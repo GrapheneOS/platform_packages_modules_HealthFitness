@@ -91,7 +91,7 @@
     <string name="app_priority_button" msgid="3126133977893705098">"ಆ್ಯಪ್ ಆದ್ಯತೆ"</string>
     <string name="delete_category_data_button" msgid="2324773398768267043">"<xliff:g id="CATEGORY">%s</xliff:g> ಡೇಟಾವನ್ನು ಅಳಿಸಿ"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"ಎಲ್ಲಾ ಆ್ಯಪ್‌ಗಳು"</string>
-    <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g>ಯನ್ನು ಓದಬಹುದು"</string>
+    <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ಅನ್ನು ಓದಬಹುದು"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ಅನ್ನು ಬರೆಯಬಹುದು"</string>
     <string name="inactive_apps" msgid="8956546286760797760">"ನಿಷ್ಕ್ರಿಯ ಆ್ಯಪ್‌ಗಳು"</string>
     <string name="inactive_apps_message" msgid="8335803540719022910">"ಈ ಆ್ಯಪ್‌ಗಳಿಗೆ ಇನ್ನು ಮುಂದೆ <xliff:g id="DATA_TYPE">%s</xliff:g> ಅನ್ನು ಓದಲು ಅಥವಾ ಬರೆಯಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ, ಆದರೆ ಅವು Health Connect ನಲ್ಲಿ ಈಗಲೂ ಡೇಟಾವನ್ನು ಸಂಗ್ರಹಿಸಿಡುತ್ತವೆ"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect Android ಸಿಸ್ಟಂನೊಂದಿಗೆ ಸಂಯೋಜನೆಯಾಗಲಿದೆ ಹಾಗಾಗಿ ನೀವು ನೇರವಾಗಿ ನಿಮ್ಮ ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಂದ ಅದಕ್ಕೆ ಆ್ಯಕ್ಸೆಸ್ ಪಡೆಯಬಹುದು."</string>
     <string name="update_button" msgid="4544529019832009496">"ಅಪ್‌ಡೇಟ್ ಮಾಡಿ"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"ಈ ಅಪ್‌ಡೇಟ್ ಅನ್ನು ಪ್ರಾರಂಭಿಸುವುದರಿಂದ Health Connect ನಿಮ್ಮ ಸಿಸ್ಟಂ ಸೆಟ್ಟಿಂಗ್‌ಗಳೊಂದಿಗೆ ಸಂಯೋಜನೆಯಾಗುವುದನ್ನು ಮುಂದುವರಿಸಬಹುದು"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect ಅನ್ನು Android ಸಿಸ್ಟಂನೊಂದಿಗೆ ಸಂಯೋಜಿಸಲಾಗುತ್ತಿದೆ, ಹಾಗಾಗಿ ನಿಮ್ಮ ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಂದ ನೇರವಾಗಿ ನೀವು ಅದನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"ಸಿಸ್ಟಂ ಅಪ್‌ಡೇಟ್ ಅಗತ್ಯವಿದೆ"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ಮುಂದುವರಿಯುವ ಮೊದಲು, ನಿಮ್ಮ ಫೋನ್ ಸಿಸ್ಟಂ ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಿ."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ನೀವು ಈಗಾಗಲೇ ನಿಮ್ಮ ಫೋನ್ ಸಿಸ್ಟಂ ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಿದ್ದರೆ, ಇಂಟಿಗ್ರೇಶನ್ ಅನ್ನು ಮುಂದುವರಿಸಲು ನಿಮ್ಮ ಫೋನ್ ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಲು ಪ್ರಯತ್ನಿಸಿ"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> ನಲ್ಲಿನ <xliff:g id="DATA_TYPE">%1$s</xliff:g> ಡೇಟಾವನ್ನು ಶಾಶ್ವತವಾಗಿ ಅಳಿಸಬೇಕೆ?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"ಸಿಸ್ಟಂ ತೋರಿಸಿ"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"ಸಿಸ್ಟಂ ಮರೆಮಾಡಿ"</string>
+    <string name="system_warning" msgid="5593850900577682512">"ನೀವು ಈ ಅನುಮತಿಯನ್ನು ನಿರಾಕರಿಸಿದರೆ, ಇನ್ನು ಮುಂದೆ ನಿಮ್ಮ ಸಾಧನದ ಬೇಸಿಕ್ ಫೀಚರ್‌ಗಳು ಉದ್ದೇಶಿಸಿದಂತೆ ಕಾರ್ಯನಿರ್ವಹಿಸದಿರಬಹುದು."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"ಯಾವುದೇ ರೀತಿಯಲ್ಲೂ ಅನುಮತಿಸಬೇಡಿ"</string>
     <string name="on" msgid="8266542510798355807">"ಆನ್ ಆಗಿದೆ"</string>
     <string name="off" msgid="6996623844428550649">"ಆಫ್ ಆಗಿದೆ"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g> ಸಮಯಕ್ಕೆ ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲಾಗಿದೆ"</string>

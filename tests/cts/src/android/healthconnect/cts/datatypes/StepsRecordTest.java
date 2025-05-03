@@ -19,10 +19,6 @@ package android.healthconnect.cts.datatypes;
 import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUMENT;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.healthconnect.cts.lib.TestAppProxy.APP_WRITE_PERMS_ONLY;
-import static android.healthconnect.cts.utils.DataFactory.NOW;
-import static android.healthconnect.cts.utils.DataFactory.generateMetadata;
-import static android.healthconnect.cts.utils.DataFactory.getCompleteStepsRecord;
-import static android.healthconnect.cts.utils.DataFactory.getUpdatedStepsRecord;
 import static android.healthconnect.cts.utils.TestUtils.copyRecordIdsViaReflection;
 import static android.healthconnect.cts.utils.TestUtils.distinctByUuid;
 import static android.healthconnect.cts.utils.TestUtils.getChangeLogs;
@@ -32,6 +28,10 @@ import static android.healthconnect.cts.utils.TestUtils.readRecords;
 import static android.healthconnect.cts.utils.TestUtils.readRecordsWithPagination;
 import static android.healthconnect.cts.utils.TestUtils.updateRecords;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.testing.shared.DataFactory.NOW;
+import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
+import static android.healthconnect.testing.shared.DataFactory.getCompleteStepsRecord;
+import static android.healthconnect.testing.shared.DataFactory.getUpdatedStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -65,9 +65,9 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.cts.lib.TestAppProxy;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DataFactory;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.shared.DataFactory;
 import android.platform.test.annotations.AppModeFull;
 
 import androidx.test.core.app.ApplicationProvider;

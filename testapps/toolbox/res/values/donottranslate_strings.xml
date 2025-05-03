@@ -15,182 +15,550 @@
 -->
 
 <resources>
-  <string name="app_label">HC Toolbox</string>
-  <string name="not_implemented">Not implemented</string>
-  <string name="insert_data">Insert Data</string>
-  <string name="update_data">Update Data</string>
-  <string name="add_sample_entry">Add Sample Entry</string>
-  <string name="please_wait">Please Wait</string>
+    <string name="app_label">HC Toolbox</string>
+    <string name="not_implemented">Not implemented</string>
+    <string name="insert_data">Insert Data</string>
+    <string name="update_data">Update Data</string>
+    <string name="add_sample_entry">Add Sample Entry</string>
+    <string name="please_wait">Please Wait</string>
 
-  <!-- Home Screen -->
-  <string name="request_data_type_permissions">Request Data Type Permissions</string>
-  <string name="launch_health_connect">Launch Health Connect</string>
-  <string name="request_route">Request Route</string>
-  <string name="insert_update_data">Insert / Update Data</string>
-  <string name="insert_session">Insert Session</string>
-  <string name="seed_random_data">Seed Random Data</string>
-  <string name="read_data_in_background">Read Data in Background</string>
-  <string name="read_data_in_foreground">Read Data in Foreground</string>
-  <string name="phr_options">PHR options</string>
-  <string name="exit_process">Exit Process</string>
-  <string name="new_screens">New screens</string>
-  <string name="all_permissions_already_granted_toast">Permissions already granted, please manage them via HC App</string>
-  <string name="all_permissions_success">All permissions were successfully granted</string>
-  <string name="number_of_permissions_not_granted">%1$d permissions were not granted</string>
-  <string name="seed_performance_insert_data">Seed Performance Data</string>
-  <string name="seed_performance_insert_data_in_parallel">Seed Performance Data (In Parallel)</string>
-  <string name="seed_performance_read_data">Read Performance Data</string>
-  <string name="toggle_permission_intent_filter">Toggle Intent Filter</string>
-  <string name="request_health_permissions">Request Health Permissions</string>
-  <string name="request_additional_permissions">Request Additional Permissions</string>
-  <string name="request_bg_read_permission">Request Background Read</string>
-  <string name="request_history_read_permission">Request History Read</string>
-  <string name="request_medical_write">Request Medical Write</string>
-  <string name="request_medical_write_and_other_health_permissions">Request Medical Write + Other Health</string>
-  <string name="request_medical_read">Request Medical Read</string>
-  <string name="request_fitness_read">Request Fitness Read</string>
-  <string name="request_fitness_write">Request Fitness Write</string>
-  <string name="toast_permission_filter_enabled">Intent Filter Enabled</string>
-  <string name="toast_permission_filter_disabled">Intent Filter Disabled</string>
-  <string name="toast_seed_data_success">Data inserted successfully</string>
+    <!-- Home Screen -->
+    <string name="request_data_type_permissions">Request Data Type Permissions</string>
+    <string name="launch_health_connect">Launch Health Connect</string>
+    <string name="request_route">Request Route</string>
+    <string name="insert_update_data">Insert / Update Data</string>
+    <string name="insert_session">Insert Session</string>
+    <string name="seed_random_data">Seed Random Data</string>
+    <string name="read_data_in_background">Read Data in Background</string>
+    <string name="read_data_in_foreground">Read Data in Foreground</string>
+    <string name="phr_options">PHR options</string>
+    <string name="exit_process">Exit Process</string>
+    <string name="new_screens">New screens</string>
+    <string name="all_permissions_already_granted_toast">Permissions already granted, please manage them via HC App</string>
+    <string name="all_permissions_success">All permissions were successfully granted</string>
+    <string name="number_of_permissions_not_granted">%1$d permissions were not granted</string>
+    <string name="seed_performance_insert_data">Seed Performance Data</string>
+    <string name="seed_performance_insert_data_in_parallel">Seed Performance Data (In Parallel)</string>
+    <string name="seed_performance_read_data">Read Performance Data</string>
+    <string name="toggle_permission_intent_filter">Toggle Intent Filter</string>
+    <string name="request_health_permissions">Request Health Permissions</string>
+    <string name="request_additional_permissions">Request Additional Permissions</string>
+    <string name="request_bg_read_permission">Request Background Read</string>
+    <string name="request_history_read_permission">Request History Read</string>
+    <string name="request_medical_write">Request Medical Write</string>
+    <string name="request_medical_write_and_other_health_permissions">Request Medical Write + Other Health</string>
+    <string name="request_medical_read">Request Medical Read</string>
+    <string name="request_fitness_read">Request Fitness Read</string>
+    <string name="request_fitness_write">Request Fitness Write</string>
+    <string name="toast_permission_filter_enabled">Intent Filter Enabled</string>
+    <string name="toast_permission_filter_disabled">Intent Filter Disabled</string>
+    <string name="toast_seed_data_success">Data inserted successfully</string>
 
-  <!-- Data Categories -->
-  <string name="activity_category" description="Title for activity category, displaying user data related to activities (such as active time, calories burned, etc.) [CHAR LIMIT=30]">Activity</string>
-  <string name="body_measurements_category" description="Title for body measurements category, displaying user data related to body measurements (such as height, weight, etc.) [CHAR LIMIT=30]">Body measurements</string>
-  <string name="sleep_category" description="Title for sleep category, displaying user data related to sleep (such as sleep duration, bedtime schedule, etc.) [CHAR LIMIT=30]">Sleep</string>
-  <string name="vitals_category" description="Title for vitals category, displaying user data related to vitals (such as heart rate, blood pressure, etc.) [CHAR LIMIT=30]">Vitals</string>
-  <string name="cycle_tracking_category" description="Title for cycle tracking category, displaying user data related to cycle tracking (such as cervical mucus, menstrual flow, etc.) [CHAR LIMIT=30]">Cycle tracking</string>
-  <string name="nutrition_category" description="Title for nutrition category, displaying user data related to nutrition (such as calories consumed, hydration, etc.) [CHAR LIMIT=30]">Nutrition</string>
-  <string name="wellness_category" description="Title for wellness category, displaying user data related to wellness (such as mindfulness, etc.) [CHAR LIMIT=30]">Wellness</string>
+    <!-- Data Categories -->
+    <string name="activity_category" description="Title for activity category, displaying user data related to activities (such as active time, calories burned, etc.) [CHAR LIMIT=30]">Activity</string>
+    <string name="body_measurements_category" description="Title for body measurements category, displaying user data related to body measurements (such as height, weight, etc.) [CHAR LIMIT=30]">Body measurements</string>
+    <string name="sleep_category" description="Title for sleep category, displaying user data related to sleep (such as sleep duration, bedtime schedule, etc.) [CHAR LIMIT=30]">Sleep</string>
+    <string name="vitals_category" description="Title for vitals category, displaying user data related to vitals (such as heart rate, blood pressure, etc.) [CHAR LIMIT=30]">Vitals</string>
+    <string name="cycle_tracking_category" description="Title for cycle tracking category, displaying user data related to cycle tracking (such as cervical mucus, menstrual flow, etc.) [CHAR LIMIT=30]">Cycle tracking</string>
+    <string name="nutrition_category" description="Title for nutrition category, displaying user data related to nutrition (such as calories consumed, hydration, etc.) [CHAR LIMIT=30]">Nutrition</string>
+    <string name="wellness_category" description="Title for wellness category, displaying user data related to wellness (such as mindfulness, etc.) [CHAR LIMIT=30]">Wellness</string>
 
-  <!-- region Data Types -->
-  <!-- region Activity data types -->
-  <string name="active_calories_burned_label" description="Label used to show the user's active calories burned data [CHAR_LIMIT=50]">Active calories burned</string>
-  <string name="activity_intensity_label" description="Label used to show the user's activity intensity data [CHAR_LIMIT=50]">Activity intensity</string>
-  <string name="distance_label" description="Label used to show the user's distance data [CHAR_LIMIT=50]">Distance</string>
-  <string name="elevation_gained_label" description="Label used to show the user's elevation gained data [CHAR_LIMIT=50]">Elevation gained</string>
-  <string name="floors_climbed_label" description="Label used to show the user's floors climbed data [CHAR_LIMIT=50]">Floors climbed</string>
-  <string name="power_label" description="Label used to show the user's power data [CHAR_LIMIT=50]">Power</string>
-  <string name="speed_label" description="Label used to show the user's speed data [CHAR_LIMIT=50]">Speed</string>
-  <string name="steps_label" description="Label used to show the user's steps data [CHAR_LIMIT=50]">Steps</string>
-  <string name="steps_cadence_label" description="Label used to show the user's step cadence data [CHAR_LIMIT=50]">Steps Cadence</string>
-  <string name="total_calories_burned_label" description="Label used to show the user's total calories burned data [CHAR_LIMIT=50]">Total calories burned</string>
-  <string name="vo2_max_label" description="Label used to show the user's V02 max data [CHAR_LIMIT=50]">VO2 max</string>
-  <string name="wheelchair_pushes_label" description="Label used to show the user's wheelchair pushes data [CHAR_LIMIT=50]">Wheelchair pushes</string>
-  <string name="cycling_pedaling_cadence" description="Label used to show the user's cycling pedaling cadence data [CHAR_LIMIT=50]">Cycling Pedaling Cadence</string>
-  <string name="exercise_session" description="Label used to show the exercise session [CHAR_LIMIT=50]">Exercise Sessions</string>
-  <string name="training_plans" description="Label used to show the training plans [CHAR_LIMIT=50]">Training Plans</string>
-  <string name="training_plan_exercise_block_notice_text" description="Label used to generate exercise steps">Generate test exercise steps</string>
-  <!--endregion-->
+    <!-- region Data Types -->
+    <!-- region Activity data types -->
+    <string name="active_calories_burned_label" description="Label used to show the user's active calories burned data [CHAR_LIMIT=50]">Active calories burned</string>
+    <string name="activity_intensity_label" description="Label used to show the user's activity intensity data [CHAR_LIMIT=50]">Activity intensity</string>
+    <string name="distance_label" description="Label used to show the user's distance data [CHAR_LIMIT=50]">Distance</string>
+    <string name="elevation_gained_label" description="Label used to show the user's elevation gained data [CHAR_LIMIT=50]">Elevation gained</string>
+    <string name="floors_climbed_label" description="Label used to show the user's floors climbed data [CHAR_LIMIT=50]">Floors climbed</string>
+    <string name="power_label" description="Label used to show the user's power data [CHAR_LIMIT=50]">Power</string>
+    <string name="speed_label" description="Label used to show the user's speed data [CHAR_LIMIT=50]">Speed</string>
+    <string name="steps_label" description="Label used to show the user's steps data [CHAR_LIMIT=50]">Steps</string>
+    <string name="steps_cadence_label" description="Label used to show the user's step cadence data [CHAR_LIMIT=50]">Steps Cadence</string>
+    <string name="total_calories_burned_label" description="Label used to show the user's total calories burned data [CHAR_LIMIT=50]">Total calories burned</string>
+    <string name="vo2_max_label" description="Label used to show the user's V02 max data [CHAR_LIMIT=50]">VO2 max</string>
+    <string name="wheelchair_pushes_label" description="Label used to show the user's wheelchair pushes data [CHAR_LIMIT=50]">Wheelchair pushes</string>
+    <string name="cycling_pedaling_cadence" description="Label used to show the user's cycling pedaling cadence data [CHAR_LIMIT=50]">Cycling Pedaling Cadence</string>
+    <string name="exercise_session" description="Label used to show the exercise session [CHAR_LIMIT=50]">Exercise Sessions</string>
+    <string name="training_plans" description="Label used to show the training plans [CHAR_LIMIT=50]">Training Plans</string>
+    <string name="training_plan_exercise_block_notice_text" description="Label used to generate exercise steps">Generate test exercise steps</string>
+    <!--endregion-->
 
-  <!-- region Body measurements data types -->
-  <string name="basal_metabolic_rate_label" description="Label used to show the user's basal metabolic rate data [CHAR_LIMIT=50]">Basal metabolic rate</string>
-  <string name="body_fat_label" description="Label used to show the user's body fat data [CHAR_LIMIT=50]">Body fat</string>
-  <string name="body_water_mass_label" description="Label used to show the user's body water mass data [CHAR_LIMIT=50]">Body water mass</string>
-  <string name="bone_mass_label" description="Label used to show the user's bone mass data [CHAR_LIMIT=50]">Bone mass</string>
-  <string name="height_label" description="Label used to show the user's height data [CHAR_LIMIT=50]">Height</string>
-  <string name="lean_body_mass_label" description="Label used to show the user's lean body mass data [CHAR_LIMIT=50]">Lean body mass</string>
-  <string name="weight_label" description="Label used to show the user's weight data [CHAR_LIMIT=50]">Weight</string>
-  <!--endregion-->
+    <!-- region Body measurements data types -->
+    <string name="basal_metabolic_rate_label" description="Label used to show the user's basal metabolic rate data [CHAR_LIMIT=50]">Basal metabolic rate</string>
+    <string name="body_fat_label" description="Label used to show the user's body fat data [CHAR_LIMIT=50]">Body fat</string>
+    <string name="body_water_mass_label" description="Label used to show the user's body water mass data [CHAR_LIMIT=50]">Body water mass</string>
+    <string name="bone_mass_label" description="Label used to show the user's bone mass data [CHAR_LIMIT=50]">Bone mass</string>
+    <string name="height_label" description="Label used to show the user's height data [CHAR_LIMIT=50]">Height</string>
+    <string name="lean_body_mass_label" description="Label used to show the user's lean body mass data [CHAR_LIMIT=50]">Lean body mass</string>
+    <string name="weight_label" description="Label used to show the user's weight data [CHAR_LIMIT=50]">Weight</string>
+    <!--endregion-->
 
-  <!-- region Cycle tracking data types -->
-  <string name="cervical_mucus_label" description="Label used to show the user's cervical mucus data [CHAR_LIMIT=50]">Cervical mucus</string>
-  <string name="menstruation_flow" description="Label used to show the user's menstruation data [CHAR_LIMIT=50]">Menstruation Flow</string>
-  <string name="menstruation_period" description="Label used to show the user's menstruation period data [CHAR_LIMIT=50]">Menstruation Period</string>
-  <string name="ovulation_test_label" description="Label used to show the user's ovulation test data [CHAR_LIMIT=50]">Ovulation test</string>
-  <string name="sexual_activity_label" description="Label used to show the user's sexual activity data [CHAR_LIMIT=50]">Sexual activity</string>
-  <string name="spotting_label" description="Label used to show the user's spotting data [CHAR_LIMIT=50]">Spotting</string>
-  <string name="inter_menstrual_bleeding" description="Label used to show the user's inter menstrual bleeding data [CHAR_LIMIT=50]">Inter Menstrual Bleeding</string>
-  <!--endregion-->
+    <!-- region Cycle tracking data types -->
+    <string name="cervical_mucus_label" description="Label used to show the user's cervical mucus data [CHAR_LIMIT=50]">Cervical mucus</string>
+    <string name="menstruation_flow" description="Label used to show the user's menstruation data [CHAR_LIMIT=50]">Menstruation Flow</string>
+    <string name="menstruation_period" description="Label used to show the user's menstruation period data [CHAR_LIMIT=50]">Menstruation Period</string>
+    <string name="ovulation_test_label" description="Label used to show the user's ovulation test data [CHAR_LIMIT=50]">Ovulation test</string>
+    <string name="sexual_activity_label" description="Label used to show the user's sexual activity data [CHAR_LIMIT=50]">Sexual activity</string>
+    <string name="spotting_label" description="Label used to show the user's spotting data [CHAR_LIMIT=50]">Spotting</string>
+    <string name="inter_menstrual_bleeding" description="Label used to show the user's inter menstrual bleeding data [CHAR_LIMIT=50]">Inter Menstrual Bleeding</string>
+    <!--endregion-->
 
-  <!-- region Nutrition data types -->
-  <string name="hydration_label" description="Label used to show the user's hydration data [CHAR_LIMIT=50]">Hydration</string>
-  <string name="nutrition_label" description="Label used to show the user's nutrition data [CHAR_LIMIT=50]">Nutrition</string>
-  <!--endregion-->
+    <!-- region Nutrition data types -->
+    <string name="hydration_label" description="Label used to show the user's hydration data [CHAR_LIMIT=50]">Hydration</string>
+    <string name="nutrition_label" description="Label used to show the user's nutrition data [CHAR_LIMIT=50]">Nutrition</string>
+    <!--endregion-->
 
-  <!-- region Sleep data types -->
-  <string name="sleep_label" description="Label used to show the user's sleep data [CHAR_LIMIT=50]">Sleep</string>
-  <!--endregion-->
+    <!-- region Sleep data types -->
+    <string name="sleep_label" description="Label used to show the user's sleep data [CHAR_LIMIT=50]">Sleep</string>
+    <!--endregion-->
 
-  <!-- region Vitals data types -->
-  <string name="basal_body_temperature_label" description="Label used to show the user's basal body temperature data [CHAR_LIMIT=50]">Basal body temperature</string>
-  <string name="blood_glucose_label" description="Label used to show the user's blood glucose data [CHAR_LIMIT=50]">Blood glucose</string>
-  <string name="blood_pressure_label" description="Label used to show the user's blood pressure data [CHAR_LIMIT=50]">Blood pressure</string>
-  <string name="body_temperature_label" description="Label used to show the user's body temperature data [CHAR_LIMIT=50]">Body temperature</string>
-  <string name="heart_rate_label" description="Label used to show the user's heart rate data [CHAR_LIMIT=50]">Heart rate</string>
-  <string name="heart_rate_variability_label" description="Label used to show the user's heart rate variability data [CHAR_LIMIT=50]">Heart rate variability</string>
-  <string name="oxygen_saturation_label" description="Label used to show the user's oxygen saturation data [CHAR_LIMIT=50]">Oxygen saturation</string>
-  <string name="respiratory_rate_label" description="Label used to show the user's respiratory rate data [CHAR_LIMIT=50]">Respiratory rate</string>
-  <string name="resting_heart_rate_label" description="Label used to show the user's resting heart rate data [CHAR_LIMIT=50]">Resting heart rate</string>
-  <string name="skin_temperature_label" description="Label used to show the user's skin temperature data [CHAR_LIMIT=50]">Skin temperature</string>
-  <string name="mindfulness_label" description="Label used to show the user's mindfulness data [CHAR_LIMIT=50]">Mindfulness</string>
-  <!--endregion-->
-  <!--endregion-->
+    <!-- region Vitals data types -->
+    <string name="basal_body_temperature_label" description="Label used to show the user's basal body temperature data [CHAR_LIMIT=50]">Basal body temperature</string>
+    <string name="blood_glucose_label" description="Label used to show the user's blood glucose data [CHAR_LIMIT=50]">Blood glucose</string>
+    <string name="blood_pressure_label" description="Label used to show the user's blood pressure data [CHAR_LIMIT=50]">Blood pressure</string>
+    <string name="body_temperature_label" description="Label used to show the user's body temperature data [CHAR_LIMIT=50]">Body temperature</string>
+    <string name="heart_rate_label" description="Label used to show the user's heart rate data [CHAR_LIMIT=50]">Heart rate</string>
+    <string name="heart_rate_variability_label" description="Label used to show the user's heart rate variability data [CHAR_LIMIT=50]">Heart rate variability</string>
+    <string name="oxygen_saturation_label" description="Label used to show the user's oxygen saturation data [CHAR_LIMIT=50]">Oxygen saturation</string>
+    <string name="respiratory_rate_label" description="Label used to show the user's respiratory rate data [CHAR_LIMIT=50]">Respiratory rate</string>
+    <string name="resting_heart_rate_label" description="Label used to show the user's resting heart rate data [CHAR_LIMIT=50]">Resting heart rate</string>
+    <string name="skin_temperature_label" description="Label used to show the user's skin temperature data [CHAR_LIMIT=50]">Skin temperature</string>
+    <string name="mindfulness_label" description="Label used to show the user's mindfulness data [CHAR_LIMIT=50]">Mindfulness</string>
+    <!--endregion-->
+    <!--endregion-->
 
-  <!-- region Performance Testing Dialog -->
-  <string name="span_insert_over_time">Span insert over time</string>
-  <string name="number_of_batches">Number of batches</string>
-  <string name="number_of_records_per_batch">Number of records per batch</string>
-  <string name="time_span">Time Span (in minutes)</string>
-  <string name="performance_testing_explanation">Heart Rate Records will be inserted/read in batches. Please enable checkbox to insert data over a given time span.</string>
-  <!--endregion-->
+    <!-- region Performance Testing Dialog -->
+    <string name="span_insert_over_time">Span insert over time</string>
+    <string name="number_of_batches">Number of batches</string>
+    <string name="number_of_records_per_batch">Number of records per batch</string>
+    <string name="time_span">Time Span (in minutes)</string>
+    <string name="performance_testing_explanation">Heart Rate Records will be inserted/read in batches. Please enable checkbox to insert data over a given time span.</string>
+    <!--endregion-->
 
-  <!-- region Background Reading screen -->
-  <string name="background_read_title">Read Data In Background Via Toolbox 2</string>
-  <string name="background_read_own_steps">Read Own Steps</string>
-  <string name="background_read_all_steps">Read All Steps</string>
-  <!--endregion-->
+    <!-- region Background Reading screen -->
+    <string name="background_read_title">Read Data In Background Via Toolbox 2</string>
+    <string name="background_read_own_steps">Read Own Steps</string>
+    <string name="background_read_all_steps">Read All Steps</string>
+    <!--endregion-->
 
-  <!-- region Foreground Reading screen -->
-  <string name="foreground_read_title">Read Data In Foreground</string>
-  <string name="foreground_read_all_steps">Read All Steps</string>
-  <!--endregion-->
+    <!-- region Foreground Reading screen -->
+    <string name="foreground_read_title">Read Data In Foreground</string>
+    <string name="foreground_read_all_steps">Read All Steps</string>
+    <!--endregion-->
 
-  <!-- region Phr Options screen -->
-  <string name="phr_options_read_immunization">Read PHR data</string>
-  <string name="phr_options_select_patient_title">Select patient context</string>
-  <string name="phr_options_select_data_source_title">Select data source for insert </string>
-  <string name="phr_options_ingest_title">Insert PHR data</string>
-  <string name="phr_options_bulk_ingest_title">Bulk insert PHR data</string>
-  <string name="phr_options_create_data_source">Create data source</string>
-  <string name="phr_options_pasted_resource_placeholder">Add a FHIR resource json string</string>
-  <string name="phr_options_data_source_name_placeholder">Optional display name for new data source</string>
-  <string name="phr_options_insert_resource">Insert pasted resource</string>
-  <string name="phr_options_read_by_id">Read all vaccines</string>
-  <string name="phr_options_seed_fhir_jsons">Seed all FHIR resources</string>
-  <string name="phr_options_seed_x_fhir_jsons">Seed selected number of FHIR resources</string>
-  <string name="phr_options_request_immunization">Request read immunization permission</string>
-  <string name="phr_options_request_medical">Request all medical permissions</string>
-  <string name="all_medical_permissions_success">All medical permissions were successfully granted</string>
-  <string name="number_of_medical_permissions_not_granted">%1$d medical permissions still not granted</string>
-  <string name="data_source_spinner_default_message">SELECT A DATA SOURCE</string>
-  <string name="spinner_default_message">SELECT FHIR RESOURCE TO INSERT</string>
-  <!--endregion-->
+    <!-- region Phr Options screen -->
+    <string name="phr_options_read_immunization">Read PHR data</string>
+    <string name="phr_options_select_patient_title">Select patient context</string>
+    <string name="phr_options_select_data_source_title">Select data source for insert </string>
+    <string name="phr_options_ingest_title">Insert PHR data</string>
+    <string name="phr_options_bulk_ingest_title">Bulk insert PHR data</string>
+    <string name="phr_options_create_data_source">Create data source</string>
+    <string name="phr_options_pasted_resource_placeholder">Add a FHIR resource json string</string>
+    <string name="phr_options_data_source_name_placeholder">Optional display name for new data source</string>
+    <string name="phr_options_insert_resource">Insert pasted resource</string>
+    <string name="phr_options_read_by_id">Read all vaccines</string>
+    <string name="phr_options_seed_fhir_jsons">Seed all FHIR resources</string>
+    <string name="phr_options_seed_x_fhir_jsons">Seed selected number of FHIR resources</string>
+    <string name="phr_options_request_immunization">Request read immunization permission</string>
+    <string name="phr_options_request_medical">Request all medical permissions</string>
+    <string name="all_medical_permissions_success">All medical permissions were successfully granted</string>
+    <string name="number_of_medical_permissions_not_granted">%1$d medical permissions still not granted</string>
+    <string name="data_source_spinner_default_message">SELECT A DATA SOURCE</string>
+    <string name="spinner_default_message">SELECT FHIR RESOURCE TO INSERT</string>
+    <!--endregion-->
 
-  <!-- region for permissions request screen-->
-  <string name="permissions_request">request permissions</string>
-  <string name="only">only</string>
-  <string name="write_permission">Write</string>
-  <string name="all_permissions">All permissions</string>
-  <string name="fitness_permissions">Fitness permissions</string>
-  <string name="health_permissions">Health permissions</string>
-  <string name="read_permission">Read</string>
-  <string name="medical">Personal health record</string>
-  <string name="additional_permissions">Additional</string>
-  <string name="history_read_permission">History read</string>
-  <string name="background_read_permission">Background read</string>
-  <string name="request_permissions">Request</string>
-  <string name="revoke_permissions">Revoke permissions</string>
-  <!--endregion-->
+    <!-- region for permissions request screen-->
+    <string name="permissions_request">request permissions</string>
+    <string name="only">only</string>
+    <string name="write_permission">Write</string>
+    <string name="all_permissions">All permissions</string>
+    <string name="fitness_permissions">Fitness permissions</string>
+    <string name="health_permissions">Health permissions</string>
+    <string name="read_permission">Read</string>
+    <string name="medical">Personal health record</string>
+    <string name="additional_permissions">Additional</string>
+    <string name="history_read_permission">History read</string>
+    <string name="background_read_permission">Background read</string>
+    <string name="request_permissions">Request</string>
+    <string name="revoke_permissions">Revoke permissions</string>
+    <!--endregion-->
 
-  <!-- region Read data screens -->
-  <string name="loading_data">Loading data…</string>
-  <string name="error">Error</string>
-  <!--endregion-->
+    <!-- region Read data screens -->
+    <string name="loading_data">Loading data…</string>
+    <string name="error">Error</string>
+    <!--endregion-->
 
-  <string name="read_backup_data">Read backup data</string>
-  <string name="write_restore_data">Write restore data</string>
-  <string name="read_backup_metadata">Read backup metadata</string>
-  <string name="write_restore_metadata">Write restore metadata</string>
+    <string name="read_backup_data">Read backup data</string>
+    <string name="write_restore_data">Write restore data</string>
+    <string name="read_backup_metadata">Read backup metadata</string>
+    <string name="write_restore_metadata">Write restore metadata</string>
+
+    <!-- region Headers -->
+    <string name="measurement_location">Measurement Location</string>
+    <string name="baseline">Baseline</string>
+    <string name="body_position">Body Position</string>
+    <string name="relation">Relation</string>
+    <string name="type">Type</string>
+    <string name="source">Source</string>
+    <string name="notes">Notes</string>
+    <!-- endregion -->
+
+    <!-- region Unit -->
+    <string name="floors">floors</string>
+    <string name="celsius">celsius</string>
+    <string name="pushes">Pushes</string>
+    <!-- endregion -->
+
+    <!-- region Unit Labels -->
+    <string name="millimetres_of_mercury_label">mmHg</string>
+    <string name="revolutions_per_minute_label">rpm</string>
+    <string name="beats_per_minute_label">bpm</string>
+    <string name="milliseconds_label">ms</string>
+    <string name="repetitions_label">reps</string>
+    <string name="kilometers_per_hour_label">km/h</string>
+    <string name="steps_per_minute">steps/min</string>
+    <string name="vo2_milliliters_per_minute_kilogram_label">mL/(kg·min)</string>
+    <string name="watts_label">W</string>
+    <string name="millimoles_per_liter_label">mmol/L</string>
+    <string name="liter_label">L</string>
+    <string name="milligrams_label">mg</string>
+    <string name="grams_label">g</string>
+    <string name="kilograms_label">kg</string>
+    <string name="meters_label">m</string>
+    <string name="kilometers_label">km</string>
+    <string name="calories_label">cal</string>
+    <!-- endregion -->
+
+    <!-- region Exercise Segment Types -->
+    <string name="exercise_segment_arm_curl">Arm Curl</string>
+    <string name="exercise_segment_back_extension">Back Extension</string>
+    <string name="exercise_segment_ball_slam">Ball Slam</string>
+    <string name="exercise_segment_barbell_shoulder_press">Barbell Shoulder Press</string>
+    <string name="exercise_segment_bench_press">Bench Press</string>
+    <string name="exercise_segment_bench_sit_up">Bench Sit Up</string>
+    <string name="exercise_segment_biking">Biking</string>
+    <string name="exercise_segment_biking_stationary">Stationary Biking</string>
+    <string name="exercise_segment_burpee">Burpee</string>
+    <string name="exercise_segment_crunch">Crunch</string>
+    <string name="exercise_segment_deadlift">Deadlift</string>
+    <string name="exercise_segment_double_arm_triceps_extension">Double Arm Triceps Extension</string>
+    <string name="exercise_segment_dumbbell_curl_left_arm">Left Arm Dumbbell Curl</string>
+    <string name="exercise_segment_dumbbell_curl_right_arm">Right Arm Dumbbell Curl</string>
+    <string name="exercise_segment_dumbbell_front_raise">Right Arm Dumbbell Front Raise</string>
+    <string name="exercise_segment_dumbbell_lateral_raise">Dumbbell Lateral Raise</string>
+    <string name="exercise_segment_dumbbell_row">Dumbbell Row</string>
+    <string name="exercise_segment_dumbbell_triceps_extension_left_arm">Left Arm Triceps Extension</string>
+    <string name="exercise_segment_dumbbell_triceps_extension_right_arm">Right Arm Triceps Extension</string>
+    <string name="exercise_segment_dumbbell_triceps_extension_two_arm">Two Arm Triceps Extension</string>
+    <string name="exercise_segment_elliptical">Elliptical</string>
+    <string name="exercise_segment_forward_twist">Forward Twist</string>
+    <string name="exercise_segment_front_raise">Front Raise</string>
+    <string name="exercise_segment_high_intensity_interval_training">High Intensity Training</string>
+    <string name="exercise_segment_hip_thrust">Hip Thrust</string>
+    <string name="exercise_segment_hula_hoop">Hula Hoop</string>
+    <string name="exercise_segment_jumping_jack">Jumping Jack</string>
+    <string name="exercise_segment_jump_rope">Jump Rope</string>
+    <string name="exercise_segment_kettlebell_swing">Kettlebell Swing</string>
+    <string name="exercise_segment_lateral_raise">Lateral Raise</string>
+    <string name="exercise_segment_lat_pull_down">Lat Pull-down</string>
+    <string name="exercise_segment_leg_curl">Leg Curl</string>
+    <string name="exercise_segment_leg_extension">Leg Extension</string>
+    <string name="exercise_segment_leg_press">Leg Press</string>
+    <string name="exercise_segment_leg_raise">Leg Raise</string>
+    <string name="exercise_segment_lunge">Lunge</string>
+    <string name="exercise_segment_mountain_climber">Mountain Climber</string>
+    <string name="exercise_segment_other_workout">Other Workout</string>
+    <string name="exercise_segment_pause">Pause</string>
+    <string name="exercise_segment_pilates">Pilates</string>
+    <string name="exercise_segment_plank">Plank</string>
+    <string name="exercise_segment_pull_up">Pull-up</string>
+    <string name="exercise_segment_punch">Punch</string>
+    <string name="exercise_segment_rest">Rest</string>
+    <string name="exercise_segment_rowing_machine">Rowing Machine</string>
+    <string name="exercise_segment_running">Running</string>
+    <string name="exercise_segment_running_treadmill">Treadmill Running</string>
+    <string name="exercise_segment_shoulder_press">Shoulder Press</string>
+    <string name="exercise_segment_single_arm_triceps_extension">Single Arm Triceps Extension</string>
+    <string name="exercise_segment_sit_up">Sit-up</string>
+    <string name="exercise_segment_squat">Squat</string>
+    <string name="exercise_segment_stair_climbing">Stair Climbing</string>
+    <string name="exercise_segment_stair_climbing_machine">Stair Climbing Machine</string>
+    <string name="exercise_segment_stretching">Stretching</string>
+    <string name="exercise_segment_swimming_backstroke">Backstroke Swimming</string>
+    <string name="exercise_segment_swimming_breaststroke">Breaststroke Swimming</string>
+    <string name="exercise_segment_swimming_butterfly">Butterfly Swimming</string>
+    <string name="exercise_segment_swimming_freestyle">Freestyle Swimming</string>
+    <string name="exercise_segment_swimming_mixed">Mixed Swimming</string>
+    <string name="exercise_segment_swimming_open_water">Open Water Swimming</string>
+    <string name="exercise_segment_swimming_other">Other Swimming</string>
+    <string name="exercise_segment_swimming_pool">Pool Swimming</string>
+    <string name="exercise_segment_unknown">Unknown</string>
+    <string name="exercise_segment_upper_twist">Upper Twist</string>
+    <string name="exercise_segment_walking">Walking</string>
+    <string name="exercise_segment_weightlifting">Weightlifting</string>
+    <string name="exercise_segment_wheelchair">Wheelchair</string>
+    <string name="exercise_segment_yoga">Yoga</string>
+    <string name="exercise_segment_unknown_exercise">Unknown Exercise</string>
+    <!--endregion-->
+
+    <!--region Exercise type-->
+    <string name="exercise_type_badminton">Badminton</string>
+    <string name="exercise_type_biking">Biking</string>
+    <string name="exercise_type_baseball">Baseball</string>
+    <string name="exercise_type_basketball">Basketball</string>
+    <string name="exercise_type_biking_stationary">Biking Stationary</string>
+    <string name="exercise_type_bootcamp">Bootcamp</string>
+    <string name="exercise_type_boxing">Boxing</string>
+    <string name="exercise_type_calisthenics">Calisthenics</string>
+    <string name="exercise_type_cricket">Cricket</string>
+    <string name="exercise_type_dancing">Dancing</string>
+    <string name="exercise_type_elliptical">Elliptical</string>
+    <string name="exercise_type_exercise_class">Exercise Class</string>
+    <string name="exercise_type_fencing">Fencing</string>
+    <string name="exercise_type_football_american">American Football</string>
+    <string name="exercise_type_football_australian">Australian Football</string>
+    <string name="exercise_type_frisbee">Frisbee</string>
+    <string name="exercise_type_golf">Golf</string>
+    <string name="exercise_type_guided_breathing">Guided Breathing</string>
+    <string name="exercise_type_gymnastics">Gymnastics</string>
+    <string name="exercise_type_handball">Handball</string>
+    <string name="exercise_type_high_intensity_interval_training">High Intensity Interval Training</string>
+    <string name="exercise_type_hiking">Hiking</string>
+    <string name="exercise_type_ice_hockey">Ice Hockey</string>
+    <string name="exercise_type_ice_skating">Ice Skating</string>
+    <string name="exercise_type_martial_arts">Martial Arts</string>
+    <string name="exercise_type_paddling">Paddling</string>
+    <string name="exercise_type_paragliding">Paragliding</string>
+    <string name="exercise_type_pilates">Pilates</string>
+    <string name="exercise_type_racquetball">Racquetball</string>
+    <string name="exercise_type_rock_climbing">Rock Climbing</string>
+    <string name="exercise_type_roller_hockey">Roller Hockey</string>
+    <string name="exercise_type_rowing">Rowing</string>
+    <string name="exercise_type_rowing_machine">Rowing Machine</string>
+    <string name="exercise_type_rugby">Rugby</string>
+    <string name="exercise_type_running">Running</string>
+    <string name="exercise_type_treadmill">Treadmill</string>
+    <string name="exercise_type_sailing">Sailing</string>
+    <string name="exercise_type_scuba_diving">Scuba Diving</string>
+    <string name="exercise_type_skating">Skating</string>
+    <string name="exercise_type_skiing">Skiing</string>
+    <string name="exercise_type_snowboarding">Snowboarding</string>
+    <string name="exercise_type_snowshoeing">Snowshoeing</string>
+    <string name="exercise_type_soccer">Soccer</string>
+    <string name="exercise_type_softball">Softball</string>
+    <string name="exercise_type_squash">Squash</string>
+    <string name="exercise_type_stair_climbing">Stair Climbing</string>
+    <string name="exercise_type_stair_climbing_machine">Stair Climbing Machine</string>
+    <string name="exercise_type_strength_training">Strength Training</string>
+    <string name="exercise_type_stretching">Stretching</string>
+    <string name="exercise_type_surfing">Surfing</string>
+    <string name="exercise_type_swimming_open_water">Open Water Swimming</string>
+    <string name="exercise_type_swimming">Swimming</string>
+    <string name="exercise_type_table_tennis">Table Tennis</string>
+    <string name="exercise_type_tennis">Tennis</string>
+    <string name="exercise_type_volleyball">Volleyball</string>
+    <string name="exercise_type_walking">Walking</string>
+    <string name="exercise_type_water_polo">Water Polo</string>
+    <string name="exercise_type_weightlifting">Weightlifting</string>
+    <string name="exercise_type_wheelchair">Wheelchair</string>
+    <string name="exercise_type_yoga">Yoga</string>
+    <string name="exercise_type_other">Other</string>
+    <string name="exercise_type_unknown_exercise_type">Unknown exercise type</string>
+    <!--endregion-->
+
+    <!-- region Measurement Location -->
+    <string name="measurement_location_armpit">Armpit</string>
+    <string name="measurement_location_ear">Ear</string>
+    <string name="measurement_location_finger">Finger</string>
+    <string name="measurement_location_forehead">Forehead</string>
+    <string name="measurement_location_mouth">Mouth</string>
+    <string name="measurement_location_rectum">Rectum</string>
+    <string name="measurement_location_temporal_artery">Temporal Artery</string>
+    <string name="measurement_location_toe">Toe</string>
+    <string name="measurement_location_vagina">Vagina</string>
+    <string name="measurement_location_wrist">Wrist</string>
+    <!--endregion-->
+
+    <!-- region Meal Type -->
+    <string name="meal_type_breakfast">Breakfast</string>
+    <string name="meal_type_dinner">Dinner</string>
+    <string name="meal_type_lunch">Lunch</string>
+    <string name="meal_type_snack">Snack</string>
+    <!--endregion-->
+
+    <!-- region Specimen Source -->
+    <string name="specimen_source_capillary_blood">Capillary blood</string>
+    <string name="specimen_source_interstitial_fluid">Interstitial fluid</string>
+    <string name="specimen_source_plasma">Plasma</string>
+    <string name="specimen_source_serum">Serum</string>
+    <string name="specimen_source_tears">Tears</string>
+    <string name="specimen_source_whole_blood">Whole blood</string>
+    <!-- endregion -->
+
+    <!-- region Relation To Meal -->
+    <string name="relation_to_meal_after_meal">After</string>
+    <string name="relation_to_meal_before_meal">Before</string>
+    <string name="relation_to_meal_fasting">Fasting</string>
+    <string name="relation_to_meal_general">General</string>
+    <!-- endregion -->
+
+    <!-- region Blood Pressure -->
+    <string name="body_position_lying_down">Lying down</string>
+    <string name="body_position_reclining">Reclining</string>
+    <string name="body_position_sitting_down">Sitting down</string>
+    <string name="body_position_standing_up">Standing up</string>
+
+    <string name="blood_pressure_measurement_location_left_upper_arm">Left upper arm</string>
+    <string name="blood_pressure_measurement_location_left_wrist">Left wrist</string>
+    <string name="blood_pressure_measurement_location_right_upper_arm">Right upper arm</string>
+    <string name="blood_pressure_measurement_location_right_wrist">Right wrist</string>
+    <!-- endregion -->
+
+    <!-- region Activity Intensity -->
+    <string name="activity_intensity_moderate">Moderate</string>
+    <string name="activity_intensity_vigorous">Vigorous</string>
+    <string name="activity_intensity_unknown">Unknown</string>
+    <!-- endregion -->
+
+    <!-- region Cervical Mucus -->
+    <string name="cervical_mucus_appearance_dry">Dry</string>
+    <string name="cervical_mucus_appearance_sticky">Sticky</string>
+    <string name="cervical_mucus_appearance_creamy">Creamy</string>
+    <string name="cervical_mucus_appearance_watery">Watery</string>
+    <string name="cervical_mucus_appearance_egg_white">Egg white</string>
+    <string name="cervical_mucus_appearance_unusual">Unusual</string>
+
+    <string name="cervical_mucus_sensation_light">Light</string>
+    <string name="cervical_mucus_sensation_medium">Medium</string>
+    <string name="cervical_mucus_sensation_heavy">Heavy</string>
+    <!-- endregion -->
+
+    <!-- region Intermenstrual bleeding -->
+    <string name="intermenstrual_bleeding_spotting">Spotting</string>
+    <!-- endregion -->
+
+    <!-- region Menstruation Flow -->
+    <string name="menstruation_flow_heavy">Heavy</string>
+    <string name="menstruation_flow_Medium">Medium</string>
+    <string name="menstruation_flow_light">Light</string>
+    <string name="menstruation_flow_unknown">Unknown Flow</string>
+    <!-- endregion -->
+
+    <!-- region Mindfulness -->
+    <string name="mindfulness_session_header">Mindfulness session</string>
+
+    <string name="mindfulness_session_type_breathing">Breathing</string>
+    <string name="mindfulness_session_type_meditation">Meditation</string>
+    <string name="mindfulness_session_type_movement">Movement</string>
+    <string name="mindfulness_session_type_music">Music</string>
+    <string name="mindfulness_session_type_other">Other</string>
+    <string name="mindfulness_session_type_unguided">Unguided</string>
+    <string name="mindfulness_session_type_unknown">Unknown</string>
+    <!-- endregion -->
+
+    <!-- region Nutrition -->
+    <string name="nutrition_biotin">Biotin</string>
+    <string name="nutrition_caffeine">Caffeine</string>
+    <string name="nutrition_calcium">Calcium</string>
+    <string name="nutrition_chloride">Chloride</string>
+    <string name="nutrition_cholesterol">Cholesterol</string>
+    <string name="nutrition_chromium">Chromium</string>
+    <string name="nutrition_copper">Copper</string>
+    <string name="nutrition_dietary_fiber">Dietary Fiber</string>
+    <string name="nutrition_energy_from_fat">Energy From Fat</string>
+    <string name="nutrition_energy">Energy</string>
+    <string name="nutrition_folate">Folate</string>
+    <string name="nutrition_folic_acid">Folic Acid</string>
+    <string name="nutrition_iodine">Iodine</string>
+    <string name="nutrition_iron">Iron</string>
+    <string name="nutrition_magnesium">Magnesium</string>
+    <string name="nutrition_manganese">Manganese</string>
+    <string name="nutrition_molybdenum">Molybdenum</string>
+    <string name="nutrition_monounsaturated_fat">Monounsaturated Fat</string>
+    <string name="nutrition_niacin">Niacin</string>
+    <string name="nutrition_pantothenic_acid">Pantothenic Acid</string>
+    <string name="nutrition_phosphorus">Phosphorus</string>
+    <string name="nutrition_polyunsaturated_fat">Polyunsaturated Fat</string>
+    <string name="nutrition_potassium">Potassium</string>
+    <string name="nutrition_protein">Protein</string>
+    <string name="nutrition_riboflavin">Riboflavin</string>
+    <string name="nutrition_saturated_fat">Saturated Fat</string>
+    <string name="nutrition_selenium">Selenium</string>
+    <string name="nutrition_sodium">Sodium</string>
+    <string name="nutrition_sugar">Sugar</string>
+    <string name="nutrition_thiamin">Thiamin</string>
+    <string name="nutrition_total_carbohydrate">Total Carbohydrate</string>
+    <string name="nutrition_total_fat">Total Fat</string>
+    <string name="nutrition_trans_fat">Trans Fat</string>
+    <string name="nutrition_unsaturated_fat">Unsaturated Fat</string>
+    <string name="nutrition_vitamin_a">Vitamin A</string>
+    <string name="nutrition_vitamin_b12">Vitamin B12</string>
+    <string name="nutrition_vitamin_b6">Vitamin B6</string>
+    <string name="nutrition_vitamin_c">Vitamin C</string>
+    <string name="nutrition_vitamin_d">Vitamin D</string>
+    <string name="nutrition_vitamin_e">Vitamin E</string>
+    <string name="nutrition_vitamin_k">Vitamin K</string>
+    <string name="nutrition_zinc">Zinc</string>
+
+    <string name="meal">Meal</string>
+    <string name="no_nutritional_data_recorded">No nutritional data recorded</string>
+    <!-- endregion -->
+
+    <!-- region Ovulation Test -->
+    <string name="ovulation_test_high">High fertility</string>
+    <string name="ovulation_test_inconclusive">Inconclusive result</string>
+    <string name="ovulation_test_negative">Negative / low fertility</string>
+    <string name="ovulation_test_positive">Positive / peak fertility</string>
+    <string name="ovulation_test_unknown">Unknown result</string>
+    <!-- endregion -->
+
+    <!-- region Planned Exercise Session -->
+    <string name="active">Active</string>
+    <string name="cooldown">Cooldown</string>
+    <string name="recovery">Recovery</string>
+    <string name="rest">Rest</string>
+    <string name="warmup">Warmup</string>
+    <string name="unknown_exercise_category">Unknown exercise category</string>
+
+    <string name="unknown_performance_goal">Unknown performance goal</string>
+    <string name="unknown_completion_goal">Unknown completion goal</string>
+    <!-- endregion -->
+
+    <!-- region Sexual Activity -->
+    <string name="sexual_activity_protected">Protected</string>
+    <string name="sexual_activity_unprotected">Unprotected</string>
+    <string name="sexual_activity_unknown">Unknown</string>
+    <!-- endregion -->
+
+    <!-- region Skin Temperature -->
+    <string name="finger">Finger</string>
+    <string name="toe">Toe</string>
+    <string name="wrist">Wrist</string>
+    <!-- endregion -->
+
+    <!-- region Skin Temperature -->
+    <string name="sleep_no_stages">No stages</string>
+    <string name="sleep_sleep_session">Sleep session</string>
+
+    <string name="sleep_awake">Awake</string>
+    <string name="sleep_awake_in_bed">Awake in bed</string>
+    <string name="sleep_awake_out_of_bed">Awake out of bed</string>
+    <string name="sleep_sleeping">Sleeping</string>
+    <string name="sleep_deep_sleep">Deep sleep</string>
+    <string name="sleep_light_sleep">Light sleep</string>
+    <string name="sleep_rem_sleep">REM sleep</string>
+    <string name="sleep_unknown">Unknown</string>
+    <!-- endregion -->
+
+    <!-- region VO2 Max -->
+    <string name="vo2Max_measurement_method_cooper_test">Cooper Test</string>
+    <string name="vo2Max_measurement_method_heart_rate_ratio">Heart Rate Ratio</string>
+    <string name="vo2Max_measurement_method_metabolic_cart">Metabolic Cart</string>
+    <string name="vo2Max_measurement_method_multistage_fitness_test">Multistage Fitness Test</string>
+    <string name="vo2Max_measurement_method_other">Other</string>
+    <string name="vo2Max_measurement_method_rockport_fitness_test">Rockport Fitness Test</string>
+    <string name="vo2Max_measurement_method_unknown">Unknown</string>
+    <!-- endregion -->
+
 
 </resources>

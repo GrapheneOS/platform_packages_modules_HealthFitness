@@ -14,55 +14,75 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.android.healthconnect.controller.data.entries.AppHeaderView
-        android:visibility="gone"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:id="@+id/app_header"/>
-
-    <com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationView
-        android:id="@+id/date_navigation_view"
-        android:paddingTop="@dimen/spacing_xsmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <ProgressBar
-        android:id="@+id/loading"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="?android:progressBarStyle"/>
-
-    <TextView
-        android:id="@+id/no_data_view"
+    <LinearLayout
+        android:id="@+id/pinned_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/no_data"
-        android:visibility="gone"
-        android:focusable="true"/>
+        android:orientation="vertical"
+        android:clipToPadding="false"
+        android:scrollbars="none"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="?android:colorBackground"
+        android:translationZ="1dp"
+        app:layout_constraintBottom_toTopOf="@id/data_entries_list">
+        <com.android.healthconnect.controller.data.entries.AppHeaderView
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/app_header"
+            android:translationZ="4dp"/>
 
-    <include
-        android:id="@+id/zerostate_view"
-        layout="@layout/fragment_entries_zerostate"
-        android:visibility="gone"/>
+        <com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationView
+            android:id="@+id/date_navigation_view"
+            android:paddingTop="@dimen/spacing_xsmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:translationZ="4dp"/>
 
-    <TextView
-        android:id="@+id/error_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/default_error"
-        android:visibility="gone" />
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:progressBarStyle"/>
+
+        <TextView
+            android:id="@+id/no_data_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_data"
+            android:visibility="gone"
+            android:focusable="true"/>
+
+        <include
+            android:id="@+id/zerostate_view"
+            layout="@layout/fragment_entries_zerostate"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/error_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/default_error"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/data_entries_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true"/>
-</LinearLayout>
+        android:layout_marginTop="@dimen/spacing_small"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@id/pinned_header"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

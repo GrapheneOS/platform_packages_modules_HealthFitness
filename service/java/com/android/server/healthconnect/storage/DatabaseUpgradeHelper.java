@@ -22,6 +22,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ACTIVITY_INTENSITY;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ECOSYSTEM_METRICS;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_GENERATED_LOCAL_TIME;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PERSONAL_HEALTH_RECORD;
@@ -32,6 +33,7 @@ import static com.android.server.healthconnect.common.accesslog.AccessLogsHelper
 import static com.android.server.healthconnect.fitness.recordhelpers.PlannedExerciseSessionRecordHelper.PLANNED_EXERCISE_SESSION_RECORD_TABLE_NAME;
 import static com.android.server.healthconnect.storage.HealthConnectDatabase.createTable;
 import static com.android.server.healthconnect.storage.TransactionManager.runAsTransaction;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.checkColumnExists;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.checkTableExists;
 
 import android.database.sqlite.SQLiteDatabase;
@@ -48,6 +50,7 @@ import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriori
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.ActivityIntensityRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSegmentRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.MindfulnessSessionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.PlannedExerciseSessionRecordHelper;
@@ -94,6 +97,9 @@ final class DatabaseUpgradeHelper {
     private static final Upgrader UPGRADE_TO_CLOUD_BACKUP_AND_RESTORE =
             BackupChangeTokenHelper::applyBackupTokenUpgrade;
 
+    private static final Upgrader UPGRADE_TO_EXERCISE_SEGMENT_WEIGHT =
+            DatabaseUpgradeHelper::applyExerciseSegmentImprovementsDatabaseUpgrade;
+
     /**
      * A list of db version -> Upgrader to upgrade the db from the previous version to the version.
      * The upgrades must be executed one by one in the numeric order of db versions, hence TreeMap.
@@ -110,7 +116,9 @@ final class DatabaseUpgradeHelper {
                             DB_VERSION_ACTIVITY_INTENSITY, UPGRADE_TO_ACTIVITY_INTENSITY,
                             DB_VERSION_ECOSYSTEM_METRICS, UPGRADE_TO_ECOSYSTEM_METRICS,
                             DB_VERSION_CLOUD_BACKUP_AND_RESTORE,
-                                    UPGRADE_TO_CLOUD_BACKUP_AND_RESTORE));
+                                    UPGRADE_TO_CLOUD_BACKUP_AND_RESTORE,
+                            DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS,
+                                    UPGRADE_TO_EXERCISE_SEGMENT_WEIGHT));
 
     /**
      * Applies db upgrades to bring the current schema to the latest supported version.
@@ -215,6 +223,22 @@ final class DatabaseUpgradeHelper {
                 db,
                 exerciseRecordHelper
                         .getAlterTableRequestForPlannedExerciseFeature()
+                        .getAddColumnsCommands());
+    }
+
+    private static void applyExerciseSegmentImprovementsDatabaseUpgrade(SQLiteDatabase db) {
+        if (checkColumnExists(
+                db,
+                ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_RECORD_TABLE_NAME,
+                ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_WEIGHT_GRAMS)) {
+            // Upgrade has already been applied. Return early.
+            // This is necessary as the ALTER TABLE ... ADD COLUMN statements below are not
+            // idempotent, as SQLite does not support ADD COLUMN IF NOT EXISTS.
+            return;
+        }
+        executeSqlStatements(
+                db,
+                ExerciseSegmentRecordHelper.getAlterTableRequestForExerciseSegmentImprovements()
                         .getAddColumnsCommands());
     }
 

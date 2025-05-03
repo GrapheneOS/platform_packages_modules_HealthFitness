@@ -16,21 +16,21 @@
 
 package android.healthconnect.cts.phr;
 
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_DISPLAY_NAME;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_FHIR_BASE_URI;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_FHIR_VERSION;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_ID;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_LAST_DATA_UPDATE_TIME;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_PACKAGE_NAME;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DIFFERENT_DATA_SOURCE_BASE_URI;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DIFFERENT_DATA_SOURCE_DISPLAY_NAME;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DIFFERENT_DATA_SOURCE_FHIR_VERSION;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DIFFERENT_DATA_SOURCE_ID;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DIFFERENT_DATA_SOURCE_LAST_DATA_UPDATE_TIME;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DIFFERENT_DATA_SOURCE_PACKAGE_NAME;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.getMedicalDataSourceBuilderWithOptionalFields;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.getMedicalDataSourceRequiredFieldsOnly;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.getMedicalDataSourceWithOptionalFields;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_DISPLAY_NAME;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_FHIR_BASE_URI;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_FHIR_VERSION;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_ID;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_LAST_DATA_UPDATE_TIME;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_PACKAGE_NAME;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_DATA_SOURCE_BASE_URI;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_DATA_SOURCE_DISPLAY_NAME;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_DATA_SOURCE_FHIR_VERSION;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_DATA_SOURCE_ID;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_DATA_SOURCE_LAST_DATA_UPDATE_TIME;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_DATA_SOURCE_PACKAGE_NAME;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedicalDataSourceBuilderWithOptionalFields;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedicalDataSourceRequiredFieldsOnly;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedicalDataSourceWithOptionalFields;
 
 import static com.google.common.truth.Truth.assertThat;
 

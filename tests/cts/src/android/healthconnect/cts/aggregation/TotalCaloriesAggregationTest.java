@@ -24,8 +24,6 @@ import static android.healthconnect.cts.aggregation.DataFactory.getBaseLeanBodyM
 import static android.healthconnect.cts.aggregation.DataFactory.getBaseWeightRecord;
 import static android.healthconnect.cts.aggregation.DataFactory.getTimeFilter;
 import static android.healthconnect.cts.aggregation.Utils.assertEnergyWithTolerance;
-import static android.healthconnect.cts.utils.DataFactory.getDataOrigin;
-import static android.healthconnect.cts.utils.DataFactory.getEmptyMetadata;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseGroupByDuration;
@@ -33,6 +31,8 @@ import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseGrou
 import static android.healthconnect.cts.utils.TestUtils.insertRecord;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
+import static android.healthconnect.testing.shared.DataFactory.getDataOrigin;
+import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
 
 import static com.google.common.truth.Truth.assertThat;
 

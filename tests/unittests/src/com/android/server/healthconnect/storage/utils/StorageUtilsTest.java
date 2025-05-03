@@ -17,19 +17,28 @@
 package healthconnect.storage.utils;
 
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_ID;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.getFhirResourceId;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_ID;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.getFhirResourceId;
 
+import static com.android.server.healthconnect.storage.DatabaseTestUtils.createEmptyDatabase;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.UUID_BYTE_SIZE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.bytesToUuids;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.checkColumnExists;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.generateMedicalResourceUUID;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getNormalisedString;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getSingleByteArray;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.util.Pair;
+
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.android.server.healthconnect.fitness.recordhelpers.StepsRecordHelper;
+import com.android.server.healthconnect.storage.HealthConnectDatabase;
+import com.android.server.healthconnect.storage.request.CreateTableRequest;
 
 import org.json.JSONException;
 import org.junit.Test;
@@ -119,5 +128,44 @@ public class StorageUtilsTest {
         String id = "id with 'escaped' quotes";
         String result = getNormalisedString(id);
         assertThat(result).isEqualTo("'id with ''escaped'' quotes'");
+    }
+
+    @Test
+    public void checkColumnExists_whenColumnExists_returnsTrue() {
+        try (var db = createEmptyDatabase()) {
+            HealthConnectDatabase.createTable(
+                    db,
+                    new CreateTableRequest(
+                            "tableName", List.of(new Pair<>("columnName", TEXT_NULL))));
+
+            assertThat(checkColumnExists(db, "tableName", "columnName")).isTrue();
+        }
+    }
+
+    @Test
+    public void checkColumnExists_whenColumnDoesNotExist_returnsFalse() {
+        try (var db = createEmptyDatabase()) {
+            HealthConnectDatabase.createTable(
+                    db,
+                    new CreateTableRequest(
+                            "tableName", List.of(new Pair<>("columnName", TEXT_NULL))));
+
+            assertThat(
+                            checkColumnExists(
+                                    db, StepsRecordHelper.STEPS_TABLE_NAME, "non_existent_column"))
+                    .isFalse();
+        }
+    }
+
+    @Test
+    public void checkColumnExists_whenTableDoesNotExist_returnsFalse() {
+        try (var db = createEmptyDatabase()) {
+            HealthConnectDatabase.createTable(
+                    db,
+                    new CreateTableRequest(
+                            "tableName", List.of(new Pair<>("columnName", TEXT_NULL))));
+
+            assertThat(checkColumnExists(db, "non_existent_table", "columnName")).isFalse();
+        }
     }
 }

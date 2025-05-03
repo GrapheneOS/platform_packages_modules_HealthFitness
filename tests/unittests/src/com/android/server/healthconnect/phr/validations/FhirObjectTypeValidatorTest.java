@@ -18,7 +18,7 @@ package com.android.server.healthconnect.phr.validations;
 
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_ALLERGY_INTOLERANCE;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_VERSION_R4;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSION_R4;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION;
@@ -604,8 +604,7 @@ public class FhirObjectTypeValidatorTest {
 
     @EnableFlags(FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS)
     @Test
-    public void testValidate_primitiveTypeValueArray_canContainNull()
-            throws JSONException {
+    public void testValidate_primitiveTypeValueArray_canContainNull() throws JSONException {
         FhirResourceSpec fhirSpec =
                 FhirResourceSpec.newBuilder()
                         .putResourceTypeToConfig(
@@ -652,12 +651,12 @@ public class FhirObjectTypeValidatorTest {
                                 new JSONArray("[\"value1\", null, \"value3\"]"));
 
         assertThrows(
-            IllegalArgumentException.class,
-            () ->
-                    validator.validate(
-                            immunizationJson,
-                            FHIR_RESOURCE_TYPE_IMMUNIZATION,
-                            FHIR_VERSION_R4));
+                IllegalArgumentException.class,
+                () ->
+                        validator.validate(
+                                immunizationJson,
+                                FHIR_RESOURCE_TYPE_IMMUNIZATION,
+                                FHIR_VERSION_R4));
     }
 
     @Test
@@ -823,9 +822,7 @@ public class FhirObjectTypeValidatorTest {
                                 + " in field: primarySource");
     }
 
-    @EnableFlags({
-        FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION
-    })
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION})
     @Test
     public void testValidate_primitiveTypeFieldIsWrongType_throws() throws JSONException {
         FhirResourceSpec fhirSpec =
@@ -856,9 +853,7 @@ public class FhirObjectTypeValidatorTest {
                                 + " primarySource");
     }
 
-    @EnableFlags({
-        FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION
-    })
+    @EnableFlags({FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION})
     @Test
     public void testValidate_unexpectedFieldInNestedType_throws() throws JSONException {
         FhirResourceSpec fhirSpec =
@@ -899,9 +894,7 @@ public class FhirObjectTypeValidatorTest {
                 .contains("Found unexpected field statusReason.coding.unexpected");
     }
 
-    @EnableFlags({
-        FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION
-    })
+    @EnableFlags({FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION})
     @Test
     public void testValidate_moreThanOneOneOfFieldSetInNestedType_throws() throws JSONException {
         FhirComplexTypeConfig annotationComplexTypeConfig =
@@ -980,9 +973,7 @@ public class FhirObjectTypeValidatorTest {
                 .contains("Only one type should be set for field note.author[x]");
     }
 
-    @EnableFlags({
-        FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS
-    })
+    @EnableFlags({FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS})
     @Test
     public void testValidate_emptyComplexTypeObject_throws() throws JSONException {
         FhirResourceSpec fhirSpec =
@@ -1011,9 +1002,7 @@ public class FhirObjectTypeValidatorTest {
                 .contains("Found empty object in field: statusReason");
     }
 
-    @EnableFlags({
-        FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS
-    })
+    @EnableFlags({FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS})
     @Test
     public void testValidate_emptyArray_throws() throws JSONException {
         FhirResourceSpec fhirSpec =

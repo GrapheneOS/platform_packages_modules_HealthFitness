@@ -36,7 +36,7 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> қолданбаға рұқсат берілген."</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{1 қолданбаға рұқсат берілген.}other{# қолданбаға рұқсат берілген.}}"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Ешқандай"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"Енгізілген дерек мәліметтері"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"Жазба мәліметтері"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Деректерді шолу"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Деректерді және оларды пайдалана алатын қолданбаларды көру"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Автоматты түрде жою, деректер көзі, сақтық көшірме жасау және қалпына келтіру"</string>
@@ -173,7 +173,7 @@
     <string name="planned_exercise_read_content_description" msgid="3240286968325192534">"Жаттығу жоспарларын оқу"</string>
     <string name="planned_exercise_write_content_description" msgid="8146488636094126823">"Жаттығу жоспарларын жазу"</string>
     <string name="distance_uppercase_label" msgid="1420705424462077174">"Қашықтық"</string>
-    <string name="distance_lowercase_label" msgid="2287154001209381379">"қашықтық"</string>
+    <string name="distance_lowercase_label" msgid="2287154001209381379">"Қашықтық"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"Қашықтық деректерін оқу"</string>
     <string name="distance_write_content_description" msgid="494549494589487562">"Қашықтық деректерін жазу"</string>
     <string name="elevation_gained_uppercase_label" msgid="7708101940695442377">"Көтерілген биіктік"</string>
@@ -401,7 +401,7 @@
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасы бұдан былай Health Connect-тегі деректерді, соның ішінде фондық деректі оқи немесе жаза алмайды.\n\nБұл локацияны, камераны немесе микрофонды пайдалану сияқты осы қолданбадағы басқа рұқсаттарға әсер етпейді."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасы бұдан былай Health Connect-тегі деректерді, соның ішінде бұрынғы деректі оқи немесе жаза алмайды.\n\nБұл локацияны, камераны немесе микрофонды пайдалану сияқты осы қолданбадағы басқа рұқсаттарға әсер етпейді."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасы бұдан былай Health Connect-тегі деректерді, соның ішінде фондық және бұрынғы деректі оқи немесе жаза алмайды.\n\nБұл локацияны, камераны немесе микрофонды пайдалану сияқты осы қолданбадағы басқа рұқсаттарға әсер етпейді."</string>
-    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect-тен <xliff:g id="APP_NAME">%1$s</xliff:g> деректері де жойылсын."</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect-тен <xliff:g id="APP_NAME">%1$s</xliff:g> деректерін де жою"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Барлық фитнес және сауықтыру рұқсатын өшіру керек пе?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасынан алынған фитнес дерегі де Health Connect-тен жойылсын"</string>
     <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Барлық денсаулық туралы ақпарат рұқсатын өшіру керек пе?"</string>
@@ -512,7 +512,7 @@
     <string name="frequency_daily" msgid="3596412357416125727">"Күн сайын"</string>
     <string name="frequency_weekly" msgid="7302587625019573393">"Апта сайын"</string>
     <string name="frequency_monthly" msgid="729674398053825938">"Ай сайын"</string>
-    <string name="export_destination_title" msgid="8352929396306002479">"Жоспарланған экспортты сақтау орнын таңдаңыз."</string>
+    <string name="export_destination_title" msgid="8352929396306002479">"Жоспарланған экспортты сақтау орнын таңдаңыз"</string>
     <string name="export_invalid_storage" msgid="1459055934301871321">"Деректеріңізді экспорттау үшін бұлт жады қолданбасын таңдаңыз."</string>
     <string name="export_default_file_name" msgid="1146984404965754445">"Health Connect"</string>
     <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"Health Connect (<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>)"</string>
@@ -791,7 +791,7 @@
     <string name="pause" msgid="5161459047750335691">"Кідірту"</string>
     <string name="activity_type_australian_football" msgid="431838050917315084">"Австралия футболы"</string>
     <string name="unknown_type" msgid="4506151971125161053">"Белгісіз түр"</string>
-    <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> ұйқы"</string>
+    <string name="sleep_session_default" msgid="7376764686701487196">"Ұйқы: <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"ояу"</string>
     <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"төсекте ояу жату"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect қолданбасы Android жүйесімен біріктіріліп жатыр, сондықтан қолданбаны тікелей параметрлерден пайдалана аласыз."</string>
     <string name="update_button" msgid="4544529019832009496">"Жаңарту"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Жаңартуды бастасаңыз, Health Connect қолданбасын жүйе параметрлерімен біріктіру процесін жалғастыра аласыз."</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect қолданбасы Android жүйесімен біріктіріліп жатыр, сондықтан қолданбаны тікелей параметрлерден пайдалана аласыз.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Жүйені жаңарту қажет"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Жалғастырмас бұрын, телефондағы операциялық жүйені жаңартыңыз."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Телефондағы операциялық жүйені жаңартып қойсаңыз, біріктіру процесін жалғастыру үшін телефонды өшіріп, сосын қосып көріңіз."</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> қолданбасындағы <xliff:g id="DATA_TYPE">%1$s</xliff:g> деректерін біржола жою керек пе?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Жүйені көрсету"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Жүйені жасыру"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Бұл рұқсатты бермесеңіз, құрылғының негізгі функциялары енді көзделгендей жұмыс істемеуі мүмкін."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Бәрібір рұқсат бермеу"</string>
     <string name="on" msgid="8266542510798355807">"Қосулы"</string>
     <string name="off" msgid="6996623844428550649">"Өшірулі"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Пайдаланылған уақыты: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

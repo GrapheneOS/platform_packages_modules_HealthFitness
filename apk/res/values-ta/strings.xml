@@ -200,8 +200,8 @@
     <string name="total_calories_burned_lowercase_label" msgid="3185370725975873922">"எரிக்கப்பட்ட மொத்தக் கலோரிகள்"</string>
     <string name="total_calories_burned_read_content_description" msgid="1569722345910293531">"எரிக்கப்பட்ட மொத்தக் கலோரிகள் தொடர்பான தரவை வாசிக்கும்"</string>
     <string name="total_calories_burned_write_content_description" msgid="2727752180681851608">"எரிக்கப்பட்ட மொத்தக் கலோரிகள் தொடர்பான தரவை எழுதும்"</string>
-    <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"அதிகபட்சமாக ஆக்சிஜன் உட்கொள்ளப்பட்ட அளவு"</string>
-    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"அதிகபட்சமாக ஆக்சிஜன் உட்கொள்ளப்பட்ட அளவு"</string>
+    <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"அதிகபட்ச VO2"</string>
+    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"அதிகபட்ச VO2"</string>
     <string name="vo2_max_read_content_description" msgid="8132626885797169882">"அதிகபட்சமாக ஆக்சிஜன் உட்கொள்ளப்பட்ட அளவு தொடர்பான தரவை வாசிக்கும்"</string>
     <string name="vo2_max_write_content_description" msgid="4783300275788728546">"அதிகபட்சமாக ஆக்சிஜன் உட்கொள்ளப்பட்ட அளவு தொடர்பான தரவை எழுதும்"</string>
     <string name="wheelchair_pushes_uppercase_label" msgid="5582991294340226965">"வீல்ச்சேர் புஷ்கள்"</string>
@@ -507,12 +507,12 @@
     <string name="next_export_file_location" msgid="2117071837862240540">"<xliff:g id="EXPORT_APP_NAME">%1$s</xliff:g> • <xliff:g id="EXPORT_FILE_NAME">%2$s</xliff:g>"</string>
     <string name="choose_frequency_category" msgid="9094154407387676553">"கால இடைவெளியை மாற்றுதல்"</string>
     <string name="scheduled_export_settings_footer_text" msgid="8488483803782086291">"திட்டமிடப்பட்ட பதிவிறக்கத்தை நீங்கள் முடக்கினால், இதற்கு முன் பதிவிறக்கப்பட்ட தரவு அதன் சேமிப்பகத்திலிருந்து நீக்கப்படாது"</string>
-    <string name="choose_frequency" msgid="8119085390857180221">"திட்டமிடப்பட்ட பதிவிறக்கத்தை அமையுங்கள்"</string>
-    <string name="choose_frequency_description" msgid="7698155810053504157">"உங்கள் தரவைப் பதிவிறக்குவதற்கான கால இடைவெளியைத் தேர்வுசெய்யலாம்"</string>
+    <string name="choose_frequency" msgid="8119085390857180221">"திட்டமிடப்பட்ட பதிவேற்றத்தை அமையுங்கள்"</string>
+    <string name="choose_frequency_description" msgid="7698155810053504157">"உங்கள் தரவைப் பதிவேற்றுவதற்கான கால இடைவெளியைத் தேர்வுசெய்யலாம்"</string>
     <string name="frequency_daily" msgid="3596412357416125727">"தினமும்"</string>
     <string name="frequency_weekly" msgid="7302587625019573393">"வாரந்தோறும்"</string>
     <string name="frequency_monthly" msgid="729674398053825938">"மாதந்தோறும்"</string>
-    <string name="export_destination_title" msgid="8352929396306002479">"திட்டமிடப்பட்ட பதிவிறக்கத்திற்கான சேமிப்பகத்தைத் தேர்வுசெய்க"</string>
+    <string name="export_destination_title" msgid="8352929396306002479">"திட்டமிடப்பட்ட பதிவேற்றத்திற்கான சேமிப்பகத்தைத் தேர்வுசெய்க"</string>
     <string name="export_invalid_storage" msgid="1459055934301871321">"உங்கள் தரவைப் பதிவேற்ற கிளவுடு சேமிப்பக ஆப்ஸைத் தேர்வுசெய்யுங்கள்"</string>
     <string name="export_default_file_name" msgid="1146984404965754445">"Health Connect"</string>
     <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"Health Connect (<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>)"</string>
@@ -558,7 +558,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Play Storeருக்குச் செல்லுங்கள்"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Health Connect ஆப்ஸைப் பயன்படுத்தத் தொடங்குங்கள்"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect ஆப்ஸ் உங்கள் ஆரோக்கியம் மற்றும் உடற்பயிற்சி குறித்த தரவைச் சேமிக்கிறது. இந்த ஆப்ஸ் மூலம் சாதனத்திலுள்ள வெவ்வேறு ஆப்ஸை நீங்கள் எளிதாக ஒத்திசைக்கலாம்."</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect வெவ்வேறு ஆப்ஸிலிருந்து ஆரோக்கியம் மற்றும் உடற்பயிற்சி குறித்த தரவைச் சேமித்து ஒத்திசைக்கிறது.\n\n"<b>"உடற்பயிற்சி மற்றும் ஆரோக்கியம் குறித்த தரவு,"</b>" இதில் உடற்பயிற்சி அமர்வுகள், காலடிகள், ஊட்டச்சத்து, உறக்கம் மற்றும் பல அடங்கும்\n\n"<b>"உடல்நலம் குறித்த சுருக்கமான தகவல்கள்,"</b>" இதில் தடுப்பூசிகள், ஆய்வக முடிவுகள் மற்றும் பல அடங்கும்"</string>
+    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect வெவ்வேறு ஆப்ஸிலிருந்து ஆரோக்கியம் மற்றும் ஃபிட்னஸ் குறித்த தரவைச் சேமித்து ஒத்திசைக்கிறது.\n\n"<b>"ஃபிட்னஸ் மற்றும் உடல்நலம் குறித்த தரவு,"</b>" இதில் உடற்பயிற்சி அமர்வுகள், காலடிகள், ஊட்டச்சத்து, உறக்கம் மற்றும் பல அடங்கும்\n\n"<b>"உடல்நலத் தகவல் பதிவுகள்,"</b>" இதில் தடுப்பூசிகள், ஆய்வக முடிவுகள் மற்றும் பல அடங்கும்"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connect மூலம் இவற்றைச் செய்யலாம்:"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"உங்கள் ஆப்ஸுடன் தரவைப் பகிர்தல்"</b>\n"ஒவ்வொரு ஆப்ஸும் Health Connectடில் எந்தெந்தத் தரவைப் படிக்கலாம்/எழுதலாம் என்பதை நீங்கள் தேர்வுசெய்யலாம்"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"உங்கள் அமைப்புகளையும் தனியுரிமையையும் நிர்வகித்தல்"</b>\n"எப்போது வேண்டுமானாலும் ஆப்ஸ் அனுமதிகளை மாற்றலாம், உங்கள் தரவை நிர்வகிக்கலாம்"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Android சிஸ்டத்துடன் Health Connect ஒருங்கிணைக்கப்படுவதால், உங்கள் அமைப்புகளில் இருந்து அதை நேரடியாக அணுகலாம்."</string>
     <string name="update_button" msgid="4544529019832009496">"புதுப்பி"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"இந்தப் புதுப்பிப்பைத் தொடங்குங்கள். இதனால், உங்கள் சிஸ்டம் அமைப்புகளுடன் Health Connect ஆப்ஸால் தொடர்ந்து ஒருங்கிணைக்க முடியும்"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Android சிஸ்டத்துடன் Health Connect ஒருங்கிணைக்கப்படுவதால், உங்கள் அமைப்புகளில் இருந்து அதை நேரடியாக அணுகலாம்.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"சிஸ்டம் புதுப்பிப்பு தேவை"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"தொடர்வதற்கு முன்பு, உங்கள் மொபைல் சிஸ்டத்தைப் புதுப்பியுங்கள்."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"உங்கள் மொபைல் சிஸ்டத்தை ஏற்கெனவே புதுப்பித்திருந்தால், ஒருங்கிணைப்பைத் தொடர உங்கள் மொபைலை மீண்டும் தொடங்கிப் பாருங்கள்"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> ஆப்ஸுக்கான <xliff:g id="DATA_TYPE">%1$s</xliff:g> தரவை நிரந்தரமாக நீக்கவா?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"சிஸ்டம் ஆப்ஸைக் காட்டுதல்"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"சிஸ்டம் ஆப்ஸை மறைத்தல்"</string>
+    <string name="system_warning" msgid="5593850900577682512">"இந்த அனுமதியை நிராகரித்தால் உங்கள் சாதனத்தின் அடிப்படை அம்சங்கள் சரியாகச் செயல்படாமல் போகலாம்."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"பரவாயில்லை, அனுமதிக்காதே"</string>
     <string name="on" msgid="8266542510798355807">"ஆன்"</string>
     <string name="off" msgid="6996623844428550649">"ஆஃப்"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"அணுகிய நேரம்: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

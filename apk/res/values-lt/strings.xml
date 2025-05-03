@@ -36,7 +36,7 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"Programų, kurioms suteikta prieiga: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>"</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{1 programa, kuriai suteikta prieiga}one{# programa, kuriai suteikta prieiga}few{# programos, kurioms suteikta prieiga}many{# programos, kurioms suteikta prieiga}other{# programų, kurioms suteikta prieiga}}"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Nėra"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"Išsami įvedimo informacija"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"Išsami įrašo informacija"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Naršyti duomenis"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Žr. duomenis ir kurios programos gali juos pasiekti"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Automatinis ištrynimas, duomenų šaltiniai, atsarginė kopija ir atkūrimas"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"„Health Connect“ integruojama su „Android“ sistema, kad galėtumėte ją pasiekti tiesiai iš nustatymų."</string>
     <string name="update_button" msgid="4544529019832009496">"Atnaujinti"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Pradėkite šį atnaujinimą, kad būtų galima ir toliau integruoti „Health Connect“ su jūsų sistemos nustatymais"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"„Health Connect“ integruojama su „Android“ sistema, kad galėtumėte ją pasiekti tiesiai iš nustatymų.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Reikalingas sistemos naujinys"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Prieš tęsdami atnaujinkite telefono sistemą."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Jei jau atnaujinote telefono sistemą, pabandykite iš naujo paleisti telefoną, kad būtų tęsiamas integravimas"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Visam laikui ištrinti „<xliff:g id="APP_NAME">%2$s</xliff:g>“ <xliff:g id="DATA_TYPE">%1$s</xliff:g> duomenis?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Rodyti sistemą"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Slėpti sistemą"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Jei nesuteiksite šio leidimo, pagrindinės įrenginio funkcijos gali nebeveikti, kaip numatyta."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Vis tiek neleisti"</string>
     <string name="on" msgid="8266542510798355807">"Įjungta"</string>
     <string name="off" msgid="6996623844428550649">"Išjungta"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Pasiekta <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

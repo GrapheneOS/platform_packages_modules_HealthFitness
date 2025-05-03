@@ -37,8 +37,7 @@ public interface HealthConnectNotificationFactory {
 
     /** Returns a {@link Notification} depending on the specified type. */
     @Nullable
-    Notification createNotification(
-            @HealthConnectNotificationSender.HealthConnectNotificationType int notificationType);
+    Notification createNotification(int notificationType);
 
     /** Returns a string defined by the string identifier. */
     String getStringResource(String name);

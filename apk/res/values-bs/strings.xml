@@ -196,7 +196,7 @@
     <string name="steps_lowercase_label" msgid="706153549312838582">"koraci"</string>
     <string name="steps_read_content_description" msgid="7839297670092769964">"Čitanje koraka"</string>
     <string name="steps_write_content_description" msgid="6360223825799711659">"Zapisivanje koraka"</string>
-    <string name="total_calories_burned_uppercase_label" msgid="2749855864302679314">"Ukupno potrošenih kalorija"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="2749855864302679314">"Ukupno potrošene kalorije"</string>
     <string name="total_calories_burned_lowercase_label" msgid="3185370725975873922">"ukupno potrošenih kalorija"</string>
     <string name="total_calories_burned_read_content_description" msgid="1569722345910293531">"Čitanje ukupno potrošenih kalorija"</string>
     <string name="total_calories_burned_write_content_description" msgid="2727752180681851608">"Zapisivanje ukupno potrošenih kalorija"</string>
@@ -554,7 +554,7 @@
     <string name="export_import_choose_account_cancel_button" msgid="7975616126298263479">"Otkaži"</string>
     <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"Gotovo"</string>
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"Nema dostupnih aplikacija. Da ih vidite ovdje, instalirajte aplikacije za pohranu u oblaku"</string>
-    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Za više opcija instalirajte aplikacije za pohranu u oblaku"</string>
+    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Instalirajte aplikacije za pohranu u oblaku da vidite više opcija ovdje"</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Idite u Play trgovinu"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Počnite koristiti Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect pohranjuje vaše podatke o zdravlju i fitnesu i pruža vam jednostavan način da sinhronizirate različite aplikacije na uređaju"</string>
@@ -610,7 +610,7 @@
     <string name="delete_dialog_success_title" msgid="900884533930984889">"Podaci su izbrisani iz Health Connecta"</string>
     <string name="delete_dialog_success_message" msgid="7454086333205881294">"Ako želite potpuno izbrisati podatke iz povezanih aplikacija, označite svaku aplikaciju u kojoj mogu biti sačuvani."</string>
     <string name="delete_dialog_done_button" msgid="1371340030947835493">"Gotovo"</string>
-    <string name="delete_dialog_see_connected_apps_button" msgid="2975631672738138716">"Pogledajte povezane aplikacije"</string>
+    <string name="delete_dialog_see_connected_apps_button" msgid="2975631672738138716">"Prikaži povezane aplikacije"</string>
     <string name="delete_progress_indicator" msgid="5799502879065833417">"Brisanje vaših podataka"</string>
     <string name="delete_dialog_failure_title" msgid="1959020721355789496">"Brisanje podataka nije uspjelo"</string>
     <string name="delete_dialog_failure_message" msgid="7473241488471319963">"Nešto nije uredu i Health Connect nije uspio izbrisati vaše podatke"</string>
@@ -791,7 +791,7 @@
     <string name="pause" msgid="5161459047750335691">"Pauziranje"</string>
     <string name="activity_type_australian_football" msgid="431838050917315084">"Australijski fudbal"</string>
     <string name="unknown_type" msgid="4506151971125161053">"Nepoznata vrsta"</string>
-    <string name="sleep_session_default" msgid="7376764686701487196">"spavanje u trajanju od <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
+    <string name="sleep_session_default" msgid="7376764686701487196">"Spavanje: <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"budni"</string>
     <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"budni u krevetu"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect se integrira s Android sistemom da mu možete pristupiti direktno iz postavki."</string>
     <string name="update_button" msgid="4544529019832009496">"Ažuriraj"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Pokrenite ovo ažuriranje da Health Connect može nastaviti s integracijom s postavkama sistema"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect se integrira s Android sistemom da mu možete pristupiti direktno iz postavki.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Potrebno je ažuriranje sistema"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Prije nego što nastavite, ažurirajte sistem telefona."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ako ste već ažurirali sistem telefona, pokušajte s ponovnim pokretanjem telefona da nastavite s integracijom"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Trajno izbrisati podatke \"<xliff:g id="DATA_TYPE">%1$s</xliff:g>\" za aplikaciju <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Prikaži sistemske aplikacije"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Sakrij sistemske aplikacije"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Ako odbijete ovo odobrenje, osnovne funkcije uređaja možda više neće funkcionirati onako kako je namijenjeno."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Svejedno nemoj dozvoliti"</string>
     <string name="on" msgid="8266542510798355807">"Uključeno"</string>
     <string name="off" msgid="6996623844428550649">"Isključeno"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Pristupljeno je u <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

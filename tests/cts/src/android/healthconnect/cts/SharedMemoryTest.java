@@ -16,14 +16,14 @@
 
 package android.healthconnect.cts;
 
-import static android.healthconnect.cts.utils.DataFactory.getEmptyMetadata;
-import static android.healthconnect.cts.utils.DataFactory.getMetadataForClientId;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.utils.TestUtils.insertRecordAndGetId;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.readAllRecords;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
+import static android.healthconnect.testing.shared.DataFactory.getMetadataForClientId;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 

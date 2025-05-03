@@ -16,8 +16,8 @@
 
 package android.healthconnect.cts.datatypes;
 
-import static android.healthconnect.cts.utils.DataFactory.SESSION_START_TIME;
-import static android.healthconnect.cts.utils.DataFactory.buildLocationTimePoint;
+import static android.healthconnect.testing.shared.DataFactory.SESSION_START_TIME;
+import static android.healthconnect.testing.shared.DataFactory.buildLocationTimePoint;
 
 import static com.google.common.truth.Truth.assertThat;
 

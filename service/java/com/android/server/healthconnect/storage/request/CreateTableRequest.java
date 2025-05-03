@@ -177,14 +177,18 @@ public final class CreateTableRequest {
     }
 
     private String getCreateIndexCommand(String columnName) {
+        return getCreateIndexCommand(mTableName, columnName);
+    }
+
+    static String getCreateIndexCommand(String tableName, String columnName) {
         Objects.requireNonNull(columnName);
 
         return CREATE_INDEX_COMMAND
-                + mTableName
+                + tableName
                 + "_"
                 + columnName
                 + " ON "
-                + mTableName
+                + tableName
                 + "("
                 + columnName
                 + ")";

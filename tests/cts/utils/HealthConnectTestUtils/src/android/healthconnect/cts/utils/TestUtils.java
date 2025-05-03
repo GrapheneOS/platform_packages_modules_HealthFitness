@@ -28,8 +28,8 @@ import static android.health.connect.HealthPermissionCategory.HEART_RATE;
 import static android.health.connect.HealthPermissionCategory.PLANNED_EXERCISE;
 import static android.health.connect.HealthPermissionCategory.STEPS;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
-import static android.healthconnect.cts.utils.DataFactory.getDataOrigin;
 import static android.healthconnect.cts.utils.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
+import static android.healthconnect.testing.shared.DataFactory.getDataOrigin;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 

@@ -19,12 +19,32 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.DeviceRecordHelper;
+
 /**
  * Listener that receives SensorManager pedometer events.
  *
  * @hide
  */
 class StepSensorEventListener implements SensorEventListener {
+
+    private final HealthConnectThreadScheduler mThreadScheduler;
+    private final DeviceRecordHelper mDeviceRecordHelper;
+
+    // TODO(b/413650602): Check if we ever want to cache the current device.
+    private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
+
+    StepSensorEventListener(
+            HealthConnectThreadScheduler threadScheduler,
+            DeviceRecordHelper deviceRecordHelper,
+            DeviceDataSourcesHelper deviceDataSourcesHelper) {
+        this.mThreadScheduler = threadScheduler;
+        this.mDeviceRecordHelper = deviceRecordHelper;
+        this.mDeviceDataSourcesHelper = deviceDataSourcesHelper;
+    }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         // Implementation goes here. Do nothing for now.

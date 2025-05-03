@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Salut connectada s\'està integrant amb el sistema Android perquè hi puguis accedir directament des de la configuració."</string>
     <string name="update_button" msgid="4544529019832009496">"Actualitza"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Inicia l\'actualització perquè Salut connectada pugui continuar integrant-se amb la configuració del sistema"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Salut connectada s\'està integrant amb el sistema Android perquè hi puguis accedir directament des de la configuració.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Actualització del sistema necessària"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Abans de continuar, actualitza el sistema del telèfon."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Si ja has actualitzat el sistema del telèfon, prova de reiniciar-lo per continuar la integració"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Vols suprimir permanentment les dades de <xliff:g id="DATA_TYPE">%1$s</xliff:g> de <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Mostra el sistema"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Amaga el sistema"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Si denegues aquest permís, és possible que funcions bàsiques del dispositiu deixin de funcionar correctament."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"No permetis de cap manera"</string>
     <string name="on" msgid="8266542510798355807">"Activat"</string>
     <string name="off" msgid="6996623844428550649">"Desactivat"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"S\'hi ha accedit a les <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

@@ -401,7 +401,7 @@
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"Приложение <xliff:g id="APP_NAME">%1$s</xliff:g> больше не сможет читать и записывать данные на платформе \"Здоровье и спорт\", включая данные в фоновом режиме.\n\nЭто не повлияет на другие разрешения, такие как доступ к данным о местоположении, камере или микрофону."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"Приложение <xliff:g id="APP_NAME">%1$s</xliff:g> больше не сможет читать и записывать данные на платформе \"Здоровье и спорт\", включая сохраненные данные.\n\nЭто не повлияет на другие разрешения, такие как доступ к данным о местоположении, камере или микрофону."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"Приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" больше не сможет читать и записывать данные на платформе \"Здоровье и спорт\", в том числе сохраненные ранее или в фоновом режиме.\n\nЭто не повлияет на другие разрешения, которые есть у приложения, например на доступ к сведениям о местоположении, камере или микрофону."</string>
-    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Также удалить данные приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" из Здоровья и спорта"</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Также удалить с платформы \"Здоровье и спорт\" данные <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Удалить разрешения в области физ. активности и самочувствия?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Также удалить с платформы \"Здоровье и спорт\" данные о физической активности, полученные от приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
     <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Удалить все разрешения на доступ к данным о здоровье?"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Выполняется интеграция приложения \"Здоровье и спорт\" с Android. После окончания вы сможете открывать его прямо из настроек."</string>
     <string name="update_button" msgid="4544529019832009496">"Обновить"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Установите это обновление, чтобы продолжить интеграцию приложения \"Здоровье и спорт\" с настройками системы."</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Выполняется интеграция приложения \"Здоровье и спорт\" с Android. После окончания вы сможете открывать его прямо из настроек.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Требуется обновление системы"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Прежде чем продолжить, обновите систему."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Если вы уже обновили систему, перезапустите телефон, чтобы продолжить интеграцию."</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Навсегда удалить данные (<xliff:g id="DATA_TYPE">%1$s</xliff:g>) приложения <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Показать системные приложения"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Скрыть системные приложения"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Без этого разрешения основные функции устройства могут работать неправильно."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Все равно запретить"</string>
     <string name="on" msgid="8266542510798355807">"Включено"</string>
     <string name="off" msgid="6996623844428550649">"Отключено"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Последний доступ в <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

@@ -230,6 +230,21 @@ constructor(
     }
 
     private fun updateDetailedPermissions() {
+        val bulletPoints = listOf(dataAccessType, accessInfo, privacyPolicy)
+        bulletPoints.forEach {
+            it.setTextAppearance(AttributeResolver.getResource(context, R.attr.headerDetails))
+        }
+        if (SettingsThemeHelper.isExpressiveTheme(context)) {
+            bulletPoints.forEach {
+                it.setPadding(
+                    0,
+                    0,
+                    0,
+                    /* bottom= */ context.resources.getDimension(R.dimen.spacing_normal).toInt(),
+                )
+            }
+        }
+
         detailedPermissions.visibility = View.VISIBLE
         when (screenState) {
             is MedicalScreenState -> {

@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect word met die Android-stelsel geïntegreer sodat jy direk van jou instellings af toegang daartoe kan kry."</string>
     <string name="update_button" msgid="4544529019832009496">"Dateer op"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Begin hierdie opdatering sodat Health Connect kan voortgaan om met jou stelselinstellings te integreer"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect word met die Android-stelsel geïntegreer sodat jy direk van jou instellings af toegang daartoe kan kry.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Stelselopdatering is nodig"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Dateer jou foonstelsel op voordat jy voortgaan."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"As jy reeds jou foonstelsel opgedateer het, kan jy probeer om jou foon te herbegin sodat jy met die integrasie kan voortgaan"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Vee <xliff:g id="DATA_TYPE">%1$s</xliff:g>-data vir <xliff:g id="APP_NAME">%2$s</xliff:g> permanent uit?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Wys stelsel"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Versteek stelsel"</string>
+    <string name="system_warning" msgid="5593850900577682512">"As jy hierdie toestemming weier, sal basiese kenmerke van jou toestel dalk nie meer soos bedoel werk nie."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Moet steeds nie toelaat nie"</string>
     <string name="on" msgid="8266542510798355807">"Aan"</string>
     <string name="off" msgid="6996623844428550649">"Af"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Ingegaan <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

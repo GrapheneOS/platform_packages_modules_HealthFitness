@@ -51,7 +51,7 @@ import android.health.connect.internal.datatypes.PlannedExerciseSessionRecordInt
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
-import android.healthconnect.cts.utils.DataFactory;
+import android.healthconnect.testing.shared.DataFactory;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 

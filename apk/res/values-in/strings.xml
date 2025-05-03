@@ -38,7 +38,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Tidak ada"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Detail entri"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Jelajahi data"</string>
-    <string name="browse_data_subtitle" msgid="7025164374898103993">"Lihat data dan jenis aplikasi yang dapat mengaksesnya"</string>
+    <string name="browse_data_subtitle" msgid="7025164374898103993">"Lihat data dan aplikasi yang dapat mengaksesnya"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Hapus otomatis, sumber data, pencadangan, dan pemulihan"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"Item lainnya"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"Lebih sedikit item"</string>
@@ -610,7 +610,7 @@
     <string name="delete_dialog_success_title" msgid="900884533930984889">"Data dihapus dari Health Connect"</string>
     <string name="delete_dialog_success_message" msgid="7454086333205881294">"Jika Anda ingin menghapus data sepenuhnya dari aplikasi yang terhubung, periksa setiap aplikasi yang mungkin menyimpan data Anda."</string>
     <string name="delete_dialog_done_button" msgid="1371340030947835493">"Selesai"</string>
-    <string name="delete_dialog_see_connected_apps_button" msgid="2975631672738138716">"Lihat aplikasi yang terhubung"</string>
+    <string name="delete_dialog_see_connected_apps_button" msgid="2975631672738138716">"Lihat aplikasi terhubung"</string>
     <string name="delete_progress_indicator" msgid="5799502879065833417">"Menghapus data Anda"</string>
     <string name="delete_dialog_failure_title" msgid="1959020721355789496">"Tidak dapat menghapus data"</string>
     <string name="delete_dialog_failure_message" msgid="7473241488471319963">"Terjadi masalah dan Health Connect tidak dapat menghapus data Anda"</string>
@@ -996,7 +996,7 @@
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Lihat semua aplikasi yang kompatibel"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Temukan aplikasi di Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Kirim masukan"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"Beri tahu kami aplikasi kesehatan &amp; kebugaran mana yang Anda inginkan agar berfungsi dengan Health Connect"</string>
+    <string name="send_feedback_description" msgid="2887207112856240778">"Beri tahu kami tentang aplikasi kesehatan dan kebugaran yang Anda ingin gunakan dengan Health Connect"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Hapus otomatis"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Hapus otomatis"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect sedang diintegrasikan dengan sistem Android sehingga Anda dapat mengaksesnya langsung dari setelan."</string>
     <string name="update_button" msgid="4544529019832009496">"Update"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Mulai update ini agar Health Connect dapat melanjutkan integrasi dengan setelan sistem Anda"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect sedang diintegrasikan dengan sistem Android sehingga Anda dapat mengaksesnya langsung dari setelan.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Update sistem diperlukan"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Sebelum melanjutkan, update sistem ponsel Anda."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Jika sistem ponsel telah diupdate, coba mulai ulang ponsel Anda untuk melanjutkan integrasi"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Hapus permanen data <xliff:g id="DATA_TYPE">%1$s</xliff:g> untuk <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Tampilkan sistem"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Sembunyikan sistem"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Jika Anda menolak izin ini, fitur dasar perangkat mungkin tidak berfungsi lagi sebagaimana mestinya."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Tetap jangan izinkan"</string>
     <string name="on" msgid="8266542510798355807">"Aktif"</string>
     <string name="off" msgid="6996623844428550649">"Nonaktif"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Diakses <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

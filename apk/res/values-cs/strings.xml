@@ -55,7 +55,7 @@
     <string name="recent_access_header" msgid="7623497371790225888">"Nedávný přístup"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Přístup ke službě Health Connect neměly v poslední době žádné aplikace"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Zobrazit veškerý nedávný přístup"</string>
-    <string name="recent_access_screen_description" msgid="331101209889185402">"Podívejte se, které aplikace měly přístup k vašim datům za posledních 24 hodin"</string>
+    <string name="recent_access_screen_description" msgid="331101209889185402">"Podívejte se, které aplikace měly přístup k vašim datům za posledních 24 hodin."</string>
     <string name="today_header" msgid="1006837293203834373">"Dnes"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"Včera"</string>
     <string name="read_data_access_label" msgid="8968758932021241976">"Přečteno: <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
@@ -300,7 +300,7 @@
     <string name="body_temperature_lowercase_label" msgid="324124730971992259">"tělesná teplota"</string>
     <string name="body_temperature_read_content_description" msgid="5966765249024688738">"Číst tělesnou teplotu"</string>
     <string name="body_temperature_write_content_description" msgid="5498016171067859369">"Zapisovat tělesnou teplotu"</string>
-    <string name="heart_rate_uppercase_label" msgid="4990167215137642430">"Tepová frekvence"</string>
+    <string name="heart_rate_uppercase_label" msgid="4990167215137642430">"Srdeční tep"</string>
     <string name="heart_rate_lowercase_label" msgid="693492686337628283">"tepová frekvence"</string>
     <string name="heart_rate_read_content_description" msgid="4165867166260001259">"Číst tepovou frekvenci"</string>
     <string name="heart_rate_write_content_description" msgid="2876667918366409170">"Zapisovat tepovou frekvenci"</string>
@@ -450,8 +450,8 @@
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Neaktivní aplikace"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Tyto aplikace už nemají přístup, ale stále mají uložená data ve službě Health Connect"</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> může číst data přidaná po <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
-    <string name="other_android_permissions" msgid="8051485761573324702">"Pokud chcete spravovat ostatní oprávnění Androidu, ke kterým má aplikace přístup, přejděte do Nastavení &gt; Aplikace"</string>
-    <string name="manage_permissions_rationale" msgid="2780008055185441703">"Jak aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> nakládá s vašimi daty, zjistíte v zásadách ochrany soukromí vývojáře"</string>
+    <string name="other_android_permissions" msgid="8051485761573324702">"Pokud chcete spravovat ostatní oprávnění Androidu, ke kterým má aplikace přístup, přejděte do Nastavení &gt; Aplikace."</string>
+    <string name="manage_permissions_rationale" msgid="2780008055185441703">"Informace o tom, jak aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> nakládá s vašimi daty, jsou dostupné v zásadách ochrany soukromí vývojáře."</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Pokud chcete spravovat ostatní oprávnění Androidu, ke kterým má aplikace přístup, přejděte do Nastavení a klepněte na Aplikace"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Zobrazit zásady ochrany soukromí"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Použito během posledních 24 hodin"</string>
@@ -608,7 +608,7 @@
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Hotovo"</string>
     <string name="delete_dialog_failure_close_button" msgid="4376647579348193224">"Zavřít"</string>
     <string name="delete_dialog_success_title" msgid="900884533930984889">"Data byla vymazána ze služby Health Connect"</string>
-    <string name="delete_dialog_success_message" msgid="7454086333205881294">"Pokud chcete úplně vymazat data z připojených aplikací, zaškrtněte všechny aplikace, ve kterých mohou být vaše data uložena."</string>
+    <string name="delete_dialog_success_message" msgid="7454086333205881294">"Pokud chcete úplně vymazat data z připojených aplikací, zkontrolujte všechny aplikace, ve kterých mohou být vaše data uložena."</string>
     <string name="delete_dialog_done_button" msgid="1371340030947835493">"Hotovo"</string>
     <string name="delete_dialog_see_connected_apps_button" msgid="2975631672738138716">"Zobrazit připojené aplikace"</string>
     <string name="delete_progress_indicator" msgid="5799502879065833417">"Mazání dat"</string>
@@ -989,7 +989,7 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Stupně Fahrenheita"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Stupně Kelvina"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"Nápověda a zpětná vazba"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Pokud nějakou nainstalovanou aplikaci nevidíte, zřejmě ještě není kompatibilní se službou Health Connect"</string>
+    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Pokud nějakou nainstalovanou aplikaci nevidíte, zřejmě ještě není kompatibilní se službou Health Connect."</string>
     <string name="things_to_try" msgid="8200374691546152703">"Co byste mohli vyzkoušet"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Zkontrolovat dostupnost aktualizací"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Ověřte, zda jsou nainstalované aplikace aktuální"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Služba Health Connect se integruje se systémem Android, abyste k ní měli přístup přímo z nastavení."</string>
     <string name="update_button" msgid="4544529019832009496">"Aktualizovat"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Zahajte aktualizaci, aby služba Health Connect mohla pokračovat v integraci s nastavením systému"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Služba Health Connect se integruje se systémem Android, abyste k ní měli přístup přímo z nastavení.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Je potřeba aktualizace systému"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Než budete pokračovat, aktualizujte systém telefonu."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Pokud jste systém telefonu už aktualizovali, restartujte telefon, aby integrace pokračovala"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Trvale smazat data (<xliff:g id="DATA_TYPE">%1$s</xliff:g>) aplikace <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Zobrazit systémové aplikace"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Skrýt systémové aplikace"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Pokud toto oprávnění zamítnete, základní funkce zařízení nemusejí fungovat správně."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Přesto nepovolit"</string>
     <string name="on" msgid="8266542510798355807">"Zapnuto"</string>
     <string name="off" msgid="6996623844428550649">"Vypnuto"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Poslední přístup: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

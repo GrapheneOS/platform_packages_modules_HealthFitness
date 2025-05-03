@@ -51,7 +51,7 @@
     <string name="set_units_title" msgid="2657822539603758029">"ضبط الوحدات"</string>
     <string name="manage_data_preferences_category_title" msgid="1183110821140344472">"الإعدادات المفضّلة"</string>
     <string name="manage_data_category_title" msgid="6328886061582616519">"إدارة البيانات"</string>
-    <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"يتيح تصدير البيانات واستيرادها"</string>
+    <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"تصدير البيانات واستيرادها"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"التطبيقات التي وصلت مؤخرًا إلى البيانات الصحية"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"لم تستخدم أي تطبيقات Health Connect مؤخرًا."</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"عرض كل هذه التطبيقات"</string>
@@ -481,7 +481,7 @@
     <string name="next_export_time" msgid="3138247220014510213">"تاريخ عملية التصدير القادمة: ‎<xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"ستبدأ قريبًا عملية التصدير التالية"</string>
     <string name="cloud_backup_option" msgid="2602990573804189525">"الاحتفاظ بنسخة احتياطية"</string>
-    <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"الاحتفاظ بنسخة احتياطية والاستعادة"</string>
+    <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"نسخ البيانات احتياطيًا واستعادتها"</string>
     <string name="last_export_time" msgid="9205875050823594041">"تاريخ عملية التصدير الأخيرة: ‎<xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"وقت آخر عملية تصدير: الآن"</string>
     <string name="last_export_time_minutes_ago" msgid="5279296486877765961">"{count,plural, =1{آخر عملية تصدير: قبل دقيقة واحدة}zero{آخر عملية تصدير: قبل # دقيقة}two{آخر عملية تصدير: قبل دقيقتَين}few{آخر عملية تصدير: قبل # دقائق}many{آخر عملية تصدير: قبل # دقيقة}other{آخر عملية تصدير: قبل # دقيقة}}"</string>
@@ -490,7 +490,7 @@
     <string name="last_export_file_location" msgid="4069435932524304633">"<xliff:g id="EXPORT_APP_NAME">%1$s</xliff:g> • <xliff:g id="EXPORT_FILE_NAME">%2$s</xliff:g>"</string>
     <string name="scheduled_export" msgid="8737660963687364370">"عملية التصدير المُجدوَلة"</string>
     <string name="import_data" msgid="404502315533233094">"استيراد البيانات"</string>
-    <string name="import_data_description" msgid="4040178599441724296">"يتيح استعادة البيانات من ملف تم تصديره في السابق"</string>
+    <string name="import_data_description" msgid="4040178599441724296">"استعادة البيانات من ملف تم تصديره في السابق"</string>
     <string name="import_error_banner_title" msgid="1480977889067027790">"تعذَّرت استعادة البيانات"</string>
     <string name="import_wrong_file_error_banner_button" msgid="1518043363477255045">"اختيار ملف"</string>
     <string name="import_wrong_file_error_banner_summary" msgid="4857514343099050126">"الملف الذي اخترته غير متوافق مع عملية استعادة البيانات. احرص على اختيار الملف الصحيح الذي تم تصديره."</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"يتم دمج تطبيق Health Connect حاليًا مع نظام Android لتتمكّن من الوصول إليه مباشرةً من خلال الإعدادات."</string>
     <string name="update_button" msgid="4544529019832009496">"تحديث"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"يُرجى بدء تنزيل هذا التحديث ليتمكّن تطبيق Health Connect من مواصلة عملية الدمج مع إعدادات النظام."</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"يتم حاليًا دمج تطبيق Health Connect مع نظام Android ليتسنّى لك الوصول إليه مباشرةً من خلال الإعدادات.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"يجب تحديث النظام"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"قبل المتابعة، يُرجى تحديث نظام الهاتف."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"إذا سبق لك تحديث نظام الهاتف، جرِّب إعادة تشغيل الهاتف لمواصلة عملية الدمج."</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"هل تريد حذف بيانات <xliff:g id="DATA_TYPE">%1$s</xliff:g> الواردة من تطبيق \"<xliff:g id="APP_NAME">%2$s</xliff:g>\" نهائيًا؟"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"إظهار تطبيقات النظام"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"إخفاء تطبيقات النظام"</string>
+    <string name="system_warning" msgid="5593850900577682512">"في حال رفض هذا الإذن، قد لا تعمل ميزات أساسية في جهازك على النحو المطلوب."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"عدم السماح على أي حال"</string>
     <string name="on" msgid="8266542510798355807">"مفعّل"</string>
     <string name="off" msgid="6996623844428550649">"غير مفعَّل"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"آخر استخدام: ‎<xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

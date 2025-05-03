@@ -22,12 +22,6 @@ import static android.health.connect.HealthPermissions.READ_HEART_RATE;
 import static android.health.connect.HealthPermissions.READ_SLEEP;
 import static android.health.connect.HealthPermissions.READ_STEPS;
 import static android.health.connect.HealthPermissions.READ_TOTAL_CALORIES_BURNED;
-import static android.healthconnect.cts.utils.DataFactory.buildExerciseSession;
-import static android.healthconnect.cts.utils.DataFactory.buildSleepSession;
-import static android.healthconnect.cts.utils.DataFactory.getDistanceRecordWithNonEmptyId;
-import static android.healthconnect.cts.utils.DataFactory.getHeartRateRecord;
-import static android.healthconnect.cts.utils.DataFactory.getStepsRecord;
-import static android.healthconnect.cts.utils.DataFactory.getTotalCaloriesBurnedRecord;
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeHealthPermission;
@@ -35,6 +29,12 @@ import static android.healthconnect.cts.utils.TestUtils.deleteRecords;
 import static android.healthconnect.cts.utils.TestUtils.getChangeLogToken;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.updateRecords;
+import static android.healthconnect.testing.shared.DataFactory.buildExerciseSession;
+import static android.healthconnect.testing.shared.DataFactory.buildSleepSession;
+import static android.healthconnect.testing.shared.DataFactory.getDistanceRecordWithNonEmptyId;
+import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
+import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
+import static android.healthconnect.testing.shared.DataFactory.getTotalCaloriesBurnedRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 

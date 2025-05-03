@@ -19,6 +19,7 @@ package com.android.healthfitness.flags;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ACTIVITY_INTENSITY;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ECOSYSTEM_METRICS;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 import static com.android.internal.annotations.VisibleForTesting.Visibility.PRIVATE;
 
@@ -107,6 +108,7 @@ public final class AconfigFlagHelper {
         map.put(DB_VERSION_ACTIVITY_INTENSITY, Flags::activityIntensityDb);
         map.put(DB_VERSION_ECOSYSTEM_METRICS, Flags::ecosystemMetricsDbChanges);
         map.put(DB_VERSION_CLOUD_BACKUP_AND_RESTORE, Flags::cloudBackupAndRestoreDb);
+        map.put(DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS, Flags::exerciseSegmentImprovementsDb);
         return map;
     }
 
@@ -131,5 +133,16 @@ public final class AconfigFlagHelper {
     /** Returns a boolean indicating whether Nicotine Intake data type is enabled. */
     public static boolean isNicotineIntakeEnabled() {
         return Flags.smoking() && Flags.smokingDb() && Flags.healthConnectMappings();
+    }
+
+    /** Returns a boolean indicating whether exercise segment improvements are enabled. */
+    public static boolean isExerciseSegmentImprovementsEnabled() {
+        return Flags.exerciseSegmentImprovements()
+                && isDbFlagEnabled(DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS);
+    }
+
+    /** Returns a boolean indicating whether PHR change logs feature is enabled. */
+    public static boolean isPhrChangeLogsEnabled() {
+        return Flags.phrChangeLogs() && Flags.developmentDatabase();
     }
 }

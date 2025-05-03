@@ -31,16 +31,16 @@ import static android.healthconnect.cts.aggregation.Utils.assertDoubleWithTolera
 import static android.healthconnect.cts.aggregation.Utils.assertEnergyWithTolerance;
 import static android.healthconnect.cts.aggregation.Utils.assertLengthWithTolerance;
 import static android.healthconnect.cts.aggregation.Utils.assertMassWithTolerance;
-import static android.healthconnect.cts.utils.DataFactory.getDistanceRecord;
-import static android.healthconnect.cts.utils.DataFactory.getEmptyMetadata;
-import static android.healthconnect.cts.utils.DataFactory.getStepsRecord;
-import static android.healthconnect.cts.utils.DataFactory.getWeightRecord;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseGroupByDuration;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseGroupByPeriod;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
+import static android.healthconnect.testing.shared.DataFactory.getDistanceRecord;
+import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
+import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
+import static android.healthconnect.testing.shared.DataFactory.getWeightRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 

@@ -26,6 +26,15 @@ flag {
 }
 
 flag {
+    name: "personal_health_record_ui_telemetry"
+    namespace: "health_fitness_aconfig"
+    description: "Flag for guarding telemetry for PHR MVP UI."
+    bug: "342159144"
+    is_fixed_read_only: true
+    is_exported: true
+}
+
+flag {
     name: "personal_health_record_entries_screen"
     namespace: "health_fitness_aconfig"
     description: "Flag for guarding the improved Health Record Entries screen."
@@ -468,4 +477,13 @@ flag {
     metadata {
         purpose: PURPOSE_BUGFIX
     }
+}
+
+flag {
+    name: "new_device_types"
+    namespace: "health_fitness_aconfig"
+    description: "Flag for adding new device types to metadata."
+    bug: "403200835"
+    is_fixed_read_only: true
+    is_exported: false
 }

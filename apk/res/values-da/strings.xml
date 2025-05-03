@@ -608,7 +608,7 @@
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Udfør"</string>
     <string name="delete_dialog_failure_close_button" msgid="4376647579348193224">"Luk"</string>
     <string name="delete_dialog_success_title" msgid="900884533930984889">"Dataene er slettet fra Health Connect"</string>
-    <string name="delete_dialog_success_message" msgid="7454086333205881294">"Hvis du vil slette dataene helt fra dine tilknyttede apps, skal du markere hver app, hvor dine data kan være gemt."</string>
+    <string name="delete_dialog_success_message" msgid="7454086333205881294">"Hvis du vil slette dataene helt fra dine tilknyttede apps, skal du tjekke hver app, hvor dine data kan være gemt."</string>
     <string name="delete_dialog_done_button" msgid="1371340030947835493">"Udfør"</string>
     <string name="delete_dialog_see_connected_apps_button" msgid="2975631672738138716">"Se tilknyttede apps"</string>
     <string name="delete_progress_indicator" msgid="5799502879065833417">"Dine data slettes"</string>
@@ -1008,7 +1008,7 @@
     <string name="range_off" msgid="8178520557618184215">"Fra"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Når du ændrer dine indstillinger, sletter Health Connect eksisterende data for at afspejle dine nye præferencer"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Skal data slettes automatisk efter # måned?}one{Skal data slettes automatisk efter # måned?}other{Skal data slettes automatisk efter # måneder?}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Denne handling sletter også data, der er ældre end # måned, fra Health Connect.\n\nHvis du vil slette dataene helt fra dine tilknyttede apps, skal du markere hver app, hvor dine data kan være gemt.}one{Denne handling sletter også data, der er ældre end # måned, fra Health Connect.\n\nHvis du vil slette dataene helt fra dine tilknyttede apps, skal du markere hver app, hvor dine data kan være gemt.}other{Denne handling sletter også data, der er ældre end # måneder, fra Health Connect.\n\nHvis du vil slette dataene helt fra dine tilknyttede apps, skal du markere hver app, hvor dine data kan være gemt.}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Denne handling sletter også data, der er ældre end # måned, fra Health Connect.\n\nHvis du vil slette dataene helt fra dine tilknyttede apps, skal du tjekke hver app, hvor dine data kan være gemt.}one{Denne handling sletter også data, der er ældre end # måned, fra Health Connect.\n\nHvis du vil slette dataene helt fra dine tilknyttede apps, skal du tjekke hver app, hvor dine data kan være gemt.}other{Denne handling sletter også data, der er ældre end # måneder, fra Health Connect.\n\nHvis du vil slette dataene helt fra dine tilknyttede apps, skal du tjekke hver app, hvor dine data kan være gemt.}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"Konfigurer automatisk sletning"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"Eksisterende data slettes"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Health Connect sletter alle data, som er ældre end # måned. Der kan gå en dag, før disse ændringer vises i dine tilknyttede apps.}one{Health Connect will delete all data older than # months. It may take a day for these changes to appear in your connected apps.}other{Health Connect sletter alle data, som er ældre end # måneder. Der kan gå en dag, før disse ændringer vises i dine tilknyttede apps.}}"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect integreres med Android-systemet, så du kan tilgå Health Connect direkte fra dine indstillinger."</string>
     <string name="update_button" msgid="4544529019832009496">"Opdater"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Start denne opdatering, så Health Conenct kan fortsætte med at blive integreret med dine systemindstillinger"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect integreres med Android-systemet, så du kan tilgå Health Connect direkte fra dine indstillinger.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Systemopdatering er påkrævet"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Inden du fortsætter, skal du opdatere dit telefonsystem."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Hvis du allerede har opdateret dit telefonsystem, kan du prøve at genstarte din telefon for at fortsætte med integrationen"</string>
@@ -1118,7 +1117,7 @@
     <string name="app_sources_header" msgid="6343062519512947665">"Appkilder"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Føj appkilder til listen for at se, hvordan de samlede data kan ændre sig. Hvis du fjerner en app fra denne liste, vil den ikke længere bidrage til de samlede data, men den vil stadig have skrivetilladelser."</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Ingen appkilder"</string>
-    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Når du har givet apptilladelser til at skrive <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> data, vises kilderne her."</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Når du har givet apptilladelser til at skrive <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>-data, vises kilderne her."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Sådan fungerer kilder og prioritering"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Tilføj en app"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Rediger appkilder"</string>
@@ -1171,7 +1170,7 @@
     <string name="some_entries_selected_day_deletion_confirmation_dialog" msgid="3481363886097542565">"Skal de valgte data fra <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g> slettes permanent?"</string>
     <string name="some_entries_selected_week_deletion_confirmation_dialog" msgid="7150217982297131340">"Skal de valgte data fra ugen <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g> slettes permanent?"</string>
     <string name="some_entries_selected_month_deletion_confirmation_dialog" msgid="3712014725077445591">"Skal de valgte data fra <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g> slettes permanent?"</string>
-    <string name="one_entry_selected_deletion_confirmation_dialog" msgid="4642573082594021789">"Skal denne oplysning slettes permanent?"</string>
+    <string name="one_entry_selected_deletion_confirmation_dialog" msgid="4642573082594021789">"Skal denne post slettes permanent?"</string>
     <string name="all_app_entries_selected_day_deletion_confirmation_dialog" msgid="2342034541791960151">"Skal alle <xliff:g id="APP_NAME">%1$s</xliff:g>-data fra <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g> slettes permanent?"</string>
     <string name="all_app_entries_selected_week_deletion_confirmation_dialog" msgid="24289763841770386">"Skal alle <xliff:g id="APP_NAME">%1$s</xliff:g>-data fra ugen <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g> slettes permanent?"</string>
     <string name="all_app_entries_selected_month_deletion_confirmation_dialog" msgid="3240581815583269052">"Skal alle <xliff:g id="APP_NAME">%1$s</xliff:g>-data fra <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g> slettes permanent?"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Vil du slette data om <xliff:g id="DATA_TYPE">%1$s</xliff:g> for <xliff:g id="APP_NAME">%2$s</xliff:g> permanent?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Vis system"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Skjul system"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Hvis du afviser denne tilladelse, vil grundlæggende funktioner på din enhed muligvis ikke længere fungere efter hensigten."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Tillad ikke alligevel"</string>
     <string name="on" msgid="8266542510798355807">"Til"</string>
     <string name="off" msgid="6996623844428550649">"Fra"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Tilgået kl. <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

@@ -16,12 +16,17 @@
 
 package android.health.connect.internal.datatypes;
 
+import static android.health.connect.Constants.DEFAULT_FLOAT;
+import static android.health.connect.Constants.DEFAULT_INT;
+
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.datatypes.ExerciseSegment;
 import android.health.connect.datatypes.ExerciseSegmentType;
+import android.health.connect.datatypes.units.Mass;
 import android.os.Parcel;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 
 import java.time.Instant;
@@ -43,14 +48,30 @@ public class ExerciseSegmentInternal {
 
     private int mRepetitionsCount;
 
+    @Nullable private Double mWeightGrams;
+
+    private int mSetIndex = DEFAULT_INT;
+
+    private float mRateOfPerceivedExertion = DEFAULT_FLOAT;
+
     /** Reads record from parcel. */
     @VisibleForTesting
     public static ExerciseSegmentInternal readFromParcel(Parcel parcel) {
-        return new ExerciseSegmentInternal()
-                .setStartTime(parcel.readLong())
-                .setEndTime(parcel.readLong())
-                .setRepetitionsCount(parcel.readInt())
-                .setSegmentType(parcel.readInt());
+        ExerciseSegmentInternal segment =
+                new ExerciseSegmentInternal()
+                        .setStartTime(parcel.readLong())
+                        .setEndTime(parcel.readLong())
+                        .setRepetitionsCount(parcel.readInt())
+                        .setSegmentType(parcel.readInt());
+        if (Flags.exerciseSegmentImprovements()) {
+            boolean weightIsSet = parcel.readBoolean();
+            if (weightIsSet) {
+                segment.setWeightGrams(parcel.readDouble());
+            }
+            segment.setSetIndex(parcel.readInt());
+            segment.setRateOfPerceivedExertion(parcel.readFloat());
+        }
+        return segment;
     }
 
     @Nullable
@@ -90,17 +111,34 @@ public class ExerciseSegmentInternal {
         parcel.writeLong(mEndTime);
         parcel.writeInt(mRepetitionsCount);
         parcel.writeInt(mSegmentType);
+        if (Flags.exerciseSegmentImprovements()) {
+            boolean weightIsSet = mWeightGrams != null;
+            parcel.writeBoolean(weightIsSet);
+            if (weightIsSet) {
+                parcel.writeDouble(mWeightGrams);
+            }
+            parcel.writeInt(mSetIndex);
+            parcel.writeFloat(mRateOfPerceivedExertion);
+        }
     }
 
     /** Sets segment type. Returns record with type set. */
     @VisibleForTesting
     public ExerciseSegment toExternalRecord() {
-        return new ExerciseSegment.Builder(
-                        Instant.ofEpochMilli(getStartTime()),
-                        Instant.ofEpochMilli(getEndTime()),
-                        getSegmentType())
-                .setRepetitionsCount(getRepetitionsCount())
-                .buildWithoutValidation();
+        ExerciseSegment.Builder builder =
+                new ExerciseSegment.Builder(
+                        Instant.ofEpochMilli(mStartTime),
+                        Instant.ofEpochMilli(mEndTime),
+                        getSegmentType());
+        builder.setRepetitionsCount(mRepetitionsCount);
+        if (Flags.exerciseSegmentImprovements()) {
+            if (mWeightGrams != null) {
+                builder.setWeight(Mass.fromGrams(mWeightGrams));
+            }
+            builder.setSetIndex(mSetIndex);
+            builder.setRateOfPerceivedExertion(mRateOfPerceivedExertion);
+        }
+        return builder.buildWithoutValidation();
     }
 
     /** Sets segment start time. Returns record with start time set. */
@@ -130,9 +168,46 @@ public class ExerciseSegmentInternal {
         return mRepetitionsCount;
     }
 
+    /** Returns weight used during the exercise segment. */
+    @Nullable
+    public Double getWeightGrams() {
+        return mWeightGrams;
+    }
+
+    /** Returns set index for the exercise segment. */
+    public int getSetIndex() {
+        return mSetIndex;
+    }
+
+    /** Returns rate of perceived exertion for the exercise segment. */
+    public float getRateOfPerceivedExertion() {
+        return mRateOfPerceivedExertion;
+    }
+
     /** Sets segment repetitions count. Return record with repetitions set. */
     public ExerciseSegmentInternal setRepetitionsCount(int repetitionsCount) {
         mRepetitionsCount = repetitionsCount;
+        return this;
+    }
+
+    /** Sets weight used during the exercise segment. Returns record with weight. */
+    public ExerciseSegmentInternal setWeightGrams(double weightGrams) {
+        mWeightGrams = weightGrams;
+        return this;
+    }
+
+    /** Sets set index for the exercise segment. Returns record with set index. */
+    public ExerciseSegmentInternal setSetIndex(int setIndex) {
+        mSetIndex = setIndex;
+        return this;
+    }
+
+    /**
+     * Sets rate of perceived exertion for the exercise segment. Returns record with rate of
+     * perceived exertion.
+     */
+    public ExerciseSegmentInternal setRateOfPerceivedExertion(float rateOfPerceivedExertion) {
+        mRateOfPerceivedExertion = rateOfPerceivedExertion;
         return this;
     }
 
@@ -155,11 +230,21 @@ public class ExerciseSegmentInternal {
         return mSegmentType == that.mSegmentType
                 && mRepetitionsCount == that.mRepetitionsCount
                 && mStartTime == that.mStartTime
-                && mEndTime == that.mEndTime;
+                && mEndTime == that.mEndTime
+                && Objects.equals(mWeightGrams, that.mWeightGrams)
+                && mSetIndex == that.mSetIndex
+                && mRateOfPerceivedExertion == that.mRateOfPerceivedExertion;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mStartTime, mEndTime, mSegmentType, mRepetitionsCount);
+        return Objects.hash(
+                mStartTime,
+                mEndTime,
+                mSegmentType,
+                mRepetitionsCount,
+                mWeightGrams,
+                mSetIndex,
+                mRateOfPerceivedExertion);
     }
 }

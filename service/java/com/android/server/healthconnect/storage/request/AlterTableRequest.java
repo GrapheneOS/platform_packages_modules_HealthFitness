@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Creates a alter table request and alter statements for it.
@@ -40,6 +41,7 @@ public final class AlterTableRequest {
     private final List<Pair<String, String>> mColumnInfo;
 
     private final Map<String, Pair<String, String>> mForeignKeyConstraints = new HashMap<>();
+    private final List<String> mColumnsToIndex = new ArrayList<>();
 
     public AlterTableRequest(String tableName, List<Pair<String, String>> columnInfo) {
         mTableName = tableName;
@@ -53,6 +55,14 @@ public final class AlterTableRequest {
     public AlterTableRequest addForeignKeyConstraint(
             String column, String referencedTable, String referencedColumn) {
         mForeignKeyConstraints.put(column, new Pair<>(referencedTable, referencedColumn));
+        return this;
+    }
+
+    /** Add index to create */
+    public AlterTableRequest createIndexOn(String columnName) {
+        Objects.requireNonNull(columnName);
+
+        mColumnsToIndex.add(columnName);
         return this;
     }
 
@@ -77,6 +87,14 @@ public final class AlterTableRequest {
             statement.append(";");
             statements.add(statement.toString());
         }
+        statements.addAll(
+                mColumnsToIndex.stream()
+                        .map(
+                                columnName ->
+                                        CreateTableRequest.getCreateIndexCommand(
+                                                mTableName, columnName))
+                        .toList());
+
         Slog.d(TAG, "Alter table: " + statements);
 
         // Check on the final commands for now as it's more broad. Should this become a problem

@@ -31,6 +31,7 @@ public final class Constants {
     public static final int DEFAULT_INT = -1;
     public static final long DEFAULT_LONG = -1;
     public static final double DEFAULT_DOUBLE = Double.MIN_VALUE;
+    public static final float DEFAULT_FLOAT = Float.MIN_VALUE;
     public static final int DEFAULT_PAGE_SIZE = 1000;
     public static final int MINIMUM_PAGE_SIZE = 1;
     public static final int MAXIMUM_PAGE_SIZE = 5000;
@@ -39,4 +40,5 @@ public final class Constants {
     public static final int DELETE = 1;
     public static final int READ = 2;
     public static final String PARENT_KEY = "parent_key";
+    public static final String NOTIFICATION_CHANNEL_ID = "healthconnect-channel";
 }

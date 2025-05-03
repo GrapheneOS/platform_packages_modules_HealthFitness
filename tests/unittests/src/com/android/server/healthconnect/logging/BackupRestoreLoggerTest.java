@@ -61,15 +61,12 @@ public class BackupRestoreLoggerTest {
         int backupTypeIncremental =
                 HEALTH_CONNECT_DATA_BACKUP_INVOKED__BACKUP_TYPE__DATA_BACKUP_TYPE_INCREMENTAL;
 
-        mBackupRestoreLogger.logDataBackupStatus(
-                statusPartialBackup, 100, 2000, backupTypeIncremental);
+        mBackupRestoreLogger.logDataBackupStatus(statusPartialBackup, backupTypeIncremental);
 
         verify(mHealthFitnessStatsLog, times(1))
                 .write(
                         eq(HEALTH_CONNECT_DATA_BACKUP_INVOKED),
                         eq(statusPartialBackup),
-                        eq(100),
-                        eq(2000),
                         eq(backupTypeIncremental));
     }
 

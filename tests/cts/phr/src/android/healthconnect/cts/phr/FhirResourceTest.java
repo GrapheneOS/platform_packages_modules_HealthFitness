@@ -29,26 +29,26 @@ import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_O
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_PATIENT;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_PRACTITIONER;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_PROCEDURE;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_ALLERGY;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_RESOURCE_ID_ALLERGY;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_RESOURCE_ID_IMMUNIZATION;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.getFhirResource;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.getFhirResourceBuilder;
 import static android.healthconnect.cts.utils.TestUtils.setFieldValueUsingReflection;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_ALLERGY;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_RESOURCE_ID_ALLERGY;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_RESOURCE_ID_IMMUNIZATION;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.getFhirResource;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.getFhirResourceBuilder;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
 import android.health.connect.datatypes.FhirResource;
-import android.healthconnect.cts.phr.utils.ConditionBuilder;
-import android.healthconnect.cts.phr.utils.EncountersBuilder;
-import android.healthconnect.cts.phr.utils.MedicationsBuilder;
-import android.healthconnect.cts.phr.utils.ObservationBuilder;
-import android.healthconnect.cts.phr.utils.PatientBuilder;
-import android.healthconnect.cts.phr.utils.PractitionerBuilder;
-import android.healthconnect.cts.phr.utils.ProcedureBuilder;
+import android.healthconnect.testing.shared.phr.ConditionBuilder;
+import android.healthconnect.testing.shared.phr.EncountersBuilder;
+import android.healthconnect.testing.shared.phr.MedicationsBuilder;
+import android.healthconnect.testing.shared.phr.ObservationBuilder;
+import android.healthconnect.testing.shared.phr.PatientBuilder;
+import android.healthconnect.testing.shared.phr.PractitionerBuilder;
+import android.healthconnect.testing.shared.phr.ProcedureBuilder;
 import android.os.Parcel;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;

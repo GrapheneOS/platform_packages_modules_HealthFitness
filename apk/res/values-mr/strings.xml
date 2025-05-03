@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"आरोग्यविषयक डेटासंबंधित अ‍ॅपचा अ‍ॅक्सेस नियंत्रित करा"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"आरोग्यविषयक डेटासंबंधित अ‍ॅपचा अ‍ॅक्सेस व्यवस्थापित करा"</string>
     <string name="health_connect_notification_channel_name" msgid="5189243942800749782">"अपडेट आणि सूचना"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"परवानग्या आणि डेटा"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"तुमच्या डिव्हाइसवरील आरोग्य आणि फिटनेससंबंधी डेटा व्यवस्थापित करा व कोणती अ‍ॅप्स तो डेटा अ‍ॅक्सेस करू शकतात हे नियंत्रित करा"</string>
@@ -610,7 +610,7 @@
     <string name="delete_dialog_success_title" msgid="900884533930984889">"Health Connect मधून हटवलेला डेटा"</string>
     <string name="delete_dialog_success_message" msgid="7454086333205881294">"तुम्हाला तुमच्या कनेक्ट केलेल्या ॲप्समधून डेटा पूर्णपणे हटवायचा असल्यास, जिथे तुमचा डेटा सेव्ह केला जाऊ शकतो असे प्रत्येक ॲप तपासा."</string>
     <string name="delete_dialog_done_button" msgid="1371340030947835493">"पूर्ण झाले"</string>
-    <string name="delete_dialog_see_connected_apps_button" msgid="2975631672738138716">"कनेक्ट केलेली अ‍ॅप्स"</string>
+    <string name="delete_dialog_see_connected_apps_button" msgid="2975631672738138716">"कनेक्ट केलेली अ‍ॅप्स पहा"</string>
     <string name="delete_progress_indicator" msgid="5799502879065833417">"तुमचा डेटा हटवत आहे"</string>
     <string name="delete_dialog_failure_title" msgid="1959020721355789496">"डेटा हटवता आला नाही"</string>
     <string name="delete_dialog_failure_message" msgid="7473241488471319963">"काहीतरी चूक झाली आणि Health Connect ला तुमचा डेटा हटवता आला नाही"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect हे Android सिस्टीमसह इंटिग्रेट केले जात आहे, जेणेकरून तुम्ही ते तुमच्या सेटिंग्जमधून थेट ॲक्सेस करू शकता."</string>
     <string name="update_button" msgid="4544529019832009496">"अपडेट करा"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"हे अपडेट सुरू करा, जेणेकरून Health Connect हे तुमच्या सिस्टीम सेटिंग्जसह इंटिग्रेट करणे पुढे सुरू ठेवू शकते"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect हे Android सिस्टीमसह इंटिग्रेट केले जात आहे, जेणेकरून तुम्ही ते तुमच्या सेटिंग्जमधून थेट ॲक्सेस करू शकता.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"सिस्टीम अपडेट करणे आवश्यक आहे"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"पुढे सुरू ठेवण्यापूर्वी, तुमच्या फोनची सिस्टीम अपडेट करा."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"तुम्ही तुमच्या फोनची सिस्टीम आधीच अपडेट केली असल्यास, इंटिग्रेशन पुढे सुरू ठेवण्यासाठी तुमचा फोन रीस्टार्ट करून पहा"</string>
@@ -1114,7 +1113,7 @@
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"अपडेट आवश्यक आहे"</string>
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"तुमचा डेटा रिस्टोअर करणे पुढे सुरू ठेवण्यापूर्वी, तुमची फोन सिस्टीम अपडेट करा."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"आता अपडेट करा"</string>
-    <string name="data_totals_header" msgid="8316977153276216025">"डेटा बेरीज"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"एकूण डेटा"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"अ‍ॅप स्रोत"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"एकूण डेटा कसा बदलू शकतो हे पाहण्यासाठी सूचीमध्ये ॲप स्रोत जोडा. या सूचीमधून ॲप काढून टाकल्याने ते बेरजेमध्ये योगदान देण्यापासून थांबेल, पण तरीही त्याला राइट परवानग्या असतील."</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"कोणतीही ॲप स्रोत नाहीत"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> साठीचा सर्व <xliff:g id="DATA_TYPE">%1$s</xliff:g> डेटा कायमचा हटवायचा आहे का?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"सिस्टीम दाखवा"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"सिस्टीम लपवा"</string>
+    <string name="system_warning" msgid="5593850900577682512">"तुम्ही ही परवानगी नाकारल्यास, तुमच्या डिव्‍हाइसची मुलभूत वैशिष्ट्ये अपेक्षित असल्याप्रमाणे कदाचित कार्य करू शकणार नाहीत."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"तरीही अनुमती देऊ नका"</string>
     <string name="on" msgid="8266542510798355807">"सुरू आहे"</string>
     <string name="off" msgid="6996623844428550649">"बंद आहे"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g> वाजता ॲक्सेस केले"</string>

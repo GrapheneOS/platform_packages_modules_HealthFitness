@@ -165,13 +165,17 @@ public final class WhereClauses {
      * @param columnName Column name on which where condition to be applied
      * @param values to check in the where condition
      */
-    public WhereClauses addWhereInIntsClause(String columnName, Collection<Integer> values) {
-        if (values == null || values.isEmpty()) return this;
+    public WhereClauses addWhereInIntsClause(
+            @Nullable String columnName, @Nullable Collection<Integer> values) {
+        if (columnName == null || values == null || values.isEmpty()) return this;
 
         mClauses.add(
                 columnName
                         + " IN ("
-                        + values.stream().map(String::valueOf).collect(Collectors.joining(", "))
+                        + values.stream()
+                                .distinct()
+                                .map(String::valueOf)
+                                .collect(Collectors.joining(", "))
                         + ")");
 
         return this;

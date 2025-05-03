@@ -18,12 +18,12 @@ package android.healthconnect.tests.exportimport;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.health.connect.HealthPermissions.WRITE_STEPS;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.getCreateMedicalDataSourceRequest;
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.utils.TestUtils.deleteRecords;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.readAllRecords;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 import static android.healthconnect.tests.exportimport.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_EXPORT_IMPORT;
@@ -169,9 +169,7 @@ public class ExportImportApiTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_ENABLE_EXPORT_IMPORT
-    })
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD_ENABLE_EXPORT_IMPORT})
     public void phr_exportDeleteDataAndThenImport_dataIsRestored() throws Exception {
         // insert some medical data
         String medicalDataSourceId =

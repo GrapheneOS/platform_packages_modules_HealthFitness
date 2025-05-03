@@ -608,7 +608,7 @@
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"ہو گیا"</string>
     <string name="delete_dialog_failure_close_button" msgid="4376647579348193224">"بند کریں"</string>
     <string name="delete_dialog_success_title" msgid="900884533930984889">"‫Health Connect سے ڈیٹا حذف ہو گیا"</string>
-    <string name="delete_dialog_success_message" msgid="7454086333205881294">"اگر آپ اپنے منسلک ایپس سے ڈیٹا کو مکمل طور پرحذف کرنا چاہتے ہیں تو ہر ایپ کو جہاں بھی آپ کا ڈیٹا محفوظ ہو سکتا ہے چیک کریں۔"</string>
+    <string name="delete_dialog_success_message" msgid="7454086333205881294">"اگر آپ اپنی منسلک ایپس سے ڈیٹا کو مکمل طور پرحذف کرنا چاہتے ہیں تو ہر ایپ کو جہاں بھی آپ کا ڈیٹا محفوظ ہو سکتا ہے چیک کریں۔"</string>
     <string name="delete_dialog_done_button" msgid="1371340030947835493">"ہو گیا"</string>
     <string name="delete_dialog_see_connected_apps_button" msgid="2975631672738138716">"منسلک ایپس دیکھیں"</string>
     <string name="delete_progress_indicator" msgid="5799502879065833417">"آپ کا ڈیٹا حذف کیا جا رہا ہے"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"‫Health Connect کو Android سسٹم کے ساتھ ضم کیا جا رہا ہے تاکہ آپ اسے اپنی ترتیبات سے براہ راست رسائی حاصل کر سکیں۔"</string>
     <string name="update_button" msgid="4544529019832009496">"اپ ڈیٹ کریں"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"اس اپ ڈیٹ کو شروع کریں تاکہ Health Connect کا آپ کے سسٹم کی ترتیبات کے ساتھ ضم ہونا جاری رہے"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"‫Health Connect کو Android سسٹم کے ساتھ ضم کیا جا رہا ہے تاکہ آپ اپنی ترتیبات سے براہ راست اس تک رسائی حاصل کر سکیں۔\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"سسٹم اپ ڈیٹ درکار ہے"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"جاری رکھنے سے پہلے، اپنے فون سسٹم کو اپ ڈیٹ کریں۔"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"اگر آپ پہلے ہی اپنے فون سسٹم کو اپ ڈیٹ کر چکے ہیں تو انضمام جاری رکھنے کے لیے اپنے فون کو ری سٹارٹ کرنے کی کوشش کریں"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> کے لیے <xliff:g id="DATA_TYPE">%1$s</xliff:g> ڈیٹا کو مستقل طور پر حذف کریں؟"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"سسٹم دکھائیں"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"سسٹم چھپائیں"</string>
+    <string name="system_warning" msgid="5593850900577682512">"اگر آپ اس اجازت کو مسترد کرتے ہیں تو شاید آپ کے آلے کی بنیادی خصوصیات ٹھیک سے کام نہ کریں۔"</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"کسی بھی صورت میں اجازت نہ دیں"</string>
     <string name="on" msgid="8266542510798355807">"آن"</string>
     <string name="off" msgid="6996623844428550649">"آف"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g> پر رسائی حاصل کی گئی"</string>

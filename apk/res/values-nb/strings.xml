@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect integreres med Android-systemet, slik at du kan gå til den direkte fra innstillingene."</string>
     <string name="update_button" msgid="4544529019832009496">"Oppdater"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Start denne oppdateringen, slik at Health Connect kan fortsette integreringen med systeminnstilingene dine"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect integreres med Android-systemet, slik at du kan gå til den direkte fra innstillingene.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Systemet må oppdateres"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Du må oppdatere telefonsystemet før du fortsetter."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Hvis du har oppdatert systemet på telefonen allerede, bør du prøve å starte telefonen på nytt for å fortsette integreringen"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Vil du slette <xliff:g id="DATA_TYPE">%1$s</xliff:g>-dataene for <xliff:g id="APP_NAME">%2$s</xliff:g> permanent?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Vis systemapper"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Skjul systemapper"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Hvis du ikke gir denne tillatelsen, kan grunnleggende funksjoner på enheten slutte å fungere som de skal."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Ikke tillat likevel"</string>
     <string name="on" msgid="8266542510798355807">"På"</string>
     <string name="off" msgid="6996623844428550649">"Av"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Åpnet <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

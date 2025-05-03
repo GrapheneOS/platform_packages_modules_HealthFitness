@@ -38,7 +38,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Ništa"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Pojedinosti o unosu"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Pregledajte podatke"</string>
-    <string name="browse_data_subtitle" msgid="7025164374898103993">"Pogledajte podatke i koje im aplikacije mogu pristupiti"</string>
+    <string name="browse_data_subtitle" msgid="7025164374898103993">"Pogledajte podatke i aplikacije koje im mogu pristupati"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Automatsko brisanje, izvori podataka, sigurnosno kopiranje i vraćanje"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"Više stavki"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"Manje stavki"</string>
@@ -397,8 +397,8 @@
     <string name="medical_request_footer" msgid="6533749932770903089">"Sinkronizirajte podatke o zdravstvenom stanju iz različitih aplikacija i izvora da biste ih zadržali na jednom mjestu"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Želite li ukloniti sva dopuštenja?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Ukloni sve"</string>
-    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti bilježiti podatke iz Health Connecta.\n\nTo ne utječe na druga dopuštenja koja ova aplikacija može imati, kao što su kamera, mikrofon ili lokacija."</string>
-    <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti bilježiti podatke iz Health Connecta, uključujući pozadinske podatke.\n\nTo ne utječe na druga dopuštenja koja ova aplikacija može imati, kao što su lokacija, kamera ili mikrofon."</string>
+    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti bilježiti podatke iz Health Connecta.\n\nTo ne utječe na druga dopuštenja dodijeljena ovoj aplikaciji kao što su pristup kameri, mikrofonu ili lokaciji."</string>
+    <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti bilježiti podatke iz Health Connecta, uključujući pozadinske podatke.\n\nTo ne utječe na druga dopuštenja dodijeljena ovoj aplikaciji kao što su pristup lokaciji, kameri ili mikrofonu."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti bilježiti podatke iz Health Connecta, uključujući prethodne podatke.\n\nTo ne utječe na druga dopuštenja koja ova aplikacija može imati, kao što su lokacija, fotoaparat ili mikrofon."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti bilježiti podatke iz Health Connecta, uključujući pozadinske podatke ili prethodne podatke.\n\nTo ne utječe na druga dopuštenja koja ova aplikacija može imati, kao što su dopuštenja za upotrebu lokacije, kamere ili mikrofona."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Izbriši i podatke aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g> iz Health Connecta"</string>
@@ -481,7 +481,7 @@
     <string name="next_export_time" msgid="3138247220014510213">"Datum sljedećeg izvoza: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Sljedeći izvoz uskoro započinje"</string>
     <string name="cloud_backup_option" msgid="2602990573804189525">"Sigurnosna kopija"</string>
-    <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Stvaranje sigurnosne kopije i vraćanje"</string>
+    <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Sigurnosno kopiranje i vraćanje podataka"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Datum posljednjeg izvoza: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Posljednji izvoz: sada"</string>
     <string name="last_export_time_minutes_ago" msgid="5279296486877765961">"{count,plural, =1{Posljednji izvoz: prije 1 min}one{Posljednji izvoz: prije # min}few{Posljednji izvoz: prije # min}other{Posljednji izvoz: prije # min}}"</string>
@@ -499,7 +499,7 @@
     <string name="import_other_error_banner_button" msgid="8006947649520909176">"Pokušaj ponovno"</string>
     <string name="import_other_error_banner_summary" msgid="4378957063605649197">"Došlo je do problema prilikom vraćanja podataka iz vašeg uvoza."</string>
     <string name="backup_and_restore_footer_body_text" msgid="4854718727539851909">"Izvoz vam omogućuje spremanje podataka da biste ih mogli prenijeti na novi telefon"</string>
-    <string name="backup_and_restore_footer_link_text" msgid="9075133737244288876">"O sigurnosnom kopiranju i vraćanju"</string>
+    <string name="backup_and_restore_footer_link_text" msgid="9075133737244288876">"O sigurnosnom kopiranju i vraćanju podataka"</string>
     <string name="automatic_export_status" msgid="4407131306281440230">"<xliff:g id="EXPORT_ON_OR_OFF">%1$s</xliff:g> • <xliff:g id="EXPORT_FREQUENCY">%2$s</xliff:g>"</string>
     <string name="automatic_export_on" msgid="6972389773963624315">"Uključeno"</string>
     <string name="automatic_export_off" msgid="3270255845008880841">"Isključeno"</string>
@@ -547,7 +547,7 @@
     <string name="export_cancel_button" msgid="1952360582645412410">"Odustani"</string>
     <string name="import_cancel_button" msgid="2191598074422096715">"Odustani"</string>
     <string name="import_next_button" msgid="5706322508691854289">"Dalje"</string>
-    <string name="import_source_location_title" msgid="4444467438013749461">"Uvoz iz:"</string>
+    <string name="import_source_location_title" msgid="4444467438013749461">"Uvoz s usluge"</string>
     <string name="import_invalid_storage" msgid="341798262315495399">"Odaberite aplikaciju za pohranu u oblaku za uvoz podataka"</string>
     <string name="export_import_tap_to_choose_account" msgid="5016799636886709580">"Dodirnite da biste odabrali račun"</string>
     <string name="export_import_choose_account_title" msgid="1047021319012735232">"Odabir računa"</string>
@@ -556,12 +556,12 @@
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"Nema dostupnih aplikacija. Instalirajte aplikacije za pohranu u oblaku da biste ih vidjeli ovdje"</string>
     <string name="export_import_install_apps_text" msgid="5026922993254770904">"Za više opcija instalirajte aplikacije za pohranu u oblaku da biste ih vidjeli ovdje"</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Otvori Trgovinu Play"</string>
-    <string name="onboarding_title" msgid="8550656211291180188">"Početak upotrebe Health Connecta"</string>
+    <string name="onboarding_title" msgid="8550656211291180188">"Započnite s upotrebom Health Connecta"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect sprema podatke o vašem zdravlju i fitnessu i pruža vam jednostavan način za sinkronizaciju različitih aplikacija na uređaju"</string>
     <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect pohranjuje i sinkronizira vaše podatke o zdravlju i fitnessu iz različitih aplikacija.\n\n"<b>"Podaci o fitnessu i zdravlju,"</b>" uključujući sesije vježbanja, korake, prehranu, spavanje i drugo\n\n"<b>"Podaci o zdravstvenom stanju,"</b>" uključujući cjepiva, laboratorijske nalaze i drugo"</string>
-    <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connect omogućuje vam sljedeće:"</string>
+    <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Što sve možete uz Health Connect"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Dijelite podatke s aplikacijama"</b>\n"Odaberite podatke koje svaka aplikacija može čitati ili bilježiti u Health Connectu"</string>
-    <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Upravljajte svojim postavkama i privatnošću"</b>\n"Promijenite dopuštenja aplikacije i upravljajte svojim podacima"</string>
+    <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Upravljajte postavkama i privatnošću"</b>\n"Promijenite dopuštenja aplikacija i upravljajte svojim podacima"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Natrag"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Započnite"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Izbriši podatke"</string>
@@ -608,7 +608,7 @@
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Gotovo"</string>
     <string name="delete_dialog_failure_close_button" msgid="4376647579348193224">"Zatvori"</string>
     <string name="delete_dialog_success_title" msgid="900884533930984889">"Podaci su izbrisani iz Health Connecta"</string>
-    <string name="delete_dialog_success_message" msgid="7454086333205881294">"Ako želite u potpunosti izbrisati podatke iz povezanih aplikacija, označite sve aplikacije koje bi mogle sadržavati spremljene podatke."</string>
+    <string name="delete_dialog_success_message" msgid="7454086333205881294">"Ako želite u potpunosti izbrisati podatke iz povezanih aplikacija, provjerite sve aplikacije koje bi mogle sadržavati spremljene podatke."</string>
     <string name="delete_dialog_done_button" msgid="1371340030947835493">"Gotovo"</string>
     <string name="delete_dialog_see_connected_apps_button" msgid="2975631672738138716">"Prikaži povezane aplikacije"</string>
     <string name="delete_progress_indicator" msgid="5799502879065833417">"Brisanje podataka"</string>
@@ -1000,7 +1000,7 @@
     <string name="playstore_app_title" msgid="4138464328693481809">"Trgovina Play"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Automatsko brisanje"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Automatsko brisanje"</string>
-    <string name="auto_delete_header" msgid="4258649705159293715">"Kontrolirajte koliko se dugo vaši podaci pohranjuju u Health Connectu zakazivanjem brisanja nakon postavljenog vremena"</string>
+    <string name="auto_delete_header" msgid="4258649705159293715">"Upravljajte time koliko se dugo vaši podaci pohranjuju u Health Connectu zakazivanjem brisanja nakon postavljenog vremena"</string>
     <string name="auto_delete_learn_more" msgid="7416469042791307994">"Saznajte više o automatskom brisanju"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Automatsko brisanje podataka"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Nakon # mjeseca}one{Nakon # mjeseca}few{Nakon # mjeseca}other{Nakon # mjeseci}}"</string>
@@ -1008,7 +1008,7 @@
     <string name="range_off" msgid="8178520557618184215">"Isključeno"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Kad promijenite ove postavke, Health Connect briše postojeće podatke u skladu s vašim novim preferencijama"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Automatski izbrisati podatke nakon # mjeseca?}one{Automatski izbrisati podatke nakon # mjeseca?}few{Automatski izbrisati podatke nakon # mjeseca?}other{Automatski izbrisati podatke nakon # mjeseci?}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Time se iz Health Connecta brišu podaci stariji od # mjeseca.\n\nAko želite u potpunosti izbrisati podatke sa svojih povezanih aplikacija, označite sve aplikacije koje bi mogle sadržavati spremljene podatke.}one{Time se iz Health Connecta brišu podaci stariji od # mjeseca.\n\nAko želite u potpunosti izbrisati podatke sa svojih povezanih aplikacija, označite sve aplikacije koje bi mogle sadržavati spremljene podatke.}few{Time se iz Health Connecta brišu podaci stariji od # mjeseca.\n\nAko želite u potpunosti izbrisati podatke sa svojih povezanih aplikacija, označite sve aplikacije koje bi mogle sadržavati spremljene podatke.}other{Time se iz Health Connecta brišu podaci stariji od # mjeseci.\n\nAko želite u potpunosti izbrisati podatke sa svojih povezanih aplikacija, označite sve aplikacije koje bi mogle sadržavati spremljene podatke.}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Time se iz Health Connecta brišu podaci stariji od # mjesec.\n\nAko želite u potpunosti izbrisati podatke iz povezanih aplikacija, provjerite sve aplikacije koje bi mogle sadržavati spremljene podatke.}one{Time se iz Health Connecta brišu podaci stariji od # mjesec.\n\nAko želite u potpunosti izbrisati podatke iz povezanih aplikacija, provjerite sve aplikacije koje bi mogle sadržavati spremljene podatke.}few{Time se iz Health Connecta brišu podaci stariji od # mjeseca.\n\nAko želite u potpunosti izbrisati podatke iz povezanih aplikacija, provjerite sve aplikacije koje bi mogle sadržavati spremljene podatke.}other{Time se iz Health Connecta brišu podaci stariji od # mjeseci.\n\nAko želite u potpunosti izbrisati podatke iz povezanih aplikacija, provjerite sve aplikacije koje bi mogle sadržavati spremljene podatke.}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"Postavi automatsko brisanje"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"Postojeći podaci će se izbrisati"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Health Connect izbrisat će sve podatke starije od # mjeseca. Može proći jedan dan prije nego što se te promjene pojave u vašim povezanim aplikacijama.}one{Health Connect izbrisat će sve podatke starije od # mjeseca. Može proći jedan dan prije nego što se te promjene pojave u vašim povezanim aplikacijama.}few{Health Connect izbrisat će sve podatke starije od # mjeseca. Može proći jedan dan prije nego što se te promjene pojave u vašim povezanim aplikacijama.}other{Health Connect izbrisat će sve podatke starije od # mjeseci. Može proći jedan dan prije nego što se te promjene pojave u vašim povezanim aplikacijama.}}"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Aplikacija Health Connect integrira se sa sustavom Android kako biste joj mogli pristupiti izravno putem postavki."</string>
     <string name="update_button" msgid="4544529019832009496">"Ažuriraj"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Pokrenite ažuriranje kako bi aplikacija Health Connect mogla nastaviti integraciju s postavkama sustava"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Aplikacija Health Connect integrira se sa sustavom Android kako biste joj mogli pristupiti izravno putem postavki.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Potrebno je ažuriranje sustava"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Prije nastavka ažurirajte sustav telefona."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ako ste već ažurirali sustav telefona, pokušajte ponovo pokrenuti telefon da biste nastavili integraciju"</string>
@@ -1115,11 +1114,11 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Prije nego što nastavite s vraćanjem podataka, ažurirajte sustav telefona."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Ažuriraj sada"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Ukupne vrijednosti podataka"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"Izvori aplikacije"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"Dodajte izvore aplikacije na popis da biste vidjeli kako se ukupne vrijednosti podataka mogu promijeniti. Uklanjanjem aplikacije s tog popisa prestat će pridonošenje ukupnim vrijednostima, no i dalje će imati dopuštenja za pisanje."</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Izvori aplikacija"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Dodajte izvore aplikacija na popis da biste vidjeli kako se ukupne vrijednosti podataka mogu promijeniti. Ako s tog popisa uklonite aplikaciju, ona više neće doprinositi ukupnim vrijednostima, no i dalje će imati dopuštenja za pisanje."</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Nema izvora aplikacija"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Nakon što aplikacijama date dopuštenje da zapisuju podatke iz kategorije <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, izvori će se prikazati ovdje."</string>
-    <string name="data_sources_help_link" msgid="7740264923634947915">"Kako funkcioniraju izvori i prioritizacija"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Kako funkcioniraju izvori i određivanje prioriteta"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Dodaj aplikaciju"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Uređivanje izvora aplikacija"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Zadana postavka uređaja"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Želite li trajno izbrisati podatke vrste <xliff:g id="DATA_TYPE">%1$s</xliff:g> za aplikaciju <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Prikaži sustav"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Sakrij sustav"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Ako ne odobrite ovo dopuštenje, osnovne značajke vašeg uređaja možda više neće funkcionirati pravilno."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Ipak nemoj dopustiti"</string>
     <string name="on" msgid="8266542510798355807">"Uključeno"</string>
     <string name="off" msgid="6996623844428550649">"Isključeno"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Pristupljeno: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

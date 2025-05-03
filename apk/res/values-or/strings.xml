@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connectକୁ Android ସିଷ୍ଟମ ସହ ଇଣ୍ଟିଗ୍ରେଟ କରାଯାଉଛି ଯାହା ଫଳରେ ଆପଣ ସିଧାସଳଖ ଆପଣଙ୍କ ସେଟିଂସରୁ ଏହାକୁ ଆକ୍ସେସ କରିପାରିବେ।"</string>
     <string name="update_button" msgid="4544529019832009496">"ଅପଡେଟ କରନ୍ତୁ"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"ଏହି ଅପଡେଟକୁ ଆରମ୍ଭ କରନ୍ତୁ ଯାହା ଫଳରେ Health Connect ଆପଣଙ୍କ ସିଷ୍ଟମ ସେଟିଂସ ସହ ଇଣ୍ଟିଗ୍ରେଟ କରିବା ଜାରି ରଖିପାରିବ"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connectକୁ Android ସିଷ୍ଟମ ସହ ଇଣ୍ଟିଗ୍ରେଟ କରାଯାଉଛି ଯାହା ଫଳରେ ଆପଣ ସିଧାସଳଖ ଆପଣଙ୍କ ସେଟିଂସରୁ ଏହାକୁ ଆକ୍ସେସ କରିପାରିବେ।\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"ସିଷ୍ଟମ୍ ଅପଡେଟ୍ ଆବଶ୍ୟକ ଅଟେ"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ଜାରି ରଖିବା ପୂର୍ବରୁ, ଆପଣଙ୍କ ଫୋନ ସିଷ୍ଟମକୁ ଅପଡେଟ କରନ୍ତୁ।"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ଯଦି ଆପଣ ପୂର୍ବରୁ ଆପଣଙ୍କ ଫୋନ ସିଷ୍ଟମକୁ ଅପଡେଟ କରିଛନ୍ତି, ତେବେ ଇଣ୍ଟିଗ୍ରେସନ ଜାରି ରଖିବା ପାଇଁ ଆପଣଙ୍କ ଫୋନକୁ ରିଷ୍ଟାର୍ଟ କରିବାକୁ ଚେଷ୍ଟା କରନ୍ତୁ"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> ପାଇଁ <xliff:g id="DATA_TYPE">%1$s</xliff:g> ଡାଟାକୁ ସ୍ଥାୟୀ ଭାବେ ଡିଲିଟ କରିବେ?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"ସିଷ୍ଟମ ଦେଖାନ୍ତୁ"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"ସିଷ୍ଟମକୁ ଲୁଚାନ୍ତୁ"</string>
+    <string name="system_warning" msgid="5593850900577682512">"ଯଦି ଆପଣ ଏହି ଅନୁମତିକୁ ପ୍ରତ୍ୟାଖ୍ୟାନ କରନ୍ତି, ତେବେ ଆପଣଙ୍କ ଡିଭାଇସର ବେସିକ ଫିଚରଗୁଡ଼ିକ ଆଶାନୁରୂପେ ଆଉ କାର୍ଯ୍ୟ ନକରିପାରେ।"</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"ଯେ କୌଣସି ମତେ ଅନୁମତି ଦିଅ ନାହିଁ"</string>
     <string name="on" msgid="8266542510798355807">"ଚାଲୁ ଅଛି"</string>
     <string name="off" msgid="6996623844428550649">"ବନ୍ଦ ଅଛି"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g>ରେ ଆକ୍ସେସ କରାଯାଇଛି"</string>

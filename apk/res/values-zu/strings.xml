@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"I-Health Connect ihlanganiswa nesistimu ye-Android ukuze ukwazi ukuyifinyelela ngokuqondile ukusuka kumasethingi akho."</string>
     <string name="update_button" msgid="4544529019832009496">"Buyekeza"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Qala lesi sibuyekezo ukuze i-Health Connect iqhubeke nokuhlanganisa namasethingi esistimu yakho"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"IHealth Connect ihlanganiswa nesistimu ye-Android ukuze ukwazi ukuyifinyelela ngokuqondile kusuka kumasethingi akho.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Isibuyekezo sesistimu siyadingeka"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Ngaphambi kokuqhubeka, buyekeza isistimu yefoni yakho."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Uma usuvele ubuyekeze isistimu yefoni yakho, zama ukuqala kabusha ifoni yakho ukuze uqhubeke nokuhlanganisa"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Sula ngokuzenzakalela idatha ye-<xliff:g id="DATA_TYPE">%1$s</xliff:g> ye-<xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Bonisa isistimu"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Fihla isistimu"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Uma wenqaba le mvume, izakhi eziyisisekelo zedivayisi yakho zingahle zingasasebenzi njengoba kuhlosiwe."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Ungavumeli noma kunjalo"</string>
     <string name="on" msgid="8266542510798355807">"Vuliwe"</string>
     <string name="off" msgid="6996623844428550649">"Valiwe"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Kufinyelelwe ngo-<xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

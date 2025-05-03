@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Сервіс Health Connect інтегрується із системою Android, щоб ви могли отримувати доступ до нього просто з налаштувань."</string>
     <string name="update_button" msgid="4544529019832009496">"Оновити"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Установіть це оновлення, щоб продовжити інтеграцію Health Connect із налаштуваннями вашої системи"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Сервіс Health Connect інтегрується із системою Android, щоб ви могли отримувати доступ до нього просто з налаштувань.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Потрібно оновити систему"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Перш ніж продовжити, оновіть операційну систему телефона."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Якщо на вашому телефоні встановлено найновішу версію ОС, спробуйте перезавантажити його, щоб продовжити інтеграцію"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Назавжди видалити дані (<xliff:g id="DATA_TYPE">%1$s</xliff:g>) для додатка <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Показати системні додатки"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Сховати системні додатки"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Якщо ви не надасте цей дозвіл, основні функції пристрою можуть працювати неналежним чином."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Усе одно не дозволяти"</string>
     <string name="on" msgid="8266542510798355807">"Увімкнено"</string>
     <string name="off" msgid="6996623844428550649">"Вимкнено"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Останній доступ:: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

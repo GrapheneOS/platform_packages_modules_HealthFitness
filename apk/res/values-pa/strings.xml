@@ -431,8 +431,8 @@
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"ਵੇਰਵੇ ਸਹਿਤ ਸਰੋਤ ਕੋਡ: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"ਇਸ ਇਜਾਜ਼ਤ ਵਾਲੀਆਂ ਐਪਾਂ ਤੁਹਾਡੇ ਸਿਹਤ ਅਤੇ ਫਿੱਟਨੈੱਸ ਸੰਬੰਧੀ ਡਾਟੇ ਨੂੰ ਪੜ੍ਹ ਅਤੇ ਲਿੱਖ ਸਕਦੀਆਂ ਹਨ।"</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"ਕੰਟਰੋਲ ਕਰੋ ਕਿ ਕਿਹੜੀਆਂ ਐਪਾਂ Health Connect ਵਿੱਚ ਸਟੋਰ ਕੀਤੇ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਦੀਆਂ ਹਨ। ਐਪ ਵੱਲੋਂ ਪੜ੍ਹੇ ਅਤੇ ਸੰਪਾਦਨ ਕੀਤੇ ਜਾਣ ਵਾਲੇ ਡਾਟੇ ਦੀ ਸਮੀਖਿਆ ਕਰਨ ਲਈ ਇਸ \'ਤੇ ਟੈਪ ਕਰੋ।"</string>
-    <string name="connected_apps_section_title" msgid="2415288099612126258">"ਪਹੁੰਚ ਕਰਨ ਦੀ ਆਗਿਆ"</string>
-    <string name="not_connected_apps_section_title" msgid="452718769894103039">"ਪਹੁੰਚ ਕਰਨ ਦੀ ਆਗਿਆ ਨਹੀਂ"</string>
+    <string name="connected_apps_section_title" msgid="2415288099612126258">"ਪਹੁੰਚ ਕਰਨ ਦੀ ਆਗਿਆ ਹੈ"</string>
+    <string name="not_connected_apps_section_title" msgid="452718769894103039">"ਪਹੁੰਚ ਕਰਨ ਦੀ ਆਗਿਆ ਨਹੀਂ ਹੈ"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"ਅੱਪਡੇਟ ਕਰਨ ਦੀ ਲੋੜ ਹੈ"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"ਸੈਟਿੰਗਾਂ ਅਤੇ ਮਦਦ"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"ਸਾਰੀਆਂ ਐਪਾਂ ਲਈ ਪਹੁੰਚ ਹਟਾਓ"</string>
@@ -508,7 +508,7 @@
     <string name="choose_frequency_category" msgid="9094154407387676553">"ਵਾਰਵਾਰਤਾ ਬਦਲੋ"</string>
     <string name="scheduled_export_settings_footer_text" msgid="8488483803782086291">"ਜੇ ਤੁਸੀਂ ਨਿਯਤ ਨਿਰਯਾਤ ਨੂੰ ਬੰਦ ਕਰ ਦਿੰਦੇ ਹੋ, ਤਾਂ ਅਜਿਹਾ ਕਰਨ ਨਾਲ ਪਹਿਲਾਂ ਤੋਂ ਨਿਰਯਾਤ ਕੀਤੇ ਡਾਟੇ ਨੂੰ ਉੱਥੋਂ ਨਹੀਂ ਮਿਟਾਇਆ ਜਾਵੇਗਾ, ਜਿੱਥੇ ਉਸਨੂੰ ਰੱਖਿਅਤ ਕੀਤਾ ਗਿਆ ਸੀ"</string>
     <string name="choose_frequency" msgid="8119085390857180221">"ਨਿਯਤ ਨਿਰਯਾਤ ਦਾ ਸੈੱਟਅੱਪ ਕਰੋ"</string>
-    <string name="choose_frequency_description" msgid="7698155810053504157">"ਚੁਣੋ ਕਿ ਤੁਹਾਡੇ ਡਾਟੇ ਨੂੰ ਕਿੰਨੀ ਵਾਰ ਨਿਰਯਾਤ ਕਰਨਾ ਹੈ"</string>
+    <string name="choose_frequency_description" msgid="7698155810053504157">"ਚੁਣੋ ਕਿ ਤੁਹਾਡੇ ਡਾਟੇ ਨੂੰ ਕਦੋਂ ਨਿਰਯਾਤ ਕਰਨਾ ਹੈ"</string>
     <string name="frequency_daily" msgid="3596412357416125727">"ਰੋਜ਼ਾਨਾ"</string>
     <string name="frequency_weekly" msgid="7302587625019573393">"ਹਫ਼ਤਾਵਾਰੀ"</string>
     <string name="frequency_monthly" msgid="729674398053825938">"ਮਹੀਨਾਵਾਰ"</string>
@@ -1000,7 +1000,7 @@
     <string name="playstore_app_title" msgid="4138464328693481809">"Play ਸਟੋਰ"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"ਸਵੈਚਲਿਤ-ਮਿਟਾਉਣਾ"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"ਸਵੈਚਲਿਤ-ਮਿਟਾਉਣਾ"</string>
-    <string name="auto_delete_header" msgid="4258649705159293715">"ਆਪਣੇ ਡਾਟੇ ਦੀ ਸੈੱਟ ਕੀਤੇ ਗਏ ਸਮੇਂ ਤੋਂ ਬਾਅਦ ਮਿਟਾਏ ਜਾਣ ਸੰਬੰਧੀ ਸਮਾਂ-ਸੂਚੀ ਬਣਾ ਕੇ ਕੰਟਰੋਲ ਕਰੋ ਕਿ ਉਸਨੂੰ Health Connect ਵਿੱਚ ਕਿੰਨੇ ਸਮੇਂ ਤੱਕ ਸਟੋਰ ਕੀਤਾ ਜਾਂਦਾ ਹੈ"</string>
+    <string name="auto_delete_header" msgid="4258649705159293715">"ਆਪਣੇ ਡਾਟੇ ਦੀ ਸੈੱਟ ਕੀਤੇ ਗਏ ਸਮੇਂ ਤੋਂ ਬਾਅਦ ਮਿਟਾਏ ਜਾਣ ਸੰਬੰਧੀ ਸਮਾਂ-ਸੂਚੀ ਬਣਾ ਕੇ ਕੰਟਰੋਲ ਕਰੋ ਕਿ ਇਹ Health Connect ਵਿੱਚ ਕਿੰਨੇ ਸਮੇਂ ਤੱਕ ਸਟੋਰ ਰਹੇ"</string>
     <string name="auto_delete_learn_more" msgid="7416469042791307994">"ਸਵੈਚਲਿਤ-ਮਿਟਾਉਣ ਬਾਰੇ ਹੋਰ ਜਾਣੋ"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"ਡਾਟੇ ਨੂੰ ਸਵੈਚਲਿਤ-ਮਿਟਾਓ"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# ਮਹੀਨੇ ਬਾਅਦ}one{# ਮਹੀਨੇ ਬਾਅਦ}other{# ਮਹੀਨਿਆਂ ਬਾਅਦ}}"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect ਦਾ Android ਸਿਸਟਮ ਨਾਲ ਏਕੀਕਰਨ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ, ਇਸ ਲਈ ਤੁਸੀਂ ਇਸ ਤੱਕ ਸਿੱਧਾ ਆਪਣੀਆਂ ਸੈਟਿੰਗਾਂ ਤੋਂ ਪਹੁੰਚ ਕਰ ਸਕਦੇ ਹੋ।"</string>
     <string name="update_button" msgid="4544529019832009496">"ਅੱਪਡੇਟ ਕਰੋ"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"ਅੱਪਡੇਟ ਸ਼ੁਰੂ ਕਰੋ, ਤਾਂ ਜੋ Health Connect ਤੁਹਾਡੀਆਂ ਸਿਸਟਮ ਸੈਟਿੰਗਾਂ ਨਾਲ ਏਕੀਕਰਨ ਕਰਨਾ ਜਾਰੀ ਰੱਖ ਸਕੇ"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect ਦਾ Android ਸਿਸਟਮ ਨਾਲ ਏਕੀਕਰਨ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ, ਇਸ ਲਈ ਤੁਸੀਂ ਇਸ ਤੱਕ ਸਿੱਧਾ ਆਪਣੀਆਂ ਸੈਟਿੰਗਾਂ ਤੋਂ ਪਹੁੰਚ ਕਰ ਸਕਦੇ ਹੋ।\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"ਸਿਸਟਮ ਅੱਪਡੇਟ ਕਰਨ ਦੀ ਲੋੜ ਹੈ"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ਅੱਗੇ ਵਧਣ ਤੋਂ ਪਹਿਲਾਂ, ਆਪਣੇ ਫ਼ੋਨ ਸਿਸਟਮ ਨੂੰ ਅੱਪਡੇਟ ਕਰੋ।"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ਜੇ ਤੁਸੀਂ ਆਪਣੇ ਫ਼ੋਨ ਸਿਸਟਮ ਨੂੰ ਅੱਪਡੇਟ ਕਰ ਲਿਆ ਹੈ, ਤਾਂ ਏਕੀਕਰਨ ਨੂੰ ਜਾਰੀ ਰੱਖਣ ਲਈ ਆਪਣੇ ਫ਼ੋਨ ਨੂੰ ਮੁੜ-ਸ਼ੁਰੂ ਕਰ ਕੇ ਦੇਖੋ"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"ਕੀ <xliff:g id="APP_NAME">%2$s</xliff:g> ਲਈ <xliff:g id="DATA_TYPE">%1$s</xliff:g> ਡਾਟੇ ਨੂੰ ਪੱਕੇ ਤੌਰ \'ਤੇ ਮਿਟਾਉਣਾ ਹੈ?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"ਸਿਸਟਮ ਦਿਖਾਓ"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"ਸਿਸਟਮ ਲੁਕਾਓ"</string>
+    <string name="system_warning" msgid="5593850900577682512">"ਜੇ ਤੁਸੀਂ ਇਸ ਇਜਾਜ਼ਤ ਨੂੰ ਅਸਵੀਕਾਰ ਕਰਦੇ ਹੋ, ਤਾਂ ਹੋ ਸਕਦਾ ਹੈ ਕਿ ਤੁਹਾਡੇ ਡੀਵਾਈਸ ਦੀਆਂ ਮੂਲ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਹੁਣ ਨਿਯਤ ਤਰੀਕੇ ਮੁਤਾਬਕ ਕੰਮ ਨਾ ਕਰਨ।"</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"ਫਿਰ ਵੀ ਆਗਿਆ ਨਾ ਦਿਓ"</string>
     <string name="on" msgid="8266542510798355807">"ਚਾਲੂ"</string>
     <string name="off" msgid="6996623844428550649">"ਬੰਦ"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g> ਵਜੇ ਪਹੁੰਚ ਕੀਤੀ ਗਈ"</string>

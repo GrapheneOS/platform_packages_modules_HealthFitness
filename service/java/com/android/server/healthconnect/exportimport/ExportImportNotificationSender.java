@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.exportimport;
 
+import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
+
 import android.annotation.IntDef;
 import android.content.Context;
 
@@ -36,7 +38,6 @@ public class ExportImportNotificationSender {
     private static final String TAG = "ExportImportNotificationSender";
     private static final int FIXED_NOTIFICATION_ID = 9877;
     private static final String NOTIFICATION_TAG = "HealthConnectTag";
-    private static final String CHANNEL_ID = "healthconnect-channel";
     private static final String CHANNEL_GROUP_ID = "healthconnect-channel-group";
     private static final String CHANNEL_NAME_RESOURCE = "health_connect_notification_channel_name";
     private static final String CHANNEL_GROUP_NAME_RESOURCE = "app_label";
@@ -47,11 +48,12 @@ public class ExportImportNotificationSender {
         return new HealthConnectNotificationSender.Builder()
                 .setContext(context)
                 .setNotificationFactory(
-                        new ExportImportNotificationFactory(context, resourcesContext, CHANNEL_ID))
+                        new ExportImportNotificationFactory(
+                                context, resourcesContext, NOTIFICATION_CHANNEL_ID))
                 .setChannelGroupId(CHANNEL_GROUP_ID)
                 .setChannelNameResource(CHANNEL_NAME_RESOURCE)
                 .setChannelGroupNameResource(CHANNEL_GROUP_NAME_RESOURCE)
-                .setChannelId(CHANNEL_ID)
+                .setChannelId(NOTIFICATION_CHANNEL_ID)
                 .setFixedNotificationId(FIXED_NOTIFICATION_ID)
                 .setNotificationTag(NOTIFICATION_TAG)
                 .setIsEnabled(true)

@@ -449,13 +449,13 @@
     <string name="delete_app_data" msgid="6890357774873859952">"Kustuta rakenduse andmed"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Inaktiivsed rakendused"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Nendel rakendustel pole enam juurdepääsu, kuid nende andmed on endiselt Health Connecti salvestatud."</string>
-    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> saab lugeda andmeid, mis lisati pärast kuupäeva <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> saab lugeda andmeid, mis lisati pärast kuupäeva <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>."</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"Kui soovite hallata muid Androidi lube, mis sellele rakendusele antud on, tehke valikud Seaded &gt; Rakendused."</string>
     <string name="manage_permissions_rationale" msgid="2780008055185441703">"Teavet selle kohta, kuidas <xliff:g id="APP_NAME">%1$s</xliff:g> teie andmeid töötleb, leiate arendaja privaatsuseeskirjadest."</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Kui soovite hallata muid Androidi lube, mis sellele rakendusele antud on, avage Seaded ja seejärel puudutage valikut Rakendused."</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Lugege privaatsuseeskirju"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Pääseti juurde viimase 24 tunni jooksul"</string>
-    <string name="app_access_title" msgid="7137018424885371763">"Rakenduste juurdepääs"</string>
+    <string name="app_access_title" msgid="7137018424885371763">"Rakenduse juurdepääs"</string>
     <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"Ühilduvaid rakendusi pole installitud."</string>
     <string name="additional_access_label" msgid="4645249249222528341">"Täiendav juurdepääs"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"Varasemad andmed, taustaandmed"</string>
@@ -989,7 +989,7 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Fahrenheit"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Kelvin"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"Abi ja tagasiside"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Kui te installitud rakendust ei näe, ei pruugi see veel Health Connectiga ühilduda"</string>
+    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Kui te installitud rakendust ei näe, ei pruugi see veel Health Connectiga ühilduda."</string>
     <string name="things_to_try" msgid="8200374691546152703">"Asjad, mida proovida"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Otsige värskendusi"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Veenduge, et installitud rakendused oleksid ajakohased"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect integreeritakse Androidi süsteemiga ning saate juurdepääsu Health Connectile otse seadete kaudu."</string>
     <string name="update_button" msgid="4544529019832009496">"Värskenda"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Alustage värskendusega, et Health Connect integreeruks teie süsteemiseadetega"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connecti integreeritakse Androidi süsteemiga ja teil on nüüd sellele juurdepääs otse seadete kaudu.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Vajalik on süsteemivärskendus"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Enne jätkamist värskendage oma telefonisüsteemi."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Kui olete oma telefonile juba süsteemivärskenduse teinud, proovige integratsiooni jätkamiseks oma telefon taaskäivitada."</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Kas kustutada rakenduse <xliff:g id="APP_NAME">%2$s</xliff:g> kategooria <xliff:g id="DATA_TYPE">%1$s</xliff:g> andmed?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Süsteemi kuvamine"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Süsteemi peitmine"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Selle loa keelamise korral ei pruugi seadme põhifunktsioonid enam eelduspäraselt toimida."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Ära luba ikkagi"</string>
     <string name="on" msgid="8266542510798355807">"Sees"</string>
     <string name="off" msgid="6996623844428550649">"Väljas"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Juurde pääsetud <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

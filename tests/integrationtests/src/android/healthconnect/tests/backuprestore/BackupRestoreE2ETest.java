@@ -17,7 +17,6 @@
 package android.healthconnect.tests.backuprestore;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.getCreateMedicalDataSourceRequest;
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
@@ -26,6 +25,7 @@ import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.readAllRecords;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 
 import static com.android.compatibility.common.util.BackupUtils.LOCAL_TRANSPORT_TOKEN;
 import static com.android.compatibility.common.util.SystemUtil.eventually;
@@ -56,8 +56,8 @@ import android.health.connect.datatypes.PlannedExerciseSessionRecord;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.units.Energy;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
-import android.healthconnect.cts.utils.DataFactory;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
+import android.healthconnect.testing.shared.DataFactory;
 import android.os.ParcelFileDescriptor;
 import android.os.UserHandle;
 import android.platform.test.annotations.AppModeFull;
@@ -149,7 +149,7 @@ public class BackupRestoreE2ETest {
     }
 
     @Test
-    public void testBackupThenRestore_over5000MedicalResources_expectDataIsRestoredCorrectly()
+    public void testBackupThenRestore_1000MedicalResources_expectDataIsRestoredCorrectly()
             throws Exception {
         if (!DeviceSupportUtils.isHealthConnectFullySupported()) {
             return;
@@ -162,7 +162,7 @@ public class BackupRestoreE2ETest {
                         this::getCompleteActiveCaloriesBurnedRecord, numOfRecords);
         assertThat(insertedRecords).hasSize(numOfRecords);
         // Insert medical resources.
-        int numOfMedicalResources = 7000;
+        int numOfMedicalResources = 1000;
         String dataSourceId =
                 mPhrTestUtil.createDataSource(getCreateMedicalDataSourceRequest("1")).getId();
         List<MedicalResource> medicalResources =

@@ -19,6 +19,7 @@ package com.android.server.healthconnect.injector;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.health.HealthFitnessStatsLog;
+import android.health.connect.Constants;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Environment;
@@ -42,9 +43,11 @@ import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.device.tracker.TrackerManagerImpl;
+import com.android.server.healthconnect.exportimport.ExportImportNotificationFactory;
 import com.android.server.healthconnect.exportimport.ExportImportNotificationSender;
 import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
 import com.android.server.healthconnect.exportimport.ExportManager;
@@ -137,9 +140,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final BackupRestore mBackupRestore;
     private final PreferencesManager mPreferencesManager;
     private final ReadAccessLogsHelper mReadAccessLogsHelper;
+    private final ExportImportNotificationFactory mExportImportNotificationFactory;
     private final HealthConnectNotificationSender mExportImportNotificationSender;
     private final AppOpsManagerLocal mAppOpsManagerLocal;
     private final HealthConnectThreadScheduler mThreadScheduler;
+    private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
     private final File mEnvironmentDataDirectory;
     private final HealthFitnessStatsLog mHealthFitnesssStatsLog;
     private final ExportImportLogger mExportImportLogger;
@@ -190,6 +195,10 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mThreadScheduler == null
                         ? new HealthConnectThreadScheduler()
                         : builder.mThreadScheduler;
+        mDeviceDataSourcesHelper =
+                builder.mDeviceDataSourcesHelper == null
+                        ? new DeviceDataSourcesHelper()
+                        : builder.mDeviceDataSourcesHelper;
         mMigrationEntityHelper =
                 builder.mMigrationEntityHelper == null
                         ? new MigrationEntityHelper(mDatabaseHelpers)
@@ -245,6 +254,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mExportImportSettingsStorage == null
                         ? new ExportImportSettingsStorage(mPreferenceHelper)
                         : builder.mExportImportSettingsStorage;
+        mExportImportNotificationFactory =
+                builder.mExportImportNotificationFactory == null
+                        ? new ExportImportNotificationFactory(
+                                context, resourcesContext, Constants.NOTIFICATION_CHANNEL_ID)
+                        : builder.mExportImportNotificationFactory;
         mExportManager =
                 builder.mExportManager == null
                         ? new ExportManager(
@@ -254,7 +268,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mTransactionManager,
                                 mExportImportNotificationSender,
                                 mEnvironmentDataDirectory,
-                                mExportImportLogger)
+                                mExportImportLogger,
+                                mExportImportNotificationFactory)
                         : builder.mExportManager;
         mMigrationBroadcastScheduler =
                 builder.mMigrationBroadcastScheduler == null
@@ -444,15 +459,20 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mAppOpsManagerLocal == null
                         ? LocalManagerRegistry.getManager(AppOpsManagerLocal.class)
                         : builder.mAppOpsManagerLocal;
-        mTrackerManager =
-                builder.mTrackerManager == null
-                        ? new TrackerManagerImpl(context, mHealthConnectPermissionHelper)
-                        : builder.mTrackerManager;
         mOnboardingStateManager =
                 builder.mOnboardingStateManager == null && Flags.onboarding()
                         ? new OnboardingStateManager(getPreferenceHelper(), userHandle)
                         : builder.mOnboardingStateManager;
         mDeviceRecordHelper = new DeviceRecordHelper(mFitnessRecordUpsertHelper);
+        mTrackerManager =
+                builder.mTrackerManager == null
+                        ? new TrackerManagerImpl(
+                                context,
+                                mHealthConnectPermissionHelper,
+                                mThreadScheduler,
+                                mDeviceRecordHelper,
+                                mDeviceDataSourcesHelper)
+                        : builder.mTrackerManager;
     }
 
     @Override
@@ -695,6 +715,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     }
 
     @Override
+    public DeviceDataSourcesHelper getDeviceDataSourcesHelper() {
+        return mDeviceDataSourcesHelper;
+    }
+
+    @Override
     public File getEnvironmentDataDirectory() {
         return mEnvironmentDataDirectory;
     }
@@ -724,6 +749,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         return mGrantTimeXmlHelper;
     }
 
+    @Override
+    public ExportImportNotificationFactory getExportImportNotificationFactory() {
+        return mExportImportNotificationFactory;
+    }
+
     /**
      * Returns a new Builder of Health Connect Injector
      *
@@ -751,6 +781,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private PreferenceHelper mPreferenceHelper;
         @Nullable private ExportImportSettingsStorage mExportImportSettingsStorage;
         @Nullable private ExportManager mExportManager;
+        @Nullable private ExportImportNotificationFactory mExportImportNotificationFactory;
         @Nullable private MigrationStateManager mMigrationStateManager;
         @Nullable private DeviceInfoHelper mDeviceInfoHelper;
         @Nullable private AppInfoHelper mAppInfoHelper;
@@ -787,6 +818,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private File mEnvironmentDataDirectory;
         @Nullable private AppOpsManagerLocal mAppOpsManagerLocal;
         @Nullable private HealthConnectThreadScheduler mThreadScheduler;
+        @Nullable private DeviceDataSourcesHelper mDeviceDataSourcesHelper;
         @Nullable private HealthFitnessStatsLog mStatsLog;
         @Nullable private TrackerManager mTrackerManager;
         @Nullable private MigrationUtils mMigrationUtils;
@@ -846,6 +878,13 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         public Builder setExportManager(ExportManager exportManager) {
             Objects.requireNonNull(exportManager);
             mExportManager = exportManager;
+            return this;
+        }
+
+        /** Set fake or custom {@link ExportImportNotificationFactory} */
+        public Builder setExportImportNotificationFactory(ExportImportNotificationFactory factory) {
+            Objects.requireNonNull(factory);
+            mExportImportNotificationFactory = factory;
             return this;
         }
 
@@ -1072,13 +1111,19 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
             return this;
         }
 
-        /** Set fake or custom {@link AppOpsManagerLocal}. */
+        /** Set fake or custom {@link HealthConnectThreadScheduler}. */
         public Builder setThreadScheduler(HealthConnectThreadScheduler threadScheduler) {
             mThreadScheduler = Objects.requireNonNull(threadScheduler);
             return this;
         }
 
-        /** Set fake or custom {@link AppOpsManagerLocal}. */
+        /** Set fake or custom {@link DeviceDataSourcesHelper}. */
+        public Builder setDeviceDataSourcesHelper(DeviceDataSourcesHelper deviceDataSourcesHelper) {
+            mDeviceDataSourcesHelper = Objects.requireNonNull(deviceDataSourcesHelper);
+            return this;
+        }
+
+        /** Set fake or custom {@link HealthFitnessStatsLog}. */
         public Builder setHealthFitnessStatsLog(HealthFitnessStatsLog statsLog) {
             mStatsLog = Objects.requireNonNull(statsLog);
             return this;

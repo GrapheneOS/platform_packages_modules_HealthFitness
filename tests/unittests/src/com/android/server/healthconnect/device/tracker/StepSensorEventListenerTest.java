@@ -15,14 +15,30 @@
  */
 package com.android.server.healthconnect.device.tracker;
 
+import static org.mockito.Mockito.mock;
+
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.DeviceRecordHelper;
+import com.android.server.healthconnect.injector.HealthConnectInjector;
+import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
+import com.android.server.healthconnect.permission.FirstGrantTimeManager;
+
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -32,16 +48,38 @@ import java.lang.reflect.Method;
 @RunWith(AndroidJUnit4.class)
 public class StepSensorEventListenerTest {
 
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+
+    private HealthConnectThreadScheduler mThreadScheduler;
+    private DeviceRecordHelper mDeviceRecordHelper;
+    private DeviceDataSourcesHelper mDeviceDataSourcesHelper;
+
+    @Before
+    public void setup() throws PackageManager.NameNotFoundException {
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+        HealthConnectInjector healthConnectInjector =
+                HealthConnectInjectorImpl.newBuilderForTest(context)
+                        .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
+                        .build();
+        mThreadScheduler = healthConnectInjector.getThreadScheduler();
+        mDeviceRecordHelper = healthConnectInjector.getDeviceRecordHelper();
+        mDeviceDataSourcesHelper = healthConnectInjector.getDeviceDataSourcesHelper();
+    }
+
     @Test
     public void onSensorChanged_doesNotThrow() throws Exception {
-        StepSensorEventListener eventListener = new StepSensorEventListener();
+        StepSensorEventListener eventListener =
+                new StepSensorEventListener(
+                        mThreadScheduler, mDeviceRecordHelper, mDeviceDataSourcesHelper);
         eventListener.onSensorChanged(
                 createStepSensorEvent(/* value= */ 1, /* timestamp= */ 1234567890));
     }
 
     @Test
     public void onAccuracyChanged_doesNotThrow() throws Exception {
-        StepSensorEventListener eventListener = new StepSensorEventListener();
+        StepSensorEventListener eventListener =
+                new StepSensorEventListener(
+                        mThreadScheduler, mDeviceRecordHelper, mDeviceDataSourcesHelper);
         eventListener.onAccuracyChanged(createSensor(), SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
     }
 

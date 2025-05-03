@@ -189,14 +189,10 @@ public class BackupRestoreLogger {
      */
     public void logDataBackupStatus(
             @BackupRestoreEnums.DataBackupState int dataBackupStatus,
-            int timeToSucceedOrFailMillis,
-            int dataSize,
             @BackupRestoreEnums.DataBackupType int dataBackupType) {
         mStatsLog.write(
                 HEALTH_CONNECT_DATA_BACKUP_INVOKED,
                 dataBackupStatus,
-                timeToSucceedOrFailMillis,
-                dataSize,
                 dataBackupType);
     }
 

@@ -17,9 +17,9 @@
 package android.healthconnect.cts.ratelimiter;
 
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
-import static android.healthconnect.cts.utils.DataFactory.buildDevice;
-import static android.healthconnect.cts.utils.DataFactory.getCompleteStepsRecord;
-import static android.healthconnect.cts.utils.DataFactory.getUpdatedStepsRecord;
+import static android.healthconnect.testing.shared.DataFactory.buildDevice;
+import static android.healthconnect.testing.shared.DataFactory.getCompleteStepsRecord;
+import static android.healthconnect.testing.shared.DataFactory.getUpdatedStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 

@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect-г Android системтэй нэгтгэж байгаа тул та үүнд тохиргооноосоо шууд хандах боломжтой."</string>
     <string name="update_button" msgid="4544529019832009496">"Шинэчлэх"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Энэ шинэчлэлтийг эхлүүлснээр Health Connect-г таны системийн тохиргоотой үргэлжлүүлэн нэгтгэх боломжтой"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect-г Android системтэй нэгтгэж байгаа бөгөөд ингэснээр та үүнд тохиргооноосоо шууд хандах боломжтой.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Системийн шинэчлэлт шаардлагатай"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Үргэлжлүүлэхээсээ өмнө утасныхаа системийг шинэчилнэ үү."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Хэрэв та утасныхаа системийг аль хэдийн шинэчилсэн бол нэгтгэлийг үргэлжлүүлэхийн тулд утсаа дахин эхлүүлж үзнэ үү"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g>-н <xliff:g id="DATA_TYPE">%1$s</xliff:g>-н өгөгдлийг бүрмөсөн устгах уу?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Системийг харуулах"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Системийг нуух"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Хэрэв та энэ зөвшөөрлөөс татгалзвал таны төхөөрөмжийн үндсэн онцлогууд цаашид зохих ёсоор ажиллахаа больж болзошгүй."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Ямартай ч бүү зөвшөөр"</string>
     <string name="on" msgid="8266542510798355807">"Асаалттай"</string>
     <string name="off" msgid="6996623844428550649">"Унтраалттай"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g>-д хандсан"</string>

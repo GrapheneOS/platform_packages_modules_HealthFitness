@@ -16,8 +16,8 @@
 
 package android.healthconnect.cts.device;
 
-import static android.healthconnect.cts.utils.DataFactory.getEmptyMetadata;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
 
 import static com.google.common.truth.Truth.assertThat;
 

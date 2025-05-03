@@ -517,7 +517,7 @@
     <string name="export_default_file_name" msgid="1146984404965754445">"Health Connect"</string>
     <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"Health Connect (<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>)"</string>
     <string name="import_confirmation_dialog_title" msgid="1218478436676890997">"এই ফাইল ইমপোর্ট করবেন?"</string>
-    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"<xliff:g id="FILE_NAME">%1$s</xliff:g> Health Connect-এ ইমপোর্ট করা হবে"</string>
+    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"<xliff:g id="FILE_NAME">%1$s</xliff:g>, Health Connect-এ ইমপোর্ট করা হবে"</string>
     <string name="import_confirmation_dialog_cancel_button" msgid="4323351978842360895">"বাতিল করুন"</string>
     <string name="import_confirmation_dialog_import_button" msgid="7090219024758375606">"ইমপোর্ট করুন"</string>
     <string name="import_notification_import_in_progress_title" msgid="4657602436278942808">"Health Connect-এর ডেটা ফিরিয়ে আনার প্রসেস চলছে"</string>
@@ -996,7 +996,7 @@
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"সবকটি মানানসই অ্যাপ দেখুন"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Play-তে অ্যাপ দেখুন"</string>
     <string name="send_feedback" msgid="7756927746070096780">"মতামত জানান"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"Health Connect-এর সাথে কোন কোন স্বাস্থ্য &amp; ফিটনেস অ্যাপ আপনি ব্যবহার করতে চান তা আমাদের জানান"</string>
+    <string name="send_feedback_description" msgid="2887207112856240778">"Health Connect-এর সাথে কোন কোন স্বাস্থ্য ও ফিটনেস অ্যাপ আপনি ব্যবহার করতে চান তা আমাদের জানান"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"অটোমেটিক মুছে দেওয়া"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"অটোমেটিক মুছে দেওয়া"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect Android সিস্টেমের মাধ্যমে ইন্টিগ্রেট করা হচ্ছে যাতে আপনি নিজের সেটিংস থেকে এটি সরাসরি অ্যাক্সেস করতে পারেন।"</string>
     <string name="update_button" msgid="4544529019832009496">"আপডেট করুন"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"এই আপডেট চালু করুন যাতে Health Connect আপনার সিস্টেমের সেটিংসের মাধ্যমে ইন্টিগ্রেশন চালিয়ে যেতে পারে"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Android সিস্টেমের সাথে Health Connect ইন্টিগ্রেট করা হচ্ছে, যাতে আপনি নিজের সেটিংস থেকে এটি সরাসরি অ্যাক্সেস করতে পারেন।\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"সিস্টেম আপডেট করা প্রয়োজন"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"চালিয়ে যাওয়ার আগে, আপনার ফোনের সিস্টেম আপডেট করুন।"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"আপনি আগেই নিজের ফোনের সিস্টেম আপডেট করে থাকলে, ইন্টিগ্রেশন চালিয়ে যেতে ফোন রিস্টার্ট করে দেখুন"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g>-এর <xliff:g id="DATA_TYPE">%1$s</xliff:g> ডেটা স্থায়ীভাবে মুছে ফেলতে চান?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"সিস্টেম দেখুন"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"সিস্টেম লুকান"</string>
+    <string name="system_warning" msgid="5593850900577682512">"আপনি এই অনুমতি না দিলে, আপনার ডিভাইসের প্রাথমিক ফিচারগুলি ঠিকভাবে কাজ নাও করতে পারে।"</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"কোনওভাবেই অনুমতি দেবেন না"</string>
     <string name="on" msgid="8266542510798355807">"চালু আছে"</string>
     <string name="off" msgid="6996623844428550649">"বন্ধ আছে"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g>-এ অ্যাক্সেস করা হয়েছে"</string>

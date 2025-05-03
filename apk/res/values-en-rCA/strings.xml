@@ -1181,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Permanently delete <xliff:g id="DATA_TYPE">%1$s</xliff:g> data for <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Show system"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Hide system"</string>
+    <string name="system_warning" msgid="5593850900577682512">"If you deny this permission, basic features of your device may no longer function as intended."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Don’t allow anyway"</string>
     <string name="on" msgid="8266542510798355807">"On"</string>
     <string name="off" msgid="6996623844428550649">"Off"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Accessed <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

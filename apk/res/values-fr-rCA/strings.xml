@@ -47,7 +47,7 @@
     <string name="settings_fitness_permissions" msgid="8133228907519227359">"Connexion santé"</string>
     <string name="settings_medical_permissions" msgid="4621535972501674863">"Connexion santé"</string>
     <string name="backup_title" msgid="211503191266235085">"Sauvegarde"</string>
-    <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Source de données et priorité"</string>
+    <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Sources de données et priorité"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Configurer les unités"</string>
     <string name="manage_data_preferences_category_title" msgid="1183110821140344472">"Préférences"</string>
     <string name="manage_data_category_title" msgid="6328886061582616519">"Gérer les données"</string>
@@ -200,8 +200,8 @@
     <string name="total_calories_burned_lowercase_label" msgid="3185370725975873922">"le total des calories brûlées"</string>
     <string name="total_calories_burned_read_content_description" msgid="1569722345910293531">"Lecture des données relatives au total des calories brûlées"</string>
     <string name="total_calories_burned_write_content_description" msgid="2727752180681851608">"Écriture des données relatives au total des calories brûlées"</string>
-    <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"VO2 max"</string>
-    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"la VO2 max"</string>
+    <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"VO₂ max"</string>
+    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"VO₂ max"</string>
     <string name="vo2_max_read_content_description" msgid="8132626885797169882">"Lecture des données relatives au VO2 max"</string>
     <string name="vo2_max_write_content_description" msgid="4783300275788728546">"Écriture des données relatives au VO2 max"</string>
     <string name="wheelchair_pushes_uppercase_label" msgid="5582991294340226965">"Poussées de fauteuil roulant"</string>
@@ -430,7 +430,7 @@
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g> : <xliff:g id="VALUE">%2$s</xliff:g>."</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Code source détaillé : <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"Les applis disposant de cette autorisation peuvent lire et écrire vos données de santé et d\'activité physique."</string>
-    <string name="connected_apps_text" msgid="1177626440966855831">"Choisissez les applis qui peuvent accéder aux données stockées dans Connexion santé. Touchez une appli pour vérifier les données qu\'elle peut lire et écrire."</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"Choisissez les applis qui peuvent accéder aux données stockées dans Connexion santé. Touchez une appli pour vérifier les données qu\'elle peut lire ou écrire."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Accès autorisé"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Accès non autorisé"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"Doivent être mises à jour"</string>
@@ -1005,7 +1005,7 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Suppression automatique des données"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Après # mois}one{Après # mois}other{Après # mois}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Jamais"</string>
-    <string name="range_off" msgid="8178520557618184215">"Désactivé"</string>
+    <string name="range_off" msgid="8178520557618184215">"Désactivée"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Lorsque vous modifiez ces paramètres, Connexion santé supprime les données existantes conformément à vos nouvelles préférences"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Supprimer automatiquement les données après # mois?}one{Supprimer automatiquement les données après # mois?}other{Supprimer automatiquement les données après # mois?}}"</string>
     <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Cette action supprime également les données datant de plus de # mois de Connexion santé.\n\nSi vous souhaitez supprimer complètement les données de vos applis connectées, vérifiez chaque appli dans laquelle vos données peuvent être enregistrées.}one{Cette action supprime également les données datant de plus de # mois de Connexion santé.\n\nSi vous souhaitez supprimer complètement les données de vos applis connectées, vérifiez chaque appli dans laquelle vos données peuvent être enregistrées.}other{Cette action supprime également les données datant de plus de # mois de Connexion santé.\n\nSi vous souhaitez supprimer complètement les données de vos applis connectées, vérifiez chaque appli dans laquelle vos données peuvent être enregistrées.}}"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Connexion santé est en cours d\'intégration au système Android afin que vous puissiez y accéder directement à partir de vos paramètres."</string>
     <string name="update_button" msgid="4544529019832009496">"Mettre à jour"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Lancez cette mise à jour pour continuer l\'intégration de Connexion santé à vos paramètres système"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Connexion santé est en cours d\'intégration au système Android afin que vous puissiez y accéder directement à partir de vos paramètres.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Mise à jour système requise"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Avant de continuer, veuillez mettre à jour le système d\'exploitation de votre téléphone."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Si vous avez déjà mis à jour le système d\'exploitation de votre téléphone, essayez de redémarrer celui-ci pour continuer l\'intégration"</string>
@@ -1116,9 +1115,9 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Mettre à jour maintenant"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Totaux de données"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Sources d\'applis"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"Ajouter des sources d\'applis à la liste pour voir comment les totaux de données peuvent changer. Le retrait d\'une appli de cette liste l\'empêchera de contribuer aux totaux, mais elle disposera toujours des autorisations d\'écriture."</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Ajoutez des sources d\'applis à la liste pour voir comment les totaux de données peuvent changer. Le retrait d\'une appli de cette liste l\'empêchera de contribuer aux totaux, mais elle disposera toujours des autorisations d\'écriture."</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Aucune source d\'applis"</string>
-    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Une fois que vous aurez autorisé l\'appli à écrire les données de catégorie <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, les sources s\'afficheront ici."</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Une fois que vous aurez autorisé des applis à écrire les données de catégorie « <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> », les sources s\'afficheront ici."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Fonctionnement des sources et de la hiérarchisation"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Ajouter une appli"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Modifier les sources d\'applis"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Supprimer définitivement les données « <xliff:g id="DATA_TYPE">%1$s</xliff:g> » pour <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Afficher le système"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Masquer le système"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Si vous refusez cette autorisation, il est possible que cela touche certaines fonctionnalités de base de votre appareil."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Ne pas autoriser quand même"</string>
     <string name="on" msgid="8266542510798355807">"Activé"</string>
     <string name="off" msgid="6996623844428550649">"Désactivé"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Dernier accès : <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

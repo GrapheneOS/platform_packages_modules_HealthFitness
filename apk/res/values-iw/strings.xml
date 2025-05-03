@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"מתבצע שילוב של Health Connect עם מערכת Android כדי שניתן יהיה לגשת אליה ישירות מההגדרות."</string>
     <string name="update_button" msgid="4544529019832009496">"עדכון"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"יש לבצע את העדכון הזה כדי ש-Health Connect תוכל להמשיך בשילוב עם הגדרות המערכת"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"מתבצע שילוב של Health Connect עם מערכת Android כדי שניתן יהיה לגשת לאפליקציה ישירות מההגדרות.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"נדרש עדכון מערכת"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"לפני המשך הפעולה, עליך לעדכן את מערכת הטלפון שלך."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"אם כבר עדכנת את מערכת הטלפון שלך, אפשר לנסות להפעיל מחדש את הטלפון כדי להמשיך בשילוב"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"למחוק לתמיד את הנתונים מסוג <xliff:g id="DATA_TYPE">%1$s</xliff:g> של <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"הצגת אפליקציות המערכת"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"הסתרת אפליקציות המערכת"</string>
+    <string name="system_warning" msgid="5593850900577682512">"בלי ההרשאה הזו, יכול להיות שתכונות בסיסיות במכשיר לא יפעלו כמו שצריך."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"אין אישור"</string>
     <string name="on" msgid="8266542510798355807">"מופעל"</string>
     <string name="off" msgid="6996623844428550649">"כבוי"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"הגישה האחרונה נעשתה בתאריך: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

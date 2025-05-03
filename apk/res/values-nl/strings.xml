@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect wordt geïntegreerd met het Android-systeem zodat je er direct vanuit je instellingen toegang toe hebt."</string>
     <string name="update_button" msgid="4544529019832009496">"Updaten"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Start deze update zodat de integratie van Health Connect met je systeeminstellingen kan worden voortgezet"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect wordt geïntegreerd met het Android-systeem zodat je er direct vanuit je instellingen toegang toe hebt.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Systeemupdate nodig"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Update je telefoonsysteem voordat je doorgaat."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Heb je je telefoonsysteem al geüpdatet, start je telefoon dan opnieuw op om door te gaan met de integratie"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Gegevens van het type <xliff:g id="DATA_TYPE">%1$s</xliff:g> voor <xliff:g id="APP_NAME">%2$s</xliff:g> definitief verwijderen?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Systeem-apps tonen"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Systeem-apps verbergen"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Als je dit recht weigert, kan het zijn dat basisfuncties van je apparaat niet meer werken zoals bedoeld."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Toch niet toestaan"</string>
     <string name="on" msgid="8266542510798355807">"Aan"</string>
     <string name="off" msgid="6996623844428550649">"Uit"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Geopend: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

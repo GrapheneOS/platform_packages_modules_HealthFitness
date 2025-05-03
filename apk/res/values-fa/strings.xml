@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"‫Health Connect درحال ادغام شدن با سیستم Android است تا بتوانید مستقیماً از تنظیمات به آن دسترسی داشته باشید."</string>
     <string name="update_button" msgid="4544529019832009496">"به‌روزرسانی"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"این به‌روزرسانی را آغاز کنید تا Health Connect بتواند یکپارچه‌سازی با تنظیمات سیستم را ادامه دهد"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"‫Health Connect درحال ادغام شدن با سیستم Android است تا بتوانید مستقیماً از تنظیمات خود به آن دسترسی داشته باشید.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"به‌روزرسانی سیستم لازم است"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"قبل‌از ادامه دادن، سیستم تلفنتان را به‌روز کنید."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"اگر قبلاً سیستم تلفن را به‌روز کرده‌اید، تلفن را برای ادامه یکپارچه‌سازی بازراه‌اندازی کنید"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"داده‌های <xliff:g id="DATA_TYPE">%1$s</xliff:g> مربوط به «<xliff:g id="APP_NAME">%2$s</xliff:g>» برای همیشه حذف شود؟"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"نمایش دادن سیستم"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"پنهان کردن سیستم"</string>
+    <string name="system_warning" msgid="5593850900577682512">"اگر این اجازه را رد کنید، ممکن است ویژگی‌های اصلی دستگاهتان دیگر عملکرد موردانتظار را نداشته باشد."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"درهرصورت اجازه نیست"</string>
     <string name="on" msgid="8266542510798355807">"روشن"</string>
     <string name="off" msgid="6996623844428550649">"خاموش"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"آخرین دسترسی: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Salud conectada se está integrando con el sistema Android para que puedas acceder a ella directamente desde tus ajustes."</string>
     <string name="update_button" msgid="4544529019832009496">"Actualizar"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Inicia esta actualización para que Salud conectada pueda seguir integrándose con los ajustes del sistema"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Salud conectada se está integrando con el sistema Android para que puedas acceder a ella directamente desde tus ajustes.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Es necesario actualizar el sistema"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Antes de continuar, actualiza el sistema de tu teléfono."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Si ya has actualizado el sistema del teléfono, prueba a reiniciar el teléfono para continuar con la integración"</string>
@@ -1114,8 +1113,8 @@
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Necesita actualizarse"</string>
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Antes de seguir restaurando tus datos, actualiza el sistema de tu teléfono."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Actualizar ahora"</string>
-    <string name="data_totals_header" msgid="8316977153276216025">"Totales de datos"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"Fuentes de aplicaciones"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Resultados totales"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Aplicaciones"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Añade fuentes de aplicaciones a la lista para ver cómo pueden cambiar los totales de datos. Si eliminas una aplicación de esta lista, dejará de contribuir a los totales, pero seguirá teniendo permisos de escritura."</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"No hay fuentes de aplicaciones"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Cuando des permisos a las aplicaciones para escribir datos de <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, las fuentes se mostrarán aquí."</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"¿Eliminar permanentemente los datos de <xliff:g id="DATA_TYPE">%1$s</xliff:g> de <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Mostrar sistema"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Ocultar sistema"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Si rechazas este permiso, es posible que algunas funciones básicas de tu dispositivo dejen de funcionar correctamente."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"No permitir de todas formas"</string>
     <string name="on" msgid="8266542510798355807">"Activado"</string>
     <string name="off" msgid="6996623844428550649">"Desactivado"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Último acceso: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

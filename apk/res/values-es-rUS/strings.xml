@@ -499,7 +499,7 @@
     <string name="import_other_error_banner_button" msgid="8006947649520909176">"Reintentar"</string>
     <string name="import_other_error_banner_summary" msgid="4378957063605649197">"Se produjo un error al restablecer los datos de tu exportación."</string>
     <string name="backup_and_restore_footer_body_text" msgid="4854718727539851909">"La exportación te permite guardar tus datos para poder transferirlos a un teléfono nuevo"</string>
-    <string name="backup_and_restore_footer_link_text" msgid="9075133737244288876">"Copias de seguridad y restablecimiento"</string>
+    <string name="backup_and_restore_footer_link_text" msgid="9075133737244288876">"Más información sobre copias de seguridad y restablecimiento"</string>
     <string name="automatic_export_status" msgid="4407131306281440230">"<xliff:g id="EXPORT_ON_OR_OFF">%1$s</xliff:g> • <xliff:g id="EXPORT_FREQUENCY">%2$s</xliff:g>"</string>
     <string name="automatic_export_on" msgid="6972389773963624315">"Activada"</string>
     <string name="automatic_export_off" msgid="3270255845008880841">"Desactivada"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect se está integrando al sistema Android para que puedas acceder directamente desde la configuración."</string>
     <string name="update_button" msgid="4544529019832009496">"Actualizar"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Inicia esta actualización para que Health Connect pueda continuar integrándose con la configuración del sistema"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect se está integrando al sistema Android para que puedas acceder directamente desde la configuración.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Actualización del sistema necesaria"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Antes de continuar, actualiza el sistema de tu teléfono."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Si ya actualizaste el sistema del teléfono, intenta reiniciarlo para continuar con la integración"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"¿Quieres borrar de forma permanente los datos de <xliff:g id="DATA_TYPE">%1$s</xliff:g> de <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Mostrar sistema"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Ocultar sistema"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Si no otorgas este permiso, es posible que algunas funciones básicas del dispositivo dejen de funcionar correctamente."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"No permitir igualmente"</string>
     <string name="on" msgid="8266542510798355807">"Activado"</string>
     <string name="off" msgid="6996623844428550649">"Desactivado"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Último acceso: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

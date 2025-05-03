@@ -264,7 +264,7 @@
     <string name="ovulation_test_lowercase_label" msgid="93260039417722840">"jaribio la yai kupevuka"</string>
     <string name="ovulation_test_read_content_description" msgid="8008351738285775840">"Isome data ya jaribio la yai kupevuka"</string>
     <string name="ovulation_test_write_content_description" msgid="7061493310852203463">"Iandike data ya jaribio la yai kupevuka"</string>
-    <string name="sexual_activity_uppercase_label" msgid="1093238473810194127">"Vitendo vya ngono"</string>
+    <string name="sexual_activity_uppercase_label" msgid="1093238473810194127">"Vitendo vya kujamiiana"</string>
     <string name="sexual_activity_lowercase_label" msgid="8285364117437418834">"vitendo vya ngono"</string>
     <string name="sexual_activity_read_content_description" msgid="4937721417714312007">"Isome data ya vitendo vya ngono"</string>
     <string name="sexual_activity_write_content_description" msgid="3063448245882840534">"Iandike data ya vitendo vya ngono"</string>
@@ -450,7 +450,7 @@
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Programu zilizozimwa"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Programu hizi hazina tena ufikiaji, lakini bado zina data iliyohifadhiwa kwenye Health Connect"</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> inaweza kusoma data iliyowekwa baada ya <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
-    <string name="other_android_permissions" msgid="8051485761573324702">"Ili udhibiti ruhusa zingine za Android ambazo programu hii inaweza kufikia, nenda kwenye Mipangilio &gt; Programu"</string>
+    <string name="other_android_permissions" msgid="8051485761573324702">"Ili udhibiti ruhusa nyingine za Android ambazo programu hii inaweza kufikia, nenda kwenye Mipangilio &gt; Programu"</string>
     <string name="manage_permissions_rationale" msgid="2780008055185441703">"Unaweza kupata maelezo kuhusu jinsi <xliff:g id="APP_NAME">%1$s</xliff:g> inavyoshughulikia data yako katika sera ya faragha ya msanidi programu"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Ili udhibiti ruhusa zingine za Android ambazo programu hii inaweza kufikia, nenda kwenye Mipangilio kisha uguse Programu"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Soma sera ya faragha"</string>
@@ -558,7 +558,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Nenda kwenye Duka la Google Play"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Anza kutumia Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect huhifadhi data yako ya afya na siha, hali inayorahisisha mchakato wa kusawazisha programu tofauti kwenye kifaa chako"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect huhifadhi na kusawazisha data yako ya afya na siha kutoka kwenye programu tofauti.\n\n"<b>"Data ya siha,"</b>" ikiwa ni pamoja na vipindi vya mazoezi ya mwili, hatua, lishe, kulala na mengine mengi\n\n"<b>"Rekodi za afya,"</b>" ikiwa ni pamoja na chanjo, matokeo ya maabara na mengine mengi"</string>
+    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect huhifadhi na kusawazisha data yako ya afya na siha kutoka kwenye programu tofauti.\n\n"<b>"Data ya mazoezi na siha,"</b>" ikiwa ni pamoja na vipindi vya mazoezi ya mwili, hatua, lishe, kulala na mengine mengi\n\n"<b>"Rekodi za afya,"</b>" ikiwa ni pamoja na chanjo, matokeo ya maabara na mengine mengi"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Ukiwa na Health Connect unaweza"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Ruhusu programu zako zifikie data"</b>\n"Chagua data ambayo kila programu inaweza kusoma au kuandika kwenye Health Connect"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Dhibiti mipangilio na faragha yako"</b>\n"Badilisha ruhusa za programu na udhibiti data yako wakati wowote"</string>
@@ -970,7 +970,7 @@
     <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{Asilimia 1}other{Asilimia #}}"</string>
     <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{Asilimia 1}other{Asilimia #}}"</string>
     <string name="units_cancel" msgid="5947097690625771995">"Ghairi"</string>
-    <string name="units_title" msgid="6504086463237869339">"Idadi"</string>
+    <string name="units_title" msgid="6504086463237869339">"Kizio"</string>
     <string name="distance_unit_title" msgid="4696952932438418209">"Umbali"</string>
     <string name="height_unit_title" msgid="5461594609577078049">"Kimo"</string>
     <string name="weight_unit_title" msgid="7405186541678939987">"Uzito"</string>
@@ -989,10 +989,10 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Farenhaiti"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Kelvin"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"Usaidizi na maoni"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Ikiwa huoni programu iliyosakinishwa, huenda haifanyi kazi na programu ya Health Connect kwa sasa"</string>
+    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Ikiwa huoni programu uliyoweka, huenda haifanyi kazi na programu ya Health Connect kwa sasa"</string>
     <string name="things_to_try" msgid="8200374691546152703">"Mambo unayoweza kujaribu"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Angalia masasisho"</string>
-    <string name="check_for_updates_description" msgid="1347667778199095160">"Hakikisha kuwa programu ulizosakinisha zimesasishwa"</string>
+    <string name="check_for_updates_description" msgid="1347667778199095160">"Hakikisha kuwa programu ulizoweka zimesasishwa"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Angalia programu zote oanifu"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Tafuta programu kwenye Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Tuma maoni"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Programu ya Health Connect inajumuishwa na mfumo wa Android ili uweze kuifikia moja kwa moja kupitia mipangilio yako."</string>
     <string name="update_button" msgid="4544529019832009496">"Sasisha"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Anzisha sasisho hili ili programu ya Health Connect iweze kuendelee kujumuishwa na mipangilio ya mfumo wako"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Programu ya Health Connect inajumuishwa na mfumo wa Android ili uweze kuifikia moja kwa moja katika mipangilio yako.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Inahitaji sasisho la mfumo"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Kabla ya kuendelea, sasisha mfumo wa simu yako."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ikiwa tayari umesasisha mfumo wa simu yako, jaribu kuzima kisha uwashe simu yako ili uendelee na shughuli ya ujumuishaji"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Ungependa kufuta kabisa data ya <xliff:g id="DATA_TYPE">%1$s</xliff:g> kwenye <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Onyesha mfumo"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Ficha mfumo"</string>
+    <string name="system_warning" msgid="5593850900577682512">"Usipokubali ruhusa hii, huenda vipengele vya msingi vya kifaa chako visifanye kazi kama ilivyokusudiwa."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Usiruhusu licha ya hayo"</string>
     <string name="on" msgid="8266542510798355807">"Kimewashwa"</string>
     <string name="off" msgid="6996623844428550649">"Kimezimwa"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Kilifunguliwa <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

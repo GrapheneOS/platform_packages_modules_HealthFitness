@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect กำลังผสานรวมกับระบบ Android เพื่อให้คุณเข้าถึงได้โดยตรงจากการตั้งค่า"</string>
     <string name="update_button" msgid="4544529019832009496">"อัปเดต"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"เริ่มการอัปเดตนี้เพื่อให้ Health Connect ผสานรวมกับการตั้งค่าระบบต่อได้"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect กำลังผสานรวมกับระบบ Android เพื่อให้คุณเข้าถึงได้โดยตรงจากการตั้งค่า\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"ต้องอัปเดตระบบ"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"อัปเดตระบบโทรศัพท์ก่อนที่จะดำเนินการต่อ"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"หากอัปเดตระบบโทรศัพท์เรียบร้อยแล้ว ให้ลองรีสตาร์ทโทรศัพท์เพื่อผสานรวมต่อ"</string>
@@ -1182,6 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"ลบข้อมูล<xliff:g id="DATA_TYPE">%1$s</xliff:g>ของ <xliff:g id="APP_NAME">%2$s</xliff:g> อย่างถาวรใช่ไหม"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"แสดงระบบ"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"ซ่อนระบบ"</string>
+    <string name="system_warning" msgid="5593850900577682512">"หากคุณปฏิเสธสิทธิ์นี้ ฟีเจอร์พื้นฐานของอุปกรณ์อาจไม่ทำงานตามที่ควรจะเป็นอีกต่อไป"</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"ยังคงไม่อนุญาต"</string>
     <string name="on" msgid="8266542510798355807">"เปิด"</string>
     <string name="off" msgid="6996623844428550649">"ปิด"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"เข้าถึงเมื่อ <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

@@ -343,14 +343,44 @@ public final class AppInfoHelper extends DatabaseHelper {
     /**
      * Returns AppInfo id for the provided {@code packageName}, creating it if needed using the
      * given {@link SQLiteDatabase}.
+     *
+     * @throws IllegalStateException if AppInfo is not already present in the database and an app
+     *     with the provided package name could not be found.
      */
     public long getOrInsertAppInfoId(SQLiteDatabase db, String packageName) {
-        return getOrInsertAppInfoId(Optional.of(db), packageName);
+        try {
+            return getOrInsertAppInfoId(Optional.of(db), packageName);
+        } catch (NameNotFoundException e) {
+            throw new IllegalStateException("Could not find package info for package", e);
+        }
     }
 
-    /** Returns AppInfo id for the provided {@code packageName}, creating it if needed. */
+    /**
+     * Returns AppInfo id for the provided {@code packageName}, creating it if needed.
+     *
+     * @throws IllegalStateException if AppInfo is not already present in the database and an app
+     *     with the provided package name could not be found.
+     */
     public long getOrInsertAppInfoId(String packageName) {
-        return getOrInsertAppInfoId(Optional.empty(), packageName);
+        try {
+            return getOrInsertAppInfoId(Optional.empty(), packageName);
+        } catch (NameNotFoundException e) {
+            throw new IllegalStateException("Could not find package info for package", e);
+        }
+    }
+
+    /**
+     * Returns AppInfo id for the provided {@code packageName}, creating it if needed.
+     *
+     * @return the AppInfo id, or {@link Constants#DEFAULT_LONG} if an app with the provided package
+     *     name could not be found.
+     */
+    public long getOrInsertAppInfoIdNoThrow(String packageName) {
+        try {
+            return getOrInsertAppInfoId(Optional.empty(), packageName);
+        } catch (NameNotFoundException e) {
+            return DEFAULT_LONG;
+        }
     }
 
     /**
@@ -358,16 +388,12 @@ public final class AppInfoHelper extends DatabaseHelper {
      * is null, the default will be {@link TransactionManager#getReadableDb()} for reads and {@link
      * TransactionManager#getWritableDb()} for writes.
      */
-    private long getOrInsertAppInfoId(Optional<SQLiteDatabase> db, String packageName) {
+    private long getOrInsertAppInfoId(Optional<SQLiteDatabase> db, String packageName)
+            throws NameNotFoundException {
         AppInfoInternal appInfoInternal = getAppInfoMap(db).get(packageName);
 
         if (appInfoInternal == null) {
-            try {
-                appInfoInternal = getAppInfo(packageName);
-            } catch (NameNotFoundException e) {
-                throw new IllegalStateException("Could not find package info for package", e);
-            }
-
+            appInfoInternal = getAppInfo(packageName);
             insertIfNotPresent(db, packageName, appInfoInternal);
         }
 
