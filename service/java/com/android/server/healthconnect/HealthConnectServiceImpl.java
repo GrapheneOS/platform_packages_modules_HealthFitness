@@ -188,6 +188,7 @@ import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.exportimport.DocumentProvidersManager;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
+import com.android.server.healthconnect.exportimport.ExportImportNotificationFactory;
 import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
 import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.exportimport.ImportManager;
@@ -359,7 +360,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             File environmentDataDirectory,
             ExportImportLogger exportImportLogger,
             HealthFitnessStatsLog statsLog,
-            BackupRestoreLogger backupRestoreLogger) {
+            BackupRestoreLogger backupRestoreLogger,
+            ExportImportNotificationFactory exportImportNotificationFactory) {
         mContext = context;
         mCurrentForegroundUser = context.getUser();
         mTimeSource = timeSource;
@@ -425,7 +427,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         Flags.exportImportFastFollow() ? clockForLogging : null,
                         exportImportNotificationSender,
                         environmentDataDirectory,
-                        exportImportLogger);
+                        exportImportLogger,
+                        exportImportNotificationFactory);
 
         mCloudBackupManager =
                 // TODO(b/400105647): Remove duplicate flag check once excess code size is resolved.

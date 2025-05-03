@@ -105,7 +105,8 @@ public class HealthConnectManagerService extends SystemService {
                         mHealthConnectInjector.getEnvironmentDataDirectory(),
                         mHealthConnectInjector.getExportImportLogger(),
                         mHealthConnectInjector.getHealthFitnessStatsLog(),
-                        mHealthConnectInjector.getBackupRestoreLogger());
+                        mHealthConnectInjector.getBackupRestoreLogger(),
+                        mHealthConnectInjector.getExportImportNotificationFactory());
     }
 
     @Override

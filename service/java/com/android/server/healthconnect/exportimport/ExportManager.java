@@ -83,6 +83,7 @@ public class ExportManager {
     private final ExportImportLogger mExportImportLogger;
     private final ErrorReporter mErrorReporter;
     private final Compressor mCompressor;
+    private final ExportImportNotificationFactory mNotificationFactory;
 
     // Tables to drop instead of tables to keep to avoid risk of bugs if new data types are added.
     /**
@@ -107,7 +108,8 @@ public class ExportManager {
             TransactionManager transactionManager,
             HealthConnectNotificationSender notificationSender,
             File environmentDataDirectory,
-            ExportImportLogger exportImportLogger) {
+            ExportImportLogger exportImportLogger,
+            ExportImportNotificationFactory notificationFactory) {
         this(
                 context,
                 clock,
@@ -117,7 +119,8 @@ public class ExportManager {
                 environmentDataDirectory,
                 exportImportLogger,
                 new ErrorReporter(),
-                new Compressor());
+                new Compressor(),
+                notificationFactory);
     }
 
     @VisibleForTesting
@@ -130,7 +133,8 @@ public class ExportManager {
             File environmentDataDirectory,
             ExportImportLogger exportImportLogger,
             ErrorReporter errorReporter,
-            Compressor compressor) {
+            Compressor compressor,
+            ExportImportNotificationFactory notificationFactory) {
         mContext = context;
         mClock = clock;
         mExportImportSettingsStorage = exportImportSettingsStorage;
@@ -140,6 +144,7 @@ public class ExportManager {
         mExportImportLogger = exportImportLogger;
         mErrorReporter = errorReporter;
         mCompressor = compressor;
+        mNotificationFactory = notificationFactory;
     }
 
     /**
@@ -401,7 +406,8 @@ public class ExportManager {
     /** Sends export status notification if export_import_fast_follow flag enabled. */
     private void sendNotificationIfEnabled(UserHandle userHandle, int notificationType) {
         if (exportImportFastFollow()) {
-            mNotificationSender.sendNotificationAsUser(notificationType, userHandle);
+            mNotificationSender.sendNotificationAsUser(
+                    mNotificationFactory.createNotification(notificationType), userHandle);
         }
     }
 

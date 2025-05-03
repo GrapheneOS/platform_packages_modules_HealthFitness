@@ -39,6 +39,7 @@ public final class HealthConnectNotificationSender {
     private static final String TAG = "HealthConnectNotificationSender";
 
     private final Context mContext;
+    // TODO(b/414949807): Remove HealthConnectNotificationFactory to make this class general purpose
     private final HealthConnectNotificationFactory mNotificationFactory;
     private final int mFixedNotificationId;
     private final String mNotificationTag;
@@ -154,10 +155,8 @@ public final class HealthConnectNotificationSender {
         }
     }
 
-    /** Creates a notification determined by the passed-in type and displays it to the user. */
-    public void sendNotificationAsUser(
-            @HealthConnectNotificationType int notificationType, UserHandle userHandle) {
-
+    /** Send the passed-in {@code notification} to the user. */
+    public void sendNotificationAsUser(Notification notification, UserHandle userHandle) {
         Slog.i(TAG, "Sending notification as user.");
 
         if (!mIsEnabled) {
@@ -166,8 +165,6 @@ public final class HealthConnectNotificationSender {
         }
 
         createNotificationChannel(userHandle);
-        Notification notification = mNotificationFactory.createNotification(notificationType);
-        if (notification == null) return;
         NotificationManager notificationManager = getNotificationManagerForUser(userHandle);
         notifyFromSystem(notificationManager, notification);
     }
