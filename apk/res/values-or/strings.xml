@@ -1181,10 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> ପାଇଁ <xliff:g id="DATA_TYPE">%1$s</xliff:g> ଡାଟାକୁ ସ୍ଥାୟୀ ଭାବେ ଡିଲିଟ କରିବେ?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"ସିଷ୍ଟମ ଦେଖାନ୍ତୁ"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"ସିଷ୍ଟମକୁ ଲୁଚାନ୍ତୁ"</string>
-    <!-- no translation found for system_warning (5593850900577682512) -->
-    <skip />
-    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
-    <skip />
+    <string name="system_warning" msgid="5593850900577682512">"ଯଦି ଆପଣ ଏହି ଅନୁମତିକୁ ପ୍ରତ୍ୟାଖ୍ୟାନ କରନ୍ତି, ତେବେ ଆପଣଙ୍କ ଡିଭାଇସର ବେସିକ ଫିଚରଗୁଡ଼ିକ ଆଶାନୁରୂପେ ଆଉ କାର୍ଯ୍ୟ ନକରିପାରେ।"</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"ଯେ କୌଣସି ମତେ ଅନୁମତି ଦିଅ ନାହିଁ"</string>
     <string name="on" msgid="8266542510798355807">"ଚାଲୁ ଅଛି"</string>
     <string name="off" msgid="6996623844428550649">"ବନ୍ଦ ଅଛି"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g>ରେ ଆକ୍ସେସ କରାଯାଇଛି"</string>

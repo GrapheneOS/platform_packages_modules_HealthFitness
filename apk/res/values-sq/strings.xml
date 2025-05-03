@@ -1181,10 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Të fshihen përgjithmonë të dhënat për <xliff:g id="DATA_TYPE">%1$s</xliff:g> për <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Shfaq sistemin"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Fshih sistemin"</string>
-    <!-- no translation found for system_warning (5593850900577682512) -->
-    <skip />
-    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
-    <skip />
+    <string name="system_warning" msgid="5593850900577682512">"Nëse e refuzon këtë leje, veçoritë bazë të pajisjes sate mund të mos funksionojnë më siç pritet."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Mos lejo gjithsesi"</string>
     <string name="on" msgid="8266542510798355807">"Aktiv"</string>
     <string name="off" msgid="6996623844428550649">"Joaktiv"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Qasja e fundit në <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

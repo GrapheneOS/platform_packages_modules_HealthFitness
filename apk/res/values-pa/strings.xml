@@ -508,7 +508,7 @@
     <string name="choose_frequency_category" msgid="9094154407387676553">"ਵਾਰਵਾਰਤਾ ਬਦਲੋ"</string>
     <string name="scheduled_export_settings_footer_text" msgid="8488483803782086291">"ਜੇ ਤੁਸੀਂ ਨਿਯਤ ਨਿਰਯਾਤ ਨੂੰ ਬੰਦ ਕਰ ਦਿੰਦੇ ਹੋ, ਤਾਂ ਅਜਿਹਾ ਕਰਨ ਨਾਲ ਪਹਿਲਾਂ ਤੋਂ ਨਿਰਯਾਤ ਕੀਤੇ ਡਾਟੇ ਨੂੰ ਉੱਥੋਂ ਨਹੀਂ ਮਿਟਾਇਆ ਜਾਵੇਗਾ, ਜਿੱਥੇ ਉਸਨੂੰ ਰੱਖਿਅਤ ਕੀਤਾ ਗਿਆ ਸੀ"</string>
     <string name="choose_frequency" msgid="8119085390857180221">"ਨਿਯਤ ਨਿਰਯਾਤ ਦਾ ਸੈੱਟਅੱਪ ਕਰੋ"</string>
-    <string name="choose_frequency_description" msgid="7698155810053504157">"ਚੁਣੋ ਕਿ ਤੁਹਾਡੇ ਡਾਟੇ ਨੂੰ ਕਿੰਨੀ ਵਾਰ ਨਿਰਯਾਤ ਕਰਨਾ ਹੈ"</string>
+    <string name="choose_frequency_description" msgid="7698155810053504157">"ਚੁਣੋ ਕਿ ਤੁਹਾਡੇ ਡਾਟੇ ਨੂੰ ਕਦੋਂ ਨਿਰਯਾਤ ਕਰਨਾ ਹੈ"</string>
     <string name="frequency_daily" msgid="3596412357416125727">"ਰੋਜ਼ਾਨਾ"</string>
     <string name="frequency_weekly" msgid="7302587625019573393">"ਹਫ਼ਤਾਵਾਰੀ"</string>
     <string name="frequency_monthly" msgid="729674398053825938">"ਮਹੀਨਾਵਾਰ"</string>
@@ -1000,7 +1000,7 @@
     <string name="playstore_app_title" msgid="4138464328693481809">"Play ਸਟੋਰ"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"ਸਵੈਚਲਿਤ-ਮਿਟਾਉਣਾ"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"ਸਵੈਚਲਿਤ-ਮਿਟਾਉਣਾ"</string>
-    <string name="auto_delete_header" msgid="4258649705159293715">"ਆਪਣੇ ਡਾਟੇ ਦੀ ਸੈੱਟ ਕੀਤੇ ਗਏ ਸਮੇਂ ਤੋਂ ਬਾਅਦ ਮਿਟਾਏ ਜਾਣ ਸੰਬੰਧੀ ਸਮਾਂ-ਸੂਚੀ ਬਣਾ ਕੇ ਕੰਟਰੋਲ ਕਰੋ ਕਿ ਉਸਨੂੰ Health Connect ਵਿੱਚ ਕਿੰਨੇ ਸਮੇਂ ਤੱਕ ਸਟੋਰ ਕੀਤਾ ਜਾਂਦਾ ਹੈ"</string>
+    <string name="auto_delete_header" msgid="4258649705159293715">"ਆਪਣੇ ਡਾਟੇ ਦੀ ਸੈੱਟ ਕੀਤੇ ਗਏ ਸਮੇਂ ਤੋਂ ਬਾਅਦ ਮਿਟਾਏ ਜਾਣ ਸੰਬੰਧੀ ਸਮਾਂ-ਸੂਚੀ ਬਣਾ ਕੇ ਕੰਟਰੋਲ ਕਰੋ ਕਿ ਇਹ Health Connect ਵਿੱਚ ਕਿੰਨੇ ਸਮੇਂ ਤੱਕ ਸਟੋਰ ਰਹੇ"</string>
     <string name="auto_delete_learn_more" msgid="7416469042791307994">"ਸਵੈਚਲਿਤ-ਮਿਟਾਉਣ ਬਾਰੇ ਹੋਰ ਜਾਣੋ"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"ਡਾਟੇ ਨੂੰ ਸਵੈਚਲਿਤ-ਮਿਟਾਓ"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# ਮਹੀਨੇ ਬਾਅਦ}one{# ਮਹੀਨੇ ਬਾਅਦ}other{# ਮਹੀਨਿਆਂ ਬਾਅਦ}}"</string>
@@ -1181,10 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"ਕੀ <xliff:g id="APP_NAME">%2$s</xliff:g> ਲਈ <xliff:g id="DATA_TYPE">%1$s</xliff:g> ਡਾਟੇ ਨੂੰ ਪੱਕੇ ਤੌਰ \'ਤੇ ਮਿਟਾਉਣਾ ਹੈ?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"ਸਿਸਟਮ ਦਿਖਾਓ"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"ਸਿਸਟਮ ਲੁਕਾਓ"</string>
-    <!-- no translation found for system_warning (5593850900577682512) -->
-    <skip />
-    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
-    <skip />
+    <string name="system_warning" msgid="5593850900577682512">"ਜੇ ਤੁਸੀਂ ਇਸ ਇਜਾਜ਼ਤ ਨੂੰ ਅਸਵੀਕਾਰ ਕਰਦੇ ਹੋ, ਤਾਂ ਹੋ ਸਕਦਾ ਹੈ ਕਿ ਤੁਹਾਡੇ ਡੀਵਾਈਸ ਦੀਆਂ ਮੂਲ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਹੁਣ ਨਿਯਤ ਤਰੀਕੇ ਮੁਤਾਬਕ ਕੰਮ ਨਾ ਕਰਨ।"</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"ਫਿਰ ਵੀ ਆਗਿਆ ਨਾ ਦਿਓ"</string>
     <string name="on" msgid="8266542510798355807">"ਚਾਲੂ"</string>
     <string name="off" msgid="6996623844428550649">"ਬੰਦ"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g> ਵਜੇ ਪਹੁੰਚ ਕੀਤੀ ਗਈ"</string>

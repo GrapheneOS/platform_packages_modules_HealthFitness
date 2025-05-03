@@ -1181,10 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Xoá vĩnh viễn dữ liệu <xliff:g id="DATA_TYPE">%1$s</xliff:g> cho <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Hiện hệ thống"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Ẩn hệ thống"</string>
-    <!-- no translation found for system_warning (5593850900577682512) -->
-    <skip />
-    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
-    <skip />
+    <string name="system_warning" msgid="5593850900577682512">"Nếu bạn từ chối quyền này thì các tính năng cơ bản của thiết bị có thể không còn hoạt động như dự kiến."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Vẫn không cho phép"</string>
     <string name="on" msgid="8266542510798355807">"Đang bật"</string>
     <string name="off" msgid="6996623844428550649">"Đang tắt"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Truy cập lúc <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
