@@ -1181,10 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> എന്നതിനുള്ള <xliff:g id="DATA_TYPE">%1$s</xliff:g> ഡാറ്റ ശാശ്വതമായി നീക്കം ചെയ്യണോ?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"സിസ്‌റ്റം കാണിക്കുക"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"സിസ്‌റ്റം മറയ്ക്കുക"</string>
-    <!-- no translation found for system_warning (5593850900577682512) -->
-    <skip />
-    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
-    <skip />
+    <string name="system_warning" msgid="5593850900577682512">"നിങ്ങൾ ഈ അനുമതി നിഷേധിക്കുകയാണെങ്കിൽ, നിങ്ങളുടെ ഉപകരണത്തിന്റെ അടിസ്ഥാന ഫീച്ചറുകൾ ഉദ്ദേശിച്ചത് പോലെ തുടർന്ന് പ്രവർത്തിച്ചേക്കില്ല."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"എന്തായാലും അനുവദിക്കരുത്"</string>
     <string name="on" msgid="8266542510798355807">"ഓണാണ്"</string>
     <string name="off" msgid="6996623844428550649">"ഓഫാണ്"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g>-ന് ആക്‌സസ് ചെയ്തു"</string>

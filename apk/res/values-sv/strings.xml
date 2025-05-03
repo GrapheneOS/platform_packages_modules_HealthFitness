@@ -1181,10 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Vill du radera <xliff:g id="DATA_TYPE">%1$s</xliff:g>-data för <xliff:g id="APP_NAME">%2$s</xliff:g> permanent?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Visa systemet"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Dölj systemet"</string>
-    <!-- no translation found for system_warning (5593850900577682512) -->
-    <skip />
-    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
-    <skip />
+    <string name="system_warning" msgid="5593850900577682512">"Om du nekar appen behörighet kan det hända att grundläggande funktioner på enheten inte fungerar som de ska."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Tillåt inte ändå"</string>
     <string name="on" msgid="8266542510798355807">"På"</string>
     <string name="off" msgid="6996623844428550649">"Av"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Öppnades <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

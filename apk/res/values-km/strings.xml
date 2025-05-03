@@ -1181,10 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"លុបទិន្នន័យ<xliff:g id="DATA_TYPE">%1$s</xliff:g>សម្រាប់ <xliff:g id="APP_NAME">%2$s</xliff:g> ជាអចិន្ត្រៃយ៍ឬ?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"បង្ហាញ​ប្រព័ន្ធ"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"លាក់ប្រព័ន្ធ"</string>
-    <!-- no translation found for system_warning (5593850900577682512) -->
-    <skip />
-    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
-    <skip />
+    <string name="system_warning" msgid="5593850900577682512">"ប្រសិនបើ​អ្នកបដិសេធ​ការអនុញ្ញាត​នេះ មុខងារគោលនៃឧបករណ៍​របស់អ្នក​ប្រហែលជាមិនដំណើរការ​ដូចការគ្រោងទុកតទៅទៀតទេ។"</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"មិនអីទេ មិនអនុញ្ញាត"</string>
     <string name="on" msgid="8266542510798355807">"បើក"</string>
     <string name="off" msgid="6996623844428550649">"បិទ"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"បានចូលប្រើនៅម៉ោង <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

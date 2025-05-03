@@ -1104,7 +1104,7 @@
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"၎င်းကို ထပ်စမ်းကြည့်နိုင်သောအခါ အကြောင်းကြားချက်ရမည်။"</string>
     <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"ရပြီ"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"ဘာတွေထူးသလဲ"</string>
-    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Health Connect ကို ဆက်တင်များမှ တိုက်ရိုက်သုံးနိုင်ပါပြီ။ သိုလှောင်ခန်း နေရာလွတ်ပြုလုပ်ရန် Health Connect အက်ပ်ကို အချိန်မရွေး ဖယ်ရှားနိုင်သည်။"</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Health Connect ကို ဆက်တင်များမှ တိုက်ရိုက်သုံးနိုင်ပါပြီ။ သိုလှောင်ခန်း နေရာလွတ်ပြုလုပ်ရန် Health Connect အက်ပ်ကို အချိန်မရွေး ဖြုတ်နိုင်သည်။"</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"ရပြီ"</string>
     <string name="data_restore_in_progress_screen_title" msgid="2516161353003274764">"ပြန်ယူနေဆဲဖြစ်သည်"</string>
     <string name="data_restore_in_progress_content" msgid="2684897189974069361">"Health Connect သည် ဒေတာနှင့် ခွင့်ပြုချက်များကို ပြန်လည်ရယူနေပါပြီ။ ဤသို့လုပ်ဆောင်ခြင်းက အချိန်အနည်းငယ် ကြာနိုင်ပါသည်။"</string>
@@ -1181,10 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> အတွက် <xliff:g id="DATA_TYPE">%1$s</xliff:g> ဒေတာကို အပြီးဖျက်မလား။"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"စနစ်ကို ပြပါ"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"စနစ်ကို ဖျောက်ပါ"</string>
-    <!-- no translation found for system_warning (5593850900577682512) -->
-    <skip />
-    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
-    <skip />
+    <string name="system_warning" msgid="5593850900577682512">"ဤခွင့်ပြုချက်ကို သင်ငြင်းပယ်ပါက သင့်စက်၏ အခြေခံတူးလ်များသည် ရည်ရွယ်ထားသည့်အတိုင်း လုပ်ဆောင်တော့မည် မဟုတ်ပါ။"</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"မည်သို့ပင်ဖြစ်စေ ခွင့်မပြုရန်"</string>
     <string name="on" msgid="8266542510798355807">"ဖွင့်"</string>
     <string name="off" msgid="6996623844428550649">"ပိတ်"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g> တွင် သုံးထားသည်"</string>

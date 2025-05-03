@@ -1181,10 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g>‌కు సంబంధించిన <xliff:g id="DATA_TYPE">%1$s</xliff:g> డేటాను శాశ్వతంగా తొలగించాలా?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"సిస్టమ్ ప్రాసెస్‌లను చూపించండి"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"సిస్టమ్‌ను దాచండి"</string>
-    <!-- no translation found for system_warning (5593850900577682512) -->
-    <skip />
-    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
-    <skip />
+    <string name="system_warning" msgid="5593850900577682512">"మీరు ఈ అనుమతిని నిరాకరిస్తే, మీ డివైజ్ ప్రాథమిక ఫీచర్‌లు ఇకపై ఉద్దేశించిన రీతిలో పని చేయకపోవచ్చు."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"ఏదేమైనా అనుమతించవద్దు"</string>
     <string name="on" msgid="8266542510798355807">"ఆన్‌లో ఉంది"</string>
     <string name="off" msgid="6996623844428550649">"ఆఫ్‌లో ఉంది"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g>‌కు యాక్సెస్ చేశారు"</string>
