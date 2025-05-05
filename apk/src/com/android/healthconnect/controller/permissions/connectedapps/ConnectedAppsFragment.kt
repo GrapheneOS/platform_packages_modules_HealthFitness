@@ -59,8 +59,6 @@ import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPrefer
 import com.android.healthconnect.controller.shared.preference.HealthBannerPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
-import com.android.healthconnect.controller.shared.preference.PreferenceScreenExtensions.updateTopIntro
-import com.android.healthconnect.controller.shared.preference.PreferenceScreenExtensions.updateVisibility
 import com.android.healthconnect.controller.utils.AppStoreUtils
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
@@ -77,6 +75,7 @@ import com.android.healthconnect.controller.utils.showLoadingDialog
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.SettingsThemeHelper
+import com.android.settingslib.widget.TopIntroPreference
 import com.android.settingslib.widget.ZeroStatePreference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -115,6 +114,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     private lateinit var removeAllAppsDialog: AlertDialog
     private lateinit var adapter: RecyclerView.Adapter<*>
 
+    private val topIntroPreference: TopIntroPreference by pref(TOP_INTRO)
     private val allowedAppsCategory: PreferenceGroup by pref(ALLOWED_APPS_CATEGORY)
     private val notAllowedAppsCategory: PreferenceGroup by pref(NOT_ALLOWED_APPS)
     private val inactiveAppsCategory: PreferenceGroup by pref(INACTIVE_APPS)
@@ -196,11 +196,8 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                 setUpEmptyState()
             } else {
                 logger.logImpression(AppPermissionsElement.SEARCH_BUTTON)
-                preferenceScreen.updateTopIntro(
-                    requireContext(),
-                    TOP_INTRO,
-                    getString(R.string.connected_apps_text),
-                )
+
+                topIntroPreference.title = getString(R.string.connected_apps_text)
                 zeroStatePreference.isVisible = false
                 thingsToTryCategory.isVisible = false
                 setAppAndSettingsCategoriesVisibility(true)
@@ -514,15 +511,11 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     private fun setUpEmptyState() {
         if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
-            preferenceScreen.updateVisibility(TOP_INTRO, false)
+            topIntroPreference.isVisible = false
             zeroStatePreference.isVisible = true
         } else {
-            preferenceScreen.updateVisibility(TOP_INTRO, true)
-            preferenceScreen.updateTopIntro(
-                requireContext(),
-                TOP_INTRO,
-                getString(R.string.connected_apps_empty_list_section_title),
-            )
+            topIntroPreference.isVisible = true
+            topIntroPreference.title = getString(R.string.connected_apps_empty_list_section_title)
             zeroStatePreference.isVisible = false
         }
         if (
