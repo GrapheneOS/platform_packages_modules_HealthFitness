@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.lib;
+package android.healthconnect.testing.shared.recordfactory;
 
 import static android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_MEDITATION;
 import static android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_OTHER;
 import static android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_UNKNOWN;
-import static android.healthconnect.cts.lib.BundleHelper.PREFIX;
 
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.MindfulnessSessionRecord;

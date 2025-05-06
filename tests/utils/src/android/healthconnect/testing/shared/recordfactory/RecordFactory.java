@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.lib;
+package android.healthconnect.testing.shared.recordfactory;
 
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_RING;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH;
@@ -42,6 +42,8 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 public abstract class RecordFactory<T extends Record> {
+
+    static final String PREFIX = "android.healthconnect.testing.shared";
 
     public static final ZonedDateTime YESTERDAY_11AM =
             LocalDate.now(ZoneId.systemDefault())

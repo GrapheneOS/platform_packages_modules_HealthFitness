@@ -16,14 +16,14 @@
 
 package android.healthconnect.cts.aggregation;
 
-import static android.healthconnect.cts.lib.RecordFactory.MIDNIGHT_ONE_WEEK_AGO;
-import static android.healthconnect.cts.lib.RecordFactory.YESTERDAY_10AM_LOCAL;
-import static android.healthconnect.cts.lib.RecordFactory.YESTERDAY_11AM;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseGroupByDuration;
 import static android.healthconnect.cts.utils.TestUtils.insertRecord;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.MIDNIGHT_ONE_WEEK_AGO;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.YESTERDAY_10AM_LOCAL;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.YESTERDAY_11AM;
 
 import static com.google.common.truth.Truth.assertThat;
 

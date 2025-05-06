@@ -23,8 +23,8 @@ import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYP
 import android.health.connect.datatypes.MindfulnessSessionRecord
 import android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_MEDITATION
 import android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_UNKNOWN
-import android.healthconnect.cts.lib.RecordFactory.YESTERDAY_11AM
-import android.healthconnect.cts.lib.RecordFactory.newEmptyMetadata
+import android.healthconnect.testing.shared.recordfactory.RecordFactory.YESTERDAY_11AM
+import android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadata
 import android.text.format.DateFormat.is24HourFormat
 
 class MindfulnessTest : BaseDataTypeTest<MindfulnessSessionRecord>() {
