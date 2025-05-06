@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.exportimport;
 
+import static android.health.connect.Constants.APP_ICON_DRAWABLE_NAME;
+
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_EXPORT_UNSUCCESSFUL_GENERIC_ERROR;
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_EXPORT_UNSUCCESSFUL_NOT_ENOUGH_SPACE;
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_IMPORT_COMPLETE;
@@ -87,9 +89,7 @@ public class ExportImportNotificationFactoryTest {
         when(mResourcesContext.getStringByNameWithArgsOrThrow(any(), any()))
                 .thenAnswer(
                         invocation -> invocation.getArgument(0) + "," + invocation.getArgument(1));
-        when(mResourcesContext.getIconByDrawableName(
-                        ExportImportNotificationFactory.APP_ICON_DRAWABLE_NAME))
-                .thenReturn(APP_ICON);
+        when(mResourcesContext.getIconByDrawableName(APP_ICON_DRAWABLE_NAME)).thenReturn(APP_ICON);
     }
 
     @Test
