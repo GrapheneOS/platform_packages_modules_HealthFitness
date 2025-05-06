@@ -59,9 +59,10 @@ java_sdk_library {
     jarjar_rules: "jarjar-rules.txt",
     installable: true,
     optimize: {
-        optimize: select(release_flag("RELEASE_HC_MODULE_SERVICE_OPTIMIZATION"), {
-            true: true,
-            default: false,
+        // product_variable eng is true when TARGET_BUILD_VARIANT is  eng
+        optimize: select((product_variable("eng"), release_flag("RELEASE_HC_MODULE_SERVICE_OPTIMIZATION")), {
+            (false, true): true,
+            (default, default): false,
         }),
         proguard_flags_files: ["proguard.flags"],
     },
