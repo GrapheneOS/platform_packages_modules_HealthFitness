@@ -42,8 +42,8 @@ import static android.healthconnect.testing.shared.DataFactory.getTestRecords;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_ID;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_RESOURCE_ID_IMMUNIZATION;
 
+import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -166,7 +166,7 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_DEVELOPMENT_DATABASE,
     })
     public void testGetChangeLogToken_forMedicalResource_hasFieldsSet() {
         var dataOriginFilter = new DataOrigin.Builder().setPackageName("package.name").build();
@@ -185,26 +185,26 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsDisabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_DEVELOPMENT_DATABASE,
     })
-    public void testGetChangeLogToken_emptyRecordTypes_throwsException() {
+    public void testGetChangeLogTokenRequest_emptyRecordTypes_throwsException() {
         Throwable thrown =
                 assertThrows(
                         IllegalStateException.class,
-                        () -> getChangeLogToken(new ChangeLogTokenRequest.Builder().build()));
+                        () -> new ChangeLogTokenRequest.Builder().build());
         assertThat(thrown).hasMessageThat().contains("Requested record types must not be empty");
     }
 
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_DEVELOPMENT_DATABASE,
     })
-    public void testGetChangeLogToken_emptyBothTypes_throwsException() {
+    public void testGetChangeLogTokenRequest_emptyBothTypes_throwsException() {
         Throwable thrown =
                 assertThrows(
                         IllegalStateException.class,
-                        () -> getChangeLogToken(new ChangeLogTokenRequest.Builder().build()));
+                        () -> new ChangeLogTokenRequest.Builder().build());
         assertThat(thrown)
                 .hasMessageThat()
                 .contains("At least one Record type or Medical Resource type must be set");
@@ -213,35 +213,31 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_DEVELOPMENT_DATABASE,
     })
-    public void testGetChangeLogToken_setBothTypes_throwsException() {
+    public void testGetChangeLogTokenRequest_setBothTypes_throwsException_beforeBuild() {
         Throwable thrown =
                 assertThrows(
-                        IllegalStateException.class,
+                        IllegalArgumentException.class,
                         () ->
-                                getChangeLogToken(
-                                        new ChangeLogTokenRequest.Builder()
-                                                .addRecordType(StepsRecord.class)
-                                                .addMedicalResourceType(
-                                                        MEDICAL_RESOURCE_TYPE_MEDICATIONS)
-                                                .build()));
+                                new ChangeLogTokenRequest.Builder()
+                                        .addRecordType(StepsRecord.class)
+                                        .addMedicalResourceType(MEDICAL_RESOURCE_TYPE_MEDICATIONS));
         assertThat(thrown)
                 .hasMessageThat()
-                .contains("Record type or Medical Resource types can't both be set");
+                .contains("Record types and Medical Resource types can't both be set");
     }
 
     @Test
-    public void testGetChangeLogToken_superRecordTypes_throwsException() {
+    public void testGetChangeLogTokenRequest_superRecordTypes_throwsException() {
         String errorMessage = "Requested record types must not contain any of ";
         Throwable thrown =
                 assertThrows(
                         IllegalStateException.class,
                         () ->
-                                getChangeLogToken(
-                                        new ChangeLogTokenRequest.Builder()
-                                                .addRecordType(Record.class)
-                                                .build()));
+                                new ChangeLogTokenRequest.Builder()
+                                        .addRecordType(Record.class)
+                                        .build());
         assertThat(thrown)
                 .hasMessageThat()
                 .isEqualTo(errorMessage + "[android.health.connect.datatypes.Record]");
@@ -250,13 +246,12 @@ public class HealthConnectChangeLogsTests {
                 assertThrows(
                         IllegalStateException.class,
                         () ->
-                                getChangeLogToken(
-                                        new ChangeLogTokenRequest.Builder()
-                                                .addRecordType(HeartRateRecord.class)
-                                                .addRecordType(InstantRecord.class)
-                                                .addRecordType(IntervalRecord.class)
-                                                .addRecordType(StepsRecord.class)
-                                                .build()));
+                                new ChangeLogTokenRequest.Builder()
+                                        .addRecordType(HeartRateRecord.class)
+                                        .addRecordType(InstantRecord.class)
+                                        .addRecordType(IntervalRecord.class)
+                                        .addRecordType(StepsRecord.class)
+                                        .build());
         assertThat(thrown).hasMessageThat().startsWith(errorMessage);
 
         assertThat(thrown)
