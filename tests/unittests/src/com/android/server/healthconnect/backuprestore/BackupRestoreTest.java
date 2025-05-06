@@ -72,6 +72,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.restore.BackupFileNamesSet;
 import android.health.connect.restore.StageRemoteDataRequest;
+import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.os.ParcelFileDescriptor;
 import android.os.PersistableBundle;
 import android.os.UserHandle;
@@ -91,7 +92,6 @@ import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.UserGrantTimeState;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
 import com.android.server.healthconnect.utils.FilesUtil;
 
 import org.junit.After;

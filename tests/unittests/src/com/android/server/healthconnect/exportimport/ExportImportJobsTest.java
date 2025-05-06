@@ -29,6 +29,7 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.health.connect.exportimport.ScheduledExportSettings;
+import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.net.Uri;
 import android.os.PersistableBundle;
 import android.os.UserHandle;
@@ -40,7 +41,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
-import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
 
 import org.junit.Before;
 import org.junit.Rule;

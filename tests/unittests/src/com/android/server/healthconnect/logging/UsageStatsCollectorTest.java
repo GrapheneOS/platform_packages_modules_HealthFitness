@@ -38,6 +38,7 @@ import static org.mockito.Mockito.when;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.healthconnect.testing.unittest.mocks.HealthPermissionsMocker;
 import android.os.UserHandle;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -53,7 +54,6 @@ import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.HealthConnectContext;
-import com.android.server.healthconnect.testing.HealthPermissionsMocker;
 
 import org.junit.Before;
 import org.junit.Rule;

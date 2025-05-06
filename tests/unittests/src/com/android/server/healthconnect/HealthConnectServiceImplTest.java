@@ -153,6 +153,7 @@ import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.health.connect.restore.StageRemoteDataRequest;
+import android.healthconnect.testing.unittest.fakes.FakeTimeSource;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
@@ -192,7 +193,6 @@ import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.testing.fakes.FakeTimeSource;
 
 import org.junit.After;
 import org.junit.Before;
