@@ -59,6 +59,7 @@ android_test {
         ":CtsPhrTestHelperApp1",
         ":CtsPhrTestHelperApp2",
     ],
+    jarjar_rules: ":health-cts-jarjar-rules",
 }
 
 java_library {

@@ -1,0 +1,8 @@
+# TEMPORARY FIX: Rename flag package to prevent runtime classpath collision.
+# The framework jar (a bootclasspath jar, e.g., healthfitness-framework) and CTS
+# both include the same flag library. Without renaming, the framework's version
+# is always loaded. However, the flag API in the framework is @hide, causing a
+# NoSuchMethodError when CTS attempts to access it. Renaming creates distinct
+# classes, avoiding the collision and error.
+# TODO(b/416120182): Remove this rule when CTS tooling provides a proper solution.
+rule com.android.healthfitness.flags.** com.android.healthfitness.cts.flags.@1
