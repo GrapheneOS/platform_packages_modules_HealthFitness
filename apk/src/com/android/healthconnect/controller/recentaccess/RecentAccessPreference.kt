@@ -42,7 +42,12 @@ class RecentAccessPreference(
     private var showDivider = false
 
     init {
-        layoutResource = R.layout.widget_recent_access_timeline
+        layoutResource =
+            if (showCategories) {
+                R.layout.widget_recent_access_timeline_expressive
+            } else {
+                R.layout.widget_recent_access_timeline_legacy
+            }
         isSelectable = true
         this.logName = RecentAccessElement.RECENT_ACCESS_ENTRY_BUTTON
     }
@@ -56,8 +61,11 @@ class RecentAccessPreference(
         val appTitle = holder.findViewById(R.id.title) as TextView
         appTitle.text = recentAccessEntry.metadata.appName
 
-        val divider = holder.findViewById(R.id.recent_access_divider) as ImageView
-        divider.visibility = if (showDivider) View.VISIBLE else View.INVISIBLE
+        if (showCategories) {
+            // The divider is part of this view only for expressive designs
+            val divider = holder.findViewById(R.id.recent_access_divider) as ImageView
+            divider.visibility = if (showDivider) View.VISIBLE else View.INVISIBLE
+        }
 
         val dataTypesWritten = holder.findViewById(R.id.data_types_written) as TextView
         if (showCategories && recentAccessEntry.dataTypesWritten.isNotEmpty()) {
