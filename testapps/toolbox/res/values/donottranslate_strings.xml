@@ -186,6 +186,7 @@
     <!-- region Read data screens -->
     <string name="loading_data">Loading data…</string>
     <string name="error">Error</string>
+    <string name="no_data">No data</string>
     <!--endregion-->
 
     <string name="read_backup_data">Read backup data</string>

@@ -15,12 +15,16 @@
  */
 package com.android.healthconnect.testapps.toolbox.read.controller
 
+import android.content.Context
 import android.health.connect.HealthConnectManager
 import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord
 import com.android.healthconnect.testapps.toolbox.Constants.HealthPermissionType
+import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry.FormattedAggregation
+import com.android.healthconnect.testapps.toolbox.read.dataentries.utils.Unit
+import com.android.healthconnect.testapps.toolbox.read.dataentries.utils.UnitFormatter
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils
 
 class LoadAggregation : ILoadAggregation {
@@ -28,7 +32,8 @@ class LoadAggregation : ILoadAggregation {
     override suspend fun invoke(
         input: LoadEntriesInput,
         healthConnectManager: HealthConnectManager,
-    ): AggregatedData {
+        context: Context,
+    ): FormattedAggregation {
 
         val timeFilter =
             TimeInstantRangeFilter.Builder()
@@ -46,29 +51,42 @@ class LoadAggregation : ILoadAggregation {
                             timeRangeFilter = timeFilter,
                         )
                         .get(StepsRecord.STEPS_COUNT_TOTAL)
-                return AggregatedData(totalSteps.toString(), dataType)
+                return FormattedAggregation(
+                    aggregation = UnitFormatter.formatSteps(totalSteps!!, context),
+                    contributingApps = "",
+                )
             }
-
             HealthPermissionType.DISTANCE -> {
                 val totalDistance =
                     GeneralUtils.aggregate(
-                        manager = healthConnectManager,
-                        metrics = setOf(DistanceRecord.DISTANCE_TOTAL),
-                        timeRangeFilter = timeFilter,
-                    )
-                return AggregatedData(totalDistance.toString(), dataType)
+                            manager = healthConnectManager,
+                            metrics = setOf(DistanceRecord.DISTANCE_TOTAL),
+                            timeRangeFilter = timeFilter,
+                        )
+                        .get(DistanceRecord.DISTANCE_TOTAL)
+                return FormattedAggregation(
+                    aggregation =
+                        UnitFormatter.formatLength(
+                            totalDistance!!,
+                            Unit.Length.KILOMETERS,
+                            context,
+                        ),
+                    contributingApps = "",
+                )
             }
-
             HealthPermissionType.TOTAL_CALORIES_BURNED -> {
                 val totalCaloriesBurned =
                     GeneralUtils.aggregate(
-                        manager = healthConnectManager,
-                        metrics = setOf(TotalCaloriesBurnedRecord.ENERGY_TOTAL),
-                        timeRangeFilter = timeFilter,
-                    )
-                return AggregatedData(totalCaloriesBurned.toString(), dataType)
+                            manager = healthConnectManager,
+                            metrics = setOf(TotalCaloriesBurnedRecord.ENERGY_TOTAL),
+                            timeRangeFilter = timeFilter,
+                        )
+                        .get(TotalCaloriesBurnedRecord.ENERGY_TOTAL)
+                return FormattedAggregation(
+                    aggregation = UnitFormatter.formatEnergy(totalCaloriesBurned!!, context),
+                    contributingApps = "",
+                )
             }
-
             else -> {
                 throw IllegalArgumentException("Aggregation not supported: $dataType")
             }
@@ -76,11 +94,10 @@ class LoadAggregation : ILoadAggregation {
     }
 }
 
-data class AggregatedData(val aggregation: String, val dataType: HealthPermissionType)
-
 interface ILoadAggregation {
     suspend fun invoke(
         input: LoadEntriesInput,
         healthConnectManager: HealthConnectManager,
-    ): AggregatedData
+        context: Context,
+    ): FormattedAggregation
 }

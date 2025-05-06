@@ -16,8 +16,12 @@
 
 package com.android.healthconnect.testapps.toolbox.read.components
 
-import android.health.connect.datatypes.Record
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,16 +31,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.android.healthconnect.testapps.toolbox.R
+import com.android.healthconnect.testapps.toolbox.UIConstants.PADDING_MEDIUM
+import com.android.healthconnect.testapps.toolbox.UIConstants.PADDING_SMALL
 import com.android.healthconnect.testapps.toolbox.read.components.states.ErrorMessage
 import com.android.healthconnect.testapps.toolbox.read.components.states.LoadingBar
 import com.android.healthconnect.testapps.toolbox.read.controller.LoadEntriesInput
+import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry
 import com.android.healthconnect.testapps.toolbox.read.navigation.Screen
+import com.android.healthconnect.testapps.toolbox.read.utils.DataEntryUtils.Companion.mapEntryToComposable
 import com.android.healthconnect.testapps.toolbox.viewmodels.DataState
 import com.android.healthconnect.testapps.toolbox.viewmodels.LoadEntriesViewModel
 import java.time.Instant
-import java.time.temporal.ChronoUnit
+import java.time.temporal.ChronoUnit.DAYS
 
 /** Screen that displays details of selected data type */
+typealias ComposableView = @Composable () -> Unit
+
 @Composable
 fun DataTypeDetailsScreen(
     modifier: Modifier = Modifier,
@@ -44,7 +55,7 @@ fun DataTypeDetailsScreen(
     viewModel: LoadEntriesViewModel = viewModel(factory = LoadEntriesViewModel.Factory),
 ) {
     LaunchedEffect(Unit) {
-        val startTime = Instant.now().truncatedTo(ChronoUnit.DAYS)
+        val startTime = Instant.now().truncatedTo(DAYS)
         val endTime = Instant.now()
         viewModel.loadEntries(
             LoadEntriesInput(
@@ -58,21 +69,35 @@ fun DataTypeDetailsScreen(
     Column {
         // Header
         Text(
+            modifier = Modifier.padding(start = PADDING_SMALL, bottom = PADDING_SMALL),
             text = stringResource(id = dataTypeDetails.dataType.title),
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.displayMedium,
         )
 
         // Body
         val entriesState = viewModel.entriesState.collectAsState().value
         return when (entriesState) {
             is DataState.Loading -> LoadingBar()
-            is DataState.Success -> RecordList(entriesState.records)
+            is DataState.Success -> DataEntriesList(entriesState.entries)
             is DataState.Error -> ErrorMessage(entriesState.exception)
         }
     }
 }
 
 @Composable
-fun RecordList(records: List<Record>) {
-    Column(modifier = Modifier.testTag("recordList")) {}
+fun DataEntriesList(entries: List<FormattedEntry>) {
+
+    if (entries.isEmpty()) {
+        return Text(
+            text = stringResource(id = R.string.no_data),
+            modifier = Modifier.padding(PADDING_MEDIUM).testTag("entriesList"),
+        )
+    }
+    val formattedEntries: List<ComposableView> =
+        entries.map { entry -> mapEntryToComposable(entry) }
+
+    // List of entries
+    LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(PADDING_MEDIUM)) {
+        items(formattedEntries) { entry -> entry.invoke() }
+    }
 }
