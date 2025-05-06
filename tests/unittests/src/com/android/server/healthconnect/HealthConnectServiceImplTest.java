@@ -53,6 +53,7 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.getGetMedi
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedicalDataSourceRequiredFieldsOnly;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedicalResourceId;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getUpsertMedicalResourceRequest;
+import static android.healthconnect.testing.unittest.TaskUtils.waitForAllScheduledTasksToComplete;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
@@ -73,7 +74,6 @@ import static com.android.server.healthconnect.logging.HealthConnectServiceLogge
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.READ_MEDICAL_RESOURCES_BY_REQUESTS;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.UPSERT_MEDICAL_RESOURCES;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.MEDICAL_RESOURCE_TYPE_NOT_ASSIGNED_DEFAULT_VALUE;
-import static com.android.server.healthconnect.testing.TestUtils.waitForAllScheduledTasksToComplete;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;

@@ -18,7 +18,7 @@ package android.health.connect.internal.datatypes;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.units.Power;
-import android.health.connect.testing.RecordInternalFactory;
+import android.healthconnect.testing.unittest.RecordInternalFactory;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;

@@ -60,6 +60,7 @@ import android.health.connect.datatypes.HeightRecord;
 import android.health.connect.datatypes.SkinTemperatureRecord;
 import android.health.connect.datatypes.StepsCadenceRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.os.UserHandle;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.Pair;
@@ -75,7 +76,6 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;

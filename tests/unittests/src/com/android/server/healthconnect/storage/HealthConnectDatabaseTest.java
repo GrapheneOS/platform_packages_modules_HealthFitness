@@ -33,6 +33,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -48,7 +49,6 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;

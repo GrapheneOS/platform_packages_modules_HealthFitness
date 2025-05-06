@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.testing;
+package android.healthconnect.testing.unittest;
 
-import android.database.DatabaseUtils;
 import android.os.UserHandle;
 
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
-import com.android.server.healthconnect.storage.HealthConnectDatabase;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
 
-public final class TestUtils {
+public final class TaskUtils {
     public static final UserHandle TEST_USER = UserHandle.of(UserHandle.myUserId());
 
     public static void waitForTaskToFinishSuccessfully(Runnable task) throws TimeoutException {
@@ -46,7 +44,7 @@ public final class TestUtils {
         }
     }
 
-    static void waitForCondition(Predicate<Void> predicate, int timeoutSeconds)
+    private static void waitForCondition(Predicate<Void> predicate, int timeoutSeconds)
             throws TimeoutException {
         Instant startTime = Instant.now();
         while (!predicate.test(null)) {
@@ -74,10 +72,5 @@ public final class TestUtils {
                                         == threadScheduler.mForegroundExecutor
                                                 .getCompletedTaskCount()),
                 15);
-    }
-
-    /** Returns the number of rows in the specified table. */
-    public static long queryNumEntries(HealthConnectDatabase database, String tableName) {
-        return DatabaseUtils.queryNumEntries(database.getReadableDatabase(), tableName);
     }
 }

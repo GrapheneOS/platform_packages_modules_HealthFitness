@@ -16,11 +16,12 @@
 
 package com.android.server.healthconnect.backuprestore;
 
+import static android.healthconnect.testing.unittest.StorageUtils.queryNumEntries;
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+
 import static com.android.server.healthconnect.backuprestore.BackupRestore.GRANT_TIME_FILE_NAME;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.STAGED_DATABASE_DIR;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.STAGED_DATABASE_NAME;
-import static com.android.server.healthconnect.testing.TestUtils.queryNumEntries;
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -32,6 +33,9 @@ import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.restore.StageRemoteDataRequest;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
+import android.healthconnect.testing.unittest.PhrTestUtils;
+import android.healthconnect.testing.unittest.StorageUtils;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.os.ParcelFileDescriptor;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.ArrayMap;
@@ -51,8 +55,6 @@ import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
-import com.android.server.healthconnect.testing.storage.PhrTestUtils;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -82,6 +84,7 @@ public class BackupRestoreWithoutMocksTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     private Context mContext;
+    private StorageUtils mStorageUtils;
     private TransactionTestUtils mTransactionTestUtils;
     private BackupRestore mBackupRestore;
     private PhrTestUtils mPhrTestUtils;
@@ -100,6 +103,7 @@ public class BackupRestoreWithoutMocksTest {
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .build();
+        mStorageUtils = new StorageUtils(healthConnectInjector);
         mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
 
@@ -136,9 +140,9 @@ public class BackupRestoreWithoutMocksTest {
         // Insert a Step record.
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
         // Ensure the original database contains the inserted data above.
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_table")).isEqualTo(1);
-        assertThat(mTransactionTestUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
 
         // Create the files where the database and the grant time files will be backed up to.
         HealthConnectContext dbContext =
@@ -213,10 +217,10 @@ public class BackupRestoreWithoutMocksTest {
 
         mBackupRestore.merge();
 
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_table"))
+        assertThat(mStorageUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_table"))
                 .isEqualTo(numOfResources);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_indices_table"))
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_indices_table"))
                 .isEqualTo(numOfResources);
         // Read the dataSources and lastModifiedTimestamps of original db after merge.
         List<Pair<MedicalDataSource, Long>> dataSourceRowsOriginal =
@@ -269,10 +273,9 @@ public class BackupRestoreWithoutMocksTest {
 
         mBackupRestore.merge();
 
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_table")).isEqualTo(2);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_indices_table"))
-                .isEqualTo(2);
+        assertThat(mStorageUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_table")).isEqualTo(2);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_indices_table")).isEqualTo(2);
         // Read the dataSources and lastModifiedTimestamps of original db after merge.
         List<Pair<MedicalDataSource, Long>> dataSourceRowsOriginal =
                 mPhrTestUtils.readMedicalDataSources();
@@ -296,10 +299,9 @@ public class BackupRestoreWithoutMocksTest {
         // Insert an allergy medicalResource.
         mPhrTestUtils.upsertResource(PhrDataFactory::createAllergyMedicalResource, dataSource);
         // Verify data exists.
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_table")).isEqualTo(1);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_indices_table"))
-                .isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_indices_table")).isEqualTo(1);
         // Create the staged db file.
         HealthConnectContext dbContext =
                 HealthConnectContext.create(
@@ -338,13 +340,12 @@ public class BackupRestoreWithoutMocksTest {
         // We expect the medical_data_source table to contain 1 dataSource. Even though there was
         // 1 dataSource in original database and 1 in the staged database, they both have the
         // same unique ids so the one in the stagedDatabase will be ignored.
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
         // We expect 3 rows in both medical_resource and medical_resource_indices tables,
         // since there was one medicalResource in the original database and two medicalResources
         // in the staged database.
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_table")).isEqualTo(3);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_indices_table"))
-                .isEqualTo(3);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_table")).isEqualTo(3);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_indices_table")).isEqualTo(3);
     }
 
     @Test
@@ -355,10 +356,9 @@ public class BackupRestoreWithoutMocksTest {
         // Insert a vaccine medicalResource.
         mPhrTestUtils.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource);
         // Verify data exists.
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_table")).isEqualTo(1);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_indices_table"))
-                .isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_indices_table")).isEqualTo(1);
         // Create the staged db file.
         HealthConnectContext dbContext =
                 HealthConnectContext.create(
@@ -397,14 +397,13 @@ public class BackupRestoreWithoutMocksTest {
         // We expect the medical_data_source table to contain 1 dataSource. Even though there was
         // 1 dataSource in original database and 1 in the staged database, they both have the
         // same unique ids so the one in the stagedDatabase will be ignored.
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
         // Overall we have 3 medicalResources in both original and staged database but
         // we expect 2 rows in both medical_resource and medical_resource_indices tables after merge
         // since one of the vaccine resources in the stagedDatabase is a duplicate of an existing
         // resource in the original database.
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_table")).isEqualTo(2);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_indices_table"))
-                .isEqualTo(2);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_table")).isEqualTo(2);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_indices_table")).isEqualTo(2);
     }
 
     private static File createAndGetEmptyFile(File dir, String fileName) throws IOException {

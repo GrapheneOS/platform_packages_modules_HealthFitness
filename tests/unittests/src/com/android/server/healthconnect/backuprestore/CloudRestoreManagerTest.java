@@ -47,6 +47,7 @@ import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -68,7 +69,6 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.S
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.PriorityList;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import com.google.common.collect.ImmutableMap;
 

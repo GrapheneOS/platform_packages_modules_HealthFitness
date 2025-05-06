@@ -16,10 +16,11 @@
 
 package com.android.server.healthconnect.common.accesslog;
 
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createBloodPressureRecord;
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+
 import static com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper.PAGE_SIZE;
 import static com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper.ReadAccessLog;
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createBloodPressureRecord;
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -29,6 +30,7 @@ import android.health.connect.datatypes.BloodPressureRecord;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -42,7 +44,6 @@ import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import com.google.common.collect.ImmutableList;
 

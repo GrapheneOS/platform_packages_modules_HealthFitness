@@ -29,6 +29,7 @@ import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -42,7 +43,6 @@ import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.testing.storage;
+package android.healthconnect.testing.unittest;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.DELETE;
@@ -74,6 +74,7 @@ import java.util.UUID;
 import java.util.stream.IntStream;
 
 /** Util class provides shared functionality for db transaction testing. */
+// TODO(b/414747066): Remove all record builders and migrate callers to RecordInternalFactory.
 public final class TransactionTestUtils {
     private static final Set<String> NO_EXTRA_PERMS = Set.of();
     private static final String TEST_PACKAGE_NAME = "package.name";
@@ -309,11 +310,6 @@ public final class TransactionTestUtils {
             }
             return uuids.build();
         }
-    }
-
-    /** Returns the number of rows in the specified table. */
-    public long queryNumEntries(String tableName) {
-        return mTransactionManager.queryNumEntries(tableName);
     }
 
     /** Returns a valid UUID string. */
