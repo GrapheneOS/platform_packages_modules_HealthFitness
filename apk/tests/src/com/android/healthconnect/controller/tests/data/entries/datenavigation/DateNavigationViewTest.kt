@@ -17,7 +17,6 @@ package com.android.healthconnect.controller.tests.data.entries.datenavigation
 
 import android.content.Context
 import android.view.View
-import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Spinner
 import android.widget.TextView
@@ -51,7 +50,6 @@ class DateNavigationViewTest {
     private lateinit var previousDayButton: View
     private lateinit var nextDayButton: View
     private lateinit var datePickerSpinner: Spinner
-    private lateinit var disabledSpinner: TextView
 
     private lateinit var context: Context
     private val dateChangedListener =
@@ -76,7 +74,6 @@ class DateNavigationViewTest {
         context.setLocale(locale)
         dateNavigationView =
             DateNavigationView(context = context, attrs = null, timeSource = timeSource)
-        disabledSpinner = dateNavigationView.findViewById(R.id.disabled_spinner)
         datePickerSpinner = dateNavigationView.findViewById(R.id.date_picker_spinner) as Spinner
         previousDayButton = dateNavigationView.findViewById(R.id.navigation_previous_day)
         nextDayButton = dateNavigationView.findViewById(R.id.navigation_next_day)
@@ -329,11 +326,10 @@ class DateNavigationViewTest {
     @Test
     fun disableDateNavigationView_disablesCorrectly() {
         dateNavigationView.setDate(NOW.minus(Duration.ofDays(1)))
-        dateNavigationView.disableDateNavigationView(isEnabled = false, text = "Yesterday")
+        dateNavigationView.setActive(isEnabled = false)
 
         assertSpinnerView("Yesterday")
-        assertThat(datePickerSpinner.visibility).isEqualTo(GONE)
-        assertThat(disabledSpinner.visibility).isEqualTo(VISIBLE)
+        assertThat(datePickerSpinner.isEnabled).isFalse()
         assertThat(nextDayButton.isEnabled).isFalse()
         assertThat(previousDayButton.isEnabled).isFalse()
     }

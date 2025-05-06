@@ -34,20 +34,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <Spinner
-        android:id="@+id/date_picker_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/navigation_selected_day"
-        style="?attr/spinnerStyle"
-        />
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/navigation_next_day"
         android:layout_width="wrap_content"
@@ -61,33 +47,27 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
+        android:id="@+id/date_picker_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constrainedWidth="true"
         android:layout_centerInParent="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/navigation_next_day"
-        app:layout_constraintStart_toStartOf="@+id/navigation_previous_day"
+        app:layout_constraintEnd_toStartOf="@+id/navigation_next_day"
+        app:layout_constraintStart_toEndOf="@+id/navigation_previous_day"
         app:layout_constraintTop_toTopOf="parent"
         android:layoutDirection="locale"
         android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/disabled_spinner"
-            style="?attr/disabledSpinner"
-            android:importantForAccessibility="no"
+        <Spinner
+            android:id="@+id/date_picker_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:spinnerMode="dropdown"
             android:contentDescription="@string/navigation_selected_day"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
-            android:textAlignment="center" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            style="?attr/spinnerStyle" />
+    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

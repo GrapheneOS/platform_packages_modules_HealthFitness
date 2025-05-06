@@ -254,12 +254,12 @@
     <!-- END REGION -->
 
     <style name="Widget.HealthConnect.CalendarSpinner" parent="android:style/Widget.Material.Spinner">
-        <item name="android:background">@drawable/settingslib_spinner_background</item>
-        <item name="android:popupBackground">@drawable/settingslib_spinner_dropdown_background
+        <item name="android:background">@drawable/spinner_custom_background</item>
+        <item name="android:popupBackground">@drawable/spinner_dropdown_background
         </item>
         <item name="android:paddingStart">@dimen/spacing_small</item>
         <item name="android:paddingEnd">@dimen/spacing_xlarge</item>
-        <item name="android:textColor">@color/settingslib_spinner_title_color</item>
+        <item name="android:textColor">@color/spinner_custom_text_color</item>
         <item name="android:textAppearance">?attr/textAppearanceLabel</item>
         <item name="android:dropDownVerticalOffset">@dimen/button_size</item>
     </style>
