@@ -43,6 +43,7 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry.ReverseS
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SeriesDataEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SessionHeader
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SleepSessionEntry
+import com.android.healthconnect.controller.data.entries.MarginItemDecoration
 import com.android.healthconnect.controller.data.entries.PlannedExerciseSessionItemViewBinder
 import com.android.healthconnect.controller.data.entries.SeriesDataItemViewBinder
 import com.android.healthconnect.controller.data.entries.SleepSessionItemViewBinder
@@ -149,8 +150,10 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
                 ?: throw IllegalArgumentException("SHOW_DATA_ORIGIN_KEY can't be null!")
         errorView = view.findViewById(R.id.error_view)
         loadingView = view.findViewById(R.id.loading)
+        val isExpressiveThemeEnabled = SettingsThemeHelper.isExpressiveTheme(requireContext())
+
         detailsAdapter =
-            if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+            if (isExpressiveThemeEnabled) {
                 getExpressiveEntriesAdapter()
             } else {
                 getEntriesAdapter()
@@ -160,6 +163,9 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
             view.findViewById<RecyclerView?>(R.id.data_entries_list).apply {
                 layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
                 adapter = detailsAdapter
+                if (isExpressiveThemeEnabled) {
+                    addItemDecoration(MarginItemDecoration)
+                }
             }
         viewModel.loadEntryData(permissionType, entryId, showDataOrigin)
         setupSharedMenu(viewLifecycleOwner, logger)
