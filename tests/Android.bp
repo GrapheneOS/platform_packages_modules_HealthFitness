@@ -111,6 +111,7 @@ android_test {
     ],
     static_libs: [
         "TestParameterInjector",
+        "compatibility-device-util-axt",
         "service-healthfitness.impl",
         "framework-healthfitness.impl",
         "healthfitness-aconfig-flags-lib",
@@ -123,8 +124,6 @@ android_test {
         "truth",
         "services.core",
         "androidx.test.ext.truth",
-        "cts-healthconnect-utils",
-        "cts-healthconnect-phr-lib",
         "platform-parametric-runner-lib",
         "framework-annotations-lib",
         "guava-android-testlib", // For EqualsTester
