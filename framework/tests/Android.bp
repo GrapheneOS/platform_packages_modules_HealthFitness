@@ -68,6 +68,8 @@ android_test {
         "framework-healthfitness.impl",
         "healthfitness-aconfig-flags-lib",
         "healthfitness-aconfig-flags-helper",
+        "healthfitness-testing-shared",
+        "healthfitness-testing-unittest",
         "flag-junit",
         "androidx.test.runner",
         "mockito-target-extended-minus-junit4",

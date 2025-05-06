@@ -16,14 +16,16 @@
 
 package com.android.server.healthconnect.common.jobs;
 
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+
 import static com.android.server.healthconnect.fitness.recordhelpers.StepsRecordHelper.STEPS_TABLE_NAME;
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -37,7 +39,6 @@ import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;

@@ -19,8 +19,7 @@ package com.android.server.healthconnect.fitness.aggregation;
 import static android.health.connect.HealthDataCategory.ACTIVITY;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_READ;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
-
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -41,6 +40,7 @@ import android.health.connect.accesslog.AccessLog;
 import android.health.connect.aidl.AggregateDataRequestParcel;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.os.UserHandle;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
@@ -61,7 +61,6 @@ import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;

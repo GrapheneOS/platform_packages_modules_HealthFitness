@@ -21,12 +21,12 @@ import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXP
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_UNKNOWN;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_UNSPECIFIED;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_STARTED;
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
 
 import static com.android.server.healthconnect.exportimport.ExportManager.LOCAL_EXPORT_DATABASE_FILE_NAME;
 import static com.android.server.healthconnect.exportimport.ExportManager.LOCAL_EXPORT_DIR_NAME;
 import static com.android.server.healthconnect.exportimport.ExportManager.LOCAL_EXPORT_ZIP_FILE_NAME;
 import static com.android.server.healthconnect.testing.TestUtils.queryNumEntries;
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -48,6 +48,7 @@ import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.exportimport.ScheduledExportStatus;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.net.Uri;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
@@ -68,7 +69,6 @@ import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
 import com.android.server.healthconnect.testing.storage.PhrTestUtils;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 import com.android.server.healthconnect.utils.FilesUtil;
 
 import org.junit.After;

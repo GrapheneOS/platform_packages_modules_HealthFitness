@@ -76,6 +76,7 @@ import android.health.connect.datatypes.FhirVersion;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.net.Uri;
 import android.os.Process;
 import android.os.UserHandle;
@@ -100,7 +101,6 @@ import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
 import com.android.server.healthconnect.testing.fakes.FakeTimeSource;
 import com.android.server.healthconnect.testing.storage.PhrTestUtils;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.After;
 import org.junit.Before;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.health.connect.testing;
+package android.healthconnect.testing.unittest;
 
 import android.health.connect.datatypes.ExerciseSegmentType;
 import android.health.connect.datatypes.ExerciseSessionType;

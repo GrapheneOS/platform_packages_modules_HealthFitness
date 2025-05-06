@@ -16,7 +16,7 @@
 
 package com.android.server.healthconnect.fitness;
 
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -24,6 +24,7 @@ import static org.mockito.Mockito.mock;
 
 import android.content.Context;
 import android.health.connect.accesslog.AccessLog;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.os.UserHandle;
 import android.util.ArrayMap;
 
@@ -39,7 +40,6 @@ import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;

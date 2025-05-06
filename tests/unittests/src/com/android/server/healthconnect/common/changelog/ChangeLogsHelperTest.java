@@ -22,6 +22,8 @@ import static android.health.connect.Constants.UPSERT;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createBloodPressureRecord;
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
@@ -32,8 +34,6 @@ import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.UUIDS_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.bytesToUuids;
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createBloodPressureRecord;
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -48,6 +48,7 @@ import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.BloodPressureRecord;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.StepsRecord;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -64,7 +65,6 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;

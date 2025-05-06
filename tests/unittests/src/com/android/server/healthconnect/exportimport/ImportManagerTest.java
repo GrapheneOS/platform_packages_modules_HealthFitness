@@ -20,6 +20,8 @@ import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR
 import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR_VERSION_MISMATCH;
 import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR_WRONG_FILE;
 import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_STARTED;
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createBloodPressureRecord;
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
 
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_IMPORT_COMPLETE;
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_IMPORT_IN_PROGRESS;
@@ -28,8 +30,6 @@ import static com.android.server.healthconnect.exportimport.ExportImportNotifica
 import static com.android.server.healthconnect.exportimport.ExportManager.LOCAL_EXPORT_DATABASE_FILE_NAME;
 import static com.android.server.healthconnect.exportimport.ImportManager.IMPORT_DATABASE_DIR_NAME;
 import static com.android.server.healthconnect.exportimport.ImportManager.IMPORT_DATABASE_FILE_NAME;
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createBloodPressureRecord;
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -46,6 +46,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.net.Uri;
 import android.os.UserHandle;
 import android.platform.test.annotations.EnableFlags;
@@ -72,7 +73,6 @@ import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.testing.TestUtils;
 import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
