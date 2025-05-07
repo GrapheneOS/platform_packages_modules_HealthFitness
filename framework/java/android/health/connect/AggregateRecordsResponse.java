@@ -53,7 +53,7 @@ public final class AggregateRecordsResponse<T> {
     }
 
     /** @hide */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @Nullable
     public static <U> ZoneOffset getZoneOffsetInternal(
             @NonNull AggregationType<U> aggregationType,
             Map<AggregationType<U>, AggregateResult<U>> mAggregateResults) {
@@ -84,7 +84,7 @@ public final class AggregateRecordsResponse<T> {
     }
 
     /** @hide */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @Nullable
     public static <U> U getInternal(
             @NonNull AggregationType<U> aggregationType,
             Map<AggregationType<U>, AggregateResult<U>> mAggregateResults) {
