@@ -329,6 +329,27 @@ class DataEntryDetailsFragmentTest {
     }
 
     @Test
+    fun dataEntriesDetailsInit_withSegmentDetails_showsItem_showsDetails() {
+        val list = buildList {
+            add(getFormattedExerciseSession(showSession = false))
+            add(getFormattedExerciseSegment())
+        }
+        whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
+
+        launchFragment<DataEntryDetailsFragment>(
+            DataEntryDetailsFragment.createBundle(
+                permissionType = EXERCISE,
+                entryId = "1",
+                showDataOrigin = true,
+            )
+        )
+
+        onView(withText("• Set 0")).check(matches(isDisplayed()))
+        onView(withText("• 5 kg")).check(matches(isDisplayed()))
+        onView(withText("• RPE: 4")).check(matches(isDisplayed()))
+    }
+
+    @Test
     fun dataEntriesDetailsInit_withRouteDetails_showsMapView() {
         val list = buildList { add(getFormattedExerciseSession(showSession = true)) }
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
@@ -583,6 +604,22 @@ class DataEntryDetailsFragmentTest {
                 } else {
                     null
                 },
+        )
+    }
+
+    private fun getFormattedExerciseSegment(): FormattedEntry.FormattedSegment {
+        return FormattedEntry.FormattedSegment(
+            uuid = "1",
+            header = "07:06 • TEST_APP_NAME",
+            headerA11y = "07:06 • TEST_APP_NAME",
+            title = "Stretching",
+            titleA11y = "Stretching",
+            setIndex = "Set 0",
+            setIndexA11y = "Set 0",
+            weight = "5 kg",
+            weightA11y = "5 kilograms",
+            rpe = "RPE: 4",
+            rpeA11y = "Rate of perceived exertion: 4",
         )
     }
 
