@@ -14,13 +14,16 @@
 package com.android.healthconnect.testapps.toolbox
 
 import android.content.Context
+import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.WeightRecord
 import android.health.connect.datatypes.units.Mass
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.testapps.toolbox.read.controller.DataEntriesLoader
+import com.android.healthconnect.testapps.toolbox.read.controller.ILoadAggregation
 import com.android.healthconnect.testapps.toolbox.read.controller.LoadEntriesInput
+import com.android.healthconnect.testapps.toolbox.read.dataentries.formatters.DataEntryFormatter
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils
 import com.android.healthconnect.testapps.toolbox.viewmodels.DataState
 import com.android.healthconnect.testapps.toolbox.viewmodels.LoadEntriesViewModel
@@ -48,6 +51,9 @@ import org.mockito.kotlin.stub
 class LoadEntriesViewModelTest {
 
     private val mockLoadEntries = mock<DataEntriesLoader>()
+    private val mockHealthConnectManager = mock<HealthConnectManager>()
+    private val mockLoadAggregation = mock<ILoadAggregation>()
+    private val mockDataEntryFormatter = mock<DataEntryFormatter>()
     private lateinit var viewModel: LoadEntriesViewModel
     private val testDispatcher = StandardTestDispatcher()
     private val dataType = Constants.HealthPermissionType.WEIGHT
@@ -59,7 +65,15 @@ class LoadEntriesViewModelTest {
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = LoadEntriesViewModel(mockLoadEntries)
+        val context: Context = ApplicationProvider.getApplicationContext()
+        viewModel =
+            LoadEntriesViewModel(
+                mockLoadEntries,
+                mockHealthConnectManager,
+                mockLoadAggregation,
+                mockDataEntryFormatter,
+                context,
+            )
     }
 
     @After
@@ -114,7 +128,6 @@ class LoadEntriesViewModelTest {
             val currentRecordDataState = viewModel.entriesState.first()
 
             assertThat(currentRecordDataState is DataState.Success).isTrue()
-            assertThat((currentRecordDataState as DataState.Success).records)
-                .containsExactly(weightRecord1, weightRecord2)
+            assertThat((currentRecordDataState as DataState.Success).entries).hasSize(2)
         }
 }

@@ -34,7 +34,9 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB_N
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BOOLEAN_FALSE_VALUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BOOLEAN_TRUE_VALUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorUUID;
@@ -57,7 +59,9 @@ import android.util.ArraySet;
 import android.util.Pair;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.RecordReadTableRequest;
 import com.android.server.healthconnect.fitness.RecordUpsertTableRequest;
@@ -92,7 +96,8 @@ public final class ExerciseSessionRecordHelper
         extends IntervalRecordHelper<ExerciseSessionRecordInternal> {
     private static final String TAG = "ExerciseSessionRecordHelper";
 
-    static final String EXERCISE_SESSION_RECORD_TABLE_NAME = "exercise_session_record_table";
+    @VisibleForTesting
+    public static final String EXERCISE_SESSION_RECORD_TABLE_NAME = "exercise_session_record_table";
 
     // Exercise Session columns names
     private static final String NOTES_COLUMN_NAME = "notes";
@@ -100,7 +105,8 @@ public final class ExerciseSessionRecordHelper
     private static final String TITLE_COLUMN_NAME = "title";
     private static final String HAS_ROUTE_COLUMN_NAME = "has_route";
     static final String PLANNED_EXERCISE_SESSION_ID_COLUMN_NAME = "planned_exercise_session_id";
-
+    public static final String RATE_OF_PERCEIVED_EXERTION_COLUMN_NAME =
+            "rate_of_perceived_exertion";
     private static final int ROUTE_READ_ACCESS_TYPE_NONE = 0;
     private static final int ROUTE_READ_ACCESS_TYPE_OWN = 1;
     private static final int ROUTE_READ_ACCESS_TYPE_ALL = 2;
@@ -127,6 +133,12 @@ public final class ExerciseSessionRecordHelper
         if (!isNullValue(cursor, PLANNED_EXERCISE_SESSION_ID_COLUMN_NAME)) {
             exerciseSessionRecord.setPlannedExerciseSessionId(
                     StorageUtils.getCursorUUID(cursor, PLANNED_EXERCISE_SESSION_ID_COLUMN_NAME));
+        }
+
+        if (AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()
+                && !isNullValue(cursor, RATE_OF_PERCEIVED_EXERTION_COLUMN_NAME)) {
+            exerciseSessionRecord.setRateOfPerceivedExertion(
+                    (float) getCursorDouble(cursor, RATE_OF_PERCEIVED_EXERTION_COLUMN_NAME));
         }
 
         // The table might contain duplicates because of 2 left joins, use sets to remove them.
@@ -186,6 +198,11 @@ public final class ExerciseSessionRecordHelper
                             exerciseSessionRecord.getPlannedExerciseSessionId()));
         } else {
             contentValues.putNull(PLANNED_EXERCISE_SESSION_ID_COLUMN_NAME);
+        }
+        if (AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
+            contentValues.put(
+                    RATE_OF_PERCEIVED_EXERTION_COLUMN_NAME,
+                    exerciseSessionRecord.getRateOfPerceivedExertion());
         }
     }
 
@@ -423,6 +440,18 @@ public final class ExerciseSessionRecordHelper
                 PLANNED_EXERCISE_SESSION_RECORD_TABLE_NAME,
                 UUID_COLUMN_NAME);
         return result;
+    }
+
+    /**
+     * Returns an {@link AlterTableRequest} to add the rate of perceived exertion column to the
+     * exercise segments table.
+     *
+     * @return AlterTableRequest to add the rate of perceived exertion column
+     */
+    public static AlterTableRequest getAlterTableRequestForRateOfPerceivedExertion() {
+        List<Pair<String, String>> columnInfo = new ArrayList<>();
+        columnInfo.add(new Pair<>(RATE_OF_PERCEIVED_EXERTION_COLUMN_NAME, REAL));
+        return new AlterTableRequest(EXERCISE_SESSION_RECORD_TABLE_NAME, columnInfo);
     }
 
     @Override

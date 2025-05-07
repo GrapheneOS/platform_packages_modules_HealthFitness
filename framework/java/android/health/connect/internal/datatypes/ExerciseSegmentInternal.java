@@ -26,6 +26,7 @@ import android.health.connect.datatypes.ExerciseSegmentType;
 import android.health.connect.datatypes.units.Mass;
 import android.os.Parcel;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 
@@ -63,7 +64,7 @@ public class ExerciseSegmentInternal {
                         .setEndTime(parcel.readLong())
                         .setRepetitionsCount(parcel.readInt())
                         .setSegmentType(parcel.readInt());
-        if (Flags.exerciseSegmentImprovements()) {
+        if (AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
             boolean weightIsSet = parcel.readBoolean();
             if (weightIsSet) {
                 segment.setWeightGrams(parcel.readDouble());
@@ -111,7 +112,7 @@ public class ExerciseSegmentInternal {
         parcel.writeLong(mEndTime);
         parcel.writeInt(mRepetitionsCount);
         parcel.writeInt(mSegmentType);
-        if (Flags.exerciseSegmentImprovements()) {
+        if (AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
             boolean weightIsSet = mWeightGrams != null;
             parcel.writeBoolean(weightIsSet);
             if (weightIsSet) {
@@ -131,12 +132,19 @@ public class ExerciseSegmentInternal {
                         Instant.ofEpochMilli(mEndTime),
                         getSegmentType());
         builder.setRepetitionsCount(mRepetitionsCount);
-        if (Flags.exerciseSegmentImprovements()) {
+        // Check flag directly as well as the helper method to remove lint check errors that aren't
+        // able to detect that this flag is checked in the helper method.
+        if (Flags.exerciseSegmentImprovements()
+                && AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
             if (mWeightGrams != null) {
                 builder.setWeight(Mass.fromGrams(mWeightGrams));
             }
-            builder.setSetIndex(mSetIndex);
-            builder.setRateOfPerceivedExertion(mRateOfPerceivedExertion);
+            if (mSetIndex != DEFAULT_INT) {
+                builder.setSetIndex(mSetIndex);
+            }
+            if (mRateOfPerceivedExertion != DEFAULT_FLOAT) {
+                builder.setRateOfPerceivedExertion(mRateOfPerceivedExertion);
+            }
         }
         return builder.buildWithoutValidation();
     }

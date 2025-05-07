@@ -29,7 +29,7 @@ import android.health.connect.datatypes.units.Mass;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
 
-import com.android.healthfitness.flags.Flags;
+import com.android.healthfitness.flags.AconfigFlagHelper;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -236,7 +236,7 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
                         .setEndTime(getEndTime().toEpochMilli())
                         .setSegmentType(getSegmentType())
                         .setRepetitionsCount(getRepetitionsCount());
-        if (Flags.exerciseSegmentImprovements()) {
+        if (AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
             if (getWeight() != null) {
                 segment.setWeightGrams(getWeight().getInGrams());
             }

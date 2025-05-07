@@ -16,14 +16,19 @@
 
 package android.health.connect.datatypes;
 
+import static android.health.connect.Constants.DEFAULT_FLOAT;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION;
 import static android.health.connect.datatypes.validation.ValidationUtils.sortAndValidateTimeIntervalHolders;
+
+import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS;
 
 import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.datatypes.validation.ExerciseSessionTypesValidation;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
+
+import com.android.healthfitness.flags.Flags;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -70,6 +75,8 @@ public final class ExerciseSessionRecord extends IntervalRecord {
     private final List<ExerciseLap> mLaps;
     private final String mPlannedExerciseSessionId;
 
+    private final float mRateOfPerceivedExertion;
+
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}.
      * @param startTime Start time of this activity
@@ -97,6 +104,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             @NonNull List<ExerciseSegment> segments,
             @NonNull List<ExerciseLap> laps,
             @Nullable String plannedExerciseSessionId,
+            float rateOfPerceivedExertion,
             boolean skipValidation) {
         super(
                 metadata,
@@ -130,6 +138,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
                         (List<ExerciseLap>)
                                 sortAndValidateTimeIntervalHolders(startTime, endTime, laps));
         mPlannedExerciseSessionId = plannedExerciseSessionId;
+        mRateOfPerceivedExertion = rateOfPerceivedExertion;
     }
 
     /** Returns exerciseType of this session. */
@@ -189,6 +198,38 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         return mPlannedExerciseSessionId;
     }
 
+    /**
+     * Gets the rate of perceived exertion (RPE) for this exercise session.
+     *
+     * <p>Values correspond to the Borg CR10 RPE scale and must be in the range 0 to 10 inclusive.
+     * 0: No exertion (at rest) 1: Very light 2-3: Light 4-5: Moderate 6-7: Hard 8-9: Very hard 10:
+     * Maximum effort
+     *
+     * <p>Use {@link #hasRateOfPerceivedExertion} to check whether RPE exists for this session.
+     *
+     * @throws IllegalStateException if rate of perceived exertion is not set.
+     * @hide
+     */
+    @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+    public float getRateOfPerceivedExertion() {
+        if (mRateOfPerceivedExertion == DEFAULT_FLOAT) {
+            throw new IllegalStateException(
+                    "Rate of perceived exertion is not set. Use `hasRateOfPerceivedExertion` to"
+                            + " check whether RPE exists for this session.");
+        }
+        return mRateOfPerceivedExertion;
+    }
+
+    /**
+     * Returns true if this session has an associated rate of perceived exertion.
+     *
+     * @hide
+     */
+    @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+    public boolean hasRateOfPerceivedExertion() {
+        return mRateOfPerceivedExertion != DEFAULT_FLOAT;
+    }
+
     @Override
     public boolean equals(@Nullable Object o) {
         if (this == o) return true;
@@ -201,11 +242,14 @@ public final class ExerciseSessionRecord extends IntervalRecord {
                 && Objects.equals(getRoute(), that.getRoute())
                 && Objects.equals(getSegments(), that.getSegments())
                 && Objects.equals(getPlannedExerciseSessionId(), that.getPlannedExerciseSessionId())
-                && Objects.equals(getLaps(), that.getLaps());
+                && Objects.equals(getLaps(), that.getLaps())
+                // RPE field is accessed directly to avoid an exception in the unset state.
+                && mRateOfPerceivedExertion == that.mRateOfPerceivedExertion;
     }
 
     @Override
     public int hashCode() {
+        // RPE field is accessed directly to avoid an exception in the unset state.
         return Objects.hash(
                 super.hashCode(),
                 getExerciseType(),
@@ -214,7 +258,8 @@ public final class ExerciseSessionRecord extends IntervalRecord {
                 getRoute(),
                 getSegments(),
                 getPlannedExerciseSessionId(),
-                getLaps());
+                getLaps(),
+                mRateOfPerceivedExertion);
     }
 
     /** Builder class for {@link ExerciseSessionRecord} */
@@ -232,6 +277,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         private final List<ExerciseLap> mLaps;
         private boolean mHasRoute;
         @Nullable private String mPlannedExerciseSessionId;
+        private float mRateOfPerceivedExertion = DEFAULT_FLOAT;
 
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
@@ -372,6 +418,42 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         }
 
         /**
+         * Sets rate of perceived exertion (RPE) used during the exercise session.
+         *
+         * <p>Values correspond to the Borg CR10 RPE scale and must be in the range 0 to 10
+         * inclusive. 0: No exertion (at rest) 1: Very light 2-3: Light 4-5: Moderate 6-7: Hard 8-9:
+         * Very hard 10: Maximum effort
+         *
+         * <p>Returns builder instance with rate of perceived exertion set.
+         *
+         * @hide
+         */
+        @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+        @NonNull
+        public Builder setRateOfPerceivedExertion(float rateOfPerceivedExertion) {
+            if ((rateOfPerceivedExertion < 0 || rateOfPerceivedExertion > 10)) {
+                throw new IllegalArgumentException(
+                        "Rate of perceived exertion must be in the range 0 to 10 inclusive");
+            }
+            this.mRateOfPerceivedExertion = rateOfPerceivedExertion;
+            return this;
+        }
+
+        /**
+         * Clears the rate of perceived exertion for this exercise session.
+         *
+         * <p>Returns builder instance without rate of perceived exertion.
+         *
+         * @hide
+         */
+        @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+        @NonNull
+        public Builder clearRateOfPerceivedExertion() {
+            this.mRateOfPerceivedExertion = DEFAULT_FLOAT;
+            return this;
+        }
+
+        /**
          * @return Object of {@link ExerciseSessionRecord} without validating the values.
          * @hide
          */
@@ -391,6 +473,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
                     mSegments,
                     mLaps,
                     mPlannedExerciseSessionId,
+                    mRateOfPerceivedExertion,
                     true);
         }
 
@@ -411,6 +494,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
                     mSegments,
                     mLaps,
                     mPlannedExerciseSessionId,
+                    mRateOfPerceivedExertion,
                     false);
         }
     }
@@ -452,6 +536,11 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         recordInternal.setExerciseType(mExerciseType);
         if (mPlannedExerciseSessionId != null) {
             recordInternal.setPlannedExerciseSessionId(UUID.fromString(mPlannedExerciseSessionId));
+        }
+        if (Flags.exerciseSegmentImprovements()) {
+            if (hasRateOfPerceivedExertion()) {
+                recordInternal.setRateOfPerceivedExertion(getRateOfPerceivedExertion());
+            }
         }
         return recordInternal;
     }

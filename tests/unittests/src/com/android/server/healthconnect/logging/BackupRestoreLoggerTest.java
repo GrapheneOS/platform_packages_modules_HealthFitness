@@ -61,13 +61,15 @@ public class BackupRestoreLoggerTest {
         int backupTypeIncremental =
                 HEALTH_CONNECT_DATA_BACKUP_INVOKED__BACKUP_TYPE__DATA_BACKUP_TYPE_INCREMENTAL;
 
-        mBackupRestoreLogger.logDataBackupStatus(statusPartialBackup, backupTypeIncremental);
+        mBackupRestoreLogger.logDataBackupStatus(
+                statusPartialBackup, backupTypeIncremental, /*totalRecordCount*/ 50);
 
         verify(mHealthFitnessStatsLog, times(1))
                 .write(
                         eq(HEALTH_CONNECT_DATA_BACKUP_INVOKED),
                         eq(statusPartialBackup),
-                        eq(backupTypeIncremental));
+                        eq(backupTypeIncremental),
+                        eq(50));
     }
 
     @Test
@@ -76,7 +78,8 @@ public class BackupRestoreLoggerTest {
         int statusSettingsBackup =
                 HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_ERROR_COLLATION_FAILED;
 
-        mBackupRestoreLogger.logSettingsBackupStatus(statusSettingsBackup, 100, 2000);
+        mBackupRestoreLogger.logSettingsBackupStatus(
+                statusSettingsBackup, /*timeToSucceedOrFailMillis*/ 100, /*dataSize*/ 2000);
         verify(mHealthFitnessStatsLog, times(1))
                 .write(
                         eq(HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED),
@@ -91,13 +94,18 @@ public class BackupRestoreLoggerTest {
         int statusDataRestore =
                 HEALTH_CONNECT_DATA_RESTORE_INVOKED__STATUS__DATA_RESTORE_STATUS_ERROR_NONE;
 
-        mBackupRestoreLogger.logDataRestoreStatus(statusDataRestore, 100, 2000);
+        mBackupRestoreLogger.logDataRestoreStatus(
+                statusDataRestore,
+                /*timeToSucceedOrFailMillis*/ 100,
+                /*totalRecordCount*/ 50,
+                /*successfulRecordCount*/ 45);
         verify(mHealthFitnessStatsLog, times(1))
                 .write(
                         eq(HEALTH_CONNECT_DATA_RESTORE_INVOKED),
                         eq(statusDataRestore),
                         eq(100),
-                        eq(2000));
+                        eq(50),
+                        eq(45));
     }
 
     @Test
@@ -106,7 +114,8 @@ public class BackupRestoreLoggerTest {
         int statusSettingsRestore =
                 HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_ERROR_NONE;
 
-        mBackupRestoreLogger.logSettingsRestoreStatus(statusSettingsRestore, 100, 2000);
+        mBackupRestoreLogger.logSettingsRestoreStatus(
+                statusSettingsRestore, /*timeToSucceedOrFailMillis*/ 100, /*dataSize*/ 2000);
         verify(mHealthFitnessStatsLog, times(1))
                 .write(
                         eq(HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED),

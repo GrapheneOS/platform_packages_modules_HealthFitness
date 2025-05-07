@@ -16,9 +16,10 @@
 
 package com.android.server.healthconnect.storage;
 
-import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
+
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.server.healthconnect.storage.DatabaseTestUtils.assertColumnsExist;
@@ -37,6 +38,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSegmentRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper;
@@ -53,8 +55,8 @@ import java.util.List;
 public class DatabaseUpgradeHelperTest {
     private static final int NUM_OF_TABLES_AT_MIN_SUPPORTED_VERSION = 57;
     private static final int NUM_OF_TABLES_AT_MINDFULNESS_VERSION = 64;
-    private static final int NUM_OF_TABLES_IN_STAGING = 70;
-    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
+    private static final int NUM_OF_TABLES_IN_STAGING = 71;
+    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_NICOTINE_INTAKE;
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
@@ -117,6 +119,10 @@ public class DatabaseUpgradeHelperTest {
                         ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_WEIGHT_GRAMS,
                         ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_SET_INDEX,
                         ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_RATE_OF_PERCEIVED_EXERTION));
+        assertColumnsExist(
+                mSQLiteDatabase,
+                ExerciseSessionRecordHelper.EXERCISE_SESSION_RECORD_TABLE_NAME,
+                List.of(ExerciseSessionRecordHelper.RATE_OF_PERCEIVED_EXERTION_COLUMN_NAME));
 
         onUpgrade(mSQLiteDatabase, 0, DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS);
         assertColumnsExist(
@@ -126,7 +132,10 @@ public class DatabaseUpgradeHelperTest {
                         ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_WEIGHT_GRAMS,
                         ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_SET_INDEX,
                         ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_RATE_OF_PERCEIVED_EXERTION));
-        assertDbSchemaUpToDate(mSQLiteDatabase);
+        assertColumnsExist(
+                mSQLiteDatabase,
+                ExerciseSessionRecordHelper.EXERCISE_SESSION_RECORD_TABLE_NAME,
+                List.of(ExerciseSessionRecordHelper.RATE_OF_PERCEIVED_EXERTION_COLUMN_NAME));
     }
 
     /**

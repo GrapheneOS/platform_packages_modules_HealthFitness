@@ -64,7 +64,7 @@ class DataTypeDetailsScreenTest {
 
         composeTestRule.onNodeWithTag("loadingBar").assertExists()
         composeTestRule.onNodeWithTag("errorMessage").assertDoesNotExist()
-        composeTestRule.onNodeWithTag("recordList").assertDoesNotExist()
+        composeTestRule.onNodeWithTag("entriesList").assertDoesNotExist()
     }
 
     @Test
@@ -85,7 +85,7 @@ class DataTypeDetailsScreenTest {
 
         composeTestRule.onNodeWithTag("loadingBar").assertDoesNotExist()
         composeTestRule.onNodeWithTag("errorMessage").assertExists()
-        composeTestRule.onNodeWithTag("recordList").assertDoesNotExist()
+        composeTestRule.onNodeWithTag("entriesList").assertDoesNotExist()
         composeTestRule.onNodeWithText(errorMessage).assertExists()
     }
 
@@ -106,6 +106,6 @@ class DataTypeDetailsScreenTest {
 
         composeTestRule.onNodeWithTag("loadingBar").assertDoesNotExist()
         composeTestRule.onNodeWithTag("errorMessage").assertDoesNotExist()
-        composeTestRule.onNodeWithTag("recordList").assertExists()
+        composeTestRule.onNodeWithTag("entriesList").assertExists()
     }
 }
