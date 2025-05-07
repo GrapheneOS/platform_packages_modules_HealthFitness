@@ -45,6 +45,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getListOfHexStrings;
 import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
@@ -334,11 +335,20 @@ public final class MedicalResourceHelper {
      */
     public List<MedicalResource> readMedicalResourcesByIdsWithoutPermissionChecks(
             List<MedicalResourceId> medicalResourceIds) throws SQLiteException {
+        return readMedicalResourcesByIds(medicalResourceIds, /* appId= */ null);
+    }
+
+    /**
+     * Reads the {@link MedicalResource}s stored in the HealthConnect database that belong to the
+     * given appId. Returns all resources if appId is null
+     */
+    private List<MedicalResource> readMedicalResourcesByIds(
+            List<MedicalResourceId> medicalResourceIds, @Nullable Long appId)
+            throws SQLiteException {
         if (medicalResourceIds.isEmpty()) {
             return List.of();
         }
-        Pair<String, String[]> paramsAndArgs =
-                makeParametersAndArgs(medicalResourceIds, /* appId= */ null);
+        Pair<String, String[]> paramsAndArgs = makeParametersAndArgs(medicalResourceIds, appId);
         String sql =
                 "SELECT "
                         + getMedicalResourceColumns()
@@ -1216,16 +1226,7 @@ public final class MedicalResourceHelper {
      */
     public void deleteMedicalResourcesByIdsWithoutPermissionChecks(
             List<MedicalResourceId> medicalResourceIds) {
-        if (medicalResourceIds.isEmpty()) {
-            throw new IllegalArgumentException("Nothing to delete specified");
-        }
-        Pair<String, String[]> paramsAndArgs =
-                makeParametersAndArgs(medicalResourceIds, /* appId= */ null);
-        String whereClause = DELETE_ON_IDS_WHERE_CLAUSE + paramsAndArgs.first + ")";
-        mTransactionManager.runAsTransaction(
-                db -> {
-                    db.delete(MEDICAL_RESOURCE_TABLE_NAME, whereClause, paramsAndArgs.second);
-                });
+        deleteMedicalResourcesByIds(medicalResourceIds, /* callingPackageName= */ null);
     }
 
     /**
@@ -1241,11 +1242,26 @@ public final class MedicalResourceHelper {
     public void deleteMedicalResourcesByIdsWithPermissionChecks(
             List<MedicalResourceId> medicalResourceIds, String callingPackageName)
             throws SQLiteException {
+        deleteMedicalResourcesByIds(medicalResourceIds, requireNonNull(callingPackageName));
+    }
 
-        long appId = mAppInfoHelper.getAppInfoId(callingPackageName);
-        if (appId == Constants.DEFAULT_LONG) {
-            throw new IllegalArgumentException(
-                    "Deletion not permitted as app has inserted no data.");
+    /**
+     * @param callingPackageName is used to check if the requested resources were written by that
+     *     package name, and won't be deleted if they are not. Also used for generating access logs.
+     *     If null, all given resource ids will be deleted without ownership checks, and no access
+     *     logs will be generated.
+     */
+    private void deleteMedicalResourcesByIds(
+            List<MedicalResourceId> medicalResourceIds, @Nullable String callingPackageName) {
+        Long appId;
+        if (callingPackageName != null) {
+            appId = mAppInfoHelper.getAppInfoId(callingPackageName);
+            if (appId == Constants.DEFAULT_LONG) {
+                throw new IllegalArgumentException(
+                        "Deletion not permitted as app has inserted no data.");
+            }
+        } else {
+            appId = null;
         }
 
         Pair<String, String[]> paramsAndArgs = makeParametersAndArgs(medicalResourceIds, appId);
@@ -1254,26 +1270,83 @@ public final class MedicalResourceHelper {
 
         mTransactionManager.runAsTransaction(
                 db -> {
-                    // Getting the distinct resource types that will be deleted, to add
-                    // access logs.
-                    Set<Integer> resourcesTypes =
-                            readMedicalResourcesTypes(db, medicalResourceIds, appId);
+                    if (callingPackageName != null) {
+                        // Getting the distinct resource types that will be deleted, to add
+                        // access logs.
+                        Set<Integer> resourcesTypes =
+                                readMedicalResourcesTypes(db, medicalResourceIds, appId);
+
+                        if (!resourcesTypes.isEmpty()) {
+                            mAccessLogsHelper.addAccessLog(
+                                    db,
+                                    callingPackageName,
+                                    resourcesTypes,
+                                    OPERATION_TYPE_DELETE,
+                                    /* accessedMedicalDataSource= */ false);
+                        }
+                    }
+
+                    if (isPhrChangeLogsEnabled()) {
+                        generateDeletionChangeLogsForMedicalResources(
+                                db, medicalResourceIds, appId);
+                    }
 
                     db.delete(MEDICAL_RESOURCE_TABLE_NAME, whereClause, args);
-
-                    if (!resourcesTypes.isEmpty()) {
-                        mAccessLogsHelper.addAccessLog(
-                                db,
-                                callingPackageName,
-                                resourcesTypes,
-                                OPERATION_TYPE_DELETE,
-                                /* accessedMedicalDataSource= */ false);
-                    }
                 });
     }
 
+    private void generateDeletionChangeLogsForMedicalResources(
+            SQLiteDatabase db, List<MedicalResourceId> medicalResourceIds, @Nullable Long appId) {
+        var resourcesToDelete = readMedicalResourcesByIds(medicalResourceIds, appId);
+        var deletionChangeLogs = ChangeLogsHelper.ChangeLogsTableRequests.ofDeletion(Instant.now());
+
+        if (appId == null) {
+            // If we're not deleting resources of a specific app (for example deleting from the UI),
+            // we need to check the app ids of the data sources the resources belong to.
+            List<UUID> dataSourceIds =
+                    resourcesToDelete.stream()
+                            .map(MedicalResource::getDataSourceId)
+                            .map(UUID::fromString)
+                            .distinct()
+                            .toList();
+            Map<String, Long> dataSourcesToAppIdsMap =
+                    mMedicalDataSourceHelper
+                            .getMedicalDataSourcesByIdsWithoutPermissionChecks(dataSourceIds)
+                            .stream()
+                            .collect(
+                                    toMap(
+                                            MedicalDataSource::getId,
+                                            dataSource ->
+                                                    mAppInfoHelper.getAppInfoId(
+                                                            dataSource.getPackageName())));
+            resourcesToDelete.forEach(
+                    resource -> {
+                        var resourceAppId = dataSourcesToAppIdsMap.get(resource.getDataSourceId());
+                        if (resourceAppId == null) {
+                            Slog.e(
+                                    TAG,
+                                    "No app id found for resource, it will be skipped: "
+                                            + resource);
+                            return;
+                        }
+                        deletionChangeLogs.addMedicalResourceInfo(
+                                resource.getType(), resourceAppId, resource.getId());
+                    });
+        } else {
+            resourcesToDelete.forEach(
+                    resource ->
+                            deletionChangeLogs.addMedicalResourceInfo(
+                                    resource.getType(), appId, resource.getId()));
+        }
+
+        for (UpsertTableRequest insertRequestsForChangeLog :
+                deletionChangeLogs.getUpsertTableRequests()) {
+            mTransactionManager.insertOrThrowOnConflict(db, insertRequestsForChangeLog);
+        }
+    }
+
     private Set<Integer> readMedicalResourcesTypes(
-            SQLiteDatabase db, List<MedicalResourceId> medicalResourceIds, long appId) {
+            SQLiteDatabase db, List<MedicalResourceId> medicalResourceIds, @Nullable Long appId) {
         Pair<String, String[]> paramsAndArgs = makeParametersAndArgs(medicalResourceIds, appId);
         String sql =
                 "SELECT DISTINCT "

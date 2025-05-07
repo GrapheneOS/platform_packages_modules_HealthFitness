@@ -22,8 +22,10 @@ import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESS
 
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.OPERATION_TYPE_COLUMN_NAME;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.UUIDS_COLUMN_NAME;
+import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.toMedicalResourceIdList;
 import static com.android.server.healthconnect.common.metadata.AppInfoHelper.PACKAGE_COLUMN_NAME;
 import static com.android.server.healthconnect.common.metadata.AppInfoHelper.UNIQUE_COLUMN_INFO;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorBlob;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorUUIDList;
 import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
@@ -33,6 +35,7 @@ import static java.time.Duration.ofMinutes;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.connect.MedicalResourceId;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
@@ -295,7 +298,7 @@ public final class TransactionTestUtils {
                 new UpsertTableRequest(ChangeLogsHelper.TABLE_NAME, contentValues));
     }
 
-    /** Retrieves all delete change logs from change log table. */
+    /** Retrieves all delete record change logs from change log table. */
     public List<UUID> getAllDeletedUuids() {
         WhereClauses whereClauses =
                 new WhereClauses(AND).addWhereEqualsClause(OPERATION_TYPE_COLUMN_NAME, DELETE + "");
@@ -307,6 +310,22 @@ public final class TransactionTestUtils {
                 uuids.addAll(getCursorUUIDList(cursor, UUIDS_COLUMN_NAME));
             }
             return uuids.build();
+        }
+    }
+
+    /** Retrieves all delete medical resource change logs from change log table. */
+    public List<MedicalResourceId> getAllDeletedMedicalResourceIds() {
+        WhereClauses whereClauses =
+                new WhereClauses(AND).addWhereEqualsClause(OPERATION_TYPE_COLUMN_NAME, DELETE + "");
+        ReadTableRequest readChangeLogsRequest =
+                new ReadTableRequest(ChangeLogsHelper.TABLE_NAME).setWhereClause(whereClauses);
+        ImmutableList.Builder<MedicalResourceId> medicalResourceIds = ImmutableList.builder();
+        try (Cursor cursor = mTransactionManager.read(readChangeLogsRequest)) {
+            while (cursor.moveToNext()) {
+                medicalResourceIds.addAll(
+                        toMedicalResourceIdList(getCursorBlob(cursor, UUIDS_COLUMN_NAME)));
+            }
+            return medicalResourceIds.build();
         }
     }
 

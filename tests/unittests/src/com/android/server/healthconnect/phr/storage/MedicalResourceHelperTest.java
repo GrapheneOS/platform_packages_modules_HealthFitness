@@ -41,6 +41,9 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedical
 import static android.healthconnect.testing.unittest.PhrTestUtils.ACCESS_LOG_EQUIVALENCE;
 import static android.healthconnect.testing.unittest.PhrTestUtils.makeUpsertRequest;
 
+import static com.android.healthfitness.flags.AconfigFlagHelper.isPhrChangeLogsEnabled;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.phr.storage.MedicalResourceHelper.DATA_SOURCE_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.phr.storage.MedicalResourceHelper.FHIR_DATA_COLUMN_NAME;
@@ -146,6 +149,7 @@ public class MedicalResourceHelperTest {
     private PhrTestUtils mUtil;
     private FakeTimeSource mFakeTimeSource;
     private UserHandle mUserHandle;
+    private TransactionTestUtils mTransactionTestUtils;
 
     @Before
     public void setup() {
@@ -166,9 +170,9 @@ public class MedicalResourceHelperTest {
         mUtil = new PhrTestUtils(healthConnectInjector);
         mUserHandle = context.getUser();
 
-        TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        transactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
-        transactionTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
+        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
+        mTransactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        mTransactionTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
     }
 
     @Test
@@ -1684,6 +1688,7 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
     public void insertMedicalResourcesOfSameType_createsChangeLogs() {
         MedicalDataSource dataSource =
                 mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME);
@@ -1695,6 +1700,7 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
     public void insertMedicalResourcesOfDifferentTypes_createsChangeLogs() {
         String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
         MedicalResource vaccine = createVaccineMedicalResource(dataSource);
@@ -1708,6 +1714,7 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
     public void insertAndUpdateMedicalResources_createsChangeLogs() throws JSONException {
         String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
         MedicalResource vaccine = createVaccineMedicalResource(dataSource);
@@ -1724,6 +1731,70 @@ public class MedicalResourceHelperTest {
 
         assertThat(mTransactionManager.count(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME)))
                 .isEqualTo(3);
+    }
+
+    @Test
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    public void insertMedicalResourcesOfSameType_delete_createsChangeLogs() {
+        MedicalDataSource dataSource =
+                mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME);
+        var resourceIds =
+                mUtil
+                        .upsertResources(
+                                PhrDataFactory::createVaccineMedicalResources,
+                                /* numOfResources= */ 6,
+                                dataSource)
+                        .stream()
+                        .map(MedicalResource::getId)
+                        .toList();
+
+        mMedicalResourceHelper.deleteMedicalResourcesByIdsWithoutPermissionChecks(resourceIds);
+
+        assertThat(mTransactionTestUtils.getAllDeletedMedicalResourceIds()).isEqualTo(resourceIds);
+    }
+
+    @Test
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    public void insertMedicalResourcesOfDifferentTypes_delete_createsChangeLogs() {
+        String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
+        MedicalResource vaccine = createVaccineMedicalResource(dataSource);
+        MedicalResource allergy = createAllergyMedicalResource(dataSource);
+        var resourceIds =
+                mMedicalResourceHelper
+                        .upsertMedicalResources(
+                                DATA_SOURCE_PACKAGE_NAME,
+                                createUpsertMedicalResourceRequests(
+                                        List.of(vaccine, allergy), dataSource))
+                        .stream()
+                        .map(MedicalResource::getId)
+                        .toList();
+
+        mMedicalResourceHelper.deleteMedicalResourcesByIdsWithoutPermissionChecks(resourceIds);
+
+        assertThat(mTransactionTestUtils.getAllDeletedMedicalResourceIds()).isEqualTo(resourceIds);
+    }
+
+    @Test
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    public void insertAndUpdateMedicalResources_delete_createsChangeLogs() throws JSONException {
+        String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
+        MedicalResource vaccine = createVaccineMedicalResource(dataSource);
+        MedicalResource allergy = createAllergyMedicalResource(dataSource);
+        MedicalResource updatedVaccine = createUpdatedVaccineMedicalResource(dataSource);
+        // initial inserts
+        mMedicalResourceHelper.upsertMedicalResources(
+                DATA_SOURCE_PACKAGE_NAME,
+                createUpsertMedicalResourceRequests(List.of(vaccine, allergy), dataSource));
+        // update the vaccine resource
+        mMedicalResourceHelper.upsertMedicalResources(
+                DATA_SOURCE_PACKAGE_NAME,
+                createUpsertMedicalResourceRequests(List.of(updatedVaccine), dataSource));
+
+        mMedicalResourceHelper.deleteMedicalResourcesByIdsWithoutPermissionChecks(
+                List.of(updatedVaccine.getId()));
+
+        assertThat(mTransactionTestUtils.getAllDeletedMedicalResourceIds())
+                .containsExactly(updatedVaccine.getId());
     }
 
     @Test
@@ -1951,6 +2022,9 @@ public class MedicalResourceHelperTest {
                 List.of(getMedicalResourceId()), DATA_SOURCE_PACKAGE_NAME);
 
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeletedMedicalResourceIds()).isEmpty();
+        }
     }
 
     @Test
@@ -1966,6 +2040,10 @@ public class MedicalResourceHelperTest {
                 List.of(resource1.getId()));
 
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeletedMedicalResourceIds())
+                    .containsExactly(resource1.getId());
+        }
     }
 
     @Test
@@ -1998,6 +2076,10 @@ public class MedicalResourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeletedMedicalResourceIds())
+                    .containsExactly(vaccinePackage1.getId());
+        }
     }
 
     @Test
@@ -2033,6 +2115,10 @@ public class MedicalResourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeletedMedicalResourceIds())
+                    .containsExactly(vaccinePackage1.getId(), unknownResourcePackage1.getId());
+        }
     }
 
     @Test
@@ -2071,6 +2157,10 @@ public class MedicalResourceHelperTest {
 
         assertThat(result).isEmpty();
         assertThat(indicesResult).isEmpty();
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeletedMedicalResourceIds())
+                    .containsExactly(medicalResource1.getId());
+        }
     }
 
     @Test
@@ -2091,6 +2181,10 @@ public class MedicalResourceHelperTest {
                         List.of(medicalResource1.getId(), medicalResource2.getId()));
         assertThat(result).containsExactly(medicalResource2);
         assertThat(indicesResult).containsExactly(MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES);
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeletedMedicalResourceIds())
+                    .containsExactly(medicalResource1.getId());
+        }
     }
 
     @Test
@@ -2109,6 +2203,9 @@ public class MedicalResourceHelperTest {
                 mMedicalResourceHelper.readMedicalResourcesByIdsWithoutPermissionChecks(
                         List.of(medicalResource1.getId(), medicalResource2.getId()));
         assertThat(result).containsExactly(medicalResource1, medicalResource2);
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeletedMedicalResourceIds()).isEmpty();
+        }
     }
 
     @Test
@@ -2127,6 +2224,10 @@ public class MedicalResourceHelperTest {
                 mMedicalResourceHelper.readMedicalResourcesByIdsWithoutPermissionChecks(
                         List.of(medicalResource1.getId(), medicalResource2.getId()));
         assertThat(result).containsExactly(medicalResource2);
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeletedMedicalResourceIds())
+                    .containsExactly(medicalResource1.getId());
+        }
     }
 
     @Test
@@ -2155,6 +2256,11 @@ public class MedicalResourceHelperTest {
                                 expectedResource2Source1.getId(),
                                 expectedResource2Source2.getId()));
         assertThat(result).containsExactly(expectedResource1Source2, expectedResource2Source1);
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeletedMedicalResourceIds())
+                    .containsExactly(
+                            expectedResource1Source1.getId(), expectedResource2Source2.getId());
+        }
     }
 
     @Test
