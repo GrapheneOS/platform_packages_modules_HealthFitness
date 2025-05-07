@@ -44,7 +44,7 @@
     <dimen name="warning_expressive_corner_radius">28dp</dimen>
 
     <dimen name="timeline_divider_height">26dp</dimen>
-    <dimen name="timeline_divider_margin_start">26dp</dimen>
+    <dimen name="timeline_divider_margin_start">102dp</dimen>
 
     <dimen name="list_item_min_height">64dp</dimen>
     <dimen name="recent_access_date_min_width">60dp</dimen>
