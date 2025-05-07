@@ -17,15 +17,17 @@
     <style name="Theme.HealthConnect" parent="Base.Theme.HealthConnect"/>
 
     <style name="Theme.HealthConnect.Expressive" parent="Theme.SubSettingsBase.Expressive">
-        <!-- REGION CLIPPING -->
-        <item name="android:clipToPadding">true</item>
-        <item name="android:clipChildren">true</item>
-        <!-- END REGION -->
-
         <item name="headerTitle">@style/TextAppearance.HealthConnect.Expressive.Heading</item>
         <item name="headerSummary">@style/TextAppearance.SettingsLib.BodyLarge</item>
         <item name="permissionHeaderTitle">@style/TextAppearance.HealthConnect.Expressive.PermissionHeading</item>
         <item name="headerDetails">@style/TextAppearance.HealthConnect.Expressive.DetailedHeading</item>
 
+    </style>
+
+    <style name="Theme.HealthConnect.Expressive.Test" parent="Theme.HealthConnect.Expressive">
+        <!-- REGION CLIPPING -->
+        <item name="android:clipToPadding">true</item>
+        <item name="android:clipChildren">true</item>
+        <!-- END REGION -->
     </style>
 </resources>
