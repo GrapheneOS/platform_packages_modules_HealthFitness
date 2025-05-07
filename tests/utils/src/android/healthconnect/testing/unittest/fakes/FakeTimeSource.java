@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.testing.fakes;
+package android.healthconnect.testing.unittest.fakes;
 
 import com.android.server.healthconnect.utils.TimeSource;
 

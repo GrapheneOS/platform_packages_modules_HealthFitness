@@ -49,6 +49,7 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.healthconnect.testing.unittest.StorageUtils;
 import android.healthconnect.testing.unittest.TaskUtils;
 import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.net.Uri;
 import android.os.UserHandle;
 import android.platform.test.annotations.EnableFlags;
@@ -73,7 +74,6 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;

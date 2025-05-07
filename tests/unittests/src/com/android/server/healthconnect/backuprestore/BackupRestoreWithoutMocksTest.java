@@ -36,6 +36,7 @@ import android.healthconnect.testing.shared.phr.PhrDataFactory;
 import android.healthconnect.testing.unittest.PhrTestUtils;
 import android.healthconnect.testing.unittest.StorageUtils;
 import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.os.ParcelFileDescriptor;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.ArrayMap;
@@ -54,7 +55,6 @@ import com.android.server.healthconnect.permission.UserGrantTimeState;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
 
 import org.junit.Before;
 import org.junit.Rule;

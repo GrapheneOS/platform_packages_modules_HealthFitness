@@ -16,10 +16,11 @@
 
 package com.android.server.healthconnect.storage;
 
+import static android.healthconnect.testing.unittest.StorageUtils.assertColumnsExist;
+import static android.healthconnect.testing.unittest.StorageUtils.createEmptyDatabase;
+
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
-import static com.android.server.healthconnect.storage.DatabaseTestUtils.assertColumnsExist;
-import static com.android.server.healthconnect.storage.DatabaseTestUtils.createEmptyDatabase;
 import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.onUpgrade;
 
 import static com.google.common.truth.Truth.assertThat;

@@ -20,8 +20,8 @@ import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_I
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_ID;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getFhirResourceId;
+import static android.healthconnect.testing.unittest.StorageUtils.createEmptyDatabase;
 
-import static com.android.server.healthconnect.storage.DatabaseTestUtils.createEmptyDatabase;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.UUID_BYTE_SIZE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.bytesToUuids;
