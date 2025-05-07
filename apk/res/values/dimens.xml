@@ -23,6 +23,7 @@
     <dimen name="spacing_xlarge">32dp</dimen>
     <dimen name="spacing_page_title">84dp</dimen>
     <dimen name="spacing_banner">20dp</dimen>
+    <dimen name="spacing_spinner">40dp</dimen>
 
     <dimen name="button_size">48dp</dimen>
 
@@ -56,4 +57,6 @@
     <dimen name="recyclerview_decorator_expressive_extrasmall">2dp</dimen>
 
     <dimen name="item_exercise_session_marginEnd">@dimen/spacing_large</dimen>
+
+    <dimen name="radius_full">360dp</dimen>
 </resources>

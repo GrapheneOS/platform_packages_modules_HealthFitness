@@ -21,7 +21,6 @@ import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.AdapterView
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.android.healthconnect.controller.R
@@ -59,7 +58,6 @@ constructor(
     private lateinit var previousDayButton: View
     private lateinit var nextDayButton: View
     private lateinit var datePickerSpinner: Spinner
-    private lateinit var disabledSpinner: TextView
     private var selectedDate = Instant.ofEpochMilli(timeSource.currentTimeMillis())
     private var period: DateNavigationPeriod = PERIOD_DAY
     private var onDateChangedListener: OnDateChangedListener? = null
@@ -76,7 +74,7 @@ constructor(
 
         val layout =
             if (SettingsThemeHelper.isExpressiveTheme(context)) {
-                R.layout.expressive_widget_date_navigation_with_spinner
+                R.layout.widget_date_navigation_with_spinner_expressive
             } else {
                 R.layout.widget_date_navigation_with_spinner
             }
@@ -115,33 +113,13 @@ constructor(
         return period
     }
 
-    fun disableDateNavigationView(isEnabled: Boolean, text: String) {
-        setSpinnerText(text)
+    fun setActive(isEnabled: Boolean) {
         disableButtons(isEnabled)
-        toggleSpinnerVisibility(isEnabled)
+        datePickerSpinner.isEnabled = isEnabled
     }
 
     fun getDateNavigationText(): String? {
         return (datePickerSpinner.adapter as DatePickerSpinnerAdapter).getText()
-    }
-
-    private fun setSpinnerText(text: String) {
-        // text from the adapter can be null on rotation
-        if (getDateNavigationText() == null) {
-            disabledSpinner.text = text
-        } else {
-            disabledSpinner.text = (datePickerSpinner.adapter as DatePickerSpinnerAdapter).getText()
-        }
-    }
-
-    private fun toggleSpinnerVisibility(isEnabled: Boolean) {
-        if (!isEnabled) {
-            datePickerSpinner.visibility = GONE
-            disabledSpinner.visibility = VISIBLE
-        } else {
-            datePickerSpinner.visibility = VISIBLE
-            disabledSpinner.visibility = GONE
-        }
     }
 
     private fun disableButtons(isEnabled: Boolean) {
@@ -173,7 +151,6 @@ constructor(
 
     private fun bindDateTextView(view: View) {
         datePickerSpinner = view.findViewById(R.id.date_picker_spinner) as Spinner
-        disabledSpinner = view.findViewById(R.id.disabled_spinner)
         val adapter =
             DatePickerSpinnerAdapter(
                 view.context,
