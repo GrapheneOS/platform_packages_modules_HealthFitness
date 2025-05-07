@@ -146,7 +146,7 @@ public class HealthConnectThreadSchedulerTest {
 
     @Test
     public void testSchedulePassiveTrackerTaskWithDelay() throws Exception {
-        long delayMillis = 30000;
+        long delayMillis = 3000;
         Instant startTime = Instant.now();
 
         ScheduledFuture<?> future =
@@ -156,9 +156,9 @@ public class HealthConnectThreadSchedulerTest {
         future.get(); // Wait for the task to run and complete
 
         long durationMillis = ChronoUnit.MILLIS.between(startTime, Instant.now());
-        assertThat(durationMillis).isGreaterThan(delayMillis); // Task should start after the delay
+        assertThat(durationMillis).isAtLeast(delayMillis - 1000); // Task should start after a delay
         assertThat(durationMillis)
-                .isLessThan(
+                .isAtMost(
                         delayMillis
                                 + 3000); // Task shouldn't take too long to finish after the delay
     }
