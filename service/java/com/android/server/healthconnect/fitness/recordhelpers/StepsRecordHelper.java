@@ -64,7 +64,7 @@ public final class StepsRecordHelper extends IntervalRecordHelper<StepsRecordInt
                 return new AggregateParams(
                         STEPS_TABLE_NAME,
                         new ArrayList(Arrays.asList(COUNT_COLUMN_NAME)),
-                        Long.class);
+                        AggregateParams.PriorityAggregationExtraParams.VALUE_TYPE_LONG);
             default:
                 return null;
         }

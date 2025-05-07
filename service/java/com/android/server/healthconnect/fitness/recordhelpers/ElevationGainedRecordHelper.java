@@ -64,7 +64,7 @@ public final class ElevationGainedRecordHelper
                 return new AggregateParams(
                         ELEVATION_GAINED_RECORD_TABLE_NAME,
                         new ArrayList(Arrays.asList(ELEVATION_COLUMN_NAME)),
-                        Double.class);
+                        AggregateParams.PriorityAggregationExtraParams.VALUE_TYPE_DOUBLE);
             default:
                 return null;
         }
