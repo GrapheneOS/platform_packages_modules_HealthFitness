@@ -55,6 +55,7 @@ java_sdk_library {
         "modules-utils-backgroundthread",
         "fhirspec-java-proto-lite",
         "backup-restore-proto",
+        "serialization-proto",
     ],
     jarjar_rules: "jarjar-rules.txt",
     installable: true,

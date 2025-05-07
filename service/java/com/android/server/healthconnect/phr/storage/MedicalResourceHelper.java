@@ -368,7 +368,9 @@ public final class MedicalResourceHelper {
             boolean hasWritePermission,
             boolean isCalledFromBgWithoutBgRead)
             throws SQLiteException {
-
+        if (medicalResourceIds.isEmpty()) {
+            return List.of();
+        }
         Pair<String, String[]> sqlAndArgs =
                 getSqlAndArgsBasedOnPermissionFilters(
                         medicalResourceIds,
@@ -1104,8 +1106,8 @@ public final class MedicalResourceHelper {
      * @param request the specification for the rows to read
      * @param pageSize the number of results to return in this page
      * @param pageTokenWrapper the page token for the query
-     * @throws IllegalArgumentException if the cursor contains more than @link
-     *     MAXIMUM_ALLOWED_CURSOR_COUNT} records.
+     * @throws IllegalArgumentException if the cursor contains more than {@link
+     *     Constants#MAXIMUM_ALLOWED_CURSOR_COUNT} records.
      */
     public static ReadMedicalResourcesInternalResponse getMedicalResources(
             SQLiteDatabase db,

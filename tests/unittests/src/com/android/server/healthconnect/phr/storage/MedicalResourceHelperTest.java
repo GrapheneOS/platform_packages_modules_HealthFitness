@@ -771,12 +771,22 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
+    public void readById_noReadOrWritePermissions_emptyIdList_passes() {
+        mMedicalResourceHelper.readMedicalResourcesByIdsWithPermissionChecks(
+                List.of(),
+                /* grantedReadMedicalResourceTypes= */ Set.of(),
+                DATA_SOURCE_PACKAGE_NAME,
+                /* hasWritePermission= */ false,
+                /* isCalledFromBgWithoutBgRead= */ false);
+    }
+
+    @Test
     public void readById_noReadOrWritePermissions_throws() {
         assertThrows(
                 IllegalStateException.class,
                 () ->
                         mMedicalResourceHelper.readMedicalResourcesByIdsWithPermissionChecks(
-                                List.of(),
+                                List.of(getMedicalResourceId()),
                                 /* grantedReadMedicalResourceTypes= */ Set.of(),
                                 DATA_SOURCE_PACKAGE_NAME,
                                 /* hasWritePermission= */ false,
