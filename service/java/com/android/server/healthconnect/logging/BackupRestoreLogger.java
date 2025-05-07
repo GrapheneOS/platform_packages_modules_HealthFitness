@@ -182,18 +182,18 @@ public class BackupRestoreLogger {
      * Log the data backup metrics.
      *
      * @param dataBackupStatus the status of the invoked data backup
-     * @param timeToSucceedOrFailMillis time between invoking a data backup and the status being
-     *     returned
-     * @param dataSize the size of the data being backed up
      * @param dataBackupType the type of data backup that was invoked
+     * @param totalRecordCount the number of records being backed up
      */
     public void logDataBackupStatus(
             @BackupRestoreEnums.DataBackupState int dataBackupStatus,
-            @BackupRestoreEnums.DataBackupType int dataBackupType) {
+            @BackupRestoreEnums.DataBackupType int dataBackupType,
+            int totalRecordCount) {
         mStatsLog.write(
                 HEALTH_CONNECT_DATA_BACKUP_INVOKED,
                 dataBackupStatus,
-                dataBackupType);
+                dataBackupType,
+                totalRecordCount);
     }
 
     /**
@@ -221,17 +221,20 @@ public class BackupRestoreLogger {
      * @param dataRestoreStatus the status of the invoked data restore
      * @param timeToSucceedOrFailMillis time between invoking a data restore and the status being
      *     returned
-     * @param dataSize the size of the data being restored
+     * @param totalRecordCount the total number of records in this restore attempt
+     * @param successfulRecordCount the total number of records successfully restored
      */
     public void logDataRestoreStatus(
             @BackupRestoreEnums.DataRestoreState int dataRestoreStatus,
             int timeToSucceedOrFailMillis,
-            int dataSize) {
+            int totalRecordCount,
+            int successfulRecordCount) {
         mStatsLog.write(
                 HEALTH_CONNECT_DATA_RESTORE_INVOKED,
                 dataRestoreStatus,
                 timeToSucceedOrFailMillis,
-                dataSize);
+                totalRecordCount,
+                successfulRecordCount);
     }
 
     /**
