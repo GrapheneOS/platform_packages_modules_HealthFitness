@@ -714,9 +714,16 @@ package android.health.connect.datatypes {
     method @Nullable public String getModel();
     method public int getType();
     field public static final int DEVICE_TYPE_CHEST_STRAP = 7; // 0x7
+    field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE = 9; // 0x9
     field public static final int DEVICE_TYPE_FITNESS_BAND = 6; // 0x6
+    field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_FITNESS_EQUIPMENT = 13; // 0xd
+    field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_FITNESS_MACHINE = 12; // 0xc
+    field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_GLASSES = 10; // 0xa
     field public static final int DEVICE_TYPE_HEAD_MOUNTED = 5; // 0x5
+    field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_HEARABLES = 11; // 0xb
+    field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_METER = 15; // 0xf
     field public static final int DEVICE_TYPE_PHONE = 2; // 0x2
+    field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_PORTABLE_COMPUTERS = 14; // 0xe
     field public static final int DEVICE_TYPE_RING = 4; // 0x4
     field public static final int DEVICE_TYPE_SCALE = 3; // 0x3
     field public static final int DEVICE_TYPE_SMART_DISPLAY = 8; // 0x8
