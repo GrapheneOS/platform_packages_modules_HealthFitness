@@ -20,8 +20,8 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.android.healthconnect.testapps.toolbox.newUi.navigation.Screen
 import com.android.healthconnect.testapps.toolbox.read.components.DataTypeDetailsScreen
-import com.android.healthconnect.testapps.toolbox.read.navigation.Screen
 import com.android.healthconnect.testapps.toolbox.viewmodels.DataState
 import com.android.healthconnect.testapps.toolbox.viewmodels.LoadEntriesViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

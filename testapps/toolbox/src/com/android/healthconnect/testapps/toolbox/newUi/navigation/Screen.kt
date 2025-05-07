@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.testapps.toolbox.read.navigation
+package com.android.healthconnect.testapps.toolbox.newUi.navigation
 
 import com.android.healthconnect.testapps.toolbox.Constants.HealthPermissionType
 import kotlinx.serialization.Serializable
 
 /**
  * Defines navigation screens for the Compose toolbox.
+ *
+ * [HomeMenu]: Displays list of composable screens. Acts as the entry point for new UI screens.
  *
  * [DataTypeList]: Displays a list of data types.
  *
@@ -33,4 +35,6 @@ sealed class Screen {
     @Serializable
     @Suppress("PROVIDED_RUNTIME_TOO_LOW")
     data class DataTypeDetails(val dataType: HealthPermissionType) : Screen()
+
+    @Serializable @Suppress("PROVIDED_RUNTIME_TOO_LOW") data object HomeMenu : Screen()
 }
