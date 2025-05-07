@@ -62,7 +62,7 @@ public final class DistanceRecordHelper extends IntervalRecordHelper<DistanceRec
                 return new AggregateParams(
                         DISTANCE_RECORD_TABLE_NAME,
                         new ArrayList(Arrays.asList(DISTANCE_COLUMN_NAME)),
-                        Double.class);
+                        AggregateParams.PriorityAggregationExtraParams.VALUE_TYPE_DOUBLE);
             default:
                 return null;
         }
