@@ -16,6 +16,8 @@
 
 package android.health.connect.internal.datatypes;
 
+import static android.health.connect.Constants.DEFAULT_FLOAT;
+
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.datatypes.ExerciseSessionRecord;
@@ -24,6 +26,8 @@ import android.health.connect.datatypes.Identifier;
 import android.health.connect.datatypes.PlannedExerciseSessionRecord;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.os.Parcel;
+
+import com.android.healthfitness.flags.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +57,8 @@ public final class ExerciseSessionRecordInternal
 
     @Nullable private UUID mPlannedExerciseSessionId;
 
+    private float mRateOfPerceivedExertion = DEFAULT_FLOAT;
+
     public ExerciseSessionRecordInternal() {
         super();
         this.mHasRoute = false;
@@ -69,6 +75,9 @@ public final class ExerciseSessionRecordInternal
         mExerciseSegments = ExerciseSegmentInternal.populateSegmentsFromParcel(parcel);
         String uuid = parcel.readString();
         mPlannedExerciseSessionId = uuid == null ? null : UUID.fromString(uuid);
+        if (Flags.exerciseSegmentImprovements()) {
+            mRateOfPerceivedExertion = parcel.readFloat();
+        }
     }
 
     @Nullable
@@ -182,6 +191,20 @@ public final class ExerciseSessionRecordInternal
         return mPlannedExerciseSessionId;
     }
 
+    /**
+     * Sets rate of perceived exertion for the exercise session. Returns record with rate of
+     * perceived exertion.
+     */
+    public ExerciseSessionRecordInternal setRateOfPerceivedExertion(float rateOfPerceivedExertion) {
+        mRateOfPerceivedExertion = rateOfPerceivedExertion;
+        return this;
+    }
+
+    /** Returns rate of perceived exertion for the exercise session. */
+    public float getRateOfPerceivedExertion() {
+        return mRateOfPerceivedExertion;
+    }
+
     @NonNull
     @Override
     public ExerciseSessionRecord toExternalRecord() {
@@ -225,6 +248,9 @@ public final class ExerciseSessionRecordInternal
         if (sessionId != null) {
             builder.setPlannedExerciseSessionId(sessionId.toString());
         }
+        if (Flags.exerciseSegmentImprovements()) {
+            builder.setRateOfPerceivedExertion(getRateOfPerceivedExertion());
+        }
         return builder.buildWithoutValidation();
     }
 
@@ -239,6 +265,9 @@ public final class ExerciseSessionRecordInternal
         ExerciseSegmentInternal.writeSegmentsToParcel(mExerciseSegments, parcel);
         parcel.writeString(
                 mPlannedExerciseSessionId == null ? null : mPlannedExerciseSessionId.toString());
+        if (Flags.exerciseSegmentImprovements()) {
+            parcel.writeFloat(mRateOfPerceivedExertion);
+        }
     }
 
     /** Add route location to the session */

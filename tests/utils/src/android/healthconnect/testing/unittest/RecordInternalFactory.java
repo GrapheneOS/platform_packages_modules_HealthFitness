@@ -89,6 +89,30 @@ public class RecordInternalFactory {
                         .setModel("Pixel4a");
     }
 
+    /** Returns an internal exercise session instance with rate of perceived exertion set. */
+    public static ExerciseSessionRecordInternal buildExerciseSessionInternalWithRpe() {
+        return (ExerciseSessionRecordInternal)
+                new ExerciseSessionRecordInternal()
+                        .setExerciseType(ExerciseSessionType.EXERCISE_SESSION_TYPE_OTHER_WORKOUT)
+                        .setRoute(buildExerciseRouteInternal())
+                        .setTitle("Morning walk")
+                        .setNotes("Sunny weather")
+                        .setRateOfPerceivedExertion(5.0f)
+                        .setExerciseLaps(Collections.singletonList(buildExerciseLap()))
+                        .setExerciseSegments(Collections.singletonList(buildExerciseSegment()))
+                        .setStartTime(START_TIME)
+                        .setEndTime(END_TIME)
+                        .setEndZoneOffset(1)
+                        .setStartZoneOffset(1)
+                        .setAppInfoId(1)
+                        .setClientRecordId("client_id")
+                        .setManufacturer("manufacturer")
+                        .setClientRecordVersion(12)
+                        .setUuid(UUID.randomUUID())
+                        .setPackageName("android.healthconnect.unittests")
+                        .setModel("Pixel4a");
+    }
+
     /** Returns an internal planned exercise session instance. */
     public static PlannedExerciseSessionRecordInternal buildPlannedExerciseSessionInternal() {
         return (PlannedExerciseSessionRecordInternal)

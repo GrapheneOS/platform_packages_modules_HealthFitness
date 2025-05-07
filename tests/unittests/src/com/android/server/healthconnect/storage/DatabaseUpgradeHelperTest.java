@@ -37,6 +37,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSegmentRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper;
@@ -117,6 +118,10 @@ public class DatabaseUpgradeHelperTest {
                         ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_WEIGHT_GRAMS,
                         ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_SET_INDEX,
                         ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_RATE_OF_PERCEIVED_EXERTION));
+        assertColumnsExist(
+                mSQLiteDatabase,
+                ExerciseSessionRecordHelper.EXERCISE_SESSION_RECORD_TABLE_NAME,
+                List.of(ExerciseSessionRecordHelper.RATE_OF_PERCEIVED_EXERTION_COLUMN_NAME));
 
         onUpgrade(mSQLiteDatabase, 0, DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS);
         assertColumnsExist(
@@ -126,6 +131,10 @@ public class DatabaseUpgradeHelperTest {
                         ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_WEIGHT_GRAMS,
                         ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_SET_INDEX,
                         ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_RATE_OF_PERCEIVED_EXERTION));
+        assertColumnsExist(
+                mSQLiteDatabase,
+                ExerciseSessionRecordHelper.EXERCISE_SESSION_RECORD_TABLE_NAME,
+                List.of(ExerciseSessionRecordHelper.RATE_OF_PERCEIVED_EXERTION_COLUMN_NAME));
         assertDbSchemaUpToDate(mSQLiteDatabase);
     }
 
