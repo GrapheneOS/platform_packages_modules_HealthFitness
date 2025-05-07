@@ -52,8 +52,8 @@
     <string name="manage_data_preferences_category_title" msgid="1183110821140344472">"Hobespenak"</string>
     <string name="manage_data_category_title" msgid="6328886061582616519">"Kudeatu datuak"</string>
     <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"Esportatu eta inportatu datuak"</string>
-    <string name="recent_access_header" msgid="7623497371790225888">"Azkenaldian datuak atzitu dituztenak"</string>
-    <string name="no_recent_access" msgid="4724297929902441784">"Ez dago azkenaldian Health Connect atzitu duen aplikaziorik"</string>
+    <string name="recent_access_header" msgid="7623497371790225888">"Azkenaldian datuak erabili dituztenak"</string>
+    <string name="no_recent_access" msgid="4724297929902441784">"Ez dago azkenaldian Health Connect erabili duen aplikaziorik"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Ikusi azkenaldian datuak atzitu dituztenak"</string>
     <string name="recent_access_screen_description" msgid="331101209889185402">"Ikusi zein aplikaziok atzitu dituzten datuak azken 24 orduetan"</string>
     <string name="today_header" msgid="1006837293203834373">"Gaur"</string>

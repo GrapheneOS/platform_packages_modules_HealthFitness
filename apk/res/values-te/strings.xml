@@ -1147,7 +1147,7 @@
     <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"Health Connect ద్వారా <xliff:g id="APP_NAME">%s</xliff:g>‌తో సింక్ చేయడానికి మరిన్ని యాప్స్‌ను కనుగొనండి"</string>
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"యాప్ స్టోర్‌లో చూడండి"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"స్క్రీన్ లాక్‌ను సెట్ చేయండి"</string>
-    <string name="lock_screen_banner_content" msgid="3392527073622152481">"మీ ఆరోగ్య డేటాకు అదనపు సెక్యూరిటీని అందించడానికి, ఈ పరికరానికి PINను, ఆకృతిని, లేదా పాస్‌వర్డ్‌ను సెట్ చేయండి"</string>
+    <string name="lock_screen_banner_content" msgid="3392527073622152481">"మీ ఆరోగ్య డేటాకు అదనపు సెక్యూరిటీని అందించడానికి, ఈ డివైజ్‌కు PINను, ఆకృతిని, లేదా పాస్‌వర్డ్‌ను సెట్ చేయండి"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"స్క్రీన్ లాక్‌ను సెట్ చేయండి"</string>
     <string name="select_all" msgid="837499881590001166">"అన్నింటినీ ఎంచుకోండి"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"కనెక్ట్ అయి ఉన్న యాప్‌లు ఇకపై Health Connectలో ఈ డేటాను రీడ్ చేయలేవు"</string>
