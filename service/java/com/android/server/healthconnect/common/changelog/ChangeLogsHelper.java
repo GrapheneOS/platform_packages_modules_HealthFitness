@@ -64,6 +64,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -341,13 +342,41 @@ public final class ChangeLogsHelper extends DatabaseHelper {
             return requests;
         }
 
-        private record RecordGrouping(
-                @RecordTypeIdentifier.RecordType int recordType, long appId) {}
+        // The following record classes are implementing equals and hashcode because the default
+        // implementations are extremely slow and are occasionally timing out some tests.
+        // https://stackoverflow.com/q/77514303
+
+        private record RecordGrouping(@RecordTypeIdentifier.RecordType int recordType, long appId) {
+            @Override
+            public boolean equals(Object o) {
+                return o instanceof RecordGrouping that
+                        && appId == that.appId
+                        && recordType == that.recordType;
+            }
+
+            @Override
+            public int hashCode() {
+                return Objects.hash(recordType, appId);
+            }
+        }
 
         private record MedicalResourceGrouping(
                 @MedicalResource.MedicalResourceType int resourceType,
                 long appId,
-                String medicalDataSourceId) {}
+                String medicalDataSourceId) {
+            @Override
+            public boolean equals(Object o) {
+                return o instanceof MedicalResourceGrouping that
+                        && appId == that.appId
+                        && resourceType == that.resourceType
+                        && Objects.equals(medicalDataSourceId, that.medicalDataSourceId);
+            }
+
+            @Override
+            public int hashCode() {
+                return Objects.hash(resourceType, appId, medicalDataSourceId);
+            }
+        }
     }
 
     /** Change logs that are read from the database. */
