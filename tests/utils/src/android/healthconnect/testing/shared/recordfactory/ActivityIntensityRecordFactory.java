@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.lib;
+package android.healthconnect.testing.shared.recordfactory;
 
 import static android.health.connect.datatypes.ActivityIntensityRecord.ACTIVITY_INTENSITY_TYPE_MODERATE;
 import static android.health.connect.datatypes.ActivityIntensityRecord.ACTIVITY_INTENSITY_TYPE_VIGOROUS;
-import static android.healthconnect.cts.lib.BundleHelper.PREFIX;
 
 import android.health.connect.datatypes.ActivityIntensityRecord;
 import android.health.connect.datatypes.Metadata;

@@ -28,7 +28,6 @@ import static android.health.connect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.health.connect.datatypes.SleepSessionRecord.SLEEP_DURATION_TOTAL;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.health.connect.datatypes.TotalCaloriesBurnedRecord.ENERGY_TOTAL;
-import static android.healthconnect.cts.lib.RecordFactory.newEmptyMetadataWithClientId;
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
 import static android.healthconnect.cts.utils.TestUtils.deleteRecords;
@@ -49,6 +48,7 @@ import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecor
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.DataFactory.getTotalCaloriesBurnedRecord;
 import static android.healthconnect.testing.shared.DataFactory.getTotalCaloriesBurnedRecordWithEmptyMetadata;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadataWithClientId;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -71,10 +71,10 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
-import android.healthconnect.cts.lib.MindfulnessSessionRecordFactory;
 import android.healthconnect.cts.lib.TestAppProxy;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
+import android.healthconnect.testing.shared.recordfactory.MindfulnessSessionRecordFactory;
 import android.platform.test.annotations.AppModeFull;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;

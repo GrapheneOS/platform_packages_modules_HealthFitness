@@ -18,7 +18,7 @@ package android.healthconnect.cts.aggregation;
 
 import static android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_DURATION_TOTAL;
 import static android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_MEDITATION;
-import static android.healthconnect.cts.lib.RecordFactory.newEmptyMetadata;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadata;
 
 import android.health.connect.HealthDataCategory;
 import android.health.connect.datatypes.MindfulnessSessionRecord;

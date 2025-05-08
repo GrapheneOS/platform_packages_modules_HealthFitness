@@ -18,7 +18,7 @@ package android.healthconnect.cts.datatypes.api;
 
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.NicotineIntakeRecord;
-import android.healthconnect.cts.lib.NicotineIntakeRecordFactory;
+import android.healthconnect.testing.shared.recordfactory.NicotineIntakeRecordFactory;
 import android.platform.test.annotations.AppModeFull;
 import android.platform.test.annotations.RequiresFlagsEnabled;
 

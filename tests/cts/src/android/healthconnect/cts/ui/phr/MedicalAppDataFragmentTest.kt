@@ -21,7 +21,6 @@ import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsRecord
 import android.healthconnect.cts.lib.ActivityLauncher.launchMainActivity
-import android.healthconnect.cts.lib.RecordFactory.newEmptyMetadata
 import android.healthconnect.cts.lib.TestAppProxy
 import android.healthconnect.cts.lib.UiTestUtils.findObject
 import android.healthconnect.cts.lib.UiTestUtils.findText
@@ -33,6 +32,7 @@ import android.healthconnect.cts.utils.TestUtils
 import android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_ALLERGY
 import android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION
 import android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest
+import android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadata
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.uiautomator.By
