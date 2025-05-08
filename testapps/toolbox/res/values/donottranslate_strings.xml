@@ -115,20 +115,24 @@
     <string name="sleep_label" description="Label used to show the user's sleep data [CHAR_LIMIT=50]">Sleep</string>
     <!--endregion-->
 
-    <!-- region Vitals data types -->
-    <string name="basal_body_temperature_label" description="Label used to show the user's basal body temperature data [CHAR_LIMIT=50]">Basal body temperature</string>
-    <string name="blood_glucose_label" description="Label used to show the user's blood glucose data [CHAR_LIMIT=50]">Blood glucose</string>
-    <string name="blood_pressure_label" description="Label used to show the user's blood pressure data [CHAR_LIMIT=50]">Blood pressure</string>
-    <string name="body_temperature_label" description="Label used to show the user's body temperature data [CHAR_LIMIT=50]">Body temperature</string>
-    <string name="heart_rate_label" description="Label used to show the user's heart rate data [CHAR_LIMIT=50]">Heart rate</string>
-    <string name="heart_rate_variability_label" description="Label used to show the user's heart rate variability data [CHAR_LIMIT=50]">Heart rate variability</string>
-    <string name="oxygen_saturation_label" description="Label used to show the user's oxygen saturation data [CHAR_LIMIT=50]">Oxygen saturation</string>
-    <string name="respiratory_rate_label" description="Label used to show the user's respiratory rate data [CHAR_LIMIT=50]">Respiratory rate</string>
-    <string name="resting_heart_rate_label" description="Label used to show the user's resting heart rate data [CHAR_LIMIT=50]">Resting heart rate</string>
-    <string name="skin_temperature_label" description="Label used to show the user's skin temperature data [CHAR_LIMIT=50]">Skin temperature</string>
-    <string name="mindfulness_label" description="Label used to show the user's mindfulness data [CHAR_LIMIT=50]">Mindfulness</string>
-    <!--endregion-->
-    <!--endregion-->
+  <!-- region Vitals data types -->
+  <string name="basal_body_temperature_label" description="Label used to show the user's basal body temperature data [CHAR_LIMIT=50]">Basal body temperature</string>
+  <string name="blood_glucose_label" description="Label used to show the user's blood glucose data [CHAR_LIMIT=50]">Blood glucose</string>
+  <string name="blood_pressure_label" description="Label used to show the user's blood pressure data [CHAR_LIMIT=50]">Blood pressure</string>
+  <string name="body_temperature_label" description="Label used to show the user's body temperature data [CHAR_LIMIT=50]">Body temperature</string>
+  <string name="heart_rate_label" description="Label used to show the user's heart rate data [CHAR_LIMIT=50]">Heart rate</string>
+  <string name="heart_rate_variability_label" description="Label used to show the user's heart rate variability data [CHAR_LIMIT=50]">Heart rate variability</string>
+  <string name="oxygen_saturation_label" description="Label used to show the user's oxygen saturation data [CHAR_LIMIT=50]">Oxygen saturation</string>
+  <string name="respiratory_rate_label" description="Label used to show the user's respiratory rate data [CHAR_LIMIT=50]">Respiratory rate</string>
+  <string name="resting_heart_rate_label" description="Label used to show the user's resting heart rate data [CHAR_LIMIT=50]">Resting heart rate</string>
+  <string name="skin_temperature_label" description="Label used to show the user's skin temperature data [CHAR_LIMIT=50]">Skin temperature</string>
+  <!--endregion-->
+
+  <!-- region Wellness data types -->
+  <string name="mindfulness_label" description="Label used to show the user's mindfulness data [CHAR_LIMIT=50]">Mindfulness</string>
+  <string name="nicotine_intake_label" description="Label used to show the user's nicotine intake data [CHAR_LIMIT=50]">Nicotine Intake</string>
+  <!--endregion-->
+  <!--endregion-->
 
     <!-- region Performance Testing Dialog -->
     <string name="span_insert_over_time">Span insert over time</string>

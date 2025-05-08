@@ -1106,6 +1106,14 @@
     <string name="activity_intensity_type_moderate" description="Activity intensity type: Moderate. [CHAR LIMIT=20]">Moderate</string>
     <string name="activity_intensity_type_vigorous" description="Activity intensity type: Vigorous. [CHAR LIMIT=20]">Vigorous</string>
     <!--endregion-->
+
+    <!-- region Nicotine Intake -->
+    <string name="nicotine_intake_title" description="Nicotine intake value with unit. [CHAR LIMIT=50]"><xliff:g example="1 cigarette" id="quantity">%1$s</xliff:g> • <xliff:g example="500 mg" id="intake">%2$s</xliff:g></string>
+    <string name="nicotine_intake_title_long" description="Nicotine intake value with unit. [CHAR LIMIT=160]"><xliff:g example="1 cigarette" id="quantity">%1$s</xliff:g> • <xliff:g example="500 milligrams" id="intake">%2$s</xliff:g></string>
+    <string name="nicotine_intake_type_vape" description="Nicotine intake type: Vape [CHAR LIMIT=20]">{quantity, plural, =1 {{quantity} vape puff} other {{quantity} vape puffs}}</string>
+    <string name="nicotine_intake_type_cigarette" description="Nicotine intake type: Cigarette [CHAR LIMIT=20]">{quantity, plural, =1 {{quantity} cigarette} other {{quantity} cigarettes}}</string>
+    <string name="nicotine_intake_type_unknown" description="Nicotine intake type: Unknown [CHAR LIMIT=20]">{quantity, number} unknown</string>
+    <!--endregion-->
     <!-- endregion -->
 
     <!-- region Duration -->

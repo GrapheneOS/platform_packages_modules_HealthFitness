@@ -42,6 +42,7 @@ import android.health.connect.datatypes.IntermenstrualBleedingRecord
 import android.health.connect.datatypes.LeanBodyMassRecord
 import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MindfulnessSessionRecord
+import android.health.connect.datatypes.NicotineIntakeRecord
 import android.health.connect.datatypes.NutritionRecord
 import android.health.connect.datatypes.OvulationTestRecord
 import android.health.connect.datatypes.OxygenSaturationRecord
@@ -85,6 +86,7 @@ import com.android.healthconnect.controller.data.formatters.IntermenstrualBleedi
 import com.android.healthconnect.controller.data.formatters.LeanBodyMassFormatter
 import com.android.healthconnect.controller.data.formatters.MenstruationFlowFormatter
 import com.android.healthconnect.controller.data.formatters.MindfulnessSessionFormatter
+import com.android.healthconnect.controller.data.formatters.NicotineIntakeFormatter
 import com.android.healthconnect.controller.data.formatters.NutritionFormatter
 import com.android.healthconnect.controller.data.formatters.OvulationTestFormatter
 import com.android.healthconnect.controller.data.formatters.OxygenSaturationFormatter
@@ -152,6 +154,7 @@ constructor(
     private val plannedExerciseSessionRecordFormatter: PlannedExerciseSessionRecordFormatter,
     private val mindfulnessSessionFormatter: MindfulnessSessionFormatter,
     private val activityIntensityFormatter: ActivityIntensityFormatter,
+    private val nicotineIntakeFormatter: NicotineIntakeFormatter,
 ) {
 
     suspend fun format(record: Record, showDataOrigin: Boolean = true): FormattedEntry {
@@ -202,6 +205,7 @@ constructor(
                 plannedExerciseSessionRecordFormatter.format(record, appName)
             is MindfulnessSessionRecord -> mindfulnessSessionFormatter.format(record, appName)
             is ActivityIntensityRecord -> activityIntensityFormatter.format(record, appName)
+            is NicotineIntakeRecord -> nicotineIntakeFormatter.format(record, appName)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
         }
     }

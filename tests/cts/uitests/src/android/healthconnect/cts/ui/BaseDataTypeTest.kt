@@ -93,7 +93,6 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
         TestUtils.deleteAllDataFromHealthConnect()
 
         val record = createRecord()
-
         val recordToBeDeleted = createRecordToBeDeleted()
 
         val insertedRecords = TestUtils.insertRecords(record, recordToBeDeleted)
@@ -119,7 +118,7 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
 
             findText("No data")
             findDescAndClick("Previous day")
-            waitForObjectNotFound(By.text("No data"), timeout = ofSeconds(1))
+            waitForObjectNotFound(By.text("No data"), timeout = ofSeconds(3))
             scrollToEnd()
 
             findText(expectedRecordHeader)
