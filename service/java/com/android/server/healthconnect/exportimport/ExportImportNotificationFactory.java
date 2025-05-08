@@ -32,12 +32,12 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Icon;
 import android.health.connect.HealthConnectManager;
-import android.os.Binder;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationFactory;
+import com.android.server.healthconnect.notifications.NotificationUtils;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -290,12 +290,7 @@ public class ExportImportNotificationFactory implements HealthConnectNotificatio
     }
 
     private PendingIntent getPendingIntent(Intent intent) {
-        final long callingId = Binder.clearCallingIdentity();
-        try {
-            return PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-        } finally {
-            Binder.restoreCallingIdentity(callingId);
-        }
+        return NotificationUtils.getPendingIntent(mContext, intent);
     }
 
     private PendingIntent getImportCompletePendingIntent() {
