@@ -16,7 +16,6 @@
 
 package com.android.server.healthconnect.notifications;
 
-import android.annotation.Nullable;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
@@ -27,6 +26,10 @@ import android.os.UserHandle;
 import android.util.Log;
 import android.util.Slog;
 
+import androidx.annotation.Nullable;
+
+import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
+
 import java.util.Objects;
 
 /**
@@ -36,11 +39,10 @@ import java.util.Objects;
  */
 public final class HealthConnectNotificationSender {
 
-    private static final String TAG = "HealthConnectNotificationSender";
+    private static final String TAG = "HCNotificationSender";
 
     private final Context mContext;
-    // TODO(b/414949807): Remove HealthConnectNotificationFactory to make this class general purpose
-    private final HealthConnectNotificationFactory mNotificationFactory;
+    private final HealthConnectResourcesContext mResourcesContext;
     private final int mFixedNotificationId;
     private final String mNotificationTag;
     private final String mChannelId;
@@ -49,9 +51,9 @@ public final class HealthConnectNotificationSender {
     private final String mChannelGroupNameResource;
     private final boolean mIsEnabled;
 
-    public HealthConnectNotificationSender(Builder builder) {
+    private HealthConnectNotificationSender(Builder builder) {
         if (builder.mContext == null
-                || builder.mNotificationFactory == null
+                || builder.mResourcesContext == null
                 || builder.mNotificationTag == null
                 || builder.mChannelId == null
                 || builder.mChannelGroupId == null
@@ -60,7 +62,7 @@ public final class HealthConnectNotificationSender {
             throw new IllegalArgumentException("Values cannot be null");
         }
         this.mContext = builder.mContext;
-        this.mNotificationFactory = builder.mNotificationFactory;
+        this.mResourcesContext = builder.mResourcesContext;
         this.mFixedNotificationId = builder.mFixedNotificationId;
         this.mNotificationTag = builder.mNotificationTag;
         this.mChannelId = builder.mChannelId;
@@ -71,20 +73,25 @@ public final class HealthConnectNotificationSender {
     }
 
     public static final class Builder {
-
         @Nullable private Context mContext;
-        @Nullable private HealthConnectNotificationFactory mNotificationFactory;
+        @Nullable private HealthConnectResourcesContext mResourcesContext;
         private int mFixedNotificationId;
         @Nullable private String mNotificationTag;
         @Nullable private String mChannelId;
         @Nullable private String mChannelGroupId;
         @Nullable private String mChannelNameResource;
         @Nullable private String mChannelGroupNameResource;
-        private boolean mIsEnabled;
+        private boolean mIsEnabled = false;
 
         /** provide notification sender with context */
         public Builder setContext(Context context) {
             this.mContext = context;
+            return this;
+        }
+
+        /** provide notification sender with resource context */
+        public Builder setResourcesContext(HealthConnectResourcesContext resourcesContext) {
+            this.mResourcesContext = resourcesContext;
             return this;
         }
 
@@ -94,13 +101,6 @@ public final class HealthConnectNotificationSender {
          */
         public Builder setIsEnabled(boolean isEnabled) {
             this.mIsEnabled = isEnabled;
-            return this;
-        }
-
-        /** provide notification sender with notification factory */
-        public Builder setNotificationFactory(
-                HealthConnectNotificationFactory notificationFactory) {
-            this.mNotificationFactory = notificationFactory;
             return this;
         }
 
@@ -142,14 +142,26 @@ public final class HealthConnectNotificationSender {
 
         /** build the notification sender */
         public HealthConnectNotificationSender build() {
-            if (this.mChannelGroupId == null
-                    || this.mChannelId == null
-                    || this.mNotificationTag == null
-                    || this.mNotificationFactory == null
-                    || this.mContext == null
-                    || this.mChannelNameResource == null
-                    || this.mChannelGroupNameResource == null) {
-                throw new IllegalArgumentException("Cannot have null parameter.");
+            if (mContext == null) {
+                throw new IllegalArgumentException("mContext cannot be null");
+            }
+            if (mResourcesContext == null) {
+                throw new IllegalArgumentException("mResourcesContext cannot be null");
+            }
+            if (mNotificationTag == null) {
+                throw new IllegalArgumentException("mNotificationTag cannot be null");
+            }
+            if (mChannelId == null) {
+                throw new IllegalArgumentException("mChannelId cannot be null");
+            }
+            if (mChannelGroupId == null) {
+                throw new IllegalArgumentException("mChannelGroupId cannot be null");
+            }
+            if (mChannelNameResource == null) {
+                throw new IllegalArgumentException("mChannelName cannot be null");
+            }
+            if (mChannelGroupNameResource == null) {
+                throw new IllegalArgumentException("mChannelGroupName cannot be null");
             }
             return new HealthConnectNotificationSender(this);
         }
@@ -207,8 +219,8 @@ public final class HealthConnectNotificationSender {
 
     private void createNotificationChannel(UserHandle userHandle) {
         CharSequence channelGroupName =
-                mNotificationFactory.getStringResource(mChannelGroupNameResource);
-        CharSequence channelName = mNotificationFactory.getStringResource(mChannelNameResource);
+                mResourcesContext.getStringByNameOrThrow(mChannelGroupNameResource);
+        CharSequence channelName = mResourcesContext.getStringByNameOrThrow(mChannelNameResource);
 
         NotificationChannelGroup group =
                 new NotificationChannelGroup(mChannelGroupId, channelGroupName);
