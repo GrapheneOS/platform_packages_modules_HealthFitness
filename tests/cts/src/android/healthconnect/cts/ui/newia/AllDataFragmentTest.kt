@@ -25,7 +25,6 @@ import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.units.Length
 import android.health.connect.datatypes.units.Volume
 import android.healthconnect.cts.lib.ActivityLauncher.launchDataActivity
-import android.healthconnect.cts.lib.RecordFactory.newEmptyMetadata
 import android.healthconnect.cts.lib.UiTestUtils.clickOnDescAndWaitForNewWindow
 import android.healthconnect.cts.lib.UiTestUtils.findObjectAndClick
 import android.healthconnect.cts.lib.UiTestUtils.findText
@@ -37,6 +36,7 @@ import android.healthconnect.cts.lib.UiTestUtils.verifyObjectNotFound
 import android.healthconnect.cts.lib.UiTestUtils.waitDisplayed
 import android.healthconnect.cts.ui.HealthConnectBaseTest
 import android.healthconnect.cts.utils.TestUtils
+import android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadata
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.uiautomator.By

@@ -21,11 +21,11 @@ import static android.health.connect.datatypes.ActivityIntensityRecord.ACTIVITY_
 import static android.health.connect.datatypes.ActivityIntensityRecord.DURATION_TOTAL;
 import static android.health.connect.datatypes.ActivityIntensityRecord.MODERATE_DURATION_TOTAL;
 import static android.health.connect.datatypes.ActivityIntensityRecord.VIGOROUS_DURATION_TOTAL;
-import static android.healthconnect.cts.lib.RecordFactory.YESTERDAY_11AM;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
 import static android.healthconnect.cts.utils.TestUtils.insertRecord;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.YESTERDAY_11AM;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
@@ -39,8 +39,8 @@ import android.health.connect.HealthDataCategory;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.ActivityIntensityRecord;
 import android.health.connect.datatypes.DataOrigin;
-import android.healthconnect.cts.lib.ActivityIntensityRecordFactory;
 import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.shared.recordfactory.ActivityIntensityRecordFactory;
 import android.platform.test.annotations.RequiresFlagsEnabled;
 
 import androidx.annotation.Nullable;

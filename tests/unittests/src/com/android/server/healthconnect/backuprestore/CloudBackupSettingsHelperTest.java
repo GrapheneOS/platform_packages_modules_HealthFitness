@@ -34,6 +34,7 @@ import static com.google.common.truth.Truth.assertThat;
 import android.content.Context;
 import android.health.connect.HealthDataCategory;
 import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -48,7 +49,6 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.AppInfo;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.PriorityList;
-import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
 
 import org.junit.After;
 import org.junit.Before;

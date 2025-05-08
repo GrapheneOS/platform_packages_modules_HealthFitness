@@ -64,15 +64,6 @@
             android:layout_width="@dimen/app_icon_size"
             android:layout_height="@dimen/app_icon_size"
             android:importantForAccessibility="no" />
-        <ImageView
-            android:id="@+id/recent_access_divider"
-            android:visibility="gone"
-            android:layout_width="?attr/recentAccessTimelineDividerHeight"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/spacing_xxsmall"
-            android:background="?attr/recentAccessTimelineDividerDrawable"
-            android:importantForAccessibility="no"/>
     </LinearLayout>
 
     <LinearLayout

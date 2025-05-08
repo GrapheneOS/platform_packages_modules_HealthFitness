@@ -18,7 +18,7 @@ package android.healthconnect.cts.datatypes.api;
 
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.MindfulnessSessionRecord;
-import android.healthconnect.cts.lib.MindfulnessSessionRecordFactory;
+import android.healthconnect.testing.shared.recordfactory.MindfulnessSessionRecordFactory;
 import android.platform.test.annotations.AppModeFull;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;

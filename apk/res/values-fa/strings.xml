@@ -1182,7 +1182,7 @@
     <string name="menu_show_system" msgid="5608880605989914394">"نمایش دادن سیستم"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"پنهان کردن سیستم"</string>
     <string name="system_warning" msgid="5593850900577682512">"اگر این اجازه را رد کنید، ممکن است ویژگی‌های اصلی دستگاهتان دیگر عملکرد موردانتظار را نداشته باشد."</string>
-    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"درهرصورت اجازه نیست"</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"به‌هرصورت اجازه ندادن"</string>
     <string name="on" msgid="8266542510798355807">"روشن"</string>
     <string name="off" msgid="6996623844428550649">"خاموش"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"آخرین دسترسی: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

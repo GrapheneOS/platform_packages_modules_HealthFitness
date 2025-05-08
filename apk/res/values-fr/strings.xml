@@ -1147,7 +1147,7 @@
     <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"Trouver d\'autres applis à synchroniser avec <xliff:g id="APP_NAME">%s</xliff:g> via Santé Connect"</string>
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"Afficher sur la plate-forme de téléchargement d\'applications"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"Définir le verrouillage de l\'écran"</string>
-    <string name="lock_screen_banner_content" msgid="3392527073622152481">"Pour mieux sécuriser vos données de forme physique, définissez un code, un schéma ou un mot de passe pour cet appareil"</string>
+    <string name="lock_screen_banner_content" msgid="3392527073622152481">"Pour mieux sécuriser vos données de santé, définissez un code, un schéma ou un mot de passe pour cet appareil"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Définir le verrouillage de l\'écran"</string>
     <string name="select_all" msgid="837499881590001166">"Tout sélectionner"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Les applications connectées ne pourront plus accéder à ces données à partir de Santé Connect"</string>

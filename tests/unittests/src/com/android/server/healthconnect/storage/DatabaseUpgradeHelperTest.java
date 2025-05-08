@@ -16,17 +16,17 @@
 
 package com.android.server.healthconnect.storage;
 
+import static android.healthconnect.testing.unittest.StorageUtils.assertColumnsExist;
+import static android.healthconnect.testing.unittest.StorageUtils.assertNumberOfTables;
+import static android.healthconnect.testing.unittest.StorageUtils.assertTablesExists;
+import static android.healthconnect.testing.unittest.StorageUtils.clearDatabase;
+import static android.healthconnect.testing.unittest.StorageUtils.createEmptyDatabase;
 
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
-import static com.android.server.healthconnect.storage.DatabaseTestUtils.assertColumnsExist;
-import static com.android.server.healthconnect.storage.DatabaseTestUtils.assertNumberOfTables;
-import static com.android.server.healthconnect.storage.DatabaseTestUtils.assertTablesExists;
-import static com.android.server.healthconnect.storage.DatabaseTestUtils.clearDatabase;
-import static com.android.server.healthconnect.storage.DatabaseTestUtils.createEmptyDatabase;
 import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.onUpgrade;
 
 import android.database.sqlite.SQLiteDatabase;

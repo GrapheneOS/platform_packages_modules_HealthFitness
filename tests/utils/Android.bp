@@ -45,6 +45,7 @@ android_library {
         "androidx.test.rules",
         "framework-healthfitness.impl",
         "healthfitness-testing-shared",
+        "mockito",
         "service-healthfitness.impl",
     ],
     min_sdk_version: "34",

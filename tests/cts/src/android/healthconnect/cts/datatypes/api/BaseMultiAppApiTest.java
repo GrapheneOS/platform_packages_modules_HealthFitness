@@ -16,11 +16,11 @@
 
 package android.healthconnect.cts.datatypes.api;
 
-import static android.healthconnect.cts.lib.RecordFactory.newEmptyMetadata;
-import static android.healthconnect.cts.lib.RecordFactory.newEmptyMetadataWithId;
 import static android.healthconnect.cts.utils.PermissionHelper.getGrantedHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.runWithRevokedPermission;
 import static android.healthconnect.cts.utils.PermissionHelper.runWithRevokedPermissions;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadata;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadataWithId;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -33,11 +33,11 @@ import android.health.connect.RecordIdFilter;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.Record;
-import android.healthconnect.cts.lib.RecordFactory;
 import android.healthconnect.cts.lib.TestAppProxy;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.shared.recordfactory.RecordFactory;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 

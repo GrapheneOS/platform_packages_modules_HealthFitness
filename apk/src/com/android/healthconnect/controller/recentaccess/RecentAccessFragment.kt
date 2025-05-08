@@ -42,6 +42,7 @@ import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.RecentAccessElement
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
+import com.android.settingslib.widget.SettingsThemeHelper
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -192,10 +193,19 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
 
                 if (recentApp.isToday) {
                     mRecentAccessTodayPreferenceGroup.addPreference(newPreference)
+                    if (!(isLastUsage || SettingsThemeHelper.isExpressiveTheme(requireContext()))) {
+                        mRecentAccessTodayPreferenceGroup.addPreference(
+                            DividerPreference(requireContext())
+                        )
+                    }
                 } else {
                     mRecentAccessYesterdayPreferenceGroup.addPreference(newPreference)
+                    if (!(isLastUsage || SettingsThemeHelper.isExpressiveTheme(requireContext()))) {
+                        mRecentAccessYesterdayPreferenceGroup.addPreference(
+                            DividerPreference(requireContext())
+                        )
+                    }
                 }
-                newPreference.setShowDivider(!isLastUsage)
             }
         }
     }

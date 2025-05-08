@@ -33,6 +33,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.health.connect.HealthPermissions;
+import android.healthconnect.testing.unittest.mocks.HealthPermissionsMocker;
 import android.os.Process;
 import android.os.UserHandle;
 import android.os.UserManager;
@@ -44,7 +45,6 @@ import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigrationStateManager;
-import com.android.server.healthconnect.testing.HealthPermissionsMocker;
 
 import org.junit.Before;
 import org.junit.Rule;

@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.exportimport;
 
+import static android.health.connect.Constants.APP_ICON_DRAWABLE_NAME;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_CLEARING_LOG_TABLES;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_NONE;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_UNKNOWN;
@@ -51,6 +52,7 @@ import android.healthconnect.testing.shared.phr.PhrDataFactory;
 import android.healthconnect.testing.unittest.PhrTestUtils;
 import android.healthconnect.testing.unittest.StorageUtils;
 import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.net.Uri;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
@@ -69,7 +71,6 @@ import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
-import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
 import com.android.server.healthconnect.utils.FilesUtil;
 
 import org.junit.After;
@@ -126,14 +127,12 @@ public class ExportManagerTest {
     @Before
     public void setUp() throws Exception {
         // Return the requested name as the string resource
-        when(mResourcesContext.getStringByName(any()))
+        when(mResourcesContext.getStringByNameOrThrow(any()))
                 .thenAnswer(invocation -> invocation.getArgument(0));
-        when(mResourcesContext.getStringByNameWithArgs(any(), any()))
+        when(mResourcesContext.getStringByNameWithArgsOrThrow(any(), any()))
                 .thenAnswer(
                         invocation -> invocation.getArgument(0) + "," + invocation.getArgument(1));
-        when(mResourcesContext.getIconByDrawableName(
-                        ExportImportNotificationFactory.APP_ICON_DRAWABLE_NAME))
-                .thenReturn(APP_ICON);
+        when(mResourcesContext.getIconByDrawableName(APP_ICON_DRAWABLE_NAME)).thenReturn(APP_ICON);
 
         mContext = ApplicationProvider.getApplicationContext();
         mHealthConnectInjector =

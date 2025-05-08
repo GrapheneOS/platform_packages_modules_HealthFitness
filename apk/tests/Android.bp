@@ -176,16 +176,6 @@ filegroup {
     visibility: ["//visibility:private"],
 }
 
-android_test {
-    name: "HealthConnectControllerDataScreensOldTests",
-    srcs: [":data-screens-old-tests-srcs"],
-    defaults: ["health-connect-controller-tests-default"],
-    manifest_values: {
-        applicationId: "com.android.healthconnect.controller.tests.data.screens.old",
-    },
-    instrumentation_target_package: "com.android.healthconnect.controller.tests.data.screens.old",
-}
-
 filegroup {
     name: "deletion-tests-srcs",
     srcs: [

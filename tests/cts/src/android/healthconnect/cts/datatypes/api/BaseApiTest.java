@@ -16,17 +16,17 @@
 
 package android.healthconnect.cts.datatypes.api;
 
-import static android.healthconnect.cts.lib.RecordFactory.newAnotherFullMetadataWithClientId;
-import static android.healthconnect.cts.lib.RecordFactory.newAnotherFullMetadataWithClientIdAndVersion;
-import static android.healthconnect.cts.lib.RecordFactory.newAnotherFullMetadataWithId;
-import static android.healthconnect.cts.lib.RecordFactory.newEmptyMetadata;
-import static android.healthconnect.cts.lib.RecordFactory.newEmptyMetadataWithClientId;
-import static android.healthconnect.cts.lib.RecordFactory.newEmptyMetadataWithIdClientIdAndVersion;
-import static android.healthconnect.cts.lib.RecordFactory.newFullMetadataWithClientId;
-import static android.healthconnect.cts.lib.RecordFactory.newFullMetadataWithClientIdAndVersion;
-import static android.healthconnect.cts.lib.RecordFactory.newFullMetadataWithId;
-import static android.healthconnect.cts.lib.RecordFactory.newFullMetadataWithoutIds;
 import static android.healthconnect.cts.utils.PermissionHelper.getGrantedHealthPermissions;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newAnotherFullMetadataWithClientId;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newAnotherFullMetadataWithClientIdAndVersion;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newAnotherFullMetadataWithId;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadata;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadataWithClientId;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadataWithIdClientIdAndVersion;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newFullMetadataWithClientId;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newFullMetadataWithClientIdAndVersion;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newFullMetadataWithId;
+import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newFullMetadataWithoutIds;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -43,10 +43,10 @@ import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
-import android.healthconnect.cts.lib.RecordFactory;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.shared.recordfactory.RecordFactory;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 

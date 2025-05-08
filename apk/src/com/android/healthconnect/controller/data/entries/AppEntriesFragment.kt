@@ -488,10 +488,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
             }
         }
         entriesViewModel.getDateNavigationText()?.let { dateSpinnerText ->
-            dateNavigationView.disableDateNavigationView(
-                isEnabled = screenState == VIEW,
-                dateSpinnerText,
-            )
+            dateNavigationView.setActive(isEnabled = screenState == VIEW)
         }
     }
 
@@ -527,10 +524,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                     entriesRecyclerView.isVisible = false
                     updateMenu(screenState = VIEW, hasData = false)
                     entriesViewModel.getDateNavigationText()?.let { dateSpinnerText ->
-                        dateNavigationView.disableDateNavigationView(
-                            isEnabled = true,
-                            dateSpinnerText,
-                        )
+                        dateNavigationView.setActive(isEnabled = true)
                     }
                 }
 

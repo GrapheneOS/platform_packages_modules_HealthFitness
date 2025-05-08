@@ -187,11 +187,37 @@ public final class HealthConnectResourcesContext extends ContextWrapper {
         return getOptionalString(id);
     }
 
+    /**
+     * Returns a string by its resource name.
+     *
+     * @throws IllegalArgumentException if the given string {@code name} cannot be found.
+     */
+    public String getStringByNameOrThrow(String name) {
+        String string = getStringByName(name);
+        if (string == null) {
+            throw new IllegalArgumentException("Cannot find string with name " + name);
+        }
+        return string;
+    }
+
     /** Returns a string by its resource name formatted with supplied arguments */
     @Nullable
-    public String getStringByNameWithArgs(String name, Object... formatArgs) {
+    private String getStringByNameWithArgs(String name, Object... formatArgs) {
         int id = getStringRes(name);
         return getOptionalStringWithArgs(id, formatArgs);
+    }
+
+    /**
+     * Returns a string by its resource name formatted with supplied arguments
+     *
+     * @throws IllegalArgumentException if the given string {@code name} cannot be found.
+     */
+    public String getStringByNameWithArgsOrThrow(String name, Object... formatArgs) {
+        String string = getStringByNameWithArgs(name, formatArgs);
+        if (string == null) {
+            throw new IllegalArgumentException("Cannot find string with name " + name);
+        }
+        return string;
     }
 
     @StringRes

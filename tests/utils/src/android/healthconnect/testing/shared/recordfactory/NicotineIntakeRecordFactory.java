@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.lib;
+package android.healthconnect.testing.shared.recordfactory;
 
 import static android.health.connect.datatypes.NicotineIntakeRecord.NICOTINE_INTAKE_TYPE_CIGARETTE;
 import static android.health.connect.datatypes.NicotineIntakeRecord.NICOTINE_INTAKE_TYPE_VAPE;
-import static android.healthconnect.cts.lib.BundleHelper.PREFIX;
 
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.NicotineIntakeRecord;
