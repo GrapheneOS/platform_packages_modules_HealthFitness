@@ -16,16 +16,17 @@
 package com.android.healthconnect.testapps.toolbox.read.dataentries.formatters
 
 import android.content.Context
-import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsRecord
-import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry
+import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry.FormattedDataEntry
+import com.android.healthconnect.testapps.toolbox.read.dataentries.utils.UnitFormatter.Companion.formatSteps
+import com.android.healthconnect.testapps.toolbox.read.utils.DataEntryUtils.Companion.getHeader
 
-class DataEntryFormatter(private val stepsFormatter: StepsFormatter = StepsFormatter()) {
+class StepsFormatter {
 
-    fun format(record: Record, context: Context): FormattedEntry {
-        return when (record) {
-            is StepsRecord -> stepsFormatter.format(record, context)
-            else -> throw IllegalArgumentException("Unsupported data type")
-        }
+    fun format(record: StepsRecord, context: Context): FormattedDataEntry {
+        return FormattedDataEntry(
+            header = getHeader(record),
+            value = formatSteps(record.count, context),
+        )
     }
 }
