@@ -104,6 +104,14 @@ public class PhrTestUtils {
                 medicalResources.stream().map(PhrTestUtils::makeUpsertRequest).toList());
     }
 
+    /** Upsert the given {@link MedicalResource}s. The data sources must already exist. */
+    public List<MedicalResource> upsertResources(
+            List<MedicalResource> medicalResources, String callingPackageName) {
+        return mMedicalResourceHelper.upsertMedicalResources(
+                callingPackageName,
+                medicalResources.stream().map(PhrTestUtils::makeUpsertRequest).toList());
+    }
+
     /** Returns a request to upsert the given {@link MedicalResource}. */
     public static UpsertMedicalResourceInternalRequest makeUpsertRequest(MedicalResource resource) {
         return makeUpsertRequest(
