@@ -79,6 +79,8 @@ import android.os.ext.SdkExtensions;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.compatibility.common.util.SystemUtil;
+
 import com.google.common.truth.Expect;
 
 import org.junit.After;
@@ -110,7 +112,6 @@ public class DataMigrationTest {
     private static final String PACKAGE_NAME_NOT_INSTALLED = "not.installed.package";
     private static final String INVALID_PERMISSION_1 = "invalid.permission.1";
     private static final String INVALID_PERMISSION_2 = "invalid.permission.2";
-    private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
     private static final String APP_NAME = "Test App";
     private static final String APP_NAME_NEW = "Test App 2";
     // DEFAULT_PAGE_SIZE should hold the same value as Constants#DEFAULT_PAGE_SIZE
@@ -130,8 +131,6 @@ public class DataMigrationTest {
                     mEndTime, ZoneOffset.systemDefault().getRules().getOffset(mEndTime));
     private Context mTargetContext;
     private HealthConnectManager mManager;
-    private String mEnableCompletionJobsBackup;
-    private String mEnablePauseJobsBackup;
     private String mStateChangeJobAdbDumpsys;
 
     private static Metadata getMetadata(UUID id, String clientRecordId, String packageName) {
@@ -804,7 +803,7 @@ public class DataMigrationTest {
                         + ".MigrationStateChangeJob@android/com\\.android\\.server\\"
                         + ".healthconnect\\.HealthConnectDailyService";
 
-        String commandOutput = TestUtils.runShellCommand("dumpsys jobscheduler");
+        String commandOutput = SystemUtil.runShellCommand("dumpsys jobscheduler");
 
         Pattern regexPattern = Pattern.compile(scheduledStateChangeJobPattern);
         Matcher matcher = regexPattern.matcher(commandOutput);

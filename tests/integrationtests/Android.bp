@@ -66,13 +66,14 @@ android_test {
     libs: [
         "framework-healthfitness.impl",
     ],
-
     static_libs: [
         "androidx.test.rules",
         "compatibility-device-util-axt",
         "androidx.test.ext.truth",
         "cts-healthconnect-utils",
         "android.permission.flags-aconfig-java-export",
+        "healthfitness-testing-cts",
+        "healthfitness-testing-shared",
     ],
 
     srcs: [
@@ -116,6 +117,8 @@ android_test {
         "cts-healthconnect-phr-lib",
         "healthconnect-documentprovider-utils",
         "healthfitness-aconfig-flags-lib",
+        "healthfitness-testing-cts",
+        "healthfitness-testing-shared",
     ],
     srcs: [
         "src/android/healthconnect/tests/exportimport/*.java",
