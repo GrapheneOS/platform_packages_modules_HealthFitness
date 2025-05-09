@@ -49,7 +49,6 @@ import com.android.server.healthconnect.storage.TransactionManager;
 
 import com.google.common.collect.ImmutableMap;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -90,26 +89,6 @@ public final class CloudBackupRestoreTest {
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
-
-    private String mPreviousRobolectricProperty;
-
-    @Before
-    public void robolectricProperties() {
-        // TODO: b/403334845 - remove this when test infrastructure supports setting this property
-        mPreviousRobolectricProperty =
-                System.setProperty("robolectric.useValidGetApplicationIcon", "true");
-    }
-
-    @After
-    public void robolectricPropertiesClear() {
-        // TODO: b/403334845 - remove this when test infrastructure supports setting this property
-        if (mPreviousRobolectricProperty == null) {
-            System.clearProperty("robolectric.useValidGetApplicationIcon");
-        } else {
-            System.setProperty(
-                    "robolectric.useValidGetApplicationIcon", mPreviousRobolectricProperty);
-        }
-    }
 
     @Before
     public void setUp() {
