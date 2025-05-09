@@ -51,9 +51,19 @@ android_robolectric_test {
     test_suites: [
         "general-tests",
     ],
+    // Enable robolectric changes we need for tests, that were contributed back and aren't default
+    // yet.
+    test_options: {
+        test_runner_options: [
+            {
+                name: "java-flags",
+                value: "-Drobolectric.useValidGetApplicationIcon=true",
+            },
+        ],
+    },
     static_libs: [
         // This is required to get mocking of final classes
-        "inline-mockito-robolectric-prebuilt",
+        "inline-mockito5-robolectric-prebuilt",
         "framework-healthfitness.impl",
         "service-healthfitness.impl",
         "androidx.test.core",
