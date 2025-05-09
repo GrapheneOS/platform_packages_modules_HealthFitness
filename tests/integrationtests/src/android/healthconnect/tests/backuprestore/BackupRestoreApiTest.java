@@ -29,22 +29,18 @@ import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissions;
-import android.health.connect.ReadRecordsRequest;
-import android.health.connect.ReadRecordsRequestUsingFilters;
-import android.health.connect.ReadRecordsResponse;
 import android.health.connect.datatypes.BodyFatRecord;
 import android.health.connect.datatypes.HeightRecord;
-import android.health.connect.datatypes.Record;
 import android.health.connect.restore.StageRemoteDataException;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
+import android.healthconnect.cts.utils.TestUtils;
 import android.healthconnect.integrationtests.backuprestore.R;
 import android.os.FileUtils;
 import android.os.OutcomeReceiver;
 import android.os.ParcelFileDescriptor;
 import android.util.ArrayMap;
 import android.util.ArraySet;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -98,12 +94,8 @@ public class BackupRestoreApiTest {
         verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
         deleteAllStagedRemoteData();
 
-        List<BodyFatRecord> bodyFatRecordsRead =
-                readRecords(
-                        new ReadRecordsRequestUsingFilters.Builder<>(BodyFatRecord.class).build());
-        List<HeightRecord> heightRecordsRead =
-                readRecords(
-                        new ReadRecordsRequestUsingFilters.Builder<>(HeightRecord.class).build());
+        List<BodyFatRecord> bodyFatRecordsRead = TestUtils.readAllRecords(BodyFatRecord.class);
+        List<HeightRecord> heightRecordsRead = TestUtils.readAllRecords(HeightRecord.class);
 
         assertThat(bodyFatRecordsRead).isEmpty();
         assertThat(heightRecordsRead).isEmpty();
@@ -117,13 +109,9 @@ public class BackupRestoreApiTest {
 
         // Step 3: Assert that the restored db (with the service) has the records from the db with
         // the app.
-        heightRecordsRead =
-                readRecords(
-                        new ReadRecordsRequestUsingFilters.Builder<>(HeightRecord.class).build());
+        heightRecordsRead = TestUtils.readAllRecords(HeightRecord.class);
         assertThat(heightRecordsRead.size()).isEqualTo(2);
-        bodyFatRecordsRead =
-                readRecords(
-                        new ReadRecordsRequestUsingFilters.Builder<>(BodyFatRecord.class).build());
+        bodyFatRecordsRead = TestUtils.readAllRecords(BodyFatRecord.class);
         assertThat(bodyFatRecordsRead.size()).isEqualTo(1);
 
         File backupDataDir = getBackupDataDir();
@@ -215,38 +203,6 @@ public class BackupRestoreApiTest {
                     .getUiAutomation()
                     .dropShellPermissionIdentity();
         }
-    }
-
-    private <T extends Record> List<T> readRecords(ReadRecordsRequest<T> request)
-            throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-        assertThat(mService).isNotNull();
-        assertThat(request.getRecordType()).isNotNull();
-        AtomicReference<List<T>> response = new AtomicReference<>();
-        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
-                new AtomicReference<>();
-        mService.readRecords(
-                request,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(ReadRecordsResponse<T> result) {
-                        response.set(result.getRecords());
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        Log.e(TAG, exception.getMessage());
-                        healthConnectExceptionAtomicReference.set(exception);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
-        if (healthConnectExceptionAtomicReference.get() != null) {
-            throw healthConnectExceptionAtomicReference.get();
-        }
-        return response.get();
     }
 
     public void verifyDeleteRecords(DeleteUsingFiltersRequest request) throws InterruptedException {

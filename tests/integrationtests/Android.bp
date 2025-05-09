@@ -24,7 +24,6 @@ android_test {
         "general-tests",
         "mts-healthfitness",
     ],
-
     libs: [
         "android.test.runner.stubs.system",
         "android.test.base.stubs.system",
@@ -32,7 +31,6 @@ android_test {
         "framework-sdkextensions.stubs.module_lib",
         "framework-healthfitness.impl",
     ],
-
     static_libs: [
         "androidx.test.rules",
         "compatibility-device-util-axt",
@@ -75,7 +73,6 @@ android_test {
         "healthfitness-testing-cts",
         "healthfitness-testing-shared",
     ],
-
     srcs: [
         ":healthfitness-permissions-testapp-srcs",
         "src/**/*.java",
@@ -129,7 +126,6 @@ android_test {
     test_config: "AndroidTestExportImport.xml",
     manifest: "AndroidManifestExportImport.xml",
     data: [
-        ":HealthFitnessCtsTestApp",
         ":HealthFitnessTestDocumentProviderApp",
         ":HealthFitnessTestDocumentProviderApp2",
     ],

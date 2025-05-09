@@ -31,7 +31,7 @@ class ManageDataFragmentTest : HealthConnectBaseTest() {
 
     @Test
     fun manageDataFragment_never_showsAutoDeleteOption() {
-        TestUtils.setAutoDeletePeriod(0)
+        TestUtils.setRecordRetentionPeriodInDays(0)
 
         context.launchMainActivity {
             navigateToNewPage("Manage data")
@@ -42,7 +42,7 @@ class ManageDataFragmentTest : HealthConnectBaseTest() {
 
     @Test
     fun manageDataFragment_3months_showsAutoDeleteOption() {
-        TestUtils.setAutoDeletePeriod(THREE_MONTHS)
+        TestUtils.setRecordRetentionPeriodInDays(THREE_MONTHS)
 
         context.launchMainActivity {
             navigateToNewPage("Manage data")
