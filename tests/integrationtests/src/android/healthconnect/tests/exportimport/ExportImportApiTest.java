@@ -17,8 +17,6 @@
 package android.healthconnect.tests.exportimport;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
-import static android.health.connect.HealthPermissions.WRITE_STEPS;
-import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.utils.TestUtils.deleteRecords;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
@@ -72,7 +70,6 @@ import java.util.List;
 /** Integration test for the export/import functionality of HealthConnect service. */
 @RunWith(AndroidJUnit4.class)
 public class ExportImportApiTest {
-    private static final String DEFAULT_APP_PACKAGE = "android.healthconnect.cts.app";
     private static final String JOB_NAMESPACE = "HEALTH_CONNECT_IMPORT_EXPORT_JOBS";
     private static final String REMOTE_EXPORT_DATABASE_DIR_NAME = "export_import";
     private static final String REMOTE_EXPORT_ZIP_FILE_NAME = "remote_file.zip";
@@ -127,7 +124,6 @@ public class ExportImportApiTest {
 
     @Test
     public void exportDeleteDataAndThenImport_dataIsRestored() throws Exception {
-        grantHealthPermission(DEFAULT_APP_PACKAGE, WRITE_STEPS);
         RecordFactory<? extends Record> recordFactory =
                 RecordFactory.forDataType(StepsRecord.class);
         insertRecords(

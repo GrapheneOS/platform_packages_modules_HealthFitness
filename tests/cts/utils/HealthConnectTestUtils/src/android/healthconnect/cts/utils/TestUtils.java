@@ -432,7 +432,7 @@ public final class TestUtils {
         return receiver.getResponse();
     }
 
-    public static void setAutoDeletePeriod(int period) throws InterruptedException {
+    public static void setRecordRetentionPeriodInDays(int period) throws InterruptedException {
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
         uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
         try {
