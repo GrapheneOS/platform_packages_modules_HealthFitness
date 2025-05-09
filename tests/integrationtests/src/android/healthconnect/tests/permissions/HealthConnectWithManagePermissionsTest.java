@@ -49,7 +49,6 @@ import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.PermissionHelper;
 import android.healthconnect.cts.utils.TestUtils;
-import android.healthconnect.tests.IntegrationTestUtils;
 import android.os.Build;
 import android.platform.test.annotations.RequiresFlagsDisabled;
 import android.platform.test.annotations.RequiresFlagsEnabled;
@@ -829,9 +828,7 @@ public class HealthConnectWithManagePermissionsTest {
     @Test
     public void testPermissionApis_migrationInProgress_apisBlocked() throws Exception {
         assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
-        runWithShellPermissionIdentity(
-                IntegrationTestUtils::startMigration,
-                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+        TestUtils.startMigrationWithShellPermissionIdentity();
 
         // Grant permission
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
@@ -845,9 +842,7 @@ public class HealthConnectWithManagePermissionsTest {
         deleteAllStagedRemoteData(mHealthConnectManager);
 
         // Revoke permission
-        runWithShellPermissionIdentity(
-                IntegrationTestUtils::startMigration,
-                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+        TestUtils.startMigrationWithShellPermissionIdentity();
 
         grantPermissionViaPackageManager(DEFAULT_APP_PACKAGE, READ_PERM);
         assertPermGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
@@ -886,9 +881,7 @@ public class HealthConnectWithManagePermissionsTest {
                         setHealthPermissionsUserFixedFlagValue(
                                 DEFAULT_APP_PACKAGE, List.of(READ_PERM, WRITE_PERM), false));
 
-        runWithShellPermissionIdentity(
-                IntegrationTestUtils::finishMigration,
-                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+        TestUtils.finishMigrationWithShellPermissionIdentity();
         assertPermGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
     }
 
