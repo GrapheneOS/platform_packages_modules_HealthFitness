@@ -64,6 +64,7 @@ import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.formatRecentAccessTime
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HomePageElement
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -87,6 +88,7 @@ class HomeFragment : Hilt_HomeFragment() {
     companion object {
         private const val BANNER_GROUP = "banner_group"
         private const val NO_RECENT_ACCESS = "no_recent_access"
+        private const val PERMISSIONS_AND_DATA_CATEGORY_KEY = "permissions_and_data_category"
         private const val DATA_AND_ACCESS_PREFERENCE_KEY = "data_and_access"
         private const val RECENT_ACCESS_PREFERENCE_KEY = "recent_access"
         private const val CONNECTED_APPS_PREFERENCE_KEY = "connected_apps"
@@ -111,6 +113,7 @@ class HomeFragment : Hilt_HomeFragment() {
     @Inject lateinit var timeSource: TimeSource
     @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
+    @Inject lateinit var logger: HealthConnectLogger
 
     private val recentAccessViewModel: RecentAccessViewModel by viewModels()
     private val homeViewModel: HomeViewModel by viewModels()
@@ -119,16 +122,16 @@ class HomeFragment : Hilt_HomeFragment() {
 
     private val noRecentAccessPreference: ZeroStatePreference by pref(NO_RECENT_ACCESS)
 
-    private val dataAndAccessPreference: HealthPreference by pref(DATA_AND_ACCESS_PREFERENCE_KEY)
-
     private val recentAccessPreferenceGroup: PreferenceGroup by pref(RECENT_ACCESS_PREFERENCE_KEY)
+
+    private val permissionsAndDataPreferenceGroup: PreferenceGroup by
+        pref(PERMISSIONS_AND_DATA_CATEGORY_KEY)
 
     private val appPermissionsPreference: HealthPreference by pref(CONNECTED_APPS_PREFERENCE_KEY)
 
-    private val manageDataPreference: HealthPreference by pref(MANAGE_DATA_PREFERENCE_KEY)
+    private val dataAndAccessPreference: HealthPreference by pref(DATA_AND_ACCESS_PREFERENCE_KEY)
 
-    private val browseMedicalDataPreference: HealthPreference by
-        pref(BROWSE_MEDICAL_DATA_PREFERENCE_KEY)
+    private val manageDataPreference: HealthPreference by pref(MANAGE_DATA_PREFERENCE_KEY)
 
     private val dateFormatter: LocalDateTimeFormatter by lazy {
         LocalDateTimeFormatter(requireContext())
@@ -163,17 +166,6 @@ class HomeFragment : Hilt_HomeFragment() {
         }
         manageDataPreference.summary = getString(R.string.manage_data_summary)
 
-        browseMedicalDataPreference.setOnPreferenceClickListener {
-            findNavController()
-                .navigate(
-                    R.id.action_homeFragment_to_medicalDataFragment,
-                    bundleOf(IS_BROWSE_MEDICAL_DATA_SCREEN to true),
-                )
-            true
-        }
-        browseMedicalDataPreference.isVisible = false
-        browseMedicalDataPreference.logName = HomePageElement.BROWSE_HEALTH_RECORDS_BUTTON
-
         migrationBannerSummary = getString(R.string.resume_migration_banner_description_fallback)
     }
 
@@ -184,10 +176,7 @@ class HomeFragment : Hilt_HomeFragment() {
         exportStatusViewModel.loadScheduledExportStatus()
         homeViewModel.loadHasAnyMedicalData()
         if (isLockScreenBannerAvailable) {
-            homeViewModel.loadShouldShowLockScreenBanner(
-                getSharedPreference(),
-                requireContext(),
-            )
+            homeViewModel.loadShouldShowLockScreenBanner(getSharedPreference(), requireContext())
         }
     }
 
@@ -237,7 +226,11 @@ class HomeFragment : Hilt_HomeFragment() {
 
         homeViewModel.loadHasAnyMedicalData()
         homeViewModel.hasAnyMedicalData.observe(viewLifecycleOwner) { hasAnyMedicalData ->
-            browseMedicalDataPreference.isVisible = hasAnyMedicalData ?: false
+            if (hasAnyMedicalData) {
+                addBrowseHealthDataButton()
+            } else {
+                removeBrowseHealthDataButton()
+            }
         }
         if (isLockScreenBannerAvailable) {
             val sharedPreference = getSharedPreference()
@@ -250,6 +243,41 @@ class HomeFragment : Hilt_HomeFragment() {
                 }
             }
         }
+    }
+
+    private fun addBrowseHealthDataButton() {
+        if (isBrowseHealthDataAlreadyAdded()) {
+            return
+        }
+        permissionsAndDataPreferenceGroup.addPreference(
+            HealthPreference(requireContext()).also {
+                it.key = BROWSE_MEDICAL_DATA_PREFERENCE_KEY
+                it.title = getString(R.string.browse_medical_data)
+                it.summary = getString(R.string.browse_medical_data_subtitle)
+                it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.dataAndAccessIcon)
+                it.logName = HomePageElement.BROWSE_HEALTH_RECORDS_BUTTON
+                it.setOnPreferenceClickListener {
+                    findNavController()
+                        .navigate(
+                            R.id.action_homeFragment_to_medicalDataFragment,
+                            bundleOf(IS_BROWSE_MEDICAL_DATA_SCREEN to true),
+                        )
+                    true
+                }
+            }
+        )
+    }
+
+    private fun isBrowseHealthDataAlreadyAdded(): Boolean {
+        return permissionsAndDataPreferenceGroup.findPreference<HealthPreference>(
+            BROWSE_MEDICAL_DATA_PREFERENCE_KEY
+        ) != null
+    }
+
+    private fun removeBrowseHealthDataButton() {
+        permissionsAndDataPreferenceGroup.removePreferenceRecursively(
+            BROWSE_MEDICAL_DATA_PREFERENCE_KEY
+        )
     }
 
     private fun isLockScreenBannerAlreadyAdded(): Boolean {
