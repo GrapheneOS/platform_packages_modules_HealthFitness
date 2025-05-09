@@ -28,7 +28,6 @@ import android.os.UserManager;
 
 import androidx.annotation.Nullable;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
@@ -111,7 +110,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final ExportImportSettingsStorage mExportImportSettingsStorage;
     private final ExportManager mExportManager;
     private final MigrationStateManager mMigrationStateManager;
-    private @Nullable final OnboardingStateManager mOnboardingStateManager;
+    private final OnboardingStateManager mOnboardingStateManager;
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final AppInfoHelper mAppInfoHelper;
     private final AppOpLogsHelper mAppOpLogsHelper;
@@ -460,7 +459,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         ? LocalManagerRegistry.getManager(AppOpsManagerLocal.class)
                         : builder.mAppOpsManagerLocal;
         mOnboardingStateManager =
-                builder.mOnboardingStateManager == null && Flags.onboarding()
+                builder.mOnboardingStateManager == null
                         ? new OnboardingStateManager(getPreferenceHelper(), userHandle)
                         : builder.mOnboardingStateManager;
         mDeviceRecordHelper = new DeviceRecordHelper(mFitnessRecordUpsertHelper);
@@ -520,7 +519,6 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         return mMigrationStateManager;
     }
 
-    @Nullable
     @Override
     public OnboardingStateManager getOnboardingStateManager() {
         return mOnboardingStateManager;
@@ -1068,6 +1066,13 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         public Builder setMigrationEntityHelper(MigrationEntityHelper migrationEntityHelper) {
             Objects.requireNonNull(migrationEntityHelper);
             mMigrationEntityHelper = migrationEntityHelper;
+            return this;
+        }
+
+        /** Set fake or custom {@link OnboardingStateManager} */
+        public Builder setOnboardingStateManager(OnboardingStateManager onboardingStateManager) {
+            Objects.requireNonNull(onboardingStateManager);
+            mOnboardingStateManager = onboardingStateManager;
             return this;
         }
 

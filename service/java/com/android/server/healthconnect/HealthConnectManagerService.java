@@ -32,6 +32,7 @@ import com.android.server.healthconnect.exportimport.ExportImportJobs;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigratorPackageChangesReceiver;
+import com.android.server.healthconnect.onboarding.OnboardingNotificationJob;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 
 import java.util.Objects;
@@ -135,6 +136,9 @@ public class HealthConnectManagerService extends SystemService {
         threadScheduler.shutdownThreadPools();
         mRateLimiter.clearCache();
         HealthConnectDailyJobs.cancelAllJobs(mContext);
+        if (Flags.onboarding()) {
+            OnboardingNotificationJob.cancelAllJobs(mContext);
+        }
         mHealthConnectInjector.getDatabaseHelpers().clearAllCache();
         mHealthConnectInjector.getTransactionManager().shutDownCurrentUser();
         mHealthConnectInjector.getMigrationStateManager().shutDownCurrentUser(mContext);
@@ -270,6 +274,17 @@ public class HealthConnectManagerService extends SystemService {
                             mHealthConnectInjector.getTrackerManager().initialize();
                         } catch (Exception e) {
                             Slog.e(TAG, "Failed to initialize steps tracker.", e);
+                        }
+                    });
+        }
+        if (Flags.onboarding()) {
+            threadScheduler.scheduleInternalTask(
+                    () -> {
+                        try {
+                            OnboardingNotificationJob.scheduleJobIfNotScheduled(
+                                    mCurrentForegroundUser, mContext);
+                        } catch (Exception e) {
+                            Slog.e(TAG, "Failed to schedule onboarding notification job.", e);
                         }
                     });
         }

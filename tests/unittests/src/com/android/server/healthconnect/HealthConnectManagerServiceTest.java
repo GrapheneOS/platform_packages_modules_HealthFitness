@@ -16,7 +16,9 @@
 
 package com.android.server.healthconnect;
 
+import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.BackupRestoreJobService.BACKUP_RESTORE_JOBS_NAMESPACE;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationJob.ONBOARDING_NOTIFICATION_JOB_NAMESPACE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -24,6 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -38,6 +41,9 @@ import android.content.pm.PermissionInfo;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.permission.PermissionManager;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -66,14 +72,15 @@ public class HealthConnectManagerServiceTest {
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
-
-    @Mock Context mContext;
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Mock private Context mContext;
     @Mock private SystemService.TargetUser mMockTargetUser;
     @Mock private JobScheduler mMainJobScheduler;
     @Mock private JobScheduler mDailyJobScheduler;
     @Mock private JobScheduler mImportExportJobScheduler;
     @Mock private JobScheduler mMigrationJobScheduler;
     @Mock private JobScheduler mBackupRestoreJobScheduler;
+    @Mock private JobScheduler mOnboardingNotificationJobScheduler;
     @Mock private UserManager mUserManager;
     @Mock private PackageManager mPackageManager;
     @Mock private PermissionManager mPermissionManager;
@@ -89,6 +96,8 @@ public class HealthConnectManagerServiceTest {
                 .thenReturn(mImportExportJobScheduler);
         when(mMainJobScheduler.forNamespace(BACKUP_RESTORE_JOBS_NAMESPACE))
                 .thenReturn(mBackupRestoreJobScheduler);
+        when(mMainJobScheduler.forNamespace(ONBOARDING_NOTIFICATION_JOB_NAMESPACE))
+                .thenReturn(mOnboardingNotificationJobScheduler);
         PermissionGroupInfo permissionGroupInfo = new PermissionGroupInfo();
         permissionGroupInfo.packageName = "test";
         PackageInfo mockPackageInfo = new PackageInfo();
@@ -148,6 +157,7 @@ public class HealthConnectManagerServiceTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void testUserSwitch_userUnlocked() {
         HealthConnectManagerService service = makeServiceWithTemporaryDir();
         when(mUserManager.isUserUnlocked(any())).thenReturn(true);
@@ -157,6 +167,16 @@ public class HealthConnectManagerServiceTest {
         verify(mDailyJobScheduler, times(1)).cancelAll();
         verify(mDailyJobScheduler, timeout(5000).times(1)).schedule(any());
         verify(mBackupRestoreJobScheduler, times(1)).cancelAll();
+        verify(mOnboardingNotificationJobScheduler, times(1)).cancelAll();
+    }
+
+    @Test
+    @DisableFlags(FLAG_ONBOARDING)
+    public void testUserSwitch_onboardingFlagDisabled_notCancelJob() {
+        HealthConnectManagerService service = makeServiceWithTemporaryDir();
+
+        service.onUserSwitching(mMockTargetUser, mMockTargetUser);
+        verify(mOnboardingNotificationJobScheduler, never()).cancelAll();
     }
 
     private HealthConnectManagerService makeServiceWithTemporaryDir() {
