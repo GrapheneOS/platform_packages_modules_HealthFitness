@@ -106,7 +106,7 @@ public final class ExerciseSessionRecordHelper
     private static final String HAS_ROUTE_COLUMN_NAME = "has_route";
     static final String PLANNED_EXERCISE_SESSION_ID_COLUMN_NAME = "planned_exercise_session_id";
     public static final String RATE_OF_PERCEIVED_EXERTION_COLUMN_NAME =
-            "rate_of_perceived_exertion";
+            "session_rate_of_perceived_exertion";
     private static final int ROUTE_READ_ACCESS_TYPE_NONE = 0;
     private static final int ROUTE_READ_ACCESS_TYPE_OWN = 1;
     private static final int ROUTE_READ_ACCESS_TYPE_ALL = 2;

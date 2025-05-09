@@ -224,6 +224,7 @@ message ExerciseSession {
   repeated ExerciseLap lap = 6;
   repeated ExerciseSegment segment = 7;
   optional string planned_exercise_session_id = 8;
+  optional float session_rate_of_perceived_exertion = 9;
 
   message ExerciseRoute {
     repeated Location route_location = 1;
@@ -249,6 +250,9 @@ message ExerciseSession {
     int64 end_time = 2;
     int32 segment_type = 3;
     int32 repetitions_count = 4;
+    optional double weight = 5;
+    optional int32 set_index = 6;
+    optional float rate_of_perceived_exertion = 7;
   }
 }
 

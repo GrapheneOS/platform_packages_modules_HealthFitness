@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.backuprestore;
 
+import static android.health.connect.Constants.DEFAULT_FLOAT;
+import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.datatypes.units.Temperature.fromCelsius;
 
 import static java.util.stream.Collectors.toSet;
@@ -83,6 +85,7 @@ import android.health.connect.internal.datatypes.WeightRecordInternal;
 import android.health.connect.internal.datatypes.WheelchairPushesRecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ActiveCaloriesBurned;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ActivityIntensity;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BasalBodyTemperature;
@@ -366,6 +369,12 @@ public final class RecordProtoConverter {
                     exerciseSessionRecordInternal.getPlannedExerciseSessionId().toString());
         }
 
+        if (AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()
+                && exerciseSessionRecordInternal.getRateOfPerceivedExertion() != DEFAULT_FLOAT) {
+            builder.setSessionRateOfPerceivedExertion(
+                    exerciseSessionRecordInternal.getRateOfPerceivedExertion());
+        }
+
         return builder.build();
     }
 
@@ -389,12 +398,24 @@ public final class RecordProtoConverter {
     }
 
     private static ExerciseSegment toSegmentProto(ExerciseSegmentInternal segmentInternal) {
-        return ExerciseSegment.newBuilder()
-                .setStartTime(segmentInternal.getStartTime())
+
+        ExerciseSegment.Builder builder = ExerciseSegment.newBuilder();
+        builder.setStartTime(segmentInternal.getStartTime())
                 .setEndTime(segmentInternal.getEndTime())
                 .setSegmentType(segmentInternal.getSegmentType())
-                .setRepetitionsCount(segmentInternal.getRepetitionsCount())
-                .build();
+                .setRepetitionsCount(segmentInternal.getRepetitionsCount());
+        if (AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
+            if (segmentInternal.getWeightGrams() != null) {
+                builder.setWeight(segmentInternal.getWeightGrams());
+            }
+            if (segmentInternal.getSetIndex() != DEFAULT_INT) {
+                builder.setSetIndex(segmentInternal.getSetIndex());
+            }
+            if (segmentInternal.getRateOfPerceivedExertion() != DEFAULT_FLOAT) {
+                builder.setRateOfPerceivedExertion(segmentInternal.getRateOfPerceivedExertion());
+            }
+        }
+        return builder.build();
     }
 
     private static FloorsClimbed toFloorsClimbedProto(
@@ -1262,16 +1283,36 @@ public final class RecordProtoConverter {
         exerciseSessionRecordInternal.setExerciseSegments(
                 exerciseSessionProto.getSegmentList().stream()
                         .map(
-                                segment ->
-                                        new ExerciseSegmentInternal()
-                                                .setStartTime(segment.getStartTime())
-                                                .setEndTime(segment.getEndTime())
-                                                .setSegmentType(segment.getSegmentType())
-                                                .setRepetitionsCount(segment.getRepetitionsCount()))
+                                (ExerciseSegment segment) -> {
+                                    ExerciseSegmentInternal segmentInternal =
+                                            new ExerciseSegmentInternal();
+                                    segmentInternal
+                                            .setStartTime(segment.getStartTime())
+                                            .setEndTime(segment.getEndTime())
+                                            .setSegmentType(segment.getSegmentType())
+                                            .setRepetitionsCount(segment.getRepetitionsCount());
+                                    if (AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
+                                        if (segment.hasWeight()) {
+                                            segmentInternal.setWeightGrams(segment.getWeight());
+                                        }
+                                        if (segment.hasSetIndex()) {
+                                            segmentInternal.setSetIndex(segment.getSetIndex());
+                                        }
+                                        if (segment.hasRateOfPerceivedExertion()) {
+                                            segmentInternal.setRateOfPerceivedExertion(
+                                                    segment.getRateOfPerceivedExertion());
+                                        }
+                                    }
+                                    return segmentInternal;
+                                })
                         .toList());
         if (exerciseSessionProto.hasPlannedExerciseSessionId()) {
             exerciseSessionRecordInternal.setPlannedExerciseSessionId(
                     UUID.fromString(exerciseSessionProto.getPlannedExerciseSessionId()));
+        }
+        if (exerciseSessionProto.hasSessionRateOfPerceivedExertion()) {
+            exerciseSessionRecordInternal.setRateOfPerceivedExertion(
+                    exerciseSessionProto.getSessionRateOfPerceivedExertion());
         }
         return exerciseSessionRecordInternal;
     }
