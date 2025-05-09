@@ -114,7 +114,6 @@ import android.health.connect.datatypes.WeightRecord;
 import android.health.connect.datatypes.WheelchairPushesRecord;
 import android.health.connect.migration.MigrationException;
 import android.os.OutcomeReceiver;
-import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -123,11 +122,6 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.healthfitness.flags.Flags;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.time.Duration;
 import java.time.Instant;
@@ -875,31 +869,6 @@ public final class TestUtils {
                         .addRecordType(HeartRateRecord.class)
                         .addRecordType(BasalMetabolicRateRecord.class)
                         .build());
-    }
-
-    public static String runShellCommand(String command) throws IOException {
-        UiAutomation uiAutomation =
-                androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
-                        .getUiAutomation();
-        uiAutomation.adoptShellPermissionIdentity();
-        final ParcelFileDescriptor stdout = uiAutomation.executeShellCommand(command);
-        StringBuilder output = new StringBuilder();
-
-        try (BufferedReader reader =
-                new BufferedReader(
-                        new InputStreamReader(new FileInputStream(stdout.getFileDescriptor())))) {
-            char[] buffer = new char[4096];
-            int bytesRead;
-            while ((bytesRead = reader.read(buffer)) != -1) {
-                output.append(buffer, 0, bytesRead);
-            }
-        } catch (FileNotFoundException e) {
-            Log.e(TAG, e.getMessage());
-        } finally {
-            uiAutomation.dropShellPermissionIdentity();
-        }
-
-        return output.toString();
     }
 
     @NonNull

@@ -51,3 +51,24 @@ android_library {
     min_sdk_version: "34",
     sdk_version: "module_current",
 }
+
+// Library for testing helpers that can only be used in cts / integration tests,
+// Note: When using java_library, it doesn't allow us to use "module_current" as the sdk_version,
+// which in turn doesn't allow access to hidden methods.
+android_library {
+    name: "healthfitness-testing-cts",
+    manifest: "AndroidManifest_cts.xml",
+    srcs: [
+        "src/android/healthconnect/testing/cts/**/*.java",
+    ],
+    static_libs: [
+        "androidx.test.ext.junit",
+        "androidx.test.ext.truth",
+        "androidx.test.rules",
+        "compatibility-device-util-axt",
+        "framework-healthfitness.impl",
+        "healthfitness-testing-shared",
+    ],
+    min_sdk_version: "34",
+    sdk_version: "module_current",
+}
