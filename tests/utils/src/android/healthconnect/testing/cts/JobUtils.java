@@ -32,12 +32,12 @@ public class JobUtils {
 
     /** Runs the job with the given namespace if it has already been scheduled. */
     public static void runJobIfScheduled(String namespace) throws Exception {
-        runShellCommandForHCJob(namespace, "cancel -n");
+        runShellCommandForHCJob(namespace, "run -f -n");
     }
 
     /** Cancels the job with the given namespace if it has already been scheduled. */
     public static void cancelJobIfScheduled(String namespace) throws Exception {
-        runShellCommandForHCJob(namespace, "run -f -n");
+        runShellCommandForHCJob(namespace, "cancel -n");
     }
 
     private static void runShellCommandForHCJob(String namespace, String command) throws Exception {
