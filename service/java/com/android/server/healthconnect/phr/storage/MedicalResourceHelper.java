@@ -340,7 +340,7 @@ public final class MedicalResourceHelper {
 
     /**
      * Reads the {@link MedicalResource}s stored in the HealthConnect database that belong to the
-     * given appId. Returns all resources if appId is null
+     * given appId. Returns all resources if appId is null.
      */
     private List<MedicalResource> readMedicalResourcesByIds(
             List<MedicalResourceId> medicalResourceIds, @Nullable Long appId)
@@ -738,6 +738,26 @@ public final class MedicalResourceHelper {
                                 appId,
                                 getJoinWithIndicesTableFilterOnMedicalResourceTypes(
                                         medicalResourceTypes)));
+    }
+
+    @VisibleForTesting
+    static ReadTableRequest getFilteredReadRequestForResources(
+            List<UUID> dataSourceIds, Set<Integer> medicalResourceTypes, @Nullable Long appId) {
+        List<String> columns = new ArrayList<>(sMedicalResourceColumns);
+        columns.add(sLastModifiedTimeInInnerQuery);
+        return new ReadTableRequest(getMainTableName())
+                .setColumnNames(columns)
+                .setJoinClause(
+                        appId == null
+                                ? getJoinWithMedicalDataSourceFilterOnDataSourceIds(
+                                        dataSourceIds,
+                                        getJoinWithIndicesTableFilterOnMedicalResourceTypes(
+                                                medicalResourceTypes))
+                                : getJoinWithMedicalDataSourceFilterOnDataSourceIdsAndAppId(
+                                        dataSourceIds,
+                                        appId,
+                                        getJoinWithIndicesTableFilterOnMedicalResourceTypes(
+                                                medicalResourceTypes)));
     }
 
     /**
@@ -1288,7 +1308,7 @@ public final class MedicalResourceHelper {
 
                     if (isPhrChangeLogsEnabled()) {
                         generateDeletionChangeLogsForMedicalResources(
-                                db, medicalResourceIds, appId);
+                                db, readMedicalResourcesByIds(medicalResourceIds, appId), appId);
                     }
 
                     db.delete(MEDICAL_RESOURCE_TABLE_NAME, whereClause, args);
@@ -1296,8 +1316,7 @@ public final class MedicalResourceHelper {
     }
 
     private void generateDeletionChangeLogsForMedicalResources(
-            SQLiteDatabase db, List<MedicalResourceId> medicalResourceIds, @Nullable Long appId) {
-        var resourcesToDelete = readMedicalResourcesByIds(medicalResourceIds, appId);
+            SQLiteDatabase db, List<MedicalResource> resourcesToDelete, @Nullable Long appId) {
         var deletionChangeLogs = ChangeLogsHelper.ChangeLogsTableRequests.ofDeletion(Instant.now());
 
         if (appId == null) {
@@ -1375,15 +1394,7 @@ public final class MedicalResourceHelper {
      */
     public void deleteMedicalResourcesByRequestWithoutPermissionChecks(
             DeleteMedicalResourcesRequest request) throws SQLiteException {
-        Set<String> dataSourceIds = request.getDataSourceIds();
-        Set<Integer> medicalResourceTypes = request.getMedicalResourceTypes();
-        List<UUID> dataSourceUuids = StorageUtils.toUuids(dataSourceIds);
-        if (dataSourceUuids.isEmpty() && !dataSourceIds.isEmpty()) {
-            // The request came in with no valid UUIDs. Do nothing.
-            return;
-        }
-        mTransactionManager.delete(
-                getFilteredDeleteRequest(dataSourceUuids, medicalResourceTypes, /* appId= */ null));
+        deleteMedicalResourcesByRequest(request, /* callingPackageName= */ null);
     }
 
     /**
@@ -1401,6 +1412,18 @@ public final class MedicalResourceHelper {
     public void deleteMedicalResourcesByRequestWithPermissionChecks(
             DeleteMedicalResourcesRequest request, String callingPackageName)
             throws SQLiteException {
+        deleteMedicalResourcesByRequest(request, requireNonNull(callingPackageName));
+    }
+
+    /**
+     * @param callingPackageName is used to check if the requested resources were written by that
+     *     package name, and won't be deleted if they are not. Also used for generating access logs.
+     *     If null, all matching resources will be deleted without ownership checks, and no access
+     *     logs will be generated.
+     */
+    private void deleteMedicalResourcesByRequest(
+            DeleteMedicalResourcesRequest request, @Nullable String callingPackageName)
+            throws SQLiteException {
         Set<String> dataSourceIds = request.getDataSourceIds();
         Set<Integer> medicalResourceTypes = request.getMedicalResourceTypes();
         List<UUID> dataSourceUuids = StorageUtils.toUuids(dataSourceIds);
@@ -1409,34 +1432,48 @@ public final class MedicalResourceHelper {
             return;
         }
 
-        long appId = mAppInfoHelper.getAppInfoId(callingPackageName);
-        if (appId == Constants.DEFAULT_LONG) {
-            throw new IllegalArgumentException(
-                    "Deletion not permitted as app has inserted no data.");
+        Long appId;
+        if (callingPackageName != null) {
+            appId = mAppInfoHelper.getAppInfoId(callingPackageName);
+            if (appId == Constants.DEFAULT_LONG) {
+                throw new IllegalArgumentException(
+                        "Deletion not permitted as app has inserted no data.");
+            }
+        } else {
+            appId = null;
         }
 
         mTransactionManager.runAsTransaction(
                 db -> {
-                    // Getting the distinct resource types that will be deleted, to add
-                    // access logs.
-                    ReadTableRequest readRequest =
-                            getFilteredReadRequestForDistinctResourceTypes(
-                                    dataSourceUuids, medicalResourceTypes, appId);
-                    Set<Integer> resourceTypes =
-                            readMedicalResourcesTypesByReadRequest(db, readRequest);
+                    if (callingPackageName != null && appId != null) {
+                        // Getting the distinct resource types that will be deleted, to add
+                        // access logs.
+                        ReadTableRequest readRequest =
+                                getFilteredReadRequestForDistinctResourceTypes(
+                                        dataSourceUuids, medicalResourceTypes, appId);
+                        Set<Integer> resourceTypes =
+                                readMedicalResourcesTypesByReadRequest(db, readRequest);
+                        if (!resourceTypes.isEmpty()) {
+                            mAccessLogsHelper.addAccessLog(
+                                    db,
+                                    callingPackageName,
+                                    resourceTypes,
+                                    OPERATION_TYPE_DELETE,
+                                    /* accessedMedicalDataSource= */ false);
+                        }
+                    }
+
+                    if (isPhrChangeLogsEnabled()) {
+                        var readRequest =
+                                getFilteredReadRequestForResources(
+                                        dataSourceUuids, medicalResourceTypes, appId);
+                        var resources = readMedicalResourcesByReadRequest(db, readRequest);
+                        generateDeletionChangeLogsForMedicalResources(db, resources, appId);
+                    }
 
                     mTransactionManager.delete(
                             db,
                             getFilteredDeleteRequest(dataSourceUuids, medicalResourceTypes, appId));
-
-                    if (!resourceTypes.isEmpty()) {
-                        mAccessLogsHelper.addAccessLog(
-                                db,
-                                callingPackageName,
-                                resourceTypes,
-                                OPERATION_TYPE_DELETE,
-                                /* accessedMedicalDataSource= */ false);
-                    }
                 });
     }
 
@@ -1451,6 +1488,17 @@ public final class MedicalResourceHelper {
             }
         }
         return resourceTypes;
+    }
+
+    private List<MedicalResource> readMedicalResourcesByReadRequest(
+            SQLiteDatabase db, ReadTableRequest request) {
+        List<MedicalResource> resources = new ArrayList<>();
+        try (Cursor cursor = mTransactionManager.read(db, request)) {
+            while (cursor.moveToNext()) {
+                resources.add(getMedicalResource(cursor));
+            }
+        }
+        return resources;
     }
 
     private DeleteTableRequest getFilteredDeleteRequest(
