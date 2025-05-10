@@ -18,9 +18,9 @@
     android:id="@+id/spinner_item_text"
     style="?android:attr/spinnerDropDownItemStyle"
     android:textAppearance="?attr/textAppearanceLabel"
-    android:textColor="@color/settingslib_materialColorOnSecondaryContainer"
-    android:singleLine="true"
+    android:textColor="@color/spinner_custom_text_color"
+    android:maxLines="2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingVertical="@dimen/spacing_data_entries"
-    android:ellipsize="marquee"/>
+    android:ellipsize="end"/>

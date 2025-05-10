@@ -17,7 +17,6 @@
 package com.android.healthconnect.controller.recentaccess
 
 import android.content.Context
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -39,10 +38,16 @@ class RecentAccessPreference(
 ) : HealthPreference(context), ComparablePreference {
 
     private val separator: String by lazy { context.getString(R.string.separator) }
-    private var showDivider = false
 
     init {
-        layoutResource = R.layout.widget_recent_access_timeline
+        layoutResource =
+            if (showCategories) {
+                // Top-aligned elements for use in the recent access fragment
+                R.layout.widget_recent_access_timeline_with_details
+            } else {
+                // Center-aligned elements for use on the home page
+                R.layout.widget_recent_access_timeline_home
+            }
         isSelectable = true
         this.logName = RecentAccessElement.RECENT_ACCESS_ENTRY_BUTTON
     }
@@ -55,9 +60,6 @@ class RecentAccessPreference(
 
         val appTitle = holder.findViewById(R.id.title) as TextView
         appTitle.text = recentAccessEntry.metadata.appName
-
-        val divider = holder.findViewById(R.id.recent_access_divider) as ImageView
-        divider.visibility = if (showDivider) View.VISIBLE else View.INVISIBLE
 
         val dataTypesWritten = holder.findViewById(R.id.data_types_written) as TextView
         if (showCategories && recentAccessEntry.dataTypesWritten.isNotEmpty()) {
@@ -81,10 +83,6 @@ class RecentAccessPreference(
         accessTime.text = formattedTime
         accessTime.contentDescription =
             context.getString(R.string.recent_access_time_content_descritption, formattedTime)
-    }
-
-    fun setShowDivider(show: Boolean) {
-        showDivider = show
     }
 
     override fun isSameItem(preference: Preference): Boolean {

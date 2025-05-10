@@ -55,13 +55,15 @@ java_sdk_library {
         "modules-utils-backgroundthread",
         "fhirspec-java-proto-lite",
         "backup-restore-proto",
+        "serialization-proto",
     ],
     jarjar_rules: "jarjar-rules.txt",
     installable: true,
     optimize: {
-        optimize: select(release_flag("RELEASE_HC_MODULE_SERVICE_OPTIMIZATION"), {
-            true: true,
-            default: false,
+        // product_variable eng is true when TARGET_BUILD_VARIANT is  eng
+        optimize: select((product_variable("eng"), release_flag("RELEASE_HC_MODULE_SERVICE_OPTIMIZATION")), {
+            (false, true): true,
+            (default, default): false,
         }),
         proguard_flags_files: ["proguard.flags"],
     },
@@ -71,6 +73,7 @@ java_sdk_library {
     impl_library_visibility: [
         // Top level directory for bivalent tests
         "//packages/modules/HealthFitness/tests",
+        "//packages/modules/HealthFitness/tests/utils",
         "//packages/modules/HealthFitness/tests/unittests",
         "//packages/modules/HealthFitness/tests/integrationtests",
     ],

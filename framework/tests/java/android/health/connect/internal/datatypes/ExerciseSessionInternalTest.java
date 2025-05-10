@@ -16,18 +16,26 @@
 
 package android.health.connect.internal.datatypes;
 
+import static android.health.connect.Constants.DEFAULT_FLOAT;
+import static android.health.connect.Constants.DEFAULT_INT;
+
+import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.ExerciseLap;
 import android.health.connect.datatypes.ExerciseRoute;
 import android.health.connect.datatypes.ExerciseSegment;
 import android.health.connect.datatypes.ExerciseSessionRecord;
-import android.health.connect.testing.RecordInternalFactory;
 import android.health.connect.testing.StringUtil;
+import android.healthconnect.testing.unittest.RecordInternalFactory;
 import android.os.Parcel;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,6 +43,18 @@ import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class ExerciseSessionInternalTest {
+
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
+    @Test
+    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS})
+    public void testSessionConvertToExternal_convertToExternalWithRPE_fieldsAreEqual() {
+        ExerciseSessionRecordInternal session =
+                RecordInternalFactory.buildExerciseSessionInternalWithRpe();
+        ExerciseSessionRecord externalSession = session.toExternalRecord();
+        assertFieldsAreEqual(externalSession, session);
+    }
+
     @Test
     public void testSessionConvertToExternal_convertToExternal_fieldsIsEqual() {
         ExerciseSessionRecordInternal session =
@@ -49,6 +69,17 @@ public class ExerciseSessionInternalTest {
                 RecordInternalFactory.buildExerciseSessionInternalNoExtraFields();
         ExerciseSessionRecord externalSession = session.toExternalRecord();
         assertFieldsAreEqual(externalSession, session);
+    }
+
+    @Test
+    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS})
+    public void
+            testSessionWriteToParcel_populateToParcelAndFromWithRpe_restoredFieldsAreIdentical() {
+        ExerciseSessionRecordInternal session =
+                RecordInternalFactory.buildExerciseSessionInternalWithRpe();
+        ExerciseSessionRecordInternal restoredSession = writeAndRestoreFromParcel(session);
+
+        assertFieldsAreEqual(session, restoredSession);
     }
 
     @Test
@@ -95,6 +126,12 @@ public class ExerciseSessionInternalTest {
                 .isEqualTo(external.getStartZoneOffset().getTotalSeconds());
         assertThat(internal.getEndZoneOffsetInSeconds())
                 .isEqualTo(external.getEndZoneOffset().getTotalSeconds());
+        if (external.hasRateOfPerceivedExertion()) {
+            assertThat(internal.getRateOfPerceivedExertion())
+                    .isEqualTo(external.getRateOfPerceivedExertion());
+        } else {
+            assertThat(internal.getRateOfPerceivedExertion()).isEqualTo(DEFAULT_FLOAT);
+        }
         if (internal.getRoute() == null) {
             assertThat(external.getRoute()).isNull();
         } else {
@@ -149,6 +186,23 @@ public class ExerciseSessionInternalTest {
                     .isEqualTo(externalSegment.getSegmentType());
             assertThat(internalSegment.getRepetitionsCount())
                     .isEqualTo(externalSegment.getRepetitionsCount());
+            if (externalSegment.getWeight() != null) {
+                assertThat(internalSegment.getWeightGrams())
+                        .isEqualTo(externalSegment.getWeight().getInGrams());
+            } else {
+                assertThat(internalSegment.getWeightGrams()).isEqualTo(null);
+            }
+            if (externalSegment.hasSetIndex()) {
+                assertThat(internalSegment.getSetIndex()).isEqualTo(externalSegment.getSetIndex());
+            } else {
+                assertThat(internalSegment.getSetIndex()).isEqualTo(DEFAULT_INT);
+            }
+            if (externalSegment.hasSetIndex()) {
+                assertThat(internalSegment.getRateOfPerceivedExertion())
+                        .isEqualTo(externalSegment.getRateOfPerceivedExertion());
+            } else {
+                assertThat(internalSegment.getRateOfPerceivedExertion()).isEqualTo(DEFAULT_FLOAT);
+            }
         }
     }
 
@@ -160,6 +214,8 @@ public class ExerciseSessionInternalTest {
                 .isEqualTo(internal2.getStartZoneOffsetInSeconds());
         assertThat(internal.getEndZoneOffsetInSeconds())
                 .isEqualTo(internal2.getEndZoneOffsetInSeconds());
+        assertThat(internal.getRateOfPerceivedExertion())
+                .isEqualTo(internal2.getRateOfPerceivedExertion());
         assertThat(internal.getRoute()).isEqualTo(internal2.getRoute());
         assertThat(internal.getExerciseType()).isEqualTo(internal2.getExerciseType());
         StringUtil.assertCharSequencesEqualToStringWithNull(

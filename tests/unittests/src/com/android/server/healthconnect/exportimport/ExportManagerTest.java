@@ -16,17 +16,18 @@
 
 package com.android.server.healthconnect.exportimport;
 
+import static android.health.connect.Constants.APP_ICON_DRAWABLE_NAME;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_CLEARING_LOG_TABLES;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_NONE;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_UNKNOWN;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_UNSPECIFIED;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_STARTED;
+import static android.healthconnect.testing.unittest.StorageUtils.queryNumEntries;
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
 
 import static com.android.server.healthconnect.exportimport.ExportManager.LOCAL_EXPORT_DATABASE_FILE_NAME;
 import static com.android.server.healthconnect.exportimport.ExportManager.LOCAL_EXPORT_DIR_NAME;
 import static com.android.server.healthconnect.exportimport.ExportManager.LOCAL_EXPORT_ZIP_FILE_NAME;
-import static com.android.server.healthconnect.testing.TestUtils.queryNumEntries;
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -48,6 +49,10 @@ import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.exportimport.ScheduledExportStatus;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
+import android.healthconnect.testing.unittest.PhrTestUtils;
+import android.healthconnect.testing.unittest.StorageUtils;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.net.Uri;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
@@ -66,9 +71,6 @@ import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
-import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
-import com.android.server.healthconnect.testing.storage.PhrTestUtils;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 import com.android.server.healthconnect.utils.FilesUtil;
 
 import org.junit.After;
@@ -106,6 +108,7 @@ public class ExportManagerTest {
 
     private Context mContext;
     private HealthConnectInjector mHealthConnectInjector;
+    private StorageUtils mStorageUtils;
     private TransactionTestUtils mTransactionTestUtils;
     private ExportManager mExportManager;
     private HealthConnectContext mExportedDbContext;
@@ -124,14 +127,12 @@ public class ExportManagerTest {
     @Before
     public void setUp() throws Exception {
         // Return the requested name as the string resource
-        when(mResourcesContext.getStringByName(any()))
+        when(mResourcesContext.getStringByNameOrThrow(any()))
                 .thenAnswer(invocation -> invocation.getArgument(0));
-        when(mResourcesContext.getStringByNameWithArgs(any(), any()))
+        when(mResourcesContext.getStringByNameWithArgsOrThrow(any(), any()))
                 .thenAnswer(
                         invocation -> invocation.getArgument(0) + "," + invocation.getArgument(1));
-        when(mResourcesContext.getIconByDrawableName(
-                        ExportImportNotificationFactory.APP_ICON_DRAWABLE_NAME))
-                .thenReturn(APP_ICON);
+        when(mResourcesContext.getIconByDrawableName(APP_ICON_DRAWABLE_NAME)).thenReturn(APP_ICON);
 
         mContext = ApplicationProvider.getApplicationContext();
         mHealthConnectInjector =
@@ -144,6 +145,7 @@ public class ExportManagerTest {
                         .build();
 
         mExportImportSettingsStorage = mHealthConnectInjector.getExportImportSettingsStorage();
+        mStorageUtils = new StorageUtils(mHealthConnectInjector);
         mTransactionTestUtils = new TransactionTestUtils(mHealthConnectInjector);
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
         mPhrTestUtils = new PhrTestUtils(mHealthConnectInjector);
@@ -189,10 +191,9 @@ public class ExportManagerTest {
         MedicalDataSource dataSource =
                 mPhrTestUtils.insertR4MedicalDataSource("ds", TEST_PACKAGE_NAME);
         mPhrTestUtils.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_table")).isEqualTo(1);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_indices_table"))
-                .isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_indices_table")).isEqualTo(1);
 
         assertThat(mExportManager.runExport(mContext.getUser())).isTrue();
 
@@ -212,10 +213,9 @@ public class ExportManagerTest {
         MedicalDataSource dataSource =
                 mPhrTestUtils.insertR4MedicalDataSource("ds", TEST_PACKAGE_NAME);
         mPhrTestUtils.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_table")).isEqualTo(1);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_indices_table"))
-                .isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("medical_resource_indices_table")).isEqualTo(1);
 
         assertThat(mExportManager.runExport(mContext.getUser())).isTrue();
 
@@ -233,7 +233,7 @@ public class ExportManagerTest {
     public void deletesAccessLogsTableContent() throws Exception {
         mTransactionTestUtils.insertAccessLog();
         mTransactionTestUtils.insertAccessLog();
-        assertThat(mTransactionTestUtils.queryNumEntries("access_logs_table")).isEqualTo(2);
+        assertThat(mStorageUtils.queryNumEntries("access_logs_table")).isEqualTo(2);
 
         assertThat(mExportManager.runExport(mContext.getUser())).isTrue();
 
@@ -272,7 +272,7 @@ public class ExportManagerTest {
     public void deletesChangeLogsTableContent() throws Exception {
         mTransactionTestUtils.insertChangeLog();
         mTransactionTestUtils.insertChangeLog();
-        assertThat(mTransactionTestUtils.queryNumEntries("change_logs_table")).isEqualTo(2);
+        assertThat(mStorageUtils.queryNumEntries("change_logs_table")).isEqualTo(2);
 
         assertThat(mExportManager.runExport(mContext.getUser())).isTrue();
 
@@ -286,7 +286,7 @@ public class ExportManagerTest {
     @Test
     public void runExport_whenCompleted_deletesLocalCopies() {
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
-        assertThat(mTransactionTestUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
 
         assertThat(mExportManager.runExport(mContext.getUser())).isTrue();
 
@@ -374,7 +374,7 @@ public class ExportManagerTest {
     @Test
     public void makesRemoteCopyOfDatabase() throws Exception {
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
-        assertThat(mTransactionTestUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
 
         assertThat(mExportManager.runExport(mContext.getUser())).isTrue();
 
@@ -390,7 +390,7 @@ public class ExportManagerTest {
         // Inserting multiple rows to vary the size for testing of size logging
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(124, 457, 7));
-        assertThat(mTransactionTestUtils.queryNumEntries("steps_record_table")).isEqualTo(2);
+        assertThat(mStorageUtils.queryNumEntries("steps_record_table")).isEqualTo(2);
 
         mExportImportSettingsStorage.setLastExportError(
                 ScheduledExportStatus.DATA_EXPORT_ERROR_NONE, mTimeStamp);
@@ -418,7 +418,7 @@ public class ExportManagerTest {
     @Test
     public void updatesLastSuccessfulExport_onSuccessOnly() throws Exception {
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
-        assertThat(mTransactionTestUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
 
         // running a successful export records a "last successful export"
         assertThat(mExportManager.runExport(mContext.getUser())).isTrue();
@@ -467,7 +467,7 @@ public class ExportManagerTest {
         when(cursor.getString(anyInt())).thenReturn(REMOTE_EXPORT_ZIP_FILE_NAME);
 
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
-        assertThat(mTransactionTestUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
 
         // Running a successful export records a "last successful export".
         assertThat(mExportManager.runExport(mContext.getUser())).isTrue();

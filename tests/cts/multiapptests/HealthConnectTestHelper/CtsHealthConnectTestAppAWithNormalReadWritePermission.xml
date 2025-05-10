@@ -63,8 +63,10 @@
     <uses-permission android:name="android.permission.health.WRITE_NUTRITION"/>
     <uses-permission android:name="android.permission.health.WRITE_TOTAL_CALORIES_BURNED"/>
     <uses-permission android:name="android.permission.health.WRITE_MINDFULNESS"/>
+    <uses-permission android:name="android.permission.health.WRITE_NICOTINE_INTAKE"/>
     <uses-permission android:name="android.permission.health.WRITE_MEDICAL_DATA"/>
     <uses-permission android:name="android.permission.health.WRITE_PLANNED_EXERCISE"/>
+    <uses-permission android:name="android.permission.health.WRITE_MEDICAL_DATA"/>
 
     <uses-permission android:name="android.permission.health.READ_STEPS"/>
     <uses-permission android:name="android.permission.health.READ_HEART_RATE"/>
@@ -105,7 +107,20 @@
     <uses-permission android:name="android.permission.health.READ_NUTRITION"/>
     <uses-permission android:name="android.permission.health.READ_TOTAL_CALORIES_BURNED"/>
     <uses-permission android:name="android.permission.health.READ_MINDFULNESS"/>
+    <uses-permission android:name="android.permission.health.READ_NICOTINE_INTAKE"/>
     <uses-permission android:name="android.permission.health.READ_PLANNED_EXERCISE"/>
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES"/>
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_CONDITIONS"/>
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_MEDICATIONS"/>
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_PERSONAL_DETAILS"/>
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_PRACTITIONER_DETAILS"/>
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_VISITS"/>
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_PROCEDURES"/>
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_PREGNANCY"/>
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_SOCIAL_HISTORY"/>
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_VACCINES"/>
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_VITAL_SIGNS"/>
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_LABORATORY_RESULTS"/>
 
     <!-- Used to check if App Ops considers the app to be in the background -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>

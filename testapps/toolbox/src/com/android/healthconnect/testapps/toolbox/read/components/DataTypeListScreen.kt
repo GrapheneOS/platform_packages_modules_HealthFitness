@@ -29,9 +29,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.android.healthconnect.testapps.toolbox.Constants.HealthDataCategory
 import com.android.healthconnect.testapps.toolbox.Constants.HealthPermissionType
+import com.android.healthconnect.testapps.toolbox.UIConstants.PADDING_MEDIUM
+import com.android.healthconnect.testapps.toolbox.UIConstants.PADDING_SMALL
 
 @Composable
 fun DataTypeListScreen(
@@ -47,7 +48,8 @@ fun DataTypeListScreen(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(all = 8.dp).verticalScroll(rememberScrollState())
+        modifier =
+            Modifier.fillMaxSize().padding(PADDING_SMALL).verticalScroll(rememberScrollState())
     ) {
         for (categoryAndDataType in categoriesAndDataTypes) {
 
@@ -56,7 +58,11 @@ fun DataTypeListScreen(
                     Text(
                         text = stringResource(id = categoryAndDataType.title),
                         modifier =
-                            Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
+                            Modifier.padding(
+                                    start = PADDING_MEDIUM,
+                                    top = PADDING_SMALL,
+                                    bottom = PADDING_SMALL,
+                                )
                                 .testTag("dataType")
                                 .clickable {
                                     onNavigateToDataTypeDetailsScreen(categoryAndDataType)
@@ -69,7 +75,9 @@ fun DataTypeListScreen(
                         text = stringResource(id = categoryAndDataType.title),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp).testTag("category"),
+                        modifier =
+                            Modifier.padding(top = PADDING_SMALL, bottom = PADDING_SMALL)
+                                .testTag("category"),
                     )
                 }
             }

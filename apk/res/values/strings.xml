@@ -953,6 +953,11 @@
     <string name="repetitions" description="Repetitions of an exercise set. [ICU SYNTAX][CHAR LIMIT=50]">{count, plural, =1 {1 rep} other {# reps}}</string>
     <string name="repetitions_long" description="Repetitions of an exercise set.  [ICU SYNTAX][CHAR LIMIT=50]">{count, plural, =1 {1 repetition} other {# repetitions}}</string>
     <string name="exercise_segments_header" description="Header for a group of exercise segments. [CHAR LIMIT=50]">Exercise segments</string>
+    <string name="segment_set_index_format" description="Label for the set index of an exercise segment [CHAR LIMIT=50]">Set <xliff:g example="0" id="set_index">%1$d</xliff:g></string>
+    <string name="segment_rpe_format" description="Label for the rate of perceived exertion for an exercise segment [CHAR LIMIT=50]">RPE: <xliff:g example="5.5" id="rpe">%1$s</xliff:g></string>
+    <string name="segment_rpe_format_long" description="Label for the rate of perceived exertion for an exercise segment">Rate of perceived exertion: <xliff:g example="5.5" id="rpe">%1$s</xliff:g></string>
+    <string name="session_rpe_header" description="Header for a session rate of perceived exertion value">RPE</string>
+    <string name="session_rpe_header_long" description="Header for a session rate of perceived exertion value">Rate of perceived exertion</string>
     <string name="exercise_laps_header" description="Header for a group of exercise laps. [CHAR LIMIT=50]">Laps</string>
     <string name="back_extension" description="Name of the back extension gym exercise. [CHAR LIMIT=50]">Back extension</string>
     <string name="badminton" description="Activity type: playing badminton. [CHAR LIMIT=50]">Badminton</string>

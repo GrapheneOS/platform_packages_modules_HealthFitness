@@ -18,7 +18,7 @@ package android.healthconnect.cts.datatypes.api;
 
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.ActivityIntensityRecord;
-import android.healthconnect.cts.lib.ActivityIntensityRecordFactory;
+import android.healthconnect.testing.shared.recordfactory.ActivityIntensityRecordFactory;
 import android.platform.test.annotations.AppModeFull;
 import android.platform.test.annotations.RequiresFlagsEnabled;
 

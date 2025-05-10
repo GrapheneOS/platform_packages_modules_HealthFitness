@@ -16,12 +16,13 @@
 
 package com.android.server.healthconnect.storage;
 
+import static android.healthconnect.testing.unittest.StorageUtils.assertNumberOfTables;
+
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
-import static com.android.server.healthconnect.storage.DatabaseTestUtils.NUM_OF_TABLES;
-import static com.android.server.healthconnect.storage.DatabaseTestUtils.assertNumberOfTables;
+import static com.android.healthfitness.flags.Flags.FLAG_SMOKING_DB;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.checkTableExists;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -33,6 +34,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -48,7 +50,6 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -64,6 +65,10 @@ import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectDatabaseTest {
+    // The number of table we released to the public. This number can only increase, as we are not
+    // allowed to make changes that remove tables or columns.
+    // Development tables that haven't reached prod are excluded.
+    static final int NUM_OF_TABLES = 67;
     private static final String TEST_PACKAGE_NAME = "package.test";
 
     private Context mContext;
@@ -83,6 +88,7 @@ public class HealthConnectDatabaseTest {
         FLAG_ACTIVITY_INTENSITY_DB,
         Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
         FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
+        FLAG_SMOKING_DB
     })
     public void onCreate_dbWithLatestSchemaCreated() {
         SQLiteDatabase sqliteDatabase =

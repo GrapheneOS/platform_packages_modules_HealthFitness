@@ -36,6 +36,8 @@ import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.HealthPermissions.getAllMedicalPermissions;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.healthconnect.testing.shared.DataFactory.MAXIMUM_PAGE_SIZE;
 import static android.healthconnect.testing.shared.DataFactory.NOW;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_DISPLAY_NAME;
@@ -53,10 +55,13 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.getGetMedi
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedicalDataSourceRequiredFieldsOnly;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedicalResourceId;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getUpsertMedicalResourceRequest;
+import static android.healthconnect.testing.unittest.TaskUtils.waitForAllScheduledTasksToComplete;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE;
 import static com.android.healthfitness.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_STATE_KEY;
@@ -67,13 +72,14 @@ import static com.android.server.healthconnect.logging.HealthConnectServiceLogge
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_MEDICAL_DATA_SOURCE_WITH_DATA;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_MEDICAL_RESOURCES_BY_IDS;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_MEDICAL_RESOURCES_BY_REQUESTS;
+import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.GET_CHANGES;
+import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.GET_CHANGES_TOKEN;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.GET_MEDICAL_DATA_SOURCES_BY_IDS;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.GET_MEDICAL_DATA_SOURCES_BY_REQUESTS;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.READ_MEDICAL_RESOURCES_BY_IDS;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.READ_MEDICAL_RESOURCES_BY_REQUESTS;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.UPSERT_MEDICAL_RESOURCES;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.MEDICAL_RESOURCE_TYPE_NOT_ASSIGNED_DEFAULT_VALUE;
-import static com.android.server.healthconnect.testing.TestUtils.waitForAllScheduledTasksToComplete;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -120,8 +126,10 @@ import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
+import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
+import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
 import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
@@ -133,12 +141,19 @@ import android.health.connect.aidl.IMigrationCallback;
 import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
 import android.health.connect.backuprestore.BackupMetadata;
+import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.changelog.ChangeLogTokenResponse;
+import android.health.connect.changelog.ChangeLogsRequest;
+import android.health.connect.changelog.ChangeLogsResponse;
+import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.health.connect.restore.StageRemoteDataRequest;
+import android.healthconnect.testing.unittest.fakes.FakeTimeSource;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
@@ -157,6 +172,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
@@ -176,7 +193,6 @@ import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.testing.fakes.FakeTimeSource;
 
 import org.junit.After;
 import org.junit.Before;
@@ -194,6 +210,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -332,6 +349,10 @@ public class HealthConnectServiceImplTest {
     @Mock IEmptyResponseCallback mEmptyResponseCallback;
     @Mock IMedicalResourceListParcelResponseCallback mMedicalResourceListParcelResponseCallback;
     @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
+    @Mock private ChangeLogsHelper mChangeLogsHelper;
+    @Mock private ChangeLogsRequestHelper mChangeLogsRequestHelper;
+    @Mock private IGetChangeLogTokenCallback mGetChangeLogTokenCallback;
+    @Mock private IChangeLogsResponseCallback mChangeLogsResponseCallback;
     @Captor ArgumentCaptor<HealthConnectExceptionParcel> mErrorCaptor;
     @Captor private ArgumentCaptor<HealthConnectOnboardingState> mOnboardingStateCaptor;
     private FakeTimeSource mFakeTimeSource;
@@ -387,6 +408,8 @@ public class HealthConnectServiceImplTest {
                         .setAppOpsManagerLocal(mAppOpsManagerLocal)
                         .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .setChangeLogsHelper(mChangeLogsHelper)
+                        .setChangeLogsRequestHelper(mChangeLogsRequestHelper)
                         .build();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
         mInternalTaskScheduler = mThreadScheduler.mInternalBackgroundExecutor;
@@ -2366,6 +2389,292 @@ public class HealthConnectServiceImplTest {
                 .onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    public void testGetChangeLogToken_noPermissions_throwsSecurityException() throws Exception {
+        // Deny necessary permissions
+        when(mPermissionManager.checkPermissionForPreflight(any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+        when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+        ChangeLogTokenRequest request =
+                new ChangeLogTokenRequest.Builder()
+                        .addRecordType(HeartRateRecord.class)
+                        .addDataOriginFilter(
+                                new DataOrigin.Builder().setPackageName(mTestPackageName).build())
+                        .build();
+
+        mHealthConnectService.getChangeLogToken(
+                mAttributionSource, request, mGetChangeLogTokenCallback);
+
+        verify(mGetChangeLogTokenCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_SECURITY);
+        verify(mChangeLogsRequestHelper, never()).getToken(anyLong(), anyString(), any());
+    }
+
+    @Test
+    public void testGetChangeLogToken_validRequest_returnsToken() throws Exception {
+        // Grant necessary permissions
+        when(mPermissionManager.checkPermissionForPreflight(any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        when(mAppOpsManagerLocal.isUidInForeground(anyInt())).thenReturn(true);
+        long latestRowId = 12345L;
+        ChangeLogTokenRequest request =
+                new ChangeLogTokenRequest.Builder()
+                        .addRecordType(HeartRateRecord.class)
+                        .addDataOriginFilter(
+                                new DataOrigin.Builder().setPackageName(mTestPackageName).build())
+                        .build();
+        when(mChangeLogsHelper.getLatestRowId()).thenReturn(latestRowId);
+        String expectedToken = "test-token-123";
+        when(mChangeLogsRequestHelper.getToken(latestRowId, mTestPackageName, request))
+                .thenReturn(expectedToken);
+
+        mHealthConnectService.getChangeLogToken(
+                mAttributionSource, request, mGetChangeLogTokenCallback);
+
+        ArgumentCaptor<ChangeLogTokenResponse> responseCaptor =
+                ArgumentCaptor.forClass(ChangeLogTokenResponse.class);
+        verify(mGetChangeLogTokenCallback, timeout(TIMEOUT_MILLIS))
+                .onResult(responseCaptor.capture());
+        ChangeLogTokenResponse actualResponse = responseCaptor.getValue();
+        assertThat(actualResponse.getToken()).isEqualTo(expectedToken);
+
+        verify(mGetChangeLogTokenCallback, never()).onError(any());
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(GET_CHANGES_TOKEN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
+    }
+
+    @Test
+    public void testGetChangeLogs_noPermissions_throwsSecurityException() throws Exception {
+        // Deny necessary permissions
+        when(mPermissionManager.checkPermissionForPreflight(any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+        when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+        setBackgroundReadPermission(PERMISSION_GRANTED);
+        when(mAppOpsManagerLocal.isUidInForeground(anyInt())).thenReturn(true);
+        String token = "test-token-123";
+        ChangeLogsRequest request = new ChangeLogsRequest.Builder(token).build();
+        // Mock getRequest to return a valid TokenRequest to proceed further before permission check
+        ChangeLogsRequestHelper.TokenRequest tokenRequest =
+                new ChangeLogsRequestHelper.TokenRequest(
+                        List.of(mTestPackageName),
+                        List.of(RECORD_TYPE_HEART_RATE),
+                        List.of(), // No medical types
+                        mTestPackageName,
+                        100L); // Example row ID
+        when(mChangeLogsRequestHelper.getRequest(mTestPackageName, token)).thenReturn(tokenRequest);
+
+        mHealthConnectService.getChangeLogs(
+                mAttributionSource, request, mChangeLogsResponseCallback);
+
+        verify(mChangeLogsResponseCallback, timeout(TIMEOUT_MILLIS))
+                .onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_SECURITY);
+    }
+
+    @Test
+    public void testGetChangeLogs_invalidToken_throwsIllegalArgumentException() throws Exception {
+        // Grant permissions to pass initial checks
+        when(mPermissionManager.checkPermissionForPreflight(any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        setBackgroundReadPermission(PERMISSION_GRANTED);
+        when(mAppOpsManagerLocal.isUidInForeground(anyInt()))
+                .thenReturn(true); // Simulate foreground call
+        String invalidToken = "invalid-token";
+        ChangeLogsRequest request = new ChangeLogsRequest.Builder(invalidToken).build();
+        // Mock getRequest to throw IllegalArgumentException for the invalid token
+        when(mChangeLogsRequestHelper.getRequest(mTestPackageName, invalidToken))
+                .thenThrow(new IllegalArgumentException("Invalid token"));
+
+        mHealthConnectService.getChangeLogs(
+                mAttributionSource, request, mChangeLogsResponseCallback);
+
+        verify(mChangeLogsResponseCallback, timeout(TIMEOUT_MILLIS))
+                .onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_INVALID_ARGUMENT);
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
+                .contains("Invalid token");
+        verify(mChangeLogsHelper, never()).getChangeLogs(any(), any(), any(), any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    public void testGetChangeLogs_emptyToken_phrFlagOn_throwsIllegalArgumentException()
+            throws Exception {
+        // Grant permissions to pass initial checks
+        when(mPermissionManager.checkPermissionForPreflight(any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        setBackgroundReadPermission(PERMISSION_GRANTED);
+        when(mAppOpsManagerLocal.isUidInForeground(anyInt()))
+                .thenReturn(true); // Simulate foreground call
+        String emptyToken = "empty-token";
+        ChangeLogsRequest request = new ChangeLogsRequest.Builder(emptyToken).build();
+        // Token request with no data types defined.
+        ChangeLogsRequestHelper.TokenRequest tokenRequest =
+                new ChangeLogsRequestHelper.TokenRequest(
+                        List.of(),
+                        List.of(), // No record types
+                        List.of(), // No medical types
+                        mTestPackageName,
+                        100L);
+        when(mChangeLogsRequestHelper.getRequest(mTestPackageName, emptyToken))
+                .thenReturn(tokenRequest);
+
+        mHealthConnectService.getChangeLogs(
+                mAttributionSource, request, mChangeLogsResponseCallback);
+
+        verify(mChangeLogsResponseCallback, timeout(TIMEOUT_MILLIS))
+                .onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_INVALID_ARGUMENT);
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
+                .contains("At least one record or medical resource type must be set.");
+        verify(mChangeLogsHelper, never()).getChangeLogs(any(), any(), any(), any());
+    }
+
+    @Test
+    @DisableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    public void testGetChangeLogs_emptyToken_phrFlagOff_throwsIllegalArgumentException()
+            throws Exception {
+        // Grant permissions to pass initial checks
+        when(mPermissionManager.checkPermissionForPreflight(any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        setBackgroundReadPermission(PERMISSION_GRANTED);
+        when(mAppOpsManagerLocal.isUidInForeground(anyInt()))
+                .thenReturn(true); // Simulate foreground call
+        String emptyToken = "empty-token";
+        ChangeLogsRequest request = new ChangeLogsRequest.Builder(emptyToken).build();
+        // Token request with no data types defined.
+        ChangeLogsRequestHelper.TokenRequest tokenRequest =
+                new ChangeLogsRequestHelper.TokenRequest(
+                        List.of(),
+                        List.of(), // No record types
+                        List.of(), // No medical types
+                        mTestPackageName,
+                        100L);
+        when(mChangeLogsRequestHelper.getRequest(mTestPackageName, emptyToken))
+                .thenReturn(tokenRequest);
+
+        mHealthConnectService.getChangeLogs(
+                mAttributionSource, request, mChangeLogsResponseCallback);
+
+        verify(mChangeLogsResponseCallback, timeout(TIMEOUT_MILLIS))
+                .onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_INVALID_ARGUMENT);
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
+                .contains("Requested record types must not be empty.");
+        verify(mChangeLogsHelper, never()).getChangeLogs(any(), any(), any(), any());
+    }
+
+    @Test
+    public void testGetChangeLogs_validRequest_returnsChangeLogs() throws Exception {
+        // Grant necessary permissions
+        when(mPermissionManager.checkPermissionForPreflight(any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        setBackgroundReadPermission(PERMISSION_GRANTED);
+        when(mAppOpsManagerLocal.isUidInForeground(anyInt()))
+                .thenReturn(true); // Simulate foreground call
+        when(mHealthConnectPermissionHelper.getHealthDataStartDateAccessOrThrow(anyString(), any()))
+                .thenReturn(Instant.EPOCH); // Grant history access implicitly
+        String token = "test-token-valid";
+        String nextToken = "test-token-next";
+        long initialRowId = 100L;
+        ChangeLogsRequest request = new ChangeLogsRequest.Builder(token).build();
+        ChangeLogsRequestHelper.TokenRequest tokenRequest =
+                new ChangeLogsRequestHelper.TokenRequest(
+                        List.of(), // No package filter
+                        List.of(RECORD_TYPE_HEART_RATE, RECORD_TYPE_STEPS),
+                        List.of(), // No medical types
+                        mTestPackageName,
+                        initialRowId);
+        when(mChangeLogsRequestHelper.getRequest(mTestPackageName, token)).thenReturn(tokenRequest);
+        ChangeLogsHelper.ChangeLogsResponse mockChangeLogsResponse =
+                mock(ChangeLogsHelper.ChangeLogsResponse.class);
+        when(mockChangeLogsResponse.getRecordTypeToUpsertedUuids()).thenReturn(Map.of());
+        when(mockChangeLogsResponse.getDeletedLogs()).thenReturn(List.of());
+        when(mockChangeLogsResponse.getUpsertedMedicalResourceIds()).thenReturn(List.of());
+        when(mockChangeLogsResponse.getDeletedMedicalResources()).thenReturn(List.of());
+        when(mockChangeLogsResponse.getNextPageToken()).thenReturn(nextToken);
+        when(mockChangeLogsResponse.hasMorePages()).thenReturn(false);
+        when(mChangeLogsHelper.getChangeLogs(
+                        eq(mAppInfoHelper),
+                        eq(tokenRequest),
+                        eq(request),
+                        eq(mChangeLogsRequestHelper)))
+                .thenReturn(mockChangeLogsResponse);
+
+        mHealthConnectService.getChangeLogs(
+                mAttributionSource, request, mChangeLogsResponseCallback);
+
+        ChangeLogsResponse expectedResponse =
+                new ChangeLogsResponse(
+                        List.of(), List.of(), List.of(), List.of(), nextToken, false);
+        verify(mChangeLogsResponseCallback, timeout(TIMEOUT_MILLIS)).onResult(expectedResponse);
+        verify(mChangeLogsResponseCallback, never()).onError(any());
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(GET_CHANGES),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
+    }
+
+    @Test
+    public void testGetChangeLogs_backgroundReadDenied_throwsSecurityException() throws Exception {
+        // Grant basic read permissions but deny background read
+        when(mPermissionManager.checkPermissionForPreflight(any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        setBackgroundReadPermission(PERMISSION_DENIED);
+        doThrow(SecurityException.class)
+                .when(mServiceContext)
+                .enforcePermission(
+                        eq(READ_HEALTH_DATA_IN_BACKGROUND), anyInt(), anyInt(), anyString());
+        when(mAppOpsManagerLocal.isUidInForeground(anyInt()))
+                .thenReturn(false); // Simulate background call
+        String token = "test-token-bg-denied";
+        ChangeLogsRequest request = new ChangeLogsRequest.Builder(token).build();
+
+        mHealthConnectService.getChangeLogs(
+                mAttributionSource, request, mChangeLogsResponseCallback);
+
+        verify(mChangeLogsResponseCallback, timeout(TIMEOUT_MILLIS))
+                .onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_SECURITY);
+        verify(mChangeLogsHelper, never()).getChangeLogs(any(), any(), any(), any());
     }
 
     private void setUpCreateMedicalDataSourceDefaultMocks() {

@@ -105,6 +105,7 @@ android_test {
         "cts-wm-util",
         "testng",
         "cts-healthconnect-utils",
+        "cts-healthconnect-phr-lib",
     ],
     test_suites: [
         "cts",

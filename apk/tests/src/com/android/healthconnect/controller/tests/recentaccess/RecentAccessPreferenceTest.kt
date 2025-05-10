@@ -54,7 +54,11 @@ class RecentAccessPreferenceTest {
         context = ContextThemeWrapper(getApplicationContext(), R.style.Theme_HealthConnect)
         holder =
             PreferenceViewHolder.createInstanceForTests(
-                View.inflate(context, R.layout.widget_recent_access_timeline, /* parent= */ null)
+                View.inflate(
+                    context,
+                    R.layout.widget_recent_access_timeline_with_details,
+                    /* parent= */ null,
+                )
             )
     }
 

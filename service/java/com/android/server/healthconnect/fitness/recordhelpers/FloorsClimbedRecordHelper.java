@@ -63,7 +63,7 @@ public final class FloorsClimbedRecordHelper
                 return new AggregateParams(
                         FLOORS_CLIMBED_RECORD_TABLE_NAME,
                         new ArrayList(Arrays.asList(FLOORS_COLUMN_NAME)),
-                        Double.class);
+                        AggregateParams.PriorityAggregationExtraParams.VALUE_TYPE_DOUBLE);
             default:
                 return null;
         }

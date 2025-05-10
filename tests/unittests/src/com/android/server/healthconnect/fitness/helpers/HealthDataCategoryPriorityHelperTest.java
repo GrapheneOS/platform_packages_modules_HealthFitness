@@ -38,6 +38,9 @@ import android.health.connect.Constants;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.healthconnect.testing.unittest.TaskUtils;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.mocks.HealthPermissionsMocker;
 import android.os.UserManager;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -51,9 +54,6 @@ import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
-import com.android.server.healthconnect.testing.HealthPermissionsMocker;
-import com.android.server.healthconnect.testing.TestUtils;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.After;
 import org.junit.Before;
@@ -147,7 +147,7 @@ public class HealthDataCategoryPriorityHelperTest {
 
     @After
     public void tearDown() throws Exception {
-        TestUtils.waitForAllScheduledTasksToComplete(mThreadScheduler);
+        TaskUtils.waitForAllScheduledTasksToComplete(mThreadScheduler);
     }
 
     @Test

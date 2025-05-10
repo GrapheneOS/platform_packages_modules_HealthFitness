@@ -17,6 +17,13 @@ package {
     default_team: "trendy_team_android_health",
 }
 
+filegroup {
+    name: "health-cts-jarjar-rules",
+    srcs: [
+        "jarjar-rules.txt",
+    ],
+}
+
 android_test {
     name: "CtsHealthFitnessDeviceTestCases",
     team: "trendy_team_android_health",
@@ -71,6 +78,7 @@ android_test {
         ":CtsHealthConnectTestAppAWithNormalReadWritePermission",
         ":CtsHealthConnectTestAppWithWritePermissionsOnly",
     ],
+    jarjar_rules: ":health-cts-jarjar-rules",
 }
 
 android_test {
@@ -114,6 +122,7 @@ android_test {
     data: [
         ":CtsHealthConnectTestAppAWithNormalReadWritePermission",
     ],
+    jarjar_rules: ":health-cts-jarjar-rules",
 }
 
 android_test {
@@ -189,6 +198,7 @@ android_test {
     sdk_version: "test_current",
     test_config: "AndroidTestRateLimiter.xml",
     manifest: "AndroidManifestRateLimiter.xml",
+    jarjar_rules: ":health-cts-jarjar-rules",
 }
 
 android_test {

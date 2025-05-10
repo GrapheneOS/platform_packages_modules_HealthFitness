@@ -38,6 +38,8 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVacc
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResources;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getFhirResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedicalResourceId;
+import static android.healthconnect.testing.unittest.PhrTestUtils.ACCESS_LOG_EQUIVALENCE;
+import static android.healthconnect.testing.unittest.PhrTestUtils.makeUpsertRequest;
 
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.phr.storage.MedicalResourceHelper.DATA_SOURCE_ID_COLUMN_NAME;
@@ -57,8 +59,6 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_N
 import static com.android.server.healthconnect.storage.utils.StorageUtils.generateMedicalResourceUUID;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getHexString;
-import static com.android.server.healthconnect.testing.storage.PhrTestUtils.ACCESS_LOG_EQUIVALENCE;
-import static com.android.server.healthconnect.testing.storage.PhrTestUtils.makeUpsertRequest;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -77,6 +77,9 @@ import android.health.connect.datatypes.FhirResource;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
+import android.healthconnect.testing.unittest.PhrTestUtils;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.fakes.FakeTimeSource;
 import android.os.UserHandle;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -88,6 +91,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -99,9 +103,6 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
-import com.android.server.healthconnect.testing.fakes.FakeTimeSource;
-import com.android.server.healthconnect.testing.storage.PhrTestUtils;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.json.JSONException;
 import org.junit.Before;
@@ -771,12 +772,22 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
+    public void readById_noReadOrWritePermissions_emptyIdList_passes() {
+        mMedicalResourceHelper.readMedicalResourcesByIdsWithPermissionChecks(
+                List.of(),
+                /* grantedReadMedicalResourceTypes= */ Set.of(),
+                DATA_SOURCE_PACKAGE_NAME,
+                /* hasWritePermission= */ false,
+                /* isCalledFromBgWithoutBgRead= */ false);
+    }
+
+    @Test
     public void readById_noReadOrWritePermissions_throws() {
         assertThrows(
                 IllegalStateException.class,
                 () ->
                         mMedicalResourceHelper.readMedicalResourcesByIdsWithPermissionChecks(
-                                List.of(),
+                                List.of(getMedicalResourceId()),
                                 /* grantedReadMedicalResourceTypes= */ Set.of(),
                                 DATA_SOURCE_PACKAGE_NAME,
                                 /* hasWritePermission= */ false,
@@ -1592,7 +1603,7 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
-    public void insertMedicalResourcesOfSameType_createsAccessLog_success() {
+    public void insertMedicalResourcesOfSameType_createsAccessLog() {
         MedicalDataSource dataSource =
                 mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME);
         mUtil.upsertResources(
@@ -1612,7 +1623,7 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
-    public void insertMedicalResourcesOfDifferentTypes_createsAccessLog_success() {
+    public void insertMedicalResourcesOfDifferentTypes_createsAccessLog() {
         String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
         MedicalResource vaccine = createVaccineMedicalResource(dataSource);
         MedicalResource allergy = createAllergyMedicalResource(dataSource);
@@ -1636,7 +1647,7 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
-    public void insertAndUpdateMedicalResources_createsAccessLog_success() throws JSONException {
+    public void insertAndUpdateMedicalResources_createsAccessLog() throws JSONException {
         String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
         MedicalResource vaccine = createVaccineMedicalResource(dataSource);
         MedicalResource allergy = createAllergyMedicalResource(dataSource);
@@ -1670,6 +1681,49 @@ public class MedicalResourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsAtLeast(insertAccessLog, updateAccessLog);
+    }
+
+    @Test
+    public void insertMedicalResourcesOfSameType_createsChangeLogs() {
+        MedicalDataSource dataSource =
+                mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME);
+        mUtil.upsertResources(
+                PhrDataFactory::createVaccineMedicalResources, /* numOfResources= */ 6, dataSource);
+
+        assertThat(mTransactionManager.count(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME)))
+                .isEqualTo(1);
+    }
+
+    @Test
+    public void insertMedicalResourcesOfDifferentTypes_createsChangeLogs() {
+        String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
+        MedicalResource vaccine = createVaccineMedicalResource(dataSource);
+        MedicalResource allergy = createAllergyMedicalResource(dataSource);
+        mMedicalResourceHelper.upsertMedicalResources(
+                DATA_SOURCE_PACKAGE_NAME,
+                createUpsertMedicalResourceRequests(List.of(vaccine, allergy), dataSource));
+
+        assertThat(mTransactionManager.count(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME)))
+                .isEqualTo(2);
+    }
+
+    @Test
+    public void insertAndUpdateMedicalResources_createsChangeLogs() throws JSONException {
+        String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
+        MedicalResource vaccine = createVaccineMedicalResource(dataSource);
+        MedicalResource allergy = createAllergyMedicalResource(dataSource);
+        MedicalResource updatedVaccine = createUpdatedVaccineMedicalResource(dataSource);
+        // initial inserts
+        mMedicalResourceHelper.upsertMedicalResources(
+                DATA_SOURCE_PACKAGE_NAME,
+                createUpsertMedicalResourceRequests(List.of(vaccine, allergy), dataSource));
+        // update the vaccine resource
+        mMedicalResourceHelper.upsertMedicalResources(
+                DATA_SOURCE_PACKAGE_NAME,
+                createUpsertMedicalResourceRequests(List.of(updatedVaccine), dataSource));
+
+        assertThat(mTransactionManager.count(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME)))
+                .isEqualTo(3);
     }
 
     @Test

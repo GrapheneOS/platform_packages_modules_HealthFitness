@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
@@ -34,6 +35,8 @@ import android.health.connect.datatypes.ExerciseSegmentType;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.HeartRateRecord;
+import android.health.connect.datatypes.HeightRecord;
+import android.health.connect.datatypes.LeanBodyMassRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.PlannedExerciseBlock;
 import android.health.connect.datatypes.PlannedExerciseSessionRecord;
@@ -153,11 +156,6 @@ public final class DataFactory {
 
     public static SleepSessionRecord buildSleepSession() {
         return buildSleepSession(generateMetadata());
-    }
-
-    /** Builds a {@link SleepSessionRecord} with a specific {@code clientId}. */
-    public static SleepSessionRecord buildSleepSessionWithClientId(String clientId) {
-        return buildSleepSession(generateMetadataWithClientId(clientId));
     }
 
     /** Builds a {@link SleepSessionRecord} with empty {@link Metadata}. */
@@ -615,6 +613,54 @@ public final class DataFactory {
 
     public static BasalMetabolicRateRecord getBasalMetabolicRateRecord() {
         return new BasalMetabolicRateRecord.Builder(generateMetadata(), NOW, Power.fromWatts(100.0))
+                .build();
+    }
+
+    /**
+     * Returns a {@link ActiveCaloriesBurnedRecord} with given {@code energy} between the given
+     * {@code start} and {@code end} time.
+     */
+    public static ActiveCaloriesBurnedRecord getActiveCaloriesBurnedRecord(
+            double energy, Instant start, Instant end) {
+        return new ActiveCaloriesBurnedRecord.Builder(
+                        getEmptyMetadata(), start, end, Energy.fromCalories(energy))
+                .build();
+    }
+
+    /**
+     * Returns a {@link BasalMetabolicRateRecord} with given {@code power} at the given {@code
+     * time}.
+     */
+    public static BasalMetabolicRateRecord getBasalMetabolicRateRecord(double power, Instant time) {
+        return new BasalMetabolicRateRecord.Builder(
+                        new Metadata.Builder().build(), time, Power.fromWatts(power))
+                .build();
+    }
+
+    /**
+     * Returns a {@link BasalMetabolicRateRecord} with given {@code power} at the given {@code time}
+     * at the given {@code offset}.
+     */
+    public static BasalMetabolicRateRecord getBasalMetabolicRateRecord(
+            double power, Instant time, ZoneOffset offset) {
+        return new BasalMetabolicRateRecord.Builder(
+                        new Metadata.Builder().build(), time, Power.fromWatts(power))
+                .setZoneOffset(offset)
+                .build();
+    }
+
+    public static LeanBodyMassRecord getBaseLeanBodyMassRecord(Instant time, double grams) {
+        return new LeanBodyMassRecord.Builder(getEmptyMetadata(), time, Mass.fromGrams(grams))
+                .build();
+    }
+
+    public static HeightRecord getBaseHeightRecord(Instant time, double heightMeter) {
+        return new HeightRecord.Builder(getEmptyMetadata(), time, Length.fromMeters(heightMeter))
+                .build();
+    }
+
+    public static WeightRecord getBaseWeightRecord(Instant time, double weightKg) {
+        return new WeightRecord.Builder(getEmptyMetadata(), time, Mass.fromGrams(weightKg * 1000))
                 .build();
     }
 }

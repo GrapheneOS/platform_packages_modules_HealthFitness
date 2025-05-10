@@ -17,16 +17,16 @@
 package android.healthconnect.cts.aggregation;
 
 import static android.health.connect.datatypes.BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL;
-import static android.healthconnect.cts.aggregation.DataFactory.getBasalMetabolicRateRecord;
-import static android.healthconnect.cts.aggregation.DataFactory.getBaseHeightRecord;
-import static android.healthconnect.cts.aggregation.DataFactory.getBaseLeanBodyMassRecord;
-import static android.healthconnect.cts.aggregation.DataFactory.getBaseWeightRecord;
 import static android.healthconnect.cts.aggregation.Utils.assertEnergyWithTolerance;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseGroupByDuration;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
+import static android.healthconnect.testing.shared.DataFactory.getBasalMetabolicRateRecord;
+import static android.healthconnect.testing.shared.DataFactory.getBaseHeightRecord;
+import static android.healthconnect.testing.shared.DataFactory.getBaseLeanBodyMassRecord;
+import static android.healthconnect.testing.shared.DataFactory.getBaseWeightRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 

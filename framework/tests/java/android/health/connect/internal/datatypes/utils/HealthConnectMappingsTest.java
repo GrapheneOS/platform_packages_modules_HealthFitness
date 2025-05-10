@@ -426,7 +426,12 @@ public class HealthConnectMappingsTest {
                 .doesNotContain(RECORD_TYPE_ACTIVITY_INTENSITY);
     }
 
-    @EnableFlags({Flags.FLAG_SMOKING, Flags.FLAG_SMOKING_DB})
+    @EnableFlags({
+        Flags.FLAG_SMOKING,
+        Flags.FLAG_SMOKING_DB,
+        Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
+        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB
+    })
     @Test
     public void nicotineIntakeFlagEnabled_containsNicotineIntake() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();

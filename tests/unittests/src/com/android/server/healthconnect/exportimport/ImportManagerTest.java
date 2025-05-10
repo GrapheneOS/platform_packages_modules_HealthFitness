@@ -20,6 +20,8 @@ import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR
 import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR_VERSION_MISMATCH;
 import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR_WRONG_FILE;
 import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_STARTED;
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createBloodPressureRecord;
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
 
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_IMPORT_COMPLETE;
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_IMPORT_IN_PROGRESS;
@@ -28,8 +30,6 @@ import static com.android.server.healthconnect.exportimport.ExportImportNotifica
 import static com.android.server.healthconnect.exportimport.ExportManager.LOCAL_EXPORT_DATABASE_FILE_NAME;
 import static com.android.server.healthconnect.exportimport.ImportManager.IMPORT_DATABASE_DIR_NAME;
 import static com.android.server.healthconnect.exportimport.ImportManager.IMPORT_DATABASE_FILE_NAME;
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createBloodPressureRecord;
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -46,6 +46,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.healthconnect.testing.unittest.StorageUtils;
+import android.healthconnect.testing.unittest.TaskUtils;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.net.Uri;
 import android.os.UserHandle;
 import android.platform.test.annotations.EnableFlags;
@@ -70,9 +74,6 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.testing.TestUtils;
-import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -121,6 +122,7 @@ public class ImportManagerTest {
 
     private Context mContext;
     private TransactionManager mTransactionManager;
+    private StorageUtils mStorageUtils;
     private TransactionTestUtils mTransactionTestUtils;
     private HealthDataCategoryPriorityHelper mPriorityHelper;
     private ExportImportSettingsStorage mExportImportSettingsStorage;
@@ -140,26 +142,6 @@ public class ImportManagerTest {
     // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private ExportImportLogger mExportImportLogger;
-
-    private String mPreviousRobolectricProperty;
-
-    @Before
-    public void robolectricProperties() {
-        // TODO: b/403334845 - remove this when test infrastructure supports setting this property
-        mPreviousRobolectricProperty =
-                System.setProperty("/robolectric.useValidGetApplicationIcon", "true");
-    }
-
-    @After
-    public void robolectricPropertiesClear() {
-        // TODO: b/403334845 - remove this when test infrastructure supports setting this property
-        if (mPreviousRobolectricProperty == null) {
-            System.clearProperty("robolectric.useValidGetApplicationIcon");
-        } else {
-            System.setProperty(
-                    "robolectric.useValidGetApplicationIcon", mPreviousRobolectricProperty);
-        }
-    }
 
     @Before
     public void setUp() throws Exception {
@@ -181,6 +163,7 @@ public class ImportManagerTest {
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
         mNotificationFactory = healthConnectInjector.getExportImportNotificationFactory();
 
+        mStorageUtils = new StorageUtils(healthConnectInjector);
         mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME_2);
@@ -216,7 +199,7 @@ public class ImportManagerTest {
 
     @After
     public void tearDown() throws Exception {
-        TestUtils.waitForAllScheduledTasksToComplete(mThreadScheduler);
+        TaskUtils.waitForAllScheduledTasksToComplete(mThreadScheduler);
 
         File testDir = mContext.getDir(TEST_DIRECTORY_NAME, Context.MODE_PRIVATE);
         File[] allContents = testDir.listFiles();
@@ -630,7 +613,7 @@ public class ImportManagerTest {
 
         mImportManagerSpy.runImport(mContext.getUser(), Uri.fromFile(zipToImport));
 
-        assertThat(mTransactionTestUtils.queryNumEntries(ChangeLogsHelper.TABLE_NAME)).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries(ChangeLogsHelper.TABLE_NAME)).isEqualTo(1);
     }
 
     @Test
@@ -642,7 +625,7 @@ public class ImportManagerTest {
 
         mImportManagerSpy.runImport(mContext.getUser(), Uri.fromFile(zipToImport));
 
-        assertThat(mTransactionTestUtils.queryNumEntries(ChangeLogsHelper.TABLE_NAME)).isEqualTo(0);
+        assertThat(mStorageUtils.queryNumEntries(ChangeLogsHelper.TABLE_NAME)).isEqualTo(0);
     }
 
     private File exportCurrentDb() throws Exception {

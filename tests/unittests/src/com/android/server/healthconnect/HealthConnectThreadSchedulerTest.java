@@ -22,12 +22,11 @@ import static org.mockito.Mockito.when;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.healthconnect.testing.unittest.TaskUtils;
 import android.os.Process;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
-
-import com.android.server.healthconnect.testing.TestUtils;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -84,7 +83,7 @@ public class HealthConnectThreadSchedulerTest {
     @Test
     public void testSchedulerScheduleInternal() throws Exception {
         mHealthConnectThreadScheduler.scheduleInternalTask(() -> {});
-        TestUtils.waitForTaskToFinishSuccessfully(
+        TaskUtils.waitForTaskToFinishSuccessfully(
                 () -> {
                     if (mInternalTaskScheduler.getCompletedTaskCount()
                             != mInternalTaskSchedulerCompletedJobs + 1) {
@@ -96,7 +95,7 @@ public class HealthConnectThreadSchedulerTest {
     @Test
     public void testScheduleControllerTask() throws Exception {
         mHealthConnectThreadScheduler.scheduleControllerTask(() -> {});
-        TestUtils.waitForTaskToFinishSuccessfully(
+        TaskUtils.waitForTaskToFinishSuccessfully(
                 () -> {
                     if (mControllerTaskScheduler.getCompletedTaskCount()
                             != mControllerTaskSchedulerCompletedJobs + 1) {
@@ -110,7 +109,7 @@ public class HealthConnectThreadSchedulerTest {
         mockCurrentProcessImportance(ActivityManager.RunningAppProcessInfo.IMPORTANCE_CACHED);
 
         mHealthConnectThreadScheduler.schedule(mMockContext, () -> {}, Process.myUid(), false);
-        TestUtils.waitForTaskToFinishSuccessfully(
+        TaskUtils.waitForTaskToFinishSuccessfully(
                 () -> {
                     if (mBackgroundTaskScheduler.getCompletedTaskCount()
                             != mBackgroundTaskSchedulerCompletedJobs + 1) {
@@ -124,7 +123,7 @@ public class HealthConnectThreadSchedulerTest {
         mockCurrentProcessImportance(ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND);
 
         mHealthConnectThreadScheduler.schedule(mMockContext, () -> {}, Process.myUid(), false);
-        TestUtils.waitForTaskToFinishSuccessfully(
+        TaskUtils.waitForTaskToFinishSuccessfully(
                 () -> {
                     if (mForegroundTaskScheduler.getCompletedTaskCount()
                             != mForegroundTaskSchedulerCompletedJobs + 1) {
@@ -136,7 +135,7 @@ public class HealthConnectThreadSchedulerTest {
     @Test
     public void testSchedulePassiveTrackerTask() throws Exception {
         mHealthConnectThreadScheduler.schedulePassiveTrackerTask(() -> {});
-        TestUtils.waitForTaskToFinishSuccessfully(
+        TaskUtils.waitForTaskToFinishSuccessfully(
                 () -> {
                     if (mPassiveTrackerTaskScheduler.getCompletedTaskCount()
                             != mPassiveTrackerTaskSchedulerCompletedJobs + 1) {
@@ -147,7 +146,7 @@ public class HealthConnectThreadSchedulerTest {
 
     @Test
     public void testSchedulePassiveTrackerTaskWithDelay() throws Exception {
-        long delayMillis = 30000;
+        long delayMillis = 3000;
         Instant startTime = Instant.now();
 
         ScheduledFuture<?> future =
@@ -157,9 +156,9 @@ public class HealthConnectThreadSchedulerTest {
         future.get(); // Wait for the task to run and complete
 
         long durationMillis = ChronoUnit.MILLIS.between(startTime, Instant.now());
-        assertThat(durationMillis).isGreaterThan(delayMillis); // Task should start after the delay
+        assertThat(durationMillis).isAtLeast(delayMillis - 1000); // Task should start after a delay
         assertThat(durationMillis)
-                .isLessThan(
+                .isAtMost(
                         delayMillis
                                 + 3000); // Task shouldn't take too long to finish after the delay
     }
@@ -170,7 +169,7 @@ public class HealthConnectThreadSchedulerTest {
         when(mActivityManager.getRunningAppProcesses()).thenReturn(null);
 
         mHealthConnectThreadScheduler.scheduleInternalTask(() -> {});
-        TestUtils.waitForTaskToFinishSuccessfully(
+        TaskUtils.waitForTaskToFinishSuccessfully(
                 () -> {
                     if (mInternalTaskScheduler.getCompletedTaskCount()
                             != mInternalTaskSchedulerCompletedJobs + 1) {

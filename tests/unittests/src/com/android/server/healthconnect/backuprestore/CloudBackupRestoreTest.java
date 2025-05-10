@@ -16,11 +16,12 @@
 
 package com.android.server.healthconnect.backuprestore;
 
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
 import static com.android.server.healthconnect.backuprestore.ProtoTestData.TEST_PACKAGE_NAME;
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -30,6 +31,7 @@ import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -44,11 +46,9 @@ import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import com.google.common.collect.ImmutableMap;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -89,26 +89,6 @@ public final class CloudBackupRestoreTest {
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
-
-    private String mPreviousRobolectricProperty;
-
-    @Before
-    public void robolectricProperties() {
-        // TODO: b/403334845 - remove this when test infrastructure supports setting this property
-        mPreviousRobolectricProperty =
-                System.setProperty("robolectric.useValidGetApplicationIcon", "true");
-    }
-
-    @After
-    public void robolectricPropertiesClear() {
-        // TODO: b/403334845 - remove this when test infrastructure supports setting this property
-        if (mPreviousRobolectricProperty == null) {
-            System.clearProperty("robolectric.useValidGetApplicationIcon");
-        } else {
-            System.setProperty(
-                    "robolectric.useValidGetApplicationIcon", mPreviousRobolectricProperty);
-        }
-    }
 
     @Before
     public void setUp() {

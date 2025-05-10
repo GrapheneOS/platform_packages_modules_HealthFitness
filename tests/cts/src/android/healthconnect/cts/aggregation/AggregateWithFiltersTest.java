@@ -25,9 +25,6 @@ import static android.health.connect.datatypes.HeartRateRecord.HEART_MEASUREMENT
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.health.connect.datatypes.WeightRecord.WEIGHT_MAX;
 import static android.health.connect.datatypes.WeightRecord.WEIGHT_MIN;
-import static android.healthconnect.cts.aggregation.DataFactory.getOpenEndTimeFilter;
-import static android.healthconnect.cts.aggregation.DataFactory.getOpenStartTimeFilter;
-import static android.healthconnect.cts.aggregation.DataFactory.getTimeFilter;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseGroupByDuration;
@@ -40,6 +37,9 @@ import static android.healthconnect.testing.shared.DataFactory.getDistanceRecord
 import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.DataFactory.getWeightRecord;
+import static android.healthconnect.testing.shared.aggregation.TimeFilterFactory.getOpenEndTimeFilter;
+import static android.healthconnect.testing.shared.aggregation.TimeFilterFactory.getOpenStartTimeFilter;
+import static android.healthconnect.testing.shared.aggregation.TimeFilterFactory.getTimeFilter;
 
 import static com.google.common.truth.Truth.assertThat;
 

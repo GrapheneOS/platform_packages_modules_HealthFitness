@@ -21,8 +21,8 @@ import android.health.connect.HealthPermissions.WRITE_ACTIVITY_INTENSITY
 import android.health.connect.datatypes.ActivityIntensityRecord
 import android.health.connect.datatypes.RespiratoryRateRecord
 import android.health.connect.datatypes.StepsRecord
-import android.healthconnect.cts.lib.RecordFactory.YESTERDAY_11AM
-import android.healthconnect.cts.lib.RecordFactory.newEmptyMetadata
+import android.healthconnect.testing.shared.recordfactory.RecordFactory.YESTERDAY_11AM
+import android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadata
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.text.format.DateFormat.is24HourFormat
 import com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY

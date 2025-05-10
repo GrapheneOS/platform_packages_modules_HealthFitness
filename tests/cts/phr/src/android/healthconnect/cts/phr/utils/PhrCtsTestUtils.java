@@ -175,10 +175,11 @@ public class PhrCtsTestUtils {
         Log.d(TAG, TAG + "#upsertVaccineMedicalResources(String dataSourceId, int numOfResources)");
         List<MedicalResource> medicalResources =
                 createVaccineMedicalResources(numOfResources, dataSourceId);
-        return upsertMedicalData(medicalResources);
+        return upsertMedicalResources(medicalResources);
     }
 
-    private List<MedicalResource> upsertMedicalData(List<MedicalResource> medicalResources)
+    /** Upsert the given medical resources. The data sources must already been inserted. */
+    public List<MedicalResource> upsertMedicalResources(List<MedicalResource> medicalResources)
             throws InterruptedException {
         int numOfResources = medicalResources.size();
         // To avoid hitting transaction limit:

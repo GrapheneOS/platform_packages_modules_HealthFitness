@@ -24,6 +24,7 @@ import androidx.test.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
+import com.android.server.healthconnect.onboarding.OnboardingStateManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
 
@@ -46,6 +47,8 @@ public class HealthConnectInjectorTest {
 
     // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
+
+    @Mock private OnboardingStateManager mOnboardingStateManager;
 
     private HealthConnectInjectorImpl.Builder mBuilder;
 
@@ -92,5 +95,22 @@ public class HealthConnectInjectorTest {
 
         assertThat(healthConnectInjector.getHealthDataCategoryPriorityHelper())
                 .isNotEqualTo(mHealthDataCategoryPriorityHelper);
+    }
+
+    @Test
+    public void getOnboardingStateManager_fakeProvided_returnsFake() {
+        HealthConnectInjector healthConnectInjector =
+                mBuilder.setOnboardingStateManager(mOnboardingStateManager).build();
+
+        assertThat(healthConnectInjector.getOnboardingStateManager())
+                .isEqualTo(mOnboardingStateManager);
+    }
+
+    @Test
+    public void getOnboardingStateManager_noFakeProvided_returnsRealImpl() {
+        HealthConnectInjector healthConnectInjector = mBuilder.build();
+
+        assertThat(healthConnectInjector.getOnboardingStateManager())
+                .isNotEqualTo(mOnboardingStateManager);
     }
 }

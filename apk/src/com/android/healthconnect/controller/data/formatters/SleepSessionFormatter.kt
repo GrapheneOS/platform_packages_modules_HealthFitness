@@ -23,6 +23,7 @@ import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_
 import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_LIGHT
 import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_REM
 import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_UNKNOWN
+import androidx.annotation.VisibleForTesting
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSessionDetail
@@ -33,7 +34,6 @@ import com.android.healthconnect.controller.data.formatters.shared.RecordDetails
 import com.android.healthconnect.controller.data.formatters.shared.UnitFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
-import com.google.common.annotations.VisibleForTesting
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Duration
 import javax.inject.Inject

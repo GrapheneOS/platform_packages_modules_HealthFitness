@@ -16,13 +16,18 @@
 
 package android.healthconnect.cts.device;
 
+import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
-import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
+import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
+
+import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static java.time.Duration.ofMinutes;
-
+import android.health.connect.HealthConnectManager;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
@@ -30,16 +35,24 @@ import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.MedicalDataSource;
+import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.cts.lib.TestAppProxy;
+import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
+import android.healthconnect.cts.utils.TestUtils;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.google.common.truth.Correspondence;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -66,10 +79,21 @@ public class HealthConnectChangeLogsDeviceTests {
                             "has matching string id");
 
     @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
+
+    @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
+
+    @Before
+    public void setUp() throws Exception {
+        TestUtils.deleteAllStagedRemoteData();
+        HealthConnectManager manager = TestUtils.getHealthConnectManager();
+        PhrCtsTestUtils util = new PhrCtsTestUtils(manager);
+        util.deleteAllMedicalData();
+    }
 
     @After
     public void tearDown() throws InterruptedException {
@@ -127,7 +151,7 @@ public class HealthConnectChangeLogsDeviceTests {
         ChangeLogsRequest changeLogsRequest = new ChangeLogsRequest.Builder(changeLogToken).build();
 
         String recordIdInsertedByAppA = APP_A_WITH_READ_WRITE_PERMS.insertRecord(getStepsRecord());
-        APP_A_WITH_READ_WRITE_PERMS.insertRecord(getStepsRecord());
+        APP_B_WITH_READ_WRITE_PERMS.insertRecord(getStepsRecord());
         StepsRecord recordInsertedByAppA =
                 APP_A_WITH_READ_WRITE_PERMS
                         .readRecords(
@@ -195,9 +219,71 @@ public class HealthConnectChangeLogsDeviceTests {
         assertThat(response.getUpsertedRecords()).isEmpty();
     }
 
-    private static StepsRecord getStepsRecord() {
-        Instant startTime = NOW.minus(ofMinutes(10));
-        Instant endTime = NOW.minus(ofMinutes(5));
-        return new StepsRecord.Builder(getEmptyMetadata(), startTime, endTime, 155).build();
+    @Test
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    public void testChangeLogs_phr_insert_multipleApps_noFilter_returnsUpsertLogsForAllApps()
+            throws Exception {
+        String changeLogToken =
+                APP_A_WITH_READ_WRITE_PERMS.getChangeLogToken(
+                        new ChangeLogTokenRequest.Builder()
+                                .addMedicalResourceType(MEDICAL_RESOURCE_TYPE_VACCINES)
+                                .build());
+        ChangeLogsRequest changeLogsRequest = new ChangeLogsRequest.Builder(changeLogToken).build();
+
+        MedicalDataSource dataSourceByAppA =
+                APP_A_WITH_READ_WRITE_PERMS.createMedicalDataSource(
+                        getCreateMedicalDataSourceRequest("appA"));
+        MedicalResource medicalResourceInsertedByAppA =
+                APP_A_WITH_READ_WRITE_PERMS.upsertMedicalResource(
+                        dataSourceByAppA.getId(), FHIR_DATA_IMMUNIZATION);
+        MedicalDataSource dataSourceByAppB =
+                APP_B_WITH_READ_WRITE_PERMS.createMedicalDataSource(
+                        getCreateMedicalDataSourceRequest("appB"));
+        MedicalResource medicalResourceInsertedByAppB =
+                APP_B_WITH_READ_WRITE_PERMS.upsertMedicalResource(
+                        dataSourceByAppB.getId(), FHIR_DATA_IMMUNIZATION);
+        ChangeLogsResponse response = APP_A_WITH_READ_WRITE_PERMS.getChangeLogs(changeLogsRequest);
+
+        assertThat(response.getUpsertedMedicalResources())
+                .containsExactly(medicalResourceInsertedByAppA, medicalResourceInsertedByAppB);
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
+    }
+
+    @Test
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    public void testChangeLogs_phr_insert_multipleApps_filterDataOrigin_returnsUpsertLogs()
+            throws Exception {
+        String changeLogToken =
+                APP_A_WITH_READ_WRITE_PERMS.getChangeLogToken(
+                        new ChangeLogTokenRequest.Builder()
+                                .addMedicalResourceType(MEDICAL_RESOURCE_TYPE_VACCINES)
+                                .addDataOriginFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(
+                                                        APP_A_WITH_READ_WRITE_PERMS
+                                                                .getPackageName())
+                                                .build())
+                                .build());
+        ChangeLogsRequest changeLogsRequest = new ChangeLogsRequest.Builder(changeLogToken).build();
+
+        MedicalDataSource dataSourceByAppA =
+                APP_A_WITH_READ_WRITE_PERMS.createMedicalDataSource(
+                        getCreateMedicalDataSourceRequest("appA"));
+        MedicalResource medicalResourceInsertedByAppA =
+                APP_A_WITH_READ_WRITE_PERMS.upsertMedicalResource(
+                        dataSourceByAppA.getId(), FHIR_DATA_IMMUNIZATION);
+        MedicalDataSource dataSourceByAppB =
+                APP_B_WITH_READ_WRITE_PERMS.createMedicalDataSource(
+                        getCreateMedicalDataSourceRequest("appB"));
+        MedicalResource medicalResourceInsertedByAppB =
+                APP_B_WITH_READ_WRITE_PERMS.upsertMedicalResource(
+                        dataSourceByAppB.getId(), FHIR_DATA_IMMUNIZATION);
+        ChangeLogsResponse response = APP_A_WITH_READ_WRITE_PERMS.getChangeLogs(changeLogsRequest);
+
+        assertThat(response.getUpsertedMedicalResources())
+                .containsExactly(medicalResourceInsertedByAppA);
+        assertThat(response.getUpsertedMedicalResources())
+                .doesNotContain(medicalResourceInsertedByAppB);
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 }

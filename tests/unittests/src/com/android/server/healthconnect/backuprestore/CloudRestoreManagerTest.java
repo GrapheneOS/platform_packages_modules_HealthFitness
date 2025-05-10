@@ -47,6 +47,7 @@ import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -68,12 +69,10 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.S
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.PriorityList;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import com.google.common.collect.ImmutableMap;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -119,26 +118,6 @@ public class CloudRestoreManagerTest {
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
-
-    private String mPreviousRobolectricProperty;
-
-    @Before
-    public void robolectricProperties() {
-        // TODO: b/403334845 - remove this when test infrastructure supports setting this property
-        mPreviousRobolectricProperty =
-                System.setProperty("robolectric.useValidGetApplicationIcon", "true");
-    }
-
-    @After
-    public void robolectricPropertiesClear() {
-        // TODO: b/403334845 - remove this when test infrastructure supports setting this property
-        if (mPreviousRobolectricProperty == null) {
-            System.clearProperty("robolectric.useValidGetApplicationIcon");
-        } else {
-            System.setProperty(
-                    "robolectric.useValidGetApplicationIcon", mPreviousRobolectricProperty);
-        }
-    }
 
     @Before
     public void setUp() {

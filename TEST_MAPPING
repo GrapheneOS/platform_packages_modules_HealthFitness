@@ -62,9 +62,6 @@
        "name": "HealthConnectControllerDataScreensNewTests"
     },
     {
-       "name": "HealthConnectControllerDataScreensOldTests"
-    },
-    {
        "name": "HealthConnectControllerDeletionTests"
     },
     {
@@ -112,9 +109,6 @@
     },
     {
        "name": "HealthConnectControllerDataScreensNewTests[com.google.android.healthfitness.apex]"
-    },
-    {
-       "name": "HealthConnectControllerDataScreensOldTests[com.google.android.healthfitness.apex]"
     },
     {
        "name": "HealthConnectControllerDeletionTests[com.google.android.healthfitness.apex]"
@@ -188,9 +182,6 @@
     },
     {
        "name": "HealthConnectControllerDataScreensNewTests"
-    },
-    {
-       "name": "HealthConnectControllerDataScreensOldTests"
     },
     {
        "name": "HealthConnectControllerDeletionTests"

@@ -27,6 +27,10 @@ import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYP
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_OTHER_WORKOUT
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING
 import android.health.connect.datatypes.units.Length
+import android.health.connect.datatypes.units.Mass
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.ExerciseSessionFormatter
@@ -36,6 +40,8 @@ import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.units.DistanceUnit.KILOMETERS
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.units.WeightUnit.KILOGRAM
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -53,6 +59,8 @@ class ExerciseSessionFormatterTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @get:Rule val clearTimeFormatRule = ClearTimeFormatRule()
+
+    @get:Rule val mSetFlagsRule: SetFlagsRule = SetFlagsRule()
 
     @Inject lateinit var formatter: ExerciseSessionFormatter
 
@@ -89,7 +97,11 @@ class ExerciseSessionFormatterTest {
     }
 
     @Test
-    fun formatRecordDetails_returnSegments() = runBlocking {
+    @DisableFlags(
+        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
+        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    )
+    fun formatRecordDetails_segmentImprovementsDisabledReturnSegments() = runBlocking {
         unitPreferences.setDistanceUnit(KILOMETERS)
         val segments =
             buildList<ExerciseSegment> {
@@ -136,6 +148,207 @@ class ExerciseSessionFormatterTest {
             )
     }
 
+    @Test
+    @DisableFlags(
+        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
+        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    )
+    fun formatRecordDetails_segmentImprovementsDisabledReturnSegmentsWithoutNewFields() =
+        runBlocking {
+            unitPreferences.setDistanceUnit(KILOMETERS)
+            val segments =
+                buildList<ExerciseSegment> {
+                    add(
+                        ExerciseSegment.Builder(
+                                NOW,
+                                NOW.plusSeconds(500),
+                                EXERCISE_SEGMENT_TYPE_JUMPING_JACK,
+                            )
+                            .setRepetitionsCount(2)
+                            .setWeight(Mass.fromGrams(5000.0))
+                            .setSetIndex(0)
+                            .setRateOfPerceivedExertion(5.5f)
+                            .build()
+                    )
+                }
+            val laps =
+                buildList<ExerciseLap> {
+                    add(
+                        ExerciseLap.Builder(NOW, NOW.plusSeconds(500))
+                            .setLength(Length.fromMeters(20.0))
+                            .build()
+                    )
+                }
+            val record =
+                getRecord(
+                    type = EXERCISE_SESSION_TYPE_OTHER_WORKOUT,
+                    segments = segments,
+                    laps = laps,
+                )
+            assertThat(formatter.formatRecordDetails(record))
+                .isEqualTo(
+                    listOf(
+                        FormattedEntry.SessionHeader("Exercise segments"),
+                        FormattedEntry.FormattedSessionDetail(
+                            uuid = record.metadata.id,
+                            header = "07:06 - 07:14",
+                            headerA11y = "from 07:06 to 07:14",
+                            title = "Jumping jack: 2 reps",
+                            titleA11y = "Jumping jack: 2 repetitions",
+                        ),
+                        FormattedEntry.SessionHeader("Laps"),
+                        FormattedEntry.FormattedSessionDetail(
+                            uuid = record.metadata.id,
+                            header = "07:06 - 07:14",
+                            headerA11y = "from 07:06 to 07:14",
+                            title = "0.02 km",
+                            titleA11y = "0.02 kilometres",
+                        ),
+                    )
+                )
+        }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
+        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    )
+    fun formatRecordDetails_segmentImprovementsEnabledWithNewFields() = runBlocking {
+        unitPreferences.setDistanceUnit(KILOMETERS)
+        unitPreferences.setWeightUnit(KILOGRAM)
+        val segments =
+            buildList<ExerciseSegment> {
+                add(
+                    ExerciseSegment.Builder(
+                            NOW,
+                            NOW.plusSeconds(500),
+                            EXERCISE_SEGMENT_TYPE_JUMPING_JACK,
+                        )
+                        .setRepetitionsCount(2)
+                        .setWeight(Mass.fromGrams(5000.0))
+                        .setSetIndex(0)
+                        .setRateOfPerceivedExertion(5.5f)
+                        .build()
+                )
+            }
+        val laps =
+            buildList<ExerciseLap> {
+                add(
+                    ExerciseLap.Builder(NOW, NOW.plusSeconds(500))
+                        .setLength(Length.fromMeters(20.0))
+                        .build()
+                )
+            }
+        val record =
+            getRecordWithRpe(
+                type = EXERCISE_SESSION_TYPE_OTHER_WORKOUT,
+                segments = segments,
+                laps = laps,
+            )
+        assertThat(formatter.formatRecordDetails(record))
+            .isEqualTo(
+                listOf(
+                    FormattedEntry.SessionHeader("RPE"),
+                    FormattedEntry.FormattedHeaderlessSessionDetail(
+                        uuid = record.metadata.id,
+                        title = "4.5",
+                        titleA11y = "4.5",
+                    ),
+                    FormattedEntry.SessionHeader("Exercise segments"),
+                    FormattedEntry.FormattedSegment(
+                        uuid = record.metadata.id,
+                        header = "07:06 - 07:14",
+                        headerA11y = "from 07:06 to 07:14",
+                        title = "Jumping jack: 2 reps",
+                        titleA11y = "Jumping jack: 2 repetitions",
+                        setIndex = "Set 0",
+                        setIndexA11y = "Set 0",
+                        weight = "5 kg",
+                        weightA11y = "5 kilograms",
+                        rpe = "RPE: 5.5",
+                        rpeA11y = "Rate of perceived exertion: 5.5",
+                    ),
+                    FormattedEntry.SessionHeader("Laps"),
+                    FormattedEntry.FormattedSessionDetail(
+                        uuid = record.metadata.id,
+                        header = "07:06 - 07:14",
+                        headerA11y = "from 07:06 to 07:14",
+                        title = "0.02 km",
+                        titleA11y = "0.02 kilometres",
+                    ),
+                )
+            )
+    }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
+        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    )
+    fun formatRecordDetails_segmentImprovementsEnabledWithoutNewFields() = runBlocking {
+        unitPreferences.setDistanceUnit(KILOMETERS)
+        unitPreferences.setWeightUnit(KILOGRAM)
+        val segments =
+            buildList<ExerciseSegment> {
+                add(
+                    ExerciseSegment.Builder(
+                            NOW,
+                            NOW.plusSeconds(500),
+                            EXERCISE_SEGMENT_TYPE_JUMPING_JACK,
+                        )
+                        .setRepetitionsCount(2)
+                        .build()
+                )
+            }
+        val laps =
+            buildList<ExerciseLap> {
+                add(
+                    ExerciseLap.Builder(NOW, NOW.plusSeconds(500))
+                        .setLength(Length.fromMeters(20.0))
+                        .build()
+                )
+            }
+        val record =
+            getRecordWithRpe(
+                type = EXERCISE_SESSION_TYPE_OTHER_WORKOUT,
+                segments = segments,
+                laps = laps,
+            )
+        assertThat(formatter.formatRecordDetails(record))
+            .isEqualTo(
+                listOf(
+                    FormattedEntry.SessionHeader("RPE"),
+                    FormattedEntry.FormattedHeaderlessSessionDetail(
+                        uuid = record.metadata.id,
+                        title = "4.5",
+                        titleA11y = "4.5",
+                    ),
+                    FormattedEntry.SessionHeader("Exercise segments"),
+                    FormattedEntry.FormattedSegment(
+                        uuid = record.metadata.id,
+                        header = "07:06 - 07:14",
+                        headerA11y = "from 07:06 to 07:14",
+                        title = "Jumping jack: 2 reps",
+                        titleA11y = "Jumping jack: 2 repetitions",
+                        setIndex = null,
+                        setIndexA11y = null,
+                        weight = null,
+                        weightA11y = null,
+                        rpe = null,
+                        rpeA11y = null,
+                    ),
+                    FormattedEntry.SessionHeader("Laps"),
+                    FormattedEntry.FormattedSessionDetail(
+                        uuid = record.metadata.id,
+                        header = "07:06 - 07:14",
+                        headerA11y = "from 07:06 to 07:14",
+                        title = "0.02 km",
+                        titleA11y = "0.02 kilometres",
+                    ),
+                )
+            )
+    }
+
     private fun getRecord(
         type: Int = EXERCISE_SESSION_TYPE_BIKING,
         title: String? = null,
@@ -148,6 +361,22 @@ class ExerciseSessionFormatterTest {
             .setLaps(laps)
             .setTitle(title)
             .setSegments(segments)
+            .build()
+    }
+
+    private fun getRecordWithRpe(
+        type: Int = EXERCISE_SESSION_TYPE_BIKING,
+        title: String? = null,
+        note: String? = null,
+        laps: List<ExerciseLap> = emptyList(),
+        segments: List<ExerciseSegment> = emptyList(),
+    ): ExerciseSessionRecord {
+        return ExerciseSessionRecord.Builder(getMetaData(), NOW, NOW.plusSeconds(1000), type)
+            .setNotes(note)
+            .setLaps(laps)
+            .setTitle(title)
+            .setSegments(segments)
+            .setRateOfPerceivedExertion(4.5f)
             .build()
     }
 }

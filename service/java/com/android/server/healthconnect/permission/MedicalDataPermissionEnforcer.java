@@ -26,6 +26,7 @@ import android.health.connect.datatypes.MedicalResource;
 import android.permission.PermissionManager;
 import android.util.ArraySet;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -93,6 +94,25 @@ public class MedicalDataPermissionEnforcer {
             }
         }
         return grantedPermissions;
+    }
+
+    /** Enforces read permissions for given medical resource types */
+    public void enforceMedicalResourceTypesReadPermissions(
+            Collection<Integer> medicalResourceTypes, AttributionSource attributionSource) {
+        medicalResourceTypes.forEach(
+                medicalResourceType ->
+                        enforceMedicalReadAccess(medicalResourceType, attributionSource));
+    }
+
+    private void enforceMedicalReadAccess(
+            @MedicalResource.MedicalResourceType int medicalResourceType,
+            AttributionSource attributionSource) {
+        String readPermissionName = getMedicalReadPermission(medicalResourceType);
+
+        if (!isPermissionGranted(readPermissionName, attributionSource)) {
+            throw new SecurityException(
+                    "Caller doesn't have " + readPermissionName + " to read MedicalResource");
+        }
     }
 
     private boolean isPermissionGranted(

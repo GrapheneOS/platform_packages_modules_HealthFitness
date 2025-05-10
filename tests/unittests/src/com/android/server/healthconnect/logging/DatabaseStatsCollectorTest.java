@@ -16,9 +16,9 @@
 
 package com.android.server.healthconnect.logging;
 
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createBloodPressureRecord;
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createSpeedRecordInternal;
-import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createBloodPressureRecord;
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createSpeedRecordInternal;
+import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -31,6 +31,8 @@ import android.health.connect.datatypes.FhirVersion;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.shared.phr.ImmunizationBuilder;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.fakes.FakeTimeSource;
 import android.net.Uri;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -44,8 +46,6 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.phr.UpsertMedicalResourceInternalRequest;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
-import com.android.server.healthconnect.testing.fakes.FakeTimeSource;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;

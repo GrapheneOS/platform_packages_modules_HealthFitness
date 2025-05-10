@@ -49,7 +49,7 @@ public class HealthConnectResourcesContextTest {
     public void testAllMigrationNotificationStringsExist() {
         String[] expected = MigrationNotificationFactory.getNotificationStringResources();
         for (String s : expected) {
-            String fetched = mResourcesContext.getStringByName(s);
+            String fetched = mResourcesContext.getStringByNameOrThrow(s);
             String failMessage = "String resource with name " + s + " cannot be found.";
             assertWithMessage(failMessage).that(fetched).isNotNull();
         }
@@ -70,7 +70,7 @@ public class HealthConnectResourcesContextTest {
                         mContext, mResourcesContext, "healthconnect-channel");
         String[] expectedStrings = factory.getNotificationStringResources();
         for (String s : expectedStrings) {
-            String fetched = factory.getStringResource(s);
+            String fetched = mResourcesContext.getStringByNameOrThrow(s);
             String failMessage = "String resource with name " + s + " cannot be found.";
             assertWithMessage(failMessage).that(fetched).isNotNull();
         }

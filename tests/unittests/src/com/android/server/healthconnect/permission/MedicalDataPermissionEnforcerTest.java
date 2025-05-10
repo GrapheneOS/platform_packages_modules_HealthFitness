@@ -29,15 +29,21 @@ import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VACCINE
 import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VISITS;
 import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VITAL_SIGNS;
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
+import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
+import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_CONDITIONS;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
 import static android.permission.PermissionManager.PERMISSION_GRANTED;
 import static android.permission.PermissionManager.PERMISSION_HARD_DENIED;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.AttributionSource;
@@ -53,6 +59,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
@@ -84,7 +92,7 @@ public class MedicalDataPermissionEnforcerTest {
     }
 
     @Test(expected = SecurityException.class)
-    public void testEnforceWriteMedicalDataPermission_permissionDenied_throwsException() {
+    public void testEnforceWriteMedicalDataPermission_permissionDenied_throws() {
         when(mPermissionManager.checkPermissionForDataDelivery(
                         WRITE_MEDICAL_DATA, mAttributionSource, null))
                 .thenReturn(PERMISSION_HARD_DENIED);
@@ -176,6 +184,137 @@ public class MedicalDataPermissionEnforcerTest {
                         mAttributionSource);
 
         assertThat(permissions).isEmpty();
+    }
+
+    @Test
+    public void testEnforceMedicalResourceTypesReadPermissions_emptyList_doesNothing() {
+        mMedicalDataPermissionEnforcer.enforceMedicalResourceTypesReadPermissions(
+                Collections.emptyList(), mAttributionSource);
+        // Verify that checkPermissionForDataDelivery was never called
+        verify(mPermissionManager, never())
+                .checkPermissionForDataDelivery(anyString(), eq(mAttributionSource), any());
+    }
+
+    @Test
+    public void testEnforceMedicalResourceTypesReadPermissions_singleTypeGranted_doesNotThrow() {
+        List<Integer> resourceTypes = List.of(MEDICAL_RESOURCE_TYPE_VACCINES);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_VACCINES, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+
+        mMedicalDataPermissionEnforcer.enforceMedicalResourceTypesReadPermissions(
+                resourceTypes, mAttributionSource);
+
+        // Verify check was made once for the specific permission
+        verify(mPermissionManager, times(1))
+                .checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_VACCINES, mAttributionSource, null);
+    }
+
+    @Test
+    public void testEnforceMedicalResourceTypesReadPermissions_singleTypeDenied_throws() {
+        List<Integer> resourceTypes = List.of(MEDICAL_RESOURCE_TYPE_VACCINES);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_VACCINES, mAttributionSource, null))
+                .thenReturn(PERMISSION_HARD_DENIED);
+
+        SecurityException exception =
+                assertThrows(
+                        SecurityException.class,
+                        () ->
+                                mMedicalDataPermissionEnforcer
+                                        .enforceMedicalResourceTypesReadPermissions(
+                                                resourceTypes, mAttributionSource));
+
+        // Check the exception message
+        assertThat(exception.getMessage())
+                .isEqualTo(
+                        "Caller doesn't have "
+                                + READ_MEDICAL_DATA_VACCINES
+                                + " to read MedicalResource");
+        // Verify check was made
+        verify(mPermissionManager)
+                .checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_VACCINES, mAttributionSource, null);
+    }
+
+    @Test
+    public void testEnforceMedicalResourceTypesReadPermissions_multipleTypesGranted_doesNotThrow() {
+        List<Integer> resourceTypes =
+                List.of(
+                        MEDICAL_RESOURCE_TYPE_VACCINES,
+                        MEDICAL_RESOURCE_TYPE_CONDITIONS,
+                        MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES);
+        // Grant all necessary permissions
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_VACCINES, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_CONDITIONS, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+
+        mMedicalDataPermissionEnforcer.enforceMedicalResourceTypesReadPermissions(
+                resourceTypes, mAttributionSource);
+
+        // Verify checks were made for each permission
+        verify(mPermissionManager)
+                .checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_VACCINES, mAttributionSource, null);
+        verify(mPermissionManager)
+                .checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_CONDITIONS, mAttributionSource, null);
+        verify(mPermissionManager)
+                .checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES, mAttributionSource, null);
+    }
+
+    @Test
+    public void testEnforceMedicalResourceTypesReadPermissions_multipleTypesOneDenied_throws() {
+        List<Integer> resourceTypes =
+                List.of(
+                        MEDICAL_RESOURCE_TYPE_VACCINES, // Granted
+                        MEDICAL_RESOURCE_TYPE_CONDITIONS, // Denied
+                        MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES); // Granted (won't be checked)
+
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_VACCINES, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_CONDITIONS, mAttributionSource, null))
+                .thenReturn(PERMISSION_HARD_DENIED); // Deny this one
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+
+        SecurityException exception =
+                assertThrows(
+                        SecurityException.class,
+                        () ->
+                                mMedicalDataPermissionEnforcer
+                                        .enforceMedicalResourceTypesReadPermissions(
+                                                resourceTypes, mAttributionSource));
+
+        // Check the exception message for the denied permission
+        assertThat(exception.getMessage())
+                .isEqualTo(
+                        "Caller doesn't have "
+                                + READ_MEDICAL_DATA_CONDITIONS
+                                + " to read MedicalResource");
+
+        // Verify checks were made up to the point of failure
+        verify(mPermissionManager)
+                .checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_VACCINES, mAttributionSource, null);
+        verify(mPermissionManager)
+                .checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_CONDITIONS, mAttributionSource, null);
+        // Verify the check for ALLERGIES was *not* made because the loop terminated early
+        verify(mPermissionManager, never())
+                .checkPermissionForDataDelivery(
+                        READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES, mAttributionSource, null);
     }
 
     private static AttributionSource buildAttributionSource() {

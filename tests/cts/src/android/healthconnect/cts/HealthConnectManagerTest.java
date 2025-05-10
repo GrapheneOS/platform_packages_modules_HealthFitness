@@ -713,7 +713,7 @@ public class HealthConnectManagerTest {
     public void testAutoDeleteApis() throws InterruptedException {
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
 
-        TestUtils.setAutoDeletePeriod(30);
+        TestUtils.setRecordRetentionPeriodInDays(30);
         uiAutomation.adoptShellPermissionIdentity(HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
         try {
             assertThat(mManager.getRecordRetentionPeriodInDays()).isEqualTo(30);
@@ -721,7 +721,7 @@ public class HealthConnectManagerTest {
             uiAutomation.dropShellPermissionIdentity();
         }
 
-        TestUtils.setAutoDeletePeriod(0);
+        TestUtils.setRecordRetentionPeriodInDays(0);
         uiAutomation.adoptShellPermissionIdentity(HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
         try {
             assertThat(mManager.getRecordRetentionPeriodInDays()).isEqualTo(0);
@@ -1158,7 +1158,7 @@ public class HealthConnectManagerTest {
 
         uiAutomation.adoptShellPermissionIdentity(HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
         try {
-            TestUtils.setAutoDeletePeriod(1);
+            TestUtils.setRecordRetentionPeriodInDays(1);
             Assert.fail();
         } catch (HealthConnectException exception) {
             assertThat(exception).isNotNull();

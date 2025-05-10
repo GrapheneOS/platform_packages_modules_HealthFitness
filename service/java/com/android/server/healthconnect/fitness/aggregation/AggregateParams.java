@@ -49,14 +49,15 @@ public final class AggregateParams {
 
     private PriorityAggregationExtraParams mPriorityAggregationExtraParams;
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public AggregateParams(String tableName, List<String> columnsToFetch) {
-        this(tableName, columnsToFetch, null);
+        this(tableName, columnsToFetch, PriorityAggregationExtraParams.VALUE_TYPE_DOUBLE);
     }
 
     @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     public AggregateParams(
-            String tableName, List<String> columnsToFetch, Class<?> priorityColumnDataType) {
+            String tableName,
+            List<String> columnsToFetch,
+            @PriorityAggregationExtraParams.ValueColumnType int priorityColumnDataType) {
         mTableName = tableName;
         mColumnsToFetch = new ArrayList<>();
         mColumnsToFetch.addAll(columnsToFetch);
@@ -162,13 +163,10 @@ public final class AggregateParams {
             mExcludeIntervalEndColumnName = Objects.requireNonNull(excludeIntervalEndColumnName);
         }
 
-        @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
         public PriorityAggregationExtraParams(
-                String columnToAggregateName, Class<?> aggregationType) {
+                String columnToAggregateName, @ValueColumnType int dataType) {
             mColumnToAggregateName = columnToAggregateName;
-            // TODO(b/277776749): use intdef instead of unlimited Class<?>
-            mColumnToAggregateType =
-                    (aggregationType == Long.class ? VALUE_TYPE_LONG : VALUE_TYPE_DOUBLE);
+            mColumnToAggregateType = dataType;
         }
 
         @Nullable

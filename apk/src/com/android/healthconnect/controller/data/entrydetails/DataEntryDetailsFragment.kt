@@ -32,8 +32,10 @@ import com.android.healthconnect.controller.data.entries.ExerciseSessionItemView
 import com.android.healthconnect.controller.data.entries.ExpressiveEntriesAdapter
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ExercisePerformanceGoalEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ExerciseSessionEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedHeaderlessSessionDetail
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSectionContent
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSectionTitle
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSegment
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSessionDetail
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ItemDataEntrySeparator
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseBlockEntry
@@ -43,6 +45,7 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry.ReverseS
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SeriesDataEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SessionHeader
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SleepSessionEntry
+import com.android.healthconnect.controller.data.entries.MarginItemDecoration
 import com.android.healthconnect.controller.data.entries.PlannedExerciseSessionItemViewBinder
 import com.android.healthconnect.controller.data.entries.SeriesDataItemViewBinder
 import com.android.healthconnect.controller.data.entries.SleepSessionItemViewBinder
@@ -111,6 +114,10 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
     }
     private val itemDataEntrySeparatorViewBinder by lazy { ItemDataEntrySeparatorViewBinder() }
     private val sessionDetailViewBinder by lazy { SessionDetailViewBinder() }
+
+    private val headerlessSessionDetailViewBinder by lazy { HeaderlessSessionDetailViewBinder() }
+
+    private val segmentViewBinder by lazy { SegmentViewBinder() }
     private val sessionHeaderViewBinder by lazy { SessionHeaderViewBinder() }
     private val reverseSessionDetailViewBinder by lazy { ReverseSessionDetailViewBinder() }
     private val formattedSectionTitleViewBinder by lazy { FormattedSectionTitleViewBinder() }
@@ -149,8 +156,10 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
                 ?: throw IllegalArgumentException("SHOW_DATA_ORIGIN_KEY can't be null!")
         errorView = view.findViewById(R.id.error_view)
         loadingView = view.findViewById(R.id.loading)
+        val isExpressiveThemeEnabled = SettingsThemeHelper.isExpressiveTheme(requireContext())
+
         detailsAdapter =
-            if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+            if (isExpressiveThemeEnabled) {
                 getExpressiveEntriesAdapter()
             } else {
                 getEntriesAdapter()
@@ -160,6 +169,9 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
             view.findViewById<RecyclerView?>(R.id.data_entries_list).apply {
                 layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
                 adapter = detailsAdapter
+                if (isExpressiveThemeEnabled) {
+                    addItemDecoration(MarginItemDecoration)
+                }
             }
         viewModel.loadEntryData(permissionType, entryId, showDataOrigin)
         setupSharedMenu(viewLifecycleOwner, logger)
@@ -178,6 +190,11 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
             .setViewBinder(ExerciseSessionEntry::class.java, exerciseSessionItemViewBinder)
             .setViewBinder(SeriesDataEntry::class.java, heartRateItemViewBinder)
             .setViewBinder(FormattedSessionDetail::class.java, sessionDetailViewBinder)
+            .setViewBinder(
+                FormattedHeaderlessSessionDetail::class.java,
+                headerlessSessionDetailViewBinder,
+            )
+            .setViewBinder(FormattedSegment::class.java, segmentViewBinder)
             .setViewBinder(SessionHeader::class.java, sessionHeaderViewBinder)
             .setViewBinder(ReverseSessionDetail::class.java, reverseSessionDetailViewBinder)
             .setViewBinder(FormattedSectionTitle::class.java, formattedSectionTitleViewBinder)
@@ -203,6 +220,11 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
             .setViewBinder(ExerciseSessionEntry::class.java, exerciseSessionItemViewBinder)
             .setViewBinder(SeriesDataEntry::class.java, heartRateItemViewBinder)
             .setViewBinder(FormattedSessionDetail::class.java, sessionDetailViewBinder)
+            .setViewBinder(
+                FormattedHeaderlessSessionDetail::class.java,
+                headerlessSessionDetailViewBinder,
+            )
+            .setViewBinder(FormattedSegment::class.java, segmentViewBinder)
             .setViewBinder(SessionHeader::class.java, sessionHeaderViewBinder)
             .setViewBinder(ReverseSessionDetail::class.java, reverseSessionDetailViewBinder)
             .setViewBinder(FormattedSectionTitle::class.java, formattedSectionTitleViewBinder)

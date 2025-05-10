@@ -36,6 +36,7 @@ import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.datatypes.MedicalDataSource.validateMedicalDataSourceIds;
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
+import static com.android.healthfitness.flags.AconfigFlagHelper.isPhrChangeLogsEnabled;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.CREATE_MEDICAL_DATA_SOURCE;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_DATA;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_MEDICAL_DATA_SOURCE_WITH_DATA;
@@ -134,6 +135,7 @@ import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.changelog.ChangeLogsResponse.DeletedLog;
+import android.health.connect.changelog.ChangeLogsResponse.DeletedMedicalResource;
 import android.health.connect.datatypes.AppInfo;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.MedicalDataSource;
@@ -977,10 +979,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             mAppOpsManagerLocal.isUidInForeground(uid),
                             logger);
                     throwExceptionIfDataSyncInProgress();
-                    if (request.getRecordTypeIds().isEmpty()) {
-                        throw new IllegalArgumentException(
-                                "Requested record types must not be empty.");
+                    if (isPhrChangeLogsEnabled()) {
+                        if (request.getRecordTypeIds().isEmpty()
+                                && request.getMedicalResourceTypes().isEmpty()) {
+                            throw new IllegalArgumentException(
+                                    "At least one record or medical resource type must be set.");
+                        }
+                    } else {
+                        if (request.getRecordTypeIds().isEmpty()) {
+                            throw new IllegalArgumentException(
+                                    "Requested record types must not be empty.");
+                        }
                     }
+
                     mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                             request.getRecordTypeIds(), attributionSource);
                     callback.onResult(
@@ -1045,24 +1056,31 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     tryAcquireApiCallQuota(
                             uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, logger);
 
+                    // Check that the token request is valid.
                     ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
                             mChangeLogsRequestHelper.getRequest(
                                     callerPackageName, request.getToken());
-                    if (changeLogsTokenRequest.getRecordTypes().isEmpty()) {
-                        throw new IllegalArgumentException(
-                                "Requested record types must not be empty.");
+                    if (isPhrChangeLogsEnabled()) {
+                        if (changeLogsTokenRequest.getRecordTypes().isEmpty()
+                                && changeLogsTokenRequest.getMedicalResourceTypes().isEmpty()) {
+                            throw new IllegalArgumentException(
+                                    "At least one record or medical resource type must be set.");
+                        }
+                    } else {
+                        if (changeLogsTokenRequest.getRecordTypes().isEmpty()) {
+                            throw new IllegalArgumentException(
+                                    "Requested record types must not be empty.");
+                        }
                     }
-                    // This API doesn't support reading own data without read permissions.
+
+                    // Permissions check.
+                    // This API doesn't support reading own data without read permissions, so
+                    // enforce permissions instead of allowing self read.
                     mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                             changeLogsTokenRequest.getRecordTypes(), attributionSource);
-                    long startDateAccessEpochMilli = DEFAULT_LONG;
-                    if (!isPermissionGranted(READ_HEALTH_DATA_HISTORY, uid, pid)) {
-                        startDateAccessEpochMilli =
-                                mPermissionHelper
-                                        .getHealthDataStartDateAccessOrThrow(
-                                                callerPackageName, userHandle)
-                                        .toEpochMilli();
-                    }
+                    mMedicalDataPermissionEnforcer.enforceMedicalResourceTypesReadPermissions(
+                            changeLogsTokenRequest.getMedicalResourceTypes(), attributionSource);
+
                     final ChangeLogsHelper.ChangeLogsResponse changeLogsResponse =
                             mChangeLogsHelper.getChangeLogs(
                                     mAppInfoHelper,
@@ -1070,28 +1088,56 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     request,
                                     mChangeLogsRequestHelper);
 
+                    // Read upserted records.
+                    List<RecordInternal<?>> recordInternals = List.of();
                     Map<Integer, List<UUID>> recordTypeToUpsertedUuids =
                             changeLogsResponse.getRecordTypeToUpsertedUuids();
-
-                    Set<String> grantedExtraReadPermissions =
-                            mDataPermissionEnforcer.collectGrantedExtraReadPermissions(
-                                    recordTypeToUpsertedUuids.keySet(), attributionSource);
-
-                    List<RecordInternal<?>> recordInternals =
-                            mFitnessRecordReadHelper.readRecords(
-                                    mTransactionManager,
-                                    callerPackageName,
-                                    recordTypeToUpsertedUuids,
-                                    grantedExtraReadPermissions,
-                                    startDateAccessEpochMilli,
-                                    isInForeground,
-                                    /* shouldRecordAccessLog= */ true);
+                    if (!recordTypeToUpsertedUuids.isEmpty()) {
+                        long startDateAccessEpochMilli =
+                                isPermissionGranted(READ_HEALTH_DATA_HISTORY, uid, pid)
+                                        ? DEFAULT_LONG
+                                        : mPermissionHelper
+                                                .getHealthDataStartDateAccessOrThrow(
+                                                        callerPackageName, userHandle)
+                                                .toEpochMilli();
+                        Set<String> grantedExtraReadPermissions =
+                                mDataPermissionEnforcer.collectGrantedExtraReadPermissions(
+                                        recordTypeToUpsertedUuids.keySet(), attributionSource);
+                        recordInternals =
+                                mFitnessRecordReadHelper.readRecords(
+                                        mTransactionManager,
+                                        callerPackageName,
+                                        recordTypeToUpsertedUuids,
+                                        grantedExtraReadPermissions,
+                                        startDateAccessEpochMilli,
+                                        isInForeground,
+                                        /* shouldRecordAccessLog= */ true);
+                    }
                     List<DeletedLog> deletedLogs = changeLogsResponse.getDeletedLogs();
 
+                    // Read upserted medical resources.
+                    List<MedicalResourceId> upsertedMedicalResourceIds =
+                            changeLogsResponse.getUpsertedMedicalResourceIds();
+                    List<MedicalResource> upsertedMedicalResources =
+                            (isPhrChangeLogsEnabled() && !upsertedMedicalResourceIds.isEmpty())
+                                    ? mMedicalResourceHelper
+                                            .readMedicalResourcesByIdsWithoutPermissionChecks(
+                                                    upsertedMedicalResourceIds)
+                                    : List.of();
+                    List<DeletedMedicalResource> deletedMedicalResources =
+                            isPhrChangeLogsEnabled()
+                                    ? changeLogsResponse.getDeletedMedicalResources()
+                                    : List.of();
+
+                    // Return the result.
                     callback.onResult(
                             new ChangeLogsResponse(
-                                    new RecordsParcel(recordInternals),
+                                    recordInternals.stream()
+                                            .map(RecordInternal::toExternalRecord)
+                                            .collect(toList()),
                                     deletedLogs,
+                                    upsertedMedicalResources,
+                                    deletedMedicalResources,
                                     changeLogsResponse.getNextPageToken(),
                                     changeLogsResponse.hasMorePages()));
                     logger.setHealthDataServiceApiStatusSuccess()

@@ -39,9 +39,6 @@ public interface HealthConnectNotificationFactory {
     @Nullable
     Notification createNotification(int notificationType);
 
-    /** Returns a string defined by the string identifier. */
-    String getStringResource(String name);
-
     /** Returns a {@link PendingIntent} associated with a notification's actions. */
     @Nullable
     default PendingIntent getPendingIntent(Context context, Intent intent) {

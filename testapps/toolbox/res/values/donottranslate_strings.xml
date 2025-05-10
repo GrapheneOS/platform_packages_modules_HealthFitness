@@ -186,6 +186,7 @@
     <!-- region Read data screens -->
     <string name="loading_data">Loading data…</string>
     <string name="error">Error</string>
+    <string name="no_data">No data</string>
     <!--endregion-->
 
     <string name="read_backup_data">Read backup data</string>
@@ -201,12 +202,16 @@
     <string name="type">Type</string>
     <string name="source">Source</string>
     <string name="notes">Notes</string>
+    <string name="desc">Desc</string>
+    <string name="category">Category</string>
     <!-- endregion -->
 
     <!-- region Unit -->
     <string name="floors">floors</string>
     <string name="celsius">celsius</string>
     <string name="pushes">Pushes</string>
+    <string name="duration">Duration</string>
+    <string name="exercise_blocks">Exercise Blocks</string>
     <!-- endregion -->
 
     <!-- region Unit Labels -->
@@ -522,6 +527,10 @@
 
     <string name="unknown_performance_goal">Unknown performance goal</string>
     <string name="unknown_completion_goal">Unknown completion goal</string>
+
+    <string name="no_steps">No Steps</string>
+    <string name="completion_goal">Completion Goal</string>
+    <string name="performance_goal">Performance Goal</string>
     <!-- endregion -->
 
     <!-- region Sexual Activity -->

@@ -125,7 +125,6 @@ public abstract class HealthConnectInjector {
      * Getter for {@link OnboardingStateManager} instance initialised by the Health Connect
      * Injector.
      */
-    @Nullable
     public abstract OnboardingStateManager getOnboardingStateManager();
 
     /** Getter for {@link DeviceInfoHelper} instance initialised by the Health Connect Injector. */

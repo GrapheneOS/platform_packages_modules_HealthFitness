@@ -17,7 +17,6 @@ package com.android.healthconnect.controller.utils.logging
 
 import androidx.annotation.VisibleForTesting
 import com.android.healthconnect.controller.HealthFitnessUiStatsLog.*
-import com.android.healthfitness.flags.Flags.personalHealthRecordUiTelemetry
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
@@ -28,32 +27,12 @@ import javax.inject.Singleton
 @Singleton
 class HealthConnectLogger @Inject constructor() {
 
-    companion object {
-        private val phrElements =
-            setOf(
-                OnboardingElement.ONBOARDING_MESSAGE_WITH_PHR,
-                HomePageElement.BROWSE_HEALTH_RECORDS_BUTTON,
-                CombinedAppAccessElement.FITNESS_PERMISSIONS_BUTTON,
-                CombinedAppAccessElement.MEDICAL_PERMISSIONS_BUTTON,
-                CombinedAppAccessElement.REMOVE_ALL_PERMISSIONS_BUTTON,
-                HomePageElement.LOCK_SCREEN_BANNER,
-                HomePageElement.LOCK_SCREEN_BANNER_BUTTON,
-                HomePageElement.LOCK_SCREEN_BANNER_DISMISS_BUTTON,
-                RawFhirPageElement.RAW_FHIR_RESOURCE,
-                MedicalWritePermissionPageElement.ALLOW_WRITE_HEALTH_RECORDS_BUTTON,
-                MedicalWritePermissionPageElement.CANCEL_WRITE_HEALTH_RECORDS_BUTTON,
-            )
-    }
-
     private var pageName = PageName.UNKNOWN_PAGE
 
     /**
      * Sets the page ID which will be used for all impressions and interaction logging on this page.
      */
     fun setPageId(pageName: PageName) {
-        if (isGuardedByPhrFlag(pageName)) {
-            return
-        }
         this.pageName = pageName
     }
 
@@ -66,30 +45,17 @@ class HealthConnectLogger @Inject constructor() {
 
     /** Logs the impression of an element. */
     fun logImpression(element: ElementName) {
-        if (isGuardedByPhrFlag(element)) {
-            return
-        }
         write(HEALTH_CONNECT_UI_IMPRESSION, pageName.impressionId, element.impressionId)
     }
 
     /** Logs the interaction with an element. */
     fun logInteraction(element: ElementName, action: UIAction = UIAction.ACTION_CLICK) {
-        if (isGuardedByPhrFlag(element)) {
-            return
-        }
         write(
             HEALTH_CONNECT_UI_INTERACTION,
             pageName.interactionId,
             element.interactionId,
             action.id,
         )
-    }
-
-    private fun isGuardedByPhrFlag(pageName: PageName) =
-        pageName.isPhrPage() && !personalHealthRecordUiTelemetry()
-
-    private fun isGuardedByPhrFlag(elementName: ElementName): Boolean {
-        return phrElements.contains(elementName) && !personalHealthRecordUiTelemetry()
     }
 }
 
@@ -312,23 +278,6 @@ enum class PageName(val impressionId: Int, val interactionId: Int) {
         HEALTH_CONNECT_UI_IMPRESSION__PAGE__PAGE_UNKNOWN,
         HEALTH_CONNECT_UI_INTERACTION__PAGE__PAGE_UNKNOWN,
     );
-
-    fun isPhrPage(): Boolean {
-        val phrPages =
-            setOf(
-                ALL_MEDICAL_DATA_PAGE,
-                TAB_MEDICAL_ENTRIES_PAGE,
-                TAB_MEDICAL_ACCESS_PAGE,
-                RAW_FHIR_PAGE,
-                REQUEST_MEDICAL_PERMISSIONS_PAGE,
-                COMBINED_APP_ACCESS_PAGE,
-                MEDICAL_APP_ACCESS_PAGE,
-                SETTINGS_MANAGE_COMBINED_APP_PERMISSIONS_PAGE,
-                SETTINGS_MANAGE_MEDICAL_APP_PERMISSIONS_PAGE,
-                REQUEST_WRITE_MEDICAL_PERMISSION_PAGE,
-            )
-        return phrPages.contains(this)
-    }
 }
 
 /** Common interface for loggable elements. */

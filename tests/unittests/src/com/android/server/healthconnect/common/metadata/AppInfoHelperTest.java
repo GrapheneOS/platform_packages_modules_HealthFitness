@@ -17,8 +17,7 @@
 package com.android.server.healthconnect.common.metadata;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
-
-import static com.android.server.healthconnect.testing.TestUtils.TEST_USER;
+import static android.healthconnect.testing.unittest.TaskUtils.TEST_USER;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -35,6 +34,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -43,7 +43,6 @@ import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.After;
 import org.junit.Before;

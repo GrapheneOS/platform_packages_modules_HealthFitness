@@ -32,6 +32,9 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createAllergyMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
+import static android.healthconnect.testing.unittest.PhrTestUtils.ACCESS_LOG_EQUIVALENCE;
+import static android.healthconnect.testing.unittest.PhrTestUtils.makeUpsertRequest;
+import static android.healthconnect.testing.unittest.TaskUtils.TEST_USER;
 
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.PRIMARY_COLUMN_NAME;
@@ -49,9 +52,6 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_N
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorUUID;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getHexString;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.toUuids;
-import static com.android.server.healthconnect.testing.TestUtils.TEST_USER;
-import static com.android.server.healthconnect.testing.storage.PhrTestUtils.ACCESS_LOG_EQUIVALENCE;
-import static com.android.server.healthconnect.testing.storage.PhrTestUtils.makeUpsertRequest;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -76,6 +76,10 @@ import android.health.connect.datatypes.FhirVersion;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
+import android.healthconnect.testing.unittest.PhrTestUtils;
+import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
+import android.healthconnect.testing.unittest.fakes.FakeTimeSource;
 import android.net.Uri;
 import android.os.Process;
 import android.os.UserHandle;
@@ -97,10 +101,6 @@ import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
-import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
-import com.android.server.healthconnect.testing.fakes.FakeTimeSource;
-import com.android.server.healthconnect.testing.storage.PhrTestUtils;
-import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.After;
 import org.junit.Before;
