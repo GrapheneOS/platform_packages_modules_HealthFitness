@@ -18,9 +18,21 @@ package com.android.server.healthconnect.device;
 
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
 
+import static com.android.server.healthconnect.device.DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE;
+
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
+
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.health.connect.accesslog.AccessLog;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
@@ -33,8 +45,8 @@ import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
-import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
@@ -73,6 +85,10 @@ public class DeviceRecordHelperTest {
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private AppOpLogsHelper mAppOpLogsHelper;
+    @Mock private Context mContext;
+    @Mock private Drawable mDrawable;
+
+    @Mock private PackageManager mPackageManager;
     private static final String TEST_PACKAGE_NAME = "package.name";
     private UserHandle mUserHandle;
     private DeviceRecordHelper mDeviceRecordHelper;
@@ -94,11 +110,24 @@ public class DeviceRecordHelperTest {
     private static final Instant NOW = Instant.ofEpochMilli(1742835562527L);
 
     @Before
-    public void setup() {
-        Context context = ApplicationProvider.getApplicationContext();
-        mUserHandle = context.getUser();
+    public void setup() throws PackageManager.NameNotFoundException {
+        mContext = spy(InstrumentationRegistry.getInstrumentation().getContext());
+        // This is required as AppInfoHelper derives its context via this method.
+        doReturn(mContext).when(mContext).createContextAsUser(any(), anyInt());
+        when(mContext.getPackageManager()).thenReturn(mPackageManager);
+        // The "android" package is always present on real devices, however Robolectric does not
+        // attempt to simulate this, so we need to mock it here.
+        ApplicationInfo fakeSystemPackage = new ApplicationInfo();
+        doReturn(fakeSystemPackage)
+                .when(mPackageManager)
+                .getApplicationInfo(eq(DEVICE_DATA_PROVIDER_PACKAGE), any());
+        doReturn("Android System").when(mPackageManager).getApplicationLabel(fakeSystemPackage);
+        when(mDrawable.getIntrinsicHeight()).thenReturn(200);
+        when(mDrawable.getIntrinsicWidth()).thenReturn(200);
+        doReturn(mDrawable).when(mPackageManager).getApplicationIcon(fakeSystemPackage);
+        mUserHandle = mContext.getUser();
         HealthConnectInjector healthConnectInjector =
-                HealthConnectInjectorImpl.newBuilderForTest(context)
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setAppOpLogsHelper(mAppOpLogsHelper)
@@ -213,7 +242,7 @@ public class DeviceRecordHelperTest {
                 new ChangeLogsRequest.Builder(
                                 mChangeLogsRequestHelper.getToken(
                                         mChangeLogsHelper.getLatestRowId(),
-                                        DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE,
+                                        DEVICE_DATA_PROVIDER_PACKAGE,
                                         new ChangeLogTokenRequest.Builder()
                                                 .addRecordType(StepsRecord.class)
                                                 .build()))
@@ -254,7 +283,7 @@ public class DeviceRecordHelperTest {
         assertThat(records.stream().map(r -> ((StepsRecordInternal) r).getCount()).toList())
                 .containsExactly(5, 10, 15);
         assertThat(records.stream().map(RecordInternal::getPackageName).distinct().toList())
-                .containsExactly(DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE);
+                .containsExactly(DEVICE_DATA_PROVIDER_PACKAGE);
         assertThat(records.stream().map(RecordInternal::getManufacturer).distinct().toList())
                 .containsExactly(TEST_DEVICE_DATA_SOURCE.getDeviceInfo().getManufacturer());
         assertThat(records.stream().map(RecordInternal::getModel).distinct().toList())

@@ -19,7 +19,23 @@ import android.health.connect.datatypes.InstantRecord
 import android.health.connect.datatypes.IntervalRecord
 import android.health.connect.datatypes.Record
 import com.android.healthconnect.testapps.toolbox.read.components.ComposableView
+import com.android.healthconnect.testapps.toolbox.read.components.baseentries.AggregationHeaderEntry
+import com.android.healthconnect.testapps.toolbox.read.components.baseentries.DataDetailsEntry
+import com.android.healthconnect.testapps.toolbox.read.components.baseentries.DataEntry
+import com.android.healthconnect.testapps.toolbox.read.components.baseentries.ExerciseSessionEntry
+import com.android.healthconnect.testapps.toolbox.read.components.baseentries.HeaderEntry
+import com.android.healthconnect.testapps.toolbox.read.components.baseentries.NutritionEntry
+import com.android.healthconnect.testapps.toolbox.read.components.baseentries.PlannedExerciseSessionEntry
+import com.android.healthconnect.testapps.toolbox.read.components.baseentries.SampleEntry
 import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry
+import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry.FormattedAggregation
+import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry.FormattedDataDetails
+import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry.FormattedDataEntry
+import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry.FormattedExerciseSession
+import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry.FormattedNutritionEntry
+import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry.FormattedPlannedExerciseSession
+import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry.FormattedSample
+import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry.Header
 import com.android.healthconnect.testapps.toolbox.utils.asString
 import java.time.Instant
 import java.time.LocalTime
@@ -60,6 +76,15 @@ class DataEntryUtils {
         fun mapEntryToComposable(entry: FormattedEntry): ComposableView {
 
             when (entry) {
+                is FormattedAggregation -> return { AggregationHeaderEntry(entry) }
+                is FormattedDataDetails -> return { DataDetailsEntry(entry) }
+                is FormattedDataEntry -> return { DataEntry(entry) }
+                is FormattedExerciseSession -> return { ExerciseSessionEntry(entry) }
+                is FormattedNutritionEntry -> return { NutritionEntry(entry) }
+                is FormattedPlannedExerciseSession -> return { PlannedExerciseSessionEntry(entry) }
+                is FormattedSample -> return { SampleEntry(entry) }
+                is Header -> return { HeaderEntry(entry) }
+
                 else -> throw IllegalArgumentException("Unsupported entry `${entry.javaClass}`")
             }
         }

@@ -83,10 +83,13 @@ import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYP
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_WEIGHTLIFTING
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_WHEELCHAIR
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_YOGA
+import android.health.connect.datatypes.units.Mass
 import android.icu.text.MessageFormat.format
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ExerciseSessionEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedHeaderlessSessionDetail
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSegment
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSessionDetail
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SessionHeader
 import com.android.healthconnect.controller.data.formatters.DurationFormatter.formatDurationLong
@@ -96,9 +99,11 @@ import com.android.healthconnect.controller.data.formatters.shared.LengthFormatt
 import com.android.healthconnect.controller.data.formatters.shared.RecordDetailsFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
+import com.android.healthfitness.flags.AconfigFlagHelper
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Duration
 import javax.inject.Inject
+import kotlin.math.floor
 
 /** Formatter for printing ExerciseSessionRecord data. */
 class ExerciseSessionFormatter
@@ -142,10 +147,30 @@ constructor(
 
     override suspend fun formatRecordDetails(record: ExerciseSessionRecord): List<FormattedEntry> {
         val sortedSegments =
-            record.segments.sortedBy { it.startTime }.map { formatSegment(record.metadata.id, it) }
+            record.segments
+                .sortedBy { it.startTime }
+                .map {
+                    if (AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
+                        formatSegmentWithNewFields(record.metadata.id, it)
+                    } else {
+                        formatSegment(record.metadata.id, it)
+                    }
+                }
         val sortedLaps =
             record.laps.sortedBy { it.startTime }.map { formatLaps(record.metadata.id, it) }
         return buildList {
+            if (
+                AconfigFlagHelper.isExerciseSegmentImprovementsEnabled() &&
+                    record.hasRateOfPerceivedExertion()
+            ) {
+                add(SessionHeader(context.getString(R.string.session_rpe_header)))
+                add(
+                    buildSessionRpeFormattedEntry(
+                        record.metadata.id,
+                        record.rateOfPerceivedExertion,
+                    )
+                )
+            }
             if (sortedSegments.isNotEmpty()) {
                 add(SessionHeader(context.getString(R.string.exercise_segments_header)))
                 addAll(sortedSegments)
@@ -180,6 +205,30 @@ constructor(
         )
     }
 
+    private fun formatSegmentWithNewFields(id: String, segment: ExerciseSegment): FormattedSegment {
+        return FormattedSegment(
+            uuid = id,
+            header = timeFormatter.formatTimeRange(segment.startTime, segment.endTime),
+            headerA11y = timeFormatter.formatTimeRangeA11y(segment.startTime, segment.endTime),
+            title = formatSegmentTitle(segment.repetitionsCount, segment.segmentType),
+            titleA11y = formatSegmentTitleA11y(segment.repetitionsCount, segment.segmentType),
+            setIndex = if (segment.hasSetIndex()) formatSegmentSetIndex(segment.setIndex) else null,
+            setIndexA11y =
+                if (segment.hasSetIndex()) formatSegmentSetIndex(segment.setIndex) else null,
+            weight = if (segment.weight != null) formatSegmentWeight(segment.weight!!) else null,
+            weightA11y =
+                if (segment.weight != null) formatSegmentWeightA11y(segment.weight!!) else null,
+            rpe =
+                if (segment.hasRateOfPerceivedExertion())
+                    formatSegmentRpe(segment.rateOfPerceivedExertion)
+                else null,
+            rpeA11y =
+                if (segment.hasRateOfPerceivedExertion())
+                    formatSegmentRpeA11y(segment.rateOfPerceivedExertion)
+                else null,
+        )
+    }
+
     private fun formatLaps(id: String, lap: ExerciseLap): FormattedSessionDetail {
         return FormattedSessionDetail(
             uuid = id,
@@ -203,6 +252,36 @@ constructor(
             format(context.getString(R.string.repetitions_long), mapOf("count" to repetitionsCount))
         return context.getString(R.string.repetitions_format, segmentType, repetitions)
     }
+
+    private fun buildSessionRpeFormattedEntry(
+        id: String,
+        rpe: Float,
+    ): FormattedHeaderlessSessionDetail {
+        val formattedRpeValue = formatRpeValue(rpe)
+        return FormattedHeaderlessSessionDetail(
+            uuid = id,
+            title = formattedRpeValue,
+            titleA11y = formattedRpeValue,
+        )
+    }
+
+    private fun formatSegmentSetIndex(setIndex: Int) =
+        context.getString(R.string.segment_set_index_format, setIndex)
+
+    private fun formatSegmentWeight(mass: Mass) =
+        MassFormatter.formatValue(context, mass, unitPreferences.getWeightUnit())
+
+    private fun formatSegmentWeightA11y(mass: Mass) =
+        MassFormatter.formatA11yValue(context, mass, unitPreferences.getWeightUnit())
+
+    private fun formatSegmentRpe(rpe: Float) =
+        context.getString(R.string.segment_rpe_format, formatRpeValue(rpe))
+
+    private fun formatSegmentRpeA11y(rpe: Float) =
+        context.getString(R.string.segment_rpe_format_long, formatRpeValue(rpe))
+
+    private fun formatRpeValue(rpe: Float) =
+        if (floor(rpe) == rpe) rpe.toInt().toString() else rpe.toString()
 
     companion object {
         fun getExerciseType(context: Context, type: Int): String {

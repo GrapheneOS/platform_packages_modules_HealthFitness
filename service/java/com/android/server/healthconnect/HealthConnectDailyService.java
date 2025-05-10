@@ -22,6 +22,8 @@ import static com.android.server.healthconnect.common.jobs.HealthConnectDailyJob
 import static com.android.server.healthconnect.exportimport.ExportImportJobs.PERIODIC_EXPORT_JOB_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_COMPLETE_JOB_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_PAUSE_JOB_NAME;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationJob.ONBOARDING_NOTIFICATION_JOB_NAME;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationJob.executeOnboardingNotificationJob;
 
 import android.annotation.Nullable;
 import android.app.job.JobInfo;
@@ -33,6 +35,7 @@ import android.health.connect.Constants;
 import android.os.UserHandle;
 import android.util.Slog;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.jobs.DailyCleanupJob;
 import com.android.server.healthconnect.common.jobs.HealthConnectDailyJobs;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
@@ -45,6 +48,7 @@ import com.android.server.healthconnect.logging.EcosystemStatsCollector;
 import com.android.server.healthconnect.logging.UsageStatsCollector;
 import com.android.server.healthconnect.migration.MigrationStateChangeJob;
 import com.android.server.healthconnect.migration.MigrationStateManager;
+import com.android.server.healthconnect.onboarding.OnboardingNotificationJob;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 
 import java.util.Objects;
@@ -152,6 +156,18 @@ public class HealthConnectDailyService extends JobService {
                             // for new jobs. Like that we can filter out repeat errors for each of
                             // the regular (weekly, daily etc) exports.
                         });
+                return true;
+            case ONBOARDING_NOTIFICATION_JOB_NAME:
+                if (Flags.onboarding()) {
+                    threadScheduler.scheduleInternalTask(
+                            () -> {
+                                executeOnboardingNotificationJob(
+                                        healthConnectInjector.getOnboardingStateManager());
+                                jobFinished(params, /* wantsReschedule= */ false);
+                            });
+                } else {
+                    OnboardingNotificationJob.cancelAllJobs(context);
+                }
                 return true;
             default:
                 Slog.w(TAG, "Job name " + jobName + " is not supported.");

@@ -91,8 +91,20 @@ public final class OnboardingStateManager {
         }
     }
 
+    /**
+     * Evaluates the current onboarding state, updates the value in storage, and returns the current
+     * state.
+     */
+    @HealthConnectOnboardingState.OnboardingState
+    public int updateAndGetOnboardingState() {
+        int onboardingState = evaluateCurrentOnboardingState();
+        updateOnboardingState(onboardingState);
+        return onboardingState;
+    }
+
     /** Updates the onboarding state. */
-    public void updateOnboardingState(@HealthConnectOnboardingState.OnboardingState int state) {
+    @VisibleForTesting
+    void updateOnboardingState(@HealthConnectOnboardingState.OnboardingState int state) {
         mStatesLock.writeLock().lock();
         try {
             updateOnboardingStateGuarded(state);
@@ -101,6 +113,12 @@ public final class OnboardingStateManager {
         }
 
         updateListeners(state);
+    }
+
+    @HealthConnectOnboardingState.OnboardingState
+    private static int evaluateCurrentOnboardingState() {
+        // TODO(b/414749504): implement the logic
+        return ONBOARDING_BANNER_STATE_HIDE;
     }
 
     /** Atomically updates the onboarding state. */

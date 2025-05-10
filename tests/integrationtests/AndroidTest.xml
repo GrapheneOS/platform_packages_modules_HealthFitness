@@ -34,7 +34,7 @@
         <option name="test-file-name" value="RequestBodySensorsTestApp.apk"/>
     </target_preparer>
     <test class="com.android.tradefed.testtype.AndroidJUnitTest">
-        <option name="package" value="android.healthconnect.integrationtests"/>
+        <option name="package" value="android.healthconnect.tests"/>
         <option name="hidden-api-checks" value="false"/>
     </test>
 

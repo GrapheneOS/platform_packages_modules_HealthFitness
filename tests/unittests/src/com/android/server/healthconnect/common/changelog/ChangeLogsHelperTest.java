@@ -64,7 +64,6 @@ import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.StepsRecord;
-import android.healthconnect.testing.shared.phr.PhrDataFactory;
 import android.healthconnect.testing.unittest.PhrTestUtils;
 import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.platform.test.annotations.DisableFlags;
@@ -553,15 +552,13 @@ public class ChangeLogsHelperTest {
                                 .addMedicalResourceType(MEDICAL_RESOURCE_TYPE_VACCINES)
                                 .build());
         var insertedResources =
-                List.of(
-                        mPhrTestUtils.upsertResource(
-                                PhrDataFactory::createVaccineMedicalResource, mDataSource),
-                        mPhrTestUtils.upsertResource(
-                                PhrDataFactory::createDifferentVaccineMedicalResource, mDataSource),
-                        mPhrTestUtils.upsertResource(
-                                PhrDataFactory::createAllergyMedicalResource, mDataSource));
+                mPhrTestUtils.upsertResources(
+                        List.of(
+                                createVaccineMedicalResource(mDataSource.getId()),
+                                createDifferentVaccineMedicalResource(mDataSource.getId()),
+                                createAllergyMedicalResource(mDataSource.getId())),
+                        PACKAGE_NAME);
         mPhrTestUtils.deleteResource(insertedResources.get(0));
-        insertMedicalResourceUpsertionChangeLogs(insertedResources);
         insertMedicalResourceDeletionChangeLogs(insertedResources.subList(0, 1));
 
         var tokenRequest = mChangeLogsRequestHelper.getRequest(PACKAGE_NAME, token);
@@ -593,15 +590,13 @@ public class ChangeLogsHelperTest {
                                         MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES)
                                 .build());
         var insertedResources =
-                List.of(
-                        mPhrTestUtils.upsertResource(
-                                PhrDataFactory::createVaccineMedicalResource, mDataSource),
-                        mPhrTestUtils.upsertResource(
-                                PhrDataFactory::createDifferentVaccineMedicalResource, mDataSource),
-                        mPhrTestUtils.upsertResource(
-                                PhrDataFactory::createAllergyMedicalResource, mDataSource));
+                mPhrTestUtils.upsertResources(
+                        List.of(
+                                createVaccineMedicalResource(mDataSource.getId()),
+                                createDifferentVaccineMedicalResource(mDataSource.getId()),
+                                createAllergyMedicalResource(mDataSource.getId())),
+                        PACKAGE_NAME);
         mPhrTestUtils.deleteResource(insertedResources.get(0));
-        insertMedicalResourceUpsertionChangeLogs(insertedResources);
         insertMedicalResourceDeletionChangeLogs(insertedResources.subList(0, 1));
 
         var tokenRequest = mChangeLogsRequestHelper.getRequest(PACKAGE_NAME, token);
@@ -632,15 +627,13 @@ public class ChangeLogsHelperTest {
                                         MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES)
                                 .build());
         var insertedResources =
-                List.of(
-                        mPhrTestUtils.upsertResource(
-                                PhrDataFactory::createVaccineMedicalResource, mDataSource),
-                        mPhrTestUtils.upsertResource(
-                                PhrDataFactory::createDifferentVaccineMedicalResource, mDataSource),
-                        mPhrTestUtils.upsertResource(
-                                PhrDataFactory::createAllergyMedicalResource, mDataSource));
+                mPhrTestUtils.upsertResources(
+                        List.of(
+                                createVaccineMedicalResource(mDataSource.getId()),
+                                createDifferentVaccineMedicalResource(mDataSource.getId()),
+                                createAllergyMedicalResource(mDataSource.getId())),
+                        PACKAGE_NAME);
         mPhrTestUtils.deleteResource(insertedResources.get(0));
-        insertMedicalResourceUpsertionChangeLogs(insertedResources);
         insertMedicalResourceDeletionChangeLogs(insertedResources.subList(0, 1));
 
         // First page (vaccines upsertion)
@@ -762,17 +755,7 @@ public class ChangeLogsHelperTest {
                 new UpsertTableRequest(ChangeLogsHelper.TABLE_NAME, contentValues));
     }
 
-    // TODO(b/409490589) - Remove these when the linked task is done.
-    private void insertMedicalResourceUpsertionChangeLogs(List<MedicalResource> medicalResources) {
-        var requests = ChangeLogsHelper.ChangeLogsTableRequests.ofUpsertion(Instant.now());
-        medicalResources.forEach(
-                resource ->
-                        requests.addMedicalResourceInfo(resource.getType(), 0, resource.getId()));
-        for (UpsertTableRequest request : requests.getUpsertTableRequests()) {
-            mTransactionManager.insertOrThrowOnConflict(request);
-        }
-    }
-
+    // TODO(b/409490589) - Remove this when the linked task is done.
     private void insertMedicalResourceDeletionChangeLogs(List<MedicalResource> medicalResources) {
         var requests = ChangeLogsHelper.ChangeLogsTableRequests.ofDeletion(Instant.now());
         medicalResources.forEach(

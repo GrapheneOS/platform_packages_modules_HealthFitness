@@ -23,6 +23,7 @@ import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_UPSERT;
 import static android.health.connect.datatypes.FhirVersion.parseFhirVersion;
 
+import static com.android.healthfitness.flags.AconfigFlagHelper.isPhrChangeLogsEnabled;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper.getDataSourceUuidColumnName;
 import static com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper.getFhirVersionColumnName;
@@ -67,6 +68,7 @@ import android.util.Slog;
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
@@ -79,6 +81,7 @@ import com.android.server.healthconnect.storage.request.CreateIndexRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
+import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.OrderByClause;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -975,10 +978,13 @@ public final class MedicalResourceHelper {
                 upsertRequests.stream()
                         .map(UpsertMedicalResourceInternalRequest::getDataSourceId)
                         .toList();
-        long appInfoIdRestriction = mAppInfoHelper.getAppInfoId(callingPackageName);
+        long appInfoId = mAppInfoHelper.getAppInfoId(callingPackageName);
         Map<String, Pair<Long, FhirVersion>> dataSourceUuidToRowIdAndVersion =
                 mMedicalDataSourceHelper.getUuidToRowIdAndVersionMap(
-                        db, appInfoIdRestriction, StorageUtils.toUuids(dataSourceUuids));
+                        db, appInfoId, StorageUtils.toUuids(dataSourceUuids));
+
+        var upsertionChangeLogs =
+                ChangeLogsHelper.ChangeLogsTableRequests.ofUpsertion(Instant.now());
 
         // Standard Upsert code cannot be used as it uses a query with inline values to look for
         // existing data. The FHIR id is a user supplied string, and so vulnerable to SQL injection.
@@ -1017,6 +1023,12 @@ public final class MedicalResourceHelper {
                     /* nullColumnHack= */ null,
                     MedicalResourceIndicesHelper.getContentValues(rowId, medicalResourceType),
                     SQLiteDatabase.CONFLICT_REPLACE);
+            if (isPhrChangeLogsEnabled()) {
+                upsertionChangeLogs.addMedicalResourceInfo(
+                        upsertRequest.getMedicalResourceType(),
+                        appInfoId,
+                        upsertRequest.getMedicalResourceId());
+            }
         }
 
         List<MedicalResource> upsertedMedicalResources = new ArrayList<>();
@@ -1035,7 +1047,11 @@ public final class MedicalResourceHelper {
                 resourceTypes,
                 OPERATION_TYPE_UPSERT,
                 /* accessedMedicalDataSource= */ false);
-
+        if (isPhrChangeLogsEnabled()) {
+            for (UpsertTableRequest request : upsertionChangeLogs.getUpsertTableRequests()) {
+                mTransactionManager.insertOrThrowOnConflict(db, request);
+            }
+        }
         return upsertedMedicalResources;
     }
 
@@ -1269,10 +1285,8 @@ public final class MedicalResourceHelper {
                         + paramsAndArgs.first;
         Set<Integer> resourceTypes = new HashSet<>();
         try (Cursor cursor = db.rawQuery(sql, paramsAndArgs.second)) {
-            if (cursor.moveToFirst()) {
-                do {
-                    resourceTypes.add(getCursorInt(cursor, getMedicalResourceTypeColumnName()));
-                } while (cursor.moveToNext());
+            while (cursor.moveToNext()) {
+                resourceTypes.add(getCursorInt(cursor, getMedicalResourceTypeColumnName()));
             }
         }
         return resourceTypes;

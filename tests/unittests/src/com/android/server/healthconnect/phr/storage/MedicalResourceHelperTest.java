@@ -91,6 +91,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -1602,7 +1603,7 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
-    public void insertMedicalResourcesOfSameType_createsAccessLog_success() {
+    public void insertMedicalResourcesOfSameType_createsAccessLog() {
         MedicalDataSource dataSource =
                 mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME);
         mUtil.upsertResources(
@@ -1622,7 +1623,7 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
-    public void insertMedicalResourcesOfDifferentTypes_createsAccessLog_success() {
+    public void insertMedicalResourcesOfDifferentTypes_createsAccessLog() {
         String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
         MedicalResource vaccine = createVaccineMedicalResource(dataSource);
         MedicalResource allergy = createAllergyMedicalResource(dataSource);
@@ -1646,7 +1647,7 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
-    public void insertAndUpdateMedicalResources_createsAccessLog_success() throws JSONException {
+    public void insertAndUpdateMedicalResources_createsAccessLog() throws JSONException {
         String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
         MedicalResource vaccine = createVaccineMedicalResource(dataSource);
         MedicalResource allergy = createAllergyMedicalResource(dataSource);
@@ -1680,6 +1681,49 @@ public class MedicalResourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsAtLeast(insertAccessLog, updateAccessLog);
+    }
+
+    @Test
+    public void insertMedicalResourcesOfSameType_createsChangeLogs() {
+        MedicalDataSource dataSource =
+                mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME);
+        mUtil.upsertResources(
+                PhrDataFactory::createVaccineMedicalResources, /* numOfResources= */ 6, dataSource);
+
+        assertThat(mTransactionManager.count(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME)))
+                .isEqualTo(1);
+    }
+
+    @Test
+    public void insertMedicalResourcesOfDifferentTypes_createsChangeLogs() {
+        String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
+        MedicalResource vaccine = createVaccineMedicalResource(dataSource);
+        MedicalResource allergy = createAllergyMedicalResource(dataSource);
+        mMedicalResourceHelper.upsertMedicalResources(
+                DATA_SOURCE_PACKAGE_NAME,
+                createUpsertMedicalResourceRequests(List.of(vaccine, allergy), dataSource));
+
+        assertThat(mTransactionManager.count(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME)))
+                .isEqualTo(2);
+    }
+
+    @Test
+    public void insertAndUpdateMedicalResources_createsChangeLogs() throws JSONException {
+        String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
+        MedicalResource vaccine = createVaccineMedicalResource(dataSource);
+        MedicalResource allergy = createAllergyMedicalResource(dataSource);
+        MedicalResource updatedVaccine = createUpdatedVaccineMedicalResource(dataSource);
+        // initial inserts
+        mMedicalResourceHelper.upsertMedicalResources(
+                DATA_SOURCE_PACKAGE_NAME,
+                createUpsertMedicalResourceRequests(List.of(vaccine, allergy), dataSource));
+        // update the vaccine resource
+        mMedicalResourceHelper.upsertMedicalResources(
+                DATA_SOURCE_PACKAGE_NAME,
+                createUpsertMedicalResourceRequests(List.of(updatedVaccine), dataSource));
+
+        assertThat(mTransactionManager.count(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME)))
+                .isEqualTo(3);
     }
 
     @Test

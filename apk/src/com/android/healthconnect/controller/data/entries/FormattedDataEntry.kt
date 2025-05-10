@@ -116,6 +116,26 @@ sealed class FormattedEntry(
         val titleA11y: String,
     ) : FormattedEntry(uuid, GROUP_ITEM)
 
+    data class FormattedHeaderlessSessionDetail(
+        override val uuid: String,
+        val title: String,
+        val titleA11y: String,
+    ) : FormattedEntry(uuid, GROUP_ITEM)
+
+    data class FormattedSegment(
+        override val uuid: String,
+        val header: String,
+        val headerA11y: String,
+        val title: String,
+        val titleA11y: String,
+        val setIndex: String?,
+        val setIndexA11y: String?,
+        val weight: String?,
+        val weightA11y: String?,
+        val rpe: String?,
+        val rpeA11y: String?,
+    ) : FormattedEntry(uuid, GROUP_ITEM)
+
     data class FormattedAggregation(
         val aggregation: String,
         val aggregationA11y: String,

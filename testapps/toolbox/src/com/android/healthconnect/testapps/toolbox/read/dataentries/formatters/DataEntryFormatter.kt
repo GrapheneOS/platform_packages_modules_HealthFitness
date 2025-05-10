@@ -17,12 +17,14 @@ package com.android.healthconnect.testapps.toolbox.read.dataentries.formatters
 
 import android.content.Context
 import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.StepsRecord
 import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry
 
-class DataEntryFormatter() {
+class DataEntryFormatter(private val stepsFormatter: StepsFormatter = StepsFormatter()) {
 
     fun format(record: Record, context: Context): FormattedEntry {
         return when (record) {
+            is StepsRecord -> stepsFormatter.format(record, context)
             else -> throw IllegalArgumentException("Unsupported data type")
         }
     }
