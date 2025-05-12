@@ -218,6 +218,6 @@ fun buttonPreference(
     }
 }
 
-private fun isExpressiveAndBuildVersion(context: Context) =
+fun isExpressiveAndBuildVersion(context: Context) =
     Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM &&
         SettingsThemeHelper.isExpressiveTheme(context)
