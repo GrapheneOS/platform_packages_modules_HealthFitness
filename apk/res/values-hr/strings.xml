@@ -677,6 +677,16 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 ponavljanje}one{# ponavljanje}few{# ponavljanja}other{# ponavljanja}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 ponavljanje}one{# ponavljanje}few{# ponavljanja}other{# ponavljanja}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Segmenti vježbe"</string>
+    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
+    <skip />
+    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
+    <skip />
+    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
+    <skip />
+    <!-- no translation found for session_rpe_header (6436164288422834973) -->
+    <skip />
+    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
+    <skip />
     <string name="exercise_laps_header" msgid="117228630553856372">"Krugovi"</string>
     <string name="back_extension" msgid="426518933137440577">"Leđna ekstenzija"</string>
     <string name="badminton" msgid="8839727076522086870">"Badminton"</string>
@@ -1148,7 +1158,7 @@
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"Prikaži u trgovini aplikacija"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"Postavite zaključavanje zaslona"</string>
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Da biste dodatno zaštitili svoje zdravstvene podatke, postavite PIN, uzorak ili zaporku za ovaj uređaj"</string>
-    <string name="lock_screen_banner_button" msgid="2537090011380728122">"Postavi zaključavanje zaslona"</string>
+    <string name="lock_screen_banner_button" msgid="2537090011380728122">"Postavite zaključavanje zaslona"</string>
     <string name="select_all" msgid="837499881590001166">"Odaberi sve"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Povezane aplikacije više neće moći čitati te podatke iz Health Connecta"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Potvrđeno"</string>

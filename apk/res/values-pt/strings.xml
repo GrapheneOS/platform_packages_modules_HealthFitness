@@ -543,7 +543,7 @@
     <string name="export_notification_set_up_intent_button" msgid="1484836974815713693">"Configurar"</string>
     <string name="export_notification_free_up_space_intent_button" msgid="2902823222861202203">"Liberar espaço"</string>
     <string name="export_back_button" msgid="3550795479165524982">"Voltar"</string>
-    <string name="export_next_button" msgid="657930567137105172">"Próxima"</string>
+    <string name="export_next_button" msgid="657930567137105172">"Avançar"</string>
     <string name="export_cancel_button" msgid="1952360582645412410">"Cancelar"</string>
     <string name="import_cancel_button" msgid="2191598074422096715">"Cancelar"</string>
     <string name="import_next_button" msgid="5706322508691854289">"Avançar"</string>
@@ -568,7 +568,7 @@
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Entrar no estado de exclusão"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Sair do estado de exclusão"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Escolha os dados para excluir do app Conexão Saúde"</string>
-    <string name="time_range_next_button" msgid="5849096934896557888">"Próxima"</string>
+    <string name="time_range_next_button" msgid="5849096934896557888">"Avançar"</string>
     <string name="time_range_message_all" msgid="7280888587242744729">"Esta ação exclui permanentemente todos os dados adicionados à plataforma Conexão Saúde no período escolhido"</string>
     <string name="time_range_message_data_type" msgid="1896125004829258195">"Esta ação exclui permanentemente os dados de <xliff:g id="DATA_TYPE">%s</xliff:g> adicionados à plataforma Conexão Saúde no período escolhido"</string>
     <string name="time_range_message_category" msgid="1136451418397326356">"Esta ação exclui permanentemente os dados de <xliff:g id="CATEGORY">%s</xliff:g> adicionados à plataforma Conexão Saúde no período escolhido"</string>
@@ -677,6 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 rep}one{# rep}other{# rep}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 repetição}one{# repetição}other{# repetições}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Segmentos de exercício"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Definir <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"Nível de esforço percebido: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"Nível de esforço percebido"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"Voltas"</string>
     <string name="back_extension" msgid="426518933137440577">"Extensão de costas"</string>
     <string name="badminton" msgid="8839727076522086870">"Badminton"</string>
