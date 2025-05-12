@@ -194,6 +194,11 @@
     <string name="read_backup_metadata">Read backup metadata</string>
     <string name="write_restore_metadata">Write restore metadata</string>
 
+    <!-- Home Menu -->
+    <string name="health_connect_toolbox">Health Connect Toolbox</string>
+    <string name="read_data">Read Data</string>
+    <!-- endregion -->
+
     <!-- region Headers -->
     <string name="measurement_location">Measurement Location</string>
     <string name="baseline">Baseline</string>

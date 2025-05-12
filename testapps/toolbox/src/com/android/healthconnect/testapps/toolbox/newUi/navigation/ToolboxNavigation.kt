@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.testapps.toolbox.read.navigation
+package com.android.healthconnect.testapps.toolbox.newUi.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -24,13 +24,23 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.android.healthconnect.testapps.toolbox.newUi.components.screens.HomeMenuScreen
 import com.android.healthconnect.testapps.toolbox.read.components.DataTypeDetailsScreen
 import com.android.healthconnect.testapps.toolbox.read.components.DataTypeListScreen
 
 @Composable
 fun ToolboxNavigation(navController: NavHostController, scaffoldPadding: PaddingValues) {
 
-    NavHost(navController = navController, startDestination = Screen.DataTypeList) {
+    NavHost(navController = navController, startDestination = Screen.HomeMenu) {
+        composable<Screen.HomeMenu> {
+            HomeMenuScreen(
+                modifier = Modifier.padding(scaffoldPadding),
+                onNavigateToDataTypeListScreen = {
+                    navController.navigate(route = Screen.DataTypeList)
+                },
+            )
+        }
+
         composable<Screen.DataTypeDetails> { backStackEntry ->
             val dataTypeDetails: Screen.DataTypeDetails = backStackEntry.toRoute()
 

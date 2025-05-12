@@ -24,7 +24,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.healthconnect.testapps.toolbox.read.navigation.ToolboxNavigation
+import com.android.healthconnect.testapps.toolbox.newUi.navigation.ToolboxNavigation
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,28 +35,24 @@ class ToolboxNavigationTest {
     @get:Rule val composeTestRule = createComposeRule()
 
     @Test
-    fun onDataTypeListClick_navigatesTo_ReadDataScreen(){
-
-
+    fun onDataTypeListClick_navigatesTo_ReadDataScreen() {
 
         composeTestRule.setContent {
-            Scaffold(modifier = Modifier.fillMaxSize()){ innerPadding ->
+            Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                 ToolboxNavigation(
                     navController = rememberNavController(),
-                    scaffoldPadding = innerPadding
+                    scaffoldPadding = innerPadding,
                 )
             }
         }
 
-        // Click on steps to navigate to next screen
-        composeTestRule
-            .onNodeWithText("Steps")
-            .performClick()
-
+        // Navigates to new home page.
+        composeTestRule.onNodeWithText("Read Data").performClick()
+        composeTestRule.waitForIdle()
+        // Navigates to steps details page.
+        composeTestRule.onNodeWithText("Steps").performClick()
         composeTestRule.waitForIdle()
 
-        composeTestRule
-            .onNodeWithText("Steps")
-            .assertIsDisplayed()
+        composeTestRule.onNodeWithText("Steps").assertIsDisplayed()
     }
 }
