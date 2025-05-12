@@ -23,9 +23,9 @@ import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMIS
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
 import static android.health.connect.HealthPermissions.READ_HEART_RATE;
-import static android.healthconnect.cts.utils.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.utils.TestUtils.updatePriorityWithManageHealthDataPermission;
+import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 

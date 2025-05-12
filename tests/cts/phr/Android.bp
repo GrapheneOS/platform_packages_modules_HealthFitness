@@ -73,6 +73,7 @@ java_library {
         "platform-test-annotations",
         "cts-healthconnect-utils",
         "cts-healthconnect-lib",
+        "healthfitness-testing-cts",
     ],
     sdk_version: "test_current",
 }

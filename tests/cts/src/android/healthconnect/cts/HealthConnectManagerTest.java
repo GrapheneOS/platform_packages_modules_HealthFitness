@@ -32,12 +32,12 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
-import static android.healthconnect.cts.utils.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
-import static android.healthconnect.cts.utils.TestOutcomeReceiver.outcomeExecutor;
 import static android.healthconnect.cts.utils.TestUtils.finishMigrationWithShellPermissionIdentity;
 import static android.healthconnect.cts.utils.TestUtils.getRecordById;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.startMigrationWithShellPermissionIdentity;
+import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
+import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
@@ -85,9 +85,9 @@ import android.health.connect.datatypes.units.Volume;
 import android.health.connect.restore.StageRemoteDataException;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.HealthConnectReceiver;
-import android.healthconnect.cts.utils.TestOutcomeReceiver;
 import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.HealthConnectReceiver;
+import android.healthconnect.testing.cts.TestOutcomeReceiver;
 import android.healthconnect.testing.shared.DataFactory;
 import android.os.OutcomeReceiver;
 import android.os.ParcelFileDescriptor;

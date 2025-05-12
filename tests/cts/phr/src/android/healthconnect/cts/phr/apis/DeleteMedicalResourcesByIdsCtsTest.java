@@ -53,8 +53,8 @@ import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.HealthConnectReceiver;
 import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.HealthConnectReceiver;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 

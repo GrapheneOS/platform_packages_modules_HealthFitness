@@ -17,7 +17,7 @@
 package android.healthconnect.cts.showmigrationinfointent;
 
 import static android.Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA;
-import static android.healthconnect.cts.utils.TestOutcomeReceiver.outcomeExecutor;
+import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
@@ -26,8 +26,8 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.migration.MigrationException;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestOutcomeReceiver;
 import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.TestOutcomeReceiver;
 import android.os.Build;
 import android.os.ext.SdkExtensions;
 import android.platform.test.annotations.AppModeFull;

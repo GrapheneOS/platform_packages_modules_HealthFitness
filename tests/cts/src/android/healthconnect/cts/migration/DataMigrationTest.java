@@ -25,8 +25,8 @@ import static android.health.connect.HealthPermissions.READ_HEIGHT;
 import static android.health.connect.HealthPermissions.WRITE_HEIGHT;
 import static android.health.connect.datatypes.units.Length.fromMeters;
 import static android.health.connect.datatypes.units.Power.fromWatts;
-import static android.healthconnect.cts.utils.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
+import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 

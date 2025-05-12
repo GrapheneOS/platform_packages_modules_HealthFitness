@@ -60,8 +60,8 @@ import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.lib.BundleHelper;
-import android.healthconnect.cts.utils.HealthConnectReceiver;
 import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.HealthConnectReceiver;
 import android.os.Bundle;
 import android.util.Log;
 
