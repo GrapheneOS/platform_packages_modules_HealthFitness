@@ -18,10 +18,10 @@
 package com.android.healthconnect.controller.onboarding
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
-import com.android.settingslib.collapsingtoolbar.EdgeToEdgeUtils
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,7 +35,7 @@ class ConnectAppsOnboardingActivity : Hilt_ConnectAppsOnboardingActivity() {
     private val viewModel: OnboardingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        EdgeToEdgeUtils.enable(this)
+        enableEdgeToEdge()
         if (SettingsThemeHelper.isExpressiveTheme(this)) {
             setTheme(R.style.Theme_HealthConnect_Expressive)
         }
