@@ -40,7 +40,6 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__D
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__MENSTRUATION_FLOW;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__MENSTRUATION_PERIOD;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__MINDFULNESS_SESSION;
-import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__NICOTINE_INTAKE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__NUTRITION;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__OVULATION_TEST;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__OXYGEN_SATURATION;
@@ -82,7 +81,6 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_FLOW;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_PERIOD;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MINDFULNESS_SESSION;
-import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NICOTINE_INTAKE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_OVULATION_TEST;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_OXYGEN_SATURATION;
@@ -127,7 +125,6 @@ import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForU
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_MENSTRUATION_FLOW;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_MENSTRUATION_PERIOD;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_MINDFULNESS_SESSION;
-import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_NICOTINE_INTAKE;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_NUTRITION;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_OVULATION_TEST;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_OXYGEN_SATURATION;
@@ -177,7 +174,6 @@ import com.android.server.healthconnect.fitness.recordhelpers.LeanBodyMassRecord
 import com.android.server.healthconnect.fitness.recordhelpers.MenstruationFlowRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.MenstruationPeriodRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.MindfulnessSessionRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.NicotineIntakeRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.NutritionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.OvulationTestRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.OxygenSaturationRecordHelper;
@@ -210,9 +206,6 @@ public class InternalDataTypeDescriptors {
 
     private static final int LOGGING_ENUM_ACTIVITY_INTENSITY =
             HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ACTIVITY_INTENSITY;
-
-    private static final int LOGGING_ENUM_NICOTINE_INTAKE =
-            HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__NICOTINE_INTAKE;
 
     @VisibleForTesting(visibility = PACKAGE)
     static List<InternalDataTypeDescriptor> getAllInternalDataTypeDescriptors() {
@@ -385,14 +378,6 @@ public class InternalDataTypeDescriptors {
                         .setLoggingEnum(
                                 HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__MINDFULNESS_SESSION)
                         .build(),
-                AconfigFlagHelper.isNicotineIntakeEnabled()
-                        ? InternalDataTypeDescriptor.builder()
-                                .setRecordTypeIdentifier(RECORD_TYPE_NICOTINE_INTAKE)
-                                .setRecordHelper(new NicotineIntakeRecordHelper())
-                                .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_NICOTINE_INTAKE)
-                                .setLoggingEnum(LOGGING_ENUM_NICOTINE_INTAKE)
-                                .build()
-                        : null,
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_NUTRITION)
                         .setRecordHelper(new NutritionRecordHelper())
