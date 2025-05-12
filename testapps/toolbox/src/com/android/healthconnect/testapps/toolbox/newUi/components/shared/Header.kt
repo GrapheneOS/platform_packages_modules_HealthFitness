@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.android.healthconnect.testapps.toolbox.newUi.components.shared
 
-package android.healthconnect.test.app;
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.sp
 
-import android.health.connect.HealthConnectException;
-
-/**
- * A predefined {@link BlockingOutcomeReceiver} with the error type {@link HealthConnectException}.
- * Can be used instead of {@link BlockingOutcomeReceiver} to avoid specifying the error type every
- * time.
- */
-public final class DefaultOutcomeReceiver<T>
-        extends BlockingOutcomeReceiver<T, HealthConnectException> {}
+@Composable
+fun Header(modifier: Modifier = Modifier, text: String) {
+    Text(text = text, fontSize = 24.sp, modifier = modifier)
+}

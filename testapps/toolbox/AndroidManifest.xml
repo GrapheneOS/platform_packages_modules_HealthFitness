@@ -108,7 +108,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".read.HomeActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/app_label"
             android:theme="@style/AppTheme" />
         <activity
@@ -130,6 +130,16 @@
                 <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
 
                 <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".OnboardingActivity"
+            android:exported="true"
+            android:targetActivity=".MainActivity"
+            android:permission="android.permission.health.START_ONBOARDING">
+            <intent-filter>
+                <action android:name="android.health.connect.action.SHOW_ONBOARDING" />
             </intent-filter>
         </activity-alias>
 

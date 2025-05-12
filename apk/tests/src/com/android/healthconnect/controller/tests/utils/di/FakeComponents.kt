@@ -54,6 +54,8 @@ import com.android.healthconnect.controller.exportimport.api.ITriggerImportUseCa
 import com.android.healthconnect.controller.exportimport.api.IUpdateExportSettingsUseCase
 import com.android.healthconnect.controller.exportimport.api.ImportUiState
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
+import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
+import com.android.healthconnect.controller.onboarding.ILoadFitnessPermissionAppsUseCase
 import com.android.healthconnect.controller.permissions.additionalaccess.ExerciseRouteState
 import com.android.healthconnect.controller.permissions.additionalaccess.ILoadExerciseRoutePermissionUseCase
 import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState
@@ -635,5 +637,24 @@ class FakeLoadImportStatusUseCase : ILoadImportStatusUseCase {
 
     override suspend fun invoke(): ExportImportUseCaseResult<ImportUiState> {
         return ExportImportUseCaseResult.Success(importState)
+    }
+}
+
+class FakeLoadFitnessPermissionAppsUseCase : ILoadFitnessPermissionAppsUseCase {
+    private var connectedApps: List<ConnectedFitnessAppMetadata> = emptyList()
+    var invocations = 0
+
+    fun reset() {
+        connectedApps = emptyList()
+        invocations = 0
+    }
+
+    fun setConnectedApps(connectedApps: List<ConnectedFitnessAppMetadata>) {
+        this.connectedApps = connectedApps
+    }
+
+    override suspend fun invoke(): List<ConnectedFitnessAppMetadata> {
+        invocations += 1
+        return connectedApps
     }
 }

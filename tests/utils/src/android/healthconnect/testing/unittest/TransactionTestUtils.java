@@ -177,7 +177,7 @@ public final class TransactionTestUtils {
                 shouldRecordAccessLogs);
     }
 
-    /** Fetches all records of a given time from epoch until the current time. */
+    /** Fetches all records of a given type. */
     public <T extends Record> List<RecordInternal<?>> readAllRecordsOfType(
             String packageName, Class<T> recordClass) {
         ReadRecordsRequestUsingFilters<T> request =
@@ -185,8 +185,6 @@ public final class TransactionTestUtils {
                         .setTimeRangeFilter(
                                 new TimeInstantRangeFilter.Builder()
                                         .setStartTime(Instant.EPOCH)
-                                        .setEndTime(
-                                                Instant.ofEpochMilli(System.currentTimeMillis()))
                                         .build())
                         .build();
 

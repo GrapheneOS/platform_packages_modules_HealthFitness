@@ -28,8 +28,6 @@ import static android.health.connect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.health.connect.datatypes.SleepSessionRecord.SLEEP_DURATION_TOTAL;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.health.connect.datatypes.TotalCaloriesBurnedRecord.ENERGY_TOTAL;
-import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
-import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
 import static android.healthconnect.cts.utils.TestUtils.deleteRecords;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseGroupByDuration;
@@ -72,6 +70,7 @@ import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
 import android.healthconnect.cts.lib.TestAppProxy;
+import android.healthconnect.cts.lib.TestAppRule;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.testing.shared.recordfactory.MindfulnessSessionRecordFactory;
@@ -100,19 +99,23 @@ import java.util.List;
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectManagerNoPermissionsGrantedTest {
-    private static final TestAppProxy APP_A_WITH_READ_WRITE_PERMS =
-            TestAppProxy.forPackageName("android.healthconnect.cts.testapp.readWritePerms.A");
     private static final MindfulnessSessionRecordFactory MINDFULNESS_SESSION_RECORD_FACTORY =
             new MindfulnessSessionRecordFactory();
 
-    @Rule
+    @Rule(order = 0)
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
-    @Rule
+    @Rule(order = 1)
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
+
+    @Rule(order = 2)
+    public final TestAppRule mTestAppRule =
+            new TestAppRule.Builder("android.healthconnect.cts.testapp.readWritePerms.A").build();
+
+    private final TestAppProxy mTestApp = mTestAppRule.getProxy();
 
     @Test
     public void testInsert_noPermissions_expectError() throws InterruptedException {
@@ -190,9 +193,7 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
 
     @Test
     public void testGetChangeLogs_noPermissions_expectError() throws Exception {
-        TestAppProxy testApp = APP_A_WITH_READ_WRITE_PERMS;
-        String packageName = testApp.getPackageName();
-        revokeAllHealthPermissions(packageName, /* reason= */ "for test");
+        mTestAppRule.revokeAllHealthPermissions();
         List<Pair<String, Class<? extends Record>>> permissionAndRecordClassPairs =
                 List.of(
                         new Pair<>(READ_STEPS, StepsRecord.class),
@@ -205,14 +206,14 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
         for (var permissionAndRecordClass : permissionAndRecordClassPairs) {
             String permission = permissionAndRecordClass.first;
             Class<? extends Record> recordClass = permissionAndRecordClass.second;
-            grantHealthPermission(packageName, permission);
+            mTestAppRule.grantHealthPermission(permission);
             String token =
-                    testApp.getChangeLogToken(
+                    mTestApp.getChangeLogToken(
                             new ChangeLogTokenRequest.Builder().addRecordType(recordClass).build());
-            revokeAllHealthPermissions(packageName, /* reason= */ "for test");
+            mTestAppRule.revokeAllHealthPermissions();
 
             try {
-                testApp.getChangeLogs(new ChangeLogsRequest.Builder(token).build());
+                mTestApp.getChangeLogs(new ChangeLogsRequest.Builder(token).build());
 
                 Assert.fail(
                         String.format(
