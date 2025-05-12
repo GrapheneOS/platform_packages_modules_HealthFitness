@@ -114,6 +114,9 @@
         <item name="vitalsIcon">@drawable/ic_medical_vital_signs</item>
         <item name="socialHistoryIcon">@drawable/ic_medical_social_history</item>
 
+        <!-- Onboarding -->
+        <item name="checkmarkIcon">@drawable/ic_checkmark</item>
+
         <!-- Lock screen banner -->
         <item name="lockIcon">@drawable/ic_lock</item>
 
