@@ -74,7 +74,6 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.L
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstruationFlow;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstruationPeriod;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MindfulnessSession;
-import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.NicotineIntake;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Nutrition;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.OvulationTest;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.OxygenSaturation;
@@ -256,12 +255,6 @@ final class ProtoTestData {
                             .setIntervalRecord(
                                     generateIntervalRecord()
                                             .setMindfulnessSession(generateMindfulnessSession()))
-                            .build();
-            case RecordTypeIdentifier.RECORD_TYPE_NICOTINE_INTAKE ->
-                    generateCoreRecord()
-                            .setIntervalRecord(
-                                    generateIntervalRecord()
-                                            .setNicotineIntake(generateNicotineIntake()))
                             .build();
             case RecordTypeIdentifier.RECORD_TYPE_NUTRITION ->
                     generateCoreRecord()
@@ -518,10 +511,6 @@ final class ProtoTestData {
 
     static MindfulnessSession generateMindfulnessSession() {
         return MindfulnessSession.newBuilder().build();
-    }
-
-    static NicotineIntake generateNicotineIntake() {
-        return NicotineIntake.newBuilder().setNicotineIntake(0.12).build();
     }
 
     static Nutrition generateNutrition() {
