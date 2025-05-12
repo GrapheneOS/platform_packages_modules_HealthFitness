@@ -26,11 +26,14 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.MindfulnessSessionRecord;
+import android.health.connect.datatypes.NicotineIntakeRecord;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+
+import com.android.healthfitness.flags.Flags;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -254,6 +257,8 @@ public abstract class RecordFactory<T extends Record> {
             return new ActivityIntensityRecordFactory();
         } else if (recordClass.equals(MindfulnessSessionRecord.class)) {
             return new MindfulnessSessionRecordFactory();
+        } else if (Flags.smoking() && recordClass.equals(NicotineIntakeRecord.class)) {
+            return new NicotineIntakeRecordFactory();
         } else if (recordClass.equals(StepsRecord.class)) {
             return new StepsRecordFactory();
         }

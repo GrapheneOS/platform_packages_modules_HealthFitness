@@ -287,7 +287,8 @@ public class HealthConnectMappingsTest {
         Flags.FLAG_SMOKING,
         Flags.FLAG_SMOKING_DB,
         Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
-        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB
+        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+        Flags.FLAG_PHR_CHANGE_LOGS_DB
     })
     @Test
     public void nicotineIntakeFlagEnabled_containsNicotineIntake() {

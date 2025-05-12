@@ -63,7 +63,9 @@
     <uses-permission android:name="android.permission.health.WRITE_NUTRITION"/>
     <uses-permission android:name="android.permission.health.WRITE_TOTAL_CALORIES_BURNED"/>
     <uses-permission android:name="android.permission.health.WRITE_MINDFULNESS"/>
+    <uses-permission android:name="android.permission.health.WRITE_NICOTINE_INTAKE"/>
     <uses-permission android:name="android.permission.health.WRITE_MEDICAL_DATA"/>
+
     <uses-permission android:name="android.permission.health.READ_STEPS"/>
     <uses-permission android:name="android.permission.health.READ_HEART_RATE"/>
     <uses-permission android:name="android.permission.health.READ_BASAL_METABOLIC_RATE"/>
@@ -103,6 +105,7 @@
     <uses-permission android:name="android.permission.health.READ_NUTRITION"/>
     <uses-permission android:name="android.permission.health.READ_TOTAL_CALORIES_BURNED"/>
     <uses-permission android:name="android.permission.health.READ_MINDFULNESS"/>
+    <uses-permission android:name="android.permission.health.READ_NICOTINE_INTAKE"/>
     <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES"/>
     <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_CONDITIONS"/>
     <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_MEDICATIONS"/>

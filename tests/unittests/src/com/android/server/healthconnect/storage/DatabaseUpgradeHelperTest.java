@@ -22,9 +22,9 @@ import static android.healthconnect.testing.unittest.StorageUtils.assertTablesEx
 import static android.healthconnect.testing.unittest.StorageUtils.clearDatabase;
 import static android.healthconnect.testing.unittest.StorageUtils.createEmptyDatabase;
 
-import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
@@ -60,8 +60,9 @@ import java.util.List;
 public class DatabaseUpgradeHelperTest {
     private static final int NUM_OF_TABLES_AT_MIN_SUPPORTED_VERSION = 57;
     private static final int NUM_OF_TABLES_AT_MINDFULNESS_VERSION = 64;
-    private static final int NUM_OF_TABLES_IN_STAGING = 70;
-    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
+    private static final int NUM_OF_TABLES_AT_EXERCISE_SEGMENT_IMPROVEMENTS_VERSION = 70;
+    private static final int NUM_OF_TABLES_IN_STAGING = 71;
+    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_NICOTINE_INTAKE;
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
@@ -90,7 +91,7 @@ public class DatabaseUpgradeHelperTest {
         // We do idempotent upgrades above MIN_SUPPORTED_DB_VERSION
         onUpgrade(mSQLiteDatabase, MIN_SUPPORTED_DB_VERSION, LATEST_DB_VERSION_IN_STAGING);
         // TODO(b/338031465): Improve testing, check that schema indeed match.
-        assertDbSchemaUpToDate(mSQLiteDatabase);
+        assertNumberOfTables(mSQLiteDatabase, NUM_OF_TABLES_IN_STAGING);
     }
 
     // For historical reasons, we don't have schema tests before mindfulness session, so we opt for
@@ -104,7 +105,7 @@ public class DatabaseUpgradeHelperTest {
     @Test
     public void onUpgrade_newVersionGreaterThanMaxSupportedVersion_upgradeToMaxSupportedVersion() {
         onUpgrade(mSQLiteDatabase, 0, Integer.MAX_VALUE);
-        assertDbSchemaUpToDate(mSQLiteDatabase);
+        assertNumberOfTables(mSQLiteDatabase, NUM_OF_TABLES_IN_STAGING);
     }
 
     @Test
@@ -114,7 +115,9 @@ public class DatabaseUpgradeHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB)
+    @EnableFlags({
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void onUpgrade_addingNewColumn_calledMultipleTimes() {
         onUpgrade(mSQLiteDatabase, 0, DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS);
         assertColumnsExist(
@@ -141,7 +144,8 @@ public class DatabaseUpgradeHelperTest {
                 mSQLiteDatabase,
                 ExerciseSessionRecordHelper.EXERCISE_SESSION_RECORD_TABLE_NAME,
                 List.of(ExerciseSessionRecordHelper.RATE_OF_PERCEIVED_EXERTION_COLUMN_NAME));
-        assertDbSchemaUpToDate(mSQLiteDatabase);
+        assertNumberOfTables(
+                mSQLiteDatabase, NUM_OF_TABLES_AT_EXERCISE_SEGMENT_IMPROVEMENTS_VERSION);
     }
 
     @Test
@@ -153,7 +157,8 @@ public class DatabaseUpgradeHelperTest {
         try (var db = createEmptyDatabase()) {
             onUpgrade(db, 0, DB_VERSION_PHR_CHANGE_LOGS);
 
-            assertDbSchemaUpToDate(db);
+            assertNumberOfTables(db, NUM_OF_TABLES_AT_EXERCISE_SEGMENT_IMPROVEMENTS_VERSION);
+            assertPHRTablesExist(db);
             assertColumnsExist(
                     db,
                     ChangeLogsRequestHelper.TABLE_NAME,
@@ -177,7 +182,8 @@ public class DatabaseUpgradeHelperTest {
             onUpgrade(db, 0, DB_VERSION_PHR_CHANGE_LOGS);
             onUpgrade(db, 0, DB_VERSION_PHR_CHANGE_LOGS);
 
-            assertDbSchemaUpToDate(db);
+            assertNumberOfTables(db, NUM_OF_TABLES_AT_EXERCISE_SEGMENT_IMPROVEMENTS_VERSION);
+            assertPHRTablesExist(db);
             assertColumnsExist(
                     db,
                     ChangeLogsRequestHelper.TABLE_NAME,
@@ -191,14 +197,8 @@ public class DatabaseUpgradeHelperTest {
         }
     }
 
-    /**
-     * Asserts that the db schema of {@link #LATEST_DB_VERSION_IN_STAGING} matches the desired
-     * schema.
-     */
-    private static void assertDbSchemaUpToDate(SQLiteDatabase db) {
-        assertNumberOfTables(db, NUM_OF_TABLES_IN_STAGING);
-
-        // PHR
+    /** Asserts that PHR tables exist */
+    private static void assertPHRTablesExist(SQLiteDatabase db) {
         assertTablesExists(
                 db,
                 List.of(

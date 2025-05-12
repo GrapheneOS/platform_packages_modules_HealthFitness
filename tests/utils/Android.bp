@@ -26,8 +26,10 @@ java_library {
         "androidx.test.ext.junit",
         "androidx.test.ext.truth",
         "androidx.test.rules",
+        "healthfitness-aconfig-flags-lib",
     ],
     sdk_version: "test_current",
+    jarjar_rules: ":health-cts-jarjar-rules",
 }
 
 // Library for testing helpers that can only be used in unittests,
