@@ -112,6 +112,7 @@ import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
 import android.health.connect.datatypes.Vo2MaxRecord;
 import android.health.connect.datatypes.WeightRecord;
 import android.health.connect.datatypes.WheelchairPushesRecord;
+import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationException;
 import android.os.OutcomeReceiver;
 import android.util.Log;
@@ -572,6 +573,18 @@ public final class TestUtils {
                 MigrationException.class,
                 getHealthConnectManager()::startMigration,
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+    }
+
+    /** Calls {@link HealthConnectManager#writeMigrationData} with shell permission identity. */
+    public static void writeMigrationDataWithShellPermissionIdentity(MigrationEntity... entities)
+            throws InterruptedException {
+        Void unused =
+                callAndGetResponseWithShellPermissionIdentity(
+                        MigrationException.class,
+                        (executor, receiver) ->
+                                getHealthConnectManager()
+                                        .writeMigrationData(List.of(entities), executor, receiver),
+                        Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
     }
 
     /** Calls {@link HealthConnectManager#finishMigration} with shell permission identity. */
