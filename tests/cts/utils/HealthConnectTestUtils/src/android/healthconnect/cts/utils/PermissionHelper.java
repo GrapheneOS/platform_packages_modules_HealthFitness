@@ -151,8 +151,20 @@ public final class PermissionHelper {
      * the {@code HealthConnectManager} method, this does not modify any permission flags.
      */
     @SuppressLint("MissingPermission")
-    public static void revokeHealthPermission(String packageName, String permission)
-            throws PackageManager.NameNotFoundException {
+    public static void revokeHealthPermission(String packageName, String permission) {
+        revokeHealthPermission(packageName, permission, /* reason= */ "revokeHealthPermission");
+    }
+
+    /**
+     * Revokes the specified health permission from the app specified by {@code packageName}.
+     *
+     * <p>Permissions are revoked via {@link PackageManager#revokeRuntimePermission}, as {@link
+     * HealthConnectManager#revokeHealthPermission} is hidden and so can't be used by CTS. Unlike
+     * the {@code HealthConnectManager} method, this does not modify any permission flags.
+     */
+    @SuppressLint("MissingPermission")
+    public static void revokeHealthPermission(
+            String packageName, String permission, String reason) {
         if (!getGrantedHealthPermissions(packageName).contains(permission)) {
             return;
         }
@@ -162,7 +174,7 @@ public final class PermissionHelper {
         UserHandle user = context.getUser();
 
         runWithShellPermissionIdentity(
-                () -> packageManager.revokeRuntimePermission(packageName, permission, user),
+                () -> packageManager.revokeRuntimePermission(packageName, permission, user, reason),
                 REVOKE_RUNTIME_PERMISSIONS);
 
         // Apps are killed following a revoke. Wait for this to ensure that it doesn't interfere
@@ -178,8 +190,7 @@ public final class PermissionHelper {
      * Unlike the {@code HealthConnectManager} method, this does not modify any permission flags.
      */
     @SuppressLint("MissingPermission")
-    public static void revokeAllHealthPermissions(String packageName, String reason)
-            throws PackageManager.NameNotFoundException {
+    public static void revokeAllHealthPermissions(String packageName, String reason) {
         List<String> permissions = getGrantedHealthPermissions(packageName);
         if (permissions.isEmpty()) {
             return;
@@ -267,19 +278,20 @@ public final class PermissionHelper {
     }
 
     @SuppressLint("MissingPermission")
-    private static void waitForNoRunningProcesses(String packageName)
-            throws PackageManager.NameNotFoundException {
+    private static void waitForNoRunningProcesses(String packageName) {
         Context context = ApplicationProvider.getApplicationContext();
-        int uid = context.getPackageManager().getPackageUid(packageName, /* flags= */ 0);
         ActivityManager activityManager =
                 requireNonNull(context.getSystemService(ActivityManager.class));
 
         runWithShellPermissionIdentity(
-                () ->
-                        eventually(
-                                () ->
-                                        assertThat(activityManager.getUidImportance(uid))
-                                                .isEqualTo(IMPORTANCE_GONE)),
+                () -> {
+                    int uid =
+                            context.getPackageManager().getPackageUid(packageName, /* flags= */ 0);
+                    eventually(
+                            () ->
+                                    assertThat(activityManager.getUidImportance(uid))
+                                            .isEqualTo(IMPORTANCE_GONE));
+                },
                 PACKAGE_USAGE_STATS);
     }
 }
