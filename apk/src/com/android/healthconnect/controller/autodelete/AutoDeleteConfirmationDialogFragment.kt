@@ -15,9 +15,9 @@
  */
 package com.android.healthconnect.controller.autodelete
 
-import android.app.Dialog
 import android.icu.text.MessageFormat
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -39,7 +39,7 @@ class AutoDeleteConfirmationDialogFragment : Hilt_AutoDeleteConfirmationDialogFr
 
     private val viewModel: AutoDeleteViewModel by activityViewModels()
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         check(viewModel.newAutoDeleteRange.value != AutoDeleteRange.AUTO_DELETE_RANGE_NEVER) {
             "ConfirmationDialog not supported for AUTO_DELETE_RANGE_NEVER."
         }
@@ -60,7 +60,7 @@ class AutoDeleteConfirmationDialogFragment : Hilt_AutoDeleteConfirmationDialogFr
                         bundleOf(AUTO_DELETE_SAVED_EVENT to viewModel.newAutoDeleteRange.value),
                     )
                 }
-                .setNeutralButton(
+                .setNegativeButton(
                     android.R.string.cancel,
                     AutoDeleteElement.AUTO_DELETE_DIALOG_CANCEL_BUTTON,
                 ) { _, _ ->

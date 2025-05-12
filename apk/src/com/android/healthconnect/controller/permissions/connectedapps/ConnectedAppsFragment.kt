@@ -584,7 +584,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                 )
                 .setView(body)
                 .setCancelable(false)
-                .setNeutralButton(
+                .setNegativeButton(
                     android.R.string.cancel,
                     DisconnectAllAppsDialogElement.DISCONNECT_ALL_APPS_DIALOG_CANCEL_BUTTON,
                 ) { _, _ ->

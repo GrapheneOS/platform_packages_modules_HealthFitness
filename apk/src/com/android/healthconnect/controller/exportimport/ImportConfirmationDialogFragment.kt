@@ -17,7 +17,6 @@
 package com.android.healthconnect.controller.exportimport
 
 import android.app.Activity
-import android.app.Dialog
 import android.content.ContentResolver
 import android.content.DialogInterface
 import android.content.Intent
@@ -26,6 +25,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Slog
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
@@ -43,7 +43,7 @@ class ImportConfirmationDialogFragment : Hilt_ImportConfirmationDialogFragment()
         const val TAG = "ImportConfirmationDialogFragment"
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val importFileUriString = arguments?.getString(IMPORT_FILE_URI_KEY) ?: ""
         val importFileName = getFileName(importFileUriString)
         val importMessage =
@@ -66,7 +66,7 @@ class ImportConfirmationDialogFragment : Hilt_ImportConfirmationDialogFragment()
                 requireActivity().setResult(Activity.RESULT_OK, returnIntent)
                 requireActivity().finish()
             }
-            .setNeutralButton(
+            .setNegativeButton(
                 R.string.import_confirmation_dialog_cancel_button,
                 ImportConfirmationDialogElement.IMPORT_CONFIRMATION_CANCEL_BUTTON,
             ) { _: DialogInterface, _: Int ->
