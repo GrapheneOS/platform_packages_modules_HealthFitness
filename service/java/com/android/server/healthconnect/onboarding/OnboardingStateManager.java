@@ -20,14 +20,24 @@ import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BAN
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.health.connect.Constants;
 import android.health.connect.HealthConnectOnboardingState;
+import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.os.UserHandle;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
+import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
+import com.android.server.healthconnect.permission.PackageInfoUtils;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -45,13 +55,31 @@ public final class OnboardingStateManager {
     @VisibleForTesting
     static final String ONBOARDING_STATE_PREFERENCE_KEY_PREFIX = "onboarding_state_";
 
+    private final Context mContext;
     private final PreferenceHelper mPreferenceHelper;
     private final ReentrantReadWriteLock mStatesLock = new ReentrantReadWriteLock(true);
-    private UserHandle mUserHandle;
     private final Set<StateChangedListener> mStateChangedListeners = new CopyOnWriteArraySet<>();
+    private final HealthConnectPermissionHelper mHealthConnectPermissionHelper;
+    private final PackageInfoUtils mPackageInfoUtils;
+    private final AppInfoHelper mAppInfoHelper;
+    private final AccessLogsHelper mAccessLogsHelper;
 
-    public OnboardingStateManager(PreferenceHelper preferenceHelper, UserHandle userHandle) {
+    private UserHandle mUserHandle;
+
+    public OnboardingStateManager(
+            Context context,
+            PreferenceHelper preferenceHelper,
+            HealthConnectPermissionHelper healthConnectPermissionHelper,
+            PackageInfoUtils packageInfoUtils,
+            AppInfoHelper appInfoHelper,
+            AccessLogsHelper accessLogsHelper,
+            UserHandle userHandle) {
+        mContext = context;
         mPreferenceHelper = preferenceHelper;
+        mHealthConnectPermissionHelper = healthConnectPermissionHelper;
+        mPackageInfoUtils = packageInfoUtils;
+        mAppInfoHelper = appInfoHelper;
+        mAccessLogsHelper = accessLogsHelper;
         mUserHandle = userHandle;
     }
 
@@ -103,9 +131,15 @@ public final class OnboardingStateManager {
     }
 
     /** Updates the onboarding state. */
-    @VisibleForTesting
-    void updateOnboardingState(@HealthConnectOnboardingState.OnboardingState int state) {
+    private void updateOnboardingState(@HealthConnectOnboardingState.OnboardingState int state) {
         mStatesLock.writeLock().lock();
+        if (state == getOnboardingState()) {
+            if (Constants.DEBUG) {
+                Slog.d(TAG, "The new state same as the current state.");
+            }
+            return;
+        }
+
         try {
             updateOnboardingStateGuarded(state);
         } finally {
@@ -116,21 +150,78 @@ public final class OnboardingStateManager {
     }
 
     @HealthConnectOnboardingState.OnboardingState
-    private static int evaluateCurrentOnboardingState() {
-        // TODO(b/414749504): implement the logic
+    private int evaluateCurrentOnboardingState() {
+        List<PackageInfo> compatibleFitnessApps =
+                mPackageInfoUtils
+                        .getPackagesCompatibleWithHealthConnect(mContext, mUserHandle)
+                        .stream()
+                        .filter(this::hasFitnessPerm)
+                        .toList();
+        if (compatibleFitnessApps.isEmpty()) {
+            return ONBOARDING_BANNER_STATE_HIDE;
+        }
+
+        // compatible but not connected apps are potential candidates
+        List<PackageInfo> potentialCandidates =
+                compatibleFitnessApps.stream().filter(app -> !isConnected(app)).toList();
+        if (potentialCandidates.isEmpty()) {
+            return ONBOARDING_BANNER_STATE_HIDE;
+        }
+
+        long connectedFitnessAppsCount = compatibleFitnessApps.size() - potentialCandidates.size();
+        if (connectedFitnessAppsCount >= 2) {
+            return ONBOARDING_BANNER_STATE_HIDE;
+        }
+
+        long candidateAppsCount =
+                potentialCandidates.stream()
+                        .filter(app -> !hasBeenUsed(app))
+                        .filter(this::installed7DaysAgo)
+                        .count();
+
+        if (connectedFitnessAppsCount == 0 && candidateAppsCount >= 2) {
+            return ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
+        }
+        if (connectedFitnessAppsCount == 1 && candidateAppsCount >= 1) {
+            return ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
+        }
         return ONBOARDING_BANNER_STATE_HIDE;
+    }
+
+    private boolean isConnected(PackageInfo app) {
+        return mHealthConnectPermissionHelper.hasGrantedHealthPermissions(
+                app.packageName, mUserHandle);
+    }
+
+    private boolean hasFitnessPerm(PackageInfo app) {
+        // TODO(b/417974138) implement this
+        return true;
+    }
+
+    private boolean hasBeenUsed(PackageInfo app) {
+        // TODO(b/403256600): check if the user has denied permissions for the app
+        AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(app.packageName);
+        if (appInfo == null) {
+            return false;
+        }
+
+        Set<Integer> recordTypesUsed = appInfo.getRecordTypesUsed();
+        boolean hasData = recordTypesUsed != null && !recordTypesUsed.isEmpty();
+        boolean hasAccessLog =
+                mAccessLogsHelper.queryAccessLogs(mUserHandle).stream()
+                        .anyMatch(log -> log.getPackageName().equals(app.packageName));
+        return hasData || hasAccessLog;
+    }
+
+    private boolean installed7DaysAgo(PackageInfo app) {
+        Instant installTime = Instant.ofEpochMilli(app.firstInstallTime);
+        Instant aWeekAgo = Instant.now().minus(Duration.ofDays(7));
+        return installTime.isBefore(aWeekAgo);
     }
 
     /** Atomically updates the onboarding state. */
     private void updateOnboardingStateGuarded(
             @HealthConnectOnboardingState.OnboardingState int state) {
-        if (state == getOnboardingState()) {
-            if (Constants.DEBUG) {
-                Slog.d(TAG, "The new state same as the current state.");
-            }
-            return;
-        }
-
         switch (state) {
             case ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED,
                     ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED,

@@ -473,7 +473,14 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         : builder.mAppOpsManagerLocal;
         mOnboardingStateManager =
                 builder.mOnboardingStateManager == null
-                        ? new OnboardingStateManager(getPreferenceHelper(), userHandle)
+                        ? new OnboardingStateManager(
+                                context,
+                                getPreferenceHelper(),
+                                getHealthConnectPermissionHelper(),
+                                getPackageInfoUtils(),
+                                getAppInfoHelper(),
+                                getAccessLogsHelper(),
+                                userHandle)
                         : builder.mOnboardingStateManager;
         mOnboardingNotificationSender =
                 builder.mOnboardingNotificationSender == null
