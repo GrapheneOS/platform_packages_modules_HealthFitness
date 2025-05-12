@@ -349,6 +349,75 @@ class ExerciseSessionFormatterTest {
             )
     }
 
+    @Test
+    @EnableFlags(
+        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
+        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    )
+    fun formatRecordDetails_zeroRepetitionsHidesRepCount() = runBlocking {
+        unitPreferences.setDistanceUnit(KILOMETERS)
+        unitPreferences.setWeightUnit(KILOGRAM)
+        val segments =
+            buildList<ExerciseSegment> {
+                add(
+                    ExerciseSegment.Builder(
+                            NOW,
+                            NOW.plusSeconds(500),
+                            EXERCISE_SEGMENT_TYPE_JUMPING_JACK,
+                        )
+                        .setRepetitionsCount(0)
+                        .build()
+                )
+            }
+        val laps =
+            buildList<ExerciseLap> {
+                add(
+                    ExerciseLap.Builder(NOW, NOW.plusSeconds(500))
+                        .setLength(Length.fromMeters(20.0))
+                        .build()
+                )
+            }
+        val record =
+            getRecordWithRpe(
+                type = EXERCISE_SESSION_TYPE_OTHER_WORKOUT,
+                segments = segments,
+                laps = laps,
+            )
+        assertThat(formatter.formatRecordDetails(record))
+            .isEqualTo(
+                listOf(
+                    FormattedEntry.SessionHeader("RPE"),
+                    FormattedEntry.FormattedHeaderlessSessionDetail(
+                        uuid = record.metadata.id,
+                        title = "4.5",
+                        titleA11y = "4.5",
+                    ),
+                    FormattedEntry.SessionHeader("Exercise segments"),
+                    FormattedEntry.FormattedSegment(
+                        uuid = record.metadata.id,
+                        header = "07:06 - 07:14",
+                        headerA11y = "from 07:06 to 07:14",
+                        title = "Jumping jack",
+                        titleA11y = "Jumping jack",
+                        setIndex = null,
+                        setIndexA11y = null,
+                        weight = null,
+                        weightA11y = null,
+                        rpe = null,
+                        rpeA11y = null,
+                    ),
+                    FormattedEntry.SessionHeader("Laps"),
+                    FormattedEntry.FormattedSessionDetail(
+                        uuid = record.metadata.id,
+                        header = "07:06 - 07:14",
+                        headerA11y = "from 07:06 to 07:14",
+                        title = "0.02 km",
+                        titleA11y = "0.02 kilometres",
+                    ),
+                )
+            )
+    }
+
     private fun getRecord(
         type: Int = EXERCISE_SESSION_TYPE_BIKING,
         title: String? = null,
