@@ -187,6 +187,7 @@
     <string name="loading_data">Loading data…</string>
     <string name="error">Error</string>
     <string name="no_data">No data</string>
+    <string name="zero_seconds">0 seconds</string>
     <!--endregion-->
 
     <string name="read_backup_data">Read backup data</string>
@@ -217,6 +218,8 @@
     <string name="pushes">Pushes</string>
     <string name="duration">Duration</string>
     <string name="exercise_blocks">Exercise Blocks</string>
+    <string name="seconds">seconds</string>
+    <string name="days">days</string>
     <!-- endregion -->
 
     <!-- region Unit Labels -->
@@ -237,6 +240,8 @@
     <string name="meters_label">m</string>
     <string name="kilometers_label">km</string>
     <string name="calories_label">cal</string>
+    <string name="hour_label">hrs</string>
+    <string name="minute_label">mins</string>
     <!-- endregion -->
 
     <!-- region Exercise Segment Types -->
