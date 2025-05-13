@@ -15,8 +15,8 @@
  */
 package com.android.healthconnect.controller.selectabledeletion
 
-import android.app.Dialog
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import com.android.healthconnect.controller.R
@@ -29,7 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint(DialogFragment::class)
 class FailedDialogFragment : Hilt_FailedDialogFragment() {
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         return AlertDialogBuilder(this, FailedDialogElement.DELETION_DIALOG_ERROR_CONTAINER)
             .setIcon(R.attr.failureIcon)
             .setTitle(R.string.delete_dialog_failure_title)
@@ -40,7 +40,7 @@ class FailedDialogFragment : Hilt_FailedDialogFragment() {
             ) { _, _ ->
                 setFragmentResult(TRY_AGAIN_EVENT, Bundle())
             }
-            .setNeutralButton(
+            .setNegativeButton(
                 R.string.delete_dialog_failure_close_button,
                 FailedDialogElement.DELETION_DIALOG_ERROR_CLOSE_BUTTON,
             )

@@ -15,12 +15,12 @@
  */
 package com.android.healthconnect.controller.selectabledeletion
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
@@ -44,7 +44,7 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
     // TODO (b/384028690) replace after pagination implementation
     private val PAGE_SIZE = 1000
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val view: View =
             layoutInflater.inflate(
                 if (SettingsThemeHelper.isExpressiveTheme(requireContext()))
@@ -80,7 +80,7 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
                     viewModel.removePermissions = checkbox.isChecked
                     setFragmentResult(CONFIRMATION_KEY, Bundle())
                 }
-                .setNeutralButton(
+                .setNegativeButton(
                     android.R.string.cancel,
                     DeletionDialogConfirmationElement.DELETION_DIALOG_CONFIRMATION_CANCEL_BUTTON,
                 )

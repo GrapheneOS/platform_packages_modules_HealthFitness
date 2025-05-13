@@ -18,7 +18,6 @@
 
 package com.android.healthconnect.controller.permissions.additionalaccess
 
-import android.app.Dialog
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +26,7 @@ import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.annotation.IdRes
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -40,6 +40,7 @@ import com.android.healthconnect.controller.utils.logging.AdditionalAccessElemen
 import com.android.healthconnect.controller.utils.logging.AdditionalAccessElement.EXERCISE_ROUTES_ASK_BUTTON
 import com.android.healthconnect.controller.utils.logging.AdditionalAccessElement.EXERCISE_ROUTES_DIALOG_CONTAINER
 import com.android.healthconnect.controller.utils.logging.AdditionalAccessElement.EXERCISE_ROUTES_DIALOG_DENY_BUTTON
+import com.android.healthconnect.controller.utils.logging.ErrorPageElement.UNKNOWN_ELEMENT
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -81,7 +82,7 @@ class ExerciseRoutesPermissionDialogFragment : Hilt_ExerciseRoutesPermissionDial
         logger.logImpression(EXERCISE_ROUTES_DIALOG_DENY_BUTTON)
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val view =
             layoutInflater.inflate(
                 if (SettingsThemeHelper.isExpressiveTheme(requireContext()))
@@ -93,7 +94,7 @@ class ExerciseRoutesPermissionDialogFragment : Hilt_ExerciseRoutesPermissionDial
         val packageNameExtra = requireArguments().getString(EXTRA_PACKAGE_NAME)
         if (packageNameExtra.isNullOrEmpty()) {
             Log.e(TAG, "Invalid Intent Extras, finishing.")
-            return super.onCreateDialog(savedInstanceState)
+            return AlertDialogBuilder(this, UNKNOWN_ELEMENT).create()
         }
         packageName = packageNameExtra
 
