@@ -25,7 +25,7 @@ class TestActivity : Hilt_TestActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         EdgeToEdgeUtils.enable(this)
         if (SettingsThemeHelper.isExpressiveTheme(this)) {
-            setTheme(R.style.Theme_HealthConnect_Expressive)
+            setTheme(R.style.Theme_HealthConnect_Expressive_Test)
         } else {
             setTheme(R.style.Theme_HealthConnect)
         }

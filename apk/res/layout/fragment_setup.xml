@@ -20,14 +20,14 @@
     android:filterTouchesWhenObscured="true"
     android:background="?android:colorBackground"
     android:translationZ="@dimen/spacing_xlarge"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/spacing_xlarge">
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/preference_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:clipChildren="true"
         android:layout_above="@+id/action_container" />
 
     <FrameLayout

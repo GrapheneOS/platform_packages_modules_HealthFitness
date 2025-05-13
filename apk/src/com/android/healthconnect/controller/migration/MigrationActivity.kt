@@ -37,7 +37,6 @@ import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
 import com.android.healthconnect.controller.utils.logging.MigrationElement
-import com.android.settingslib.collapsingtoolbar.EdgeToEdgeUtils
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -250,7 +249,6 @@ class MigrationActivity : Hilt_MigrationActivity() {
     @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        EdgeToEdgeUtils.enable(this)
         if (SettingsThemeHelper.isExpressiveTheme(this)) {
             setTheme(R.style.Theme_HealthConnect_Expressive)
         }
