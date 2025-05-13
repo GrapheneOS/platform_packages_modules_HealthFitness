@@ -25,8 +25,8 @@ import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermis
 import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeHealthPermission;
 import static android.healthconnect.cts.utils.TestUtils.createReadRecordsRequestUsingFilters;
+import static android.healthconnect.cts.utils.TestUtils.deleteAllFitnessDataAddedByTestApp;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.cts.utils.TestUtils.deleteTestData;
 import static android.healthconnect.cts.utils.TestUtils.fetchDataOriginsPriorityOrder;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
 import static android.healthconnect.cts.utils.TestUtils.getApplicationInfo;
@@ -177,7 +177,7 @@ public class HealthConnectDeviceTest {
 
     @After
     public void tearDown() throws InterruptedException {
-        deleteTestData();
+        deleteAllFitnessDataAddedByTestApp();
         deleteAllStagedRemoteData();
         grantAllHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
         grantAllHealthPermissions(APP_B_WITH_READ_WRITE_PERMS.getPackageName());

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.utils;
+package android.healthconnect.testing.cts;
 
 import static com.google.common.truth.Truth.assertThat;
 

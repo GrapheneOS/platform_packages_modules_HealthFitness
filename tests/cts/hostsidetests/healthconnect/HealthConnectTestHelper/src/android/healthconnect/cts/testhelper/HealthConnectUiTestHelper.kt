@@ -21,8 +21,9 @@ import android.content.pm.PackageManager
 import android.health.connect.HealthConnectManager
 import android.healthconnect.cts.lib.ActivityLauncher.launchMainActivity
 import android.healthconnect.cts.lib.UiTestUtils
+import android.healthconnect.cts.utils.TestUtils
+import android.healthconnect.testing.shared.DataFactory
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.uiautomator.By
 import com.android.compatibility.common.util.DisableAnimationRule
 import com.android.compatibility.common.util.NonApiTest
 import com.android.compatibility.common.util.SystemUtil
@@ -39,8 +40,7 @@ import org.junit.Test
  */
 @NonApiTest(exemptionReasons = [], justification = "METRIC")
 class HealthConnectUiTestHelper {
-    @get:Rule
-    val disableAnimationRule = DisableAnimationRule()
+    @get:Rule val disableAnimationRule = DisableAnimationRule()
 
     private val context: Context = ApplicationProvider.getApplicationContext()
     private val mHealthConnectManager: HealthConnectManager? =
@@ -58,12 +58,12 @@ class HealthConnectUiTestHelper {
     @Before
     fun before() {
         // TODO inert app here
-        TestHelperUtils.deleteAllRecordsAddedByTestApp(mHealthConnectManager)
+        TestUtils.deleteAllFitnessDataAddedByTestApp()
     }
 
     @After
     fun after() {
-        TestHelperUtils.deleteAllRecordsAddedByTestApp(mHealthConnectManager)
+        TestUtils.deleteAllFitnessDataAddedByTestApp()
     }
 
     private fun unlockDevice() {
@@ -81,20 +81,19 @@ class HealthConnectUiTestHelper {
         // IoT devices do not have a UI to run these UI tests
         val pm: PackageManager = context.packageManager
         return (!pm.hasSystemFeature(PackageManager.FEATURE_EMBEDDED) &&
-                !pm.hasSystemFeature(PackageManager.FEATURE_WATCH) &&
-                !pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK) &&
-                !pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE))
+            !pm.hasSystemFeature(PackageManager.FEATURE_WATCH) &&
+            !pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK) &&
+            !pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE))
     }
 
     @Test
     fun openHomeFragment() {
-        TestHelperUtils.insertRecords(
-            mHealthConnectManager,
+        TestUtils.insertRecords(
             listOf(
-                TestHelperUtils.getBloodPressureRecord(),
-                TestHelperUtils.getHeartRateRecord(),
-                TestHelperUtils.getStepsRecord(),
-            ),
+                DataFactory.getBloodPressureRecord(),
+                DataFactory.getHeartRateRecord(),
+                DataFactory.getStepsRecord(),
+            )
         )
         context.launchMainActivity {
             UiTestUtils.skipOnboardingIfAppears()

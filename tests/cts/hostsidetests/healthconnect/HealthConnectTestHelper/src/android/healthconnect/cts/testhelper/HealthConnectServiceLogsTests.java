@@ -19,17 +19,15 @@ package android.healthconnect.cts.testhelper;
 import static android.health.connect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
 import static android.health.connect.datatypes.NutritionRecord.BIOTIN_TOTAL;
-import static android.healthconnect.cts.testhelper.TestHelperUtils.TIMEOUT_SECONDS;
-import static android.healthconnect.cts.testhelper.TestHelperUtils.deleteAllRecordsAddedByTestApp;
-import static android.healthconnect.cts.testhelper.TestHelperUtils.deleteRecords;
-import static android.healthconnect.cts.testhelper.TestHelperUtils.getBloodPressureRecord;
-import static android.healthconnect.cts.testhelper.TestHelperUtils.getDefaultTimeRangeFilter;
-import static android.healthconnect.cts.testhelper.TestHelperUtils.getHeartRateRecord;
-import static android.healthconnect.cts.testhelper.TestHelperUtils.getHeightRecord;
-import static android.healthconnect.cts.testhelper.TestHelperUtils.getMetadata;
-import static android.healthconnect.cts.testhelper.TestHelperUtils.getStepsRecord;
-import static android.healthconnect.cts.testhelper.TestHelperUtils.insertRecords;
+import static android.healthconnect.cts.utils.TestUtils.deleteRecordsOfType;
+import static android.healthconnect.cts.utils.TestUtils.deleteRecordsOfTypes;
+import static android.healthconnect.cts.utils.TestUtils.insertRecords;
+import static android.healthconnect.testing.shared.DataFactory.getBloodPressureRecord;
 import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
+import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
+import static android.healthconnect.testing.shared.DataFactory.getHeightRecord;
+import static android.healthconnect.testing.shared.DataFactory.getMetadataForId;
+import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 
@@ -50,6 +48,7 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.ReadMedicalResourcesInitialRequest;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsResponse;
+import android.health.connect.TimeRangeFilter;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
@@ -67,6 +66,7 @@ import android.health.connect.datatypes.units.Mass;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
 import android.healthconnect.cts.utils.PermissionHelper;
 import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.shared.aggregation.TimeFilterFactory;
 import android.os.OutcomeReceiver;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -77,7 +77,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -94,6 +96,8 @@ import java.util.concurrent.atomic.AtomicReference;
         justification = "METRIC")
 public class HealthConnectServiceLogsTests {
 
+    public static final int TIMEOUT_SECONDS = 5;
+
     private final Context mContext = ApplicationProvider.getApplicationContext();
     private final HealthConnectManager mHealthConnectManager =
             requireNonNull(mContext.getSystemService(HealthConnectManager.class));
@@ -109,15 +113,15 @@ public class HealthConnectServiceLogsTests {
         // insert a record so the test app gets an app id in HC
         Record record =
                 new StepsRecord.Builder(getEmptyMetadata(), EPOCH, Instant.now(), 123).build();
-        insertRecords(mHealthConnectManager, List.of(record));
+        insertRecords(List.of(record));
 
-        deleteAllRecordsAddedByTestApp(mHealthConnectManager);
+        TestUtils.deleteAllFitnessDataAddedByTestApp();
         mPhrTestUtils.deleteAllMedicalData();
     }
 
     @After
     public void after() throws InterruptedException {
-        deleteAllRecordsAddedByTestApp(mHealthConnectManager);
+        TestUtils.deleteAllFitnessDataAddedByTestApp();
         mPhrTestUtils.deleteAllMedicalData();
     }
 
@@ -304,8 +308,7 @@ public class HealthConnectServiceLogsTests {
 
     @Test
     public void testHealthConnectInsertRecords() throws Exception {
-        insertRecords(
-                mHealthConnectManager, List.of(getBloodPressureRecord(), getHeartRateRecord()));
+        insertRecords(List.of(getBloodPressureRecord(), getHeartRateRecord()));
     }
 
     @Test
@@ -313,30 +316,26 @@ public class HealthConnectServiceLogsTests {
         // No permission for Height so it should throw Security Exception
         assertThrows(
                 HealthConnectException.class,
-                () ->
-                        insertRecords(
-                                mHealthConnectManager,
-                                List.of(getBloodPressureRecord(), getHeightRecord())));
+                () -> insertRecords(List.of(getBloodPressureRecord(), getHeightRecord())));
     }
 
     @Test
     public void testHealthConnectUpdateRecords() throws Exception {
         List<Record> records =
                 insertRecords(
-                        mHealthConnectManager,
                         List.of(getBloodPressureRecord(), getHeartRateRecord(), getStepsRecord()));
         updateRecords(records);
     }
 
     @Test
     public void testHealthConnectUpdateRecordsError() throws Exception {
-        List<Record> insertRecords =
-                insertRecords(mHealthConnectManager, List.of(getBloodPressureRecord()));
+        List<Record> insertRecords = insertRecords(List.of(getBloodPressureRecord()));
 
         updateRecords(
                 List.of(
                         new HeightRecord.Builder(
-                                        getMetadata(insertRecords.get(0).getMetadata().getId()),
+                                        getMetadataForId(
+                                                insertRecords.get(0).getMetadata().getId()),
                                         Instant.now(),
                                         Length.fromMeters(1.5))
                                 .build()));
@@ -344,23 +343,21 @@ public class HealthConnectServiceLogsTests {
 
     @Test
     public void testHealthConnectDeleteRecords() throws Exception {
-        insertRecords(mHealthConnectManager, List.of(getBloodPressureRecord(), getStepsRecord()));
+        insertRecords(List.of(getBloodPressureRecord(), getStepsRecord()));
 
-        deleteRecords(mHealthConnectManager, List.of(BloodPressureRecord.class, StepsRecord.class));
+        deleteRecordsOfTypes(List.of(BloodPressureRecord.class, StepsRecord.class));
     }
 
     @Test
     public void testHealthConnectDeleteRecordsError() throws Exception {
-        insertRecords(mHealthConnectManager, List.of(getBloodPressureRecord(), getStepsRecord()));
+        insertRecords(List.of(getBloodPressureRecord(), getStepsRecord()));
 
-        assertThrows(
-                HealthConnectException.class,
-                () -> deleteRecords(mHealthConnectManager, List.of(HeightRecord.class)));
+        assertThrows(HealthConnectException.class, () -> deleteRecordsOfType(HeightRecord.class));
     }
 
     @Test
     public void testHealthConnectReadRecords() throws Exception {
-        insertRecords(mHealthConnectManager, List.of(getStepsRecord()));
+        insertRecords(List.of(getStepsRecord()));
 
         CountDownLatch latch = new CountDownLatch(1);
         assertThat(mHealthConnectManager).isNotNull();
@@ -450,10 +447,9 @@ public class HealthConnectServiceLogsTests {
     public void testHealthConnectGetChangeLogs() throws Exception {
         String token = getChangeLogToken();
 
-        insertRecords(
-                mHealthConnectManager, List.of(getBloodPressureRecord(), getHeartRateRecord()));
+        insertRecords(List.of(getBloodPressureRecord(), getHeartRateRecord()));
 
-        deleteRecords(mHealthConnectManager, List.of(BloodPressureRecord.class));
+        deleteRecordsOfTypes(List.of(BloodPressureRecord.class));
 
         CountDownLatch latch = new CountDownLatch(1);
         assertThat(mHealthConnectManager).isNotNull();
@@ -551,9 +547,7 @@ public class HealthConnectServiceLogsTests {
 
     @Test
     public void testHealthConnectDatabaseStats() throws Exception {
-        insertRecords(
-                mHealthConnectManager,
-                List.of(getStepsRecord(), getBloodPressureRecord(), getHeartRateRecord()));
+        insertRecords(List.of(getStepsRecord(), getBloodPressureRecord(), getHeartRateRecord()));
     }
 
     private String getChangeLogToken() throws Exception {
@@ -604,6 +598,13 @@ public class HealthConnectServiceLogsTests {
                 });
 
         assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
+    }
+
+    private static TimeRangeFilter getDefaultTimeRangeFilter() {
+        Instant now = Instant.now();
+        Instant start = now.minus(Duration.ofHours(24)).truncatedTo(ChronoUnit.DAYS);
+        Instant end = now.plus(Duration.ofHours(24)).truncatedTo(ChronoUnit.DAYS);
+        return TimeFilterFactory.getTimeFilter(start, end);
     }
 
     /**
