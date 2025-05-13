@@ -901,15 +901,26 @@ package android.health.connect.datatypes {
 
   public final class ExerciseSegment {
     method @NonNull public java.time.Instant getEndTime();
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @FloatRange(from=0, to=10, fromInclusive=true, toInclusive=true) public float getRateOfPerceivedExertion();
     method @IntRange(from=0) public int getRepetitionsCount();
     method public int getSegmentType();
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") public int getSetIndex();
     method @NonNull public java.time.Instant getStartTime();
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @Nullable public android.health.connect.datatypes.units.Mass getWeight();
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") public boolean hasRateOfPerceivedExertion();
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") public boolean hasSetIndex();
   }
 
   public static final class ExerciseSegment.Builder {
     ctor public ExerciseSegment.Builder(@NonNull java.time.Instant, @NonNull java.time.Instant, int);
     method @NonNull public android.health.connect.datatypes.ExerciseSegment build();
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder clearRateOfPerceivedExertion();
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder clearSetIndex();
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder clearWeight();
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder setRateOfPerceivedExertion(@FloatRange(from=0, to=10, fromInclusive=true, toInclusive=true) float);
     method @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder setRepetitionsCount(@IntRange(from=0) int);
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder setSetIndex(int);
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder setWeight(@NonNull android.health.connect.datatypes.units.Mass);
   }
 
   public final class ExerciseSegmentType {
@@ -988,9 +999,11 @@ package android.health.connect.datatypes {
     method @NonNull public java.util.List<android.health.connect.datatypes.ExerciseLap> getLaps();
     method @Nullable public CharSequence getNotes();
     method @FlaggedApi("com.android.healthconnect.flags.training_plans") @Nullable public String getPlannedExerciseSessionId();
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @FloatRange(from=0, to=10, fromInclusive=true, toInclusive=true) public float getRateOfPerceivedExertion();
     method @Nullable public android.health.connect.datatypes.ExerciseRoute getRoute();
     method @NonNull public java.util.List<android.health.connect.datatypes.ExerciseSegment> getSegments();
     method @Nullable public CharSequence getTitle();
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") public boolean hasRateOfPerceivedExertion();
     method @NonNull public boolean hasRoute();
     field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Long> EXERCISE_DURATION_TOTAL;
   }
@@ -999,11 +1012,13 @@ package android.health.connect.datatypes {
     ctor public ExerciseSessionRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
     method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord build();
     method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder clearEndZoneOffset();
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder clearRateOfPerceivedExertion();
     method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder clearStartZoneOffset();
     method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder setLaps(@NonNull java.util.List<android.health.connect.datatypes.ExerciseLap>);
     method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder setNotes(@Nullable CharSequence);
     method @FlaggedApi("com.android.healthconnect.flags.training_plans") @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder setPlannedExerciseSessionId(@Nullable String);
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder setRateOfPerceivedExertion(@FloatRange(from=0, to=10, fromInclusive=true, toInclusive=true) float);
     method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder setRoute(@Nullable android.health.connect.datatypes.ExerciseRoute);
     method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder setSegments(@NonNull java.util.List<android.health.connect.datatypes.ExerciseSegment>);
     method @NonNull public android.health.connect.datatypes.ExerciseSessionRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);

@@ -22,10 +22,13 @@ import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
+
 import android.health.connect.datatypes.ExerciseSegment;
 import android.health.connect.datatypes.ExerciseSegmentType;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.ExerciseSessionType;
+import android.health.connect.datatypes.units.Mass;
 
 import org.junit.Test;
 
@@ -53,6 +56,30 @@ public class ExerciseSegmentTest {
     }
 
     @Test
+    public void testExerciseSegmentWithNewFields_buildSegment_buildCorrectObject() {
+        ExerciseSegment segment =
+                new ExerciseSegment.Builder(
+                                START_TIME,
+                                END_TIME,
+                                ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
+                        .setRepetitionsCount(10)
+                        .setWeight(Mass.fromGrams(5000))
+                        .setRateOfPerceivedExertion(1.5f)
+                        .setSetIndex(4)
+                        .build();
+        assertThat(segment.getStartTime()).isEqualTo(START_TIME);
+        assertThat(segment.getEndTime()).isEqualTo(END_TIME);
+        assertThat(segment.getSegmentType())
+                .isEqualTo(ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL);
+        assertThat(segment.getRepetitionsCount()).isEqualTo(10);
+        assertThat(segment.getWeight()).isEqualTo(Mass.fromGrams(5000));
+        assertThat(segment.hasRateOfPerceivedExertion()).isEqualTo(true);
+        assertThat(segment.getRateOfPerceivedExertion()).isEqualTo(1.5f);
+        assertThat(segment.hasSetIndex()).isEqualTo(true);
+        assertThat(segment.getSetIndex()).isEqualTo(4);
+    }
+
+    @Test
     public void testExerciseSegment_buildWithoutRepetitions_repetitionsIsZero() {
         ExerciseSegment segment =
                 new ExerciseSegment.Builder(
@@ -61,6 +88,28 @@ public class ExerciseSegmentTest {
                                 ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
                         .build();
         assertThat(segment.getRepetitionsCount()).isEqualTo(0);
+    }
+
+    @Test
+    public void testExerciseSegment_buildWithoutRpe_throwsException() {
+        ExerciseSegment segment =
+                new ExerciseSegment.Builder(
+                                START_TIME,
+                                END_TIME,
+                                ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
+                        .build();
+        assertThrows(IllegalStateException.class, segment::getRateOfPerceivedExertion);
+    }
+
+    @Test
+    public void testExerciseSegment_buildWithoutSetIndex_throwsException() {
+        ExerciseSegment segment =
+                new ExerciseSegment.Builder(
+                                START_TIME,
+                                END_TIME,
+                                ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
+                        .build();
+        assertThrows(IllegalStateException.class, segment::getSetIndex);
     }
 
     @Test(expected = IllegalArgumentException.class)
