@@ -453,6 +453,7 @@ class ConnectedAppsFragmentTest {
 
         onView(withText("Permanently delete all $TEST_APP_NAME data?"))
             .check(matches(isDisplayed()))
+        verify(healthConnectLogger).logInteraction(AppPermissionsElement.INACTIVE_APP_DELETE_BUTTON)
     }
 
     @Test
