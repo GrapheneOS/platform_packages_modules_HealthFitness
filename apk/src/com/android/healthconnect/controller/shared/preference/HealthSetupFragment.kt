@@ -71,8 +71,7 @@ abstract class HealthSetupFragment : HealthPreferenceFragment() {
                 windowInsets.getInsets(
                     WindowInsetsCompat.Type.systemBars() or
                         WindowInsetsCompat.Type.displayCutout() or
-                        WindowInsetsCompat.Type.statusBars() or
-                        WindowInsetsCompat.Type.systemGestures()
+                        WindowInsetsCompat.Type.statusBars()
                 )
             preferenceContainer.updatePadding(top = bars.top, left = bars.left, right = bars.right)
             buttonArea.updatePadding(bottom = bars.bottom, left = bars.left, right = bars.right)
