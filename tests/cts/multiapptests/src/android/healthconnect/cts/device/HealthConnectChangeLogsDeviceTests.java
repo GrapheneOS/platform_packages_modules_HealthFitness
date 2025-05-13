@@ -59,6 +59,7 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectChangeLogsDeviceTests {
@@ -77,6 +78,15 @@ public class HealthConnectChangeLogsDeviceTests {
                             (deletedLog, stringId) ->
                                     deletedLog.getDeletedRecordId().equals(stringId),
                             "has matching string id");
+
+    private static final Correspondence<ChangeLogsResponse.DeletedMedicalResource, MedicalResource>
+            DELETED_MEDICAL_RESOURCE_CORRESPONDENCE =
+                    Correspondence.from(
+                            (deletedMedicalResource, medicalResource) ->
+                                    deletedMedicalResource
+                                            .getDeletedMedicalResourceId()
+                                            .equals(medicalResource.getId()),
+                            "has matching medical resource id");
 
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
@@ -285,5 +295,83 @@ public class HealthConnectChangeLogsDeviceTests {
         assertThat(response.getUpsertedMedicalResources())
                 .doesNotContain(medicalResourceInsertedByAppB);
         assertThat(response.getDeletedMedicalResources()).isEmpty();
+    }
+
+    @Test
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    public void
+            testChangeLogs_phr_insertAndDelete_multipleApps_noFilter_returnsDeletedLogsForAllApps()
+                    throws Exception {
+        String changeLogToken =
+                APP_A_WITH_READ_WRITE_PERMS.getChangeLogToken(
+                        new ChangeLogTokenRequest.Builder()
+                                .addMedicalResourceType(MEDICAL_RESOURCE_TYPE_VACCINES)
+                                .build());
+        ChangeLogsRequest changeLogsRequest = new ChangeLogsRequest.Builder(changeLogToken).build();
+
+        MedicalDataSource dataSourceByAppA =
+                APP_A_WITH_READ_WRITE_PERMS.createMedicalDataSource(
+                        getCreateMedicalDataSourceRequest("appA"));
+        MedicalResource medicalResourceInsertedByAppA =
+                APP_A_WITH_READ_WRITE_PERMS.upsertMedicalResource(
+                        dataSourceByAppA.getId(), FHIR_DATA_IMMUNIZATION);
+        MedicalDataSource dataSourceByAppB =
+                APP_B_WITH_READ_WRITE_PERMS.createMedicalDataSource(
+                        getCreateMedicalDataSourceRequest("appB"));
+        MedicalResource medicalResourceInsertedByAppB =
+                APP_B_WITH_READ_WRITE_PERMS.upsertMedicalResource(
+                        dataSourceByAppB.getId(), FHIR_DATA_IMMUNIZATION);
+        APP_A_WITH_READ_WRITE_PERMS.deleteMedicalResources(
+                List.of(medicalResourceInsertedByAppA.getId()));
+        APP_B_WITH_READ_WRITE_PERMS.deleteMedicalResources(
+                List.of(medicalResourceInsertedByAppB.getId()));
+        ChangeLogsResponse response = APP_A_WITH_READ_WRITE_PERMS.getChangeLogs(changeLogsRequest);
+
+        assertThat(response.getDeletedMedicalResources())
+                .comparingElementsUsing(DELETED_MEDICAL_RESOURCE_CORRESPONDENCE)
+                .containsExactly(medicalResourceInsertedByAppA, medicalResourceInsertedByAppB);
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+    }
+
+    @Test
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    public void
+            testChangeLogs_phr_insertAndDelete_multipleApps_filterDataOrigin_returnsDeletedLogs()
+                    throws Exception {
+        String changeLogToken =
+                APP_A_WITH_READ_WRITE_PERMS.getChangeLogToken(
+                        new ChangeLogTokenRequest.Builder()
+                                .addMedicalResourceType(MEDICAL_RESOURCE_TYPE_VACCINES)
+                                .addDataOriginFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(
+                                                        APP_B_WITH_READ_WRITE_PERMS
+                                                                .getPackageName())
+                                                .build())
+                                .build());
+        ChangeLogsRequest changeLogsRequest = new ChangeLogsRequest.Builder(changeLogToken).build();
+
+        MedicalDataSource dataSourceByAppA =
+                APP_A_WITH_READ_WRITE_PERMS.createMedicalDataSource(
+                        getCreateMedicalDataSourceRequest("appA"));
+        MedicalResource medicalResourceInsertedByAppA =
+                APP_A_WITH_READ_WRITE_PERMS.upsertMedicalResource(
+                        dataSourceByAppA.getId(), FHIR_DATA_IMMUNIZATION);
+        MedicalDataSource dataSourceByAppB =
+                APP_B_WITH_READ_WRITE_PERMS.createMedicalDataSource(
+                        getCreateMedicalDataSourceRequest("appB"));
+        MedicalResource medicalResourceInsertedByAppB =
+                APP_B_WITH_READ_WRITE_PERMS.upsertMedicalResource(
+                        dataSourceByAppB.getId(), FHIR_DATA_IMMUNIZATION);
+        APP_A_WITH_READ_WRITE_PERMS.deleteMedicalResources(
+                List.of(medicalResourceInsertedByAppA.getId()));
+        APP_B_WITH_READ_WRITE_PERMS.deleteMedicalResources(
+                List.of(medicalResourceInsertedByAppB.getId()));
+        ChangeLogsResponse response = APP_A_WITH_READ_WRITE_PERMS.getChangeLogs(changeLogsRequest);
+
+        assertThat(response.getDeletedMedicalResources())
+                .comparingElementsUsing(DELETED_MEDICAL_RESOURCE_CORRESPONDENCE)
+                .containsExactly(medicalResourceInsertedByAppB);
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
     }
 }

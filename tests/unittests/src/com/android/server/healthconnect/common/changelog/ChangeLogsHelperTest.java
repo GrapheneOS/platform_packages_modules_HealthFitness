@@ -559,7 +559,6 @@ public class ChangeLogsHelperTest {
                                 createAllergyMedicalResource(mDataSource.getId())),
                         PACKAGE_NAME);
         mPhrTestUtils.deleteResource(insertedResources.get(0));
-        insertMedicalResourceDeletionChangeLogs(insertedResources.subList(0, 1));
 
         var tokenRequest = mChangeLogsRequestHelper.getRequest(PACKAGE_NAME, token);
         var changeLogsResponse =
@@ -597,7 +596,6 @@ public class ChangeLogsHelperTest {
                                 createAllergyMedicalResource(mDataSource.getId())),
                         PACKAGE_NAME);
         mPhrTestUtils.deleteResource(insertedResources.get(0));
-        insertMedicalResourceDeletionChangeLogs(insertedResources.subList(0, 1));
 
         var tokenRequest = mChangeLogsRequestHelper.getRequest(PACKAGE_NAME, token);
         var changeLogsResponse =
@@ -634,7 +632,6 @@ public class ChangeLogsHelperTest {
                                 createAllergyMedicalResource(mDataSource.getId())),
                         PACKAGE_NAME);
         mPhrTestUtils.deleteResource(insertedResources.get(0));
-        insertMedicalResourceDeletionChangeLogs(insertedResources.subList(0, 1));
 
         // First page (vaccines upsertion)
         var firstTokenRequest = mChangeLogsRequestHelper.getRequest(PACKAGE_NAME, token);
@@ -753,17 +750,6 @@ public class ChangeLogsHelperTest {
                 UUIDS_COLUMN_NAME, StorageUtils.getSingleByteArray(Collections.emptyList()));
         mTransactionManager.insertOrThrowOnConflict(
                 new UpsertTableRequest(ChangeLogsHelper.TABLE_NAME, contentValues));
-    }
-
-    // TODO(b/409490589) - Remove this when the linked task is done.
-    private void insertMedicalResourceDeletionChangeLogs(List<MedicalResource> medicalResources) {
-        var requests = ChangeLogsHelper.ChangeLogsTableRequests.ofDeletion(Instant.now());
-        medicalResources.forEach(
-                resource ->
-                        requests.addMedicalResourceInfo(resource.getType(), 0, resource.getId()));
-        for (UpsertTableRequest request : requests.getUpsertTableRequests()) {
-            mTransactionManager.insertOrThrowOnConflict(request);
-        }
     }
 
     private static Correspondence<UpsertTableRequest, List<UUID>>

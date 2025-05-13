@@ -558,7 +558,7 @@ public final class ChangeLogsHelper extends DatabaseHelper {
     }
 
     @VisibleForTesting
-    static List<MedicalResourceId> toMedicalResourceIdList(byte[] byteArray) {
+    public static List<MedicalResourceId> toMedicalResourceIdList(byte[] byteArray) {
         try {
             return MedicalResourceIdList.parseFrom(byteArray).getMedicalResourceIdList().stream()
                     .map(
