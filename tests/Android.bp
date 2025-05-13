@@ -9,9 +9,6 @@ filegroup {
     srcs: [
         // Uses ExtendedMockito
         "unittests/src/com/android/server/healthconnect/backuprestore/BackupRestoreTest.java",
-        "unittests/src/com/android/server/healthconnect/device/DeviceDataSourcesHelperTest.java",
-        "unittests/src/com/android/server/healthconnect/device/tracker/TrackerManagerImplTest.java",
-        "unittests/src/com/android/server/healthconnect/device/tracker/StepSensorEventListenerTest.java",
         // Uses CTS TestUtils
         "unittests/src/com/android/server/healthconnect/backuprestore/BackupRestoreWithoutMocksTest.java",
         // Fails due to attempts to reference an inaccessible file don't fail with Robolectric.
