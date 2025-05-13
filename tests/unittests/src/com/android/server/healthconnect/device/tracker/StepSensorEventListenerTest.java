@@ -20,6 +20,10 @@ import static com.android.server.healthconnect.device.tracker.StepSensorEventLis
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -103,8 +107,15 @@ public class StepSensorEventListenerTest {
 
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
         mStepSensorEventListener =
-                new StepSensorEventListener(
-                        mContext, mThreadScheduler, mDeviceRecordHelper, deviceDataSourcesHelper);
+                spy(
+                        new StepSensorEventListener(
+                                mContext,
+                                mThreadScheduler,
+                                mDeviceRecordHelper,
+                                deviceDataSourcesHelper));
+
+        // Reduce the batching delay to speed up the tests
+        when(mStepSensorEventListener.getBatchingDurationMillis()).thenReturn(500L);
     }
 
     @Test
@@ -131,13 +142,17 @@ public class StepSensorEventListenerTest {
 
     @Test
     @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
-    public void onSensorChangedTwice_writesStepDeltas() throws Exception {
+    public void onSensorChangedTwice_writesTwice() throws Exception {
+        // The first event is always written instantly and the second is written through the
+        // scheduled future
         int firstStepCount = 10;
         long firstTimestampNanos = 1234567890;
         int secondStepCount = firstStepCount + 5;
-        long secondTimestampNanos = firstTimestampNanos + 10_000_000_000L;
+        long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
+        long secondTimestampNanos = firstTimestampNanos + secondTimestampDelayNanos;
 
         triggerStepEvent(firstStepCount, firstTimestampNanos);
+        sleep(secondTimestampDelayNanos);
         triggerStepEvent(secondStepCount, secondTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
@@ -151,13 +166,43 @@ public class StepSensorEventListenerTest {
 
     @Test
     @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
-    public void onSensorChangedTwice_bothStepCountsAreDuplicate_onlyWritesStepsOnce()
+    public void onSensorChangedThrice_writesTwice() throws Exception {
+        // The first event is always written instantly and the second and third events are merged
+        // and written through the scheduled future
+        int firstStepCount = 15;
+        long firstTimestampNanos = 1234567890;
+        int secondStepCount = firstStepCount + 10;
+        long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
+        long secondTimestampNanos = firstTimestampNanos + secondTimestampDelayNanos;
+        int thirdStepCount = secondStepCount + 5;
+        long thirdTimestampDelayNanos = MILLISECONDS.toNanos(100);
+        long thirdTimestampNanos = secondTimestampNanos + thirdTimestampDelayNanos;
+
+        triggerStepEvent(firstStepCount, firstTimestampNanos);
+        sleep(secondTimestampDelayNanos);
+        triggerStepEvent(secondStepCount, secondTimestampNanos);
+        sleep(thirdTimestampDelayNanos);
+        triggerStepEvent(thirdStepCount, thirdTimestampNanos);
+        awaitPassiveSensorTasksComplete();
+        List<RecordInternal<?>> records =
+                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+
+        assertThat(records).hasSize(2);
+        assertRecord(records.get(0), firstStepCount, firstTimestampNanos);
+        assertRecord(records.get(1), thirdStepCount - firstStepCount, thirdTimestampNanos);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void onSensorChangedTwice_bothStepCountsAreDuplicate_ignoresSecondEvent()
             throws Exception {
         int firstStepCount = 10;
         long firstTimestampNanos = 1234567890;
-        long secondTimestampNanos = firstTimestampNanos + 10_000_000_000L;
+        long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
+        long secondTimestampNanos = firstTimestampNanos + secondTimestampDelayNanos;
 
         triggerStepEvent(firstStepCount, firstTimestampNanos);
+        sleep(secondTimestampDelayNanos);
         triggerStepEvent(firstStepCount, secondTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
@@ -173,9 +218,11 @@ public class StepSensorEventListenerTest {
         int firstStepCount = 10;
         long firstTimestampNanos = 1234567890;
         int secondStepCount = firstStepCount - 5;
-        long secondTimestampNanos = firstTimestampNanos + 10_000_000_000L;
+        long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
+        long secondTimestampNanos = firstTimestampNanos + secondTimestampDelayNanos;
 
         triggerStepEvent(firstStepCount, firstTimestampNanos);
+        sleep(secondTimestampDelayNanos);
         triggerStepEvent(secondStepCount, secondTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
@@ -186,6 +233,47 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void onSensorChangedTwice_bothTimestampsAreDuplicate_ignoresSecondEvent()
+            throws Exception {
+        int firstStepCount = 10;
+        long firstTimestampNanos = 1234567890;
+        int secondStepCount = firstStepCount + 5;
+        long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
+
+        triggerStepEvent(firstStepCount, firstTimestampNanos);
+        sleep(secondTimestampDelayNanos);
+        triggerStepEvent(secondStepCount, firstTimestampNanos);
+        awaitPassiveSensorTasksComplete();
+        List<RecordInternal<?>> records =
+                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+
+        assertThat(records).hasSize(1);
+        assertRecord(records.get(0), firstStepCount, firstTimestampNanos);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void onSensorChangedTwice_secondTimestampsIsLower_ignoresSecondEvent() throws Exception {
+        int firstStepCount = 10;
+        long firstTimestampNanos = 1234567890;
+        int secondStepCount = firstStepCount + 5;
+        long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
+        long secondTimestampNanos = firstTimestampNanos - secondTimestampDelayNanos;
+
+        triggerStepEvent(firstStepCount, firstTimestampNanos);
+        sleep(secondTimestampDelayNanos);
+        triggerStepEvent(secondStepCount, secondTimestampNanos);
+        awaitPassiveSensorTasksComplete();
+        List<RecordInternal<?>> records =
+                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+
+        assertThat(records).hasSize(1);
+        assertRecord(records.get(0), firstStepCount, firstTimestampNanos);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
     public void onAccuracyChanged_doesNotThrow() throws Exception {
         mStepSensorEventListener.onAccuracyChanged(
                 createSensor(), SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
@@ -227,27 +315,40 @@ public class StepSensorEventListenerTest {
     }
 
     /**
-     * Waits until all executors are idle. For now this just waits for a fixed duration with {@link
-     * Thread#sleep(long)}.
+     * Waits until the passive tracking executor is idle and shut down.
+     *
+     * <p>This should only be called once in a test, after all step events have been transmitted.
      */
+    // TODO(b/417975987): Consider improving this method with a CountDownLatch.
     private void awaitPassiveSensorTasksComplete() throws InterruptedException {
+        // Wait for twice as long as the batching duration because, if an event occurs during a
+        // scheduled future, we need to wait for that one to finish and the no-op one that will
+        // occur afterwards
+        Thread.sleep(mStepSensorEventListener.getBatchingDurationMillis() * 2);
+
         ScheduledThreadPoolExecutor passiveExecutor = mThreadScheduler.mPassiveTrackerExecutor;
+        // Beware that no new tasks are executed once #shutdown is called so any tasks after this
+        // and before #resetThreadPools may be lost.
         passiveExecutor.shutdown();
         boolean successful = passiveExecutor.awaitTermination(10, TimeUnit.SECONDS);
         assertThat(successful).isTrue();
     }
 
-    private static void assertRecord(RecordInternal<?> record, int stepCount, long timestampNanos) {
-        StepsRecordInternal stepsRecord = (StepsRecordInternal) record;
-        // Start timestamp is always 1ms before the end timestamp.
-        assertThat(stepsRecord.getStartTimeInMillis())
-                .isEqualTo(getCurrentTimestampOfEvent(timestampNanos) - 1);
-        assertThat(stepsRecord.getEndTimeInMillis())
-                .isEqualTo(getCurrentTimestampOfEvent(timestampNanos));
-        assertThat(stepsRecord.getCount()).isEqualTo(stepCount);
+    private void sleep(long nanos) throws InterruptedException {
+        Thread.sleep(NANOSECONDS.toMillis(nanos));
     }
 
-    private static long getCurrentTimestampOfEvent(long timestampSinceBootNanos) {
-        return TimeUnit.NANOSECONDS.toMillis(BOOT_TIME_NANOS + timestampSinceBootNanos);
+    private static void assertRecord(RecordInternal<?> record, int stepCount, long timestampNanos) {
+        StepsRecordInternal stepsRecord = (StepsRecordInternal) record;
+        assertThat(stepsRecord.getCount()).isEqualTo(stepCount);
+        // Start timestamp is always 1ms before the end timestamp.
+        assertThat(stepsRecord.getStartTimeInMillis())
+                .isEqualTo(getTimestampAfterBoot(timestampNanos) - 1);
+        assertThat(stepsRecord.getEndTimeInMillis())
+                .isEqualTo(getTimestampAfterBoot(timestampNanos));
+    }
+
+    private static long getTimestampAfterBoot(long timestampSinceBootNanos) {
+        return NANOSECONDS.toMillis(BOOT_TIME_NANOS + timestampSinceBootNanos);
     }
 }

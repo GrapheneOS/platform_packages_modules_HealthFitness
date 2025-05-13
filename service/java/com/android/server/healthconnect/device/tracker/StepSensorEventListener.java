@@ -18,6 +18,7 @@ package com.android.server.healthconnect.device.tracker;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_AUTOMATICALLY_RECORDED;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -35,6 +36,8 @@ import com.android.server.healthconnect.device.DeviceRecordHelper;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ScheduledFuture;
 
 /**
  * Listener that receives SensorManager pedometer events.
@@ -44,6 +47,8 @@ import java.util.List;
 class StepSensorEventListener implements SensorEventListener {
 
     private static final String TAG = "HealthConnectStepSensorEventListener";
+    private static final long BATCHING_DURATION_MILLIS = SECONDS.toMillis(60);
+
     @VisibleForTesting static final long BOOT_TIME_NANOS = computeBootTimeNanos();
 
     private final Context mContext;
@@ -53,10 +58,17 @@ class StepSensorEventListener implements SensorEventListener {
     // TODO(b/413650602): Check if we ever want to cache the current device.
     private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
 
+    /** Class to hold a cumulative step data point and associated timestamp since boot time. */
+    private record SensorData(int sensorValue, long sensorTimestampNanos) {}
+
     // Sensor manager step count resets on device boot, which is also when the Health Connect
     // process starts.
     // TODO(b/397400522): Check if we need to handle user switching.
-    private int mLastSensorValue = 0;
+    private SensorData mLastSavedData =
+            new SensorData(/* sensorValue= */ 0, /* sensorTimestampNanos= */ 0);
+    private SensorData mPendingData =
+            new SensorData(/* sensorValue= */ 0, /* sensorTimestampNanos= */ 0);
+    private Optional<ScheduledFuture<?>> mPendingBatchWriteFuture = Optional.empty();
 
     StepSensorEventListener(
             Context context,
@@ -72,8 +84,6 @@ class StepSensorEventListener implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         try {
-            // TODO(b/397400522): Add support for buffering instead of converting and writing every
-            // individual data point.
             processSensorEvent(event);
         } catch (Exception e) {
             Slog.e(TAG, "Error processing sensor event: " + e);
@@ -91,29 +101,90 @@ class StepSensorEventListener implements SensorEventListener {
             return;
         }
 
-        int sensorValue = (int) event.values[0]; // Cumulative step count since boot.
-        int stepDelta =
-                sensorValue - mLastSensorValue; // Convert from cumulative steps to a step delta.
-        long eventEndTimeNanos = calculateRealEventTimestampNanos(event.timestamp);
+        int sensorValueCumulative = (int) event.values[0]; // Cumulative step count since boot.
+        long sensorEventTimestampNanos = event.timestamp;
 
-        if (sensorValue <= mLastSensorValue) {
+        // Schedule that runs immediately
+        mThreadScheduler.schedulePassiveTrackerTask(
+                () -> {
+                    if (isOldOrInvalidValue(sensorValueCumulative, sensorEventTimestampNanos)) {
+                        return;
+                    }
+
+                    mPendingData = new SensorData(sensorValueCumulative, sensorEventTimestampNanos);
+
+                    if (mPendingBatchWriteFuture.isEmpty()
+                            || mPendingBatchWriteFuture.get().isDone()) {
+                        // This will write in the first received event immediately and then future
+                        // events every 60 seconds (BATCHING_DURATION_NANOS) until there are no
+                        // steps for 60 seconds
+                        writeBatchAndScheduleNextWrite();
+                    }
+                });
+    }
+
+    private boolean isOldOrInvalidValue(int sensorValueCumulative, long sensorEventTimestampNanos) {
+        if (sensorValueCumulative <= mPendingData.sensorValue) {
             if (android.health.connect.Constants.DEBUG) {
-                Slog.d(TAG, "Ignoring same or lower sensor value");
+                Slog.d(TAG, "Ignoring event as value is same or lower than pending value");
             }
+            return true;
+        }
+
+        if (sensorEventTimestampNanos <= mPendingData.sensorTimestampNanos) {
+            if (android.health.connect.Constants.DEBUG) {
+                Slog.d(
+                        TAG,
+                        "Ignoring event as sensor timestamp is same or lower than pending value");
+            }
+            return true;
+        }
+
+        if (sensorValueCumulative <= mLastSavedData.sensorValue) {
+            if (android.health.connect.Constants.DEBUG) {
+                Slog.d(TAG, "Ignoring event as value is same or lower than saved value");
+            }
+            return true;
+        }
+
+        if (sensorEventTimestampNanos <= mLastSavedData.sensorTimestampNanos) {
+            if (android.health.connect.Constants.DEBUG) {
+                Slog.d(TAG, "Ignoring event as sensor timestamp is same or lower than saved value");
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    private void writeBatchAndScheduleNextWrite() {
+        int stepDelta =
+                mPendingData.sensorValue
+                        - mLastSavedData
+                                .sensorValue; // Convert from cumulative steps to a step delta
+
+        if (stepDelta == 0) {
+            mPendingBatchWriteFuture = Optional.empty();
+            // Don't execute or schedule another write as there have not been any changes
             return;
         }
 
-        // Update field to keep track of step deltas.
-        mLastSensorValue = sensorValue;
+        long realEventTimestampNanos =
+                calculateRealEventTimestampNanos(mPendingData.sensorTimestampNanos);
+        writeSteps(getStepsRecordInternal(stepDelta, realEventTimestampNanos));
+        mLastSavedData = mPendingData;
 
-        executeOrScheduleWrite(stepDelta, eventEndTimeNanos);
+        mPendingBatchWriteFuture =
+                mThreadScheduler.schedulePassiveTrackerTask(
+                        this::writeBatchAndScheduleNextWrite, getBatchingDurationMillis());
+        if (mPendingBatchWriteFuture.isEmpty()) {
+            Slog.e(TAG, "Failed to schedule a write");
+        }
     }
 
-    private void executeOrScheduleWrite(float stepDelta, long eventEndTimeNanos) {
-        // TODO(b/397400522): Implement scheduled writes.
-        // Gets us off the main thread ASAP.
-        mThreadScheduler.schedulePassiveTrackerTask(
-                () -> writeSteps(getStepsRecordInternal(stepDelta, eventEndTimeNanos)));
+    @VisibleForTesting
+    long getBatchingDurationMillis() {
+        return BATCHING_DURATION_MILLIS;
     }
 
     private StepsRecordInternal getStepsRecordInternal(float stepCount, long eventEndTimeNanos) {
