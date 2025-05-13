@@ -99,7 +99,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Helper class for MedicalResource table.
@@ -138,9 +137,9 @@ public final class MedicalResourceHelper {
                     FHIR_RESOURCE_TYPE_COLUMN_NAME,
                     FHIR_RESOURCE_ID_COLUMN_NAME,
                     FHIR_DATA_COLUMN_NAME,
-                    MedicalDataSourceHelper.getFhirVersionColumnName(),
-                    MedicalResourceIndicesHelper.getMedicalResourceTypeColumnName(),
-                    MedicalDataSourceHelper.getDataSourceUuidColumnName());
+                    getFhirVersionColumnName(),
+                    getMedicalResourceTypeColumnName(),
+                    getDataSourceUuidColumnName());
 
     /**
      * A block of SQL with a where clause to read based on the medical resource id composite key.
@@ -153,7 +152,7 @@ public final class MedicalResourceHelper {
             "("
                     + MedicalDataSourceHelper.getMainTableName()
                     + "."
-                    + MedicalDataSourceHelper.getDataSourceUuidColumnName()
+                    + getDataSourceUuidColumnName()
                     + ","
                     + MEDICAL_RESOURCE_TABLE_NAME
                     + "."
@@ -205,7 +204,7 @@ public final class MedicalResourceHelper {
                     + " WHERE ("
                     + MedicalDataSourceHelper.getMainTableName()
                     + "."
-                    + MedicalDataSourceHelper.getDataSourceUuidColumnName()
+                    + getDataSourceUuidColumnName()
                     + ","
                     + FHIR_RESOURCE_TYPE_COLUMN_NAME
                     + ","
@@ -244,6 +243,7 @@ public final class MedicalResourceHelper {
     private final MedicalDataSourceHelper mMedicalDataSourceHelper;
     private final TimeSource mTimeSource;
     private final AccessLogsHelper mAccessLogsHelper;
+    private final MedicalChangeLogsHelper mMedicalChangeLogsHelper;
 
     public MedicalResourceHelper(
             TransactionManager transactionManager,
@@ -256,6 +256,9 @@ public final class MedicalResourceHelper {
         mMedicalDataSourceHelper = medicalDataSourceHelper;
         mTimeSource = timeSource;
         mAccessLogsHelper = accessLogsHelper;
+        mMedicalChangeLogsHelper =
+                new MedicalChangeLogsHelper(
+                        transactionManager, appInfoHelper, medicalDataSourceHelper);
     }
 
     public static String getMainTableName() {
@@ -486,7 +489,7 @@ public final class MedicalResourceHelper {
     }
 
     private static Set<Integer> getResourceTypesRead(List<MedicalResource> resources) {
-        return resources.stream().map(MedicalResource::getType).collect(Collectors.toSet());
+        return resources.stream().map(MedicalResource::getType).collect(toSet());
     }
 
     /**
@@ -718,11 +721,26 @@ public final class MedicalResourceHelper {
             List<UUID> dataSourceIds) {
         return new ReadTableRequest(getMainTableName())
                 .setDistinctClause(true)
-                .setColumnNames(
-                        List.of(MedicalResourceIndicesHelper.getMedicalResourceTypeColumnName()))
+                .setColumnNames(List.of(getMedicalResourceTypeColumnName()))
                 .setJoinClause(
                         getJoinWithMedicalDataSourceFilterOnDataSourceIds(
                                 dataSourceIds, joinWithMedicalResourceIndicesTable()));
+    }
+
+    static ReadTableRequest getReadRequestForResourcesBelongingToDataSourceIds(
+            List<UUID> dataSourceIds, @Nullable Long appId) {
+        List<String> columns = new ArrayList<>(sMedicalResourceColumns);
+        columns.add(sLastModifiedTimeInInnerQuery);
+        return new ReadTableRequest(getMainTableName())
+                .setColumnNames(columns)
+                .setJoinClause(
+                        appId == null
+                                ? getJoinWithMedicalDataSourceFilterOnDataSourceIds(
+                                        dataSourceIds, joinWithMedicalResourceIndicesTable())
+                                : getJoinWithMedicalDataSourceFilterOnDataSourceIdsAndAppId(
+                                        dataSourceIds,
+                                        appId,
+                                        joinWithMedicalResourceIndicesTable()));
     }
 
     @VisibleForTesting
@@ -730,8 +748,7 @@ public final class MedicalResourceHelper {
             List<UUID> dataSourceIds, Set<Integer> medicalResourceTypes, long appId) {
         return new ReadTableRequest(getMainTableName())
                 .setDistinctClause(true)
-                .setColumnNames(
-                        List.of(MedicalResourceIndicesHelper.getMedicalResourceTypeColumnName()))
+                .setColumnNames(List.of(getMedicalResourceTypeColumnName()))
                 .setJoinClause(
                         getJoinWithMedicalDataSourceFilterOnDataSourceIdsAndAppId(
                                 dataSourceIds,
@@ -935,7 +952,7 @@ public final class MedicalResourceHelper {
             List<UUID> dataSourceIds, long appId) {
         WhereClauses whereClauses = getAppIdWhereClause(appId);
         whereClauses.addWhereInClauseWithoutQuotes(
-                getDataSourceUuidColumnName(), StorageUtils.getListOfHexStrings(dataSourceIds));
+                getDataSourceUuidColumnName(), getListOfHexStrings(dataSourceIds));
         return whereClauses;
     }
 
@@ -1239,8 +1256,8 @@ public final class MedicalResourceHelper {
     }
 
     /**
-     * Deletes a list of {@link MedicalResource}s created based on the given list of {@link
-     * MedicalResourceId}s into the HealthConnect database.
+     * Deletes a list of {@link MedicalResource}s based on the given list of {@link
+     * MedicalResourceId}s.
      *
      * @param medicalResourceIds list of {@link MedicalResourceId} to delete
      */
@@ -1250,8 +1267,8 @@ public final class MedicalResourceHelper {
     }
 
     /**
-     * Deletes a list of {@link MedicalResource}s created based on the given list of {@link
-     * MedicalResourceId}s into the HealthConnect database.
+     * Deletes a list of {@link MedicalResource}s based on the given list of {@link
+     * MedicalResourceId}s.
      *
      * @param medicalResourceIds list of {@link MedicalResourceId} to delete
      * @param callingPackageName Only allows deletions of resources whose owning datasource belongs
@@ -1266,17 +1283,23 @@ public final class MedicalResourceHelper {
     }
 
     /**
+     * Deletes a list of {@link MedicalResource}s based on the given list of {@link
+     * MedicalResourceId}s.
+     *
+     * @param medicalResourceIds list of {@link MedicalResourceId} to delete
      * @param callingPackageName is used to check if the requested resources were written by that
      *     package name, and won't be deleted if they are not. Also used for generating access logs.
      *     If null, all given resource ids will be deleted without ownership checks, and no access
      *     logs will be generated.
+     * @throws IllegalArgumentException if no appId exists for the given {@code packageName} in the
+     *     {@link AppInfoHelper#TABLE_NAME}.
      */
     private void deleteMedicalResourcesByIds(
             List<MedicalResourceId> medicalResourceIds, @Nullable String callingPackageName) {
         Long appId;
         if (callingPackageName != null) {
             appId = mAppInfoHelper.getAppInfoId(callingPackageName);
-            if (appId == Constants.DEFAULT_LONG) {
+            if (appId == DEFAULT_LONG) {
                 throw new IllegalArgumentException(
                         "Deletion not permitted as app has inserted no data.");
             }
@@ -1307,7 +1330,7 @@ public final class MedicalResourceHelper {
                     }
 
                     if (isPhrChangeLogsEnabled()) {
-                        generateDeletionChangeLogsForMedicalResources(
+                        mMedicalChangeLogsHelper.generateDeletionChangeLogsForMedicalResources(
                                 db, readMedicalResourcesByIds(medicalResourceIds, appId), appId);
                     }
 
@@ -1315,61 +1338,12 @@ public final class MedicalResourceHelper {
                 });
     }
 
-    private void generateDeletionChangeLogsForMedicalResources(
-            SQLiteDatabase db, List<MedicalResource> resourcesToDelete, @Nullable Long appId) {
-        var deletionChangeLogs = ChangeLogsHelper.ChangeLogsTableRequests.ofDeletion(Instant.now());
-
-        if (appId == null) {
-            // If we're not deleting resources of a specific app (for example deleting from the UI),
-            // we need to check the app ids of the data sources the resources belong to.
-            List<UUID> dataSourceIds =
-                    resourcesToDelete.stream()
-                            .map(MedicalResource::getDataSourceId)
-                            .map(UUID::fromString)
-                            .distinct()
-                            .toList();
-            Map<String, Long> dataSourcesToAppIdsMap =
-                    mMedicalDataSourceHelper
-                            .getMedicalDataSourcesByIdsWithoutPermissionChecks(dataSourceIds)
-                            .stream()
-                            .collect(
-                                    toMap(
-                                            MedicalDataSource::getId,
-                                            dataSource ->
-                                                    mAppInfoHelper.getAppInfoId(
-                                                            dataSource.getPackageName())));
-            resourcesToDelete.forEach(
-                    resource -> {
-                        var resourceAppId = dataSourcesToAppIdsMap.get(resource.getDataSourceId());
-                        if (resourceAppId == null) {
-                            Slog.e(
-                                    TAG,
-                                    "No app id found for resource, it will be skipped: "
-                                            + resource);
-                            return;
-                        }
-                        deletionChangeLogs.addMedicalResourceInfo(
-                                resource.getType(), resourceAppId, resource.getId());
-                    });
-        } else {
-            resourcesToDelete.forEach(
-                    resource ->
-                            deletionChangeLogs.addMedicalResourceInfo(
-                                    resource.getType(), appId, resource.getId()));
-        }
-
-        for (UpsertTableRequest insertRequestsForChangeLog :
-                deletionChangeLogs.getUpsertTableRequests()) {
-            mTransactionManager.insertOrThrowOnConflict(db, insertRequestsForChangeLog);
-        }
-    }
-
     private Set<Integer> readMedicalResourcesTypes(
             SQLiteDatabase db, List<MedicalResourceId> medicalResourceIds, @Nullable Long appId) {
         Pair<String, String[]> paramsAndArgs = makeParametersAndArgs(medicalResourceIds, appId);
         String sql =
                 "SELECT DISTINCT "
-                        + MedicalResourceIndicesHelper.getMedicalResourceTypeColumnName()
+                        + getMedicalResourceTypeColumnName()
                         + " FROM "
                         + RESOURCES_JOIN_DATA_SOURCES_JOIN_INDICES
                         + " WHERE "
@@ -1385,7 +1359,7 @@ public final class MedicalResourceHelper {
     }
 
     /**
-     * Deletes all {@link MedicalResource}s that are part of the given datasource.
+     * Deletes all {@link MedicalResource}s that are part of the given data source.
      *
      * <p>No error occurs if any of the ids are not present because the ids are just a part of the
      * filters.
@@ -1398,7 +1372,7 @@ public final class MedicalResourceHelper {
     }
 
     /**
-     * Deletes all {@link MedicalResource}s that are part of the given datasource.
+     * Deletes all {@link MedicalResource}s that are part of the given data source.
      *
      * <p>No error occurs if any of the ids are not present because the ids are just a part of the
      * filters.
@@ -1416,10 +1390,19 @@ public final class MedicalResourceHelper {
     }
 
     /**
+     * Deletes all {@link MedicalResource}s that are part of the given data source.
+     *
+     * <p>No error occurs if any of the ids are not present because the ids are just a part of the
+     * filters.
+     *
+     * @param request which resources to delete.
      * @param callingPackageName is used to check if the requested resources were written by that
      *     package name, and won't be deleted if they are not. Also used for generating access logs.
      *     If null, all matching resources will be deleted without ownership checks, and no access
      *     logs will be generated.
+     * @throws IllegalArgumentException if the {@code callingPackageName} does not exist in the
+     *     {@link AppInfoHelper#TABLE_NAME}. This can happen if the app has never written any data
+     *     sources.
      */
     private void deleteMedicalResourcesByRequest(
             DeleteMedicalResourcesRequest request, @Nullable String callingPackageName)
@@ -1435,7 +1418,7 @@ public final class MedicalResourceHelper {
         Long appId;
         if (callingPackageName != null) {
             appId = mAppInfoHelper.getAppInfoId(callingPackageName);
-            if (appId == Constants.DEFAULT_LONG) {
+            if (appId == DEFAULT_LONG) {
                 throw new IllegalArgumentException(
                         "Deletion not permitted as app has inserted no data.");
             }
@@ -1467,8 +1450,8 @@ public final class MedicalResourceHelper {
                         var readRequest =
                                 getFilteredReadRequestForResources(
                                         dataSourceUuids, medicalResourceTypes, appId);
-                        var resources = readMedicalResourcesByReadRequest(db, readRequest);
-                        generateDeletionChangeLogsForMedicalResources(db, resources, appId);
+                        mMedicalChangeLogsHelper.generateDeletionChangeLogsForMedicalResources(
+                                db, readRequest, appId);
                     }
 
                     mTransactionManager.delete(
@@ -1488,17 +1471,6 @@ public final class MedicalResourceHelper {
             }
         }
         return resourceTypes;
-    }
-
-    private List<MedicalResource> readMedicalResourcesByReadRequest(
-            SQLiteDatabase db, ReadTableRequest request) {
-        List<MedicalResource> resources = new ArrayList<>();
-        try (Cursor cursor = mTransactionManager.read(db, request)) {
-            while (cursor.moveToNext()) {
-                resources.add(getMedicalResource(cursor));
-            }
-        }
-        return resources;
     }
 
     private DeleteTableRequest getFilteredDeleteRequest(
@@ -1541,7 +1513,7 @@ public final class MedicalResourceHelper {
                                 .addWhereInSQLRequestClause(getPrimaryColumn(), innerRead));
     }
 
-    private static MedicalResource getMedicalResource(Cursor cursor) {
+    static MedicalResource getMedicalResource(Cursor cursor) {
         int fhirResourceTypeInt = getCursorInt(cursor, FHIR_RESOURCE_TYPE_COLUMN_NAME);
         FhirResource fhirResource =
                 new FhirResource.Builder(
@@ -1650,7 +1622,7 @@ public final class MedicalResourceHelper {
                                     : " OR ");
             selectionArgs[index++] = String.valueOf(appId);
         }
-        sql.append(MedicalResourceIndicesHelper.getMedicalResourceTypeColumnName()).append(" IN (");
+        sql.append(getMedicalResourceTypeColumnName()).append(" IN (");
 
         for (Integer type : medicalResourceTypes) {
             sql.append("?,");
