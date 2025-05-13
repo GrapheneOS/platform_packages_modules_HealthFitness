@@ -888,6 +888,7 @@ public class HealthConnectChangeLogsTests {
     }
 
     @Test
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
     public void testChangeLogs_noOperations_withPageSize_returnsEmptyChangeLogs_phr()
             throws InterruptedException {
         ChangeLogTokenResponse tokenResponse =
@@ -920,6 +921,7 @@ public class HealthConnectChangeLogsTests {
     }
 
     @Test
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
     public void testChangeLogs_insert_withPageSize_doesNotExceedPageSize_phr()
             throws InterruptedException {
         ChangeLogTokenResponse tokenResponse =
