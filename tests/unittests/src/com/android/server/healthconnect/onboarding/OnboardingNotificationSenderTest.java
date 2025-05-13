@@ -18,7 +18,6 @@ package com.android.server.healthconnect.onboarding;
 
 import static android.app.Notification.EXTRA_BIG_TEXT;
 import static android.app.Notification.EXTRA_TITLE;
-import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
 
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.CONNECT_MORE_APPS_NOTIFICATION_BUTTON;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.CONNECT_MORE_APPS_NOTIFICATION_CONTENT;
@@ -70,8 +69,8 @@ public class OnboardingNotificationSenderTest {
         mContext = InstrumentationRegistry.getInstrumentation().getContext();
         mUserHandle = mContext.getUser();
         mOnboardingNotificationSender =
-                new OnboardingNotificationSender(
-                        mNotificationSender, mResourcesContext, mContext, NOTIFICATION_CHANNEL_ID);
+                new OnboardingNotificationSender(mContext, mResourcesContext);
+        mOnboardingNotificationSender.setNotificationSenderForTesting(mNotificationSender);
         when(mResourcesContext.getStringByNameOrThrow(any()))
                 .thenAnswer(invocation -> invocation.getArgument(0));
     }
