@@ -439,6 +439,7 @@ final class ProtoTestData {
         return ExerciseSession.newBuilder()
                 .setExerciseType(EXERCISE_SESSION_TYPE_STRENGTH_TRAINING)
                 .setHasRoute(true)
+                .setSessionRateOfPerceivedExertion(4.5f)
                 .setRoute(
                         ExerciseRoute.newBuilder()
                                 .addRouteLocation(
@@ -461,7 +462,10 @@ final class ProtoTestData {
                                 .setStartTime(123456)
                                 .setEndTime(654321)
                                 .setSegmentType(EXERCISE_SEGMENT_TYPE_DEADLIFT)
-                                .setRepetitionsCount(10))
+                                .setRepetitionsCount(10)
+                                .setWeight(5000)
+                                .setSetIndex(1)
+                                .setRateOfPerceivedExertion(5.5f))
                 .build();
     }
 
