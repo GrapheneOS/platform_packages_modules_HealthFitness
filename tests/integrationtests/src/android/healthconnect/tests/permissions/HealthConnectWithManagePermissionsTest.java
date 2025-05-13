@@ -23,9 +23,9 @@ import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMIS
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
 import static android.health.connect.HealthPermissions.READ_HEART_RATE;
-import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.cts.utils.TestUtils.updatePriorityWithManageHealthDataPermission;
 import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.updatePriorityWithManageHealthDataPermission;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
@@ -45,10 +45,10 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.DataOrigin;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.PermissionHelper;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.PermissionUtils;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.Build;
 import android.platform.test.annotations.RequiresFlagsDisabled;
 import android.platform.test.annotations.RequiresFlagsEnabled;
@@ -128,7 +128,7 @@ public class HealthConnectWithManagePermissionsTest {
         mPackageManager = mContext.getPackageManager();
 
         for (String permission :
-                PermissionHelper.getDeclaredHealthPermissions(DEFAULT_APP_PACKAGE)) {
+                PermissionUtils.getDeclaredHealthPermissions(DEFAULT_APP_PACKAGE)) {
             revokePermissionViaPackageManager(DEFAULT_APP_PACKAGE, permission);
             resetPermissionFlags(DEFAULT_APP_PACKAGE, permission);
             assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, permission);

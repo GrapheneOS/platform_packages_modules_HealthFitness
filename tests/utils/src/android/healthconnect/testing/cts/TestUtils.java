@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.utils;
+package android.healthconnect.testing.cts;
 
 import static android.health.connect.HealthDataCategory.ACTIVITY;
 import static android.health.connect.HealthDataCategory.BODY_MEASUREMENTS;
@@ -117,7 +117,7 @@ import android.health.connect.datatypes.WeightRecord;
 import android.health.connect.datatypes.WheelchairPushesRecord;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationException;
-import android.healthconnect.testing.cts.HealthConnectReceiver;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.healthconnect.testing.shared.aggregation.TimeFilterFactory;
 import android.os.OutcomeReceiver;
 import android.util.Log;
@@ -464,6 +464,13 @@ public final class TestUtils {
         } finally {
             uiAutomation.dropShellPermissionIdentity();
         }
+    }
+
+    public static void deleteAllFitnessData() throws InterruptedException {
+        verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .setTimeRangeFilter(TimeFilterFactory.getOpenEndTimeFilter(Instant.EPOCH))
+                        .build());
     }
 
     /**

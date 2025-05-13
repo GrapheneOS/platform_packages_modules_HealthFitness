@@ -22,8 +22,8 @@ import static org.junit.Assert.fail;
 import android.content.Context;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissions;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;

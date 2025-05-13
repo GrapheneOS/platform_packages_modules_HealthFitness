@@ -19,9 +19,9 @@ package android.healthconnect.cts.testhelper;
 import static android.health.connect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
 import static android.health.connect.datatypes.NutritionRecord.BIOTIN_TOTAL;
-import static android.healthconnect.cts.utils.TestUtils.deleteRecordsOfType;
-import static android.healthconnect.cts.utils.TestUtils.deleteRecordsOfTypes;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.deleteRecordsOfType;
+import static android.healthconnect.testing.cts.TestUtils.deleteRecordsOfTypes;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.shared.DataFactory.getBloodPressureRecord;
 import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
 import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
@@ -64,8 +64,8 @@ import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
-import android.healthconnect.cts.utils.PermissionHelper;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.PermissionUtils;
+import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.aggregation.TimeFilterFactory;
 import android.os.OutcomeReceiver;
 
@@ -109,7 +109,7 @@ public class HealthConnectServiceLogsTests {
         // b/372766760: In theory, declared permissions are meant to be auto granted. However,
         // this seems to be unreliable and has led to test failures where the permissions don't
         // get granted as expected. We do it explicitly here as a precaution.
-        PermissionHelper.grantAllHealthPermissions(mContext.getPackageName());
+        PermissionUtils.grantAllHealthPermissions(mContext.getPackageName());
         // insert a record so the test app gets an app id in HC
         Record record =
                 new StepsRecord.Builder(getEmptyMetadata(), EPOCH, Instant.now(), 123).build();

@@ -27,7 +27,7 @@ import static org.junit.Assume.assumeTrue;
 import android.content.Context;
 import android.health.connect.HealthPermissions;
 import android.health.connect.HealthServicesInitializer;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -49,8 +49,7 @@ public class HealthServicesInitializerTest {
     }
 
     /**
-     * context.getSystemService(Context.HEALTHCONNECT_SERVICE) returns null on
-     * unsupported devices.
+     * context.getSystemService(Context.HEALTHCONNECT_SERVICE) returns null on unsupported devices.
      */
     @Test
     public void testHealthServiceRegisteredUnsupportedHardwareReturnsNull() {
@@ -61,8 +60,8 @@ public class HealthServicesInitializerTest {
     }
 
     /**
-     * context.getSystemService(Context.HEALTHCONNECT_SERVICE) returns the
-     * service on supported (non-watch) devices.
+     * context.getSystemService(Context.HEALTHCONNECT_SERVICE) returns the service on supported
+     * (non-watch) devices.
      */
     @Test
     public void testHealthServiceRegisteredNonWatchSupportedHardwareReturnsNonNull() {
@@ -74,9 +73,8 @@ public class HealthServicesInitializerTest {
     }
 
     /**
-     * context.getSystemService(Context.HEALTHCONNECT_SERVICE) returns null on
-     * watches when the package is not allowed (because it doesn't have the
-     * MANAGE_HEALTH_PERMISSIONS permission).
+     * context.getSystemService(Context.HEALTHCONNECT_SERVICE) returns null on watches when the
+     * package is not allowed (because it doesn't have the MANAGE_HEALTH_PERMISSIONS permission).
      */
     @Test
     public void testHealthServiceRegisteredWatchUnsupportedPackageReturnsNull() {

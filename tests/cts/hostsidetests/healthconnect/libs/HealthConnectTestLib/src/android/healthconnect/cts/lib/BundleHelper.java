@@ -63,7 +63,7 @@ import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
 import android.health.connect.datatypes.units.Power;
-import android.healthconnect.cts.utils.ToStringUtils;
+import android.healthconnect.testing.shared.ToStringUtils;
 import android.healthconnect.testing.shared.recordfactory.RecordFactory;
 import android.os.Bundle;
 import android.util.Log;

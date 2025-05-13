@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.utils;
+package android.healthconnect.testing.shared;
 
 import static org.junit.Assume.assumeTrue;
 

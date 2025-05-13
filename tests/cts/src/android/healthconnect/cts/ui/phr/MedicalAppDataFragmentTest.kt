@@ -28,7 +28,7 @@ import android.healthconnect.cts.lib.UiTestUtils.navigateToNewPage
 import android.healthconnect.cts.lib.UiTestUtils.navigateToSeeAppData
 import android.healthconnect.cts.lib.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.cts.ui.HealthConnectBaseTest
-import android.healthconnect.cts.utils.TestUtils
+import android.healthconnect.testing.cts.TestUtils
 import android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_ALLERGY
 import android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION
 import android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest

@@ -16,8 +16,8 @@
 
 package android.healthconnect.cts.readdata;
 
-import static android.healthconnect.cts.utils.TestUtils.getReadRecordsResponse;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.getReadRecordsResponse;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.shared.DataFactory.getDistanceRecord;
 import static android.healthconnect.testing.shared.DataFactory.getTotalCaloriesBurnedRecord;
 
@@ -33,9 +33,9 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import org.junit.After;
 import org.junit.Before;
