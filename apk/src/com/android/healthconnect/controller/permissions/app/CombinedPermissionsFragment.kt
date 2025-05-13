@@ -38,6 +38,7 @@ import com.android.healthconnect.controller.shared.children
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.shared.preference.addIntroOrAppHeaderPreference
+import com.android.healthconnect.controller.shared.preference.isExpressiveAndBuildVersion
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.logging.AppAccessElement
 import com.android.healthconnect.controller.utils.logging.CombinedAppAccessElement
@@ -79,7 +80,11 @@ class CombinedPermissionsFragment : Hilt_CombinedPermissionsFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
-        setPreferencesFromResource(R.xml.combined_permissions_screen, rootKey)
+        if (isExpressiveAndBuildVersion(requireContext())) {
+            setPreferencesFromResource(R.xml.combined_permissions_screen_expressive, rootKey)
+        } else {
+            setPreferencesFromResource(R.xml.combined_permissions_screen_legacy, rootKey)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
