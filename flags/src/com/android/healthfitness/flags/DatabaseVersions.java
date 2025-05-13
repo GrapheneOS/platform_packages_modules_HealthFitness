@@ -38,6 +38,13 @@ public final class DatabaseVersions {
     public static final int DB_VERSION_CLOUD_BACKUP_AND_RESTORE = 18;
     public static final int DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS = 19;
 
+    /**
+     * Modifies change_log_table and change_log_request_table.
+     *
+     * <p>See go/hc-phr-change-logs for details.
+     */
+    public static final int DB_VERSION_PHR_CHANGE_LOGS = 20;
+
     // For historical reasons, we do not support versions below this
     // See go/hc-mainline-dev/trunk_stable/db-and-aconfig#a-bit-of-history
     public static final int MIN_SUPPORTED_DB_VERSION = DB_VERSION_UUID_BLOB;

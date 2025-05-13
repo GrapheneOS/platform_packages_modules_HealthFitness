@@ -26,6 +26,7 @@ import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCI
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_GENERATED_LOCAL_TIME;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PERSONAL_HEALTH_RECORD;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PLANNED_EXERCISE_SESSIONS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_SKIN_TEMPERATURE;
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
@@ -100,6 +101,9 @@ final class DatabaseUpgradeHelper {
     private static final Upgrader UPGRADE_TO_EXERCISE_SEGMENT_WEIGHT =
             DatabaseUpgradeHelper::applyExerciseSegmentImprovementsDatabaseUpgrade;
 
+    private static final Upgrader UPGRADE_TO_PHR_CHANGE_LOGS =
+            DatabaseUpgradeHelper::applyPhrChangeLogsDatabaseUpgrade;
+
     /**
      * A list of db version -> Upgrader to upgrade the db from the previous version to the version.
      * The upgrades must be executed one by one in the numeric order of db versions, hence TreeMap.
@@ -107,18 +111,26 @@ final class DatabaseUpgradeHelper {
     private static final TreeMap<Integer, Upgrader> UPGRADERS =
             new TreeMap<>(
                     Map.of(
-                            DB_VERSION_GENERATED_LOCAL_TIME, UPGRADE_TO_GENERATED_LOCAL_TIME,
-                            DB_VERSION_SKIN_TEMPERATURE, UPGRADE_TO_SKIN_TEMPERATURE,
+                            DB_VERSION_GENERATED_LOCAL_TIME,
+                            UPGRADE_TO_GENERATED_LOCAL_TIME,
+                            DB_VERSION_SKIN_TEMPERATURE,
+                            UPGRADE_TO_SKIN_TEMPERATURE,
                             DB_VERSION_PLANNED_EXERCISE_SESSIONS,
-                                    UPGRADE_TO_PLANNED_EXERCISE_SESSIONS,
-                            DB_VERSION_MINDFULNESS_SESSION, UPGRADE_TO_MINDFULNESS_SESSION,
-                            DB_VERSION_PERSONAL_HEALTH_RECORD, UPGRADE_TO_PERSONAL_HEALTH_RECORD,
-                            DB_VERSION_ACTIVITY_INTENSITY, UPGRADE_TO_ACTIVITY_INTENSITY,
-                            DB_VERSION_ECOSYSTEM_METRICS, UPGRADE_TO_ECOSYSTEM_METRICS,
+                            UPGRADE_TO_PLANNED_EXERCISE_SESSIONS,
+                            DB_VERSION_MINDFULNESS_SESSION,
+                            UPGRADE_TO_MINDFULNESS_SESSION,
+                            DB_VERSION_PERSONAL_HEALTH_RECORD,
+                            UPGRADE_TO_PERSONAL_HEALTH_RECORD,
+                            DB_VERSION_ACTIVITY_INTENSITY,
+                            UPGRADE_TO_ACTIVITY_INTENSITY,
+                            DB_VERSION_ECOSYSTEM_METRICS,
+                            UPGRADE_TO_ECOSYSTEM_METRICS,
                             DB_VERSION_CLOUD_BACKUP_AND_RESTORE,
-                                    UPGRADE_TO_CLOUD_BACKUP_AND_RESTORE,
+                            UPGRADE_TO_CLOUD_BACKUP_AND_RESTORE,
                             DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS,
-                                    UPGRADE_TO_EXERCISE_SEGMENT_WEIGHT));
+                            UPGRADE_TO_EXERCISE_SEGMENT_WEIGHT,
+                            DB_VERSION_PHR_CHANGE_LOGS,
+                            UPGRADE_TO_PHR_CHANGE_LOGS));
 
     /**
      * Applies db upgrades to bring the current schema to the latest supported version.
@@ -258,6 +270,21 @@ final class DatabaseUpgradeHelper {
         MedicalResourceHelper.onInitialUpgrade(db);
         DatabaseUpgradeHelper.executeSqlStatements(
                 db, getAlterTableRequestForPhrAccessLogs().getAddColumnsCommands());
+    }
+
+    private static void applyPhrChangeLogsDatabaseUpgrade(SQLiteDatabase db) {
+        if (checkColumnExists(
+                db,
+                ChangeLogsRequestHelper.TABLE_NAME,
+                ChangeLogsRequestHelper.MEDICAL_RESOURCE_TYPES_COLUMN_NAME)) {
+            return;
+        }
+
+        var changeLogsRequestStatements =
+                ChangeLogsRequestHelper.getAlterTableRequestForPhrChangeLogs();
+        executeSqlStatements(db, changeLogsRequestStatements.getAddColumnsCommands());
+        var changeLogsStatements = ChangeLogsHelper.getAlterTableRequestForPhrChangeLogs();
+        executeSqlStatements(db, changeLogsStatements.getAddColumnsCommands());
     }
 
     /** Executes a list of SQL statements one after another, in a transaction. */
