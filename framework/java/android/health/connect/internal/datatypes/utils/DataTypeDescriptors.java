@@ -246,10 +246,6 @@ public class DataTypeDescriptors {
     /** Returns descriptors for all supported data types. */
     @VisibleForTesting(visibility = PACKAGE)
     public static List<DataTypeDescriptor> getAllDataTypeDescriptors() {
-        if (!Flags.healthConnectMappings()) {
-            return List.of();
-        }
-
         return Stream.of(
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_ACTIVE_CALORIES_BURNED)

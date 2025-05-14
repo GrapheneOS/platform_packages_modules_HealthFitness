@@ -16,14 +16,8 @@
 
 package com.android.server.healthconnect.storage.utils;
 
-import static android.health.connect.HealthDataCategory.ACTIVITY;
-import static android.health.connect.HealthDataCategory.SLEEP;
-import static android.health.connect.HealthDataCategory.WELLNESS;
-import static android.health.connect.datatypes.AggregationType.SUM;
-import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
-import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
 import static android.text.TextUtils.isEmpty;
 
 import static com.android.internal.annotations.VisibleForTesting.Visibility.PRIVATE;
@@ -38,13 +32,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
-import android.health.connect.HealthDataCategory;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.internal.datatypes.InstantRecordInternal;
 import android.health.connect.internal.datatypes.IntervalRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
-import android.health.connect.internal.datatypes.utils.RecordTypeRecordCategoryMapper;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
@@ -352,35 +344,6 @@ public final class StorageUtils {
                         .put(clientRecordIdBytes)
                         .array();
         return UUID.nameUUIDFromBytes(bytes);
-    }
-
-    /**
-     * Returns if priority of apps needs to be considered to compute the aggregate request for the
-     * record type.
-     *
-     * @deprecated use {@link InternalHealthConnectMappings#supportsPriority(int, int)}
-     */
-    @Deprecated
-    public static boolean supportsPriority(int recordType, int operationType) {
-        if (operationType != SUM) {
-            return false;
-        }
-
-        @HealthDataCategory.Type
-        int recordCategory =
-                RecordTypeRecordCategoryMapper.getRecordCategoryForRecordType(recordType);
-        return recordCategory == ACTIVITY || recordCategory == SLEEP || recordCategory == WELLNESS;
-    }
-
-    /**
-     * Returns if derivation needs to be done to calculate aggregate.
-     *
-     * @deprecated use {@link InternalHealthConnectMappings#isDerivedType(int)}
-     */
-    @Deprecated
-    public static boolean isDerivedType(int recordType) {
-        return recordType == RECORD_TYPE_BASAL_METABOLIC_RATE
-                || recordType == RECORD_TYPE_TOTAL_CALORIES_BURNED;
     }
 
     public static UUID convertBytesToUUID(byte[] bytes) {

@@ -29,11 +29,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.ArrayMap;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
-import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
-import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -77,10 +74,6 @@ public class InternalHealthConnectMappings {
         mRecordTypeIdToDescriptor = new ArrayMap<>(descriptors.size());
         mAllRecordHelpers = new ArrayList<>(descriptors.size());
 
-        if (!Flags.healthConnectMappings()) {
-            return;
-        }
-
         for (var descriptor : descriptors) {
             mRecordTypeIdToDescriptor.put(descriptor.getRecordTypeIdentifier(), descriptor);
             mAllRecordHelpers.add(descriptor.getRecordHelper());
@@ -90,10 +83,6 @@ public class InternalHealthConnectMappings {
     /** Maps the internal record type to a special record type for UUIDs. */
     @RecordTypeIdForUuid.Type
     public int getRecordTypeIdForUuid(@RecordTypeIdentifier.RecordType int recordTypeId) {
-        if (!Flags.healthConnectMappings()) {
-            return RecordTypeForUuidMappings.getRecordTypeIdForUuid(recordTypeId);
-        }
-
         return requireNonNull(
                         mRecordTypeIdToDescriptor.get(recordTypeId),
                         "No mapping for " + recordTypeId)
@@ -102,26 +91,16 @@ public class InternalHealthConnectMappings {
 
     /** Returns a collection of all supported record helpers. */
     public Collection<RecordHelper<?>> getRecordHelpers() {
-        if (!Flags.healthConnectMappings()) {
-            return RecordHelperProvider.getRecordHelpers();
-        }
         return mAllRecordHelpers;
     }
 
     /** Returns a {@link RecordHelper} for given record type id. */
     public RecordHelper<?> getRecordHelper(@RecordTypeIdentifier.RecordType int recordTypeId) {
-        if (!Flags.healthConnectMappings()) {
-            return RecordHelperProvider.getRecordHelper(recordTypeId);
-        }
-
         return getDescriptorFor(recordTypeId).getRecordHelper();
     }
 
     /** Returns a logging enum for given record type id. */
     public int getLoggingEnumForRecordTypeId(@RecordTypeIdentifier.RecordType int recordTypeId) {
-        if (!Flags.healthConnectMappings()) {
-            return HealthConnectServiceLogger.Builder.getDataTypeEnumFromRecordType(recordTypeId);
-        }
         return getDescriptorFor(recordTypeId).getLoggingEnum();
     }
 
@@ -133,9 +112,6 @@ public class InternalHealthConnectMappings {
     public boolean supportsPriority(
             @RecordTypeIdentifier.RecordType int recordType,
             @AggregationType.AggregateOperationType int operationType) {
-        if (!Flags.healthConnectMappings()) {
-            return StorageUtils.supportsPriority(recordType, operationType);
-        }
 
         if (operationType != SUM) {
             return false;
@@ -149,10 +125,6 @@ public class InternalHealthConnectMappings {
 
     /** Returns true if given record type is derived. */
     public boolean isDerivedType(@RecordTypeIdentifier.RecordType int recordType) {
-        if (!Flags.healthConnectMappings()) {
-            return StorageUtils.isDerivedType(recordType);
-        }
-
         return getDescriptorFor(recordType).isDerived();
     }
 
