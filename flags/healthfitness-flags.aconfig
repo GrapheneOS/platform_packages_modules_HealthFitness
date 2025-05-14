@@ -478,3 +478,12 @@ flag {
     is_fixed_read_only: true
     is_exported: true
 }
+
+flag {
+    name: "device_resource"
+    namespace: "health_fitness_aconfig"
+    description: "Support the Device FHIR Resource type in PHR."
+    bug: "399727839"
+    is_fixed_read_only: true
+    is_exported: false
+}
