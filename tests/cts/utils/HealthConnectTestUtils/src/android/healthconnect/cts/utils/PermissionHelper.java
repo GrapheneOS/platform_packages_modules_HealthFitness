@@ -33,11 +33,13 @@ import static java.util.Objects.requireNonNull;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.UiAutomation;
+import android.content.AttributionSource;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.health.connect.HealthConnectManager;
 import android.os.UserHandle;
+import android.permission.PermissionManager;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -125,11 +127,25 @@ public final class PermissionHelper {
     public static void grantHealthPermission(String packageName, String permission) {
         Context context = ApplicationProvider.getApplicationContext();
         PackageManager packageManager = context.getPackageManager();
+        PermissionManager permissionManager =
+                requireNonNull(context.getSystemService(PermissionManager.class));
         UserHandle user = context.getUser();
 
         runWithShellPermissionIdentity(
                 () -> packageManager.grantRuntimePermission(packageName, permission, user),
                 GRANT_RUNTIME_PERMISSIONS);
+
+        // Ensure grant has taken effect before continuing. This avoids a race where attempting to
+        // immediately exercise the permission fails, see b/416359503.
+        int uid = getPackageUidUnchecked(packageManager, packageName);
+        AttributionSource attributionSource =
+                new AttributionSource(uid, packageName, /* attributionTag= */ null);
+        eventually(
+                () ->
+                        assertThat(
+                                        permissionManager.checkPermissionForPreflight(
+                                                permission, attributionSource))
+                                .isEqualTo(PermissionManager.PERMISSION_GRANTED));
     }
 
     /**
@@ -283,15 +299,21 @@ public final class PermissionHelper {
         ActivityManager activityManager =
                 requireNonNull(context.getSystemService(ActivityManager.class));
 
+        int uid = getPackageUidUnchecked(context.getPackageManager(), packageName);
         runWithShellPermissionIdentity(
-                () -> {
-                    int uid =
-                            context.getPackageManager().getPackageUid(packageName, /* flags= */ 0);
-                    eventually(
-                            () ->
-                                    assertThat(activityManager.getUidImportance(uid))
-                                            .isEqualTo(IMPORTANCE_GONE));
-                },
+                () ->
+                        eventually(
+                                () ->
+                                        assertThat(activityManager.getUidImportance(uid))
+                                                .isEqualTo(IMPORTANCE_GONE)),
                 PACKAGE_USAGE_STATS);
+    }
+
+    private static int getPackageUidUnchecked(PackageManager packageManager, String packageName) {
+        try {
+            return packageManager.getPackageUid(packageName, /* flags= */ 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
