@@ -677,6 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 kordus}other{# kordust}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 kordus}other{# kordust}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Treeningu segmendid"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Seeria <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"Tajutav pingutus: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"Tajutav pingutus"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"Ringid"</string>
     <string name="back_extension" msgid="426518933137440577">"Seljalihaste venitused"</string>
     <string name="badminton" msgid="8839727076522086870">"Sulgpall"</string>

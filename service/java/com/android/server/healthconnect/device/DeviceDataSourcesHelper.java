@@ -49,13 +49,28 @@ public class DeviceDataSourcesHelper {
      *
      * @return The current device
      */
-    @SuppressLint("MissingPermission")
     public DeviceDataSource getCurrentDevice(Context context) {
         return new DeviceDataSource(
                 new DeviceInfoHelper.DeviceInfo(Build.MANUFACTURER, Build.MODEL, DEVICE_TYPE_PHONE),
                 // This is a sensitive value and should not be shared outside of this module.
-                Build.getSerial(),
+                getSerial(),
                 getDisplayName(context));
+    }
+
+    /**
+     * Returns the device serial number.
+     *
+     * <p>Note: the device ID for the current device is a sensitive value and should not be shared
+     * outside of this module. Normally, reading this identifier requires {@code
+     * android.permission.READ_PRIVILEGED_PHONE_STATE}.
+     *
+     * <p>This is extracted to a separate method to allow it to be easily overridden in test cases,
+     * and should not be used directly.
+     */
+    @SuppressLint("MissingPermission")
+    @VisibleForTesting
+    String getSerial() {
+        return Build.getSerial();
     }
 
     // TODO(b/413650602): update the display name in device info table if/when it changes.

@@ -22,10 +22,6 @@ import static com.android.server.healthconnect.device.DeviceDataSourcesHelper.DI
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.mockito.Mockito.when;
-
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -33,13 +29,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.healthfitness.flags.Flags;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.quality.Strictness;
 
 @RunWith(AndroidJUnit4.class)
 public class DeviceDataSourcesHelperTest {
@@ -47,25 +40,14 @@ public class DeviceDataSourcesHelperTest {
     @Rule(order = 1)
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
-    @Rule(order = 2)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(Build.class)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
-
-    @Before
-    public void setup() throws PackageManager.NameNotFoundException {
-        when(Build.getSerial()).thenReturn("TEST_SERIAL_NUMBER");
-    }
-
     @Test
     public void getCurrentDevice() {
         DeviceDataSource deviceDataSource =
-                new DeviceDataSourcesHelper()
+                new FakeSerialDeviceDataSourcesHelper()
                         .getCurrentDevice(
                                 InstrumentationRegistry.getInstrumentation().getContext());
-        assertThat(deviceDataSource.getDeviceId()).isEqualTo("TEST_SERIAL_NUMBER");
+        assertThat(deviceDataSource.getDeviceId())
+                .isEqualTo(FakeSerialDeviceDataSourcesHelper.TEST_SERIAL_NUMBER);
         assertThat(deviceDataSource.getDeviceInfo().getDeviceType()).isEqualTo(DEVICE_TYPE_PHONE);
     }
 

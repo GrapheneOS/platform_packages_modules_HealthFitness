@@ -29,6 +29,7 @@ android_library {
         "platform-test-annotations",
         "healthfitness-aconfig-flags-lib",
         "healthfitness-aconfig-flags-helper",
+        "healthfitness-testing-cts",
         "healthfitness-testing-shared",
     ],
     sdk_version: "test_current",

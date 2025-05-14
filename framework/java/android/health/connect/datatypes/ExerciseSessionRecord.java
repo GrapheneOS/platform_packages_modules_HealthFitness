@@ -23,6 +23,7 @@ import static android.health.connect.datatypes.validation.ValidationUtils.sortAn
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS;
 
 import android.annotation.FlaggedApi;
+import android.annotation.FloatRange;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.datatypes.validation.ExerciseSessionTypesValidation;
@@ -208,9 +209,9 @@ public final class ExerciseSessionRecord extends IntervalRecord {
      * <p>Use {@link #hasRateOfPerceivedExertion} to check whether RPE exists for this session.
      *
      * @throws IllegalStateException if rate of perceived exertion is not set.
-     * @hide
      */
     @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+    @FloatRange(from = 0, to = 10, fromInclusive = true, toInclusive = true)
     public float getRateOfPerceivedExertion() {
         if (mRateOfPerceivedExertion == DEFAULT_FLOAT) {
             throw new IllegalStateException(
@@ -222,8 +223,6 @@ public final class ExerciseSessionRecord extends IntervalRecord {
 
     /**
      * Returns true if this session has an associated rate of perceived exertion.
-     *
-     * @hide
      */
     @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
     public boolean hasRateOfPerceivedExertion() {
@@ -425,12 +424,12 @@ public final class ExerciseSessionRecord extends IntervalRecord {
          * Very hard 10: Maximum effort
          *
          * <p>Returns builder instance with rate of perceived exertion set.
-         *
-         * @hide
          */
         @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
         @NonNull
-        public Builder setRateOfPerceivedExertion(float rateOfPerceivedExertion) {
+        public Builder setRateOfPerceivedExertion(
+                @FloatRange(from = 0, to = 10, fromInclusive = true, toInclusive = true)
+                        float rateOfPerceivedExertion) {
             if ((rateOfPerceivedExertion < 0 || rateOfPerceivedExertion > 10)) {
                 throw new IllegalArgumentException(
                         "Rate of perceived exertion must be in the range 0 to 10 inclusive");
@@ -443,8 +442,6 @@ public final class ExerciseSessionRecord extends IntervalRecord {
          * Clears the rate of perceived exertion for this exercise session.
          *
          * <p>Returns builder instance without rate of perceived exertion.
-         *
-         * @hide
          */
         @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
         @NonNull

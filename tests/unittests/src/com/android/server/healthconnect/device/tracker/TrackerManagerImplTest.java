@@ -32,14 +32,12 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.health.connect.HealthPermissions;
-import android.os.Build;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
@@ -54,7 +52,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.util.List;
 
@@ -64,12 +63,7 @@ public class TrackerManagerImplTest {
 
     private static final String TEST_PACKAGE_NAME = "com.test.app";
 
-    @Rule
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(Build.class)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private Context mContext;
     @Mock private PackageManager mPackageManager;
@@ -83,7 +77,6 @@ public class TrackerManagerImplTest {
     public void setup() throws PackageManager.NameNotFoundException {
         mContext = spy(InstrumentationRegistry.getInstrumentation().getContext());
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
-        when(Build.getSerial()).thenReturn("TEST_SERIAL_NUMBER");
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))

@@ -50,7 +50,7 @@ import android.healthconnect.cts.lib.TestAppProxy;
 import android.healthconnect.cts.lib.TestAppRule;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.HealthConnectReceiver;
+import android.healthconnect.testing.cts.HealthConnectReceiver;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;

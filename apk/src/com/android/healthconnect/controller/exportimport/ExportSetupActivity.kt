@@ -20,7 +20,6 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
-import com.android.settingslib.collapsingtoolbar.EdgeToEdgeUtils
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +27,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint(FragmentActivity::class)
 class ExportSetupActivity : Hilt_ExportSetupActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        EdgeToEdgeUtils.enable(this)
         if (SettingsThemeHelper.isExpressiveTheme(this)) {
             setTheme(R.style.Theme_HealthConnect_Expressive)
         }

@@ -44,21 +44,29 @@ constructor(private val manager: HealthMigrationManager) {
                 val migrationUiState =
                     suspendCancellableCoroutine { continuation ->
                             manager.getHealthConnectMigrationUiState(
-                                Runnable::run, continuation.asOutcomeReceiver())
+                                Runnable::run,
+                                continuation.asOutcomeReceiver(),
+                            )
                         }
                         .healthConnectMigrationUiState
 
                 MigrationRestoreState(
                     migrationUiState =
                         migrationUiStateMapping.getOrDefault(
-                            migrationUiState, MigrationUiState.IDLE),
+                            migrationUiState,
+                            MigrationUiState.IDLE,
+                        ),
                     dataRestoreState =
                         dataRestoreUiStateMapping.getOrDefault(
-                            migrationRestoreState.dataRestoreState, DataRestoreUiState.IDLE),
+                            migrationRestoreState.dataRestoreState,
+                            DataRestoreUiState.IDLE,
+                        ),
                     dataRestoreError =
                         dataRestoreUiErrorMapping.getOrDefault(
                             migrationRestoreState.dataRestoreError,
-                            MigrationRestoreState.DataRestoreUiError.ERROR_NONE))
+                            MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
+                        ),
+                )
             } catch (e: Exception) {
                 Log.e(TAG, "Load error ", e)
                 defaultMigrationRestoreState
@@ -108,12 +116,14 @@ constructor(private val manager: HealthMigrationManager) {
                 HealthConnectDataState.RESTORE_ERROR_FETCHING_DATA to
                     MigrationRestoreState.DataRestoreUiError.ERROR_FETCHING_DATA,
                 HealthConnectDataState.RESTORE_ERROR_VERSION_DIFF to
-                    MigrationRestoreState.DataRestoreUiError.ERROR_VERSION_DIFF)
+                    MigrationRestoreState.DataRestoreUiError.ERROR_VERSION_DIFF,
+            )
 
         private val defaultMigrationRestoreState =
             MigrationRestoreState(
                 migrationUiState = MigrationUiState.IDLE,
                 dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_NONE)
+                dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
+            )
     }
 }

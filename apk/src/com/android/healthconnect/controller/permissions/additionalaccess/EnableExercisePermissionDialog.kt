@@ -18,10 +18,10 @@
 
 package com.android.healthconnect.controller.permissions.additionalaccess
 
-import android.app.Dialog
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -31,6 +31,7 @@ import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.utils.logging.AdditionalAccessElement.ENABLE_EXERCISE_PERMISSION_DIALOG_CONTAINER
 import com.android.healthconnect.controller.utils.logging.AdditionalAccessElement.ENABLE_EXERCISE_PERMISSION_DIALOG_NEGATIVE_BUTTON
 import com.android.healthconnect.controller.utils.logging.AdditionalAccessElement.ENABLE_EXERCISE_PERMISSION_DIALOG_POSITIVE_BUTTON
+import com.android.healthconnect.controller.utils.logging.ErrorPageElement.UNKNOWN_ELEMENT
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -46,19 +47,19 @@ class EnableExercisePermissionDialog : Hilt_EnableExercisePermissionDialog() {
 
     private val viewModel: AdditionalAccessViewModel by activityViewModels()
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
 
         val packageNameExtra = requireArguments().getString(EXTRA_PACKAGE_NAME)
         if (packageNameExtra.isNullOrEmpty()) {
             Log.e(TAG, "Invalid Intent Extras, finishing.")
-            return super.onCreateDialog(savedInstanceState)
+            return AlertDialogBuilder(this, UNKNOWN_ELEMENT).create()
         }
         packageName = packageNameExtra
 
         val appNameExtra = requireArguments().getString(EXTRA_APP_NAME)
         if (appNameExtra == null) {
             Log.e(TAG, "Invalid Intent Extras, finishing.")
-            return super.onCreateDialog(savedInstanceState)
+            return AlertDialogBuilder(this, UNKNOWN_ELEMENT).create()
         }
         appName = appNameExtra
 
@@ -68,15 +69,17 @@ class EnableExercisePermissionDialog : Hilt_EnableExercisePermissionDialog() {
                 .setMessage(getString(R.string.exercise_permission_dialog_enabled_summary, appName))
                 .setPositiveButton(
                     R.string.exercise_permission_dialog_positive_button,
-                    ENABLE_EXERCISE_PERMISSION_DIALOG_POSITIVE_BUTTON) { _, _ ->
-                        viewModel.enableExercisePermission(packageName)
-                        dismiss()
-                    }
+                    ENABLE_EXERCISE_PERMISSION_DIALOG_POSITIVE_BUTTON,
+                ) { _, _ ->
+                    viewModel.enableExercisePermission(packageName)
+                    dismiss()
+                }
                 .setNegativeButton(
                     R.string.exercise_permission_dialog_negative_button,
-                    ENABLE_EXERCISE_PERMISSION_DIALOG_NEGATIVE_BUTTON) { _, _ ->
-                        dismiss()
-                    }
+                    ENABLE_EXERCISE_PERMISSION_DIALOG_NEGATIVE_BUTTON,
+                ) { _, _ ->
+                    dismiss()
+                }
                 .create()
         setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)

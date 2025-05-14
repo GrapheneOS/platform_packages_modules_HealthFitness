@@ -18,8 +18,8 @@ package com.android.server.healthconnect.common.changelog;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 
-import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -56,7 +56,7 @@ public class ChangeLogTokenRequestTest {
     @Test
     @RequiresFlagsDisabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_DEVELOPMENT_DATABASE,
+        FLAG_PHR_CHANGE_LOGS_DB,
     })
     public void build_noRecordTypes_flagDisabled_throws() {
         ChangeLogTokenRequest.Builder builder = new ChangeLogTokenRequest.Builder();
@@ -66,7 +66,7 @@ public class ChangeLogTokenRequestTest {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_DEVELOPMENT_DATABASE,
+        FLAG_PHR_CHANGE_LOGS_DB,
     })
     public void build_noTypes_flagEnabled_throws() {
         ChangeLogTokenRequest.Builder builder = new ChangeLogTokenRequest.Builder();
@@ -76,7 +76,7 @@ public class ChangeLogTokenRequestTest {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_DEVELOPMENT_DATABASE,
+        FLAG_PHR_CHANGE_LOGS_DB,
     })
     public void addBothTypes_recordFirst_flagEnabled_throws_beforeBuild() {
         var builder = new ChangeLogTokenRequest.Builder().addRecordType(StepsRecord.class);
@@ -90,7 +90,7 @@ public class ChangeLogTokenRequestTest {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_DEVELOPMENT_DATABASE,
+        FLAG_PHR_CHANGE_LOGS_DB,
     })
     public void addBothTypes_medicalResourceFirst_flagEnabled_throws_beforeBuild() {
         var builder =
@@ -111,7 +111,7 @@ public class ChangeLogTokenRequestTest {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_DEVELOPMENT_DATABASE,
+        FLAG_PHR_CHANGE_LOGS_DB,
     })
     public void build_invalidMedicalResourceType_throws() {
         @SuppressLint("WrongConstant") // Testing invalid type
@@ -146,7 +146,7 @@ public class ChangeLogTokenRequestTest {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_DEVELOPMENT_DATABASE,
+        FLAG_PHR_CHANGE_LOGS_DB,
     })
     public void build_withMedicalResourceTypes_success() {
         DataOrigin dataOrigin1 = new DataOrigin.Builder().setPackageName(TEST_PACKAGE_1).build();
@@ -192,7 +192,7 @@ public class ChangeLogTokenRequestTest {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_DEVELOPMENT_DATABASE,
+        FLAG_PHR_CHANGE_LOGS_DB,
     })
     public void parcelAndUnparcel_medicalResourceTypes_noFilters_equals() {
         ChangeLogTokenRequest originalRequest =
@@ -234,7 +234,7 @@ public class ChangeLogTokenRequestTest {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_DEVELOPMENT_DATABASE,
+        FLAG_PHR_CHANGE_LOGS_DB,
     })
     public void parcelAndUnparcel_medicalResourceTypes_equals() {
         DataOrigin dataOrigin = new DataOrigin.Builder().setPackageName(TEST_PACKAGE_1).build();
@@ -278,7 +278,7 @@ public class ChangeLogTokenRequestTest {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_DEVELOPMENT_DATABASE,
+        FLAG_PHR_CHANGE_LOGS_DB,
     })
     public void getters_returnCorrectValues_medicalResourceTypes() {
         DataOrigin dataOrigin1 = new DataOrigin.Builder().setPackageName(TEST_PACKAGE_1).build();

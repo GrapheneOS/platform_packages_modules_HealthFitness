@@ -28,13 +28,15 @@ import static android.health.connect.HealthPermissionCategory.HEART_RATE;
 import static android.health.connect.HealthPermissionCategory.PLANNED_EXERCISE;
 import static android.health.connect.HealthPermissionCategory.STEPS;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
-import static android.healthconnect.cts.utils.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
+import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponse;
+import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 import static android.healthconnect.testing.shared.DataFactory.getDataOrigin;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static java.time.Instant.EPOCH;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 
@@ -61,6 +63,7 @@ import android.health.connect.ReadRecordsResponse;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.RecordTypeInfoResponse;
 import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.TimeRangeFilter;
 import android.health.connect.UpdateDataOriginPriorityOrderRequest;
 import android.health.connect.accesslog.AccessLog;
 import android.health.connect.changelog.ChangeLogTokenRequest;
@@ -114,6 +117,8 @@ import android.health.connect.datatypes.WeightRecord;
 import android.health.connect.datatypes.WheelchairPushesRecord;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationException;
+import android.healthconnect.testing.cts.HealthConnectReceiver;
+import android.healthconnect.testing.shared.aggregation.TimeFilterFactory;
 import android.os.OutcomeReceiver;
 import android.util.Log;
 
@@ -130,7 +135,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -141,6 +145,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -462,6 +467,17 @@ public final class TestUtils {
     }
 
     /**
+     * Delete all fitness records added by the test app that are stored in the Health Connect
+     * database.
+     */
+    public static void deleteAllFitnessDataAddedByTestApp() throws InterruptedException {
+        verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .setTimeRangeFilter(TimeFilterFactory.getOpenEndTimeFilter(Instant.EPOCH))
+                        .build());
+    }
+
+    /**
      * Delete all health records (datasources, resources etc) stored in the Health Connect database.
      */
     public static void deleteAllMedicalData() throws InterruptedException {
@@ -505,6 +521,28 @@ public final class TestUtils {
                 .deleteRecords(
                         recordType, timeRangeFilter, Executors.newSingleThreadExecutor(), receiver);
         receiver.verifyNoExceptionOrThrow();
+    }
+
+    public static void deleteRecordsOfTypes(List<Class<? extends Record>> recordTypes)
+            throws InterruptedException {
+        for (Class<? extends Record> recordType : recordTypes) {
+            deleteRecordsOfType(recordType);
+        }
+    }
+
+    /**
+     * Deletes all records of the specified types written by the test app.
+     *
+     * @see HealthConnectManager#deleteRecords(Class, TimeRangeFilter, Executor, OutcomeReceiver)
+     */
+    public static void deleteRecordsOfType(Class<? extends Record> recordType)
+            throws InterruptedException {
+        TimeRangeFilter allTime = new TimeInstantRangeFilter.Builder().setStartTime(EPOCH).build();
+        Void unused =
+                callAndGetResponse(
+                        (executor, receiver) ->
+                                getHealthConnectManager()
+                                        .deleteRecords(recordType, allTime, executor, receiver));
     }
 
     /** Helper function to delete records from the DB using HealthConnectManager. */
@@ -867,21 +905,6 @@ public final class TestUtils {
                 .updateDataOriginPriorityOrder(
                         request, Executors.newSingleThreadExecutor(), receiver);
         receiver.verifyNoExceptionOrThrow();
-    }
-
-    public static void deleteTestData() throws InterruptedException {
-        verifyDeleteRecords(
-                new DeleteUsingFiltersRequest.Builder()
-                        .setTimeRangeFilter(
-                                new TimeInstantRangeFilter.Builder()
-                                        .setStartTime(Instant.EPOCH)
-                                        .setEndTime(Instant.now().plus(10, ChronoUnit.DAYS))
-                                        .build())
-                        .addRecordType(ExerciseSessionRecord.class)
-                        .addRecordType(StepsRecord.class)
-                        .addRecordType(HeartRateRecord.class)
-                        .addRecordType(BasalMetabolicRateRecord.class)
-                        .build());
     }
 
     @NonNull

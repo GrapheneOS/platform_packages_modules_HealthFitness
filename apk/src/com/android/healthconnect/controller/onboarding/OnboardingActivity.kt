@@ -107,7 +107,6 @@ class OnboardingActivity : Hilt_OnboardingActivity() {
 
     private fun setupOnboardingScreen() {
         setContentView(R.layout.onboarding_screen)
-
         val onboardingDescription = findViewById<TextView>(R.id.onboarding_description)
         val withHealthConnectTitle =
             findViewById<TextView>(R.id.onboarding_description_with_health_connect)

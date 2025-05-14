@@ -23,6 +23,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.android.healthconnect.controller.R
 import com.android.settingslib.widget.SettingsThemeHelper
 
@@ -62,6 +65,18 @@ abstract class HealthSetupFragment : HealthPreferenceFragment() {
         primaryButtonFull = buttonArea.findViewById(R.id.primary_button_full)
         primaryButtonOutline = buttonArea.findViewById(R.id.primary_button_outline)
         secondaryButton = buttonArea.findViewById(R.id.secondary_button)
+
+        ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, windowInsets ->
+            val bars =
+                windowInsets.getInsets(
+                    WindowInsetsCompat.Type.systemBars() or
+                        WindowInsetsCompat.Type.displayCutout() or
+                        WindowInsetsCompat.Type.statusBars()
+                )
+            preferenceContainer.updatePadding(top = bars.top, left = bars.left, right = bars.right)
+            buttonArea.updatePadding(bottom = bars.bottom, left = bars.left, right = bars.right)
+            WindowInsetsCompat.CONSUMED
+        }
 
         return rootView
     }

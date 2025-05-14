@@ -677,6 +677,16 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 rép.}one{# rép.}other{# rép.}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 répétition}one{# répétition}other{# répétitions}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Segments d\'exercice"</string>
+    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
+    <skip />
+    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
+    <skip />
+    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
+    <skip />
+    <!-- no translation found for session_rpe_header (6436164288422834973) -->
+    <skip />
+    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
+    <skip />
     <string name="exercise_laps_header" msgid="117228630553856372">"Longueurs"</string>
     <string name="back_extension" msgid="426518933137440577">"Extension du buste"</string>
     <string name="badminton" msgid="8839727076522086870">"Badminton"</string>

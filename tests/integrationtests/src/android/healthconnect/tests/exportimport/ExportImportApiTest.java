@@ -23,7 +23,6 @@ import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.readAllRecords;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newFullMetadataWithClientIdAndVersion;
-import static android.healthconnect.tests.exportimport.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_EXPORT_IMPORT;
 
@@ -41,6 +40,7 @@ import android.health.connect.exportimport.ScheduledExportSettings;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
+import android.healthconnect.testing.cts.HealthConnectReceiver;
 import android.healthconnect.testing.cts.JobUtils;
 import android.healthconnect.testing.shared.recordfactory.RecordFactory;
 import android.net.Uri;
@@ -160,10 +160,12 @@ public class ExportImportApiTest {
         List<StepsRecord> stepsRecordsAfterDeletion = readAllRecords(StepsRecord.class);
         assertThat(stepsRecordsAfterDeletion).isEmpty();
 
-        callAndGetResponseWithShellPermissionIdentity(
-                (executor, receiver) ->
-                        mHealthConnectManager.runImport(mRemoteExportFileUri, executor, receiver),
-                MANAGE_HEALTH_DATA_PERMISSION);
+        Void unused =
+                HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity(
+                        (executor, receiver) ->
+                                mHealthConnectManager.runImport(
+                                        mRemoteExportFileUri, executor, receiver),
+                        MANAGE_HEALTH_DATA_PERMISSION);
 
         List<StepsRecord> readRecordsAfterImport = readAllRecords(StepsRecord.class);
         assertThat(readRecordsAfterImport).isEqualTo(readRecords);
@@ -215,10 +217,12 @@ public class ExportImportApiTest {
                 .isEmpty();
 
         // trigger import
-        callAndGetResponseWithShellPermissionIdentity(
-                (executor, receiver) ->
-                        mHealthConnectManager.runImport(mRemoteExportFileUri, executor, receiver),
-                MANAGE_HEALTH_DATA_PERMISSION);
+        Void unused =
+                HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity(
+                        (executor, receiver) ->
+                                mHealthConnectManager.runImport(
+                                        mRemoteExportFileUri, executor, receiver),
+                        MANAGE_HEALTH_DATA_PERMISSION);
 
         // assert that exported medical data is imported correctly
         assertThat(

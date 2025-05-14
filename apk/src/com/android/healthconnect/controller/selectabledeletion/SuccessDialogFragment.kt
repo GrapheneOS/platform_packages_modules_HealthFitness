@@ -15,8 +15,8 @@
  */
 package com.android.healthconnect.controller.selectabledeletion
 
-import android.app.Dialog
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -24,7 +24,6 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.utils.logging.SuccessDialogElement
 import dagger.hilt.android.AndroidEntryPoint
-
 
 /**
  * A deletion {@link DialogFragment} notifying user about a successful deletion.
@@ -37,7 +36,7 @@ class SuccessDialogFragment : Hilt_SuccessDialogFragment() {
 
     private val viewModel: DeletionViewModel by activityViewModels()
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         // Get the navigation action depending on the deletion type
         val deletionType = viewModel.getDeletionType()
         val navAction =
@@ -77,7 +76,9 @@ class SuccessDialogFragment : Hilt_SuccessDialogFragment() {
                 onClickListener = { _, _ ->
                     this.dismiss()
                     val navController = findNavController()
-                    if (navController.currentDestination?.id in fragmentsWithSeeConnectedAppsButton) {
+                    if (
+                        navController.currentDestination?.id in fragmentsWithSeeConnectedAppsButton
+                    ) {
                         findNavController().navigate(it)
                     }
                 },
