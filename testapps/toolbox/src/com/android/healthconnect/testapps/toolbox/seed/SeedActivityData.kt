@@ -58,6 +58,7 @@ import android.health.connect.datatypes.Vo2MaxRecord.Vo2MaxMeasurementMethod.MEA
 import android.health.connect.datatypes.WheelchairPushesRecord
 import android.health.connect.datatypes.units.Energy
 import android.health.connect.datatypes.units.Length
+import android.health.connect.datatypes.units.Mass
 import android.health.connect.datatypes.units.Power
 import android.health.connect.datatypes.units.Velocity
 import com.android.healthconnect.testapps.toolbox.data.ExerciseRoutesTestData
@@ -254,16 +255,66 @@ class SeedActivityData(private val context: Context, private val manager: Health
         val records =
             (1L..3).map { timeOffSet ->
                 val exerciseSegments = ArrayList<ExerciseSegment>()
-                repeat(5) { i ->
+                repeat(3) { i ->
                     exerciseSegments.add(
                         ExerciseSegment.Builder(
                                 start.plus(ofMinutes(timeOffSet + i)),
                                 start.plus(ofMinutes(timeOffSet + i + 1)),
                                 getValidSegmentType(),
                             )
+                            .setRepetitionsCount(5)
+                            .setWeight(Mass.fromGrams(5000.0))
+                            .setRateOfPerceivedExertion(6.5f)
+                            .setSetIndex(i)
                             .build()
                     )
                 }
+                exerciseSegments.add(
+                    ExerciseSegment.Builder(
+                            start.plus(ofMinutes(timeOffSet + 3)),
+                            start.plus(ofMinutes(timeOffSet + 4)),
+                            getValidSegmentType(),
+                        )
+                        .setSetIndex(3)
+                        .build()
+                )
+                exerciseSegments.add(
+                    ExerciseSegment.Builder(
+                            start.plus(ofMinutes(timeOffSet + 4)),
+                            start.plus(ofMinutes(timeOffSet + 5)),
+                            getValidSegmentType(),
+                        )
+                        .setRateOfPerceivedExertion(3.5f)
+                        .build()
+                )
+                exerciseSegments.add(
+                    ExerciseSegment.Builder(
+                            start.plus(ofMinutes(timeOffSet + 5)),
+                            start.plus(ofMinutes(timeOffSet + 6)),
+                            getValidSegmentType(),
+                        )
+                        .setRepetitionsCount(3)
+                        .setWeight(Mass.fromGrams(9000.0))
+                        .build()
+                )
+                exerciseSegments.add(
+                    ExerciseSegment.Builder(
+                            start.plus(ofMinutes(timeOffSet + 6)),
+                            start.plus(ofMinutes(timeOffSet + 7)),
+                            getValidSegmentType(),
+                        )
+                        .setWeight(Mass.fromGrams(2000.0))
+                        .setSetIndex(4)
+                        .build()
+                )
+                exerciseSegments.add(
+                    ExerciseSegment.Builder(
+                            start.plus(ofMinutes(timeOffSet + 7)),
+                            start.plus(ofMinutes(timeOffSet + 8)),
+                            getValidSegmentType(),
+                        )
+                        .build()
+                )
                 val exerciseLaps = ArrayList<ExerciseLap>()
                 repeat(5) { i ->
                     exerciseLaps.add(
@@ -280,6 +331,7 @@ class SeedActivityData(private val context: Context, private val manager: Health
                     exerciseSegments,
                     exerciseLaps,
                     start.plus(ofMinutes(timeOffSet)),
+                    rpe = 6.5f,
                 )
             }
         val yesterdayRecords =
@@ -875,22 +927,27 @@ class SeedActivityData(private val context: Context, private val manager: Health
         exerciseSegments: List<ExerciseSegment>,
         laps: List<ExerciseLap>,
         time: Instant,
+        rpe: Float? = null,
     ): ExerciseSessionRecord {
-        return ExerciseSessionRecord.Builder(
-                getMetaData(context),
-                time,
-                time.plusSeconds(1000),
-                ExerciseSessionType.EXERCISE_SESSION_TYPE_EXERCISE_CLASS,
-            )
-            .setSegments(exerciseSegments)
-            .setLaps(laps)
-            .setRoute(
-                generateExerciseRouteFromLocations(
-                    getValidExerciseRouteLocation(),
-                    time.toEpochMilli(),
+        val builder =
+            ExerciseSessionRecord.Builder(
+                    getMetaData(context),
+                    time,
+                    time.plusSeconds(1000),
+                    ExerciseSessionType.EXERCISE_SESSION_TYPE_EXERCISE_CLASS,
                 )
-            )
-            .build()
+                .setSegments(exerciseSegments)
+                .setLaps(laps)
+                .setRoute(
+                    generateExerciseRouteFromLocations(
+                        getValidExerciseRouteLocation(),
+                        time.toEpochMilli(),
+                    )
+                )
+        if (rpe != null) {
+            builder.setRateOfPerceivedExertion(rpe)
+        }
+        return builder.build()
     }
 
     private fun getValidExerciseRouteLocation():
