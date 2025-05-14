@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.backuprestore;
 
 import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_FETCHING_DATA;
+import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_NONE;
 import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_UNKNOWN;
 import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_VERSION_DIFF;
 import static android.health.connect.HealthConnectDataState.RESTORE_STATE_IDLE;
@@ -24,7 +25,6 @@ import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_FAILED;
 import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_RETRY;
 import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
 
-import static com.android.compatibility.common.util.SystemUtil.eventually;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.BackupRestoreJobService.BACKUP_RESTORE_JOBS_NAMESPACE;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.BackupRestoreJobService.EXTRA_JOB_NAME_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_STATE_KEY;
@@ -58,7 +58,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
@@ -68,6 +67,7 @@ import android.annotation.Nullable;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.restore.BackupFileNamesSet;
@@ -82,8 +82,7 @@ import android.util.ArrayMap;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.modules.utils.testing.ExtendedMockitoRule;
-import com.android.server.healthconnect.common.preferences.PreferenceHelper;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigrationStateManager;
@@ -104,7 +103,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -112,6 +112,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /** Unit test for class {@link BackupRestore} */
 @RunWith(AndroidJUnit4.class)
@@ -122,28 +123,25 @@ public class BackupRestoreTest {
     @Rule(order = 1)
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
-    @Rule(order = 2)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(SQLiteDatabase.class)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Rule public final TemporaryFolder mEnvironmentDataDirectory = new TemporaryFolder();
 
     @Mock Context mServiceContext;
     @Mock private TransactionManager mTransactionManager;
+    @Mock private Cursor mCursor;
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private MigrationStateManager mMockMigrationStateManager;
     @Mock private Context mContext;
     @Mock private JobScheduler mJobScheduler;
+    @Mock private AppInfoHelper mAppInfoHelper;
     @Mock private BackupRestore.BackupRestoreJobScheduler mBackupRestoreJobScheduler;
     @Spy private GrantTimeXmlHelper mGrantTimeXmlHelper = new GrantTimeXmlHelper();
     @Captor ArgumentCaptor<JobInfo> mJobInfoArgumentCaptor;
     private BackupRestore mBackupRestore;
-    private final PreferenceHelper mFakePreferenceHelper = new FakePreferenceHelper();
+    private final FakePreferenceHelper mFakePreferenceHelper = new FakePreferenceHelper();
     private UserHandle mUserHandle = UserHandle.of(UserHandle.myUserId());
     private File mMockBackedDataDirectory;
     private File mMockStagedDataDirectory;
@@ -158,7 +156,8 @@ public class BackupRestoreTest {
         when(mServiceContext.getUser()).thenReturn(mUserHandle);
         when(mServiceContext.getSystemService(JobScheduler.class)).thenReturn(mJobScheduler);
         when(mServiceContext.getPackageName()).thenReturn("packageName");
-
+        when(mTransactionManager.read(any(), any())).thenReturn(mCursor);
+        when(mTransactionManager.read(any())).thenReturn(mCursor);
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setPreferenceHelper(mFakePreferenceHelper)
@@ -171,7 +170,7 @@ public class BackupRestoreTest {
 
         mBackupRestore =
                 new BackupRestore(
-                        healthConnectInjector.getAppInfoHelper(),
+                        mAppInfoHelper,
                         mFirstGrantTimeManager,
                         healthConnectInjector.getMigrationStateManager(),
                         healthConnectInjector.getPreferenceHelper(),
@@ -490,16 +489,17 @@ public class BackupRestoreTest {
 
         when(mTransactionManager.getDatabaseVersion()).thenReturn(1);
 
-        SQLiteDatabase mockDb = mock(SQLiteDatabase.class);
-        when(mockDb.getVersion()).thenReturn(1);
-        when(SQLiteDatabase.openDatabase(any(), any())).thenReturn(mockDb);
+        createStagedDb(/* version= */ 1);
 
         mBackupRestore.scheduleAllJobs();
 
-        eventually(
-                () ->
-                        assertThat(mFakePreferenceHelper.getPreference(DATA_RESTORE_STATE_KEY))
-                                .isEqualTo(String.valueOf(INTERNAL_RESTORE_STATE_MERGING_DONE)));
+        assertThat(
+                        mFakePreferenceHelper.await(
+                                DATA_RESTORE_STATE_KEY,
+                                String.valueOf(INTERNAL_RESTORE_STATE_MERGING_DONE),
+                                10,
+                                TimeUnit.SECONDS))
+                .isTrue();
     }
 
     @Test
@@ -724,21 +724,20 @@ public class BackupRestoreTest {
     }
 
     @Test
-    public void testMerge_restoreStateIsIdle() {
+    public void testMerge_restoreStateIsIdle() throws Exception {
         mFakePreferenceHelper.insertOrReplacePreference(
                 DATA_RESTORE_STATE_KEY, String.valueOf(INTERNAL_RESTORE_STATE_STAGING_DONE));
         when(mTransactionManager.getDatabaseVersion()).thenReturn(1);
-
-        SQLiteDatabase mockDb = mock(SQLiteDatabase.class);
-        when(mockDb.getVersion()).thenReturn(1);
-        when(SQLiteDatabase.openDatabase(any(), any())).thenReturn(mockDb);
+        createStagedDb(/* version= */ 1);
 
         mBackupRestore.merge();
+
         assertThat(mBackupRestore.getDataRestoreState()).isEqualTo(RESTORE_STATE_IDLE);
+        assertThat(mBackupRestore.getDataRestoreError()).isEqualTo(RESTORE_ERROR_NONE);
     }
 
     @Test
-    public void testMerge_mergingOfGrantTimesIsInvoked() {
+    public void testMerge_mergingOfGrantTimesIsInvoked() throws Exception {
         mFakePreferenceHelper.insertOrReplacePreference(
                 DATA_RESTORE_STATE_KEY, String.valueOf(INTERNAL_RESTORE_STATE_STAGING_DONE));
         when(mTransactionManager.getDatabaseVersion()).thenReturn(1);
@@ -748,25 +747,21 @@ public class BackupRestoreTest {
                 .thenReturn(userGrantTimeState);
         doReturn(userGrantTimeState).when(mGrantTimeXmlHelper).parseGrantTime(any());
 
-        SQLiteDatabase mockDb = mock(SQLiteDatabase.class);
-        when(mockDb.getVersion()).thenReturn(1);
-        when(SQLiteDatabase.openDatabase(any(), any())).thenReturn(mockDb);
+        createStagedDb(/* version= */ 1);
 
         mBackupRestore.merge();
+
         verify(mFirstGrantTimeManager).applyAndStageGrantTimeStateForUser(eq(mUserHandle), any());
     }
 
     @Test
-    public void testMerge_mergingOfGrantTimes_parsesRestoredGrantTimes() {
+    public void testMerge_mergingOfGrantTimes_parsesRestoredGrantTimes() throws Exception {
         ArgumentCaptor<File> restoredGrantTimeFileCaptor = ArgumentCaptor.forClass(File.class);
 
         mFakePreferenceHelper.insertOrReplacePreference(
                 DATA_RESTORE_STATE_KEY, String.valueOf(INTERNAL_RESTORE_STATE_STAGING_DONE));
         when(mTransactionManager.getDatabaseVersion()).thenReturn(1);
-
-        SQLiteDatabase mockDb = mock(SQLiteDatabase.class);
-        when(mockDb.getVersion()).thenReturn(1);
-        when(SQLiteDatabase.openDatabase(any(), any())).thenReturn(mockDb);
+        createStagedDb(/* version= */ 1);
 
         mBackupRestore.merge();
         verify(mGrantTimeXmlHelper).parseGrantTime(restoredGrantTimeFileCaptor.capture());
@@ -780,18 +775,10 @@ public class BackupRestoreTest {
         mFakePreferenceHelper.insertOrReplacePreference(
                 DATA_RESTORE_STATE_KEY, String.valueOf(INTERNAL_RESTORE_STATE_STAGING_DONE));
         when(mTransactionManager.getDatabaseVersion()).thenReturn(1);
-
-        SQLiteDatabase mockDb = mock(SQLiteDatabase.class);
-        when(mockDb.getVersion()).thenReturn(2);
-        when(SQLiteDatabase.openDatabase(any(), any())).thenReturn(mockDb);
-
-        File hcDirectory =
-                FilesUtil.getDataSystemCeHCDirectoryForUser(
-                        mEnvironmentDataDirectory.getRoot(), mUserHandle.getIdentifier());
-        File databaseDir = new File(hcDirectory, STAGED_DATABASE_DIR);
-        createAndGetEmptyFile(databaseDir, STAGED_DATABASE_NAME);
+        createStagedDb(/* version= */ 2);
 
         mBackupRestore.merge();
+
         assertThat(mBackupRestore.getDataRestoreError()).isEqualTo(RESTORE_ERROR_VERSION_DIFF);
         verify(mFirstGrantTimeManager, never())
                 .applyAndStageGrantTimeStateForUser(eq(mUserHandle), any());
@@ -888,5 +875,18 @@ public class BackupRestoreTest {
         File file = new File(dir, fileName);
         file.createNewFile();
         return file;
+    }
+
+    private File createStagedDb(int version) throws IOException {
+        File hcDirectory =
+                FilesUtil.getDataSystemCeHCDirectoryForUser(
+                        mEnvironmentDataDirectory.getRoot(), mUserHandle.getIdentifier());
+        File dir = new File(hcDirectory, STAGED_DATABASE_DIR);
+        dir.mkdirs();
+        File dbFile = new File(dir, STAGED_DATABASE_NAME);
+        try (SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dbFile, null)) {
+            db.setVersion(version);
+        }
+        return dbFile;
     }
 }

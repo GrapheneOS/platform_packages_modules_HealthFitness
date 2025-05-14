@@ -7,8 +7,6 @@ package {
 filegroup {
     name: "robo-tests-sources-exclude",
     srcs: [
-        // Uses ExtendedMockito
-        "unittests/src/com/android/server/healthconnect/backuprestore/BackupRestoreTest.java",
         // Uses CTS TestUtils
         "unittests/src/com/android/server/healthconnect/backuprestore/BackupRestoreWithoutMocksTest.java",
         // Fails due to attempts to reference an inaccessible file don't fail with Robolectric.
