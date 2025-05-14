@@ -62,6 +62,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 abstract class BaseApiTest<T extends Record> {
     private static final ZonedDateTime YESTERDAY_11AM =
@@ -71,17 +72,24 @@ abstract class BaseApiTest<T extends Record> {
                     .atZone(ZoneId.systemDefault());
     private static final String TEST_PACKAGE_NAME = getTestPackageName();
 
-    private final Class<T> mRecordClass;
+    /**
+     * The record class may be unavailable on older builds. Using a supplier makes sure the class
+     * resolution gets postponed until {@link #setUp()} which never gets reached if the
+     * corresponding API flag is disabled.
+     */
+    private final Supplier<Class<T>> mRecordClassSupplier;
+
+    private Class<T> mRecordClass;
     private final String mReadPermission;
     private final String mWritePermission;
     private final RecordFactory<T> mRecordFactory;
 
     BaseApiTest(
-            Class<T> recordClass,
+            Supplier<Class<T>> recordClassSupplier,
             String readPermission,
             String writePermission,
             RecordFactory<T> recordFactory) {
-        mRecordClass = recordClass;
+        mRecordClassSupplier = recordClassSupplier;
         mReadPermission = readPermission;
         mWritePermission = writePermission;
         mRecordFactory = recordFactory;
@@ -98,6 +106,7 @@ abstract class BaseApiTest<T extends Record> {
 
     @Before
     public void setUp() throws InterruptedException {
+        mRecordClass = mRecordClassSupplier.get();
         assertThat(getGrantedHealthPermissions(getTestPackageName()))
                 .containsAtLeast(mReadPermission, mWritePermission);
         TestUtils.deleteAllStagedRemoteData();

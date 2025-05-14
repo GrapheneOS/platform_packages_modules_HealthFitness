@@ -31,7 +31,7 @@ public class MindfulnessSessionRecordMultiAppApiTest
         extends BaseMultiAppApiTest<MindfulnessSessionRecord> {
     public MindfulnessSessionRecordMultiAppApiTest() {
         super(
-                MindfulnessSessionRecord.class,
+                () -> MindfulnessSessionRecord.class,
                 HealthPermissions.READ_MINDFULNESS,
                 HealthPermissions.WRITE_MINDFULNESS,
                 new MindfulnessSessionRecordFactory());
