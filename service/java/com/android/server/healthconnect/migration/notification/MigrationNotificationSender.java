@@ -16,6 +16,11 @@
 
 package com.android.server.healthconnect.migration.notification;
 
+import static android.health.connect.Constants.CHANNEL_GROUP_ID;
+import static android.health.connect.Constants.CHANNEL_GROUP_NAME_RESOURCE;
+import static android.health.connect.Constants.CHANNEL_NAME_RESOURCE;
+import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
+
 import android.annotation.IntDef;
 import android.annotation.Nullable;
 import android.app.Notification;
@@ -46,10 +51,6 @@ public final class MigrationNotificationSender {
     // We use the same tag across notification because we want at most one notification
     // about migration active at any point in time, we we effectively just update its content
     private static final String NOTIFICATION_TAG = "HealthConnectTag";
-    private static final String CHANNEL_ID = "healthconnect-channel";
-    private static final String CHANNEL_GROUP_ID = "healthconnect-channel-group";
-    private static final String CHANNEL_NAME_RESOURCE = "health_connect_notification_channel_name";
-    private static final String CHANNEL_GROUP_NAME_RESOURCE = "app_label";
 
     private final Context mContext;
     private final MigrationNotificationFactory mNotificationFactory;
@@ -66,7 +67,8 @@ public final class MigrationNotificationSender {
         createNotificationChannel(userHandle);
         try {
             Notification notification =
-                    mNotificationFactory.createNotification(notificationType, CHANNEL_ID);
+                    mNotificationFactory.createNotification(
+                            notificationType, NOTIFICATION_CHANNEL_ID);
 
             NotificationManager notificationManager = getNotificationManagerForUser(userHandle);
             if (notificationManager != null) {
@@ -136,7 +138,7 @@ public final class MigrationNotificationSender {
         // channel def
         int importance = NotificationManager.IMPORTANCE_HIGH;
         NotificationChannel notificationChannel =
-                new NotificationChannel(CHANNEL_ID, channelName, importance);
+                new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, importance);
         notificationChannel.setGroup(CHANNEL_GROUP_ID);
         notificationChannel.setBlockable(true);
 

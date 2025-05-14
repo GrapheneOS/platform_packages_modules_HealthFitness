@@ -23,11 +23,13 @@ import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_UPSERT;
 import static android.health.connect.datatypes.FhirVersion.parseFhirVersion;
 
+import static com.android.healthfitness.flags.AconfigFlagHelper.isPhrChangeLogsEnabled;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.phr.storage.MedicalResourceHelper.getIntersectionOfResourceTypesReadAndGrantedReadPermissions;
 import static com.android.server.healthconnect.phr.storage.MedicalResourceHelper.getJoinWithIndicesTableFilterOnMedicalResourceTypes;
 import static com.android.server.healthconnect.phr.storage.MedicalResourceHelper.getReadRequestForDistinctResourceTypesBelongingToDataSourceIds;
+import static com.android.server.healthconnect.phr.storage.MedicalResourceHelper.getReadRequestForResourcesBelongingToDataSourceIds;
 import static com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper.getMedicalResourceTypeColumnName;
 import static com.android.server.healthconnect.storage.HealthConnectDatabase.createTable;
 import static com.android.server.healthconnect.storage.request.ReadTableRequest.UNION;
@@ -42,6 +44,8 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorUUID;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.isNullValue;
 import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
+
+import static java.util.Objects.requireNonNull;
 
 import android.annotation.Nullable;
 import android.content.ContentValues;
@@ -110,6 +114,7 @@ public class MedicalDataSourceHelper {
     private final AppInfoHelper mAppInfoHelper;
     private final TimeSource mTimeSource;
     private final AccessLogsHelper mAccessLogsHelper;
+    private final MedicalChangeLogsHelper mMedicalChangeLogsHelper;
 
     public MedicalDataSourceHelper(
             TransactionManager transactionManager,
@@ -120,6 +125,8 @@ public class MedicalDataSourceHelper {
         mAppInfoHelper = appInfoHelper;
         mTimeSource = timeSource;
         mAccessLogsHelper = accessLogsHelper;
+        mMedicalChangeLogsHelper =
+                new MedicalChangeLogsHelper(transactionManager, appInfoHelper, this);
     }
 
     public static String getMainTableName() {
@@ -941,38 +948,18 @@ public class MedicalDataSourceHelper {
      * Deletes the {@link MedicalDataSource}s stored in the HealthConnect database using the given
      * {@code id}.
      *
-     * <p>Note that this deletes without producing change logs, or access logs.
+     * <p>Note that this deletes without producing access logs.
      *
      * @param id the id to delete.
      * @throws IllegalArgumentException if the id does not exist.
      */
     public void deleteMedicalDataSourceWithoutPermissionChecks(UUID id) throws SQLiteException {
-        mTransactionManager.runAsTransaction(
-                db -> {
-                    try (Cursor cursor =
-                            mTransactionManager.read(
-                                    db,
-                                    getReadTableRequest(
-                                            List.of(id), /* appInfoRestriction= */ null))) {
-                        if (cursor.getCount() != 1) {
-                            throw new IllegalArgumentException("Id " + id + " does not exist");
-                        }
-                    }
-                    // This also deletes the contained data, because they are
-                    // referenced by foreign key, and so are handled by ON DELETE
-                    // CASCADE in the db.
-                    mTransactionManager.delete(
-                            db,
-                            getDeleteRequestForDataSourceUuid(
-                                    id, /* appInfoIdRestriction= */ null));
-                });
+        deleteMedicalDataSource(id, /* callingPackageName= */ null);
     }
 
     /**
      * Deletes the {@link MedicalDataSource}s stored in the HealthConnect database using the given
      * {@code id}.
-     *
-     * <p>Note that this deletes without producing change logs.
      *
      * @param id the id to delete.
      * @param callingPackageName restricts any deletions to data sources owned by the given app.
@@ -981,34 +968,73 @@ public class MedicalDataSourceHelper {
      */
     public void deleteMedicalDataSourceWithPermissionChecks(UUID id, String callingPackageName)
             throws SQLiteException {
-        long appId = mAppInfoHelper.getAppInfoId(callingPackageName);
-        if (appId == Constants.DEFAULT_LONG) {
-            throw new IllegalArgumentException(
-                    "Deletion not permitted as app has inserted no data.");
+        deleteMedicalDataSource(id, requireNonNull(callingPackageName));
+    }
+
+    /**
+     * Deletes the {@link MedicalDataSource}s stored in the HealthConnect database using the given
+     * {@code id}.
+     *
+     * @param id the id to delete.
+     * @param callingPackageName restricts any deletions to data sources owned by the given app.
+     *     Used to check if the requested data source was written by that package name, and won't be
+     *     deleted if it is not. Also used for generating access logs. If null, the data source will
+     *     be deleted without ownership checks, and no access logs will be generated.
+     */
+    private void deleteMedicalDataSource(UUID id, @Nullable String callingPackageName)
+            throws SQLiteException {
+
+        Long appId;
+        if (callingPackageName != null) {
+            appId = mAppInfoHelper.getAppInfoId(callingPackageName);
+            if (appId == Constants.DEFAULT_LONG) {
+                throw new IllegalArgumentException(
+                        "Deletion not permitted as app has inserted no data.");
+            }
+        } else {
+            appId = null;
         }
+
         mTransactionManager.runAsTransaction(
                 db -> {
                     try (Cursor cursor =
                             mTransactionManager.read(db, getReadTableRequest(List.of(id), appId))) {
                         if (cursor.getCount() != 1) {
                             throw new IllegalArgumentException(
-                                    "Id " + id + " does not exist or is owned by another app");
+                                    appId == null
+                                            ? "Id " + id + " does not exist"
+                                            : "Id "
+                                                    + id
+                                                    + " does not exist or is owned by another app");
                         }
                     }
 
-                    // Medical resource types that belong to this dataSource and will be deleted.
-                    Set<Integer> medicalResourceTypes =
-                            getMedicalResourceTypesBelongingToDataSourceIds(List.of(id));
+                    if (callingPackageName != null && appId != null) {
+                        // Medical resource types that belong to this dataSource and will be
+                        // deleted.
+                        Set<Integer> medicalResourceTypes =
+                                getMedicalResourceTypesBelongingToDataSourceIds(List.of(id));
+
+                        mAccessLogsHelper.addAccessLog(
+                                db,
+                                callingPackageName,
+                                medicalResourceTypes,
+                                OPERATION_TYPE_DELETE,
+                                /* accessedMedicalDataSource= */ true);
+                    }
+
+                    if (isPhrChangeLogsEnabled()) {
+                        var readRequest =
+                                getReadRequestForResourcesBelongingToDataSourceIds(
+                                        List.of(id), appId);
+                        mMedicalChangeLogsHelper.generateDeletionChangeLogsForMedicalResources(
+                                db, readRequest, appId);
+                    }
+
                     // This also deletes the contained data, because they are
                     // referenced by foreign key, and so are handled by ON DELETE
                     // CASCADE in the db.
                     mTransactionManager.delete(db, getDeleteRequestForDataSourceUuid(id, appId));
-                    mAccessLogsHelper.addAccessLog(
-                            db,
-                            callingPackageName,
-                            medicalResourceTypes,
-                            OPERATION_TYPE_DELETE,
-                            /* accessedMedicalDataSource= */ true);
                 });
     }
 

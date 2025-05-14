@@ -15,10 +15,15 @@
  */
 package com.android.server.healthconnect.onboarding;
 
+import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_HIDE;
+import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
+import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
+
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationJob.ONBOARDING_NOTIFICATION_JOB_NAMESPACE;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -56,11 +61,16 @@ public class OnboardingNotificationJobTest {
     @Mock private Context mContext;
     @Mock private JobScheduler mMainJobScheduler;
     @Mock private JobScheduler mOnboardingNotificationJobScheduler;
+    @Mock private OnboardingStateManager mOnboardingStateManager;
+    @Mock private OnboardingNotificationSender mOnboardingNotificationSender;
+
+    private UserHandle mUserHandle;
 
     @Before
     public void setUp() {
+        mUserHandle = UserHandle.CURRENT;
         when(mContext.getSystemService(JobScheduler.class)).thenReturn(mMainJobScheduler);
-        when(mContext.getUser()).thenReturn(UserHandle.CURRENT);
+        when(mContext.getUser()).thenReturn(mUserHandle);
         when(mMainJobScheduler.forNamespace(ONBOARDING_NOTIFICATION_JOB_NAMESPACE))
                 .thenReturn(mOnboardingNotificationJobScheduler);
     }
@@ -95,5 +105,38 @@ public class OnboardingNotificationJobTest {
         OnboardingNotificationJob.cancelAllJobs(mContext);
 
         verify(mOnboardingNotificationJobScheduler).cancelAll();
+    }
+
+    @Test
+    public void executeOnboardingNotificationJob_noAppConnected_notificationSent() {
+        when(mOnboardingStateManager.updateAndGetOnboardingState())
+                .thenReturn(ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
+        OnboardingNotificationJob.executeOnboardingNotificationJob(
+                mOnboardingStateManager, mOnboardingNotificationSender, mUserHandle);
+
+        verify(mOnboardingNotificationSender).sendNoAppConnectedNotification(eq(mUserHandle));
+        verify(mOnboardingNotificationSender, never()).sendOneAppConnectedNotification(any());
+    }
+
+    @Test
+    public void executeOnboardingNotificationJob_oneAppConnected_notificationSent() {
+        when(mOnboardingStateManager.updateAndGetOnboardingState())
+                .thenReturn(ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED);
+        OnboardingNotificationJob.executeOnboardingNotificationJob(
+                mOnboardingStateManager, mOnboardingNotificationSender, mUserHandle);
+
+        verify(mOnboardingNotificationSender, never()).sendNoAppConnectedNotification(any());
+        verify(mOnboardingNotificationSender).sendOneAppConnectedNotification(eq(mUserHandle));
+    }
+
+    @Test
+    public void executeOnboardingNotificationJob_hide_noNotificationSent() {
+        when(mOnboardingStateManager.updateAndGetOnboardingState())
+                .thenReturn(ONBOARDING_BANNER_STATE_HIDE);
+        OnboardingNotificationJob.executeOnboardingNotificationJob(
+                mOnboardingStateManager, mOnboardingNotificationSender, mUserHandle);
+
+        verify(mOnboardingNotificationSender, never()).sendNoAppConnectedNotification(any());
+        verify(mOnboardingNotificationSender, never()).sendOneAppConnectedNotification(any());
     }
 }

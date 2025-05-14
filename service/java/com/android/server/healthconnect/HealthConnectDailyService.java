@@ -25,6 +25,8 @@ import static com.android.server.healthconnect.migration.MigrationConstants.MIGR
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationJob.ONBOARDING_NOTIFICATION_JOB_NAME;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationJob.executeOnboardingNotificationJob;
 
+import static java.util.Objects.requireNonNull;
+
 import android.annotation.Nullable;
 import android.app.job.JobInfo;
 import android.app.job.JobParameters;
@@ -145,7 +147,7 @@ public class HealthConnectDailyService extends JobService {
                             boolean isExportSuccessful =
                                     ExportImportJobs.executePeriodicExportJob(
                                             context,
-                                            Objects.requireNonNull(sUserHandle),
+                                            requireNonNull(sUserHandle),
                                             params.getExtras(),
                                             exportManager,
                                             exportImportSettingsStorage);
@@ -162,7 +164,9 @@ public class HealthConnectDailyService extends JobService {
                     threadScheduler.scheduleInternalTask(
                             () -> {
                                 executeOnboardingNotificationJob(
-                                        healthConnectInjector.getOnboardingStateManager());
+                                        healthConnectInjector.getOnboardingStateManager(),
+                                        healthConnectInjector.getOnboardingNotificationSender(),
+                                        requireNonNull(sUserHandle));
                                 jobFinished(params, /* wantsReschedule= */ false);
                             });
                 } else {
@@ -184,7 +188,7 @@ public class HealthConnectDailyService extends JobService {
 
     /** Start periodically scheduling this service for {@code userId}. */
     public static void schedule(JobScheduler jobScheduler, UserHandle userHandle, JobInfo jobInfo) {
-        Objects.requireNonNull(jobScheduler);
+        requireNonNull(jobScheduler);
         sUserHandle = userHandle;
 
         int result = jobScheduler.schedule(jobInfo);
