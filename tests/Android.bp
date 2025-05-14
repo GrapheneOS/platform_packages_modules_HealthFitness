@@ -7,8 +7,6 @@ package {
 filegroup {
     name: "robo-tests-sources-exclude",
     srcs: [
-        // Fails due to attempts to reference an inaccessible file don't fail with Robolectric.
-        "unittests/src/com/android/server/healthconnect/exportimport/ExportManagerTest.java",
         // Explicit tests that needed resources are present in the controller APK.
         // Not expected to be bivalent.
         "unittests/src/com/android/server/healthconnect/migration/notification/HealthConnectResourcesContextTest.java",
