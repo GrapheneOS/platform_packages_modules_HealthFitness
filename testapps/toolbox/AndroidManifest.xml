@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.health.READ_ELEVATION_GAINED" />
     <uses-permission android:name="android.permission.health.READ_EXERCISE" />
     <uses-permission android:name="android.permission.health.READ_PLANNED_EXERCISE" />
-    <uses-permission android:name="android.permission.health.READ_EXERCISE_ROUTES" />
+    <uses-permission android:name="android.permission.health.READ_EXERCISE_ROUTE" />
     <uses-permission android:name="android.permission.health.READ_FLOORS_CLIMBED" />
     <uses-permission android:name="android.permission.health.READ_HEART_RATE" />
     <uses-permission android:name="android.permission.health.READ_HEART_RATE_VARIABILITY" />
@@ -122,6 +122,17 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".OnboardingActivity"
+            android:exported="true"
+            android:label="@string/app_label"
+            android:theme="@style/AppTheme"
+            android:permission="android.permission.health.START_ONBOARDING">
+            <intent-filter>
+                <action android:name="android.health.connect.action.SHOW_ONBOARDING" />
+            </intent-filter>
+        </activity>
+
         <activity-alias
             android:name=".AliasMainActivity"
             android:exported="true"
@@ -130,16 +141,6 @@
                 <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
 
                 <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
-            </intent-filter>
-        </activity-alias>
-
-        <activity-alias
-            android:name=".OnboardingActivity"
-            android:exported="true"
-            android:targetActivity=".MainActivity"
-            android:permission="android.permission.health.START_ONBOARDING">
-            <intent-filter>
-                <action android:name="android.health.connect.action.SHOW_ONBOARDING" />
             </intent-filter>
         </activity-alias>
 
