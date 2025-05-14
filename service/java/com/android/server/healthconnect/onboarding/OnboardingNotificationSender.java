@@ -17,6 +17,10 @@
 package com.android.server.healthconnect.onboarding;
 
 import static android.health.connect.Constants.APP_ICON_DRAWABLE_NAME;
+import static android.health.connect.Constants.CHANNEL_GROUP_ID;
+import static android.health.connect.Constants.CHANNEL_GROUP_NAME_RESOURCE;
+import static android.health.connect.Constants.CHANNEL_NAME_RESOURCE;
+import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
 
 import android.app.Notification;
 import android.content.Context;
@@ -54,21 +58,40 @@ public final class OnboardingNotificationSender {
     @VisibleForTesting
     static final String CONNECT_MORE_APPS_NOTIFICATION_BUTTON = "connect_more_apps_set_up_button";
 
-    private final HealthConnectNotificationSender mHealthConnectNotificationSender;
+    // Unique random ID for onboarding notifications, which makes sure we only have one onboarding
+    // notification at a time.
+    // TODO(b/414949807): Move to a central place
+    private static final int FIXED_NOTIFICATION_ID = 9878;
+    private static final String NOTIFICATION_TAG = "HcOnboardingTag";
+
     private final HealthConnectResourcesContext mResContext;
     private final NotificationUtils mNotificationUtils;
 
     // TODO(b/414949807): Move to NotificationUtils
     private Optional<Icon> mAppIcon = Optional.empty();
+    private HealthConnectNotificationSender mHealthConnectNotificationSender;
 
-    public OnboardingNotificationSender(
-            HealthConnectNotificationSender healthConnectNotificationSender,
-            HealthConnectResourcesContext resContext,
-            Context context,
-            String channelId) {
-        mHealthConnectNotificationSender = healthConnectNotificationSender;
+    public OnboardingNotificationSender(Context context, HealthConnectResourcesContext resContext) {
         mResContext = resContext;
-        mNotificationUtils = new NotificationUtils(context, channelId);
+        mNotificationUtils = new NotificationUtils(context, NOTIFICATION_CHANNEL_ID);
+        mHealthConnectNotificationSender =
+                new HealthConnectNotificationSender.Builder()
+                        .setContext(context)
+                        .setResourcesContext(resContext)
+                        .setChannelGroupId(CHANNEL_GROUP_ID)
+                        .setChannelNameResource(CHANNEL_NAME_RESOURCE)
+                        .setChannelGroupNameResource(CHANNEL_GROUP_NAME_RESOURCE)
+                        .setChannelId(NOTIFICATION_CHANNEL_ID)
+                        .setFixedNotificationId(FIXED_NOTIFICATION_ID)
+                        .setNotificationTag(NOTIFICATION_TAG)
+                        .setIsEnabled(true)
+                        .build();
+    }
+
+    // TODO(b/414949807): Use injector
+    @VisibleForTesting
+    void setNotificationSenderForTesting(HealthConnectNotificationSender notificationSender) {
+        mHealthConnectNotificationSender = notificationSender;
     }
 
     /** Sends a notification for onboarding scenario where there's no app connected to HC. */

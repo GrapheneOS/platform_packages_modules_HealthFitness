@@ -16,6 +16,9 @@
 
 package com.android.server.healthconnect.exportimport;
 
+import static android.health.connect.Constants.CHANNEL_GROUP_ID;
+import static android.health.connect.Constants.CHANNEL_GROUP_NAME_RESOURCE;
+import static android.health.connect.Constants.CHANNEL_NAME_RESOURCE;
 import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
 
 import android.annotation.IntDef;
@@ -38,9 +41,6 @@ public class ExportImportNotificationSender {
     private static final String TAG = "ExportImportNotificationSender";
     private static final int FIXED_NOTIFICATION_ID = 9877;
     private static final String NOTIFICATION_TAG = "HealthConnectTag";
-    private static final String CHANNEL_GROUP_ID = "healthconnect-channel-group";
-    private static final String CHANNEL_NAME_RESOURCE = "health_connect_notification_channel_name";
-    private static final String CHANNEL_GROUP_NAME_RESOURCE = "app_label";
 
     /** Create an instance of HealthConnectNotificationSender, setup for export-import. */
     public static HealthConnectNotificationSender createSender(

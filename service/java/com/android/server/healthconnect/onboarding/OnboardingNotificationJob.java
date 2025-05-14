@@ -96,7 +96,9 @@ public final class OnboardingNotificationJob {
      * required.
      */
     public static void executeOnboardingNotificationJob(
-            OnboardingStateManager onboardingStateManager) {
+            OnboardingStateManager onboardingStateManager,
+            OnboardingNotificationSender notificationSender,
+            UserHandle userHandle) {
         // TODO(b/404803574): Don't show notification if users have dismissed it
 
         @HealthConnectOnboardingState.OnboardingState
@@ -104,10 +106,10 @@ public final class OnboardingNotificationJob {
 
         switch (onboardingState) {
             case ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED:
-                // TODO(b/403257033): send notification
+                notificationSender.sendNoAppConnectedNotification(userHandle);
                 break;
             case ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED:
-                // TODO(b/403257033): send notification
+                notificationSender.sendOneAppConnectedNotification(userHandle);
                 break;
             case ONBOARDING_BANNER_STATE_HIDE:
             default:
