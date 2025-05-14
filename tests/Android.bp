@@ -7,8 +7,6 @@ package {
 filegroup {
     name: "robo-tests-sources-exclude",
     srcs: [
-        // Uses CTS TestUtils
-        "unittests/src/com/android/server/healthconnect/backuprestore/BackupRestoreWithoutMocksTest.java",
         // Fails due to attempts to reference an inaccessible file don't fail with Robolectric.
         "unittests/src/com/android/server/healthconnect/exportimport/ExportManagerTest.java",
         // Explicit tests that needed resources are present in the controller APK.
