@@ -363,7 +363,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             ExportImportLogger exportImportLogger,
             HealthFitnessStatsLog statsLog,
             BackupRestoreLogger backupRestoreLogger,
-            ExportImportNotificationFactory exportImportNotificationFactory) {
+            ExportImportNotificationFactory exportImportNotificationFactory,
+            @Nullable CloudBackupManager cloudBackupManager,
+            @Nullable CloudRestoreManager cloudRestoreManager) {
         mContext = context;
         mCurrentForegroundUser = context.getUser();
         mTimeSource = timeSource;
@@ -432,38 +434,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         exportImportLogger,
                         exportImportNotificationFactory);
 
-        mCloudBackupManager =
-                // TODO(b/400105647): Remove duplicate flag check once excess code size is resolved.
-                Flags.cloudBackupAndRestore() && isCloudBackupRestoreEnabled()
-                        ? new CloudBackupManager(
-                                mTransactionManager,
-                                mFitnessRecordReadHelper,
-                                mAppInfoHelper,
-                                mDeviceInfoHelper,
-                                mHealthConnectMappings,
-                                mInternalHealthConnectMappings,
-                                mChangeLogsHelper,
-                                mChangeLogsRequestHelper,
-                                mHealthDataCategoryPriorityHelper,
-                                mPreferenceHelper,
-                                clockForLogging,
-                                backupRestoreLogger)
-                        : null;
-        mCloudRestoreManager =
-                // TODO(b/400105647): Remove duplicate flag check once excess code size is resolved.
-                Flags.cloudBackupAndRestore() && isCloudBackupRestoreEnabled()
-                        ? new CloudRestoreManager(
-                                mTransactionManager,
-                                mFitnessRecordUpsertHelper,
-                                mFitnessRecordReadHelper,
-                                mInternalHealthConnectMappings,
-                                mDeviceInfoHelper,
-                                mAppInfoHelper,
-                                mHealthDataCategoryPriorityHelper,
-                                mPreferenceHelper,
-                                clockForLogging,
-                                backupRestoreLogger)
-                        : null;
+        mCloudBackupManager = cloudBackupManager;
+        mCloudRestoreManager = cloudRestoreManager;
         mStatsLog = statsLog;
     }
 

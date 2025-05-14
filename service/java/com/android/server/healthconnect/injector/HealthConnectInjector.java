@@ -25,6 +25,8 @@ import androidx.annotation.VisibleForTesting;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
+import com.android.server.healthconnect.backuprestore.CloudBackupManager;
+import com.android.server.healthconnect.backuprestore.CloudRestoreManager;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
@@ -339,6 +341,18 @@ public abstract class HealthConnectInjector {
      * Injector.
      */
     public abstract ExportImportNotificationFactory getExportImportNotificationFactory();
+
+    /**
+     * Getter for {@link CloudBackupManager} instance initialised by the Health Connect Injector.
+     */
+    @Nullable
+    public abstract CloudBackupManager getCloudBackupManager();
+
+    /**
+     * Getter for {@link CloudRestoreManager} instance initialised by the Health Connect Injector.
+     */
+    @Nullable
+    public abstract CloudRestoreManager getCloudRestoreManager();
 
     /** Used to initialize the Injector. */
     public static void setInstance(HealthConnectInjector healthConnectInjector) {
