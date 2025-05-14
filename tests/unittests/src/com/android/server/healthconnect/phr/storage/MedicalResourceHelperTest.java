@@ -432,7 +432,6 @@ public class MedicalResourceHelperTest {
     @Test
     public void getReadTableRequest_resourcesUsingResourceTypesAndDataSourceIds() {
         List<UUID> dataSourceIds = List.of(UUID.fromString("a6194e35-698c-4706-918f-00bf959f123b"));
-        long appId = 123L;
         List<String> hexValues = StorageUtils.getListOfHexStrings(dataSourceIds);
 
         ReadTableRequest request =
@@ -460,6 +459,104 @@ public class MedicalResourceHelperTest {
                                 + " medical_data_source_table.medical_data_source_row_id"
                                 + "  INNER JOIN ( SELECT * FROM medical_resource_indices_table"
                                 + " WHERE medical_resource_type IN (1))"
+                                + " medical_resource_indices_table ON"
+                                + " inner_query_result.medical_resource_row_id ="
+                                + " medical_resource_indices_table.medical_resource_id");
+    }
+
+    @Test
+    public void getReadRequestForDistinctResourceTypesBelongingToDataSourceIds_correctQuery() {
+        List<UUID> dataSourceIds = List.of(UUID.fromString("a6194e35-698c-4706-918f-00bf959f123b"));
+        List<String> hexValues = StorageUtils.getListOfHexStrings(dataSourceIds);
+
+        ReadTableRequest request =
+                MedicalResourceHelper
+                        .getReadRequestForDistinctResourceTypesBelongingToDataSourceIds(
+                                dataSourceIds);
+
+        assertThat(request.getReadCommand())
+                .isEqualTo(
+                        "SELECT DISTINCT medical_resource_type FROM ( SELECT * FROM"
+                                + " medical_resource_table ) AS inner_query_result"
+                                + "  INNER JOIN ( SELECT"
+                                + " * FROM medical_data_source_table WHERE data_source_uuid IN ("
+                                + String.join(", ", hexValues)
+                                + ")) medical_data_source_table ON"
+                                + " inner_query_result.data_source_id ="
+                                + " medical_data_source_table.medical_data_source_row_id"
+                                + "  INNER JOIN"
+                                + " medical_resource_indices_table ON"
+                                + " inner_query_result.medical_resource_row_id ="
+                                + " medical_resource_indices_table.medical_resource_id");
+    }
+
+    @Test
+    public void getReadRequestForResourcesBelongingToDataSourceIds_withAppId_correctQuery() {
+        List<UUID> dataSourceIds = List.of(UUID.fromString("a6194e35-698c-4706-918f-00bf959f123b"));
+        long appId = 123L;
+        List<String> hexValues = StorageUtils.getListOfHexStrings(dataSourceIds);
+
+        ReadTableRequest request =
+                MedicalResourceHelper.getReadRequestForResourcesBelongingToDataSourceIds(
+                        dataSourceIds, appId);
+
+        assertThat(request.getReadCommand())
+                .isEqualTo(
+                        "SELECT medical_resource_row_id,"
+                                + "fhir_resource_type,"
+                                + "fhir_resource_id,"
+                                + "fhir_data,"
+                                + "fhir_version,"
+                                + "medical_resource_type,"
+                                + "data_source_uuid,"
+                                + "inner_query_result.last_modified_time"
+                                + " AS medical_resource_last_modified_time"
+                                + " FROM ( SELECT * FROM"
+                                + " medical_resource_table ) AS inner_query_result"
+                                + "  INNER JOIN ( SELECT"
+                                + " * FROM medical_data_source_table WHERE app_info_id = '"
+                                + appId
+                                + "'"
+                                + " AND data_source_uuid IN ("
+                                + String.join(", ", hexValues)
+                                + ")) medical_data_source_table ON"
+                                + " inner_query_result.data_source_id ="
+                                + " medical_data_source_table.medical_data_source_row_id"
+                                + "  INNER JOIN"
+                                + " medical_resource_indices_table ON"
+                                + " inner_query_result.medical_resource_row_id ="
+                                + " medical_resource_indices_table.medical_resource_id");
+    }
+
+    @Test
+    public void getReadRequestForResourcesBelongingToDataSourceIds_withoutAppId_correctQuery() {
+        List<UUID> dataSourceIds = List.of(UUID.fromString("a6194e35-698c-4706-918f-00bf959f123b"));
+        List<String> hexValues = StorageUtils.getListOfHexStrings(dataSourceIds);
+
+        ReadTableRequest request =
+                MedicalResourceHelper.getReadRequestForResourcesBelongingToDataSourceIds(
+                        dataSourceIds, /* appId= */ null);
+
+        assertThat(request.getReadCommand())
+                .isEqualTo(
+                        "SELECT medical_resource_row_id,"
+                                + "fhir_resource_type,"
+                                + "fhir_resource_id,"
+                                + "fhir_data,"
+                                + "fhir_version,"
+                                + "medical_resource_type,"
+                                + "data_source_uuid,"
+                                + "inner_query_result.last_modified_time"
+                                + " AS medical_resource_last_modified_time"
+                                + " FROM ( SELECT * FROM"
+                                + " medical_resource_table ) AS inner_query_result"
+                                + "  INNER JOIN ( SELECT"
+                                + " * FROM medical_data_source_table WHERE data_source_uuid IN ("
+                                + String.join(", ", hexValues)
+                                + ")) medical_data_source_table ON"
+                                + " inner_query_result.data_source_id ="
+                                + " medical_data_source_table.medical_data_source_row_id"
+                                + "  INNER JOIN"
                                 + " medical_resource_indices_table ON"
                                 + " inner_query_result.medical_resource_row_id ="
                                 + " medical_resource_indices_table.medical_resource_id");
