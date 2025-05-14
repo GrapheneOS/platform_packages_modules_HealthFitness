@@ -830,6 +830,17 @@ public final class HealthPermissions {
             "android.permission.health.READ_MEDICAL_DATA_CONDITIONS";
 
     /**
+     * Allows an application to read the user's data about medical devices.
+     *
+     * <p>Protection level: dangerous.
+     *
+     * @hide
+     */
+    // TODO: b/417657261 - change this to @FlaggedApi(FLAG_DEVICE_RESOURCE)
+    public static final String READ_MEDICAL_DATA_DEVICES =
+            "android.permission.health.READ_MEDICAL_DATA_DEVICES";
+
+    /**
      * Allows an application to read the user's laboratory result data.
      *
      * <p>Protection level: dangerous.
@@ -1078,6 +1089,9 @@ public final class HealthPermissions {
         Set<String> permissions = new ArraySet<>();
         permissions.add(WRITE_MEDICAL_DATA);
         permissions.add(READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES);
+        if (Flags.deviceResource()) {
+            permissions.add(READ_MEDICAL_DATA_DEVICES);
+        }
         permissions.add(READ_MEDICAL_DATA_CONDITIONS);
         permissions.add(READ_MEDICAL_DATA_LABORATORY_RESULTS);
         permissions.add(READ_MEDICAL_DATA_MEDICATIONS);
@@ -1148,6 +1162,7 @@ public final class HealthPermissions {
         return switch (permission) {
             case READ_ACTIVITY_INTENSITY, WRITE_ACTIVITY_INTENSITY -> Flags.activityIntensity();
             case READ_NICOTINE_INTAKE, WRITE_NICOTINE_INTAKE -> Flags.smoking();
+            case READ_MEDICAL_DATA_DEVICES -> Flags.deviceResource();
             default -> true;
         };
     }
