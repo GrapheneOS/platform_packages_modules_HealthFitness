@@ -21,7 +21,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
+import android.os.UserManager;
 import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
@@ -29,6 +31,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 
 import java.util.List;
@@ -48,30 +51,54 @@ public class TrackerManagerImpl implements TrackerManager {
 
     private final Context mContext;
     private final HealthConnectPermissionHelper mPermissionHelper;
+    private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     private final StepSensorEventListener mListener;
+    private final UserManager mUserManager;
 
     public TrackerManagerImpl(
             Context context,
             HealthConnectPermissionHelper permissionHelper,
             HealthConnectThreadScheduler threadScheduler,
             DeviceRecordHelper deviceRecordHelper,
-            DeviceDataSourcesHelper deviceDataSourcesHelper) {
+            DeviceDataSourcesHelper deviceDataSourcesHelper,
+            HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
+            UserManager userManager) {
         mContext = context;
         mPermissionHelper = permissionHelper;
+        mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
         mListener =
                 new StepSensorEventListener(
                         mContext, threadScheduler, deviceRecordHelper, deviceDataSourcesHelper);
+        mUserManager = userManager;
     }
 
     @Override
     public void initialize() {
         if (!Flags.stepTrackingEnabled()) {
+            Slog.d(TAG, "Step tracking flag disabled. Aborting initialization.");
+            return;
+        }
+
+        // Initialization should only be triggered when the user is unlocked.
+        if (!mUserManager.isUserUnlocked()) {
+            Slog.e(TAG, "User was expected to be unlocked but is not. Aborting initialization.");
             return;
         }
 
         if (packagesEligibleForStepTracking(mContext, mPermissionHelper).isEmpty()) {
+            Slog.d(TAG, "No packages eligible for step tracking. Aborting initialization.");
             return;
         }
+
+        // Normally, this is carried out whenever an app is granted permissions. Since no
+        // permissions are involved for step tracking, we need to do it here.
+        // This also has the effect of adding the "android" package to the app info table.
+        // Note: this is idempotent and can be called for every initialization.
+        Slog.d(TAG, "Adding device data provider package to app priority list.");
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE,
+                HealthDataCategory.ACTIVITY,
+                mContext.getUser());
 
         subscribeToSensorManager();
     }
