@@ -33,7 +33,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -109,8 +109,8 @@ public class HealthConnectDatabaseTest {
     public void assertPhrDatabaseWorkingAsExpected() {
         HealthConnectInjector injector = getHealthConnectInjector(mContext);
         TransactionManager transactionManager = injector.getTransactionManager();
-        TransactionTestUtils transactionTestUtils = new TransactionTestUtils(injector);
-        transactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        FitnessTestUtils fitnessTestUtils = new FitnessTestUtils(injector);
+        fitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
         assertPhrTablesExist(transactionManager);
         // PHR functions should work properly.

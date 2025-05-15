@@ -33,7 +33,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.health.connect.HealthDataCategory;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -102,10 +102,10 @@ public class CloudBackupSettingsHelperTest {
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
 
-        TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        transactionTestUtils.insertApp(TEST_PACKAGE_NAME);
-        transactionTestUtils.insertApp(TEST_PACKAGE_NAME_2);
-        transactionTestUtils.insertApp(TEST_PACKAGE_NAME_3);
+        FitnessTestUtils fitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        fitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
+        fitnessTestUtils.insertApp(TEST_PACKAGE_NAME_2);
+        fitnessTestUtils.insertApp(TEST_PACKAGE_NAME_3);
 
         mPriorityHelper = healthConnectInjector.getHealthDataCategoryPriorityHelper();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();

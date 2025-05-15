@@ -41,8 +41,8 @@ import android.health.connect.Constants;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.TaskUtils;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.healthconnect.testing.unittest.mocks.HealthPermissionsMocker;
 import android.os.UserManager;
 import android.platform.test.annotations.DisableFlags;
@@ -136,12 +136,12 @@ public class HealthDataCategoryPriorityHelperTest {
                         .setUserManager(mUserManager)
                         .build();
 
-        TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        transactionTestUtils.insertApp(APP_PACKAGE_NAME);
-        transactionTestUtils.insertApp(APP_PACKAGE_NAME_2);
-        transactionTestUtils.insertApp(APP_PACKAGE_NAME_3);
-        transactionTestUtils.insertApp(APP_PACKAGE_NAME_4);
-        transactionTestUtils.insertApp(DEVICE_DATA_PROVIDER_PACKAGE);
+        FitnessTestUtils fitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        fitnessTestUtils.insertApp(APP_PACKAGE_NAME);
+        fitnessTestUtils.insertApp(APP_PACKAGE_NAME_2);
+        fitnessTestUtils.insertApp(APP_PACKAGE_NAME_3);
+        fitnessTestUtils.insertApp(APP_PACKAGE_NAME_4);
+        fitnessTestUtils.insertApp(DEVICE_DATA_PROVIDER_PACKAGE);
 
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mAppPackageId = mAppInfoHelper.getAppInfoId(APP_PACKAGE_NAME);

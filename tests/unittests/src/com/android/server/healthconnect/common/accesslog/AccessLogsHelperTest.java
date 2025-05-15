@@ -60,7 +60,7 @@ import android.health.connect.datatypes.HeightRecord;
 import android.health.connect.datatypes.SkinTemperatureRecord;
 import android.health.connect.datatypes.StepsCadenceRecord;
 import android.health.connect.datatypes.StepsRecord;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.os.UserHandle;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -125,8 +125,8 @@ public class AccessLogsHelperTest {
         mAccessLogsHelper = healthConnectInjector.getAccessLogsHelper();
         mUserHandle = context.getUser();
 
-        TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        transactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        FitnessTestUtils fitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        fitnessTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
     }
 
     @Test

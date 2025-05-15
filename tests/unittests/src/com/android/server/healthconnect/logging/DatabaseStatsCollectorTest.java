@@ -31,7 +31,7 @@ import android.health.connect.datatypes.FhirVersion;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.shared.phr.ImmunizationBuilder;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.fakes.FakeTimeSource;
 import android.net.Uri;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -74,7 +74,7 @@ public class DatabaseStatsCollectorTest {
 
     private long mPackageAppInfoId;
 
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
     private HealthConnectInjector mHealthConnectInjector;
 
     private DatabaseStatsCollector mDatabaseStatsCollector;
@@ -91,8 +91,8 @@ public class DatabaseStatsCollectorTest {
                         .setTimeSource(mFakeTimeSource)
                         .setEnvironmentDataDirectory(mTemporaryFolder.getRoot())
                         .build();
-        mTransactionTestUtils = new TransactionTestUtils(mHealthConnectInjector);
-        mTransactionTestUtils.insertApp(PACKAGE_NAME);
+        mFitnessTestUtils = new FitnessTestUtils(mHealthConnectInjector);
+        mFitnessTestUtils.insertApp(PACKAGE_NAME);
         mPackageAppInfoId = mHealthConnectInjector.getAppInfoHelper().getAppInfoId(PACKAGE_NAME);
 
         mDatabaseStatsCollector = mHealthConnectInjector.getDatabaseStatsCollector();
@@ -176,14 +176,14 @@ public class DatabaseStatsCollectorTest {
 
     @Test
     public void testChangeLogsTableDatabaseLogsStats() {
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertRecords(
                 PACKAGE_NAME,
                 buildStepsRecord(
                         "client.id1",
                         /* startTimeMillis= */ 4000,
                         /* endTimeMillis= */ 4500,
                         /* stepsCount= */ 1000));
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertRecords(
                 PACKAGE_NAME,
                 buildBloodPressureRecord(
                         /* appInfoId= */ mPackageAppInfoId,
@@ -196,7 +196,7 @@ public class DatabaseStatsCollectorTest {
 
     @Test
     public void testIntervalRecordsTableDatabaseLogsStats() {
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertRecords(
                 PACKAGE_NAME,
                 buildStepsRecord(
                         "client.id1",
@@ -214,7 +214,7 @@ public class DatabaseStatsCollectorTest {
 
     @Test
     public void testInstantRecordsTableDatabaseLogsStats() {
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertRecords(
                 PACKAGE_NAME,
                 buildBloodPressureRecord(
                         /* appInfoId= */ mPackageAppInfoId,
@@ -227,9 +227,9 @@ public class DatabaseStatsCollectorTest {
 
     @Test
     public void testSeriesRecordsTableDatabaseLogsStats() {
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertRecords(
                 PACKAGE_NAME, buildSpeedRecordInternal(/* startTine= */ INSTANT_NOW));
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertRecords(
                 PACKAGE_NAME,
                 buildSpeedRecordInternal(/* startTine= */ Instant.now().minusSeconds(100)));
 
@@ -238,7 +238,7 @@ public class DatabaseStatsCollectorTest {
 
     @Test
     public void testGetDatabaseSizeDatabaseLogsStats() {
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertRecords(
                 PACKAGE_NAME,
                 buildStepsRecord(
                         "client.id1",

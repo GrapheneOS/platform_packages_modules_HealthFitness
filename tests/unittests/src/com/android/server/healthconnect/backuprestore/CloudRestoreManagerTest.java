@@ -47,7 +47,7 @@ import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -105,7 +105,7 @@ public class CloudRestoreManagerTest {
     private DeviceInfoHelper mDeviceInfoHelper;
     private TransactionManager mTransactionManager;
     private FitnessRecordReadHelper mFitnessRecordReadHelper;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
     private CloudRestoreManager mCloudRestoreManager;
     private RecordProtoConverter mRecordProtoConverter;
     private HealthDataCategoryPriorityHelper mPriorityHelper;
@@ -154,7 +154,7 @@ public class CloudRestoreManagerTest {
                         mPreferenceHelper,
                         fakeClock,
                         healthConnectInjector.getBackupRestoreLogger());
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
     }
 
     @Test
@@ -182,7 +182,7 @@ public class CloudRestoreManagerTest {
         mCloudRestoreManager.restoreChanges(List.of(stepsChange, bloodPressureChange));
 
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readRecordsByIds(
+                mFitnessTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 List.of(UUID.fromString(stepsRecord.getUuid())),
@@ -221,7 +221,7 @@ public class CloudRestoreManagerTest {
         // Second restore does not throw any exceptions
         mCloudRestoreManager.restoreChanges(List.of(stepsChange, bloodPressureChange));
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readRecordsByIds(
+                mFitnessTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 List.of(UUID.fromString(stepsRecord.getUuid())),
