@@ -60,6 +60,7 @@ import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiError
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
+import com.android.healthconnect.controller.onboarding.OnboardingViewModel
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.RecentAccessState
@@ -122,22 +123,16 @@ class HomeFragmentTest {
     @get:Rule val setFlagsRule = SetFlagsRule()
     private lateinit var context: Context
 
-    @BindValue val homeViewModel: HomeViewModel = Mockito.mock(HomeViewModel::class.java)
+    @BindValue val homeViewModel: HomeViewModel = mock()
 
-    @BindValue
-    val recentAccessViewModel: RecentAccessViewModel =
-        Mockito.mock(RecentAccessViewModel::class.java)
+    @BindValue val recentAccessViewModel: RecentAccessViewModel = mock()
 
-    @BindValue
-    val healthPermissionReader: HealthPermissionReader =
-        Mockito.mock(HealthPermissionReader::class.java)
+    @BindValue val healthPermissionReader: HealthPermissionReader = mock()
 
-    @BindValue
-    val migrationViewModel: MigrationViewModel = Mockito.mock(MigrationViewModel::class.java)
+    @BindValue val migrationViewModel: MigrationViewModel = mock()
 
-    @BindValue
-    val exportStatusViewModel: ExportStatusViewModel =
-        Mockito.mock(ExportStatusViewModel::class.java)
+    @BindValue val exportStatusViewModel: ExportStatusViewModel = mock()
+    @BindValue val onboardingViewModel: OnboardingViewModel = mock()
 
     @BindValue val deviceInfoUtils: DeviceInfoUtils = FakeDeviceInfoUtils()
 
@@ -145,7 +140,7 @@ class HomeFragmentTest {
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
 
     private lateinit var navHostController: TestNavHostController
-    @BindValue val navigationUtils: NavigationUtils = Mockito.mock(NavigationUtils::class.java)
+    @BindValue val navigationUtils: NavigationUtils = mock()
 
     companion object {
         private const val TEST_EXPORT_FREQUENCY_IN_DAYS = 1
@@ -194,6 +189,9 @@ class HomeFragmentTest {
         }
         whenever(homeViewModel.showLockScreenBanner).then {
             MediatorLiveData(HomeViewModel.LockScreenBannerState.NoBanner)
+        }
+        whenever(onboardingViewModel.onboardingBannerState).then {
+            MediatorLiveData(OnboardingViewModel.OnboardingBannerState.NoOnboardingBanner)
         }
         (deviceInfoUtils as FakeDeviceInfoUtils).setIntentHandlerAvailability(true)
 
@@ -1625,6 +1623,79 @@ class HomeFragmentTest {
 
         assertThat(navHostController.currentDestination?.id)
             .isEqualTo(R.id.combinedPermissionsFragment)
+    }
+
+    // endregion
+
+    // region onboarding banners
+    @Test
+    @EnableFlags(Flags.FLAG_ONBOARDING)
+    fun onboardingBannerStateHide_noOnboardingBanner() {
+        launchFragment<HomeFragment>(Bundle())
+        onView(withText("See your health data across apps")).check(doesNotExist())
+        onView(withText("Connect a second app")).check(doesNotExist())
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_ONBOARDING)
+    fun onboardingBannerStateZeroApps_showsZeroAppsBanner() {
+        whenever(onboardingViewModel.onboardingBannerState).then {
+            MediatorLiveData(OnboardingViewModel.OnboardingBannerState.ZeroAppsOnboardingBanner)
+        }
+        launchFragment<HomeFragment>(Bundle()).use { scenario ->
+            onView(withText("See your health data across apps")).check(matches(isDisplayed()))
+            onView(withText("Start sharing health and fitness data between your apps"))
+                .check(matches(isDisplayed()))
+            onView(withText("Set up")).check(matches(isDisplayed()))
+            onView(withText("Connect a second app")).check(doesNotExist())
+
+            onView(withId(com.android.settingslib.widget.preference.banner.R.id.banner_dismiss_btn))
+                .perform(scrollTo())
+                .perform(click())
+            scenario.onActivity { activity ->
+                val preferences =
+                    activity.getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+                assertThat(
+                        preferences.getBoolean(Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
+                    )
+                    .isTrue()
+            }
+
+            onView(withText("See your health data across apps")).check(doesNotExist())
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_ONBOARDING)
+    fun onboardingBannerStateOneApp_showsOneAppBanner() {
+        whenever(onboardingViewModel.onboardingBannerState).then {
+            MediatorLiveData(
+                OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner(TEST_APP)
+            )
+        }
+        launchFragment<HomeFragment>(Bundle()).use { scenario ->
+            onView(withText("Connect a second app")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Set up one more app to share health and fitness data with $TEST_APP_NAME"
+                    )
+                )
+                .check(matches(isDisplayed()))
+            onView(withText("Continue")).check(matches(isDisplayed()))
+            onView(withText("See your health data across apps")).check(doesNotExist())
+
+            onView(withId(com.android.settingslib.widget.preference.banner.R.id.banner_dismiss_btn))
+                .perform(scrollTo())
+                .perform(click())
+            scenario.onActivity { activity ->
+                val preferences =
+                    activity.getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+                assertThat(preferences.getBoolean(Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false))
+                    .isTrue()
+            }
+
+            onView(withText("Connect a second app")).check(doesNotExist())
+        }
     }
 
     // endregion

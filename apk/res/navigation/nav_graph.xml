@@ -84,7 +84,14 @@
         <action
             android:id="@+id/action_homeFragment_to_playstoreActivity"
             app:destination="@id/playstore_activity"/>
+        <action
+            android:id="@+id/action_homeFragment_to_onboardingActivity"
+            app:destination="@id/onboardingActivity"/>
     </fragment>
+
+    <activity
+        android:id="@+id/onboardingActivity"
+        android:name="com.android.healthconnect.controller.onboarding.ConnectAppsOnboardingActivity"/>
 
     <activity
         android:id="@+id/migrationActivity"

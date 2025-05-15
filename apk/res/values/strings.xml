@@ -1745,5 +1745,12 @@
     <string name="onboarded_app_content_description" description="Content description of a button that indicates that an app has been connected to Health Connect. [CHAR_LIMIT=50]">App connected to Health&#160;Connect</string>
     <string name="almost_done_title" description="Title of page to finish connecting apps to Health Connect by opening the apps. [CHAR_LIMIT=NONE]">Almost done</string>
     <string name="almost_done_description" description="Description of page to finish connecting apps to Health Connect by opening the apps. [CHAR_LIMIT=NONE]">Open these apps now to finish setup and start data sharing</string>
+    <string name="zero_apps_onboarding_banner_title" description="Title of banner to take users to a page where they can connect apps to Health Connect [CHAR_LIMIT=NONE]">See your health data across apps</string>
+    <string name="zero_apps_onboarding_banner_summary" description="Summary of banner to take users to a page where they can connect apps to Health Connect [CHAR_LIMIT=NONE]">Start sharing health and fitness data between your apps</string>
+    <string name="zero_apps_onboarding_banner_button" description="Button of banner to take users to a page where they can connect apps to Health Connect [CHAR_LIMIT=NONE]">Set up</string>
+    <string name="one_app_onboarding_banner_title" description="Title of banner to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Connect a second app</string>
+    <string name="one_app_onboarding_banner_summary" description="Summary of banner to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Set up one more app to share health and fitness data with <xliff:g id="app_name" example="Run Tracker">%1$s</xliff:g></string>
+    <string name="one_app_onboarding_banner_button" description="Button of banner to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Continue</string>
+
     <!-- endregion -->
 </resources>

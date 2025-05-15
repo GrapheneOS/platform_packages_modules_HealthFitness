@@ -37,6 +37,10 @@ object Constants {
     const val CONNECT_MORE_APPS_BANNER_SEEN = "connect_more_apps_seen"
     const val SEE_MORE_COMPATIBLE_APPS_BANNER_SEEN = "see_more_apps_seen"
 
+    // New onboarding banners
+    const val ONBOARDING_ZERO_APPS_BANNER_SEEN = "onboarding_zero_apps_banner_seen"
+    const val ONBOARDING_ONE_APP_BANNER_SEEN = "onboarding_one_app_banner_seen"
+
     // Lock screen banners
     const val LOCK_SCREEN_BANNER_SEEN_FITNESS = "lock_screen_banner_seen_fitness"
     const val LOCK_SCREEN_BANNER_SEEN_MEDICAL = "lock_screen_banner_seen_medical"
