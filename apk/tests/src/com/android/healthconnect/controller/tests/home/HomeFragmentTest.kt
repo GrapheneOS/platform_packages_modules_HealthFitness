@@ -113,6 +113,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
@@ -1695,6 +1696,21 @@ class HomeFragmentTest {
             }
 
             onView(withText("Connect a second app")).check(doesNotExist())
+        }
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_ONBOARDING)
+    fun whenOnboardingFlagDisabled_onboardingViewModelNotCalled() {
+        whenever(onboardingViewModel.onboardingBannerState).then {
+            MediatorLiveData(
+                OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner(TEST_APP)
+            )
+        }
+        launchFragment<HomeFragment>(Bundle()).use { scenario ->
+            onView(withText("See your health data across apps")).check(doesNotExist())
+            onView(withText("Connect a second app")).check(doesNotExist())
+            verifyNoInteractions(onboardingViewModel)
         }
     }
 
