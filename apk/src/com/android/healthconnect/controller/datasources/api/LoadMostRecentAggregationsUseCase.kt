@@ -19,8 +19,8 @@ import com.android.healthconnect.controller.data.entries.api.LoadAggregationInpu
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.datasources.AggregationCardInfo
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
-import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.toInstantAtStartOfDay
 import java.time.Instant
@@ -57,18 +57,22 @@ constructor(
                         listOf(
                             FitnessPermissionType.STEPS,
                             FitnessPermissionType.DISTANCE,
-                            FitnessPermissionType.TOTAL_CALORIES_BURNED)
+                            FitnessPermissionType.TOTAL_CALORIES_BURNED,
+                        )
 
                     activityPermissionTypesWithAggregations.forEach { permissionType ->
                         val lastDateWithData: LocalDate?
-                        when (val lastDateWithDataResult =
-                            loadLastDateWithPriorityDataUseCase.invoke(permissionType)) {
+                        when (
+                            val lastDateWithDataResult =
+                                loadLastDateWithPriorityDataUseCase.invoke(permissionType)
+                        ) {
                             is UseCaseResults.Success -> {
                                 lastDateWithData = lastDateWithDataResult.data
                             }
                             is UseCaseResults.Failed -> {
                                 return@withContext UseCaseResults.Failed(
-                                    lastDateWithDataResult.exception)
+                                    lastDateWithDataResult.exception
+                                )
                             }
                         }
 
@@ -79,14 +83,17 @@ constructor(
                 } else if (healthDataCategory == HealthDataCategory.SLEEP) {
 
                     val lastDateWithSleepData: LocalDate?
-                    when (val lastDateWithSleepDataResult =
-                        loadLastDateWithPriorityDataUseCase.invoke(FitnessPermissionType.SLEEP)) {
+                    when (
+                        val lastDateWithSleepDataResult =
+                            loadLastDateWithPriorityDataUseCase.invoke(FitnessPermissionType.SLEEP)
+                    ) {
                         is UseCaseResults.Success -> {
                             lastDateWithSleepData = lastDateWithSleepDataResult.data
                         }
                         is UseCaseResults.Failed -> {
                             return@withContext UseCaseResults.Failed(
-                                lastDateWithSleepDataResult.exception)
+                                lastDateWithSleepDataResult.exception
+                            )
                         }
                     }
 
@@ -102,7 +109,7 @@ constructor(
 
     private suspend fun getLastAvailableActivityAggregation(
         lastDateWithData: LocalDate?,
-        fitnessPermissionType: FitnessPermissionType
+        fitnessPermissionType: FitnessPermissionType,
     ): AggregationCardInfo? {
         if (lastDateWithData == null) {
             return null
@@ -118,7 +125,8 @@ constructor(
                 packageName = null,
                 displayedStartTime = lastDateInstant,
                 period = DateNavigationPeriod.PERIOD_DAY,
-                showDataOrigin = false)
+                showDataOrigin = false,
+            )
 
         return when (val useCaseResult = loadDataAggregationsUseCase.invoke(input)) {
             is UseCaseResults.Success -> {
@@ -158,7 +166,7 @@ constructor(
      */
     private suspend fun computeSleepAggregation(
         minStartTime: Instant,
-        maxEndTime: Instant
+        maxEndTime: Instant,
     ): AggregationCardInfo {
         val aggregationInput =
             LoadAggregationInput.CustomAggregation(
@@ -166,13 +174,18 @@ constructor(
                 packageName = null,
                 startTime = minStartTime,
                 endTime = maxEndTime,
-                showDataOrigin = false)
+                showDataOrigin = false,
+            )
 
         return when (val useCaseResult = loadDataAggregationsUseCase.invoke(aggregationInput)) {
             is UseCaseResults.Success -> {
                 // use this aggregation value to construct the card
                 AggregationCardInfo(
-                    FitnessPermissionType.SLEEP, useCaseResult.data, minStartTime, maxEndTime)
+                    FitnessPermissionType.SLEEP,
+                    useCaseResult.data,
+                    minStartTime,
+                    maxEndTime,
+                )
             }
             is UseCaseResults.Failed -> {
                 throw useCaseResult.exception

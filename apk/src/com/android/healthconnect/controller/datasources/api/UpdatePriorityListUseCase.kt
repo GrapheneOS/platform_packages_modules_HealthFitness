@@ -17,8 +17,8 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
 import android.health.connect.UpdateDataOriginPriorityOrderRequest
 import android.health.connect.datatypes.DataOrigin
-import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -29,13 +29,13 @@ class UpdatePriorityListUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : IUpdatePriorityListUseCase {
 
     /** Updates the priority list of the stored [DataOrigin]s for given [HealthDataCategory]. */
     override suspend operator fun invoke(
         priorityList: List<String>,
-        category: @HealthDataCategoryInt Int
+        category: @HealthDataCategoryInt Int,
     ) {
         withContext(dispatcher) {
             val dataOrigins: List<DataOrigin> =
@@ -44,7 +44,9 @@ constructor(
                     .map { packageName -> DataOrigin.Builder().setPackageName(packageName).build() }
                     .toList()
             healthConnectManager.updateDataOriginPriorityOrder(
-                UpdateDataOriginPriorityOrderRequest(dataOrigins, category), Runnable::run) {}
+                UpdateDataOriginPriorityOrderRequest(dataOrigins, category),
+                Runnable::run,
+            ) {}
         }
     }
 }

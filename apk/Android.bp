@@ -27,7 +27,15 @@ filegroup {
         ":healthconnectController-migration-apis",
         ":healthconnectController-exportimport-apis",
         ":healthconnectController-onboarding-apis",
+        ":healthConnectController-useCase",
         "src/**/HealthConnectApplication.kt",
+    ],
+}
+
+filegroup {
+    name: "healthConnectController-useCase",
+    srcs: [
+        "src/com/android/healthconnect/controller/shared/usecase/**/*.kt",
     ],
 }
 
@@ -60,6 +68,20 @@ filegroup {
 }
 
 java_library {
+    name: "HealthConnectUseCase",
+    srcs: [":healthConnectController-useCase"],
+    sdk_version: "module_current",
+    min_sdk_version: "34",
+    static_libs: [
+        "kotlin-stdlib",
+        "hilt_android",
+        "guava",
+    ],
+    kotlincflags: ["-Xjvm-default=all"],
+    apex_available: ["com.android.healthfitness"],
+}
+
+java_library {
     name: "HealthConnectPermissionsApis",
     srcs: [":healthconnectController-permissions-apis"],
     sdk_version: "module_current",
@@ -72,6 +94,7 @@ java_library {
         "kotlin-stdlib",
         "hilt_android",
         "guava",
+        "HealthConnectUseCase",
     ],
     kotlincflags: ["-Xjvm-default=all"],
     apex_available: ["com.android.healthfitness"],
@@ -91,6 +114,7 @@ java_library {
         "hilt_android",
         "kotlinx-coroutines-android",
         "guava",
+        "HealthConnectUseCase",
     ],
     kotlincflags: ["-Xjvm-default=all"],
     apex_available: ["com.android.healthfitness"],
@@ -110,6 +134,7 @@ java_library {
         "hilt_android",
         "kotlinx-coroutines-android",
         "guava",
+        "HealthConnectUseCase",
     ],
     kotlincflags: ["-Xjvm-default=all"],
     apex_available: ["com.android.healthfitness"],
@@ -129,6 +154,7 @@ java_library {
         "hilt_android",
         "kotlinx-coroutines-android",
         "guava",
+        "HealthConnectUseCase",
     ],
     kotlincflags: ["-Xjvm-default=all"],
     apex_available: ["com.android.healthfitness"],
@@ -190,6 +216,7 @@ android_library {
         "HealthConnectMigrationApis",
         "HealthConnectExportApis",
         "HealthConnectOnboardingApis",
+        "HealthConnectUseCase",
         "SettingsLibSettingsTheme",
         "kotlin-stdlib",
         "kotlinx-coroutines-android",
@@ -296,6 +323,7 @@ android_app {
         "HealthConnectMigrationApis",
         "HealthConnectExportApis",
         "HealthConnectOnboardingApis",
+        "HealthConnectUseCase",
         "hilt_android",
     ],
     libs: [

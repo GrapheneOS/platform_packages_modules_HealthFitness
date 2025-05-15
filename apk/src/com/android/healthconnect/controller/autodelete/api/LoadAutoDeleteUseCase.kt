@@ -17,7 +17,7 @@ package com.android.healthconnect.controller.autodelete.api
 
 import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
-import com.android.healthconnect.controller.service.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -29,7 +29,7 @@ class LoadAutoDeleteUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) {
 
     companion object {

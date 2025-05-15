@@ -4,7 +4,7 @@ import android.health.connect.datatypes.IntervalRecord
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SleepSessionRecord
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
-import com.android.healthconnect.controller.service.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.isAtLeastOneDayAfter
 import com.android.healthconnect.controller.utils.isOnDayAfter
@@ -52,13 +52,15 @@ constructor(
                     currentDaySleepData.any { record ->
                         val currentSleepSession = (record as IntervalRecord)
                         (currentSleepSession.endTime.isAtLeastOneDayAfter(
-                            currentSleepSession.startTime))
+                            currentSleepSession.startTime
+                        ))
                     }
 
                 // Handle Case 3 - at least one sleep session starts on Day 2 and finishes on Day 3
                 if (sessionsCrossingMidnight) {
                     return@withContext UseCaseResults.Success(
-                        handleSessionsCrossingMidnight(currentDaySleepData))
+                        handleSessionsCrossingMidnight(currentDaySleepData)
+                    )
                 }
 
                 // case 1 - start and end times on the same day (Day 2)
@@ -88,7 +90,9 @@ constructor(
                             previousDaySleepData,
                             lastDateWithDataInstant,
                             minStartTime,
-                            maxEndTime))
+                            maxEndTime,
+                        )
+                    )
                 }
 
                 return@withContext UseCaseResults.Success(Pair(minStartTime, maxEndTime))
@@ -146,7 +150,7 @@ constructor(
         previousDaySleepData: List<Record>,
         lastDateWithDataInstant: Instant,
         lastDayMinStartTime: Instant,
-        lastDayMaxEndTime: Instant
+        lastDayMaxEndTime: Instant,
     ): Pair<Instant, Instant> {
 
         // This ensures we also take into account the sessions from lastDateWithData
@@ -188,8 +192,10 @@ constructor(
     private suspend fun getPrioritySleepRecords(
         lastDateWithData: LocalDate
     ): List<SleepSessionRecord> {
-        when (val result =
-            loadPriorityEntriesUseCase.invoke(FitnessPermissionType.SLEEP, lastDateWithData)) {
+        when (
+            val result =
+                loadPriorityEntriesUseCase.invoke(FitnessPermissionType.SLEEP, lastDateWithData)
+        ) {
             is UseCaseResults.Success -> {
                 return result.data.map { it as SleepSessionRecord }
             }

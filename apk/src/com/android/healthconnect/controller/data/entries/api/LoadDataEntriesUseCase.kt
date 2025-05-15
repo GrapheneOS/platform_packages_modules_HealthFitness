@@ -18,8 +18,8 @@ package com.android.healthconnect.controller.data.entries.api
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
-import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import java.time.Instant
 import javax.inject.Inject
@@ -32,14 +32,17 @@ class LoadDataEntriesUseCase
 @Inject
 constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
-    private val loadEntriesHelper: LoadEntriesHelper
+    private val loadEntriesHelper: LoadEntriesHelper,
 ) : BaseUseCase<LoadDataEntriesInput, List<FormattedEntry>>(dispatcher), ILoadDataEntriesUseCase {
 
     override suspend fun execute(input: LoadDataEntriesInput): List<FormattedEntry> {
         val entryRecords = loadEntriesHelper.readRecords(input)
 
         return loadEntriesHelper.maybeAddDateSectionHeaders(
-            entryRecords, input.period, input.showDataOrigin)
+            entryRecords,
+            input.period,
+            input.showDataOrigin,
+        )
     }
 }
 
@@ -48,7 +51,7 @@ data class LoadDataEntriesInput(
     val packageName: String?,
     val displayedStartTime: Instant,
     val period: DateNavigationPeriod,
-    val showDataOrigin: Boolean
+    val showDataOrigin: Boolean,
 )
 
 interface ILoadDataEntriesUseCase {

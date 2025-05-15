@@ -23,8 +23,8 @@ import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.Record
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
-import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import java.time.Duration.ofDays
 import java.time.Instant
