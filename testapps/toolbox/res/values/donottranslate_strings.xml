@@ -179,8 +179,8 @@
     <string name="additional_permissions">Additional</string>
     <string name="history_read_permission">History read</string>
     <string name="background_read_permission">Background read</string>
-    <string name="request_permissions">Request</string>
-    <string name="revoke_permissions">Revoke permissions</string>
+    <string name="request">Request</string>
+    <string name="revoke">Revoke</string>
     <!--endregion-->
 
     <!-- region Read data screens -->

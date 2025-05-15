@@ -268,8 +268,6 @@ public class MedicalResourceValidator {
             String fhirResourceTypeString,
             String fhirResourceId,
             JSONObject json) {
-        // TODO(b/342574702): add mapping logic for more FHIR resource types and improve error
-        // message.
         switch (fhirResourceType) {
             case FHIR_RESOURCE_TYPE_ALLERGY_INTOLERANCE:
                 return MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;

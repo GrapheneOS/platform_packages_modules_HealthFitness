@@ -23,8 +23,8 @@ import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.searchapps.SearchHealthPermissionApps
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteAllDataUseCase
-import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.utils.postValueIfUpdated
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

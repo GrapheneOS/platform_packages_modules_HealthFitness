@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.injector;
 
+import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
+
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.health.HealthFitnessStatsLog;
@@ -28,10 +30,13 @@ import android.os.UserManager;
 
 import androidx.annotation.Nullable;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
+import com.android.server.healthconnect.backuprestore.CloudBackupManager;
+import com.android.server.healthconnect.backuprestore.CloudRestoreManager;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
@@ -143,6 +148,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final ReadAccessLogsHelper mReadAccessLogsHelper;
     private final ExportImportNotificationFactory mExportImportNotificationFactory;
     private final HealthConnectNotificationSender mExportImportNotificationSender;
+    private final UserManager mUserManager;
     private final AppOpsManagerLocal mAppOpsManagerLocal;
     private final HealthConnectThreadScheduler mThreadScheduler;
     private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
@@ -154,6 +160,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final BackupRestoreLogger mBackupRestoreLogger;
     private final FirstGrantTimeDatastore mFirstGrantTimeDatastore;
     private final DeviceRecordHelper mDeviceRecordHelper;
+    @Nullable private final CloudBackupManager mCloudBackupManager;
+    @Nullable private final CloudRestoreManager mCloudRestoreManager;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -191,6 +199,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         mDatabaseHelpers = new DatabaseHelpers();
         mInternalHealthConnectMappings = InternalHealthConnectMappings.getInstance();
         mHealthConnectMappings = HealthConnectMappings.getInstance();
+
+        mUserManager =
+                builder.mUserManager == null
+                        ? context.getSystemService(UserManager.class)
+                        : builder.mUserManager;
         mTimeSource = builder.mTimeSource == null ? new TimeSourceImpl() : builder.mTimeSource;
         mThreadScheduler =
                 builder.mThreadScheduler == null
@@ -240,9 +253,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthConnectMappings,
                                 mDatabaseHelpers,
                                 mThreadScheduler,
-                                builder.mUserManager == null
-                                        ? hcContext.getSystemService(UserManager.class)
-                                        : builder.mUserManager)
+                                mUserManager)
                         : builder.mHealthDataCategoryPriorityHelper;
         mPriorityMigrationHelper =
                 builder.mPriorityMigrationHelper == null
@@ -476,8 +487,47 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthConnectPermissionHelper,
                                 mThreadScheduler,
                                 mDeviceRecordHelper,
-                                mDeviceDataSourcesHelper)
+                                mDeviceDataSourcesHelper,
+                                mHealthDataCategoryPriorityHelper,
+                                mUserManager)
                         : builder.mTrackerManager;
+        mCloudBackupManager =
+                // TODO(b/400105647): Remove duplicate flag check once excess code size is resolved.
+                builder.mCloudBackupManager == null
+                                && Flags.cloudBackupAndRestore()
+                                && isCloudBackupRestoreEnabled()
+                        ? new CloudBackupManager(
+                                mTransactionManager,
+                                mFitnessRecordReadHelper,
+                                mAppInfoHelper,
+                                mDeviceInfoHelper,
+                                mHealthConnectMappings,
+                                mInternalHealthConnectMappings,
+                                mChangeLogsHelper,
+                                mChangeLogsRequestHelper,
+                                mHealthDataCategoryPriorityHelper,
+                                mPreferenceHelper,
+                                Clock.systemUTC(),
+                                mBackupRestoreLogger)
+                        : null;
+
+        mCloudRestoreManager =
+                // TODO(b/400105647): Remove duplicate flag check once excess code size is resolved.
+                builder.mCloudRestoreManager == null
+                                && Flags.cloudBackupAndRestore()
+                                && isCloudBackupRestoreEnabled()
+                        ? new CloudRestoreManager(
+                                mTransactionManager,
+                                mFitnessRecordUpsertHelper,
+                                mFitnessRecordReadHelper,
+                                mInternalHealthConnectMappings,
+                                mDeviceInfoHelper,
+                                mAppInfoHelper,
+                                mHealthDataCategoryPriorityHelper,
+                                mPreferenceHelper,
+                                Clock.systemUTC(),
+                                mBackupRestoreLogger)
+                        : null;
     }
 
     @Override
@@ -763,6 +813,18 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         return mExportImportNotificationFactory;
     }
 
+    @Nullable
+    @Override
+    public CloudBackupManager getCloudBackupManager() {
+        return mCloudBackupManager;
+    }
+
+    @Nullable
+    @Override
+    public CloudRestoreManager getCloudRestoreManager() {
+        return mCloudRestoreManager;
+    }
+
     /**
      * Returns a new Builder of Health Connect Injector
      *
@@ -834,6 +896,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private MigrationUtils mMigrationUtils;
         @Nullable private HealthConnectResourcesContext mResourcesContext;
         @Nullable private UserManager mUserManager;
+        @Nullable private CloudBackupManager mCloudBackupManager;
+        @Nullable private CloudRestoreManager mCloudRestoreManager;
 
         private Builder(Context context) {
             mContext = context;

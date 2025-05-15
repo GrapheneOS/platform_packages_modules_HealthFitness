@@ -26,7 +26,6 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.Constants.SHOW_MANAGE_APP_SECTION
 import com.android.healthconnect.controller.shared.HealthPermissionReader
-import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthSetupFragment
 import com.android.healthconnect.controller.shared.preference.HealthSetupHeaderPreference
 import com.android.healthconnect.controller.utils.AttributeResolver
@@ -34,6 +33,7 @@ import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
+import com.android.settingslib.widget.AppPreference
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.TopIntroPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -99,7 +99,7 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
     }
 
     private fun updateSetupLaterButton() {
-        val setupLaterButton = getPrimaryButtonOutline()
+        val setupLaterButton = primaryButtonOutline
         hideSecondaryButton()
         setupLaterButton.text = getString(R.string.set_up_later)
         setupLaterButton.setOnClickListener {
@@ -147,7 +147,7 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
         appsCategory.removeAll()
         appsCategory.isVisible = true
         appsToConnect.forEach { app ->
-            val newPreference = HealthPreference(requireContext())
+            val newPreference = AppPreference(requireContext())
 
             appsCategory.addPreference(
                 newPreference.also {
@@ -167,12 +167,12 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
                                     .getLaunchIntentForPackage(app.appMetadata.packageName)
                             launchIntent?.let { requireContext().startActivity(it) }
                         } else {
-                            if (
-                                !tryLaunchAppOnboardingActivity(
+                            val onboardingLaunched =
+                                tryLaunchAppOnboardingActivity(
                                     healthPermissionReader,
                                     app.appMetadata.packageName,
                                 )
-                            ) {
+                            if (!onboardingLaunched) {
                                 findNavController()
                                     .navigate(
                                         R.id
@@ -183,6 +183,9 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
                                             SHOW_MANAGE_APP_SECTION to false,
                                         ),
                                     )
+                            } else {
+                                // Mark app as having been interacted with
+                                viewModel.setAppInteractedWith(app.appMetadata.packageName)
                             }
                         }
 

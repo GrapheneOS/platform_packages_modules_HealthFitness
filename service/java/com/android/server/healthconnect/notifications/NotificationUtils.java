@@ -16,9 +16,14 @@
 
 package com.android.server.healthconnect.notifications;
 
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
+
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Icon;
+import android.os.Binder;
 
 import androidx.annotation.Nullable;
 
@@ -29,6 +34,7 @@ import androidx.annotation.Nullable;
  */
 public final class NotificationUtils {
     private final Context mContext;
+    // TODO(b/414949807): Use NOTIFICATION_CHANNEL_ID
     private final String mChannelId;
 
     public NotificationUtils(Context context, String channelId) {
@@ -55,5 +61,15 @@ public final class NotificationUtils {
                 createNotificationOnlyTitle(notificationTitle, icon);
         notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(notificationTextBody));
         return notificationBuilder;
+    }
+
+    /** Returns a {@link PendingIntent} associated with a notification's actions. */
+    public static PendingIntent getPendingIntent(Context context, Intent intent) {
+        final long callingId = Binder.clearCallingIdentity();
+        try {
+            return PendingIntent.getActivity(context, 0, intent, FLAG_IMMUTABLE);
+        } finally {
+            Binder.restoreCallingIdentity(callingId);
+        }
     }
 }

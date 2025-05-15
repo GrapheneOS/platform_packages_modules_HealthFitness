@@ -15,8 +15,8 @@
  */
 package com.android.healthconnect.controller.permissions.connectedapps.searchapps
 
-import com.android.healthconnect.controller.service.MainDispatcher
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
+import com.android.healthconnect.controller.shared.usecase.MainDispatcher
 import com.android.healthconnect.controller.utils.NormalizeUtf8
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -31,7 +31,7 @@ constructor(@MainDispatcher private val mainDispatcher: CoroutineDispatcher) {
     /** Returns a filtered result list of ConnectedAppMetadata. */
     suspend fun search(
         list: List<ConnectedAppMetadata>,
-        searchValue: String
+        searchValue: String,
     ): List<ConnectedAppMetadata> =
         withContext(mainDispatcher) {
             list.filter { connectedAppMetadata ->

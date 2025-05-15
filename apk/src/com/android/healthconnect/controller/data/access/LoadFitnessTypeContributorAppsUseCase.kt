@@ -21,9 +21,9 @@ import android.health.connect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.fromHealthPermissionCategory
-import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -36,7 +36,7 @@ class LoadFitnessTypeContributorAppsUseCase
 constructor(
     private val appInfoReader: AppInfoReader,
     private val healthConnectManager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadFitnessTypeContributorAppsUseCase {
 
     /** Returns a list of [AppMetadata]s that have data in this [FitnessPermissionType]. */
@@ -46,7 +46,9 @@ constructor(
                 val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
                     suspendCancellableCoroutine { continuation ->
                         healthConnectManager.queryAllRecordTypesInfo(
-                            Runnable::run, continuation.asOutcomeReceiver())
+                            Runnable::run,
+                            continuation.asOutcomeReceiver(),
+                        )
                     }
                 val packages =
                     recordTypeInfoMap.values

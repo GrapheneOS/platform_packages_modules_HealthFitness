@@ -256,6 +256,9 @@ class TrampolineActivityTest {
                 )
             )
         }
+        whenever(onboardingViewModel.onboardingBannerState).then {
+            MediatorLiveData(OnboardingViewModel.OnboardingBannerState.NoOnboardingBanner)
+        }
     }
 
     @Test

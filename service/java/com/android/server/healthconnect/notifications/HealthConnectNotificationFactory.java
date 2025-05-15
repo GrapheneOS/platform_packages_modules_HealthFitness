@@ -18,11 +18,7 @@ package com.android.server.healthconnect.notifications;
 
 import android.annotation.Nullable;
 import android.app.Notification;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Icon;
-import android.os.Binder;
 
 import com.android.internal.annotations.VisibleForTesting;
 
@@ -38,17 +34,6 @@ public interface HealthConnectNotificationFactory {
     /** Returns a {@link Notification} depending on the specified type. */
     @Nullable
     Notification createNotification(int notificationType);
-
-    /** Returns a {@link PendingIntent} associated with a notification's actions. */
-    @Nullable
-    default PendingIntent getPendingIntent(Context context, Intent intent) {
-        final long callingId = Binder.clearCallingIdentity();
-        try {
-            return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-        } finally {
-            Binder.restoreCallingIdentity(callingId);
-        }
-    }
 
     /** Returns an {@link Icon} to be displayed on the notification. */
     @VisibleForTesting

@@ -16,6 +16,9 @@
 
 package com.android.server.healthconnect.fitness.helpers;
 
+import static com.android.healthfitness.flags.Flags.FLAG_STEP_TRACKING_ENABLED;
+import static com.android.server.healthconnect.device.DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -42,6 +45,9 @@ import android.healthconnect.testing.unittest.TaskUtils;
 import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.healthconnect.testing.unittest.mocks.HealthPermissionsMocker;
 import android.os.UserManager;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -80,6 +86,7 @@ public class HealthDataCategoryPriorityHelperTest {
     private static final String APP_PACKAGE_NAME_5 = "android.healthconnect.mocked.app5";
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
 
     @Mock private PackageInfoUtils mPackageInfoUtils;
@@ -96,6 +103,7 @@ public class HealthDataCategoryPriorityHelperTest {
     private long mAppPackageId2;
     private long mAppPackageId3;
     private long mAppPackageId4;
+    private long mDeviceDataProviderId;
 
     private AppInfoHelper mAppInfoHelper;
     private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
@@ -133,12 +141,14 @@ public class HealthDataCategoryPriorityHelperTest {
         transactionTestUtils.insertApp(APP_PACKAGE_NAME_2);
         transactionTestUtils.insertApp(APP_PACKAGE_NAME_3);
         transactionTestUtils.insertApp(APP_PACKAGE_NAME_4);
+        transactionTestUtils.insertApp(DEVICE_DATA_PROVIDER_PACKAGE);
 
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mAppPackageId = mAppInfoHelper.getAppInfoId(APP_PACKAGE_NAME);
         mAppPackageId2 = mAppInfoHelper.getAppInfoId(APP_PACKAGE_NAME_2);
         mAppPackageId3 = mAppInfoHelper.getAppInfoId(APP_PACKAGE_NAME_3);
         mAppPackageId4 = mAppInfoHelper.getAppInfoId(APP_PACKAGE_NAME_4);
+        mDeviceDataProviderId = mAppInfoHelper.getAppInfoId(DEVICE_DATA_PROVIDER_PACKAGE);
 
         mHealthDataCategoryPriorityHelper =
                 healthConnectInjector.getHealthDataCategoryPriorityHelper();
@@ -358,6 +368,25 @@ public class HealthDataCategoryPriorityHelperTest {
                 APP_PACKAGE_NAME);
 
         assertAppIdPriorityOrderIsEqualTo(HealthDataCategory.ACTIVITY, List.of(mAppPackageId3));
+    }
+
+    @Test
+    @EnableFlags(FLAG_STEP_TRACKING_ENABLED)
+    public void
+            maybeRemoveAppWithoutWritePermissionsFromPriorityList_ddpPackage_doesNotRemoveApp() {
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                DEVICE_DATA_PROVIDER_PACKAGE, HealthDataCategory.ACTIVITY, mContext.getUser());
+
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.appHasDataInCategory(
+                                DEVICE_DATA_PROVIDER_PACKAGE, HealthDataCategory.ACTIVITY))
+                .isFalse();
+
+        mHealthDataCategoryPriorityHelper.maybeRemoveAppWithoutWritePermissionsFromPriorityList(
+                DEVICE_DATA_PROVIDER_PACKAGE);
+        // DDP package is still present.
+        assertAppIdPriorityOrderIsEqualTo(
+                HealthDataCategory.ACTIVITY, List.of(mDeviceDataProviderId));
     }
 
     @Test
@@ -1304,6 +1333,34 @@ public class HealthDataCategoryPriorityHelperTest {
         expectedResult.put(HealthDataCategory.VITALS, Set.of(APP_PACKAGE_NAME, APP_PACKAGE_NAME_3));
         assertThat(mHealthDataCategoryPriorityHelper.getAllInactiveApps())
                 .containsExactlyEntriesIn(expectedResult);
+    }
+
+    @Test
+    @EnableFlags(FLAG_STEP_TRACKING_ENABLED)
+    public void testGetAllInactiveApps_doesNotConsiderDdpPackageInactive() {
+        // Include DDP package, but don't grant any permissions.
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                DEVICE_DATA_PROVIDER_PACKAGE, HealthDataCategory.ACTIVITY, mContext.getUser());
+
+        assertThat(mHealthDataCategoryPriorityHelper.getAllInactiveApps()).isEmpty();
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .containsExactly(mDeviceDataProviderId);
+    }
+
+    @Test
+    @DisableFlags(FLAG_STEP_TRACKING_ENABLED)
+    public void ddpPackagePreviouslyAdded_flagDisabled_removesFromPriorityOnResync() {
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                DEVICE_DATA_PROVIDER_PACKAGE, HealthDataCategory.ACTIVITY, mContext.getUser());
+
+        mHealthDataCategoryPriorityHelper.reSyncHealthDataPriorityTable();
+
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .isEmpty();
     }
 
     private void assertAppIdPriorityOrderIsEqualTo(int type, List<Long> appIds) {

@@ -140,7 +140,7 @@ public class FhirPrimitiveTypeValidator {
                         fullFieldName);
                 break;
             case R4_FHIR_TYPE_XHTML:
-                // TODO:b/393060416 - Consider additional xhtml type validations to minimise
+                // TODO:b/401504262 - Consider additional xhtml type validations to minimise
                 //  security risk to downstream apps. The xhtml type does not have a regex
                 //  specified, but a constraint that specifies that only basic html tags should be
                 //  allowed. See https://build.fhir.org/narrative.html#xhtml.

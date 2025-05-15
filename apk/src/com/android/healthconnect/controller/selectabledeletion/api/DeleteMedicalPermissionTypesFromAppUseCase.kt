@@ -19,8 +19,8 @@ import android.health.connect.DeleteMedicalResourcesRequest
 import android.health.connect.HealthConnectManager
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.data.toMedicalResourceType
-import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
