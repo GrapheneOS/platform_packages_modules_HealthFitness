@@ -19,6 +19,7 @@ package android.health.connect;
 import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTE;
 import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES;
 import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_CONDITIONS;
+import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_DEVICES;
 import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_LABORATORY_RESULTS;
 import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_MEDICATIONS;
 import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_PERSONAL_DETAILS;
@@ -35,33 +36,41 @@ import static android.health.connect.HealthPermissions.isValidHealthPermission;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import static org.mockito.Mockito.reset;
-
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionInfo;
+import android.platform.test.flag.junit.FlagsParameterization;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.InstrumentationRegistry;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
+import platform.test.runner.parameterized.ParameterizedAndroidJunit4;
+import platform.test.runner.parameterized.Parameters;
+
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@RunWith(AndroidJUnit4.class)
+@RunWith(ParameterizedAndroidJunit4.class)
 public class HealthPermissionsTest {
+    @Parameters(name = "{0}")
+    public static List<FlagsParameterization> getParams() {
+        return FlagsParameterization.allCombinationsOf(Flags.FLAG_DEVICE_RESOURCE);
+    }
+
     private static final String FAIL_MESSAGE =
             "Add new health permission to ALL_EXPECTED_HEALTH_PERMISSIONS and "
                     + " android.healthconnect.cts.HealthPermissionsPresenceTest.HEALTH_PERMISSIONS "
@@ -77,7 +86,7 @@ public class HealthPermissionsTest {
     // {@link android.healthconnect.cts.HealthPermissionsPresenceTest.HEALTH_PERMISSIONS}
     // sets.
     private static final Set<String> ALL_EXPECTED_HEALTH_PERMISSIONS =
-            Stream.concat(
+            Stream.<Stream<String>>of(
                             Stream.of(
                                     HealthPermissions.READ_HEALTH_DATA_HISTORY,
                                     HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
@@ -176,24 +185,27 @@ public class HealthPermissionsTest {
                                     ? Stream.of(
                                             HealthPermissions.READ_ACTIVITY_INTENSITY,
                                             HealthPermissions.WRITE_ACTIVITY_INTENSITY)
+                                    : Stream.of(),
+                            Flags.deviceResource()
+                                    ? Stream.of(HealthPermissions.READ_MEDICAL_DATA_DEVICES)
                                     : Stream.of())
+                    .flatMap(s -> s)
                     .collect(Collectors.toSet());
     private PackageManager mPackageManager;
     private Context mContext;
     @Mock private PackageInfo mPackageInfo1;
 
-    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final SetFlagsRule mSetFlagsRule;
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+
+    public HealthPermissionsTest(FlagsParameterization flags) {
+        mSetFlagsRule = new SetFlagsRule(flags);
+    }
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
         mContext = InstrumentationRegistry.getTargetContext();
         mPackageManager = mContext.getPackageManager();
-    }
-
-    @After
-    public void tearDown() {
-        reset(mPackageInfo1);
     }
 
     @Test
@@ -308,21 +320,27 @@ public class HealthPermissionsTest {
     @Test
     public void testGetMedicalPermissions_returnsValidPermissions() {
         Set<String> permissions = HealthPermissions.getAllMedicalPermissions();
-        assertThat(permissions)
-                .containsAtLeast(
-                        WRITE_MEDICAL_DATA,
-                        READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES,
-                        READ_MEDICAL_DATA_CONDITIONS,
-                        READ_MEDICAL_DATA_LABORATORY_RESULTS,
-                        READ_MEDICAL_DATA_MEDICATIONS,
-                        READ_MEDICAL_DATA_PERSONAL_DETAILS,
-                        READ_MEDICAL_DATA_PRACTITIONER_DETAILS,
-                        READ_MEDICAL_DATA_PREGNANCY,
-                        READ_MEDICAL_DATA_PROCEDURES,
-                        READ_MEDICAL_DATA_SOCIAL_HISTORY,
-                        READ_MEDICAL_DATA_VACCINES,
-                        READ_MEDICAL_DATA_VISITS,
-                        READ_MEDICAL_DATA_VITAL_SIGNS);
+
+        HashSet<String> expectedPermissions =
+                Stream.of(
+                                WRITE_MEDICAL_DATA,
+                                READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES,
+                                READ_MEDICAL_DATA_CONDITIONS,
+                                READ_MEDICAL_DATA_LABORATORY_RESULTS,
+                                READ_MEDICAL_DATA_MEDICATIONS,
+                                READ_MEDICAL_DATA_PERSONAL_DETAILS,
+                                READ_MEDICAL_DATA_PRACTITIONER_DETAILS,
+                                READ_MEDICAL_DATA_PREGNANCY,
+                                READ_MEDICAL_DATA_PROCEDURES,
+                                READ_MEDICAL_DATA_SOCIAL_HISTORY,
+                                READ_MEDICAL_DATA_VACCINES,
+                                READ_MEDICAL_DATA_VISITS,
+                                READ_MEDICAL_DATA_VITAL_SIGNS)
+                        .collect(Collectors.toCollection(HashSet::new));
+        if (Flags.deviceResource()) {
+            expectedPermissions.add(READ_MEDICAL_DATA_DEVICES);
+        }
+        assertThat(permissions).containsAtLeastElementsIn(expectedPermissions);
     }
 
     @Test
