@@ -87,6 +87,7 @@ public class TrackerManagerImpl implements TrackerManager {
 
         if (packagesEligibleForStepTracking(mContext, mPermissionHelper).isEmpty()) {
             Slog.d(TAG, "No packages eligible for step tracking. Aborting initialization.");
+            unsubscribeFromSensorManager();
             return;
         }
 
@@ -171,6 +172,21 @@ public class TrackerManagerImpl implements TrackerManager {
         return !isPregrantedPermission;
     }
 
+    private void unsubscribeFromSensorManager() {
+        if (android.health.connect.Constants.DEBUG) {
+            Slog.d(TAG, "Calling unsubscribeFromSensorManager()");
+        }
+
+        // TODO(b/413703946): Check that the sensor service is always initialised before this call.
+        SensorManager sensorManager = mContext.getSystemService(SensorManager.class);
+        if (sensorManager == null) {
+            Slog.e(TAG, "SensorManager is null");
+            return;
+        }
+
+        sensorManager.unregisterListener(mListener);
+    }
+
     private void subscribeToSensorManager() {
         if (android.health.connect.Constants.DEBUG) {
             Slog.d(TAG, "Calling subscribeToSensorManager()");
@@ -189,6 +205,7 @@ public class TrackerManagerImpl implements TrackerManager {
             return;
         }
 
+        // TODO(b/397420313): Check that this subscription is successful
         sensorManager.registerListener(
                 mListener, stepCounterSensor, SAMPLING_PERIOD_US, MAX_REPORT_LATENCY_US);
     }
