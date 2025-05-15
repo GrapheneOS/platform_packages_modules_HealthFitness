@@ -72,7 +72,7 @@ android_test {
         "healthfitness-testing-unittest",
         "flag-junit",
         "androidx.test.runner",
-        "mockito-target-extended-minus-junit4",
+        "mockito",
         "truth",
         "services.core",
         "androidx.test.ext.truth",
@@ -81,11 +81,6 @@ android_test {
         "platform-parametric-runner-lib",
         "framework-annotations-lib",
         "guava-android-testlib", // For EqualsTester
-    ],
-    jni_libs: [
-        // Required for ExtendedMockito
-        "libdexmakerjvmtiagent",
-        "libstaticjvmtiagent",
     ],
     libs: [
         "android.test.base.stubs.system",
