@@ -19,8 +19,8 @@ package com.android.healthconnect.controller.recentaccess
 import android.health.connect.HealthConnectManager
 import android.health.connect.accesslog.AccessLog
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.TimeSource
 import java.time.Duration

@@ -17,29 +17,30 @@
 package com.android.healthconnect.controller.onboarding.api
 
 import androidx.core.os.asOutcomeReceiver
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
 
 @Singleton
-class LoadOnboardingStateUseCase @Inject constructor(private val manager: HealthOnboardingManager) :
-    ILoadOnboardingStateUseCase {
+class LoadOnboardingStateUseCase
+@Inject
+constructor(
+    private val manager: HealthOnboardingManager,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+) : ILoadOnboardingStateUseCase, BaseUseCase<Unit, OnboardingState>(dispatcher) {
 
-    override suspend operator fun invoke(): OnboardingState {
-        return withContext(Dispatchers.IO) {
-            val state = suspendCancellableCoroutine { continuation ->
-                manager.getHealthConnectOnboardingState(
-                    Runnable::run,
-                    continuation.asOutcomeReceiver(),
-                )
-            }
-            when (state.onboardingState) {
-                0 -> OnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED
-                1 -> OnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED
-                else -> OnboardingState.ONBOARDING_BANNER_STATE_HIDE
-            }
+    override suspend fun execute(input: Unit): OnboardingState {
+        val state = suspendCancellableCoroutine { continuation ->
+            manager.getHealthConnectOnboardingState(Runnable::run, continuation.asOutcomeReceiver())
+        }
+        return when (state.onboardingState) {
+            0 -> OnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED
+            1 -> OnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED
+            else -> OnboardingState.ONBOARDING_BANNER_STATE_HIDE
         }
     }
 }
@@ -51,5 +52,7 @@ enum class OnboardingState {
 }
 
 interface ILoadOnboardingStateUseCase {
-    suspend operator fun invoke(): OnboardingState
+    suspend fun invoke(input: Unit): UseCaseResults<OnboardingState>
+
+    suspend fun execute(input: Unit): OnboardingState
 }

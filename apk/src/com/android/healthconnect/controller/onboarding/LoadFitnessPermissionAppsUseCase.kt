@@ -18,14 +18,15 @@ package com.android.healthconnect.controller.onboarding
 
 import com.android.healthconnect.controller.permissions.app.LoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
 
 /**
  * Loads all apps which have at least one fitness permission and whether at least one fitness
@@ -39,52 +40,54 @@ constructor(
     private val loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase,
     private val appInfoReader: AppInfoReader,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : ILoadFitnessPermissionAppsUseCase {
+) :
+    ILoadFitnessPermissionAppsUseCase,
+    BaseUseCase<Unit, List<ConnectedFitnessAppMetadata>>(dispatcher) {
 
-    override suspend operator fun invoke(): List<ConnectedFitnessAppMetadata> =
-        withContext(dispatcher) {
-            val appsWithHealthPermissions = healthPermissionReader.getAppsWithHealthPermissions()
-            val connectedApps = mutableListOf<ConnectedFitnessAppMetadata>()
+    override suspend fun execute(unit: Unit): List<ConnectedFitnessAppMetadata> {
+        val appsWithHealthPermissions = healthPermissionReader.getAppsWithHealthPermissions()
+        val connectedApps = mutableListOf<ConnectedFitnessAppMetadata>()
 
-            connectedApps.addAll(
-                appsWithHealthPermissions
-                    .filterNot { it.value }
-                    .mapNotNull { (packageName, isSystem) ->
-                        val metadata = appInfoReader.getAppMetadata(packageName, isSystem)
+        connectedApps.addAll(
+            appsWithHealthPermissions
+                .filterNot { it.value }
+                .mapNotNull { (packageName, isSystem) ->
+                    val metadata = appInfoReader.getAppMetadata(packageName, isSystem)
 
-                        val healthPermissionsList =
-                            loadAppPermissionsStatusUseCase.invoke(packageName)
-                        val fitnessPermissions =
-                            healthPermissionsList
-                                .map { it.healthPermission }
-                                .filterIsInstance<HealthPermission.FitnessPermission>()
+                    val healthPermissionsList = loadAppPermissionsStatusUseCase.invoke(packageName)
+                    val fitnessPermissions =
+                        healthPermissionsList
+                            .map { it.healthPermission }
+                            .filterIsInstance<HealthPermission.FitnessPermission>()
 
-                        if (fitnessPermissions.isEmpty()) {
-                            // not a fitness app
-                            return@mapNotNull null
-                        }
-
-                        val grantedFitnessPermissions =
-                            healthPermissionsList
-                                .filter { it.isGranted }
-                                .map { it.healthPermission }
-                                .filterIsInstance<HealthPermission.FitnessPermission>()
-
-                        val isConnected = grantedFitnessPermissions.isNotEmpty()
-                        ConnectedFitnessAppMetadata(metadata, isConnected)
+                    if (fitnessPermissions.isEmpty()) {
+                        // not a fitness app
+                        return@mapNotNull null
                     }
-            )
-            connectedApps.sortedWith(
-                // TODO (b/416744614) additional sorting criteria for apps
-                // Show connected apps first
-                compareBy<ConnectedFitnessAppMetadata> { if (it.isConnected) 0 else 1 }
-                    .thenBy { it.appMetadata.appName }
-            )
-        }
+
+                    val grantedFitnessPermissions =
+                        healthPermissionsList
+                            .filter { it.isGranted }
+                            .map { it.healthPermission }
+                            .filterIsInstance<HealthPermission.FitnessPermission>()
+
+                    val isConnected = grantedFitnessPermissions.isNotEmpty()
+                    ConnectedFitnessAppMetadata(metadata, isConnected)
+                }
+        )
+        return connectedApps.sortedWith(
+            // TODO (b/416744614) additional sorting criteria for apps
+            // Show connected apps first
+            compareBy<ConnectedFitnessAppMetadata> { if (it.isConnected) 0 else 1 }
+                .thenBy { it.appMetadata.appName }
+        )
+    }
 }
 
 interface ILoadFitnessPermissionAppsUseCase {
-    suspend fun invoke(): List<ConnectedFitnessAppMetadata>
+    suspend fun invoke(unit: Unit): UseCaseResults<List<ConnectedFitnessAppMetadata>>
+
+    suspend fun execute(unit: Unit): List<ConnectedFitnessAppMetadata>
 }
 
 data class ConnectedFitnessAppMetadata(val appMetadata: AppMetadata, var isConnected: Boolean)

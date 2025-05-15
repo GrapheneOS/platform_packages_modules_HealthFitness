@@ -17,6 +17,7 @@
 package com.android.healthconnect.controller.onboarding
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,6 +29,7 @@ import com.android.healthconnect.controller.shared.Constants.ONBOARDING_ONE_APP_
 import com.android.healthconnect.controller.shared.Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN
 import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -103,34 +105,44 @@ constructor(
         }
     }
 
-    init {
-        loadConnectedApps()
-    }
-
     fun loadConnectedApps() {
         _connectedApps.postValue(OnboardingFragmentState.Loading)
 
         viewModelScope.launch {
             // TODO (b/376085888) handle error from useCase
-            val connectedFitnessApps = loadFitnessPermissionApps.invoke().toMutableList()
-            for (currentApp in connectedFitnessApps) {
-                if (currentApp.appMetadata.packageName in appsInteractedWith) {
-                    currentApp.isConnected = true
+            when (val result = loadFitnessPermissionApps.invoke(Unit)) {
+                is UseCaseResults.Failed -> {
+                    Log.e(TAG, "Error invoking LoadFitnessPermissionApps: " + result.exception)
+                }
+                is UseCaseResults.Success -> {
+                    val connectedFitnessApps = result.data.toMutableList()
+                    for (currentApp in connectedFitnessApps) {
+                        if (currentApp.appMetadata.packageName in appsInteractedWith) {
+                            currentApp.isConnected = true
+                        }
+                    }
+                    connectedFitnessApps.sortWith(
+                        // TODO (b/416744614) additional sorting criteria for apps
+                        // Show connected apps first
+                        compareBy<ConnectedFitnessAppMetadata> { if (it.isConnected) 0 else 1 }
+                            .thenBy { it.appMetadata.appName }
+                    )
+                    _connectedApps.postValue(OnboardingFragmentState.WithData(connectedFitnessApps))
                 }
             }
-            connectedFitnessApps.sortWith(
-                // TODO (b/416744614) additional sorting criteria for apps
-                // Show connected apps first
-                compareBy<ConnectedFitnessAppMetadata> { if (it.isConnected) 0 else 1 }
-                    .thenBy { it.appMetadata.appName }
-            )
-            _connectedApps.postValue(OnboardingFragmentState.WithData(connectedFitnessApps))
         }
     }
 
     fun loadOnboardingBannerState() {
         viewModelScope.launch {
-            _internalOnboardingBannerState.postValue(loadOnboardingStateUseCase.invoke())
+            when (val result = loadOnboardingStateUseCase.invoke(Unit)) {
+                is UseCaseResults.Failed -> {
+                    Log.e(TAG, "Error invoking LoadOnboardingState: " + result.exception)
+                }
+                is UseCaseResults.Success -> {
+                    _internalOnboardingBannerState.postValue(result.data)
+                }
+            }
         }
     }
 

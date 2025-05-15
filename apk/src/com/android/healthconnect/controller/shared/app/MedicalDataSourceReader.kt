@@ -22,7 +22,7 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.MedicalDataSource
 import android.util.Log
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.service.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import java.util.concurrent.Executors
 import javax.inject.Inject
 import javax.inject.Singleton

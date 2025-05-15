@@ -84,10 +84,9 @@ class OnboardingViewModelTest {
                 ConnectedFitnessAppMetadata(TEST_APP_2, false),
             )
         )
-        assertThat(loadFitnessPermissionApps.invocations).isEqualTo(1)
         viewModel.loadConnectedApps()
         advanceUntilIdle()
-        assertThat(loadFitnessPermissionApps.invocations).isEqualTo(2)
+        assertThat(loadFitnessPermissionApps.invocations).isEqualTo(1)
     }
 
     @Test

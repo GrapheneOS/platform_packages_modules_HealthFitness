@@ -15,8 +15,7 @@
  */
 package com.android.healthconnect.controller.selectabledeletion.api
 
-import com.android.healthconnect.controller.service.IoDispatcher
-import com.android.healthfitness.flags.Flags.personalHealthRecord
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher

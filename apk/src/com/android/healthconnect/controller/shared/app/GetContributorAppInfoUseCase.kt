@@ -26,7 +26,7 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.AppInfo
 import android.util.Log
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.service.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton

@@ -38,12 +38,12 @@ import com.android.healthconnect.controller.data.appdata.AppDataFragment.Compani
 import com.android.healthconnect.controller.data.entries.AppEntriesFragment
 import com.android.healthconnect.controller.data.entries.EntriesViewModel
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.STEPS
-import com.android.healthconnect.controller.service.DefaultDispatcher
 import com.android.healthconnect.controller.service.DispatcherModule
 import com.android.healthconnect.controller.service.HealthManagerModule
-import com.android.healthconnect.controller.service.IoDispatcher
-import com.android.healthconnect.controller.service.MainDispatcher
 import com.android.healthconnect.controller.shared.Constants
+import com.android.healthconnect.controller.shared.usecase.DefaultDispatcher
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.MainDispatcher
 import com.android.healthconnect.controller.tests.utils.CoroutineTestRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME

@@ -19,8 +19,10 @@ package com.android.healthconnect.controller.tests.onboarding.api
 import android.health.connect.HealthConnectOnboardingState
 import com.android.healthconnect.controller.onboarding.api.LoadOnboardingStateUseCase
 import com.android.healthconnect.controller.onboarding.api.OnboardingState
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthOnboardingManager
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -32,37 +34,43 @@ class LoadOnboardingStateUseCaseTest {
 
     @Test
     fun invoke_onboardingStateZeroApps_mapsToZeroAppsConnected() = runTest {
-        val useCase = LoadOnboardingStateUseCase(healthOnboardingManager)
+        val useCase = LoadOnboardingStateUseCase(healthOnboardingManager, Dispatchers.Main)
         healthOnboardingManager.setOnboardingState(
             HealthConnectOnboardingState(
                 HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED
             )
         )
 
-        assertThat(useCase.invoke())
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(OnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED)
     }
 
     @Test
     fun invoke_onboardingStateOneApp_mapsToOneAppConnected() = runTest {
-        val useCase = LoadOnboardingStateUseCase(healthOnboardingManager)
+        val useCase = LoadOnboardingStateUseCase(healthOnboardingManager, Dispatchers.Main)
         healthOnboardingManager.setOnboardingState(
             HealthConnectOnboardingState(
                 HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED
             )
         )
-
-        assertThat(useCase.invoke())
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(OnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED)
     }
 
     @Test
     fun invoke_onboardingStateHide_mapsToHide() = runTest {
-        val useCase = LoadOnboardingStateUseCase(healthOnboardingManager)
+        val useCase = LoadOnboardingStateUseCase(healthOnboardingManager, Dispatchers.Main)
         healthOnboardingManager.setOnboardingState(
             HealthConnectOnboardingState(HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_HIDE)
         )
 
-        assertThat(useCase.invoke()).isEqualTo(OnboardingState.ONBOARDING_BANNER_STATE_HIDE)
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
+            .isEqualTo(OnboardingState.ONBOARDING_BANNER_STATE_HIDE)
     }
 }

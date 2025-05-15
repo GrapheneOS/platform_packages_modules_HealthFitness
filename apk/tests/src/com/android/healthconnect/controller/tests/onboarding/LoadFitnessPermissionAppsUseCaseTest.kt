@@ -30,6 +30,7 @@ import com.android.healthconnect.controller.permissions.data.PermissionsAccessTy
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.di.FakeGetGrantedHealthPermissionsUseCase
 import com.google.common.truth.Truth.assertThat
@@ -190,10 +191,11 @@ class LoadFitnessPermissionAppsUseCaseTest {
             listOf(readSkinTemperaturePermission.toString(), readHeartRatePermission.toString()),
         )
 
-        val actual = useCase.invoke()
+        val actual = useCase.invoke(Unit)
         advanceUntilIdle()
 
-        assertThat(actual)
+        assertThat(actual is UseCaseResults.Success).isTrue()
+        assertThat((actual as UseCaseResults.Success).data)
             .containsExactlyElementsIn(
                 listOf(
                     ConnectedFitnessAppMetadata(fitnessApp, true),
@@ -220,10 +222,11 @@ class LoadFitnessPermissionAppsUseCaseTest {
             listOf(readDataInBackgroundPermission.toString()),
         )
 
-        val actual = useCase.invoke()
+        val actual = useCase.invoke(Unit)
         advanceUntilIdle()
 
-        assertThat(actual)
+        assertThat(actual is UseCaseResults.Success).isTrue()
+        assertThat((actual as UseCaseResults.Success).data)
             .containsExactlyElementsIn(
                 listOf(
                     ConnectedFitnessAppMetadata(fitnessApp2, true),
@@ -254,10 +257,11 @@ class LoadFitnessPermissionAppsUseCaseTest {
             listOf(readSkinTemperaturePermission.toString()),
         )
 
-        val actual = useCase.invoke()
+        val actual = useCase.invoke(Unit)
         advanceUntilIdle()
 
-        assertThat(actual)
+        assertThat(actual is UseCaseResults.Success).isTrue()
+        assertThat((actual as UseCaseResults.Success).data)
             .containsExactlyElementsIn(
                 listOf(
                     ConnectedFitnessAppMetadata(combinedApp, true),
@@ -284,10 +288,11 @@ class LoadFitnessPermissionAppsUseCaseTest {
             listOf(readSkinTemperaturePermission.toString()),
         )
 
-        val actual = useCase.invoke()
+        val actual = useCase.invoke(Unit)
         advanceUntilIdle()
 
-        assertThat(actual)
+        assertThat(actual is UseCaseResults.Success).isTrue()
+        assertThat((actual as UseCaseResults.Success).data)
             .containsExactlyElementsIn(
                 listOf(
                     ConnectedFitnessAppMetadata(fitnessApp, true),
@@ -313,10 +318,11 @@ class LoadFitnessPermissionAppsUseCaseTest {
             listOf(readSkinTemperaturePermission.toString()),
         )
 
-        val actual = useCase.invoke()
+        val actual = useCase.invoke(Unit)
         advanceUntilIdle()
 
-        assertThat(actual)
+        assertThat(actual is UseCaseResults.Success).isTrue()
+        assertThat((actual as UseCaseResults.Success).data)
             .containsExactlyElementsIn(
                 listOf(
                     ConnectedFitnessAppMetadata(fitnessApp, true),

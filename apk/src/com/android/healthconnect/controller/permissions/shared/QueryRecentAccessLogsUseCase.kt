@@ -37,7 +37,7 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.accesslog.AccessLog
 import android.util.Log
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.service.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -51,7 +51,7 @@ class QueryRecentAccessLogsUseCase
 @Inject
 constructor(
     private val manager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : IQueryRecentAccessLogsUseCase {
 
     companion object {

@@ -20,8 +20,8 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.DataOrigin
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.android.healthconnect.controller.selectabledeletion.DeletionType
-import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -52,10 +52,7 @@ constructor(
             val deleteMedicalData = async {
                 val medicalDataSources = medicalDataSourceReader.fromPackageName(packageName)
                 medicalDataSources.forEach {
-                    healthConnectManager.deleteMedicalDataSourceWithData(
-                        it.id,
-                        Runnable::run,
-                    ) {}
+                    healthConnectManager.deleteMedicalDataSourceWithData(it.id, Runnable::run) {}
                 }
             }
             deleteFitnessData.await()

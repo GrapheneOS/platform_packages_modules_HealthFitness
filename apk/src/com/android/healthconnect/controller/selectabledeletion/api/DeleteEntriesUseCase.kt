@@ -18,7 +18,7 @@ package com.android.healthconnect.controller.selectabledeletion.api
 import android.health.connect.HealthConnectManager
 import android.health.connect.RecordIdFilter
 import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteEntries
-import com.android.healthconnect.controller.service.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher

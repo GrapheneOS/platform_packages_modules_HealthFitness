@@ -20,8 +20,8 @@ import android.health.connect.ReadRecordsRequestUsingIds
 import android.health.connect.ReadRecordsResponse
 import android.health.connect.datatypes.ExerciseSessionRecord
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -33,7 +33,7 @@ class LoadExerciseRouteUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : BaseUseCase<String, ExerciseSessionRecord?>(dispatcher) {
 
     @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") // for readability
@@ -46,7 +46,10 @@ constructor(
             suspendCancellableCoroutine<ReadRecordsResponse<ExerciseSessionRecord>> { continuation
                     ->
                     healthConnectManager.readRecords(
-                        request, Runnable::run, continuation.asOutcomeReceiver())
+                        request,
+                        Runnable::run,
+                        continuation.asOutcomeReceiver(),
+                    )
                 }
                 .records
         if (records.isEmpty() || !records[0].hasRoute()) {

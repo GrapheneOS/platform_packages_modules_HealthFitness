@@ -88,6 +88,7 @@ import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.GetContributorAppInfoUseCase
 import com.android.healthconnect.controller.shared.app.IGetContributorAppInfoUseCase
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.utils.TimeSource
 import dagger.Module
 import dagger.Provides
@@ -403,8 +404,9 @@ class UseCaseModule {
 
     @Provides
     fun providesLoadOnboardingStateUseCase(
-        healthOnboardingManager: HealthOnboardingManager
+        healthOnboardingManager: HealthOnboardingManager,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
     ): ILoadOnboardingStateUseCase {
-        return LoadOnboardingStateUseCase(healthOnboardingManager)
+        return LoadOnboardingStateUseCase(healthOnboardingManager, dispatcher)
     }
 }
