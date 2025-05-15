@@ -185,10 +185,6 @@ public class FhirObjectTypeValidator {
                                 + joinFieldPathAndFieldName(objectPath, requiredField));
             }
         }
-
-        // TODO: b/377717422 - If the field is an array also check that it's not empty.
-        // This case does not happen for top level resource field validation, so should be
-        // handled as part of implementing complex type validation.
     }
 
     /**
