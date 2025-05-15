@@ -107,13 +107,11 @@ class ConnectedAppsFragmentTest {
 
     @Inject lateinit var manager: HealthConnectManager
 
-    @BindValue
-    val viewModel: ConnectedAppsViewModel = Mockito.mock(ConnectedAppsViewModel::class.java)
-    @BindValue
-    val healthPermissionReader: HealthPermissionReader = Mockito.mock(HealthPermissionReader::class.java)
+    @BindValue val viewModel: ConnectedAppsViewModel = mock()
+    @BindValue val healthPermissionReader: HealthPermissionReader = mock()
 
     @BindValue val deviceInfoUtils: DeviceInfoUtils = FakeDeviceInfoUtils()
-    @BindValue val navigationUtils: NavigationUtils = Mockito.mock(NavigationUtils::class.java)
+    @BindValue val navigationUtils: NavigationUtils = mock()
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
     private lateinit var navHostController: TestNavHostController
     private lateinit var context: Context
@@ -672,19 +670,25 @@ class ConnectedAppsFragmentTest {
         val connectedApps =
             listOf(
                 ConnectedAppMetadata(
-                    AppMetadata(packageName = TEST_APP_PACKAGE_NAME, appName = TEST_APP_NAME, icon = null),
+                    AppMetadata(
+                        packageName = TEST_APP_PACKAGE_NAME,
+                        appName = TEST_APP_NAME,
+                        icon = null,
+                    ),
                     status = DENIED,
-                ),
+                )
             )
 
         val testIntent = Intent(ACTION_SHOW_ONBOARDING)
         testIntent.setPackage(TEST_APP.packageName)
         // Assume that the client onboarding activity completes normally.
-        Intents.intending(hasAction(ACTION_SHOW_ONBOARDING)).respondWith(
-            Instrumentation.ActivityResult(
-                Activity.RESULT_OK, Intent()))
+        Intents.intending(hasAction(ACTION_SHOW_ONBOARDING))
+            .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, Intent()))
         whenever(viewModel.connectedApps).then { MutableLiveData(connectedApps) }
-        whenever(healthPermissionReader.getOnboardingActivityIntent(any(), eq(TEST_APP.packageName))).thenReturn(testIntent)
+        whenever(
+                healthPermissionReader.getOnboardingActivityIntent(any(), eq(TEST_APP.packageName))
+            )
+            .thenReturn(testIntent)
 
         launchFragment<ConnectedAppsFragment>(Bundle())
         onView(withText(TEST_APP_NAME)).perform(scrollTo()).check(matches(isDisplayed()))

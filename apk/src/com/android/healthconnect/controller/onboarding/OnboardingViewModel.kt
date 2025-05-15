@@ -50,6 +50,8 @@ constructor(
     val connectedApps: LiveData<OnboardingFragmentState>
         get() = _connectedApps
 
+    private val appsInteractedWith = mutableSetOf<String>()
+
     private val _internalOnboardingBannerState = MutableLiveData<OnboardingState>()
 
     private val _onboardingBannerState =
@@ -110,7 +112,18 @@ constructor(
 
         viewModelScope.launch {
             // TODO (b/376085888) handle error from useCase
-            val connectedFitnessApps = loadFitnessPermissionApps.invoke()
+            val connectedFitnessApps = loadFitnessPermissionApps.invoke().toMutableList()
+            for (currentApp in connectedFitnessApps) {
+                if (currentApp.appMetadata.packageName in appsInteractedWith) {
+                    currentApp.isConnected = true
+                }
+            }
+            connectedFitnessApps.sortWith(
+                // TODO (b/416744614) additional sorting criteria for apps
+                // Show connected apps first
+                compareBy<ConnectedFitnessAppMetadata> { if (it.isConnected) 0 else 1 }
+                    .thenBy { it.appMetadata.appName }
+            )
             _connectedApps.postValue(OnboardingFragmentState.WithData(connectedFitnessApps))
         }
     }
@@ -129,6 +142,10 @@ constructor(
                 sharedPreferences.getBoolean(ONBOARDING_ONE_APP_BANNER_SEEN, false)
             else -> false
         }
+    }
+
+    fun setAppInteractedWith(packageName: String) {
+        appsInteractedWith.add(packageName)
     }
 
     sealed class OnboardingFragmentState {
