@@ -24,11 +24,11 @@ import static android.healthconnect.cts.route.ExerciseRouteTestHelper.getExercis
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.getExerciseSessionWithoutRoute;
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.getRoute;
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.readAllExerciseSessionRecordsPrivileged;
-import static android.healthconnect.cts.utils.TestUtils.connectAppsWithGrantedPermissions;
-import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
-import static android.healthconnect.cts.utils.TestUtils.updateRecords;
-import static android.healthconnect.cts.utils.TestUtils.yesterdayAt;
+import static android.healthconnect.testing.cts.TestUtils.connectAppsWithGrantedPermissions;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.updateRecords;
+import static android.healthconnect.testing.cts.TestUtils.yesterdayAt;
 import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
 import static android.healthconnect.testing.shared.DataFactory.getMetadataForClientId;
 import static android.healthconnect.testing.shared.DataFactory.getMetadataForClientIdAndVersion;
@@ -37,8 +37,8 @@ import static android.healthconnect.testing.shared.DataFactory.getMetadataForId;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.ExerciseSessionRecord;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import org.junit.After;
 import org.junit.Before;

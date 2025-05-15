@@ -19,7 +19,7 @@ package android.healthconnect.tests.migration;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 import static android.health.connect.HealthPermissions.READ_ACTIVE_CALORIES_BURNED;
 import static android.health.connect.HealthPermissions.WRITE_ACTIVE_CALORIES_BURNED;
-import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 
 import static com.android.compatibility.common.util.FeatureUtil.AUTOMOTIVE_FEATURE;
 import static com.android.compatibility.common.util.FeatureUtil.hasSystemFeature;
@@ -32,9 +32,9 @@ import android.content.pm.PackageManager;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.PermissionMigrationPayload;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;

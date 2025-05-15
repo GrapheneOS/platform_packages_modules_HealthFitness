@@ -16,8 +16,8 @@
 
 package android.healthconnect.cts.testhelper;
 
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
-import static android.healthconnect.cts.utils.TestUtils.queryAccessLogs;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.queryAccessLogs;
 import static android.healthconnect.testing.shared.DataFactory.getBloodPressureRecord;
 import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
@@ -30,7 +30,7 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.TestUtils;
 
 import androidx.test.InstrumentationRegistry;
 

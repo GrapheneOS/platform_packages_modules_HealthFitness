@@ -36,10 +36,10 @@ import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.UpdateDataOriginPriorityOrderRequest;
 import android.health.connect.datatypes.DataOrigin;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;

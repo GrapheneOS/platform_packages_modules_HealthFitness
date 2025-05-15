@@ -18,7 +18,7 @@ package android.healthconnect.cts.phr;
 
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_ALLERGY_INTOLERANCE;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION;
-import static android.healthconnect.cts.utils.TestUtils.setFieldValueUsingReflection;
+import static android.healthconnect.testing.cts.TestUtils.setFieldValueUsingReflection;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_ID;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_DATA_SOURCE_ID;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_RESOURCE_ID_ALLERGY;

@@ -15,9 +15,9 @@
  */
 package android.healthconnect.tests;
 
-import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
-import static android.healthconnect.cts.utils.TestUtils.readAllRecords;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.readAllRecords;
 import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadata;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -27,11 +27,11 @@ import android.content.Context;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.PermissionHelper;
-import android.healthconnect.cts.utils.TestUtils;
 import android.healthconnect.testing.cts.JobUtils;
+import android.healthconnect.testing.cts.PermissionUtils;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.healthconnect.testing.shared.recordfactory.RecordFactory;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -65,11 +65,11 @@ public class DailyJobTest {
         Context mContext = ApplicationProvider.getApplicationContext();
         deleteAllStagedRemoteData();
 
-        PermissionHelper.grantHealthPermission(
+        PermissionUtils.grantHealthPermission(
                 mContext.getPackageName(), HealthPermissions.READ_STEPS);
-        PermissionHelper.grantHealthPermission(
+        PermissionUtils.grantHealthPermission(
                 mContext.getPackageName(), HealthPermissions.WRITE_STEPS);
-        PermissionHelper.grantHealthPermission(
+        PermissionUtils.grantHealthPermission(
                 mContext.getPackageName(), HealthPermissions.READ_HEALTH_DATA_HISTORY);
 
         SystemUtil.eventually(

@@ -29,8 +29,8 @@ import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VISITS;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VITAL_SIGNS;
-import static android.healthconnect.cts.utils.TestUtils.finishMigrationWithShellPermissionIdentity;
-import static android.healthconnect.cts.utils.TestUtils.startMigrationWithShellPermissionIdentity;
+import static android.healthconnect.testing.cts.TestUtils.finishMigrationWithShellPermissionIdentity;
+import static android.healthconnect.testing.cts.TestUtils.startMigrationWithShellPermissionIdentity;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_FHIR_DATA_IMMUNIZATION;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_ALLERGY;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
@@ -45,10 +45,10 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.MedicalResourceTypeInfo;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 

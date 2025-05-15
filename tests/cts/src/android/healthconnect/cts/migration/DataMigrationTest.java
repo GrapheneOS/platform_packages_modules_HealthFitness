@@ -25,8 +25,8 @@ import static android.health.connect.HealthPermissions.READ_HEIGHT;
 import static android.health.connect.HealthPermissions.WRITE_HEIGHT;
 import static android.health.connect.datatypes.units.Length.fromMeters;
 import static android.health.connect.datatypes.units.Power.fromWatts;
-import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
 import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
+import static android.healthconnect.testing.cts.PermissionUtils.revokeAllHealthPermissions;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
@@ -70,9 +70,9 @@ import android.health.connect.migration.MigrationException;
 import android.health.connect.migration.PermissionMigrationPayload;
 import android.health.connect.migration.PriorityMigrationPayload;
 import android.health.connect.migration.RecordMigrationPayload;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.Build;
 import android.os.ext.SdkExtensions;
 

@@ -29,7 +29,7 @@ import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_O
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_PATIENT;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_PRACTITIONER;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_PROCEDURE;
-import static android.healthconnect.cts.utils.TestUtils.setFieldValueUsingReflection;
+import static android.healthconnect.testing.cts.TestUtils.setFieldValueUsingReflection;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_ALLERGY;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_RESOURCE_ID_ALLERGY;

@@ -17,9 +17,9 @@
 package android.healthconnect.cts.aggregation;
 
 import static android.health.connect.datatypes.ExerciseSessionRecord.EXERCISE_DURATION_TOTAL;
-import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
-import static android.healthconnect.cts.utils.TestUtils.insertRecord;
-import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
+import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
+import static android.healthconnect.testing.cts.TestUtils.insertRecord;
+import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
 import static android.healthconnect.testing.shared.DataFactory.SESSION_END_TIME;
 import static android.healthconnect.testing.shared.DataFactory.SESSION_START_TIME;
 import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
@@ -36,9 +36,9 @@ import android.health.connect.datatypes.ExerciseSegment;
 import android.health.connect.datatypes.ExerciseSegmentType;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.ExerciseSessionType;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import org.junit.After;
 import org.junit.Before;

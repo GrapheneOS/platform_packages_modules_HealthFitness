@@ -21,7 +21,7 @@ import android.content.pm.PackageManager
 import android.health.connect.HealthConnectManager
 import android.healthconnect.cts.lib.ActivityLauncher.launchMainActivity
 import android.healthconnect.cts.lib.UiTestUtils
-import android.healthconnect.cts.utils.TestUtils
+import android.healthconnect.testing.cts.TestUtils
 import android.healthconnect.testing.shared.DataFactory
 import androidx.test.core.app.ApplicationProvider
 import com.android.compatibility.common.util.DisableAnimationRule

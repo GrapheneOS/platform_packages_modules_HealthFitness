@@ -20,8 +20,8 @@ import static android.health.connect.datatypes.ExerciseSessionRecord.EXERCISE_DU
 import static android.health.connect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.health.connect.datatypes.TotalCaloriesBurnedRecord.ENERGY_TOTAL;
-import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
 import static android.healthconnect.testing.shared.DataFactory.NOW;
 import static android.healthconnect.testing.shared.DataFactory.buildExerciseSessionWithEmptyMetadata;
 import static android.healthconnect.testing.shared.DataFactory.buildSleepSessionWithEmptyMetadata;
@@ -45,9 +45,9 @@ import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
 import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Length;
 import android.healthconnect.cts.lib.TestAppProxy;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import org.junit.Before;
 import org.junit.Rule;

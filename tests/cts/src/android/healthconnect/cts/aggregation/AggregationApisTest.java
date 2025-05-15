@@ -29,12 +29,12 @@ import static android.healthconnect.cts.aggregation.Utils.assertDoubleWithTolera
 import static android.healthconnect.cts.aggregation.Utils.assertEnergyWithTolerance;
 import static android.healthconnect.cts.aggregation.Utils.assertLengthWithTolerance;
 import static android.healthconnect.cts.aggregation.Utils.assertMassWithTolerance;
-import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
-import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseGroupByDuration;
-import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseGroupByPeriod;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
-import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
+import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGroupByDuration;
+import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGroupByPeriod;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
 import static android.healthconnect.testing.shared.DataFactory.getActiveCaloriesBurnedRecord;
 import static android.healthconnect.testing.shared.DataFactory.getDistanceRecord;
 import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
@@ -69,8 +69,8 @@ import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
 import android.healthconnect.cts.lib.TestAppProxy;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 

@@ -19,10 +19,10 @@ package android.healthconnect.cts.aggregation;
 import static android.health.connect.datatypes.ActivityIntensityRecord.ACTIVITY_INTENSITY_TYPE_MODERATE;
 import static android.health.connect.datatypes.ActivityIntensityRecord.ACTIVITY_INTENSITY_TYPE_VIGOROUS;
 import static android.health.connect.datatypes.ActivityIntensityRecord.MODERATE_DURATION_TOTAL;
-import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
-import static android.healthconnect.cts.utils.TestUtils.insertRecord;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
-import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
+import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
+import static android.healthconnect.testing.cts.TestUtils.insertRecord;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
 import static android.healthconnect.testing.shared.recordfactory.RecordFactory.YESTERDAY_11AM;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;

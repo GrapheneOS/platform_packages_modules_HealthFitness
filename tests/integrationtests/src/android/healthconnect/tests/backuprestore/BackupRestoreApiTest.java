@@ -16,7 +16,7 @@
 
 package android.healthconnect.tests.backuprestore;
 
-import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 import static android.os.ParcelFileDescriptor.MODE_READ_ONLY;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -32,10 +32,10 @@ import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.BodyFatRecord;
 import android.health.connect.datatypes.HeightRecord;
 import android.health.connect.restore.StageRemoteDataException;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
 import android.healthconnect.integrationtests.backuprestore.R;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.FileUtils;
 import android.os.OutcomeReceiver;
 import android.os.ParcelFileDescriptor;

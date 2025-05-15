@@ -16,11 +16,11 @@
 
 package android.healthconnect.cts.aggregation;
 
-import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
-import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseGroupByDuration;
-import static android.healthconnect.cts.utils.TestUtils.insertRecord;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
-import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
+import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
+import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGroupByDuration;
+import static android.healthconnect.testing.cts.TestUtils.insertRecord;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
 import static android.healthconnect.testing.shared.recordfactory.RecordFactory.MIDNIGHT_ONE_WEEK_AGO;
 import static android.healthconnect.testing.shared.recordfactory.RecordFactory.YESTERDAY_10AM_LOCAL;
 import static android.healthconnect.testing.shared.recordfactory.RecordFactory.YESTERDAY_11AM;
@@ -40,9 +40,9 @@ import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.IntervalRecord;
 import android.healthconnect.cts.lib.TestAppProxy;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 

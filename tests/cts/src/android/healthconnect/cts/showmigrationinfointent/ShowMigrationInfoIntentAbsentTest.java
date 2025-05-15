@@ -24,10 +24,10 @@ import static com.android.compatibility.common.util.SystemUtil.runWithShellPermi
 import android.content.Context;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.migration.MigrationException;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
 import android.healthconnect.testing.cts.TestOutcomeReceiver;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.Build;
 import android.os.ext.SdkExtensions;
 import android.platform.test.annotations.AppModeFull;

@@ -64,6 +64,8 @@ android_library {
         "androidx.test.ext.truth",
         "androidx.test.rules",
         "compatibility-device-util-axt",
+        "healthfitness-aconfig-flags-lib",
+        "healthfitness-aconfig-flags-helper",
         "healthfitness-testing-shared",
     ],
     min_sdk_version: "34",

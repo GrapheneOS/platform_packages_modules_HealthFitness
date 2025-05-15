@@ -17,10 +17,10 @@
 package android.healthconnect.tests.exportimport;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
-import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.cts.utils.TestUtils.deleteRecords;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
-import static android.healthconnect.cts.utils.TestUtils.readAllRecords;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteRecords;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.readAllRecords;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newFullMetadataWithClientIdAndVersion;
 
@@ -38,10 +38,10 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
 import android.healthconnect.testing.cts.JobUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.healthconnect.testing.shared.recordfactory.RecordFactory;
 import android.net.Uri;
 import android.os.Environment;

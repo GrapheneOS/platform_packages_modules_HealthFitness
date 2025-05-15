@@ -29,7 +29,7 @@ import static java.util.function.Predicate.not;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.healthconnect.cts.utils.PermissionHelper;
+import android.healthconnect.testing.cts.PermissionUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -73,37 +73,37 @@ public class TestAppRule extends ExternalResource {
 
     /** Grants the specified permission to the test app via {@link PackageManager}. */
     public void grantHealthPermission(String permission) {
-        PermissionHelper.grantHealthPermission(mPackageName, permission);
+        PermissionUtils.grantHealthPermission(mPackageName, permission);
     }
 
     /** Grants all the specified permissions to the test app via {@link PackageManager}. */
     public void grantHealthPermissions(Collection<String> permissions) {
-        PermissionHelper.grantHealthPermissions(mPackageName, permissions);
+        PermissionUtils.grantHealthPermissions(mPackageName, permissions);
     }
 
     /** Revokes the specified permission from the test app via {@link PackageManager}. */
     public void revokeHealthPermission(String permission) {
-        PermissionHelper.revokeHealthPermission(mPackageName, permission, /* reason= */ mTestName);
+        PermissionUtils.revokeHealthPermission(mPackageName, permission, /* reason= */ mTestName);
     }
 
     /** Revokes all health permissions from the test app via {@link PackageManager}. */
     public void revokeAllHealthPermissions() {
-        PermissionHelper.revokeAllHealthPermissions(mPackageName, /* reason= */ mTestName);
+        PermissionUtils.revokeAllHealthPermissions(mPackageName, /* reason= */ mTestName);
     }
 
     @Override
     protected void before() throws Throwable {
         List<String> declaredPermissions =
-                PermissionHelper.getDeclaredHealthPermissions(mPackageName);
+                PermissionUtils.getDeclaredHealthPermissions(mPackageName);
         assertThat(declaredPermissions).containsAtLeastElementsIn(mPermissionsToRevoke);
 
         // Start from a consistent state; a previous test may have left permissions revoked.
         List<String> permissionsToGrant =
                 declaredPermissions.stream().filter(not(mPermissionsToRevoke::contains)).toList();
-        PermissionHelper.grantHealthPermissions(mPackageName, permissionsToGrant);
+        PermissionUtils.grantHealthPermissions(mPackageName, permissionsToGrant);
 
         for (String permission : mPermissionsToRevoke) {
-            PermissionHelper.revokeHealthPermission(
+            PermissionUtils.revokeHealthPermission(
                     mPackageName, permission, /* reason= */ mTestName);
         }
 
@@ -132,7 +132,7 @@ public class TestAppRule extends ExternalResource {
     @Override
     protected void after() {
         // Leave permissions in a consistent state.
-        PermissionHelper.grantAllHealthPermissions(mPackageName);
+        PermissionUtils.grantAllHealthPermissions(mPackageName);
     }
 
     /** Builder for the rule. */
