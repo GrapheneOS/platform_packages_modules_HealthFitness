@@ -18,6 +18,7 @@ package com.android.server.healthconnect.phr.validations;
 
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_ALLERGY_INTOLERANCE;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_CONDITION;
+import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_DEVICE;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_LOCATION;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_MEDICATION;
@@ -99,11 +100,13 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.assertThrows;
 
 import android.health.connect.datatypes.FhirVersion;
+import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.proto.FhirComplexTypeConfig;
 import com.android.server.healthconnect.proto.FhirFieldConfig;
 import com.android.server.healthconnect.proto.MultiTypeFieldConfig;
@@ -671,6 +674,30 @@ public class FhirSpecProviderTest {
                 .containsExactlyElementsIn(expectedRequiredFields);
         assertThat(organizationConfig.getAllowedFieldNamesToConfigMap())
                 .containsAtLeastEntriesIn(atLeastExpectedFieldConfigsMap);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_RESOURCE)
+    public void testGetFhirResourceTypeConfig_deviceFlagOn_returnsConfig() {
+        FhirSpecProvider spec = new FhirSpecProvider(FHIR_VERSION_R4);
+
+        FhirComplexTypeConfig deviceConfig =
+                spec.getFhirResourceTypeConfig(FHIR_RESOURCE_TYPE_DEVICE);
+
+        assertThat(deviceConfig.getRequiredFieldsList())
+                .containsExactlyElementsIn(List.<String>of());
+        assertThat(deviceConfig.getAllowedFieldNamesToConfigMap())
+                .containsAtLeastEntriesIn(Map.<String, FhirFieldConfig>of());
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_RESOURCE)
+    public void testGetFhirResourceTypeConfig_deviceFlagOff_throws() {
+        FhirSpecProvider spec = new FhirSpecProvider(FHIR_VERSION_R4);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> spec.getFhirResourceTypeConfig(FHIR_RESOURCE_TYPE_DEVICE));
     }
 
     @EnableFlags({FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION})

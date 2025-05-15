@@ -25,8 +25,6 @@ def extract_and_print_type_enums(profiles_resources_json, profiles_types_json, r
             resource, structure_definition)
         top_level_fhir_types.update(fhir_types)
         top_level_child_types.update(child_types)
-    # We don't need this type as this is defined by child types instead.
-    top_level_fhir_types.remove("BackboneElement")
 
     all_required_fhir_types = _get_all_types_and_subtypes_from_type_definitions(
         profiles_types_json, top_level_fhir_types).union(top_level_child_types)
