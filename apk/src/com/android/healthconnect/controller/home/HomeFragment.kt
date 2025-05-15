@@ -179,8 +179,10 @@ class HomeFragment : Hilt_HomeFragment() {
         homeViewModel.loadConnectedApps()
         exportStatusViewModel.loadScheduledExportStatus()
         homeViewModel.loadHasAnyMedicalData()
-        onboardingViewModel.loadConnectedApps()
-        onboardingViewModel.loadOnboardingBannerState()
+        if (onboarding()) {
+            onboardingViewModel.loadConnectedApps()
+            onboardingViewModel.loadOnboardingBannerState()
+        }
         if (isLockScreenBannerAvailable) {
             homeViewModel.loadShouldShowLockScreenBanner(getSharedPreference(), requireContext())
         }
@@ -250,8 +252,10 @@ class HomeFragment : Hilt_HomeFragment() {
             }
         }
 
-        onboardingViewModel.onboardingBannerState.observe(viewLifecycleOwner) { state ->
-            maybeShowOnboardingBanner(state)
+        if (onboarding()) {
+            onboardingViewModel.onboardingBannerState.observe(viewLifecycleOwner) { state ->
+                maybeShowOnboardingBanner(state)
+            }
         }
     }
 
