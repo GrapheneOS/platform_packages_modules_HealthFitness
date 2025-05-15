@@ -38,8 +38,8 @@ import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.shared.phr.ImmunizationBuilder;
 import android.healthconnect.testing.unittest.PhrTestUtils;
+import android.healthconnect.testing.unittest.PhrTestUtils.MedicalChangeLogEntry;
 import android.healthconnect.testing.unittest.TransactionTestUtils;
-import android.healthconnect.testing.unittest.TransactionTestUtils.MedicalChangeLogEntry;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -135,8 +135,7 @@ public final class MedicalChangeLogsHelperTest {
                             db, resourcesToDelete, appId1);
                 });
 
-        List<MedicalChangeLogEntry> changeLogs =
-                mTransactionTestUtils.getAllDeleteMedicalChangeLogs();
+        List<MedicalChangeLogEntry> changeLogs = mPhrTestUtils.getAllDeleteMedicalChangeLogs();
         assertThat(changeLogs)
                 .containsExactly(
                         new MedicalChangeLogEntry(
@@ -196,8 +195,7 @@ public final class MedicalChangeLogsHelperTest {
                         MEDICAL_RESOURCE_TYPE_VACCINES,
                         appId2,
                         List.of(vaccine1Ds2.getId()));
-        List<MedicalChangeLogEntry> changeLogs =
-                mTransactionTestUtils.getAllDeleteMedicalChangeLogs();
+        List<MedicalChangeLogEntry> changeLogs = mPhrTestUtils.getAllDeleteMedicalChangeLogs();
         assertThat(changeLogs)
                 .containsExactly(
                         expectedLogForVaccinesDs1,
@@ -254,8 +252,7 @@ public final class MedicalChangeLogsHelperTest {
                         MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
                         appId1,
                         List.of(allergy1Ds1.getId()));
-        List<MedicalChangeLogEntry> changeLogs =
-                mTransactionTestUtils.getAllDeleteMedicalChangeLogs();
+        List<MedicalChangeLogEntry> changeLogs = mPhrTestUtils.getAllDeleteMedicalChangeLogs();
         assertThat(changeLogs)
                 .containsExactly(expectedLogForVaccinesApp1, expectedLogForAllergyApp1);
     }
@@ -311,8 +308,7 @@ public final class MedicalChangeLogsHelperTest {
                         MEDICAL_RESOURCE_TYPE_VACCINES,
                         appId2,
                         List.of(vaccine1Ds2.getId(), vaccine2Ds2.getId()));
-        List<MedicalChangeLogEntry> changeLogs =
-                mTransactionTestUtils.getAllDeleteMedicalChangeLogs();
+        List<MedicalChangeLogEntry> changeLogs = mPhrTestUtils.getAllDeleteMedicalChangeLogs();
         assertThat(changeLogs)
                 .containsExactly(expectedLogForVaccinesApp1, expectedLogForVaccinesApp2);
     }

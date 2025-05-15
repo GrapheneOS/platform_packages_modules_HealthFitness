@@ -22,8 +22,8 @@ import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXP
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_UNKNOWN;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_UNSPECIFIED;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_STARTED;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 import static android.healthconnect.testing.unittest.StorageUtils.queryNumEntries;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
 
 import static com.android.server.healthconnect.exportimport.ExportManager.LOCAL_EXPORT_DATABASE_FILE_NAME;
 import static com.android.server.healthconnect.exportimport.ExportManager.LOCAL_EXPORT_DIR_NAME;
@@ -285,7 +285,7 @@ public class ExportManagerTest {
 
     @Test
     public void runExport_whenCompleted_deletesLocalCopies() {
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(123, 456, 7));
         assertThat(mStorageUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
 
         assertThat(mExportManager.runExport(mContext.getUser())).isTrue();
@@ -373,7 +373,7 @@ public class ExportManagerTest {
 
     @Test
     public void makesRemoteCopyOfDatabase() throws Exception {
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(123, 456, 7));
         assertThat(mStorageUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
 
         assertThat(mExportManager.runExport(mContext.getUser())).isTrue();
@@ -388,8 +388,8 @@ public class ExportManagerTest {
     @Test
     public void destinationUriDoesNotExist_exportFailsWithLostFileAccessError() throws IOException {
         // Inserting multiple rows to vary the size for testing of size logging
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(124, 457, 7));
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(123, 456, 7));
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(124, 457, 7));
         assertThat(mStorageUtils.queryNumEntries("steps_record_table")).isEqualTo(2);
 
         mExportImportSettingsStorage.setLastExportError(
@@ -419,7 +419,7 @@ public class ExportManagerTest {
 
     @Test
     public void updatesLastSuccessfulExport_onSuccessOnly() throws Exception {
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(123, 456, 7));
         assertThat(mStorageUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
 
         // running a successful export records a "last successful export"
@@ -471,7 +471,7 @@ public class ExportManagerTest {
         when(cursor.moveToFirst()).thenReturn(true);
         when(cursor.getString(anyInt())).thenReturn(REMOTE_EXPORT_ZIP_FILE_NAME);
 
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(123, 456, 7));
         assertThat(mStorageUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
 
         // Running a successful export records a "last successful export".

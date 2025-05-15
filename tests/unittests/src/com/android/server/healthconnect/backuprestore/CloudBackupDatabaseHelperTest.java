@@ -20,8 +20,8 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createBloodPressureRecord;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildBloodPressureRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
@@ -175,9 +175,9 @@ public class CloudBackupDatabaseHelperTest {
             throws Exception {
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT),
-                createBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
+                buildBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
 
         GetChangesForBackupResponse response =
                 mCloudBackupDatabaseHelper.getChangesAndTokenFromDataTables();
@@ -256,7 +256,7 @@ public class CloudBackupDatabaseHelperTest {
     @Test
     public void getChangesFromDataTables_mixedRecordsNotInSamePage_correctChangeTokenReturned() {
         List<RecordInternal<?>> records = createStepRecords(DEFAULT_PAGE_SIZE);
-        records.add(createBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
+        records.add(buildBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
 
         GetChangesForBackupResponse response =
@@ -277,7 +277,7 @@ public class CloudBackupDatabaseHelperTest {
     @Test
     public void getChangesFromDataTables_mixedRecordsNotInSamePage_usingToken_responseReturned() {
         List<RecordInternal<?>> records = createStepRecords(DEFAULT_PAGE_SIZE);
-        records.add(createBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
+        records.add(buildBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
 
         GetChangesForBackupResponse firstResponse =
@@ -327,7 +327,7 @@ public class CloudBackupDatabaseHelperTest {
     @Test
     public void getChangesFromDataTables_returnsPlannedExerciseSessionsFirst() throws Exception {
         mTransactionTestUtils.insertRecords(
-                TEST_PACKAGE_NAME, createStepsRecord(123456, 654321, 1234));
+                TEST_PACKAGE_NAME, buildStepsRecord(123456, 654321, 1234));
         Metadata metadata =
                 new Metadata.Builder()
                         .setDataOrigin(DataFactory.getDataOrigin(TEST_PACKAGE_NAME))
@@ -368,7 +368,7 @@ public class CloudBackupDatabaseHelperTest {
     @Test
     public void isChangeLogsTokenValid_changeLogNoLongerExists_invalid() {
         RecordInternal<StepsRecord> stepRecord =
-                createStepsRecord(
+                buildStepsRecord(
                         TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT);
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, stepRecord);
         GetChangesForBackupResponse response =
@@ -377,7 +377,7 @@ public class CloudBackupDatabaseHelperTest {
         // does not point to the end of the table.
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
+                buildBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
 
         // Delete the original change logs.
         mTransactionManager.delete(new DeleteTableRequest(ChangeLogsHelper.TABLE_NAME));
@@ -389,7 +389,7 @@ public class CloudBackupDatabaseHelperTest {
     @Test
     public void isChangeLogsTokenValid_nextChangeLogExists_valid() {
         RecordInternal<StepsRecord> stepRecord =
-                createStepsRecord(
+                buildStepsRecord(
                         TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT);
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, stepRecord);
         GetChangesForBackupResponse response =
@@ -398,7 +398,7 @@ public class CloudBackupDatabaseHelperTest {
         // does not point to the end of the table.
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
+                buildBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
 
         assertThat(mCloudBackupDatabaseHelper.isChangeLogsTokenValid(response.getNextChangeToken()))
                 .isTrue();
@@ -407,7 +407,7 @@ public class CloudBackupDatabaseHelperTest {
     @Test
     public void isChangeLogsTokenValid_tokenPointsToEndOfTable_valid() {
         RecordInternal<StepsRecord> stepRecord =
-                createStepsRecord(
+                buildStepsRecord(
                         TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT);
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, stepRecord);
         GetChangesForBackupResponse response =
@@ -428,7 +428,7 @@ public class CloudBackupDatabaseHelperTest {
     public void getIncrementalChanges_upsertRecords_correctChangeReturned() throws Exception {
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT));
         // All data tables have been iterated through.
         GetChangesForBackupResponse response =
@@ -440,7 +440,7 @@ public class CloudBackupDatabaseHelperTest {
         // Insert a new record and generate access logs.
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
+                buildBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
         GetChangesForBackupResponse secondResponse =
                 mCloudBackupDatabaseHelper.getIncrementalChanges(
                         backupChangeToken.getChangeLogsRequestToken());
@@ -458,10 +458,10 @@ public class CloudBackupDatabaseHelperTest {
     @Test
     public void getIncrementalChanges_includesDeletedRecords_correctChangeReturned() {
         RecordInternal<BloodPressureRecord> bloodPressureRecordInternal =
-                createBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC);
+                buildBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC);
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT),
                 bloodPressureRecordInternal);
         // All data tables have been iterated through.
@@ -504,7 +504,7 @@ public class CloudBackupDatabaseHelperTest {
     public void getIncrementalChanges_returnsExerciseSession_afterPlannedExerciseSessionChange()
             throws Exception {
         mTransactionTestUtils.insertRecords(
-                TEST_PACKAGE_NAME, createStepsRecord(123456, 654321, 1234));
+                TEST_PACKAGE_NAME, buildStepsRecord(123456, 654321, 1234));
         Metadata metadata =
                 new Metadata.Builder()
                         .setDataOrigin(DataFactory.getDataOrigin(TEST_PACKAGE_NAME))
@@ -554,7 +554,7 @@ public class CloudBackupDatabaseHelperTest {
         List<RecordInternal<?>> records = new ArrayList<>();
         for (int recordNumber = 0; recordNumber < recordSize; recordNumber++) {
             records.add(
-                    createStepsRecord(
+                    buildStepsRecord(
                             // Add offsets to start time and end time for distinguishing different
                             // records.
                             TEST_START_TIME_IN_MILLIS + recordNumber,
@@ -568,7 +568,7 @@ public class CloudBackupDatabaseHelperTest {
         List<RecordInternal<?>> records = new ArrayList<>();
         for (int recordNumber = 0; recordNumber < recordSize; recordNumber++) {
             records.add(
-                    createBloodPressureRecord(
+                    buildBloodPressureRecord(
                             TEST_TIME_IN_MILLIS + recordNumber, TEST_SYSTOLIC, TEST_DIASTOLIC));
         }
         return records;

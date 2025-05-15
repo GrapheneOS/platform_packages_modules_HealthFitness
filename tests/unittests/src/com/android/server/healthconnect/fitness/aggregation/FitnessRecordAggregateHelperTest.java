@@ -19,7 +19,7 @@ package com.android.server.healthconnect.fitness.aggregation;
 import static android.health.connect.HealthDataCategory.ACTIVITY;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_READ;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -156,7 +156,7 @@ public class FitnessRecordAggregateHelperTest {
         mTransactionTestUtils.insertApp(readerPackage);
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
                         testStartTime.minusMillis(1000).toEpochMilli(),
                         testStartTime.minusMillis(500).toEpochMilli(),
@@ -201,7 +201,7 @@ public class FitnessRecordAggregateHelperTest {
         mTransactionTestUtils.insertApp(readerPackage);
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME), 123, 345, 100));
+                buildStepsRecord(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME), 123, 345, 100));
 
         TimeRangeFilter timeRangeFilter =
                 new LocalTimeRangeFilter.Builder()
@@ -233,7 +233,7 @@ public class FitnessRecordAggregateHelperTest {
         mTransactionTestUtils.insertApp(readerPackage);
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME), 123, 345, 100));
+                buildStepsRecord(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME), 123, 345, 100));
 
         TimeRangeFilter timeRangeFilter =
                 new LocalTimeRangeFilter.Builder()
