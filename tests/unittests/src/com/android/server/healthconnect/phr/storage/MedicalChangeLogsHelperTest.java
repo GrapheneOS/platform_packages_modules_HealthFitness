@@ -27,33 +27,25 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVacc
 
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
-import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.APP_ID_COLUMN_NAME;
-import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.MEDICAL_RESOURCE_TYPE_COLUMN_NAME;
-import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.OPERATION_TYPE_COLUMN_NAME;
-import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.RECORD_TYPE_COLUMN_NAME;
-import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.UUIDS_COLUMN_NAME;
-import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.toMedicalResourceIdList;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.mock;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.health.connect.MedicalResourceId;
 import android.health.connect.datatypes.FhirResource;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.shared.phr.ImmunizationBuilder;
 import android.healthconnect.testing.unittest.PhrTestUtils;
 import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.TransactionTestUtils.MedicalChangeLogEntry;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -71,9 +63,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
@@ -145,10 +135,12 @@ public final class MedicalChangeLogsHelperTest {
                             db, resourcesToDelete, appId1);
                 });
 
-        List<ChangeLogEntry> changeLogs = getAllMedicalChangeLogs();
+        List<MedicalChangeLogEntry> changeLogs =
+                mTransactionTestUtils.getAllDeleteMedicalChangeLogs();
         assertThat(changeLogs)
                 .containsExactly(
-                        new ChangeLogEntry(
+                        new MedicalChangeLogEntry(
+                                DELETE,
                                 MEDICAL_RESOURCE_TYPE_VACCINES,
                                 appId1,
                                 List.of(vaccine1.getId(), vaccine2.getId(), vaccine3.getId())));
@@ -186,20 +178,26 @@ public final class MedicalChangeLogsHelperTest {
                             db, resourcesToDelete, null);
                 });
 
-        ChangeLogEntry expectedLogForVaccinesDs1 =
-                new ChangeLogEntry(
+        MedicalChangeLogEntry expectedLogForVaccinesDs1 =
+                new MedicalChangeLogEntry(
+                        DELETE,
                         MEDICAL_RESOURCE_TYPE_VACCINES,
                         appId1,
                         List.of(vaccine1Ds1.getId(), vaccine2Ds1.getId()));
-        ChangeLogEntry expectedLogForAllergyDs1 =
-                new ChangeLogEntry(
+        MedicalChangeLogEntry expectedLogForAllergyDs1 =
+                new MedicalChangeLogEntry(
+                        DELETE,
                         MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
                         appId1,
                         List.of(allergy1Ds1.getId()));
-        ChangeLogEntry expectedLogForVaccineDs2 =
-                new ChangeLogEntry(
-                        MEDICAL_RESOURCE_TYPE_VACCINES, appId2, List.of(vaccine1Ds2.getId()));
-        List<ChangeLogEntry> changeLogs = getAllMedicalChangeLogs();
+        MedicalChangeLogEntry expectedLogForVaccineDs2 =
+                new MedicalChangeLogEntry(
+                        DELETE,
+                        MEDICAL_RESOURCE_TYPE_VACCINES,
+                        appId2,
+                        List.of(vaccine1Ds2.getId()));
+        List<MedicalChangeLogEntry> changeLogs =
+                mTransactionTestUtils.getAllDeleteMedicalChangeLogs();
         assertThat(changeLogs)
                 .containsExactly(
                         expectedLogForVaccinesDs1,
@@ -244,17 +242,20 @@ public final class MedicalChangeLogsHelperTest {
                 });
 
         // Expect change logs only for resources from PACKAGE_NAME_1
-        ChangeLogEntry expectedLogForVaccinesApp1 =
-                new ChangeLogEntry(
+        MedicalChangeLogEntry expectedLogForVaccinesApp1 =
+                new MedicalChangeLogEntry(
+                        DELETE,
                         MEDICAL_RESOURCE_TYPE_VACCINES,
                         appId1,
                         List.of(vaccine1Ds1.getId(), vaccine2Ds1.getId()));
-        ChangeLogEntry expectedLogForAllergyApp1 =
-                new ChangeLogEntry(
+        MedicalChangeLogEntry expectedLogForAllergyApp1 =
+                new MedicalChangeLogEntry(
+                        DELETE,
                         MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
                         appId1,
                         List.of(allergy1Ds1.getId()));
-        List<ChangeLogEntry> changeLogs = getAllMedicalChangeLogs();
+        List<MedicalChangeLogEntry> changeLogs =
+                mTransactionTestUtils.getAllDeleteMedicalChangeLogs();
         assertThat(changeLogs)
                 .containsExactly(expectedLogForVaccinesApp1, expectedLogForAllergyApp1);
     }
@@ -298,76 +299,21 @@ public final class MedicalChangeLogsHelperTest {
                 });
 
         // Expect change logs for Vaccine resources from both apps
-        ChangeLogEntry expectedLogForVaccinesApp1 =
-                new ChangeLogEntry(
+        MedicalChangeLogEntry expectedLogForVaccinesApp1 =
+                new MedicalChangeLogEntry(
+                        DELETE,
                         MEDICAL_RESOURCE_TYPE_VACCINES,
                         appId1,
                         List.of(vaccine1Ds1.getId(), vaccine2Ds1.getId()));
-        ChangeLogEntry expectedLogForVaccinesApp2 =
-                new ChangeLogEntry(
+        MedicalChangeLogEntry expectedLogForVaccinesApp2 =
+                new MedicalChangeLogEntry(
+                        DELETE,
                         MEDICAL_RESOURCE_TYPE_VACCINES,
                         appId2,
                         List.of(vaccine1Ds2.getId(), vaccine2Ds2.getId()));
-        List<ChangeLogEntry> changeLogs = getAllMedicalChangeLogs();
+        List<MedicalChangeLogEntry> changeLogs =
+                mTransactionTestUtils.getAllDeleteMedicalChangeLogs();
         assertThat(changeLogs)
                 .containsExactly(expectedLogForVaccinesApp1, expectedLogForVaccinesApp2);
     }
-
-    private List<ChangeLogEntry> getAllMedicalChangeLogs() {
-        List<ChangeLogEntry> entries = new ArrayList<>();
-        try (Cursor cursor =
-                mTransactionManager.read(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME))) {
-            while (cursor.moveToNext()) {
-                // Skip if it's not a medical resource change log (record_type is not null)
-                if (!cursor.isNull(cursor.getColumnIndexOrThrow(RECORD_TYPE_COLUMN_NAME))) {
-                    continue;
-                }
-                int operationType =
-                        cursor.getInt(cursor.getColumnIndexOrThrow(OPERATION_TYPE_COLUMN_NAME));
-                if (operationType != DELETE) {
-                    continue;
-                }
-                int resourceType =
-                        cursor.getInt(
-                                cursor.getColumnIndexOrThrow(MEDICAL_RESOURCE_TYPE_COLUMN_NAME));
-                long appId = cursor.getLong(cursor.getColumnIndexOrThrow(APP_ID_COLUMN_NAME));
-                byte[] uuidsBlob = cursor.getBlob(cursor.getColumnIndexOrThrow(UUIDS_COLUMN_NAME));
-                List<MedicalResourceId> medicalResourceIds = toMedicalResourceIdList(uuidsBlob);
-                entries.add(new ChangeLogEntry(resourceType, appId, medicalResourceIds));
-            }
-        }
-        return entries;
-    }
-
-    private record ChangeLogEntry(
-            int resourceType, long appId, List<MedicalResourceId> medicalResourceIds) {
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            ChangeLogEntry that = (ChangeLogEntry) o;
-            return resourceType == that.resourceType
-                    && appId == that.appId
-                    && Objects.equals(
-                            // Sort the lists for consistent comparison
-                            medicalResourceIds.stream()
-                                    .sorted(MEDICAL_RESOURCE_ID_COMPARATOR)
-                                    .toList(),
-                            that.medicalResourceIds.stream()
-                                    .sorted(MEDICAL_RESOURCE_ID_COMPARATOR)
-                                    .toList());
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(
-                    resourceType,
-                    appId,
-                    medicalResourceIds.stream().sorted(MEDICAL_RESOURCE_ID_COMPARATOR).toList());
-        }
-    }
-
-    private static final Comparator<MedicalResourceId> MEDICAL_RESOURCE_ID_COMPARATOR =
-            Comparator.comparing(MedicalResourceId::toString);
 }
