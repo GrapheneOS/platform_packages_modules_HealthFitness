@@ -21,10 +21,17 @@ import static android.health.connect.Constants.CHANNEL_GROUP_ID;
 import static android.health.connect.Constants.CHANNEL_GROUP_NAME_RESOURCE;
 import static android.health.connect.Constants.CHANNEL_NAME_RESOURCE;
 import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
+import static android.health.connect.HealthConnectManager.ACTION_SYNC_MORE_APPS;
+
+import static com.android.server.healthconnect.notifications.NotificationUtils.getPendingIntent;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Icon;
+import android.health.connect.HealthConnectManager;
 import android.os.UserHandle;
 
 import com.android.internal.annotations.VisibleForTesting;
@@ -64,6 +71,10 @@ public final class OnboardingNotificationSender {
     private static final int FIXED_NOTIFICATION_ID = 9878;
     private static final String NOTIFICATION_TAG = "HcOnboardingTag";
 
+    private static final Intent FALLBACK_INTENT =
+            new Intent(HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS);
+
+    private final Context mContext;
     private final HealthConnectResourcesContext mResContext;
     private final NotificationUtils mNotificationUtils;
 
@@ -72,6 +83,7 @@ public final class OnboardingNotificationSender {
     private HealthConnectNotificationSender mHealthConnectNotificationSender;
 
     public OnboardingNotificationSender(Context context, HealthConnectResourcesContext resContext) {
+        mContext = context;
         mResContext = resContext;
         mNotificationUtils = new NotificationUtils(context, NOTIFICATION_CHANNEL_ID);
         mHealthConnectNotificationSender =
@@ -112,9 +124,9 @@ public final class OnboardingNotificationSender {
         String button = mResContext.getStringByNameOrThrow(START_USING_HC_NOTIFICATION_BUTTON);
 
         Icon icon = getAppIcon().orElse(null);
-        // TODO(b/403257033): set pending intent
         Notification.Action action =
-                new Notification.Action.Builder(icon, button, /* intent= */ null).build();
+                new Notification.Action.Builder(icon, button, getSyncMoreAppsPendingIntent())
+                        .build();
 
         return mNotificationUtils
                 .createNotificationTitleAndBodyText(title, content, icon)
@@ -128,9 +140,9 @@ public final class OnboardingNotificationSender {
         String button = mResContext.getStringByNameOrThrow(CONNECT_MORE_APPS_NOTIFICATION_BUTTON);
 
         Icon icon = getAppIcon().orElse(null);
-        // TODO(b/403257033): set pending intent
         Notification.Action action =
-                new Notification.Action.Builder(icon, button, /* intent= */ null).build();
+                new Notification.Action.Builder(icon, button, getSyncMoreAppsPendingIntent())
+                        .build();
 
         return mNotificationUtils
                 .createNotificationTitleAndBodyText(title, content, icon)
@@ -140,11 +152,19 @@ public final class OnboardingNotificationSender {
 
     // TODO(b/414949807): Move to NotificationUtils
     /** Returns an {@link Icon} to be displayed on the notification. */
-    public Optional<Icon> getAppIcon() {
+    private Optional<Icon> getAppIcon() {
         if (mAppIcon.isEmpty()) {
             Icon maybeIcon = mResContext.getIconByDrawableName(APP_ICON_DRAWABLE_NAME);
             mAppIcon = maybeIcon == null ? Optional.empty() : Optional.of(maybeIcon);
         }
         return mAppIcon;
+    }
+
+    private PendingIntent getSyncMoreAppsPendingIntent() {
+        Intent intent = new Intent(ACTION_SYNC_MORE_APPS);
+        ResolveInfo resolveInfo = mContext.getPackageManager().resolveActivity(intent, 0);
+        return resolveInfo != null
+                ? getPendingIntent(mContext, intent)
+                : getPendingIntent(mContext, FALLBACK_INTENT);
     }
 }
