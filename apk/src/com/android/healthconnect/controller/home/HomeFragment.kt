@@ -299,18 +299,19 @@ class HomeFragment : Hilt_HomeFragment() {
     }
 
     private fun getZeroAppsOnboardingBanner(): HealthBannerPreference {
-        // TODO(b/417206188) banner telemetry
-        return HealthBannerPreference(requireContext(), UnknownGenericElement.UNKNOWN_BANNER)
+        return HealthBannerPreference(requireContext(), HomePageElement.ZERO_APPS_CONNECTED_BANNER)
             .also { banner ->
                 banner.setPositiveButton(
                     text = getString(R.string.zero_apps_onboarding_banner_button),
-                    logName = UnknownGenericElement.UNKNOWN_BANNER_BUTTON,
+                    logName = HomePageElement.ZERO_APPS_CONNECTED_BANNER_SET_UP_BUTTON,
                 ) {
                     findNavController().navigate(R.id.action_homeFragment_to_onboardingActivity)
                 }
 
                 banner.setDismissButtonVisible(true)
-                banner.setDismissButton(logName = UnknownGenericElement.UNKNOWN_BANNER_BUTTON) {
+                banner.setDismissButton(
+                    logName = HomePageElement.ZERO_APPS_CONNECTED_BANNER_DISMISS_BUTTON
+                ) {
                     setBannerSeen(Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN)
                     bannerGroup.removePreferenceRecursively(ONBOARDING_ZERO_APPS_BANNER_KEY)
                 }
@@ -326,18 +327,19 @@ class HomeFragment : Hilt_HomeFragment() {
     }
 
     private fun getOneAppConnectedBanner(app: AppMetadata): HealthBannerPreference {
-        // TODO(b/417206188) banner telemetry
-        return HealthBannerPreference(requireContext(), UnknownGenericElement.UNKNOWN_BANNER)
+        return HealthBannerPreference(requireContext(), HomePageElement.ONE_APP_CONNECTED_BANNER)
             .also { banner ->
                 banner.setPositiveButton(
                     text = getString(R.string.one_app_onboarding_banner_button),
-                    logName = UnknownGenericElement.UNKNOWN_BANNER_BUTTON,
+                    logName = HomePageElement.ONE_APP_CONNECTED_BANNER_SET_UP_BUTTON,
                 ) {
                     findNavController().navigate(R.id.action_homeFragment_to_onboardingActivity)
                 }
 
                 banner.setDismissButtonVisible(true)
-                banner.setDismissButton(logName = UnknownGenericElement.UNKNOWN_BANNER_BUTTON) {
+                banner.setDismissButton(
+                    logName = HomePageElement.ONE_APP_CONNECTED_BANNER_DISMISS_BUTTON
+                ) {
                     setBannerSeen(Constants.ONBOARDING_ONE_APP_BANNER_SEEN)
                     bannerGroup.removePreferenceRecursively(ONBOARDING_ONE_APP_BANNER_KEY)
                 }

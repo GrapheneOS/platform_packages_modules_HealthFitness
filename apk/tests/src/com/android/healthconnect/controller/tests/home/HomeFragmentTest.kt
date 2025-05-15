@@ -1650,6 +1650,12 @@ class HomeFragmentTest {
             onView(withText("Set up")).check(matches(isDisplayed()))
             onView(withText("Connect a second app")).check(doesNotExist())
 
+            verify(healthConnectLogger).logImpression(HomePageElement.ZERO_APPS_CONNECTED_BANNER)
+            verify(healthConnectLogger)
+                .logImpression(HomePageElement.ZERO_APPS_CONNECTED_BANNER_SET_UP_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(HomePageElement.ZERO_APPS_CONNECTED_BANNER_DISMISS_BUTTON)
+
             onView(withId(com.android.settingslib.widget.preference.banner.R.id.banner_dismiss_btn))
                 .perform(scrollTo())
                 .perform(click())
@@ -1663,7 +1669,42 @@ class HomeFragmentTest {
             }
 
             onView(withText("See your health data across apps")).check(doesNotExist())
+            verify(healthConnectLogger)
+                .logInteraction(HomePageElement.ZERO_APPS_CONNECTED_BANNER_DISMISS_BUTTON)
         }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_ONBOARDING)
+    fun onboardingBannerStateZeroApps_clickOnSetup_navigatesToOnboardingActivity() {
+        whenever(onboardingViewModel.onboardingBannerState).then {
+            MediatorLiveData(OnboardingViewModel.OnboardingBannerState.ZeroAppsOnboardingBanner)
+        }
+        launchFragment<HomeFragment>(Bundle()) {
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.homeFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use { scenario ->
+                onView(withText("See your health data across apps")).check(matches(isDisplayed()))
+                onView(withText("Start sharing health and fitness data between your apps"))
+                    .check(matches(isDisplayed()))
+                onView(withText("Set up")).check(matches(isDisplayed()))
+                onView(withText("Connect a second app")).check(doesNotExist())
+
+                verify(healthConnectLogger)
+                    .logImpression(HomePageElement.ZERO_APPS_CONNECTED_BANNER)
+                verify(healthConnectLogger)
+                    .logImpression(HomePageElement.ZERO_APPS_CONNECTED_BANNER_SET_UP_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(HomePageElement.ZERO_APPS_CONNECTED_BANNER_DISMISS_BUTTON)
+
+                onView(withText("Set up")).perform(scrollTo()).perform(click())
+                verify(healthConnectLogger)
+                    .logInteraction(HomePageElement.ZERO_APPS_CONNECTED_BANNER_SET_UP_BUTTON)
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.onboardingActivity)
+            }
     }
 
     @Test
@@ -1685,6 +1726,12 @@ class HomeFragmentTest {
             onView(withText("Continue")).check(matches(isDisplayed()))
             onView(withText("See your health data across apps")).check(doesNotExist())
 
+            verify(healthConnectLogger).logImpression(HomePageElement.ONE_APP_CONNECTED_BANNER)
+            verify(healthConnectLogger)
+                .logImpression(HomePageElement.ONE_APP_CONNECTED_BANNER_SET_UP_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(HomePageElement.ONE_APP_CONNECTED_BANNER_DISMISS_BUTTON)
+
             onView(withId(com.android.settingslib.widget.preference.banner.R.id.banner_dismiss_btn))
                 .perform(scrollTo())
                 .perform(click())
@@ -1696,6 +1743,8 @@ class HomeFragmentTest {
             }
 
             onView(withText("Connect a second app")).check(doesNotExist())
+            verify(healthConnectLogger)
+                .logInteraction(HomePageElement.ONE_APP_CONNECTED_BANNER_DISMISS_BUTTON)
         }
     }
 
@@ -1712,6 +1761,45 @@ class HomeFragmentTest {
             onView(withText("Connect a second app")).check(doesNotExist())
             verifyNoInteractions(onboardingViewModel)
         }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_ONBOARDING)
+    fun onboardingBannerStateOneApp_clickOnContinue_navigatesToOnboardingActivity() {
+        whenever(onboardingViewModel.onboardingBannerState).then {
+            MediatorLiveData(
+                OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner(TEST_APP)
+            )
+        }
+        launchFragment<HomeFragment>(Bundle()) {
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.homeFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use { scenario ->
+                onView(withText("Connect a second app")).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Set up one more app to share health and fitness data with $TEST_APP_NAME"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(withText("Continue")).check(matches(isDisplayed()))
+                onView(withText("See your health data across apps")).check(doesNotExist())
+
+                verify(healthConnectLogger).logImpression(HomePageElement.ONE_APP_CONNECTED_BANNER)
+                verify(healthConnectLogger)
+                    .logImpression(HomePageElement.ONE_APP_CONNECTED_BANNER_SET_UP_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(HomePageElement.ONE_APP_CONNECTED_BANNER_DISMISS_BUTTON)
+
+                onView(withText("Continue")).perform(scrollTo()).perform(click())
+
+                verify(healthConnectLogger)
+                    .logInteraction(HomePageElement.ONE_APP_CONNECTED_BANNER_SET_UP_BUTTON)
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.onboardingActivity)
+            }
     }
 
     // endregion
