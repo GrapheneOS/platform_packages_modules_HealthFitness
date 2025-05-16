@@ -291,8 +291,6 @@ public class BackupRestoreWithoutMocksTest {
 
     @Test
     public void testMerge_doesNotCopyMedicalDataSourceDuplicates() throws Exception {
-        // TODO(b/376645901): Improve the test to assert on the exact data in the two databases
-        // rather than just the database size.
         // Insert a dataSource with display name using DATA_SOURCE_SUFFIX and TEST_PACKAGE_NAME.
         MedicalDataSource dataSource =
                 mPhrTestUtils.insertR4MedicalDataSource(DATA_SOURCE_SUFFIX, TEST_PACKAGE_NAME);
@@ -334,16 +332,52 @@ public class BackupRestoreWithoutMocksTest {
         assertThat(queryNumEntries(stagedDb, "medical_data_source_table")).isEqualTo(1);
         assertThat(queryNumEntries(stagedDb, "medical_resource_table")).isEqualTo(2);
         assertThat(queryNumEntries(stagedDb, "medical_resource_indices_table")).isEqualTo(2);
+        // Read the medicalResources of original db before merge.
+        List<MedicalResource> medicalResourcesOriginalBeforeMerge =
+                mPhrTestUtils.readAllMedicalResources().stream().map(pair -> pair.first).toList();
+        // Read the medicalResources of staged db before merge.
+        List<MedicalResource> medicalResourcesStagedBeforeMerge =
+                PhrTestUtils.readAllMedicalResources(stagedDb).stream()
+                        .map(pair -> pair.first)
+                        .toList();
 
         mBackupRestore.merge();
 
         // We expect the medical_data_source table to contain 1 dataSource. Even though there was
         // 1 dataSource in original database and 1 in the staged database, they both have the
         // same unique ids so the one in the stagedDatabase will be ignored.
+        List<MedicalDataSource> medicalDataSourcesAfterMerge =
+                mPhrTestUtils.readMedicalDataSources().stream()
+                        .map(pair -> pair.first)
+                        .map(
+                                ds ->
+                                        new MedicalDataSource.Builder(ds)
+                                                .setLastDataUpdateTime(null)
+                                                .build())
+                        .toList();
+        assertThat(medicalDataSourcesAfterMerge).containsExactly(dataSource);
         assertThat(mStorageUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
         // We expect 3 rows in both medical_resource and medical_resource_indices tables,
-        // since there was one medicalResource in the original database and two medicalResources
+        // since there was 1 medicalResource in the original database and 2 medicalResources
         // in the staged database.
+        List<MedicalResource> medicalResourcesAfterMerge =
+                mPhrTestUtils.readAllMedicalResources().stream().map(pair -> pair.first).toList();
+        assertThat(medicalResourcesAfterMerge).hasSize(3);
+        assertThat(medicalResourcesAfterMerge)
+                .containsAtLeastElementsIn(medicalResourcesOriginalBeforeMerge);
+        assertThat(medicalResourcesAfterMerge)
+                .containsAtLeastElementsIn(
+                        medicalResourcesStagedBeforeMerge.stream()
+                                // original data source was used during merge, so staged medical
+                                // resources before merge needs to be updated to have the original
+                                // data source id.
+                                .map(
+                                        ms ->
+                                                new MedicalResource.Builder(ms)
+                                                        .setDataSourceId(dataSource.getId())
+                                                        .build())
+                                .toList());
+        // Assert the number of rows in the medical_resource and medical_resource_indices tables.
         assertThat(mStorageUtils.queryNumEntries("medical_resource_table")).isEqualTo(3);
         assertThat(mStorageUtils.queryNumEntries("medical_resource_indices_table")).isEqualTo(3);
     }

@@ -49,7 +49,6 @@ import android.util.ArrayMap;
 import android.util.Pair;
 import android.util.Slog;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
@@ -153,14 +152,12 @@ public final class DatabaseMerger {
         // Similar to current HC behaviour, we honour what is on the target device. This means
         // that if a MedicalResource or MedicalDataSource of the same unique ids as the
         // stagedDatabase exists on the targetDatabase, we ignore the one in stagedDatabase.
-        // TODO(b/376645901): Verify that there's no timeout with large datasets on actual
-        // devices.
         Slog.i(TAG, "Merging PHR data");
         try {
             mergePhrContent(stagedDatabase.getReadableDatabase());
         } catch (Exception e) {
             Slog.e(TAG, "Failed to transfer PHR data from staged database", e);
-            }
+        }
 
         Slog.i(TAG, "Merging records");
 
