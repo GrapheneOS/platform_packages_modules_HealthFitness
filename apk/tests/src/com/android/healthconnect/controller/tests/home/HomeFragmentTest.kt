@@ -102,7 +102,6 @@ import java.util.Locale
 import java.util.TimeZone
 import org.junit.After
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
@@ -1041,181 +1040,6 @@ class HomeFragmentTest {
 
     // endregion
 
-    // region Onboarding banners
-    @Test
-    @Ignore("b/399086212 - Re-enable when new banner logic in place")
-    @EnableFlags(Flags.FLAG_ONBOARDING)
-    fun onboardingFlagOn_whenNoAppsConnected_andOneAvailable_showsStartUsingHcBanner() {
-        setStartUsingHcBannerSeen(context, false)
-        whenever(recentAccessViewModel.recentAccessApps).then {
-            MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
-        }
-        whenever(homeViewModel.connectedApps).then {
-            MutableLiveData(listOf(ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.DENIED)))
-        }
-
-        launchFragment<HomeFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-        onView(withText("Start using Health Connect")).check(matches(isDisplayed()))
-        onView(withText("Sync your first apps to share health and fitness data between them"))
-            .check(matches(isDisplayed()))
-        onView(withText("Set up")).check(matches(isDisplayed()))
-
-        onView(withText("Set up")).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.connectedAppsFragment)
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
-    fun onboardingFlagOff_whenNoAppsConnected_andOneAvailable_doesNotShowStartUsingHcBanner() {
-        setStartUsingHcBannerSeen(context, false)
-        whenever(recentAccessViewModel.recentAccessApps).then {
-            MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
-        }
-        whenever(homeViewModel.connectedApps).then {
-            MutableLiveData(listOf(ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.DENIED)))
-        }
-
-        launchFragment<HomeFragment>(Bundle())
-        onView(withText("Start using Health Connect")).check(doesNotExist())
-        onView(withText("Sync your first apps to share health and fitness data between them"))
-            .check(doesNotExist())
-        onView(withText("Set up")).check(doesNotExist())
-    }
-
-    @Test
-    @Ignore("b/399086212 - Re-enable when new banner logic in place")
-    @EnableFlags(Flags.FLAG_ONBOARDING)
-    fun onboardingFlagOn_whenOneAppConnected_andMoreAvailable_showsConnectMoreAppsBanner() {
-        setConnectMoreAppsBannerSeen(context, false)
-        whenever(recentAccessViewModel.recentAccessApps).then {
-            MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
-        }
-        whenever(homeViewModel.connectedApps).then {
-            MutableLiveData(
-                listOf(
-                    ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.DENIED),
-                    ConnectedAppMetadata(TEST_APP_2, ConnectedAppStatus.ALLOWED),
-                )
-            )
-        }
-
-        launchFragment<HomeFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-        onView(withText("Connect more apps")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Start sharing data between Health Connect test app 2 and the health apps on your phone"
-                )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Set up")).check(matches(isDisplayed()))
-
-        onView(withText("Set up")).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.connectedAppsFragment)
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
-    fun onboardingFlagOff_whenOneAppConnected_andMoreAvailable_doesNotShowConnectMoreAppsBanner() {
-        setConnectMoreAppsBannerSeen(context, false)
-        whenever(recentAccessViewModel.recentAccessApps).then {
-            MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
-        }
-        whenever(homeViewModel.connectedApps).then {
-            MutableLiveData(
-                listOf(
-                    ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.DENIED),
-                    ConnectedAppMetadata(TEST_APP_2, ConnectedAppStatus.ALLOWED),
-                )
-            )
-        }
-
-        launchFragment<HomeFragment>(Bundle())
-        onView(withText("Connect more apps")).check(doesNotExist())
-        onView(
-                withText(
-                    "Start sharing data between Health Connect test app 2 and the health apps on your phone"
-                )
-            )
-            .check(doesNotExist())
-        onView(withText("Set up")).check(doesNotExist())
-    }
-
-    @Test
-    @Ignore("b/399086212 - Re-enable when new banner logic in place")
-    @EnableFlags(Flags.FLAG_ONBOARDING)
-    fun onboardingFlagOn_playstoreAvailable_whenOneAppConnected_andNoMoreAvailable_showsSeeCompatibleAppsBanner() {
-        (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
-        setConnectMoreAppsBannerSeen(context, false)
-        whenever(recentAccessViewModel.recentAccessApps).then {
-            MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
-        }
-        whenever(homeViewModel.connectedApps).then {
-            MutableLiveData(listOf(ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED)))
-        }
-
-        launchFragment<HomeFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-        onView(withText("See compatible apps")).check(matches(isDisplayed()))
-        onView(withText("Find more apps to sync with Health Connect test app via Health Connect"))
-            .check(matches(isDisplayed()))
-        onView(withText("See on app store")).check(matches(isDisplayed()))
-
-        onView(withText("See on app store")).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.playstore_activity)
-    }
-
-    @Test
-    @Ignore("b/399086212 - Re-enable when new banner logic in place")
-    @EnableFlags(Flags.FLAG_ONBOARDING)
-    fun onboardingFlagOn_playstoreNotAvailable_doesNotShowSeeCompatibleAppsBanner() {
-        (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(false)
-        setConnectMoreAppsBannerSeen(context, false)
-        whenever(recentAccessViewModel.recentAccessApps).then {
-            MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
-        }
-        whenever(homeViewModel.connectedApps).then {
-            MutableLiveData(listOf(ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED)))
-        }
-
-        launchFragment<HomeFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-        onView(withText("See compatible apps")).check(doesNotExist())
-        onView(withText("Find more apps to sync with Health Connect test app via Health Connect"))
-            .check(doesNotExist())
-        onView(withText("See on app store")).check(doesNotExist())
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
-    fun onboardingFlagOff_whenOneAppConnected_andNoMoreAvailable_doesNotShowSeeCompatibleAppsBanner() {
-        (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
-        setConnectMoreAppsBannerSeen(context, false)
-        whenever(recentAccessViewModel.recentAccessApps).then {
-            MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
-        }
-        whenever(homeViewModel.connectedApps).then {
-            MutableLiveData(listOf(ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED)))
-        }
-
-        launchFragment<HomeFragment>(Bundle())
-        onView(withText("See compatible apps")).check(doesNotExist())
-        onView(withText("Find more apps to sync with Health Connect test app via Health Connect"))
-            .check(doesNotExist())
-        onView(withText("See on app store")).check(doesNotExist())
-    }
-
-    // endregion
-
     // region lock screen banner
     @Test
     fun lockScreenBanner_shouldNotShowBanner_bannerNotShown() {
@@ -1526,6 +1350,7 @@ class HomeFragmentTest {
         onView(withText("No apps recently accessed Health\u00A0Connect")).check(doesNotExist())
     }
 
+    // region Onboarding
     @Test
     @EnableFlags(Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY)
     fun onboardingActivityAvailable_navigatesToOnboardingActivityInsteadOfPermissionManagement() {
@@ -1626,9 +1451,6 @@ class HomeFragmentTest {
             .isEqualTo(R.id.combinedPermissionsFragment)
     }
 
-    // endregion
-
-    // region onboarding banners
     @Test
     @EnableFlags(Flags.FLAG_ONBOARDING)
     fun onboardingBannerStateHide_noOnboardingBanner() {
