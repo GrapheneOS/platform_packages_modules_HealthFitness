@@ -229,6 +229,19 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void deviceIsWearOs_stepTrackingNotStarted() throws Exception {
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)).thenReturn(true);
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initialize();
+
+        verify(mSensorManager, never()).registerListener(any(), any(), anyInt(), anyInt());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void duringInitialization_deviceDataPackageAddedToAppPriorityList() {
         grantAppStepsPermission(TEST_PACKAGE_NAME);
         assertThat(mAppInfoHelper.getAppInfoMap()).isEmpty();

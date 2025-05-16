@@ -79,6 +79,12 @@ public class TrackerManagerImpl implements TrackerManager {
             return;
         }
 
+        if (mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_WATCH)) {
+            // Health Connect runs on Wear for permission management but we don't want to enable
+            // passive step tracking for it
+            return;
+        }
+
         // Initialization should only be triggered when the user is unlocked.
         if (!mUserManager.isUserUnlocked()) {
             Slog.e(TAG, "User was expected to be unlocked but is not. Aborting initialization.");
