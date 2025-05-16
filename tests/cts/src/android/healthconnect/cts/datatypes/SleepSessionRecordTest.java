@@ -16,10 +16,10 @@
 
 package android.healthconnect.cts.datatypes;
 
-import static android.healthconnect.testing.shared.DataFactory.SESSION_END_TIME;
-import static android.healthconnect.testing.shared.DataFactory.SESSION_START_TIME;
 import static android.healthconnect.testing.shared.DataFactory.buildSleepSession;
 import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
+import static android.healthconnect.testing.shared.DataFactory.sessionEndTime;
+import static android.healthconnect.testing.shared.DataFactory.sessionStartTime;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -41,6 +41,7 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -71,6 +72,8 @@ public class SleepSessionRecordTest {
             new AssumptionCheckerRule(
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
+
+    private final Instant mNow = DataFactory.now();
 
     @After
     public void tearDown() throws InterruptedException {
@@ -473,22 +476,24 @@ public class SleepSessionRecordTest {
                         .setLastModifiedTime(metadata.getLastModifiedTime())
                         .build();
         return new SleepSessionRecord.Builder(
-                        metadataWithId, SESSION_START_TIME, SESSION_START_TIME.plusSeconds(800))
+                        metadataWithId,
+                        sessionStartTime(mNow),
+                        sessionStartTime(mNow).plusSeconds(800))
                 .setNotes("updated note")
                 .setTitle("Evening nap")
                 .setStages(
                         List.of(
                                 new SleepSessionRecord.Stage(
-                                        SESSION_START_TIME,
-                                        SESSION_START_TIME.plusSeconds(100),
+                                        sessionStartTime(mNow),
+                                        sessionStartTime(mNow).plusSeconds(100),
                                         SleepSessionRecord.StageType.STAGE_TYPE_UNKNOWN),
                                 new SleepSessionRecord.Stage(
-                                        SESSION_START_TIME.plusSeconds(200),
-                                        SESSION_START_TIME.plusSeconds(300),
+                                        sessionStartTime(mNow).plusSeconds(200),
+                                        sessionStartTime(mNow).plusSeconds(300),
                                         SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_REM),
                                 new SleepSessionRecord.Stage(
-                                        SESSION_START_TIME.plusSeconds(400),
-                                        SESSION_START_TIME.plusSeconds(500),
+                                        sessionStartTime(mNow).plusSeconds(400),
+                                        sessionStartTime(mNow).plusSeconds(500),
                                         SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_DEEP)))
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
@@ -503,9 +508,9 @@ public class SleepSessionRecordTest {
         assertRecordsAreEqual(records, readRecords);
     }
 
-    public static SleepSessionRecord buildSleepSessionMinimal() {
+    private SleepSessionRecord buildSleepSessionMinimal() {
         return new SleepSessionRecord.Builder(
-                        generateMetadata(), SESSION_START_TIME, SESSION_END_TIME)
+                        generateMetadata(), sessionStartTime(mNow), sessionEndTime(mNow))
                 .build();
     }
 }

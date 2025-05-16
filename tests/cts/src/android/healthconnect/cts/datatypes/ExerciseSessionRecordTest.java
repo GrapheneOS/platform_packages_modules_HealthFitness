@@ -26,12 +26,12 @@ import static android.healthconnect.testing.cts.TestUtils.insertRecordAndGetId;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.readRecords;
 import static android.healthconnect.testing.cts.TestUtils.updateRecords;
-import static android.healthconnect.testing.shared.DataFactory.SESSION_END_TIME;
-import static android.healthconnect.testing.shared.DataFactory.SESSION_START_TIME;
 import static android.healthconnect.testing.shared.DataFactory.buildExerciseRoute;
 import static android.healthconnect.testing.shared.DataFactory.buildExerciseSession;
 import static android.healthconnect.testing.shared.DataFactory.buildLocationTimePoint;
 import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
+import static android.healthconnect.testing.shared.DataFactory.sessionEndTime;
+import static android.healthconnect.testing.shared.DataFactory.sessionStartTime;
 
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS;
 
@@ -62,11 +62,12 @@ import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.SetFlagsRule;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.Pair;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -100,6 +101,8 @@ public class ExerciseSessionRecordTest {
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
+    private final Instant mNow = DataFactory.now();
+
     @After
     public void tearDown() throws InterruptedException {
         TestUtils.verifyDeleteRecords(
@@ -114,8 +117,8 @@ public class ExerciseSessionRecordTest {
     @Test
     public void testExerciseSession_buildSession_buildCorrectObject() {
         ExerciseSessionRecord record = buildSessionMinimal();
-        assertThat(record.getStartTime()).isEqualTo(SESSION_START_TIME);
-        assertThat(record.getEndTime()).isEqualTo(SESSION_END_TIME);
+        assertThat(record.getStartTime()).isEqualTo(sessionStartTime(mNow));
+        assertThat(record.getEndTime()).isEqualTo(sessionEndTime(mNow));
         assertThat(record.hasRoute()).isFalse();
         assertThat(record.getRoute()).isNull();
         assertThat(record.getNotes()).isNull();
@@ -129,8 +132,8 @@ public class ExerciseSessionRecordTest {
     @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS})
     public void testExerciseSessionWithRpe_buildSession_buildCorrectObject() {
         ExerciseSessionRecord record = buildSessionWithRpe();
-        assertThat(record.getStartTime()).isEqualTo(SESSION_START_TIME);
-        assertThat(record.getEndTime()).isEqualTo(SESSION_END_TIME);
+        assertThat(record.getStartTime()).isEqualTo(sessionStartTime(mNow));
+        assertThat(record.getEndTime()).isEqualTo(sessionEndTime(mNow));
         assertThat(record.hasRoute()).isFalse();
         assertThat(record.getRoute()).isNull();
         assertThat(record.getNotes()).isNull();
@@ -154,8 +157,8 @@ public class ExerciseSessionRecordTest {
         Metadata metadata = generateMetadata();
         new ExerciseSessionRecord.Builder(
                         metadata,
-                        SESSION_START_TIME,
-                        SESSION_END_TIME,
+                        sessionStartTime(mNow),
+                        sessionEndTime(mNow),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
                 .setRateOfPerceivedExertion(11f)
                 .build();
@@ -167,8 +170,8 @@ public class ExerciseSessionRecordTest {
         Metadata metadata = generateMetadata();
         new ExerciseSessionRecord.Builder(
                         metadata,
-                        SESSION_START_TIME,
-                        SESSION_END_TIME,
+                        sessionStartTime(mNow),
+                        sessionEndTime(mNow),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
                 .setRateOfPerceivedExertion(-1.5f)
                 .build();
@@ -180,15 +183,15 @@ public class ExerciseSessionRecordTest {
         ExerciseSessionRecord record =
                 new ExerciseSessionRecord.Builder(
                                 metadata,
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
                         .build();
         ExerciseSessionRecord record2 =
                 new ExerciseSessionRecord.Builder(
                                 metadata,
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
                         .build();
         assertThat(record).isEqualTo(record2);
@@ -202,8 +205,8 @@ public class ExerciseSessionRecordTest {
         List<ExerciseSegment> segmentList =
                 List.of(
                         new ExerciseSegment.Builder(
-                                        SESSION_START_TIME,
-                                        SESSION_END_TIME,
+                                        sessionStartTime(mNow),
+                                        sessionEndTime(mNow),
                                         ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_OTHER_WORKOUT)
                                 .setRepetitionsCount(10)
                                 .setRateOfPerceivedExertion(6.0f)
@@ -213,14 +216,14 @@ public class ExerciseSessionRecordTest {
 
         List<ExerciseLap> lapsList =
                 List.of(
-                        new ExerciseLap.Builder(SESSION_START_TIME, SESSION_END_TIME)
+                        new ExerciseLap.Builder(sessionStartTime(mNow), sessionEndTime(mNow))
                                 .setLength(Length.fromMeters(10))
                                 .build());
         ExerciseSessionRecord record =
                 new ExerciseSessionRecord.Builder(
                                 generateMetadata(),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
                         .setRoute(route)
                         .setEndZoneOffset(ZoneOffset.MAX)
@@ -253,8 +256,8 @@ public class ExerciseSessionRecordTest {
         ExerciseSessionRecord record =
                 new ExerciseSessionRecord.Builder(
                                 new Metadata.Builder().build(),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
                         .setRoute(route)
                         .build();
@@ -282,14 +285,16 @@ public class ExerciseSessionRecordTest {
     public void testExerciseSessionBuilds_routeTimestampAfterSessionEnd_throwsException() {
         new ExerciseSessionRecord.Builder(
                         new Metadata.Builder().build(),
-                        SESSION_START_TIME,
-                        SESSION_END_TIME,
+                        sessionStartTime(mNow),
+                        sessionEndTime(mNow),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
                 .setRoute(
                         new ExerciseRoute(
                                 List.of(
                                         new Location.Builder(
-                                                        SESSION_END_TIME.plusSeconds(1), 10.0, 10.0)
+                                                        sessionEndTime(mNow).plusSeconds(1),
+                                                        10.0,
+                                                        10.0)
                                                 .build())))
                 .build();
     }
@@ -298,14 +303,14 @@ public class ExerciseSessionRecordTest {
     public void testExerciseSessionBuilds_routeTimestampBeforeSessionStart_throwsException() {
         new ExerciseSessionRecord.Builder(
                         new Metadata.Builder().build(),
-                        SESSION_START_TIME,
-                        SESSION_END_TIME,
+                        sessionStartTime(mNow),
+                        sessionEndTime(mNow),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
                 .setRoute(
                         new ExerciseRoute(
                                 List.of(
                                         new Location.Builder(
-                                                        SESSION_START_TIME.minusSeconds(1),
+                                                        sessionStartTime(mNow).minusSeconds(1),
                                                         10.0,
                                                         10.0)
                                                 .build())))
@@ -380,8 +385,8 @@ public class ExerciseSessionRecordTest {
         ExerciseSessionRecord.Builder builder =
                 new ExerciseSessionRecord.Builder(
                                 generateMetadata(),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
                         .setRoute(route)
                         .setEndZoneOffset(ZoneOffset.MAX)
@@ -477,12 +482,13 @@ public class ExerciseSessionRecordTest {
 
         TimeInstantRangeFilter filter =
                 new TimeInstantRangeFilter.Builder()
-                        .setStartTime(SESSION_START_TIME.minusMillis(10))
-                        .setEndTime(SESSION_END_TIME.plusMillis(10))
+                        .setStartTime(sessionStartTime(mNow).minusMillis(10))
+                        .setEndTime(sessionEndTime(mNow).plusMillis(10))
                         .build();
 
         ExerciseSessionRecord outOfRangeRecord =
-                buildSession(SESSION_END_TIME.plusMillis(100), SESSION_END_TIME.plusMillis(200));
+                buildSession(
+                        sessionEndTime(mNow).plusMillis(100), sessionEndTime(mNow).plusMillis(200));
         TestUtils.insertRecords(List.of(outOfRangeRecord));
 
         List<ExerciseSessionRecord> readRecords =
@@ -1019,11 +1025,16 @@ public class ExerciseSessionRecordTest {
 
     private ExerciseSessionRecord buildRecordWithOneSegment(int sessionType, int segmentType) {
         return new ExerciseSessionRecord.Builder(
-                        generateMetadata(), SESSION_START_TIME, SESSION_END_TIME, sessionType)
+                        generateMetadata(),
+                        sessionStartTime(mNow),
+                        sessionEndTime(mNow),
+                        sessionType)
                 .setSegments(
                         List.of(
                                 new ExerciseSegment.Builder(
-                                                SESSION_START_TIME, SESSION_END_TIME, segmentType)
+                                                sessionStartTime(mNow),
+                                                sessionEndTime(mNow),
+                                                segmentType)
                                         .build()))
                 .build();
     }
@@ -1171,20 +1182,20 @@ public class ExerciseSessionRecordTest {
                 .build();
     }
 
-    private static ExerciseSessionRecord buildSessionMinimal() {
+    private ExerciseSessionRecord buildSessionMinimal() {
         return new ExerciseSessionRecord.Builder(
                         buildMetadata("ExerciseSessionClient" + Math.random()),
-                        SESSION_START_TIME,
-                        SESSION_END_TIME,
+                        sessionStartTime(mNow),
+                        sessionEndTime(mNow),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
                 .build();
     }
 
-    private static ExerciseSessionRecord buildSessionWithRpe() {
+    private ExerciseSessionRecord buildSessionWithRpe() {
         return new ExerciseSessionRecord.Builder(
                         buildMetadata("ExerciseSessionClient" + Math.random()),
-                        SESSION_START_TIME,
-                        SESSION_END_TIME,
+                        sessionStartTime(mNow),
+                        sessionEndTime(mNow),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
                 .setRateOfPerceivedExertion(4.5f)
                 .build();

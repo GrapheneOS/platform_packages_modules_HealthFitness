@@ -248,7 +248,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
                 Executors.newSingleThreadExecutor(),
                 createReceiver);
         MedicalDataSource dataSource = createReceiver.getResponse();
-        Instant insertTime = DataFactory.NOW;
+        Instant insertTime = DataFactory.now();
         mUtil.upsertMedicalData(dataSource.getId(), FHIR_DATA_IMMUNIZATION);
         HealthConnectReceiver<List<MedicalDataSource>> receiver = new HealthConnectReceiver<>();
         GetMedicalDataSourcesRequest request = new GetMedicalDataSourcesRequest.Builder().build();

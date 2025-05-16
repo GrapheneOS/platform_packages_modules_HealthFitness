@@ -65,10 +65,28 @@ import java.util.List;
 import java.util.UUID;
 
 public final class DataFactory {
-    // truncate to MILLIS because HC does, so reduce flakiness in some tests.
-    public static final Instant NOW = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-    public static final Instant SESSION_START_TIME = NOW.minus(10, ChronoUnit.DAYS);
-    public static final Instant SESSION_END_TIME = SESSION_START_TIME.plus(1, ChronoUnit.HOURS);
+
+    /**
+     * Returns the current time truncated to MILLIS because HC does, to reduce flakiness in some
+     * tests.
+     *
+     * <p>We still need to use the actual current time because a fixed timestamp doesn't work with
+     * historical read restrictions without extensive refactoring of tests.
+     */
+    public static Instant now() {
+        return Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    }
+
+    /** Generates a session start time. */
+    public static Instant sessionStartTime(Instant now) {
+        return now.minus(10, ChronoUnit.DAYS);
+    }
+
+    /** Generates a session end time. */
+    public static Instant sessionEndTime(Instant now) {
+        return sessionStartTime(now).plus(1, ChronoUnit.HOURS);
+    }
+
     public static final long DEFAULT_LONG = -1;
     public static final int DEFAULT_PAGE_SIZE = 1000;
     public static final int MINIMUM_PAGE_SIZE = 1;
@@ -78,7 +96,7 @@ public final class DataFactory {
         return new Device.Builder()
                 .setManufacturer("google")
                 .setModel("Pixel4a")
-                .setType(2)
+                .setType(Device.DEVICE_TYPE_PHONE)
                 .build();
     }
 
@@ -167,22 +185,24 @@ public final class DataFactory {
 
     /** Builds a {@link SleepSessionRecord} with a specific {@link Metadata}. */
     public static SleepSessionRecord buildSleepSession(Metadata metadata) {
-        return new SleepSessionRecord.Builder(metadata, SESSION_START_TIME, SESSION_END_TIME)
+        Instant instant = now();
+        return new SleepSessionRecord.Builder(
+                        metadata, sessionStartTime(instant), sessionEndTime(instant))
                 .setNotes("warm")
                 .setTitle("Afternoon nap")
                 .setStages(
                         List.of(
                                 new SleepSessionRecord.Stage(
-                                        SESSION_START_TIME,
-                                        SESSION_START_TIME.plusSeconds(300),
+                                        sessionStartTime(instant),
+                                        sessionStartTime(instant).plusSeconds(300),
                                         SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_LIGHT),
                                 new SleepSessionRecord.Stage(
-                                        SESSION_START_TIME.plusSeconds(300),
-                                        SESSION_START_TIME.plusSeconds(600),
+                                        sessionStartTime(instant).plusSeconds(300),
+                                        sessionStartTime(instant).plusSeconds(600),
                                         SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_REM),
                                 new SleepSessionRecord.Stage(
-                                        SESSION_START_TIME.plusSeconds(900),
-                                        SESSION_START_TIME.plusSeconds(1200),
+                                        sessionStartTime(instant).plusSeconds(900),
+                                        sessionStartTime(instant).plusSeconds(1200),
                                         SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_DEEP)))
                 .build();
     }
@@ -204,33 +224,35 @@ public final class DataFactory {
 
     /** Builds a {@link ExerciseSessionRecord} with a specific {@link Metadata}. */
     public static ExerciseSessionRecord buildExerciseSession(Metadata metadata) {
+        Instant instant = now();
         return new ExerciseSessionRecord.Builder(
                         metadata,
-                        SESSION_START_TIME,
-                        SESSION_END_TIME,
+                        sessionStartTime(instant),
+                        sessionEndTime(instant),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_OTHER_WORKOUT)
                 .setRoute(buildExerciseRoute())
                 .setLaps(
                         List.of(
                                 new ExerciseLap.Builder(
-                                                SESSION_START_TIME,
-                                                SESSION_START_TIME.plusSeconds(20))
+                                                sessionStartTime(instant),
+                                                sessionStartTime(instant).plusSeconds(20))
                                         .setLength(Length.fromMeters(10))
                                         .build(),
                                 new ExerciseLap.Builder(
-                                                SESSION_END_TIME.minusSeconds(20), SESSION_END_TIME)
+                                                sessionEndTime(instant).minusSeconds(20),
+                                                sessionEndTime(instant))
                                         .build()))
                 .setSegments(
                         List.of(
                                 new ExerciseSegment.Builder(
-                                                SESSION_START_TIME.plusSeconds(1),
-                                                SESSION_START_TIME.plusSeconds(10),
+                                                sessionStartTime(instant).plusSeconds(1),
+                                                sessionStartTime(instant).plusSeconds(10),
                                                 ExerciseSegmentType
                                                         .EXERCISE_SEGMENT_TYPE_BENCH_PRESS)
                                         .build(),
                                 new ExerciseSegment.Builder(
-                                                SESSION_START_TIME.plusSeconds(21),
-                                                SESSION_START_TIME.plusSeconds(124),
+                                                sessionStartTime(instant).plusSeconds(21),
+                                                sessionStartTime(instant).plusSeconds(124),
                                                 ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BURPEE)
                                         .setRepetitionsCount(15)
                                         .build()))
@@ -242,11 +264,12 @@ public final class DataFactory {
     }
 
     public static ExerciseRoute buildExerciseRoute() {
+        Instant instant = now();
         return new ExerciseRoute(
                 List.of(
-                        buildLocationTimePoint(SESSION_START_TIME),
-                        buildLocationTimePoint(SESSION_START_TIME),
-                        buildLocationTimePoint(SESSION_START_TIME)));
+                        buildLocationTimePoint(sessionStartTime(instant)),
+                        buildLocationTimePoint(sessionStartTime(instant)),
+                        buildLocationTimePoint(sessionStartTime(instant))));
     }
 
     public static ExerciseRoute.Location buildLocationTimePoint(Instant startTime) {
@@ -260,12 +283,13 @@ public final class DataFactory {
 
     /** Returns a training plan builder, prepopulated with test data. */
     public static PlannedExerciseSessionRecord.Builder plannedExerciseSession(Metadata metadata) {
+        Instant instant = now();
         PlannedExerciseSessionRecord.Builder sessionBuilder =
                 new PlannedExerciseSessionRecord.Builder(
                         metadata,
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING,
-                        SESSION_START_TIME,
-                        SESSION_END_TIME);
+                        sessionStartTime(instant),
+                        sessionEndTime(instant));
         sessionBuilder.setNotes("Some notes");
         sessionBuilder.setTitle("Some training plan");
         sessionBuilder.setStartZoneOffset(ZoneOffset.UTC);
@@ -293,7 +317,7 @@ public final class DataFactory {
 
     /** Gets a {@link HeartRateRecord} with a specific heart rate and {@link Metadata}. */
     public static HeartRateRecord getHeartRateRecord(int heartRate, Metadata metadata) {
-        Instant instant = NOW;
+        Instant instant = now();
         HeartRateRecord.HeartRateSample heartRateSample =
                 new HeartRateRecord.HeartRateSample(heartRate, instant.plusMillis(10));
         return new HeartRateRecord.Builder(
@@ -302,11 +326,11 @@ public final class DataFactory {
     }
 
     public static HeartRateRecord getHeartRateRecord(int heartRate, String clientId) {
-        return getHeartRateRecord(heartRate, NOW.plusMillis(100), clientId);
+        return getHeartRateRecord(heartRate, now().plusMillis(100), clientId);
     }
 
     public static HeartRateRecord getHeartRateRecord(int heartRate) {
-        return getHeartRateRecord(heartRate, NOW.plusMillis(100));
+        return getHeartRateRecord(heartRate, now().plusMillis(100));
     }
 
     public static HeartRateRecord getHeartRateRecord(int heartRate, Instant instant) {
@@ -380,7 +404,8 @@ public final class DataFactory {
 
     /** Creates and returns a {@link StepsRecord} with the specified metadata. */
     public static StepsRecord getStepsRecord(long steps, Metadata metadata) {
-        return new StepsRecord.Builder(metadata, NOW, NOW.plusMillis(1000), steps).build();
+        Instant instant = now();
+        return new StepsRecord.Builder(metadata, instant, instant.plusMillis(1000), steps).build();
     }
 
     /** Creates and returns a {@link StepsRecord} with the specified arguments. */
@@ -395,13 +420,16 @@ public final class DataFactory {
     }
 
     public static StepsRecord getStepsRecord(String id) {
-        return new StepsRecord.Builder(generateMetadata(id), NOW, NOW.plusMillis(1000), 10).build();
+        Instant instant = now();
+        return new StepsRecord.Builder(generateMetadata(id), instant, instant.plusMillis(1000), 10)
+                .build();
     }
 
     /** Creates and returns a {@link StepsRecord} with default arguments. */
     public static StepsRecord getCompleteStepsRecord() {
+        Instant instant = now();
         return getCompleteStepsRecord(
-                NOW, NOW.plusMillis(1000), /* clientRecordId= */ "SR" + Math.random());
+                instant, instant.plusMillis(1000), /* clientRecordId= */ "SR" + Math.random());
     }
 
     /** Creates and returns a {@link StepsRecord} with the specified arguments. */
@@ -460,7 +488,11 @@ public final class DataFactory {
             long clientRecordVersion,
             long count) {
         Device device =
-                new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
+                new Device.Builder()
+                        .setManufacturer("google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .build();
         DataOrigin dataOrigin =
                 new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
 
@@ -479,6 +511,7 @@ public final class DataFactory {
 
     public static StepsRecord getUpdatedStepsRecord(
             Record record, String id, String clientRecordId) {
+        Instant instant = now();
         Metadata metadata = record.getMetadata();
         Metadata metadataWithId =
                 new Metadata.Builder()
@@ -489,23 +522,25 @@ public final class DataFactory {
                         .setDevice(metadata.getDevice())
                         .setLastModifiedTime(metadata.getLastModifiedTime())
                         .build();
-        return new StepsRecord.Builder(metadataWithId, NOW, NOW.plusMillis(2000), 20)
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(NOW))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(NOW))
+        return new StepsRecord.Builder(metadataWithId, instant, instant.plusMillis(2000), 20)
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(instant))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(instant))
                 .build();
     }
 
     /** Creates a {@link DistanceRecord}. */
     public static DistanceRecord getDistanceRecord() {
-        return getDistanceRecord(10.0, NOW, NOW.plusMillis(1000));
+        Instant instant = now();
+        return getDistanceRecord(10.0, instant, instant.plusMillis(1000));
     }
 
     /** Creates a {@link DistanceRecord} with a specified {@code clientId}. */
     public static DistanceRecord getDistanceRecordWithClientId(String clientId) {
+        Instant instant = now();
         return getDistanceRecord(
                 10,
-                NOW,
-                NOW.plusMillis(1000),
+                instant,
+                instant.plusMillis(1000),
                 /* startZoneOffset= */ null,
                 /* endZoneOffset= */ null,
                 generateMetadataWithClientId(clientId));
@@ -513,10 +548,11 @@ public final class DataFactory {
 
     /** Create a {@link DistanceRecord} with non empty record ID. */
     public static DistanceRecord getDistanceRecordWithNonEmptyId() {
+        Instant instant = now();
         return getDistanceRecord(
                 10,
-                NOW,
-                NOW.plusMillis(1000),
+                instant,
+                instant.plusMillis(1000),
                 /* startZoneOffset= */ null,
                 /* endZoneOffset= */ null,
                 generateMetadata());
@@ -524,10 +560,11 @@ public final class DataFactory {
 
     /** Create a {@link DistanceRecord} with empty {@link Metadata}. */
     public static DistanceRecord getDistanceRecordWithEmptyMetadata() {
+        Instant instant = now();
         return getDistanceRecord(
                 10,
-                NOW,
-                NOW.plusMillis(1000),
+                instant,
+                instant.plusMillis(1000),
                 /* startZoneOffset= */ null,
                 /* endZoneOffset= */ null,
                 getEmptyMetadata());
@@ -588,8 +625,9 @@ public final class DataFactory {
 
     /** Gets a {@link TotalCaloriesBurnedRecord} with a specific {@link Metadata}. */
     public static TotalCaloriesBurnedRecord getTotalCaloriesBurnedRecord(Metadata metadata) {
+        Instant instant = now();
         return new TotalCaloriesBurnedRecord.Builder(
-                        metadata, NOW, NOW.plusMillis(1000), Energy.fromCalories(10.0))
+                        metadata, instant, instant.plusMillis(1000), Energy.fromCalories(10.0))
                 .build();
     }
 
@@ -614,7 +652,8 @@ public final class DataFactory {
     }
 
     public static BasalMetabolicRateRecord getBasalMetabolicRateRecord() {
-        return new BasalMetabolicRateRecord.Builder(generateMetadata(), NOW, Power.fromWatts(100.0))
+        return new BasalMetabolicRateRecord.Builder(
+                        generateMetadata(), now(), Power.fromWatts(100.0))
                 .build();
     }
 
@@ -657,7 +696,7 @@ public final class DataFactory {
     }
 
     public static HeightRecord getHeightRecord() {
-        return getBaseHeightRecord(Instant.now(), 1.9);
+        return getBaseHeightRecord(now(), 1.9);
     }
 
     public static HeightRecord getBaseHeightRecord(Instant time, double heightMeter) {
@@ -673,7 +712,7 @@ public final class DataFactory {
     public static BloodPressureRecord getBloodPressureRecord() {
         return new BloodPressureRecord.Builder(
                         getEmptyMetadata(),
-                        Instant.now(),
+                        now(),
                         BloodPressureRecord.BloodPressureMeasurementLocation
                                 .BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_WRIST,
                         Pressure.fromMillimetersOfMercury(22.0),

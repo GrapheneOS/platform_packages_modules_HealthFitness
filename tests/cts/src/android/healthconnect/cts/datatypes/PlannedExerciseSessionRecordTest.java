@@ -21,8 +21,8 @@ import static android.healthconnect.testing.cts.TestUtils.insertRecordAndGetId;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.readAllRecords;
 import static android.healthconnect.testing.cts.TestUtils.verifyDeleteRecords;
-import static android.healthconnect.testing.shared.DataFactory.SESSION_END_TIME;
-import static android.healthconnect.testing.shared.DataFactory.SESSION_START_TIME;
+import static android.healthconnect.testing.shared.DataFactory.sessionEndTime;
+import static android.healthconnect.testing.shared.DataFactory.sessionStartTime;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -53,6 +53,7 @@ import android.health.connect.datatypes.units.Power;
 import android.healthconnect.cts.lib.TestAppProxy;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -81,7 +82,9 @@ import java.util.UUID;
 public class PlannedExerciseSessionRecordTest {
     private static final String PKG_TEST_APP = "android.healthconnect.cts.testapp.readWritePerms.A";
 
-    private TestAppProxy mTestApp;
+    private final TestAppProxy mTestApp = TestAppProxy.forPackageName(PKG_TEST_APP);
+
+    private final Instant mNow = DataFactory.now();
 
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
@@ -91,7 +94,6 @@ public class PlannedExerciseSessionRecordTest {
 
     @Before
     public void setUp() throws InterruptedException {
-        mTestApp = TestAppProxy.forPackageName(PKG_TEST_APP);
         TestUtils.deleteAllStagedRemoteData();
     }
 
@@ -230,8 +232,8 @@ public class PlannedExerciseSessionRecordTest {
                         .build();
         PlannedExerciseSessionRecord record2 =
                 basePlannedExerciseSession(ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
-                        .setStartTime(SESSION_START_TIME.plus(2, DAYS))
-                        .setEndTime(SESSION_END_TIME.plus(2, DAYS))
+                        .setStartTime(sessionStartTime(mNow).plus(2, DAYS))
+                        .setEndTime(sessionEndTime(mNow).plus(2, DAYS))
                         .build();
 
         List<Record> insertedRecords = verifyInsertSucceeds(Arrays.asList(record1, record2));
@@ -293,8 +295,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord.Builder exerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(insertedPlannedSession.getMetadata().getId());
         insertRecordAndGetId(exerciseSession.build());
@@ -306,8 +308,8 @@ public class PlannedExerciseSessionRecordTest {
                 new ExerciseSessionRecord.Builder(
                                 buildMetadataWithUuid(
                                         insertedExerciseSession.getMetadata().getId()),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(null);
         TestUtils.updateRecords(Collections.singletonList(exerciseSession.build()));
@@ -337,8 +339,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord.Builder exerciseSession =
                 new ExerciseSessionRecord.Builder(
                         buildMetadata(null),
-                        SESSION_START_TIME,
-                        SESSION_END_TIME,
+                        sessionStartTime(mNow),
+                        sessionEndTime(mNow),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING);
         insertRecordAndGetId(exerciseSession.build());
 
@@ -349,8 +351,8 @@ public class PlannedExerciseSessionRecordTest {
                 new ExerciseSessionRecord.Builder(
                                 buildMetadataWithUuid(
                                         insertedExerciseSession.getMetadata().getId()),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(insertedPlannedSession.getMetadata().getId());
         TestUtils.updateRecords(Collections.singletonList(exerciseSession.build()));
@@ -406,8 +408,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord exerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(insertedPlannedSession.getMetadata().getId())
                         .build();
@@ -432,8 +434,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord exerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(someMadeUpUuid)
                         .build();
@@ -452,8 +454,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord exerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(insertedPlannedSession.getMetadata().getId())
                         .build();
@@ -479,8 +481,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord exerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(insertedPlannedSession.getMetadata().getId())
                         .build();
@@ -505,8 +507,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord.Builder exerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(insertedPlannedSession.getMetadata().getId());
 
@@ -537,8 +539,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord exerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(insertedPlannedSession.getMetadata().getId())
                         .build();
@@ -566,16 +568,16 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord exerciseSessionOne =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(insertedPlannedSession.getMetadata().getId())
                         .build();
         ExerciseSessionRecord exerciseSessionTwo =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME.plus(2, DAYS),
-                                SESSION_END_TIME.plus(2, DAYS),
+                                sessionStartTime(mNow).plus(2, DAYS),
+                                sessionEndTime(mNow).plus(2, DAYS),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(insertedPlannedSession.getMetadata().getId())
                         .build();
@@ -635,8 +637,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord exerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(originalTrainingPlan.getMetadata().getId())
                         .build();
@@ -678,8 +680,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord.Builder exerciseSession =
                 new ExerciseSessionRecord.Builder(
                         buildMetadata(null),
-                        SESSION_START_TIME,
-                        SESSION_END_TIME,
+                        sessionStartTime(mNow),
+                        sessionEndTime(mNow),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING);
 
         ExerciseSessionRecord inserted =
@@ -728,8 +730,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord.Builder exerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(originalTrainingPlan.getMetadata().getId());
         exerciseSession =
@@ -768,8 +770,8 @@ public class PlannedExerciseSessionRecordTest {
 
         verifyInsertSucceeds(builder.build());
         builder.setTitle("Second training plan");
-        builder.setStartTime(SESSION_END_TIME.plus(Duration.ofHours(1)));
-        builder.setEndTime(SESSION_END_TIME.plus(Duration.ofHours(2)));
+        builder.setStartTime(sessionEndTime(mNow).plus(Duration.ofHours(1)));
+        builder.setEndTime(sessionEndTime(mNow).plus(Duration.ofHours(2)));
         verifyInsertSucceeds(builder.build());
         PlannedExerciseSessionRecord firstTrainingPlan =
                 readAllRecords(PlannedExerciseSessionRecord.class).get(0);
@@ -781,8 +783,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord.Builder exerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(firstTrainingPlan.getMetadata().getId());
         ExerciseSessionRecord inserted =
@@ -814,8 +816,8 @@ public class PlannedExerciseSessionRecordTest {
                 new PlannedExerciseSessionRecord.Builder(
                                 new Metadata.Builder().build(),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING,
-                                SESSION_START_TIME,
-                                SESSION_END_TIME)
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow))
                         .build();
         mTestApp.insertRecord(plannedExerciseSession);
         PlannedExerciseSessionRecord insertedTrainingPlan =
@@ -825,8 +827,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord.Builder exerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(insertedTrainingPlan.getMetadata().getId());
         ExerciseSessionRecord inserted =
@@ -879,8 +881,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord exerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(originalTrainingPlan.getMetadata().getId())
                         .build();
@@ -915,8 +917,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord exerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 new Metadata.Builder().build(),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(originalTrainingPlan.getMetadata().getId())
                         .build();
@@ -963,8 +965,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord exerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(originalTrainingPlan.getMetadata().getId())
                         .build();
@@ -977,8 +979,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord anotherExerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME.plus(3, HOURS),
-                                SESSION_END_TIME.plus(3, HOURS),
+                                sessionStartTime(mNow).plus(3, HOURS),
+                                sessionEndTime(mNow).plus(3, HOURS),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(originalTrainingPlan.getMetadata().getId())
                         .build();
@@ -1023,8 +1025,8 @@ public class PlannedExerciseSessionRecordTest {
         ExerciseSessionRecord exerciseSession =
                 new ExerciseSessionRecord.Builder(
                                 buildMetadata(null),
-                                SESSION_START_TIME,
-                                SESSION_END_TIME,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(originalTrainingPlan.getMetadata().getId())
                         .build();
@@ -1118,8 +1120,8 @@ public class PlannedExerciseSessionRecordTest {
                 new PlannedExerciseSessionRecord.Builder(
                         buildMetadata("some client record ID"),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING,
-                        SESSION_START_TIME,
-                        SESSION_END_TIME);
+                        sessionStartTime(mNow),
+                        sessionEndTime(mNow));
         builder.setExerciseType(ExerciseSessionType.EXERCISE_SESSION_TYPE_BOXING);
         builder.setTitle("Some title");
         builder.setNotes("Some notes");
@@ -1131,8 +1133,8 @@ public class PlannedExerciseSessionRecordTest {
                 .isEqualTo(ExerciseSessionType.EXERCISE_SESSION_TYPE_BOXING);
         assertThat(builtRecord.getTitle()).isEqualTo("Some title");
         assertThat(builtRecord.getNotes()).isEqualTo("Some notes");
-        assertThat(builtRecord.getStartTime()).isEqualTo(SESSION_START_TIME);
-        assertThat(builtRecord.getEndTime()).isEqualTo(SESSION_END_TIME);
+        assertThat(builtRecord.getStartTime()).isEqualTo(sessionStartTime(mNow));
+        assertThat(builtRecord.getEndTime()).isEqualTo(sessionEndTime(mNow));
         assertThat(builtRecord.getBlocks()).isEqualTo(List.of(baseExerciseBlock().build()));
     }
 
@@ -1189,8 +1191,8 @@ public class PlannedExerciseSessionRecordTest {
         new PlannedExerciseSessionRecord.Builder(
                         buildMetadata("some_client_record_id"),
                         -1,
-                        SESSION_START_TIME,
-                        SESSION_END_TIME)
+                        sessionStartTime(mNow),
+                        sessionEndTime(mNow))
                 .build();
     }
 
@@ -1287,7 +1289,7 @@ public class PlannedExerciseSessionRecordTest {
 
     @Test
     public void builder_setEndTime() {
-        Instant originalStartTime = SESSION_START_TIME;
+        Instant originalStartTime = sessionStartTime(mNow);
         PlannedExerciseSessionRecord.Builder builder =
                 new PlannedExerciseSessionRecord.Builder(
                         buildMetadata("some client record ID"),
@@ -1297,7 +1299,7 @@ public class PlannedExerciseSessionRecordTest {
 
         assertThat(builder.build().getStartTime()).isEqualTo(originalStartTime);
 
-        Instant replacementStartTime = SESSION_START_TIME.plus(3, HOURS);
+        Instant replacementStartTime = sessionStartTime(mNow).plus(3, HOURS);
         builder.setStartTime(replacementStartTime);
         builder.setEndTime(replacementStartTime.plus(1, HOURS));
 
@@ -1322,7 +1324,10 @@ public class PlannedExerciseSessionRecordTest {
     private PlannedExerciseSessionRecord.Builder basePlannedExerciseSession(int exerciseType) {
         PlannedExerciseSessionRecord.Builder builder =
                 new PlannedExerciseSessionRecord.Builder(
-                        buildMetadata(null), exerciseType, SESSION_START_TIME, SESSION_END_TIME);
+                        buildMetadata(null),
+                        exerciseType,
+                        sessionStartTime(mNow),
+                        sessionEndTime(mNow));
         builder.setNotes("Some notes");
         builder.setTitle("Some training plan");
         builder.setStartZoneOffset(ZoneOffset.UTC);

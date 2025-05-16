@@ -39,7 +39,6 @@ import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.healthconnect.testing.shared.DataFactory.MAXIMUM_PAGE_SIZE;
-import static android.healthconnect.testing.shared.DataFactory.NOW;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_DISPLAY_NAME;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_FHIR_BASE_URI;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_FHIR_VERSION;
@@ -153,6 +152,7 @@ import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.health.connect.restore.StageRemoteDataRequest;
+import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.unittest.fakes.FakeTimeSource;
 import android.net.Uri;
 import android.os.Build;
@@ -364,6 +364,7 @@ public class HealthConnectServiceImplTest {
     private ThreadPoolExecutor mInternalTaskScheduler;
     private String mTestPackageName;
     private HealthConnectThreadScheduler mThreadScheduler;
+    private final Instant mNow = DataFactory.now();
 
     @Before
     public void setUp() throws Exception {
@@ -381,7 +382,7 @@ public class HealthConnectServiceImplTest {
                 .thenReturn(mPermissionManager);
         setUpHealthPermissions();
 
-        mFakeTimeSource = new FakeTimeSource(NOW);
+        mFakeTimeSource = new FakeTimeSource(mNow);
         mAttributionSource = mContext.getAttributionSource();
         mTestPackageName = mAttributionSource.getPackageName();
         setUpAllMedicalPermissionChecksHardDenied();
@@ -1330,7 +1331,7 @@ public class HealthConnectServiceImplTest {
     @Test
     public void testReadMedicalResourcesByRequests_expectCorrectLogs() throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
-        mFakeTimeSource.setInstant(NOW);
+        mFakeTimeSource.setInstant(mNow);
 
         mHealthConnectService.readMedicalResourcesByRequest(
                 mAttributionSource,
@@ -1350,7 +1351,7 @@ public class HealthConnectServiceImplTest {
                 () -> eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
                 List.of(VACCINES_INVOKED),
                 1);
-        verify(mPreferencesManager, times(1)).setLastPhrReadMedicalResourcesApiTimeStamp(eq(NOW));
+        verify(mPreferencesManager, times(1)).setLastPhrReadMedicalResourcesApiTimeStamp(eq(mNow));
     }
 
     @Test
@@ -1358,7 +1359,7 @@ public class HealthConnectServiceImplTest {
             testReadMedicalResourcesByRequests_hasDataManagementPermission_expectMonthlyTimeStamp()
                     throws InterruptedException {
         setUpSuccessfulMocksForPhrTelemetry();
-        mFakeTimeSource.setInstant(NOW);
+        mFakeTimeSource.setInstant(mNow);
         setDataManagementPermission(PERMISSION_GRANTED);
 
         mHealthConnectService.readMedicalResourcesByRequest(
@@ -1370,13 +1371,13 @@ public class HealthConnectServiceImplTest {
 
         awaitAllExecutorsIdle();
         assertThat(mPreferencesManager.getPhrLastReadMedicalResourcesApiTimeStamp()).isNull();
-        verify(mPreferencesManager, times(1)).setLastPhrReadMedicalResourcesApiTimeStamp(eq(NOW));
+        verify(mPreferencesManager, times(1)).setLastPhrReadMedicalResourcesApiTimeStamp(eq(mNow));
     }
 
     @Test
     public void testReadMedicalResourcesByIds_expectCorrectLogs() throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
-        mFakeTimeSource.setInstant(NOW);
+        mFakeTimeSource.setInstant(mNow);
 
         mHealthConnectService.readMedicalResourcesByIds(
                 mAttributionSource,
@@ -1393,13 +1394,13 @@ public class HealthConnectServiceImplTest {
                 () -> eq(READ_MEDICAL_RESOURCES_BY_IDS),
                 () -> eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
                 1);
-        verify(mPreferencesManager, times(1)).setLastPhrReadMedicalResourcesApiTimeStamp(eq(NOW));
+        verify(mPreferencesManager, times(1)).setLastPhrReadMedicalResourcesApiTimeStamp(eq(mNow));
     }
 
     @Test
     public void testReadMedicalResourcesByIds_hasDataManagementPermission_expectMonthlyTimeStamp() {
         setUpSuccessfulMocksForPhrTelemetry();
-        mFakeTimeSource.setInstant(NOW);
+        mFakeTimeSource.setInstant(mNow);
         setDataManagementPermission(PERMISSION_GRANTED);
 
         mHealthConnectService.readMedicalResourcesByIds(
@@ -1408,7 +1409,7 @@ public class HealthConnectServiceImplTest {
                 mReadMedicalResourcesResponseCallback);
 
         verify(mPreferencesManager, timeout(5000).times(1))
-                .setLastPhrReadMedicalResourcesApiTimeStamp(eq(NOW));
+                .setLastPhrReadMedicalResourcesApiTimeStamp(eq(mNow));
     }
 
     @Test
