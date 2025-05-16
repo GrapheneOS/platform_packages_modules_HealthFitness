@@ -18,6 +18,7 @@ package android.health.connect.internal.datatypes.utils;
 
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_CONDITIONS;
+import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_DEVICES;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_LABORATORY_RESULTS;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_MEDICATIONS;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_PERSONAL_DETAILS;
@@ -34,10 +35,16 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertThrows;
 
 import android.health.connect.HealthPermissions;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.Flags;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,6 +55,16 @@ import java.util.stream.Collectors;
 @RunWith(AndroidJUnit4.class)
 public class MedicalResourceTypePermissionMapperTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
+    @Before
+    public void setUp() {
+        MedicalResourceTypePermissionMapper.reset();
+    }
+
+    @After
+    public void tearDown() {
+        MedicalResourceTypePermissionMapper.reset();
+    }
 
     @Test
     public void testGetMedicalReadPermissionForResourceType_vaccineType_returns() {
@@ -177,7 +194,18 @@ public class MedicalResourceTypePermissionMapperTest {
     }
 
     @Test
-    public void testGetMedicalResourceTypeForReadPermission_coversAllPermissions() {
+    @EnableFlags(Flags.FLAG_DEVICE_RESOURCE)
+    public void testGetMedicalResourceTypeForReadPermission_devicesType_returns() {
+        int medicalResourceType =
+                MedicalResourceTypePermissionMapper.getMedicalResourceType(
+                        HealthPermissions.READ_MEDICAL_DATA_DEVICES);
+
+        assertThat(medicalResourceType).isEqualTo(MEDICAL_RESOURCE_TYPE_DEVICES);
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_RESOURCE)
+    public void testGetMedicalResourceTypeForReadPermission__withoutDevice_coversAllPermissions() {
         Set<String> medicalReadPermissions =
                 HealthPermissions.getAllMedicalPermissions().stream()
                         .filter(
@@ -192,6 +220,25 @@ public class MedicalResourceTypePermissionMapperTest {
 
         assertThat(medicalResourceTypes.size()).isEqualTo(medicalReadPermissions.size());
         assertThat(medicalResourceTypes.size()).isEqualTo(12);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_RESOURCE)
+    public void testGetMedicalResourceTypeForReadPermission_withDevice_coversAllPermissions() {
+        Set<String> medicalReadPermissions =
+                HealthPermissions.getAllMedicalPermissions().stream()
+                        .filter(
+                                permissionString ->
+                                        !permissionString.equals(
+                                                HealthPermissions.WRITE_MEDICAL_DATA))
+                        .collect(Collectors.toSet());
+        Set<Integer> medicalResourceTypes =
+                medicalReadPermissions.stream()
+                        .map(MedicalResourceTypePermissionMapper::getMedicalResourceType)
+                        .collect(Collectors.toSet());
+
+        assertThat(medicalResourceTypes.size()).isEqualTo(medicalReadPermissions.size());
+        assertThat(medicalResourceTypes.size()).isEqualTo(13);
     }
 
     @Test
