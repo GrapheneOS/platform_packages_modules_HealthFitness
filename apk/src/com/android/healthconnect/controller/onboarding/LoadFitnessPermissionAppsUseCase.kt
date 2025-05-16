@@ -16,6 +16,7 @@
 
 package com.android.healthconnect.controller.onboarding
 
+import android.content.Context
 import com.android.healthconnect.controller.permissions.app.LoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.shared.HealthPermissionReader
@@ -24,6 +25,7 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -36,6 +38,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 class LoadFitnessPermissionAppsUseCase
 @Inject
 constructor(
+    @ApplicationContext private val context: Context,
     private val healthPermissionReader: HealthPermissionReader,
     private val loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase,
     private val appInfoReader: AppInfoReader,
@@ -72,7 +75,13 @@ constructor(
                             .filterIsInstance<HealthPermission.FitnessPermission>()
 
                     val isConnected = grantedFitnessPermissions.isNotEmpty()
-                    ConnectedFitnessAppMetadata(metadata, isConnected)
+                    val onboardingIntent =
+                        healthPermissionReader.getOnboardingActivityIntent(context, packageName)
+                    if (onboardingIntent != null) {
+                        ConnectedFitnessAppMetadata(metadata, isConnected, true)
+                    } else {
+                        ConnectedFitnessAppMetadata(metadata, isConnected, false)
+                    }
                 }
         )
         return connectedApps.sortedWith(
@@ -90,4 +99,8 @@ interface ILoadFitnessPermissionAppsUseCase {
     suspend fun execute(unit: Unit): List<ConnectedFitnessAppMetadata>
 }
 
-data class ConnectedFitnessAppMetadata(val appMetadata: AppMetadata, var isConnected: Boolean)
+data class ConnectedFitnessAppMetadata(
+    val appMetadata: AppMetadata,
+    var isConnected: Boolean,
+    val hasOnboarding: Boolean = false,
+)

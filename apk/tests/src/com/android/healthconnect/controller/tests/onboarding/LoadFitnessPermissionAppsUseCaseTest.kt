@@ -17,6 +17,8 @@
 package com.android.healthconnect.controller.tests.onboarding
 
 import android.content.Context
+import android.content.Intent
+import android.health.connect.HealthConnectManager.ACTION_SHOW_ONBOARDING
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.LoadFitnessPermissionAppsUseCase
@@ -105,6 +107,7 @@ class LoadFitnessPermissionAppsUseCaseTest {
             )
         useCase =
             LoadFitnessPermissionAppsUseCase(
+                context,
                 healthPermissionReader,
                 loadAppPermissionsStatusUseCase,
                 appInfoReader,
@@ -328,6 +331,57 @@ class LoadFitnessPermissionAppsUseCaseTest {
                     ConnectedFitnessAppMetadata(fitnessApp, true),
                     ConnectedFitnessAppMetadata(fitnessApp2, true),
                     ConnectedFitnessAppMetadata(combinedApp, false),
+                )
+            )
+    }
+
+    @Test
+    fun returnsCorrectAppsWithOnboarding() = runTest {
+        mockAppMetadata()
+        val testIntent = Intent(ACTION_SHOW_ONBOARDING)
+        testIntent.setPackage(fitnessAppPackageName2)
+        whenever(
+                healthPermissionReader.getOnboardingActivityIntent(
+                    any(),
+                    eq(fitnessAppPackageName2),
+                )
+            )
+            .thenReturn(testIntent)
+        getGrantedHealthPermissionsUseCase.updateData(
+            medicalAppPackageName,
+            listOf(writeMedicalData.toString(), readAllergies.toString()),
+        )
+        getGrantedHealthPermissionsUseCase.updateData(
+            combinedAppPackageName,
+            listOf(writeMedicalData.toString()),
+        )
+        getGrantedHealthPermissionsUseCase.updateData(
+            fitnessAppPackageName,
+            listOf(readSkinTemperaturePermission.toString()),
+        )
+
+        val actual = useCase.invoke(Unit)
+        advanceUntilIdle()
+
+        assertThat(actual is UseCaseResults.Success).isTrue()
+        assertThat((actual as UseCaseResults.Success).data)
+            .containsExactlyElementsIn(
+                listOf(
+                    ConnectedFitnessAppMetadata(
+                        appMetadata = fitnessApp,
+                        isConnected = true,
+                        hasOnboarding = false,
+                    ),
+                    ConnectedFitnessAppMetadata(
+                        appMetadata = fitnessApp2,
+                        isConnected = true,
+                        hasOnboarding = true,
+                    ),
+                    ConnectedFitnessAppMetadata(
+                        appMetadata = combinedApp,
+                        isConnected = false,
+                        hasOnboarding = false,
+                    ),
                 )
             )
     }
