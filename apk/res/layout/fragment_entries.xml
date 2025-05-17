@@ -31,14 +31,13 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintTop_toTopOf="parent"
         android:background="?android:colorBackground"
-        android:translationZ="1dp"
         app:layout_constraintBottom_toTopOf="@id/data_entries_list">
+
         <com.android.healthconnect.controller.data.entries.AppHeaderView
             android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:id="@+id/app_header"
-            android:translationZ="4dp"/>
+            android:id="@+id/app_header"/>
 
         <com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationView
             android:id="@+id/date_navigation_view"
@@ -81,7 +80,8 @@
         android:id="@+id/data_entries_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_small"
+        android:paddingTop="@dimen/spacing_small"
+        android:clipToPadding="true"
         app:layout_constrainedHeight="true"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintTop_toBottomOf="@id/pinned_header"
