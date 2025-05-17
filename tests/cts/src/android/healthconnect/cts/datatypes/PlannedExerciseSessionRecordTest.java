@@ -16,11 +16,11 @@
 
 package android.healthconnect.cts.datatypes;
 
-import static android.healthconnect.cts.utils.TestUtils.insertRecord;
-import static android.healthconnect.cts.utils.TestUtils.insertRecordAndGetId;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
-import static android.healthconnect.cts.utils.TestUtils.readAllRecords;
-import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.testing.cts.TestUtils.insertRecord;
+import static android.healthconnect.testing.cts.TestUtils.insertRecordAndGetId;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.readAllRecords;
+import static android.healthconnect.testing.cts.TestUtils.verifyDeleteRecords;
 import static android.healthconnect.testing.shared.DataFactory.SESSION_END_TIME;
 import static android.healthconnect.testing.shared.DataFactory.SESSION_START_TIME;
 
@@ -51,9 +51,9 @@ import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
 import android.health.connect.datatypes.units.Power;
 import android.healthconnect.cts.lib.TestAppProxy;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 

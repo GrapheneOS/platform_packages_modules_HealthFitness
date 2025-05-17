@@ -19,7 +19,7 @@ package android.healthconnect.tests.migration;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 import static android.health.connect.HealthPermissions.READ_ACTIVE_CALORIES_BURNED;
 import static android.health.connect.HealthPermissions.WRITE_ACTIVE_CALORIES_BURNED;
-import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 
 import static com.android.compatibility.common.util.FeatureUtil.AUTOMOTIVE_FEATURE;
 import static com.android.compatibility.common.util.FeatureUtil.hasSystemFeature;
@@ -27,15 +27,14 @@ import static com.android.compatibility.common.util.SystemUtil.runWithShellPermi
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.PermissionMigrationPayload;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.tests.IntegrationTestUtils;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -48,7 +47,6 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.Period;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /** Integration tests for Health Connect permissions migration. */
@@ -113,18 +111,10 @@ public class HealthConnectPermissionsMigrationTest {
         return readGrantTime.get();
     }
 
-    private void migrate(MigrationEntity... entities) {
-        runWithShellPermissionIdentity(
-                IntegrationTestUtils::startMigration,
-                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
-
-        runWithShellPermissionIdentity(
-                () -> IntegrationTestUtils.writeMigrationData(List.of(entities)),
-                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
-
-        runWithShellPermissionIdentity(
-                IntegrationTestUtils::finishMigration,
-                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+    private void migrate(MigrationEntity... entities) throws InterruptedException {
+        TestUtils.startMigrationWithShellPermissionIdentity();
+        TestUtils.writeMigrationDataWithShellPermissionIdentity(entities);
+        TestUtils.finishMigrationWithShellPermissionIdentity();
     }
 
     private void assertPermNotGrantedForApp(String packageName, String permName) {

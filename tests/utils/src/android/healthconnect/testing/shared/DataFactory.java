@@ -24,6 +24,7 @@ import android.content.Context;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
+import android.health.connect.datatypes.BloodPressureRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
@@ -50,6 +51,7 @@ import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
 import android.health.connect.datatypes.units.Power;
+import android.health.connect.datatypes.units.Pressure;
 
 import androidx.annotation.Nullable;
 import androidx.test.core.app.ApplicationProvider;
@@ -280,6 +282,10 @@ public final class DataFactory {
         return sessionBuilder;
     }
 
+    public static HeartRateRecord getHeartRateRecord() {
+        return getHeartRateRecord(72);
+    }
+
     /** Gets a {@link HeartRateRecord} with an empty {@link Metadata}. */
     public static HeartRateRecord getHeartRateRecordWithEmptyMetadata() {
         return getHeartRateRecord(72, getEmptyMetadata());
@@ -293,10 +299,6 @@ public final class DataFactory {
         return new HeartRateRecord.Builder(
                         metadata, instant, instant.plusMillis(1000), List.of(heartRateSample))
                 .build();
-    }
-
-    public static HeartRateRecord getHeartRateRecord() {
-        return getHeartRateRecord(72);
     }
 
     public static HeartRateRecord getHeartRateRecord(int heartRate, String clientId) {
@@ -654,6 +656,10 @@ public final class DataFactory {
                 .build();
     }
 
+    public static HeightRecord getHeightRecord() {
+        return getBaseHeightRecord(Instant.now(), 1.9);
+    }
+
     public static HeightRecord getBaseHeightRecord(Instant time, double heightMeter) {
         return new HeightRecord.Builder(getEmptyMetadata(), time, Length.fromMeters(heightMeter))
                 .build();
@@ -661,6 +667,18 @@ public final class DataFactory {
 
     public static WeightRecord getBaseWeightRecord(Instant time, double weightKg) {
         return new WeightRecord.Builder(getEmptyMetadata(), time, Mass.fromGrams(weightKg * 1000))
+                .build();
+    }
+
+    public static BloodPressureRecord getBloodPressureRecord() {
+        return new BloodPressureRecord.Builder(
+                        getEmptyMetadata(),
+                        Instant.now(),
+                        BloodPressureRecord.BloodPressureMeasurementLocation
+                                .BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_WRIST,
+                        Pressure.fromMillimetersOfMercury(22.0),
+                        Pressure.fromMillimetersOfMercury(24.0),
+                        BloodPressureRecord.BodyPosition.BODY_POSITION_STANDING_UP)
                 .build();
     }
 }

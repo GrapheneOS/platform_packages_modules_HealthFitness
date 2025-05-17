@@ -386,7 +386,7 @@ public class ExportManagerTest {
     }
 
     @Test
-    public void destinationUriDoesNotExist_exportFailsWithLostFileAccessError() {
+    public void destinationUriDoesNotExist_exportFailsWithLostFileAccessError() throws IOException {
         // Inserting multiple rows to vary the size for testing of size logging
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(124, 457, 7));
@@ -394,10 +394,12 @@ public class ExportManagerTest {
 
         mExportImportSettingsStorage.setLastExportError(
                 ScheduledExportStatus.DATA_EXPORT_ERROR_NONE, mTimeStamp);
-        // Set export location to inaccessible directory.
+        // Set export location to inaccessible file.
+        File inaccessibleFile = mEnvironmentDataDirectory.newFile("inaccessible");
+        inaccessibleFile.setWritable(false);
         mExportImportSettingsStorage.configure(
                 new ScheduledExportSettings.Builder()
-                        .setUri(Uri.fromFile(new File("inaccessible")))
+                        .setUri(Uri.fromFile(inaccessibleFile))
                         .build());
 
         assertThat(mExportManager.runExport(mContext.getUser())).isFalse();
@@ -442,9 +444,12 @@ public class ExportManagerTest {
 
         // Export running at a later time with an error
         mTimeStamp = Instant.parse("2024-12-12T16:39:12Z");
+        // Set export location to inaccessible file.
+        File inaccessibleFile = mEnvironmentDataDirectory.newFile("inaccessible");
+        inaccessibleFile.setWritable(false);
         mExportImportSettingsStorage.configure(
                 new ScheduledExportSettings.Builder()
-                        .setUri(Uri.fromFile(new File("inaccessible")))
+                        .setUri(Uri.fromFile(inaccessibleFile))
                         .build());
         assertThat(mExportManager.runExport(mContext.getUser())).isFalse();
 
@@ -457,7 +462,7 @@ public class ExportManagerTest {
     }
 
     @Test
-    public void updatesLastExportFileName_onSuccessOnly() {
+    public void updatesLastExportFileName_onSuccessOnly() throws IOException {
         Context context = mock(Context.class);
         ContentResolver contentResolver = mock(ContentResolver.class);
         Cursor cursor = mock(Cursor.class);
@@ -478,9 +483,12 @@ public class ExportManagerTest {
                 .isEqualTo(REMOTE_EXPORT_ZIP_FILE_NAME);
 
         // Export running at a later time with an error
+        // Set export location to inaccessible file.
+        File inaccessibleFile = mEnvironmentDataDirectory.newFile("inaccessible");
+        inaccessibleFile.setWritable(false);
         mExportImportSettingsStorage.configure(
                 new ScheduledExportSettings.Builder()
-                        .setUri(Uri.fromFile(new File("inaccessible")))
+                        .setUri(Uri.fromFile(inaccessibleFile))
                         .build());
         assertThat(mExportManager.runExport(mContext.getUser())).isFalse();
 

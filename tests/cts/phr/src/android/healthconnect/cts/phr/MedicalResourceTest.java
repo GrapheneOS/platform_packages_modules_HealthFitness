@@ -18,7 +18,7 @@ package android.healthconnect.cts.phr;
 
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
-import static android.healthconnect.cts.utils.TestUtils.setFieldValueUsingReflection;
+import static android.healthconnect.testing.cts.TestUtils.setFieldValueUsingReflection;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_ID;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_DATA_SOURCE_ID;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSION_R4;

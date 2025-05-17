@@ -16,12 +16,11 @@
 
 package android.healthconnect.cts.testhelper;
 
-import static android.healthconnect.cts.testhelper.TestHelperUtils.deleteAllRecordsAddedByTestApp;
-import static android.healthconnect.cts.testhelper.TestHelperUtils.getBloodPressureRecord;
-import static android.healthconnect.cts.testhelper.TestHelperUtils.getHeartRateRecord;
-import static android.healthconnect.cts.testhelper.TestHelperUtils.getStepsRecord;
-import static android.healthconnect.cts.testhelper.TestHelperUtils.insertRecords;
-import static android.healthconnect.cts.testhelper.TestHelperUtils.queryAccessLogs;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.queryAccessLogs;
+import static android.healthconnect.testing.shared.DataFactory.getBloodPressureRecord;
+import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
+import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 
@@ -31,7 +30,7 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.TestUtils;
 
 import androidx.test.InstrumentationRegistry;
 
@@ -73,7 +72,6 @@ public class DailyLogsTests {
     public void testInsertRecordsSucceed() throws Exception {
         assertThat(
                         insertRecords(
-                                mHealthConnectManager,
                                 List.of(
                                         getStepsRecord(),
                                         getBloodPressureRecord(),
@@ -83,17 +81,17 @@ public class DailyLogsTests {
 
     @Test
     public void testHealthConnectAccessLogsEqualsZero() throws Exception {
-        assertThat(queryAccessLogs(mHealthConnectManager)).hasSize(0);
+        assertThat(queryAccessLogs()).hasSize(0);
     }
 
     @Test
     public void testHealthConnectAccessLogsEqualsOne() throws Exception {
-        assertThat(queryAccessLogs(mHealthConnectManager)).hasSize(1);
+        assertThat(queryAccessLogs()).hasSize(1);
     }
 
     @Test
     public void testHealthConnectAccessLogsEqualsTwo() throws Exception {
-        assertThat(queryAccessLogs(mHealthConnectManager)).hasSize(2);
+        assertThat(queryAccessLogs()).hasSize(2);
     }
 
     /**
@@ -104,8 +102,8 @@ public class DailyLogsTests {
      */
     @Test
     public void deleteAllStagedRemoteData() throws InterruptedException {
+        TestUtils.deleteAllFitnessDataAddedByTestApp();
         TestUtils.deleteAllStagedRemoteData();
-        deleteAllRecordsAddedByTestApp(mHealthConnectManager);
         mPhrTestUtils.deleteAllMedicalData();
     }
 }

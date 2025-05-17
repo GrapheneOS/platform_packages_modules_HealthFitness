@@ -41,5 +41,8 @@ public final class Constants {
     public static final int READ = 2;
     public static final String PARENT_KEY = "parent_key";
     public static final String NOTIFICATION_CHANNEL_ID = "healthconnect-channel";
+    public static final String CHANNEL_GROUP_ID = "healthconnect-channel-group";
+    public static final String CHANNEL_GROUP_NAME_RESOURCE = "app_label";
+    public static final String CHANNEL_NAME_RESOURCE = "health_connect_notification_channel_name";
     public static final String APP_ICON_DRAWABLE_NAME = "health_connect_logo";
 }

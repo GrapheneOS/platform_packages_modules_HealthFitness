@@ -34,11 +34,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.android.healthconnect.testapps.toolbox.R
 import com.android.healthconnect.testapps.toolbox.UIConstants.PADDING_MEDIUM
 import com.android.healthconnect.testapps.toolbox.UIConstants.PADDING_SMALL
+import com.android.healthconnect.testapps.toolbox.newUi.navigation.Screen
 import com.android.healthconnect.testapps.toolbox.read.components.states.ErrorMessage
 import com.android.healthconnect.testapps.toolbox.read.components.states.LoadingBar
 import com.android.healthconnect.testapps.toolbox.read.controller.LoadEntriesInput
 import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry
-import com.android.healthconnect.testapps.toolbox.read.navigation.Screen
 import com.android.healthconnect.testapps.toolbox.read.utils.DataEntryUtils.Companion.mapEntryToComposable
 import com.android.healthconnect.testapps.toolbox.viewmodels.DataState
 import com.android.healthconnect.testapps.toolbox.viewmodels.LoadEntriesViewModel

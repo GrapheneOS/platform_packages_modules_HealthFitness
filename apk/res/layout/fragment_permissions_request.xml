@@ -19,8 +19,7 @@
     android:layout_height="match_parent"
     android:filterTouchesWhenObscured="true"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/spacing_small"
-    android:paddingTop="@dimen/spacing_xlarge">
+    android:paddingBottom="@dimen/spacing_small">
 
     <FrameLayout
         android:id="@+id/preference_container"

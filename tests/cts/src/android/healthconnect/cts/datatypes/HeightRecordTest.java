@@ -19,12 +19,12 @@ package android.healthconnect.cts.datatypes;
 import static android.health.connect.datatypes.HeightRecord.HEIGHT_AVG;
 import static android.health.connect.datatypes.HeightRecord.HEIGHT_MAX;
 import static android.health.connect.datatypes.HeightRecord.HEIGHT_MIN;
-import static android.healthconnect.cts.utils.TestUtils.copyRecordIdsViaReflection;
-import static android.healthconnect.cts.utils.TestUtils.distinctByUuid;
-import static android.healthconnect.cts.utils.TestUtils.getRecordIds;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
-import static android.healthconnect.cts.utils.TestUtils.readRecords;
-import static android.healthconnect.cts.utils.TestUtils.updateRecords;
+import static android.healthconnect.testing.cts.TestUtils.copyRecordIdsViaReflection;
+import static android.healthconnect.testing.cts.TestUtils.distinctByUuid;
+import static android.healthconnect.testing.cts.TestUtils.getRecordIds;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.readRecords;
+import static android.healthconnect.testing.cts.TestUtils.updateRecords;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -48,9 +48,9 @@ import android.health.connect.datatypes.HeightRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.units.Length;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.platform.test.annotations.AppModeFull;
 
 import androidx.test.core.app.ApplicationProvider;

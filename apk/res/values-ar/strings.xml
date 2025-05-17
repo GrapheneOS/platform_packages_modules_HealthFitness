@@ -677,6 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{التكرار مرة واحدة}zero{التكرار # مرة}two{التكرار مرّتَان}few{التكرار # مرات}many{التكرار # مرة}other{التكرار # مرة}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{التكرار مرة واحدة}zero{التكرار # مرة}two{التكرار مرّتَان}few{التكرار # مرات}many{التكرار # مرة}other{التكرار # مرة}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"شرائح التمرين الرياضي"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"ضبط <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"معدّل الجهد المبذول: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"معدّل الجهد المبذول: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"معدّل الجهد المبذول"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"معدّل الجهد المبذول"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"عدد اللفّات"</string>
     <string name="back_extension" msgid="426518933137440577">"تمرين تمديد الظَهّر"</string>
     <string name="badminton" msgid="8839727076522086870">"كرة الريشة"</string>

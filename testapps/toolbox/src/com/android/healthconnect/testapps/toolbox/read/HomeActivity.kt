@@ -25,7 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.android.healthconnect.testapps.toolbox.read.navigation.ToolboxNavigation
+import com.android.healthconnect.testapps.toolbox.newUi.navigation.ToolboxNavigation
 import com.android.healthconnect.testapps.toolbox.read.theme.HealthFitnessGradleProjectTheme
 
 class HomeActivity : ComponentActivity() {

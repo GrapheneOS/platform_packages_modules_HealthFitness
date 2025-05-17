@@ -18,10 +18,15 @@ package android.healthconnect.testing.unittest;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.DELETE;
+import static android.health.connect.Constants.UPSERT;
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING;
 
+import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.APP_ID_COLUMN_NAME;
+import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.MEDICAL_RESOURCE_TYPE_COLUMN_NAME;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.OPERATION_TYPE_COLUMN_NAME;
+import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.RECORD_TYPE_COLUMN_NAME;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.UUIDS_COLUMN_NAME;
+import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.toMedicalResourceIdList;
 import static com.android.server.healthconnect.common.metadata.AppInfoHelper.PACKAGE_COLUMN_NAME;
 import static com.android.server.healthconnect.common.metadata.AppInfoHelper.UNIQUE_COLUMN_INFO;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorUUIDList;
@@ -33,6 +38,7 @@ import static java.time.Duration.ofMinutes;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.connect.MedicalResourceId;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
@@ -67,8 +73,11 @@ import com.android.server.healthconnect.storage.utils.WhereClauses;
 import com.google.common.collect.ImmutableList;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.IntStream;
@@ -177,7 +186,7 @@ public final class TransactionTestUtils {
                 shouldRecordAccessLogs);
     }
 
-    /** Fetches all records of a given time from epoch until the current time. */
+    /** Fetches all records of a given type. */
     public <T extends Record> List<RecordInternal<?>> readAllRecordsOfType(
             String packageName, Class<T> recordClass) {
         ReadRecordsRequestUsingFilters<T> request =
@@ -185,8 +194,6 @@ public final class TransactionTestUtils {
                         .setTimeRangeFilter(
                                 new TimeInstantRangeFilter.Builder()
                                         .setStartTime(Instant.EPOCH)
-                                        .setEndTime(
-                                                Instant.ofEpochMilli(System.currentTimeMillis()))
                                         .build())
                         .build();
 
@@ -297,7 +304,7 @@ public final class TransactionTestUtils {
                 new UpsertTableRequest(ChangeLogsHelper.TABLE_NAME, contentValues));
     }
 
-    /** Retrieves all delete change logs from change log table. */
+    /** Retrieves all delete record change logs from change log table. */
     public List<UUID> getAllDeletedUuids() {
         WhereClauses whereClauses =
                 new WhereClauses(AND).addWhereEqualsClause(OPERATION_TYPE_COLUMN_NAME, DELETE + "");
@@ -310,6 +317,83 @@ public final class TransactionTestUtils {
             }
             return uuids.build();
         }
+    }
+
+    /** Retrieves all upsert medical resource change logs from change log table. */
+    public List<MedicalChangeLogEntry> getAllUpsertMedicalChangeLogs() {
+        return getAllMedicalChangeLogs().stream()
+                .filter(entry -> entry.operationType == UPSERT)
+                .toList();
+    }
+
+    /** Retrieves all delete medical resource change logs from change log table. */
+    public List<MedicalChangeLogEntry> getAllDeleteMedicalChangeLogs() {
+        return getAllMedicalChangeLogs().stream()
+                .filter(entry -> entry.operationType == DELETE)
+                .toList();
+    }
+
+    /** Retrieves all medical resource change logs from change log table. */
+    public List<MedicalChangeLogEntry> getAllMedicalChangeLogs() {
+        List<MedicalChangeLogEntry> entries = new ArrayList<>();
+        try (Cursor cursor =
+                mTransactionManager.read(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME))) {
+            while (cursor.moveToNext()) {
+                // Skip if it's not a medical resource change log (record_type is not null)
+                if (!cursor.isNull(cursor.getColumnIndexOrThrow(RECORD_TYPE_COLUMN_NAME))) {
+                    continue;
+                }
+                int operationType =
+                        cursor.getInt(cursor.getColumnIndexOrThrow(OPERATION_TYPE_COLUMN_NAME));
+                int resourceType =
+                        cursor.getInt(
+                                cursor.getColumnIndexOrThrow(MEDICAL_RESOURCE_TYPE_COLUMN_NAME));
+                long appId = cursor.getLong(cursor.getColumnIndexOrThrow(APP_ID_COLUMN_NAME));
+                byte[] uuidsBlob = cursor.getBlob(cursor.getColumnIndexOrThrow(UUIDS_COLUMN_NAME));
+                List<MedicalResourceId> medicalResourceIds = toMedicalResourceIdList(uuidsBlob);
+                entries.add(
+                        new MedicalChangeLogEntry(
+                                operationType, resourceType, appId, medicalResourceIds));
+            }
+        }
+        return entries;
+    }
+
+    public record MedicalChangeLogEntry(
+            int operationType,
+            int resourceType,
+            long appId,
+            List<MedicalResourceId> medicalResourceIds) {
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            MedicalChangeLogEntry that = (MedicalChangeLogEntry) o;
+            return operationType == that.operationType
+                    && resourceType == that.resourceType
+                    && appId == that.appId
+                    && Objects.equals(
+                            // Sort the lists for consistent comparison
+                            medicalResourceIds.stream()
+                                    .sorted(MEDICAL_RESOURCE_ID_COMPARATOR)
+                                    .toList(),
+                            that.medicalResourceIds.stream()
+                                    .sorted(MEDICAL_RESOURCE_ID_COMPARATOR)
+                                    .toList());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(
+                    operationType,
+                    resourceType,
+                    appId,
+                    medicalResourceIds.stream().sorted(MEDICAL_RESOURCE_ID_COMPARATOR).toList());
+        }
+
+        private static final Comparator<MedicalResourceId> MEDICAL_RESOURCE_ID_COMPARATOR =
+                Comparator.comparing(MedicalResourceId::toString);
     }
 
     /** Returns a valid UUID string. */

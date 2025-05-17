@@ -31,10 +31,10 @@ import static android.health.connect.datatypes.SpeedRecord.SPEED_AVG;
 import static android.health.connect.datatypes.SpeedRecord.SPEED_MAX;
 import static android.health.connect.datatypes.SpeedRecord.SPEED_MIN;
 import static android.healthconnect.cts.aggregation.Utils.assertDoubleWithTolerance;
-import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
-import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
 import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
 import static android.healthconnect.testing.shared.aggregation.TimeFilterFactory.getTimeFilter;
 
@@ -55,8 +55,8 @@ import android.health.connect.datatypes.PowerRecord;
 import android.health.connect.datatypes.SpeedRecord;
 import android.health.connect.datatypes.units.Power;
 import android.health.connect.datatypes.units.Velocity;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 

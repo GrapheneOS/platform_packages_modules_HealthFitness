@@ -33,9 +33,9 @@ import static android.healthconnect.testing.unittest.TransactionTestUtils.create
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
-import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.APP_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.OPERATION_TYPE_COLUMN_NAME;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.RECORD_TYPE_COLUMN_NAME;
@@ -542,7 +542,7 @@ public class ChangeLogsHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
     public void getChangeLogs_medicalResources_skipsNotRequestedDataTypes() {
         var token =
                 mChangeLogsRequestHelper.getToken(
@@ -559,7 +559,6 @@ public class ChangeLogsHelperTest {
                                 createAllergyMedicalResource(mDataSource.getId())),
                         PACKAGE_NAME);
         mPhrTestUtils.deleteResource(insertedResources.get(0));
-        insertMedicalResourceDeletionChangeLogs(insertedResources.subList(0, 1));
 
         var tokenRequest = mChangeLogsRequestHelper.getRequest(PACKAGE_NAME, token);
         var changeLogsResponse =
@@ -578,7 +577,7 @@ public class ChangeLogsHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
     public void getChangeLogs_medicalResources_returnsChangeLogs() {
         var token =
                 mChangeLogsRequestHelper.getToken(
@@ -597,7 +596,6 @@ public class ChangeLogsHelperTest {
                                 createAllergyMedicalResource(mDataSource.getId())),
                         PACKAGE_NAME);
         mPhrTestUtils.deleteResource(insertedResources.get(0));
-        insertMedicalResourceDeletionChangeLogs(insertedResources.subList(0, 1));
 
         var tokenRequest = mChangeLogsRequestHelper.getRequest(PACKAGE_NAME, token);
         var changeLogsResponse =
@@ -615,7 +613,7 @@ public class ChangeLogsHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
     public void getChangeLogs_medicalResources_withPageSize_returnsChangeLogs() {
         var token =
                 mChangeLogsRequestHelper.getToken(
@@ -634,7 +632,6 @@ public class ChangeLogsHelperTest {
                                 createAllergyMedicalResource(mDataSource.getId())),
                         PACKAGE_NAME);
         mPhrTestUtils.deleteResource(insertedResources.get(0));
-        insertMedicalResourceDeletionChangeLogs(insertedResources.subList(0, 1));
 
         // First page (vaccines upsertion)
         var firstTokenRequest = mChangeLogsRequestHelper.getRequest(PACKAGE_NAME, token);
@@ -753,17 +750,6 @@ public class ChangeLogsHelperTest {
                 UUIDS_COLUMN_NAME, StorageUtils.getSingleByteArray(Collections.emptyList()));
         mTransactionManager.insertOrThrowOnConflict(
                 new UpsertTableRequest(ChangeLogsHelper.TABLE_NAME, contentValues));
-    }
-
-    // TODO(b/409490589) - Remove this when the linked task is done.
-    private void insertMedicalResourceDeletionChangeLogs(List<MedicalResource> medicalResources) {
-        var requests = ChangeLogsHelper.ChangeLogsTableRequests.ofDeletion(Instant.now());
-        medicalResources.forEach(
-                resource ->
-                        requests.addMedicalResourceInfo(resource.getType(), 0, resource.getId()));
-        for (UpsertTableRequest request : requests.getUpsertTableRequests()) {
-            mTransactionManager.insertOrThrowOnConflict(request);
-        }
     }
 
     private static Correspondence<UpsertTableRequest, List<UUID>>

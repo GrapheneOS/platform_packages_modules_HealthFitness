@@ -19,8 +19,8 @@ package com.android.healthconnect.controller.permissions.app
 
 import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -32,7 +32,7 @@ class LoadAppPermissionsStatusUseCase
 constructor(
     private val loadGrantedHealthPermissionsUseCase: IGetGrantedHealthPermissionsUseCase,
     private val healthPermissionReader: HealthPermissionReader,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) {
     suspend operator fun invoke(packageName: String): List<HealthPermissionStatus> =
         withContext(dispatcher) {
@@ -40,7 +40,9 @@ constructor(
             val grantedPermissions = loadGrantedHealthPermissionsUseCase(packageName)
             permissions.map { permission ->
                 HealthPermissionStatus(
-                    permission, grantedPermissions.contains(permission.toString()))
+                    permission,
+                    grantedPermissions.contains(permission.toString()),
+                )
             }
         }
 }

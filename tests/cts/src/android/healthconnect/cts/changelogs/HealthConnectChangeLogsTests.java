@@ -20,17 +20,17 @@ import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_I
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_MEDICATIONS;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
-import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.cts.utils.TestUtils.deleteRecords;
-import static android.healthconnect.cts.utils.TestUtils.deleteRecordsByIdFilter;
-import static android.healthconnect.cts.utils.TestUtils.getChangeLogToken;
-import static android.healthconnect.cts.utils.TestUtils.getChangeLogs;
-import static android.healthconnect.cts.utils.TestUtils.insertRecord;
-import static android.healthconnect.cts.utils.TestUtils.insertRecordAndGetId;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
-import static android.healthconnect.cts.utils.TestUtils.readRecords;
-import static android.healthconnect.cts.utils.TestUtils.updateRecords;
-import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteRecords;
+import static android.healthconnect.testing.cts.TestUtils.deleteRecordsByIdFilter;
+import static android.healthconnect.testing.cts.TestUtils.getChangeLogToken;
+import static android.healthconnect.testing.cts.TestUtils.getChangeLogs;
+import static android.healthconnect.testing.cts.TestUtils.insertRecord;
+import static android.healthconnect.testing.cts.TestUtils.insertRecordAndGetId;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.readRecords;
+import static android.healthconnect.testing.cts.TestUtils.updateRecords;
+import static android.healthconnect.testing.cts.TestUtils.verifyDeleteRecords;
 import static android.healthconnect.testing.shared.DataFactory.buildExerciseSession;
 import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
 import static android.healthconnect.testing.shared.DataFactory.getBasalMetabolicRateRecord;
@@ -47,8 +47,8 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.createAlle
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 
-import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -79,9 +79,9 @@ import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.platform.test.annotations.AppModeFull;
 import android.platform.test.annotations.RequiresFlagsDisabled;
 import android.platform.test.annotations.RequiresFlagsEnabled;
@@ -135,6 +135,15 @@ public class HealthConnectChangeLogsTests {
                                     deletedLog.getDeletedRecordId().equals(stringId),
                             "has matching string id");
 
+    private static final Correspondence<ChangeLogsResponse.DeletedMedicalResource, MedicalResource>
+            DELETED_MEDICAL_RESOURCE_CORRESPONDENCE =
+                    Correspondence.from(
+                            (deletedMedicalResource, medicalResource) ->
+                                    deletedMedicalResource
+                                            .getDeletedMedicalResourceId()
+                                            .equals(medicalResource.getId()),
+                            "has matching medical resource id");
+
     private static final Correspondence<StepsRecord, StepsRecord> STEPS_RECORD_CORRESPONDENCE =
             Correspondence.from(
                     (record1, record2) ->
@@ -185,7 +194,7 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_DEVELOPMENT_DATABASE,
+        FLAG_PHR_CHANGE_LOGS_DB,
     })
     public void testGetChangeLogToken_forMedicalResource_hasFieldsSet() {
         var dataOriginFilter = new DataOrigin.Builder().setPackageName("package.name").build();
@@ -204,7 +213,7 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsDisabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_DEVELOPMENT_DATABASE,
+        FLAG_PHR_CHANGE_LOGS_DB,
     })
     public void testGetChangeLogTokenRequest_emptyRecordTypes_throwsException() {
         Throwable thrown =
@@ -217,7 +226,7 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_DEVELOPMENT_DATABASE,
+        FLAG_PHR_CHANGE_LOGS_DB,
     })
     public void testGetChangeLogTokenRequest_emptyBothTypes_throwsException() {
         Throwable thrown =
@@ -232,7 +241,7 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_DEVELOPMENT_DATABASE,
+        FLAG_PHR_CHANGE_LOGS_DB,
     })
     public void testGetChangeLogTokenRequest_setBothTypes_throwsException_beforeBuild() {
         Throwable thrown =
@@ -384,7 +393,7 @@ public class HealthConnectChangeLogsTests {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
     public void testChangeLogs_noOperations_returnsEmptyChangelogs_phr()
             throws InterruptedException {
         ChangeLogTokenResponse tokenResponse =
@@ -417,7 +426,7 @@ public class HealthConnectChangeLogsTests {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
     public void testChangeLogs_insert_returnsUpsertedLogsOnly_phr() throws InterruptedException {
         ChangeLogTokenResponse tokenResponse =
                 getChangeLogToken(getChangeLogTokenRequestForTestMedicalResourceTypes().build());
@@ -458,7 +467,7 @@ public class HealthConnectChangeLogsTests {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
     public void testChangeLogs_insert_filterNonExistingDataOrigin_returnsEmptyLogs_phr()
             throws InterruptedException {
         ChangeLogTokenResponse tokenResponse =
@@ -504,6 +513,32 @@ public class HealthConnectChangeLogsTests {
     }
 
     @Test
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    public void testChangeLogs_insertAndDelete_filterNonExistingDataOrigin_returnsEmptyLogs_phr()
+            throws InterruptedException {
+        ChangeLogTokenResponse tokenResponse =
+                getChangeLogToken(
+                        getChangeLogTokenRequestForTestMedicalResourceTypes()
+                                .addDataOriginFilter(
+                                        new DataOrigin.Builder().setPackageName("random").build())
+                                .build());
+        ChangeLogsRequest changeLogsRequest =
+                new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
+
+        var dataSource = mPhrCtsTestUtils.createDataSource(getCreateMedicalDataSourceRequest());
+        List<MedicalResource> testMedicalResources = getTestMedicalResources(dataSource.getId());
+        mPhrCtsTestUtils.upsertMedicalResources(testMedicalResources);
+        mPhrCtsTestUtils.deleteResources(
+                testMedicalResources.stream().map(MedicalResource::getId).toList());
+        ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
+
+        assertThat(response.getUpsertedRecords()).isEmpty();
+        assertThat(response.getDeletedLogs()).isEmpty();
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
+    }
+
+    @Test
     public void testChangeLogs_insert_filterRecordType_returnsUpsertedLogs()
             throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
@@ -530,7 +565,7 @@ public class HealthConnectChangeLogsTests {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
     public void testChangeLogs_insert_filterMedicalResourceType_returnsUpsertedLogs_phr()
             throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
@@ -575,6 +610,30 @@ public class HealthConnectChangeLogsTests {
         assertThat(response.getUpsertedRecords()).isEmpty();
         assertThat(response.getUpsertedMedicalResources()).isEmpty();
         assertThat(response.getDeletedMedicalResources()).isEmpty();
+    }
+
+    @Test
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    public void testChangeLogs_insertAndDeleteDataById_returnsDeletedLogsOnly_phr()
+            throws InterruptedException {
+        ChangeLogTokenResponse tokenResponse =
+                getChangeLogToken(getChangeLogTokenRequestForTestMedicalResourceTypes().build());
+        ChangeLogsRequest changeLogsRequest =
+                new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
+
+        var dataSource = mPhrCtsTestUtils.createDataSource(getCreateMedicalDataSourceRequest());
+        List<MedicalResource> testMedicalResources = getTestMedicalResources(dataSource.getId());
+        mPhrCtsTestUtils.upsertMedicalResources(testMedicalResources);
+        mPhrCtsTestUtils.deleteResources(
+                testMedicalResources.stream().map(MedicalResource::getId).toList());
+        ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
+
+        assertThat(response.getUpsertedRecords()).isEmpty();
+        assertThat(response.getDeletedLogs()).isEmpty();
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources())
+                .comparingElementsUsing(DELETED_MEDICAL_RESOURCE_CORRESPONDENCE)
+                .containsExactlyElementsIn(testMedicalResources);
     }
 
     @Test
@@ -652,28 +711,6 @@ public class HealthConnectChangeLogsTests {
     }
 
     @Test
-    public void testChangeLogs_insertAndDelete_nonExistingDataOriginFilter_returnsEmptyLogs()
-            throws InterruptedException {
-        ChangeLogTokenResponse tokenResponse =
-                getChangeLogToken(
-                        getChangeLogTokenRequestForTestRecordTypes()
-                                .addDataOriginFilter(
-                                        new DataOrigin.Builder().setPackageName("random").build())
-                                .build());
-        ChangeLogsRequest changeLogsRequest =
-                new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
-
-        List<Record> testRecords = insertRecords(getTestRecords());
-        deleteRecords(testRecords);
-        ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
-
-        assertThat(response.getUpsertedRecords()).isEmpty();
-        assertThat(response.getDeletedLogs()).isEmpty();
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
-    }
-
-    @Test
     public void testChangeLogs_insertAndDelete_recordFilter_onlyReturnsDeletedLogsForRecordType()
             throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
@@ -701,6 +738,38 @@ public class HealthConnectChangeLogsTests {
                 .containsExactly(stepsRecord);
         assertThat(response.getUpsertedMedicalResources()).isEmpty();
         assertThat(response.getDeletedMedicalResources()).isEmpty();
+    }
+
+    @Test
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    public void testChangeLogs_insertAndDelete_onlyReturnsDeletedLogsForMedicalResourceType()
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        ChangeLogTokenResponse tokenResponse =
+                getChangeLogToken(
+                        new ChangeLogTokenRequest.Builder()
+                                .addDataOriginFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .addMedicalResourceType(MEDICAL_RESOURCE_TYPE_VACCINES)
+                                .build());
+        ChangeLogsRequest changeLogsRequest =
+                new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
+
+        var dataSource = mPhrCtsTestUtils.createDataSource(getCreateMedicalDataSourceRequest());
+        List<MedicalResource> testMedicalResources = getTestMedicalResources(dataSource.getId());
+        mPhrCtsTestUtils.upsertMedicalResources(testMedicalResources);
+        mPhrCtsTestUtils.deleteResources(
+                testMedicalResources.stream().map(MedicalResource::getId).toList());
+        ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
+
+        assertThat(response.getUpsertedRecords()).isEmpty();
+        assertThat(response.getDeletedLogs()).isEmpty();
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources())
+                .comparingElementsUsing(DELETED_MEDICAL_RESOURCE_CORRESPONDENCE)
+                .containsExactly(testMedicalResources.get(0));
     }
 
     @Test
@@ -819,6 +888,7 @@ public class HealthConnectChangeLogsTests {
     }
 
     @Test
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
     public void testChangeLogs_noOperations_withPageSize_returnsEmptyChangeLogs_phr()
             throws InterruptedException {
         ChangeLogTokenResponse tokenResponse =
@@ -851,6 +921,7 @@ public class HealthConnectChangeLogsTests {
     }
 
     @Test
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
     public void testChangeLogs_insert_withPageSize_doesNotExceedPageSize_phr()
             throws InterruptedException {
         ChangeLogTokenResponse tokenResponse =

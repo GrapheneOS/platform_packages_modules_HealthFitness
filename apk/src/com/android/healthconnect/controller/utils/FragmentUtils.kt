@@ -53,7 +53,9 @@ fun Fragment.setupMenu(
 
     val hiltEntryPoint =
         EntryPointAccessors.fromApplication(
-            requireContext().applicationContext, DeviceInfoUtilsEntryPoint::class.java)
+            requireContext().applicationContext,
+            DeviceInfoUtilsEntryPoint::class.java,
+        )
 
     deviceInfoUtils = hiltEntryPoint.deviceInfoUtils()
 
@@ -85,14 +87,17 @@ fun Fragment.setupMenu(
         }
 
     (requireActivity() as MenuHost).addMenuProvider(
-        menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        menuProvider,
+        viewLifecycleOwner,
+        Lifecycle.State.RESUMED,
+    )
 }
 
 fun Fragment.setupSharedMenu(
     viewLifecycleOwner: LifecycleOwner,
     logger: HealthConnectLogger? = null,
     @MenuRes menuRes: Int = R.menu.send_feedback_and_help,
-    onMenuItemSelected: (MenuItem) -> Boolean = { false }
+    onMenuItemSelected: (MenuItem) -> Boolean = { false },
 ) {
     setupMenu(menuRes, viewLifecycleOwner, logger, onMenuItemSelected)
 }
@@ -114,9 +119,13 @@ fun Fragment.dismissLoadingDialog() {
  *
  * @return {@code true} if the activity was successfully launched. Otherwise, {@code false}.
  */
-fun Fragment.tryLaunchAppOnboardingActivity(healthPermissionReader: HealthPermissionReader, packageName: String): Boolean {
+fun Fragment.tryLaunchAppOnboardingActivity(
+    healthPermissionReader: HealthPermissionReader,
+    packageName: String,
+): Boolean {
     if (launchOnboardingActivity()) {
-        val maybeOnboardingIntent = healthPermissionReader.getOnboardingActivityIntent(requireContext(), packageName)
+        val maybeOnboardingIntent =
+            healthPermissionReader.getOnboardingActivityIntent(requireContext(), packageName)
         if (maybeOnboardingIntent != null) {
             activity?.startActivity(maybeOnboardingIntent)
             return true

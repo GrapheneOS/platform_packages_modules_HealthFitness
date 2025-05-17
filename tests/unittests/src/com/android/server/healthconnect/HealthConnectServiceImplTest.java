@@ -58,10 +58,10 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.getUpsertM
 import static android.healthconnect.testing.unittest.TaskUtils.waitForAllScheduledTasksToComplete;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
-import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE;
 import static com.android.healthfitness.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_STATE_KEY;
@@ -455,7 +455,9 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getExportImportLogger(),
                         healthConnectInjector.getHealthFitnessStatsLog(),
                         healthConnectInjector.getBackupRestoreLogger(),
-                        healthConnectInjector.getExportImportNotificationFactory());
+                        healthConnectInjector.getExportImportNotificationFactory(),
+                        healthConnectInjector.getCloudBackupManager(),
+                        healthConnectInjector.getCloudRestoreManager());
         mBackupRestore = healthConnectInjector.getBackupRestore();
     }
 
@@ -2517,7 +2519,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
     public void testGetChangeLogs_emptyToken_phrFlagOn_throwsIllegalArgumentException()
             throws Exception {
         // Grant permissions to pass initial checks
@@ -2554,7 +2556,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_DEVELOPMENT_DATABASE})
+    @DisableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
     public void testGetChangeLogs_emptyToken_phrFlagOff_throwsIllegalArgumentException()
             throws Exception {
         // Grant permissions to pass initial checks

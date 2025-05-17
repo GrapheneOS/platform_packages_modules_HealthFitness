@@ -355,6 +355,21 @@ public class HealthConnectManager {
     public static final String ACTION_SHOW_ONBOARDING =
             "android.health.connect.action.SHOW_ONBOARDING";
 
+    /**
+     * Activity action: Launch UI to prompt user to connect more apps with Health Connect.
+     *
+     * <p>Health Connect will show a list of fitness apps which are compatible but not connected (no
+     * read or write permissions granted).
+     *
+     * <p class="note">The intent will launch an activity owned by HC, that is guarded with {@link
+     * HealthPermissions#MANAGE_HEALTH_DATA_PERMISSION}.
+     *
+     * @hide
+     */
+    @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    public static final String ACTION_SYNC_MORE_APPS =
+            "android.health.connect.action.SYNC_MORE_APPS";
+
     private static final String TAG = "HealthConnectManager";
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
 

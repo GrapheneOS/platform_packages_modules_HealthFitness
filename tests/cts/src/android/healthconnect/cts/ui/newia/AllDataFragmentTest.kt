@@ -35,7 +35,7 @@ import android.healthconnect.cts.lib.UiTestUtils.scrollUpTo
 import android.healthconnect.cts.lib.UiTestUtils.verifyObjectNotFound
 import android.healthconnect.cts.lib.UiTestUtils.waitDisplayed
 import android.healthconnect.cts.ui.HealthConnectBaseTest
-import android.healthconnect.cts.utils.TestUtils
+import android.healthconnect.testing.cts.TestUtils
 import android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadata
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider

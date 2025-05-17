@@ -54,6 +54,7 @@
                 <action android:name="android.health.connect.action.HEALTH_HOME_SETTINGS" />
                 <action android:name="android.health.connect.action.MANAGE_HEALTH_DATA" />
                 <action android:name="android.health.connect.action.SKIP_HEALTH_CONNECT_ONBOARDING" />
+                <action android:name="android.health.connect.action.SYNC_MORE_APPS"/>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -103,6 +104,15 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.health.connect.action.MIGRATION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".onboarding.ConnectAppsOnboardingActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.health.connect.action.SYNC_MORE_APPS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

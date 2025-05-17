@@ -677,6 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 repetition}other{# repetitioner}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 repetition}other{# repetitioner}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Träningssegment"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Ställ in <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"Grad av upplevd ansträngning: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"Grad av upplevd ansträngning"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"Varv"</string>
     <string name="back_extension" msgid="426518933137440577">"Ryggresning"</string>
     <string name="badminton" msgid="8839727076522086870">"Badminton"</string>
@@ -1026,7 +1031,7 @@
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Knapp för att dra och byta plats på <xliff:g id="SELECTED_APP">%s</xliff:g> i prioritetslistan"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Knapp för att ta bort <xliff:g id="SELECTED_APP">%s</xliff:g> från prioritetslistan"</string>
     <string name="see_actions_button_content_description" msgid="2004104767369363475">"Knapp för att byta plats på eller ta bort <xliff:g id="SELECTED_APP">%s</xliff:g> från listan över appkällor"</string>
-    <string name="reorder_button_action_description" msgid="5197462036756192214">"Tryck snabbt två gånger och dra för att ändra ordning"</string>
+    <string name="reorder_button_action_description" msgid="5197462036756192214">"Dubbeltryck och dra för att ändra ordning"</string>
     <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="SELECTED_APP">%2$s</xliff:g> har plats <xliff:g id="POSITION">%1$s</xliff:g> i listan"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"träning, hälsa"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"behörigheter"</string>

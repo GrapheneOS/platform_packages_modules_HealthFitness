@@ -20,7 +20,7 @@ import android.healthconnect.cts.lib.UiTestUtils.findText
 import android.healthconnect.cts.lib.UiTestUtils.navigateToAppPermissions
 import android.healthconnect.cts.lib.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.cts.ui.HealthConnectBaseTest
-import android.healthconnect.cts.utils.TestUtils
+import android.healthconnect.testing.cts.TestUtils
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import org.junit.Before

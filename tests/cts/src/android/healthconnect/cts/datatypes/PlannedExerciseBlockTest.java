@@ -23,8 +23,8 @@ import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.PlannedExerciseBlock;
 import android.health.connect.datatypes.PlannedExerciseStep;
 import android.health.connect.datatypes.units.Length;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 

@@ -22,17 +22,10 @@ import static com.android.server.healthconnect.device.DeviceRecordHelper.DEVICE_
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.health.connect.accesslog.AccessLog;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
@@ -40,6 +33,7 @@ import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.mocks.AndroidPackageMocker;
 import android.os.UserHandle;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
@@ -86,9 +80,7 @@ public class DeviceRecordHelperTest {
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private AppOpLogsHelper mAppOpLogsHelper;
     @Mock private Context mContext;
-    @Mock private Drawable mDrawable;
 
-    @Mock private PackageManager mPackageManager;
     private static final String TEST_PACKAGE_NAME = "package.name";
     private UserHandle mUserHandle;
     private DeviceRecordHelper mDeviceRecordHelper;
@@ -112,19 +104,7 @@ public class DeviceRecordHelperTest {
     @Before
     public void setup() throws PackageManager.NameNotFoundException {
         mContext = spy(InstrumentationRegistry.getInstrumentation().getContext());
-        // This is required as AppInfoHelper derives its context via this method.
-        doReturn(mContext).when(mContext).createContextAsUser(any(), anyInt());
-        when(mContext.getPackageManager()).thenReturn(mPackageManager);
-        // The "android" package is always present on real devices, however Robolectric does not
-        // attempt to simulate this, so we need to mock it here.
-        ApplicationInfo fakeSystemPackage = new ApplicationInfo();
-        doReturn(fakeSystemPackage)
-                .when(mPackageManager)
-                .getApplicationInfo(eq(DEVICE_DATA_PROVIDER_PACKAGE), any());
-        doReturn("Android System").when(mPackageManager).getApplicationLabel(fakeSystemPackage);
-        when(mDrawable.getIntrinsicHeight()).thenReturn(200);
-        when(mDrawable.getIntrinsicWidth()).thenReturn(200);
-        doReturn(mDrawable).when(mPackageManager).getApplicationIcon(fakeSystemPackage);
+        AndroidPackageMocker.addToContext(mContext);
         mUserHandle = mContext.getUser();
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)

@@ -256,6 +256,9 @@ filegroup {
 android_test {
     name: "HealthConnectControllerHomePageAndOnboardingTests",
     srcs: [":home-and-onboarding-tests-srcs"],
+    static_libs: [
+        "HealthConnectOnboardingApis",
+    ],
     defaults: ["health-connect-controller-tests-default"],
     manifest_values: {
         applicationId: "com.android.healthconnect.controller.tests.home.and.onboarding",
@@ -393,6 +396,7 @@ android_test {
         "SafetyCenterTests",
         "HealthConnectMigrationApis",
         "HealthConnectExportApis",
+        "HealthConnectOnboardingApis",
     ],
     test_suites: [
         "general-tests",

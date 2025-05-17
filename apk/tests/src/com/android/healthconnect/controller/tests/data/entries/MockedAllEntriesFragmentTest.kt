@@ -37,11 +37,11 @@ import com.android.healthconnect.controller.data.appdata.AppDataFragment.Compani
 import com.android.healthconnect.controller.data.entries.AllEntriesFragment
 import com.android.healthconnect.controller.data.entries.EntriesViewModel
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.STEPS
-import com.android.healthconnect.controller.service.DefaultDispatcher
 import com.android.healthconnect.controller.service.DispatcherModule
 import com.android.healthconnect.controller.service.HealthManagerModule
-import com.android.healthconnect.controller.service.IoDispatcher
-import com.android.healthconnect.controller.service.MainDispatcher
+import com.android.healthconnect.controller.shared.usecase.DefaultDispatcher
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.MainDispatcher
 import com.android.healthconnect.controller.tests.utils.CoroutineTestRule
 import com.android.healthconnect.controller.tests.utils.FakeParentFragment
 import com.android.healthconnect.controller.tests.utils.NESTED_FRAGMENT_TAG
@@ -81,12 +81,9 @@ import org.mockito.invocation.InvocationOnMock
 @HiltAndroidTest
 class MockedAllEntriesFragmentTest {
 
-    @get:Rule
-    val coroutineTestRule = CoroutineTestRule()
-    @get:Rule
-    val hiltRule = HiltAndroidRule(this)
-    @BindValue
-    val manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
+    @get:Rule val coroutineTestRule = CoroutineTestRule()
+    @get:Rule val hiltRule = HiltAndroidRule(this)
+    @BindValue val manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
     private val NOW: Instant =
         LocalDate.now(ZoneId.systemDefault())
             .atStartOfDay()
@@ -385,7 +382,7 @@ class MockedAllEntriesFragmentTest {
     }
 
     private fun prepareStepsAggregationAnswer():
-                (InvocationOnMock) -> AggregateRecordsResponse<Long> {
+        (InvocationOnMock) -> AggregateRecordsResponse<Long> {
         val answer = { args: InvocationOnMock ->
             val receiver = args.arguments[2] as OutcomeReceiver<AggregateRecordsResponse<Long>, *>
             receiver.onResult(getStepsAggregationResponse())
@@ -395,27 +392,29 @@ class MockedAllEntriesFragmentTest {
     }
 
     private fun getStepsAggregationResponse(): AggregateRecordsResponse<Long> {
-        val aggregationResult = AggregateResult<Long>(
-            60, null,
-            AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME))
-        );
+        val aggregationResult =
+            AggregateResult<Long>(
+                60,
+                null,
+                AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME)),
+            )
         return AggregateRecordsResponse<Long>(
             mapOf(
                 AggregationType.AggregationTypeIdentifier.STEPS_RECORD_COUNT_TOTAL to
-                        aggregationResult
+                    aggregationResult
             )
         )
     }
 
     private fun getStepsCadence(samples: List<Double>): StepsCadenceRecord {
         return StepsCadenceRecord.Builder(
-            getMetaDataWithUniqueIds(),
-            NOW,
-            NOW.plusSeconds(samples.size.toLong() + 1),
-            samples.map { rate ->
-                StepsCadenceRecord.StepsCadenceRecordSample(rate, NOW.plusSeconds(1))
-            },
-        )
+                getMetaDataWithUniqueIds(),
+                NOW,
+                NOW.plusSeconds(samples.size.toLong() + 1),
+                samples.map { rate ->
+                    StepsCadenceRecord.StepsCadenceRecordSample(rate, NOW.plusSeconds(1))
+                },
+            )
             .build()
     }
 
@@ -426,9 +425,7 @@ class MockedAllEntriesFragmentTest {
         @Provides
         fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
-        @IoDispatcher
-        @Provides
-        fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.Main
+        @IoDispatcher @Provides fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
         @MainDispatcher
         @Provides

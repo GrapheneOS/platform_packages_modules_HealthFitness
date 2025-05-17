@@ -74,7 +74,6 @@ android_test {
         "healthfitness-testing-shared",
     ],
     srcs: [
-        ":healthfitness-permissions-testapp-srcs",
         "src/**/*.java",
     ],
     exclude_srcs: [

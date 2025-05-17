@@ -15,10 +15,10 @@
  */
 package com.android.healthconnect.controller.selectabledeletion
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
@@ -26,7 +26,7 @@ import com.android.healthconnect.controller.utils.logging.ProgressDialogElement
 
 class DeletionLoadingDialogFragment : DialogFragment() {
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val view: View = layoutInflater.inflate(R.layout.dialog_progress, null)
         val title = view.findViewById<TextView>(R.id.progress_indicator_title)
         title.setText(R.string.delete_progress_indicator)

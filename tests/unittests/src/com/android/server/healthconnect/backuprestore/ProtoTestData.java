@@ -74,7 +74,6 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.L
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstruationFlow;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstruationPeriod;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MindfulnessSession;
-import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.NicotineIntake;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Nutrition;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.OvulationTest;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.OxygenSaturation;
@@ -256,12 +255,6 @@ final class ProtoTestData {
                             .setIntervalRecord(
                                     generateIntervalRecord()
                                             .setMindfulnessSession(generateMindfulnessSession()))
-                            .build();
-            case RecordTypeIdentifier.RECORD_TYPE_NICOTINE_INTAKE ->
-                    generateCoreRecord()
-                            .setIntervalRecord(
-                                    generateIntervalRecord()
-                                            .setNicotineIntake(generateNicotineIntake()))
                             .build();
             case RecordTypeIdentifier.RECORD_TYPE_NUTRITION ->
                     generateCoreRecord()
@@ -446,6 +439,7 @@ final class ProtoTestData {
         return ExerciseSession.newBuilder()
                 .setExerciseType(EXERCISE_SESSION_TYPE_STRENGTH_TRAINING)
                 .setHasRoute(true)
+                .setSessionRateOfPerceivedExertion(4.5f)
                 .setRoute(
                         ExerciseRoute.newBuilder()
                                 .addRouteLocation(
@@ -468,7 +462,10 @@ final class ProtoTestData {
                                 .setStartTime(123456)
                                 .setEndTime(654321)
                                 .setSegmentType(EXERCISE_SEGMENT_TYPE_DEADLIFT)
-                                .setRepetitionsCount(10))
+                                .setRepetitionsCount(10)
+                                .setWeight(5000)
+                                .setSetIndex(1)
+                                .setRateOfPerceivedExertion(5.5f))
                 .build();
     }
 
@@ -518,10 +515,6 @@ final class ProtoTestData {
 
     static MindfulnessSession generateMindfulnessSession() {
         return MindfulnessSession.newBuilder().build();
-    }
-
-    static NicotineIntake generateNicotineIntake() {
-        return NicotineIntake.newBuilder().setNicotineIntake(0.12).build();
     }
 
     static Nutrition generateNutrition() {

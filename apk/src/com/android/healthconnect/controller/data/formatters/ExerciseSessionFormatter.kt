@@ -241,16 +241,22 @@ constructor(
 
     private fun formatSegmentTitle(repetitionsCount: Int, type: Int): String {
         val segmentType = exerciseSegmentTypeFormatter.getSegmentType(type)
-        val repetitions =
-            format(context.getString(R.string.repetitions), mapOf("count" to repetitionsCount))
-        return context.getString(R.string.repetitions_format, segmentType, repetitions)
+        if (repetitionsCount != 0 || !AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
+            val repetitions =
+                format(context.getString(R.string.repetitions), mapOf("count" to repetitionsCount))
+            return context.getString(R.string.repetitions_format, segmentType, repetitions)
+        }
+        return segmentType
     }
 
     private fun formatSegmentTitleA11y(repetitionsCount: Int, type: Int): String {
         val segmentType = exerciseSegmentTypeFormatter.getSegmentType(type)
-        val repetitions =
+        if (repetitionsCount != 0 || !AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
+            val repetitions =
             format(context.getString(R.string.repetitions_long), mapOf("count" to repetitionsCount))
-        return context.getString(R.string.repetitions_format, segmentType, repetitions)
+            return context.getString(R.string.repetitions_format, segmentType, repetitions)
+        }
+        return segmentType
     }
 
     private fun buildSessionRpeFormattedEntry(

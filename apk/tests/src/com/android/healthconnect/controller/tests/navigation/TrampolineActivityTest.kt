@@ -60,6 +60,8 @@ import com.android.healthconnect.controller.migration.api.MigrationRestoreState.
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
 import com.android.healthconnect.controller.navigation.TrampolineActivity
+import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
+import com.android.healthconnect.controller.onboarding.OnboardingViewModel
 import com.android.healthconnect.controller.permissions.additionalaccess.AdditionalAccessViewModel
 import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
@@ -73,6 +75,7 @@ import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP
+import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
@@ -118,6 +121,8 @@ class TrampolineActivityTest {
     @BindValue
     val recentAccessViewModel: RecentAccessViewModel = mock(RecentAccessViewModel::class.java)
     private val context = InstrumentationRegistry.getInstrumentation().context
+
+    @BindValue val onboardingViewModel: OnboardingViewModel = mock(OnboardingViewModel::class.java)
 
     @Before
     fun setup() {
@@ -241,6 +246,19 @@ class TrampolineActivityTest {
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData(RecentAccessViewModel.RecentAccessState.WithData(listOf()))
         }
+        whenever(onboardingViewModel.connectedApps).then {
+            MutableLiveData(
+                OnboardingViewModel.OnboardingFragmentState.WithData(
+                    listOf(
+                        ConnectedFitnessAppMetadata(TEST_APP, false),
+                        ConnectedFitnessAppMetadata(TEST_APP_2, false),
+                    )
+                )
+            )
+        }
+        whenever(onboardingViewModel.onboardingBannerState).then {
+            MediatorLiveData(OnboardingViewModel.OnboardingBannerState.NoOnboardingBanner)
+        }
     }
 
     @Test
@@ -282,6 +300,20 @@ class TrampolineActivityTest {
             onIdle()
             onView(withId(R.id.onboarding)).check((doesNotExist()))
         }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_ONBOARDING)
+    fun syncMoreAppsAction_showsConnectAppsOnboarding() {
+        // TODO (b/416731816) replace with correct action
+        launchActivityForResult<TrampolineActivity>(
+                createStartIntent("android.health.connect.action.SYNC_MORE_APPS")
+            )
+            .use {
+                onIdle()
+                onView(withText("Connect your first 2 apps")).check(matches(isDisplayed()))
+                onView(withText(TEST_APP.appName)).check(matches(isDisplayed()))
+            }
     }
 
     @Test

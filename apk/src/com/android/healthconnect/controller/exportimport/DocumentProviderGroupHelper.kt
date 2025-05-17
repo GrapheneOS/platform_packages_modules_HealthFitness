@@ -213,7 +213,7 @@ class DocumentProviderGroupHelper(
         // TODO: b/339189778 - Add proper logging for the account picker dialog.
         AlertDialogBuilder(inflater.context, UnknownGenericElement.UNKNOWN_DIALOG)
             .setView(view)
-            .setNeutralButton(
+            .setNegativeButton(
                 R.string.export_import_choose_account_cancel_button,
                 UnknownGenericElement.UNKNOWN_DIALOG_NEUTRAL_BUTTON,
             )

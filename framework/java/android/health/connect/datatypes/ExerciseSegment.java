@@ -22,6 +22,7 @@ import static android.health.connect.Constants.DEFAULT_INT;
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS;
 
 import android.annotation.FlaggedApi;
+import android.annotation.FloatRange;
 import android.annotation.IntRange;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -95,8 +96,6 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
      * Gets the weight associated with this exercise segment.
      *
      * <p>Returns {@code null} if weight is not set.
-     *
-     * @hide
      */
     @Nullable
     @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
@@ -128,7 +127,6 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
      * segments can share the same set index.
      *
      * @throws IllegalStateException if set index is not set.
-     * @hide
      */
     @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
     public int getSetIndex() {
@@ -142,8 +140,6 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
 
     /**
      * Returns true if this segment has an associated set index.
-     *
-     * @hide
      */
     @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
     public boolean hasSetIndex() {
@@ -160,9 +156,9 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
      * <p>Use {@link #hasRateOfPerceivedExertion} to check whether RPE exists for this segment.
      *
      * @throws IllegalStateException if rate of perceived exertion is not set.
-     * @hide
      */
     @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+    @FloatRange(from = 0, to = 10, fromInclusive = true, toInclusive = true)
     public float getRateOfPerceivedExertion() {
         if (mRateOfPerceivedExertion == DEFAULT_FLOAT) {
             throw new IllegalStateException(
@@ -174,8 +170,6 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
 
     /**
      * Returns true if this segment has an associated rate of perceived exertion.
-     *
-     * @hide
      */
     @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
     public boolean hasRateOfPerceivedExertion() {
@@ -293,8 +287,6 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
          * <p>Weight must be at least zero and not more than 2500kg.
          *
          * <p>Returns builder instance with weight set.
-         *
-         * @hide
          */
         @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
         @NonNull
@@ -312,9 +304,7 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
         /**
          * Clears the weight for this exercise segment.
          *
-         * <p>Returns builder instance with weight set.
-         *
-         * @hide
+         * <p>Returns builder instance with weight unset.
          */
         @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
         @NonNull
@@ -341,8 +331,6 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
          * setIndex values of 0, 1, 2, 0, 1, 2 would be expected for those segments.
          *
          * <p>Returns builder instance with set index set.
-         *
-         * @hide
          */
         @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
         @NonNull
@@ -357,9 +345,7 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
         /**
          * Clears the set index for this exercise segment.
          *
-         * <p>Returns builder instance without set index set.
-         *
-         * @hide
+         * <p>Returns builder instance with set index unset.
          */
         @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
         @NonNull
@@ -376,12 +362,12 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
          * Very hard 10: Maximum effort
          *
          * <p>Returns builder instance with rate of perceived exertion set.
-         *
-         * @hide
          */
         @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
         @NonNull
-        public Builder setRateOfPerceivedExertion(float rateOfPerceivedExertion) {
+        public Builder setRateOfPerceivedExertion(
+                @FloatRange(from = 0, to = 10, fromInclusive = true, toInclusive = true)
+                        float rateOfPerceivedExertion) {
             if ((rateOfPerceivedExertion < 0 || rateOfPerceivedExertion > 10)) {
                 throw new IllegalArgumentException(
                         "Rate of perceived exertion must be in the range 0 to 10 inclusive");
@@ -393,9 +379,7 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
         /**
          * Clears the rate of perceived exertion for this exercise segment.
          *
-         * <p>Returns builder instance without rate of perceived exertion.
-         *
-         * @hide
+         * <p>Returns builder instance with rate of perceived exertion unset.
          */
         @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
         @NonNull

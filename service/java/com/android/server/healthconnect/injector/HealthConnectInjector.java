@@ -25,6 +25,8 @@ import androidx.annotation.VisibleForTesting;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
+import com.android.server.healthconnect.backuprestore.CloudBackupManager;
+import com.android.server.healthconnect.backuprestore.CloudRestoreManager;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
@@ -58,6 +60,7 @@ import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
+import com.android.server.healthconnect.onboarding.OnboardingNotificationSender;
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -126,6 +129,12 @@ public abstract class HealthConnectInjector {
      * Injector.
      */
     public abstract OnboardingStateManager getOnboardingStateManager();
+
+    /**
+     * Getter for {@link OnboardingNotificationSender} instance initialised by the Health Connect
+     * Injector.
+     */
+    public abstract OnboardingNotificationSender getOnboardingNotificationSender();
 
     /** Getter for {@link DeviceInfoHelper} instance initialised by the Health Connect Injector. */
     public abstract DeviceInfoHelper getDeviceInfoHelper();
@@ -339,6 +348,18 @@ public abstract class HealthConnectInjector {
      * Injector.
      */
     public abstract ExportImportNotificationFactory getExportImportNotificationFactory();
+
+    /**
+     * Getter for {@link CloudBackupManager} instance initialised by the Health Connect Injector.
+     */
+    @Nullable
+    public abstract CloudBackupManager getCloudBackupManager();
+
+    /**
+     * Getter for {@link CloudRestoreManager} instance initialised by the Health Connect Injector.
+     */
+    @Nullable
+    public abstract CloudRestoreManager getCloudRestoreManager();
 
     /** Used to initialize the Injector. */
     public static void setInstance(HealthConnectInjector healthConnectInjector) {

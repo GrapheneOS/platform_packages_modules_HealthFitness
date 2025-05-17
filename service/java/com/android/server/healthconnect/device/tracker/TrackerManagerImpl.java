@@ -21,7 +21,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
+import android.os.UserManager;
 import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
@@ -29,6 +31,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 
 import java.util.List;
@@ -48,30 +51,61 @@ public class TrackerManagerImpl implements TrackerManager {
 
     private final Context mContext;
     private final HealthConnectPermissionHelper mPermissionHelper;
+    private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     private final StepSensorEventListener mListener;
+    private final UserManager mUserManager;
 
     public TrackerManagerImpl(
             Context context,
             HealthConnectPermissionHelper permissionHelper,
             HealthConnectThreadScheduler threadScheduler,
             DeviceRecordHelper deviceRecordHelper,
-            DeviceDataSourcesHelper deviceDataSourcesHelper) {
+            DeviceDataSourcesHelper deviceDataSourcesHelper,
+            HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
+            UserManager userManager) {
         mContext = context;
         mPermissionHelper = permissionHelper;
+        mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
         mListener =
                 new StepSensorEventListener(
                         mContext, threadScheduler, deviceRecordHelper, deviceDataSourcesHelper);
+        mUserManager = userManager;
     }
 
     @Override
     public void initialize() {
         if (!Flags.stepTrackingEnabled()) {
+            Slog.d(TAG, "Step tracking flag disabled. Aborting initialization.");
+            return;
+        }
+
+        if (mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_WATCH)) {
+            // Health Connect runs on Wear for permission management but we don't want to enable
+            // passive step tracking for it
+            return;
+        }
+
+        // Initialization should only be triggered when the user is unlocked.
+        if (!mUserManager.isUserUnlocked()) {
+            Slog.e(TAG, "User was expected to be unlocked but is not. Aborting initialization.");
             return;
         }
 
         if (packagesEligibleForStepTracking(mContext, mPermissionHelper).isEmpty()) {
+            Slog.d(TAG, "No packages eligible for step tracking. Aborting initialization.");
+            unsubscribeFromSensorManager();
             return;
         }
+
+        // Normally, this is carried out whenever an app is granted permissions. Since no
+        // permissions are involved for step tracking, we need to do it here.
+        // This also has the effect of adding the "android" package to the app info table.
+        // Note: this is idempotent and can be called for every initialization.
+        Slog.d(TAG, "Adding device data provider package to app priority list.");
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE,
+                HealthDataCategory.ACTIVITY,
+                mContext.getUser());
 
         subscribeToSensorManager();
     }
@@ -144,6 +178,21 @@ public class TrackerManagerImpl implements TrackerManager {
         return !isPregrantedPermission;
     }
 
+    private void unsubscribeFromSensorManager() {
+        if (android.health.connect.Constants.DEBUG) {
+            Slog.d(TAG, "Calling unsubscribeFromSensorManager()");
+        }
+
+        // TODO(b/413703946): Check that the sensor service is always initialised before this call.
+        SensorManager sensorManager = mContext.getSystemService(SensorManager.class);
+        if (sensorManager == null) {
+            Slog.e(TAG, "SensorManager is null");
+            return;
+        }
+
+        sensorManager.unregisterListener(mListener);
+    }
+
     private void subscribeToSensorManager() {
         if (android.health.connect.Constants.DEBUG) {
             Slog.d(TAG, "Calling subscribeToSensorManager()");
@@ -162,6 +211,7 @@ public class TrackerManagerImpl implements TrackerManager {
             return;
         }
 
+        // TODO(b/397420313): Check that this subscription is successful
         sensorManager.registerListener(
                 mListener, stepCounterSensor, SAMPLING_PERIOD_US, MAX_REPORT_LATENCY_US);
     }

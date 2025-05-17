@@ -19,14 +19,12 @@ package android.healthconnect.cts.backgroundread;
 import static android.health.connect.HealthConnectException.ERROR_SECURITY;
 import static android.health.connect.HealthDataCategory.ACTIVITY;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
-import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.cts.utils.TestUtils.getRecordIds;
-import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.getRecordIds;
+import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
 import static android.healthconnect.testing.shared.DataFactory.NOW;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecordWithEmptyMetaData;
-
-import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -37,7 +35,6 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.util.Objects.requireNonNull;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.InsertRecordsResponse;
@@ -51,10 +48,9 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.cts.lib.TestAppProxy;
 import android.healthconnect.cts.lib.TestAppRule;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.HealthConnectReceiver;
-import android.healthconnect.cts.utils.PermissionHelper;
+import android.healthconnect.testing.cts.HealthConnectReceiver;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -74,7 +70,6 @@ public class BackgroundReadTest {
     private static final String PKG_TEST_APP = "android.healthconnect.cts.testapp.readWritePerms.A";
 
     private Context mContext;
-    private PackageManager mPackageManager;
     private HealthConnectManager mManager;
     private TestAppProxy mTestApp;
 
@@ -86,12 +81,14 @@ public class BackgroundReadTest {
 
     @Rule(order = 1)
     public final TestAppRule mTestAppRule =
-            new TestAppRule.Builder(PKG_TEST_APP).setInBackground(true).build();
+            new TestAppRule.Builder(PKG_TEST_APP)
+                    .setInBackground(true)
+                    .revokeHealthPermission(READ_HEALTH_DATA_IN_BACKGROUND)
+                    .build();
 
     @Before
     public void setUp() throws Exception {
         mContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        mPackageManager = mContext.getPackageManager();
         mManager = requireNonNull(mContext.getSystemService(HealthConnectManager.class));
         mTestApp = mTestAppRule.getProxy();
 
@@ -106,7 +103,6 @@ public class BackgroundReadTest {
     @Test
     public void testReadRecordsByFilters_inBackgroundWithoutPermission_cannotReadOtherAppsData()
             throws Exception {
-        revokeBackgroundReadPermissionForTestApp();
         insertStepsRecordsDirectly(List.of(getStepsRecordWithEmptyMetaData()));
 
         // test app will try to read the step record inserted by this test
@@ -125,7 +121,6 @@ public class BackgroundReadTest {
     @Test
     public void testReadRecordsByFilters_inBackgroundWithoutPermission_canReadOwnData()
             throws Exception {
-        revokeBackgroundReadPermissionForTestApp();
         String insertedId = mTestApp.insertRecord(getStepsRecord(10, NOW, NOW.plus(1, MINUTES)));
 
         // test app will try to read the step record inserted by itself
@@ -142,7 +137,7 @@ public class BackgroundReadTest {
     @Test
     public void testReadRecordsByFilters_inBackgroundWithPermission_canReadBothOwnAndOtherAppsData()
             throws Exception {
-        grantBackgroundReadPermissionForTestApp();
+        mTestAppRule.grantHealthPermission(READ_HEALTH_DATA_IN_BACKGROUND);
         String idInsertedByThisTest =
                 insertStepsRecordsDirectly(List.of(getStepsRecordWithEmptyMetaData())).get(0);
         String idInsertedByTestApp =
@@ -167,7 +162,6 @@ public class BackgroundReadTest {
     @Test
     public void testReadRecordsByIds_inBackgroundWithoutPermission_canReadOnlyOwnData()
             throws Exception {
-        revokeBackgroundReadPermissionForTestApp();
         String idInsertedByThisTest =
                 insertStepsRecordsDirectly(List.of(getStepsRecordWithEmptyMetaData())).get(0);
         String idInsertedByTestApp =
@@ -188,7 +182,7 @@ public class BackgroundReadTest {
     @Test
     public void testReadRecordsByIds_inBackgroundWithPermission_canReadBothOwnAndOtherAppsData()
             throws Exception {
-        grantBackgroundReadPermissionForTestApp();
+        mTestAppRule.grantHealthPermission(READ_HEALTH_DATA_IN_BACKGROUND);
         String idInsertedByThisTest =
                 insertStepsRecordsDirectly(List.of(getStepsRecordWithEmptyMetaData())).get(0);
         String idInsertedByTestApp =
@@ -211,7 +205,6 @@ public class BackgroundReadTest {
     // apps' data which should fail.
     @Test
     public void testAggregate_inBackgroundWithoutPermission_expectSecurityError() throws Exception {
-        revokeBackgroundReadPermissionForTestApp();
         insertStepsRecordsDirectly(List.of(getStepsRecordWithEmptyMetaData())).get(0);
         mTestApp.insertRecord(getStepsRecord(10, NOW, NOW.plus(1, MINUTES)));
 
@@ -229,7 +222,7 @@ public class BackgroundReadTest {
     @Test
     public void testAggregate_inBackgroundWithPermission_canAggregateBothOwnAndOtherAppsData()
             throws Exception {
-        grantBackgroundReadPermissionForTestApp();
+        mTestAppRule.grantHealthPermission(READ_HEALTH_DATA_IN_BACKGROUND);
         long value1 = 10;
         long value2 = 5;
         StepsRecord stepsRecord1 = getStepsRecord(value1);
@@ -251,8 +244,6 @@ public class BackgroundReadTest {
 
     @Test
     public void testGetChangeLogs_inBackgroundWithoutPermission_securityError() throws Exception {
-        revokeBackgroundReadPermissionForTestApp();
-
         ChangeLogsRequest request = new ChangeLogsRequest.Builder("token").build();
         HealthConnectException thrown =
                 assertThrows(HealthConnectException.class, () -> mTestApp.getChangeLogs(request));
@@ -262,15 +253,13 @@ public class BackgroundReadTest {
 
     @Test
     public void testGetChangeLogs_inBackgroundWithPermission_success() throws Exception {
-        revokeBackgroundReadPermissionForTestApp();
-
         ChangeLogTokenRequest tokenRequest =
                 new ChangeLogTokenRequest.Builder()
                         .addRecordType(ActiveCaloriesBurnedRecord.class)
                         .build();
         String token = mTestApp.getChangeLogToken(tokenRequest);
 
-        grantBackgroundReadPermissionForTestApp();
+        mTestAppRule.grantHealthPermission(READ_HEALTH_DATA_IN_BACKGROUND);
 
         ChangeLogsRequest changeLogsRequest = new ChangeLogsRequest.Builder(token).build();
         mTestApp.getChangeLogs(changeLogsRequest);
@@ -283,16 +272,5 @@ public class BackgroundReadTest {
                         (executor, receiver) ->
                                 mManager.insertRecords(recordsToInsert, executor, receiver));
         return getRecordIds(response.getRecords());
-    }
-
-    private void grantBackgroundReadPermissionForTestApp() {
-        runWithShellPermissionIdentity(
-                () ->
-                        mPackageManager.grantRuntimePermission(
-                                PKG_TEST_APP, READ_HEALTH_DATA_IN_BACKGROUND, mContext.getUser()));
-    }
-
-    private void revokeBackgroundReadPermissionForTestApp() throws Exception {
-        PermissionHelper.revokeHealthPermission(PKG_TEST_APP, READ_HEALTH_DATA_IN_BACKGROUND);
     }
 }

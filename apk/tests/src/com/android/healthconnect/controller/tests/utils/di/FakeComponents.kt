@@ -54,6 +54,10 @@ import com.android.healthconnect.controller.exportimport.api.ITriggerImportUseCa
 import com.android.healthconnect.controller.exportimport.api.IUpdateExportSettingsUseCase
 import com.android.healthconnect.controller.exportimport.api.ImportUiState
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
+import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
+import com.android.healthconnect.controller.onboarding.ILoadFitnessPermissionAppsUseCase
+import com.android.healthconnect.controller.onboarding.api.ILoadOnboardingStateUseCase
+import com.android.healthconnect.controller.onboarding.api.OnboardingState
 import com.android.healthconnect.controller.permissions.additionalaccess.ExerciseRouteState
 import com.android.healthconnect.controller.permissions.additionalaccess.ILoadExerciseRoutePermissionUseCase
 import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState
@@ -635,5 +639,50 @@ class FakeLoadImportStatusUseCase : ILoadImportStatusUseCase {
 
     override suspend fun invoke(): ExportImportUseCaseResult<ImportUiState> {
         return ExportImportUseCaseResult.Success(importState)
+    }
+}
+
+class FakeLoadFitnessPermissionAppsUseCase : ILoadFitnessPermissionAppsUseCase {
+    private var connectedApps: List<ConnectedFitnessAppMetadata> = emptyList()
+    var invocations = 0
+
+    fun reset() {
+        connectedApps = emptyList()
+        invocations = 0
+    }
+
+    fun setConnectedApps(connectedApps: List<ConnectedFitnessAppMetadata>) {
+        this.connectedApps = connectedApps
+    }
+
+    override suspend fun execute(unit: Unit): List<ConnectedFitnessAppMetadata> {
+        return connectedApps
+    }
+
+    override suspend fun invoke(unit: Unit): UseCaseResults<List<ConnectedFitnessAppMetadata>> {
+        invocations += 1
+        return UseCaseResults.Success(connectedApps)
+    }
+}
+
+class FakeLoadOnboardingStateUseCase : ILoadOnboardingStateUseCase {
+    private var onboardingState = OnboardingState.ONBOARDING_BANNER_STATE_HIDE
+    var invocations = 0
+
+    fun reset() {
+        invocations = 0
+    }
+
+    fun setOnboardingBannerState(onboardingState: OnboardingState) {
+        this.onboardingState = onboardingState
+    }
+
+    override suspend fun execute(input: Unit): OnboardingState {
+        return onboardingState
+    }
+
+    override suspend fun invoke(input: Unit): UseCaseResults<OnboardingState> {
+        invocations += 1
+        return UseCaseResults.Success(onboardingState)
     }
 }

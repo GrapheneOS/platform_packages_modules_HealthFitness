@@ -16,7 +16,7 @@
 
 package android.healthconnect.testing.cts;
 
-import android.util.Slog;
+import android.util.Log;
 
 import com.android.compatibility.common.util.SystemUtil;
 
@@ -32,18 +32,18 @@ public class JobUtils {
 
     /** Runs the job with the given namespace if it has already been scheduled. */
     public static void runJobIfScheduled(String namespace) throws Exception {
-        runShellCommandForHCJob(namespace, "cancel -n");
+        runShellCommandForHCJob(namespace, "run -f -n");
     }
 
     /** Cancels the job with the given namespace if it has already been scheduled. */
     public static void cancelJobIfScheduled(String namespace) throws Exception {
-        runShellCommandForHCJob(namespace, "run -f -n");
+        runShellCommandForHCJob(namespace, "cancel -n");
     }
 
     private static void runShellCommandForHCJob(String namespace, String command) throws Exception {
         String dumpsysOutput = SystemUtil.runShellCommand("dumpsys jobscheduler");
         if (!isJobScheduled(namespace)) {
-            Slog.i(TAG, "No HC jobs scheduled for namespace: " + namespace);
+            Log.i(TAG, "No HC jobs scheduled for namespace: " + namespace);
             return;
         }
 
@@ -57,6 +57,6 @@ public class JobUtils {
                 SystemUtil.runShellCommand(
                         String.format(
                                 "cmd jobscheduler %s %s android %s", command, namespace, jobId));
-        Slog.i(TAG, "Run output: " + commandOutput);
+        Log.i(TAG, "Run output: " + commandOutput);
     }
 }

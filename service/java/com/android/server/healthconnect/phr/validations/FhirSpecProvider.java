@@ -257,9 +257,6 @@ public class FhirSpecProvider {
     /** Returns the {@code true} if the provided {@code fhirType} is a primitive type. */
     public boolean isPrimitiveType(R4FhirType fhirType) {
         return mPrimitiveTypes.contains(fhirType);
-
-        // TODO(b/377701407) After we extract a complex type config - throw exception if the spec is
-        //  not aware of the type.
     }
 
     private static FhirResourceSpec loadFhirResourceSpec(FhirVersion fhirVersion) {

@@ -6,7 +6,8 @@ option java_outer_classname = "BackupRestoreProto";
 
 message Settings {
   map<int32, PriorityList> priority_list = 1;
-  reserved 2; // export-import settings removed
+  // export-import settings are removed.
+  reserved 2;
   AutoDeleteFrequencyProto auto_delete_frequency = 3;
   EnergyUnitProto energy_unit_setting = 4;
   TemperatureUnitProto temperature_unit_setting = 5;
@@ -70,7 +71,8 @@ message BackupData {
 message Record {
   string uuid = 1;
   optional string package_name = 2;
-  reserved 3; // App name is removed.
+  // App name is removed.
+  reserved 3;
   int64 last_modified_time = 4;
   optional string client_record_id = 5;
   int64 client_record_version = 6;
@@ -103,7 +105,6 @@ message IntervalRecord {
     Hydration hydration = 109;
     MenstruationPeriod menstruation_period = 110;
     MindfulnessSession mindfulness_session = 111;
-    NicotineIntake nicotine_intake = 121;
     Nutrition nutrition = 112;
     PlannedExerciseSession planned_exercise_session = 113;
     Power power = 114;
@@ -225,6 +226,7 @@ message ExerciseSession {
   repeated ExerciseLap lap = 6;
   repeated ExerciseSegment segment = 7;
   optional string planned_exercise_session_id = 8;
+  optional float session_rate_of_perceived_exertion = 9;
 
   message ExerciseRoute {
     repeated Location route_location = 1;
@@ -250,6 +252,9 @@ message ExerciseSession {
     int64 end_time = 2;
     int32 segment_type = 3;
     int32 repetitions_count = 4;
+    optional double weight = 5;
+    optional int32 set_index = 6;
+    optional float rate_of_perceived_exertion = 7;
   }
 }
 
@@ -298,12 +303,6 @@ message MindfulnessSession {
   int32 mindfulness_session_type = 1;
   optional string title = 2;
   optional string notes = 3;
-}
-
-message NicotineIntake {
-  int32 nicotine_intake_type = 1;
-  int32 quantity = 2;
-  optional double nicotine_intake = 3;
 }
 
 message Nutrition {
@@ -523,7 +522,6 @@ message SleepSession {
     int64 start_time = 1;
     int64 end_time = 2;
     int32 stage_type = 3;
-
   }
 }
 

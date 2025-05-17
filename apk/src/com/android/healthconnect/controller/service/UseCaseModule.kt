@@ -65,6 +65,11 @@ import com.android.healthconnect.controller.exportimport.api.LoadScheduledExport
 import com.android.healthconnect.controller.exportimport.api.QueryDocumentProvidersUseCase
 import com.android.healthconnect.controller.exportimport.api.TriggerImportUseCase
 import com.android.healthconnect.controller.exportimport.api.UpdateExportSettingsUseCase
+import com.android.healthconnect.controller.onboarding.ILoadFitnessPermissionAppsUseCase
+import com.android.healthconnect.controller.onboarding.LoadFitnessPermissionAppsUseCase
+import com.android.healthconnect.controller.onboarding.api.HealthOnboardingManager
+import com.android.healthconnect.controller.onboarding.api.ILoadOnboardingStateUseCase
+import com.android.healthconnect.controller.onboarding.api.LoadOnboardingStateUseCase
 import com.android.healthconnect.controller.permissions.additionalaccess.ILoadExerciseRoutePermissionUseCase
 import com.android.healthconnect.controller.permissions.additionalaccess.LoadDeclaredHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.additionalaccess.LoadExerciseRoutePermissionUseCase
@@ -72,6 +77,7 @@ import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPerm
 import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
+import com.android.healthconnect.controller.permissions.app.LoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.connectedapps.LoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.shared.IQueryRecentAccessLogsUseCase
@@ -82,6 +88,7 @@ import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.GetContributorAppInfoUseCase
 import com.android.healthconnect.controller.shared.app.IGetContributorAppInfoUseCase
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.utils.TimeSource
 import dagger.Module
 import dagger.Provides
@@ -378,5 +385,28 @@ class UseCaseModule {
         healthDataImportManager: HealthDataImportManager
     ): ILoadImportStatusUseCase {
         return LoadImportStatusUseCase(healthDataImportManager)
+    }
+
+    @Provides
+    fun providesLoadFitnessPermissionAppsUseCase(
+        healthPermissionReader: HealthPermissionReader,
+        loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase,
+        appInfoReader: AppInfoReader,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
+    ): ILoadFitnessPermissionAppsUseCase {
+        return LoadFitnessPermissionAppsUseCase(
+            healthPermissionReader,
+            loadAppPermissionsStatusUseCase,
+            appInfoReader,
+            dispatcher,
+        )
+    }
+
+    @Provides
+    fun providesLoadOnboardingStateUseCase(
+        healthOnboardingManager: HealthOnboardingManager,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
+    ): ILoadOnboardingStateUseCase {
+        return LoadOnboardingStateUseCase(healthOnboardingManager, dispatcher)
     }
 }

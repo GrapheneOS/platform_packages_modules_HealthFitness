@@ -18,7 +18,6 @@ package com.android.server.healthconnect.onboarding;
 
 import static android.app.Notification.EXTRA_BIG_TEXT;
 import static android.app.Notification.EXTRA_TITLE;
-import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
 
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.CONNECT_MORE_APPS_NOTIFICATION_BUTTON;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.CONNECT_MORE_APPS_NOTIFICATION_CONTENT;
@@ -35,6 +34,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.os.UserHandle;
 
@@ -70,8 +70,8 @@ public class OnboardingNotificationSenderTest {
         mContext = InstrumentationRegistry.getInstrumentation().getContext();
         mUserHandle = mContext.getUser();
         mOnboardingNotificationSender =
-                new OnboardingNotificationSender(
-                        mNotificationSender, mResourcesContext, mContext, NOTIFICATION_CHANNEL_ID);
+                new OnboardingNotificationSender(mContext, mResourcesContext);
+        mOnboardingNotificationSender.setNotificationSenderForTesting(mNotificationSender);
         when(mResourcesContext.getStringByNameOrThrow(any()))
                 .thenAnswer(invocation -> invocation.getArgument(0));
     }
@@ -91,7 +91,10 @@ public class OnboardingNotificationSenderTest {
         Notification.Action action = notification.actions[0];
         assertThat(action.title.toString()).isEqualTo(START_USING_HC_NOTIFICATION_BUTTON);
 
-        // TODO(b/403257033): test pending intent
+        PendingIntent pendingIntent = action.actionIntent;
+        assertThat(pendingIntent.getCreatorPackage()).isEqualTo(mContext.getPackageName());
+        assertThat(pendingIntent.isActivity()).isTrue();
+        assertThat(pendingIntent.isImmutable()).isTrue();
     }
 
     @Test
@@ -109,6 +112,9 @@ public class OnboardingNotificationSenderTest {
         Notification.Action action = notification.actions[0];
         assertThat(action.title.toString()).isEqualTo(CONNECT_MORE_APPS_NOTIFICATION_BUTTON);
 
-        // TODO(b/403257033): test pending intent
+        PendingIntent pendingIntent = action.actionIntent;
+        assertThat(pendingIntent.getCreatorPackage()).isEqualTo(mContext.getPackageName());
+        assertThat(pendingIntent.isActivity()).isTrue();
+        assertThat(pendingIntent.isImmutable()).isTrue();
     }
 }

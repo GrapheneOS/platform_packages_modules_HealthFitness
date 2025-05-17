@@ -19,19 +19,21 @@ package android.healthconnect.cts.datatypes;
 import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUMENT;
 import static android.health.connect.RecordIdFilter.fromId;
 import static android.healthconnect.cts.lib.TestAppProxy.APP_WRITE_PERMS_ONLY;
-import static android.healthconnect.cts.utils.TestUtils.copyRecordIdsViaReflection;
-import static android.healthconnect.cts.utils.TestUtils.distinctByUuid;
-import static android.healthconnect.cts.utils.TestUtils.getRecordIds;
-import static android.healthconnect.cts.utils.TestUtils.insertRecordAndGetId;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
-import static android.healthconnect.cts.utils.TestUtils.readRecords;
-import static android.healthconnect.cts.utils.TestUtils.updateRecords;
+import static android.healthconnect.testing.cts.TestUtils.copyRecordIdsViaReflection;
+import static android.healthconnect.testing.cts.TestUtils.distinctByUuid;
+import static android.healthconnect.testing.cts.TestUtils.getRecordIds;
+import static android.healthconnect.testing.cts.TestUtils.insertRecordAndGetId;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.readRecords;
+import static android.healthconnect.testing.cts.TestUtils.updateRecords;
 import static android.healthconnect.testing.shared.DataFactory.SESSION_END_TIME;
 import static android.healthconnect.testing.shared.DataFactory.SESSION_START_TIME;
 import static android.healthconnect.testing.shared.DataFactory.buildExerciseRoute;
 import static android.healthconnect.testing.shared.DataFactory.buildExerciseSession;
 import static android.healthconnect.testing.shared.DataFactory.buildLocationTimePoint;
 import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
+
+import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -59,9 +61,12 @@ import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.units.Length;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
+import android.health.connect.datatypes.units.Mass;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.util.Pair;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -86,6 +91,8 @@ import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 public class ExerciseSessionRecordTest {
+
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
@@ -115,6 +122,23 @@ public class ExerciseSessionRecordTest {
         assertThat(record.getTitle()).isNull();
         assertThat(record.getSegments()).isEmpty();
         assertThat(record.getLaps()).isEmpty();
+        assertThat(record.hasRateOfPerceivedExertion()).isEqualTo(false);
+    }
+
+    @Test
+    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS})
+    public void testExerciseSessionWithRpe_buildSession_buildCorrectObject() {
+        ExerciseSessionRecord record = buildSessionWithRpe();
+        assertThat(record.getStartTime()).isEqualTo(SESSION_START_TIME);
+        assertThat(record.getEndTime()).isEqualTo(SESSION_END_TIME);
+        assertThat(record.hasRoute()).isFalse();
+        assertThat(record.getRoute()).isNull();
+        assertThat(record.getNotes()).isNull();
+        assertThat(record.getTitle()).isNull();
+        assertThat(record.getSegments()).isEmpty();
+        assertThat(record.getLaps()).isEmpty();
+        assertThat(record.hasRateOfPerceivedExertion()).isEqualTo(true);
+        assertThat(record.getRateOfPerceivedExertion()).isEqualTo(4.5f);
     }
 
     @Test
@@ -122,6 +146,32 @@ public class ExerciseSessionRecordTest {
         for (int i = 0; i < 200; i++) {
             buildExerciseSession();
         }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS})
+    public void testBuildSessionWithRpeTooHigh_throwsException() {
+        Metadata metadata = generateMetadata();
+        new ExerciseSessionRecord.Builder(
+                        metadata,
+                        SESSION_START_TIME,
+                        SESSION_END_TIME,
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
+                .setRateOfPerceivedExertion(11f)
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS})
+    public void testBuildSessionWithRpeNegative_throwsException() {
+        Metadata metadata = generateMetadata();
+        new ExerciseSessionRecord.Builder(
+                        metadata,
+                        SESSION_START_TIME,
+                        SESSION_END_TIME,
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
+                .setRateOfPerceivedExertion(-1.5f)
+                .build();
     }
 
     @Test
@@ -156,6 +206,9 @@ public class ExerciseSessionRecordTest {
                                         SESSION_END_TIME,
                                         ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_OTHER_WORKOUT)
                                 .setRepetitionsCount(10)
+                                .setRateOfPerceivedExertion(6.0f)
+                                .setSetIndex(1)
+                                .setWeight(Mass.fromGrams(2000))
                                 .build());
 
         List<ExerciseLap> lapsList =
@@ -176,6 +229,7 @@ public class ExerciseSessionRecordTest {
                         .setTitle(title)
                         .setSegments(segmentList)
                         .setLaps(lapsList)
+                        .setRateOfPerceivedExertion(5.0f)
                         .build();
 
         assertThat(record.hasRoute()).isTrue();
@@ -188,6 +242,8 @@ public class ExerciseSessionRecordTest {
         assertThat(record.getSegments()).isEqualTo(segmentList);
         assertThat(record.getLaps()).isEqualTo(lapsList);
         assertThat(record.getTitle().toString()).isEqualTo(title);
+        assertThat(record.hasRateOfPerceivedExertion()).isEqualTo(true);
+        assertThat(record.getRateOfPerceivedExertion()).isEqualTo(5.0f);
     }
 
     @Test
@@ -331,6 +387,7 @@ public class ExerciseSessionRecordTest {
                         .setEndZoneOffset(ZoneOffset.MAX)
                         .setStartZoneOffset(ZoneOffset.MIN)
                         .setNotes(notes)
+                        .setRateOfPerceivedExertion(4.0f)
                         .setTitle(title);
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())
@@ -347,6 +404,20 @@ public class ExerciseSessionRecordTest {
     public void testRead_insertAndReadById_recordsAreEqual() throws InterruptedException {
         List<Record> records =
                 TestUtils.insertRecords(List.of(buildExerciseSession(), buildSessionMinimal()));
+
+        ReadRecordsRequestUsingIds.Builder<ExerciseSessionRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(ExerciseSessionRecord.class);
+        request.addId(records.get(0).getMetadata().getId());
+        request.addId(records.get(1).getMetadata().getId());
+
+        assertRecordsAreEqual(records, TestUtils.readRecords(request.build()));
+    }
+
+    @Test
+    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS})
+    public void testRead_insertAndReadByIdWithRpe_recordsAreEqual() throws InterruptedException {
+        List<Record> records =
+                TestUtils.insertRecords(List.of(buildExerciseSession(), buildSessionWithRpe()));
 
         ReadRecordsRequestUsingIds.Builder<ExerciseSessionRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(ExerciseSessionRecord.class);
@@ -1106,6 +1177,16 @@ public class ExerciseSessionRecordTest {
                         SESSION_START_TIME,
                         SESSION_END_TIME,
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
+                .build();
+    }
+
+    private static ExerciseSessionRecord buildSessionWithRpe() {
+        return new ExerciseSessionRecord.Builder(
+                        buildMetadata("ExerciseSessionClient" + Math.random()),
+                        SESSION_START_TIME,
+                        SESSION_END_TIME,
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
+                .setRateOfPerceivedExertion(4.5f)
                 .build();
     }
 

@@ -23,8 +23,8 @@ import static android.health.connect.HealthDataCategory.NUTRITION;
 import static android.health.connect.HealthDataCategory.SLEEP;
 import static android.health.connect.HealthDataCategory.VITALS;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
-import static android.healthconnect.cts.utils.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
-import static android.healthconnect.cts.utils.TestOutcomeReceiver.outcomeExecutor;
+import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
+import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -36,10 +36,10 @@ import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.UpdateDataOriginPriorityOrderRequest;
 import android.health.connect.datatypes.DataOrigin;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.HealthConnectReceiver;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.HealthConnectReceiver;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;

@@ -17,14 +17,14 @@
 package android.healthconnect.tests.backuprestore;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
-import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
-import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
-import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.cts.utils.TestUtils.getHealthConnectDataRestoreState;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
-import static android.healthconnect.cts.utils.TestUtils.readAllRecords;
-import static android.healthconnect.cts.utils.TestUtils.readRecords;
-import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermission;
+import static android.healthconnect.testing.cts.PermissionUtils.revokeAllHealthPermissions;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.getHealthConnectDataRestoreState;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.readAllRecords;
+import static android.healthconnect.testing.cts.TestUtils.readRecords;
+import static android.healthconnect.testing.cts.TestUtils.verifyDeleteRecords;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 
 import static com.android.compatibility.common.util.BackupUtils.LOCAL_TRANSPORT_TOKEN;
@@ -56,8 +56,8 @@ import android.health.connect.datatypes.PlannedExerciseSessionRecord;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.units.Energy;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.testing.shared.DataFactory;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.ParcelFileDescriptor;
 import android.os.UserHandle;
 import android.platform.test.annotations.AppModeFull;

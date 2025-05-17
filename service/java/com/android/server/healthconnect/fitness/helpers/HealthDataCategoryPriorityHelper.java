@@ -19,6 +19,7 @@ package com.android.server.healthconnect.fitness.helpers;
 import static android.health.connect.HealthPermissions.getDataCategoriesWithWritePermissionsForPackage;
 import static android.health.connect.HealthPermissions.getPackageHasWriteHealthPermissionsForCategory;
 
+import static com.android.server.healthconnect.device.DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE;
 import static com.android.server.healthconnect.storage.request.UpsertTableRequest.TYPE_STRING;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_UNIQUE;
@@ -39,6 +40,7 @@ import android.util.Slog;
 
 import androidx.annotation.Nullable;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
@@ -234,6 +236,11 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
      */
     public synchronized void maybeRemoveAppFromPriorityList(
             String packageName, @HealthDataCategory.Type int dataCategory) {
+        if (Flags.stepTrackingEnabled() && DEVICE_DATA_PROVIDER_PACKAGE.equals(packageName)) {
+            // The DDP package doesn't hold conventional permissions, so we shouldn't
+            // treat it as inactive on this basis alone.
+            return;
+        }
         PackageInfo packageInfo =
                 mPackageInfoUtils.getPackageInfoWithPermissionsAsUser(
                         packageName, mUserContext.getUser(), mUserContext);
@@ -334,7 +341,6 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
                 List<Long> appIdsInOrder =
                         StorageUtils.getCursorLongList(
                                 cursor, APP_ID_PRIORITY_ORDER_COLUMN_NAME, DELIMITER);
-
                 healthDataCategoryToAppIdPriorityMap.put(dataCategory, appIdsInOrder);
             }
         }
@@ -446,6 +452,11 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
      */
     private synchronized void removeAppFromPriorityListIfNoDataExists(
             @HealthDataCategory.Type int dataCategory, String packageName) {
+        if (Flags.stepTrackingEnabled() && DEVICE_DATA_PROVIDER_PACKAGE.equals(packageName)) {
+            // Once we've appended the device data provider to the priority list it should remain
+            // there.
+            return;
+        }
         boolean dataExistsForPackageName = appHasDataInCategory(packageName, dataCategory);
         if (dataExistsForPackageName) {
             return;
@@ -609,6 +620,12 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
             Set<String> contributorApps = entry.getValue();
 
             for (String packageName : contributorApps) {
+                if (Flags.stepTrackingEnabled()
+                        && DEVICE_DATA_PROVIDER_PACKAGE.equals(packageName)) {
+                    // The DDP package doesn't hold conventional permissions, so we shouldn't
+                    // treat it as inactive on this basis alone.
+                    continue;
+                }
                 PackageInfo packageInfo =
                         mPackageInfoUtils.getPackageInfoWithPermissionsAsUser(
                                 packageName, mUserContext.getUser(), mUserContext);

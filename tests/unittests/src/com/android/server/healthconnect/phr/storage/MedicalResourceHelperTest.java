@@ -17,6 +17,8 @@
 package com.android.server.healthconnect.phr.storage;
 
 import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
+import static android.health.connect.Constants.DELETE;
+import static android.health.connect.Constants.UPSERT;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_DELETE;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_READ;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_UPSERT;
@@ -41,6 +43,9 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedical
 import static android.healthconnect.testing.unittest.PhrTestUtils.ACCESS_LOG_EQUIVALENCE;
 import static android.healthconnect.testing.unittest.PhrTestUtils.makeUpsertRequest;
 
+import static com.android.healthfitness.flags.AconfigFlagHelper.isPhrChangeLogsEnabled;
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.phr.storage.MedicalResourceHelper.DATA_SOURCE_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.phr.storage.MedicalResourceHelper.FHIR_DATA_COLUMN_NAME;
@@ -79,6 +84,7 @@ import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
 import android.healthconnect.testing.unittest.PhrTestUtils;
 import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.TransactionTestUtils.MedicalChangeLogEntry;
 import android.healthconnect.testing.unittest.fakes.FakeTimeSource;
 import android.os.UserHandle;
 import android.platform.test.annotations.EnableFlags;
@@ -91,7 +97,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
-import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -146,6 +152,8 @@ public class MedicalResourceHelperTest {
     private PhrTestUtils mUtil;
     private FakeTimeSource mFakeTimeSource;
     private UserHandle mUserHandle;
+    private TransactionTestUtils mTransactionTestUtils;
+    private AppInfoHelper mAppInfoHelper;
 
     @Before
     public void setup() {
@@ -163,12 +171,13 @@ public class MedicalResourceHelperTest {
         mTransactionManager = healthConnectInjector.getTransactionManager();
         mAccessLogsHelper = healthConnectInjector.getAccessLogsHelper();
         mMedicalResourceHelper = healthConnectInjector.getMedicalResourceHelper();
+        mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mUtil = new PhrTestUtils(healthConnectInjector);
         mUserHandle = context.getUser();
 
-        TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        transactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
-        transactionTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
+        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
+        mTransactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        mTransactionTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
     }
 
     @Test
@@ -308,6 +317,251 @@ public class MedicalResourceHelperTest {
                                 + " medical_data_source_table.medical_data_source_row_id"
                                 + "  INNER JOIN ( SELECT * FROM medical_resource_indices_table"
                                 + " WHERE medical_resource_type IN (1))"
+                                + " medical_resource_indices_table ON"
+                                + " inner_query_result.medical_resource_row_id ="
+                                + " medical_resource_indices_table.medical_resource_id");
+    }
+
+    @Test
+    public void getReadTableRequest_resourcesUsingAppIdAndDataSourceIds_correctQuery() {
+        List<UUID> dataSourceIds = List.of(UUID.fromString("a6194e35-698c-4706-918f-00bf959f123b"));
+        long appId = 123L;
+        List<String> hexValues = StorageUtils.getListOfHexStrings(dataSourceIds);
+
+        ReadTableRequest request =
+                MedicalResourceHelper.getFilteredReadRequestForResources(
+                        dataSourceIds, new HashSet<>(), appId);
+
+        assertThat(request.getReadCommand())
+                .isEqualTo(
+                        "SELECT medical_resource_row_id,"
+                                + "fhir_resource_type,"
+                                + "fhir_resource_id,"
+                                + "fhir_data,"
+                                + "fhir_version,"
+                                + "medical_resource_type,"
+                                + "data_source_uuid,"
+                                + "inner_query_result.last_modified_time"
+                                + " AS medical_resource_last_modified_time"
+                                + " FROM ( SELECT * FROM"
+                                + " medical_resource_table ) AS inner_query_result"
+                                + "  INNER JOIN ( SELECT"
+                                + " * FROM medical_data_source_table WHERE app_info_id = '"
+                                + appId
+                                + "'"
+                                + " AND data_source_uuid IN ("
+                                + String.join(", ", hexValues)
+                                + ")) medical_data_source_table ON"
+                                + " inner_query_result.data_source_id ="
+                                + " medical_data_source_table.medical_data_source_row_id"
+                                + "  INNER JOIN ( SELECT * FROM medical_resource_indices_table)"
+                                + " medical_resource_indices_table ON"
+                                + " inner_query_result.medical_resource_row_id ="
+                                + " medical_resource_indices_table.medical_resource_id");
+    }
+
+    @Test
+    public void getReadTableRequest_resourcesUsingAppIdAndResourceTypes_correctQuery() {
+        long appId = 123L;
+
+        ReadTableRequest request =
+                MedicalResourceHelper.getFilteredReadRequestForResources(
+                        List.of(), Set.of(MEDICAL_RESOURCE_TYPE_VACCINES), appId);
+
+        assertThat(request.getReadCommand())
+                .isEqualTo(
+                        "SELECT medical_resource_row_id,"
+                                + "fhir_resource_type,"
+                                + "fhir_resource_id,"
+                                + "fhir_data,"
+                                + "fhir_version,"
+                                + "medical_resource_type,"
+                                + "data_source_uuid,"
+                                + "inner_query_result.last_modified_time"
+                                + " AS medical_resource_last_modified_time"
+                                + " FROM ( SELECT * FROM"
+                                + " medical_resource_table ) AS inner_query_result"
+                                + "  INNER JOIN ( SELECT"
+                                + " * FROM medical_data_source_table WHERE app_info_id = '"
+                                + appId
+                                + "'"
+                                + ") medical_data_source_table ON"
+                                + " inner_query_result.data_source_id ="
+                                + " medical_data_source_table.medical_data_source_row_id"
+                                + "  INNER JOIN ( SELECT * FROM medical_resource_indices_table"
+                                + " WHERE medical_resource_type IN (1))"
+                                + " medical_resource_indices_table ON"
+                                + " inner_query_result.medical_resource_row_id ="
+                                + " medical_resource_indices_table.medical_resource_id");
+    }
+
+    @Test
+    public void getReadTableRequest_resourcesUsingAppIdResourceTypesAndDataSourceIds() {
+        List<UUID> dataSourceIds = List.of(UUID.fromString("a6194e35-698c-4706-918f-00bf959f123b"));
+        long appId = 123L;
+        List<String> hexValues = StorageUtils.getListOfHexStrings(dataSourceIds);
+
+        ReadTableRequest request =
+                MedicalResourceHelper.getFilteredReadRequestForResources(
+                        dataSourceIds, Set.of(MEDICAL_RESOURCE_TYPE_VACCINES), appId);
+
+        assertThat(request.getReadCommand())
+                .isEqualTo(
+                        "SELECT medical_resource_row_id,"
+                                + "fhir_resource_type,"
+                                + "fhir_resource_id,"
+                                + "fhir_data,"
+                                + "fhir_version,"
+                                + "medical_resource_type,"
+                                + "data_source_uuid,"
+                                + "inner_query_result.last_modified_time"
+                                + " AS medical_resource_last_modified_time"
+                                + " FROM ( SELECT * FROM"
+                                + " medical_resource_table ) AS inner_query_result"
+                                + "  INNER JOIN ( SELECT"
+                                + " * FROM medical_data_source_table WHERE app_info_id = '"
+                                + appId
+                                + "'"
+                                + " AND data_source_uuid IN ("
+                                + String.join(", ", hexValues)
+                                + ")) medical_data_source_table ON"
+                                + " inner_query_result.data_source_id ="
+                                + " medical_data_source_table.medical_data_source_row_id"
+                                + "  INNER JOIN ( SELECT * FROM medical_resource_indices_table"
+                                + " WHERE medical_resource_type IN (1))"
+                                + " medical_resource_indices_table ON"
+                                + " inner_query_result.medical_resource_row_id ="
+                                + " medical_resource_indices_table.medical_resource_id");
+    }
+
+    @Test
+    public void getReadTableRequest_resourcesUsingResourceTypesAndDataSourceIds() {
+        List<UUID> dataSourceIds = List.of(UUID.fromString("a6194e35-698c-4706-918f-00bf959f123b"));
+        List<String> hexValues = StorageUtils.getListOfHexStrings(dataSourceIds);
+
+        ReadTableRequest request =
+                MedicalResourceHelper.getFilteredReadRequestForResources(
+                        dataSourceIds, Set.of(MEDICAL_RESOURCE_TYPE_VACCINES), /* appId= */ null);
+
+        assertThat(request.getReadCommand())
+                .isEqualTo(
+                        "SELECT medical_resource_row_id,"
+                                + "fhir_resource_type,"
+                                + "fhir_resource_id,"
+                                + "fhir_data,"
+                                + "fhir_version,"
+                                + "medical_resource_type,"
+                                + "data_source_uuid,"
+                                + "inner_query_result.last_modified_time"
+                                + " AS medical_resource_last_modified_time"
+                                + " FROM ( SELECT * FROM"
+                                + " medical_resource_table ) AS inner_query_result"
+                                + "  INNER JOIN ( SELECT"
+                                + " * FROM medical_data_source_table WHERE data_source_uuid IN ("
+                                + String.join(", ", hexValues)
+                                + ")) medical_data_source_table ON"
+                                + " inner_query_result.data_source_id ="
+                                + " medical_data_source_table.medical_data_source_row_id"
+                                + "  INNER JOIN ( SELECT * FROM medical_resource_indices_table"
+                                + " WHERE medical_resource_type IN (1))"
+                                + " medical_resource_indices_table ON"
+                                + " inner_query_result.medical_resource_row_id ="
+                                + " medical_resource_indices_table.medical_resource_id");
+    }
+
+    @Test
+    public void getReadRequestForDistinctResourceTypesBelongingToDataSourceIds_correctQuery() {
+        List<UUID> dataSourceIds = List.of(UUID.fromString("a6194e35-698c-4706-918f-00bf959f123b"));
+        List<String> hexValues = StorageUtils.getListOfHexStrings(dataSourceIds);
+
+        ReadTableRequest request =
+                MedicalResourceHelper
+                        .getReadRequestForDistinctResourceTypesBelongingToDataSourceIds(
+                                dataSourceIds);
+
+        assertThat(request.getReadCommand())
+                .isEqualTo(
+                        "SELECT DISTINCT medical_resource_type FROM ( SELECT * FROM"
+                                + " medical_resource_table ) AS inner_query_result"
+                                + "  INNER JOIN ( SELECT"
+                                + " * FROM medical_data_source_table WHERE data_source_uuid IN ("
+                                + String.join(", ", hexValues)
+                                + ")) medical_data_source_table ON"
+                                + " inner_query_result.data_source_id ="
+                                + " medical_data_source_table.medical_data_source_row_id"
+                                + "  INNER JOIN"
+                                + " medical_resource_indices_table ON"
+                                + " inner_query_result.medical_resource_row_id ="
+                                + " medical_resource_indices_table.medical_resource_id");
+    }
+
+    @Test
+    public void getReadRequestForResourcesBelongingToDataSourceIds_withAppId_correctQuery() {
+        List<UUID> dataSourceIds = List.of(UUID.fromString("a6194e35-698c-4706-918f-00bf959f123b"));
+        long appId = 123L;
+        List<String> hexValues = StorageUtils.getListOfHexStrings(dataSourceIds);
+
+        ReadTableRequest request =
+                MedicalResourceHelper.getReadRequestForResourcesBelongingToDataSourceIds(
+                        dataSourceIds, appId);
+
+        assertThat(request.getReadCommand())
+                .isEqualTo(
+                        "SELECT medical_resource_row_id,"
+                                + "fhir_resource_type,"
+                                + "fhir_resource_id,"
+                                + "fhir_data,"
+                                + "fhir_version,"
+                                + "medical_resource_type,"
+                                + "data_source_uuid,"
+                                + "inner_query_result.last_modified_time"
+                                + " AS medical_resource_last_modified_time"
+                                + " FROM ( SELECT * FROM"
+                                + " medical_resource_table ) AS inner_query_result"
+                                + "  INNER JOIN ( SELECT"
+                                + " * FROM medical_data_source_table WHERE app_info_id = '"
+                                + appId
+                                + "'"
+                                + " AND data_source_uuid IN ("
+                                + String.join(", ", hexValues)
+                                + ")) medical_data_source_table ON"
+                                + " inner_query_result.data_source_id ="
+                                + " medical_data_source_table.medical_data_source_row_id"
+                                + "  INNER JOIN"
+                                + " medical_resource_indices_table ON"
+                                + " inner_query_result.medical_resource_row_id ="
+                                + " medical_resource_indices_table.medical_resource_id");
+    }
+
+    @Test
+    public void getReadRequestForResourcesBelongingToDataSourceIds_withoutAppId_correctQuery() {
+        List<UUID> dataSourceIds = List.of(UUID.fromString("a6194e35-698c-4706-918f-00bf959f123b"));
+        List<String> hexValues = StorageUtils.getListOfHexStrings(dataSourceIds);
+
+        ReadTableRequest request =
+                MedicalResourceHelper.getReadRequestForResourcesBelongingToDataSourceIds(
+                        dataSourceIds, /* appId= */ null);
+
+        assertThat(request.getReadCommand())
+                .isEqualTo(
+                        "SELECT medical_resource_row_id,"
+                                + "fhir_resource_type,"
+                                + "fhir_resource_id,"
+                                + "fhir_data,"
+                                + "fhir_version,"
+                                + "medical_resource_type,"
+                                + "data_source_uuid,"
+                                + "inner_query_result.last_modified_time"
+                                + " AS medical_resource_last_modified_time"
+                                + " FROM ( SELECT * FROM"
+                                + " medical_resource_table ) AS inner_query_result"
+                                + "  INNER JOIN ( SELECT"
+                                + " * FROM medical_data_source_table WHERE data_source_uuid IN ("
+                                + String.join(", ", hexValues)
+                                + ")) medical_data_source_table ON"
+                                + " inner_query_result.data_source_id ="
+                                + " medical_data_source_table.medical_data_source_row_id"
+                                + "  INNER JOIN"
                                 + " medical_resource_indices_table ON"
                                 + " inner_query_result.medical_resource_row_id ="
                                 + " medical_resource_indices_table.medical_resource_id");
@@ -1684,18 +1938,30 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
     public void insertMedicalResourcesOfSameType_createsChangeLogs() {
+        long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource =
                 mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME);
-        mUtil.upsertResources(
-                PhrDataFactory::createVaccineMedicalResources, /* numOfResources= */ 6, dataSource);
+        List<MedicalResource> resources =
+                mUtil.upsertResources(
+                        PhrDataFactory::createVaccineMedicalResources,
+                        /* numOfResources= */ 6,
+                        dataSource);
 
-        assertThat(mTransactionManager.count(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME)))
-                .isEqualTo(1);
+        assertThat(mTransactionTestUtils.getAllUpsertMedicalChangeLogs())
+                .containsExactly(
+                        new MedicalChangeLogEntry(
+                                UPSERT,
+                                MEDICAL_RESOURCE_TYPE_VACCINES,
+                                appId,
+                                resources.stream().map(MedicalResource::getId).toList()));
     }
 
     @Test
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
     public void insertMedicalResourcesOfDifferentTypes_createsChangeLogs() {
+        long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
         String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
         MedicalResource vaccine = createVaccineMedicalResource(dataSource);
         MedicalResource allergy = createAllergyMedicalResource(dataSource);
@@ -1703,12 +1969,24 @@ public class MedicalResourceHelperTest {
                 DATA_SOURCE_PACKAGE_NAME,
                 createUpsertMedicalResourceRequests(List.of(vaccine, allergy), dataSource));
 
-        assertThat(mTransactionManager.count(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME)))
-                .isEqualTo(2);
+        assertThat(mTransactionTestUtils.getAllUpsertMedicalChangeLogs())
+                .containsExactly(
+                        new MedicalChangeLogEntry(
+                                UPSERT,
+                                MEDICAL_RESOURCE_TYPE_VACCINES,
+                                appId,
+                                List.of(vaccine.getId())),
+                        new MedicalChangeLogEntry(
+                                UPSERT,
+                                MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
+                                appId,
+                                List.of(allergy.getId())));
     }
 
     @Test
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
     public void insertAndUpdateMedicalResources_createsChangeLogs() throws JSONException {
+        long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
         String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
         MedicalResource vaccine = createVaccineMedicalResource(dataSource);
         MedicalResource allergy = createAllergyMedicalResource(dataSource);
@@ -1722,8 +2000,111 @@ public class MedicalResourceHelperTest {
                 DATA_SOURCE_PACKAGE_NAME,
                 createUpsertMedicalResourceRequests(List.of(updatedVaccine), dataSource));
 
-        assertThat(mTransactionManager.count(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME)))
-                .isEqualTo(3);
+        assertThat(mTransactionTestUtils.getAllUpsertMedicalChangeLogs())
+                .containsExactly(
+                        // initial inserts
+                        new MedicalChangeLogEntry(
+                                UPSERT,
+                                MEDICAL_RESOURCE_TYPE_VACCINES,
+                                appId,
+                                List.of(vaccine.getId())),
+                        new MedicalChangeLogEntry(
+                                UPSERT,
+                                MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
+                                appId,
+                                List.of(allergy.getId())),
+                        // upsert
+                        new MedicalChangeLogEntry(
+                                UPSERT,
+                                MEDICAL_RESOURCE_TYPE_VACCINES,
+                                appId,
+                                List.of(vaccine.getId())));
+    }
+
+    @Test
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    public void insertMedicalResourcesOfSameType_delete_createsChangeLogs() {
+        long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+        MedicalDataSource dataSource =
+                mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME);
+        var resourceIds =
+                mUtil
+                        .upsertResources(
+                                PhrDataFactory::createVaccineMedicalResources,
+                                /* numOfResources= */ 6,
+                                dataSource)
+                        .stream()
+                        .map(MedicalResource::getId)
+                        .toList();
+
+        mMedicalResourceHelper.deleteMedicalResourcesByIdsWithoutPermissionChecks(resourceIds);
+
+        assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                .containsExactly(
+                        new MedicalChangeLogEntry(
+                                DELETE, MEDICAL_RESOURCE_TYPE_VACCINES, appId, resourceIds));
+    }
+
+    @Test
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    public void insertMedicalResourcesOfDifferentTypes_delete_createsChangeLogs() {
+        long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+        String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
+        MedicalResource vaccine = createVaccineMedicalResource(dataSource);
+        MedicalResource allergy = createAllergyMedicalResource(dataSource);
+        var resourceIds =
+                mMedicalResourceHelper
+                        .upsertMedicalResources(
+                                DATA_SOURCE_PACKAGE_NAME,
+                                createUpsertMedicalResourceRequests(
+                                        List.of(vaccine, allergy), dataSource))
+                        .stream()
+                        .map(MedicalResource::getId)
+                        .toList();
+
+        mMedicalResourceHelper.deleteMedicalResourcesByIdsWithoutPermissionChecks(resourceIds);
+
+        assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                .containsExactly(
+                        new MedicalChangeLogEntry(
+                                DELETE,
+                                MEDICAL_RESOURCE_TYPE_VACCINES,
+                                appId,
+                                List.of(vaccine.getId())),
+                        new MedicalChangeLogEntry(
+                                DELETE,
+                                MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
+                                appId,
+                                List.of(allergy.getId())));
+    }
+
+    @Test
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    public void insertAndUpdateMedicalResources_delete_createsChangeLogs() throws JSONException {
+        long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+        String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
+        MedicalResource vaccine = createVaccineMedicalResource(dataSource);
+        MedicalResource allergy = createAllergyMedicalResource(dataSource);
+        MedicalResource updatedVaccine = createUpdatedVaccineMedicalResource(dataSource);
+        // initial inserts
+        mMedicalResourceHelper.upsertMedicalResources(
+                DATA_SOURCE_PACKAGE_NAME,
+                createUpsertMedicalResourceRequests(List.of(vaccine, allergy), dataSource));
+        // update the vaccine resource
+        mMedicalResourceHelper.upsertMedicalResources(
+                DATA_SOURCE_PACKAGE_NAME,
+                createUpsertMedicalResourceRequests(List.of(updatedVaccine), dataSource));
+
+        mMedicalResourceHelper.deleteMedicalResourcesByIdsWithoutPermissionChecks(
+                List.of(updatedVaccine.getId()));
+
+        assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                .containsExactly(
+                        new MedicalChangeLogEntry(
+                                DELETE,
+                                MEDICAL_RESOURCE_TYPE_VACCINES,
+                                appId,
+                                List.of(updatedVaccine.getId())));
     }
 
     @Test
@@ -1951,6 +2332,9 @@ public class MedicalResourceHelperTest {
                 List.of(getMedicalResourceId()), DATA_SOURCE_PACKAGE_NAME);
 
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+        }
     }
 
     @Test
@@ -1966,6 +2350,16 @@ public class MedicalResourceHelperTest {
                 List.of(resource1.getId()));
 
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId,
+                                    List.of(resource1.getId())));
+        }
     }
 
     @Test
@@ -1998,6 +2392,16 @@ public class MedicalResourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId,
+                                    List.of(vaccinePackage1.getId())));
+        }
     }
 
     @Test
@@ -2033,6 +2437,21 @@ public class MedicalResourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId,
+                                    List.of(vaccinePackage1.getId())),
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
+                                    appId,
+                                    List.of(unknownResourcePackage1.getId())));
+        }
     }
 
     @Test
@@ -2071,6 +2490,16 @@ public class MedicalResourceHelperTest {
 
         assertThat(result).isEmpty();
         assertThat(indicesResult).isEmpty();
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId,
+                                    List.of(medicalResource1.getId())));
+        }
     }
 
     @Test
@@ -2091,6 +2520,16 @@ public class MedicalResourceHelperTest {
                         List.of(medicalResource1.getId(), medicalResource2.getId()));
         assertThat(result).containsExactly(medicalResource2);
         assertThat(indicesResult).containsExactly(MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES);
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId,
+                                    List.of(medicalResource1.getId())));
+        }
     }
 
     @Test
@@ -2109,6 +2548,9 @@ public class MedicalResourceHelperTest {
                 mMedicalResourceHelper.readMedicalResourcesByIdsWithoutPermissionChecks(
                         List.of(medicalResource1.getId(), medicalResource2.getId()));
         assertThat(result).containsExactly(medicalResource1, medicalResource2);
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+        }
     }
 
     @Test
@@ -2127,6 +2569,16 @@ public class MedicalResourceHelperTest {
                 mMedicalResourceHelper.readMedicalResourcesByIdsWithoutPermissionChecks(
                         List.of(medicalResource1.getId(), medicalResource2.getId()));
         assertThat(result).containsExactly(medicalResource2);
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId,
+                                    List.of(medicalResource1.getId())));
+        }
     }
 
     @Test
@@ -2155,6 +2607,22 @@ public class MedicalResourceHelperTest {
                                 expectedResource2Source1.getId(),
                                 expectedResource2Source2.getId()));
         assertThat(result).containsExactly(expectedResource1Source2, expectedResource2Source1);
+        if (isPhrChangeLogsEnabled()) {
+            long appId1 = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            long appId2 = mAppInfoHelper.getAppInfoId(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId1,
+                                    List.of(expectedResource1Source1.getId())),
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
+                                    appId2,
+                                    List.of(expectedResource2Source2.getId())));
+        }
     }
 
     @Test
@@ -2441,8 +2909,12 @@ public class MedicalResourceHelperTest {
                 mUtil.insertR4MedicalDataSource("ds1", DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource2 =
                 mUtil.insertR4MedicalDataSource("ds2", DATA_SOURCE_PACKAGE_NAME);
-        mUtil.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource1);
-        mUtil.upsertResource(PhrDataFactory::createAllergyMedicalResource, dataSource2);
+        var resources =
+                List.of(
+                        mUtil.upsertResource(
+                                PhrDataFactory::createVaccineMedicalResource, dataSource1),
+                        mUtil.upsertResource(
+                                PhrDataFactory::createAllergyMedicalResource, dataSource2));
         // Clear access logs table, so that only the access logs from delete will be present
         mAccessLogsHelper.clearData(mTransactionManager);
 
@@ -2468,6 +2940,21 @@ public class MedicalResourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId,
+                                    List.of(resources.get(0).getId())),
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
+                                    appId,
+                                    List.of(resources.get(1).getId())));
+        }
     }
 
     @Test
@@ -2476,8 +2963,12 @@ public class MedicalResourceHelperTest {
                 mUtil.insertR4MedicalDataSource("ds1", DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource2 =
                 mUtil.insertR4MedicalDataSource("ds2", DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
-        mUtil.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource1);
-        mUtil.upsertResource(PhrDataFactory::createAllergyMedicalResource, dataSource2);
+        var resources =
+                List.of(
+                        mUtil.upsertResource(
+                                PhrDataFactory::createVaccineMedicalResource, dataSource1),
+                        mUtil.upsertResource(
+                                PhrDataFactory::createAllergyMedicalResource, dataSource2));
         // Clear access logs table, so that only the access logs from delete will be present
         mAccessLogsHelper.clearData(mTransactionManager);
 
@@ -2503,6 +2994,16 @@ public class MedicalResourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId,
+                                    List.of(resources.get(0).getId())));
+        }
     }
 
     @Test
@@ -2512,8 +3013,12 @@ public class MedicalResourceHelperTest {
                 mUtil.insertR4MedicalDataSource("ds1", DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource2 =
                 mUtil.insertR4MedicalDataSource("ds2", DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
-        mUtil.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource1);
-        mUtil.upsertResource(PhrDataFactory::createAllergyMedicalResource, dataSource2);
+        var resources =
+                List.of(
+                        mUtil.upsertResource(
+                                PhrDataFactory::createVaccineMedicalResource, dataSource1),
+                        mUtil.upsertResource(
+                                PhrDataFactory::createAllergyMedicalResource, dataSource2));
         // Clear access logs table, so that only the access logs from delete will be present
         mAccessLogsHelper.clearData(mTransactionManager);
 
@@ -2538,6 +3043,16 @@ public class MedicalResourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId,
+                                    List.of(resources.get(0).getId())));
+        }
     }
 
     @Test
@@ -2546,9 +3061,14 @@ public class MedicalResourceHelperTest {
                 mUtil.insertR4MedicalDataSource("ds1", DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource2 =
                 mUtil.insertR4MedicalDataSource("ds2", DATA_SOURCE_PACKAGE_NAME);
-        mUtil.upsertResource(PhrDataFactory::createAllergyMedicalResource, dataSource1);
-        mUtil.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource1);
-        mUtil.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource2);
+        var resources =
+                List.of(
+                        mUtil.upsertResource(
+                                PhrDataFactory::createAllergyMedicalResource, dataSource1),
+                        mUtil.upsertResource(
+                                PhrDataFactory::createVaccineMedicalResource, dataSource1),
+                        mUtil.upsertResource(
+                                PhrDataFactory::createVaccineMedicalResource, dataSource2));
         // Clear access logs table, so that only the access logs from delete will be present
         mAccessLogsHelper.clearData(mTransactionManager);
 
@@ -2569,6 +3089,17 @@ public class MedicalResourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
+
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
+                                    appId,
+                                    List.of(resources.get(0).getId())));
+        }
     }
 
     @Test
@@ -2590,14 +3121,21 @@ public class MedicalResourceHelperTest {
                 /* callingPackageName= */ DATA_SOURCE_PACKAGE_NAME);
 
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+        }
     }
 
     @Test
     public void deleteByRequestWithPermChecks_expectAccessLogsForAccessedTypesAndSources_logs() {
         MedicalDataSource dataSource1 =
                 mUtil.insertR4MedicalDataSource("ds1", DATA_SOURCE_PACKAGE_NAME);
-        mUtil.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource1);
-        mUtil.upsertResource(PhrDataFactory::createAllergyMedicalResource, dataSource1);
+        var resources =
+                List.of(
+                        mUtil.upsertResource(
+                                PhrDataFactory::createVaccineMedicalResource, dataSource1),
+                        mUtil.upsertResource(
+                                PhrDataFactory::createAllergyMedicalResource, dataSource1));
         // Clear access logs table, so that only the access logs from delete will be present
         mAccessLogsHelper.clearData(mTransactionManager);
 
@@ -2618,6 +3156,16 @@ public class MedicalResourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId,
+                                    List.of(resources.get(0).getId())));
+        }
     }
 
     @Test
@@ -2635,13 +3183,17 @@ public class MedicalResourceHelperTest {
                 /* callingPackageName= */ DATA_SOURCE_PACKAGE_NAME);
 
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+        }
     }
 
     @Test
     public void deleteByRequestWithoutPermChecks_withoutPackageRestriction_noAccessLogsCreated() {
         MedicalDataSource dataSource1 =
                 mUtil.insertR4MedicalDataSource("ds1", DATA_SOURCE_PACKAGE_NAME);
-        mUtil.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource1);
+        var resource =
+                mUtil.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource1);
         // Clear access logs table, so that only the access logs from delete will be present
         mAccessLogsHelper.clearData(mTransactionManager);
 
@@ -2651,6 +3203,16 @@ public class MedicalResourceHelperTest {
                         .build());
 
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId,
+                                    List.of(resource.getId())));
+        }
     }
 
     @Test
@@ -2682,6 +3244,22 @@ public class MedicalResourceHelperTest {
                         mMedicalResourceHelper.readMedicalResourcesByIdsWithoutPermissionChecks(
                                 List.of(allergyResource.getId())))
                 .hasSize(1);
+        if (isPhrChangeLogsEnabled()) {
+            long appId1 = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            long appId2 = mAppInfoHelper.getAppInfoId(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId1,
+                                    List.of(vaccineDS1.getId())),
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId2,
+                                    List.of(vaccineDS2.getId())));
+        }
     }
 
     @Test
@@ -2720,6 +3298,27 @@ public class MedicalResourceHelperTest {
                         mMedicalResourceHelper.readMedicalResourcesByIdsWithoutPermissionChecks(
                                 List.of(vaccineDS3.getId())))
                 .hasSize(1);
+        if (isPhrChangeLogsEnabled()) {
+            long appId1 = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            long appId2 = mAppInfoHelper.getAppInfoId(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId1,
+                                    List.of(vaccineDS1.getId())),
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId2,
+                                    List.of(vaccineDS2.getId())),
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
+                                    appId1,
+                                    List.of(allergyDS1.getId())));
+        }
     }
 
     @Test
@@ -2752,6 +3351,16 @@ public class MedicalResourceHelperTest {
                         mMedicalResourceHelper.readMedicalResourcesByIdsWithoutPermissionChecks(
                                 List.of(allergyDS1.getId(), vaccineDS2.getId())))
                 .hasSize(2);
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId,
+                                    List.of(vaccineDS1.getId())));
+        }
     }
 
     @Test

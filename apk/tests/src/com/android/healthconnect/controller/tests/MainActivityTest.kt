@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.platform.test.flag.junit.SetFlagsRule
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso.onView
@@ -23,9 +24,13 @@ import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiError
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
+import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
+import com.android.healthconnect.controller.onboarding.OnboardingViewModel
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.tests.utils.NOW
+import com.android.healthconnect.controller.tests.utils.TEST_APP
+import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -37,7 +42,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito
+import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
@@ -46,15 +51,11 @@ class MainActivityTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val setFlagsRule = SetFlagsRule()
 
-    @BindValue val viewModel: MigrationViewModel = Mockito.mock(MigrationViewModel::class.java)
-    @BindValue
-    val exportStatusViewModel: ExportStatusViewModel =
-        Mockito.mock(ExportStatusViewModel::class.java)
-    @BindValue
-    val recentAccessViewModel: RecentAccessViewModel =
-        Mockito.mock(RecentAccessViewModel::class.java)
-    @BindValue
-    val healthConnectLogger: HealthConnectLogger = Mockito.mock(HealthConnectLogger::class.java)
+    @BindValue val viewModel: MigrationViewModel = mock()
+    @BindValue val exportStatusViewModel: ExportStatusViewModel = mock()
+    @BindValue val recentAccessViewModel: RecentAccessViewModel = mock()
+    @BindValue val healthConnectLogger: HealthConnectLogger = mock()
+    @BindValue val onboardingViewModel: OnboardingViewModel = mock()
 
     private lateinit var context: Context
 
@@ -97,6 +98,19 @@ class MainActivityTest {
         }
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData(RecentAccessViewModel.RecentAccessState.WithData(listOf()))
+        }
+        whenever(onboardingViewModel.connectedApps).then {
+            MutableLiveData(
+                OnboardingViewModel.OnboardingFragmentState.WithData(
+                    listOf(
+                        ConnectedFitnessAppMetadata(TEST_APP, false),
+                        ConnectedFitnessAppMetadata(TEST_APP_2, false),
+                    )
+                )
+            )
+        }
+        whenever(onboardingViewModel.onboardingBannerState).then {
+            MediatorLiveData(OnboardingViewModel.OnboardingBannerState.NoOnboardingBanner)
         }
         setPreferenceSeen(context, Constants.SEE_MORE_COMPATIBLE_APPS_BANNER_SEEN, true)
         setPreferenceSeen(context, Constants.START_USING_HC_BANNER_SEEN, true)

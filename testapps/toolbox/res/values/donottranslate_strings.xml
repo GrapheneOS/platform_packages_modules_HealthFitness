@@ -179,20 +179,33 @@
     <string name="additional_permissions">Additional</string>
     <string name="history_read_permission">History read</string>
     <string name="background_read_permission">Background read</string>
-    <string name="request_permissions">Request</string>
-    <string name="revoke_permissions">Revoke permissions</string>
+    <string name="request">Request</string>
+    <string name="revoke">Revoke</string>
     <!--endregion-->
 
     <!-- region Read data screens -->
     <string name="loading_data">Loading data…</string>
     <string name="error">Error</string>
     <string name="no_data">No data</string>
+    <string name="zero_seconds">0 seconds</string>
     <!--endregion-->
+
+
+    <!-- Onboarding Screen -->
+    <string name="onboarding_title">3P Onboarding screen / flow</string>
+    <string name="onboarding_message">Please allow health permissions for testing.</string>
+    <string name="continue_string">Continue</string>
+    <!-- endregion -->
 
     <string name="read_backup_data">Read backup data</string>
     <string name="write_restore_data">Write restore data</string>
     <string name="read_backup_metadata">Read backup metadata</string>
     <string name="write_restore_metadata">Write restore metadata</string>
+
+    <!-- Home Menu -->
+    <string name="health_connect_toolbox">Health Connect Toolbox</string>
+    <string name="read_data">Read Data</string>
+    <!-- endregion -->
 
     <!-- region Headers -->
     <string name="measurement_location">Measurement Location</string>
@@ -212,6 +225,8 @@
     <string name="pushes">Pushes</string>
     <string name="duration">Duration</string>
     <string name="exercise_blocks">Exercise Blocks</string>
+    <string name="seconds">seconds</string>
+    <string name="days">days</string>
     <!-- endregion -->
 
     <!-- region Unit Labels -->
@@ -232,6 +247,8 @@
     <string name="meters_label">m</string>
     <string name="kilometers_label">km</string>
     <string name="calories_label">cal</string>
+    <string name="hour_label">hrs</string>
+    <string name="minute_label">mins</string>
     <!-- endregion -->
 
     <!-- region Exercise Segment Types -->

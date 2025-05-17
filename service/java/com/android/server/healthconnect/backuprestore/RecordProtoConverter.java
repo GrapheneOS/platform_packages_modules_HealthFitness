@@ -16,7 +16,8 @@
 
 package com.android.server.healthconnect.backuprestore;
 
-import static android.health.connect.Constants.DEFAULT_DOUBLE;
+import static android.health.connect.Constants.DEFAULT_FLOAT;
+import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.datatypes.units.Temperature.fromCelsius;
 
 import static java.util.stream.Collectors.toSet;
@@ -61,7 +62,6 @@ import android.health.connect.internal.datatypes.LeanBodyMassRecordInternal;
 import android.health.connect.internal.datatypes.MenstruationFlowRecordInternal;
 import android.health.connect.internal.datatypes.MenstruationPeriodRecordInternal;
 import android.health.connect.internal.datatypes.MindfulnessSessionRecordInternal;
-import android.health.connect.internal.datatypes.NicotineIntakeRecordInternal;
 import android.health.connect.internal.datatypes.NutritionRecordInternal;
 import android.health.connect.internal.datatypes.OvulationTestRecordInternal;
 import android.health.connect.internal.datatypes.OxygenSaturationRecordInternal;
@@ -85,6 +85,7 @@ import android.health.connect.internal.datatypes.WeightRecordInternal;
 import android.health.connect.internal.datatypes.WheelchairPushesRecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ActiveCaloriesBurned;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ActivityIntensity;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BasalBodyTemperature;
@@ -117,7 +118,6 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.L
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstruationFlow;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstruationPeriod;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MindfulnessSession;
-import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.NicotineIntake;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Nutrition;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.OvulationTest;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.OxygenSaturation;
@@ -156,7 +156,7 @@ import java.util.UUID;
  */
 public final class RecordProtoConverter {
 
-    public static final int PROTO_VERSION = 2;
+    public static final int PROTO_VERSION = 1;
 
     private final Map<Integer, Class<? extends RecordInternal<?>>> mDataTypeClassMap =
             HealthConnectMappings.getInstance().getRecordIdToInternalRecordClassMap();
@@ -251,9 +251,6 @@ public final class RecordProtoConverter {
                 instanceof MindfulnessSessionRecordInternal mindfulnessSessionRecordInternal) {
             builder.setMindfulnessSession(
                     toMindfulnessSessionProto(mindfulnessSessionRecordInternal));
-        } else if (intervalRecordInternal
-                instanceof NicotineIntakeRecordInternal nicotineIntakeRecordInternal) {
-            builder.setNicotineIntake(toNicotineIntakeProto(nicotineIntakeRecordInternal));
         } else if (intervalRecordInternal
                 instanceof NutritionRecordInternal nutritionRecordInternal) {
             builder.setNutrition(toNutritionProto(nutritionRecordInternal));
@@ -372,6 +369,12 @@ public final class RecordProtoConverter {
                     exerciseSessionRecordInternal.getPlannedExerciseSessionId().toString());
         }
 
+        if (AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()
+                && exerciseSessionRecordInternal.getRateOfPerceivedExertion() != DEFAULT_FLOAT) {
+            builder.setSessionRateOfPerceivedExertion(
+                    exerciseSessionRecordInternal.getRateOfPerceivedExertion());
+        }
+
         return builder.build();
     }
 
@@ -395,12 +398,24 @@ public final class RecordProtoConverter {
     }
 
     private static ExerciseSegment toSegmentProto(ExerciseSegmentInternal segmentInternal) {
-        return ExerciseSegment.newBuilder()
-                .setStartTime(segmentInternal.getStartTime())
+
+        ExerciseSegment.Builder builder = ExerciseSegment.newBuilder();
+        builder.setStartTime(segmentInternal.getStartTime())
                 .setEndTime(segmentInternal.getEndTime())
                 .setSegmentType(segmentInternal.getSegmentType())
-                .setRepetitionsCount(segmentInternal.getRepetitionsCount())
-                .build();
+                .setRepetitionsCount(segmentInternal.getRepetitionsCount());
+        if (AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
+            if (segmentInternal.getWeightGrams() != null) {
+                builder.setWeight(segmentInternal.getWeightGrams());
+            }
+            if (segmentInternal.getSetIndex() != DEFAULT_INT) {
+                builder.setSetIndex(segmentInternal.getSetIndex());
+            }
+            if (segmentInternal.getRateOfPerceivedExertion() != DEFAULT_FLOAT) {
+                builder.setRateOfPerceivedExertion(segmentInternal.getRateOfPerceivedExertion());
+            }
+        }
+        return builder.build();
     }
 
     private static FloorsClimbed toFloorsClimbedProto(
@@ -439,19 +454,6 @@ public final class RecordProtoConverter {
         }
         if (mindfulnessSessionRecordInternal.getNotes() != null) {
             builder.setNotes(mindfulnessSessionRecordInternal.getNotes());
-        }
-
-        return builder.build();
-    }
-
-    private static NicotineIntake toNicotineIntakeProto(
-            NicotineIntakeRecordInternal nicotineIntakeRecordInternal) {
-        NicotineIntake.Builder builder =
-                NicotineIntake.newBuilder()
-                        .setNicotineIntakeType(nicotineIntakeRecordInternal.getNicotineIntakeType())
-                        .setQuantity(nicotineIntakeRecordInternal.getQuantity());
-        if (nicotineIntakeRecordInternal.getNicotineIntakeGrams() != DEFAULT_DOUBLE) {
-            builder.setNicotineIntake(nicotineIntakeRecordInternal.getNicotineIntakeGrams());
         }
 
         return builder.build();
@@ -1156,10 +1158,6 @@ public final class RecordProtoConverter {
                     intervalRecordInternal =
                             populateMindfulnessSessionRecordInternal(
                                     intervalRecordProto.getMindfulnessSession());
-            case NICOTINE_INTAKE ->
-                    intervalRecordInternal =
-                            populateNicotineIntakeRecordInternal(
-                                    intervalRecordProto.getNicotineIntake());
             case NUTRITION ->
                     intervalRecordInternal =
                             populateNutritionRecordInternal(intervalRecordProto.getNutrition());
@@ -1285,16 +1283,36 @@ public final class RecordProtoConverter {
         exerciseSessionRecordInternal.setExerciseSegments(
                 exerciseSessionProto.getSegmentList().stream()
                         .map(
-                                segment ->
-                                        new ExerciseSegmentInternal()
-                                                .setStartTime(segment.getStartTime())
-                                                .setEndTime(segment.getEndTime())
-                                                .setSegmentType(segment.getSegmentType())
-                                                .setRepetitionsCount(segment.getRepetitionsCount()))
+                                (ExerciseSegment segment) -> {
+                                    ExerciseSegmentInternal segmentInternal =
+                                            new ExerciseSegmentInternal();
+                                    segmentInternal
+                                            .setStartTime(segment.getStartTime())
+                                            .setEndTime(segment.getEndTime())
+                                            .setSegmentType(segment.getSegmentType())
+                                            .setRepetitionsCount(segment.getRepetitionsCount());
+                                    if (AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
+                                        if (segment.hasWeight()) {
+                                            segmentInternal.setWeightGrams(segment.getWeight());
+                                        }
+                                        if (segment.hasSetIndex()) {
+                                            segmentInternal.setSetIndex(segment.getSetIndex());
+                                        }
+                                        if (segment.hasRateOfPerceivedExertion()) {
+                                            segmentInternal.setRateOfPerceivedExertion(
+                                                    segment.getRateOfPerceivedExertion());
+                                        }
+                                    }
+                                    return segmentInternal;
+                                })
                         .toList());
         if (exerciseSessionProto.hasPlannedExerciseSessionId()) {
             exerciseSessionRecordInternal.setPlannedExerciseSessionId(
                     UUID.fromString(exerciseSessionProto.getPlannedExerciseSessionId()));
+        }
+        if (exerciseSessionProto.hasSessionRateOfPerceivedExertion()) {
+            exerciseSessionRecordInternal.setRateOfPerceivedExertion(
+                    exerciseSessionProto.getSessionRateOfPerceivedExertion());
         }
         return exerciseSessionRecordInternal;
     }
@@ -1334,20 +1352,6 @@ public final class RecordProtoConverter {
             mindfulnessSessionRecordInternal.setNotes(mindfulnessSessionProto.getNotes());
         }
         return mindfulnessSessionRecordInternal;
-    }
-
-    private static NicotineIntakeRecordInternal populateNicotineIntakeRecordInternal(
-            NicotineIntake nicotineIntakeProto) {
-        NicotineIntakeRecordInternal nicotineIntakeRecordInternal =
-                new NicotineIntakeRecordInternal();
-        nicotineIntakeRecordInternal
-                .setNicotineIntakeType(nicotineIntakeProto.getNicotineIntakeType())
-                .setQuantity(nicotineIntakeProto.getQuantity());
-        if (nicotineIntakeProto.hasNicotineIntake()) {
-            nicotineIntakeRecordInternal.setNicotineIntakeGrams(
-                    nicotineIntakeProto.getNicotineIntake());
-        }
-        return nicotineIntakeRecordInternal;
     }
 
     private static NutritionRecordInternal populateNutritionRecordInternal(
@@ -1881,7 +1885,6 @@ public final class RecordProtoConverter {
             case HYDRATION -> RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
             case MENSTRUATION_PERIOD -> RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_PERIOD;
             case MINDFULNESS_SESSION -> RecordTypeIdentifier.RECORD_TYPE_MINDFULNESS_SESSION;
-            case NICOTINE_INTAKE -> RecordTypeIdentifier.RECORD_TYPE_NICOTINE_INTAKE;
             case NUTRITION -> RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
             case PLANNED_EXERCISE_SESSION ->
                     RecordTypeIdentifier.RECORD_TYPE_PLANNED_EXERCISE_SESSION;

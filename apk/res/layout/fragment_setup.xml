@@ -14,20 +14,20 @@
   ~ limitations under the License.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/request_permissions"
+    android:id="@+id/setup_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:filterTouchesWhenObscured="true"
     android:background="?android:colorBackground"
     android:translationZ="@dimen/spacing_xlarge"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/spacing_xlarge">
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/preference_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:clipChildren="true"
         android:layout_above="@+id/action_container" />
 
     <FrameLayout

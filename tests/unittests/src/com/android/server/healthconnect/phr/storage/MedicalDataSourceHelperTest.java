@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.phr.storage;
 
+import static android.health.connect.Constants.DELETE;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_DELETE;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_READ;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_UPSERT;
@@ -36,6 +37,7 @@ import static android.healthconnect.testing.unittest.PhrTestUtils.ACCESS_LOG_EQU
 import static android.healthconnect.testing.unittest.PhrTestUtils.makeUpsertRequest;
 import static android.healthconnect.testing.unittest.TaskUtils.TEST_USER;
 
+import static com.android.healthfitness.flags.AconfigFlagHelper.isPhrChangeLogsEnabled;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper.DATA_SOURCE_UUID_COLUMN_NAME;
@@ -78,6 +80,7 @@ import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
 import android.healthconnect.testing.unittest.PhrTestUtils;
 import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.TransactionTestUtils.MedicalChangeLogEntry;
 import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.healthconnect.testing.unittest.fakes.FakeTimeSource;
 import android.net.Uri;
@@ -2912,6 +2915,9 @@ public class MedicalDataSourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .doesNotContain(deleteAccessLog);
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+        }
     }
 
     @Test
@@ -2921,7 +2927,8 @@ public class MedicalDataSourceHelperTest {
                 mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource2 =
                 mUtil.insertR4MedicalDataSource("ds", DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
-        mUtil.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource1);
+        var resource1 =
+                mUtil.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource1);
         mUtil.upsertResource(PhrDataFactory::createAllergyMedicalResource, dataSource2);
         mMedicalDataSourceHelper.deleteMedicalDataSourceWithPermissionChecks(
                 UUID.fromString(dataSource1.getId()), /* packageName= */ DATA_SOURCE_PACKAGE_NAME);
@@ -2941,6 +2948,16 @@ public class MedicalDataSourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .contains(deleteAccessLog);
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId,
+                                    List.of(resource1.getId())));
+        }
     }
 
     @Test
@@ -2950,8 +2967,10 @@ public class MedicalDataSourceHelperTest {
                 mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource2 =
                 mUtil.insertR4MedicalDataSource("ds", DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
-        mUtil.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource1);
-        mUtil.upsertResource(PhrDataFactory::createAllergyMedicalResource, dataSource1);
+        var resource1 =
+                mUtil.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource1);
+        var resource2 =
+                mUtil.upsertResource(PhrDataFactory::createAllergyMedicalResource, dataSource1);
         mUtil.upsertResource(PhrDataFactory::createAllergyMedicalResource, dataSource2);
         mMedicalDataSourceHelper.deleteMedicalDataSourceWithPermissionChecks(
                 UUID.fromString(dataSource1.getId()), DATA_SOURCE_PACKAGE_NAME);
@@ -2974,6 +2993,21 @@ public class MedicalDataSourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .contains(deleteAccessLog);
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId,
+                                    List.of(resource1.getId())),
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
+                                    appId,
+                                    List.of(resource2.getId())));
+        }
     }
 
     @Test
@@ -3003,6 +3037,9 @@ public class MedicalDataSourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .contains(deleteAccessLog);
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+        }
     }
 
     @Test
@@ -3037,6 +3074,9 @@ public class MedicalDataSourceHelperTest {
                 mMedicalDataSourceHelper.getMedicalDataSourcesByIdsWithoutPermissionChecks(
                         List.of(UUID.fromString(existing.getId())));
         assertThat(result).containsExactly(existing);
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+        }
     }
 
     @Test
@@ -3068,6 +3108,9 @@ public class MedicalDataSourceHelperTest {
                 mMedicalDataSourceHelper.getMedicalDataSourcesByIdsWithoutPermissionChecks(
                         toUuids(List.of(existing.getId(), different.getId())));
         assertThat(result).containsExactly(existing, different);
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+        }
     }
 
     @Test
@@ -3089,6 +3132,9 @@ public class MedicalDataSourceHelperTest {
                 mMedicalDataSourceHelper.getMedicalDataSourcesByIdsWithoutPermissionChecks(
                         List.of(existingUuid));
         assertThat(result).isEmpty();
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+        }
     }
 
     @Test
@@ -3116,6 +3162,9 @@ public class MedicalDataSourceHelperTest {
                 mMedicalDataSourceHelper.getMedicalDataSourcesByIdsWithoutPermissionChecks(
                         toUuids(List.of(dataSource1.getId(), dataSource2.getId())));
         assertThat(result).containsExactly(dataSource2);
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+        }
     }
 
     @Test
@@ -3143,6 +3192,9 @@ public class MedicalDataSourceHelperTest {
                 mMedicalDataSourceHelper.getMedicalDataSourcesByIdsWithoutPermissionChecks(
                         toUuids(List.of(dataSource1.getId(), dataSource2.getId())));
         assertThat(result).containsExactly(dataSource2);
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+        }
     }
 
     @Test
@@ -3174,6 +3226,9 @@ public class MedicalDataSourceHelperTest {
                 mMedicalDataSourceHelper.getMedicalDataSourcesByIdsWithoutPermissionChecks(
                         toUuids(List.of(dataSource1.getId(), dataSource2.getId())));
         assertThat(result).containsExactly(dataSource1, dataSource2);
+        if (isPhrChangeLogsEnabled()) {
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+        }
     }
 
     @Test
@@ -3211,6 +3266,16 @@ public class MedicalDataSourceHelperTest {
                 mMedicalResourceHelper.readMedicalResourcesByIdsWithoutPermissionChecks(
                         List.of(resource.getId()));
         assertThat(resourceResult).isEmpty();
+        if (isPhrChangeLogsEnabled()) {
+            long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
+            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+                    .containsExactly(
+                            new MedicalChangeLogEntry(
+                                    DELETE,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    appId,
+                                    List.of(resource.getId())));
+        }
     }
 
     @Test

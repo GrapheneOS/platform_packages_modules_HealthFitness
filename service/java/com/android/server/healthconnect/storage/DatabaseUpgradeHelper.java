@@ -25,8 +25,8 @@ import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ECOSYS
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_GENERATED_LOCAL_TIME;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
-import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PERSONAL_HEALTH_RECORD;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PLANNED_EXERCISE_SESSIONS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_SKIN_TEMPERATURE;
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
@@ -54,7 +54,6 @@ import com.android.server.healthconnect.fitness.recordhelpers.ActivityIntensityR
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSegmentRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.MindfulnessSessionRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.NicotineIntakeRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.PlannedExerciseSessionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.SkinTemperatureRecordHelper;
@@ -102,8 +101,8 @@ final class DatabaseUpgradeHelper {
     private static final Upgrader UPGRADE_TO_EXERCISE_SEGMENT_WEIGHT =
             DatabaseUpgradeHelper::applyExerciseSegmentImprovementsDatabaseUpgrade;
 
-    private static final Upgrader UPGRADE_TO_NICOTINE_INTAKE =
-            db -> new NicotineIntakeRecordHelper().applyNicotineIntakeUpgrade(db);
+    private static final Upgrader UPGRADE_TO_PHR_CHANGE_LOGS =
+            DatabaseUpgradeHelper::applyPhrChangeLogsDatabaseUpgrade;
 
     /**
      * A list of db version -> Upgrader to upgrade the db from the previous version to the version.
@@ -112,19 +111,26 @@ final class DatabaseUpgradeHelper {
     private static final TreeMap<Integer, Upgrader> UPGRADERS =
             new TreeMap<>(
                     Map.of(
-                            DB_VERSION_GENERATED_LOCAL_TIME, UPGRADE_TO_GENERATED_LOCAL_TIME,
-                            DB_VERSION_SKIN_TEMPERATURE, UPGRADE_TO_SKIN_TEMPERATURE,
+                            DB_VERSION_GENERATED_LOCAL_TIME,
+                            UPGRADE_TO_GENERATED_LOCAL_TIME,
+                            DB_VERSION_SKIN_TEMPERATURE,
+                            UPGRADE_TO_SKIN_TEMPERATURE,
                             DB_VERSION_PLANNED_EXERCISE_SESSIONS,
-                                    UPGRADE_TO_PLANNED_EXERCISE_SESSIONS,
-                            DB_VERSION_MINDFULNESS_SESSION, UPGRADE_TO_MINDFULNESS_SESSION,
-                            DB_VERSION_PERSONAL_HEALTH_RECORD, UPGRADE_TO_PERSONAL_HEALTH_RECORD,
-                            DB_VERSION_ACTIVITY_INTENSITY, UPGRADE_TO_ACTIVITY_INTENSITY,
-                            DB_VERSION_ECOSYSTEM_METRICS, UPGRADE_TO_ECOSYSTEM_METRICS,
+                            UPGRADE_TO_PLANNED_EXERCISE_SESSIONS,
+                            DB_VERSION_MINDFULNESS_SESSION,
+                            UPGRADE_TO_MINDFULNESS_SESSION,
+                            DB_VERSION_PERSONAL_HEALTH_RECORD,
+                            UPGRADE_TO_PERSONAL_HEALTH_RECORD,
+                            DB_VERSION_ACTIVITY_INTENSITY,
+                            UPGRADE_TO_ACTIVITY_INTENSITY,
+                            DB_VERSION_ECOSYSTEM_METRICS,
+                            UPGRADE_TO_ECOSYSTEM_METRICS,
                             DB_VERSION_CLOUD_BACKUP_AND_RESTORE,
-                                    UPGRADE_TO_CLOUD_BACKUP_AND_RESTORE,
+                            UPGRADE_TO_CLOUD_BACKUP_AND_RESTORE,
                             DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS,
-                                    UPGRADE_TO_EXERCISE_SEGMENT_WEIGHT,
-                            DB_VERSION_NICOTINE_INTAKE, UPGRADE_TO_NICOTINE_INTAKE));
+                            UPGRADE_TO_EXERCISE_SEGMENT_WEIGHT,
+                            DB_VERSION_PHR_CHANGE_LOGS,
+                            UPGRADE_TO_PHR_CHANGE_LOGS));
 
     /**
      * Applies db upgrades to bring the current schema to the latest supported version.
@@ -264,6 +270,21 @@ final class DatabaseUpgradeHelper {
         MedicalResourceHelper.onInitialUpgrade(db);
         DatabaseUpgradeHelper.executeSqlStatements(
                 db, getAlterTableRequestForPhrAccessLogs().getAddColumnsCommands());
+    }
+
+    private static void applyPhrChangeLogsDatabaseUpgrade(SQLiteDatabase db) {
+        if (checkColumnExists(
+                db,
+                ChangeLogsRequestHelper.TABLE_NAME,
+                ChangeLogsRequestHelper.MEDICAL_RESOURCE_TYPES_COLUMN_NAME)) {
+            return;
+        }
+
+        var changeLogsRequestStatements =
+                ChangeLogsRequestHelper.getAlterTableRequestForPhrChangeLogs();
+        executeSqlStatements(db, changeLogsRequestStatements.getAddColumnsCommands());
+        var changeLogsStatements = ChangeLogsHelper.getAlterTableRequestForPhrChangeLogs();
+        executeSqlStatements(db, changeLogsStatements.getAddColumnsCommands());
     }
 
     /** Executes a list of SQL statements one after another, in a transaction. */

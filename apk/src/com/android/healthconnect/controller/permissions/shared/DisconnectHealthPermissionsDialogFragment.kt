@@ -13,12 +13,12 @@
  */
 package com.android.healthconnect.controller.permissions.shared
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -75,7 +75,7 @@ class DisconnectHealthPermissionsDialogFragment() :
 
     @Inject lateinit var logger: HealthConnectLogger
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         if (savedInstanceState != null) {
             appName = savedInstanceState.getString(KEY_APP_NAME, "")
             enableDeleteData = savedInstanceState.getBoolean(KEY_ENABLE_DELETE_DATA, true)
@@ -151,7 +151,7 @@ class DisconnectHealthPermissionsDialogFragment() :
         val dialog =
             AlertDialogBuilder(this, DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONTAINER)
                 .setView(body)
-                .setNeutralButton(
+                .setNegativeButton(
                     android.R.string.cancel,
                     DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CANCEL_BUTTON,
                 ) { _, _ ->

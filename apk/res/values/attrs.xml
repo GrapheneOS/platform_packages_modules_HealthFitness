@@ -114,6 +114,9 @@
     <attr name="vitalsIcon" format="reference"/>
     <attr name="socialHistoryIcon" format="reference"/>
 
+    <!-- Onboarding -->
+    <attr name="checkmarkIcon" format="reference"/>
+
     <!-- Lock screen banner -->
     <attr name="lockIcon" format="reference" />
     <!-- END REGION -->

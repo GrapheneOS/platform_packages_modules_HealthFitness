@@ -16,7 +16,7 @@
 
 package android.healthconnect.cts.phr;
 
-import static android.healthconnect.cts.utils.TestUtils.setFieldValueUsingReflection;
+import static android.healthconnect.testing.cts.TestUtils.setFieldValueUsingReflection;
 
 import static com.google.common.truth.Truth.assertThat;
 

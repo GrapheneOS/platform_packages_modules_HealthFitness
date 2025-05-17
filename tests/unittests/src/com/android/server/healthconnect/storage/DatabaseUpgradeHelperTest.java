@@ -22,11 +22,14 @@ import static android.healthconnect.testing.unittest.StorageUtils.assertTablesEx
 import static android.healthconnect.testing.unittest.StorageUtils.clearDatabase;
 import static android.healthconnect.testing.unittest.StorageUtils.createEmptyDatabase;
 
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
-import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.onUpgrade;
 
 import android.database.sqlite.SQLiteDatabase;
@@ -37,6 +40,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSegmentRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
@@ -55,8 +60,8 @@ import java.util.List;
 public class DatabaseUpgradeHelperTest {
     private static final int NUM_OF_TABLES_AT_MIN_SUPPORTED_VERSION = 57;
     private static final int NUM_OF_TABLES_AT_MINDFULNESS_VERSION = 64;
-    private static final int NUM_OF_TABLES_IN_STAGING = 71;
-    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_NICOTINE_INTAKE;
+    private static final int NUM_OF_TABLES_IN_STAGING = 70;
+    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
@@ -136,6 +141,54 @@ public class DatabaseUpgradeHelperTest {
                 mSQLiteDatabase,
                 ExerciseSessionRecordHelper.EXERCISE_SESSION_RECORD_TABLE_NAME,
                 List.of(ExerciseSessionRecordHelper.RATE_OF_PERCEIVED_EXERTION_COLUMN_NAME));
+        assertDbSchemaUpToDate(mSQLiteDatabase);
+    }
+
+    @Test
+    @EnableFlags({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+    })
+    public void onUpgrade_phrChangeLogs_schemaUpToDate() {
+        try (var db = createEmptyDatabase()) {
+            onUpgrade(db, 0, DB_VERSION_PHR_CHANGE_LOGS);
+
+            assertDbSchemaUpToDate(db);
+            assertColumnsExist(
+                    db,
+                    ChangeLogsRequestHelper.TABLE_NAME,
+                    List.of(ChangeLogsRequestHelper.MEDICAL_RESOURCE_TYPES_COLUMN_NAME));
+            assertColumnsExist(
+                    db,
+                    ChangeLogsHelper.TABLE_NAME,
+                    List.of(
+                            ChangeLogsHelper.MEDICAL_RESOURCE_TYPE_COLUMN_NAME,
+                            ChangeLogsHelper.MEDICAL_DATA_SOURCE_ID_COLUMN_NAME));
+        }
+    }
+
+    @Test
+    @EnableFlags({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+    })
+    public void onUpgrade_phrChangeLogs_idempotent() {
+        try (var db = createEmptyDatabase()) {
+            onUpgrade(db, 0, DB_VERSION_PHR_CHANGE_LOGS);
+            onUpgrade(db, 0, DB_VERSION_PHR_CHANGE_LOGS);
+
+            assertDbSchemaUpToDate(db);
+            assertColumnsExist(
+                    db,
+                    ChangeLogsRequestHelper.TABLE_NAME,
+                    List.of(ChangeLogsRequestHelper.MEDICAL_RESOURCE_TYPES_COLUMN_NAME));
+            assertColumnsExist(
+                    db,
+                    ChangeLogsHelper.TABLE_NAME,
+                    List.of(
+                            ChangeLogsHelper.MEDICAL_RESOURCE_TYPE_COLUMN_NAME,
+                            ChangeLogsHelper.MEDICAL_DATA_SOURCE_ID_COLUMN_NAME));
+        }
     }
 
     /**

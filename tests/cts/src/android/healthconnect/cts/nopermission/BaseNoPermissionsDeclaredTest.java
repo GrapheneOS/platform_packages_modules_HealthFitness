@@ -16,12 +16,12 @@
 
 package android.healthconnect.cts.nopermission;
 
-import static android.healthconnect.cts.utils.PermissionHelper.getDeclaredHealthPermissions;
-import static android.healthconnect.cts.utils.TestUtils.getChangeLogToken;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
-import static android.healthconnect.cts.utils.TestUtils.readRecords;
-import static android.healthconnect.cts.utils.TestUtils.updateRecords;
-import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.testing.cts.PermissionUtils.getDeclaredHealthPermissions;
+import static android.healthconnect.testing.cts.TestUtils.getChangeLogToken;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.readRecords;
+import static android.healthconnect.testing.cts.TestUtils.updateRecords;
+import static android.healthconnect.testing.cts.TestUtils.verifyDeleteRecords;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -34,9 +34,9 @@ import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.datatypes.Record;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.healthconnect.testing.shared.recordfactory.RecordFactory;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;

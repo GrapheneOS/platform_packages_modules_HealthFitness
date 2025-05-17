@@ -22,9 +22,9 @@ import static android.health.connect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.health.connect.datatypes.HeartRateRecord.BPM_MIN;
 import static android.health.connect.datatypes.HeartRateRecord.HEART_MEASUREMENTS_COUNT;
 import static android.healthconnect.cts.lib.TestAppProxy.APP_WRITE_PERMS_ONLY;
-import static android.healthconnect.cts.utils.TestOutcomeReceiver.outcomeExecutor;
-import static android.healthconnect.cts.utils.TestUtils.getHealthConnectManager;
-import static android.healthconnect.cts.utils.TestUtils.readRecordsWithPagination;
+import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
+import static android.healthconnect.testing.cts.TestUtils.getHealthConnectManager;
+import static android.healthconnect.testing.cts.TestUtils.readRecordsWithPagination;
 import static android.healthconnect.testing.shared.DataFactory.getCompleteStepsRecord;
 import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
 
@@ -55,10 +55,10 @@ import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.HealthConnectReceiver;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.cts.HealthConnectReceiver;
+import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.platform.test.annotations.AppModeFull;
 
 import androidx.test.core.app.ApplicationProvider;
