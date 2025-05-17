@@ -24,17 +24,22 @@ import static com.android.server.healthconnect.device.DeviceRecordHelper.DEVICE_
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.health.connect.HealthPermissions;
 import android.healthconnect.testing.unittest.mocks.AndroidPackageMocker;
 import android.os.UserManager;
@@ -63,6 +68,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
 /** Unit tests for {@link TrackerManagerImpl} */
@@ -74,10 +82,13 @@ public class TrackerManagerImplTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
+
     @Mock private Context mContext;
     @Mock private PackageManager mPackageManager;
     @Mock private HealthConnectPermissionHelper mPermissionHelper;
+    @Mock private SensorManager mSensorManager;
     @Mock private UserManager mUserManager;
+
     private AppInfoHelper mAppInfoHelper;
     private HealthConnectInjector mHealthConnectInjector;
 
@@ -86,6 +97,8 @@ public class TrackerManagerImplTest {
         mContext = spy(InstrumentationRegistry.getInstrumentation().getContext());
         AndroidPackageMocker.addToContext(mContext);
         mPackageManager = mContext.getPackageManager();
+        when(mContext.getPackageManager()).thenReturn(mPackageManager);
+        doReturn(mSensorManager).when(mContext).getSystemService(SensorManager.class);
         doReturn(TEST_USER).when(mContext).getUser();
         doReturn(true).when(mUserManager).isUserUnlocked();
         doReturn(true).when(mUserManager).isUserUnlocked(TEST_USER);
@@ -104,7 +117,7 @@ public class TrackerManagerImplTest {
 
     @After
     public void tearDown() throws Exception {
-        reset(mContext, mPackageManager);
+        reset(mContext, mPackageManager, mSensorManager);
     }
 
     @Test
@@ -142,7 +155,6 @@ public class TrackerManagerImplTest {
     public void noAppsGrantedReadSteps_noPackagesReturned() {
         List<String> packages =
                 TrackerManagerImpl.packagesEligibleForStepTracking(mContext, mPermissionHelper);
-        mockInstallAndGrantPermissions(List.of());
 
         assertThat(packages).isEmpty();
     }
@@ -150,9 +162,7 @@ public class TrackerManagerImplTest {
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void appGrantedReadStepsPermission_isReturnedInList() {
-        PackageInfo packageInfo = new PackageInfo();
-        packageInfo.packageName = TEST_PACKAGE_NAME;
-        mockInstallAndGrantPermissions(List.of(packageInfo));
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
 
         List<String> packages =
                 TrackerManagerImpl.packagesEligibleForStepTracking(mContext, mPermissionHelper);
@@ -163,9 +173,7 @@ public class TrackerManagerImplTest {
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void appPregrantedReadStepsPermission_notReturnedInList() {
-        PackageInfo packageInfo = new PackageInfo();
-        packageInfo.packageName = TEST_PACKAGE_NAME;
-        mockInstallAndGrantPermissions(List.of(packageInfo));
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
         setAsPregrantedApp(TEST_PACKAGE_NAME);
 
         List<String> packages =
@@ -176,10 +184,66 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void appHasPermission_deviceHasNoSensor_doesNotSubscribeToSensorManager() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initialize();
+
+        verify(mSensorManager).getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        // We don't subscribe because there is no step sensor
+        verify(mSensorManager, never()).registerListener(any(), any(), anyInt(), anyInt());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void appHasPermission_deviceHasSensor_subscribesToSensorManager() throws Exception {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initialize();
+
+        verify(mSensorManager)
+                .registerListener(
+                        any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void afterSensorManagerSubscription_appLosesPermission_unsubscribeFromSensorManager()
+            throws Exception {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        manager.initialize();
+        verify(mSensorManager)
+                .registerListener(
+                        any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+
+        revokeStepsPermissionForAllApps();
+        manager.initialize();
+
+        verify(mSensorManager).unregisterListener(any(StepSensorEventListener.class));
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void deviceIsWearOs_stepTrackingNotStarted() throws Exception {
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)).thenReturn(true);
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initialize();
+
+        verify(mSensorManager, never()).registerListener(any(), any(), anyInt(), anyInt());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void duringInitialization_deviceDataPackageAddedToAppPriorityList() {
-        PackageInfo packageInfo = new PackageInfo();
-        packageInfo.packageName = TEST_PACKAGE_NAME;
-        mockInstallAndGrantPermissions(List.of(packageInfo));
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
         assertThat(mAppInfoHelper.getAppInfoMap()).isEmpty();
 
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
@@ -200,16 +264,45 @@ public class TrackerManagerImplTest {
         assertThat(mAppInfoHelper.getAppInfoMap()).isEmpty();
     }
 
-    private void mockInstallAndGrantPermissions(List<PackageInfo> packageInfos) {
+    private void grantAppStepsPermission(String packageName) {
+        PackageInfo packageInfo = new PackageInfo();
+        packageInfo.packageName = packageName;
+
         when(mPackageManager.getPackagesHoldingPermissions(
                         eq(new String[] {HealthPermissions.READ_STEPS}),
                         argThat(flag -> (flag.getValue() == 0))))
-                .thenReturn(packageInfos);
+                .thenReturn(List.of(packageInfo));
+    }
+
+    private void revokeStepsPermissionForAllApps() {
+        when(mPackageManager.getPackagesHoldingPermissions(
+                        eq(new String[] {HealthPermissions.READ_STEPS}),
+                        argThat(flag -> (flag.getValue() == 0))))
+                .thenReturn(List.of());
     }
 
     private void setAsPregrantedApp(String packageName) {
         when(mPermissionHelper.getHealthPermissionFlags(
                         eq(packageName), any(), eq(HealthPermissions.READ_STEPS)))
                 .thenReturn(PackageManager.FLAG_PERMISSION_GRANTED_BY_DEFAULT);
+    }
+
+    private static Sensor createSensor() throws Exception {
+        Constructor<Sensor> constr = Sensor.class.getDeclaredConstructor();
+        constr.setAccessible(true);
+        Sensor sensor = constr.newInstance();
+        setSensorType(sensor, Sensor.TYPE_STEP_COUNTER, "Step sensor");
+        return sensor;
+    }
+
+    private static void setSensorType(Sensor sensor, int type, String strType) throws Exception {
+        Method setter = Sensor.class.getDeclaredMethod("setType", Integer.TYPE);
+        setter.setAccessible(true);
+        setter.invoke(sensor, type);
+        if (strType != null) {
+            Field f = sensor.getClass().getDeclaredField("mStringType");
+            f.setAccessible(true);
+            f.set(sensor, strType);
+        }
     }
 }

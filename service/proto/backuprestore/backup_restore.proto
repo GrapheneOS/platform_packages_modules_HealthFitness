@@ -6,7 +6,8 @@ option java_outer_classname = "BackupRestoreProto";
 
 message Settings {
   map<int32, PriorityList> priority_list = 1;
-  reserved 2; // export-import settings removed
+  // export-import settings are removed.
+  reserved 2;
   AutoDeleteFrequencyProto auto_delete_frequency = 3;
   EnergyUnitProto energy_unit_setting = 4;
   TemperatureUnitProto temperature_unit_setting = 5;
@@ -70,7 +71,8 @@ message BackupData {
 message Record {
   string uuid = 1;
   optional string package_name = 2;
-  reserved 3; // App name is removed.
+  // App name is removed.
+  reserved 3;
   int64 last_modified_time = 4;
   optional string client_record_id = 5;
   int64 client_record_version = 6;
@@ -520,7 +522,6 @@ message SleepSession {
     int64 start_time = 1;
     int64 end_time = 2;
     int32 stage_type = 3;
-
   }
 }
 

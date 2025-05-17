@@ -19,8 +19,8 @@ package android.healthconnect.cts.ui
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.pm.PackageManager
-import android.healthconnect.cts.utils.AssumptionCheckerRule
-import android.healthconnect.cts.utils.DeviceSupportUtils
+import android.healthconnect.testing.shared.AssumptionCheckerRule
+import android.healthconnect.testing.shared.DeviceSupportUtils
 import android.server.wm.WindowManagerStateHelper
 import android.util.Log
 import androidx.test.core.app.ApplicationProvider

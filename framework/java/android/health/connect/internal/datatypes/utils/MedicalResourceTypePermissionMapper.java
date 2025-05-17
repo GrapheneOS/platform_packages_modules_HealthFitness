@@ -18,6 +18,7 @@ package android.health.connect.internal.datatypes.utils;
 
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_CONDITIONS;
+import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_DEVICES;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_LABORATORY_RESULTS;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_MEDICATIONS;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_PERSONAL_DETAILS;
@@ -33,6 +34,9 @@ import android.annotation.NonNull;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.MedicalResource.MedicalResourceType;
 import android.util.ArrayMap;
+
+import com.android.healthfitness.flags.Flags;
+import com.android.internal.annotations.VisibleForTesting;
 
 import java.util.Map;
 
@@ -81,12 +85,26 @@ public final class MedicalResourceTypePermissionMapper {
                 MEDICAL_RESOURCE_TYPE_VISITS, HealthPermissions.READ_MEDICAL_DATA_VISITS);
         sMedicalResourceTypeToReadPermissionMap.put(
                 MEDICAL_RESOURCE_TYPE_VITAL_SIGNS, HealthPermissions.READ_MEDICAL_DATA_VITAL_SIGNS);
+        if (Flags.deviceResource()) {
+            sMedicalResourceTypeToReadPermissionMap.put(
+                    MEDICAL_RESOURCE_TYPE_DEVICES, HealthPermissions.READ_MEDICAL_DATA_DEVICES);
+        }
 
         // Populate sMedicalResourceTypeToReadPermissionMap.
         sMedicalResourceTypeToReadPermissionMap.forEach(
                 (key, value) -> {
                     sMedicalResourceReadPermissionToTypeMap.put(value, key);
                 });
+    }
+
+    /**
+     * Reset the map so it can be repopulated. Useful for tests which change flag values so may
+     * change the features in the mapper.
+     */
+    @VisibleForTesting
+    public static synchronized void reset() {
+        sMedicalResourceReadPermissionToTypeMap.clear();
+        sMedicalResourceTypeToReadPermissionMap.clear();
     }
 
     /**

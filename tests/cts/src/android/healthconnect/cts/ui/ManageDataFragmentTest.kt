@@ -19,7 +19,7 @@ package android.healthconnect.cts.ui
 import android.healthconnect.cts.lib.ActivityLauncher.launchMainActivity
 import android.healthconnect.cts.lib.UiTestUtils.findText
 import android.healthconnect.cts.lib.UiTestUtils.navigateToNewPage
-import android.healthconnect.cts.utils.TestUtils
+import android.healthconnect.testing.cts.TestUtils
 import org.junit.Test
 
 /** CTS test for HealthConnect Manage data screen. */

@@ -31,11 +31,15 @@ import android.health.connect.MedicalResourceId;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.android.healthfitness.flags.Flags;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A class to capture the user's medical data. This is the class used for all medical resource
@@ -98,6 +102,16 @@ public final class MedicalResource implements Parcelable {
      */
     public static final int MEDICAL_RESOURCE_TYPE_VISITS = 12;
 
+    /**
+     * Medical resource type labelling data as related to a medical device. This could be either
+     * metadata describing the device that made an observation or an actual embedded medical device
+     * like for instance a pacemaker.
+     *
+     * @hide
+     */
+    // TODO: b/417657261 - change this to @FlaggedApi(FLAG_DEVICE_RESOURCE)
+    public static final int MEDICAL_RESOURCE_TYPE_DEVICES = 13;
+
     /** @hide */
     @Target(ElementType.TYPE_USE)
     @IntDef({
@@ -113,6 +127,7 @@ public final class MedicalResource implements Parcelable {
         MEDICAL_RESOURCE_TYPE_VACCINES,
         MEDICAL_RESOURCE_TYPE_VISITS,
         MEDICAL_RESOURCE_TYPE_VITAL_SIGNS,
+        MEDICAL_RESOURCE_TYPE_DEVICES,
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface MedicalResourceType {}
@@ -265,19 +280,25 @@ public final class MedicalResource implements Parcelable {
      * @hide
      */
     public static final Set<Integer> VALID_TYPES =
-            Set.of(
-                    MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
-                    MEDICAL_RESOURCE_TYPE_CONDITIONS,
-                    MEDICAL_RESOURCE_TYPE_LABORATORY_RESULTS,
-                    MEDICAL_RESOURCE_TYPE_MEDICATIONS,
-                    MEDICAL_RESOURCE_TYPE_PERSONAL_DETAILS,
-                    MEDICAL_RESOURCE_TYPE_PRACTITIONER_DETAILS,
-                    MEDICAL_RESOURCE_TYPE_PREGNANCY,
-                    MEDICAL_RESOURCE_TYPE_PROCEDURES,
-                    MEDICAL_RESOURCE_TYPE_SOCIAL_HISTORY,
-                    MEDICAL_RESOURCE_TYPE_VACCINES,
-                    MEDICAL_RESOURCE_TYPE_VISITS,
-                    MEDICAL_RESOURCE_TYPE_VITAL_SIGNS);
+            Stream.<Stream<Integer>>of(
+                            Stream.of(
+                                    MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
+                                    MEDICAL_RESOURCE_TYPE_CONDITIONS,
+                                    MEDICAL_RESOURCE_TYPE_LABORATORY_RESULTS,
+                                    MEDICAL_RESOURCE_TYPE_MEDICATIONS,
+                                    MEDICAL_RESOURCE_TYPE_PERSONAL_DETAILS,
+                                    MEDICAL_RESOURCE_TYPE_PRACTITIONER_DETAILS,
+                                    MEDICAL_RESOURCE_TYPE_PREGNANCY,
+                                    MEDICAL_RESOURCE_TYPE_PROCEDURES,
+                                    MEDICAL_RESOURCE_TYPE_SOCIAL_HISTORY,
+                                    MEDICAL_RESOURCE_TYPE_VACCINES,
+                                    MEDICAL_RESOURCE_TYPE_VISITS,
+                                    MEDICAL_RESOURCE_TYPE_VITAL_SIGNS),
+                            Flags.deviceResource()
+                                    ? Stream.of(MEDICAL_RESOURCE_TYPE_DEVICES)
+                                    : Stream.of())
+                    .flatMap(t -> t)
+                    .collect(Collectors.toSet());
 
     /**
      * Validates the provided {@code medicalResourceType} is in the {@link

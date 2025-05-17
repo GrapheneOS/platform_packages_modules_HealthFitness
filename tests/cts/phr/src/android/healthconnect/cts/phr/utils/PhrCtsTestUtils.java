@@ -30,8 +30,8 @@ import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VISITS;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VITAL_SIGNS;
-import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
-import static android.healthconnect.cts.utils.PermissionHelper.revokeHealthPermission;
+import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermission;
+import static android.healthconnect.testing.cts.PermissionUtils.revokeHealthPermission;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_ALLERGY;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_CONDITION;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_ENCOUNTER;

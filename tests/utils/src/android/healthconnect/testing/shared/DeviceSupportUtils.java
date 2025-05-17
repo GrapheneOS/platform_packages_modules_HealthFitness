@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.healthconnect.cts.utils;
+package android.healthconnect.testing.shared;
 
 import android.content.Context;
 import android.content.pm.PackageManager;

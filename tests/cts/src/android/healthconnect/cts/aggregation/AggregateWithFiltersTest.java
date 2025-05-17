@@ -25,13 +25,13 @@ import static android.health.connect.datatypes.HeartRateRecord.HEART_MEASUREMENT
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.health.connect.datatypes.WeightRecord.WEIGHT_MAX;
 import static android.health.connect.datatypes.WeightRecord.WEIGHT_MIN;
-import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
-import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseGroupByDuration;
-import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseGroupByPeriod;
-import static android.healthconnect.cts.utils.TestUtils.insertRecords;
-import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
-import static android.healthconnect.cts.utils.TestUtils.updatePriorityWithManageHealthDataPermission;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
+import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGroupByDuration;
+import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGroupByPeriod;
+import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
+import static android.healthconnect.testing.cts.TestUtils.updatePriorityWithManageHealthDataPermission;
 import static android.healthconnect.testing.shared.DataFactory.getDataOrigin;
 import static android.healthconnect.testing.shared.DataFactory.getDistanceRecord;
 import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
@@ -57,8 +57,8 @@ import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
 import android.healthconnect.cts.lib.TestAppProxy;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 
