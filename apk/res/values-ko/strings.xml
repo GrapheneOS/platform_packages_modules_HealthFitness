@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1세트}other{#세트}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1세트 반복}other{#세트 반복}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"운동 분류"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"<xliff:g id="SET_INDEX">%1$d</xliff:g> 설정"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"인지된 운동 강도: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"RPE(인지된 운동 강도)"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"랩 타임"</string>
     <string name="back_extension" msgid="426518933137440577">"백 익스텐션"</string>
     <string name="badminton" msgid="8839727076522086870">"배드민턴"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"계속하기 전에 휴대전화 시스템을 업데이트하세요."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"휴대전화 시스템을 이미 업데이트했다면 휴대전화를 다시 시작하여 통합을 계속해 보세요."</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"계속하기 전에 헬스 커넥트 앱을 최신 버전으로 업데이트하세요."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"추가 저장용량 필요"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"통합을 계속하기 위해 헬스 커넥트에 <xliff:g id="SPACE_NEEDED">%1$s</xliff:g>의 저장용량이 필요합니다.\n\n휴대전화에서 저장용량 일부를 정리한 후 다시 시도해 보세요."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"다시 시도"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"여유 공간 확보"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"통합 일시중지됨"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"헬스 커넥트 앱이 Android 시스템과의 통합 중에 종료되었습니다.\n\n재개를 클릭하여 앱을 다시 열고 데이터 및 권한 이전을 계속하세요."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"헬스 커넥트 데이터를 유지하려면 <xliff:g id="TIME_NEEDED">%1$s</xliff:g> 이내에 완료하세요."</string>
@@ -1229,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{앱 1개에서 사용}other{앱 #개에서 사용}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"지난 24시간 동안 사용하지 않음"</string>
     <string name="accessed" msgid="4424701457530587176">"<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>에 액세스함"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"첫 번째 앱 2개 연결"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"앱을 연결하여 앱 간에 건강/피트니스 데이터를 공유하세요."</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"두 번째 앱 연결"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"<xliff:g id="APP_NAME">%1$s</xliff:g> 앱과 건강/피트니스 데이터를 공유할 앱을 하나 더 설정하세요."</string>
+    <string name="set_up_later" msgid="223888663943501921">"나중에 설정"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"연결할 수 있는 앱"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"헬스 커넥트를 사용하면 건강/피트니스 데이터를 한곳에 저장하고 휴대전화의 앱 간에 공유할 수 있으므로 앱이 더 원활하게 작동합니다."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"헬스 커넥트에 관해 자세히 알아보기"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"앱이 헬스 커넥트에 연결됨"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"거의 완료되었습니다"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"지금 앱을 열어 설정을 완료하고 데이터 공유를 시작하세요."</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

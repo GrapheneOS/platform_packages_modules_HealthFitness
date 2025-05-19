@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 ಪುನರಾವರ್ತನೆ}one{# ಪುನರಾವರ್ತನೆಗಳು}other{# ಪುನರಾವರ್ತನೆಗಳು}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 ಪುನರಾವರ್ತನೆ}one{# ಪುನರಾವರ್ತನೆಗಳು}other{# ಪುನರಾವರ್ತನೆಗಳು}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"ವ್ಯಾಯಾಮದ ಸೆಗ್ಮೆಂಟ್‌ಗಳು"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"<xliff:g id="SET_INDEX">%1$d</xliff:g> ಸೆಟ್ ಮಾಡಿ"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"ವ್ಯಾಯಾಮದ ಸಮಯದಲ್ಲಿನ ಶ್ರಮದ ದರ: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"ವ್ಯಾಯಾಮದ ಸಮಯದಲ್ಲಿನ ಶ್ರಮದ ದರ"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"ಲ್ಯಾಪ್‌ಗಳು"</string>
     <string name="back_extension" msgid="426518933137440577">"ಬ್ಯಾಕ್ ಎಕ್ಸ್‌ಟೆನ್ಶನ್"</string>
     <string name="badminton" msgid="8839727076522086870">"ಬ್ಯಾಡ್ಮಿಂಟನ್"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ಮುಂದುವರಿಯುವ ಮೊದಲು, ನಿಮ್ಮ ಫೋನ್ ಸಿಸ್ಟಂ ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಿ."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ನೀವು ಈಗಾಗಲೇ ನಿಮ್ಮ ಫೋನ್ ಸಿಸ್ಟಂ ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಿದ್ದರೆ, ಇಂಟಿಗ್ರೇಶನ್ ಅನ್ನು ಮುಂದುವರಿಸಲು ನಿಮ್ಮ ಫೋನ್ ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಲು ಪ್ರಯತ್ನಿಸಿ"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"ಮುಂದುವರಿಯುವ ಮೊದಲು, Health Connect ಆ್ಯಪ್ ಅನ್ನು ಇತ್ತೀಚಿನ ಆವೃತ್ತಿಗೆ ಅಪ್‌ಡೇಟ್ ಮಾಡಿ."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"ಹೆಚ್ಚು ಸ್ಥಳ ಅಗತ್ಯವಿದೆ"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"ಇಂಟಿಗ್ರೇಶನ್ ಅನ್ನು ಮುಂದುವರಿಸಲು Health Connect ಗೆ ನಿಮ್ಮ ಫೋನ್‌ನ <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> ಸಂಗ್ರಹಣೆಯ ಸ್ಥಳ ಅಗತ್ಯವಿದೆ.\n\nನಿಮ್ಮ ಫೋನ್‌ನಲ್ಲಿ ಸ್ವಲ್ಪ ಸ್ಥಳವನ್ನು ತೆರವುಗೊಳಿಸಿ ಮತ್ತು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"ಪುನಃ ಪ್ರಯತ್ನಿಸಿ"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"ಸ್ಥಳಾವಕಾಶವನ್ನು ತೆರವುಗೊಳಿಸಿ"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"ಇಂಟಿಗ್ರೇಶನ್ ಅನ್ನು ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect ಆ್ಯಪ್ Android ಸಿಸ್ಟಂನೊಂದಿಗೆ ಸಂಯೋಜನೆಯಾಗುತ್ತಿದ್ದಾಗ ಅದು ಮುಚ್ಚಿದೆ.\n\nಆ್ಯಪ್ ಅನ್ನು ಮತ್ತೆ ತೆರೆಯಲು ಪುನರಾರಂಭಿಸಿ ಎಂಬುದನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ ಮತ್ತು ನಿಮ್ಮ ಡೇಟಾ ಹಾಗೂ ಅನುಮತಿಗಳನ್ನು ವರ್ಗಾಯಿಸುವುದನ್ನು ಮುಂದುವರಿಸಿ."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"ನಿಮ್ಮ Health Connect ಡೇಟಾ ಇರಿಸಿಕೊಳ್ಳಲು <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ಒಳಗಾಗಿ ಇದನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"</string>
@@ -1229,4 +1220,21 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 ಆ್ಯಪ್ ಬಳಸಿದೆ}one{# ಆ್ಯಪ್‌ಗಳು ಬಳಸಿವೆ}other{# ಆ್ಯಪ್‌ಗಳು ಬಳಸಿವೆ}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"ಕಳೆದ 24 ಗಂಟೆಗಳಲ್ಲಿ ಬಳಸಿಲ್ಲ"</string>
     <string name="accessed" msgid="4424701457530587176">"<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g> ಸಮಯಕ್ಕೆ ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲಾಗಿದೆ"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"ನಿಮ್ಮ ಮೊದಲ 2 ಆ್ಯಪ್‌ಗಳನ್ನು ಕನೆಕ್ಟ್ ಮಾಡಿ"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"ಈ ಆ್ಯಪ್‌‌ಗಳನ್ನು ಕನೆಕ್ಟ್ ಮಾಡಿ, ಅವುಗಳ ನಡುವೆ ಆರೋಗ್ಯ ಮತ್ತು ಫಿಟ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ಪ್ರಾರಂಭಿಸಿ"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"ಎರಡನೇ ಆ್ಯಪ್ ಅನ್ನು ಕನೆಕ್ಟ್ ಮಾಡಿ"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"<xliff:g id="APP_NAME">%1$s</xliff:g> ಜೊತೆಗೆ ಆರೋಗ್ಯ ಮತ್ತು ಫಿಟ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ಇನ್ನೊಂದು ಆ್ಯಪ್ ಅನ್ನು ಸೆಟ್ ಮಾಡಿ"</string>
+    <string name="set_up_later" msgid="223888663943501921">"ನಂತರ ಸೆಟಪ್‌ ಮಾಡಿ"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"ಕನೆಕ್ಟ್ ಮಾಡಲು ಲಭ್ಯವಿರುವ ಆ್ಯಪ್‌ಗಳು"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect ನಿಮ್ಮ ಆರೋಗ್ಯ ಮತ್ತು ಫಿಟ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಒಂದೇ ಸ್ಥಳದಲ್ಲಿ ಸಂಗ್ರಹಿಸಲು ಮತ್ತು ಅದನ್ನು ನಿಮ್ಮ ಫೋನ್‌ನಲ್ಲಿರುವ ಆ್ಯಪ್‌ಗಳ ನಡುವೆ ಹಂಚಿಕೊಳ್ಳಲು ನಿಮಗೆ ಅನುಮತಿಸುತ್ತದೆ, ಇದರಿಂದಾಗಿ ನಿಮ್ಮ ಆ್ಯಪ್‌‌ಗಳು ಒಟ್ಟಿಗೆ ಉತ್ತಮವಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತವೆ."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Health Connect ಕುರಿತಾಗಿ ಹೆಚ್ಚಿನ ಮಾಹಿತಿ"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"Health Connect ಗೆ ಆ್ಯಪ್ ಕನೆಕ್ಟ್ ಆಗಿದೆ"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"ಬಹುತೇಕ ಮುಗಿದಿದೆ"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"ಸೆಟಪ್ ಮುಗಿಸಲು ಮತ್ತು ಡೇಟಾ ಹಂಚಿಕೊಳ್ಳುವಿಕೆಯನ್ನು ಪ್ರಾರಂಭಿಸಲು ಈ ಆ್ಯಪ್‌ಗಳನ್ನು ಈಗಲೇ ತೆರೆಯಿರಿ"</string>
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"ಆ್ಯಪ್‌ಗಳಾದ್ಯಂತ ನಿಮ್ಮ ಆರೋಗ್ಯ ಡೇಟಾವನ್ನು ನೋಡಿ"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"ನಿಮ್ಮ ಆ್ಯಪ್‌ಗಳ ನಡುವೆ ಆರೋಗ್ಯ ಮತ್ತು ಫಿಟ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ಪ್ರಾರಂಭಿಸಿ"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"ಸೆಟಪ್ ಮಾಡಿ"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"ಎರಡನೇ ಆ್ಯಪ್ ಅನ್ನು ಕನೆಕ್ಟ್ ಮಾಡಿ"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"<xliff:g id="APP_NAME">%1$s</xliff:g> ಜೊತೆಗೆ ಆರೋಗ್ಯ ಮತ್ತು ಫಿಟ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ಇನ್ನೊಂದು ಆ್ಯಪ್ ಅನ್ನು ಸೆಟ್ ಮಾಡಿ"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"ಮುಂದುವರಿಸಿ"</string>
 </resources>

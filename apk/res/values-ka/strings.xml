@@ -1077,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"გაგრძელებამდე, განაახლეთ თქვენი ტელეფონის სისტემა."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"თუ თქვენ უკვე განაახლეთ თქვენი ტელეფონის სისტემა, სცადეთ ტელეფონის გადატვირთვა ინტეგრაციის გასაგრძელებლად"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"გაგრძელებამდე, განაახლეთ Health Connect აპი ბოლო ვერსიამდე."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"საჭიროა დამატებითი სივრცე"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect საჭიროებს <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> მეხსიერების საცავს თქვენს ტელეფონში ინტეგრაციის გასაგრძელებლად.\n\nგაასუფთავეთ გარკვეული სივრცე თქვენს ტელეფონში და შემდეგ ისევ სცადეთ.."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"ხელახლა ცდა"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"მეხსიერების გათავისუფლება"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"ინტეგრაცია დაპაუზებულია"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect-ის აპი დაიხურა მისი Android სისტემასთან ინტეგრაციისას.\n\nდააწკაპუნეთ ღილაკზე „განახლება“ აპის ხელახლა გასახსნელად და გააგრძელეთ თქვენი მონაცემების და ნებართვების გადატანა."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"თქვენი Health Connect-ის მონაცემების შესანახად, დაასრულეთ ეს <xliff:g id="TIME_NEEDED">%1$s</xliff:g>-ში"</string>
@@ -1224,4 +1220,21 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{იყენებს 1 აპი}other{იყენებს # აპი}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"არ გამოყენებულა ბოლო 24 საათის განმავლობაში"</string>
     <string name="accessed" msgid="4424701457530587176">"წვდომა განხორციელდა: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"დააკავშირეთ თქვენი პირველი 2 აპი"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"ჯანმრთელობის და ფიტნესის მონაცემების აპებს შორის გაზიარების მიზნით, დააკავშირეთ ეს აპები ერთმანეთთან"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"დააკავშირეთ მეორე აპი"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"დააყენეთ კიდევ ერთი აპი ჯანმრთელობის და ფიტნესის მონაცემების გასაზიარებლად <xliff:g id="APP_NAME">%1$s</xliff:g>-თან"</string>
+    <string name="set_up_later" msgid="223888663943501921">"მოგვიანებით დაყენება"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"დასაკავშირებლად ხელმისაწვდომი აპები"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect საშუალებას გაძლევთ, ერთ ადგილას შეინახოთ თქვენი ჯანმრთელობის და ფიტნესის მონაცემები და გააზიაროთ ისინი თქვენს ტელეფონზე არსებულ აპებს შორის, რაც აპების ერთობლივ მუშაობას აუმჯობესებს."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"ვრცლად Health Connect-ის შესახებ"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"აპი დაკავშირებულია Health Connect-თან"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"თითქმის მზადაა"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"გახსენით ეს აპები ახლა, რომ დაასრულოთ დაყენება და დაიწყოთ მონაცემთა გაზიარება"</string>
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"თქვენი ჯანმრთელობის მონაცემების ნახვა სხვადასხვა აპში"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"დაიწყეთ ჯანმრთელობისა და ფიტნესის მონაცემების გაზიარება თქვენს აპებს შორის"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"დაყენება"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"მეორე აპის დაკავშირება"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"დააყენეთ კიდევ ერთი აპი ჯანმრთელობისა და ფიტნესის მონაცემების გასაზიარებლად <xliff:g id="APP_NAME">%1$s</xliff:g>-თან"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"გაგრძელება"</string>
 </resources>

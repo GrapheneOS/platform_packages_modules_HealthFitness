@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 rip}other{# rip}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 ripetizione}other{# ripetizioni}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Segmenti esercizio fisico"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Imposta <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"Grado di sforzo percepito: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"Grado di sforzo percepito"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"Giri"</string>
     <string name="back_extension" msgid="426518933137440577">"Allungamento della schiena"</string>
     <string name="badminton" msgid="8839727076522086870">"Badminton"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Prima di continuare, aggiorna il sistema del tuo telefono."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Se hai già aggiornato il sistema del tuo telefono, prova a riavviare il dispositivo per continuare con l\'integrazione"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Prima di continuare, aggiorna l\'app Connessione Salute all\'ultima versione."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"È necessario più spazio"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Connessione Salute richiede <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> di spazio di archiviazione sul telefono per continuare con l\'integrazione.\n\nLibera un po\' di spazio sul telefono e riprova."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Riprova"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Libera spazio"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Integrazione in pausa"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"L\'app Connessione Salute è stata chiusa durante l\'integrazione nel sistema Android.\n\nFai clic su Riprendi per riaprire l\'app e continuare a trasferire dati e autorizzazioni."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Per mantenere i tuoi dati di Connessione Salute, completa l\'operazione entro <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
@@ -1229,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Utilizzata da 1 app}other{Utilizzata da # app}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Autorizzazione non utilizzata nelle ultime 24 ore"</string>
     <string name="accessed" msgid="4424701457530587176">"Ultimo accesso: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Collega le prime due app"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Connetti queste app per iniziare a condividere i dati relativi alla salute e all\'attività fisica"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"Collega una seconda app"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"Configura un\'altra app per condividere dati relativi alla salute e all\'attività fisica con <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="set_up_later" msgid="223888663943501921">"Configura più tardi"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"App disponibili per la connessione"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Connessione Salute ti consente di archiviare i tuoi dati relativi alla salute e all\'attività fisica in un unico posto e di condividerli tra le app sul tuo smartphone, migliorando l\'interazione tra le tue app."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Scopri di più su Connessione Salute"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"App collegata a Connessione Salute"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"Operazione quasi terminata"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"Apri queste app ora per completare la configurazione e avviare la condivisione dei dati"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

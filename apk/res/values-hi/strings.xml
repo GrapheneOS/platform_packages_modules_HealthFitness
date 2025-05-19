@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 सेट}one{# सेट}other{# सेट}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 सेट}one{# सेट}other{# सेट}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"कसरत के सेगमेंट"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"<xliff:g id="SET_INDEX">%1$d</xliff:g> सेट करें"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"आरपीई: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"कसरत के दौरान मेहनत करने की दर: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"आरपीई"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"कसरत के दौरान मेहनत करने की दर"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"लैप"</string>
     <string name="back_extension" msgid="426518933137440577">"बैक एक्सटेंशन"</string>
     <string name="badminton" msgid="8839727076522086870">"बैडमिंटन"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"आगे बढ़ने से पहले, अपने फ़ोन का सिस्टम अपडेट करें."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"अगर आपने अपने फ़ोन का सिस्टम पहले ही अपडेट कर दिया है, तो इंटिग्रेशन की प्रोसेस को जारी रखने के लिए फ़ोन को रीस्टार्ट करें"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"आगे बढ़ने से पहले, Health Connect ऐप्लिकेशन को नए वर्शन में अपडेट करें."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"ज़्यादा स्टोरेज की ज़रूरत है"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect को आपके फ़ोन में <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> का स्टोरेज चाहिए, ताकि इंटिग्रेशन की प्रोसेस जारी रखी जा सके.\n\nअपने फ़ोन में कुछ स्टोरेज बढ़ाएं और फिर से कोशिश करें."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"फिर से कोशिश करें"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"डिवाइस में स्टोरेज खाली करें"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"इंटिग्रेट करने की प्रोसेस रोक दी गई है"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect ऐप्लिकेशन, Android सिस्टम के साथ इंटिग्रेट होने के दौरान बंद किया गया.\n\n\'फिर शुरू करें\' पर क्लिक करके ऐप्लिकेशन दोबारा खोलें और डेटा के साथ-साथ अनुमतियां ट्रांसफ़र करना जारी रखें."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"आपके Health Connect डेटा को सेव रखने के लिए, इस प्रोसेस को <xliff:g id="TIME_NEEDED">%1$s</xliff:g> में पूरा करें"</string>
@@ -1229,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 ऐप्लिकेशन ने इस्तेमाल किया}one{# ऐप्लिकेशन ने इस्तेमाल किया}other{# ऐप्लिकेशन ने इस्तेमाल किया}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"पिछले 24 घंटों में इस्तेमाल नहीं किया गया"</string>
     <string name="accessed" msgid="4424701457530587176">"<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g> को ऐक्सेस किया गया"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"पहले दो ऐप्लिकेशन कनेक्ट करें"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"इन ऐप्लिकेशन को कनेक्ट करें, ताकि ये एक-दूसरे के साथ सेहत और फ़िटनेस का डेटा शेयर कर सकें"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"किसी दूसरे ऐप्लिकेशन को कनेक्ट करें"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"<xliff:g id="APP_NAME">%1$s</xliff:g> के साथ सेहत और फ़िटनेस का डेटा शेयर करने के लिए, एक और ऐप्लिकेशन सेट अप करें"</string>
+    <string name="set_up_later" msgid="223888663943501921">"बाद में सेट अप करें"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"कनेक्ट करने के लिए उपलब्ध ऐप्लिकेशन"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect, आपको सेहत और फ़िटनेस से जुड़ा डेटा एक जगह पर सेव करने की सुविधा देता है. यहां आपके पास उस डेटा को फ़ोन में मौजूद ऐप्लिकेशन के बीच शेयर करने का विकल्प भी होता है. इससे आपके ऐप्लिकेशन बेहतर तरीके से काम कर पाते हैं."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Health Connect के बारे में ज़्यादा जानकारी"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"Health Connect से ऐप्लिकेशन को कनेक्ट किया गया"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"यह प्रोसेस पूरी होने ही वाली है"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"सेटअप पूरा करने और डेटा शेयर करने के लिए, अभी ये ऐप्लिकेशन खोलें"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

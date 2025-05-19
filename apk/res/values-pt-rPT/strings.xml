@@ -387,7 +387,7 @@
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Permitir que a app <xliff:g id="APP_NAME">%1$s</xliff:g> aceda à Saúde Connect?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Permitir que a app <xliff:g id="APP_NAME">%1$s</xliff:g> aceda a dados de fitness e bem-estar?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Pode saber como a app <xliff:g id="APP_NAME">%1$s</xliff:g> trata os seus dados na respetiva <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
-    <string name="request_permissions_privacy_policy" msgid="228503452643555737">"política de privacidade"</string>
+    <string name="request_permissions_privacy_policy" msgid="228503452643555737">"Política de Privacidade"</string>
     <string name="medical_request_header" msgid="2300521519021510027">"Permitir que a app <xliff:g id="APP_NAME">%1$s</xliff:g> aceda aos seus registos de saúde?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Se der acesso, a app pode ler e escrever dados, como alergias, resultados de laboratório, vacinas e muito mais\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Se der acesso, a app pode ler dados, como alergias, resultados de laboratório, vacinas e muito mais\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 rep}other{# reps}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 repetição}other{# repetições}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Segmentos de exercício"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Conjunto <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"Nível da perceção subjetiva de esforço: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"Nível da perceção subjetiva de esforço"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"Voltas"</string>
     <string name="back_extension" msgid="426518933137440577">"Extensão lombar"</string>
     <string name="badminton" msgid="8839727076522086870">"Badmínton"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Antes de continuar, atualize o sistema do seu telemóvel."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Se já atualizou o sistema do seu telemóvel, tente reiniciar o telemóvel para continuar a integração"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Antes de continuar, atualize a app Saúde Connect para a versão mais recente."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Mais espaço necessário"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"A Saúde Connect precisa de <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> de espaço de armazenamento no seu telemóvel para continuar a integração.\n\nLiberte algum espaço no seu telemóvel e, em seguida, tente novamente."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Tentar novamente"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Libertar espaço"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Integração pausada"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"A app Saúde Connect foi fechada enquanto estava a ser integrada com o sistema Android.\n\nClique em Retomar para reabrir a app e continuar a transferir os seus dados e autorizações."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Para manter os seus dados da Saúde Connect, conclua esta ação em <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
@@ -1229,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Usada por 1 app}other{Usada por # apps}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Sem utilização nas últimas 24 horas"</string>
     <string name="accessed" msgid="4424701457530587176">"Último acesso: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Associe as suas primeiras 2 apps"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Associe estas apps para começar a partilhar dados de saúde e fitness entre elas"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"Associe uma segunda app"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"Configure mais uma app para partilhar dados de saúde e fitness com a app <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="set_up_later" msgid="223888663943501921">"Configurar depois"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"Apps disponíveis para associar"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"A Saúde Connect permite-lhe armazenar os seus dados de saúde e fitness num só lugar e partilhá-los entre apps no seu telemóvel, para que as suas apps funcionem melhor em conjunto."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Mais sobre a Saúde Connect"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"App associada à Saúde Connect"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"Quase concluído"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"Abra estas apps agora para concluir a configuração e começar a partilhar dados"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

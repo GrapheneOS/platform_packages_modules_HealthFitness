@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 повторение}other{# повторения}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 повторение}other{# повторения}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Сегменти от упражненията"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Задаване на <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"Процент на констатираните усилия: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"Процент на констатираните усилия: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"Процент на констатираните усилия"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"Процент на констатираните усилия"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"Дължини"</string>
     <string name="back_extension" msgid="426518933137440577">"Гръбно разгъване"</string>
     <string name="badminton" msgid="8839727076522086870">"Бадминтон"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Преди да продължите, актуализирайте системата на телефона си."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ако вече сте актуализирали системата на телефона си, рестартирайте го, така че интегрирането да продължи"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Преди да продължите, актуализирайте приложението Health Connect до най-новата версия."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Необходимо е още място"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"За да продължи интегрирането, Health Connect се нуждае от <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> свободно място в хранилището на телефона ви.\n\nОсвободете място на телефона си и опитайте отново."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Нов опит"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Освобождаване на място"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Интегрирането е поставено на пауза"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Приложението Health Connect бе затворено, докато се интегрираше в системата Android.\n\nКликнете върху бутона за възобновяване, за да отворите приложението отново и да продължите прехвърлянето на данните и разрешенията си."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"За да запазите данните си в Health Connect, завършете процеса в рамките на <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
@@ -1229,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Използва се от 1 приложение}other{Използва се от # приложения}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Не е използвано през последните 24 часа"</string>
     <string name="accessed" msgid="4424701457530587176">"Осъществен достъп: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Свържете първите си 2 приложения"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Свържете тези приложения, за да започнат да споделят помежду си данни за здравето и физическата активност"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"Свържете второ приложение"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"Настройте още едно приложение, за да споделяте данни за здравето и физическата активност с(ъс) <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="set_up_later" msgid="223888663943501921">"Настройване по-късно"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"Налични приложения за свързване"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect ви дава възможност да съхранявате данните за здравето и физическата си активност на едно място и да ги споделяте между приложенията на телефона си, като по този начин те ще работят по-добре заедно."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Още за Health Connect"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"Приложението е свързано с Health Connect"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"Почти готово"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"Отворете тези приложения сега, за да завършите настройването и да започнете да споделяте данни"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

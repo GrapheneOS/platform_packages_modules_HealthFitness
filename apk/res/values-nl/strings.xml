@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 herh.}other{# herh.}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 herhaling}other{# herhalingen}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Oefeningssegmenten"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Set <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"Gevoelde inspanning: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"Gevoelde inspanning"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"Baantjes/Rondjes"</string>
     <string name="back_extension" msgid="426518933137440577">"Back extension"</string>
     <string name="badminton" msgid="8839727076522086870">"Badminton"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Update je telefoonsysteem voordat je doorgaat."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Heb je je telefoonsysteem al geüpdatet, start je telefoon dan opnieuw op om door te gaan met de integratie"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Update de Health Connect-app naar de nieuwste versie voordat je doorgaat."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Meer ruimte nodig"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect heeft <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> opslagruimte op je telefoon nodig om door te gaan met de integratie.\n\nMaak wat ruimte vrij op je telefoon en probeer het opnieuw."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Opnieuw proberen"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Ruimte vrijmaken"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Integratie onderbroken"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"De Health Connect-app is tijdens de integratie met het Android-systeem gesloten.\n\nKlik op Hervatten om de app opnieuw te openen en door te gaan met het overzetten van je gegevens en rechten."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Als je je Health Connect-gegevens wilt behouden, moet je dit binnen <xliff:g id="TIME_NEEDED">%1$s</xliff:g> afronden."</string>
@@ -1229,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Gebruikt door 1 app}other{Gebruikt door # apps}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Niet gebruikt in de afgelopen 24 uur"</string>
     <string name="accessed" msgid="4424701457530587176">"Geopend: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Koppel je eerste 2 apps"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Koppel deze apps om gezondheids- en fitnessgegevens tussen de apps te delen"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"Een 2e app koppelen"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"Stel nog één app in om gezondheids- en fitnessgegevens te delen met <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="set_up_later" msgid="223888663943501921">"Later instellen"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"Beschikbare apps om te koppelen"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Met Health Connect kun je je gezondheids- en fitnessgegevens op één plek opslaan en delen tussen apps op je telefoon, zodat je apps beter samenwerken."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Meer informatie over Health Connect"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"App gekoppeld aan Health Connect"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"Bijna klaar"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"Open deze apps nu om de instellingen af te ronden en gegevens delen te starten"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>
