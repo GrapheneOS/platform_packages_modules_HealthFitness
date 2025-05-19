@@ -496,3 +496,12 @@ flag {
     is_fixed_read_only: true
     is_exported: false
 }
+
+flag {
+    name: "remove_old_onboarding"
+    namespace: "health_fitness_aconfig"
+    description: "Removes old onboarding flow."
+    bug: "418779070"
+    is_fixed_read_only: true
+    is_exported: false
+}
