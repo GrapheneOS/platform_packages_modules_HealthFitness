@@ -90,6 +90,7 @@ enum Kind {
 }
 
 // The R4 Fhir type used to indicate the type of a field extracted from the fhir spec.
+// To update this list use the print_required_fhir_type_enums.py script.
 // Next ID: 57
 enum R4FhirType {
     R4_FHIR_TYPE_UNSPECIFIED = 0;
