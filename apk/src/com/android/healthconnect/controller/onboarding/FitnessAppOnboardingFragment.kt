@@ -38,6 +38,9 @@ import com.android.healthconnect.controller.shared.preference.HealthSetupFragmen
 import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.LocaleSorter.sortByLocale
+import com.android.healthconnect.controller.utils.logging.FitnessAppOnboardingPageElement
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.pref
 import com.android.settingslib.widget.IntroPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,6 +55,7 @@ class FitnessAppOnboardingFragment : Hilt_FitnessAppOnboardingFragment() {
 
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
     @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
+    @Inject lateinit var logger: HealthConnectLogger
 
     companion object {
         private const val ALLOW_ALL_PREFERENCE = "allow_all_preference"
@@ -72,8 +76,17 @@ class FitnessAppOnboardingFragment : Hilt_FitnessAppOnboardingFragment() {
     private val writePermissionCategory: PreferenceGroup by pref(WRITE_CATEGORY)
     private val appHeaderPreference: IntroPreference by pref(APP_HEADER_PREFERENCE)
 
+    init {
+        this.setPageName(PageName.FITNESS_APP_ONBOARDING_PAGE)
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.fitness_app_onboarding_screen, rootKey)
+
+        allowAllPreference.logNameActive =
+            FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_ALLOW_ALL_BUTTON
+        allowAllPreference.logNameInactive =
+            FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_ALLOW_ALL_BUTTON
         allowAllPreference.isChecked = false
     }
 
@@ -82,7 +95,11 @@ class FitnessAppOnboardingFragment : Hilt_FitnessAppOnboardingFragment() {
 
         val doneButton = primaryButtonFull
         doneButton.text = getString(R.string.delete_dialog_done_button)
+        logger.logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_DONE_BUTTON)
         doneButton.setOnClickListener {
+            logger.logInteraction(
+                FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_DONE_BUTTON
+            )
             findNavController().popBackStack()
             viewModel.done()
             // The user interacted with this app, so regardless of permissions
@@ -92,7 +109,13 @@ class FitnessAppOnboardingFragment : Hilt_FitnessAppOnboardingFragment() {
 
         val backButton = secondaryButton
         backButton.text = getString(R.string.back_button)
-        backButton.setOnClickListener { findNavController().popBackStack() }
+        logger.logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_BACK_BUTTON)
+        backButton.setOnClickListener {
+            logger.logInteraction(
+                FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_BACK_BUTTON
+            )
+            findNavController().popBackStack()
+        }
 
         if (
             requireArguments().containsKey(EXTRA_PACKAGE_NAME) &&
@@ -139,12 +162,17 @@ class FitnessAppOnboardingFragment : Hilt_FitnessAppOnboardingFragment() {
     ) {
         appHeaderPreference.icon = appMetadata.icon
         appHeaderPreference.title = appMetadata.appName
+        logger.logImpression(
+            FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_PRIVACY_POLICY_LINK
+        )
+        logger.logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_LEARN_MORE_LINK)
 
         val onRationaleLinkClicked = {
             val startRationaleIntent =
                 healthPermissionReader.getApplicationRationaleIntent(appMetadata.packageName)
-            // TODO (b/417206188) telemetry
-            // logger.logInteraction(PermissionsElement.APP_RATIONALE_LINK)
+            logger.logInteraction(
+                FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_PRIVACY_POLICY_LINK
+            )
             startActivity(startRationaleIntent)
         }
         detailsPreference.bind(
@@ -152,6 +180,9 @@ class FitnessAppOnboardingFragment : Hilt_FitnessAppOnboardingFragment() {
             screenState = screenState,
             onRationaleLinkClicked = onRationaleLinkClicked,
             onLearnMoreClicked = {
+                logger.logInteraction(
+                    FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_LEARN_MORE_LINK
+                )
                 deviceInfoUtils.openHealthFitnessPermissionsLearnMoreLink(requireActivity())
             },
         )
@@ -197,11 +228,10 @@ class FitnessAppOnboardingFragment : Hilt_FitnessAppOnboardingFragment() {
                         it.setTitle(
                             fromPermissionType(permission.fitnessPermissionType).uppercaseLabel
                         )
-                        // TODO (b/417206188) telemetry
-                        //                    it.logNameActive =
-                        // AppAccessElement.PERMISSION_SWITCH_ACTIVE
-                        //                    it.logNameInactive =
-                        // AppAccessElement.PERMISSION_SWITCH_INACTIVE
+                        it.logNameActive =
+                            FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_PERMISSION_BUTTON
+                        it.logNameInactive =
+                            FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_PERMISSION_BUTTON
                         it.setOnPreferenceChangeListener { _, newValue ->
                             val checked = newValue as Boolean
                             viewModel.updatePermission(permission, checked)
