@@ -323,7 +323,6 @@ class TrampolineActivityTest {
         launchActivityForResult<TrampolineActivity>(createStartIntent(ACTION_HEALTH_HOME_SETTINGS))
             .use {
                 onIdle()
-                // TODO (b/390212615) update once we can use settings flag
                 if (SettingsThemeHelper.isExpressiveTheme(context)) {
                     onView(withText("No recent access"))
                         .perform(scrollTo())

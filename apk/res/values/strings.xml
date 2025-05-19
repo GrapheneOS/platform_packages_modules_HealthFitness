@@ -135,7 +135,6 @@
     <string name="permgroupdesc_health" description="Description of an application permission, listed so the user can choose whether they want to allow the application to do this. [CHAR LIMIT=100]">access your health data</string>
 
     <!-- Health data permissions labels and descriptions -->
-    <!-- TODO(b/249531235): update the labels and descriptions once UX writing is finalised -->
     <string name="permlab_readCaloriesBurned" description="Title of an application permission, listed so the user can choose whether they want to allow the application to do this. [CHAR LIMIT=30]">Read calories burned</string>
     <string name="permdesc_readCaloriesBurned" description="Description of an application permission, listed so the user can choose whether they want to allow the application to do this. [CHAR LIMIT=100]">Allows the app to read the calories burned</string>
     <!--endregion-->
@@ -1479,14 +1478,6 @@
     <!--  endregion -->
     <!-- region App Update needed -->
     <string name="migration_app_update_needed_action" description="Action information shown when migration is pending and an app update is needed.">Before continuing, update the Health&#160;Connect app to the latest version.</string>
-    <!--  endregion -->
-
-    <!-- region More space needed -->
-    <string name="migration_more_space_needed_screen_title" description="Title of screen shown when migration is pending and more space is needed.">More space needed</string>
-    <!--    TODO (b/275685595) use string resource for storage space -->
-    <string name="migration_more_space_needed_screen_details" description="Detail information shown when migration is pending and more space is needed.">Health&#160;Connect needs <xliff:g example="500MB" id="space_needed">%1$s</xliff:g> of storage space on your phone in order for the integration to continue.\n\nClear some space on your phone and then try again.</string>
-    <string name="try_again_button" description="Text of a button prompting the user to try looking at the space again [CHAR_LIMIT=40]">Try again</string>
-    <string name="free_up_space_button" description="Text of a button leading the user to their system storage so they can free up space. [CHAR_LIMIT=40]">Free up space</string>
     <!--  endregion -->
 
     <!-- region Migration paused -->

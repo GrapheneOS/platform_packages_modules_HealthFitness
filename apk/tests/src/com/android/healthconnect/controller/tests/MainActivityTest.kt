@@ -125,7 +125,6 @@ class MainActivityTest {
 
         launchActivityForResult<MainActivity>(startActivityIntent)
 
-        // TODO (b/390212615) update once we can use settings flag
         if (SettingsThemeHelper.isExpressiveTheme(context)) {
             onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
         } else {
@@ -228,7 +227,6 @@ class MainActivityTest {
         launchActivityForResult<MainActivity>(startActivityIntent)
 
         onView(withText("Resume integration")).perform(scrollTo()).check(matches(isDisplayed()))
-        // TODO (b/390212615) update once we can use settings flag
         if (SettingsThemeHelper.isExpressiveTheme(context)) {
             onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
         } else {
@@ -269,7 +267,6 @@ class MainActivityTest {
         launchActivityForResult<MainActivity>(startActivityIntent)
 
         onView(withText("Resume integration")).perform(scrollTo()).check(matches(isDisplayed()))
-        // TODO (b/390212615) update once we can use settings flag
         if (SettingsThemeHelper.isExpressiveTheme(context)) {
             onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
         } else {
@@ -310,7 +307,6 @@ class MainActivityTest {
         launchActivityForResult<MainActivity>(startActivityIntent)
 
         onView(withText("Resume integration")).perform(scrollTo()).check(matches(isDisplayed()))
-        // TODO (b/390212615) update once we can use settings flag
         if (SettingsThemeHelper.isExpressiveTheme(context)) {
             onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
         } else {

@@ -2381,7 +2381,7 @@ class AppPermissionViewModelTest {
             assertThat(result).isTrue()
         }
 
-    // TODO (b/324247426) unignore when we can mock suspend functions
+    // TODO (b/376085889) unignore when we can mock suspend functions
     @Test
     @Ignore
     fun deleteAppData_invokesUseCaseWithCorrectFilter() = runTest {

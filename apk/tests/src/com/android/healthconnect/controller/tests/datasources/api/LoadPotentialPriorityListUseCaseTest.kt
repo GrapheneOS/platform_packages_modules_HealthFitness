@@ -115,7 +115,7 @@ class LoadPotentialPriorityListUseCaseTest {
             .isEqualTo(setOf(TEST_APP_PACKAGE_NAME_2))
     }
 
-    // TODO (b/299920950) Unignore test when we can use mockito-kotlin
+    // TODO (b/376085889) Unignore test when we can use mockito-kotlin
     @Test
     @Ignore
     fun getAppsWithWritePermission_forActivity_returnsAppsForActivity() = runTest {
@@ -154,7 +154,7 @@ class LoadPotentialPriorityListUseCaseTest {
         assertThat((result as UseCaseResults.Success).data).isEqualTo(setOf(TEST_APP_PACKAGE_NAME))
     }
 
-    // TODO (b/299920950) Unignore test when we can use mockito-kotlin
+    // TODO (b/376085889) Unignore test when we can use mockito-kotlin
     @Test
     @Ignore
     fun getAppsWithWritePermission_forSleep_returnsAppsForSleep() = runTest {

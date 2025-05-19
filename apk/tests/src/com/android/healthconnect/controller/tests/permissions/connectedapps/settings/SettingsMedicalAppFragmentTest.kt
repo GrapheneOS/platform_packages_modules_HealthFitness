@@ -495,7 +495,6 @@ class SettingsMedicalAppFragmentTest {
             )
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
-        // TODO (b/322495982) check navigation to Migration activity
         onView(withText("Start integration")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(withText("Continue")).inRoot(isDialog()).check(matches(isDisplayed()))
         verify(healthConnectLogger)

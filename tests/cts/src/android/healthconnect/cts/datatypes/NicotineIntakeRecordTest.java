@@ -64,8 +64,6 @@ public class NicotineIntakeRecordTest {
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
-    // TODO: b/383747833 - Add test for invalid nicotine intake
-
     @Test
     public void nicotineIntakeRecordBuilder_allFieldsSet() {
         Instant endTime = Instant.now();
