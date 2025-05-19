@@ -79,8 +79,8 @@ import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
 import android.healthconnect.testing.unittest.PhrTestUtils;
+import android.healthconnect.testing.unittest.PhrTestUtils.MedicalChangeLogEntry;
 import android.healthconnect.testing.unittest.TransactionTestUtils;
-import android.healthconnect.testing.unittest.TransactionTestUtils.MedicalChangeLogEntry;
 import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.healthconnect.testing.unittest.fakes.FakeTimeSource;
 import android.net.Uri;
@@ -2916,7 +2916,7 @@ public class MedicalDataSourceHelperTest {
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .doesNotContain(deleteAccessLog);
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -2950,7 +2950,7 @@ public class MedicalDataSourceHelperTest {
                 .contains(deleteAccessLog);
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -2995,7 +2995,7 @@ public class MedicalDataSourceHelperTest {
                 .contains(deleteAccessLog);
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -3038,7 +3038,7 @@ public class MedicalDataSourceHelperTest {
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .contains(deleteAccessLog);
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3075,7 +3075,7 @@ public class MedicalDataSourceHelperTest {
                         List.of(UUID.fromString(existing.getId())));
         assertThat(result).containsExactly(existing);
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3109,7 +3109,7 @@ public class MedicalDataSourceHelperTest {
                         toUuids(List.of(existing.getId(), different.getId())));
         assertThat(result).containsExactly(existing, different);
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3133,7 +3133,7 @@ public class MedicalDataSourceHelperTest {
                         List.of(existingUuid));
         assertThat(result).isEmpty();
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3163,7 +3163,7 @@ public class MedicalDataSourceHelperTest {
                         toUuids(List.of(dataSource1.getId(), dataSource2.getId())));
         assertThat(result).containsExactly(dataSource2);
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3193,7 +3193,7 @@ public class MedicalDataSourceHelperTest {
                         toUuids(List.of(dataSource1.getId(), dataSource2.getId())));
         assertThat(result).containsExactly(dataSource2);
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3227,7 +3227,7 @@ public class MedicalDataSourceHelperTest {
                         toUuids(List.of(dataSource1.getId(), dataSource2.getId())));
         assertThat(result).containsExactly(dataSource1, dataSource2);
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3268,7 +3268,7 @@ public class MedicalDataSourceHelperTest {
         assertThat(resourceResult).isEmpty();
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,

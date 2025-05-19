@@ -18,8 +18,8 @@ package com.android.server.healthconnect.backuprestore;
 import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 import static android.health.connect.PageTokenWrapper.EMPTY_PAGE_TOKEN;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createBloodPressureRecord;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildBloodPressureRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
@@ -163,7 +163,7 @@ public class CloudBackupManagerTest {
     public void getChangesForBackup_noMoreChangeLogs_correctResponseReturned() {
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT));
         GetChangesForBackupResponse response = mCloudBackupManager.getChangesForBackup(null);
         BackupChangeTokenHelper.BackupChangeToken firstBackupToken =
@@ -190,7 +190,7 @@ public class CloudBackupManagerTest {
         List<RecordInternal<?>> records = new ArrayList<>();
         for (int recordNumber = 0; recordNumber < DEFAULT_PAGE_SIZE + 1; recordNumber++) {
             records.add(
-                    createStepsRecord(
+                    buildStepsRecord(
                             // Add offsets to start time and end time for distinguishing different
                             // records.
                             TEST_START_TIME_IN_MILLIS + recordNumber,
@@ -213,7 +213,7 @@ public class CloudBackupManagerTest {
         // the second call of getChangesForBackup, is not empty.
         for (int recordNumber = 0; recordNumber < DEFAULT_PAGE_SIZE + 1; recordNumber++) {
             records.add(
-                    createStepsRecord(
+                    buildStepsRecord(
                             // Add offsets to start time and end time for distinguishing different
                             // records.
                             TEST_START_TIME_IN_MILLIS + recordNumber,
@@ -234,7 +234,7 @@ public class CloudBackupManagerTest {
     public void getChangesForBackup_changeTokenIsNull_succeed() {
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT));
 
         GetChangesForBackupResponse response = mCloudBackupManager.getChangesForBackup(null);
@@ -248,7 +248,7 @@ public class CloudBackupManagerTest {
     public void getChangesForBackup_throwsDatabaseException() {
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT));
 
         // Delete backup_change_token_table.
@@ -284,7 +284,7 @@ public class CloudBackupManagerTest {
         GetChangesForBackupResponse firstResponse = mCloudBackupManager.getChangesForBackup(null);
         // Insert one more record during the backup
         var bloodPressureRecord =
-                createBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC);
+                buildBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC);
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, bloodPressureRecord);
         // Second full data backup call
         GetChangesForBackupResponse secondResponse =
@@ -361,7 +361,7 @@ public class CloudBackupManagerTest {
 
         // Insert records and backup
         var recordToBeInserted =
-                createBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC);
+                buildBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC);
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, recordToBeInserted);
         GetChangesForBackupResponse secondResponse =
                 mCloudBackupManager.getChangesForBackup(firstResponse.getNextChangeToken());
@@ -393,7 +393,7 @@ public class CloudBackupManagerTest {
         List<RecordInternal<?>> records = new ArrayList<>();
         for (int recordNumber = 0; recordNumber < recordSize; recordNumber++) {
             records.add(
-                    createStepsRecord(
+                    buildStepsRecord(
                             // Add offsets to start time and end time for distinguishing different
                             // records.
                             TEST_START_TIME_IN_MILLIS + recordNumber,

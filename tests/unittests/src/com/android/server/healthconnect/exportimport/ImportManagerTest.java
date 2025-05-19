@@ -20,8 +20,8 @@ import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR
 import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR_VERSION_MISMATCH;
 import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR_WRONG_FILE;
 import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_STARTED;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createBloodPressureRecord;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildBloodPressureRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_IMPORT_COMPLETE;
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_IMPORT_IN_PROGRESS;
@@ -216,8 +216,8 @@ public class ImportManagerTest {
         List<String> uuids =
                 mTransactionTestUtils.insertRecords(
                         TEST_PACKAGE_NAME,
-                        createStepsRecord(123, 345, 100),
-                        createBloodPressureRecord(234, 120.0, 80.0));
+                        buildStepsRecord(123, 345, 100),
+                        buildBloodPressureRecord(234, 120.0, 80.0));
 
         File zipToImport = zipExportedDb(exportCurrentDb());
 
@@ -325,8 +325,8 @@ public class ImportManagerTest {
         List<String> uuids =
                 mTransactionTestUtils.insertRecords(
                         TEST_PACKAGE_NAME,
-                        createStepsRecord(123, 345, 100),
-                        createBloodPressureRecord(234, 120.0, 80.0));
+                        buildStepsRecord(123, 345, 100),
+                        buildBloodPressureRecord(234, 120.0, 80.0));
 
         File dbToImport = exportCurrentDb();
 
@@ -565,8 +565,8 @@ public class ImportManagerTest {
         List<String> uuids =
                 mTransactionTestUtils.insertRecords(
                         TEST_PACKAGE_NAME,
-                        createStepsRecord(123, 345, 100),
-                        createBloodPressureRecord(234, 120.0, 80.0));
+                        buildStepsRecord(123, 345, 100),
+                        buildBloodPressureRecord(234, 120.0, 80.0));
 
         File zipToImport = zipExportedDb(exportCurrentDb());
 
@@ -604,7 +604,7 @@ public class ImportManagerTest {
     @Test
     @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
     public void copiesAllData_changeLogsTokenExists_generateChangeLogs() throws Exception {
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 345, 100));
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(123, 345, 100));
         File zipToImport = zipExportedDb(exportCurrentDb());
         mDatabaseHelpers.clearAllData(mTransactionManager);
 
@@ -619,7 +619,7 @@ public class ImportManagerTest {
     @Test
     @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
     public void copiesAllData_noChangeLogsToken_noChangeLogs() throws Exception {
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 345, 100));
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(123, 345, 100));
         File zipToImport = zipExportedDb(exportCurrentDb());
         mDatabaseHelpers.clearAllData(mTransactionManager);
 

@@ -16,8 +16,8 @@
 
 package com.android.server.healthconnect.backuprestore;
 
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 import static android.healthconnect.testing.unittest.StorageUtils.queryNumEntries;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
 
 import static com.android.server.healthconnect.backuprestore.BackupRestore.GRANT_TIME_FILE_NAME;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.STAGED_DATABASE_DIR;
@@ -138,7 +138,7 @@ public class BackupRestoreWithoutMocksTest {
                 mPhrTestUtils.insertR4MedicalDataSource("ds", TEST_PACKAGE_NAME);
         mPhrTestUtils.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource);
         // Insert a Step record.
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(123, 456, 7));
         // Ensure the original database contains the inserted data above.
         assertThat(mStorageUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
         assertThat(mStorageUtils.queryNumEntries("medical_resource_table")).isEqualTo(1);

@@ -162,6 +162,10 @@ constructor(
         _permissionTypesReloadNeeded.postValue(false)
     }
 
+    fun resetConnectedAppsReloadNeeded() {
+        _connectedAppsReloadNeeded.postValue(false)
+    }
+
     fun resetEntriesReloadNeeded() {
         _entriesReloadNeeded.postValue(false)
     }

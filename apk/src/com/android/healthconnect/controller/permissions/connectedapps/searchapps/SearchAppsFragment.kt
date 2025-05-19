@@ -17,31 +17,35 @@ package com.android.healthconnect.controller.permissions.connectedapps.searchapp
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
 import com.android.healthconnect.controller.permissions.connectedapps.HealthAppPreference
+import com.android.healthconnect.controller.selectabledeletion.DeletionConstants.START_DELETION_KEY
+import com.android.healthconnect.controller.selectabledeletion.DeletionFragment
+import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteAppData
+import com.android.healthconnect.controller.selectabledeletion.DeletionViewModel
 import com.android.healthconnect.controller.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.ALLOWED
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.INACTIVE
+import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -53,6 +57,7 @@ import com.android.settingslib.widget.ZeroStatePreference
 import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.getValue
 
 /** Fragment for search apps screen. */
 @AndroidEntryPoint(HealthPreferenceFragment::class)
@@ -65,12 +70,14 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
         private const val EMPTY_SEARCH_RESULT = "no_search_result_preference"
         private const val TOP_INTRO_PREF = "search_apps_top_intro"
         private const val ZERO_STATE_PREF = "no_result"
+        private const val FRAGMENT_TAG_DELETION = "FRAGMENT_TAG_DELETION"
     }
 
     @Inject lateinit var logger: HealthConnectLogger
 
     private var searchView: SearchView? = null
     private val viewModel: ConnectedAppsViewModel by viewModels()
+    private val deletionViewModel: DeletionViewModel by activityViewModels()
 
     private val allowedAppsCategory: PreferenceGroup by pref(ALLOWED_APPS_CATEGORY)
 
@@ -130,6 +137,10 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.search_apps_screen, rootKey)
         preferenceScreen.addPreference(NoSearchResultPreference(requireContext()))
+
+        if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {
+            childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -144,6 +155,13 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
             updateAllowedApps(connectedAppsGroup[ALLOWED].orEmpty())
             updateDeniedApps(connectedAppsGroup[DENIED].orEmpty())
             updateInactiveApps(connectedAppsGroup[INACTIVE].orEmpty())
+        }
+
+        deletionViewModel.connectedAppsReloadNeeded.observe(viewLifecycleOwner) { isReloadNeeded ->
+            if (isReloadNeeded) {
+                viewModel.loadConnectedApps()
+                deletionViewModel.resetConnectedAppsReloadNeeded()
+            }
         }
     }
 
@@ -165,6 +183,7 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
 
     override fun onResume() {
         super.onResume()
+        viewModel.loadConnectedApps()
         hideTitleFromCollapsingToolbarLayout()
     }
 
@@ -176,8 +195,26 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
             preferenceScreen.addPreference(inactiveAppsPreference)
             appsList
                 .sortedBy { it.appMetadata.appName }
-                .forEach { app -> inactiveAppsPreference.addPreference(getAppPreference(app)) }
+                .forEach { app ->
+                    val inactiveAppPreference =
+                        InactiveAppPreference(requireContext()).also {
+                            it.title = app.appMetadata.appName
+                            it.icon = app.appMetadata.icon
+                            it.logName = AppPermissionsElement.INACTIVE_APP_BUTTON
+                            it.setOnDeleteButtonClickListener {
+                                val packageName = app.appMetadata.packageName
+                                val appName = app.appMetadata.appName
+                                deleteData(packageName, appName)
+                            }
+                        }
+                    inactiveAppsPreference.addPreference(inactiveAppPreference)
+                }
         }
+    }
+
+    private fun deleteData(packageName: String, appName: String) {
+        deletionViewModel.setDeletionType(DeleteAppData(packageName, appName))
+        childFragmentManager.setFragmentResult(START_DELETION_KEY, bundleOf())
     }
 
     private fun updateAllowedApps(appsList: List<ConnectedAppMetadata>) {

@@ -18,6 +18,7 @@ package com.android.server.healthconnect.phr.validations;
 
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_ALLERGY_INTOLERANCE;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_CONDITION;
+import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_DEVICE;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_ENCOUNTER;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_LOCATION;
@@ -33,6 +34,7 @@ import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_P
 import static android.health.connect.datatypes.FhirResource.FhirResourceType;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_CONDITIONS;
+import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_DEVICES;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_LABORATORY_RESULTS;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_MEDICATIONS;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_PERSONAL_DETAILS;
@@ -273,6 +275,8 @@ public class MedicalResourceValidator {
                 return MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
             case FHIR_RESOURCE_TYPE_CONDITION:
                 return MEDICAL_RESOURCE_TYPE_CONDITIONS;
+            case FHIR_RESOURCE_TYPE_DEVICE:
+                return MEDICAL_RESOURCE_TYPE_DEVICES;
             case FHIR_RESOURCE_TYPE_ENCOUNTER,
                     FHIR_RESOURCE_TYPE_LOCATION,
                     FHIR_RESOURCE_TYPE_ORGANIZATION:

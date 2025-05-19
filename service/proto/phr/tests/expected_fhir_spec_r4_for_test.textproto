@@ -3139,6 +3139,256 @@ resource_type_to_config {
     }
   }
 }
+resource_type_to_config {
+  key: 15
+  value {
+    allowed_field_names_to_config {
+      key: "contact"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_CONTACT_POINT
+      }
+    }
+    allowed_field_names_to_config {
+      key: "contained"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_RESOURCE
+      }
+    }
+    allowed_field_names_to_config {
+      key: "definition"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_REFERENCE
+      }
+    }
+    allowed_field_names_to_config {
+      key: "deviceName"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_DEVICE_DEVICENAME
+      }
+    }
+    allowed_field_names_to_config {
+      key: "distinctIdentifier"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    allowed_field_names_to_config {
+      key: "expirationDate"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_DATE_TIME
+      }
+    }
+    allowed_field_names_to_config {
+      key: "extension"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_EXTENSION
+      }
+    }
+    allowed_field_names_to_config {
+      key: "id"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_ID
+      }
+    }
+    allowed_field_names_to_config {
+      key: "identifier"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_IDENTIFIER
+      }
+    }
+    allowed_field_names_to_config {
+      key: "implicitRules"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_URI
+      }
+    }
+    allowed_field_names_to_config {
+      key: "language"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_CODE
+      }
+    }
+    allowed_field_names_to_config {
+      key: "location"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_REFERENCE
+      }
+    }
+    allowed_field_names_to_config {
+      key: "lotNumber"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    allowed_field_names_to_config {
+      key: "manufactureDate"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_DATE_TIME
+      }
+    }
+    allowed_field_names_to_config {
+      key: "manufacturer"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    allowed_field_names_to_config {
+      key: "meta"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_META
+      }
+    }
+    allowed_field_names_to_config {
+      key: "modelNumber"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    allowed_field_names_to_config {
+      key: "modifierExtension"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_EXTENSION
+      }
+    }
+    allowed_field_names_to_config {
+      key: "note"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_ANNOTATION
+      }
+    }
+    allowed_field_names_to_config {
+      key: "owner"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_REFERENCE
+      }
+    }
+    allowed_field_names_to_config {
+      key: "parent"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_REFERENCE
+      }
+    }
+    allowed_field_names_to_config {
+      key: "partNumber"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    allowed_field_names_to_config {
+      key: "patient"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_REFERENCE
+      }
+    }
+    allowed_field_names_to_config {
+      key: "property"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_DEVICE_PROPERTY
+      }
+    }
+    allowed_field_names_to_config {
+      key: "resourceType"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    allowed_field_names_to_config {
+      key: "safety"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_CODEABLE_CONCEPT
+      }
+    }
+    allowed_field_names_to_config {
+      key: "serialNumber"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    allowed_field_names_to_config {
+      key: "specialization"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_DEVICE_SPECIALIZATION
+      }
+    }
+    allowed_field_names_to_config {
+      key: "status"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_CODE
+      }
+    }
+    allowed_field_names_to_config {
+      key: "statusReason"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_CODEABLE_CONCEPT
+      }
+    }
+    allowed_field_names_to_config {
+      key: "text"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_NARRATIVE
+      }
+    }
+    allowed_field_names_to_config {
+      key: "type"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_CODEABLE_CONCEPT
+      }
+    }
+    allowed_field_names_to_config {
+      key: "udiCarrier"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_DEVICE_UDICARRIER
+      }
+    }
+    allowed_field_names_to_config {
+      key: "url"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_URI
+      }
+    }
+    allowed_field_names_to_config {
+      key: "version"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_DEVICE_VERSION
+      }
+    }
+  }
+}
 fhir_data_type_configs {
   fhir_type: R4_FHIR_TYPE_ADDRESS
   kind: KIND_COMPLEX_TYPE
@@ -4120,6 +4370,258 @@ fhir_data_type_configs {
 fhir_data_type_configs {
   fhir_type: R4_FHIR_TYPE_DECIMAL
   kind: KIND_PRIMITIVE_TYPE
+}
+fhir_data_type_configs {
+  fhir_type: R4_FHIR_TYPE_DEVICE_DEVICENAME
+  kind: KIND_COMPLEX_TYPE
+  fhir_complex_type_config {
+    allowed_field_names_to_config {
+      key: "extension"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_EXTENSION
+      }
+    }
+    allowed_field_names_to_config {
+      key: "id"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    allowed_field_names_to_config {
+      key: "modifierExtension"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_EXTENSION
+      }
+    }
+    allowed_field_names_to_config {
+      key: "name"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    allowed_field_names_to_config {
+      key: "type"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_CODE
+      }
+    }
+    required_fields: "name"
+    required_fields: "type"
+  }
+}
+fhir_data_type_configs {
+  fhir_type: R4_FHIR_TYPE_DEVICE_PROPERTY
+  kind: KIND_COMPLEX_TYPE
+  fhir_complex_type_config {
+    allowed_field_names_to_config {
+      key: "extension"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_EXTENSION
+      }
+    }
+    allowed_field_names_to_config {
+      key: "id"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    allowed_field_names_to_config {
+      key: "modifierExtension"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_EXTENSION
+      }
+    }
+    allowed_field_names_to_config {
+      key: "type"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_CODEABLE_CONCEPT
+      }
+    }
+    allowed_field_names_to_config {
+      key: "valueCode"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_CODEABLE_CONCEPT
+      }
+    }
+    allowed_field_names_to_config {
+      key: "valueQuantity"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_QUANTITY
+      }
+    }
+    required_fields: "type"
+  }
+}
+fhir_data_type_configs {
+  fhir_type: R4_FHIR_TYPE_DEVICE_SPECIALIZATION
+  kind: KIND_COMPLEX_TYPE
+  fhir_complex_type_config {
+    allowed_field_names_to_config {
+      key: "extension"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_EXTENSION
+      }
+    }
+    allowed_field_names_to_config {
+      key: "id"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    allowed_field_names_to_config {
+      key: "modifierExtension"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_EXTENSION
+      }
+    }
+    allowed_field_names_to_config {
+      key: "systemType"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_CODEABLE_CONCEPT
+      }
+    }
+    allowed_field_names_to_config {
+      key: "version"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    required_fields: "systemType"
+  }
+}
+fhir_data_type_configs {
+  fhir_type: R4_FHIR_TYPE_DEVICE_UDICARRIER
+  kind: KIND_COMPLEX_TYPE
+  fhir_complex_type_config {
+    allowed_field_names_to_config {
+      key: "carrierAIDC"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_BASE64_BINARY
+      }
+    }
+    allowed_field_names_to_config {
+      key: "carrierHRF"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    allowed_field_names_to_config {
+      key: "deviceIdentifier"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    allowed_field_names_to_config {
+      key: "entryType"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_CODE
+      }
+    }
+    allowed_field_names_to_config {
+      key: "extension"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_EXTENSION
+      }
+    }
+    allowed_field_names_to_config {
+      key: "id"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    allowed_field_names_to_config {
+      key: "issuer"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_URI
+      }
+    }
+    allowed_field_names_to_config {
+      key: "jurisdiction"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_URI
+      }
+    }
+    allowed_field_names_to_config {
+      key: "modifierExtension"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_EXTENSION
+      }
+    }
+  }
+}
+fhir_data_type_configs {
+  fhir_type: R4_FHIR_TYPE_DEVICE_VERSION
+  kind: KIND_COMPLEX_TYPE
+  fhir_complex_type_config {
+    allowed_field_names_to_config {
+      key: "component"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_IDENTIFIER
+      }
+    }
+    allowed_field_names_to_config {
+      key: "extension"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_EXTENSION
+      }
+    }
+    allowed_field_names_to_config {
+      key: "id"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    allowed_field_names_to_config {
+      key: "modifierExtension"
+      value {
+        is_array: true
+        r4_type: R4_FHIR_TYPE_EXTENSION
+      }
+    }
+    allowed_field_names_to_config {
+      key: "type"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_CODEABLE_CONCEPT
+      }
+    }
+    allowed_field_names_to_config {
+      key: "value"
+      value {
+        is_array: false
+        r4_type: R4_FHIR_TYPE_STRING
+      }
+    }
+    required_fields: "value"
+  }
 }
 fhir_data_type_configs {
   fhir_type: R4_FHIR_TYPE_DISTANCE

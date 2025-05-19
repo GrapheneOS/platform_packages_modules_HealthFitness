@@ -28,8 +28,8 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURC
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createAllergyMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createDifferentVaccineMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResource;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createBloodPressureRecord;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildBloodPressureRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
@@ -393,9 +393,9 @@ public class ChangeLogsHelperTest {
         var insertedRecords =
                 mTransactionTestUtils.insertRecords(
                         PACKAGE_NAME,
-                        createStepsRecord(12345, 54321, 100),
-                        createStepsRecord(123456, 654321, 100),
-                        createBloodPressureRecord(12345678, 100, 100));
+                        buildStepsRecord(12345, 54321, 100),
+                        buildStepsRecord(123456, 654321, 100),
+                        buildBloodPressureRecord(12345678, 100, 100));
         mTransactionTestUtils.deleteRecords(
                 PACKAGE_NAME, RecordIdFilter.fromId(StepsRecord.class, insertedRecords.get(0)));
 
@@ -432,9 +432,9 @@ public class ChangeLogsHelperTest {
         var insertedRecords =
                 mTransactionTestUtils.insertRecords(
                         PACKAGE_NAME,
-                        createStepsRecord(12345, 54321, 100),
-                        createStepsRecord(123456, 654321, 100),
-                        createBloodPressureRecord(12345678, 100, 100));
+                        buildStepsRecord(12345, 54321, 100),
+                        buildStepsRecord(123456, 654321, 100),
+                        buildBloodPressureRecord(12345678, 100, 100));
         mTransactionTestUtils.deleteRecords(
                 PACKAGE_NAME, RecordIdFilter.fromId(StepsRecord.class, insertedRecords.get(0)));
 
@@ -473,9 +473,9 @@ public class ChangeLogsHelperTest {
         var insertedRecords =
                 mTransactionTestUtils.insertRecords(
                         PACKAGE_NAME,
-                        createStepsRecord(12345, 54321, 100),
-                        createStepsRecord(123456, 654321, 100),
-                        createBloodPressureRecord(12345678, 100, 100));
+                        buildStepsRecord(12345, 54321, 100),
+                        buildStepsRecord(123456, 654321, 100),
+                        buildBloodPressureRecord(12345678, 100, 100));
         mTransactionTestUtils.deleteRecords(
                 PACKAGE_NAME, RecordIdFilter.fromId(StepsRecord.class, insertedRecords.get(0)));
 

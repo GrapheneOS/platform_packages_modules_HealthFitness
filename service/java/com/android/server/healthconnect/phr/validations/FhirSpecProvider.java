@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.phr.validations;
 
+import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_DEVICE;
 import static android.health.connect.datatypes.FhirResource.FhirResourceType;
 import static android.health.connect.datatypes.FhirResource.validateFhirResourceType;
 
@@ -160,6 +161,9 @@ public class FhirSpecProvider {
                 fhirSpec.getResourceTypeToConfigMap();
         resourceTypeToConfig.forEach(
                 (resourceType, config) -> {
+                    if (resourceType == FHIR_RESOURCE_TYPE_DEVICE && !Flags.deviceResource()) {
+                        return;
+                    }
                     validateFhirResourceType(resourceType);
                     mResourceTypeIntToFhirSpecMap.put(resourceType, config);
                 });

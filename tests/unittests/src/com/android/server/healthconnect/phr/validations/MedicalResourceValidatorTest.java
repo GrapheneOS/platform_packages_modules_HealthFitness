@@ -54,7 +54,9 @@ import static org.junit.Assert.assertThrows;
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.datatypes.FhirResource;
 import android.health.connect.datatypes.MedicalResource;
+import android.health.connect.internal.datatypes.utils.FhirResourceTypeStringToIntMapper;
 import android.healthconnect.testing.shared.phr.ConditionBuilder;
+import android.healthconnect.testing.shared.phr.DeviceBuilder;
 import android.healthconnect.testing.shared.phr.EncountersBuilder;
 import android.healthconnect.testing.shared.phr.ImmunizationBuilder;
 import android.healthconnect.testing.shared.phr.MedicationsBuilder;
@@ -63,8 +65,10 @@ import android.healthconnect.testing.shared.phr.ObservationBuilder.QuantityUnits
 import android.healthconnect.testing.shared.phr.PatientBuilder;
 import android.healthconnect.testing.shared.phr.PractitionerBuilder;
 import android.healthconnect.testing.shared.phr.ProcedureBuilder;
+import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.phr.UpsertMedicalResourceInternalRequest;
 
 import com.google.testing.junit.testparameterinjector.TestParameter;
@@ -531,6 +535,19 @@ public class MedicalResourceValidatorTest {
         assertThat(type).isEqualTo(MedicalResource.MEDICAL_RESOURCE_TYPE_VISITS);
     }
 
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_RESOURCE)
+    public void testCalculateMedicalResourceType_device() {
+        FhirResourceTypeStringToIntMapper.reset();
+        String fhirData = new DeviceBuilder().toJson();
+        MedicalResourceValidator validator = makeValidator(fhirData);
+
+        int type = validator.validateAndCreateInternalRequest().getMedicalResourceType();
+
+        assertThat(type).isEqualTo(MedicalResource.MEDICAL_RESOURCE_TYPE_DEVICES);
+        FhirResourceTypeStringToIntMapper.reset();
+    }
+
     // IPS artifacts: https://build.fhir.org/ig/HL7/fhir-ips/artifacts.html
     // pregnancy outcome,  status and expected delivery date.
     enum PregnancyStatusTestValue {
@@ -844,7 +861,7 @@ public class MedicalResourceValidatorTest {
     }
 
     @Test
-    public void testPregancyHigherPriorityThanSocialHistory() {
+    public void testPregnancyHigherPriorityThanSocialHistory() {
         PregnancyStatusTestValue status = PregnancyStatusTestValue.PREGNANT;
         String fhirData =
                 new ObservationBuilder()
