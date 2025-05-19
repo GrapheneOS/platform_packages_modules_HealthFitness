@@ -57,6 +57,7 @@ import static android.health.connect.HealthPermissionCategory.WEIGHT;
 import static android.health.connect.HealthPermissionCategory.WHEELCHAIR_PUSHES;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API;
 import static com.android.healthfitness.flags.Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY;
 import static com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
@@ -128,6 +129,21 @@ public final class HealthPermissions {
      */
     @FlaggedApi(FLAG_LAUNCH_ONBOARDING_ACTIVITY)
     public static final String START_ONBOARDING = "android.permission.health.START_ONBOARDING";
+
+    /**
+     * Allows an application to launch Backup and Restore Settings activities where the user can
+     * change Cloud backup and restore settings such as enable/disable. This permission can only be
+     * held by the system. Client apps that choose to export a health connect backup and restore
+     * settings activity must guard it with this permission so that only the system can launch it.
+     *
+     * <p>See {@link HealthConnectManager#ACTION_VIEW_HEALTH_CONNECT_BACKUP_SETTINGS} for the
+     * corresponding intent used by the system to launch backup and restore settings activities.
+     *
+     * <p>Protection level: signature.
+     */
+    @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API)
+    public static final String START_BACKUP_RESTORE_SETTINGS_PERMISSION =
+            "android.permission.health.START_BACKUP_RESTORE_SETTINGS";
 
     /**
      * Used for runtime permissions which grant access to Health Connect data.

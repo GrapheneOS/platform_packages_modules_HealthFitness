@@ -22,9 +22,11 @@ import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
+import static android.health.connect.HealthPermissions.START_BACKUP_RESTORE_SETTINGS_PERMISSION;
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
 import static com.android.healthfitness.flags.Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY;
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
@@ -354,6 +356,39 @@ public class HealthConnectManager {
     @FlaggedApi(FLAG_LAUNCH_ONBOARDING_ACTIVITY)
     public static final String ACTION_SHOW_ONBOARDING =
             "android.health.connect.action.SHOW_ONBOARDING";
+
+    /**
+     * Activity action: Launches the activity that shows the settings UI for changing Health Connect
+     * backup and restore settings such as enabling/disabling.
+     *
+     * <p>Health Connect invokes this intent whenever the user clicks on the backup option in Health
+     * Connect Settings.
+     *
+     * <p class="note">Applications exporting an activity that is launched by this intent must guard
+     * it with {@link HealthPermissions#START_BACKUP_RESTORE_SETTINGS_PERMISSION} so that only the
+     * system can launch it. Applications need to hold the {@link
+     * android.Manifest.permission#BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS} or {@link
+     * android.Manifest.permission#BACKUP} for the intent to be sent.
+     *
+     * <p class="note">Health Connect does not send the intent if:
+     *
+     * <ul>
+     *   <li>There is no component available to handle the intent action
+     *   <li>More than one component is available to handle the intent action
+     *   <li>The component that can handle the action does not hold either of the required
+     *       permissions
+     *   <li>The handler activity is not guarded with the {@link
+     *       HealthPermissions#START_BACKUP_RESTORE_SETTINGS_PERMISSION}
+     * </ul>
+     *
+     * @hide
+     */
+    @SystemApi
+    @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API)
+    @RequiresPermission(START_BACKUP_RESTORE_SETTINGS_PERMISSION)
+    @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    public static final String ACTION_SHOW_HEALTH_CONNECT_BACKUP_SETTINGS =
+            "android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS";
 
     /**
      * Activity action: Launch UI to prompt user to connect more apps with Health Connect.
