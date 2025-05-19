@@ -151,7 +151,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         deletionViewModel.connectedAppsReloadNeeded.observe(viewLifecycleOwner) { isReloadNeeded ->
             if (isReloadNeeded) {
                 viewModel.loadConnectedApps()
-                deletionViewModel.resetPermissionTypesReloadNeeded()
+                deletionViewModel.resetConnectedAppsReloadNeeded()
             }
         }
     }
