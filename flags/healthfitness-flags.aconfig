@@ -487,3 +487,12 @@ flag {
     is_fixed_read_only: true
     is_exported: false
 }
+
+flag {
+    name: "onboarding_notification"
+    namespace: "health_fitness_aconfig"
+    description: "Enable notification for onboarding flow."
+    bug: "418778638"
+    is_fixed_read_only: true
+    is_exported: false
+}
