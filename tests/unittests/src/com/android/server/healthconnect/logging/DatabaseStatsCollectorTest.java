@@ -16,9 +16,9 @@
 
 package com.android.server.healthconnect.logging;
 
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createBloodPressureRecord;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createSpeedRecordInternal;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildBloodPressureRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildSpeedRecordInternal;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -178,14 +178,14 @@ public class DatabaseStatsCollectorTest {
     public void testChangeLogsTableDatabaseLogsStats() {
         mTransactionTestUtils.insertRecords(
                 PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         "client.id1",
                         /* startTimeMillis= */ 4000,
                         /* endTimeMillis= */ 4500,
                         /* stepsCount= */ 1000));
         mTransactionTestUtils.insertRecords(
                 PACKAGE_NAME,
-                createBloodPressureRecord(
+                buildBloodPressureRecord(
                         /* appInfoId= */ mPackageAppInfoId,
                         /* timeMillis= */ 4000,
                         /* systolic= */ 120,
@@ -198,12 +198,12 @@ public class DatabaseStatsCollectorTest {
     public void testIntervalRecordsTableDatabaseLogsStats() {
         mTransactionTestUtils.insertRecords(
                 PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         "client.id1",
                         /* startTimeMillis= */ 4000,
                         /* endTimeMillis= */ 4500,
                         /* stepsCount= */ 1000),
-                createStepsRecord(
+                buildStepsRecord(
                         "client.id2",
                         /* startTimeMillis= */ 6000,
                         /* endTimeMillis= */ 7000,
@@ -216,7 +216,7 @@ public class DatabaseStatsCollectorTest {
     public void testInstantRecordsTableDatabaseLogsStats() {
         mTransactionTestUtils.insertRecords(
                 PACKAGE_NAME,
-                createBloodPressureRecord(
+                buildBloodPressureRecord(
                         /* appInfoId= */ mPackageAppInfoId,
                         /* timeMillis= */ 4000,
                         /* systolic= */ 120,
@@ -228,10 +228,10 @@ public class DatabaseStatsCollectorTest {
     @Test
     public void testSeriesRecordsTableDatabaseLogsStats() {
         mTransactionTestUtils.insertRecords(
-                PACKAGE_NAME, createSpeedRecordInternal(/* startTine= */ INSTANT_NOW));
+                PACKAGE_NAME, buildSpeedRecordInternal(/* startTine= */ INSTANT_NOW));
         mTransactionTestUtils.insertRecords(
                 PACKAGE_NAME,
-                createSpeedRecordInternal(/* startTine= */ Instant.now().minusSeconds(100)));
+                buildSpeedRecordInternal(/* startTine= */ Instant.now().minusSeconds(100)));
 
         assertThat(mDatabaseStatsCollector.getNumberOfSeriesRecordRows()).isEqualTo(2L);
     }
@@ -240,7 +240,7 @@ public class DatabaseStatsCollectorTest {
     public void testGetDatabaseSizeDatabaseLogsStats() {
         mTransactionTestUtils.insertRecords(
                 PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         "client.id1",
                         /* startTimeMillis= */ 4000,
                         /* endTimeMillis= */ 4500,

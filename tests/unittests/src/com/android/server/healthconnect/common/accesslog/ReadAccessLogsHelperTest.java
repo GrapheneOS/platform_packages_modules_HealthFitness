@@ -16,8 +16,8 @@
 
 package com.android.server.healthconnect.common.accesslog;
 
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createBloodPressureRecord;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildBloodPressureRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
 import static com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper.PAGE_SIZE;
 import static com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper.ReadAccessLog;
@@ -102,9 +102,9 @@ public class ReadAccessLogsHelperTest {
     @Test
     public void insertReadAccessLogs_queryLogsReturnsAllLogs() {
         RecordInternal<StepsRecord> stepsRecordRecordInternal =
-                createStepsRecord(mWriterAppInfoId, 123, Instant.now().toEpochMilli(), 100);
+                buildStepsRecord(mWriterAppInfoId, 123, Instant.now().toEpochMilli(), 100);
         RecordInternal<BloodPressureRecord> bloodPressureRecordRecordInternal =
-                createBloodPressureRecord(mWriterAppInfoId, 1234, 120, 80);
+                buildBloodPressureRecord(mWriterAppInfoId, 1234, 120, 80);
         long readTimeStamp = Instant.now().toEpochMilli();
         List<ReadAccessLog> expectedReadAccessLogs =
                 List.of(
@@ -139,13 +139,13 @@ public class ReadAccessLogsHelperTest {
     @Test
     public void insertReadAccessLogsOfSameDataType_insertsOnlyLatestPerDataType() {
         RecordInternal<StepsRecord> stepsRecordRecordInternalOne =
-                createStepsRecord(mWriterAppInfoId, 123, 345, 100);
+                buildStepsRecord(mWriterAppInfoId, 123, 345, 100);
         RecordInternal<StepsRecord> stepsRecordRecordInternalTwo =
-                createStepsRecord(mWriterAppInfoId, 123, 350, 100);
+                buildStepsRecord(mWriterAppInfoId, 123, 350, 100);
         RecordInternal<BloodPressureRecord> bloodPressureRecordRecordInternalOne =
-                createBloodPressureRecord(mWriterAppInfoId, 1234, 120, 80);
+                buildBloodPressureRecord(mWriterAppInfoId, 1234, 120, 80);
         RecordInternal<BloodPressureRecord> bloodPressureRecordRecordInternalTwo =
-                createBloodPressureRecord(mWriterAppInfoId, Instant.now().toEpochMilli(), 120, 80);
+                buildBloodPressureRecord(mWriterAppInfoId, Instant.now().toEpochMilli(), 120, 80);
         long readTimeStamp = Instant.now().toEpochMilli();
         List<ReadAccessLog> expectedReadAccessLogs =
                 List.of(
@@ -241,9 +241,9 @@ public class ReadAccessLogsHelperTest {
     @Test
     public void testInsertReadAccessLogForDifferentReaderAndWriterPackage() {
         RecordInternal<StepsRecord> stepsRecordRecordInternalOne =
-                createStepsRecord(mWriterAppInfoId, 123, Instant.now().toEpochMilli(), 100);
+                buildStepsRecord(mWriterAppInfoId, 123, Instant.now().toEpochMilli(), 100);
         RecordInternal<BloodPressureRecord> bloodPressureRecordRecordInternalTwo =
-                createBloodPressureRecord(mReaderAppInfoId, Instant.now().toEpochMilli(), 120, 80);
+                buildBloodPressureRecord(mReaderAppInfoId, Instant.now().toEpochMilli(), 120, 80);
         long readTimeStamp = Instant.now().toEpochMilli();
         List<ReadAccessLog> expectedReadAccessLogs =
                 List.of(
@@ -274,7 +274,7 @@ public class ReadAccessLogsHelperTest {
     public void testReadAccessLogsCountLessThanPageLimit() {
         int count = PAGE_SIZE - 10;
         RecordInternal<StepsRecord> stepsRecordRecordInternalOne =
-                createStepsRecord(mWriterAppInfoId, 123, Instant.now().toEpochMilli(), 100);
+                buildStepsRecord(mWriterAppInfoId, 123, Instant.now().toEpochMilli(), 100);
         long readTimeStamp = Instant.now().toEpochMilli();
         ReadAccessLog expectedReadAccessLog =
                 new ReadAccessLog(
@@ -297,7 +297,7 @@ public class ReadAccessLogsHelperTest {
     @Test
     public void testReadAccessLogsCountEqualToPageLimit() {
         RecordInternal<StepsRecord> stepsRecordRecordInternalOne =
-                createStepsRecord(mWriterAppInfoId, 123, Instant.now().toEpochMilli(), 100);
+                buildStepsRecord(mWriterAppInfoId, 123, Instant.now().toEpochMilli(), 100);
         long readTimeStamp = Instant.now().toEpochMilli();
         ReadAccessLog expectedReadAccessLog =
                 new ReadAccessLog(
@@ -321,7 +321,7 @@ public class ReadAccessLogsHelperTest {
     public void testReadAccessLogsCountGreaterThanPageLimit() {
         int count = PAGE_SIZE + 10;
         RecordInternal<StepsRecord> stepsRecordRecordInternalOne =
-                createStepsRecord(mWriterAppInfoId, 123, Instant.now().toEpochMilli(), 100);
+                buildStepsRecord(mWriterAppInfoId, 123, Instant.now().toEpochMilli(), 100);
         long readTimeStamp = Instant.now().toEpochMilli();
         ReadAccessLog expectedReadAccessLog =
                 new ReadAccessLog(

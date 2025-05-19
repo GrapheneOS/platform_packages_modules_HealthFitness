@@ -18,8 +18,8 @@ package com.android.server.healthconnect.fitness.recordhelpers;
 
 import static android.health.connect.Constants.MAXIMUM_ALLOWED_CURSOR_COUNT;
 import static android.health.connect.PageTokenWrapper.EMPTY_PAGE_TOKEN;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createBloodPressureRecord;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildBloodPressureRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
 import static com.android.server.healthconnect.fitness.recordhelpers.BloodPressureRecordHelper.BLOOD_PRESSURE_RECORD_TABLE_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.StepsRecordHelper.STEPS_TABLE_NAME;
@@ -108,7 +108,7 @@ public class RecordHelperTest {
         RecordHelper<?> helper = new StepsRecordHelper();
         String uid =
                 mTransactionTestUtils
-                        .insertRecords(TEST_PACKAGE_NAME, createStepsRecord(4000, 5000, 100))
+                        .insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(4000, 5000, 100))
                         .get(0);
         ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {
@@ -129,7 +129,7 @@ public class RecordHelperTest {
         RecordHelper<?> helper = new StepsRecordHelper();
         String uid =
                 mTransactionTestUtils
-                        .insertRecords(TEST_PACKAGE_NAME, createStepsRecord(4000, 5000, 100))
+                        .insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(4000, 5000, 100))
                         .get(0);
         ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {
@@ -147,7 +147,7 @@ public class RecordHelperTest {
         int startTime = 9527;
         List<RecordInternal<?>> records = new ArrayList<>(MAXIMUM_ALLOWED_CURSOR_COUNT + 1);
         for (int i = 0; i <= MAXIMUM_ALLOWED_CURSOR_COUNT; i++) {
-            records.add(createStepsRecord(startTime + i, startTime + i + 1, 100));
+            records.add(buildStepsRecord(startTime + i, startTime + i + 1, 100));
         }
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
 
@@ -170,12 +170,12 @@ public class RecordHelperTest {
         boolean isAscending = false;
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         "client.id1",
                         /* startTimeMillis= */ 4000,
                         /* endTimeMillis= */ 4500,
                         /* stepsCount= */ 1000),
-                createStepsRecord(
+                buildStepsRecord(
                         "client.id2",
                         /* startTimeMillis= */ 6000,
                         /* endTimeMillis= */ 7000,
@@ -232,33 +232,33 @@ public class RecordHelperTest {
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
                 // in page 1
-                createStepsRecord(
+                buildStepsRecord(
                         "id1",
                         /* startTimeMillis= */ 3000,
                         /* endTimeMillis= */ 45000,
                         /* stepsCount= */ 1000),
-                createStepsRecord(
+                buildStepsRecord(
                         "id2",
                         /* startTimeMillis= */ 4000,
                         /* endTimeMillis= */ 5000,
                         /* stepsCount= */ 100),
-                createStepsRecord(
+                buildStepsRecord(
                         "id3",
                         /* startTimeMillis= */ 4000,
                         /* endTimeMillis= */ 6000,
                         /* stepsCount= */ 200),
                 // in page 2
-                createStepsRecord(
+                buildStepsRecord(
                         "id4",
                         /* startTimeMillis= */ 4000,
                         /* endTimeMillis= */ 7000,
                         /* stepsCount= */ 300),
-                createStepsRecord(
+                buildStepsRecord(
                         "id5",
                         /* startTimeMillis= */ 5000,
                         /* endTimeMillis= */ 6000,
                         /* stepsCount= */ 400),
-                createStepsRecord(
+                buildStepsRecord(
                         "id6",
                         /* startTimeMillis= */ 6000,
                         /* endTimeMillis= */ 7000,
@@ -321,8 +321,8 @@ public class RecordHelperTest {
         RecordHelper<?> helper = new StepsRecordHelper();
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord("id1", 4000, 5000, 100),
-                createStepsRecord("id2", 5000, 6000, 100));
+                buildStepsRecord("id1", 4000, 5000, 100),
+                buildStepsRecord("id2", 5000, 6000, 100));
         PageTokenWrapper incorrectToken = PageTokenWrapper.of(true, 4000, 2);
         ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {
@@ -346,7 +346,8 @@ public class RecordHelperTest {
         String uid =
                 mTransactionTestUtils
                         .insertRecords(
-                                TEST_PACKAGE_NAME, createBloodPressureRecord(4000, 5000, 100))
+                                TEST_PACKAGE_NAME,
+                                buildBloodPressureRecord(4000, 5000, 100))
                         .get(0);
         ReadTableRequest request = new ReadTableRequest(BLOOD_PRESSURE_RECORD_TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {
@@ -365,7 +366,7 @@ public class RecordHelperTest {
         RecordHelper<?> helper = new StepsRecordHelper();
         String uid =
                 mTransactionTestUtils
-                        .insertRecords(TEST_PACKAGE_NAME, createStepsRecord(4000, 5000, 100))
+                        .insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(4000, 5000, 100))
                         .get(0);
         ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {

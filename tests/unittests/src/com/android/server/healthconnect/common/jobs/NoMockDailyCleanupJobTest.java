@@ -16,8 +16,6 @@
 
 package com.android.server.healthconnect.common.jobs;
 
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
-
 import static com.android.server.healthconnect.fitness.recordhelpers.StepsRecordHelper.STEPS_TABLE_NAME;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -25,6 +23,7 @@ import static com.google.common.truth.Truth.assertThat;
 import android.content.Context;
 import android.database.Cursor;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.healthconnect.testing.unittest.RecordInternalFactory;
 import android.healthconnect.testing.unittest.TransactionTestUtils;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -91,7 +90,9 @@ public class NoMockDailyCleanupJobTest {
     public void startDailyCleanup_changeLogsGenerated() {
         String uuid =
                 mTransactionTestUtils
-                        .insertRecords(TEST_PACKAGE_NAME, createStepsRecord(4000, 5000, 100))
+                        .insertRecords(
+                                TEST_PACKAGE_NAME,
+                                RecordInternalFactory.buildStepsRecord(4000, 5000, 100))
                         .get(0);
         RecordHelper<?> helper = new StepsRecordHelper();
         try (Cursor cursor = mTransactionManager.read(new ReadTableRequest(STEPS_TABLE_NAME))) {

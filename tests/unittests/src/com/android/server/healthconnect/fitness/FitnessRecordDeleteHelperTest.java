@@ -18,7 +18,6 @@ package com.android.server.healthconnect.fitness;
 
 import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_DELETE;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -33,6 +32,7 @@ import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.healthconnect.testing.unittest.RecordInternalFactory;
 import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.os.UserHandle;
 import android.platform.test.annotations.EnableFlags;
@@ -109,7 +109,7 @@ public class FitnessRecordDeleteHelperTest {
     public void deleteRecords_byIdFilter_generateChangeLogs() {
         List<String> uuids =
                 mTransactionTestUtils.insertRecords(
-                        TEST_PACKAGE_NAME, createStepsRecord(123, 456, 100));
+                        TEST_PACKAGE_NAME, RecordInternalFactory.buildStepsRecord(123, 456, 100));
         List<RecordIdFilter> ids = List.of(RecordIdFilter.fromId(StepsRecord.class, uuids.get(0)));
 
         DeleteUsingFiltersRequestParcel request =
@@ -129,7 +129,7 @@ public class FitnessRecordDeleteHelperTest {
     public void deleteRecords_byTimeFilter_generateChangeLogs() {
         List<String> uuids =
                 mTransactionTestUtils.insertRecords(
-                        TEST_PACKAGE_NAME, createStepsRecord(123, 456, 100));
+                        TEST_PACKAGE_NAME, RecordInternalFactory.buildStepsRecord(123, 456, 100));
 
         DeleteUsingFiltersRequest deleteRequest =
                 new DeleteUsingFiltersRequest.Builder()
@@ -152,7 +152,7 @@ public class FitnessRecordDeleteHelperTest {
     public void deleteRecords_byTimeFilter_bulkDelete_generateChangeLogs() {
         ImmutableList.Builder<RecordInternal<?>> records = new ImmutableList.Builder<>();
         for (int i = 0; i <= DEFAULT_PAGE_SIZE; i++) {
-            records.add(createStepsRecord(i * 1000L, (i + 1) * 1000L, 9527));
+            records.add(RecordInternalFactory.buildStepsRecord(i * 1000L, (i + 1) * 1000L, 9527));
         }
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records.build());
 
@@ -223,7 +223,8 @@ public class FitnessRecordDeleteHelperTest {
 
     @Test
     public void deleteRecordsUnrestricted() {
-        RecordInternal<StepsRecord> stepsRecord = createStepsRecord(123456, 654321, 123);
+        RecordInternal<StepsRecord> stepsRecord =
+                RecordInternalFactory.buildStepsRecord(123456, 654321, 123);
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, stepsRecord);
 
         List<RecordInternal<?>> records =

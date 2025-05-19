@@ -20,10 +20,10 @@ import static android.health.connect.HealthPermissions.WRITE_EXERCISE_ROUTE;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_READ;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.healthconnect.testing.shared.DataFactory.getDataOrigin;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createBloodPressureRecord;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createExerciseSessionRecordWithRoute;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createExerciseSessionRecordWithSegment;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildBloodPressureRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildExerciseSessionRecordWithRoute;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildExerciseSessionRecordWithSegment;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
@@ -150,7 +150,7 @@ public class FitnessRecordReadHelperTest {
                 mTransactionTestUtils
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
-                                createBloodPressureRecord(timeMillis, 120.0, 80.0))
+                                buildBloodPressureRecord(timeMillis, 120.0, 80.0))
                         .get(0);
 
         ReadRecordsRequestUsingIds<BloodPressureRecord> request =
@@ -181,7 +181,7 @@ public class FitnessRecordReadHelperTest {
                 mTransactionTestUtils
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
-                                createExerciseSessionRecordWithSegment(
+                                buildExerciseSessionRecordWithSegment(
                                         Instant.ofEpochSecond(timeMillis)))
                         .get(0);
 
@@ -215,7 +215,7 @@ public class FitnessRecordReadHelperTest {
                 mTransactionTestUtils
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
-                                createBloodPressureRecord(timeMillis, 120.0, 80.0))
+                                buildBloodPressureRecord(timeMillis, 120.0, 80.0))
                         .get(0);
 
         ReadRecordsRequestUsingIds<BloodPressureRecord> request =
@@ -272,8 +272,8 @@ public class FitnessRecordReadHelperTest {
         List<String> uuids =
                 mTransactionTestUtils.insertRecords(
                         TEST_PACKAGE_NAME,
-                        createStepsRecord(400, 500, 100),
-                        createStepsRecord(500, 600, 100));
+                        buildStepsRecord(400, 500, 100),
+                        buildStepsRecord(500, 600, 100));
 
         ReadRecordsRequestUsingFilters<StepsRecord> request =
                 new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
@@ -365,8 +365,8 @@ public class FitnessRecordReadHelperTest {
         List<String> uuids =
                 mTransactionTestUtils.insertRecords(
                         TEST_PACKAGE_NAME,
-                        createStepsRecord(startTimeMillis, endTimeMillis, 100),
-                        createBloodPressureRecord(endTimeMillis, 120.0, 80.0));
+                        buildStepsRecord(startTimeMillis, endTimeMillis, 100),
+                        buildBloodPressureRecord(endTimeMillis, 120.0, 80.0));
 
         List<UUID> stepsUuids = ImmutableList.of(UUID.fromString(uuids.get(0)));
         List<UUID> bloodPressureUuids = ImmutableList.of(UUID.fromString(uuids.get(1)));
@@ -396,8 +396,8 @@ public class FitnessRecordReadHelperTest {
         List<String> uuids =
                 mTransactionTestUtils.insertRecords(
                         TEST_PACKAGE_NAME,
-                        createStepsRecord(startTimeMillis, endTimeMillis, 100),
-                        createBloodPressureRecord(endTimeMillis, 120.0, 80.0));
+                        buildStepsRecord(startTimeMillis, endTimeMillis, 100),
+                        buildBloodPressureRecord(endTimeMillis, 120.0, 80.0));
 
         List<UUID> stepsUuids = ImmutableList.of(UUID.fromString(uuids.get(0)));
         // Add an extra non-existent id.
@@ -435,7 +435,7 @@ public class FitnessRecordReadHelperTest {
                 mTransactionTestUtils
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
-                                createStepsRecord(
+                                buildStepsRecord(
                                         mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
                                         Instant.now().toEpochMilli(),
                                         Instant.now().toEpochMilli(),
@@ -474,7 +474,7 @@ public class FitnessRecordReadHelperTest {
         mTransactionTestUtils.insertApp(readerPackage);
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
                         Instant.now().toEpochMilli(),
                         Instant.now().toEpochMilli(),
@@ -514,7 +514,7 @@ public class FitnessRecordReadHelperTest {
                 mTransactionTestUtils
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
-                                createStepsRecord(
+                                buildStepsRecord(
                                         mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
                                         Instant.now().toEpochMilli(),
                                         Instant.now().toEpochMilli(),
@@ -550,7 +550,7 @@ public class FitnessRecordReadHelperTest {
                 mTransactionTestUtils
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
-                                createStepsRecord(
+                                buildStepsRecord(
                                         mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
                                         Instant.now().toEpochMilli(),
                                         Instant.now().toEpochMilli(),
@@ -584,7 +584,7 @@ public class FitnessRecordReadHelperTest {
         mTransactionTestUtils.insertApp(readerPackage);
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
                         /* startTimeMillis= */ Instant.now().minusSeconds(1000).toEpochMilli(),
                         /* endTimeMillis= */ Instant.now().minusSeconds(500).toEpochMilli(),
@@ -630,7 +630,7 @@ public class FitnessRecordReadHelperTest {
         mTransactionTestUtils.insertApp(readerPackage);
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
                         Instant.now().minusMillis(1000).toEpochMilli(),
                         Instant.now().minusMillis(500).toEpochMilli(),
@@ -673,7 +673,7 @@ public class FitnessRecordReadHelperTest {
         mTransactionTestUtils.insertApp(readerPackage);
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
                         Instant.now().minusMillis(1000).toEpochMilli(),
                         Instant.now().minusMillis(500).toEpochMilli(),
@@ -714,7 +714,7 @@ public class FitnessRecordReadHelperTest {
     public void flagsEnabled_readSelfData_readRecordsAndPageToken_doNotAddReadAccessLog() {
         mTransactionTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
                         /* startTimeMillis= */ Instant.now().minusSeconds(1000).toEpochMilli(),
                         /* endTimeMillis= */ Instant.now().minusSeconds(500).toEpochMilli(),
@@ -745,11 +745,11 @@ public class FitnessRecordReadHelperTest {
     @Test
     public void readRecordsByIds_onlyWriteRoutePermission_doesNotReturnRoutesOfOtherApps() {
         ExerciseSessionRecordInternal fooSession =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(10000));
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(10000));
         ExerciseSessionRecordInternal barSession =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(11000));
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(11000));
         ExerciseSessionRecordInternal ownSession =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
         String fooUuid = mTransactionTestUtils.insertRecords(FOO_PACKAGE_NAME, fooSession).get(0);
         String barUuid = mTransactionTestUtils.insertRecords(BAR_PACKAGE_NAME, barSession).get(0);
         String ownUuid = mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, ownSession).get(0);
@@ -783,7 +783,7 @@ public class FitnessRecordReadHelperTest {
     @Test
     public void readRecordsByIds_unknownApp_doesNotReturnRoute() {
         ExerciseSessionRecordInternal session =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
         UUID uuid =
                 UUID.fromString(
                         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session).get(0));
@@ -809,7 +809,7 @@ public class FitnessRecordReadHelperTest {
     @Test
     public void readRecordsByIds_unknownApp_withReadRoutePermission_returnsRoute() {
         ExerciseSessionRecordInternal session =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
         UUID uuid =
                 UUID.fromString(
                         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session).get(0));
@@ -834,11 +834,11 @@ public class FitnessRecordReadHelperTest {
     @Test
     public void readRecordsAndPageToken_byFilters_doesNotReturnRoutesOfOtherApps() {
         ExerciseSessionRecordInternal fooSession =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(10000));
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(10000));
         ExerciseSessionRecordInternal barSession =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(11000));
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(11000));
         ExerciseSessionRecordInternal ownSession =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
         String fooUuid = mTransactionTestUtils.insertRecords(FOO_PACKAGE_NAME, fooSession).get(0);
         String barUuid = mTransactionTestUtils.insertRecords(BAR_PACKAGE_NAME, barSession).get(0);
         String ownUuid = mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, ownSession).get(0);
@@ -883,7 +883,7 @@ public class FitnessRecordReadHelperTest {
     @Test
     public void readRecordsAndPageToken_byFilters_unknownApp_doesNotReturnRoute() {
         ExerciseSessionRecordInternal session =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session);
 
         ReadRecordsRequestParcel request =
@@ -918,7 +918,7 @@ public class FitnessRecordReadHelperTest {
     @Test
     public void readRecordsAndPageToken_byFilters_withReadRoutePermission_returnsRoute() {
         ExerciseSessionRecordInternal session =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session);
 
         ReadRecordsRequestParcel request =

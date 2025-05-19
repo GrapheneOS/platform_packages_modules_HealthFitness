@@ -18,15 +18,9 @@ package android.healthconnect.testing.unittest;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.DELETE;
-import static android.health.connect.Constants.UPSERT;
-import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING;
 
-import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.APP_ID_COLUMN_NAME;
-import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.MEDICAL_RESOURCE_TYPE_COLUMN_NAME;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.OPERATION_TYPE_COLUMN_NAME;
-import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.RECORD_TYPE_COLUMN_NAME;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.UUIDS_COLUMN_NAME;
-import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.toMedicalResourceIdList;
 import static com.android.server.healthconnect.common.metadata.AppInfoHelper.PACKAGE_COLUMN_NAME;
 import static com.android.server.healthconnect.common.metadata.AppInfoHelper.UNIQUE_COLUMN_INFO;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorUUIDList;
@@ -34,27 +28,15 @@ import static com.android.server.healthconnect.storage.utils.WhereClauses.Logica
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static java.time.Duration.ofMinutes;
-
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.health.connect.MedicalResourceId;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.RecordIdFiltersParcel;
-import android.health.connect.datatypes.BloodPressureRecord;
-import android.health.connect.datatypes.ExerciseSegmentType;
 import android.health.connect.datatypes.Record;
-import android.health.connect.datatypes.StepsRecord;
-import android.health.connect.internal.datatypes.BloodPressureRecordInternal;
-import android.health.connect.internal.datatypes.ExerciseRouteInternal;
-import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
-import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.health.connect.internal.datatypes.SpeedRecordInternal;
-import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.util.ArrayMap;
 
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
@@ -73,14 +55,10 @@ import com.android.server.healthconnect.storage.utils.WhereClauses;
 import com.google.common.collect.ImmutableList;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.IntStream;
 
 /** Util class provides shared functionality for db transaction testing. */
 // TODO(b/414747066): Remove all record builders and migrate callers to RecordInternalFactory.
@@ -210,78 +188,6 @@ public final class TransactionTestUtils {
                 .first;
     }
 
-    public static RecordInternal<StepsRecord> createStepsRecord(
-            long startTimeMillis, long endTimeMillis, int stepsCount) {
-        return createStepsRecord(/* clientId= */ null, startTimeMillis, endTimeMillis, stepsCount);
-    }
-
-    public static RecordInternal<StepsRecord> createStepsRecord(
-            String clientId, long startTimeMillis, long endTimeMillis, int stepsCount) {
-        return new StepsRecordInternal()
-                .setCount(stepsCount)
-                .setStartTime(startTimeMillis)
-                .setEndTime(endTimeMillis)
-                .setClientRecordId(clientId);
-    }
-
-    public static RecordInternal<StepsRecord> createStepsRecord(
-            long appInfoId, long startTimeMillis, long endTimeMillis, int stepsCount) {
-        return new StepsRecordInternal()
-                .setCount(stepsCount)
-                .setStartTime(startTimeMillis)
-                .setEndTime(endTimeMillis)
-                .setAppInfoId(appInfoId);
-    }
-
-    public static RecordInternal<BloodPressureRecord> createBloodPressureRecord(
-            long timeMillis, double systolic, double diastolic) {
-        return new BloodPressureRecordInternal()
-                .setSystolic(systolic)
-                .setDiastolic(diastolic)
-                .setTime(timeMillis);
-    }
-
-    public static RecordInternal<BloodPressureRecord> createBloodPressureRecord(
-            long appInfoId, long timeMillis, double systolic, double diastolic) {
-        return new BloodPressureRecordInternal()
-                .setSystolic(systolic)
-                .setDiastolic(diastolic)
-                .setTime(timeMillis)
-                .setAppInfoId(appInfoId);
-    }
-
-    /** Creates an exercise sessions with a route. */
-    public static ExerciseSessionRecordInternal createExerciseSessionRecordWithRoute(
-            Instant startTime) {
-        return (ExerciseSessionRecordInternal)
-                new ExerciseSessionRecordInternal()
-                        .setExerciseType(EXERCISE_SESSION_TYPE_RUNNING)
-                        .setRoute(createExerciseRoute(startTime))
-                        .setStartTime(startTime.toEpochMilli())
-                        .setEndTime(startTime.plus(ofMinutes(10)).toEpochMilli());
-    }
-
-    /** Creates an exercise sessions with a route. */
-    public static ExerciseSessionRecordInternal createExerciseSessionRecordWithSegment(
-            Instant startTime) {
-        return (ExerciseSessionRecordInternal)
-                new ExerciseSessionRecordInternal()
-                        .setExerciseType(EXERCISE_SESSION_TYPE_RUNNING)
-                        .setExerciseSegments(List.of(createExerciseSegment(startTime)))
-                        .setStartTime(startTime.toEpochMilli())
-                        .setEndTime(startTime.plus(ofMinutes(10)).toEpochMilli());
-    }
-
-    public static SpeedRecordInternal createSpeedRecordInternal(Instant startTime) {
-        return (SpeedRecordInternal)
-                new SpeedRecordInternal(
-                                Set.of(
-                                        new SpeedRecordInternal.SpeedRecordSample(
-                                                100, startTime.plus(ofMinutes(1)).toEpochMilli())))
-                        .setStartTime(startTime.toEpochMilli())
-                        .setEndTime(startTime.plus(ofMinutes(10)).toEpochMilli());
-    }
-
     /** Inserts one single fake access log. */
     public void insertAccessLog() {
         ContentValues contentValues = new ContentValues();
@@ -319,109 +225,8 @@ public final class TransactionTestUtils {
         }
     }
 
-    /** Retrieves all upsert medical resource change logs from change log table. */
-    public List<MedicalChangeLogEntry> getAllUpsertMedicalChangeLogs() {
-        return getAllMedicalChangeLogs().stream()
-                .filter(entry -> entry.operationType == UPSERT)
-                .toList();
-    }
-
-    /** Retrieves all delete medical resource change logs from change log table. */
-    public List<MedicalChangeLogEntry> getAllDeleteMedicalChangeLogs() {
-        return getAllMedicalChangeLogs().stream()
-                .filter(entry -> entry.operationType == DELETE)
-                .toList();
-    }
-
-    /** Retrieves all medical resource change logs from change log table. */
-    public List<MedicalChangeLogEntry> getAllMedicalChangeLogs() {
-        List<MedicalChangeLogEntry> entries = new ArrayList<>();
-        try (Cursor cursor =
-                mTransactionManager.read(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME))) {
-            while (cursor.moveToNext()) {
-                // Skip if it's not a medical resource change log (record_type is not null)
-                if (!cursor.isNull(cursor.getColumnIndexOrThrow(RECORD_TYPE_COLUMN_NAME))) {
-                    continue;
-                }
-                int operationType =
-                        cursor.getInt(cursor.getColumnIndexOrThrow(OPERATION_TYPE_COLUMN_NAME));
-                int resourceType =
-                        cursor.getInt(
-                                cursor.getColumnIndexOrThrow(MEDICAL_RESOURCE_TYPE_COLUMN_NAME));
-                long appId = cursor.getLong(cursor.getColumnIndexOrThrow(APP_ID_COLUMN_NAME));
-                byte[] uuidsBlob = cursor.getBlob(cursor.getColumnIndexOrThrow(UUIDS_COLUMN_NAME));
-                List<MedicalResourceId> medicalResourceIds = toMedicalResourceIdList(uuidsBlob);
-                entries.add(
-                        new MedicalChangeLogEntry(
-                                operationType, resourceType, appId, medicalResourceIds));
-            }
-        }
-        return entries;
-    }
-
-    public record MedicalChangeLogEntry(
-            int operationType,
-            int resourceType,
-            long appId,
-            List<MedicalResourceId> medicalResourceIds) {
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            MedicalChangeLogEntry that = (MedicalChangeLogEntry) o;
-            return operationType == that.operationType
-                    && resourceType == that.resourceType
-                    && appId == that.appId
-                    && Objects.equals(
-                            // Sort the lists for consistent comparison
-                            medicalResourceIds.stream()
-                                    .sorted(MEDICAL_RESOURCE_ID_COMPARATOR)
-                                    .toList(),
-                            that.medicalResourceIds.stream()
-                                    .sorted(MEDICAL_RESOURCE_ID_COMPARATOR)
-                                    .toList());
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(
-                    operationType,
-                    resourceType,
-                    appId,
-                    medicalResourceIds.stream().sorted(MEDICAL_RESOURCE_ID_COMPARATOR).toList());
-        }
-
-        private static final Comparator<MedicalResourceId> MEDICAL_RESOURCE_ID_COMPARATOR =
-                Comparator.comparing(MedicalResourceId::toString);
-    }
-
     /** Returns a valid UUID string. */
     public static String getUUID() {
         return "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
-    }
-
-    private static ExerciseRouteInternal createExerciseRoute(Instant startTime) {
-        int numberOfLocations = 3;
-        double latitude = 52.13;
-        double longitude = 0.14;
-
-        return new ExerciseRouteInternal(
-                IntStream.range(0, numberOfLocations)
-                        .mapToObj(
-                                i ->
-                                        new ExerciseRouteInternal.LocationInternal()
-                                                .setTime(startTime.plusSeconds(i).toEpochMilli())
-                                                .setLatitude(latitude + 0.001 * i)
-                                                .setLongitude(longitude + 0.001 * i))
-                        .toList());
-    }
-
-    private static ExerciseSegmentInternal createExerciseSegment(Instant startTime) {
-        return new ExerciseSegmentInternal()
-                .setStartTime(startTime.plusSeconds(1).toEpochMilli())
-                .setStartTime(startTime.plusSeconds(2).toEpochMilli())
-                .setSegmentType(ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
-                .setRepetitionsCount(5);
     }
 }
