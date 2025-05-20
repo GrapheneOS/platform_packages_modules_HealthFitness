@@ -16,8 +16,8 @@
 
 package android.healthconnect.cts.datatypes;
 
-import static android.healthconnect.testing.shared.DataFactory.SESSION_START_TIME;
 import static android.healthconnect.testing.shared.DataFactory.buildLocationTimePoint;
+import static android.healthconnect.testing.shared.DataFactory.sessionStartTime;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -25,6 +25,7 @@ import static org.junit.Assert.fail;
 
 import android.health.connect.datatypes.ExerciseRoute;
 import android.health.connect.datatypes.units.Length;
+import android.healthconnect.testing.shared.DataFactory;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -42,6 +43,8 @@ public class ExerciseRouteTest {
     private static final Instant DEFAULT_TIME = Instant.ofEpochSecond((long) 1e9);
     private static final double DEFAULT_LATITUDE = 23.5;
     private static final double DEFAULT_LONGITUDE = 12.3;
+
+    private final Instant mNow = DataFactory.now();
 
     @Test
     public void testExerciseRouteLocation_buildViaBuilder_buildCorrectObject() {
@@ -111,7 +114,7 @@ public class ExerciseRouteTest {
     @Test
     public void testExerciseRouteLocation_buildRoute_success() {
         ExerciseRoute route =
-                new ExerciseRoute(List.of(buildLocationTimePoint(SESSION_START_TIME)));
+                new ExerciseRoute(List.of(buildLocationTimePoint(sessionStartTime(mNow))));
         assertThat(route.getRouteLocations()).hasSize(1);
     }
 

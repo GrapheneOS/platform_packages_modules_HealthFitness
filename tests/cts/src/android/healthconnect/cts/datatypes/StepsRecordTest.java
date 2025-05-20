@@ -28,7 +28,6 @@ import static android.healthconnect.testing.cts.TestUtils.readRecords;
 import static android.healthconnect.testing.cts.TestUtils.readRecordsWithPagination;
 import static android.healthconnect.testing.cts.TestUtils.updateRecords;
 import static android.healthconnect.testing.cts.TestUtils.verifyDeleteRecords;
-import static android.healthconnect.testing.shared.DataFactory.NOW;
 import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
 import static android.healthconnect.testing.shared.DataFactory.getCompleteStepsRecord;
 import static android.healthconnect.testing.shared.DataFactory.getUpdatedStepsRecord;
@@ -99,7 +98,8 @@ public class StepsRecordTest {
     private static final String PACKAGE_NAME = "android.healthconnect.cts";
     private static final String PKG_TEST_APP = "android.healthconnect.cts.testapp.readWritePerms.A";
 
-    private TestAppProxy mTestApp;
+    private final TestAppProxy mTestApp = TestAppProxy.forPackageName(PKG_TEST_APP);
+    private final Instant mNow = DataFactory.now();
 
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
@@ -109,7 +109,6 @@ public class StepsRecordTest {
 
     @Before
     public void setUp() throws InterruptedException {
-        mTestApp = TestAppProxy.forPackageName(PKG_TEST_APP);
         TestUtils.deleteAllStagedRemoteData();
     }
 
@@ -208,8 +207,8 @@ public class StepsRecordTest {
     public void testReadStepsRecordUsingFilters_timeFilter() throws InterruptedException {
         TimeInstantRangeFilter filter =
                 new TimeInstantRangeFilter.Builder()
-                        .setStartTime(NOW)
-                        .setEndTime(NOW.plusMillis(3000))
+                        .setStartTime(mNow)
+                        .setEndTime(mNow.plusMillis(3000))
                         .build();
 
         StepsRecord testRecord = (StepsRecord) TestUtils.insertRecord(getCompleteStepsRecord());
@@ -482,8 +481,8 @@ public class StepsRecordTest {
     public void testDeleteStepsRecord_time_filters() throws InterruptedException {
         TimeInstantRangeFilter timeRangeFilter =
                 new TimeInstantRangeFilter.Builder()
-                        .setStartTime(NOW)
-                        .setEndTime(NOW.plusMillis(1000))
+                        .setStartTime(mNow)
+                        .setEndTime(mNow.plusMillis(1000))
                         .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteStepsRecord());
         verifyDeleteRecords(
@@ -684,8 +683,8 @@ public class StepsRecordTest {
     public void testDeleteStepsRecord_time_range() throws InterruptedException {
         TimeInstantRangeFilter timeRangeFilter =
                 new TimeInstantRangeFilter.Builder()
-                        .setStartTime(NOW)
-                        .setEndTime(NOW.plusMillis(1000))
+                        .setStartTime(mNow)
+                        .setEndTime(mNow.plusMillis(1000))
                         .build();
         String id = TestUtils.insertRecordAndGetId(getCompleteStepsRecord());
         verifyDeleteRecords(StepsRecord.class, timeRangeFilter);
