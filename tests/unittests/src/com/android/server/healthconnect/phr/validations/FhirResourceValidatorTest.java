@@ -30,6 +30,7 @@ import static com.android.healthfitness.flags.Flags.FLAG_PHR_ALLOW_NULLS_IN_PRIM
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_EXTENSION_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION;
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_XHTML_VALIDATION;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -1399,5 +1400,48 @@ public class FhirResourceValidatorTest {
         assertThat(thrown)
                 .hasMessageThat()
                 .contains("Found data nested deeper than the max allowed nesting level: 20");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION, FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION})
+    @Test
+    public void testValidateFhirResource_resourceWithXhtmlNarrative_succeeds()
+            throws JSONException {
+        FhirResourceValidator validator = new FhirResourceValidator();
+        JSONObject immunizationJson =
+                new JSONObject(new ImmunizationBuilder().setTextNarrative().toJson());
+
+        validator.validateFhirResource(
+                immunizationJson, FHIR_RESOURCE_TYPE_IMMUNIZATION, FHIR_VERSION_R4);
+    }
+
+    @EnableFlags({
+        FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION,
+        FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION,
+        FLAG_PHR_XHTML_VALIDATION
+    })
+    @Test
+    public void testValidateFhirResource_narrativeHasInvalidXhtml_throws() throws JSONException {
+        FhirResourceValidator validator = new FhirResourceValidator();
+        JSONObject immunizationJson = new JSONObject(new ImmunizationBuilder().toJson());
+        // Missing </p> closing tag in the xhtml
+        immunizationJson.put(
+                "text",
+                new JSONObject(
+                        """
+                        {
+                            \"status\": \"generated\",
+                            \"div\": \"<div><p></div>\"
+                        }
+                        """));
+
+        Throwable thrown =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validator.validateFhirResource(
+                                        immunizationJson,
+                                        FHIR_RESOURCE_TYPE_IMMUNIZATION,
+                                        FHIR_VERSION_R4));
+        assertThat(thrown).hasMessageThat().contains("Failed to parse xhtml in field: text.div");
     }
 }
