@@ -92,7 +92,7 @@ public class OnboardingStateManagerTest {
     private Map<String, AppInfoInternal> mFakeAppInfoMap;
     private List<AccessLog> mFakeAccessLogs;
 
-    private static final int USER_ID_INT = 10;
+    private static final int USER_ID_INT = (int) (Math.random() * 100);
     private static final String PREF_KEY = ONBOARDING_STATE_PREFERENCE_KEY_PREFIX + USER_ID_INT;
     private static final String APP_PKG_1 = "com.example.app1";
     private static final String APP_PKG_2 = "com.example.app2";
