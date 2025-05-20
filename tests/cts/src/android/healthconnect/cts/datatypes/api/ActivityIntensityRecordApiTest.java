@@ -38,7 +38,7 @@ import org.junit.runner.RunWith;
 public class ActivityIntensityRecordApiTest extends BaseApiTest<ActivityIntensityRecord> {
     public ActivityIntensityRecordApiTest() {
         super(
-                ActivityIntensityRecord.class,
+                () -> ActivityIntensityRecord.class,
                 HealthPermissions.READ_ACTIVITY_INTENSITY,
                 HealthPermissions.WRITE_ACTIVITY_INTENSITY,
                 new ActivityIntensityRecordFactory());

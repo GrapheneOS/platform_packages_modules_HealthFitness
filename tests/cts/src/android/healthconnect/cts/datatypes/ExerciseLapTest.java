@@ -16,9 +16,9 @@
 
 package android.healthconnect.cts.datatypes;
 
-import static android.healthconnect.testing.shared.DataFactory.SESSION_END_TIME;
-import static android.healthconnect.testing.shared.DataFactory.SESSION_START_TIME;
 import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
+import static android.healthconnect.testing.shared.DataFactory.sessionEndTime;
+import static android.healthconnect.testing.shared.DataFactory.sessionStartTime;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -26,6 +26,7 @@ import android.health.connect.datatypes.ExerciseLap;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.units.Length;
+import android.healthconnect.testing.shared.DataFactory;
 
 import org.junit.Test;
 
@@ -35,6 +36,8 @@ import java.util.List;
 public class ExerciseLapTest {
     private static final Instant START_TIME = Instant.ofEpochMilli((long) 1e1);
     private static final Instant END_TIME = Instant.ofEpochMilli((long) 1e2);
+
+    private final Instant mNow = DataFactory.now();
 
     @Test
     public void testExerciseLap_buildLap_buildCorrectObject() {
@@ -72,14 +75,14 @@ public class ExerciseLapTest {
     public void testLaps_lapStartTimeIllegal_throwsException() {
         new ExerciseSessionRecord.Builder(
                         generateMetadata(),
-                        SESSION_START_TIME,
-                        SESSION_START_TIME.plusSeconds(200),
+                        sessionStartTime(mNow),
+                        sessionStartTime(mNow).plusSeconds(200),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_CALISTHENICS)
                 .setLaps(
                         List.of(
                                 new ExerciseLap.Builder(
-                                                SESSION_START_TIME.minusSeconds(1),
-                                                SESSION_START_TIME.plusSeconds(100))
+                                                sessionStartTime(mNow).minusSeconds(1),
+                                                sessionStartTime(mNow).plusSeconds(100))
                                         .build()))
                 .build();
     }
@@ -88,14 +91,14 @@ public class ExerciseLapTest {
     public void testLaps_lapEndTimeIllegal_throwsException() {
         new ExerciseSessionRecord.Builder(
                         generateMetadata(),
-                        SESSION_START_TIME,
-                        SESSION_START_TIME.plusSeconds(200),
+                        sessionStartTime(mNow),
+                        sessionStartTime(mNow).plusSeconds(200),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_CALISTHENICS)
                 .setLaps(
                         List.of(
                                 new ExerciseLap.Builder(
-                                                SESSION_START_TIME,
-                                                SESSION_START_TIME.plusSeconds(1200))
+                                                sessionStartTime(mNow),
+                                                sessionStartTime(mNow).plusSeconds(1200))
                                         .build()))
                 .build();
     }
@@ -104,18 +107,18 @@ public class ExerciseLapTest {
     public void testLaps_lapsOverlaps_throwsException() {
         new ExerciseSessionRecord.Builder(
                         generateMetadata(),
-                        SESSION_START_TIME,
-                        SESSION_END_TIME,
+                        sessionStartTime(mNow),
+                        sessionEndTime(mNow),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_CALISTHENICS)
                 .setLaps(
                         List.of(
                                 new ExerciseLap.Builder(
-                                                SESSION_START_TIME,
-                                                SESSION_START_TIME.plusSeconds(200))
+                                                sessionStartTime(mNow),
+                                                sessionStartTime(mNow).plusSeconds(200))
                                         .build(),
                                 new ExerciseLap.Builder(
-                                                SESSION_START_TIME.plusSeconds(100),
-                                                SESSION_START_TIME.plusSeconds(400))
+                                                sessionStartTime(mNow).plusSeconds(100),
+                                                sessionStartTime(mNow).plusSeconds(400))
                                         .build()))
                 .build();
     }

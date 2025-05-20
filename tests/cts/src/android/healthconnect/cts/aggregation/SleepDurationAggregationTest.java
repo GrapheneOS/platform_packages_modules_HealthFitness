@@ -22,9 +22,9 @@ import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGr
 import static android.healthconnect.testing.cts.TestUtils.insertRecord;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
-import static android.healthconnect.testing.shared.DataFactory.SESSION_END_TIME;
-import static android.healthconnect.testing.shared.DataFactory.SESSION_START_TIME;
 import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
+import static android.healthconnect.testing.shared.DataFactory.sessionEndTime;
+import static android.healthconnect.testing.shared.DataFactory.sessionStartTime;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -36,6 +36,7 @@ import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import org.junit.After;
@@ -61,6 +62,8 @@ public class SleepDurationAggregationTest {
                     .build();
 
     private static final String PACKAGE_NAME = "android.healthconnect.cts";
+
+    private final Instant mNow = DataFactory.now();
 
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
@@ -88,7 +91,7 @@ public class SleepDurationAggregationTest {
         setupAggregation(PACKAGE_NAME, HealthDataCategory.SLEEP);
         SleepSessionRecord session =
                 new SleepSessionRecord.Builder(
-                                generateMetadata(), SESSION_START_TIME, SESSION_END_TIME)
+                                generateMetadata(), sessionStartTime(mNow), sessionEndTime(mNow))
                         .build();
         insertRecord(session);
         AggregateRecordsResponse<Long> response = getAggregateResponse(mAggregateAllRecordsRequest);
@@ -108,28 +111,28 @@ public class SleepDurationAggregationTest {
         setupAggregation(PACKAGE_NAME, HealthDataCategory.SLEEP);
         SleepSessionRecord.Stage awakeStage =
                 new SleepSessionRecord.Stage(
-                        SESSION_START_TIME,
-                        SESSION_START_TIME.plusSeconds(100),
+                        sessionStartTime(mNow),
+                        sessionStartTime(mNow).plusSeconds(100),
                         SleepSessionRecord.StageType.STAGE_TYPE_AWAKE);
         SleepSessionRecord session =
                 new SleepSessionRecord.Builder(
-                                generateMetadata(), SESSION_START_TIME, SESSION_END_TIME)
+                                generateMetadata(), sessionStartTime(mNow), sessionEndTime(mNow))
                         .setStages(
                                 List.of(
                                         awakeStage,
                                         new SleepSessionRecord.Stage(
-                                                SESSION_START_TIME.plusSeconds(200),
-                                                SESSION_START_TIME.plusSeconds(1400),
+                                                sessionStartTime(mNow).plusSeconds(200),
+                                                sessionStartTime(mNow).plusSeconds(1400),
                                                 SleepSessionRecord.StageType
                                                         .STAGE_TYPE_SLEEPING_DEEP),
                                         new SleepSessionRecord.Stage(
-                                                SESSION_START_TIME.plusSeconds(1500),
-                                                SESSION_START_TIME.plusSeconds(2000),
+                                                sessionStartTime(mNow).plusSeconds(1500),
+                                                sessionStartTime(mNow).plusSeconds(2000),
                                                 SleepSessionRecord.StageType
                                                         .STAGE_TYPE_SLEEPING_LIGHT),
                                         new SleepSessionRecord.Stage(
-                                                SESSION_START_TIME.plusSeconds(2100),
-                                                SESSION_START_TIME.plusSeconds(3000),
+                                                sessionStartTime(mNow).plusSeconds(2100),
+                                                sessionStartTime(mNow).plusSeconds(3000),
                                                 SleepSessionRecord.StageType
                                                         .STAGE_TYPE_SLEEPING_REM)))
                         .build();
@@ -152,9 +155,9 @@ public class SleepDurationAggregationTest {
     public void testAggregationByDuration_oneSession_returnsSplitDurationIntoGroups()
             throws InterruptedException {
         setupAggregation(PACKAGE_NAME, HealthDataCategory.SLEEP);
-        Instant endTime = SESSION_START_TIME.plus(10, ChronoUnit.HOURS);
+        Instant endTime = sessionStartTime(mNow).plus(10, ChronoUnit.HOURS);
         SleepSessionRecord session =
-                new SleepSessionRecord.Builder(generateMetadata(), SESSION_START_TIME, endTime)
+                new SleepSessionRecord.Builder(generateMetadata(), sessionStartTime(mNow), endTime)
                         .build();
         insertRecord(session);
 
@@ -162,7 +165,7 @@ public class SleepDurationAggregationTest {
                 getAggregateResponseGroupByDuration(
                         new AggregateRecordsRequest.Builder<Long>(
                                         new TimeInstantRangeFilter.Builder()
-                                                .setStartTime(SESSION_START_TIME)
+                                                .setStartTime(sessionStartTime(mNow))
                                                 .setEndTime(endTime)
                                                 .build())
                                 .addAggregationType(SLEEP_DURATION_TOTAL)

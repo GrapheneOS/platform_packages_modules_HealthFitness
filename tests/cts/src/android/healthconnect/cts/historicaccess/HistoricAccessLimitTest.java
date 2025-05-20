@@ -66,8 +66,8 @@ public class HistoricAccessLimitTest {
     private static final String PACKAGE_NAME = "android.healthconnect.cts";
     private static final String PKG_TEST_APP = "android.healthconnect.cts.testapp.readWritePerms.A";
 
-    private Instant mNow;
-    private TestAppProxy mTestApp;
+    private final Instant mNow = Instant.now();
+    private final TestAppProxy mTestApp = TestAppProxy.forPackageName(PKG_TEST_APP);
 
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
@@ -77,8 +77,6 @@ public class HistoricAccessLimitTest {
 
     @Before
     public void setUp() throws InterruptedException {
-        mNow = Instant.now();
-        mTestApp = TestAppProxy.forPackageName(PKG_TEST_APP);
         deleteAllStagedRemoteData();
     }
 

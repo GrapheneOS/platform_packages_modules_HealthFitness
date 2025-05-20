@@ -22,7 +22,6 @@ import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.health.connect.datatypes.TotalCaloriesBurnedRecord.ENERGY_TOTAL;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
-import static android.healthconnect.testing.shared.DataFactory.NOW;
 import static android.healthconnect.testing.shared.DataFactory.buildExerciseSessionWithEmptyMetadata;
 import static android.healthconnect.testing.shared.DataFactory.buildSleepSessionWithEmptyMetadata;
 import static android.healthconnect.testing.shared.DataFactory.getDistanceRecordWithEmptyMetadata;
@@ -47,6 +46,7 @@ import android.health.connect.datatypes.units.Length;
 import android.healthconnect.cts.lib.TestAppProxy;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import org.junit.Before;
@@ -131,8 +131,9 @@ public class AggregateOtherAppsDataTest {
 
     private static <T> void assertAggregation(AggregationType<T> aggregationType, T expectedValue)
             throws InterruptedException {
+        var now = DataFactory.now();
         assertAggregation(
-                aggregationType, expectedValue, NOW.minus(1000, DAYS), NOW.plus(1000, DAYS));
+                aggregationType, expectedValue, now.minus(1000, DAYS), now.plus(1000, DAYS));
     }
 
     private static <T> void assertAggregation(

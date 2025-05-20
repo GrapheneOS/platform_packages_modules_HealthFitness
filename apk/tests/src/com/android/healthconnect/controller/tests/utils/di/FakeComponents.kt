@@ -644,11 +644,13 @@ class FakeLoadImportStatusUseCase : ILoadImportStatusUseCase {
 
 class FakeLoadFitnessPermissionAppsUseCase : ILoadFitnessPermissionAppsUseCase {
     private var connectedApps: List<ConnectedFitnessAppMetadata> = emptyList()
+    private var forceFail = false
     var invocations = 0
 
     fun reset() {
         connectedApps = emptyList()
         invocations = 0
+        forceFail = false
     }
 
     fun setConnectedApps(connectedApps: List<ConnectedFitnessAppMetadata>) {
@@ -661,16 +663,26 @@ class FakeLoadFitnessPermissionAppsUseCase : ILoadFitnessPermissionAppsUseCase {
 
     override suspend fun invoke(unit: Unit): UseCaseResults<List<ConnectedFitnessAppMetadata>> {
         invocations += 1
-        return UseCaseResults.Success(connectedApps)
+        return if (forceFail) {
+            UseCaseResults.Failed(IllegalStateException("Force fail loadFitnessPermissionApps."))
+        } else {
+            return UseCaseResults.Success(connectedApps)
+        }
+    }
+
+    fun setForceFail(forceFail: Boolean) {
+        this.forceFail = forceFail
     }
 }
 
 class FakeLoadOnboardingStateUseCase : ILoadOnboardingStateUseCase {
     private var onboardingState = OnboardingState.ONBOARDING_BANNER_STATE_HIDE
+    private var forceFail = false
     var invocations = 0
 
     fun reset() {
         invocations = 0
+        forceFail = false
     }
 
     fun setOnboardingBannerState(onboardingState: OnboardingState) {
@@ -683,6 +695,14 @@ class FakeLoadOnboardingStateUseCase : ILoadOnboardingStateUseCase {
 
     override suspend fun invoke(input: Unit): UseCaseResults<OnboardingState> {
         invocations += 1
-        return UseCaseResults.Success(onboardingState)
+        return if (forceFail) {
+            UseCaseResults.Failed(IllegalStateException("Force fail onboarding state."))
+        } else {
+            UseCaseResults.Success(onboardingState)
+        }
+    }
+
+    fun setForceFail(forceFail: Boolean) {
+        this.forceFail = forceFail
     }
 }

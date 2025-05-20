@@ -21,11 +21,18 @@ import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BAN
 
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationJob.ONBOARDING_NOTIFICATION_JOB_NAMESPACE;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationJob.executeOnboardingNotificationJob;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_ALL_NOTIFICATIONS;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_NO_NOTIFICATION;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import android.app.job.JobInfo;
@@ -63,7 +70,7 @@ public class OnboardingNotificationJobTest {
     @Mock private JobScheduler mOnboardingNotificationJobScheduler;
     @Mock private OnboardingStateManager mOnboardingStateManager;
     @Mock private OnboardingNotificationSender mOnboardingNotificationSender;
-
+    @Mock private OnboardingNotificationStateManager mOnboardingNotificationStateManager;
     private UserHandle mUserHandle;
 
     @Before
@@ -78,6 +85,7 @@ public class OnboardingNotificationJobTest {
     @After
     public void tearDown() {
         HealthConnectInjector.resetInstanceForTest();
+        clearInvocations(mOnboardingNotificationJobScheduler, mOnboardingNotificationSender);
     }
 
     @Test
@@ -111,31 +119,108 @@ public class OnboardingNotificationJobTest {
     public void executeOnboardingNotificationJob_noAppConnected_notificationSent() {
         when(mOnboardingStateManager.updateAndGetOnboardingState())
                 .thenReturn(ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
-        OnboardingNotificationJob.executeOnboardingNotificationJob(
-                mOnboardingStateManager, mOnboardingNotificationSender, mUserHandle);
+        when(mOnboardingNotificationStateManager.getOnboardingNotificationState())
+                .thenReturn(SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION);
+
+        executeOnboardingNotificationJob(
+                mContext,
+                mOnboardingStateManager,
+                mOnboardingNotificationSender,
+                mOnboardingNotificationStateManager,
+                mUserHandle);
 
         verify(mOnboardingNotificationSender).sendNoAppConnectedNotification(eq(mUserHandle));
-        verify(mOnboardingNotificationSender, never()).sendOneAppConnectedNotification(any());
+        verifyNoMoreInteractions(mOnboardingNotificationSender);
+    }
+
+    @Test
+    public void executeOnboardingNotificationJob_noAppConnected_shouldNotShow_noNotification() {
+        when(mOnboardingStateManager.updateAndGetOnboardingState())
+                .thenReturn(ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
+        when(mOnboardingNotificationStateManager.getOnboardingNotificationState())
+                .thenReturn(
+                        SHOULD_SHOW_ALL_NOTIFICATIONS
+                                & (~SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION));
+
+        executeOnboardingNotificationJob(
+                mContext,
+                mOnboardingStateManager,
+                mOnboardingNotificationSender,
+                mOnboardingNotificationStateManager,
+                mUserHandle);
+
+        verifyNoNotificationSent();
     }
 
     @Test
     public void executeOnboardingNotificationJob_oneAppConnected_notificationSent() {
         when(mOnboardingStateManager.updateAndGetOnboardingState())
                 .thenReturn(ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED);
-        OnboardingNotificationJob.executeOnboardingNotificationJob(
-                mOnboardingStateManager, mOnboardingNotificationSender, mUserHandle);
+        when(mOnboardingNotificationStateManager.getOnboardingNotificationState())
+                .thenReturn(SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION);
 
-        verify(mOnboardingNotificationSender, never()).sendNoAppConnectedNotification(any());
+        executeOnboardingNotificationJob(
+                mContext,
+                mOnboardingStateManager,
+                mOnboardingNotificationSender,
+                mOnboardingNotificationStateManager,
+                mUserHandle);
+
         verify(mOnboardingNotificationSender).sendOneAppConnectedNotification(eq(mUserHandle));
+        verifyNoMoreInteractions(mOnboardingNotificationSender);
     }
 
     @Test
-    public void executeOnboardingNotificationJob_hide_noNotificationSent() {
+    public void executeOnboardingNotificationJob_oneAppConnected_shouldNotShow_noNotification() {
+        when(mOnboardingStateManager.updateAndGetOnboardingState())
+                .thenReturn(ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED);
+        when(mOnboardingNotificationStateManager.getOnboardingNotificationState())
+                .thenReturn(
+                        SHOULD_SHOW_ALL_NOTIFICATIONS
+                                & (~SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION));
+
+        executeOnboardingNotificationJob(
+                mContext,
+                mOnboardingStateManager,
+                mOnboardingNotificationSender,
+                mOnboardingNotificationStateManager,
+                mUserHandle);
+
+        verifyNoNotificationSent();
+    }
+
+    @Test
+    public void executeOnboardingNotificationJob_hide_noNotification() {
         when(mOnboardingStateManager.updateAndGetOnboardingState())
                 .thenReturn(ONBOARDING_BANNER_STATE_HIDE);
-        OnboardingNotificationJob.executeOnboardingNotificationJob(
-                mOnboardingStateManager, mOnboardingNotificationSender, mUserHandle);
 
+        executeOnboardingNotificationJob(
+                mContext,
+                mOnboardingStateManager,
+                mOnboardingNotificationSender,
+                mOnboardingNotificationStateManager,
+                mUserHandle);
+
+        verifyNoNotificationSent();
+    }
+
+    @Test
+    public void executeOnboardingNotificationJob_shouldShowNoNotification_jobCancelled() {
+        when(mOnboardingNotificationStateManager.getOnboardingNotificationState())
+                .thenReturn(SHOULD_SHOW_NO_NOTIFICATION);
+
+        executeOnboardingNotificationJob(
+                mContext,
+                mOnboardingStateManager,
+                mOnboardingNotificationSender,
+                mOnboardingNotificationStateManager,
+                mUserHandle);
+
+        verifyNoNotificationSent();
+        verify(mOnboardingNotificationJobScheduler).cancelAll();
+    }
+
+    private void verifyNoNotificationSent() {
         verify(mOnboardingNotificationSender, never()).sendNoAppConnectedNotification(any());
         verify(mOnboardingNotificationSender, never()).sendOneAppConnectedNotification(any());
     }

@@ -49,6 +49,7 @@ public class TestAppRule extends ExternalResource {
     private final String mPackageName;
     private final boolean mInBackground;
     private final Set<String> mPermissionsToRevoke;
+    private final TestAppProxy mProxy;
     private String mTestName;
 
     private TestAppRule(Builder builder) {
@@ -56,6 +57,10 @@ public class TestAppRule extends ExternalResource {
         mPackageName = builder.mPackageName;
         mInBackground = builder.mInBackground;
         mPermissionsToRevoke = Set.copyOf(builder.mPermissionsToRevoke);
+        mProxy =
+                mInBackground
+                        ? TestAppProxy.forPackageNameInBackground(mPackageName)
+                        : TestAppProxy.forPackageName(mPackageName);
     }
 
     @Override
@@ -66,9 +71,7 @@ public class TestAppRule extends ExternalResource {
 
     /** Returns a proxy for performing operations via the test app. */
     public TestAppProxy getProxy() {
-        return mInBackground
-                ? TestAppProxy.forPackageNameInBackground(mPackageName)
-                : TestAppProxy.forPackageName(mPackageName);
+        return mProxy;
     }
 
     /** Grants the specified permission to the test app via {@link PackageManager}. */
@@ -93,11 +96,14 @@ public class TestAppRule extends ExternalResource {
 
     @Override
     protected void before() throws Throwable {
+        // Force stop the app to clear any runtime state left over by a previous test.
+        mProxy.forceStop();
+
         List<String> declaredPermissions =
                 PermissionUtils.getDeclaredHealthPermissions(mPackageName);
         assertThat(declaredPermissions).containsAtLeastElementsIn(mPermissionsToRevoke);
 
-        // Start from a consistent state; a previous test may have left permissions revoked.
+        // Start from a consistent permissions state; a previous test may have left some revoked.
         List<String> permissionsToGrant =
                 declaredPermissions.stream().filter(not(mPermissionsToRevoke::contains)).toList();
         PermissionUtils.grantHealthPermissions(mPackageName, permissionsToGrant);

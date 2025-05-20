@@ -22,7 +22,6 @@ import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKG
 import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.testing.cts.TestUtils.getRecordIds;
 import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
-import static android.healthconnect.testing.shared.DataFactory.NOW;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecordWithEmptyMetaData;
 
@@ -50,6 +49,7 @@ import android.healthconnect.cts.lib.TestAppProxy;
 import android.healthconnect.cts.lib.TestAppRule;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -72,6 +72,7 @@ public class BackgroundReadTest {
     private Context mContext;
     private HealthConnectManager mManager;
     private TestAppProxy mTestApp;
+    private final Instant mNow = DataFactory.now();
 
     @Rule(order = 0)
     public AssumptionCheckerRule mSupportedHardwareRule =
@@ -121,7 +122,7 @@ public class BackgroundReadTest {
     @Test
     public void testReadRecordsByFilters_inBackgroundWithoutPermission_canReadOwnData()
             throws Exception {
-        String insertedId = mTestApp.insertRecord(getStepsRecord(10, NOW, NOW.plus(1, MINUTES)));
+        String insertedId = mTestApp.insertRecord(getStepsRecord(10, mNow, mNow.plus(1, MINUTES)));
 
         // test app will try to read the step record inserted by itself
         ReadRecordsRequestUsingFilters<StepsRecord> request =
@@ -141,7 +142,7 @@ public class BackgroundReadTest {
         String idInsertedByThisTest =
                 insertStepsRecordsDirectly(List.of(getStepsRecordWithEmptyMetaData())).get(0);
         String idInsertedByTestApp =
-                mTestApp.insertRecord(getStepsRecord(10, NOW, NOW.plus(1, MINUTES)));
+                mTestApp.insertRecord(getStepsRecord(10, mNow, mNow.plus(1, MINUTES)));
 
         // test app will try to read the step record inserted by both this test and the test app
         ReadRecordsRequestUsingFilters<StepsRecord> request =
@@ -165,7 +166,7 @@ public class BackgroundReadTest {
         String idInsertedByThisTest =
                 insertStepsRecordsDirectly(List.of(getStepsRecordWithEmptyMetaData())).get(0);
         String idInsertedByTestApp =
-                mTestApp.insertRecord(getStepsRecord(10, NOW, NOW.plus(1, MINUTES)));
+                mTestApp.insertRecord(getStepsRecord(10, mNow, mNow.plus(1, MINUTES)));
 
         // test app will try to read the step record inserted by both this test and the test app
         ReadRecordsRequestUsingIds<StepsRecord> request =
@@ -186,7 +187,7 @@ public class BackgroundReadTest {
         String idInsertedByThisTest =
                 insertStepsRecordsDirectly(List.of(getStepsRecordWithEmptyMetaData())).get(0);
         String idInsertedByTestApp =
-                mTestApp.insertRecord(getStepsRecord(10, NOW, NOW.plus(1, MINUTES)));
+                mTestApp.insertRecord(getStepsRecord(10, mNow, mNow.plus(1, MINUTES)));
 
         // test app will try to read the step record inserted by both this test and the test app
         ReadRecordsRequestUsingIds<StepsRecord> request =
@@ -206,7 +207,7 @@ public class BackgroundReadTest {
     @Test
     public void testAggregate_inBackgroundWithoutPermission_expectSecurityError() throws Exception {
         insertStepsRecordsDirectly(List.of(getStepsRecordWithEmptyMetaData())).get(0);
-        mTestApp.insertRecord(getStepsRecord(10, NOW, NOW.plus(1, MINUTES)));
+        mTestApp.insertRecord(getStepsRecord(10, mNow, mNow.plus(1, MINUTES)));
 
         HealthConnectException thrown =
                 assertThrows(

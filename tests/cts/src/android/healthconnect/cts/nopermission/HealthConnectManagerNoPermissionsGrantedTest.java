@@ -37,7 +37,6 @@ import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.readRecords;
 import static android.healthconnect.testing.cts.TestUtils.updateRecords;
 import static android.healthconnect.testing.cts.TestUtils.verifyDeleteRecords;
-import static android.healthconnect.testing.shared.DataFactory.NOW;
 import static android.healthconnect.testing.shared.DataFactory.buildExerciseSession;
 import static android.healthconnect.testing.shared.DataFactory.buildSleepSession;
 import static android.healthconnect.testing.shared.DataFactory.getDistanceRecord;
@@ -72,6 +71,7 @@ import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
 import android.healthconnect.cts.lib.TestAppProxy;
 import android.healthconnect.cts.lib.TestAppRule;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.healthconnect.testing.shared.recordfactory.MindfulnessSessionRecordFactory;
 import android.platform.test.annotations.AppModeFull;
@@ -116,6 +116,7 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
             new TestAppRule.Builder("android.healthconnect.cts.testapp.readWritePerms.A").build();
 
     private final TestAppProxy mTestApp = mTestAppRule.getProxy();
+    private final Instant mNow = DataFactory.now();
 
     @Test
     public void testInsert_noPermissions_expectError() throws InterruptedException {
@@ -295,7 +296,7 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                 TimeInstantRangeFilter timeInstantRangeFilter =
                         new TimeInstantRangeFilter.Builder()
                                 .setStartTime(Instant.ofEpochMilli(0))
-                                .setEndTime(NOW.plus(1000, DAYS))
+                                .setEndTime(mNow.plus(1000, DAYS))
                                 .build();
                 getAggregateResponse(
                         new AggregateRecordsRequest.Builder<>(timeInstantRangeFilter)
@@ -327,8 +328,8 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
             try {
                 TimeInstantRangeFilter timeInstantRangeFilter =
                         new TimeInstantRangeFilter.Builder()
-                                .setStartTime(NOW.minusMillis(500))
-                                .setEndTime(NOW.plusMillis(2500))
+                                .setStartTime(mNow.minusMillis(500))
+                                .setEndTime(mNow.plusMillis(2500))
                                 .build();
                 getAggregateResponseGroupByDuration(
                         new AggregateRecordsRequest.Builder<>(timeInstantRangeFilter)
@@ -359,7 +360,7 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                         EXERCISE_DURATION_TOTAL);
         for (var aggregationType : aggregationTypes) {
             try {
-                Instant start = NOW.minus(3, DAYS);
+                Instant start = mNow.minus(3, DAYS);
                 Instant end = start.plus(3, DAYS);
                 LocalTimeRangeFilter localTimeRangeFilter =
                         new LocalTimeRangeFilter.Builder()
@@ -381,7 +382,7 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
         }
     }
 
-    private static List<Record> getTestRecords() {
+    private List<Record> getTestRecords() {
         return Arrays.asList(
                 getStepsRecord(),
                 getHeartRateRecord(),
@@ -391,7 +392,7 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                 buildExerciseSession(),
                 MINDFULNESS_SESSION_RECORD_FACTORY.newEmptyRecord(
                         newEmptyMetadataWithClientId("mindfulness-client-id"),
-                        NOW.minus(Duration.ofMinutes(20)),
-                        NOW.minus(Duration.ofMinutes(10))));
+                        mNow.minus(Duration.ofMinutes(20)),
+                        mNow.minus(Duration.ofMinutes(10))));
     }
 }

@@ -30,7 +30,7 @@ import org.junit.runner.RunWith;
 public class MindfulnessSessionRecordApiTest extends BaseApiTest<MindfulnessSessionRecord> {
     public MindfulnessSessionRecordApiTest() {
         super(
-                MindfulnessSessionRecord.class,
+                () -> MindfulnessSessionRecord.class,
                 HealthPermissions.READ_MINDFULNESS,
                 HealthPermissions.WRITE_MINDFULNESS,
                 new MindfulnessSessionRecordFactory());

@@ -70,11 +70,9 @@ import com.android.healthconnect.controller.utils.logging.HomePageElement
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.RecentAccessElement
-import com.android.healthconnect.controller.utils.logging.UnknownGenericElement
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
 import com.android.healthfitness.flags.Flags.onboarding
-import com.android.settingslib.widget.BannerMessagePreference
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.SettingsThemeHelper
 import com.android.settingslib.widget.ZeroStatePreference
@@ -207,9 +205,8 @@ class HomeFragment : Hilt_HomeFragment() {
         }
         homeViewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
             updateConnectedApps(connectedApps)
-            // TODO - b/399086212 - Re-enable when new banner logic in place
-            //  updateOnboardingBanner(connectedApps)
         }
+
         migrationViewModel.migrationState.observe(viewLifecycleOwner) { migrationState ->
             when (migrationState) {
                 is MigrationViewModel.MigrationFragmentState.WithData -> {
@@ -529,90 +526,6 @@ class HomeFragment : Hilt_HomeFragment() {
             }
     }
 
-    private fun getStartUsingHealthConnectBanner(): HealthBannerPreference {
-        return HealthBannerPreference(requireContext(), UnknownGenericElement.UNKNOWN_BANNER)
-            .also { banner ->
-                banner.title = resources.getString(R.string.start_using_hc_banner_title)
-                banner.summary = resources.getString(R.string.start_using_hc_banner_content)
-                banner.icon =
-                    AttributeResolver.getNullableDrawable(
-                        requireContext(),
-                        R.attr.healthConnectIcon,
-                    )
-                banner.key = START_USING_HC_BANNER_KEY
-
-                banner.setPositiveButton(
-                    text = getString(R.string.start_using_hc_set_up_button),
-                    logName = UnknownGenericElement.UNKNOWN_BANNER_BUTTON,
-                ) {
-                    findNavController().navigate(R.id.action_homeFragment_to_connectedAppsFragment)
-                }
-
-                banner.setDismissButtonVisible(true)
-                banner.setDismissButton(logName = UnknownGenericElement.UNKNOWN_BANNER_BUTTON) {
-                    setBannerSeen(Constants.START_USING_HC_BANNER_SEEN)
-                    bannerGroup.removePreferenceRecursively(START_USING_HC_BANNER_KEY)
-                }
-            }
-    }
-
-    private fun getConnectMoreAppsBanner(appMetadata: AppMetadata): HealthBannerPreference {
-        return HealthBannerPreference(requireContext(), UnknownGenericElement.UNKNOWN_BANNER)
-            .also { banner ->
-                banner.setAttentionLevel(BannerMessagePreference.AttentionLevel.NORMAL)
-                banner.title = resources.getString(R.string.connect_more_apps_banner_title)
-                banner.summary =
-                    resources.getString(
-                        R.string.connect_more_apps_banner_content,
-                        appMetadata.appName,
-                    )
-                banner.icon =
-                    AttributeResolver.getNullableDrawable(requireContext(), R.attr.syncIcon)
-                banner.key = CONNECT_MORE_APPS_BANNER_KEY
-
-                banner.setPositiveButton(
-                    text = getString(R.string.connect_more_apps_set_up_button),
-                    logName = UnknownGenericElement.UNKNOWN_BANNER_BUTTON,
-                ) {
-                    findNavController().navigate(R.id.action_homeFragment_to_connectedAppsFragment)
-                }
-
-                banner.setDismissButton(logName = UnknownGenericElement.UNKNOWN_BANNER_BUTTON) {
-                    setBannerSeen(Constants.CONNECT_MORE_APPS_BANNER_SEEN)
-                    bannerGroup.removePreferenceRecursively(CONNECT_MORE_APPS_BANNER_KEY)
-                }
-            }
-    }
-
-    private fun getSeeCompatibleAppsBanner(appMetadata: AppMetadata): HealthBannerPreference {
-        return HealthBannerPreference(requireContext(), UnknownGenericElement.UNKNOWN_BANNER)
-            .also { banner ->
-                banner.title = resources.getString(R.string.see_compatible_apps_banner_title)
-                banner.summary =
-                    resources.getString(
-                        R.string.see_compatible_apps_banner_content,
-                        appMetadata.appName,
-                    )
-                banner.icon =
-                    AttributeResolver.getNullableDrawable(
-                        requireContext(),
-                        R.attr.seeAllCompatibleAppsIcon,
-                    )
-                banner.key = SEE_COMPATIBLE_APPS_BANNER_KEY
-
-                banner.setPositiveButtonText(getString(R.string.see_compatible_apps_set_up_button))
-                banner.setPositiveButtonOnClickListener {
-                    findNavController().navigate(R.id.action_homeFragment_to_playstoreActivity)
-                }
-
-                banner.setDismissButtonVisible(true)
-                banner.setDismissButtonOnClickListener {
-                    setBannerSeen(Constants.SEE_MORE_COMPATIBLE_APPS_BANNER_SEEN)
-                    bannerGroup.removePreferenceRecursively(SEE_COMPATIBLE_APPS_BANNER_KEY)
-                }
-            }
-    }
-
     private fun getLockScreenBanner(
         bannerState: LockScreenBannerState.ShowBanner
     ): HealthBannerPreference {
@@ -690,65 +603,6 @@ class HomeFragment : Hilt_HomeFragment() {
                     numTotalApps.toString(),
                 )
         }
-    }
-
-    private fun updateOnboardingBanner(connectedApps: List<ConnectedAppMetadata>) {
-        removeAllOnboardingBanners()
-
-        if (!onboarding()) {
-            return
-        }
-
-        val connectedAppsGroup = connectedApps.groupBy { it.status }
-        val numAllowedApps = connectedAppsGroup[ConnectedAppStatus.ALLOWED].orEmpty().size
-        val numNotAllowedApps = connectedAppsGroup[ConnectedAppStatus.DENIED].orEmpty().size
-        val numTotalApps = numAllowedApps + numNotAllowedApps
-
-        val sharedPreference = getSharedPreference()
-
-        if (numTotalApps > 0 && numAllowedApps == 0) {
-            // No apps connected, one available
-            // Show if not dismissed
-            val bannerSeen =
-                sharedPreference.getBoolean(Constants.START_USING_HC_BANNER_SEEN, false)
-            if (!bannerSeen) {
-                val banner = getStartUsingHealthConnectBanner()
-                bannerGroup.addPreference(banner)
-            }
-        } else if (numAllowedApps == 1 && numNotAllowedApps > 0) {
-            // 1 app connected, at least one available to connect
-            val bannerSeen =
-                sharedPreference.getBoolean(Constants.CONNECT_MORE_APPS_BANNER_SEEN, false)
-            if (!bannerSeen) {
-                val banner =
-                    getConnectMoreAppsBanner(
-                        connectedAppsGroup[ConnectedAppStatus.ALLOWED]!![0].appMetadata
-                    )
-                bannerGroup.addPreference(banner)
-            }
-        } else if (numAllowedApps == 1 && numTotalApps == 1) {
-            // 1 app connected, no more available to connect
-            if (deviceInfoUtils.isPlayStoreAvailable(requireContext())) {
-                val bannerSeen =
-                    sharedPreference.getBoolean(
-                        Constants.SEE_MORE_COMPATIBLE_APPS_BANNER_SEEN,
-                        false,
-                    )
-                if (!bannerSeen) {
-                    val banner =
-                        getSeeCompatibleAppsBanner(
-                            connectedAppsGroup[ConnectedAppStatus.ALLOWED]!![0].appMetadata
-                        )
-                    bannerGroup.addPreference(banner)
-                }
-            }
-        }
-    }
-
-    private fun removeAllOnboardingBanners() {
-        bannerGroup.removePreferenceRecursively(START_USING_HC_BANNER_KEY)
-        bannerGroup.removePreferenceRecursively(CONNECTED_APPS_PREFERENCE_KEY)
-        bannerGroup.removePreferenceRecursively(SEE_COMPATIBLE_APPS_BANNER_KEY)
     }
 
     private fun updateRecentApps(recentAppsList: List<RecentAccessEntry>) {
