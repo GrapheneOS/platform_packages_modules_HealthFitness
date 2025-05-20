@@ -39,7 +39,7 @@ public class ActivityIntensityRecordMultiAppApiTest
         extends BaseMultiAppApiTest<ActivityIntensityRecord> {
     public ActivityIntensityRecordMultiAppApiTest() {
         super(
-                ActivityIntensityRecord.class,
+                () -> ActivityIntensityRecord.class,
                 HealthPermissions.READ_ACTIVITY_INTENSITY,
                 HealthPermissions.WRITE_ACTIVITY_INTENSITY,
                 new ActivityIntensityRecordFactory());
