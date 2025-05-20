@@ -290,9 +290,9 @@ public class TestAppProxy {
                 GET_RUNTIME_PERMISSIONS);
     }
 
-    /** Kills the app. */
+    /** Force-stops the app. */
     @SuppressLint("MissingPermission")
-    public void kill() throws Exception {
+    public void forceStop() {
         ActivityManager activityManager =
                 requireNonNull(mContext.getSystemService(ActivityManager.class));
         runWithShellPermissionIdentity(
