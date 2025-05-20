@@ -75,7 +75,7 @@ class ConnectAppsOnboardingActivityTest {
     fun noAppsConnected_intentLaunchesConnectAppsOnboardingActivity() {
         whenever(viewModel.connectedApps).then {
             MutableLiveData(
-                OnboardingViewModel.OnboardingFragmentState.WithData(
+                OnboardingViewModel.OnboardingFragmentState.ZeroAppsConnected(
                     listOf(
                         ConnectedFitnessAppMetadata(TEST_APP, false),
                         ConnectedFitnessAppMetadata(TEST_APP_2, false),

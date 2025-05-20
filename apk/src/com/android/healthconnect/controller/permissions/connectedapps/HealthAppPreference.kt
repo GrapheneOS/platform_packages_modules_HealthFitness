@@ -18,7 +18,6 @@ package com.android.healthconnect.controller.permissions.connectedapps
 import android.content.Context
 import android.text.TextUtils
 import androidx.preference.Preference
-import androidx.preference.Preference.OnPreferenceClickListener
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.utils.logging.ElementName
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger

@@ -47,12 +47,19 @@ import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
+import com.android.healthconnect.controller.utils.logging.AlmostDonePageElement
+import com.android.healthconnect.controller.utils.logging.CommonOnboardingPageElement
+import com.android.healthconnect.controller.utils.logging.ConnectSecondAddOnboardingPageElement
+import com.android.healthconnect.controller.utils.logging.ConnectTwoAppsOnboardingPageElement
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
@@ -64,8 +71,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.any
+import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -78,6 +88,7 @@ class ConnectAppsOnboardingFragmentTest {
     @BindValue val viewModel: OnboardingViewModel = mock()
     @BindValue val deviceInfoUtils: DeviceInfoUtils = FakeDeviceInfoUtils()
     @BindValue val healthPermissionReader: HealthPermissionReader = mock()
+    @BindValue val healthConnectLogger: HealthConnectLogger = mock()
     private lateinit var context: Context
     private lateinit var navHostController: TestNavHostController
 
@@ -95,16 +106,25 @@ class ConnectAppsOnboardingFragmentTest {
     fun tearDown() {
         toggleAnimation(true)
         Intents.release()
+        reset(healthConnectLogger)
     }
 
     @Test
     fun noFitnessAppsConnected_showsConnectFirstTwoApps() {
         whenever(viewModel.connectedApps).then {
             MutableLiveData(
-                OnboardingViewModel.OnboardingFragmentState.WithData(
+                OnboardingViewModel.OnboardingFragmentState.ZeroAppsConnected(
                     listOf(
-                        ConnectedFitnessAppMetadata(TEST_APP, false),
-                        ConnectedFitnessAppMetadata(TEST_APP_2, false),
+                        ConnectedFitnessAppMetadata(
+                            appMetadata = TEST_APP,
+                            isConnected = false,
+                            hasOnboarding = true,
+                        ),
+                        ConnectedFitnessAppMetadata(
+                            appMetadata = TEST_APP_2,
+                            isConnected = false,
+                            hasOnboarding = false,
+                        ),
                     )
                 )
             )
@@ -135,17 +155,42 @@ class ConnectAppsOnboardingFragmentTest {
             .perform(scrollTo())
             .check(matches(isDisplayed()))
         onView(withText("Set up later")).check(matches(isDisplayed()))
+
+        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.CONNECT_TWO_APPS_ONBOARDING_PAGE)
+        verify(healthConnectLogger).logPageImpression()
+        verify(healthConnectLogger)
+            .logImpression(CommonOnboardingPageElement.APP_WITH_ONBOARDING_BUTTON)
+        verify(healthConnectLogger)
+            .logImpression(CommonOnboardingPageElement.APP_WITHOUT_ONBOARDING_BUTTON)
+        verify(healthConnectLogger)
+            .logImpression(CommonOnboardingPageElement.MORE_ABOUT_HEALTH_CONNECT_BUTTON)
+        verify(healthConnectLogger)
+            .logImpression(
+                ConnectTwoAppsOnboardingPageElement
+                    .CONNECT_FIRST_TWO_APPS_ONBOARDING_SET_UP_LATER_BUTTON
+            )
     }
 
     @Test
     fun oneFitnessAppsConnected_showsConnectSecondApp() {
         whenever(viewModel.connectedApps).then {
             MutableLiveData(
-                OnboardingViewModel.OnboardingFragmentState.WithData(
-                    listOf(
-                        ConnectedFitnessAppMetadata(TEST_APP, false),
-                        ConnectedFitnessAppMetadata(TEST_APP_2, true),
-                    )
+                OnboardingViewModel.OnboardingFragmentState.OneAppConnected(
+                    connectedApp =
+                        ConnectedFitnessAppMetadata(
+                            appMetadata = TEST_APP_2,
+                            isConnected = true,
+                            hasOnboarding = false,
+                        ),
+                    potentialApps =
+                        listOf(
+                            // TODO logging here is not set correctly
+                            ConnectedFitnessAppMetadata(
+                                appMetadata = TEST_APP,
+                                isConnected = false,
+                                hasOnboarding = true,
+                            )
+                        ),
                 )
             )
         }
@@ -177,13 +222,27 @@ class ConnectAppsOnboardingFragmentTest {
             .perform(scrollTo())
             .check(matches(isDisplayed()))
         onView(withText("Set up later")).check(matches(isDisplayed()))
+
+        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.CONNECT_ONE_APP_ONBOARDING_PAGE)
+        verify(healthConnectLogger).logPageImpression()
+        verify(healthConnectLogger)
+            .logImpression(CommonOnboardingPageElement.APP_WITH_ONBOARDING_BUTTON)
+        verify(healthConnectLogger)
+            .logImpression(ConnectSecondAddOnboardingPageElement.CONNECTED_APP_BUTTON)
+        verify(healthConnectLogger)
+            .logImpression(CommonOnboardingPageElement.MORE_ABOUT_HEALTH_CONNECT_BUTTON)
+        verify(healthConnectLogger)
+            .logImpression(
+                ConnectSecondAddOnboardingPageElement
+                    .CONNECT_SECOND_APP_ONBOARDING_SET_UP_LATER_BUTTON
+            )
     }
 
     @Test
     fun twoFitnessAppsConnected_showsAlmostDone() {
         whenever(viewModel.connectedApps).then {
             MutableLiveData(
-                OnboardingViewModel.OnboardingFragmentState.WithData(
+                OnboardingViewModel.OnboardingFragmentState.AlmostDone(
                     listOf(
                         ConnectedFitnessAppMetadata(TEST_APP, true),
                         ConnectedFitnessAppMetadata(TEST_APP_2, true),
@@ -215,6 +274,14 @@ class ConnectAppsOnboardingFragmentTest {
             .perform(scrollTo())
             .check(matches(isDisplayed()))
         onView(withText("Done")).check(matches(isDisplayed()))
+
+        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ALMOST_DONE_PAGE)
+        verify(healthConnectLogger).logPageImpression()
+        verify(healthConnectLogger, times(2))
+            .logImpression(AlmostDonePageElement.ONBOARDING_APP_BUTTON)
+        verify(healthConnectLogger)
+            .logImpression(CommonOnboardingPageElement.MORE_ABOUT_HEALTH_CONNECT_BUTTON)
+        verify(healthConnectLogger).logImpression(AlmostDonePageElement.ONBOARDING_DONE_BUTTON)
     }
 
     @Test
@@ -222,10 +289,18 @@ class ConnectAppsOnboardingFragmentTest {
     fun appWithOnboardingIntent_redirectsToApp() {
         whenever(viewModel.connectedApps).then {
             MutableLiveData(
-                OnboardingViewModel.OnboardingFragmentState.WithData(
+                OnboardingViewModel.OnboardingFragmentState.ZeroAppsConnected(
                     listOf(
-                        ConnectedFitnessAppMetadata(TEST_APP, false),
-                        ConnectedFitnessAppMetadata(TEST_APP_2, false),
+                        ConnectedFitnessAppMetadata(
+                            appMetadata = TEST_APP,
+                            isConnected = false,
+                            hasOnboarding = true,
+                        ),
+                        ConnectedFitnessAppMetadata(
+                            appMetadata = TEST_APP_2,
+                            isConnected = false,
+                            hasOnboarding = false,
+                        ),
                     )
                 )
             )
@@ -249,16 +324,26 @@ class ConnectAppsOnboardingFragmentTest {
         Intents.intended(hasPackage(TEST_APP_PACKAGE_NAME))
 
         verify(viewModel).setAppInteractedWith(TEST_APP_PACKAGE_NAME)
+        verify(healthConnectLogger)
+            .logInteraction(CommonOnboardingPageElement.APP_WITH_ONBOARDING_BUTTON)
     }
 
     @Test
     fun appWithNoOnboardingIntent_redirectsToFitnessAppOnboardingFragment() {
         whenever(viewModel.connectedApps).then {
             MutableLiveData(
-                OnboardingViewModel.OnboardingFragmentState.WithData(
+                OnboardingViewModel.OnboardingFragmentState.ZeroAppsConnected(
                     listOf(
-                        ConnectedFitnessAppMetadata(TEST_APP, false),
-                        ConnectedFitnessAppMetadata(TEST_APP_2, false),
+                        ConnectedFitnessAppMetadata(
+                            appMetadata = TEST_APP,
+                            isConnected = false,
+                            hasOnboarding = true,
+                        ),
+                        ConnectedFitnessAppMetadata(
+                            appMetadata = TEST_APP_2,
+                            isConnected = false,
+                            hasOnboarding = false,
+                        ),
                     )
                 )
             )
@@ -270,9 +355,11 @@ class ConnectAppsOnboardingFragmentTest {
             Navigation.setViewNavController(this.requireView(), navHostController)
         }
 
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME)).perform(click())
+        onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
+        onView(withText(TEST_APP_NAME_2)).perform(click())
         assertThat(navHostController.currentDestination?.id)
             .isEqualTo(R.id.fitnessAppOnboardingFragment)
+        verify(healthConnectLogger)
+            .logInteraction(CommonOnboardingPageElement.APP_WITHOUT_ONBOARDING_BUTTON)
     }
 }

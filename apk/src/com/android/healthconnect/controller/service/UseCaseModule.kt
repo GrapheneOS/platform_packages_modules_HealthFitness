@@ -389,12 +389,14 @@ class UseCaseModule {
 
     @Provides
     fun providesLoadFitnessPermissionAppsUseCase(
+        @ApplicationContext context: Context,
         healthPermissionReader: HealthPermissionReader,
         loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase,
         appInfoReader: AppInfoReader,
         @IoDispatcher dispatcher: CoroutineDispatcher,
     ): ILoadFitnessPermissionAppsUseCase {
         return LoadFitnessPermissionAppsUseCase(
+            context,
             healthPermissionReader,
             loadAppPermissionsStatusUseCase,
             appInfoReader,

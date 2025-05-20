@@ -77,29 +77,27 @@ constructor(
         internalOnboardingState: OnboardingState?,
         connectedApps: OnboardingFragmentState?,
     ): OnboardingBannerState {
-        if (internalOnboardingState == null) {
+        if (
+            internalOnboardingState == null ||
+                internalOnboardingState == OnboardingState.ONBOARDING_BANNER_STATE_HIDE ||
+                connectedApps == null ||
+                (connectedApps !is OnboardingFragmentState.ZeroAppsConnected &&
+                    connectedApps !is OnboardingFragmentState.OneAppConnected &&
+                    connectedApps !is OnboardingFragmentState.AlmostDone)
+        ) {
             return OnboardingBannerState.NoOnboardingBanner
         }
-        if (internalOnboardingState == OnboardingState.ONBOARDING_BANNER_STATE_HIDE) {
-            return OnboardingBannerState.NoOnboardingBanner
-        }
-        if (connectedApps == null) {
-            return OnboardingBannerState.NoOnboardingBanner
-        }
-        if (connectedApps !is OnboardingFragmentState.WithData) {
-            return OnboardingBannerState.NoOnboardingBanner
-        }
+
         val bannerSeen = onboardingBannerSeen(internalOnboardingState)
         if (bannerSeen) {
             return OnboardingBannerState.NoOnboardingBanner
         }
 
-        val connectedAppsCount = connectedApps.connectedApps.count { it.isConnected }
-        return if (connectedAppsCount == 0) {
+        return if (connectedApps is OnboardingFragmentState.ZeroAppsConnected) {
             OnboardingBannerState.ZeroAppsOnboardingBanner
-        } else if (connectedAppsCount == 1) {
-            val connectedApp = connectedApps.connectedApps.filter { it.isConnected }[0].appMetadata
-            OnboardingBannerState.OneAppOnboardingBanner(connectedApp)
+        } else if (connectedApps is OnboardingFragmentState.OneAppConnected) {
+            val connectedApp = connectedApps.connectedApp
+            OnboardingBannerState.OneAppOnboardingBanner(connectedApp.appMetadata)
         } else {
             OnboardingBannerState.NoOnboardingBanner
         }
@@ -109,25 +107,48 @@ constructor(
         _connectedApps.postValue(OnboardingFragmentState.Loading)
 
         viewModelScope.launch {
-            // TODO (b/376085888) handle error from useCase
             when (val result = loadFitnessPermissionApps.invoke(Unit)) {
                 is UseCaseResults.Failed -> {
                     Log.e(TAG, "Error invoking LoadFitnessPermissionApps: " + result.exception)
+                    _connectedApps.postValue(OnboardingFragmentState.Error)
                 }
                 is UseCaseResults.Success -> {
-                    val connectedFitnessApps = result.data.toMutableList()
-                    for (currentApp in connectedFitnessApps) {
+                    val potentialFitnessApps = result.data.toMutableList()
+
+                    if (potentialFitnessApps.isEmpty()) {
+                        _connectedApps.postValue(OnboardingFragmentState.NoApps)
+                        return@launch
+                    }
+
+                    for (currentApp in potentialFitnessApps) {
                         if (currentApp.appMetadata.packageName in appsInteractedWith) {
                             currentApp.isConnected = true
                         }
                     }
-                    connectedFitnessApps.sortWith(
+                    potentialFitnessApps.sortWith(
                         // TODO (b/416744614) additional sorting criteria for apps
                         // Show connected apps first
                         compareBy<ConnectedFitnessAppMetadata> { if (it.isConnected) 0 else 1 }
                             .thenBy { it.appMetadata.appName }
                     )
-                    _connectedApps.postValue(OnboardingFragmentState.WithData(connectedFitnessApps))
+
+                    val allowedApps =
+                        potentialFitnessApps
+                            .groupBy { it.isConnected }
+                            .getOrDefault(true, emptyList())
+                    if (allowedApps.isEmpty()) {
+                        _connectedApps.postValue(
+                            OnboardingFragmentState.ZeroAppsConnected(potentialFitnessApps)
+                        )
+                    } else if (allowedApps.size == 1) {
+                        val connectedApp = potentialFitnessApps.filter { it.isConnected }[0]
+                        val potentialApps = potentialFitnessApps.filter { !it.isConnected }
+                        _connectedApps.postValue(
+                            OnboardingFragmentState.OneAppConnected(connectedApp, potentialApps)
+                        )
+                    } else {
+                        _connectedApps.postValue(OnboardingFragmentState.AlmostDone(allowedApps))
+                    }
                 }
             }
         }
@@ -138,6 +159,9 @@ constructor(
             when (val result = loadOnboardingStateUseCase.invoke(Unit)) {
                 is UseCaseResults.Failed -> {
                     Log.e(TAG, "Error invoking LoadOnboardingState: " + result.exception)
+                    _internalOnboardingBannerState.postValue(
+                        OnboardingState.ONBOARDING_BANNER_STATE_HIDE
+                    )
                 }
                 is UseCaseResults.Success -> {
                     _internalOnboardingBannerState.postValue(result.data)
@@ -165,7 +189,17 @@ constructor(
 
         object Error : OnboardingFragmentState()
 
-        data class WithData(val connectedApps: List<ConnectedFitnessAppMetadata>) :
+        object NoApps : OnboardingFragmentState()
+
+        data class ZeroAppsConnected(val potentialApps: List<ConnectedFitnessAppMetadata>) :
+            OnboardingFragmentState()
+
+        data class OneAppConnected(
+            val connectedApp: ConnectedFitnessAppMetadata,
+            val potentialApps: List<ConnectedFitnessAppMetadata>,
+        ) : OnboardingFragmentState()
+
+        data class AlmostDone(val connectedApps: List<ConnectedFitnessAppMetadata>) :
             OnboardingFragmentState()
     }
 
