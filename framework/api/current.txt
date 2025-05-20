@@ -904,7 +904,7 @@ package android.health.connect.datatypes {
     method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @FloatRange(from=0, to=10, fromInclusive=true, toInclusive=true) public float getRateOfPerceivedExertion();
     method @IntRange(from=0) public int getRepetitionsCount();
     method public int getSegmentType();
-    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") public int getSetIndex();
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @IntRange(from=0) public int getSetIndex();
     method @NonNull public java.time.Instant getStartTime();
     method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @Nullable public android.health.connect.datatypes.units.Mass getWeight();
     method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") public boolean hasRateOfPerceivedExertion();
@@ -919,7 +919,7 @@ package android.health.connect.datatypes {
     method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder clearWeight();
     method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder setRateOfPerceivedExertion(@FloatRange(from=0, to=10, fromInclusive=true, toInclusive=true) float);
     method @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder setRepetitionsCount(@IntRange(from=0) int);
-    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder setSetIndex(int);
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder setSetIndex(@IntRange(from=0) int);
     method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder setWeight(@NonNull android.health.connect.datatypes.units.Mass);
   }
 

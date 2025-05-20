@@ -129,6 +129,7 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
      * @throws IllegalStateException if set index is not set.
      */
     @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+    @IntRange(from = 0)
     public int getSetIndex() {
         if (mSetIndex == DEFAULT_INT) {
             throw new IllegalStateException(
@@ -334,7 +335,7 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
          */
         @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
         @NonNull
-        public Builder setSetIndex(int setIndex) {
+        public Builder setSetIndex(@IntRange(from = 0) int setIndex) {
             if (setIndex < 0) {
                 throw new IllegalArgumentException("Set index must be non-negative");
             }
