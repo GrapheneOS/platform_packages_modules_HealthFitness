@@ -39,7 +39,6 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.ArrayMap;
 
-import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
@@ -61,33 +60,35 @@ import java.util.Set;
 import java.util.UUID;
 
 /** Util class provides shared functionality for db transaction testing. */
-// TODO(b/414747066): Remove all record builders and migrate callers to RecordInternalFactory.
-public final class TransactionTestUtils {
+public final class FitnessTestUtils {
     private static final Set<String> NO_EXTRA_PERMS = Set.of();
     private static final String TEST_PACKAGE_NAME = "package.name";
     private final TransactionManager mTransactionManager;
     private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
     private final FitnessRecordReadHelper mFitnessRecordReadHelper;
     private final FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
-    private final HealthConnectInjector mHealthConnectInjector;
+    private final AppInfoHelper mAppInfoHelper;
 
-    public TransactionTestUtils(HealthConnectInjector injector) {
+    public FitnessTestUtils(HealthConnectInjector injector) {
         mTransactionManager = injector.getTransactionManager();
         mFitnessRecordUpsertHelper = injector.getFitnessRecordUpsertHelper();
         mFitnessRecordReadHelper = injector.getFitnessRecordReadHelper();
         mFitnessRecordDeleteHelper = injector.getFitnessRecordDeleteHelper();
-        mHealthConnectInjector = injector;
+        mAppInfoHelper = injector.getAppInfoHelper();
     }
 
+    /**
+     * Inserts an app directly into the database, without going through AppInfoHelper. This allows
+     * an "insert" to happen even when an app is not installed on the device.
+     */
     public void insertApp(String packageName) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PACKAGE_COLUMN_NAME, packageName);
         mTransactionManager.insertOrThrowOnConflict(
                 new UpsertTableRequest(
                         AppInfoHelper.TABLE_NAME, contentValues, UNIQUE_COLUMN_INFO));
-        mHealthConnectInjector.getAppInfoHelper().clearCache();
-        assertThat(mHealthConnectInjector.getAppInfoHelper().getAppInfoId(packageName))
-                .isNotEqualTo(DEFAULT_LONG);
+        mAppInfoHelper.clearCache();
+        assertThat(mAppInfoHelper.getAppInfoId(packageName)).isNotEqualTo(DEFAULT_LONG);
     }
 
     /** Inserts {@code packageName} into the given {@link HealthConnectDatabase}. */
@@ -98,6 +99,8 @@ public final class TransactionTestUtils {
                 db.getWritableDatabase(),
                 new UpsertTableRequest(
                         AppInfoHelper.TABLE_NAME, contentValues, UNIQUE_COLUMN_INFO));
+        mAppInfoHelper.clearCache();
+        assertThat(mAppInfoHelper.getAppInfoId(packageName)).isNotEqualTo(DEFAULT_LONG);
     }
 
     /** Inserts records attributed to the given package. */
@@ -188,28 +191,6 @@ public final class TransactionTestUtils {
                 .first;
     }
 
-    /** Inserts one single fake access log. */
-    public void insertAccessLog() {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("record_type", "fake_record_type");
-        contentValues.put("app_id", "fake_app_id");
-        contentValues.put("access_time", "fake_access_time");
-        contentValues.put("operation_type", "fake_operation_type");
-        mTransactionManager.insertOrThrowOnConflict(
-                new UpsertTableRequest(AccessLogsHelper.TABLE_NAME, contentValues));
-    }
-
-    /** Inserts one single fake change log. */
-    public void insertChangeLog() {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("record_type", "fake_record_type");
-        contentValues.put("app_id", "fake_app_id");
-        contentValues.put("uuids", "fake_uuids");
-        contentValues.put("operation_type", "fake_operation_type");
-        mTransactionManager.insertOrThrowOnConflict(
-                new UpsertTableRequest(ChangeLogsHelper.TABLE_NAME, contentValues));
-    }
-
     /** Retrieves all delete record change logs from change log table. */
     public List<UUID> getAllDeletedUuids() {
         WhereClauses whereClauses =
@@ -223,10 +204,5 @@ public final class TransactionTestUtils {
             }
             return uuids.build();
         }
-    }
-
-    /** Returns a valid UUID string. */
-    public static String getUUID() {
-        return "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
     }
 }

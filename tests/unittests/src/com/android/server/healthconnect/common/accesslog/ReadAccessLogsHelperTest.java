@@ -30,7 +30,7 @@ import android.health.connect.datatypes.BloodPressureRecord;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -91,10 +91,10 @@ public class ReadAccessLogsHelperTest {
         mReadAccessLogsHelper = healthConnectInjector.getReadAccessLogsHelper();
         AppInfoHelper appInfoHelper = healthConnectInjector.getAppInfoHelper();
         mTransactionManager = healthConnectInjector.getTransactionManager();
-        TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
+        FitnessTestUtils fitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
 
-        transactionTestUtils.insertApp(TEST_APP_PACKAGE_READER);
-        transactionTestUtils.insertApp(TEST_APP_PACKAGE_WRITER);
+        fitnessTestUtils.insertApp(TEST_APP_PACKAGE_READER);
+        fitnessTestUtils.insertApp(TEST_APP_PACKAGE_WRITER);
         mWriterAppInfoId = appInfoHelper.getAppInfoId(TEST_APP_PACKAGE_WRITER);
         mReaderAppInfoId = appInfoHelper.getAppInfoId(TEST_APP_PACKAGE_READER);
     }

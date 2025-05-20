@@ -22,8 +22,8 @@ import static org.mockito.Mockito.mock;
 
 import android.content.Context;
 import android.health.connect.accesslog.AccessLog;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.RecordInternalFactory;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.os.UserHandle;
 import android.util.ArrayMap;
 
@@ -80,8 +80,8 @@ public class FitnessRecordUpsertHelperTest {
         mAccessLogsHelper = healthConnectInjector.getAccessLogsHelper();
         mUserHandle = context.getUser();
 
-        TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        transactionTestUtils.insertApp("package.name");
+        FitnessTestUtils fitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        fitnessTestUtils.insertApp("package.name");
     }
 
     @Test

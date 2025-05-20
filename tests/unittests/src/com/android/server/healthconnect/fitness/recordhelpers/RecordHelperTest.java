@@ -40,7 +40,7 @@ import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.BloodPressureRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.util.Pair;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -79,7 +79,7 @@ public class RecordHelperTest {
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
 
     private TransactionManager mTransactionManager;
     private DeviceInfoHelper mDeviceInfoHelper;
@@ -99,15 +99,15 @@ public class RecordHelperTest {
         mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
 
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
     }
 
     @Test
     public void getInternalRecords_insertThenRead_recordReturned() {
         RecordHelper<?> helper = new StepsRecordHelper();
         String uid =
-                mTransactionTestUtils
+                mFitnessTestUtils
                         .insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(4000, 5000, 100))
                         .get(0);
         ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
@@ -128,7 +128,7 @@ public class RecordHelperTest {
     public void getInternalRecords_requestSizeMoreThanRecordNumber_recordsReturned() {
         RecordHelper<?> helper = new StepsRecordHelper();
         String uid =
-                mTransactionTestUtils
+                mFitnessTestUtils
                         .insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(4000, 5000, 100))
                         .get(0);
         ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
@@ -149,7 +149,7 @@ public class RecordHelperTest {
         for (int i = 0; i <= MAXIMUM_ALLOWED_CURSOR_COUNT; i++) {
             records.add(buildStepsRecord(startTime + i, startTime + i + 1, 100));
         }
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
 
         ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {
@@ -168,7 +168,7 @@ public class RecordHelperTest {
         RecordHelper<?> helper = new StepsRecordHelper();
         int pageSize = 1;
         boolean isAscending = false;
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
                 buildStepsRecord(
                         "client.id1",
@@ -229,7 +229,7 @@ public class RecordHelperTest {
         RecordHelper<?> helper = new StepsRecordHelper();
         int pageSize = 3;
         boolean isAscending = true;
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
                 // in page 1
                 buildStepsRecord(
@@ -319,7 +319,7 @@ public class RecordHelperTest {
     @Test
     public void getNextInternalRecordsPageAndToken_wrongOffsetPageToken_skipSameStartTimeRecords() {
         RecordHelper<?> helper = new StepsRecordHelper();
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
                 buildStepsRecord("id1", 4000, 5000, 100),
                 buildStepsRecord("id2", 5000, 6000, 100));
@@ -344,10 +344,8 @@ public class RecordHelperTest {
     public void getInternalRecords_recordTimeForInstantRecords_startTime() {
         RecordHelper<?> helper = new BloodPressureRecordHelper();
         String uid =
-                mTransactionTestUtils
-                        .insertRecords(
-                                TEST_PACKAGE_NAME,
-                                buildBloodPressureRecord(4000, 5000, 100))
+                mFitnessTestUtils
+                        .insertRecords(TEST_PACKAGE_NAME, buildBloodPressureRecord(4000, 5000, 100))
                         .get(0);
         ReadTableRequest request = new ReadTableRequest(BLOOD_PRESSURE_RECORD_TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {
@@ -365,7 +363,7 @@ public class RecordHelperTest {
     public void getInternalRecords_recordTimeForIntervalRecords_endTime() {
         RecordHelper<?> helper = new StepsRecordHelper();
         String uid =
-                mTransactionTestUtils
+                mFitnessTestUtils
                         .insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(4000, 5000, 100))
                         .get(0);
         ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);

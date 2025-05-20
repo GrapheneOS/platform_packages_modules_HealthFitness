@@ -34,7 +34,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -68,7 +68,7 @@ public class AppInfoHelperTest {
     @Mock private PackageManager mPackageManager;
 
     private AppInfoHelper mAppInfoHelper;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
 
     @Before
     public void setup() throws PackageManager.NameNotFoundException {
@@ -90,7 +90,7 @@ public class AppInfoHelperTest {
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
     }
 
     @After
@@ -102,7 +102,7 @@ public class AppInfoHelperTest {
     public void testUpdateAppInfoIfNotInstalled_withoutIcon_getIconFromPackageName()
             throws PackageManager.NameNotFoundException {
         setAppAsNotInstalled();
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
         mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
 
@@ -115,7 +115,7 @@ public class AppInfoHelperTest {
     public void testUpdateAppInfoIfNotInstalled_withoutIcon_getDefaultIconIfPackageIsNotFound()
             throws PackageManager.NameNotFoundException {
         setAppAsNotInstalled();
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
         mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
 
@@ -128,7 +128,7 @@ public class AppInfoHelperTest {
     public void testUpdateAppInfoIfNotInstalled_appInstalled_noChangeMade()
             throws PackageManager.NameNotFoundException {
         setAppAsInstalled();
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
         mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
 
@@ -141,7 +141,7 @@ public class AppInfoHelperTest {
     public void testRestoreAppInfo_appNotInstalled_updatesName()
             throws PackageManager.NameNotFoundException {
         setAppAsNotInstalled();
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
         mAppInfoHelper.restoreAppInfo(TEST_PACKAGE_NAME, TEST_APP_NAME);
         assertThat(mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME).getName())
@@ -162,7 +162,7 @@ public class AppInfoHelperTest {
     public void testRestoreAppInfo_appInstalled_noChangeMade()
             throws PackageManager.NameNotFoundException {
         setAppAsInstalled();
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
         mAppInfoHelper.restoreAppInfo(TEST_PACKAGE_NAME, TEST_APP_NAME);
         assertThat(mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME).getName()).isNull();
@@ -185,7 +185,7 @@ public class AppInfoHelperTest {
     public void testAddAppInfoIfNoRecordExists_appInstalledNoRecordExists_noNewRecordAdded()
             throws PackageManager.NameNotFoundException {
         setAppAsInstalled();
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
         assertThat(doesRecordExistForPackage()).isTrue();
 

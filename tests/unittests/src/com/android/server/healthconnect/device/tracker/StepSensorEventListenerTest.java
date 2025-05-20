@@ -33,7 +33,7 @@ import android.hardware.SensorManager;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.mocks.AndroidPackageMocker;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -85,7 +85,7 @@ public class StepSensorEventListenerTest {
     private static final String TEST_PACKAGE_NAME = "package.name";
 
     private HealthConnectThreadScheduler mThreadScheduler;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
     private StepSensorEventListener mStepSensorEventListener;
 
     @Before
@@ -103,9 +103,9 @@ public class StepSensorEventListenerTest {
                         .build();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
         DeviceRecordHelper mDeviceRecordHelper = healthConnectInjector.getDeviceRecordHelper();
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
 
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
         mStepSensorEventListener =
                 spy(
                         new StepSensorEventListener(
@@ -134,7 +134,7 @@ public class StepSensorEventListenerTest {
         triggerStepEvent(stepCount, timestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(1);
         assertRecord(records.get(0), stepCount, timestampNanos);
@@ -156,7 +156,7 @@ public class StepSensorEventListenerTest {
         triggerStepEvent(secondStepCount, secondTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(2);
         assertRecord(records.get(0), firstStepCount, firstTimestampNanos);
@@ -185,7 +185,7 @@ public class StepSensorEventListenerTest {
         triggerStepEvent(thirdStepCount, thirdTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(2);
         assertRecord(records.get(0), firstStepCount, firstTimestampNanos);
@@ -206,7 +206,7 @@ public class StepSensorEventListenerTest {
         triggerStepEvent(firstStepCount, secondTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(1);
         assertRecord(records.get(0), firstStepCount, firstTimestampNanos);
@@ -226,7 +226,7 @@ public class StepSensorEventListenerTest {
         triggerStepEvent(secondStepCount, secondTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(1);
         assertRecord(records.get(0), firstStepCount, firstTimestampNanos);
@@ -246,7 +246,7 @@ public class StepSensorEventListenerTest {
         triggerStepEvent(secondStepCount, firstTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(1);
         assertRecord(records.get(0), firstStepCount, firstTimestampNanos);
@@ -266,7 +266,7 @@ public class StepSensorEventListenerTest {
         triggerStepEvent(secondStepCount, secondTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(1);
         assertRecord(records.get(0), firstStepCount, firstTimestampNanos);
