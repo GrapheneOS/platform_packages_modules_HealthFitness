@@ -972,7 +972,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                             mChangeLogsHelper.getLatestRowId(),
                                             attributionSource.getPackageName(),
                                             request)));
-                    logger.setHealthDataServiceApiStatusSuccess();
+                    logger.setHealthDataServiceApiStatusSuccess()
+                            .setDataTypesFromRecordTypes(
+                                    request.getRecordTypeIds().stream().toList());
+                    if (isPhrChangeLogsEnabled()) {
+                        logger.setMedicalResourceTypes(request.getMedicalResourceTypes());
+                    }
                 },
                 logger,
                 errorCallback,
@@ -1112,9 +1117,23 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     deletedMedicalResources,
                                     changeLogsResponse.getNextPageToken(),
                                     changeLogsResponse.hasMorePages()));
+
+                    var numberOfChanges =
+                            isPhrChangeLogsEnabled()
+                                    ? recordInternals.size()
+                                            + deletedLogs.size()
+                                            + upsertedMedicalResources.size()
+                                            + deletedMedicalResources.size()
+                                    : recordInternals.size() + deletedLogs.size();
                     logger.setHealthDataServiceApiStatusSuccess()
-                            .setNumberOfRecords(recordInternals.size() + deletedLogs.size())
+                            .setNumberOfRecords(numberOfChanges)
                             .setDataTypesFromRecordInternals(recordInternals);
+                    if (isPhrChangeLogsEnabled()) {
+                        logger.setMedicalResourceTypes(
+                                upsertedMedicalResources.stream()
+                                        .map(MedicalResource::getType)
+                                        .collect(Collectors.toSet()));
+                    }
                 },
                 logger,
                 errorCallback,
