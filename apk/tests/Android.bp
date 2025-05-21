@@ -406,3 +406,64 @@ android_test {
     },
     instrumentation_target_package: "com.android.healthconnect.controller.tests",
 }
+
+// A group of files known not to work with deviceless (aka bivalent aka robolectric) tests
+filegroup {
+    name: "robo-ui-tests-sources-exclude",
+    srcs: [
+        // Uses org.mockito.kotlin.mock() to mock a Hilt Singleton class HealthConnectLogger
+        // for some reason Mockito won't mock it in robolectric mode
+        "src/com/android/healthconnect/controller/tests/units/UnitsFragmentTest.kt",
+        // It seems like Localization data (specifically WeekFields) are not fetched correctly
+        // under robolectric.
+        "src/com/android/healthconnect/controller/tests/utiltests/TimeUtilsTest.kt",
+        // Uses UserSettings from compatibility util. This shell command to set user settings,
+        // and waits for callback, which doesn't work under robolectric.
+        "src/com/android/healthconnect/controller/tests/utiltests/LocalDateTimeFormatterTest.kt",
+    ],
+    path: "src",
+}
+
+// Robolectric test target for testing Health Connect Controller APK UI
+// This target is currently under development to allow bivalent tests
+// go/deviceless-tests
+android_robolectric_test {
+    name: "HealthConnectControllerRoboUITests",
+    sdk_version: "module_current",
+    srcs: [
+        "src/com/android/healthconnect/controller/tests/TestActivity.kt",
+        "src/com/android/healthconnect/controller/tests/units/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/utils/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/utiltests/**/*.kt",
+    ],
+    exclude_srcs: [
+        "src/**/safetycenter/*.kt",
+        ":robo-ui-tests-sources-exclude",
+    ],
+    // defaults : ["health-connect-controller-tests-default"],
+    static_libs: [
+        // This is required to get mocking of final classes
+        "inline-mockito5-robolectric-prebuilt",
+        "mockito-kotlin-nodeps",
+        "androidx.test.core",
+        "androidx.test.ext.junit",
+        "framework-healthfitness.impl",
+        "HealthConnectPermissionsApis",
+        "HealthConnectOnboardingApis",
+        "HealthConnectMigrationApis",
+        "HealthConnectExportApis",
+        "HealthConnectLibrary",
+        "hilt_android_testing",
+        "kotlinx_coroutines_test",
+        // test dependencies
+        "androidx.test.espresso.contrib",
+        "androidx.test.espresso.intents",
+        "androidx.test.espresso.core",
+        "androidx.test.ext.junit",
+        "androidx.test.ext.truth",
+        "androidx.test.rules",
+        "compatibility-device-util-axt",
+    ],
+    java_resource_dirs: ["config"],
+    instrumentation_for: "HealthConnectController",
+}
