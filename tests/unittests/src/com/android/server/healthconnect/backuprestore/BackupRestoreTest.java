@@ -88,7 +88,6 @@ import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.UserGrantTimeState;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.utils.FilesUtil;
@@ -131,8 +130,6 @@ public class BackupRestoreTest {
     @Mock private TransactionManager mTransactionManager;
     @Mock private Cursor mCursor;
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private MigrationStateManager mMockMigrationStateManager;
     @Mock private Context mContext;
     @Mock private JobScheduler mJobScheduler;
@@ -163,7 +160,6 @@ public class BackupRestoreTest {
                         .setPreferenceHelper(mFakePreferenceHelper)
                         .setMigrationStateManager(mMockMigrationStateManager)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setTransactionManager(mTransactionManager)
                         .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .build();

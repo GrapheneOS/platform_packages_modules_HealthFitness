@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.health.connect.datatypes.RecordTypeIdentifier;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -93,14 +93,14 @@ public class EcosystemStatsCollectorTest {
                 new EcosystemStatsCollector(
                         healthConnectInjector.getReadAccessLogsHelper(),
                         healthConnectInjector.getChangeLogsHelper());
-        TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
+        FitnessTestUtils fitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
 
-        transactionTestUtils.insertApp(TEST_APP_PACKAGE_READER);
-        transactionTestUtils.insertApp(TEST_APP_PACKAGE_READER_TWO);
-        transactionTestUtils.insertApp(TEST_APP_PACKAGE_READER_THREE);
-        transactionTestUtils.insertApp(TEST_APP_PACKAGE_WRITER);
-        transactionTestUtils.insertApp(TEST_APP_PACKAGE_WRITER_TWO);
-        transactionTestUtils.insertApp(TEST_APP_PACKAGE_WRITER_THREE);
+        fitnessTestUtils.insertApp(TEST_APP_PACKAGE_READER);
+        fitnessTestUtils.insertApp(TEST_APP_PACKAGE_READER_TWO);
+        fitnessTestUtils.insertApp(TEST_APP_PACKAGE_READER_THREE);
+        fitnessTestUtils.insertApp(TEST_APP_PACKAGE_WRITER);
+        fitnessTestUtils.insertApp(TEST_APP_PACKAGE_WRITER_TWO);
+        fitnessTestUtils.insertApp(TEST_APP_PACKAGE_WRITER_THREE);
     }
 
     @Test

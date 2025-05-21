@@ -505,3 +505,12 @@ flag {
     is_fixed_read_only: true
     is_exported: false
 }
+
+flag {
+    name: "phr_xhtml_validation"
+    namespace: "health_fitness_aconfig"
+    description: "Enable xhtml datatype validation in FHIR resources"
+    bug: "402780942"
+    is_fixed_read_only: true
+    is_exported: false
+}

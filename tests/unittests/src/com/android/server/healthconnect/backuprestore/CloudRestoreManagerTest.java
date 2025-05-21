@@ -47,7 +47,7 @@ import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -62,7 +62,6 @@ import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMa
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BackupData;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Record;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
@@ -105,7 +104,7 @@ public class CloudRestoreManagerTest {
     private DeviceInfoHelper mDeviceInfoHelper;
     private TransactionManager mTransactionManager;
     private FitnessRecordReadHelper mFitnessRecordReadHelper;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
     private CloudRestoreManager mCloudRestoreManager;
     private RecordProtoConverter mRecordProtoConverter;
     private HealthDataCategoryPriorityHelper mPriorityHelper;
@@ -116,8 +115,6 @@ public class CloudRestoreManagerTest {
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
 
     @Before
     public void setUp() {
@@ -125,7 +122,6 @@ public class CloudRestoreManagerTest {
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
 
@@ -154,7 +150,7 @@ public class CloudRestoreManagerTest {
                         mPreferenceHelper,
                         fakeClock,
                         healthConnectInjector.getBackupRestoreLogger());
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
     }
 
     @Test
@@ -182,7 +178,7 @@ public class CloudRestoreManagerTest {
         mCloudRestoreManager.restoreChanges(List.of(stepsChange, bloodPressureChange));
 
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readRecordsByIds(
+                mFitnessTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 List.of(UUID.fromString(stepsRecord.getUuid())),
@@ -221,7 +217,7 @@ public class CloudRestoreManagerTest {
         // Second restore does not throw any exceptions
         mCloudRestoreManager.restoreChanges(List.of(stepsChange, bloodPressureChange));
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readRecordsByIds(
+                mFitnessTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 List.of(UUID.fromString(stepsRecord.getUuid())),

@@ -37,9 +37,9 @@ import android.health.connect.datatypes.FhirResource;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.shared.phr.ImmunizationBuilder;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.PhrTestUtils;
 import android.healthconnect.testing.unittest.PhrTestUtils.MedicalChangeLogEntry;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -78,7 +78,7 @@ public final class MedicalChangeLogsHelperTest {
     private TransactionManager mTransactionManager;
     private AppInfoHelper mAppInfoHelper;
     private PhrTestUtils mPhrTestUtils;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
 
     private static final String PACKAGE_NAME_1 = "com.test.app1";
     private static final String PACKAGE_NAME_2 = "com.test.app2";
@@ -101,12 +101,12 @@ public final class MedicalChangeLogsHelperTest {
         mTransactionManager = injector.getTransactionManager();
         mAppInfoHelper = injector.getAppInfoHelper();
         mPhrTestUtils = new PhrTestUtils(injector);
-        mTransactionTestUtils = new TransactionTestUtils(injector);
+        mFitnessTestUtils = new FitnessTestUtils(injector);
     }
 
     @Test
     public void generateDeletionChangeLogsForMedicalResources_withAppId() {
-        mTransactionTestUtils.insertApp(PACKAGE_NAME_1);
+        mFitnessTestUtils.insertApp(PACKAGE_NAME_1);
         long appId1 = mAppInfoHelper.getAppInfoId(PACKAGE_NAME_1);
         MedicalDataSource dataSource1 =
                 mPhrTestUtils.insertR4MedicalDataSource("ds1", PACKAGE_NAME_1);
@@ -147,8 +147,8 @@ public final class MedicalChangeLogsHelperTest {
 
     @Test
     public void generateDeletionChangeLogsForMedicalResources_withoutAppId() {
-        mTransactionTestUtils.insertApp(PACKAGE_NAME_1);
-        mTransactionTestUtils.insertApp(PACKAGE_NAME_2);
+        mFitnessTestUtils.insertApp(PACKAGE_NAME_1);
+        mFitnessTestUtils.insertApp(PACKAGE_NAME_2);
         long appId1 = mAppInfoHelper.getAppInfoId(PACKAGE_NAME_1);
         long appId2 = mAppInfoHelper.getAppInfoId(PACKAGE_NAME_2);
         MedicalDataSource dataSource1 =
@@ -205,8 +205,8 @@ public final class MedicalChangeLogsHelperTest {
 
     @Test
     public void generateDeletionChangeLogsForMedicalResources_withReadRequest_withAppId() {
-        mTransactionTestUtils.insertApp(PACKAGE_NAME_1);
-        mTransactionTestUtils.insertApp(PACKAGE_NAME_2);
+        mFitnessTestUtils.insertApp(PACKAGE_NAME_1);
+        mFitnessTestUtils.insertApp(PACKAGE_NAME_2);
         long appId1 = mAppInfoHelper.getAppInfoId(PACKAGE_NAME_1);
         MedicalDataSource dataSource1 =
                 mPhrTestUtils.insertR4MedicalDataSource("ds1", PACKAGE_NAME_1);
@@ -259,8 +259,8 @@ public final class MedicalChangeLogsHelperTest {
 
     @Test
     public void generateDeletionChangeLogsForMedicalResources_withReadRequest_withoutAppId() {
-        mTransactionTestUtils.insertApp(PACKAGE_NAME_1);
-        mTransactionTestUtils.insertApp(PACKAGE_NAME_2);
+        mFitnessTestUtils.insertApp(PACKAGE_NAME_1);
+        mFitnessTestUtils.insertApp(PACKAGE_NAME_2);
         long appId1 = mAppInfoHelper.getAppInfoId(PACKAGE_NAME_1);
         long appId2 = mAppInfoHelper.getAppInfoId(PACKAGE_NAME_2);
         MedicalDataSource dataSource1 =

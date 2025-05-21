@@ -151,7 +151,7 @@ public final class Device {
 
     /** Electronic devices worn in or around the ears, often with audio capabilities. */
     @FlaggedApi(FLAG_NEW_DEVICE_TYPES)
-    public static final int DEVICE_TYPE_HEARABLES = 11;
+    public static final int DEVICE_TYPE_HEARABLE = 11;
 
     /**
      * Stationary or mobile equipment designed for physical exercise.
@@ -176,7 +176,7 @@ public final class Device {
      * <p>For example: Handheld GPS, Cycling Computer, Rowing Computer
      */
     @FlaggedApi(FLAG_NEW_DEVICE_TYPES)
-    public static final int DEVICE_TYPE_PORTABLE_COMPUTERS = 14;
+    public static final int DEVICE_TYPE_PORTABLE_COMPUTER = 14;
 
     /**
      * Equipment attachments that measure a specific metric.
@@ -276,10 +276,10 @@ public final class Device {
                                     ? Stream.of(
                                             DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE,
                                             DEVICE_TYPE_GLASSES,
-                                            DEVICE_TYPE_HEARABLES,
+                                            DEVICE_TYPE_HEARABLE,
                                             DEVICE_TYPE_FITNESS_MACHINE,
                                             DEVICE_TYPE_FITNESS_EQUIPMENT,
-                                            DEVICE_TYPE_PORTABLE_COMPUTERS,
+                                            DEVICE_TYPE_PORTABLE_COMPUTER,
                                             DEVICE_TYPE_METER)
                                     : Stream.empty())
                     .collect(Collectors.toUnmodifiableSet());
@@ -297,10 +297,10 @@ public final class Device {
         DEVICE_TYPE_SMART_DISPLAY,
         DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE,
         DEVICE_TYPE_GLASSES,
-        DEVICE_TYPE_HEARABLES,
+        DEVICE_TYPE_HEARABLE,
         DEVICE_TYPE_FITNESS_MACHINE,
         DEVICE_TYPE_FITNESS_EQUIPMENT,
-        DEVICE_TYPE_PORTABLE_COMPUTERS,
+        DEVICE_TYPE_PORTABLE_COMPUTER,
         DEVICE_TYPE_METER,
     })
     @Retention(RetentionPolicy.SOURCE)

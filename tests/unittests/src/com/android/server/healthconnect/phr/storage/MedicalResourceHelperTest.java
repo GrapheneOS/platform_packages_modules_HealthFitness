@@ -82,9 +82,9 @@ import android.health.connect.datatypes.FhirResource;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.PhrTestUtils;
 import android.healthconnect.testing.unittest.PhrTestUtils.MedicalChangeLogEntry;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.healthconnect.testing.unittest.fakes.FakeTimeSource;
 import android.os.UserHandle;
 import android.platform.test.annotations.EnableFlags;
@@ -152,7 +152,7 @@ public class MedicalResourceHelperTest {
     private PhrTestUtils mUtil;
     private FakeTimeSource mFakeTimeSource;
     private UserHandle mUserHandle;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
     private AppInfoHelper mAppInfoHelper;
 
     @Before
@@ -175,9 +175,9 @@ public class MedicalResourceHelperTest {
         mUtil = new PhrTestUtils(healthConnectInjector);
         mUserHandle = context.getUser();
 
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        mTransactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
-        mTransactionTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        mFitnessTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
     }
 
     @Test

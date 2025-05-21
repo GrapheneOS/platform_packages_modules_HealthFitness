@@ -23,8 +23,8 @@ import static com.google.common.truth.Truth.assertThat;
 import android.content.Context;
 import android.database.Cursor;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.RecordInternalFactory;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -35,7 +35,6 @@ import com.android.server.healthconnect.fitness.recordhelpers.StepsRecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 
@@ -58,13 +57,11 @@ public class NoMockDailyCleanupJobTest {
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
 
     private static final String TEST_PACKAGE_NAME = "package.name";
 
     private TransactionManager mTransactionManager;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
     private HealthConnectInjector mHealthConnectInjector;
     private DailyCleanupJob mDailyCleanupJob;
     private PreferencesManager mPreferencesManager;
@@ -75,21 +72,20 @@ public class NoMockDailyCleanupJobTest {
         mHealthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mDailyCleanupJob = mHealthConnectInjector.getDailyCleanupJob();
         mPreferencesManager = mHealthConnectInjector.getPreferencesManager();
         mTransactionManager = mHealthConnectInjector.getTransactionManager();
 
-        mTransactionTestUtils = new TransactionTestUtils(mHealthConnectInjector);
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils = new FitnessTestUtils(mHealthConnectInjector);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
     }
 
     @Test
     public void startDailyCleanup_changeLogsGenerated() {
         String uuid =
-                mTransactionTestUtils
+                mFitnessTestUtils
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
                                 RecordInternalFactory.buildStepsRecord(4000, 5000, 100))
@@ -118,7 +114,6 @@ public class NoMockDailyCleanupJobTest {
             assertThat(records).isEmpty();
         }
 
-        assertThat(mTransactionTestUtils.getAllDeletedUuids())
-                .containsExactly(UUID.fromString(uuid));
+        assertThat(mFitnessTestUtils.getAllDeletedUuids()).containsExactly(UUID.fromString(uuid));
     }
 }

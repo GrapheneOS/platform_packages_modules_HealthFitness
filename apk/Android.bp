@@ -314,6 +314,7 @@ android_app {
         "HealthPermissionsManifest.xml",
         "ManageHealthPermissionsManifest.xml",
         "ManageHealthDataManifest.xml",
+        "StartCloudBackupAndRestoreSettingsManifest.xml",
         "StartOnboardingManifest.xml",
     ],
     certificate: ":com.android.healthconnect.controller.certificate",

@@ -32,7 +32,7 @@ import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.mocks.AndroidPackageMocker;
 import android.os.UserHandle;
 import android.platform.test.annotations.DisableFlags;
@@ -88,7 +88,7 @@ public class DeviceRecordHelperTest {
     private AccessLogsHelper mAccessLogsHelper;
     private ChangeLogsHelper mChangeLogsHelper;
     private ChangeLogsRequestHelper mChangeLogsRequestHelper;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
 
     private static final DeviceDataSource TEST_DEVICE_DATA_SOURCE =
             new DeviceDataSource(
@@ -118,10 +118,10 @@ public class DeviceRecordHelperTest {
         mAccessLogsHelper = healthConnectInjector.getAccessLogsHelper();
         mChangeLogsHelper = healthConnectInjector.getChangeLogsHelper();
         mChangeLogsRequestHelper = healthConnectInjector.getChangeLogsRequestHelper();
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
 
-        TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        transactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        FitnessTestUtils fitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        fitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
     }
 
     @Test
@@ -134,7 +134,7 @@ public class DeviceRecordHelperTest {
                                 NOW.minusMillis(5_000).toEpochMilli(), NOW.toEpochMilli(), 7)));
 
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(1);
         StepsRecordInternal record = (StepsRecordInternal) records.get(0);
@@ -151,7 +151,7 @@ public class DeviceRecordHelperTest {
                                 NOW.minusMillis(5_000).toEpochMilli(), NOW.toEpochMilli(), 7)));
 
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(1);
         StepsRecordInternal record = (StepsRecordInternal) records.get(0);
@@ -170,7 +170,7 @@ public class DeviceRecordHelperTest {
                                 NOW.minusMillis(5_000).toEpochMilli(), NOW.toEpochMilli(), 7)));
 
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(1);
         StepsRecordInternal record = (StepsRecordInternal) records.get(0);
@@ -206,7 +206,7 @@ public class DeviceRecordHelperTest {
                                 NOW.minusMillis(5_000).toEpochMilli(), NOW.toEpochMilli(), 7)));
 
         List<RecordInternal<?>> insertedRecords =
-                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
         assertThat(insertedRecords).hasSize(1);
         UUID insertedUuid = insertedRecords.get(0).getUuid();
 
@@ -257,7 +257,7 @@ public class DeviceRecordHelperTest {
         mDeviceRecordHelper.insertRecords(TEST_DEVICE_DATA_SOURCE, recordsToInsert);
 
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(3);
         assertThat(records.stream().map(r -> ((StepsRecordInternal) r).getCount()).toList())
@@ -280,7 +280,7 @@ public class DeviceRecordHelperTest {
                                 NOW.minusMillis(5_000).toEpochMilli(), NOW.toEpochMilli(), 7)));
 
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).isEmpty();
     }

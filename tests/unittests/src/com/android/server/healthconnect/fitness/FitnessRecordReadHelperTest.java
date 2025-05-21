@@ -53,7 +53,7 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.os.UserHandle;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
@@ -117,7 +117,7 @@ public class FitnessRecordReadHelperTest {
     private AppInfoHelper mAppInfoHelper;
     private AccessLogsHelper mAccessLogsHelper;
     private ReadAccessLogsHelper mReadAccessLogsHelper;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
 
     @Before
     public void setup() {
@@ -136,18 +136,18 @@ public class FitnessRecordReadHelperTest {
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mAccessLogsHelper = healthConnectInjector.getAccessLogsHelper();
         mReadAccessLogsHelper = spy(healthConnectInjector.getReadAccessLogsHelper());
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
 
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
-        mTransactionTestUtils.insertApp(FOO_PACKAGE_NAME);
-        mTransactionTestUtils.insertApp(BAR_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(FOO_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(BAR_PACKAGE_NAME);
     }
 
     @Test
     public void readRecordsByIdRequest_returnsAllRecords() {
         long timeMillis = 456;
         String uuid =
-                mTransactionTestUtils
+                mFitnessTestUtils
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
                                 buildBloodPressureRecord(timeMillis, 120.0, 80.0))
@@ -178,7 +178,7 @@ public class FitnessRecordReadHelperTest {
     public void readRecords_sessionWithChild_readsChild() {
         long timeMillis = 456;
         String uuid =
-                mTransactionTestUtils
+                mFitnessTestUtils
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
                                 buildExerciseSessionRecordWithSegment(
@@ -212,7 +212,7 @@ public class FitnessRecordReadHelperTest {
     public void readRecordsByIdRequest_ignoresMissingIds() {
         long timeMillis = 456;
         String uuid =
-                mTransactionTestUtils
+                mFitnessTestUtils
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
                                 buildBloodPressureRecord(timeMillis, 120.0, 80.0))
@@ -270,7 +270,7 @@ public class FitnessRecordReadHelperTest {
     @Test
     public void readRecordsByFilterRequest_returnsRecordsAndPageToken() {
         List<String> uuids =
-                mTransactionTestUtils.insertRecords(
+                mFitnessTestUtils.insertRecords(
                         TEST_PACKAGE_NAME,
                         buildStepsRecord(400, 500, 100),
                         buildStepsRecord(500, 600, 100));
@@ -363,7 +363,7 @@ public class FitnessRecordReadHelperTest {
         long startTimeMillis = 123;
         long endTimeMillis = 456;
         List<String> uuids =
-                mTransactionTestUtils.insertRecords(
+                mFitnessTestUtils.insertRecords(
                         TEST_PACKAGE_NAME,
                         buildStepsRecord(startTimeMillis, endTimeMillis, 100),
                         buildBloodPressureRecord(endTimeMillis, 120.0, 80.0));
@@ -394,7 +394,7 @@ public class FitnessRecordReadHelperTest {
         long startTimeMillis = 123;
         long endTimeMillis = 456;
         List<String> uuids =
-                mTransactionTestUtils.insertRecords(
+                mFitnessTestUtils.insertRecords(
                         TEST_PACKAGE_NAME,
                         buildStepsRecord(startTimeMillis, endTimeMillis, 100),
                         buildBloodPressureRecord(endTimeMillis, 120.0, 80.0));
@@ -430,9 +430,9 @@ public class FitnessRecordReadHelperTest {
     })
     public void flagsEnabled_readRecordsById_addReadAccessLog() {
         String readerPackage = "reader.package";
-        mTransactionTestUtils.insertApp(readerPackage);
+        mFitnessTestUtils.insertApp(readerPackage);
         String uuid =
-                mTransactionTestUtils
+                mFitnessTestUtils
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
                                 buildStepsRecord(
@@ -471,8 +471,8 @@ public class FitnessRecordReadHelperTest {
     // TODO(b/366149374): Fix this test to start recording read access log.
     public void flagsEnabled_readRecordsByIdRequest_shouldRecordAccessLogs_doNotAddReadAccessLog() {
         String readerPackage = "reader.package";
-        mTransactionTestUtils.insertApp(readerPackage);
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertApp(readerPackage);
+        mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
                 buildStepsRecord(
                         mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
@@ -509,9 +509,9 @@ public class FitnessRecordReadHelperTest {
     })
     public void flagsEnabled_readRecordsById_shouldNotRecordAccessLogs_doNotAddReadAccessLog() {
         String readerPackage = "reader.package";
-        mTransactionTestUtils.insertApp(readerPackage);
+        mFitnessTestUtils.insertApp(readerPackage);
         String uuid =
-                mTransactionTestUtils
+                mFitnessTestUtils
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
                                 buildStepsRecord(
@@ -545,9 +545,9 @@ public class FitnessRecordReadHelperTest {
     })
     public void flagsDisabled_readRecordsById_doNotAddReadAccessLog() {
         String readerPackage = "reader.package";
-        mTransactionTestUtils.insertApp(readerPackage);
+        mFitnessTestUtils.insertApp(readerPackage);
         String uuid =
-                mTransactionTestUtils
+                mFitnessTestUtils
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
                                 buildStepsRecord(
@@ -581,8 +581,8 @@ public class FitnessRecordReadHelperTest {
     })
     public void flagsEnabled_readRecordsAndPageToken_addReadAccessLog() {
         String readerPackage = "reader.package";
-        mTransactionTestUtils.insertApp(readerPackage);
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertApp(readerPackage);
+        mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
                 buildStepsRecord(
                         mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
@@ -627,8 +627,8 @@ public class FitnessRecordReadHelperTest {
     })
     public void flagsEnabled_doNotRecordAccessLogs_readRecordsAndPageToken_doNotReadAccessLog() {
         String readerPackage = "reader.package";
-        mTransactionTestUtils.insertApp(readerPackage);
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertApp(readerPackage);
+        mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
                 buildStepsRecord(
                         mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
@@ -670,8 +670,8 @@ public class FitnessRecordReadHelperTest {
     })
     public void flagsDisabled_readRecordsAndPageToken_doNotReadAccessLog() {
         String readerPackage = "reader.package";
-        mTransactionTestUtils.insertApp(readerPackage);
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertApp(readerPackage);
+        mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
                 buildStepsRecord(
                         mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
@@ -712,7 +712,7 @@ public class FitnessRecordReadHelperTest {
         FLAG_ACTIVITY_INTENSITY_DB
     })
     public void flagsEnabled_readSelfData_readRecordsAndPageToken_doNotAddReadAccessLog() {
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
                 buildStepsRecord(
                         mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
@@ -750,9 +750,9 @@ public class FitnessRecordReadHelperTest {
                 buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(11000));
         ExerciseSessionRecordInternal ownSession =
                 buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
-        String fooUuid = mTransactionTestUtils.insertRecords(FOO_PACKAGE_NAME, fooSession).get(0);
-        String barUuid = mTransactionTestUtils.insertRecords(BAR_PACKAGE_NAME, barSession).get(0);
-        String ownUuid = mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, ownSession).get(0);
+        String fooUuid = mFitnessTestUtils.insertRecords(FOO_PACKAGE_NAME, fooSession).get(0);
+        String barUuid = mFitnessTestUtils.insertRecords(BAR_PACKAGE_NAME, barSession).get(0);
+        String ownUuid = mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, ownSession).get(0);
         List<UUID> allUuids = Stream.of(fooUuid, barUuid, ownUuid).map(UUID::fromString).toList();
 
         List<RecordInternal<?>> returnedRecords =
@@ -785,8 +785,7 @@ public class FitnessRecordReadHelperTest {
         ExerciseSessionRecordInternal session =
                 buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
         UUID uuid =
-                UUID.fromString(
-                        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session).get(0));
+                UUID.fromString(mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, session).get(0));
 
         List<RecordInternal<?>> returnedRecords =
                 mFitnessRecordReadHelper.readRecords(
@@ -811,8 +810,7 @@ public class FitnessRecordReadHelperTest {
         ExerciseSessionRecordInternal session =
                 buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
         UUID uuid =
-                UUID.fromString(
-                        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session).get(0));
+                UUID.fromString(mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, session).get(0));
         List<RecordInternal<?>> returnedRecords =
                 mFitnessRecordReadHelper.readRecords(
                         mTransactionManager,
@@ -839,9 +837,9 @@ public class FitnessRecordReadHelperTest {
                 buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(11000));
         ExerciseSessionRecordInternal ownSession =
                 buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
-        String fooUuid = mTransactionTestUtils.insertRecords(FOO_PACKAGE_NAME, fooSession).get(0);
-        String barUuid = mTransactionTestUtils.insertRecords(BAR_PACKAGE_NAME, barSession).get(0);
-        String ownUuid = mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, ownSession).get(0);
+        String fooUuid = mFitnessTestUtils.insertRecords(FOO_PACKAGE_NAME, fooSession).get(0);
+        String barUuid = mFitnessTestUtils.insertRecords(BAR_PACKAGE_NAME, barSession).get(0);
+        String ownUuid = mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, ownSession).get(0);
 
         ReadRecordsRequestParcel request =
                 new ReadRecordsRequestUsingFilters.Builder<>(ExerciseSessionRecord.class)
@@ -884,7 +882,7 @@ public class FitnessRecordReadHelperTest {
     public void readRecordsAndPageToken_byFilters_unknownApp_doesNotReturnRoute() {
         ExerciseSessionRecordInternal session =
                 buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, session);
 
         ReadRecordsRequestParcel request =
                 new ReadRecordsRequestUsingFilters.Builder<>(ExerciseSessionRecord.class)
@@ -919,7 +917,7 @@ public class FitnessRecordReadHelperTest {
     public void readRecordsAndPageToken_byFilters_withReadRoutePermission_returnsRoute() {
         ExerciseSessionRecordInternal session =
                 buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, session);
 
         ReadRecordsRequestParcel request =
                 new ReadRecordsRequestUsingFilters.Builder<>(ExerciseSessionRecord.class)

@@ -32,8 +32,8 @@ import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.RecordInternalFactory;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.os.UserHandle;
 import android.platform.test.annotations.EnableFlags;
 
@@ -48,7 +48,6 @@ import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 
 import com.google.common.collect.ImmutableList;
@@ -75,7 +74,7 @@ public class FitnessRecordDeleteHelperTest {
     private AccessLogsHelper mAccessLogsHelper;
     private FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
     private InternalHealthConnectMappings mInternalHealthConnectMappings;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
 
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -83,8 +82,6 @@ public class FitnessRecordDeleteHelperTest {
     @Mock private AppOpLogsHelper mAppOpLogsHelper;
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
 
     @Before
     public void setup() {
@@ -93,7 +90,6 @@ public class FitnessRecordDeleteHelperTest {
         HealthConnectInjector injector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setAppOpLogsHelper(mAppOpLogsHelper)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
@@ -101,14 +97,14 @@ public class FitnessRecordDeleteHelperTest {
         mFitnessRecordDeleteHelper = injector.getFitnessRecordDeleteHelper();
         mAccessLogsHelper = injector.getAccessLogsHelper();
         mInternalHealthConnectMappings = injector.getInternalHealthConnectMappings();
-        mTransactionTestUtils = new TransactionTestUtils(injector);
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils = new FitnessTestUtils(injector);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
     }
 
     @Test
     public void deleteRecords_byIdFilter_generateChangeLogs() {
         List<String> uuids =
-                mTransactionTestUtils.insertRecords(
+                mFitnessTestUtils.insertRecords(
                         TEST_PACKAGE_NAME, RecordInternalFactory.buildStepsRecord(123, 456, 100));
         List<RecordIdFilter> ids = List.of(RecordIdFilter.fromId(StepsRecord.class, uuids.get(0)));
 
@@ -120,7 +116,7 @@ public class FitnessRecordDeleteHelperTest {
                 request,
                 /* enforceSelfDelete */ true,
                 /* shouldRecordAccessLog= */ false);
-        List<UUID> uuidList = mTransactionTestUtils.getAllDeletedUuids();
+        List<UUID> uuidList = mFitnessTestUtils.getAllDeletedUuids();
         assertThat(uuidList).hasSize(1);
         assertThat(uuidList.get(0).toString()).isEqualTo(uuids.get(0));
     }
@@ -128,7 +124,7 @@ public class FitnessRecordDeleteHelperTest {
     @Test
     public void deleteRecords_byTimeFilter_generateChangeLogs() {
         List<String> uuids =
-                mTransactionTestUtils.insertRecords(
+                mFitnessTestUtils.insertRecords(
                         TEST_PACKAGE_NAME, RecordInternalFactory.buildStepsRecord(123, 456, 100));
 
         DeleteUsingFiltersRequest deleteRequest =
@@ -143,7 +139,7 @@ public class FitnessRecordDeleteHelperTest {
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
                 /* holdsDataManagementPermission */ false,
                 /* shouldRecordAccessLog= */ false);
-        List<UUID> uuidList = mTransactionTestUtils.getAllDeletedUuids();
+        List<UUID> uuidList = mFitnessTestUtils.getAllDeletedUuids();
         assertThat(uuidList).hasSize(1);
         assertThat(uuidList.get(0).toString()).isEqualTo(uuids.get(0));
     }
@@ -154,7 +150,7 @@ public class FitnessRecordDeleteHelperTest {
         for (int i = 0; i <= DEFAULT_PAGE_SIZE; i++) {
             records.add(RecordInternalFactory.buildStepsRecord(i * 1000L, (i + 1) * 1000L, 9527));
         }
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records.build());
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, records.build());
 
         DeleteUsingFiltersRequest deleteRequest =
                 new DeleteUsingFiltersRequest.Builder()
@@ -169,7 +165,7 @@ public class FitnessRecordDeleteHelperTest {
                 /* holdsDataManagementPermission */ false,
                 /* shouldRecordAccessLog= */ false);
 
-        List<UUID> uuidList = mTransactionTestUtils.getAllDeletedUuids();
+        List<UUID> uuidList = mFitnessTestUtils.getAllDeletedUuids();
         assertThat(uuidList).hasSize(DEFAULT_PAGE_SIZE + 1);
     }
 
@@ -225,10 +221,10 @@ public class FitnessRecordDeleteHelperTest {
     public void deleteRecordsUnrestricted() {
         RecordInternal<StepsRecord> stepsRecord =
                 RecordInternalFactory.buildStepsRecord(123456, 654321, 123);
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, stepsRecord);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, stepsRecord);
 
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readRecordsByIds(
+                mFitnessTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 List.of(stepsRecord.getUuid())));
@@ -246,7 +242,7 @@ public class FitnessRecordDeleteHelperTest {
         mFitnessRecordDeleteHelper.deleteRecordsUnrestricted(List.of(deleteTableRequest));
 
         records =
-                mTransactionTestUtils.readRecordsByIds(
+                mFitnessTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 List.of(stepsRecord.getUuid())));

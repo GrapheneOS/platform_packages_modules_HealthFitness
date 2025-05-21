@@ -38,7 +38,7 @@ import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -55,7 +55,6 @@ import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMa
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BackupData;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
@@ -102,15 +101,13 @@ public class CloudBackupManagerTest {
 
     private Context mContext;
     private TransactionManager mTransactionManager;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
     private CloudBackupManager mCloudBackupManager;
     private RecordProtoConverter mRecordProtoConverter;
     private Instant mTimeStamp;
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
 
     @Before
     public void setUp() {
@@ -118,13 +115,12 @@ public class CloudBackupManagerTest {
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .build();
 
         mTransactionManager = healthConnectInjector.getTransactionManager();
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
         AppInfoHelper appInfoHelper = healthConnectInjector.getAppInfoHelper();
         DeviceInfoHelper deviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
         HealthDataCategoryPriorityHelper priorityHelper =
@@ -161,7 +157,7 @@ public class CloudBackupManagerTest {
 
     @Test
     public void getChangesForBackup_noMoreChangeLogs_correctResponseReturned() {
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
                 buildStepsRecord(
                         TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT));
@@ -197,7 +193,7 @@ public class CloudBackupManagerTest {
                             TEST_END_TIME_IN_MILLIS + recordNumber,
                             TEST_STEP_COUNT));
         }
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
 
         GetChangesForBackupResponse response = mCloudBackupManager.getChangesForBackup(null);
 
@@ -220,7 +216,7 @@ public class CloudBackupManagerTest {
                             TEST_END_TIME_IN_MILLIS + recordNumber,
                             TEST_STEP_COUNT));
         }
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
         GetChangesForBackupResponse response = mCloudBackupManager.getChangesForBackup(null);
         // Delete change logs.
         mTransactionManager.delete(new DeleteTableRequest(ChangeLogsHelper.TABLE_NAME));
@@ -232,7 +228,7 @@ public class CloudBackupManagerTest {
 
     @Test
     public void getChangesForBackup_changeTokenIsNull_succeed() {
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
                 buildStepsRecord(
                         TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT));
@@ -246,7 +242,7 @@ public class CloudBackupManagerTest {
 
     @Test
     public void getChangesForBackup_throwsDatabaseException() {
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
                 buildStepsRecord(
                         TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT));
@@ -279,13 +275,13 @@ public class CloudBackupManagerTest {
     public void insertRecordsDuringBackup_insertedRecordsReturnedInIncrementalBackup() {
         // Full data has to be done with two pages.
         List<RecordInternal<?>> records = createStepRecords(DEFAULT_PAGE_SIZE + 1);
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
         // First full data backup call
         GetChangesForBackupResponse firstResponse = mCloudBackupManager.getChangesForBackup(null);
         // Insert one more record during the backup
         var bloodPressureRecord =
                 buildBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC);
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, bloodPressureRecord);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, bloodPressureRecord);
         // Second full data backup call
         GetChangesForBackupResponse secondResponse =
                 mCloudBackupManager.getChangesForBackup(firstResponse.getNextChangeToken());
@@ -305,12 +301,12 @@ public class CloudBackupManagerTest {
     public void updatesRecordsDuringBackup_updatedRecordsReturnedInIncrementalBackup() {
         // Full data has to be done with two pages.
         List<RecordInternal<?>> records = createStepRecords(DEFAULT_PAGE_SIZE + 1);
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
         // First full data backup call
         GetChangesForBackupResponse firstResponse = mCloudBackupManager.getChangesForBackup(null);
         // Modifies one record during the backup
         var modifiedRecord = ((StepsRecordInternal) records.get(DEFAULT_PAGE_SIZE)).setCount(2);
-        mTransactionTestUtils.updateRecords(TEST_PACKAGE_NAME, modifiedRecord);
+        mFitnessTestUtils.updateRecords(TEST_PACKAGE_NAME, modifiedRecord);
         // Second full data backup call
         GetChangesForBackupResponse secondResponse =
                 mCloudBackupManager.getChangesForBackup(firstResponse.getNextChangeToken());
@@ -329,11 +325,11 @@ public class CloudBackupManagerTest {
     public void deletesRecordsDuringBackup_deletedRecordsReturnedInIncrementalBackup() {
         // Full data has to be done with two pages.
         List<RecordInternal<?>> records = createStepRecords(DEFAULT_PAGE_SIZE + 2);
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
         // First full data backup call
         GetChangesForBackupResponse firstResponse = mCloudBackupManager.getChangesForBackup(null);
         // Delete one record during the backup
-        mTransactionTestUtils.deleteRecords(
+        mFitnessTestUtils.deleteRecords(
                 TEST_PACKAGE_NAME,
                 RecordIdFilter.fromId(
                         StepsRecord.class, records.get(DEFAULT_PAGE_SIZE).getUuid().toString()));
@@ -355,14 +351,14 @@ public class CloudBackupManagerTest {
     @Test
     public void multipleIncrementalBackup_correctResponsesReturned() throws Exception {
         List<RecordInternal<?>> initialRecords = createStepRecords(2);
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, initialRecords);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, initialRecords);
         // First full data backup call
         GetChangesForBackupResponse firstResponse = mCloudBackupManager.getChangesForBackup(null);
 
         // Insert records and backup
         var recordToBeInserted =
                 buildBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC);
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, recordToBeInserted);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, recordToBeInserted);
         GetChangesForBackupResponse secondResponse =
                 mCloudBackupManager.getChangesForBackup(firstResponse.getNextChangeToken());
         assertThat(secondResponse.getChanges().size()).isEqualTo(1);
@@ -371,7 +367,7 @@ public class CloudBackupManagerTest {
 
         // Modifies one record during the backup
         var modifiedRecord = ((StepsRecordInternal) initialRecords.get(0)).setCount(2);
-        mTransactionTestUtils.updateRecords(TEST_PACKAGE_NAME, modifiedRecord);
+        mFitnessTestUtils.updateRecords(TEST_PACKAGE_NAME, modifiedRecord);
         GetChangesForBackupResponse thirdResponse =
                 mCloudBackupManager.getChangesForBackup(secondResponse.getNextChangeToken());
         assertThat(thirdResponse.getChanges().size()).isEqualTo(1);
@@ -379,7 +375,7 @@ public class CloudBackupManagerTest {
                 .isEqualTo(serializeRecordInternal(modifiedRecord));
 
         // Delete one record during the backup
-        mTransactionTestUtils.deleteRecords(
+        mFitnessTestUtils.deleteRecords(
                 TEST_PACKAGE_NAME,
                 RecordIdFilter.fromId(
                         StepsRecord.class, initialRecords.get(1).getUuid().toString()));

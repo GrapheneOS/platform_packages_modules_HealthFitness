@@ -33,7 +33,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.health.connect.HealthDataCategory;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -45,7 +45,6 @@ import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriori
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.AppInfo;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.PriorityList;
@@ -84,8 +83,6 @@ public class CloudBackupSettingsHelperTest {
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
 
     @Before
     public void setUp() throws Exception {
@@ -98,14 +95,13 @@ public class CloudBackupSettingsHelperTest {
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setPreferenceHelper(mPreferenceHelper)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
 
-        TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        transactionTestUtils.insertApp(TEST_PACKAGE_NAME);
-        transactionTestUtils.insertApp(TEST_PACKAGE_NAME_2);
-        transactionTestUtils.insertApp(TEST_PACKAGE_NAME_3);
+        FitnessTestUtils fitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        fitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
+        fitnessTestUtils.insertApp(TEST_PACKAGE_NAME_2);
+        fitnessTestUtils.insertApp(TEST_PACKAGE_NAME_3);
 
         mPriorityHelper = healthConnectInjector.getHealthDataCategoryPriorityHelper();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
