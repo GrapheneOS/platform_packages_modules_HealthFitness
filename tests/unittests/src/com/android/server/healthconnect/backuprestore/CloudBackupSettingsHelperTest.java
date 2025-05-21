@@ -45,7 +45,6 @@ import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriori
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.AppInfo;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.PriorityList;
@@ -84,8 +83,6 @@ public class CloudBackupSettingsHelperTest {
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
 
     @Before
     public void setUp() throws Exception {
@@ -98,7 +95,6 @@ public class CloudBackupSettingsHelperTest {
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setPreferenceHelper(mPreferenceHelper)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
 

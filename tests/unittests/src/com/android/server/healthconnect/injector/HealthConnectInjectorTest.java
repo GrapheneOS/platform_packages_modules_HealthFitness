@@ -25,7 +25,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
 
 import org.junit.Before;
@@ -45,9 +44,6 @@ public class HealthConnectInjectorTest {
     private com.android.server.healthconnect.permission.FirstGrantTimeManager
             mFirstGrantTimeManager;
 
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
-
     @Mock private OnboardingStateManager mOnboardingStateManager;
 
     private HealthConnectInjectorImpl.Builder mBuilder;
@@ -59,7 +55,6 @@ public class HealthConnectInjectorTest {
         Context context = InstrumentationRegistry.getContext();
         mBuilder =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager);
     }
 
