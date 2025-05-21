@@ -22,6 +22,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_PHR_API_INVOKED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_PHR_API_INVOKED__MEDICAL_RESOURCE_TYPE__MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_PHR_API_INVOKED__MEDICAL_RESOURCE_TYPE__MEDICAL_RESOURCE_TYPE_VACCINES;
 import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUMENT;
 import static android.health.connect.HealthConnectException.ERROR_SECURITY;
@@ -35,6 +36,7 @@ import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VACCINE
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.HealthPermissions.getAllMedicalPermissions;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION;
+import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
@@ -50,6 +52,8 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_RESOURCE_ID_IMMUNIZATION;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSION_R4;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.createAllergyMedicalResource;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getGetMedicalDataSourceRequest;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedicalDataSourceRequiredFieldsOnly;
@@ -148,6 +152,7 @@ import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.MedicalDataSource;
+import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
@@ -318,6 +323,8 @@ public class HealthConnectServiceImplTest {
     private static final int TIMEOUT_MILLIS = 10_000;
     private static final int VACCINES_INVOKED =
             HEALTH_CONNECT_PHR_API_INVOKED__MEDICAL_RESOURCE_TYPE__MEDICAL_RESOURCE_TYPE_VACCINES;
+    private static final int ALLERGIES_INVOKED =
+            HEALTH_CONNECT_PHR_API_INVOKED__MEDICAL_RESOURCE_TYPE__MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -2650,6 +2657,83 @@ public class HealthConnectServiceImplTest {
                         anyInt(),
                         anyInt(),
                         eq(mTestPackageName));
+    }
+
+    @Test
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    public void testGetChangeLogs_validRequest_returnsChangeLogs_phr() throws Exception {
+        // Grant necessary permissions
+        when(mPermissionManager.checkPermissionForPreflight(any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        setBackgroundReadPermission(PERMISSION_GRANTED);
+        when(mAppOpsManagerLocal.isUidInForeground(anyInt()))
+                .thenReturn(true); // Simulate foreground call
+        when(mHealthConnectPermissionHelper.getHealthDataStartDateAccessOrThrow(anyString(), any()))
+                .thenReturn(Instant.EPOCH); // Grant history access implicitly
+        String token = "test-token-valid";
+        String nextToken = "test-token-next";
+        long initialRowId = 100L;
+        List<MedicalResource> resources =
+                List.of(
+                        createAllergyMedicalResource(DATA_SOURCE_ID),
+                        createVaccineMedicalResource(DATA_SOURCE_ID));
+        List<MedicalResourceId> resourceIds =
+                resources.stream().map(MedicalResource::getId).toList();
+        ChangeLogsRequest request = new ChangeLogsRequest.Builder(token).build();
+        ChangeLogsRequestHelper.TokenRequest tokenRequest =
+                new ChangeLogsRequestHelper.TokenRequest(
+                        List.of(), // No package filter
+                        List.of(), // No record types
+                        List.of(
+                                MEDICAL_RESOURCE_TYPE_VACCINES,
+                                MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES),
+                        mTestPackageName,
+                        initialRowId);
+        when(mChangeLogsRequestHelper.getRequest(mTestPackageName, token)).thenReturn(tokenRequest);
+        ChangeLogsHelper.ChangeLogsResponse mockChangeLogsResponse =
+                mock(ChangeLogsHelper.ChangeLogsResponse.class);
+        when(mockChangeLogsResponse.getRecordTypeToUpsertedUuids()).thenReturn(Map.of());
+        when(mockChangeLogsResponse.getDeletedLogs()).thenReturn(List.of());
+        when(mockChangeLogsResponse.getUpsertedMedicalResourceIds()).thenReturn(resourceIds);
+        when(mockChangeLogsResponse.getDeletedMedicalResources()).thenReturn(List.of());
+        when(mockChangeLogsResponse.getNextPageToken()).thenReturn(nextToken);
+        when(mockChangeLogsResponse.hasMorePages()).thenReturn(false);
+        when(mChangeLogsHelper.getChangeLogs(
+                        eq(mAppInfoHelper),
+                        eq(tokenRequest),
+                        eq(request),
+                        eq(mChangeLogsRequestHelper)))
+                .thenReturn(mockChangeLogsResponse);
+        when(mMedicalResourceHelper.readMedicalResourcesByIdsWithoutPermissionChecks(
+                        eq(resourceIds)))
+                .thenReturn(resources);
+
+        mHealthConnectService.getChangeLogs(
+                mAttributionSource, request, mChangeLogsResponseCallback);
+
+        ChangeLogsResponse expectedResponse =
+                new ChangeLogsResponse(
+                        List.of(), List.of(), resources, List.of(), nextToken, false);
+        verify(mChangeLogsResponseCallback, timeout(TIMEOUT_MILLIS)).onResult(expectedResponse);
+        verify(mChangeLogsResponseCallback, never()).onError(any());
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(GET_CHANGES),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        anyInt(),
+                        anyLong(),
+                        eq(2), // number of changes
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
+        assertPhrApiPrivateWestWorldWrites(
+                () -> eq(GET_CHANGES),
+                () -> eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                List.of(VACCINES_INVOKED, ALLERGIES_INVOKED),
+                1);
     }
 
     @Test
