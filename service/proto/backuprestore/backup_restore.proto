@@ -6,15 +6,17 @@ option java_outer_classname = "BackupRestoreProto";
 
 message Settings {
   map<int32, PriorityList> priority_list = 1;
-  // export-import settings are removed.
+  // export-import settings removed
   reserved 2;
-  AutoDeleteFrequencyProto auto_delete_frequency = 3;
+  // auto_delete_frequency removed, use auto_delete_frequency_in_days instead.
+  reserved 3;
   EnergyUnitProto energy_unit_setting = 4;
   TemperatureUnitProto temperature_unit_setting = 5;
   HeightUnitProto height_unit_setting = 6;
   WeightUnitProto weight_unit_setting = 7;
   DistanceUnitProto distance_unit_setting = 8;
   map<string, AppInfo> app_info = 9;
+  optional string auto_delete_frequency_in_days = 10;
 
   message PriorityList {
     repeated string package_name = 1;
@@ -22,13 +24,6 @@ message Settings {
 
   message AppInfo {
     optional string app_name = 1;
-  }
-
-  enum AutoDeleteFrequencyProto {
-    AUTO_DELETE_RANGE_UNSPECIFIED = 0;
-    AUTO_DELETE_RANGE_NEVER = 1;
-    AUTO_DELETE_RANGE_THREE_MONTHS = 2;
-    AUTO_DELETE_RANGE_EIGHTEEN_MONTHS = 3;
   }
 
   enum EnergyUnitProto {
