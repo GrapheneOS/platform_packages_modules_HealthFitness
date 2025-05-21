@@ -26,6 +26,7 @@
     <uses-permission android:name="android.permission.LAUNCH_MULTI_PANE_SETTINGS_DEEP_LINK" />
     <uses-permission android:name="android.permission.SEND_SAFETY_CENTER_UPDATE" />
     <uses-permission android:name="android.permission.health.START_ONBOARDING" />
+    <uses-permission android:name="android.permission.health.START_BACKUP_RESTORE_SETTINGS" />
     <!-- Used to enable and update safety-center entry points  -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- Used to show permissions for apps that have not declared VIEW_PERMISSION_USAGE but
@@ -186,7 +187,7 @@
                 <action android:name="android.health.connect.action.START_EXPORT_SETUP" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-    </activity>
+        </activity>
 
         <activity
             android:name=".exportimport.ImportFlowActivity"
