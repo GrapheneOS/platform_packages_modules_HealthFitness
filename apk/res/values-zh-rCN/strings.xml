@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{重复 1 次}other{重复 # 次}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{重复 1 次}other{重复 # 次}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"锻炼时段"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"设置 <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"RPE：<xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"感知运动强度：<xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"感知运动强度"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"圈数"</string>
     <string name="back_extension" msgid="426518933137440577">"背部伸展"</string>
     <string name="badminton" msgid="8839727076522086870">"羽毛球"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"在继续集成之前，请更新您的手机系统。"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"如果您已更新手机系统，请尝试重启手机，继续进行集成"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"在继续操作之前，请将健康数据共享应用更新到最新版本。"</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"需要更多存储空间"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"健康数据共享需要 <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> 的手机存储空间，才能继续集成。\n\n请清除手机上的一些内容，然后重试。"</string>
-    <string name="try_again_button" msgid="8745496819992160789">"重试"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"释放空间"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"集成已暂停"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"健康数据共享应用与 Android 系统集成时，会处于关闭状态。\n\n请点击“恢复”重新打开该应用，继续转移您的数据和权限。"</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"为保留您的健康数据共享数据，请在 <xliff:g id="TIME_NEEDED">%1$s</xliff:g>内完成这项操作"</string>
@@ -1229,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{有 1 个应用使用过}other{有 # 个应用使用过}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"过去 24 小时内未使用过"</string>
     <string name="accessed" msgid="4424701457530587176">"访问时间为 <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"关联前 2 个应用"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"关联这些应用，即可开始在它们之间共享健康与健身数据"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"关联第二个应用"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"再设置一个应用，即可与“<xliff:g id="APP_NAME">%1$s</xliff:g>”共享健康与健身数据"</string>
+    <string name="set_up_later" msgid="223888663943501921">"以后再设置"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"可关联的应用"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"借助“健康数据共享”，您可以集中存储健康与健身数据，并可在手机上的应用之间共享这些数据，让各个应用更好地协同工作。"</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"详细了解“健康数据共享”"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"应用已关联到“健康数据共享”"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"即将完成"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"立即打开这些应用，即可完成设置并开始共享数据"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

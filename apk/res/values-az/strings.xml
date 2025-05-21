@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 təkrar}other{# təkrar}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 təkrar}other{# təkrar}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Məşq seqmentləri"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Ayarlayın: <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"QYD: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"Qəbul edilən yüklənmə dərəcəsi: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"QYD"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"Qəbul edilən yüklənmə dərəcəsi"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"Dövrələrin sayı"</string>
     <string name="back_extension" msgid="426518933137440577">"Bel dartma"</string>
     <string name="badminton" msgid="8839727076522086870">"Badminton"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Davam etməzdən əvvəl telefon sistemini güncəlləyin."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Telefon sistemi güncəllənibsə, inteqrasiyaya davam etmək üçün telefonu yenidən başladın"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Davam etməzdən əvvəl Health Connect tətbiqini son versiyaya güncəlləyin."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Daha çox yer lazımdır"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"İnteqrasiyanın davam etməsi üçün Health Connect telefonda <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> yaddaş yeri tələb edir.\n\nTelefonda yer boşaldıb, yenidən cəhd edin."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Yenə sınayın"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Yer boşaldın"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"İnteqrasiyaya pauza verildi"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Android sistemi ilə inteqrasiya zamanı Health Connect bağlandı.\n\nTətbiqi yenidən açmaq üçün \"bərpa edin\" üzərinə klikləyin, data və icazələrin ötürülməsinə davam edin."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Health Connect datasını saxlamaq üçün <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ərzində tamamlayın"</string>
@@ -1229,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 tətbiq istifadə edir}other{# tətbiq istifadə edir}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Son 24 saat ərzində istifadə edilməyib"</string>
     <string name="accessed" msgid="4424701457530587176">"Daxil olunub: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"İlk 2 tətbiqi əlaqələndirin"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Sağlamlıq və fitnes datasını tətbiqlər arasında paylaşmağa başlamaq üçün onları əlaqələndirin"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"İkinci tətbiqi əlaqələndirin"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"Sağlamlıq və fitnes datasını <xliff:g id="APP_NAME">%1$s</xliff:g> ilə paylaşmaq üçün daha bir tətbiqi ayarlayın"</string>
+    <string name="set_up_later" msgid="223888663943501921">"Sonra ayarlayın"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"Qoşulmaq üçün əlçatan tətbiqlər"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect sağlamlıq və fitnes datasını bir yerdə saxlamağa və telefonunuzdakı tətbiqlər arasında paylaşmağa imkan verir və bu da tətbiqlərin birlikdə daha yaxşı işləməsini təmin edir."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Health Connect haqqında ətraflı məlumat"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"Tətbiq Health Connect ilə əlaqələndirildi"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"Demək olar ki, hazırdır"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"Ayarlamanı tamamlamaq və data paylaşımına başlamaq üçün bu tətbiqləri açın"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

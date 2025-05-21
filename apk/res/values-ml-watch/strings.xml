@@ -16,5 +16,5 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="permgrouplab_health" msgid="6793578181776346442">"ഫിറ്റ്നസും ശാരീരികക്ഷമതയും"</string>
+    <string name="permgrouplab_health" msgid="6793578181776346442">"ഫിറ്റ്നസും വെൽനെസും"</string>
 </resources>

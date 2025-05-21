@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 opakování}few{# opakování}many{# opakování}other{# opakování}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 opakování}few{# opakování}many{# opakování}other{# opakování}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Segmenty cvičení"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Série <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"Hodnocení vnímané námahy (RPE): <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"Hodnocení vnímané námahy (RPE)"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"Kola"</string>
     <string name="back_extension" msgid="426518933137440577">"Extenze páteře"</string>
     <string name="badminton" msgid="8839727076522086870">"Badminton"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Než budete pokračovat, aktualizujte systém telefonu."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Pokud jste systém telefonu už aktualizovali, restartujte telefon, aby integrace pokračovala"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Než budete pokračovat, aktualizujte aplikaci Health Connect na nejnovější verzi."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Je potřeba víc místa"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect potřebuje <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> místa v telefonu, aby bylo možné pokračovat v integraci.\n\nUvolněte místo a zkuste to znovu."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Zkusit znovu"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Uvolnit místo"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Integrace byla pozastavena"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Aplikace Health Connect byla během integrace se systémem Android zavřena.\n\nKliknutím na Pokračovat aplikaci znovu otevřete a budete pokračovat v přenosu dat a oprávnění."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Aby data Health Connect zůstala zachována, proveďte tuto akci do <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
@@ -1229,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Využíváno 1 aplikací}few{Využíváno # aplikacemi}many{Využíváno # aplikace}other{Využíváno # aplikacemi}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Během uplynulých 24 hodin nepoužito"</string>
     <string name="accessed" msgid="4424701457530587176">"Poslední přístup: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Připojte první dvě aplikace"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Pokud mezi těmito aplikacemi chcete sdílet údaje o zdraví a kondici, připojte je"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"Připojte druhou aplikaci"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"Nastavte další aplikaci ke sdílení údajů o zdraví a kondici s aplikací <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="set_up_later" msgid="223888663943501921">"Nastavit později"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"Dostupné aplikace k připojení"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect umožňuje ukládat údaje o zdraví a kondici na jednom místě a sdílet je mezi aplikacemi v telefonu, aby vzájemně mohly lépe spolupracovat."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Další informace o platformě Health Connect"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"Aplikace propojená s platformou Health Connect"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"Téměř hotovo"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"Pokud chcete nastavení dokončit a začít sdílet data, otevřete teď tyto aplikace"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

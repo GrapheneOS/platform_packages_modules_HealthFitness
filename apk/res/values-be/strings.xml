@@ -1077,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Спачатку абнавіце сістэму свайго тэлефона."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Калі вы ўжо абнавілі сістэму свайго тэлефона, паспрабуйце перазапусціць тэлефон, каб працягнуць інтэграцыю"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Спачатку абнавіце праграму \"Здароўе і спорт\" да апошняй версіі."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Патрабуецца больш месца"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Праграме \"Здароўе і спорт\" патрабуецца <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> месца ў сховішчы тэлефона, каб працягнуць інтэграцыю.\n\nАчысціце месца на тэлефоне, а потым паўтарыце спробу."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Паўтарыць спробу"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Ачысціць месца"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Інтэграцыя прыпынена"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Праграма \"Здароўе і спорт\" была закрыта ў час інтэграцыі з сістэмай Android.\n\nКаб адкрыць праграму зноў і працягнуць перанос вашых даных і дазволаў, націсніце \"Узнавіць\"."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Каб захаваць свае даныя з праграмы \"Здароўе і спорт\", выканайце гэтае дзеянне за <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
@@ -1224,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Выкарыстоўваўся 1 праграмай}one{Выкарыстоўваўся # праграмай}few{Выкарыстоўваўся # праграмамі}many{Выкарыстоўваўся # праграмамі}other{Выкарыстоўваўся # праграмы}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"За апошнія 24 гадзіны дазвол не выкарыстоўваўся"</string>
     <string name="accessed" msgid="4424701457530587176">"Апошні доступ: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Падключыце свае першыя дзве праграмы"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Падключыце гэтыя праграмы, каб пачаць абмен данымі пра здароўе і фізічную актыўнасць паміж імі"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"Падключыце другую праграму"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"Наладзьце яшчэ адну праграму для абмену данымі пра здароўе і фізічную актыўнасць з праграмай \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
+    <string name="set_up_later" msgid="223888663943501921">"Наладзіць пазней"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"Праграмы, даступныя для падключэння"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Праграма \"Здароўе і спорт\" дазваляе захоўваць даныя пра здароўе і фізічную актыўнасць у адным месцы і абагульваць іх з праграмамі на вашым тэлефоне, што дапамагае ім аптымальна ўзаемадзейнічаць паміж сабой."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Падрабязней пра праграму \"Здароўе і спорт\""</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"Праграма падключана да праграмы \"Здароўе і спорт\""</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"Амаль гатова"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"Адкрыйце гэтыя праграмы зараз, каб завяршыць наладжванне і пачаць абагульванне даных"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

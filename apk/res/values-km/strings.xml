@@ -1077,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"មុនពេលបន្ត សូមធ្វើបច្ចុប្បន្នភាព​ប្រព័ន្ធទូរសព្ទរបស់អ្នក។"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ប្រសិនបើអ្នក​បានធ្វើបច្ចុប្បន្នភាព​ប្រព័ន្ធទូរសព្ទ​របស់អ្នករួចហើយ សូមសាកល្បង​ចាប់ផ្ដើមទូរសព្ទ​របស់អ្នកឡើងវិញ ដើម្បីបន្តការរួមបញ្ចូល"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"មុនពេលបន្ត សូមដំឡើងកំណែ​កម្មវិធី Health Connect ទៅកំណែចុងក្រោយបំផុត។"</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"ចាំបាច់ត្រូវមានទំហំផ្ទុកបន្ថែម"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect ត្រូវការទំហំផ្ទុក <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> នៅលើទូរសព្ទ​របស់អ្នក ដើម្បីបន្ត​ការរួមបញ្ចូល។\n\nសូមសម្អាតទំហំផ្ទុកមួយចំនួន​នៅលើទូរសព្ទរបស់អ្នក រួចព្យាយាមម្ដងទៀត។"</string>
-    <string name="try_again_button" msgid="8745496819992160789">"ព្យាយាមម្ដងទៀត"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"បង្កើន​ទំហំផ្ទុក​ទំនេរ"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"ការរួមបញ្ចូល​ត្រូវបានផ្អាក"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"កម្មវិធី Health Connect បានបិទ ខណៈពេលដែល​កម្មវិធីនេះកំពុងត្រូវបានរួមបញ្ចូល​ជាមួយប្រព័ន្ធ Android។\n\nសូមចុច \"បន្ត\" ដើម្បីបើក​កម្មវិធីឡើងវិញ និងបន្តផ្ទេរទិន្នន័យនិងការអនុញ្ញាតរបស់អ្នក។"</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"ដើម្បីរក្សាទុកទិន្នន័យ Health Connect របស់អ្នក សូមបញ្ចប់សកម្មភាពនេះក្នុងរយៈពេល <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
@@ -1224,4 +1220,21 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{បាន​ប្រើដោយ​កម្មវិធី 1}other{បាន​ប្រើដោយ​កម្មវិធី #}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"មិនបានប្រើក្នុងរយៈពេល 24 ម៉ោងចុងក្រោយ"</string>
     <string name="accessed" msgid="4424701457530587176">"បានចូលប្រើនៅម៉ោង <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"ភ្ជាប់កម្មវិធី 2 ដំបូងរបស់អ្នក"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"ភ្ជាប់កម្មវិធីទាំងនេះ ដើម្បីចាប់ផ្ដើមចែករំលែកទិន្នន័យសុខភាព និង​សម្បទារវាងកម្មវិធីទាំងនោះ"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"ភ្ជាប់កម្មវិធីទីពីរ"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"រៀបចំកម្មវិធីមួយទៀត ដើម្បីចែករំលែកទិន្នន័យសុខភាព និង​សម្បទាជាមួយ <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="set_up_later" msgid="223888663943501921">"រៀបចំនៅពេលក្រោយ"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"កម្មវិធី​ដែលអាចប្រើបានដើម្បីភ្ជាប់"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect អាចឱ្យអ្នករក្សាទុកទិន្នន័យសុខភាព និង​សម្បទារបស់អ្នកនៅកន្លែងតែមួយ ហើយចែករំលែកវារវាងកម្មវិធីនៅលើទូរសព្ទរបស់អ្នក ដែលធ្វើឱ្យកម្មវិធីរបស់អ្នកដំណើរការជាមួយគ្នាកាន់តែប្រសើរ។"</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"ព័ត៌មានបន្ថែម​អំពី Health Connect"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"កម្មវិធីដែលបានភ្ជាប់ទៅ Health Connect"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"ជិត​រួចរាល់​ហើយ"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"បើកកម្មវិធីទាំងនេះឥឡូវ ដើម្បីបញ្ចប់ការរៀបចំ និងចាប់ផ្ដើមការចែករំលែកទិន្នន័យ"</string>
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"មើលទិន្នន័យសុខភាពរបស់អ្នកនៅលើកម្មវិធីនានា"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"ចាប់ផ្ដើមចែករំលែកទិន្នន័យសុខភាព និង​សម្បទារវាងកម្មវិធីរបស់អ្នក"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"រៀបចំ"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"ភ្ជាប់កម្មវិធីទីពីរ"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"រៀបចំកម្មវិធីមួយទៀត ដើម្បីចែករំលែកទិន្នន័យសុខភាព និង​សម្បទាជាមួយ <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"បន្ត"</string>
 </resources>

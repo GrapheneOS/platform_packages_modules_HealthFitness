@@ -1077,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Uppdatera telefonens system innan du fortsätter"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Om du redan har uppdaterat telefonens system kan du testa att starta om telefonen för att fortsätta med integreringen"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Uppdatera Health Connect-appen till den senaste versionen innan du fortsätter."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Mer utrymme krävs"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"För att fortsätta med integreringen behöver Health Connect <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> lagringsutrymme på telefonen.\n\nFrigör utrymme på telefonen och försök sedan igen."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Försök igen"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Frigör utrymme"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Integreringen har pausats"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect-appen stängdes medan den integrerades med Android-systemet.\n\nKlicka på Fortsätt för att öppna appen igen och fortsätta att överföra data och behörigheter."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Slutför detta inom <xliff:g id="TIME_NEEDED">%1$s</xliff:g> för att behålla din Health Connect-data"</string>
@@ -1224,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Används av 1 app}other{Används av # appar}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Inte använd under de senaste 24 timmarna"</string>
     <string name="accessed" msgid="4424701457530587176">"Öppnades <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Anslut dina två första appar"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Länka apparna för att börja dela hälso- och träningsdata mellan dem"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"Anslut en andra app"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"Ställ in en app till på att dela hälso- och träningsdata med <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="set_up_later" msgid="223888663943501921">"Konfigurera senare"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"Appar du kan ansluta"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Med Health Connect kan du lagra din hälso- och träningsdata på ett och samma ställe och dela den mellan appar på telefonen, så att de fungerar bättre tillsammans."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Mer om Health Connect"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"Appen är ansluten till Health Connect"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"Nästan klart"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"Öppna apparna nu för att slutföra konfigurationen och börja dela data"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>
