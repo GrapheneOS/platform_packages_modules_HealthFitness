@@ -24,6 +24,7 @@ import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.autodelete.AutoDeleteFragment
 import com.android.healthconnect.controller.autodelete.AutoDeleteRange
 import com.android.healthconnect.controller.autodelete.AutoDeleteViewModel
@@ -40,6 +41,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.mock
@@ -48,6 +50,7 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class AutoDeleteFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

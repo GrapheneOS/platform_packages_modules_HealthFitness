@@ -25,6 +25,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withSubstring
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.rawfhir.RawFhirFragment
 import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel
@@ -44,6 +45,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito.atLeast
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.reset
@@ -51,6 +53,7 @@ import org.mockito.Mockito.verify
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class RawFhirFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

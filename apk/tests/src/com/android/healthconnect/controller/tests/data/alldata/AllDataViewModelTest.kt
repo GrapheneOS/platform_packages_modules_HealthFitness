@@ -28,6 +28,7 @@ import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.WeightRecord
 import android.os.OutcomeReceiver
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.alldata.AllDataViewModel
 import com.android.healthconnect.controller.data.appdata.AllDataUseCase
@@ -58,6 +59,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.doAnswer
@@ -67,6 +69,7 @@ import org.mockito.invocation.InvocationOnMock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class AllDataViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

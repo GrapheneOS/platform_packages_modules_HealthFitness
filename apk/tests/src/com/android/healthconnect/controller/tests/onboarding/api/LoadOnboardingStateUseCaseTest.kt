@@ -17,6 +17,7 @@
 package com.android.healthconnect.controller.tests.onboarding.api
 
 import android.health.connect.HealthConnectOnboardingState
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.onboarding.api.LoadOnboardingStateUseCase
 import com.android.healthconnect.controller.onboarding.api.OnboardingState
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
@@ -26,8 +27,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(AndroidJUnit4::class)
 class LoadOnboardingStateUseCaseTest {
 
     private val healthOnboardingManager = FakeHealthOnboardingManager()

@@ -16,6 +16,7 @@
 
 package com.android.healthconnect.controller.tests.exportimport.api
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.exportimport.api.ExportStatusViewModel
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiStatus
@@ -36,9 +37,11 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
 @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+@RunWith(AndroidJUnit4::class)
 class ExportStatusViewModelTest {
     companion object {
         private const val TEST_EXPORT_FREQUENCY_IN_DAYS = 7

@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.utiltests
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
 import com.android.healthconnect.controller.utils.atStartOfDay
 import com.android.healthconnect.controller.utils.getInstant
@@ -41,7 +42,9 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.util.TimeZone
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class TimeExtensionsTest {
 
     @Test

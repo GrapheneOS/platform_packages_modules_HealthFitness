@@ -17,6 +17,7 @@
 package com.android.healthconnect.controller.tests.onboarding
 
 import android.content.Context
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.OnboardingViewModel
 import com.android.healthconnect.controller.onboarding.api.OnboardingState
@@ -44,9 +45,11 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class OnboardingViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

@@ -16,14 +16,17 @@
 package com.android.healthconnect.controller.tests.permissions.api
 
 import android.content.Context
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 
+@RunWith(AndroidJUnit4::class)
 class RevokeAllHealthPermissionsUseCaseTest {
 
     private lateinit var context: Context

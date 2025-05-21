@@ -19,6 +19,7 @@ import android.health.connect.GetMedicalDataSourcesRequest
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.MedicalDataSource
 import android.os.OutcomeReceiver
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteAllMedicalDataUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
@@ -32,6 +33,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Mockito.any
@@ -44,6 +46,7 @@ import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class DeleteAllMedicalDataUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 

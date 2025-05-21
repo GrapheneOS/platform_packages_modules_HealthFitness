@@ -17,6 +17,7 @@
 package com.android.healthconnect.controller.tests.utiltests
 
 import android.content.Context
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.utils.AppStoreUtils
@@ -28,8 +29,10 @@ import javax.inject.Inject
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class AppStoreUtilTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

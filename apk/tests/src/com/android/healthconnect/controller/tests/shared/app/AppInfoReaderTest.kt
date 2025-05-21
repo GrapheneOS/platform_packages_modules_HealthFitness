@@ -22,12 +22,14 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.ApplicationInfoFlags
 import android.content.pm.PackageManager.NameNotFoundException
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.IGetContributorAppInfoUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
@@ -39,6 +41,7 @@ private const val PACKAGE_NAME = "com.example.test"
 private const val STORED_LABEL = "Stored label"
 private const val PACKAGE_MANAGER_LABEL = "PackageManager label"
 
+@RunWith(AndroidJUnit4::class)
 class AppInfoReaderTest {
 
     private val mockPackageManager = mock<PackageManager>()

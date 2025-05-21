@@ -20,6 +20,7 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
@@ -40,9 +41,11 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class DateNavigationViewTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 

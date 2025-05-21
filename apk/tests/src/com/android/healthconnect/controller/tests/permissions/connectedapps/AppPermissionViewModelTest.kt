@@ -19,6 +19,7 @@ import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.additionalaccess.ExerciseRouteState
 import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
@@ -61,6 +62,7 @@ import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.MockitoAnnotations
@@ -74,6 +76,7 @@ import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class AppPermissionViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

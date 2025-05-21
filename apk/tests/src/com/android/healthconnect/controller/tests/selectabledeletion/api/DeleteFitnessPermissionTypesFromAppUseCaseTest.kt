@@ -26,6 +26,7 @@ import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsCadenceRecord
 import android.health.connect.datatypes.StepsRecord
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteFitnessPermissionTypesFromAppUseCase
 import com.google.common.truth.Truth.assertThat
@@ -36,6 +37,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Captor
@@ -45,6 +47,7 @@ import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class DeleteFitnessPermissionTypesFromAppUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

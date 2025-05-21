@@ -25,6 +25,7 @@ import android.health.connect.HealthPermissions.READ_SKIN_TEMPERATURE
 import android.health.connect.accesslog.AccessLog
 import android.health.connect.datatypes.RecordTypeIdentifier
 import android.platform.test.flag.junit.SetFlagsRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.app.HealthPermissionStatus
@@ -62,6 +63,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -70,6 +72,7 @@ import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class WearConnectedAppsViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

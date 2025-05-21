@@ -24,6 +24,7 @@ import android.health.connect.datatypes.Metadata
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.ActivityIntensityFormatter
@@ -46,6 +47,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @RequiresFlagsEnabled(
     Flags.FLAG_ACTIVITY_INTENSITY,
@@ -53,6 +55,7 @@ import org.junit.Test
     Flags.FLAG_HEALTH_CONNECT_MAPPINGS,
 )
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class ActivityIntensityFormatterTest {
     @get:Rule val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 

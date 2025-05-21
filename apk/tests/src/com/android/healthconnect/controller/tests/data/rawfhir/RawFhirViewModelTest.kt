@@ -21,6 +21,7 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.MedicalResourceId
 import android.health.connect.datatypes.MedicalResource
 import android.os.OutcomeReceiver
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.rawfhir.RawFhirFormatter
 import com.android.healthconnect.controller.data.rawfhir.RawFhirUseCase
@@ -48,6 +49,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
@@ -56,6 +58,7 @@ import org.mockito.invocation.InvocationOnMock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class RawFhirViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

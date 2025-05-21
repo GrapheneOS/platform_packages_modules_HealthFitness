@@ -27,6 +27,7 @@ import android.health.connect.migration.HealthConnectMigrationUiState.MIGRATION_
 import android.health.connect.migration.HealthConnectMigrationUiState.MIGRATION_UI_STATE_IDLE
 import android.health.connect.migration.HealthConnectMigrationUiState.MIGRATION_UI_STATE_IN_PROGRESS
 import android.health.connect.migration.HealthConnectMigrationUiState.MIGRATION_UI_STATE_MODULE_UPGRADE_REQUIRED
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.migration.api.LoadMigrationRestoreStateUseCase
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiError
@@ -37,8 +38,10 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(AndroidJUnit4::class)
 class LoadMigrationRestoreStateUseCaseTest {
 
     private val migrationManager = FakeHealthMigrationManager()

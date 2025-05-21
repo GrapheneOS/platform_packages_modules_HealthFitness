@@ -23,6 +23,7 @@ import android.health.connect.datatypes.ExerciseRoute
 import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.ExerciseSessionType
 import android.os.OutcomeReceiver
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
@@ -55,6 +56,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
@@ -63,6 +65,7 @@ import org.mockito.invocation.InvocationOnMock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class ExerciseRouteViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

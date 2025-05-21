@@ -40,6 +40,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.additionalaccess.AdditionalAccessViewModel
@@ -85,6 +86,7 @@ import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.atLeast
 import org.mockito.Mockito.reset
@@ -95,6 +97,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class FitnessAppFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

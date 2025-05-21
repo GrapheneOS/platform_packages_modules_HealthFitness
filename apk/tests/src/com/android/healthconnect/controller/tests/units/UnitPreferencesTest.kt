@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.tests.units
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.preference.PreferenceManager.getDefaultSharedPreferencesName
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.units.DistanceUnit
@@ -35,8 +36,10 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class UnitPreferencesTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

@@ -19,6 +19,7 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.RecordIdFilter
 import android.health.connect.datatypes.StepsCadenceRecord
 import android.health.connect.datatypes.StepsRecord
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteEntries
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteEntriesUseCase
@@ -31,6 +32,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.ArgumentMatchers.any
@@ -42,6 +44,7 @@ import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class DeleteEntryUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

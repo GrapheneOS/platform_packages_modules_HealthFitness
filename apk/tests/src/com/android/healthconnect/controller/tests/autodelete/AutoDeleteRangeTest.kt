@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.autodelete
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.autodelete.AutoDeleteRange
 import com.android.healthconnect.controller.autodelete.autoDeleteRangeEnd
 import com.android.healthconnect.controller.autodelete.autoDeleteRangeStart
@@ -24,8 +25,10 @@ import com.android.healthconnect.controller.utils.TimeSource
 import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.assertThrows
 import org.junit.Test
+import org.junit.runner.RunWith
 import java.time.Instant
 
+@RunWith(AndroidJUnit4::class)
 class AutoDeleteRangeTest {
     private val timeSource: TimeSource = TestTimeSource
 

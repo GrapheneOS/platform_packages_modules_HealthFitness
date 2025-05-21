@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.tests.permissions.data
 
 import android.health.connect.HealthPermissions
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.ACTIVE_CALORIES_BURNED
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.BLOOD_GLUCOSE
 import com.android.healthconnect.controller.permissions.data.HealthPermission.AdditionalPermission
@@ -38,8 +39,10 @@ import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class HealthPermissionTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
