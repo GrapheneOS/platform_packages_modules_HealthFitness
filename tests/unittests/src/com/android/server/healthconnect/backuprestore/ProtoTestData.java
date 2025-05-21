@@ -39,6 +39,8 @@ import static android.health.connect.datatypes.PlannedExerciseStep.EXERCISE_CATE
 import static android.health.connect.datatypes.SexualActivityRecord.SexualActivityProtectionUsed.PROTECTION_USED_PROTECTED;
 import static android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_DEEP;
 
+import static com.android.healthfitness.flags.AconfigFlagHelper.isExerciseSegmentImprovementsEnabled;
+
 import android.health.connect.datatypes.RecordTypeIdentifier;
 
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ActiveCaloriesBurned;
@@ -436,37 +438,40 @@ final class ProtoTestData {
     }
 
     static ExerciseSession generateExerciseSession() {
-        return ExerciseSession.newBuilder()
-                .setExerciseType(EXERCISE_SESSION_TYPE_STRENGTH_TRAINING)
-                .setHasRoute(true)
-                .setSessionRateOfPerceivedExertion(4.5f)
-                .setRoute(
-                        ExerciseRoute.newBuilder()
-                                .addRouteLocation(
-                                        Location.newBuilder()
-                                                .setTime(123456)
-                                                .setLatitude(60.321)
-                                                .setLongitude(59.123)
-                                                .setVerticalAccuracy(1.2)
-                                                .setHorizontalAccuracy(20)
-                                                .setAltitude(-12)))
-                .setTitle("SICK DEADLIFTS")
-                .setNotes("LIGHTWEIGHT BABY!")
-                .addLap(
-                        ExerciseLap.newBuilder()
-                                .setStartTime(123456)
-                                .setEndTime(654321)
-                                .setLength(10))
-                .addSegment(
-                        ExerciseSegment.newBuilder()
-                                .setStartTime(123456)
-                                .setEndTime(654321)
-                                .setSegmentType(EXERCISE_SEGMENT_TYPE_DEADLIFT)
-                                .setRepetitionsCount(10)
-                                .setWeight(5000)
-                                .setSetIndex(1)
-                                .setRateOfPerceivedExertion(5.5f))
-                .build();
+        var segmentBuilder =
+                ExerciseSegment.newBuilder()
+                        .setStartTime(123456)
+                        .setEndTime(654321)
+                        .setSegmentType(EXERCISE_SEGMENT_TYPE_DEADLIFT)
+                        .setRepetitionsCount(10);
+        var sessionBuilder =
+                ExerciseSession.newBuilder()
+                        .setExerciseType(EXERCISE_SESSION_TYPE_STRENGTH_TRAINING)
+                        .setHasRoute(true)
+                        .setRoute(
+                                ExerciseRoute.newBuilder()
+                                        .addRouteLocation(
+                                                Location.newBuilder()
+                                                        .setTime(123456)
+                                                        .setLatitude(60.321)
+                                                        .setLongitude(59.123)
+                                                        .setVerticalAccuracy(1.2)
+                                                        .setHorizontalAccuracy(20)
+                                                        .setAltitude(-12)))
+                        .setTitle("SICK DEADLIFTS")
+                        .setNotes("LIGHTWEIGHT BABY!")
+                        .addLap(
+                                ExerciseLap.newBuilder()
+                                        .setStartTime(123456)
+                                        .setEndTime(654321)
+                                        .setLength(10));
+
+        if (isExerciseSegmentImprovementsEnabled()) {
+            segmentBuilder.setWeight(5000).setSetIndex(1).setRateOfPerceivedExertion(5.5f);
+            sessionBuilder.setSessionRateOfPerceivedExertion(4.5f);
+        }
+
+        return sessionBuilder.addSegment(segmentBuilder).build();
     }
 
     static FloorsClimbed generateFloorsClimbed() {
