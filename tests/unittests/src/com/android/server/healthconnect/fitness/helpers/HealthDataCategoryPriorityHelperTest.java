@@ -58,7 +58,6 @@ import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
 
 import org.junit.After;
@@ -94,8 +93,6 @@ public class HealthDataCategoryPriorityHelperTest {
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private PackageManager mPackageManager;
     @Mock private UserManager mUserManager;
 
@@ -129,7 +126,6 @@ public class HealthDataCategoryPriorityHelperTest {
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setPreferenceHelper(mPreferenceHelper)
                         .setPackageInfoUtils(mPackageInfoUtils)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())

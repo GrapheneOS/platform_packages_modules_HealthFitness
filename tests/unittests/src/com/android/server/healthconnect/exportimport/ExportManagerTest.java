@@ -68,7 +68,6 @@ import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.utils.FilesUtil;
@@ -118,8 +117,6 @@ public class ExportManagerTest {
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private ExportImportLogger mExportImportLogger;
     @Mock private ErrorReporter mErrorReporter;
     @Mock private HealthConnectResourcesContext mResourcesContext;
@@ -138,7 +135,6 @@ public class ExportManagerTest {
         mHealthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setPreferenceHelper(new FakePreferenceHelper())
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .setHealthConnectResourcesContext(mResourcesContext)

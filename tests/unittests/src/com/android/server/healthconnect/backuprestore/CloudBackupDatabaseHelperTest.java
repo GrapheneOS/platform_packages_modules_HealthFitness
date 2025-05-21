@@ -70,7 +70,6 @@ import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMa
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BackupData;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
@@ -120,8 +119,6 @@ public class CloudBackupDatabaseHelperTest {
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
 
     @Before
     public void setUp() {
@@ -129,7 +126,6 @@ public class CloudBackupDatabaseHelperTest {
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mTransactionManager = healthConnectInjector.getTransactionManager();

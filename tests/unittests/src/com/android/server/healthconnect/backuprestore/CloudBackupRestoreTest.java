@@ -42,7 +42,6 @@ import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.TransactionManager;
 
@@ -82,8 +81,6 @@ public final class CloudBackupRestoreTest {
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
 
     @Before
     public void setUp() {
@@ -92,7 +89,6 @@ public final class CloudBackupRestoreTest {
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
 

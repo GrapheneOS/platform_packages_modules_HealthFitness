@@ -87,8 +87,6 @@ public class DataPermissionEnforcerTest {
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
 
     private AttributionSource mAttributionSource;
 
@@ -104,7 +102,6 @@ public class DataPermissionEnforcerTest {
         when(mContext.createContextAsUser(any(), anyInt())).thenReturn(mContext);
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(getInstrumentation().getContext())
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .build();
 
