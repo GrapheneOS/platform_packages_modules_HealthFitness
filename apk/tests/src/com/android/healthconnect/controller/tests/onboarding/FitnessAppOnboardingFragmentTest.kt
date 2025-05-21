@@ -28,6 +28,7 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
@@ -37,6 +38,7 @@ import com.android.healthconnect.controller.onboarding.OnboardingViewModel
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.DISTANCE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.EXERCISE
 import com.android.healthconnect.controller.permissions.data.HealthPermission
+import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.READ
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.WRITE
 import com.android.healthconnect.controller.shared.Constants.EXTRA_APP_NAME
@@ -261,6 +263,72 @@ class FitnessAppOnboardingFragmentTest {
         verify(healthConnectLogger).logPageImpression()
         verify(healthConnectLogger, times(2))
             .logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_PERMISSION_BUTTON)
+    }
+
+    @Test
+    fun whenPermissionSwitchIsOn_forReadWrite_correctContentDescriptionIsDisplayed() {
+        whenever(viewModel.fitnessAppOnboardingFragmentState).then {
+            MutableLiveData(
+                FitnessAppOnboardingViewModel.FitnessAppOnboardingFragmentState
+                    .ShowFitnessReadWrite(
+                        TEST_APP,
+                        mapOf(
+                            HealthPermission.FitnessPermission(EXERCISE, WRITE) to true,
+                            HealthPermission.FitnessPermission(DISTANCE, READ) to true,
+                        ),
+                        true,
+                    )
+            )
+        }
+
+        launchFragment<FitnessAppOnboardingFragment>(
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            )
+            .use { scenario ->
+                scrollToBottomOfPreferenceScreen()
+                onView(withContentDescription("Exercise. Write Access. On"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withContentDescription("Distance. Read Access. On"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+            }
+    }
+
+    @Test
+    fun whenPermissionSwitchIsOff_forReadWrite_correctContentDescriptionIsDisplayed() {
+        whenever(viewModel.fitnessAppOnboardingFragmentState).then {
+            MutableLiveData(
+                FitnessAppOnboardingViewModel.FitnessAppOnboardingFragmentState
+                    .ShowFitnessReadWrite(
+                        TEST_APP,
+                        mapOf(
+                            HealthPermission.FitnessPermission(EXERCISE, WRITE) to false,
+                            HealthPermission.FitnessPermission(DISTANCE, READ) to false,
+                        ),
+                        true,
+                    )
+            )
+        }
+
+        launchFragment<FitnessAppOnboardingFragment>(
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            )
+            .use { scenario ->
+                scrollToBottomOfPreferenceScreen()
+                onView(withContentDescription("Exercise. Write Access. Off"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withContentDescription("Distance. Read Access. Off"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test

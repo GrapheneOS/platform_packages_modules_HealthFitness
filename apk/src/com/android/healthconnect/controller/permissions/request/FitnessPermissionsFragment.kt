@@ -236,6 +236,7 @@ class FitnessPermissionsFragment : Hilt_FitnessPermissionsFragment() {
             )
             it.logNameActive = PermissionsElement.PERMISSION_SWITCH
             it.logNameInactive = PermissionsElement.PERMISSION_SWITCH
+            it.permission = permission
             it.setOnPreferenceChangeListener { _, newValue ->
                 viewModel.updateHealthPermission(permission, newValue as Boolean)
                 true

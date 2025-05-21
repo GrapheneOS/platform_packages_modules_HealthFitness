@@ -41,12 +41,14 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission.MedicalPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.MedicalPermission.Companion.fromPermissionString
+import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.request.MedicalPermissionsFragment
 import com.android.healthconnect.controller.permissions.request.MedicalScreenState
 import com.android.healthconnect.controller.permissions.request.PermissionsFragment
@@ -250,6 +252,78 @@ class MedicalPermissionsFragmentTest {
         Espresso.onIdle()
         onView(withText("Allow \u201C$TEST_APP_NAME\u201D to write")).check(doesNotExist())
         onView(withText("All health records")).check(doesNotExist())
+    }
+
+    @Test
+    fun whenPermissionSwitchIsOn_forReadWrite_correctContentDescriptionIsDisplayed() {
+        val writePermission = MedicalPermission(MedicalPermissionType.ALL_MEDICAL_DATA)
+        val readPermission = MedicalPermission(MedicalPermissionType.VACCINES)
+        whenever(viewModel.medicalScreenState).then {
+            MutableLiveData(
+                MedicalScreenState.ShowMedicalRead(
+                    appMetadata = appMetadata,
+                    medicalPermissions = listOf(writePermission, readPermission),
+                )
+            )
+        }
+        launchFragment<MedicalPermissionsFragment>(bundleOf())
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                    hasDescendant(withText("All health records"))
+                )
+            )
+        Espresso.onIdle()
+        onView(withText("All health records")).perform(click())
+        Espresso.onIdle()
+        onView(withContentDescription("All health records. Write Access. On"))
+            .check(matches(isDisplayed()))
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                    hasDescendant(withText("Vaccines"))
+                )
+            )
+        Espresso.onIdle()
+        onView(withText("Vaccines")).perform(click())
+        Espresso.onIdle()
+        onView(withContentDescription("Vaccines. Read Access. On")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun whenPermissionSwitchIsOff_forReadWrite_correctContentDescriptionIsDisplayed() {
+        val writePermission = MedicalPermission(MedicalPermissionType.ALL_MEDICAL_DATA)
+        val readPermission = MedicalPermission(MedicalPermissionType.VACCINES)
+        whenever(viewModel.medicalScreenState).then {
+            MutableLiveData(
+                MedicalScreenState.ShowMedicalRead(
+                    appMetadata = appMetadata,
+                    medicalPermissions = listOf(writePermission, readPermission),
+                )
+            )
+        }
+        launchFragment<MedicalPermissionsFragment>(bundleOf())
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                    hasDescendant(withText("All health records"))
+                )
+            )
+        Espresso.onIdle()
+        onView(withContentDescription("All health records. Write Access. Off"))
+            .check(matches(isDisplayed()))
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                    hasDescendant(withText("Vaccines"))
+                )
+            )
+        Espresso.onIdle()
+        onView(withContentDescription("Vaccines. Read Access. Off")).check(matches(isDisplayed()))
     }
 
     @Test

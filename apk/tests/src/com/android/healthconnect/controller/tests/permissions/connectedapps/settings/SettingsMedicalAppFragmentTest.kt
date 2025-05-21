@@ -32,6 +32,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
@@ -246,6 +247,43 @@ class SettingsMedicalAppFragmentTest {
         onView(withText("Allow all")).check(matches(isDisplayed()))
         onView(withText("Allowed to read")).check(doesNotExist())
         onView(withText("Allowed to write")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun permissionSwitchOn_contentDescription() {
+        val writePermission = MedicalPermission(MedicalPermissionType.ALL_MEDICAL_DATA)
+        val readPermission = MedicalPermission(MedicalPermissionType.VACCINES)
+        whenever(viewModel.medicalPermissions).then {
+            MutableLiveData(listOf(writePermission, readPermission))
+        }
+        whenever(viewModel.grantedMedicalPermissions).then {
+            MutableLiveData(setOf(writePermission, readPermission))
+        }
+
+        launchFragment<SettingsMedicalAppFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+        )
+
+        onView(withContentDescription("All health records. Write Access. On"))
+            .check(matches(isDisplayed()))
+        onView(withContentDescription("Vaccines. Read Access. On")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun permissionSwitchOff_contentDescription() {
+        val writePermission = MedicalPermission(MedicalPermissionType.ALL_MEDICAL_DATA)
+        val readPermission = MedicalPermission(MedicalPermissionType.VACCINES)
+        whenever(viewModel.medicalPermissions).then {
+            MutableLiveData(listOf(writePermission, readPermission))
+        }
+
+        launchFragment<SettingsMedicalAppFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+        )
+
+        onView(withContentDescription("All health records. Write Access. Off"))
+            .check(matches(isDisplayed()))
+        onView(withContentDescription("Vaccines. Read Access. Off")).check(matches(isDisplayed()))
     }
 
     @Test

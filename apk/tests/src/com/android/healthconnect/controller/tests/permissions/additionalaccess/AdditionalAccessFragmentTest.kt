@@ -182,6 +182,55 @@ class AdditionalAccessFragmentTest {
     }
 
     @Test
+    fun healthSwitchPreference_contentDescription_isUnchanged() {
+        val state =
+            State(
+                exerciseRoutePermissionUIState = ALWAYS_ALLOW,
+                historyReadUIState =
+                    AdditionalAccessViewModel.AdditionalPermissionState(
+                        isDeclared = true,
+                        isEnabled = true,
+                        isGranted = true,
+                    ),
+                backgroundReadUIState =
+                    AdditionalAccessViewModel.AdditionalPermissionState(
+                        isDeclared = true,
+                        isEnabled = true,
+                        isGranted = true,
+                    ),
+            )
+        whenever(additionalAccessViewModel.screenState).then {
+            MutableLiveData(
+                AdditionalAccessViewModel.ScreenState(
+                    state = state,
+                    appHasDeclaredMedicalPermissions = true,
+                    appHasGrantedFitnessReadPermission = true,
+                    showMedicalPastDataFooter = true,
+                )
+            )
+        }
+        val scenario =
+            launchFragment<AdditionalAccessFragment>(
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+
+        scenario.onActivity { activity ->
+            val fragment =
+                activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                    as AdditionalAccessFragment
+            val historyPreference =
+                fragment.preferenceScreen.findPreference("key_history_read")
+                    as HealthSwitchPreference?
+            val backgroundPreference =
+                fragment.preferenceScreen.findPreference("key_background_read")
+                    as HealthSwitchPreference?
+
+            assertThat(historyPreference?.permission).isNull()
+            assertThat(backgroundPreference?.permission).isNull()
+        }
+    }
+
+    @Test
     fun historyReadDeclaredAndEnabled_onlyFitness_showsHistoryReadPreference() {
         val state =
             State(
