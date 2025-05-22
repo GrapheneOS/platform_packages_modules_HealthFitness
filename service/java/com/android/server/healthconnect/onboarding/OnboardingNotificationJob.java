@@ -22,7 +22,6 @@ import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BAN
 
 import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_JOB_NAME_KEY;
 import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_USER_ID;
-import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_COMPLETE_JOB_NAME;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_NO_NOTIFICATION;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION;
@@ -54,7 +53,7 @@ public final class OnboardingNotificationJob {
     private static final int MIN_JOB_ID = OnboardingNotificationJob.class.hashCode();
 
     /** Schedule the onboarding notification job if it's not yet scheduled. */
-    public static void scheduleJobIfNotScheduled(UserHandle userHandle, Context context) {
+    public static void scheduleJobIfNotScheduled(Context context, UserHandle userHandle) {
         if (!Flags.onboarding()) {
             return;
         }
@@ -82,7 +81,7 @@ public final class OnboardingNotificationJob {
         ComponentName componentName = new ComponentName(context, HealthConnectDailyService.class);
         final PersistableBundle extras = new PersistableBundle();
         extras.putInt(EXTRA_USER_ID, userHandle.getIdentifier());
-        extras.putString(EXTRA_JOB_NAME_KEY, MIGRATION_COMPLETE_JOB_NAME);
+        extras.putString(EXTRA_JOB_NAME_KEY, ONBOARDING_NOTIFICATION_JOB_NAME);
         JobInfo.Builder builder =
                 new JobInfo.Builder(MIN_JOB_ID + userHandle.getIdentifier(), componentName)
                         .setPeriodic(Duration.ofDays(1).toMillis(), Duration.ofHours(6).toMillis())
