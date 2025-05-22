@@ -92,9 +92,6 @@ sealed class FormattedEntry(
 
     data class FormattedSectionTitle(val title: String) : FormattedEntry(uuid = "", HEADER_ITEM)
 
-    data class FormattedSectionContent(val title: String, val bulleted: Boolean = false) :
-        FormattedEntry(uuid = "", GROUP_ITEM)
-
     data class ItemDataEntrySeparator(val title: String = "") : FormattedEntry(uuid = "", SPACE)
 
     data class SelectAllHeader(val title: String = "Select all") :
@@ -164,6 +161,14 @@ sealed class FormattedEntry(
         val step: PlannedExerciseStep,
         val title: String,
         val titleA11y: String,
+    ) : FormattedEntry(uuid = "", UNKNOWN)
+
+    data class PlannedExerciseFormattedSectionTitle(val title: String) :
+        FormattedEntry(uuid = "", UNKNOWN)
+
+    data class PlannedExerciseFormattedSectionContent(
+        val title: String,
+        val bulleted: Boolean = false,
     ) : FormattedEntry(uuid = "", UNKNOWN)
 
     data class ExercisePerformanceGoalEntry(

@@ -18,14 +18,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSectionContent
+import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseFormattedSectionContent
 import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
 import com.android.healthconnect.controller.utils.logging.EntryDetailsElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 
-class FormattedSectionContentViewBinder : SimpleViewBinder<FormattedSectionContent, View> {
+class FormattedSectionContentViewBinder :
+    SimpleViewBinder<PlannedExerciseFormattedSectionContent, View> {
     private lateinit var logger: HealthConnectLogger
 
     override fun newView(parent: ViewGroup): View {
@@ -37,7 +38,7 @@ class FormattedSectionContentViewBinder : SimpleViewBinder<FormattedSectionConte
             .inflate(R.layout.item_data_entry_content, parent, false)
     }
 
-    override fun bind(view: View, data: FormattedSectionContent, index: Int) {
+    override fun bind(view: View, data: PlannedExerciseFormattedSectionContent, index: Int) {
         val title = view.findViewById<TextView>(R.id.item_data_entry_content)
 
         title.text =
