@@ -24,6 +24,8 @@ import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
 import static android.health.connect.HealthConnectManager.ACTION_SYNC_MORE_APPS;
 
 import static com.android.server.healthconnect.notifications.NotificationUtils.getPendingIntent;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -77,15 +79,20 @@ public final class OnboardingNotificationSender {
     private final Context mContext;
     private final HealthConnectResourcesContext mResContext;
     private final NotificationUtils mNotificationUtils;
+    private final OnboardingNotificationStateManager mNotificationStateManager;
 
     // TODO(b/414949807): Move to NotificationUtils
     private Optional<Icon> mAppIcon = Optional.empty();
     private HealthConnectNotificationSender mHealthConnectNotificationSender;
 
-    public OnboardingNotificationSender(Context context, HealthConnectResourcesContext resContext) {
+    public OnboardingNotificationSender(
+            Context context,
+            HealthConnectResourcesContext resContext,
+            OnboardingNotificationStateManager notificationStateManager) {
         mContext = context;
         mResContext = resContext;
         mNotificationUtils = new NotificationUtils(context, NOTIFICATION_CHANNEL_ID);
+        mNotificationStateManager = notificationStateManager;
         mHealthConnectNotificationSender =
                 new HealthConnectNotificationSender.Builder()
                         .setContext(context)
@@ -110,12 +117,14 @@ public final class OnboardingNotificationSender {
     public void sendNoAppConnectedNotification(UserHandle userHandle) {
         mHealthConnectNotificationSender.sendNotificationAsUser(
                 getNoAppConnectedNotification(), userHandle);
+        mNotificationStateManager.unsetFlags(SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION);
     }
 
     /** Sends a notification for onboarding scenario where there's one app connected to HC. */
     public void sendOneAppConnectedNotification(UserHandle userHandle) {
         mHealthConnectNotificationSender.sendNotificationAsUser(
                 getOneAppConnectedNotification(), userHandle);
+        mNotificationStateManager.unsetFlags(SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION);
     }
 
     private Notification getNoAppConnectedNotification() {

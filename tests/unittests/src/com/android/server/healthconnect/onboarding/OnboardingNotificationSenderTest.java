@@ -25,11 +25,16 @@ import static com.android.server.healthconnect.onboarding.OnboardingNotification
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.START_USING_HC_NOTIFICATION_BUTTON;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.START_USING_HC_NOTIFICATION_CONTENT;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.START_USING_HC_NOTIFICATION_TITLE;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.NOTIFICATION_STATE_PREFERENCE_KEY_PREFIX;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_ALL_NOTIFICATIONS;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_NO_NOTIFICATION;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,9 +46,11 @@ import android.os.UserHandle;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -60,20 +67,33 @@ public class OnboardingNotificationSenderTest {
 
     @Mock private HealthConnectNotificationSender mNotificationSender;
     @Mock private HealthConnectResourcesContext mResourcesContext;
+    @Mock private PreferenceHelper mPreferenceHelper;
+    @Mock private UserHandle mUserHandle;
     private Context mContext;
-    private UserHandle mUserHandle;
     private OnboardingNotificationSender mOnboardingNotificationSender;
     @Captor ArgumentCaptor<Notification> mNotificationCaptor;
 
+    private static final int USER_ID_INT = (int) (Math.random() * 100);
+    private static final String PREF_KEY = NOTIFICATION_STATE_PREFERENCE_KEY_PREFIX + USER_ID_INT;
+
     @Before
     public void setUp() throws Exception {
-        mContext = InstrumentationRegistry.getInstrumentation().getContext();
-        mUserHandle = mContext.getUser();
-        mOnboardingNotificationSender =
-                new OnboardingNotificationSender(mContext, mResourcesContext);
-        mOnboardingNotificationSender.setNotificationSenderForTesting(mNotificationSender);
+        when(mUserHandle.getIdentifier()).thenReturn(USER_ID_INT);
         when(mResourcesContext.getStringByNameOrThrow(any()))
                 .thenAnswer(invocation -> invocation.getArgument(0));
+
+        mContext = InstrumentationRegistry.getInstrumentation().getContext();
+        mOnboardingNotificationSender =
+                new OnboardingNotificationSender(
+                        mContext,
+                        mResourcesContext,
+                        new OnboardingNotificationStateManager(mPreferenceHelper, mUserHandle));
+        mOnboardingNotificationSender.setNotificationSenderForTesting(mNotificationSender);
+    }
+
+    @After
+    public void tearDown() {
+        clearInvocations(mPreferenceHelper);
     }
 
     @Test
@@ -98,6 +118,19 @@ public class OnboardingNotificationSenderTest {
     }
 
     @Test
+    public void sendNoAppConnectedNotification_notificationStateUpdated() {
+        when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
+                .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
+
+        mOnboardingNotificationSender.sendNoAppConnectedNotification(mUserHandle);
+
+        verify(mPreferenceHelper)
+                .insertOrReplacePreference(
+                        eq(PREF_KEY),
+                        eq(String.valueOf(SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION)));
+    }
+
+    @Test
     public void sendOneAppConnectedNotification_success() {
         mOnboardingNotificationSender.sendOneAppConnectedNotification(mUserHandle);
         verify(mNotificationSender)
@@ -116,5 +149,17 @@ public class OnboardingNotificationSenderTest {
         assertThat(pendingIntent.getCreatorPackage()).isEqualTo(mContext.getPackageName());
         assertThat(pendingIntent.isActivity()).isTrue();
         assertThat(pendingIntent.isImmutable()).isTrue();
+    }
+
+    @Test
+    public void sendOneAppConnectedNotification_notificationStateUpdated() {
+        when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
+                .thenReturn(String.valueOf(SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION));
+
+        mOnboardingNotificationSender.sendOneAppConnectedNotification(mUserHandle);
+
+        verify(mPreferenceHelper)
+                .insertOrReplacePreference(
+                        eq(PREF_KEY), eq(String.valueOf(SHOULD_SHOW_NO_NOTIFICATION)));
     }
 }

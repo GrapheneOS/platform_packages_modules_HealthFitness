@@ -147,6 +147,35 @@ public class OnboardingNotificationStateManagerTest {
         verify(mPreferenceHelper).removeKey(PREF_KEY);
     }
 
+    @Test
+    public void unsetFlags_preferenceUpdated() {
+        setNotificationStateInPreference(SHOULD_SHOW_ALL_NOTIFICATIONS);
+
+        clearInvocations(mPreferenceHelper);
+        mOnboardingNotificationStateManager.unsetFlags(SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION);
+        verify(mPreferenceHelper)
+                .insertOrReplacePreference(
+                        eq(PREF_KEY),
+                        eq(String.valueOf(SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION)));
+
+        clearInvocations(mPreferenceHelper);
+        mOnboardingNotificationStateManager.unsetFlags(SHOULD_SHOW_ALL_NOTIFICATIONS);
+        verify(mPreferenceHelper)
+                .insertOrReplacePreference(
+                        eq(PREF_KEY), eq(String.valueOf(SHOULD_SHOW_NO_NOTIFICATION)));
+    }
+
+    @Test
+    public void unsetFlags_flagsNotSetInCurrentState_preferenceNotUpdated() {
+        setNotificationStateInPreference(SHOULD_SHOW_NO_NOTIFICATION);
+
+        mOnboardingNotificationStateManager.unsetFlags(SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION);
+        verify(mPreferenceHelper, never()).insertOrReplacePreference(eq(PREF_KEY), any());
+
+        mOnboardingNotificationStateManager.unsetFlags(SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION);
+        verify(mPreferenceHelper, never()).insertOrReplacePreference(eq(PREF_KEY), any());
+    }
+
     private void setNotificationStateInPreference(int state) {
         when(mPreferenceHelper.getPreference(eq(PREF_KEY))).thenReturn(String.valueOf(state));
     }
