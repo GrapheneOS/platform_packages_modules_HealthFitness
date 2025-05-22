@@ -490,7 +490,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         : builder.mOnboardingNotificationStateManager;
         mOnboardingNotificationSender =
                 builder.mOnboardingNotificationSender == null
-                        ? new OnboardingNotificationSender(context, resourcesContext)
+                        ? new OnboardingNotificationSender(
+                                context, resourcesContext, mOnboardingNotificationStateManager)
                         : builder.mOnboardingNotificationSender;
         mDeviceRecordHelper = new DeviceRecordHelper(mFitnessRecordUpsertHelper);
         mTrackerManager =

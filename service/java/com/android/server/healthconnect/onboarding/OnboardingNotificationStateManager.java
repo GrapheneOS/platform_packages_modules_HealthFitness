@@ -98,6 +98,16 @@ public final class OnboardingNotificationStateManager {
         }
     }
 
+    /** Updates the onboarding notification flag so the active bits in {@code flags} are unset. */
+    void unsetFlags(int flags) {
+        int currentFlags = getOnboardingNotificationState();
+        if ((currentFlags & flags) == 0) {
+            // all the flags to be unset are not set in the current flags
+            return;
+        }
+        updateNotificationShownState(currentFlags & (~flags));
+    }
+
     /** Clears the onboarding notification state. */
     void clearNotificationShownState() {
         mStatesLock.writeLock().lock();
