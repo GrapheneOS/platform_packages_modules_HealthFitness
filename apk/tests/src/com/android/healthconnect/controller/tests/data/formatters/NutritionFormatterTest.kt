@@ -19,6 +19,7 @@ import android.content.Context
 import android.health.connect.datatypes.NutritionRecord
 import android.health.connect.datatypes.units.Energy.*
 import android.health.connect.datatypes.units.Mass.*
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.formatters.NutritionFormatter
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -37,8 +38,10 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class NutritionFormatterTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

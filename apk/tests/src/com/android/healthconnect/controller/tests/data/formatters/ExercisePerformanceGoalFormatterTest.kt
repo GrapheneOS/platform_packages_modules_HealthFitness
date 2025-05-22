@@ -35,6 +35,7 @@ import android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYP
 import android.health.connect.datatypes.units.Mass
 import android.health.connect.datatypes.units.Power
 import android.health.connect.datatypes.units.Velocity
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.ExercisePerformanceGoalFormatter
@@ -53,8 +54,10 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class ExercisePerformanceGoalFormatterTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 

@@ -1,13 +1,16 @@
 package com.android.healthconnect.controller.tests.searchindexables
 
 import android.provider.SearchIndexablesContract.COLUMN_INDEX_RAW_KEY
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.searchindexables.HealthConnectSearchIndexablesProvider
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class HealthConnectSearchIndexablesProviderTest {
 
     private val INDEX_KEY_HOME = "health_connect_settings_key_home"

@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.tests.permissions.data
 
 import android.content.Context
 import android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.data.fromMedicalResourceType
@@ -30,8 +31,10 @@ import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class MedicalPermissionTypeTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

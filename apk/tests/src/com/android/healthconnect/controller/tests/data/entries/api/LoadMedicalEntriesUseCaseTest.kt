@@ -20,6 +20,7 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.ReadMedicalResourcesInitialRequest
 import android.health.connect.ReadMedicalResourcesResponse
 import android.os.OutcomeReceiver
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
@@ -45,6 +46,7 @@ import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -53,6 +55,7 @@ import org.mockito.invocation.InvocationOnMock
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 @Ignore // b/343647465
+@RunWith(AndroidJUnit4::class)
 class LoadMedicalEntriesUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

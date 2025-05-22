@@ -21,6 +21,7 @@ import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.SpeedRecord
 import android.health.connect.datatypes.StepsCadenceRecord
 import android.health.connect.datatypes.StepsRecord
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.ACTIVE_CALORIES_BURNED
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.BASAL_METABOLIC_RATE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.HEART_RATE
@@ -29,7 +30,9 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper.getDataTypes
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class FitnessPermissionToDatatypeMapperTest {
 
     @Test

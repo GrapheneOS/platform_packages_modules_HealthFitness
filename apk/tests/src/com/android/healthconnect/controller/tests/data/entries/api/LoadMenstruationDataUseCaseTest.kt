@@ -25,6 +25,7 @@ import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.Record
 import android.os.OutcomeReceiver
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
@@ -55,6 +56,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -62,6 +64,7 @@ import org.mockito.invocation.InvocationOnMock
 
 @HiltAndroidTest
 @UninstallModules(HealthManagerModule::class)
+@RunWith(AndroidJUnit4::class)
 class LoadMenstruationDataUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.tests.permissions.api
 
 import android.content.Context
 import android.health.connect.HealthPermissions
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
@@ -25,9 +26,11 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.WRITE
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
 
+@RunWith(AndroidJUnit4::class)
 class GrantHealthPermissionUseCaseTest {
     private lateinit var context: Context
     private lateinit var useCase: GrantHealthPermissionUseCase

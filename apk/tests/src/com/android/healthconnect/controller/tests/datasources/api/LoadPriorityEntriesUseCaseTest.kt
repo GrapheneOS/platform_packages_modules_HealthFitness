@@ -23,6 +23,7 @@ import android.health.connect.ReadRecordsResponse
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SleepSessionRecord
 import android.os.OutcomeReceiver
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
@@ -62,6 +63,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -71,6 +73,7 @@ import org.mockito.kotlin.times
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class LoadPriorityEntriesUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

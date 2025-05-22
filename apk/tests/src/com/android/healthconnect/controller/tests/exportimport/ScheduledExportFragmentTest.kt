@@ -26,6 +26,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.exportimport.ScheduledExportFragment
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
@@ -52,6 +53,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -59,6 +61,7 @@ import org.mockito.kotlin.verify
 @HiltAndroidTest
 @UninstallModules(HealthDataExportManagerModule::class)
 @kotlinx.coroutines.ExperimentalCoroutinesApi
+@RunWith(AndroidJUnit4::class)
 class ScheduledExportFragmentTest {
     companion object {
         private const val TEST_NEXT_EXPORT_FILE_NAME = "hc.zip"

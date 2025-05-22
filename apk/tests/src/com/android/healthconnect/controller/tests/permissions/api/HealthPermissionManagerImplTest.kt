@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.tests.permissions.api
 
 import android.health.connect.HealthConnectManager
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManagerImpl
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -23,11 +24,13 @@ import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class HealthPermissionManagerImplTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

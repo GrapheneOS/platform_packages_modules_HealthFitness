@@ -23,6 +23,7 @@ import android.health.connect.datatypes.AggregationType
 import android.health.connect.datatypes.units.Energy
 import android.health.connect.datatypes.units.Length
 import android.os.OutcomeReceiver
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.api.LoadAggregationInput
@@ -52,6 +53,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -59,6 +61,7 @@ import org.mockito.invocation.InvocationOnMock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class LoadDataAggregationsUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

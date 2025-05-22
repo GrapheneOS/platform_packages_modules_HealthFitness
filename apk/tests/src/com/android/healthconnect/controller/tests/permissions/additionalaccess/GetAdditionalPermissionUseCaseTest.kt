@@ -19,6 +19,7 @@
 package com.android.healthconnect.controller.tests.permissions.additionalaccess
 
 import android.health.connect.HealthPermissions.READ_EXERCISE_ROUTES
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.additionalaccess.GetAdditionalPermissionUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
@@ -30,12 +31,14 @@ import javax.inject.Inject
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class GetAdditionalPermissionUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

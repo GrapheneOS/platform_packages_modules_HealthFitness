@@ -66,6 +66,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
@@ -102,12 +103,14 @@ import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito.any
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 
 @UninstallModules(HealthPermissionManagerModule::class, DeviceInfoUtilsModule::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class PermissionsActivityTest {
 
     companion object {

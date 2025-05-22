@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.tests.exportimport.api
 
 import android.health.connect.HealthConnectException
 import android.net.Uri
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.exportimport.api.ExportImportUseCaseResult
 import com.android.healthconnect.controller.exportimport.api.HealthDataImportManager
 import com.android.healthconnect.controller.exportimport.api.TriggerImportUseCase
@@ -31,9 +32,11 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @UninstallModules(HealthDataImportManagerModule::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class TriggerImportUseCaseTest {
 
     companion object {
