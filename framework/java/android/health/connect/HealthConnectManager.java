@@ -3107,7 +3107,8 @@ public class HealthConnectManager {
     }
 
     /**
-     * Returns the current onboarding state of the Health Connect user.
+     * Returns the current onboarding state of the Health Connect user. This API call triggers a
+     * re-evaluation, so the returned state is up to date.
      *
      * <p>See also {@link HealthConnectOnboardingState} object describing the HealthConnect state.
      *

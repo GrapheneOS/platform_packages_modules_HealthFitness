@@ -28,7 +28,7 @@ import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUME
 import static android.health.connect.HealthConnectException.ERROR_SECURITY;
 import static android.health.connect.HealthConnectException.ERROR_UNSUPPORTED_OPERATION;
 import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
-import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_HIDE;
+import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
@@ -88,7 +88,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -189,6 +188,7 @@ import com.android.server.healthconnect.migration.MigrationCleaner;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.MigrationTestUtils;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
+import com.android.server.healthconnect.onboarding.OnboardingStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
@@ -360,6 +360,7 @@ public class HealthConnectServiceImplTest {
     @Mock private ChangeLogsRequestHelper mChangeLogsRequestHelper;
     @Mock private IGetChangeLogTokenCallback mGetChangeLogTokenCallback;
     @Mock private IChangeLogsResponseCallback mChangeLogsResponseCallback;
+    @Mock private OnboardingStateManager mOnboardingStateManager;
     @Captor ArgumentCaptor<HealthConnectExceptionParcel> mErrorCaptor;
     @Captor private ArgumentCaptor<HealthConnectOnboardingState> mOnboardingStateCaptor;
     private FakeTimeSource mFakeTimeSource;
@@ -418,6 +419,7 @@ public class HealthConnectServiceImplTest {
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .setChangeLogsHelper(mChangeLogsHelper)
                         .setChangeLogsRequestHelper(mChangeLogsRequestHelper)
+                        .setOnboardingStateManager(mOnboardingStateManager)
                         .build();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
         mInternalTaskScheduler = mThreadScheduler.mInternalBackgroundExecutor;
@@ -2353,40 +2355,28 @@ public class HealthConnectServiceImplTest {
 
     @Test
     @EnableFlags({FLAG_ONBOARDING})
-    public void testGetOnboardingStatus_onboardingStatusAtDefault_returnsDefaultOnboardingStatus()
+    public void testGetOnboardingStatus_noAppConnected_returnsTheUpdatedOnboardingStatus()
             throws Exception {
+        int onboardingState = ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
+        when(mOnboardingStateManager.updateAndGetOnboardingState()).thenReturn(onboardingState);
+
         mHealthConnectService.getHealthConnectOnboardingState(
                 mGetHealthConnectOnboardingStateCallback);
 
-        verify(mGetHealthConnectOnboardingStateCallback, timeout(5000))
-                .onResult(any(HealthConnectOnboardingState.class));
-        verify(mGetHealthConnectOnboardingStateCallback).onResult(mOnboardingStateCaptor.capture());
-
-        assertNotNull(mOnboardingStateCaptor.getValue());
-        assertEquals(
-                mOnboardingStateCaptor.getValue().getOnboardingState(),
-                ONBOARDING_BANNER_STATE_HIDE);
+        verifyOnboardingState(onboardingState);
     }
 
     @Test
-    @EnableFlags({FLAG_ONBOARDING})
-    public void testGetOnboardingStatus_onboardingStatusUpdated_returnsTheUpdatedOnboardingStatus()
+    @EnableFlags(FLAG_ONBOARDING)
+    public void testGetOnboardingStatus_oneAppConnected_returnsTheUpdatedOnboardingStatus()
             throws Exception {
-        when(mPreferenceHelper.getPreference(
-                        eq(ONBOARDING_STATE_PREFERENCE_KEY + mUserHandle.getIdentifier())))
-                .thenReturn(String.valueOf(ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED));
+        int onboardingState = ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
+        when(mOnboardingStateManager.updateAndGetOnboardingState()).thenReturn(onboardingState);
 
         mHealthConnectService.getHealthConnectOnboardingState(
                 mGetHealthConnectOnboardingStateCallback);
 
-        verify(mGetHealthConnectOnboardingStateCallback, timeout(5000))
-                .onResult(any(HealthConnectOnboardingState.class));
-        verify(mGetHealthConnectOnboardingStateCallback).onResult(mOnboardingStateCaptor.capture());
-
-        assertNotNull(mOnboardingStateCaptor.getValue());
-        assertEquals(
-                mOnboardingStateCaptor.getValue().getOnboardingState(),
-                ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
+        verifyOnboardingState(onboardingState);
     }
 
     @Test
@@ -2940,6 +2930,15 @@ public class HealthConnectServiceImplTest {
         doNothing()
                 .when(mServiceContext)
                 .enforcePermission(eq(permission), anyInt(), anyInt(), anyString());
+    }
+
+    private void verifyOnboardingState(@HealthConnectOnboardingState.OnboardingState int expected)
+            throws Exception {
+        verify(mGetHealthConnectOnboardingStateCallback, timeout(5000))
+                .onResult(any(HealthConnectOnboardingState.class));
+        verify(mGetHealthConnectOnboardingStateCallback).onResult(mOnboardingStateCaptor.capture());
+
+        assertEquals(mOnboardingStateCaptor.getValue().getOnboardingState(), expected);
     }
 
     private static File createAndGetNonEmptyFile(File dir, String fileName) throws IOException {
