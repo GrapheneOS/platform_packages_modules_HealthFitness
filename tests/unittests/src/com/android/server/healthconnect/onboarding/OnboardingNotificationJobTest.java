@@ -20,12 +20,17 @@ import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BAN
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
+import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_USER_ID;
+import static com.android.server.healthconnect.backuprestore.BackupRestore.BackupRestoreJobService.EXTRA_JOB_NAME_KEY;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationJob.ONBOARDING_NOTIFICATION_JOB_NAME;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationJob.ONBOARDING_NOTIFICATION_JOB_NAMESPACE;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationJob.executeOnboardingNotificationJob;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_ALL_NOTIFICATIONS;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_NO_NOTIFICATION;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION;
+
+import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -53,6 +58,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -71,11 +78,13 @@ public class OnboardingNotificationJobTest {
     @Mock private OnboardingStateManager mOnboardingStateManager;
     @Mock private OnboardingNotificationSender mOnboardingNotificationSender;
     @Mock private OnboardingNotificationStateManager mOnboardingNotificationStateManager;
-    private UserHandle mUserHandle;
+    @Mock private UserHandle mUserHandle;
+    @Captor ArgumentCaptor<JobInfo> mJobInfoArgumentCaptor;
+    private static final int USER_ID_INT = (int) (Math.random() * 100);
 
     @Before
     public void setUp() {
-        mUserHandle = UserHandle.CURRENT;
+        when(mUserHandle.getIdentifier()).thenReturn(USER_ID_INT);
         when(mContext.getSystemService(JobScheduler.class)).thenReturn(mMainJobScheduler);
         when(mContext.getUser()).thenReturn(mUserHandle);
         when(mMainJobScheduler.forNamespace(ONBOARDING_NOTIFICATION_JOB_NAMESPACE))
@@ -92,8 +101,13 @@ public class OnboardingNotificationJobTest {
     public void scheduleJobIfNotScheduled_noExistingJob_scheduled() {
         when(mOnboardingNotificationJobScheduler.getAllPendingJobs()).thenReturn(List.of());
 
-        OnboardingNotificationJob.scheduleJobIfNotScheduled(UserHandle.CURRENT, mContext);
-        verify(mOnboardingNotificationJobScheduler).schedule(any());
+        OnboardingNotificationJob.scheduleJobIfNotScheduled(mContext, mUserHandle);
+        verify(mOnboardingNotificationJobScheduler).schedule(mJobInfoArgumentCaptor.capture());
+
+        JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
+        assertThat(jobInfo.getExtras().getInt(EXTRA_USER_ID)).isEqualTo(USER_ID_INT);
+        assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
+                .isEqualTo(ONBOARDING_NOTIFICATION_JOB_NAME);
     }
 
     @Test
@@ -104,7 +118,7 @@ public class OnboardingNotificationJobTest {
                         .build();
         when(mOnboardingNotificationJobScheduler.getAllPendingJobs()).thenReturn(List.of(dummyJob));
 
-        OnboardingNotificationJob.scheduleJobIfNotScheduled(UserHandle.CURRENT, mContext);
+        OnboardingNotificationJob.scheduleJobIfNotScheduled(mContext, mUserHandle);
         verify(mOnboardingNotificationJobScheduler, never()).schedule(any());
     }
 
