@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 ismétlés}other{# ismétlés}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 ismétlés}other{# ismétlés}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Edzéselemek"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"<xliff:g id="SET_INDEX">%1$d</xliff:g> beállítása"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"ÉEM: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"Érzékelt erőkifejtés mértéke: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"ÉEM"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"Érzékelt erőkifejtés mértéke"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"Hossz"</string>
     <string name="back_extension" msgid="426518933137440577">"Homorítás"</string>
     <string name="badminton" msgid="8839727076522086870">"Tollaslabda"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"A folytatás előtt frissítse a telefon rendszerét."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ha már frissítette a telefon rendszerét, az integráció folytatásához próbálkozzon a telefon újraindításával."</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Továbblépés előtt frissítse a Health Connect alkalmazást a legújabb verzióra."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Több tárhely szükséges"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"A Health Connectnek <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> tárhelyre van szüksége a telefonon az integráció folytatásához.\n\nSzabadítson fel némi tárhelyet a telefonon, majd próbálja újra."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Újra"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Tárhely felszabadítása"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Az integráció szüneteltetve van"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"A Health Connect alkalmazás bezárult az Android rendszerrel való integrációja közben.\n\nKattintson a „Folytatás” lehetőségre az app újbóli megnyitásához, valamint az adatok és az engedélyek átvitelének folytatásához."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"A Health Connect-adatainak megőrzése érdekében végezze el ezt a műveletet a megadott időn belül (<xliff:g id="TIME_NEEDED">%1$s</xliff:g>)"</string>
@@ -1229,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 alkalmazás használja}other{# alkalmazás használja}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Semmi nem használta az elmúlt 24 órában"</string>
     <string name="accessed" msgid="4424701457530587176">"Hozzáférés: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Az első két alkalmazás összekapcsolása"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Kapcsolja össze ezeket az alkalmazásokat, hogy elkezdhesse közöttük az egészségügyi és fitneszadatok megosztását."</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"Második alkalmazás összekapcsolása"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"Állítson be még egy alkalmazást az egészségügyi és fitneszadatok <xliff:g id="APP_NAME">%1$s</xliff:g> szolgáltatással való megosztásához."</string>
+    <string name="set_up_later" msgid="223888663943501921">"Beállítás később"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"Rendelkezésre álló összekapcsolható alkalmazások"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"A Health Connect segítségével egyetlen helyen tárolhatja egészségügyi és fitneszadatait, és megoszthatja őket a telefonján lévő alkalmazások között, hogy az appok jobban tudjanak együttműködni."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"További információ a Health Connectről"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"Alkalmazás összekapcsolva a Health Connecttel"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"Majdnem kész"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"Nyissa meg ezeket az alkalmazásokat a beállítás befejezéséhez és az adatmegosztás elindításához."</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

@@ -19,12 +19,15 @@
 package com.android.healthconnect.controller.tests.data.formatters.shared
 
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.fromHealthPermissionCategory
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class FormattersIntegrationTest {
 
     @Test

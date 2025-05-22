@@ -24,8 +24,8 @@
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"ഈ ആപ്പിന് ആക്‌സസ് ചെയ്യാനാകുന്ന, ഫിറ്റ്‌നസും വെൽനസും സംബന്ധിച്ച ഡാറ്റ ഏതൊക്കെയെന്ന് തിരഞ്ഞെടുക്കുക. ഈ ഉപകരണത്തിൽ ട്രാക്ക് ചെയ്ത് സംഭരിച്ച ഡാറ്റ ഇതിൽ ഉൾപ്പെടുന്നു, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"ഈ ആപ്പിന് ആക്‌സസ് ചെയ്യാനാകുന്ന, ഫിറ്റ്‌നസും വെൽനസും സംബന്ധിച്ച ഡാറ്റ ഏതൊക്കെയെന്ന് തിരഞ്ഞെടുക്കുക. ഈ ഉപകരണത്തിൽ ട്രാക്ക് ചെയ്ത് സംഭരിച്ച ഡാറ്റ ഇതിൽ ഉൾപ്പെടുന്നു, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_learn_more" msgid="2665249156693144626">"കൂടുതലറിയുക"</string>
-    <string name="settings_manage_permission" msgid="3585762257420446893">"ആരോഗ്യവും ഫിറ്റ്‌നസും വെൽനസും"</string>
-    <string name="settings_combined_permissions" msgid="1243346425556604875">"ആരോഗ്യവും ഫിറ്റ്‌നസും വെൽനസും"</string>
+    <string name="settings_manage_permission" msgid="3585762257420446893">"ഹെൽത്തും ഫിറ്റ്‌നസും വെൽനസും"</string>
+    <string name="settings_combined_permissions" msgid="1243346425556604875">"ഹെൽത്തും ഫിറ്റ്‌നസും വെൽനസും"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"ഫിറ്റ്നസും വെൽനസും"</string>
     <string name="settings_medical_permissions" msgid="3616285795348645545">"ആരോഗ്യ റെക്കോർഡുകൾ"</string>
 </resources>

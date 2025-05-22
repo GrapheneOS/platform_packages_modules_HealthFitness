@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.tests.utiltests
 
 import android.content.Context
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -34,7 +35,9 @@ import java.util.TimeZone
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class TimeUtilsTest {
     private lateinit var context: Context
     private lateinit var dateFormatter: LocalDateTimeFormatter

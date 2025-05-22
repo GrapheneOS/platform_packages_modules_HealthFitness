@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 ਦੁਹਰਾਅ}one{# ਦੁਹਰਾਅ}other{# ਦੁਹਰਾਅ}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 ਦੁਹਰਾਅ}one{# ਦੁਹਰਾਅ}other{# ਦੁਹਰਾਅ}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"ਕਸਰਤ ਦੇ ਹਿੱਸੇ"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"<xliff:g id="SET_INDEX">%1$d</xliff:g> ਸੈੱਟ ਕਰੋ"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"ਗਿਆਤ ਮਿਹਨਤ ਦੀ ਦਰ: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"ਗਿਆਤ ਮਿਹਨਤ ਦੀ ਦਰ"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"ਗੇੜੇ"</string>
     <string name="back_extension" msgid="426518933137440577">"ਬੈਕ ਐਕਸਟੈਂਸ਼ਨ"</string>
     <string name="badminton" msgid="8839727076522086870">"ਬੈਡਮਿੰਟਨ"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ਅੱਗੇ ਵਧਣ ਤੋਂ ਪਹਿਲਾਂ, ਆਪਣੇ ਫ਼ੋਨ ਸਿਸਟਮ ਨੂੰ ਅੱਪਡੇਟ ਕਰੋ।"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ਜੇ ਤੁਸੀਂ ਆਪਣੇ ਫ਼ੋਨ ਸਿਸਟਮ ਨੂੰ ਅੱਪਡੇਟ ਕਰ ਲਿਆ ਹੈ, ਤਾਂ ਏਕੀਕਰਨ ਨੂੰ ਜਾਰੀ ਰੱਖਣ ਲਈ ਆਪਣੇ ਫ਼ੋਨ ਨੂੰ ਮੁੜ-ਸ਼ੁਰੂ ਕਰ ਕੇ ਦੇਖੋ"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"ਅੱਗੇ ਵਧਣ ਤੋਂ ਪਹਿਲਾਂ, Health Connect ਐਪ ਨੂੰ ਨਵੀਨਤਮ ਵਰਜਨ \'ਤੇ ਅੱਪਡੇਟ ਕਰੋ।"</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"ਜ਼ਿਆਦਾ ਜਗ੍ਹਾ ਦੀ ਲੋੜ ਹੈ"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect ਨੂੰ ਏਕੀਕਰਨ ਕਰਨਾ ਜਾਰੀ ਰੱਖਣ ਲਈ, ਤੁਹਾਡੇ ਫ਼ੋਨ \'ਤੇ <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> ਦੀ ਸਟੋਰੇਜ ਜਗ੍ਹਾ ਚਾਹੀਦੀ ਹੈ।\n\nਆਪਣੇ ਫ਼ੋਨ \'ਤੇ ਕੁਝ ਜਗ੍ਹਾ ਖਾਲੀ ਕਰੋ ਅਤੇ ਫਿਰ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"</string>
-    <string name="try_again_button" msgid="8745496819992160789">"ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"ਜਗ੍ਹਾ ਖਾਲੀ ਕਰੋ"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"ਏਕੀਕਰਨ ਰੋਕਿਆ ਗਿਆ"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect ਐਪ ਦੇ Android ਸਿਸਟਮ ਨਾਲ ਏਕੀਕਰਨ ਹੋਣ ਦੌਰਾਨ, ਇਹ ਐਪ ਬੰਦ ਹੋ ਗਈ ਸੀ।\n\nਐਪ ਨੂੰ ਮੁੜ ਤੋਂ ਖੋਲ੍ਹਣ ਲਈ, ਮੁੜ-ਚਾਲੂ ਕਰੋ \'ਤੇ ਕਲਿੱਕ ਕਰੋ ਅਤੇ ਆਪਣੇ ਡਾਟਾ ਅਤੇ ਇਜਾਜ਼ਤਾਂ ਨੂੰ ਟ੍ਰਾਂਸਫ਼ਰ ਕਰਨਾ ਜਾਰੀ ਰੱਖੋ।"</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"ਆਪਣੇ Health Connect ਡਾਟੇ ਨੂੰ ਬਰਕਰਾਰ ਰੱਖਣ ਲਈ, ਇਸ ਨੂੰ <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ਦੇ ਅੰਦਰ ਪੂਰਾ ਕਰੋ"</string>
@@ -1229,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 ਐਪ ਵੱਲੋਂ ਇਜਾਜ਼ਤ ਵਰਤੀ ਗਈ}one{# ਐਪ ਵੱਲੋਂ ਇਜਾਜ਼ਤ ਵਰਤੀ ਗਈ}other{# ਐਪਾਂ ਵੱਲੋਂ ਇਜਾਜ਼ਤ ਵਰਤੀ ਗਈ}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"ਪਿਛਲੇ 24 ਘੰਟਿਆਂ ਵਿੱਚ ਨਹੀਂ ਵਰਤੀ ਗਈ"</string>
     <string name="accessed" msgid="4424701457530587176">"<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g> ਵਜੇ ਪਹੁੰਚ ਕੀਤੀ ਗਈ"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"ਆਪਣੀਆਂ ਪਹਿਲੀਆਂ 2 ਐਪਾਂ ਨੂੰ ਕਨੈਕਟ ਕਰੋ"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"ਇਨ੍ਹਾਂ ਐਪਾਂ ਨੂੰ ਕਨੈਕਟ ਕਰੋ, ਤਾਂ ਜੋ ਤੁਸੀਂ ਉਨ੍ਹਾਂ ਵਿਚਕਾਰ ਸਿਹਤ ਅਤੇ ਫਿੱਟਨੈੱਸ ਡਾਟਾ ਸਾਂਝਾ ਕਰ ਸਕੋ"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"ਕਿਸੇ ਦੂਜੀ ਐਪ ਨੂੰ ਕਨੈਕਟ ਕਰੋ"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"<xliff:g id="APP_NAME">%1$s</xliff:g> ਨਾਲ ਸਿਹਤ ਅਤੇ ਫਿੱਟਨੈੱਸ ਡਾਟਾ ਸਾਂਝਾ ਕਰਨ ਲਈ ਇੱਕ ਹੋਰ ਐਪ ਦਾ ਸੈੱਟਅੱਪ ਕਰੋ"</string>
+    <string name="set_up_later" msgid="223888663943501921">"ਬਾਅਦ ਵਿੱਚ ਸੈੱਟਅੱਪ ਕਰੋ"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"ਕਨੈਕਟ ਕਰਨ ਲਈ ਉਪਲਬਧ ਐਪਾਂ"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect ਨਾਲ ਤੁਸੀਂ ਆਪਣੇ ਸਿਹਤ ਅਤੇ ਫਿੱਟਨੈੱਸ ਡਾਟੇ ਨੂੰ ਇੱਕੋ ਥਾਂ \'ਤੇ ਸਟੋਰ ਕਰ ਸਕਦੇ ਹੋ ਅਤੇ ਆਪਣੇ ਫ਼ੋਨ \'ਤੇ ਐਪਾਂ ਵਿਚਕਾਰ ਸਾਂਝਾ ਕਰ ਸਕਦੇ ਹੋ, ਜਿਸ ਨਾਲ ਤੁਹਾਡੀਆਂ ਐਪਾਂ ਮਿਲ ਕੇ ਬਿਹਤਰ ਢੰਗ ਨਾਲ ਕੰਮ ਕਰਦੀਆਂ ਹਨ।"</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Health Connect ਬਾਰੇ ਹੋਰ ਜਾਣਕਾਰੀ"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"Health Connect ਨਾਲ ਐਪ ਨੂੰ ਕਨੈਕਟ ਕੀਤਾ ਗਿਆ"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"ਲਗਭਗ ਹੋ ਗਿਆ"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"ਸੈੱਟਅੱਪ ਪੂਰਾ ਕਰਨ ਅਤੇ ਡਾਟਾ ਸਾਂਝਾ ਕਰਨਾ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਹੁਣੇ ਇਨ੍ਹਾਂ ਐਪਾਂ ਨੂੰ ਖੋਲ੍ਹੋ"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

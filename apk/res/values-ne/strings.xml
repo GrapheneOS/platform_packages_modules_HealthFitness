@@ -1082,10 +1082,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"जारी राख्नुअघि आफ्नो फोनको सिस्टम अपडेट गर्नुहोस्।"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"तपाईंले आफ्नो फोनको सिस्टम अपडेट गरिसक्नुभएको छ भने आफ्नो फोन रिस्टार्ट गरेर इन्टिग्रेट गर्ने प्रक्रिया जारी राख्ने प्रयास गर्नुहोस्"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"जारी राख्नुअघि Health Connect एप अपडेट गरी नवीनतम संस्करण इन्स्टल गर्नुहोस्।"</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"अझ धेरै खाली ठाउँ चाहिन्छ"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect लाई इन्टिग्रेट गर्ने प्रक्रिया जारी राख्नका निम्ति तपाईंको फोनको भण्डारणमा <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> खाली ठाउँ चाहिन्छ।\n\nआफ्नो फोनको भण्डारणमा केही ठाउँ खाली गर्नुहोस् अनि फेरि प्रयास गर्नुहोस्।"</string>
-    <string name="try_again_button" msgid="8745496819992160789">"फेरि प्रयास गर्नुहोस्"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"ठाउँ खाली गर्नुहोस्"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"इन्टिग्रेट गर्ने प्रक्रिया पज गरिएको छ"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Android सिस्टममा इन्टिग्रेट गर्ने क्रममा Health Connect एप बन्द भएको थियो।\n\nयो एप फेरि खोल्न \"सुचारु गर्नुहोस्\" बटनमा क्लिक गर्नुहोस् र आफ्ना जानकारी तथा अनुमति ट्रान्स्फर गर्ने कार्य जारी राख्नुहोस्।"</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Health Connect मा भएको आफ्नो जानकारी सुरक्षित राख्नका निम्ति यो प्रक्रिया <xliff:g id="TIME_NEEDED">%1$s</xliff:g> भित्र पूरा गर्नुहोस्"</string>
@@ -1229,4 +1225,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{एउटा एपले प्रयोग गरेको}other{# वटा एपले प्रयोग गरेका}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"पछिल्लो २४ घण्टामा प्रयोग गरिएको छैन"</string>
     <string name="accessed" msgid="4424701457530587176">"<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g> मा एक्सेस गरिएको"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"सुरुका २ वटा एप कनेक्ट गर्नुहोस्"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"यी एपका बिचमा स्वास्थ्य र व्यायामसम्बन्धी जानकारी सेयर गर्न थाल्न यिनलाई कनेक्ट गर्नुहोस्"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"दोस्रो एप कनेक्ट गर्नुहोस्"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"<xliff:g id="APP_NAME">%1$s</xliff:g> सँग स्वास्थ्य र व्यायामसम्बन्धी जानकारी सेयर गर्न थप एउटा एप सेटअप गर्नुहोस्"</string>
+    <string name="set_up_later" msgid="223888663943501921">"पछि सेटअप गर्नुहोस्"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"कनेक्ट गर्नका लागि उपलब्ध एपहरू"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"तपाईं Health Connect प्रयोग गरी आफ्नो स्वास्थ्य र व्यायामसम्बन्धी जानकारी एकै ठाउँमा भण्डारण गर्न र आफ्नो फोनमा भएका एपका बिचमा यो जानकारी सेयर गर्न सक्नुहुन्छ। यसो गर्दा तपाईंका एपले एक साथ अझ राम्रोसँग काम गर्छन्।"</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Health Connect का बारेमा थप जानकारी"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"यो एप Health Connect मा कनेक्ट गरिएको छ"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"लगभग पूरा भयो"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"सेटअप गर्ने कार्य पूरा गर्न र जानकारी सेयर गर्न थाल्न अहिले नै यी एपहरू खोल्नुहोस्"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

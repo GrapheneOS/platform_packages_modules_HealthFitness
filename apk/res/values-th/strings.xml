@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 ครั้ง}other{# ครั้ง}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 ครั้ง}other{# ครั้ง}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"กลุ่มการออกกำลังกาย"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"เซ็ตที่ <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"ระดับการรับรู้การออกแรงของร่างกาย (RPE): <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"ระดับการรับรู้การออกแรงของร่างกาย: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"ระดับการรับรู้การออกแรงของร่างกาย (RPE)"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"ระดับการรับรู้การออกแรงของร่างกาย"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"รอบ"</string>
     <string name="back_extension" msgid="426518933137440577">"Back Extension"</string>
     <string name="badminton" msgid="8839727076522086870">"แบดมินตัน"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"อัปเดตระบบโทรศัพท์ก่อนที่จะดำเนินการต่อ"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"หากอัปเดตระบบโทรศัพท์เรียบร้อยแล้ว ให้ลองรีสตาร์ทโทรศัพท์เพื่อผสานรวมต่อ"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"อัปเดตแอป Health Connect เป็นเวอร์ชันล่าสุดก่อนที่จะดำเนินการต่อ"</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"ต้องมีพื้นที่มากขึ้น"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect ต้องใช้พื้นที่เก็บข้อมูลในโทรศัพท์ <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> เพื่อผสานรวมต่อ\n\nโปรดเพิ่มพื้นที่ว่างในโทรศัพท์แล้วลองอีกครั้ง"</string>
-    <string name="try_again_button" msgid="8745496819992160789">"ลองอีกครั้ง"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"เพิ่มพื้นที่ว่าง"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"หยุดการผสานรวมชั่วคราว"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"แอป Health Connect ปิดลงขณะกำลังผสานรวมกับระบบ Android\n\nคลิก \"ทำต่อ\" เพื่อเปิดแอปอีกครั้ง แล้วดำเนินการโอนข้อมูลและสิทธิ์ต่างๆ ต่อ"</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"โปรดดำเนินการให้เสร็จสมบูรณ์ภายใน <xliff:g id="TIME_NEEDED">%1$s</xliff:g> เพื่อเก็บข้อมูล Health Connect ของคุณไว้"</string>
@@ -1229,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{ใช้โดยแอป 1 แอป}other{ใช้โดยแอป # แอป}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"ไม่ได้ใช้ใน 24 ชั่วโมงที่ผ่านมา"</string>
     <string name="accessed" msgid="4424701457530587176">"เข้าถึงเมื่อ <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"เชื่อมต่อแอป 2 แอปแรก"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"เชื่อมต่อแอปเหล่านี้เพื่อเริ่มแชร์ข้อมูลสุขภาพและการออกกำลังกายระหว่างแอป"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"เชื่อมต่อแอปที่สอง"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"ตั้งค่าแอปอีก 1 แอปเพื่อแชร์ข้อมูลสุขภาพและการออกกำลังกายกับแอป <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="set_up_later" msgid="223888663943501921">"ไว้ภายหลัง"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"แอปที่พร้อมเชื่อมต่อ"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect ให้คุณจัดเก็บข้อมูลสุขภาพและการออกกำลังกายไว้ในที่เดียวและแชร์ระหว่างแอปในโทรศัพท์ได้ ซึ่งช่วยให้แอปต่างๆ ทำงานร่วมกันได้ดียิ่งขึ้น"</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"ข้อมูลเพิ่มเติมเกี่ยวกับ Health Connect"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"แอปเชื่อมต่อกับ Health Connect แล้ว"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"เกือบเสร็จแล้ว"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"เปิดแอปเหล่านี้เลยเพื่อตั้งค่าให้เสร็จสิ้นและเริ่มแชร์ข้อมูล"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

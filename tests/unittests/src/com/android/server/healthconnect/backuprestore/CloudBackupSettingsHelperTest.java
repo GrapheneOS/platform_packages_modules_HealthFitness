@@ -16,13 +16,12 @@
 
 package com.android.server.healthconnect.backuprestore;
 
-import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.AUTO_DELETE_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.DISTANCE_UNIT_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.ENERGY_UNIT_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.HEIGHT_UNIT_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.TEMPERATURE_UNIT_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.WEIGHT_UNIT_PREF_KEY;
-import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.AutoDeleteFrequencyProto;
+import static com.android.server.healthconnect.common.preferences.PreferencesManager.AUTO_DELETE_DURATION_RECORDS_KEY;
 import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.DistanceUnitProto;
 import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.EnergyUnitProto;
 import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.HeightUnitProto;
@@ -233,36 +232,57 @@ public class CloudBackupSettingsHelperTest {
     @Test
     public void autoDeleteSettingsOff_setsAutoDeleteSettingsCorrectly() {
         mPreferenceHelper.insertOrReplacePreference(
-                AUTO_DELETE_PREF_KEY, AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_NEVER.toString());
+                AUTO_DELETE_DURATION_RECORDS_KEY, String.valueOf(0));
 
         Settings userSettings = mCloudBackupSettingsHelper.collectUserSettings();
 
-        assertThat(userSettings.getAutoDeleteFrequency())
-                .isEqualTo(AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_NEVER);
+        assertThat(userSettings.getAutoDeleteFrequencyInDays()).isEqualTo("0");
     }
 
     @Test
-    public void autoDeleteSettingsThreeMonths_setsAutoDeleteSettingsCorrectly() {
+    public void autoDeleteSettingsOn_setsAutoDeleteSettingsCorrectly() {
         mPreferenceHelper.insertOrReplacePreference(
-                AUTO_DELETE_PREF_KEY,
-                AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_THREE_MONTHS.toString());
+                AUTO_DELETE_DURATION_RECORDS_KEY, String.valueOf(90));
 
         Settings userSettings = mCloudBackupSettingsHelper.collectUserSettings();
 
-        assertThat(userSettings.getAutoDeleteFrequency())
-                .isEqualTo(AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_THREE_MONTHS);
+        assertThat(userSettings.getAutoDeleteFrequencyInDays()).isEqualTo("90");
     }
 
     @Test
-    public void autoDeleteSettingsEighteenMonths_setsAutoDeleteSettingsCorrectly() {
-        mPreferenceHelper.insertOrReplacePreference(
-                AUTO_DELETE_PREF_KEY,
-                AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS.toString());
-
+    public void autoDeleteSettingsNotSet_doesNotRestore() {
+        mPreferenceHelper.removeKey(AUTO_DELETE_DURATION_RECORDS_KEY);
         Settings userSettings = mCloudBackupSettingsHelper.collectUserSettings();
+        mCloudBackupSettingsHelper.restoreUserSettings(userSettings);
 
-        assertThat(userSettings.getAutoDeleteFrequency())
-                .isEqualTo(AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS);
+        assertThat(mPreferenceHelper.getPreference(AUTO_DELETE_DURATION_RECORDS_KEY))
+                .isEqualTo(null);
+    }
+
+    @Test
+    public void autoDeleteSettingsOff_restoresAutoDeleteSettingsCorrectly() {
+        mPreferenceHelper.insertOrReplacePreference(
+                AUTO_DELETE_DURATION_RECORDS_KEY, String.valueOf(0));
+        Settings userSettings = mCloudBackupSettingsHelper.collectUserSettings();
+        mPreferenceHelper.removeKey(AUTO_DELETE_DURATION_RECORDS_KEY);
+
+        mCloudBackupSettingsHelper.restoreUserSettings(userSettings);
+
+        assertThat(mPreferenceHelper.getPreference(AUTO_DELETE_DURATION_RECORDS_KEY))
+                .isEqualTo(String.valueOf(0));
+    }
+
+    @Test
+    public void autoDeleteSettingsOn_restoresAutoDeleteSettingsCorrectly() {
+        mPreferenceHelper.insertOrReplacePreference(
+                AUTO_DELETE_DURATION_RECORDS_KEY, String.valueOf(90));
+        Settings userSettings = mCloudBackupSettingsHelper.collectUserSettings();
+        mPreferenceHelper.removeKey(AUTO_DELETE_DURATION_RECORDS_KEY);
+
+        mCloudBackupSettingsHelper.restoreUserSettings(userSettings);
+
+        assertThat(mPreferenceHelper.getPreference(AUTO_DELETE_DURATION_RECORDS_KEY))
+                .isEqualTo(String.valueOf(90));
     }
 
     @Test

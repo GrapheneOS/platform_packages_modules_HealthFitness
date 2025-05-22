@@ -16,6 +16,7 @@
 
 package com.android.healthconnect.controller.tests.exportimport.api
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.exportimport.api.ImportStatusViewModel
 import com.android.healthconnect.controller.exportimport.api.ImportUiState
 import com.android.healthconnect.controller.exportimport.api.ImportUiStatus
@@ -35,9 +36,11 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
 @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+@RunWith(AndroidJUnit4::class)
 class ImportStatusViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()

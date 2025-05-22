@@ -28,6 +28,7 @@ import android.health.connect.HealthPermissions.READ_STEPS
 import android.health.connect.HealthPermissions.WRITE_DISTANCE
 import android.health.connect.HealthPermissions.WRITE_HEIGHT
 import android.health.connect.HealthPermissions.WRITE_SPEED
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.additionalaccess.ExerciseRouteState
 import com.android.healthconnect.controller.permissions.additionalaccess.LoadDeclaredHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.additionalaccess.LoadExerciseRoutePermissionUseCase
@@ -47,6 +48,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
@@ -54,6 +56,7 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class LoadExerciseRoutePermissionUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

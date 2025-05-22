@@ -20,6 +20,7 @@ import android.health.connect.FetchDataOriginsPriorityOrderResponse
 import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
 import android.os.OutcomeReceiver
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.datasources.api.LoadPriorityListUseCase
 import com.android.healthconnect.controller.shared.app.AppInfoReader
@@ -37,6 +38,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.invocation.InvocationOnMock
@@ -44,6 +46,7 @@ import org.mockito.kotlin.eq
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class LoadPriorityListUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val coroutineTestRule = CoroutineTestRule()

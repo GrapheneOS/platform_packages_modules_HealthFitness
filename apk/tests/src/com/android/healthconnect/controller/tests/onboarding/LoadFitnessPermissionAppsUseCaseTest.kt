@@ -19,6 +19,7 @@ package com.android.healthconnect.controller.tests.onboarding
 import android.content.Context
 import android.content.Intent
 import android.health.connect.HealthConnectManager.ACTION_SHOW_ONBOARDING
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.LoadFitnessPermissionAppsUseCase
@@ -49,6 +50,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
@@ -56,6 +58,7 @@ import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class LoadFitnessPermissionAppsUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     private val healthPermissionReader: HealthPermissionReader = mock()

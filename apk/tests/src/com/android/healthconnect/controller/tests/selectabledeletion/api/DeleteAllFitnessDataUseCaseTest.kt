@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.tests.selectabledeletion.api
 
 import android.health.connect.DeleteUsingFiltersRequest
 import android.health.connect.HealthConnectManager
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteAllFitnessDataUseCase
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -26,6 +27,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.ArgumentMatchers.any
@@ -37,6 +39,7 @@ import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class DeleteAllFitnessDataUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 

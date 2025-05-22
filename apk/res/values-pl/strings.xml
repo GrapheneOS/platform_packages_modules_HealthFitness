@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 powt.}few{# powt.}many{# powt.}other{# powt.}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 powtórzenie}few{# powtórzenia}many{# powtórzeń}other{# powtórzenia}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Czas aktywności"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Ustawiono <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"Skala RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"Skala odczuwanego wysiłku: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"Skala RPE"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"Skala odczuwanego wysiłku"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"Dystans"</string>
     <string name="back_extension" msgid="426518933137440577">"Ćwiczenia na mięśnie grzbietu"</string>
     <string name="badminton" msgid="8839727076522086870">"Badminton"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Zanim przejdziesz dalej, zaktualizuj system telefonu."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Jeśli system telefonu został już zaktualizowany, uruchom telefon ponownie, aby kontynuować integrację"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Zanim przejdziesz dalej, zaktualizuj aplikację Health Connect do najnowszej wersji."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Potrzebne więcej miejsca"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Aby można było kontynuować integrację, Health Connect musi mieć <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> dostępnego miejsca na telefonie.\n\nWyczyść trochę miejsca na telefonie i spróbuj ponownie."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Spróbuj ponownie"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Zwolnij miejsce"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Wstrzymano integrację"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Aplikacja Health Connect została zamknięta podczas integracji z systemem Android.\n\nAby ponownie otworzyć aplikację i kontynuować przenoszenie danych oraz uprawnień, kliknij Wznów."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Aby dane z Health Connect zostały zachowane, cały proces nie może trwać dłużej niż <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
@@ -1229,4 +1220,38 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Używane przez 1 aplikację}few{Używane przez # aplikacje}many{Używane przez # aplikacji}other{Używane przez # aplikacji}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Nieużywane w ciągu ostatnich 24 godzin"</string>
     <string name="accessed" msgid="4424701457530587176">"Ostatni dostęp: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <!-- no translation found for connect_first_two_apps_title (2117437769113976529) -->
+    <skip />
+    <!-- no translation found for connect_first_two_apps_description (6756143365112887865) -->
+    <skip />
+    <!-- no translation found for connect_second_app_title (6609568573884272692) -->
+    <skip />
+    <!-- no translation found for connect_second_app_description (159030733462822101) -->
+    <skip />
+    <!-- no translation found for set_up_later (223888663943501921) -->
+    <skip />
+    <!-- no translation found for available_apps_to_connect (8425012138408583646) -->
+    <skip />
+    <!-- no translation found for apps_onboarding_footer (5814165211234454165) -->
+    <skip />
+    <!-- no translation found for apps_onboarding_footer_link (385298243785385467) -->
+    <skip />
+    <!-- no translation found for onboarded_app_content_description (8571163043712952164) -->
+    <skip />
+    <!-- no translation found for almost_done_title (3966589349311156772) -->
+    <skip />
+    <!-- no translation found for almost_done_description (8414648601371946510) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

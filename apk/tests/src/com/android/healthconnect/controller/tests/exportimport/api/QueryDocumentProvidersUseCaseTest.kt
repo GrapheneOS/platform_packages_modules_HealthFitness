@@ -19,6 +19,7 @@ package com.android.healthconnect.controller.tests.exportimport.api
 import android.health.connect.HealthConnectException
 import android.health.connect.exportimport.ExportImportDocumentProvider
 import android.net.Uri
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.exportimport.api.DocumentProvider
 import com.android.healthconnect.controller.exportimport.api.DocumentProviderInfo
 import com.android.healthconnect.controller.exportimport.api.DocumentProviderRoot
@@ -35,9 +36,11 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @UninstallModules(HealthDataExportManagerModule::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class QueryDocumentProvidersUseCaseTest {
     companion object {
         private const val TEST_DOCUMENT_PROVIDER_1_TITLE = "Document provider 1"

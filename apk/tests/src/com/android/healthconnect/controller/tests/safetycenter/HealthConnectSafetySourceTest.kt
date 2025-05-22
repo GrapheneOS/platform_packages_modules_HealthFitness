@@ -25,18 +25,21 @@ import android.safetycenter.SafetyEvent
 import android.safetycenter.SafetyEvent.SAFETY_EVENT_TYPE_SOURCE_STATE_CHANGED
 import android.safetycenter.SafetySourceData
 import android.safetycenter.SafetySourceStatus
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.safetycenter.HealthConnectSafetySource
 import com.android.healthconnect.controller.safetycenter.HealthConnectSafetySource.Companion.HEALTH_CONNECT_SOURCE_ID
 import com.android.healthconnect.controller.safetycenter.SafetyCenterManagerWrapper
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.whenever
 
+@RunWith(AndroidJUnit4::class)
 class HealthConnectSafetySourceTest {
 
     private val mockSafetyCenterManagerWrapper = mock(SafetyCenterManagerWrapper::class.java)

@@ -102,7 +102,12 @@ public class HealthPermissionIntentAppsTracker {
             if (mPackageManager
                     .queryIntentActivitiesAsUser(
                             permissionPackageUsageIntent,
-                            PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL),
+                            // MATCH_ALL doesn't really match all, we need the MATCH_DIRECT_BOOT_
+                            // flags to ensure there's no filtering if the user is locked.
+                            PackageManager.ResolveInfoFlags.of(
+                                    PackageManager.MATCH_ALL
+                                            | PackageManager.MATCH_DIRECT_BOOT_AWARE
+                                            | PackageManager.MATCH_DIRECT_BOOT_UNAWARE),
                             userHandle)
                     .isEmpty()) {
                 mUserToHealthPackageNamesMap.get(userHandle).remove(packageName);

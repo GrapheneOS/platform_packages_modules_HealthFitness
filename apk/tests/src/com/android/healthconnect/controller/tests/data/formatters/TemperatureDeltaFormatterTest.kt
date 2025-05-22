@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.tests.data.formatters
 
 import android.health.connect.datatypes.SkinTemperatureRecord.Delta
 import android.health.connect.datatypes.units.TemperatureDelta
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.formatters.TemperatureDeltaFormatter
 import com.android.healthconnect.controller.tests.utils.setLocale
@@ -34,8 +35,10 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class TemperatureDeltaFormatterTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 

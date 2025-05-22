@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.backuprestore;
 
+import static com.android.server.healthconnect.common.preferences.PreferencesManager.AUTO_DELETE_DURATION_RECORDS_KEY;
+
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
@@ -24,7 +26,6 @@ import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.AppInfo;
-import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.AutoDeleteFrequencyProto;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.DistanceUnitProto;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.EnergyUnitProto;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.HeightUnitProto;
@@ -49,13 +50,11 @@ public final class CloudBackupSettingsHelper {
     private final AppInfoHelper mAppInfoHelper;
 
     public static final String TAG = "CloudBackupSettingsHelper";
-
     public static final String ENERGY_UNIT_PREF_KEY = "ENERGY_UNIT_KEY";
     public static final String TEMPERATURE_UNIT_PREF_KEY = "TEMPERATURE_UNIT_KEY";
     public static final String HEIGHT_UNIT_PREF_KEY = "HEIGHT_UNIT_KEY";
     public static final String WEIGHT_UNIT_PREF_KEY = "WEIGHT_UNIT_KEY";
     public static final String DISTANCE_UNIT_PREF_KEY = "DISTANCE_UNIT_KEY";
-    public static final String AUTO_DELETE_PREF_KEY = "auto_delete_range_picker";
 
     public CloudBackupSettingsHelper(
             HealthDataCategoryPriorityHelper priorityHelper,
@@ -76,12 +75,12 @@ public final class CloudBackupSettingsHelper {
                 Settings.newBuilder()
                         .putAllAppInfo(getAppInfo())
                         .putAllPriorityList(getPriorityList())
-                        .setAutoDeleteFrequency(getAutoDeleteSetting())
                         .setEnergyUnitSetting(getEnergyPreference())
                         .setTemperatureUnitSetting(getTemperaturePreference())
                         .setHeightUnitSetting(getHeightPreference())
                         .setWeightUnitSetting(getWeightPreference())
                         .setDistanceUnitSetting(getDistancePreference());
+        maybeSetAutoDeleteFrequencyInDays(builder);
         return builder.build();
     }
 
@@ -92,11 +91,10 @@ public final class CloudBackupSettingsHelper {
     public void restoreUserSettings(Settings newUserSettings) {
         restoreAppInfo(newUserSettings.getAppInfoMap());
         mergePriorityLists(newUserSettings.getPriorityListMap());
-        AutoDeleteFrequencyProto newAutoDeleteFrequency = newUserSettings.getAutoDeleteFrequency();
-        if (newAutoDeleteFrequency != AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_UNSPECIFIED
-                && newAutoDeleteFrequency != AutoDeleteFrequencyProto.UNRECOGNIZED) {
+        if (newUserSettings.hasAutoDeleteFrequencyInDays()) {
             mPreferenceHelper.insertOrReplacePreference(
-                    AUTO_DELETE_PREF_KEY, newAutoDeleteFrequency.name());
+                    AUTO_DELETE_DURATION_RECORDS_KEY,
+                    newUserSettings.getAutoDeleteFrequencyInDays());
         }
         EnergyUnitProto newEnergyUnit = newUserSettings.getEnergyUnitSetting();
         if (newEnergyUnit != EnergyUnitProto.ENERGY_UNIT_UNSPECIFIED
@@ -203,13 +201,6 @@ public final class CloudBackupSettingsHelper {
         return appInfoMap;
     }
 
-    private AutoDeleteFrequencyProto getAutoDeleteSetting() {
-        String preference = mPreferenceHelper.getPreference(AUTO_DELETE_PREF_KEY);
-        return preference == null
-                ? AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_UNSPECIFIED
-                : AutoDeleteFrequencyProto.valueOf(preference);
-    }
-
     private TemperatureUnitProto getTemperaturePreference() {
         String preference = mPreferenceHelper.getPreference(TEMPERATURE_UNIT_PREF_KEY);
         return preference == null
@@ -243,5 +234,12 @@ public final class CloudBackupSettingsHelper {
         return preference == null
                 ? DistanceUnitProto.DISTANCE_UNIT_UNSPECIFIED
                 : DistanceUnitProto.valueOf(preference);
+    }
+
+    private void maybeSetAutoDeleteFrequencyInDays(Settings.Builder builder) {
+        String preference = mPreferenceHelper.getPreference(AUTO_DELETE_DURATION_RECORDS_KEY);
+        if (preference != null) {
+            builder.setAutoDeleteFrequencyInDays(preference);
+        }
     }
 }

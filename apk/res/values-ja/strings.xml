@@ -1077,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"続行する前に、電話システムを更新してください。"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"電話システムをすでに更新している場合は、スマートフォンを再起動して統合を続行してください"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"続行する前に、ヘルスコネクト アプリを最新バージョンに更新してください。"</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"空き容量が不足しています"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"ヘルスコネクトの統合を続けるためには、スマートフォンに <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> の空き容量が必要です。\n\nスマートフォンのストレージのデータを一部削除してから、もう一度お試しください。"</string>
-    <string name="try_again_button" msgid="8745496819992160789">"再試行"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"空き容量を増やす"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"統合が一時停止しました"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Android システムとの統合中にヘルスコネクト アプリが終了しました。\n\n[再開] をクリックしてアプリを再起動し、データと権限の移行を続行してください。"</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"ヘルスコネクトのデータを保持するため、<xliff:g id="TIME_NEEDED">%1$s</xliff:g>以内に完了してください"</string>
@@ -1224,4 +1220,21 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 件のアプリが使用}other{# 件のアプリが使用}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"過去 24 時間は使用されていません"</string>
     <string name="accessed" msgid="4424701457530587176">"<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>にアクセス"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"最初の 2 つのアプリを接続する"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"これらのアプリを接続して、健康とフィットネスに関するデータを共有しましょう"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"2 つ目のアプリを接続する"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"<xliff:g id="APP_NAME">%1$s</xliff:g> さんと健康とフィットネスに関するデータを共有するには、アプリをもう 1 つ設定してください"</string>
+    <string name="set_up_later" msgid="223888663943501921">"後でセットアップ"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"接続できるアプリ"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"ヘルスコネクトを利用すると、健康とフィットネスに関するデータを 1 か所に保存し、スマートフォン上のさまざまなアプリ間で共有できます。これにより、アプリを連携させて、さらに便利に使うことができます。"</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"ヘルスコネクトの詳細"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"アプリをヘルスコネクトに接続しました"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"もう少しで完了です"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"設定を完了してデータ共有を開始するには、これらのアプリを今すぐ開いてください"</string>
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"健康に関するデータをアプリ全体で確認できます"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"健康とフィットネスに関するデータをアプリ間で共有します"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"設定"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"2 つ目のアプリを接続する"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"<xliff:g id="APP_NAME">%1$s</xliff:g> さんと健康とフィットネスに関するデータを共有するには、アプリをもう 1 つ設定してください"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"続行"</string>
 </resources>

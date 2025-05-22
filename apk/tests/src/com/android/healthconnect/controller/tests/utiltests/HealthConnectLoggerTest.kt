@@ -15,11 +15,9 @@
  */
 package com.android.healthconnect.controller.tests.utiltests
 
-import android.platform.test.annotations.DisableFlags
-import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
-import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.PageName.ALL_MEDICAL_DATA_PAGE
 import com.android.healthconnect.controller.utils.logging.PageName.COMBINED_APP_ACCESS_PAGE
 import com.android.healthconnect.controller.utils.logging.PageName.MEDICAL_APP_ACCESS_PAGE
@@ -30,7 +28,6 @@ import com.android.healthconnect.controller.utils.logging.PageName.SETTINGS_MANA
 import com.android.healthconnect.controller.utils.logging.PageName.SETTINGS_MANAGE_MEDICAL_APP_PERMISSIONS_PAGE
 import com.android.healthconnect.controller.utils.logging.PageName.TAB_MEDICAL_ACCESS_PAGE
 import com.android.healthconnect.controller.utils.logging.PageName.TAB_MEDICAL_ENTRIES_PAGE
-import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -38,8 +35,10 @@ import javax.inject.Inject
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class HealthConnectLoggerTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

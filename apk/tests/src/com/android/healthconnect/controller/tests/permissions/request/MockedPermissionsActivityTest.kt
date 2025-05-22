@@ -54,6 +54,7 @@ import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.compatibility.common.util.SystemUtil.eventually
@@ -102,6 +103,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.atLeast
 import org.mockito.Mockito.mock
@@ -116,6 +118,7 @@ import org.mockito.kotlin.whenever
  */
 @UninstallModules(DeviceInfoUtilsModule::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class MockedPermissionsActivityTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

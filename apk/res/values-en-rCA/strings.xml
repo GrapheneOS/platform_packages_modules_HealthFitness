@@ -1077,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Before continuing, update your phone system."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"If you\'ve already updated your phone system, try restarting your phone to continue the integration"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Before continuing, update the Health Connect app to the latest version."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"More space needed"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect needs <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> of storage space on your phone in order for the integration to continue.\n\nClear some space on your phone and then try again."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Try again"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Free up space"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Integration paused"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"The Health Connect app closed while it was being integrated with the Android system.\n\nClick resume to reopen the app and continue transferring your data and permissions."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"In order to keep your Health Connect data, complete this within <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
@@ -1224,4 +1220,21 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Used by 1 app}other{Used by # apps}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Not used in past 24 hours"</string>
     <string name="accessed" msgid="4424701457530587176">"Accessed <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Connect your first 2 apps"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Connect these apps to start sharing health and fitness data between them"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"Connect a second app"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"Set up one more app to share health and fitness data with <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="set_up_later" msgid="223888663943501921">"Set up later"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"Available apps to connect"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect lets you store your health and fitness data in one place and share it between apps on your phone, making your apps work better together."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"More about Health Connect"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"App connected to Health Connect"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"Almost done"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"Open these apps now to finish setup and start data sharing"</string>
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"See your health data across apps"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Start sharing health and fitness data between your apps"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Set up"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Connect a second app"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Set up one more app to share health and fitness data with <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Continue"</string>
 </resources>

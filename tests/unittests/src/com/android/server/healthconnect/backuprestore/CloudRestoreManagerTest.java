@@ -16,7 +16,6 @@
 
 package com.android.server.healthconnect.backuprestore;
 
-import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.AUTO_DELETE_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.DISTANCE_UNIT_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.ENERGY_UNIT_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.HEIGHT_UNIT_PREF_KEY;
@@ -28,7 +27,7 @@ import static com.android.server.healthconnect.backuprestore.ProtoTestData.gener
 import static com.android.server.healthconnect.backuprestore.ProtoTestData.generateIntervalRecord;
 import static com.android.server.healthconnect.backuprestore.ProtoTestData.generateRecord;
 import static com.android.server.healthconnect.backuprestore.RecordProtoConverter.PROTO_VERSION;
-import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_UNSPECIFIED;
+import static com.android.server.healthconnect.common.preferences.PreferencesManager.AUTO_DELETE_DURATION_RECORDS_KEY;
 import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.DistanceUnitProto.DISTANCE_UNIT_UNSPECIFIED;
 import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.EnergyUnitProto.ENERGY_UNIT_UNSPECIFIED;
 import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.HeightUnitProto.HEIGHT_UNIT_UNSPECIFIED;
@@ -393,7 +392,6 @@ public class CloudRestoreManagerTest {
                         .setHeightUnitSettingValue(invalidEnumValue)
                         .setWeightUnitSettingValue(invalidEnumValue)
                         .setDistanceUnitSettingValue(invalidEnumValue)
-                        .setAutoDeleteFrequencyValue(invalidEnumValue)
                         .build();
 
         BackupMetadata backupSettings = new BackupMetadata(settings.toByteArray());
@@ -410,8 +408,8 @@ public class CloudRestoreManagerTest {
                 .isEqualTo(Settings.HeightUnitProto.CENTIMETERS.toString());
         assertThat(mPreferenceHelper.getPreference(DISTANCE_UNIT_PREF_KEY))
                 .isEqualTo(Settings.DistanceUnitProto.KILOMETERS.toString());
-        assertThat(mPreferenceHelper.getPreference(AUTO_DELETE_PREF_KEY))
-                .isEqualTo(Settings.AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_NEVER.toString());
+        assertThat(mPreferenceHelper.getPreference(AUTO_DELETE_DURATION_RECORDS_KEY))
+                .isEqualTo("90");
     }
 
     @Test
@@ -427,9 +425,7 @@ public class CloudRestoreManagerTest {
         mAppInfoHelper.addAppInfoIfNoAppInfoEntryExists(TEST_PACKAGE_NAME_3, "app name 3");
         mPriorityHelper.setPriorityOrder(
                 HealthDataCategory.ACTIVITY, List.of(TEST_PACKAGE_NAME, TEST_PACKAGE_NAME_2));
-        mPreferenceHelper.insertOrReplacePreference(
-                AUTO_DELETE_PREF_KEY,
-                Settings.AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_NEVER.toString());
+        mPreferenceHelper.insertOrReplacePreference(AUTO_DELETE_DURATION_RECORDS_KEY, "90");
         mPreferenceHelper.insertOrReplacePreference(
                 ENERGY_UNIT_PREF_KEY, Settings.EnergyUnitProto.CALORIE.toString());
         mPreferenceHelper.insertOrReplacePreference(
@@ -469,8 +465,7 @@ public class CloudRestoreManagerTest {
         return Settings.newBuilder()
                 .putAllAppInfo(appInfoMap)
                 .putAllPriorityList(priorityListMap)
-                .setAutoDeleteFrequency(
-                        Settings.AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_THREE_MONTHS)
+                .setAutoDeleteFrequencyInDays("30")
                 .setEnergyUnitSetting(energyUnitSetting)
                 .setTemperatureUnitSetting(Settings.TemperatureUnitProto.KELVIN)
                 .setHeightUnitSetting(Settings.HeightUnitProto.FEET)
@@ -492,10 +487,8 @@ public class CloudRestoreManagerTest {
                     restoredSettings.getEnergyUnitSetting());
         }
 
-        assertNotSame(AUTO_DELETE_RANGE_UNSPECIFIED, restoredSettings.getAutoDeleteFrequency());
-        assertSame(
-                settingsFromBackup.getAutoDeleteFrequency(),
-                restoredSettings.getAutoDeleteFrequency());
+        assertThat(settingsFromBackup.getAutoDeleteFrequencyInDays())
+                .isEqualTo(restoredSettings.getAutoDeleteFrequencyInDays());
 
         assertNotSame(TEMPERATURE_UNIT_UNSPECIFIED, restoredSettings.getTemperatureUnitSetting());
         assertSame(

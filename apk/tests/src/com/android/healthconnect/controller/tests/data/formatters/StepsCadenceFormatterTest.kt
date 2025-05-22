@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.tests.data.formatters
 
 import android.content.Context
 import android.health.connect.datatypes.StepsCadenceRecord
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.StepsCadenceFormatter
@@ -37,8 +38,10 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class StepsCadenceFormatterTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val clearTimeFormatRule = ClearTimeFormatRule()

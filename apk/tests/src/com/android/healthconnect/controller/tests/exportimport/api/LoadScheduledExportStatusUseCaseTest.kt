@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.tests.exportimport.api
 
 import android.health.connect.HealthConnectException
 import android.health.connect.exportimport.ScheduledExportStatus
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.exportimport.api.ExportImportUseCaseResult
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
 import com.android.healthconnect.controller.exportimport.api.LoadScheduledExportStatusUseCase
@@ -33,9 +34,11 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @UninstallModules(HealthDataExportManagerModule::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class LoadScheduledExportStatusUseCaseTest {
 
     @BindValue val healthDataExportManager: HealthDataExportManager = FakeHealthDataExportManager()

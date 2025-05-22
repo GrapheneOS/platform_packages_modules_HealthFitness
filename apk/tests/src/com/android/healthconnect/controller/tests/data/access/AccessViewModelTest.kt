@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.data.access
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.data.access.AccessViewModel
 import com.android.healthconnect.controller.data.access.AppAccessMetadata
 import com.android.healthconnect.controller.data.access.AppAccessState
@@ -44,10 +45,12 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.MockitoAnnotations
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class AccessViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

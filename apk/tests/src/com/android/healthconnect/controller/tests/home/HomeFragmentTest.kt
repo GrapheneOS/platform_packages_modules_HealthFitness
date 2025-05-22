@@ -46,6 +46,7 @@ import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
@@ -104,6 +105,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
@@ -117,6 +119,7 @@ import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @UninstallModules(DeviceInfoUtilsModule::class)
+@RunWith(AndroidJUnit4::class)
 class HomeFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
