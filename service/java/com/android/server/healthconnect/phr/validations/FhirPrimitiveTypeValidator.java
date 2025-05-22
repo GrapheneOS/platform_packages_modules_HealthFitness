@@ -45,8 +45,11 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Performs validation on FHIR primitive values.
@@ -57,6 +60,8 @@ public class FhirPrimitiveTypeValidator {
     private static final Map<R4FhirType, Integer> sR4PrimitiveIntegerTypeToMinValueMap =
             new HashMap<>();
     private static final Map<R4FhirType, Pattern> sR4PrimitiveStringTypeToPatternMap =
+            new HashMap<>();
+    private static final Map<String, Set<String>> sXhtmlElementToAttributesAllowlistMap =
             new HashMap<>();
 
     // All regex below are copied from https://hl7.org/fhir/R4/datatypes.html. Please keep the regex
@@ -94,6 +99,16 @@ public class FhirPrimitiveTypeValidator {
     private static final Pattern UUID_R4_PATTERN =
             Pattern.compile(
                     "urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+
+    private static final Set<String> XHTML_ATTRIBUTES_ALLOWED_ON_ALL_ELEMENTS =
+            Set.of("class", "dir", "id", "lang", "style", "title");
+    private static final Set<String> XHTML_TABLE_ELEMENT_ALLOWED_ATTRIBUTES =
+            Set.of("align", "char", "charoff", "valign");
+    private static final Set<String> XHTML_COLUMN_ALLOWED_ATTRIBUTES =
+            Stream.concat(
+                            Set.of("span", "width").stream(),
+                            XHTML_TABLE_ELEMENT_ALLOWED_ATTRIBUTES.stream())
+                    .collect(Collectors.toUnmodifiableSet());
 
     static void validate(Object fieldObject, String fullFieldName, R4FhirType type) {
         if (!Flags.phrFhirPrimitiveTypeValidation()) {
@@ -218,6 +233,7 @@ public class FhirPrimitiveTypeValidator {
     }
 
     private static void validateXhtmlString(String xhtml, String fullFieldName) {
+        populateXhtmlElementToAttributesAllowlistMap();
         XmlPullParser parser = createXmlPullParserAndSetInput(xhtml);
 
         while (getNextTokenAndHandleException(parser, fullFieldName)
@@ -243,7 +259,32 @@ public class FhirPrimitiveTypeValidator {
                             "Found invalid xhtml containing CDATA section in field: "
                                     + fullFieldName);
                 case XmlPullParser.START_TAG:
-                    // TODO: b/402780942 - Validate elements and attributes.
+                    String elementName = parser.getName();
+                    Set<String> allowedAttributes =
+                            sXhtmlElementToAttributesAllowlistMap.get(elementName);
+                    if (allowedAttributes == null) {
+                        throw new IllegalArgumentException(
+                                "Found invalid xhtml containing disallowed element "
+                                        + elementName
+                                        + " in field: "
+                                        + fullFieldName);
+                    }
+                    for (int i = 0; i < parser.getAttributeCount(); i++) {
+                        String attributeName = parser.getAttributeName(i);
+                        if (!allowedAttributes.contains(attributeName)
+                                && !XHTML_ATTRIBUTES_ALLOWED_ON_ALL_ELEMENTS.contains(
+                                        attributeName)) {
+                            throw new IllegalArgumentException(
+                                    "Found invalid xhtml containing disallowed attribute "
+                                            + elementName
+                                            + "."
+                                            + attributeName
+                                            + " in field: "
+                                            + fullFieldName);
+                        }
+                        // TODO: b/402780942 - Add additional link validation for a.href, img.src
+                        //  and img.longdesc.
+                    }
                     break;
                 default:
                     // Other event types can be ignored as they are mostly the html content,
@@ -325,5 +366,91 @@ public class FhirPrimitiveTypeValidator {
         sR4PrimitiveStringTypeToPatternMap.put(R4_FHIR_TYPE_URI, URI_R4_PATTERN);
         sR4PrimitiveStringTypeToPatternMap.put(R4_FHIR_TYPE_URL, URL_R4_PATTERN);
         sR4PrimitiveStringTypeToPatternMap.put(R4_FHIR_TYPE_UUID, UUID_R4_PATTERN);
+    }
+
+    private static synchronized void populateXhtmlElementToAttributesAllowlistMap() {
+        if (!sXhtmlElementToAttributesAllowlistMap.isEmpty()) {
+            return;
+        }
+        sXhtmlElementToAttributesAllowlistMap.put(
+                "a",
+                Set.of(
+                        "accesskey",
+                        "charset",
+                        "href",
+                        "hreflang",
+                        "name",
+                        "rel",
+                        "rev",
+                        "tabindex",
+                        "target",
+                        "type"));
+        sXhtmlElementToAttributesAllowlistMap.put("abbr", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("acronym", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("b", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("bdo", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("big", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("blockquote", Set.of("cite"));
+        sXhtmlElementToAttributesAllowlistMap.put("br", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("caption", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("cite", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("code", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("col", XHTML_COLUMN_ALLOWED_ATTRIBUTES);
+        sXhtmlElementToAttributesAllowlistMap.put("colgroup", XHTML_COLUMN_ALLOWED_ATTRIBUTES);
+        sXhtmlElementToAttributesAllowlistMap.put("dd", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("dfn", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("div", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("dl", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("dt", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("em", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("h1", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("h2", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("h3", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("h4", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("h5", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("h6", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("hr", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("i", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put(
+                "img", Set.of("alt", "height", "longdesc", "src", "width"));
+        sXhtmlElementToAttributesAllowlistMap.put("kbd", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("li", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("ol", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("p", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("pre", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("q", Set.of("cite"));
+        sXhtmlElementToAttributesAllowlistMap.put("samp", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("small", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("span", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("strong", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("sub", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("sup", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put(
+                "table",
+                Set.of(
+                        "border",
+                        "cellpadding",
+                        "cellspacing",
+                        "frame",
+                        "rules",
+                        "summary",
+                        "width"));
+        sXhtmlElementToAttributesAllowlistMap.put("tbody", XHTML_TABLE_ELEMENT_ALLOWED_ATTRIBUTES);
+        sXhtmlElementToAttributesAllowlistMap.put(
+                "td",
+                Set.of(
+                        "abbr", "align", "axis", "char", "charoff", "colspan", "headers", "rowspan",
+                        "scope", "valign"));
+        sXhtmlElementToAttributesAllowlistMap.put("tfoot", XHTML_TABLE_ELEMENT_ALLOWED_ATTRIBUTES);
+        sXhtmlElementToAttributesAllowlistMap.put(
+                "th",
+                Set.of(
+                        "abbr", "align", "axis", "char", "charoff", "colspan", "headers", "rowspan",
+                        "scope", "valign"));
+        sXhtmlElementToAttributesAllowlistMap.put("thead", XHTML_TABLE_ELEMENT_ALLOWED_ATTRIBUTES);
+        sXhtmlElementToAttributesAllowlistMap.put("tr", XHTML_TABLE_ELEMENT_ALLOWED_ATTRIBUTES);
+        sXhtmlElementToAttributesAllowlistMap.put("tt", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("ul", Set.of());
+        sXhtmlElementToAttributesAllowlistMap.put("var", Set.of());
     }
 }
