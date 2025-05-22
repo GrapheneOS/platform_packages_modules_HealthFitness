@@ -32,6 +32,7 @@ java_library {
         "cts-healthconnect-lib",
         "cts-healthconnect-phr-lib",
         "healthfitness-testing-cts",
+        "healthfitness-testing-testapp",
     ],
     sdk_version: "test_current",
 }

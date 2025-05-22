@@ -18,7 +18,7 @@ package android.healthconnect.cts.datatypes;
 
 import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUMENT;
 import static android.health.connect.RecordIdFilter.fromId;
-import static android.healthconnect.cts.lib.TestAppProxy.APP_WRITE_PERMS_ONLY;
+import static android.healthconnect.testing.cts.testapphelpers.TestAppProxy.APP_WRITE_PERMS_ONLY;
 
 import static com.google.common.truth.Truth.assertThat;
 

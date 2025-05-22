@@ -21,7 +21,7 @@
 
     <application>
         <uses-library android:name="android.test.runner"/>
-        <activity android:name="android.healthconnect.cts.utils.ProxyActivity" />
+        <activity android:name="android.healthconnect.testing.cts.testapphelpers.ProxyActivity" />
     </application>
 
     <!-- To get visibility of the app with health permissions definitions,
