@@ -922,14 +922,14 @@ class LoadEntriesHelperUseCaseTest {
         return Pair(input, timeRangeFilter)
     }
 
-    private fun assertArgumentRequestCaptorValidity(
-        requestCaptor: ArgumentCaptor<out ReadRecordsRequestUsingFilters<out Record>>,
+    private fun <T : Record> assertArgumentRequestCaptorValidity(
+        requestCaptor: ArgumentCaptor<out ReadRecordsRequestUsingFilters<T>>,
         timeRangeFilter: TimeInstantRangeFilter,
         recordType: Class<out Record>,
         wantedInvocationCount: Int = 1,
     ) {
         Mockito.verify(healthConnectManager, Mockito.times(wantedInvocationCount))
-            .readRecords(requestCaptor.capture(), any(), any())
+            .readRecords<T>(requestCaptor.capture(), any(), any())
         assertThat(requestCaptor.value.recordType).isEqualTo(recordType)
         assertThat((requestCaptor.value.timeRangeFilter as TimeInstantRangeFilter).startTime)
             .isEqualTo(timeRangeFilter.startTime)
