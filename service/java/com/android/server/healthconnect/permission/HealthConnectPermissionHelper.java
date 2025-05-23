@@ -478,6 +478,42 @@ public final class HealthConnectPermissionHelper {
         return isFromSplitPermission(permissionFlag, targetSdkVersion);
     }
 
+    /**
+     * Returns true if an app declares at least one fitness permission in its manifest. A fitness
+     * permission is a permission that is not medical and not additional.
+     */
+    public boolean isRequestingFitnessPermission(PackageInfo packageInfo) {
+        if (packageInfo == null || packageInfo.requestedPermissions == null) {
+            return false;
+        }
+
+        for (int i = 0; i < packageInfo.requestedPermissions.length; i++) {
+            String currentPermission = packageInfo.requestedPermissions[i];
+            if (mHealthConnectMappings.isFitnessPermission(currentPermission)) {
+                // A health permission that is not medical or additional is a fitness permission
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if an app was granted at least one fitness permission. A fitness permission is a
+     * permission that is not medical and not additional.
+     */
+    public boolean hasGrantedFitnessPermission(PackageInfo packageInfo) {
+        List<String> grantedHealthPermissions =
+                PackageInfoUtils.getGrantedHealthPermissions(mContext, packageInfo);
+
+        for (String permission : grantedHealthPermissions) {
+            if (mHealthConnectMappings.isFitnessPermission(permission)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /** Returns if the app is targeting SDK 35 and requesting the given permission. */
     private boolean isAppRequestingPermissionWithOutdatedTargetSdk(
             String packageName, UserHandle userHandle, String permission, int buildVersion) {

@@ -432,7 +432,6 @@ public class HealthConnectMappingsTest {
         Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
         Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB
     })
-
     @Test
     public void nicotineIntakeFlagEnabled_containsNicotineIntake() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -459,5 +458,41 @@ public class HealthConnectMappingsTest {
 
         assertThat(healthConnectMappings.getAllRecordTypeIdentifiers())
                 .doesNotContain(RECORD_TYPE_NICOTINE_INTAKE);
+    }
+
+    @Test
+    public void isFitnessPermission_returnsTrueForAllFitnessPermissions() {
+        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
+        for (DataTypeDescriptor descriptor : getAllDataTypeDescriptors()) {
+            assertThat(healthConnectMappings.isFitnessPermission(descriptor.getReadPermission()))
+                    .isTrue();
+            assertThat(healthConnectMappings.isFitnessPermission(descriptor.getWritePermission()))
+                    .isTrue();
+        }
+    }
+
+    @Test
+    public void isFitnessPermission_returnsFalseForAdditionalPermissions() {
+        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
+        assertThat(
+                        healthConnectMappings.isFitnessPermission(
+                                HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND))
+                .isFalse();
+        assertThat(
+                        healthConnectMappings.isFitnessPermission(
+                                HealthPermissions.READ_HEALTH_DATA_HISTORY))
+                .isFalse();
+        assertThat(
+                        healthConnectMappings.isFitnessPermission(
+                                HealthPermissions.READ_EXERCISE_ROUTES))
+                .isFalse();
+    }
+
+    @Test
+    public void isFitnessPermission_returnsFalseForMedicalPermissions() {
+        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
+        for (String permission : HealthPermissions.getAllMedicalPermissions()) {
+            assertThat(healthConnectMappings.isFitnessPermission(permission)).isFalse();
+        }
     }
 }

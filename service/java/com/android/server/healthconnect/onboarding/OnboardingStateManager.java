@@ -190,13 +190,11 @@ public final class OnboardingStateManager {
     }
 
     private boolean isConnected(PackageInfo app) {
-        return mHealthConnectPermissionHelper.hasGrantedHealthPermissions(
-                app.packageName, mUserHandle);
+        return mHealthConnectPermissionHelper.hasGrantedFitnessPermission(app);
     }
 
     private boolean hasFitnessPerm(PackageInfo app) {
-        // TODO(b/417974138) implement this
-        return true;
+        return mHealthConnectPermissionHelper.isRequestingFitnessPermission(app);
     }
 
     private boolean hasBeenUsed(PackageInfo app) {
