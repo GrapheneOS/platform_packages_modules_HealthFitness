@@ -23,24 +23,24 @@ import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing HydrationRecord data. */
-class HydrationFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<HydrationRecord>(context) {
+class HydrationFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<HydrationRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: HydrationRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: HydrationRecord): String {
         return formatVolume(R.string.liter, record.volume)
     }
 
-    override suspend fun formatA11yValue(
-        record: HydrationRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: HydrationRecord): String {
         return formatVolume(R.string.liter_long, record.volume)
     }
 

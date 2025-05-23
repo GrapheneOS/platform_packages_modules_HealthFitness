@@ -26,6 +26,7 @@ import com.android.healthconnect.controller.data.formatters.ExerciseSessionForma
 import com.android.healthconnect.controller.data.formatters.shared.BaseFormatter
 import com.android.healthconnect.controller.data.formatters.shared.RecordDetailsFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -33,17 +34,18 @@ import javax.inject.Inject
 class PlannedExerciseSessionRecordFormatter
 @Inject
 constructor(
-    @ApplicationContext private val context: Context,
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
     private val plannedExerciseBlockFormatter: PlannedExerciseBlockFormatter,
 ) :
-    BaseFormatter<PlannedExerciseSessionRecord>(context),
+    BaseFormatter<PlannedExerciseSessionRecord>(context, timeFormatter, unitPreferences),
     RecordDetailsFormatter<PlannedExerciseSessionRecord> {
 
     override suspend fun formatRecord(
         record: PlannedExerciseSessionRecord,
         header: String,
         headerA11y: String,
-        unitPreferences: UnitPreferences,
     ): FormattedEntry {
         return FormattedEntry.PlannedExerciseSessionEntry(
             uuid = record.metadata.id,
@@ -88,7 +90,6 @@ constructor(
                 addAll(
                     plannedExerciseBlockFormatter.formatBlockDetails(
                         plannedExerciseBlock,
-                        unitPreferences,
                     )
                 )
                 add(ItemDataEntrySeparator())

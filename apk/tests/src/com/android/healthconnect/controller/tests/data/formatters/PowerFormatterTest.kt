@@ -27,7 +27,7 @@ import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.units.UnitPreferences
-import com.google.common.truth.Truth.*
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.ZoneId
@@ -63,30 +63,26 @@ class PowerFormatterTest {
     @Test
     fun formatValue_noEntries_returnsNoData() = runBlocking {
         val record = getPowerRecord(listOf())
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("No data")
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("No data")
+        assertThat(formatter.formatValue(record)).isEqualTo("No data")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("No data")
     }
 
     @Test
     fun formatValue_returnsPowerValue() = runBlocking {
         val record = getPowerRecord(listOf(10.2))
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("10.2 W")
+        assertThat(formatter.formatValue(record)).isEqualTo("10.2 W")
     }
 
     @Test
     fun formatA11yValue_pluralValue_returnsA11yPowerValues() {
         val record = getPowerRecord(listOf(10.1))
-        runBlocking {
-            assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("10.1 watts")
-        }
+        runBlocking { assertThat(formatter.formatA11yValue(record)).isEqualTo("10.1 watts") }
     }
 
     @Test
     fun formatA11yValue_singleValue_returnsA11yPowerValues() {
         val record = getPowerRecord(listOf(1.0))
-        runBlocking {
-            assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("1 watt")
-        }
+        runBlocking { assertThat(formatter.formatA11yValue(record)).isEqualTo("1 watt") }
     }
 
     @Test

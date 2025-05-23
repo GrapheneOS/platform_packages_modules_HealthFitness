@@ -35,25 +35,25 @@ import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.StringJoiner
 import javax.inject.Inject
 
 /** Formatter for printing BloodGlucoseRecord data. */
-class BloodGlucoseFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<BloodGlucoseRecord>(context) {
+class BloodGlucoseFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<BloodGlucoseRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: BloodGlucoseRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: BloodGlucoseRecord): String {
         return format(R.string.millimoles_per_liter, record)
     }
 
-    override suspend fun formatA11yValue(
-        record: BloodGlucoseRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: BloodGlucoseRecord): String {
         return format(R.string.millimoles_per_liter_long, record)
     }
 

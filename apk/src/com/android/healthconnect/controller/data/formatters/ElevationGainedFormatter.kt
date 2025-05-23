@@ -21,26 +21,24 @@ import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing ElevationGainedRecord data. */
 class ElevationGainedFormatter
 @Inject
-constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<ElevationGainedRecord>(context) {
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<ElevationGainedRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: ElevationGainedRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: ElevationGainedRecord): String {
         return formatSample(R.string.elevation_meters, record.elevation)
     }
 
-    override suspend fun formatA11yValue(
-        record: ElevationGainedRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: ElevationGainedRecord): String {
         return formatSample(R.string.elevation_meters_long, record.elevation)
     }
 

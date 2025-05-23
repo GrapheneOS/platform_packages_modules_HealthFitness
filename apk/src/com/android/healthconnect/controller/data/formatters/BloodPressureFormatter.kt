@@ -27,26 +27,26 @@ import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Locale
 import java.util.StringJoiner
 import javax.inject.Inject
 
 /** Formatter for printing BloodPressureRecord data. */
-class BloodPressureFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<BloodPressureRecord>(context) {
+class BloodPressureFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<BloodPressureRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: BloodPressureRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: BloodPressureRecord): String {
         return formatBloodPressure(R.string.blood_pressure, record)
     }
 
-    override suspend fun formatA11yValue(
-        record: BloodPressureRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: BloodPressureRecord): String {
         return formatBloodPressure(R.string.blood_pressure_long, record)
     }
 

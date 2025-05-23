@@ -59,32 +59,32 @@ class HydrationFormatterTest {
 
     @Test
     fun formatValue() = runBlocking {
-        assertThat(formatter.formatValue(getRecord(12.0), preferences)).isEqualTo("12 L")
+        assertThat(formatter.formatValue(getRecord(12.0))).isEqualTo("12 L")
     }
 
     @Test
     fun formatA11yValue() = runBlocking {
-        assertThat(formatter.formatA11yValue(getRecord(12.0), preferences)).isEqualTo("12 liters")
+        assertThat(formatter.formatA11yValue(getRecord(12.0))).isEqualTo("12 liters")
     }
 
     @Test
     fun formatValue_one() = runBlocking {
-        assertThat(formatter.formatValue(getRecord(1.0), preferences)).isEqualTo("1 L")
+        assertThat(formatter.formatValue(getRecord(1.0))).isEqualTo("1 L")
     }
 
     @Test
     fun formatA11yValue_one() = runBlocking {
-        assertThat(formatter.formatA11yValue(getRecord(1.0), preferences)).isEqualTo("1 liter")
+        assertThat(formatter.formatA11yValue(getRecord(1.0))).isEqualTo("1 liter")
     }
 
     @Test
     fun formatValue_fraction() = runBlocking {
-        assertThat(formatter.formatValue(getRecord(0.3), preferences)).isEqualTo("0.3 L")
+        assertThat(formatter.formatValue(getRecord(0.3))).isEqualTo("0.3 L")
     }
 
     @Test
     fun formatA11yValue_fraction() = runBlocking {
-        assertThat(formatter.formatA11yValue(getRecord(0.3), preferences)).isEqualTo("0.3 liters")
+        assertThat(formatter.formatA11yValue(getRecord(0.3))).isEqualTo("0.3 liters")
     }
 
     private fun getRecord(liters: Double): HydrationRecord {

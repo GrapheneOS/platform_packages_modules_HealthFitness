@@ -24,26 +24,21 @@ import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import java.time.Instant
 
 /** Abstract formatter for Record types. This formatter handles header for FormattedEntries. */
-abstract class BaseFormatter<T : Record>(private val context: Context) : Formatter<T> {
-
-    private val timeFormatter = LocalDateTimeFormatter(context)
-    protected val unitPreferences = UnitPreferences(context)
+abstract class BaseFormatter<T : Record>(
+    protected val context: Context,
+    protected val timeFormatter: LocalDateTimeFormatter,
+    protected val unitPreferences: UnitPreferences,
+) : Formatter<T> {
 
     override suspend fun format(record: T, appName: String): FormattedEntry {
         return formatRecord(
             record = record,
             header = getHeader(record, appName),
             headerA11y = getHeaderA11y(record, appName),
-            unitPreferences = unitPreferences,
         )
     }
 
-    abstract suspend fun formatRecord(
-        record: T,
-        header: String,
-        headerA11y: String,
-        unitPreferences: UnitPreferences,
-    ): FormattedEntry
+    abstract suspend fun formatRecord(record: T, header: String, headerA11y: String): FormattedEntry
 
     protected fun getStartTime(record: T): Instant {
         return when (record) {

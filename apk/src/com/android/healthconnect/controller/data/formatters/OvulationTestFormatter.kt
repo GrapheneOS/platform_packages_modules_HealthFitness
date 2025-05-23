@@ -24,17 +24,20 @@ import android.health.connect.datatypes.OvulationTestRecord.OvulationTestResult.
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing OvulationTestRecod data. */
-class OvulationTestFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<OvulationTestRecord>(context) {
+class OvulationTestFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<OvulationTestRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: OvulationTestRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: OvulationTestRecord): String {
         return when (record.result) {
             RESULT_POSITIVE -> context.getString(R.string.ovulation_positive)
             RESULT_NEGATIVE -> context.getString(R.string.ovulation_negative)
@@ -46,10 +49,7 @@ class OvulationTestFormatter @Inject constructor(@ApplicationContext private val
         }
     }
 
-    override suspend fun formatA11yValue(
-        record: OvulationTestRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
-        return formatValue(record, unitPreferences)
+    override suspend fun formatA11yValue(record: OvulationTestRecord): String {
+        return formatValue(record)
     }
 }

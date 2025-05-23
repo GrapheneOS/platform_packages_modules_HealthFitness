@@ -39,18 +39,21 @@ import java.time.Duration
 import javax.inject.Inject
 
 /** Formatter for printing SleepSessionRecord data. */
-class SleepSessionFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    BaseFormatter<SleepSessionRecord>(context),
+class SleepSessionFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) :
+    BaseFormatter<SleepSessionRecord>(context, timeFormatter, unitPreferences),
     RecordDetailsFormatter<SleepSessionRecord>,
     UnitFormatter<Long> {
-
-    private val timeFormatter = LocalDateTimeFormatter(context)
 
     override suspend fun formatRecord(
         record: SleepSessionRecord,
         header: String,
         headerA11y: String,
-        unitPreferences: UnitPreferences,
     ): FormattedEntry {
         return FormattedEntry.SleepSessionEntry(
             uuid = record.metadata.id,

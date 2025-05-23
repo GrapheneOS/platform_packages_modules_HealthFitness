@@ -20,6 +20,7 @@ import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlin.math.floor
@@ -27,20 +28,17 @@ import kotlin.math.floor
 /** Formatter for printing RespiratoryRateRecord data. */
 class RespiratoryRateFormatter
 @Inject
-constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<RespiratoryRateRecord>(context) {
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<RespiratoryRateRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: RespiratoryRateRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: RespiratoryRateRecord): String {
         return formatRate(R.string.respiratory_rate_value, record.rate)
     }
 
-    override suspend fun formatA11yValue(
-        record: RespiratoryRateRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: RespiratoryRateRecord): String {
         return formatRate(R.string.respiratory_rate_value_long, record.rate)
     }
 

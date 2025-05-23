@@ -64,21 +64,21 @@ class OvulationTestFormatterTest {
     fun formatValue_positive() = runBlocking {
         val record = getRecord(result = RESULT_POSITIVE)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Positive")
+        assertThat(formatter.formatValue(record)).isEqualTo("Positive")
     }
 
     @Test
     fun formatValue_negative() = runBlocking {
         val record = getRecord(result = RESULT_NEGATIVE)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Negative")
+        assertThat(formatter.formatValue(record)).isEqualTo("Negative")
     }
 
     @Test
     fun formatValue_high() = runBlocking {
         val record = getRecord(result = RESULT_HIGH)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("High")
+        assertThat(formatter.formatValue(record)).isEqualTo("High")
     }
 
     private fun getRecord(@OvulationTestResults result: Int): OvulationTestRecord {

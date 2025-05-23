@@ -17,7 +17,7 @@ package com.android.healthconnect.controller.data.formatters
 
 import android.content.Context
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord
-import android.icu.text.MessageFormat.*
+import android.icu.text.MessageFormat.format
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry
@@ -31,41 +31,36 @@ import javax.inject.Inject
 /** Formatter for printing CyclingCadenceRecord data. */
 class CyclingPedalingCadenceFormatter
 @Inject
-constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<CyclingPedalingCadenceRecord>(context),
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) :
+    EntryFormatter<CyclingPedalingCadenceRecord>(context, timeFormatter, unitPreferences),
     RecordDetailsFormatter<CyclingPedalingCadenceRecord> {
-
-    private val timeFormatter = LocalDateTimeFormatter(context)
 
     override suspend fun formatRecord(
         record: CyclingPedalingCadenceRecord,
         header: String,
         headerA11y: String,
-        unitPreferences: UnitPreferences,
     ): FormattedEntry {
         return FormattedEntry.SeriesDataEntry(
             uuid = record.metadata.id,
             header = header,
             headerA11y = headerA11y,
-            title = formatValue(record, unitPreferences),
-            titleA11y = formatA11yValue(record, unitPreferences),
+            title = formatValue(record),
+            titleA11y = formatA11yValue(record),
             dataType = record::class,
         )
     }
 
-    override suspend fun formatValue(
-        record: CyclingPedalingCadenceRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: CyclingPedalingCadenceRecord): String {
         return formatCadence(R.string.cycling_cadence_series_range, record) { rpm ->
             format(context.getString(R.string.cycling_rpm), mapOf("count" to rpm))
         }
     }
 
-    override suspend fun formatA11yValue(
-        record: CyclingPedalingCadenceRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: CyclingPedalingCadenceRecord): String {
         return formatCadence(R.string.cycling_cadence_series_range_long, record) { rpm ->
             format(context.getString(R.string.cycling_rpm_long), mapOf("count" to rpm))
         }

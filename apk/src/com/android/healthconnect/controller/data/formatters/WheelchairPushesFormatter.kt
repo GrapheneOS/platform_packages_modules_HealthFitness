@@ -19,26 +19,24 @@ import android.icu.text.MessageFormat.*
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing WheelchairPushesRecord data. */
 class WheelchairPushesFormatter
 @Inject
-constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<WheelchairPushesRecord>(context) {
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<WheelchairPushesRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: WheelchairPushesRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: WheelchairPushesRecord): String {
         return format(context.getString(R.string.wheelchair_pushes), mapOf("count" to record.count))
     }
 
-    override suspend fun formatA11yValue(
-        record: WheelchairPushesRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
-        return formatValue(record, unitPreferences)
+    override suspend fun formatA11yValue(record: WheelchairPushesRecord): String {
+        return formatValue(record)
     }
 }

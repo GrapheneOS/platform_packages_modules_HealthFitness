@@ -36,25 +36,26 @@ import javax.inject.Singleton
 @Singleton
 class SkinTemperatureFormatter
 @Inject
-constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<SkinTemperatureRecord>(context),
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) :
+    EntryFormatter<SkinTemperatureRecord>(context, timeFormatter, unitPreferences),
     RecordDetailsFormatter<SkinTemperatureRecord>,
     UnitFormatter<TemperatureDelta> {
-
-    private val timeFormatter = LocalDateTimeFormatter(context)
 
     override suspend fun formatRecord(
         record: SkinTemperatureRecord,
         header: String,
         headerA11y: String,
-        unitPreferences: UnitPreferences,
     ): FormattedEntry {
         return FormattedEntry.SeriesDataEntry(
             uuid = record.metadata.id,
             header = header,
             headerA11y = headerA11y,
-            title = formatValue(record, unitPreferences),
-            titleA11y = formatA11yValue(record, unitPreferences),
+            title = formatValue(record),
+            titleA11y = formatA11yValue(record),
             dataType = record::class,
         )
     }
@@ -159,10 +160,7 @@ constructor(@ApplicationContext private val context: Context) :
         )
     }
 
-    override suspend fun formatValue(
-        record: SkinTemperatureRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: SkinTemperatureRecord): String {
         return if (record.deltas.size == 1) {
             formatUnit(record.deltas.first().delta)
         } else {
@@ -170,10 +168,7 @@ constructor(@ApplicationContext private val context: Context) :
         }
     }
 
-    override suspend fun formatA11yValue(
-        record: SkinTemperatureRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: SkinTemperatureRecord): String {
         return if (record.deltas.size == 1) {
             formatA11yUnit(record.deltas.first().delta)
         } else {
