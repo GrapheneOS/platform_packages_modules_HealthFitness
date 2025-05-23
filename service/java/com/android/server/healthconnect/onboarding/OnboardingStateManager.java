@@ -105,7 +105,8 @@ public final class OnboardingStateManager {
 
     /** Returns the current onboarding state. */
     @HealthConnectOnboardingState.OnboardingState
-    public int getOnboardingState() {
+    @VisibleForTesting
+    int getOnboardingState() {
         mStatesLock.readLock().lock();
         try {
             String onboardingStateStr =
