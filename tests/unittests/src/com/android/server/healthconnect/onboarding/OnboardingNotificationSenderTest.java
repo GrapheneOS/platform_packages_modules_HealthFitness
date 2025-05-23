@@ -19,10 +19,8 @@ package com.android.server.healthconnect.onboarding;
 import static android.app.Notification.EXTRA_BIG_TEXT;
 import static android.app.Notification.EXTRA_TITLE;
 
-import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.CONNECT_MORE_APPS_NOTIFICATION_BUTTON;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.CONNECT_MORE_APPS_NOTIFICATION_CONTENT;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.CONNECT_MORE_APPS_NOTIFICATION_TITLE;
-import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.START_USING_HC_NOTIFICATION_BUTTON;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.START_USING_HC_NOTIFICATION_CONTENT;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.START_USING_HC_NOTIFICATION_TITLE;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.NOTIFICATION_STATE_PREFERENCE_KEY_PREFIX;
@@ -107,11 +105,9 @@ public class OnboardingNotificationSenderTest {
                 .isEqualTo(START_USING_HC_NOTIFICATION_TITLE);
         assertThat(notification.extras.getString(EXTRA_BIG_TEXT))
                 .isEqualTo(START_USING_HC_NOTIFICATION_CONTENT);
+        assertThat(notification.actions).isNull();
 
-        Notification.Action action = notification.actions[0];
-        assertThat(action.title.toString()).isEqualTo(START_USING_HC_NOTIFICATION_BUTTON);
-
-        PendingIntent pendingIntent = action.actionIntent;
+        PendingIntent pendingIntent = notification.contentIntent;
         assertThat(pendingIntent.getCreatorPackage()).isEqualTo(mContext.getPackageName());
         assertThat(pendingIntent.isActivity()).isTrue();
         assertThat(pendingIntent.isImmutable()).isTrue();
@@ -141,11 +137,9 @@ public class OnboardingNotificationSenderTest {
                 .isEqualTo(CONNECT_MORE_APPS_NOTIFICATION_TITLE);
         assertThat(notification.extras.getString(EXTRA_BIG_TEXT))
                 .isEqualTo(CONNECT_MORE_APPS_NOTIFICATION_CONTENT);
+        assertThat(notification.actions).isNull();
 
-        Notification.Action action = notification.actions[0];
-        assertThat(action.title.toString()).isEqualTo(CONNECT_MORE_APPS_NOTIFICATION_BUTTON);
-
-        PendingIntent pendingIntent = action.actionIntent;
+        PendingIntent pendingIntent = notification.contentIntent;
         assertThat(pendingIntent.getCreatorPackage()).isEqualTo(mContext.getPackageName());
         assertThat(pendingIntent.isActivity()).isTrue();
         assertThat(pendingIntent.isImmutable()).isTrue();
