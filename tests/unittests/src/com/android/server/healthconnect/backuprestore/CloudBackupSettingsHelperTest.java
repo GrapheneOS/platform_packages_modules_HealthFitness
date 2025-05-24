@@ -16,11 +16,6 @@
 
 package com.android.server.healthconnect.backuprestore;
 
-import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.DISTANCE_UNIT_PREF_KEY;
-import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.ENERGY_UNIT_PREF_KEY;
-import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.HEIGHT_UNIT_PREF_KEY;
-import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.TEMPERATURE_UNIT_PREF_KEY;
-import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.WEIGHT_UNIT_PREF_KEY;
 import static com.android.server.healthconnect.common.preferences.PreferencesManager.AUTO_DELETE_DURATION_RECORDS_KEY;
 import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.DistanceUnitProto;
 import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.EnergyUnitProto;
@@ -185,48 +180,19 @@ public class CloudBackupSettingsHelperTest {
     }
 
     @Test
-    public void defaultUnitPreferences_setsUnitPreferencesCorrectly() {
-        mPreferenceHelper.insertOrReplacePreference(
-                TEMPERATURE_UNIT_PREF_KEY, TemperatureUnitProto.CELSIUS.toString());
-        mPreferenceHelper.insertOrReplacePreference(
-                ENERGY_UNIT_PREF_KEY, EnergyUnitProto.CALORIE.toString());
-        mPreferenceHelper.insertOrReplacePreference(
-                HEIGHT_UNIT_PREF_KEY, HeightUnitProto.CENTIMETERS.toString());
-        mPreferenceHelper.insertOrReplacePreference(
-                WEIGHT_UNIT_PREF_KEY, WeightUnitProto.POUND.toString());
-        mPreferenceHelper.insertOrReplacePreference(
-                DISTANCE_UNIT_PREF_KEY, DistanceUnitProto.KILOMETERS.toString());
-
+    public void defaultUnitPreferences_keepAllEnumsUnspecified() {
         Settings userSettings = mCloudBackupSettingsHelper.collectUserSettings();
 
         assertThat(userSettings.getTemperatureUnitSetting())
-                .isEqualTo(TemperatureUnitProto.CELSIUS);
-        assertThat(userSettings.getEnergyUnitSetting()).isEqualTo(EnergyUnitProto.CALORIE);
-        assertThat(userSettings.getWeightUnitSetting()).isEqualTo(WeightUnitProto.POUND);
-        assertThat(userSettings.getHeightUnitSetting()).isEqualTo(HeightUnitProto.CENTIMETERS);
-        assertThat(userSettings.getDistanceUnitSetting()).isEqualTo(DistanceUnitProto.KILOMETERS);
-    }
-
-    @Test
-    public void nonDefaultUnitPreference_setsUnitPreferencesCorrectly() {
-        mPreferenceHelper.insertOrReplacePreference(
-                TEMPERATURE_UNIT_PREF_KEY, TemperatureUnitProto.KELVIN.toString());
-        mPreferenceHelper.insertOrReplacePreference(
-                ENERGY_UNIT_PREF_KEY, EnergyUnitProto.KILOJOULE.toString());
-        mPreferenceHelper.insertOrReplacePreference(
-                HEIGHT_UNIT_PREF_KEY, HeightUnitProto.FEET.toString());
-        mPreferenceHelper.insertOrReplacePreference(
-                WEIGHT_UNIT_PREF_KEY, WeightUnitProto.POUND.toString());
-        mPreferenceHelper.insertOrReplacePreference(
-                DISTANCE_UNIT_PREF_KEY, DistanceUnitProto.MILES.toString());
-
-        Settings userSettings = mCloudBackupSettingsHelper.collectUserSettings();
-
-        assertThat(userSettings.getTemperatureUnitSetting()).isEqualTo(TemperatureUnitProto.KELVIN);
-        assertThat(userSettings.getEnergyUnitSetting()).isEqualTo(EnergyUnitProto.KILOJOULE);
-        assertThat(userSettings.getWeightUnitSetting()).isEqualTo(WeightUnitProto.POUND);
-        assertThat(userSettings.getHeightUnitSetting()).isEqualTo(HeightUnitProto.FEET);
-        assertThat(userSettings.getDistanceUnitSetting()).isEqualTo(DistanceUnitProto.MILES);
+                .isEqualTo(TemperatureUnitProto.TEMPERATURE_UNIT_UNSPECIFIED);
+        assertThat(userSettings.getEnergyUnitSetting())
+                .isEqualTo(EnergyUnitProto.ENERGY_UNIT_UNSPECIFIED);
+        assertThat(userSettings.getWeightUnitSetting())
+                .isEqualTo(WeightUnitProto.WEIGHT_UNIT_UNSPECIFIED);
+        assertThat(userSettings.getHeightUnitSetting())
+                .isEqualTo(HeightUnitProto.HEIGHT_UNIT_UNSPECIFIED);
+        assertThat(userSettings.getDistanceUnitSetting())
+                .isEqualTo(DistanceUnitProto.DISTANCE_UNIT_UNSPECIFIED);
     }
 
     @Test

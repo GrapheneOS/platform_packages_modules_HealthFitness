@@ -279,7 +279,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     private final BackupRestore mBackupRestore;
     private final MigrationStateManager mMigrationStateManager;
-    private @Nullable final OnboardingStateManager mOnboardingStateManager;
+    private final OnboardingStateManager mOnboardingStateManager;
 
     private final DataPermissionEnforcer mDataPermissionEnforcer;
 
@@ -334,7 +334,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             MigrationStateManager migrationStateManager,
             MigrationUiStateManager migrationUiStateManager,
             MigrationCleaner migrationCleaner,
-            @Nullable OnboardingStateManager onboardingStateManager,
+            OnboardingStateManager onboardingStateManager,
             FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             FitnessRecordReadHelper fitnessRecordReadHelper,
             FitnessRecordDeleteHelper fitnessRecordDeleteHelper,
@@ -3268,8 +3268,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 "Caller does not have " + MANAGE_HEALTH_DATA_PERMISSION);
                         callback.onResult(
                                 new HealthConnectOnboardingState(
-                                        requireNonNull(mOnboardingStateManager)
-                                                .getOnboardingState()));
+                                        mOnboardingStateManager.updateAndGetOnboardingState()));
                     } catch (SecurityException e) {
                         Log.e(TAG, "getHealthConnectOnboardingState: Exception encountered", e);
                         tryAndThrowException(errorCallback, e, ERROR_SECURITY);
