@@ -91,7 +91,7 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
 
     private var packageName: String = ""
     private var appName: String = ""
-    // TODO (b/367626030) rename as proxy for whether app also has medical/additional permissions
+    // TODO (b/376085888) rename as proxy for whether app also has medical/additional permissions
     // Or use viewModel
     private var showManageAppSection: Boolean = true
 

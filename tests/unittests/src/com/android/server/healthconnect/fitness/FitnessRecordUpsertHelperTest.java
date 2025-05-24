@@ -16,15 +16,14 @@
 
 package com.android.server.healthconnect.fitness;
 
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
-
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.mock;
 
 import android.content.Context;
 import android.health.connect.accesslog.AccessLog;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
+import android.healthconnect.testing.unittest.RecordInternalFactory;
 import android.os.UserHandle;
 import android.util.ArrayMap;
 
@@ -81,15 +80,17 @@ public class FitnessRecordUpsertHelperTest {
         mAccessLogsHelper = healthConnectInjector.getAccessLogsHelper();
         mUserHandle = context.getUser();
 
-        TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        transactionTestUtils.insertApp("package.name");
+        FitnessTestUtils fitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        fitnessTestUtils.insertApp("package.name");
     }
 
     @Test
     public void insertRecords_insertsChangeLogs_insertsAccessLogs() {
         mFitnessRecordUpsertHelper.insertRecords(
                 TEST_PACKAGE_NAME,
-                List.of(createStepsRecord(500, 750, 100).setPackageName(TEST_PACKAGE_NAME)),
+                List.of(
+                        RecordInternalFactory.buildStepsRecord(500, 750, 100)
+                                .setPackageName(TEST_PACKAGE_NAME)),
                 new ArrayMap<>(),
                 /* shouldGenerateAccessLogs= */ true);
 
@@ -103,7 +104,9 @@ public class FitnessRecordUpsertHelperTest {
     public void insertRecords_insertAccessLogsFalse_noAccessLogsInserted() {
         mFitnessRecordUpsertHelper.insertRecords(
                 TEST_PACKAGE_NAME,
-                List.of(createStepsRecord(500, 750, 100).setPackageName(TEST_PACKAGE_NAME)),
+                List.of(
+                        RecordInternalFactory.buildStepsRecord(500, 750, 100)
+                                .setPackageName(TEST_PACKAGE_NAME)),
                 new ArrayMap<>(),
                 /* shouldGenerateAccessLogs= */ false);
 
@@ -115,7 +118,7 @@ public class FitnessRecordUpsertHelperTest {
     public void insertRecordsUnrestricted_insertsChangeLogs_noAccessLogs() {
         mFitnessRecordUpsertHelper.insertRecordsUnrestricted(
                 List.of(
-                        createStepsRecord(500, 750, 100)
+                        RecordInternalFactory.buildStepsRecord(500, 750, 100)
                                 .setPackageName(TEST_PACKAGE_NAME)
                                 .setUuid(UUID.randomUUID())),
                 /* shouldGenerateChangeLog= */ true);

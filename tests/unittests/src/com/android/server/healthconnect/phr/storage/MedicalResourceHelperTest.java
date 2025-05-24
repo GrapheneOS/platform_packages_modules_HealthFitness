@@ -82,9 +82,9 @@ import android.health.connect.datatypes.FhirResource;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.PhrTestUtils;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
-import android.healthconnect.testing.unittest.TransactionTestUtils.MedicalChangeLogEntry;
+import android.healthconnect.testing.unittest.PhrTestUtils.MedicalChangeLogEntry;
 import android.healthconnect.testing.unittest.fakes.FakeTimeSource;
 import android.os.UserHandle;
 import android.platform.test.annotations.EnableFlags;
@@ -152,7 +152,7 @@ public class MedicalResourceHelperTest {
     private PhrTestUtils mUtil;
     private FakeTimeSource mFakeTimeSource;
     private UserHandle mUserHandle;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
     private AppInfoHelper mAppInfoHelper;
 
     @Before
@@ -175,9 +175,9 @@ public class MedicalResourceHelperTest {
         mUtil = new PhrTestUtils(healthConnectInjector);
         mUserHandle = context.getUser();
 
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        mTransactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
-        mTransactionTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        mFitnessTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
     }
 
     @Test
@@ -1949,7 +1949,7 @@ public class MedicalResourceHelperTest {
                         /* numOfResources= */ 6,
                         dataSource);
 
-        assertThat(mTransactionTestUtils.getAllUpsertMedicalChangeLogs())
+        assertThat(mUtil.getAllUpsertMedicalChangeLogs())
                 .containsExactly(
                         new MedicalChangeLogEntry(
                                 UPSERT,
@@ -1969,7 +1969,7 @@ public class MedicalResourceHelperTest {
                 DATA_SOURCE_PACKAGE_NAME,
                 createUpsertMedicalResourceRequests(List.of(vaccine, allergy), dataSource));
 
-        assertThat(mTransactionTestUtils.getAllUpsertMedicalChangeLogs())
+        assertThat(mUtil.getAllUpsertMedicalChangeLogs())
                 .containsExactly(
                         new MedicalChangeLogEntry(
                                 UPSERT,
@@ -2000,7 +2000,7 @@ public class MedicalResourceHelperTest {
                 DATA_SOURCE_PACKAGE_NAME,
                 createUpsertMedicalResourceRequests(List.of(updatedVaccine), dataSource));
 
-        assertThat(mTransactionTestUtils.getAllUpsertMedicalChangeLogs())
+        assertThat(mUtil.getAllUpsertMedicalChangeLogs())
                 .containsExactly(
                         // initial inserts
                         new MedicalChangeLogEntry(
@@ -2039,7 +2039,7 @@ public class MedicalResourceHelperTest {
 
         mMedicalResourceHelper.deleteMedicalResourcesByIdsWithoutPermissionChecks(resourceIds);
 
-        assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+        assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                 .containsExactly(
                         new MedicalChangeLogEntry(
                                 DELETE, MEDICAL_RESOURCE_TYPE_VACCINES, appId, resourceIds));
@@ -2064,7 +2064,7 @@ public class MedicalResourceHelperTest {
 
         mMedicalResourceHelper.deleteMedicalResourcesByIdsWithoutPermissionChecks(resourceIds);
 
-        assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+        assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                 .containsExactly(
                         new MedicalChangeLogEntry(
                                 DELETE,
@@ -2098,7 +2098,7 @@ public class MedicalResourceHelperTest {
         mMedicalResourceHelper.deleteMedicalResourcesByIdsWithoutPermissionChecks(
                 List.of(updatedVaccine.getId()));
 
-        assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+        assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                 .containsExactly(
                         new MedicalChangeLogEntry(
                                 DELETE,
@@ -2333,7 +2333,7 @@ public class MedicalResourceHelperTest {
 
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -2352,7 +2352,7 @@ public class MedicalResourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -2394,7 +2394,7 @@ public class MedicalResourceHelperTest {
                 .containsExactly(deleteAccessLog);
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -2439,7 +2439,7 @@ public class MedicalResourceHelperTest {
                 .containsExactly(deleteAccessLog);
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -2492,7 +2492,7 @@ public class MedicalResourceHelperTest {
         assertThat(indicesResult).isEmpty();
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -2522,7 +2522,7 @@ public class MedicalResourceHelperTest {
         assertThat(indicesResult).containsExactly(MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES);
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -2549,7 +2549,7 @@ public class MedicalResourceHelperTest {
                         List.of(medicalResource1.getId(), medicalResource2.getId()));
         assertThat(result).containsExactly(medicalResource1, medicalResource2);
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -2571,7 +2571,7 @@ public class MedicalResourceHelperTest {
         assertThat(result).containsExactly(medicalResource2);
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -2610,7 +2610,7 @@ public class MedicalResourceHelperTest {
         if (isPhrChangeLogsEnabled()) {
             long appId1 = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
             long appId2 = mAppInfoHelper.getAppInfoId(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -2942,7 +2942,7 @@ public class MedicalResourceHelperTest {
                 .containsExactly(deleteAccessLog);
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -2996,7 +2996,7 @@ public class MedicalResourceHelperTest {
                 .containsExactly(deleteAccessLog);
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -3045,7 +3045,7 @@ public class MedicalResourceHelperTest {
                 .containsExactly(deleteAccessLog);
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -3092,7 +3092,7 @@ public class MedicalResourceHelperTest {
 
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -3122,7 +3122,7 @@ public class MedicalResourceHelperTest {
 
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3158,7 +3158,7 @@ public class MedicalResourceHelperTest {
                 .containsExactly(deleteAccessLog);
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -3184,7 +3184,7 @@ public class MedicalResourceHelperTest {
 
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3205,7 +3205,7 @@ public class MedicalResourceHelperTest {
         assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -3247,7 +3247,7 @@ public class MedicalResourceHelperTest {
         if (isPhrChangeLogsEnabled()) {
             long appId1 = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
             long appId2 = mAppInfoHelper.getAppInfoId(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -3301,7 +3301,7 @@ public class MedicalResourceHelperTest {
         if (isPhrChangeLogsEnabled()) {
             long appId1 = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
             long appId2 = mAppInfoHelper.getAppInfoId(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -3353,7 +3353,7 @@ public class MedicalResourceHelperTest {
                 .hasSize(2);
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,

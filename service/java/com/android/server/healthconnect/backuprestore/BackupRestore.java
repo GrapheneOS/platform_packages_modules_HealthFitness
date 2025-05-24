@@ -695,7 +695,7 @@ public final class BackupRestore {
         setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_DONE, false);
 
         // Reset the error in case it was due to version diff.
-        // TODO(b/327170886): Should we always set it to NONE once merging is done?
+        // TODO(b/376085888): Should we always set it to NONE once merging is done?
         if (getDataRestoreError() == RESTORE_ERROR_VERSION_DIFF) {
             setDataRestoreError(RESTORE_ERROR_NONE);
         }

@@ -23,6 +23,7 @@ import android.health.connect.datatypes.AppInfo
 import android.os.OutcomeReceiver
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.app.GetContributorAppInfoUseCase
@@ -42,12 +43,14 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.*
 import org.mockito.Mockito
 import org.mockito.invocation.InvocationOnMock
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class GetContributorAppInfoUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val coroutineTestRule = CoroutineTestRule()

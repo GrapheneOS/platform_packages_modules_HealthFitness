@@ -1562,10 +1562,15 @@ enum class ConnectSecondAddOnboardingPageElement(
     override val impressionId: Int,
     override val interactionId: Int,
 ) : ElementName {
+    // TODO (b/417206188) update when new atom merged
+    CONNECTED_APP_BUTTON(
+        HEALTH_CONNECT_UI_IMPRESSION__ELEMENT__CONNECT_SECOND_APP_ONBOARDING_SET_UP_LATER_BUTTON,
+        HEALTH_CONNECT_UI_INTERACTION__ELEMENT__CONNECT_SECOND_APP_ONBOARDING_SET_UP_LATER_BUTTON,
+    ),
     CONNECT_SECOND_APP_ONBOARDING_SET_UP_LATER_BUTTON(
         HEALTH_CONNECT_UI_IMPRESSION__ELEMENT__CONNECT_SECOND_APP_ONBOARDING_SET_UP_LATER_BUTTON,
         HEALTH_CONNECT_UI_INTERACTION__ELEMENT__CONNECT_SECOND_APP_ONBOARDING_SET_UP_LATER_BUTTON,
-    )
+    ),
 }
 
 enum class AlmostDonePageElement(override val impressionId: Int, override val interactionId: Int) :

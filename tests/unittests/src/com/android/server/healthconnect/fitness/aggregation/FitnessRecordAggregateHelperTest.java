@@ -19,7 +19,7 @@ package com.android.server.healthconnect.fitness.aggregation;
 import static android.health.connect.HealthDataCategory.ACTIVITY;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_READ;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -40,7 +40,7 @@ import android.health.connect.accesslog.AccessLog;
 import android.health.connect.aidl.AggregateDataRequestParcel;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.StepsRecord;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.os.UserHandle;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
@@ -89,7 +89,7 @@ public class FitnessRecordAggregateHelperTest {
     private AccessLogsHelper mAccessLogsHelper;
     private ReadAccessLogsHelper mReadAccessLogsHelper;
     private InternalHealthConnectMappings mInternalHealthConnectMappings;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
     private UserHandle mUserHandle;
 
     @Before
@@ -114,8 +114,8 @@ public class FitnessRecordAggregateHelperTest {
         mInternalHealthConnectMappings = healthConnectInjector.getInternalHealthConnectMappings();
         mUserHandle = context.getUser();
 
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
     }
 
     @Test
@@ -153,10 +153,10 @@ public class FitnessRecordAggregateHelperTest {
         Instant testStartTime = Instant.now();
 
         String readerPackage = "reader.package";
-        mTransactionTestUtils.insertApp(readerPackage);
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertApp(readerPackage);
+        mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(
+                buildStepsRecord(
                         mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
                         testStartTime.minusMillis(1000).toEpochMilli(),
                         testStartTime.minusMillis(500).toEpochMilli(),
@@ -198,10 +198,10 @@ public class FitnessRecordAggregateHelperTest {
     })
     public void populateWithAggregation_accessLogDisabled_readAccessLogNotRecorded() {
         String readerPackage = "reader.package";
-        mTransactionTestUtils.insertApp(readerPackage);
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertApp(readerPackage);
+        mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME), 123, 345, 100));
+                buildStepsRecord(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME), 123, 345, 100));
 
         TimeRangeFilter timeRangeFilter =
                 new LocalTimeRangeFilter.Builder()
@@ -230,10 +230,10 @@ public class FitnessRecordAggregateHelperTest {
     @DisableFlags({Flags.FLAG_ECOSYSTEM_METRICS, Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES})
     public void populateWithAggregation_flagsDisabled_readAccessLogNotRecorded() {
         String readerPackage = "reader.package";
-        mTransactionTestUtils.insertApp(readerPackage);
-        mTransactionTestUtils.insertRecords(
+        mFitnessTestUtils.insertApp(readerPackage);
+        mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
-                createStepsRecord(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME), 123, 345, 100));
+                buildStepsRecord(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME), 123, 345, 100));
 
         TimeRangeFilter timeRangeFilter =
                 new LocalTimeRangeFilter.Builder()

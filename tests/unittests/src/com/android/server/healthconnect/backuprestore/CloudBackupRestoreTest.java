@@ -16,8 +16,6 @@
 
 package com.android.server.healthconnect.backuprestore;
 
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
-
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
@@ -31,7 +29,8 @@ import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
+import android.healthconnect.testing.unittest.RecordInternalFactory;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -43,7 +42,6 @@ import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.TransactionManager;
 
@@ -76,15 +74,13 @@ public final class CloudBackupRestoreTest {
     private DeviceInfoHelper mDeviceInfoHelper;
     private DatabaseHelpers mDatabaseHelpers;
     private TransactionManager mTransactionManager;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
     private CloudBackupManager mCloudBackupManager;
     private CloudRestoreManager mCloudRestoreManager;
     private RecordProtoConverter mRecordProtoConverter;
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
 
     @Before
     public void setUp() {
@@ -93,7 +89,6 @@ public final class CloudBackupRestoreTest {
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
 
@@ -101,9 +96,9 @@ public final class CloudBackupRestoreTest {
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
         mDatabaseHelpers = healthConnectInjector.getDatabaseHelpers();
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
         mRecordProtoConverter = new RecordProtoConverter();
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
         mCloudBackupManager = healthConnectInjector.getCloudBackupManager();
         mCloudRestoreManager = healthConnectInjector.getCloudRestoreManager();
@@ -111,8 +106,9 @@ public final class CloudBackupRestoreTest {
 
     @Test
     public void backUpAndRestoreChanges_dataIsTheSame() {
-        RecordInternal<StepsRecord> stepsRecord = createStepsRecord(123456, 654321, 123);
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, stepsRecord);
+        RecordInternal<StepsRecord> stepsRecord =
+                RecordInternalFactory.buildStepsRecord(123456, 654321, 123);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, stepsRecord);
 
         List<BackupChange> backupChanges =
                 mCloudBackupManager.getChangesForBackup(null).getChanges();
@@ -122,7 +118,7 @@ public final class CloudBackupRestoreTest {
                 backupChanges.stream().map(change -> new RestoreChange(change.getData())).toList());
 
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readRecordsByIds(
+                mFitnessTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 List.of(stepsRecord.getUuid())));

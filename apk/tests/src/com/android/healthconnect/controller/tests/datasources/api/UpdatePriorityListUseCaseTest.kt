@@ -19,6 +19,7 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
 import android.health.connect.UpdateDataOriginPriorityOrderRequest
 import android.health.connect.datatypes.DataOrigin
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.datasources.api.UpdatePriorityListUseCase
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_3
@@ -31,6 +32,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Captor
@@ -43,6 +45,7 @@ import org.mockito.invocation.InvocationOnMock
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class UpdatePriorityListUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

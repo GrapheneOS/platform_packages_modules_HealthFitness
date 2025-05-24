@@ -20,7 +20,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.accessibility.AccessibilityEvent
 import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
 import android.view.animation.AnimationUtils.loadAnimation
@@ -36,7 +35,6 @@ import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.ToolbarElement
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.SettingsBasePreferenceFragment
-import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.EntryPointAccessors
 
 /** A base fragment that represents a page in Health Connect. */
@@ -58,11 +56,6 @@ abstract class HealthPreferenceFragment : SettingsBasePreferenceFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setupLogger()
         super.onCreate(savedInstanceState)
-        val appBarLayout =
-            requireActivity()
-                .findViewById<AppBarLayout>(com.android.settingslib.collapsingtoolbar.R.id.app_bar)
-        appBarLayout?.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
-        appBarLayout?.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
     }
 
     override fun onResume() {

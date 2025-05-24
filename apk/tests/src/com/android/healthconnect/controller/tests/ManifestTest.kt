@@ -18,13 +18,16 @@ package com.android.healthconnect.controller.tests
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.migration.MigrationActivity
 import com.android.healthconnect.controller.onboarding.OnboardingActivity
 import com.android.healthconnect.controller.route.RouteRequestActivity
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class ManifestTest {
 
     private val context = InstrumentationRegistry.getInstrumentation().context

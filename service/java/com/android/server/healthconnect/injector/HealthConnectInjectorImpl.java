@@ -77,6 +77,7 @@ import com.android.server.healthconnect.migration.notification.HealthConnectReso
 import com.android.server.healthconnect.migration.notification.MigrationNotificationSender;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationSender;
+import com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager;
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastoreXmlPersistence;
@@ -117,6 +118,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final ExportManager mExportManager;
     private final MigrationStateManager mMigrationStateManager;
     private final OnboardingStateManager mOnboardingStateManager;
+    private final OnboardingNotificationStateManager mOnboardingNotificationStateManager;
     private final OnboardingNotificationSender mOnboardingNotificationSender;
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final AppInfoHelper mAppInfoHelper;
@@ -473,11 +475,23 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         : builder.mAppOpsManagerLocal;
         mOnboardingStateManager =
                 builder.mOnboardingStateManager == null
-                        ? new OnboardingStateManager(getPreferenceHelper(), userHandle)
+                        ? new OnboardingStateManager(
+                                context,
+                                getPreferenceHelper(),
+                                getHealthConnectPermissionHelper(),
+                                getPackageInfoUtils(),
+                                getAppInfoHelper(),
+                                getAccessLogsHelper(),
+                                userHandle)
                         : builder.mOnboardingStateManager;
+        mOnboardingNotificationStateManager =
+                builder.mOnboardingNotificationStateManager == null
+                        ? new OnboardingNotificationStateManager(getPreferenceHelper(), userHandle)
+                        : builder.mOnboardingNotificationStateManager;
         mOnboardingNotificationSender =
                 builder.mOnboardingNotificationSender == null
-                        ? new OnboardingNotificationSender(context, resourcesContext)
+                        ? new OnboardingNotificationSender(
+                                context, resourcesContext, mOnboardingNotificationStateManager)
                         : builder.mOnboardingNotificationSender;
         mDeviceRecordHelper = new DeviceRecordHelper(mFitnessRecordUpsertHelper);
         mTrackerManager =
@@ -578,6 +592,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Override
     public OnboardingStateManager getOnboardingStateManager() {
         return mOnboardingStateManager;
+    }
+
+    @Override
+    public OnboardingNotificationStateManager getOnboardingNotificationStateManager() {
+        return mOnboardingNotificationStateManager;
     }
 
     @Override
@@ -882,6 +901,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private MigrationUiStateManager mMigrationUiStateManager;
         @Nullable private MigrationEntityHelper mMigrationEntityHelper;
         @Nullable private OnboardingStateManager mOnboardingStateManager;
+        @Nullable private OnboardingNotificationStateManager mOnboardingNotificationStateManager;
         @Nullable private OnboardingNotificationSender mOnboardingNotificationSender;
         @Nullable private PreferencesManager mPreferencesManager;
         @Nullable private DatabaseStatsCollector mDatabaseStatsCollector;
@@ -1149,6 +1169,14 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         public Builder setOnboardingStateManager(OnboardingStateManager onboardingStateManager) {
             Objects.requireNonNull(onboardingStateManager);
             mOnboardingStateManager = onboardingStateManager;
+            return this;
+        }
+
+        /** Set fake or custom {@link OnboardingNotificationStateManager} */
+        public Builder setOnboardingNotificationStateManager(
+                OnboardingNotificationStateManager onboardingNotificationStateManager) {
+            Objects.requireNonNull(onboardingNotificationStateManager);
+            mOnboardingNotificationStateManager = onboardingNotificationStateManager;
             return this;
         }
 

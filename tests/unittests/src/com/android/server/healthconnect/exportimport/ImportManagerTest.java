@@ -20,8 +20,8 @@ import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR
 import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR_VERSION_MISMATCH;
 import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR_WRONG_FILE;
 import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_STARTED;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createBloodPressureRecord;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildBloodPressureRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_IMPORT_COMPLETE;
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_IMPORT_IN_PROGRESS;
@@ -46,9 +46,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.StorageUtils;
 import android.healthconnect.testing.unittest.TaskUtils;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.net.Uri;
 import android.os.UserHandle;
@@ -70,7 +70,6 @@ import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -123,7 +122,7 @@ public class ImportManagerTest {
     private Context mContext;
     private TransactionManager mTransactionManager;
     private StorageUtils mStorageUtils;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
     private HealthDataCategoryPriorityHelper mPriorityHelper;
     private ExportImportSettingsStorage mExportImportSettingsStorage;
     private AppInfoHelper mAppInfoHelper;
@@ -139,8 +138,6 @@ public class ImportManagerTest {
     @Mock private ExportImportNotificationFactory mNotificationFactory;
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private ExportImportLogger mExportImportLogger;
 
     @Before
@@ -150,7 +147,6 @@ public class ImportManagerTest {
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setPreferenceHelper(new FakePreferenceHelper())
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .setExportImportNotificationFactory(mNotificationFactory)
                         .build();
@@ -164,10 +160,10 @@ public class ImportManagerTest {
         mNotificationFactory = healthConnectInjector.getExportImportNotificationFactory();
 
         mStorageUtils = new StorageUtils(healthConnectInjector);
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME_2);
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME_3);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME_2);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME_3);
 
         mPriorityHelper = healthConnectInjector.getHealthDataCategoryPriorityHelper();
         mPriorityHelper.setPriorityOrder(HealthDataCategory.ACTIVITY, List.of(TEST_PACKAGE_NAME));
@@ -214,10 +210,10 @@ public class ImportManagerTest {
     @Test
     public void copiesAllData() throws Exception {
         List<String> uuids =
-                mTransactionTestUtils.insertRecords(
+                mFitnessTestUtils.insertRecords(
                         TEST_PACKAGE_NAME,
-                        createStepsRecord(123, 345, 100),
-                        createBloodPressureRecord(234, 120.0, 80.0));
+                        buildStepsRecord(123, 345, 100),
+                        buildBloodPressureRecord(234, 120.0, 80.0));
 
         File zipToImport = zipExportedDb(exportCurrentDb());
 
@@ -236,7 +232,7 @@ public class ImportManagerTest {
         List<UUID> bloodPressureUuids = ImmutableList.of(UUID.fromString(uuids.get(1)));
 
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readRecordsByIds(
+                mFitnessTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 stepsUuids,
@@ -323,10 +319,10 @@ public class ImportManagerTest {
     @Test
     public void skipsMissingTables() throws Exception {
         List<String> uuids =
-                mTransactionTestUtils.insertRecords(
+                mFitnessTestUtils.insertRecords(
                         TEST_PACKAGE_NAME,
-                        createStepsRecord(123, 345, 100),
-                        createBloodPressureRecord(234, 120.0, 80.0));
+                        buildStepsRecord(123, 345, 100),
+                        buildBloodPressureRecord(234, 120.0, 80.0));
 
         File dbToImport = exportCurrentDb();
 
@@ -358,7 +354,7 @@ public class ImportManagerTest {
         List<UUID> bloodPressureUuids = ImmutableList.of(UUID.fromString(uuids.get(1)));
 
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readRecordsByIds(
+                mFitnessTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 stepsUuids,
@@ -563,17 +559,18 @@ public class ImportManagerTest {
     @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
     public void copiesAllData_usingInsertAllWithoutAccessLogs() throws Exception {
         List<String> uuids =
-                mTransactionTestUtils.insertRecords(
+                mFitnessTestUtils.insertRecords(
                         TEST_PACKAGE_NAME,
-                        createStepsRecord(123, 345, 100),
-                        createBloodPressureRecord(234, 120.0, 80.0));
+                        buildStepsRecord(123, 345, 100),
+                        buildBloodPressureRecord(234, 120.0, 80.0));
 
         File zipToImport = zipExportedDb(exportCurrentDb());
 
         mDatabaseHelpers.clearAllData(mTransactionManager);
 
-        // Insert a change log so insertAllWithoutAccessLogs is called instead of insertAll.
-        mTransactionTestUtils.insertChangeLog();
+        // Insert a record to generate change log so the path that generates changelogs is taken.
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(456, 789, 100));
 
         mImportManagerSpy.runImport(mContext.getUser(), Uri.fromFile(zipToImport));
 
@@ -588,7 +585,7 @@ public class ImportManagerTest {
         List<UUID> bloodPressureUuids = ImmutableList.of(UUID.fromString(uuids.get(1)));
 
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readRecordsByIds(
+                mFitnessTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 stepsUuids,
@@ -604,12 +601,13 @@ public class ImportManagerTest {
     @Test
     @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
     public void copiesAllData_changeLogsTokenExists_generateChangeLogs() throws Exception {
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 345, 100));
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(123, 345, 100));
         File zipToImport = zipExportedDb(exportCurrentDb());
         mDatabaseHelpers.clearAllData(mTransactionManager);
 
-        // Insert a change log.
-        mTransactionTestUtils.insertChangeLog();
+        // Insert a record to generate a change log.
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(456, 789, 120));
 
         mImportManagerSpy.runImport(mContext.getUser(), Uri.fromFile(zipToImport));
 
@@ -619,7 +617,7 @@ public class ImportManagerTest {
     @Test
     @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
     public void copiesAllData_noChangeLogsToken_noChangeLogs() throws Exception {
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 345, 100));
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(123, 345, 100));
         File zipToImport = zipExportedDb(exportCurrentDb());
         mDatabaseHelpers.clearAllData(mTransactionManager);
 

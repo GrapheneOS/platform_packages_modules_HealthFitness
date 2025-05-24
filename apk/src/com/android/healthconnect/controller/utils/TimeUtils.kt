@@ -44,7 +44,8 @@ fun getPeriodStartDate(selectedDate: Instant, period: DateNavigationPeriod): Ins
         }
 
         PERIOD_WEEK -> {
-            val weekFields = WeekFields.of(Locale.getDefault())
+            val locale = Locale.getDefault()
+            val weekFields = WeekFields.of(locale)
             val firstDayOfWeek = weekFields.firstDayOfWeek
             val dayOfWeek: DayOfWeek =
                 selectedDate.atZone(ZoneId.systemDefault()).toLocalDate().dayOfWeek

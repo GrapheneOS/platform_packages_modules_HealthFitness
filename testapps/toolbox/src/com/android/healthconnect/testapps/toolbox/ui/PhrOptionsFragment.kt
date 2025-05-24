@@ -26,6 +26,10 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.ReadMedicalResourcesInitialRequest
 import android.health.connect.ReadMedicalResourcesResponse
 import android.health.connect.UpsertMedicalResourceRequest
+import android.health.connect.changelog.ChangeLogTokenRequest
+import android.health.connect.changelog.ChangeLogTokenResponse
+import android.health.connect.changelog.ChangeLogsRequest
+import android.health.connect.changelog.ChangeLogsResponse
 import android.health.connect.datatypes.FhirVersion
 import android.health.connect.datatypes.MedicalDataSource
 import android.health.connect.datatypes.MedicalResource
@@ -42,7 +46,6 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.SpinnerAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -52,22 +55,12 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.android.healthconnect.testapps.toolbox.Constants.MEDICAL_PERMISSIONS
-import com.android.healthconnect.testapps.toolbox.Constants.WRITE_ALL_MEDICAL_DATA
 import com.android.healthconnect.testapps.toolbox.R
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.requireSystemService
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.showMessageDialog
 import java.io.IOException
 import java.io.InputStream
-import kotlin.collections.flatten
-import kotlin.math.max
-import kotlin.text.get
-import kotlin.toString
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.json.JSONObject
 
@@ -101,12 +94,14 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
         // Starting API Level 30 If permission is denied more than once, user doesn't see the dialog
         // asking permissions again unless they grant the permission from settings.
         mRequestPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionMap: Map<String, Boolean> ->
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+                permissionMap: Map<String, Boolean> ->
                 requestPermissionResultHandler(permissionMap)
             }
 
         mSelectJSONDirectoryLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                result: ActivityResult ->
                 selectJsonDirResultHandler(result)
             }
 
@@ -124,26 +119,25 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
 
         if (numberOfPermissionsMissing == 0) {
             Toast.makeText(
-                this.requireContext(),
-                R.string.all_medical_permissions_success,
-                Toast.LENGTH_SHORT,
-            )
+                    this.requireContext(),
+                    R.string.all_medical_permissions_success,
+                    Toast.LENGTH_SHORT,
+                )
                 .show()
         } else {
             Toast.makeText(
-                this.requireContext(),
-                getString(
-                    R.string.number_of_medical_permissions_not_granted,
-                    numberOfPermissionsMissing,
-                ),
-                Toast.LENGTH_SHORT,
-            )
+                    this.requireContext(),
+                    getString(
+                        R.string.number_of_medical_permissions_not_granted,
+                        numberOfPermissionsMissing,
+                    ),
+                    Toast.LENGTH_SHORT,
+                )
                 .show()
         }
 
         // Fetch data sources in case they could not be fetched before
         fetchDataSourcesAndPopulateSpinner()
-
     }
 
     private fun selectJsonDirResultHandler(result: ActivityResult) {
@@ -151,10 +145,11 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
         val uri = result.data?.data
         if (result.resultCode != Activity.RESULT_OK || uri == null) {
             Toast.makeText(
-                this.requireContext(),
-                "Failed to get directory access.",
-                Toast.LENGTH_SHORT
-            ).show()
+                    this.requireContext(),
+                    "Failed to get directory access.",
+                    Toast.LENGTH_SHORT,
+                )
+                .show()
 
             val spinner = view.findViewById<Spinner>(R.id.phr_patient_spinner)
             spinner.setSelection(0)
@@ -171,9 +166,7 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
         super.onViewCreated(view, savedInstanceState)
 
         view.requireViewById<Button>(R.id.phr_create_data_source_button).setOnClickListener {
-            executeAndShowMessage {
-                createMedicalDataSource(view)
-            }
+            executeAndShowMessage { createMedicalDataSource(view) }
         }
 
         view.requireViewById<Button>(R.id.phr_read_by_id_button).setOnClickListener {
@@ -185,9 +178,7 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
         }
 
         view.requireViewById<Button>(R.id.phr_seed_x_fhir_jsons_button).setOnClickListener {
-            executeAndShowMessage {
-                insertSelectedNumberOfFhirResources(view)
-            }
+            executeAndShowMessage { insertSelectedNumberOfFhirResources(view) }
         }
 
         view.requireViewById<Button>(R.id.phr_insert_resource_button).setOnClickListener {
@@ -197,6 +188,14 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
         view
             .requireViewById<Button>(R.id.phr_request_read_and_write_medical_data_button)
             .setOnClickListener { requestMedicalPermissions() }
+
+        view.requireViewById<Button>(R.id.get_change_log_token).setOnClickListener {
+            executeAndShowMessage { getChangeLogToken(view) }
+        }
+
+        view.requireViewById<Button>(R.id.get_change_logs).setOnClickListener {
+            executeAndShowMessage { getChangeLogs(view) }
+        }
 
         setUpDataSourceSpinner(view, mExistingDataSourceNamesToId.keys.toList())
 
@@ -238,16 +237,15 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
                 } else {
                     errorMessage += e.localizedMessage
                 }
-                Toast.makeText(
-                    requireContext(), errorMessage, Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
             } catch (e: Exception) {
                 Log.d("GET_DATA_SOURCE", "Error getting data sources: $e")
                 Toast.makeText(
-                    requireContext(),
-                    "Failed to fetch data sources: ${e.localizedMessage}",
-                    Toast.LENGTH_LONG
-                ).show()
+                        requireContext(),
+                        "Failed to fetch data sources: ${e.localizedMessage}",
+                        Toast.LENGTH_LONG,
+                    )
+                    .show()
             }
 
             if (mExistingDataSourceNamesToId.isNotEmpty()) {
@@ -259,7 +257,7 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
     private fun setUpDataSourceSpinner(
         rootView: View,
         dataSources: List<String> = listOf(),
-        selectPosition: Int = 0
+        selectPosition: Int = 0,
     ) {
         val spinnerOptions =
             listOf(getString(R.string.data_source_spinner_default_message)) + dataSources
@@ -272,7 +270,7 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
     private fun updateDataSourceSpinnerOptions(
         view: View,
         existingDataSources: List<String>,
-        newDataSource: String
+        newDataSource: String,
     ) {
         setUpDataSourceSpinner(view, listOf(newDataSource) + existingDataSources, 1)
     }
@@ -288,7 +286,7 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
                 PATIENT_A_ASSET_PATH,
                 PATIENT_B_ASSET_PATH,
                 PATIENT_C_ASSET_PATH,
-                CUSTOM_DATA_PATH_PLACE_HOLDER
+                CUSTOM_DATA_PATH_PLACE_HOLDER,
             )
 
         val spinner = rootView.findViewById<Spinner>(R.id.phr_patient_spinner)
@@ -328,7 +326,6 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
                     // No-op.
                 }
             }
-
     }
 
     private fun setUpFhirResourceFromSpinner(rootView: View, selectedCustomDirUri: Uri) {
@@ -336,23 +333,25 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
             DocumentFile.fromTreeUri(this.requireContext(), selectedCustomDirUri)
         if (selectedDirectory == null) {
             Toast.makeText(
-                this.requireContext(),
-                "Failed to access selected dir: $selectedCustomDirUri.",
-                Toast.LENGTH_LONG
-            )
+                    this.requireContext(),
+                    "Failed to access selected dir: $selectedCustomDirUri.",
+                    Toast.LENGTH_LONG,
+                )
                 .show()
             return
         }
 
-        mSelectedCustomDirFilesToUri = selectedDirectory.listFiles()
-            .filter { file: DocumentFile -> file.isFile && file.name != null }
-            .associate { file: DocumentFile -> Pair(file.name ?: "unknown", file.uri) }
-            .filter { (filename, uri) -> uri.toString().endsWith(".json") }
+        mSelectedCustomDirFilesToUri =
+            selectedDirectory
+                .listFiles()
+                .filter { file: DocumentFile -> file.isFile && file.name != null }
+                .associate { file: DocumentFile -> Pair(file.name ?: "unknown", file.uri) }
+                .filter { (filename, uri) -> uri.toString().endsWith(".json") }
         Log.d("SET_UP_SPINNER", "Found json files $mSelectedCustomDirFilesToUri")
 
         val spinnerOptions =
             listOf(getString(R.string.spinner_default_message)) +
-                    (mSelectedCustomDirFilesToUri?.keys ?: emptyList())
+                (mSelectedCustomDirFilesToUri?.keys ?: emptyList())
 
         setUpFhirResourceSpinner(rootView, spinnerOptions, true)
     }
@@ -368,43 +367,44 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
         rootView: View,
         spinnerOptions: List<String>,
         customPatientContext: Boolean,
-        assetSubDir: String = ""
+        assetSubDir: String = "",
     ) {
         val spinner = rootView.findViewById<Spinner>(R.id.phr_spinner)
         spinner.adapter = createSpinnerAdapter(spinnerOptions)
 
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?,
-                position: Int,
-                id: Long,
-            ) {
-                if (position == 0) { // Ignore "Select resource" default message
-                    return
+        spinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long,
+                ) {
+                    if (position == 0) { // Ignore "Select resource" default message
+                        return
+                    }
+
+                    var selectedResource = ""
+                    val selectedFile = spinnerOptions[position]
+
+                    if (customPatientContext) {
+                        val resourceUri = mSelectedCustomDirFilesToUri?.get(selectedFile) ?: return
+                        selectedResource =
+                            loadJSONFromContentUri(requireContext(), resourceUri) ?: return
+                    } else {
+                        selectedResource =
+                            loadJSONFromAsset(requireContext(), assetSubDir, selectedFile) ?: return
+                    }
+
+                    rootView
+                        .findViewById<EditText>(R.id.phr_pasted_resource_text)
+                        .setText(selectedResource)
                 }
 
-                var selectedResource = ""
-                val selectedFile = spinnerOptions[position]
-
-                if (customPatientContext) {
-                    val resourceUri = mSelectedCustomDirFilesToUri?.get(selectedFile) ?: return
-                    selectedResource =
-                        loadJSONFromContentUri(requireContext(), resourceUri) ?: return
-                } else {
-                    selectedResource =
-                        loadJSONFromAsset(requireContext(), assetSubDir, selectedFile) ?: return
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // No-op.
                 }
-
-                rootView.findViewById<EditText>(R.id.phr_pasted_resource_text).setText(
-                    selectedResource
-                )
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // No-op.
-            }
-        }
     }
 
     private fun createSpinnerAdapter(spinnerOptions: List<String>): ArrayAdapter<String?> {
@@ -420,10 +420,10 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
             upsertMedicalResources(
                 listOf(
                     UpsertMedicalResourceRequest.Builder(
-                        dataSourceId,
-                        FhirVersion.parseFhirVersion("4.0.1"),
-                        resource,
-                    )
+                            dataSourceId,
+                            FhirVersion.parseFhirVersion("4.0.1"),
+                            resource,
+                        )
                         .build()
                 )
             )
@@ -436,31 +436,29 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
     private suspend fun insertAllFhirResources(view: View): String {
         val allResources = loadAllFhirJSONs(view)
         Log.d("INSERT_ALL", "Writing ${allResources.size} FHIR resources")
-        val insertedDataSourceId = getDataSourceIdFromSpinner(view)
-            ?: return "No data source selected"
+        val insertedDataSourceId =
+            getDataSourceIdFromSpinner(view) ?: return "No data source selected"
         val insertedResources =
             upsertMedicalResources(
                 allResources.map {
                     UpsertMedicalResourceRequest.Builder(
-                        insertedDataSourceId,
-                        FhirVersion.parseFhirVersion("4.0.1"),
-                        it,
-                    )
+                            insertedDataSourceId,
+                            FhirVersion.parseFhirVersion("4.0.1"),
+                            it,
+                        )
                         .build()
                 }
             )
         return "SUCCESSFUL DATA UPSERT \n\nUpserted data:\n" +
-                insertedResources.joinToString(
-                    separator = "\n",
-                    transform = MedicalResource::toString
-                )
+            insertedResources.joinToString(separator = "\n", transform = MedicalResource::toString)
     }
 
     private suspend fun insertSelectedNumberOfFhirResources(view: View): String {
-        val insertedDataSourceId = getDataSourceIdFromSpinner(view)
-            ?: return "No data source selected"
+        val insertedDataSourceId =
+            getDataSourceIdFromSpinner(view) ?: return "No data source selected"
         val numResourcesToInsert =
-            view.findViewById<EditText>(R.id.phr_number_of_inserts_id_text)
+            view
+                .findViewById<EditText>(R.id.phr_number_of_inserts_id_text)
                 .getText()
                 .toString()
                 .toIntOrNull() ?: return "Please enter a number"
@@ -469,8 +467,8 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
         val numberOfBatches = Math.ceilDiv(numResourcesToInsert, MAX_BULK_INSERT_BATCH_SIZE)
         Log.d(
             "INSERT_MANY",
-            "Inserting $numResourcesToInsert FHIR resources in batches of "
-                    + "$MAX_BULK_INSERT_BATCH_SIZE, calculated $numberOfBatches batches"
+            "Inserting $numResourcesToInsert FHIR resources in batches of " +
+                "$MAX_BULK_INSERT_BATCH_SIZE, calculated $numberOfBatches batches",
         )
 
         // Disable button while insert is running
@@ -483,15 +481,16 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
 
         try {
             val allResources = loadAllFhirJSONs(view)
-            if (allResources.isEmpty()) return "Found no resource files to insert. Please select " +
+            if (allResources.isEmpty())
+                return "Found no resource files to insert. Please select " +
                     "a patient context with FHIR resources."
 
             for (i in 0..numberOfBatches - 1) {
                 val upsertRequests: MutableList<UpsertMedicalResourceRequest> = mutableListOf()
                 val isLastBatch = i == numberOfBatches - 1
-                val numResources = if (isLastBatch)
-                    numResourcesToInsert - i * MAX_BULK_INSERT_BATCH_SIZE
-                else MAX_BULK_INSERT_BATCH_SIZE
+                val numResources =
+                    if (isLastBatch) numResourcesToInsert - i * MAX_BULK_INSERT_BATCH_SIZE
+                    else MAX_BULK_INSERT_BATCH_SIZE
 
                 for (j in 1..numResources) {
                     val resourceNumber = i * MAX_BULK_INSERT_BATCH_SIZE + j
@@ -500,10 +499,11 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
                         JSONObject(resourceJson).put("id", resourceNumber.toString()).toString()
                     upsertRequests.add(
                         UpsertMedicalResourceRequest.Builder(
-                            insertedDataSourceId,
-                            FhirVersion.parseFhirVersion("4.0.1"),
-                            resourceJson,
-                        ).build()
+                                insertedDataSourceId,
+                                FhirVersion.parseFhirVersion("4.0.1"),
+                                resourceJson,
+                            )
+                            .build()
                     )
                 }
 
@@ -537,8 +537,8 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
     }
 
     private suspend fun getMedicalDataSources(): List<MedicalDataSource> {
-        val dataSources = suspendCancellableCoroutine<List<MedicalDataSource>> {
-            continuation ->
+        val dataSources =
+            suspendCancellableCoroutine<List<MedicalDataSource>> { continuation ->
                 healthConnectManager.getMedicalDataSources(
                     GetMedicalDataSourcesRequest.Builder()
                         .addPackageName(requireContext().packageName)
@@ -551,21 +551,22 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
         return dataSources
     }
 
-    private suspend fun createMedicalDataSource(
-        view: View
-    ): String {
+    private suspend fun createMedicalDataSource(view: View): String {
         val userEnteredDataSourceDisplayName =
             view.findViewById<EditText>(R.id.phr_data_source_display_name_text)
-        val displayName = userEnteredDataSourceDisplayName.text.toString().ifEmpty {
-            "My Hospital " + (0..1000).random() }
+        val displayName =
+            userEnteredDataSourceDisplayName.text.toString().ifEmpty {
+                "My Hospital " + (0..1000).random()
+            }
 
         val dataSource =
             suspendCancellableCoroutine<MedicalDataSource> { continuation ->
                 healthConnectManager.createMedicalDataSource(
                     CreateMedicalDataSourceRequest.Builder(
-                        Uri.parse("https://example.fhir.com/R4/123"),
-                        displayName,
-                        FhirVersion.parseFhirVersion("4.0.1"))
+                            Uri.parse("https://example.fhir.com/R4/123"),
+                            displayName,
+                            FhirVersion.parseFhirVersion("4.0.1"),
+                        )
                         .build(),
                     Runnable::run,
                     continuation.asOutcomeReceiver(),
@@ -573,7 +574,9 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
             }
         Log.d("CREATE_DATA_SOURCE", "Created source: $dataSource")
         updateDataSourceSpinnerOptions(
-            view, mExistingDataSourceNamesToId.keys.toList(), dataSource.displayName
+            view,
+            mExistingDataSourceNamesToId.keys.toList(),
+            dataSource.displayName,
         )
         mExistingDataSourceNamesToId.put(dataSource.displayName, dataSource.id)
         userEnteredDataSourceDisplayName.text = null
@@ -600,9 +603,9 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
             ReadMedicalResourcesInitialRequest.Builder(MEDICAL_RESOURCE_TYPE_VACCINES).build()
         val resources =
             suspendCancellableCoroutine<ReadMedicalResourcesResponse> { continuation ->
-                receiver = continuation.asOutcomeReceiver()
-                healthConnectManager.readMedicalResources(request, Runnable::run, receiver)
-            }
+                    receiver = continuation.asOutcomeReceiver()
+                    healthConnectManager.readMedicalResources(request, Runnable::run, receiver)
+                }
                 .medicalResources
         Log.d("READ_MEDICAL_RESOURCES", "Read ${resources.size} resources")
         return resources
@@ -611,9 +614,12 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
     private fun loadAllFhirJSONs(view: View): List<String> {
         val patientContext =
             view.findViewById<Spinner>(R.id.phr_patient_spinner).selectedItem.toString()
-        val allResources = if (patientContext == CUSTOM_DATA_PATH_PLACE_HOLDER)
-            loadAllFhirJSONsFromContentUris(mSelectedCustomDirFilesToUri?.values.orEmpty().toList())
-        else loadAllFhirJSONsFromAssets(patientContext)
+        val allResources =
+            if (patientContext == CUSTOM_DATA_PATH_PLACE_HOLDER)
+                loadAllFhirJSONsFromContentUris(
+                    mSelectedCustomDirFilesToUri?.values.orEmpty().toList()
+                )
+            else loadAllFhirJSONsFromAssets(patientContext)
 
         return allResources
     }
@@ -625,10 +631,10 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
         } catch (e: IOException) {
             Log.e("listFhirJSONAssetFiles", "Error listing assets in path $path", e)
             Toast.makeText(
-                context,
-                "Error listing JSON files: ${e.localizedMessage}",
-                Toast.LENGTH_SHORT,
-            )
+                    context,
+                    "Error listing JSON files: ${e.localizedMessage}",
+                    Toast.LENGTH_SHORT,
+                )
                 .show()
             emptyList()
         }
@@ -637,12 +643,11 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
     private fun loadAllFhirJSONsFromAssets(path: String): List<String> {
         val jsonFiles = listFhirJSONAssetFiles(requireContext(), path)
 
-        return jsonFiles
-            .mapNotNull {
-                val jsonString = loadJSONFromAsset(requireContext(), path, it)
-                Log.i("loadAllFhirJSONsAssets", "$it: $jsonString")
-                jsonString
-            }
+        return jsonFiles.mapNotNull {
+            val jsonString = loadJSONFromAsset(requireContext(), path, it)
+            Log.i("loadAllFhirJSONsAssets", "$it: $jsonString")
+            jsonString
+        }
     }
 
     fun loadJSONFromAsset(context: Context, path: String, fileName: String): String? {
@@ -652,22 +657,21 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
         } catch (e: IOException) {
             Log.e("loadJSONFromAsset", "Error reading JSON file", e)
             Toast.makeText(
-                context,
-                "Error reading JSON file from Asset: ${e.localizedMessage}",
-                Toast.LENGTH_SHORT,
-            )
+                    context,
+                    "Error reading JSON file from Asset: ${e.localizedMessage}",
+                    Toast.LENGTH_SHORT,
+                )
                 .show()
             null
         }
     }
 
     private fun loadAllFhirJSONsFromContentUris(uris: List<Uri>): List<String> {
-        return uris
-            .mapNotNull {
-                val jsonString = loadJSONFromContentUri(requireContext(), it)
-                Log.i("loadAllFhirJSONsUris", "$it: $jsonString")
-                jsonString
-            }
+        return uris.mapNotNull {
+            val jsonString = loadJSONFromContentUri(requireContext(), it)
+            Log.i("loadAllFhirJSONsUris", "$it: $jsonString")
+            jsonString
+        }
     }
 
     fun loadJSONFromContentUri(context: Context, uri: Uri): String? {
@@ -677,10 +681,10 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
         } catch (e: IOException) {
             Log.e("loadJSONFromContentUri", "Error reading JSON file", e)
             Toast.makeText(
-                context,
-                "Error reading JSON file from content Uri: ${e.localizedMessage}",
-                Toast.LENGTH_SHORT,
-            )
+                    context,
+                    "Error reading JSON file from content Uri: ${e.localizedMessage}",
+                    Toast.LENGTH_SHORT,
+                )
                 .show()
             null
         }
@@ -698,5 +702,66 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
 
     private fun requestMedicalPermissions() {
         mRequestPermissionLauncher.launch(MEDICAL_PERMISSIONS)
+    }
+
+    private suspend fun getChangeLogToken(view: View): String {
+        val request =
+            ChangeLogTokenRequest.Builder()
+                .addMedicalResourceType(
+                    MedicalResource.MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES
+                )
+                .addMedicalResourceType(MedicalResource.MEDICAL_RESOURCE_TYPE_CONDITIONS)
+                .addMedicalResourceType(MedicalResource.MEDICAL_RESOURCE_TYPE_LABORATORY_RESULTS)
+                .addMedicalResourceType(MedicalResource.MEDICAL_RESOURCE_TYPE_MEDICATIONS)
+                .addMedicalResourceType(MedicalResource.MEDICAL_RESOURCE_TYPE_PERSONAL_DETAILS)
+                .addMedicalResourceType(MedicalResource.MEDICAL_RESOURCE_TYPE_PRACTITIONER_DETAILS)
+                .addMedicalResourceType(MedicalResource.MEDICAL_RESOURCE_TYPE_PREGNANCY)
+                .addMedicalResourceType(MedicalResource.MEDICAL_RESOURCE_TYPE_PROCEDURES)
+                .addMedicalResourceType(MedicalResource.MEDICAL_RESOURCE_TYPE_SOCIAL_HISTORY)
+                .addMedicalResourceType(MEDICAL_RESOURCE_TYPE_VACCINES)
+                .addMedicalResourceType(MedicalResource.MEDICAL_RESOURCE_TYPE_VISITS)
+                .addMedicalResourceType(MedicalResource.MEDICAL_RESOURCE_TYPE_VITAL_SIGNS)
+                .build()
+        val response =
+            suspendCancellableCoroutine<ChangeLogTokenResponse> { continuation ->
+                healthConnectManager.getChangeLogToken(
+                    request,
+                    Runnable::run,
+                    continuation.asOutcomeReceiver(),
+                )
+            }
+        val token = response.token
+        view.findViewById<EditText>(R.id.change_log_token).setText(token)
+        return "Change Log Token: $token"
+    }
+
+    private suspend fun getChangeLogs(view: View): String {
+        val token = view.findViewById<EditText>(R.id.change_log_token).getText().toString()
+        val request = ChangeLogsRequest.Builder(token).build()
+        val response =
+            suspendCancellableCoroutine<ChangeLogsResponse> { continuation ->
+                healthConnectManager.getChangeLogs(
+                    request,
+                    Runnable::run,
+                    continuation.asOutcomeReceiver(),
+                )
+            }
+        view.findViewById<EditText>(R.id.change_log_token).setText(response.nextChangesToken)
+        val joinItemsToString: (List<Any>) -> String = {
+            if (it.size > 100) "Too many to list"
+            else if (it.isEmpty()) "None" else it.joinToString("\n")
+        }
+        val upsertedResources = joinItemsToString(response.upsertedMedicalResources)
+        val deletedResourceIds =
+            joinItemsToString(response.deletedMedicalResources.map { it.deletedMedicalResourceId })
+        return listOf(
+                "Next change log token: ${response.nextChangesToken}",
+                "Has more pages: ${response.hasMorePages()}",
+                "Number of upserted medical Resources: ${response.upsertedMedicalResources.size}",
+                "Number of deleted medical Resources: ${response.deletedMedicalResources.size}",
+                "Upserted resources: $upsertedResources",
+                "Deleted resource IDs: $deletedResourceIds",
+            )
+            .joinToString("\n\n")
     }
 }

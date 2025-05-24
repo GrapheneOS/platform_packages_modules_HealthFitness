@@ -30,6 +30,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.app.FitnessAppFragment
 import com.android.healthconnect.controller.permissions.data.HealthPermission.Companion.fromPermissionString
@@ -48,6 +49,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
@@ -56,6 +58,7 @@ import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @UninstallModules(HealthPermissionManagerModule::class)
+@RunWith(AndroidJUnit4::class)
 class MockedFitnessAppFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

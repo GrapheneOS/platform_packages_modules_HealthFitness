@@ -60,7 +60,7 @@ import android.health.connect.datatypes.HeightRecord;
 import android.health.connect.datatypes.SkinTemperatureRecord;
 import android.health.connect.datatypes.StepsCadenceRecord;
 import android.health.connect.datatypes.StepsRecord;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.os.UserHandle;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -72,7 +72,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
@@ -102,8 +101,6 @@ public class AccessLogsHelperTest {
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private AppOpLogsHelper mAppOpLogsHelper;
     @Mock private PackageManager mPackageManager;
 
@@ -117,7 +114,6 @@ public class AccessLogsHelperTest {
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setPreferenceHelper(new FakePreferenceHelper())
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setAppOpLogsHelper(mAppOpLogsHelper)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
@@ -125,8 +121,8 @@ public class AccessLogsHelperTest {
         mAccessLogsHelper = healthConnectInjector.getAccessLogsHelper();
         mUserHandle = context.getUser();
 
-        TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        transactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        FitnessTestUtils fitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        fitnessTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
     }
 
     @Test

@@ -28,8 +28,8 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURC
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createAllergyMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createDifferentVaccineMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResource;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createBloodPressureRecord;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildBloodPressureRecord;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
@@ -64,8 +64,8 @@ import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.StepsRecord;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.PhrTestUtils;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -115,7 +115,7 @@ public class ChangeLogsHelperTest {
     private ChangeLogsRequestHelper mChangeLogsRequestHelper;
     private TransactionManager mTransactionManager;
     private AppInfoHelper mAppInfoHelper;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
     private PhrTestUtils mPhrTestUtils;
     private MedicalDataSource mDataSource;
 
@@ -133,8 +133,8 @@ public class ChangeLogsHelperTest {
         mChangeLogsRequestHelper = healthConnectInjector.getChangeLogsRequestHelper();
         mTransactionManager = healthConnectInjector.getTransactionManager();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        mTransactionTestUtils.insertApp(PACKAGE_NAME);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        mFitnessTestUtils.insertApp(PACKAGE_NAME);
         mPhrTestUtils = new PhrTestUtils(healthConnectInjector);
         mDataSource = mPhrTestUtils.insertR4MedicalDataSource(DATA_SOURCE_NAME, PACKAGE_NAME);
     }
@@ -391,12 +391,12 @@ public class ChangeLogsHelperTest {
                                 .addRecordType(StepsRecord.class)
                                 .build());
         var insertedRecords =
-                mTransactionTestUtils.insertRecords(
+                mFitnessTestUtils.insertRecords(
                         PACKAGE_NAME,
-                        createStepsRecord(12345, 54321, 100),
-                        createStepsRecord(123456, 654321, 100),
-                        createBloodPressureRecord(12345678, 100, 100));
-        mTransactionTestUtils.deleteRecords(
+                        buildStepsRecord(12345, 54321, 100),
+                        buildStepsRecord(123456, 654321, 100),
+                        buildBloodPressureRecord(12345678, 100, 100));
+        mFitnessTestUtils.deleteRecords(
                 PACKAGE_NAME, RecordIdFilter.fromId(StepsRecord.class, insertedRecords.get(0)));
 
         var tokenRequest = mChangeLogsRequestHelper.getRequest(PACKAGE_NAME, token);
@@ -430,12 +430,12 @@ public class ChangeLogsHelperTest {
                                 .addRecordType(BloodPressureRecord.class)
                                 .build());
         var insertedRecords =
-                mTransactionTestUtils.insertRecords(
+                mFitnessTestUtils.insertRecords(
                         PACKAGE_NAME,
-                        createStepsRecord(12345, 54321, 100),
-                        createStepsRecord(123456, 654321, 100),
-                        createBloodPressureRecord(12345678, 100, 100));
-        mTransactionTestUtils.deleteRecords(
+                        buildStepsRecord(12345, 54321, 100),
+                        buildStepsRecord(123456, 654321, 100),
+                        buildBloodPressureRecord(12345678, 100, 100));
+        mFitnessTestUtils.deleteRecords(
                 PACKAGE_NAME, RecordIdFilter.fromId(StepsRecord.class, insertedRecords.get(0)));
 
         var tokenRequest = mChangeLogsRequestHelper.getRequest(PACKAGE_NAME, token);
@@ -471,12 +471,12 @@ public class ChangeLogsHelperTest {
                                 .addRecordType(BloodPressureRecord.class)
                                 .build());
         var insertedRecords =
-                mTransactionTestUtils.insertRecords(
+                mFitnessTestUtils.insertRecords(
                         PACKAGE_NAME,
-                        createStepsRecord(12345, 54321, 100),
-                        createStepsRecord(123456, 654321, 100),
-                        createBloodPressureRecord(12345678, 100, 100));
-        mTransactionTestUtils.deleteRecords(
+                        buildStepsRecord(12345, 54321, 100),
+                        buildStepsRecord(123456, 654321, 100),
+                        buildBloodPressureRecord(12345678, 100, 100));
+        mFitnessTestUtils.deleteRecords(
                 PACKAGE_NAME, RecordIdFilter.fromId(StepsRecord.class, insertedRecords.get(0)));
 
         var firstTokenRequest = mChangeLogsRequestHelper.getRequest(PACKAGE_NAME, token);

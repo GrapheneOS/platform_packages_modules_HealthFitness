@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.tests.exportimport.api
 
 import android.health.connect.Constants.DEFAULT_INT
 import android.net.Uri
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.exportimport.api.DocumentProvider
 import com.android.healthconnect.controller.exportimport.api.DocumentProviderInfo
 import com.android.healthconnect.controller.exportimport.api.DocumentProviderRoot
@@ -46,9 +47,11 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class ExportSettingsViewModelTest {
     companion object {
         private val TEST_URI: Uri = Uri.parse("content://com.android.server.healthconnect/testuri")

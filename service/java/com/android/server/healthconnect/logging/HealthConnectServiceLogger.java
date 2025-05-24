@@ -234,7 +234,7 @@ public class HealthConnectServiceLogger {
     private final int mRateLimit;
     private final int mNumberOfRecords;
     private final int[] mRecordTypes;
-    private Set<Integer> mMedicalResourceTypes;
+    private final Set<Integer> mMedicalResourceTypes;
     private final String mPackageName;
     private final int mCallerForegroundState;
     private static final int MAX_NUMBER_OF_LOGGED_DATA_TYPES = 6;
@@ -779,12 +779,6 @@ public class HealthConnectServiceLogger {
             return;
         }
 
-        boolean isPhrApi = PHR_APIS.contains(mHealthDataServiceApiMethod);
-        if (isPhrApi) {
-            writePhrLogs();
-            return;
-        }
-
         mStatsLog.write(
                 HEALTH_CONNECT_API_CALLED,
                 mHealthDataServiceApiMethod,
@@ -796,36 +790,30 @@ public class HealthConnectServiceLogger {
                 mCallerForegroundState,
                 mPackageName);
 
-        // For private logging, max 6 data types per request are being logged
-        // rest will be ignored
-        mStatsLog.write(
-                HEALTH_CONNECT_API_INVOKED,
-                mHealthDataServiceApiMethod,
-                mHealthDataServiceApiStatus,
-                mErrorCode,
-                mDuration,
-                mPackageName,
-                getRecordTypeEnumToLog(mRecordTypes, 0),
-                getRecordTypeEnumToLog(mRecordTypes, 1),
-                getRecordTypeEnumToLog(mRecordTypes, 2),
-                getRecordTypeEnumToLog(mRecordTypes, 3),
-                getRecordTypeEnumToLog(mRecordTypes, 4),
-                getRecordTypeEnumToLog(mRecordTypes, 5));
+        boolean isPhrApi = PHR_APIS.contains(mHealthDataServiceApiMethod);
+        if (isPhrApi || !mMedicalResourceTypes.isEmpty()) {
+            // Change Logs isn't a PHR api but can be if it is called with medical resource types
+            writePhrLogs();
+        } else {
+            // For private logging, max 6 data types per request are being logged
+            // rest will be ignored
+            mStatsLog.write(
+                    HEALTH_CONNECT_API_INVOKED,
+                    mHealthDataServiceApiMethod,
+                    mHealthDataServiceApiStatus,
+                    mErrorCode,
+                    mDuration,
+                    mPackageName,
+                    getRecordTypeEnumToLog(mRecordTypes, 0),
+                    getRecordTypeEnumToLog(mRecordTypes, 1),
+                    getRecordTypeEnumToLog(mRecordTypes, 2),
+                    getRecordTypeEnumToLog(mRecordTypes, 3),
+                    getRecordTypeEnumToLog(mRecordTypes, 4),
+                    getRecordTypeEnumToLog(mRecordTypes, 5));
+        }
     }
 
     private void writePhrLogs() {
-        // normal WW
-        mStatsLog.write(
-                HEALTH_CONNECT_API_CALLED,
-                mHealthDataServiceApiMethod,
-                mHealthDataServiceApiStatus,
-                mErrorCode,
-                mDuration,
-                mNumberOfRecords,
-                mRateLimit,
-                mCallerForegroundState,
-                mPackageName);
-
         // private WW
         if (mMedicalResourceTypes.isEmpty()) {
             writePhrApiInvoked(MEDICAL_RESOURCE_TYPE_NOT_ASSIGNED_DEFAULT_VALUE);

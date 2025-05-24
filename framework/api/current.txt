@@ -187,6 +187,7 @@ package android.health.connect {
     field public static final String READ_VO2_MAX = "android.permission.health.READ_VO2_MAX";
     field public static final String READ_WEIGHT = "android.permission.health.READ_WEIGHT";
     field public static final String READ_WHEELCHAIR_PUSHES = "android.permission.health.READ_WHEELCHAIR_PUSHES";
+    field @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore_intent_api") public static final String START_BACKUP_RESTORE_SETTINGS_PERMISSION = "android.permission.health.START_BACKUP_RESTORE_SETTINGS";
     field @FlaggedApi("com.android.healthfitness.flags.launch_onboarding_activity") public static final String START_ONBOARDING = "android.permission.health.START_ONBOARDING";
     field public static final String WRITE_ACTIVE_CALORIES_BURNED = "android.permission.health.WRITE_ACTIVE_CALORIES_BURNED";
     field @FlaggedApi("com.android.healthfitness.flags.activity_intensity") public static final String WRITE_ACTIVITY_INTENSITY = "android.permission.health.WRITE_ACTIVITY_INTENSITY";
@@ -720,10 +721,10 @@ package android.health.connect.datatypes {
     field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_FITNESS_MACHINE = 12; // 0xc
     field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_GLASSES = 10; // 0xa
     field public static final int DEVICE_TYPE_HEAD_MOUNTED = 5; // 0x5
-    field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_HEARABLES = 11; // 0xb
+    field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_HEARABLE = 11; // 0xb
     field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_METER = 15; // 0xf
     field public static final int DEVICE_TYPE_PHONE = 2; // 0x2
-    field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_PORTABLE_COMPUTERS = 14; // 0xe
+    field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_PORTABLE_COMPUTER = 14; // 0xe
     field public static final int DEVICE_TYPE_RING = 4; // 0x4
     field public static final int DEVICE_TYPE_SCALE = 3; // 0x3
     field public static final int DEVICE_TYPE_SMART_DISPLAY = 8; // 0x8
@@ -904,7 +905,7 @@ package android.health.connect.datatypes {
     method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @FloatRange(from=0, to=10, fromInclusive=true, toInclusive=true) public float getRateOfPerceivedExertion();
     method @IntRange(from=0) public int getRepetitionsCount();
     method public int getSegmentType();
-    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") public int getSetIndex();
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @IntRange(from=0) public int getSetIndex();
     method @NonNull public java.time.Instant getStartTime();
     method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @Nullable public android.health.connect.datatypes.units.Mass getWeight();
     method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") public boolean hasRateOfPerceivedExertion();
@@ -919,7 +920,7 @@ package android.health.connect.datatypes {
     method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder clearWeight();
     method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder setRateOfPerceivedExertion(@FloatRange(from=0, to=10, fromInclusive=true, toInclusive=true) float);
     method @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder setRepetitionsCount(@IntRange(from=0) int);
-    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder setSetIndex(int);
+    method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder setSetIndex(@IntRange(from=0) int);
     method @FlaggedApi("com.android.healthfitness.flags.exercise_segment_improvements") @NonNull public android.health.connect.datatypes.ExerciseSegment.Builder setWeight(@NonNull android.health.connect.datatypes.units.Mass);
   }
 

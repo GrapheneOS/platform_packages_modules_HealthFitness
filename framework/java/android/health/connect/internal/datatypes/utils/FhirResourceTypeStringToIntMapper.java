@@ -19,6 +19,9 @@ import android.annotation.NonNull;
 import android.health.connect.datatypes.FhirResource;
 import android.health.connect.datatypes.FhirResource.FhirResourceType;
 
+import com.android.healthfitness.flags.Flags;
+import com.android.internal.annotations.VisibleForTesting;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -41,6 +44,7 @@ public final class FhirResourceTypeStringToIntMapper {
     private static final String FHIR_RESOURCE_TYPE_ENCOUNTER_STR = "ENCOUNTER";
     private static final String FHIR_RESOURCE_TYPE_LOCATION_STR = "LOCATION";
     private static final String FHIR_RESOURCE_TYPE_ORGANIZATION_STR = "ORGANIZATION";
+    private static final String FHIR_RESOURCE_TYPE_DEVICE_STR = "DEVICE";
 
     /**
      * Returns the corresponding {@code IntDef} {@link FhirResourceType} from a {@code String}
@@ -100,5 +104,18 @@ public final class FhirResourceTypeStringToIntMapper {
                 FHIR_RESOURCE_TYPE_LOCATION_STR, FhirResource.FHIR_RESOURCE_TYPE_LOCATION);
         sFhirResourceTypeStringToIntMap.put(
                 FHIR_RESOURCE_TYPE_ORGANIZATION_STR, FhirResource.FHIR_RESOURCE_TYPE_ORGANIZATION);
+        if (Flags.deviceResource()) {
+            sFhirResourceTypeStringToIntMap.put(
+                    FHIR_RESOURCE_TYPE_DEVICE_STR, FhirResource.FHIR_RESOURCE_TYPE_DEVICE);
+        }
+    }
+
+    /**
+     * Reset cached static maps. Only for use in tests where values should change due to flags
+     * changing.
+     */
+    @VisibleForTesting
+    public static void reset() {
+        sFhirResourceTypeStringToIntMap.clear();
     }
 }

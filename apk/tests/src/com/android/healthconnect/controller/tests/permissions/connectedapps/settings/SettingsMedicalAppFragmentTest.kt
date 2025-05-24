@@ -34,6 +34,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.compatibility.common.util.SystemUtil.eventually
 import com.android.healthconnect.controller.R
@@ -73,6 +74,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.eq
@@ -83,6 +85,7 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class SettingsMedicalAppFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
@@ -495,7 +498,6 @@ class SettingsMedicalAppFragmentTest {
             )
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
-        // TODO (b/322495982) check navigation to Migration activity
         onView(withText("Start integration")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(withText("Continue")).inRoot(isDialog()).check(matches(isDisplayed()))
         verify(healthConnectLogger)

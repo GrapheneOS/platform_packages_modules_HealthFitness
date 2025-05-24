@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{ຊ້ຳ 1 ຮອບ}other{ຊ້ຳ # ຮອບ}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{ຊ້ຳ 1 ຮອບ}other{ຊ້ຳ # ຮອບ}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"ກຸ່ມການອອກກຳລັງກາຍ"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"ຊຸດທີ <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"ລະດັບການຮັບຮູ້ການອອກແຮງຂອງຮ່າງກາຍ: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"ລະດັບການຮັບຮູ້ການອອກແຮງຂອງຮ່າງກາຍ"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"ຮອບ"</string>
     <string name="back_extension" msgid="426518933137440577">"ທ່າຍືດຫຼັງ"</string>
     <string name="badminton" msgid="8839727076522086870">"ດອກປີກໄກ່"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ກ່ອນທີ່ຈະດຳເນີນການຕໍ່, ໃຫ້ອັບເດດລະບົບໂທລະສັບຂອງທ່ານ."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ຫາກທ່ານອັບເດດລະບົບໂທລະສັບຂອງທ່ານແລ້ວ, ໃຫ້ລອງຣີສະຕາດໂທລະສັບຂອງທ່ານເພື່ອສືບຕໍ່ການເຊື່ອມໂຍງ"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"ກ່ອນທີ່ຈະດຳເນີນການຕໍ່, ໃຫ້ອັບເດດແອັບ Health Connect ເປັນເວີຊັນຫຼ້າສຸດ."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"ຕ້ອງການພື້ນທີ່ເພີ່ມເຕີມ"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect ຕ້ອງການພື້ນທີ່ຈັດເກັບຂໍ້ມູນ <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> ຢູ່ໂທລະສັບຂອງທ່ານເພື່ອສືບຕໍ່ການເຊື່ອມໂຍງ.\n\nເພີ່ມພື້ນທີ່ຫວ່າງຢູ່ໂທລະສັບຂອງທ່ານ ແລ້ວລອງໃໝ່."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"ລອງໃໝ່"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"ເພີ່ມພື້ນທີ່ຫວ່າງ"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"ຢຸດການເຊື່ອມໂຍງໄວ້ຊົ່ວຄາວແລ້ວ"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"ແອັບ Health Connect ປິດລົງໃນລະຫວ່າງການເຊື່ອມໂຍງກັບລະບົບ Android.\n\nຄລິກ ສືບຕໍ່ ເພື່ອເປີດແອັບຄືນໃໝ່ ແລະ ສືບຕໍ່ໂອນຍ້າຍຂໍ້ມູນ ແລະ ການອະນຸຍາດຂອງທ່ານ."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"ເພື່ອຮັກສາຂໍ້ມູນ Health Connect ຂອງທ່ານໄວ້, ໃຫ້ສຳເລັດຂະບວນການນີ້ພາຍໃນ <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
@@ -1229,4 +1220,21 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{ໃຊ້ໂດຍ 1 ແອັບ}other{ໃຊ້ໂດຍ # ແອັບ}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"ບໍ່ໄດ້ໃຊ້ໃນ 24 ຊົ່ວໂມງທີ່ຜ່ານມາ"</string>
     <string name="accessed" msgid="4424701457530587176">"ເຂົ້າເຖິງເມື່ອ <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"ເຊື່ອມຕໍ່ 2 ແອັບທຳອິດຂອງທ່ານ"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"ເຊື່ອມຕໍ່ແອັບເຫຼົ່ານີ້ເພື່ອເລີ່ມຕົ້ນການແບ່ງປັນຂໍ້ມູນສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍລະຫວ່າງພວກມັນ"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"ເຊື່ອມຕໍ່ແອັບທີສອງ"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"ຕັ້ງຄ່າອີກໜຶ່ງແອັບເພື່ອແບ່ງປັນຂໍ້ມູນສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍກັບ <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="set_up_later" msgid="223888663943501921">"ຕັ້ງຄ່າໃນພາຍຫຼັງ"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"ແອັບຕ່າງໆທີ່ສາມາດເຊື່ອມຕໍ່ໄດ້"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect ຈະເຮັດໃຫ້ທ່ານຈັດເກັບຂໍ້ມູນສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍຂອງທ່ານໄວ້ໃນບ່ອນດຽວແລະ ແບ່ງປັນມັນລະຫວ່າງແອັບຕ່າງໆຢູ່ໂທລະສັບຂອງທ່ານໄດ້, ເຮັດໃຫ້ແອັບຂອງທ່ານເຮັດວຽກຮ່ວມກັນໄດ້ດີຂຶ້ນ."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"ເພີ່ມເຕີມກ່ຽວກັບ Health Connect"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"ເຊື່ອມຕໍ່ແອັບຫາ Health Connect ແລ້ວ"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"ເກືອບສຳເລັດແລ້ວ"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"ເປີດແອັບເຫຼົ່ານີ້ຕອນນີ້ເພື່ອຕັ້ງຄ່າໃຫ້ສຳເລັດ ແລະ ເລີ່ມການແບ່ງປັນຂໍ້ມູນ"</string>
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"ເບິ່ງຂໍ້ມູນສຸຂະພາບຂອງທ່ານໃນທົ່ວແອັບ"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"ເລີ່ມການແບ່ງປັນຂໍ້ມູນສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍລະຫວ່າງແອັບຂອງທ່ານ"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"ຕັ້ງຄ່າ"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"ເຊື່ອມຕໍ່ແອັບທີສອງ"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"ຕັ້ງຄ່າອີກໜຶ່ງແອັບເພື່ອແບ່ງປັນຂໍ້ມູນສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍກັບ <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"ສືບຕໍ່"</string>
 </resources>

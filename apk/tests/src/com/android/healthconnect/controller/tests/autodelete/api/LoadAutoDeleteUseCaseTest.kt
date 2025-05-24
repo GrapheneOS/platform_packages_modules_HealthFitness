@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.tests.autodelete.api
 
 import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.autodelete.api.LoadAutoDeleteUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.google.common.truth.Truth.assertThat
@@ -28,11 +29,13 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class LoadAutoDeleteUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

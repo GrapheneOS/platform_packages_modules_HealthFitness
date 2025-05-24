@@ -29,6 +29,8 @@ import android.annotation.NonNull;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.android.healthfitness.flags.Flags;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Set;
@@ -126,6 +128,14 @@ public final class FhirResource implements Parcelable {
      */
     public static final int FHIR_RESOURCE_TYPE_ORGANIZATION = 14;
 
+    /**
+     * FHIR resource type for a <a href="https://www.hl7.org/fhir/device.html">FHIR Device</a>.
+     *
+     * @hide
+     */
+    // TODO: b/417657261 - change this to @FlaggedApi(FLAG_DEVICE_RESOURCE)
+    public static final int FHIR_RESOURCE_TYPE_DEVICE = 15;
+
     // LINT.ThenChange(/service/proto/phr/fhir_spec_utils.py:fhir_resource_type_mapping)
 
     /** @hide */
@@ -144,6 +154,7 @@ public final class FhirResource implements Parcelable {
         FHIR_RESOURCE_TYPE_ENCOUNTER,
         FHIR_RESOURCE_TYPE_LOCATION,
         FHIR_RESOURCE_TYPE_ORGANIZATION,
+        FHIR_RESOURCE_TYPE_DEVICE,
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface FhirResourceType {}
@@ -254,7 +265,8 @@ public final class FhirResource implements Parcelable {
                     FHIR_RESOURCE_TYPE_PRACTITIONER_ROLE,
                     FHIR_RESOURCE_TYPE_ENCOUNTER,
                     FHIR_RESOURCE_TYPE_LOCATION,
-                    FHIR_RESOURCE_TYPE_ORGANIZATION);
+                    FHIR_RESOURCE_TYPE_ORGANIZATION,
+                    FHIR_RESOURCE_TYPE_DEVICE);
 
     /**
      * Validates the provided {@code fhirResourceType} is in the {@link FhirResource#VALID_TYPES}
@@ -265,6 +277,9 @@ public final class FhirResource implements Parcelable {
      * @hide
      */
     public static void validateFhirResourceType(@FhirResourceType int fhirResourceType) {
+        if (!Flags.deviceResource() && fhirResourceType == FHIR_RESOURCE_TYPE_DEVICE) {
+            throw new IllegalArgumentException("Unsupported FHIR Resource type Device");
+        }
         validateIntDefValue(fhirResourceType, VALID_TYPES, FhirResourceType.class.getSimpleName());
     }
 

@@ -16,12 +16,19 @@
 
 package android.healthconnect.testing.unittest;
 
+import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING;
+
+import static java.time.Duration.ofMinutes;
+
+import android.health.connect.datatypes.BloodPressureRecord;
 import android.health.connect.datatypes.ExerciseSegmentType;
 import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.PlannedExerciseStep;
 import android.health.connect.datatypes.SleepSessionRecord;
+import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Power;
+import android.health.connect.internal.datatypes.BloodPressureRecordInternal;
 import android.health.connect.internal.datatypes.ExerciseCompletionGoalInternal;
 import android.health.connect.internal.datatypes.ExerciseLapInternal;
 import android.health.connect.internal.datatypes.ExercisePerformanceGoalInternal;
@@ -31,14 +38,19 @@ import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.PlannedExerciseBlockInternal;
 import android.health.connect.internal.datatypes.PlannedExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.PlannedExerciseStepInternal;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.SleepSessionRecordInternal;
 import android.health.connect.internal.datatypes.SleepStageInternal;
+import android.health.connect.internal.datatypes.SpeedRecordInternal;
+import android.health.connect.internal.datatypes.StepsRecordInternal;
 
 import java.time.Instant;
 import java.time.Period;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 public class RecordInternalFactory {
 
@@ -87,6 +99,28 @@ public class RecordInternalFactory {
                         .setUuid(UUID.randomUUID())
                         .setPackageName("android.healthconnect.unittests")
                         .setModel("Pixel4a");
+    }
+
+    /** Creates an exercise sessions with a route. */
+    public static ExerciseSessionRecordInternal buildExerciseSessionRecordWithRoute(
+            Instant startTime) {
+        return (ExerciseSessionRecordInternal)
+                new ExerciseSessionRecordInternal()
+                        .setExerciseType(EXERCISE_SESSION_TYPE_RUNNING)
+                        .setRoute(buildExerciseRoute(startTime))
+                        .setStartTime(startTime.toEpochMilli())
+                        .setEndTime(startTime.plus(ofMinutes(10)).toEpochMilli());
+    }
+
+    /** Creates an exercise sessions with a route. */
+    public static ExerciseSessionRecordInternal buildExerciseSessionRecordWithSegment(
+            Instant startTime) {
+        return (ExerciseSessionRecordInternal)
+                new ExerciseSessionRecordInternal()
+                        .setExerciseType(EXERCISE_SESSION_TYPE_RUNNING)
+                        .setExerciseSegments(List.of(buildExerciseSegment(startTime)))
+                        .setStartTime(startTime.toEpochMilli())
+                        .setEndTime(startTime.plus(ofMinutes(10)).toEpochMilli());
     }
 
     /** Returns an internal exercise session instance with rate of perceived exertion set. */
@@ -214,5 +248,79 @@ public class RecordInternalFactory {
                         .setEndTime((long) 1e10)
                         .setUuid(UUID.randomUUID())
                         .setPackageName("android.healthconnect.unittests");
+    }
+
+    public static RecordInternal<StepsRecord> buildStepsRecord(
+            long startTimeMillis, long endTimeMillis, int stepsCount) {
+        return buildStepsRecord(/* clientId= */ null, startTimeMillis, endTimeMillis, stepsCount);
+    }
+
+    public static RecordInternal<StepsRecord> buildStepsRecord(
+            String clientId, long startTimeMillis, long endTimeMillis, int stepsCount) {
+        return new StepsRecordInternal()
+                .setCount(stepsCount)
+                .setStartTime(startTimeMillis)
+                .setEndTime(endTimeMillis)
+                .setClientRecordId(clientId);
+    }
+
+    public static RecordInternal<StepsRecord> buildStepsRecord(
+            long appInfoId, long startTimeMillis, long endTimeMillis, int stepsCount) {
+        return new StepsRecordInternal()
+                .setCount(stepsCount)
+                .setStartTime(startTimeMillis)
+                .setEndTime(endTimeMillis)
+                .setAppInfoId(appInfoId);
+    }
+
+    public static RecordInternal<BloodPressureRecord> buildBloodPressureRecord(
+            long timeMillis, double systolic, double diastolic) {
+        return new BloodPressureRecordInternal()
+                .setSystolic(systolic)
+                .setDiastolic(diastolic)
+                .setTime(timeMillis);
+    }
+
+    public static RecordInternal<BloodPressureRecord> buildBloodPressureRecord(
+            long appInfoId, long timeMillis, double systolic, double diastolic) {
+        return new BloodPressureRecordInternal()
+                .setSystolic(systolic)
+                .setDiastolic(diastolic)
+                .setTime(timeMillis)
+                .setAppInfoId(appInfoId);
+    }
+
+    public static SpeedRecordInternal buildSpeedRecordInternal(Instant startTime) {
+        return (SpeedRecordInternal)
+                new SpeedRecordInternal(
+                                Set.of(
+                                        new SpeedRecordInternal.SpeedRecordSample(
+                                                100, startTime.plus(ofMinutes(1)).toEpochMilli())))
+                        .setStartTime(startTime.toEpochMilli())
+                        .setEndTime(startTime.plus(ofMinutes(10)).toEpochMilli());
+    }
+
+    private static ExerciseRouteInternal buildExerciseRoute(Instant startTime) {
+        int numberOfLocations = 3;
+        double latitude = 52.13;
+        double longitude = 0.14;
+
+        return new ExerciseRouteInternal(
+                IntStream.range(0, numberOfLocations)
+                        .mapToObj(
+                                i ->
+                                        new ExerciseRouteInternal.LocationInternal()
+                                                .setTime(startTime.plusSeconds(i).toEpochMilli())
+                                                .setLatitude(latitude + 0.001 * i)
+                                                .setLongitude(longitude + 0.001 * i))
+                        .toList());
+    }
+
+    private static ExerciseSegmentInternal buildExerciseSegment(Instant startTime) {
+        return new ExerciseSegmentInternal()
+                .setStartTime(startTime.plusSeconds(1).toEpochMilli())
+                .setStartTime(startTime.plusSeconds(2).toEpochMilli())
+                .setSegmentType(ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
+                .setRepetitionsCount(5);
     }
 }

@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.utiltests
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.google.common.truth.Truth.assertThat
@@ -23,8 +24,10 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class DeviceInfoUtilsTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
@@ -40,7 +43,8 @@ class DeviceInfoUtilsTest {
                 InstrumentationRegistry.getInstrumentation()
                     .context
                     .getResources()
-                    .getString(R.string.hc_get_started_link))
+                    .getString(R.string.hc_get_started_link)
+            )
             .isEqualTo("https://support.google.com/android?p=get_started_hc")
     }
 }

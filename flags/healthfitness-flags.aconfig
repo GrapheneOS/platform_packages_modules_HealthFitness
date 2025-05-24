@@ -487,3 +487,30 @@ flag {
     is_fixed_read_only: true
     is_exported: false
 }
+
+flag {
+    name: "onboarding_notification"
+    namespace: "health_fitness_aconfig"
+    description: "Enable notification for onboarding flow."
+    bug: "418778638"
+    is_fixed_read_only: true
+    is_exported: false
+}
+
+flag {
+    name: "remove_old_onboarding"
+    namespace: "health_fitness_aconfig"
+    description: "Removes old onboarding flow."
+    bug: "418779070"
+    is_fixed_read_only: true
+    is_exported: false
+}
+
+flag {
+    name: "phr_xhtml_validation"
+    namespace: "health_fitness_aconfig"
+    description: "Enable xhtml datatype validation in FHIR resources"
+    bug: "402780942"
+    is_fixed_read_only: true
+    is_exported: false
+}

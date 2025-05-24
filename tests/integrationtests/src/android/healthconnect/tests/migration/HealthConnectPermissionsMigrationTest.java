@@ -21,8 +21,7 @@ import static android.health.connect.HealthPermissions.READ_ACTIVE_CALORIES_BURN
 import static android.health.connect.HealthPermissions.WRITE_ACTIVE_CALORIES_BURNED;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 
-import static com.android.compatibility.common.util.FeatureUtil.AUTOMOTIVE_FEATURE;
-import static com.android.compatibility.common.util.FeatureUtil.hasSystemFeature;
+import static com.android.compatibility.common.util.SystemUtil.eventually;
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -53,7 +52,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectPermissionsMigrationTest {
     private static final String DEFAULT_APP_PACKAGE = "android.healthconnect.test.app";
-    private static final String TAG = "HealthConnectPermissionsMigrationTest";
     private static final Period GRANT_TIME_TO_START_ACCESS_DATE_PERIOD = Period.ofDays(30);
     private Context mContext;
     private HealthConnectManager mHealthConnectManager;
@@ -84,7 +82,9 @@ public class HealthConnectPermissionsMigrationTest {
             throws InterruptedException {
         final String entityId = "permissions";
         Instant firstGrantTime = Instant.now();
-        assertThat(readDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE)).isNull();
+        // Limit is updated asynchronously after permissions are revoked, wait if necessary.
+        eventually(
+                () -> assertThat(readDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE)).isNull());
         migrate(
                 new MigrationEntity(
                         entityId,
@@ -135,9 +135,5 @@ public class HealthConnectPermissionsMigrationTest {
             final Throwable cause = e.getCause();
             throw cause instanceof RuntimeException ? (RuntimeException) cause : e;
         }
-    }
-
-    private static boolean isHardwareAutomotive() {
-        return hasSystemFeature(AUTOMOTIVE_FEATURE);
     }
 }

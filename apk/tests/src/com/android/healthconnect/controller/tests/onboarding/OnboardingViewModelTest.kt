@@ -17,6 +17,7 @@
 package com.android.healthconnect.controller.tests.onboarding
 
 import android.content.Context
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.OnboardingViewModel
 import com.android.healthconnect.controller.onboarding.api.OnboardingState
@@ -44,9 +45,11 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class OnboardingViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
@@ -106,13 +109,111 @@ class OnboardingViewModelTest {
         advanceUntilIdle()
 
         val actual = testObserver.getLastValue()
-        assertThat(actual is OnboardingViewModel.OnboardingFragmentState.WithData).isTrue()
-        assertThat((actual as OnboardingViewModel.OnboardingFragmentState.WithData).connectedApps)
+        assertThat(actual is OnboardingViewModel.OnboardingFragmentState.OneAppConnected).isTrue()
+        assertThat(
+                (actual as OnboardingViewModel.OnboardingFragmentState.OneAppConnected).connectedApp
+            )
+            .isEqualTo(ConnectedFitnessAppMetadata(TEST_APP_3, true))
+        assertThat(actual.potentialApps)
             .containsExactlyElementsIn(
                 listOf(
-                    ConnectedFitnessAppMetadata(TEST_APP_3, true),
                     ConnectedFitnessAppMetadata(TEST_APP, false),
                     ConnectedFitnessAppMetadata(TEST_APP_2, false),
+                )
+            )
+    }
+
+    @Test
+    fun loadConnectedApps_whenNoApps_onboardingFragmentStateNoApps() = runTest {
+        loadFitnessPermissionApps.setConnectedApps(listOf())
+        val testObserver = TestObserver<OnboardingViewModel.OnboardingFragmentState>()
+        viewModel.connectedApps.observeForever(testObserver)
+        viewModel.loadConnectedApps()
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual is OnboardingViewModel.OnboardingFragmentState.NoApps).isTrue()
+    }
+
+    @Test
+    fun loadConnectedApps_noAppsConnected_onboardingFragmentStateZeroAppsConnected() = runTest {
+        loadFitnessPermissionApps.setConnectedApps(
+            listOf(
+                ConnectedFitnessAppMetadata(TEST_APP, false),
+                ConnectedFitnessAppMetadata(TEST_APP_2, false),
+                ConnectedFitnessAppMetadata(TEST_APP_3, false),
+            )
+        )
+        val testObserver = TestObserver<OnboardingViewModel.OnboardingFragmentState>()
+        viewModel.connectedApps.observeForever(testObserver)
+        viewModel.loadConnectedApps()
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual is OnboardingViewModel.OnboardingFragmentState.ZeroAppsConnected).isTrue()
+        assertThat(
+                (actual as OnboardingViewModel.OnboardingFragmentState.ZeroAppsConnected)
+                    .potentialApps
+            )
+            .containsExactlyElementsIn(
+                listOf(
+                    ConnectedFitnessAppMetadata(TEST_APP, false),
+                    ConnectedFitnessAppMetadata(TEST_APP_2, false),
+                    ConnectedFitnessAppMetadata(TEST_APP_3, false),
+                )
+            )
+    }
+
+    @Test
+    fun loadConnectedApps_oneAppConnected_onboardingFragmentStateOneAppConnected() = runTest {
+        loadFitnessPermissionApps.setConnectedApps(
+            listOf(
+                ConnectedFitnessAppMetadata(TEST_APP, true),
+                ConnectedFitnessAppMetadata(TEST_APP_2, false),
+                ConnectedFitnessAppMetadata(TEST_APP_3, false),
+            )
+        )
+        val testObserver = TestObserver<OnboardingViewModel.OnboardingFragmentState>()
+        viewModel.connectedApps.observeForever(testObserver)
+        viewModel.loadConnectedApps()
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual is OnboardingViewModel.OnboardingFragmentState.OneAppConnected).isTrue()
+        assertThat(
+                (actual as OnboardingViewModel.OnboardingFragmentState.OneAppConnected).connectedApp
+            )
+            .isEqualTo(ConnectedFitnessAppMetadata(TEST_APP, true))
+        assertThat(actual.potentialApps)
+            .containsExactlyElementsIn(
+                listOf(
+                    ConnectedFitnessAppMetadata(TEST_APP_2, false),
+                    ConnectedFitnessAppMetadata(TEST_APP_3, false),
+                )
+            )
+    }
+
+    @Test
+    fun loadConnectedApps_twoAppsConnected_onboardingFragmentStateAlmostDone() = runTest {
+        loadFitnessPermissionApps.setConnectedApps(
+            listOf(
+                ConnectedFitnessAppMetadata(TEST_APP, true),
+                ConnectedFitnessAppMetadata(TEST_APP_2, true),
+                ConnectedFitnessAppMetadata(TEST_APP_3, false),
+            )
+        )
+        val testObserver = TestObserver<OnboardingViewModel.OnboardingFragmentState>()
+        viewModel.connectedApps.observeForever(testObserver)
+        viewModel.loadConnectedApps()
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual is OnboardingViewModel.OnboardingFragmentState.AlmostDone).isTrue()
+        assertThat((actual as OnboardingViewModel.OnboardingFragmentState.AlmostDone).connectedApps)
+            .containsExactlyElementsIn(
+                listOf(
+                    ConnectedFitnessAppMetadata(TEST_APP, true),
+                    ConnectedFitnessAppMetadata(TEST_APP_2, true),
                 )
             )
     }
@@ -230,6 +331,43 @@ class OnboardingViewModelTest {
                 ConnectedFitnessAppMetadata(TEST_APP_2, true),
             )
         )
+        loadOnboardingStateUseCase.setOnboardingBannerState(
+            OnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED
+        )
+        val testObserver = TestObserver<OnboardingViewModel.OnboardingBannerState>()
+        viewModel.onboardingBannerState.observeForever(testObserver)
+        viewModel.loadConnectedApps()
+        viewModel.loadOnboardingBannerState()
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual is OnboardingViewModel.OnboardingBannerState.NoOnboardingBanner).isTrue()
+    }
+
+    @Test
+    fun whenOnboardingLoadingError_noBanner() = runTest {
+        setPreferenceSeen(Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
+        loadFitnessPermissionApps.setConnectedApps(
+            listOf(
+                ConnectedFitnessAppMetadata(TEST_APP, false),
+                ConnectedFitnessAppMetadata(TEST_APP_2, false),
+            )
+        )
+        loadOnboardingStateUseCase.setForceFail(true)
+        val testObserver = TestObserver<OnboardingViewModel.OnboardingBannerState>()
+        viewModel.onboardingBannerState.observeForever(testObserver)
+        viewModel.loadConnectedApps()
+        viewModel.loadOnboardingBannerState()
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual is OnboardingViewModel.OnboardingBannerState.NoOnboardingBanner).isTrue()
+    }
+
+    @Test
+    fun whenConnectedAppsLoadingError_noBanner() = runTest {
+        setPreferenceSeen(Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
+        loadFitnessPermissionApps.setForceFail(true)
         loadOnboardingStateUseCase.setOnboardingBannerState(
             OnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED
         )

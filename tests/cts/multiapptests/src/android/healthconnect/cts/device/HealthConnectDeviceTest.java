@@ -733,7 +733,7 @@ public class HealthConnectDeviceTest {
                 APP_A_WITH_READ_WRITE_PERMS.getPackageName(), APP_A_DECLARED_PERMISSION);
 
         APP_A_WITH_READ_WRITE_PERMS.selfRevokePermission(APP_A_DECLARED_PERMISSION);
-        APP_A_WITH_READ_WRITE_PERMS.kill();
+        APP_A_WITH_READ_WRITE_PERMS.forceStop();
 
         eventually(
                 () ->

@@ -41,8 +41,8 @@ import android.health.connect.Constants;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.TaskUtils;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.healthconnect.testing.unittest.mocks.HealthPermissionsMocker;
 import android.os.UserManager;
 import android.platform.test.annotations.DisableFlags;
@@ -58,7 +58,6 @@ import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
 
 import org.junit.After;
@@ -94,8 +93,6 @@ public class HealthDataCategoryPriorityHelperTest {
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private PackageManager mPackageManager;
     @Mock private UserManager mUserManager;
 
@@ -129,19 +126,18 @@ public class HealthDataCategoryPriorityHelperTest {
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setPreferenceHelper(mPreferenceHelper)
                         .setPackageInfoUtils(mPackageInfoUtils)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .setUserManager(mUserManager)
                         .build();
 
-        TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        transactionTestUtils.insertApp(APP_PACKAGE_NAME);
-        transactionTestUtils.insertApp(APP_PACKAGE_NAME_2);
-        transactionTestUtils.insertApp(APP_PACKAGE_NAME_3);
-        transactionTestUtils.insertApp(APP_PACKAGE_NAME_4);
-        transactionTestUtils.insertApp(DEVICE_DATA_PROVIDER_PACKAGE);
+        FitnessTestUtils fitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        fitnessTestUtils.insertApp(APP_PACKAGE_NAME);
+        fitnessTestUtils.insertApp(APP_PACKAGE_NAME_2);
+        fitnessTestUtils.insertApp(APP_PACKAGE_NAME_3);
+        fitnessTestUtils.insertApp(APP_PACKAGE_NAME_4);
+        fitnessTestUtils.insertApp(DEVICE_DATA_PROVIDER_PACKAGE);
 
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mAppPackageId = mAppInfoHelper.getAppInfoId(APP_PACKAGE_NAME);

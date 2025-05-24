@@ -22,10 +22,16 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertThrows;
 
 import android.health.connect.datatypes.FhirResource;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.Flags;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +40,16 @@ import org.junit.runner.RunWith;
 public class FhirResourceTypeStringToIntMapperTest {
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
+    @Before
+    public void setUp() {
+        FhirResourceTypeStringToIntMapper.reset();
+    }
+
+    @After
+    public void tearDown() {
+        FhirResourceTypeStringToIntMapper.reset();
+    }
 
     @Test
     public void testFhirResourceTypeInt_immunizationType() {
@@ -173,6 +189,25 @@ public class FhirResourceTypeStringToIntMapperTest {
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_ORGANIZATION);
         assertThat(getFhirResourceTypeInt("ORGANIZATION"))
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_ORGANIZATION);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_RESOURCE)
+    public void testFhirResourceTypeInt_deviceTypeFlagOn_succeeds() {
+        assertThat(getFhirResourceTypeInt("device"))
+                .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_DEVICE);
+        assertThat(getFhirResourceTypeInt("Device"))
+                .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_DEVICE);
+        assertThat(getFhirResourceTypeInt("DEVICE"))
+                .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_DEVICE);
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_RESOURCE)
+    public void testFhirResourceTypeInt_deviceTypeFlagOff_fails() {
+        assertThrows(IllegalArgumentException.class, () -> getFhirResourceTypeInt("device"));
+        assertThrows(IllegalArgumentException.class, () -> getFhirResourceTypeInt("Device"));
+        assertThrows(IllegalArgumentException.class, () -> getFhirResourceTypeInt("DEVICE"));
     }
 
     @Test

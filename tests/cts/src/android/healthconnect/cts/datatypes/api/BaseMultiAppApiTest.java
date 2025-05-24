@@ -52,6 +52,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.function.Supplier;
 
 abstract class BaseMultiAppApiTest<T extends Record> {
     private static final ZonedDateTime YESTERDAY_11AM =
@@ -63,17 +64,24 @@ abstract class BaseMultiAppApiTest<T extends Record> {
     private static final TestAppProxy APP_A_WITH_READ_WRITE_PERMS =
             TestAppProxy.forPackageName("android.healthconnect.cts.testapp.readWritePerms.A");
 
-    private final Class<T> mRecordClass;
+    /**
+     * The record class may be unavailable on older builds. Using a supplier makes sure the class
+     * resolution gets postponed until {@link #setUp()} which never gets reached if the
+     * corresponding API flag is disabled.
+     */
+    private final Supplier<Class<T>> mRecordClassSupplier;
+
+    private Class<T> mRecordClass;
     private final String mReadPermission;
     private final String mWritePermission;
     private final RecordFactory<T> mRecordFactory;
 
     BaseMultiAppApiTest(
-            Class<T> recordClass,
+            Supplier<Class<T>> recordClassSupplier,
             String readPermission,
             String writePermission,
             RecordFactory<T> recordFactory) {
-        mRecordClass = recordClass;
+        mRecordClassSupplier = recordClassSupplier;
         mReadPermission = readPermission;
         mWritePermission = writePermission;
         mRecordFactory = recordFactory;
@@ -90,6 +98,7 @@ abstract class BaseMultiAppApiTest<T extends Record> {
 
     @Before
     public void setUp() throws InterruptedException {
+        mRecordClass = mRecordClassSupplier.get();
         assertThat(getGrantedHealthPermissions(getTestPackageName()))
                 .containsAtLeast(mReadPermission, mWritePermission);
         assertThat(getGrantedHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName()))

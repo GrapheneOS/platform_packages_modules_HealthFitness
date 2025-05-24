@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.phr.validations;
 
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_ALLERGY_INTOLERANCE;
+import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_DEVICE;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_MEDICATION_REQUEST;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_OBSERVATION;
@@ -24,6 +25,7 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSION_R4;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSION_R4B;
 
+import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_RESOURCE;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_EXTENSION_VALIDATION;
@@ -34,6 +36,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertThrows;
 
 import android.healthconnect.testing.shared.phr.AllergyBuilder;
+import android.healthconnect.testing.shared.phr.DeviceBuilder;
 import android.healthconnect.testing.shared.phr.ImmunizationBuilder;
 import android.healthconnect.testing.shared.phr.MedicationsBuilder;
 import android.healthconnect.testing.shared.phr.ObservationBuilder;
@@ -67,6 +70,28 @@ public class FhirResourceValidatorTest {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> validator.validateFhirResource(immunizationJson, 100, FHIR_VERSION_R4));
+    }
+
+    @Test
+    @DisableFlags(FLAG_DEVICE_RESOURCE)
+    public void testValidateFhirResource_deviceWithoutFlag_throws() throws JSONException {
+        FhirResourceValidator validator = new FhirResourceValidator();
+        JSONObject deviceJson = new JSONObject(new DeviceBuilder().toJson());
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        validator.validateFhirResource(
+                                deviceJson, FHIR_RESOURCE_TYPE_DEVICE, FHIR_VERSION_R4));
+    }
+
+    @Test
+    @EnableFlags(FLAG_DEVICE_RESOURCE)
+    public void testValidateFhirResource_deviceWithFlag_succeeds() throws JSONException {
+        FhirResourceValidator validator = new FhirResourceValidator();
+        JSONObject deviceJson = new JSONObject(new DeviceBuilder().toJson());
+
+        validator.validateFhirResource(deviceJson, FHIR_RESOURCE_TYPE_DEVICE, FHIR_VERSION_R4);
     }
 
     @Test

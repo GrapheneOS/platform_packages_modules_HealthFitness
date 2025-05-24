@@ -24,6 +24,8 @@ import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
 import static android.health.connect.HealthConnectManager.ACTION_SYNC_MORE_APPS;
 
 import static com.android.server.healthconnect.notifications.NotificationUtils.getPendingIntent;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION;
+import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -48,22 +50,17 @@ import java.util.Optional;
  */
 public final class OnboardingNotificationSender {
     @VisibleForTesting
-    static final String START_USING_HC_NOTIFICATION_TITLE = "start_using_hc_banner_title";
+    static final String START_USING_HC_NOTIFICATION_TITLE = "zero_apps_onboarding_banner_title";
 
     @VisibleForTesting
-    static final String START_USING_HC_NOTIFICATION_CONTENT = "start_using_hc_banner_content";
+    static final String START_USING_HC_NOTIFICATION_CONTENT = "zero_apps_onboarding_banner_summary";
 
     @VisibleForTesting
-    static final String START_USING_HC_NOTIFICATION_BUTTON = "start_using_hc_set_up_button";
+    static final String CONNECT_MORE_APPS_NOTIFICATION_TITLE = "one_app_onboarding_banner_title";
 
     @VisibleForTesting
-    static final String CONNECT_MORE_APPS_NOTIFICATION_TITLE = "connect_more_apps_banner_title";
-
-    @VisibleForTesting
-    static final String CONNECT_MORE_APPS_NOTIFICATION_CONTENT = "connect_more_apps_banner_content";
-
-    @VisibleForTesting
-    static final String CONNECT_MORE_APPS_NOTIFICATION_BUTTON = "connect_more_apps_set_up_button";
+    static final String CONNECT_MORE_APPS_NOTIFICATION_CONTENT =
+            "one_app_onboarding_banner_summary";
 
     // Unique random ID for onboarding notifications, which makes sure we only have one onboarding
     // notification at a time.
@@ -77,15 +74,20 @@ public final class OnboardingNotificationSender {
     private final Context mContext;
     private final HealthConnectResourcesContext mResContext;
     private final NotificationUtils mNotificationUtils;
+    private final OnboardingNotificationStateManager mNotificationStateManager;
 
     // TODO(b/414949807): Move to NotificationUtils
     private Optional<Icon> mAppIcon = Optional.empty();
     private HealthConnectNotificationSender mHealthConnectNotificationSender;
 
-    public OnboardingNotificationSender(Context context, HealthConnectResourcesContext resContext) {
+    public OnboardingNotificationSender(
+            Context context,
+            HealthConnectResourcesContext resContext,
+            OnboardingNotificationStateManager notificationStateManager) {
         mContext = context;
         mResContext = resContext;
         mNotificationUtils = new NotificationUtils(context, NOTIFICATION_CHANNEL_ID);
+        mNotificationStateManager = notificationStateManager;
         mHealthConnectNotificationSender =
                 new HealthConnectNotificationSender.Builder()
                         .setContext(context)
@@ -109,44 +111,36 @@ public final class OnboardingNotificationSender {
     /** Sends a notification for onboarding scenario where there's no app connected to HC. */
     public void sendNoAppConnectedNotification(UserHandle userHandle) {
         mHealthConnectNotificationSender.sendNotificationAsUser(
-                getNoAppConnectedNotification(), userHandle);
+                createNoAppConnectedNotification(), userHandle);
+        mNotificationStateManager.unsetFlags(SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION);
     }
 
     /** Sends a notification for onboarding scenario where there's one app connected to HC. */
     public void sendOneAppConnectedNotification(UserHandle userHandle) {
         mHealthConnectNotificationSender.sendNotificationAsUser(
-                getOneAppConnectedNotification(), userHandle);
+                createOneAppConnectedNotification(), userHandle);
+        mNotificationStateManager.unsetFlags(SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION);
     }
 
-    private Notification getNoAppConnectedNotification() {
-        String title = mResContext.getStringByNameOrThrow(START_USING_HC_NOTIFICATION_TITLE);
-        String content = mResContext.getStringByNameOrThrow(START_USING_HC_NOTIFICATION_CONTENT);
-        String button = mResContext.getStringByNameOrThrow(START_USING_HC_NOTIFICATION_BUTTON);
-
-        Icon icon = getAppIcon().orElse(null);
-        Notification.Action action =
-                new Notification.Action.Builder(icon, button, getSyncMoreAppsPendingIntent())
-                        .build();
-
-        return mNotificationUtils
-                .createNotificationTitleAndBodyText(title, content, icon)
-                .setActions(action)
-                .build();
+    private Notification createNoAppConnectedNotification() {
+        return createNotification(
+                mResContext.getStringByNameOrThrow(START_USING_HC_NOTIFICATION_TITLE),
+                mResContext.getStringByNameOrThrow(START_USING_HC_NOTIFICATION_CONTENT),
+                getSyncMoreAppsPendingIntent());
     }
 
-    private Notification getOneAppConnectedNotification() {
-        String title = mResContext.getStringByNameOrThrow(CONNECT_MORE_APPS_NOTIFICATION_TITLE);
-        String content = mResContext.getStringByNameOrThrow(CONNECT_MORE_APPS_NOTIFICATION_CONTENT);
-        String button = mResContext.getStringByNameOrThrow(CONNECT_MORE_APPS_NOTIFICATION_BUTTON);
+    private Notification createOneAppConnectedNotification() {
+        return createNotification(
+                mResContext.getStringByNameOrThrow(CONNECT_MORE_APPS_NOTIFICATION_TITLE),
+                mResContext.getStringByNameOrThrow(CONNECT_MORE_APPS_NOTIFICATION_CONTENT),
+                getSyncMoreAppsPendingIntent());
+    }
 
-        Icon icon = getAppIcon().orElse(null);
-        Notification.Action action =
-                new Notification.Action.Builder(icon, button, getSyncMoreAppsPendingIntent())
-                        .build();
-
+    private Notification createNotification(String title, String content, PendingIntent intent) {
         return mNotificationUtils
-                .createNotificationTitleAndBodyText(title, content, icon)
-                .setActions(action)
+                .createNotificationTitleAndBodyText(title, content, getAppIcon().orElse(null))
+                .setContentIntent(intent)
+                .setAutoCancel(true)
                 .build();
     }
 

@@ -20,6 +20,7 @@ import android.content.res.Configuration
 import android.icu.util.VersionInfo
 import android.os.LocaleList
 import android.provider.Settings.System
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.compatibility.common.util.UserSettings
 import com.android.compatibility.common.util.UserSettings.Namespace
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
@@ -36,8 +37,10 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class LocalDateTimeFormatterTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

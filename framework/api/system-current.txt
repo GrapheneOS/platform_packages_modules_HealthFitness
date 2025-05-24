@@ -76,6 +76,7 @@ package android.health.connect {
     field public static final String ACTION_HEALTH_HOME_SETTINGS = "android.health.connect.action.HEALTH_HOME_SETTINGS";
     field public static final String ACTION_MANAGE_HEALTH_DATA = "android.health.connect.action.MANAGE_HEALTH_DATA";
     field public static final String ACTION_REQUEST_HEALTH_PERMISSIONS = "android.health.connect.action.REQUEST_HEALTH_PERMISSIONS";
+    field @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore_intent_api") @RequiresPermission(android.health.connect.HealthPermissions.START_BACKUP_RESTORE_SETTINGS_PERMISSION) public static final String ACTION_SHOW_HEALTH_CONNECT_BACKUP_SETTINGS = "android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS";
     field public static final String ACTION_SHOW_MIGRATION_INFO = "android.health.connect.action.SHOW_MIGRATION_INFO";
     field public static final int DATA_DOWNLOAD_COMPLETE = 4; // 0x4
     field public static final int DATA_DOWNLOAD_FAILED = 3; // 0x3

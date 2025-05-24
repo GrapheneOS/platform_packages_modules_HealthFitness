@@ -13,6 +13,7 @@ import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.MainActivity
 import com.android.healthconnect.controller.exportimport.api.ExportStatusViewModel
@@ -42,10 +43,12 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class MainActivityTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
@@ -101,7 +104,7 @@ class MainActivityTest {
         }
         whenever(onboardingViewModel.connectedApps).then {
             MutableLiveData(
-                OnboardingViewModel.OnboardingFragmentState.WithData(
+                OnboardingViewModel.OnboardingFragmentState.ZeroAppsConnected(
                     listOf(
                         ConnectedFitnessAppMetadata(TEST_APP, false),
                         ConnectedFitnessAppMetadata(TEST_APP_2, false),
@@ -125,7 +128,6 @@ class MainActivityTest {
 
         launchActivityForResult<MainActivity>(startActivityIntent)
 
-        // TODO (b/390212615) update once we can use settings flag
         if (SettingsThemeHelper.isExpressiveTheme(context)) {
             onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
         } else {
@@ -228,7 +230,6 @@ class MainActivityTest {
         launchActivityForResult<MainActivity>(startActivityIntent)
 
         onView(withText("Resume integration")).perform(scrollTo()).check(matches(isDisplayed()))
-        // TODO (b/390212615) update once we can use settings flag
         if (SettingsThemeHelper.isExpressiveTheme(context)) {
             onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
         } else {
@@ -269,7 +270,6 @@ class MainActivityTest {
         launchActivityForResult<MainActivity>(startActivityIntent)
 
         onView(withText("Resume integration")).perform(scrollTo()).check(matches(isDisplayed()))
-        // TODO (b/390212615) update once we can use settings flag
         if (SettingsThemeHelper.isExpressiveTheme(context)) {
             onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
         } else {
@@ -310,7 +310,6 @@ class MainActivityTest {
         launchActivityForResult<MainActivity>(startActivityIntent)
 
         onView(withText("Resume integration")).perform(scrollTo()).check(matches(isDisplayed()))
-        // TODO (b/390212615) update once we can use settings flag
         if (SettingsThemeHelper.isExpressiveTheme(context)) {
             onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
         } else {

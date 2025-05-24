@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 toisto}other{# toistoa}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 toisto}other{# toistoa}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Liikunta"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Aseta <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"Koettu rasitus: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"Koettu rasitus"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"Kierrokset"</string>
     <string name="back_extension" msgid="426518933137440577">"Selkäojennus"</string>
     <string name="badminton" msgid="8839727076522086870">"Sulkapallo"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Ennen kuin jatkat, päivitä puhelinjärjestelmä."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Jos olet jo päivittänyt puhelinjärjestelmän, kokeile uudelleenkäynnistää puhelin, jotta integrointia voidaan jatkaa"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Ennen kuin jatkat, päivitä Health Connect ‑sovellus uusimpaan versioon."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Lisää tallennustilaa tarvitaan"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect tarvitsee <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> tallennustilaa puhelimella, jotta integrointia voidaan jatkaa.\n\nVapauta tilaa puhelimella ja yritä sitten uudelleen."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Yritä uudelleen"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Vapauta tilaa"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Integrointi keskeytetty"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect ‑sovellus sulkeutui, kun sitä integroitiin Android-järjestelmään.\n\nAvaa sovellus uudelleen ja jatka datan ja lupien siirtämistä klikkaamalla \"Jatka\"."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Jos haluat säilyttää Health Connect ‑datan, sinulla on <xliff:g id="TIME_NEEDED">%1$s</xliff:g> aikaa tehdä integrointi"</string>
@@ -1229,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 sovelluksen käyttämä}other{# sovelluksen käyttämä}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Ei käytetty 24 viime tunnin aikana"</string>
     <string name="accessed" msgid="4424701457530587176">"Käytetty viimeksi: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Kahden ensimmäisen sovelluksen yhdistäminen"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Yhdistä nämä sovellukset, niin voit alkaa jakaa terveys- ja kuntoiludataa niiden välillä"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"Toisen sovelluksen yhdistäminen"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"Ota käyttöön vielä yksi sovellus, jotta voit jakaa terveys- ja kuntoiludataa tämän sovelluksen kanssa: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="set_up_later" msgid="223888663943501921">"Ota käyttöön myöhemmin"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"Saatavilla olevat yhdistettävät sovellukset"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connectin avulla voit tallentaa terveys- ja kuntoiludatasi yhteen paikkaan ja jakaa sen puhelimen sovellusten välillä, jolloin sovellukset toimivat paremmin yhdessä."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Lisätietoa Health Connectista"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"Sovellus yhdistetty Health Connectiin"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"Lähes valmista"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"Viimeistele käyttöönotto ja aloita datan jakaminen avaamalla nämä sovellukset"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

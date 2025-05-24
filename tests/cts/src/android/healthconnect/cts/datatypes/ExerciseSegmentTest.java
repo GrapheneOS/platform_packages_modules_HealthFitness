@@ -16,9 +16,9 @@
 
 package android.healthconnect.cts.datatypes;
 
-import static android.healthconnect.testing.shared.DataFactory.SESSION_END_TIME;
-import static android.healthconnect.testing.shared.DataFactory.SESSION_START_TIME;
 import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
+import static android.healthconnect.testing.shared.DataFactory.sessionEndTime;
+import static android.healthconnect.testing.shared.DataFactory.sessionStartTime;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -29,6 +29,7 @@ import android.health.connect.datatypes.ExerciseSegmentType;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.units.Mass;
+import android.healthconnect.testing.shared.DataFactory;
 
 import org.junit.Test;
 
@@ -38,6 +39,8 @@ import java.util.List;
 public class ExerciseSegmentTest {
     private static final Instant START_TIME = Instant.ofEpochMilli((long) 1e1);
     private static final Instant END_TIME = Instant.ofEpochMilli((long) 1e2);
+
+    private final Instant mNow = DataFactory.now();
 
     @Test
     public void testExerciseSegment_buildSegment_buildCorrectObject() {
@@ -131,14 +134,14 @@ public class ExerciseSegmentTest {
     public void testExerciseSegment_lapStartTimeIllegal_throwsException() {
         new ExerciseSessionRecord.Builder(
                         generateMetadata(),
-                        SESSION_START_TIME,
-                        SESSION_START_TIME.plusSeconds(200),
+                        sessionStartTime(mNow),
+                        sessionStartTime(mNow).plusSeconds(200),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
                 .setSegments(
                         List.of(
                                 new ExerciseSegment.Builder(
-                                                SESSION_START_TIME.minusSeconds(2),
-                                                SESSION_START_TIME.plusSeconds(100),
+                                                sessionStartTime(mNow).minusSeconds(2),
+                                                sessionStartTime(mNow).plusSeconds(100),
                                                 ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BURPEE)
                                         .build()))
                 .build();
@@ -148,14 +151,14 @@ public class ExerciseSegmentTest {
     public void testExerciseSegment_lapEndTimeIllegal_throwsException() {
         new ExerciseSessionRecord.Builder(
                         generateMetadata(),
-                        SESSION_START_TIME,
-                        SESSION_START_TIME.plusSeconds(200),
+                        sessionStartTime(mNow),
+                        sessionStartTime(mNow).plusSeconds(200),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
                 .setSegments(
                         List.of(
                                 new ExerciseSegment.Builder(
-                                                SESSION_START_TIME,
-                                                SESSION_START_TIME.plusSeconds(1200),
+                                                sessionStartTime(mNow),
+                                                sessionStartTime(mNow).plusSeconds(1200),
                                                 ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BURPEE)
                                         .build()))
                 .build();
@@ -165,19 +168,19 @@ public class ExerciseSegmentTest {
     public void testExerciseSegment_segmentsOverlap_throwsException() {
         new ExerciseSessionRecord.Builder(
                         generateMetadata(),
-                        SESSION_START_TIME,
-                        SESSION_END_TIME,
+                        sessionStartTime(mNow),
+                        sessionEndTime(mNow),
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_HIGH_INTENSITY_INTERVAL_TRAINING)
                 .setSegments(
                         List.of(
                                 new ExerciseSegment.Builder(
-                                                SESSION_START_TIME,
-                                                SESSION_START_TIME.plusSeconds(100),
+                                                sessionStartTime(mNow),
+                                                sessionStartTime(mNow).plusSeconds(100),
                                                 ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BURPEE)
                                         .build(),
                                 new ExerciseSegment.Builder(
-                                                SESSION_START_TIME.plusSeconds(50),
-                                                SESSION_START_TIME.plusSeconds(200),
+                                                sessionStartTime(mNow).plusSeconds(50),
+                                                sessionStartTime(mNow).plusSeconds(200),
                                                 ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_CRUNCH)
                                         .build()))
                 .build();

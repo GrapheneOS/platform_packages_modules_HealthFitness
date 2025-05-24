@@ -16,29 +16,16 @@
 
 package com.android.server.healthconnect.backuprestore;
 
-import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.AUTO_DELETE_PREF_KEY;
-import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.DISTANCE_UNIT_PREF_KEY;
-import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.ENERGY_UNIT_PREF_KEY;
-import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.HEIGHT_UNIT_PREF_KEY;
-import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.TEMPERATURE_UNIT_PREF_KEY;
-import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.WEIGHT_UNIT_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.ProtoTestData.TEST_PACKAGE_NAME;
 import static com.android.server.healthconnect.backuprestore.ProtoTestData.generateCoreRecord;
 import static com.android.server.healthconnect.backuprestore.ProtoTestData.generateExerciseSession;
 import static com.android.server.healthconnect.backuprestore.ProtoTestData.generateIntervalRecord;
 import static com.android.server.healthconnect.backuprestore.ProtoTestData.generateRecord;
 import static com.android.server.healthconnect.backuprestore.RecordProtoConverter.PROTO_VERSION;
-import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_UNSPECIFIED;
-import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.DistanceUnitProto.DISTANCE_UNIT_UNSPECIFIED;
-import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.EnergyUnitProto.ENERGY_UNIT_UNSPECIFIED;
-import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.HeightUnitProto.HEIGHT_UNIT_UNSPECIFIED;
-import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.TemperatureUnitProto.TEMPERATURE_UNIT_UNSPECIFIED;
-import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.WeightUnitProto.WEIGHT_UNIT_UNSPECIFIED;
+import static com.android.server.healthconnect.common.preferences.PreferencesManager.AUTO_DELETE_DURATION_RECORDS_KEY;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 
 import android.content.Context;
@@ -47,7 +34,7 @@ import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -62,7 +49,6 @@ import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMa
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BackupData;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Record;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
@@ -105,7 +91,7 @@ public class CloudRestoreManagerTest {
     private DeviceInfoHelper mDeviceInfoHelper;
     private TransactionManager mTransactionManager;
     private FitnessRecordReadHelper mFitnessRecordReadHelper;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
     private CloudRestoreManager mCloudRestoreManager;
     private RecordProtoConverter mRecordProtoConverter;
     private HealthDataCategoryPriorityHelper mPriorityHelper;
@@ -116,8 +102,6 @@ public class CloudRestoreManagerTest {
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-    // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
-    @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
 
     @Before
     public void setUp() {
@@ -125,7 +109,6 @@ public class CloudRestoreManagerTest {
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
 
@@ -154,7 +137,7 @@ public class CloudRestoreManagerTest {
                         mPreferenceHelper,
                         fakeClock,
                         healthConnectInjector.getBackupRestoreLogger());
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
     }
 
     @Test
@@ -182,7 +165,7 @@ public class CloudRestoreManagerTest {
         mCloudRestoreManager.restoreChanges(List.of(stepsChange, bloodPressureChange));
 
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readRecordsByIds(
+                mFitnessTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 List.of(UUID.fromString(stepsRecord.getUuid())),
@@ -221,7 +204,7 @@ public class CloudRestoreManagerTest {
         // Second restore does not throw any exceptions
         mCloudRestoreManager.restoreChanges(List.of(stepsChange, bloodPressureChange));
         List<RecordInternal<?>> records =
-                mTransactionTestUtils.readRecordsByIds(
+                mFitnessTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 List.of(UUID.fromString(stepsRecord.getUuid())),
@@ -234,35 +217,11 @@ public class CloudRestoreManagerTest {
     }
 
     @Test
-    public void whenRestoreSettingsCalled_noExportSettings_settingsSuccessfullyRestored() {
-        CloudBackupSettingsHelper cloudBackupSettingsHelper =
-                new CloudBackupSettingsHelper(mPriorityHelper, mPreferenceHelper, mAppInfoHelper);
-        setupInitialSettings();
-        Settings settingsToRestore = createSettingsToRestore(false);
-        mCloudRestoreManager.restoreSettings(new BackupMetadata(settingsToRestore.toByteArray()));
-
-        Settings currentSettings = cloudBackupSettingsHelper.collectUserSettings();
-        mDatabaseHelpers.clearAllData(mTransactionManager);
-
-        Map<Integer, PriorityList> expectedPriorityList =
-                Map.of(
-                        HealthDataCategory.ACTIVITY,
-                        PriorityList.newBuilder()
-                                .addPackageName(TEST_PACKAGE_NAME)
-                                .addPackageName(TEST_PACKAGE_NAME_2)
-                                .addPackageName(TEST_PACKAGE_NAME_3)
-                                .build());
-        assertSettingsCorrectlyUpdated(settingsToRestore, currentSettings, expectedPriorityList);
-    }
-
-    @Test
     public void whenRestoreSettingsCalled_withUnspecifiedEnums_settingsSuccessfullyRestored() {
         CloudBackupSettingsHelper cloudBackupSettingsHelper =
                 new CloudBackupSettingsHelper(mPriorityHelper, mPreferenceHelper, mAppInfoHelper);
-        mPreferenceHelper.insertOrReplacePreference(
-                ENERGY_UNIT_PREF_KEY, Settings.EnergyUnitProto.CALORIE.toString());
         setupInitialSettings();
-        Settings settingsToRestore = createSettingsToRestore(true);
+        Settings settingsToRestore = createSettingsToRestore();
         mCloudRestoreManager.restoreSettings(new BackupMetadata(settingsToRestore.toByteArray()));
 
         Settings currentSettings = cloudBackupSettingsHelper.collectUserSettings();
@@ -397,25 +356,13 @@ public class CloudRestoreManagerTest {
                         .setHeightUnitSettingValue(invalidEnumValue)
                         .setWeightUnitSettingValue(invalidEnumValue)
                         .setDistanceUnitSettingValue(invalidEnumValue)
-                        .setAutoDeleteFrequencyValue(invalidEnumValue)
                         .build();
 
         BackupMetadata backupSettings = new BackupMetadata(settings.toByteArray());
         mCloudRestoreManager.restoreSettings(backupSettings);
 
-        // stay the same as initial settings
-        assertThat(mPreferenceHelper.getPreference(TEMPERATURE_UNIT_PREF_KEY))
-                .isEqualTo(Settings.TemperatureUnitProto.CELSIUS.toString());
-        assertThat(mPreferenceHelper.getPreference(ENERGY_UNIT_PREF_KEY))
-                .isEqualTo(Settings.EnergyUnitProto.CALORIE.toString());
-        assertThat(mPreferenceHelper.getPreference(WEIGHT_UNIT_PREF_KEY))
-                .isEqualTo(Settings.WeightUnitProto.POUND.toString());
-        assertThat(mPreferenceHelper.getPreference(HEIGHT_UNIT_PREF_KEY))
-                .isEqualTo(Settings.HeightUnitProto.CENTIMETERS.toString());
-        assertThat(mPreferenceHelper.getPreference(DISTANCE_UNIT_PREF_KEY))
-                .isEqualTo(Settings.DistanceUnitProto.KILOMETERS.toString());
-        assertThat(mPreferenceHelper.getPreference(AUTO_DELETE_PREF_KEY))
-                .isEqualTo(Settings.AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_NEVER.toString());
+        assertThat(mPreferenceHelper.getPreference(AUTO_DELETE_DURATION_RECORDS_KEY))
+                .isEqualTo("90");
     }
 
     @Test
@@ -431,22 +378,10 @@ public class CloudRestoreManagerTest {
         mAppInfoHelper.addAppInfoIfNoAppInfoEntryExists(TEST_PACKAGE_NAME_3, "app name 3");
         mPriorityHelper.setPriorityOrder(
                 HealthDataCategory.ACTIVITY, List.of(TEST_PACKAGE_NAME, TEST_PACKAGE_NAME_2));
-        mPreferenceHelper.insertOrReplacePreference(
-                AUTO_DELETE_PREF_KEY,
-                Settings.AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_NEVER.toString());
-        mPreferenceHelper.insertOrReplacePreference(
-                ENERGY_UNIT_PREF_KEY, Settings.EnergyUnitProto.CALORIE.toString());
-        mPreferenceHelper.insertOrReplacePreference(
-                TEMPERATURE_UNIT_PREF_KEY, Settings.TemperatureUnitProto.CELSIUS.toString());
-        mPreferenceHelper.insertOrReplacePreference(
-                HEIGHT_UNIT_PREF_KEY, Settings.HeightUnitProto.CENTIMETERS.toString());
-        mPreferenceHelper.insertOrReplacePreference(
-                WEIGHT_UNIT_PREF_KEY, Settings.WeightUnitProto.POUND.toString());
-        mPreferenceHelper.insertOrReplacePreference(
-                DISTANCE_UNIT_PREF_KEY, Settings.DistanceUnitProto.KILOMETERS.toString());
+        mPreferenceHelper.insertOrReplacePreference(AUTO_DELETE_DURATION_RECORDS_KEY, "90");
     }
 
-    private Settings createSettingsToRestore(boolean setEnergyUnitAsUnspecified) {
+    private Settings createSettingsToRestore() {
         Map<String, Settings.AppInfo> appInfoMap =
                 Map.of(
                         TEST_PACKAGE_NAME,
@@ -465,21 +400,10 @@ public class CloudRestoreManagerTest {
                                 .addPackageName(TEST_PACKAGE_NAME)
                                 .build());
 
-        Settings.EnergyUnitProto energyUnitSetting =
-                setEnergyUnitAsUnspecified
-                        ? ENERGY_UNIT_UNSPECIFIED
-                        : Settings.EnergyUnitProto.KILOJOULE;
-
         return Settings.newBuilder()
                 .putAllAppInfo(appInfoMap)
                 .putAllPriorityList(priorityListMap)
-                .setAutoDeleteFrequency(
-                        Settings.AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_THREE_MONTHS)
-                .setEnergyUnitSetting(energyUnitSetting)
-                .setTemperatureUnitSetting(Settings.TemperatureUnitProto.KELVIN)
-                .setHeightUnitSetting(Settings.HeightUnitProto.FEET)
-                .setWeightUnitSetting(Settings.WeightUnitProto.KILOGRAM)
-                .setDistanceUnitSetting(Settings.DistanceUnitProto.MILES)
+                .setAutoDeleteFrequencyInDays("30")
                 .build();
     }
 
@@ -488,36 +412,8 @@ public class CloudRestoreManagerTest {
             Settings restoredSettings,
             Map<Integer, PriorityList> expectedMergedPriorityList) {
 
-        if (settingsFromBackup.getEnergyUnitSetting() == ENERGY_UNIT_UNSPECIFIED) {
-            assertNotSame(ENERGY_UNIT_UNSPECIFIED, restoredSettings.getEnergyUnitSetting());
-        } else {
-            assertSame(
-                    settingsFromBackup.getEnergyUnitSetting(),
-                    restoredSettings.getEnergyUnitSetting());
-        }
-
-        assertNotSame(AUTO_DELETE_RANGE_UNSPECIFIED, restoredSettings.getAutoDeleteFrequency());
-        assertSame(
-                settingsFromBackup.getAutoDeleteFrequency(),
-                restoredSettings.getAutoDeleteFrequency());
-
-        assertNotSame(TEMPERATURE_UNIT_UNSPECIFIED, restoredSettings.getTemperatureUnitSetting());
-        assertSame(
-                settingsFromBackup.getTemperatureUnitSetting(),
-                restoredSettings.getTemperatureUnitSetting());
-
-        assertNotSame(HEIGHT_UNIT_UNSPECIFIED, restoredSettings.getHeightUnitSetting());
-        assertSame(
-                settingsFromBackup.getHeightUnitSetting(), restoredSettings.getHeightUnitSetting());
-
-        assertNotSame(WEIGHT_UNIT_UNSPECIFIED, restoredSettings.getWeightUnitSetting());
-        assertSame(
-                settingsFromBackup.getWeightUnitSetting(), restoredSettings.getWeightUnitSetting());
-
-        assertNotSame(DISTANCE_UNIT_UNSPECIFIED, restoredSettings.getDistanceUnitSetting());
-        assertSame(
-                settingsFromBackup.getDistanceUnitSetting(),
-                restoredSettings.getDistanceUnitSetting());
+        assertThat(settingsFromBackup.getAutoDeleteFrequencyInDays())
+                .isEqualTo(restoredSettings.getAutoDeleteFrequencyInDays());
 
         assertThat(expectedMergedPriorityList.get(HealthDataCategory.ACTIVITY).getPackageNameList())
                 .isEqualTo(

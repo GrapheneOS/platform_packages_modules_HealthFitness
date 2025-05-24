@@ -29,6 +29,7 @@ import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.onboarding.FitnessAppOnboardingFragment
@@ -53,6 +54,10 @@ import com.android.healthconnect.controller.tests.utils.scrollToBottomOfPreferen
 import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
+import com.android.healthconnect.controller.utils.logging.FitnessAppOnboardingPageElement
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.logging.UIAction
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -63,19 +68,25 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @UninstallModules(DeviceInfoUtilsModule::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class FitnessAppOnboardingFragmentTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @BindValue val viewModel: FitnessAppOnboardingViewModel = mock()
     @BindValue val onboardingViewModel: OnboardingViewModel = mock()
     @BindValue val healthPermissionReader: HealthPermissionReader = mock()
     @BindValue val deviceInfoUtils: DeviceInfoUtils = FakeDeviceInfoUtils()
+    @BindValue val healthConnectLogger: HealthConnectLogger = mock()
     private lateinit var navHostController: TestNavHostController
 
     @Before
@@ -99,6 +110,7 @@ class FitnessAppOnboardingFragmentTest {
     @After
     fun tearDown() {
         toggleAnimation(true)
+        reset(healthConnectLogger)
     }
 
     @Test
@@ -125,6 +137,8 @@ class FitnessAppOnboardingFragmentTest {
                     assertThat(writeCategory?.preferenceCount).isEqualTo(0)
                 }
             }
+        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.FITNESS_APP_ONBOARDING_PAGE)
+        verify(healthConnectLogger).logPageImpression()
     }
 
     @Test
@@ -162,6 +176,10 @@ class FitnessAppOnboardingFragmentTest {
                 onView(withText("Distance")).perform(scrollTo()).check(matches(isDisplayed()))
                 onView(withText("Exercise")).perform(scrollTo()).check(matches(isDisplayed()))
             }
+        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.FITNESS_APP_ONBOARDING_PAGE)
+        verify(healthConnectLogger).logPageImpression()
+        verify(healthConnectLogger, times(2))
+            .logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_PERMISSION_BUTTON)
     }
 
     @Test
@@ -199,6 +217,10 @@ class FitnessAppOnboardingFragmentTest {
                 onView(withText("Distance")).perform(scrollTo()).check(matches(isDisplayed()))
                 onView(withText("Exercise")).perform(scrollTo()).check(matches(isDisplayed()))
             }
+        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.FITNESS_APP_ONBOARDING_PAGE)
+        verify(healthConnectLogger).logPageImpression()
+        verify(healthConnectLogger, times(2))
+            .logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_PERMISSION_BUTTON)
     }
 
     @Test
@@ -238,6 +260,10 @@ class FitnessAppOnboardingFragmentTest {
                 onView(withText("Distance")).perform(scrollTo()).check(matches(isDisplayed()))
                 onView(withText("Exercise")).perform(scrollTo()).check(matches(isDisplayed()))
             }
+        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.FITNESS_APP_ONBOARDING_PAGE)
+        verify(healthConnectLogger).logPageImpression()
+        verify(healthConnectLogger, times(2))
+            .logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_PERMISSION_BUTTON)
     }
 
     @Test
@@ -273,6 +299,18 @@ class FitnessAppOnboardingFragmentTest {
                     assertThat(mainSwitchPreference?.isChecked).isTrue()
                 }
             }
+        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.FITNESS_APP_ONBOARDING_PAGE)
+        verify(healthConnectLogger).logPageImpression()
+        verify(healthConnectLogger, times(2))
+            .logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_PERMISSION_BUTTON)
+        verify(healthConnectLogger)
+            .logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_ALLOW_ALL_BUTTON)
+        verify(healthConnectLogger)
+            .logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_LEARN_MORE_LINK)
+        verify(healthConnectLogger)
+            .logImpression(
+                FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_PRIVACY_POLICY_LINK
+            )
     }
 
     @Test
@@ -336,6 +374,12 @@ class FitnessAppOnboardingFragmentTest {
                 onView(withText("Allow all")).perform(click())
                 verify(viewModel).updateAllPermissions(false)
             }
+
+        verify(healthConnectLogger)
+            .logInteraction(
+                FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_ALLOW_ALL_BUTTON,
+                UIAction.ACTION_TOGGLE_OFF,
+            )
     }
 
     @Test
@@ -364,6 +408,12 @@ class FitnessAppOnboardingFragmentTest {
                 onView(withText("Allow all")).perform(click())
                 verify(viewModel).updateAllPermissions(true)
             }
+
+        verify(healthConnectLogger)
+            .logInteraction(
+                FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_ALLOW_ALL_BUTTON,
+                UIAction.ACTION_TOGGLE_ON,
+            )
     }
 
     @Test
@@ -396,6 +446,12 @@ class FitnessAppOnboardingFragmentTest {
                 onView(withText("Back")).perform(click())
                 verify(viewModel, never()).done()
             }
+        verify(healthConnectLogger)
+            .logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_DONE_BUTTON)
+        verify(healthConnectLogger)
+            .logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_BACK_BUTTON)
+        verify(healthConnectLogger)
+            .logInteraction(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_BACK_BUTTON)
     }
 
     @Test
@@ -430,6 +486,12 @@ class FitnessAppOnboardingFragmentTest {
                 verify(viewModel).done()
                 verify(onboardingViewModel).setAppInteractedWith(TEST_APP_PACKAGE_NAME)
             }
+        verify(healthConnectLogger)
+            .logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_DONE_BUTTON)
+        verify(healthConnectLogger)
+            .logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_BACK_BUTTON)
+        verify(healthConnectLogger)
+            .logInteraction(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_DONE_BUTTON)
     }
 
     @Test
@@ -459,6 +521,11 @@ class FitnessAppOnboardingFragmentTest {
                 verify(viewModel)
                     .updatePermission(HealthPermission.FitnessPermission(DISTANCE, READ), false)
             }
+        verify(healthConnectLogger)
+            .logInteraction(
+                FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_PERMISSION_BUTTON,
+                UIAction.ACTION_TOGGLE_OFF,
+            )
     }
 
     @Test
@@ -488,6 +555,11 @@ class FitnessAppOnboardingFragmentTest {
                 verify(viewModel)
                     .updatePermission(HealthPermission.FitnessPermission(DISTANCE, READ), true)
             }
+        verify(healthConnectLogger)
+            .logInteraction(
+                FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_PERMISSION_BUTTON,
+                UIAction.ACTION_TOGGLE_ON,
+            )
     }
 
     private fun getFragment(activity: TestActivity): HealthPreferenceFragment {

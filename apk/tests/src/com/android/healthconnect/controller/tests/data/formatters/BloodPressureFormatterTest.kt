@@ -24,6 +24,7 @@ import android.health.connect.datatypes.BloodPressureRecord.BodyPosition.BODY_PO
 import android.health.connect.datatypes.BloodPressureRecord.BodyPosition.BODY_POSITION_UNKNOWN
 import android.health.connect.datatypes.BloodPressureRecord.BodyPosition.BodyPositionType
 import android.health.connect.datatypes.units.Pressure
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.formatters.BloodPressureFormatter
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -41,8 +42,10 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class BloodPressureFormatterTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

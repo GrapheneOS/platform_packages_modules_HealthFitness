@@ -24,6 +24,7 @@ import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsRecord
 import android.os.OutcomeReceiver
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.datasources.api.LoadPotentialPriorityListUseCase
 import com.android.healthconnect.controller.datasources.api.LoadPriorityListUseCase
@@ -49,6 +50,7 @@ import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito
 import org.mockito.invocation.InvocationOnMock
@@ -56,6 +58,7 @@ import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class LoadPotentialPriorityListUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
@@ -115,7 +118,7 @@ class LoadPotentialPriorityListUseCaseTest {
             .isEqualTo(setOf(TEST_APP_PACKAGE_NAME_2))
     }
 
-    // TODO (b/299920950) Unignore test when we can use mockito-kotlin
+    // TODO (b/376085889) Unignore test when we can use mockito-kotlin
     @Test
     @Ignore
     fun getAppsWithWritePermission_forActivity_returnsAppsForActivity() = runTest {
@@ -154,7 +157,7 @@ class LoadPotentialPriorityListUseCaseTest {
         assertThat((result as UseCaseResults.Success).data).isEqualTo(setOf(TEST_APP_PACKAGE_NAME))
     }
 
-    // TODO (b/299920950) Unignore test when we can use mockito-kotlin
+    // TODO (b/376085889) Unignore test when we can use mockito-kotlin
     @Test
     @Ignore
     fun getAppsWithWritePermission_forSleep_returnsAppsForSleep() = runTest {

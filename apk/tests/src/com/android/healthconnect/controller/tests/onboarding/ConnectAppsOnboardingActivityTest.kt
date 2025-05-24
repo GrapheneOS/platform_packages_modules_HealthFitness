@@ -27,6 +27,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.onboarding.ConnectAppsOnboardingActivity
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
@@ -45,11 +46,13 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @UninstallModules(DeviceInfoUtilsModule::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class ConnectAppsOnboardingActivityTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
@@ -75,7 +78,7 @@ class ConnectAppsOnboardingActivityTest {
     fun noAppsConnected_intentLaunchesConnectAppsOnboardingActivity() {
         whenever(viewModel.connectedApps).then {
             MutableLiveData(
-                OnboardingViewModel.OnboardingFragmentState.WithData(
+                OnboardingViewModel.OnboardingFragmentState.ZeroAppsConnected(
                     listOf(
                         ConnectedFitnessAppMetadata(TEST_APP, false),
                         ConnectedFitnessAppMetadata(TEST_APP_2, false),

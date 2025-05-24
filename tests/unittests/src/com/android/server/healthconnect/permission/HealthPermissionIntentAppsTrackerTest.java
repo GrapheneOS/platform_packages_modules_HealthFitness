@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
@@ -37,6 +38,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -53,6 +56,7 @@ public class HealthPermissionIntentAppsTrackerTest {
     @Mock private Context mContext;
     @Mock private PackageManager mPackageManager;
     @Mock private UserManager mUserManager;
+    @Captor private ArgumentCaptor<PackageManager.ResolveInfoFlags> mResolveInfoFlagsCaptor;
 
     @Before
     public void setUp() {
@@ -90,6 +94,23 @@ public class HealthPermissionIntentAppsTrackerTest {
                 new HealthPermissionIntentAppsTracker(mContext);
         assertThat(mTracker.supportsPermissionUsageIntent(SELF_PACKAGE_NAME, CURRENT_USER))
                 .isTrue();
+    }
+
+    @Test
+    public void testCheckPackage_passesCorrectResolveInfoFlags() {
+        setSelfIntentSupport(/* intentSupported= */ true);
+        HealthPermissionIntentAppsTracker mTracker =
+                new HealthPermissionIntentAppsTracker(mContext);
+
+        mTracker.supportsPermissionUsageIntent(SELF_PACKAGE_NAME, CURRENT_USER);
+
+        verify(mPackageManager)
+                .queryIntentActivitiesAsUser(any(), mResolveInfoFlagsCaptor.capture(), any());
+        assertThat(mResolveInfoFlagsCaptor.getValue().getValue())
+                .isEqualTo(
+                        PackageManager.MATCH_ALL
+                                | PackageManager.MATCH_DIRECT_BOOT_AWARE
+                                | PackageManager.MATCH_DIRECT_BOOT_UNAWARE);
     }
 
     @Test

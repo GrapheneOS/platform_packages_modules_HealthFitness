@@ -32,6 +32,7 @@ import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.appdata.AppDataFragment.Companion.PERMISSION_TYPE_NAME_KEY
 import com.android.healthconnect.controller.data.entries.AllEntriesFragment
@@ -72,6 +73,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.invocation.InvocationOnMock
@@ -79,6 +81,7 @@ import org.mockito.invocation.InvocationOnMock
 @OptIn(ExperimentalCoroutinesApi::class)
 @UninstallModules(HealthManagerModule::class, DispatcherModule::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class MockedAllEntriesFragmentTest {
 
     @get:Rule val coroutineTestRule = CoroutineTestRule()

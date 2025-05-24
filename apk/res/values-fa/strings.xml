@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{یک تکرار}one{# تکرار}other{# تکرار}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{یک تکرار}one{# تکرار}other{# تکرار}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"بخش‌های تمرین"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"وهله <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"میزان فشار مشهود: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"میزان فشار مشهود: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"میزان فشار مشهود"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"میزان فشار مشهود"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"دورها"</string>
     <string name="back_extension" msgid="426518933137440577">"کشش فیله کمر"</string>
     <string name="badminton" msgid="8839727076522086870">"بدمینتون"</string>
@@ -1082,10 +1077,6 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"قبل‌از ادامه دادن، سیستم تلفنتان را به‌روز کنید."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"اگر قبلاً سیستم تلفن را به‌روز کرده‌اید، تلفن را برای ادامه یکپارچه‌سازی بازراه‌اندازی کنید"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"قبل‌از ادامه دادن، برنامه Health Connect را به جدیدترین نسخه به‌روز کنید."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"فضای بیشتری لازم است"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"برای ادامه یکپارچه‌سازی، Health Connect به <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> فضای ذخیره‌سازی در تلفن نیاز دارد.\n\nمقداری فضا در تلفنتان آزاد کنید و سپس دوباره امتحان کنید."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"امتحان مجدد"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"آزاد کردن فضا"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"یکپارچه‌سازی موقتاً متوقف شد"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"برنامه Health Connect درحین ادغام شدن با سیستم Android بسته شد.\n\nبرای باز کردن مجدد برنامه و ادامه پیدا کردن انتقال داده‌ها و اجازه‌ها، روی «ازسرگیری» کلیک کنید."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"برای حفظ داده‌های Health Connect، این فرایند را ظرف <xliff:g id="TIME_NEEDED">%1$s</xliff:g> آینده تکمیل کنید"</string>
@@ -1229,4 +1220,27 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{‫۱ برنامه از آن استفاده کرده است}one{‫# برنامه از آن استفاده کرده است}other{‫# برنامه از آن استفاده کرده است}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"در ۲۴ ساعت گذشته استفاده نشده است"</string>
     <string name="accessed" msgid="4424701457530587176">"آخرین دسترسی: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"‫۲ برنامه اول را متصل کنید"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"با متصل کردن این برنامه‌ها، داده‌های سلامتی و تناسب اندام را بین آن‌ها هم‌رسانی کنید"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"برنامه دوم را متصل کنید"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"برای هم‌رسانی داده‌های سلامتی و تناسب اندام با <xliff:g id="APP_NAME">%1$s</xliff:g>، یک برنامه دیگر را نیز راه‌اندازی کنید"</string>
+    <string name="set_up_later" msgid="223888663943501921">"بعداً راه‌اندازی شود"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"برنامه‌های دردسترس برای اتصال"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"‫Health Connect به شما امکان می‌دهد داده‌های سلامتی و تناسب اندام خود را در یک‌جا ذخیره کنید و آن‌ها را بین برنامه‌های تلفنتان هم‌رسانی کنید تا برنامه‌هایتان بهتر باهم کار کنند."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"اطلاعات بیشتر درباره Health Connect"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"برنامه به Health Connect متصل شده است"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"تقريباً تمام است"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"همین حالا این برنامه‌ها را باز کنید و راه‌اندازی را تمام کنید و هم‌رسانی داده را شروع کنید"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
+    <skip />
 </resources>

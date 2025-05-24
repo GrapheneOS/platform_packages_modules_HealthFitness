@@ -16,6 +16,7 @@ RESOURCE_TYPE_STRING_TO_HC_INT_MAPPING = {
     "Encounter": 12,
     "Location": 13,
     "Organization": 14,
+    "Device": 15,
 }
 # LINT.ThenChange(/framework/java/android/health/connect/datatypes/FhirResource.java)
 

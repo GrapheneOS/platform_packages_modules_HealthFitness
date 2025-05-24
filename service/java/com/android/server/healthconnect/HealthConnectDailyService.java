@@ -163,9 +163,13 @@ public class HealthConnectDailyService extends JobService {
                 if (Flags.onboarding()) {
                     threadScheduler.scheduleInternalTask(
                             () -> {
+                                // TODO(b/414949807): Use injector
                                 executeOnboardingNotificationJob(
+                                        context,
                                         healthConnectInjector.getOnboardingStateManager(),
                                         healthConnectInjector.getOnboardingNotificationSender(),
+                                        healthConnectInjector
+                                                .getOnboardingNotificationStateManager(),
                                         requireNonNull(sUserHandle));
                                 jobFinished(params, /* wantsReschedule= */ false);
                             });

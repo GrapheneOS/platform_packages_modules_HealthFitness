@@ -22,6 +22,7 @@ import android.content.Context
 import android.health.connect.datatypes.Metadata
 import android.health.connect.datatypes.MindfulnessSessionRecord
 import android.platform.test.flag.junit.SetFlagsRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.MindfulnessSessionFormatter
@@ -43,8 +44,10 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class MindfulnessSessionFormatterTest {
     @get:Rule val setFlagsRule = SetFlagsRule()
 

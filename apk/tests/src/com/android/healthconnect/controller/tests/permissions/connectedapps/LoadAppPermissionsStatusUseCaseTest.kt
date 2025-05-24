@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.permissions.connectedapps
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.app.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.app.LoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
@@ -31,10 +32,12 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class LoadAppPermissionsStatusUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 

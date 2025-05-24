@@ -17,6 +17,9 @@
 package com.android.healthconnect.controller.tests.onboarding
 
 import android.content.Context
+import android.content.Intent
+import android.health.connect.HealthConnectManager.ACTION_SHOW_ONBOARDING
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.LoadFitnessPermissionAppsUseCase
@@ -47,6 +50,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
@@ -54,6 +58,7 @@ import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class LoadFitnessPermissionAppsUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     private val healthPermissionReader: HealthPermissionReader = mock()
@@ -105,6 +110,7 @@ class LoadFitnessPermissionAppsUseCaseTest {
             )
         useCase =
             LoadFitnessPermissionAppsUseCase(
+                context,
                 healthPermissionReader,
                 loadAppPermissionsStatusUseCase,
                 appInfoReader,
@@ -328,6 +334,57 @@ class LoadFitnessPermissionAppsUseCaseTest {
                     ConnectedFitnessAppMetadata(fitnessApp, true),
                     ConnectedFitnessAppMetadata(fitnessApp2, true),
                     ConnectedFitnessAppMetadata(combinedApp, false),
+                )
+            )
+    }
+
+    @Test
+    fun returnsCorrectAppsWithOnboarding() = runTest {
+        mockAppMetadata()
+        val testIntent = Intent(ACTION_SHOW_ONBOARDING)
+        testIntent.setPackage(fitnessAppPackageName2)
+        whenever(
+                healthPermissionReader.getOnboardingActivityIntent(
+                    any(),
+                    eq(fitnessAppPackageName2),
+                )
+            )
+            .thenReturn(testIntent)
+        getGrantedHealthPermissionsUseCase.updateData(
+            medicalAppPackageName,
+            listOf(writeMedicalData.toString(), readAllergies.toString()),
+        )
+        getGrantedHealthPermissionsUseCase.updateData(
+            combinedAppPackageName,
+            listOf(writeMedicalData.toString()),
+        )
+        getGrantedHealthPermissionsUseCase.updateData(
+            fitnessAppPackageName,
+            listOf(readSkinTemperaturePermission.toString()),
+        )
+
+        val actual = useCase.invoke(Unit)
+        advanceUntilIdle()
+
+        assertThat(actual is UseCaseResults.Success).isTrue()
+        assertThat((actual as UseCaseResults.Success).data)
+            .containsExactlyElementsIn(
+                listOf(
+                    ConnectedFitnessAppMetadata(
+                        appMetadata = fitnessApp,
+                        isConnected = true,
+                        hasOnboarding = false,
+                    ),
+                    ConnectedFitnessAppMetadata(
+                        appMetadata = fitnessApp2,
+                        isConnected = true,
+                        hasOnboarding = true,
+                    ),
+                    ConnectedFitnessAppMetadata(
+                        appMetadata = combinedApp,
+                        isConnected = false,
+                        hasOnboarding = false,
+                    ),
                 )
             )
     }

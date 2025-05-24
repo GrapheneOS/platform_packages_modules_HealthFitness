@@ -78,9 +78,9 @@ import android.health.connect.datatypes.FhirVersion;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.PhrTestUtils;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
-import android.healthconnect.testing.unittest.TransactionTestUtils.MedicalChangeLogEntry;
+import android.healthconnect.testing.unittest.PhrTestUtils.MedicalChangeLogEntry;
 import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.healthconnect.testing.unittest.fakes.FakeTimeSource;
 import android.net.Uri;
@@ -137,7 +137,7 @@ public class MedicalDataSourceHelperTest {
     private MedicalDataSourceHelper mMedicalDataSourceHelper;
     private MedicalResourceHelper mMedicalResourceHelper;
     private TransactionManager mTransactionManager;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
     private AppInfoHelper mAppInfoHelper;
     private AccessLogsHelper mAccessLogsHelper;
     private PhrTestUtils mUtil;
@@ -175,7 +175,7 @@ public class MedicalDataSourceHelperTest {
         mMedicalResourceHelper = healthConnectInjector.getMedicalResourceHelper();
         mUserHandle = Process.myUserHandle();
 
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
         mUtil = new PhrTestUtils(healthConnectInjector);
     }
 
@@ -397,7 +397,7 @@ public class MedicalDataSourceHelperTest {
 
     @Test
     public void createAndGetSingleMedicalDataSource_packageAlreadyExists_success() {
-        mTransactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource1 =
                 createDataSource(
                         DATA_SOURCE_FHIR_BASE_URI,
@@ -414,7 +414,7 @@ public class MedicalDataSourceHelperTest {
 
     @Test
     public void createMedicalDataSources_sameDisplayNamesFromSamePackage_throws() {
-        mTransactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
         mMedicalDataSourceHelper.createMedicalDataSource(
                 new CreateMedicalDataSourceRequest.Builder(
                                 DATA_SOURCE_FHIR_BASE_URI,
@@ -437,7 +437,7 @@ public class MedicalDataSourceHelperTest {
 
     @Test
     public void createMedicalDataSource_lastModifiedTimeIsPopulated() {
-        mTransactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
         createDataSource(
                 DATA_SOURCE_FHIR_BASE_URI,
                 DATA_SOURCE_DISPLAY_NAME,
@@ -452,8 +452,8 @@ public class MedicalDataSourceHelperTest {
 
     @Test
     public void createAndGetMultipleMedicalDataSources_bothPackagesAlreadyExist_success() {
-        mTransactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
-        mTransactionTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource1 =
                 createDataSource(
                         DATA_SOURCE_FHIR_BASE_URI,
@@ -2249,8 +2249,8 @@ public class MedicalDataSourceHelperTest {
 
     @Test
     public void getMDSesByIdsWithoutPermissionChecks_multipleResourcesIns_correctDataUpdateTime() {
-        mTransactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
-        mTransactionTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource1 =
                 createDataSource(
                         DATA_SOURCE_FHIR_BASE_URI,
@@ -2296,8 +2296,8 @@ public class MedicalDataSourceHelperTest {
 
     @Test
     public void getMDSesByIdsWithoutPermissionChecks_deletedResource_notCountedForDataUpdateTime() {
-        mTransactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
-        mTransactionTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource =
                 createDataSource(
                         DATA_SOURCE_FHIR_BASE_URI,
@@ -2330,7 +2330,7 @@ public class MedicalDataSourceHelperTest {
 
     @Test
     public void getMDSesByIdsWithoutPermissionChecks_noResourcesInserted_nullDataUpdateTime() {
-        mTransactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource1 =
                 createDataSource(
                         DATA_SOURCE_FHIR_BASE_URI,
@@ -2349,8 +2349,8 @@ public class MedicalDataSourceHelperTest {
     @Test
     public void
             getMDSesByPackageWithoutPermissionChecks_multipleResourcesIns_correctDataUpdateTime() {
-        mTransactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
-        mTransactionTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource1 =
                 createDataSource(
                         DATA_SOURCE_FHIR_BASE_URI,
@@ -2397,8 +2397,8 @@ public class MedicalDataSourceHelperTest {
     @Test
     public void
             getMDSesByPackageWithoutPermissionChecks_deletedResource_notCountedForDataUpdateTime() {
-        mTransactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
-        mTransactionTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DIFFERENT_DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource =
                 createDataSource(
                         DATA_SOURCE_FHIR_BASE_URI,
@@ -2431,7 +2431,7 @@ public class MedicalDataSourceHelperTest {
 
     @Test
     public void getMDSesByPackageWithoutPermissionChecks_noResourcesInserted_nullDataUpdateTime() {
-        mTransactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource =
                 createDataSource(
                         DATA_SOURCE_FHIR_BASE_URI,
@@ -2916,7 +2916,7 @@ public class MedicalDataSourceHelperTest {
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .doesNotContain(deleteAccessLog);
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -2950,7 +2950,7 @@ public class MedicalDataSourceHelperTest {
                 .contains(deleteAccessLog);
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -2995,7 +2995,7 @@ public class MedicalDataSourceHelperTest {
                 .contains(deleteAccessLog);
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -3038,7 +3038,7 @@ public class MedicalDataSourceHelperTest {
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .contains(deleteAccessLog);
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3075,7 +3075,7 @@ public class MedicalDataSourceHelperTest {
                         List.of(UUID.fromString(existing.getId())));
         assertThat(result).containsExactly(existing);
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3109,7 +3109,7 @@ public class MedicalDataSourceHelperTest {
                         toUuids(List.of(existing.getId(), different.getId())));
         assertThat(result).containsExactly(existing, different);
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3133,7 +3133,7 @@ public class MedicalDataSourceHelperTest {
                         List.of(existingUuid));
         assertThat(result).isEmpty();
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3163,7 +3163,7 @@ public class MedicalDataSourceHelperTest {
                         toUuids(List.of(dataSource1.getId(), dataSource2.getId())));
         assertThat(result).containsExactly(dataSource2);
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3193,7 +3193,7 @@ public class MedicalDataSourceHelperTest {
                         toUuids(List.of(dataSource1.getId(), dataSource2.getId())));
         assertThat(result).containsExactly(dataSource2);
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3227,7 +3227,7 @@ public class MedicalDataSourceHelperTest {
                         toUuids(List.of(dataSource1.getId(), dataSource2.getId())));
         assertThat(result).containsExactly(dataSource1, dataSource2);
         if (isPhrChangeLogsEnabled()) {
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs()).isEmpty();
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs()).isEmpty();
         }
     }
 
@@ -3268,7 +3268,7 @@ public class MedicalDataSourceHelperTest {
         assertThat(resourceResult).isEmpty();
         if (isPhrChangeLogsEnabled()) {
             long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
-            assertThat(mTransactionTestUtils.getAllDeleteMedicalChangeLogs())
+            assertThat(mUtil.getAllDeleteMedicalChangeLogs())
                     .containsExactly(
                             new MedicalChangeLogEntry(
                                     DELETE,
@@ -3349,7 +3349,7 @@ public class MedicalDataSourceHelperTest {
 
     private void insertApps(List<String> packageNames) {
         for (String packageName : packageNames) {
-            mTransactionTestUtils.insertApp(packageName);
+            mFitnessTestUtils.insertApp(packageName);
         }
     }
 

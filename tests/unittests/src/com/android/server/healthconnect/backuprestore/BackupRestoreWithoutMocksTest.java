@@ -16,8 +16,8 @@
 
 package com.android.server.healthconnect.backuprestore;
 
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 import static android.healthconnect.testing.unittest.StorageUtils.queryNumEntries;
-import static android.healthconnect.testing.unittest.TransactionTestUtils.createStepsRecord;
 
 import static com.android.server.healthconnect.backuprestore.BackupRestore.GRANT_TIME_FILE_NAME;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.STAGED_DATABASE_DIR;
@@ -33,9 +33,9 @@ import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.restore.StageRemoteDataRequest;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.PhrTestUtils;
 import android.healthconnect.testing.unittest.StorageUtils;
-import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.os.ParcelFileDescriptor;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -85,7 +85,7 @@ public class BackupRestoreWithoutMocksTest {
 
     private Context mContext;
     private StorageUtils mStorageUtils;
-    private TransactionTestUtils mTransactionTestUtils;
+    private FitnessTestUtils mFitnessTestUtils;
     private BackupRestore mBackupRestore;
     private PhrTestUtils mPhrTestUtils;
     private GrantTimeXmlHelper mGrantTimeXmlHelper;
@@ -104,8 +104,8 @@ public class BackupRestoreWithoutMocksTest {
                         .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .build();
         mStorageUtils = new StorageUtils(healthConnectInjector);
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
         AppInfoHelper appInfoHelper = healthConnectInjector.getAppInfoHelper();
         TransactionManager transactionManager = healthConnectInjector.getTransactionManager();
@@ -138,7 +138,7 @@ public class BackupRestoreWithoutMocksTest {
                 mPhrTestUtils.insertR4MedicalDataSource("ds", TEST_PACKAGE_NAME);
         mPhrTestUtils.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource);
         // Insert a Step record.
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(123, 456, 7));
         // Ensure the original database contains the inserted data above.
         assertThat(mStorageUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
         assertThat(mStorageUtils.queryNumEntries("medical_resource_table")).isEqualTo(1);
@@ -192,7 +192,7 @@ public class BackupRestoreWithoutMocksTest {
                         mEnvironmentDataDirectory.getRoot());
         createAndGetEmptyFile(dbContext.getDataDir(), STAGED_DATABASE_NAME);
         HealthConnectDatabase stagedDb = new HealthConnectDatabase(dbContext, STAGED_DATABASE_NAME);
-        mTransactionTestUtils.insertApp(stagedDb, TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(stagedDb, TEST_PACKAGE_NAME);
         Pair<Long, String> rowIdUuidPair =
                 mPhrTestUtils.insertMedicalDataSource(
                         stagedDb, dbContext, DATA_SOURCE_SUFFIX, TEST_PACKAGE_NAME, INSTANT_NOW);
@@ -245,7 +245,7 @@ public class BackupRestoreWithoutMocksTest {
                         mEnvironmentDataDirectory.getRoot());
         createAndGetEmptyFile(dbContext.getDataDir(), STAGED_DATABASE_NAME);
         HealthConnectDatabase stagedDb = new HealthConnectDatabase(dbContext, STAGED_DATABASE_NAME);
-        mTransactionTestUtils.insertApp(stagedDb, TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(stagedDb, TEST_PACKAGE_NAME);
         Pair<Long, String> rowIdUuidPair =
                 mPhrTestUtils.insertMedicalDataSource(
                         stagedDb, dbContext, DATA_SOURCE_SUFFIX, TEST_PACKAGE_NAME, INSTANT_NOW);
@@ -309,7 +309,7 @@ public class BackupRestoreWithoutMocksTest {
                         mEnvironmentDataDirectory.getRoot());
         createAndGetEmptyFile(dbContext.getDataDir(), STAGED_DATABASE_NAME);
         HealthConnectDatabase stagedDb = new HealthConnectDatabase(dbContext, STAGED_DATABASE_NAME);
-        mTransactionTestUtils.insertApp(stagedDb, TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(stagedDb, TEST_PACKAGE_NAME);
         // Insert a dataSource with the same unique ids (displayName, appId) into the
         // staged database.
         Pair<Long, String> rowIdUuidPair =
@@ -402,7 +402,7 @@ public class BackupRestoreWithoutMocksTest {
                         mEnvironmentDataDirectory.getRoot());
         createAndGetEmptyFile(dbContext.getDataDir(), STAGED_DATABASE_NAME);
         HealthConnectDatabase stagedDb = new HealthConnectDatabase(dbContext, STAGED_DATABASE_NAME);
-        mTransactionTestUtils.insertApp(stagedDb, TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(stagedDb, TEST_PACKAGE_NAME);
         // Insert a dataSource with the same unique ids (displayName, appId) into the
         // staged database.
         Pair<Long, String> rowIdUuidPair =

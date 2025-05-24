@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.permissions.api
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.api.LoadAccessDateUseCase
 import com.google.common.truth.Truth.assertThat
@@ -24,11 +25,13 @@ import java.time.Instant
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class LoadAccessDateUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

@@ -22,12 +22,13 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_PHR_API_INVOKED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_PHR_API_INVOKED__MEDICAL_RESOURCE_TYPE__MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_PHR_API_INVOKED__MEDICAL_RESOURCE_TYPE__MEDICAL_RESOURCE_TYPE_VACCINES;
 import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUMENT;
 import static android.health.connect.HealthConnectException.ERROR_SECURITY;
 import static android.health.connect.HealthConnectException.ERROR_UNSUPPORTED_OPERATION;
 import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
-import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_HIDE;
+import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
@@ -35,11 +36,11 @@ import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VACCINE
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.HealthPermissions.getAllMedicalPermissions;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION;
+import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.healthconnect.testing.shared.DataFactory.MAXIMUM_PAGE_SIZE;
-import static android.healthconnect.testing.shared.DataFactory.NOW;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_DISPLAY_NAME;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_FHIR_BASE_URI;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_FHIR_VERSION;
@@ -50,6 +51,8 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_RESOURCE_ID_IMMUNIZATION;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSION_R4;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.createAllergyMedicalResource;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getGetMedicalDataSourceRequest;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedicalDataSourceRequiredFieldsOnly;
@@ -85,7 +88,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -148,11 +150,13 @@ import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.MedicalDataSource;
+import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.health.connect.restore.StageRemoteDataRequest;
+import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.unittest.fakes.FakeTimeSource;
 import android.net.Uri;
 import android.os.Build;
@@ -184,6 +188,7 @@ import com.android.server.healthconnect.migration.MigrationCleaner;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.MigrationTestUtils;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
+import com.android.server.healthconnect.onboarding.OnboardingStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
@@ -318,6 +323,8 @@ public class HealthConnectServiceImplTest {
     private static final int TIMEOUT_MILLIS = 10_000;
     private static final int VACCINES_INVOKED =
             HEALTH_CONNECT_PHR_API_INVOKED__MEDICAL_RESOURCE_TYPE__MEDICAL_RESOURCE_TYPE_VACCINES;
+    private static final int ALLERGIES_INVOKED =
+            HEALTH_CONNECT_PHR_API_INVOKED__MEDICAL_RESOURCE_TYPE__MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -353,6 +360,7 @@ public class HealthConnectServiceImplTest {
     @Mock private ChangeLogsRequestHelper mChangeLogsRequestHelper;
     @Mock private IGetChangeLogTokenCallback mGetChangeLogTokenCallback;
     @Mock private IChangeLogsResponseCallback mChangeLogsResponseCallback;
+    @Mock private OnboardingStateManager mOnboardingStateManager;
     @Captor ArgumentCaptor<HealthConnectExceptionParcel> mErrorCaptor;
     @Captor private ArgumentCaptor<HealthConnectOnboardingState> mOnboardingStateCaptor;
     private FakeTimeSource mFakeTimeSource;
@@ -364,6 +372,7 @@ public class HealthConnectServiceImplTest {
     private ThreadPoolExecutor mInternalTaskScheduler;
     private String mTestPackageName;
     private HealthConnectThreadScheduler mThreadScheduler;
+    private final Instant mNow = DataFactory.now();
 
     @Before
     public void setUp() throws Exception {
@@ -381,7 +390,7 @@ public class HealthConnectServiceImplTest {
                 .thenReturn(mPermissionManager);
         setUpHealthPermissions();
 
-        mFakeTimeSource = new FakeTimeSource(NOW);
+        mFakeTimeSource = new FakeTimeSource(mNow);
         mAttributionSource = mContext.getAttributionSource();
         mTestPackageName = mAttributionSource.getPackageName();
         setUpAllMedicalPermissionChecksHardDenied();
@@ -410,6 +419,7 @@ public class HealthConnectServiceImplTest {
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .setChangeLogsHelper(mChangeLogsHelper)
                         .setChangeLogsRequestHelper(mChangeLogsRequestHelper)
+                        .setOnboardingStateManager(mOnboardingStateManager)
                         .build();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
         mInternalTaskScheduler = mThreadScheduler.mInternalBackgroundExecutor;
@@ -1330,7 +1340,7 @@ public class HealthConnectServiceImplTest {
     @Test
     public void testReadMedicalResourcesByRequests_expectCorrectLogs() throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
-        mFakeTimeSource.setInstant(NOW);
+        mFakeTimeSource.setInstant(mNow);
 
         mHealthConnectService.readMedicalResourcesByRequest(
                 mAttributionSource,
@@ -1350,7 +1360,7 @@ public class HealthConnectServiceImplTest {
                 () -> eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
                 List.of(VACCINES_INVOKED),
                 1);
-        verify(mPreferencesManager, times(1)).setLastPhrReadMedicalResourcesApiTimeStamp(eq(NOW));
+        verify(mPreferencesManager, times(1)).setLastPhrReadMedicalResourcesApiTimeStamp(eq(mNow));
     }
 
     @Test
@@ -1358,7 +1368,7 @@ public class HealthConnectServiceImplTest {
             testReadMedicalResourcesByRequests_hasDataManagementPermission_expectMonthlyTimeStamp()
                     throws InterruptedException {
         setUpSuccessfulMocksForPhrTelemetry();
-        mFakeTimeSource.setInstant(NOW);
+        mFakeTimeSource.setInstant(mNow);
         setDataManagementPermission(PERMISSION_GRANTED);
 
         mHealthConnectService.readMedicalResourcesByRequest(
@@ -1370,13 +1380,13 @@ public class HealthConnectServiceImplTest {
 
         awaitAllExecutorsIdle();
         assertThat(mPreferencesManager.getPhrLastReadMedicalResourcesApiTimeStamp()).isNull();
-        verify(mPreferencesManager, times(1)).setLastPhrReadMedicalResourcesApiTimeStamp(eq(NOW));
+        verify(mPreferencesManager, times(1)).setLastPhrReadMedicalResourcesApiTimeStamp(eq(mNow));
     }
 
     @Test
     public void testReadMedicalResourcesByIds_expectCorrectLogs() throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
-        mFakeTimeSource.setInstant(NOW);
+        mFakeTimeSource.setInstant(mNow);
 
         mHealthConnectService.readMedicalResourcesByIds(
                 mAttributionSource,
@@ -1393,13 +1403,13 @@ public class HealthConnectServiceImplTest {
                 () -> eq(READ_MEDICAL_RESOURCES_BY_IDS),
                 () -> eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
                 1);
-        verify(mPreferencesManager, times(1)).setLastPhrReadMedicalResourcesApiTimeStamp(eq(NOW));
+        verify(mPreferencesManager, times(1)).setLastPhrReadMedicalResourcesApiTimeStamp(eq(mNow));
     }
 
     @Test
     public void testReadMedicalResourcesByIds_hasDataManagementPermission_expectMonthlyTimeStamp() {
         setUpSuccessfulMocksForPhrTelemetry();
-        mFakeTimeSource.setInstant(NOW);
+        mFakeTimeSource.setInstant(mNow);
         setDataManagementPermission(PERMISSION_GRANTED);
 
         mHealthConnectService.readMedicalResourcesByIds(
@@ -1408,7 +1418,7 @@ public class HealthConnectServiceImplTest {
                 mReadMedicalResourcesResponseCallback);
 
         verify(mPreferencesManager, timeout(5000).times(1))
-                .setLastPhrReadMedicalResourcesApiTimeStamp(eq(NOW));
+                .setLastPhrReadMedicalResourcesApiTimeStamp(eq(mNow));
     }
 
     @Test
@@ -2345,40 +2355,28 @@ public class HealthConnectServiceImplTest {
 
     @Test
     @EnableFlags({FLAG_ONBOARDING})
-    public void testGetOnboardingStatus_onboardingStatusAtDefault_returnsDefaultOnboardingStatus()
+    public void testGetOnboardingStatus_noAppConnected_returnsTheUpdatedOnboardingStatus()
             throws Exception {
+        int onboardingState = ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
+        when(mOnboardingStateManager.updateAndGetOnboardingState()).thenReturn(onboardingState);
+
         mHealthConnectService.getHealthConnectOnboardingState(
                 mGetHealthConnectOnboardingStateCallback);
 
-        verify(mGetHealthConnectOnboardingStateCallback, timeout(5000))
-                .onResult(any(HealthConnectOnboardingState.class));
-        verify(mGetHealthConnectOnboardingStateCallback).onResult(mOnboardingStateCaptor.capture());
-
-        assertNotNull(mOnboardingStateCaptor.getValue());
-        assertEquals(
-                mOnboardingStateCaptor.getValue().getOnboardingState(),
-                ONBOARDING_BANNER_STATE_HIDE);
+        verifyOnboardingState(onboardingState);
     }
 
     @Test
-    @EnableFlags({FLAG_ONBOARDING})
-    public void testGetOnboardingStatus_onboardingStatusUpdated_returnsTheUpdatedOnboardingStatus()
+    @EnableFlags(FLAG_ONBOARDING)
+    public void testGetOnboardingStatus_oneAppConnected_returnsTheUpdatedOnboardingStatus()
             throws Exception {
-        when(mPreferenceHelper.getPreference(
-                        eq(ONBOARDING_STATE_PREFERENCE_KEY + mUserHandle.getIdentifier())))
-                .thenReturn(String.valueOf(ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED));
+        int onboardingState = ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
+        when(mOnboardingStateManager.updateAndGetOnboardingState()).thenReturn(onboardingState);
 
         mHealthConnectService.getHealthConnectOnboardingState(
                 mGetHealthConnectOnboardingStateCallback);
 
-        verify(mGetHealthConnectOnboardingStateCallback, timeout(5000))
-                .onResult(any(HealthConnectOnboardingState.class));
-        verify(mGetHealthConnectOnboardingStateCallback).onResult(mOnboardingStateCaptor.capture());
-
-        assertNotNull(mOnboardingStateCaptor.getValue());
-        assertEquals(
-                mOnboardingStateCaptor.getValue().getOnboardingState(),
-                ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
+        verifyOnboardingState(onboardingState);
     }
 
     @Test
@@ -2653,6 +2651,83 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    public void testGetChangeLogs_validRequest_returnsChangeLogs_phr() throws Exception {
+        // Grant necessary permissions
+        when(mPermissionManager.checkPermissionForPreflight(any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        setBackgroundReadPermission(PERMISSION_GRANTED);
+        when(mAppOpsManagerLocal.isUidInForeground(anyInt()))
+                .thenReturn(true); // Simulate foreground call
+        when(mHealthConnectPermissionHelper.getHealthDataStartDateAccessOrThrow(anyString(), any()))
+                .thenReturn(Instant.EPOCH); // Grant history access implicitly
+        String token = "test-token-valid";
+        String nextToken = "test-token-next";
+        long initialRowId = 100L;
+        List<MedicalResource> resources =
+                List.of(
+                        createAllergyMedicalResource(DATA_SOURCE_ID),
+                        createVaccineMedicalResource(DATA_SOURCE_ID));
+        List<MedicalResourceId> resourceIds =
+                resources.stream().map(MedicalResource::getId).toList();
+        ChangeLogsRequest request = new ChangeLogsRequest.Builder(token).build();
+        ChangeLogsRequestHelper.TokenRequest tokenRequest =
+                new ChangeLogsRequestHelper.TokenRequest(
+                        List.of(), // No package filter
+                        List.of(), // No record types
+                        List.of(
+                                MEDICAL_RESOURCE_TYPE_VACCINES,
+                                MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES),
+                        mTestPackageName,
+                        initialRowId);
+        when(mChangeLogsRequestHelper.getRequest(mTestPackageName, token)).thenReturn(tokenRequest);
+        ChangeLogsHelper.ChangeLogsResponse mockChangeLogsResponse =
+                mock(ChangeLogsHelper.ChangeLogsResponse.class);
+        when(mockChangeLogsResponse.getRecordTypeToUpsertedUuids()).thenReturn(Map.of());
+        when(mockChangeLogsResponse.getDeletedLogs()).thenReturn(List.of());
+        when(mockChangeLogsResponse.getUpsertedMedicalResourceIds()).thenReturn(resourceIds);
+        when(mockChangeLogsResponse.getDeletedMedicalResources()).thenReturn(List.of());
+        when(mockChangeLogsResponse.getNextPageToken()).thenReturn(nextToken);
+        when(mockChangeLogsResponse.hasMorePages()).thenReturn(false);
+        when(mChangeLogsHelper.getChangeLogs(
+                        eq(mAppInfoHelper),
+                        eq(tokenRequest),
+                        eq(request),
+                        eq(mChangeLogsRequestHelper)))
+                .thenReturn(mockChangeLogsResponse);
+        when(mMedicalResourceHelper.readMedicalResourcesByIdsWithoutPermissionChecks(
+                        eq(resourceIds)))
+                .thenReturn(resources);
+
+        mHealthConnectService.getChangeLogs(
+                mAttributionSource, request, mChangeLogsResponseCallback);
+
+        ChangeLogsResponse expectedResponse =
+                new ChangeLogsResponse(
+                        List.of(), List.of(), resources, List.of(), nextToken, false);
+        verify(mChangeLogsResponseCallback, timeout(TIMEOUT_MILLIS)).onResult(expectedResponse);
+        verify(mChangeLogsResponseCallback, never()).onError(any());
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(GET_CHANGES),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        anyInt(),
+                        anyLong(),
+                        eq(2), // number of changes
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
+        assertPhrApiPrivateWestWorldWrites(
+                () -> eq(GET_CHANGES),
+                () -> eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                List.of(VACCINES_INVOKED, ALLERGIES_INVOKED),
+                1);
+    }
+
+    @Test
     public void testGetChangeLogs_backgroundReadDenied_throwsSecurityException() throws Exception {
         // Grant basic read permissions but deny background read
         when(mPermissionManager.checkPermissionForPreflight(any(), any()))
@@ -2855,6 +2930,15 @@ public class HealthConnectServiceImplTest {
         doNothing()
                 .when(mServiceContext)
                 .enforcePermission(eq(permission), anyInt(), anyInt(), anyString());
+    }
+
+    private void verifyOnboardingState(@HealthConnectOnboardingState.OnboardingState int expected)
+            throws Exception {
+        verify(mGetHealthConnectOnboardingStateCallback, timeout(5000))
+                .onResult(any(HealthConnectOnboardingState.class));
+        verify(mGetHealthConnectOnboardingStateCallback).onResult(mOnboardingStateCaptor.capture());
+
+        assertEquals(mOnboardingStateCaptor.getValue().getOnboardingState(), expected);
     }
 
     private static File createAndGetNonEmptyFile(File dir, String fileName) throws IOException {

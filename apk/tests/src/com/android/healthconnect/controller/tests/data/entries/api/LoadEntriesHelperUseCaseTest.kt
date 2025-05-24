@@ -39,6 +39,7 @@ import android.health.connect.datatypes.TotalCaloriesBurnedRecord
 import android.health.connect.datatypes.WeightRecord
 import android.health.connect.datatypes.units.Temperature
 import android.os.OutcomeReceiver
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesInput
@@ -108,6 +109,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
@@ -119,6 +121,7 @@ import org.mockito.stubbing.Stubber
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class LoadEntriesHelperUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
@@ -922,14 +925,14 @@ class LoadEntriesHelperUseCaseTest {
         return Pair(input, timeRangeFilter)
     }
 
-    private fun assertArgumentRequestCaptorValidity(
-        requestCaptor: ArgumentCaptor<out ReadRecordsRequestUsingFilters<out Record>>,
+    private fun <T : Record> assertArgumentRequestCaptorValidity(
+        requestCaptor: ArgumentCaptor<out ReadRecordsRequestUsingFilters<T>>,
         timeRangeFilter: TimeInstantRangeFilter,
         recordType: Class<out Record>,
         wantedInvocationCount: Int = 1,
     ) {
         Mockito.verify(healthConnectManager, Mockito.times(wantedInvocationCount))
-            .readRecords(requestCaptor.capture(), any(), any())
+            .readRecords<T>(requestCaptor.capture(), any(), any())
         assertThat(requestCaptor.value.recordType).isEqualTo(recordType)
         assertThat((requestCaptor.value.timeRangeFilter as TimeInstantRangeFilter).startTime)
             .isEqualTo(timeRangeFilter.startTime)

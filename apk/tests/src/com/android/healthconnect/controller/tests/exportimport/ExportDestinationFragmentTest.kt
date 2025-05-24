@@ -51,6 +51,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isNotChecked
 import androidx.test.espresso.matcher.ViewMatchers.isNotEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.exportimport.ExportDestinationFragment
@@ -80,6 +81,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -87,6 +89,7 @@ import org.mockito.kotlin.verify
 
 @HiltAndroidTest
 @UninstallModules(DeviceInfoUtilsModule::class, HealthDataExportManagerModule::class)
+@RunWith(AndroidJUnit4::class)
 class ExportDestinationFragmentTest {
     companion object {
         private const val TEST_DOCUMENT_PROVIDER_1_TITLE = "Document provider 1"

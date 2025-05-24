@@ -30,7 +30,7 @@ import java.time.Instant;
 public class PreferencesManager {
     private static final String TAG = "HCPreferencesManager";
 
-    private static final String AUTO_DELETE_DURATION_RECORDS_KEY =
+    public static final String AUTO_DELETE_DURATION_RECORDS_KEY =
             "auto_delete_duration_records_key";
 
     /**
