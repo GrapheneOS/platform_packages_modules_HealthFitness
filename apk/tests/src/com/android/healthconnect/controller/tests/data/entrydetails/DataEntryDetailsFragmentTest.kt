@@ -57,8 +57,8 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ExercisePerformanceGoalEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ExerciseSessionEntry
-import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSectionContent
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseBlockEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseFormattedSectionContent
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseSessionEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseStepEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SeriesDataEntry
@@ -428,7 +428,7 @@ class DataEntryDetailsFragmentTest {
                 )
             )
             add(SessionHeader("Notes"))
-            add(FormattedSectionContent("Morning quick run by the park"))
+            add(PlannedExerciseFormattedSectionContent("Morning quick run by the park"))
             add(
                 PlannedExerciseStepEntry(
                     step =
@@ -447,7 +447,12 @@ class DataEntryDetailsFragmentTest {
                     titleA11y = "4 kilometres Running",
                 )
             )
-            add(FormattedSectionContent(title = "This is a test exercise step", bulleted = true))
+            add(
+                PlannedExerciseFormattedSectionContent(
+                    title = "This is a test exercise step",
+                    bulleted = true,
+                )
+            )
             add(
                 ExercisePerformanceGoalEntry(
                     goal = ExercisePerformanceGoal.HeartRateGoal(150, 180),

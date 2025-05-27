@@ -25,14 +25,12 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissionCategory;
-import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 
 import java.util.Collection;
@@ -55,8 +53,6 @@ public final class HealthConnectMappings {
     private final Map<Integer, Class<? extends Record>> mRecordIdToRecordClassMap;
     private final Map<Class<? extends Record>, Integer> mRecordClassToRecordIdMap;
     private final Set<Integer> mHealthDataCategories;
-
-    private final RecordMapper mRecordMapper = RecordMapper.getInstance();
 
     @Nullable private static volatile HealthConnectMappings sHealthConnectMappings;
 
@@ -87,70 +83,51 @@ public final class HealthConnectMappings {
         var dataTypeDescriptors = DataTypeDescriptors.getAllDataTypeDescriptors();
 
         mRecordIdToDescriptorMap =
-                Flags.healthConnectMappings()
-                        ? toArrayMap(
-                                dataTypeDescriptors,
-                                DataTypeDescriptor::getRecordTypeIdentifier,
-                                Function.identity())
-                        : new ArrayMap<>();
+                toArrayMap(
+                        dataTypeDescriptors,
+                        DataTypeDescriptor::getRecordTypeIdentifier,
+                        Function.identity());
 
         mPermissionCategoryToReadPermissionMap =
-                Flags.healthConnectMappings()
-                        ? toArrayMap(
-                                dataTypeDescriptors,
-                                DataTypeDescriptor::getPermissionCategory,
-                                DataTypeDescriptor::getReadPermission)
-                        : new ArrayMap<>();
+                toArrayMap(
+                        dataTypeDescriptors,
+                        DataTypeDescriptor::getPermissionCategory,
+                        DataTypeDescriptor::getReadPermission);
 
         mPermissionCategoryToWritePermissionMap =
-                Flags.healthConnectMappings()
-                        ? toArrayMap(
-                                dataTypeDescriptors,
-                                DataTypeDescriptor::getPermissionCategory,
-                                DataTypeDescriptor::getWritePermission)
-                        : new ArrayMap<>();
+                toArrayMap(
+                        dataTypeDescriptors,
+                        DataTypeDescriptor::getPermissionCategory,
+                        DataTypeDescriptor::getWritePermission);
 
         mWritePermissionToDataCategoryMap =
-                Flags.healthConnectMappings()
-                        ? toArrayMap(
-                                dataTypeDescriptors,
-                                DataTypeDescriptor::getWritePermission,
-                                DataTypeDescriptor::getDataCategory)
-                        : new ArrayMap<>();
+                toArrayMap(
+                        dataTypeDescriptors,
+                        DataTypeDescriptor::getWritePermission,
+                        DataTypeDescriptor::getDataCategory);
 
         mDataCategoryToWritePermissionsMap =
-                Flags.healthConnectMappings()
-                        ? getDataCategoryToWritePermissionsMap(dataTypeDescriptors)
-                        : new ArrayMap<>();
+                getDataCategoryToWritePermissionsMap(dataTypeDescriptors);
 
         mRecordIdToInternalRecordClassMap =
-                Flags.healthConnectMappings()
-                        ? toArrayMap(
-                                dataTypeDescriptors,
-                                DataTypeDescriptor::getRecordTypeIdentifier,
-                                DataTypeDescriptor::getRecordInternalClass)
-                        : new ArrayMap<>();
+                toArrayMap(
+                        dataTypeDescriptors,
+                        DataTypeDescriptor::getRecordTypeIdentifier,
+                        DataTypeDescriptor::getRecordInternalClass);
 
         mRecordIdToRecordClassMap =
-                Flags.healthConnectMappings()
-                        ? toArrayMap(
-                                dataTypeDescriptors,
-                                DataTypeDescriptor::getRecordTypeIdentifier,
-                                DataTypeDescriptor::getRecordClass)
-                        : new ArrayMap<>();
-
+                toArrayMap(
+                        dataTypeDescriptors,
+                        DataTypeDescriptor::getRecordTypeIdentifier,
+                        DataTypeDescriptor::getRecordClass);
         mRecordClassToRecordIdMap =
-                Flags.healthConnectMappings()
-                        ? toArrayMap(
-                                dataTypeDescriptors,
-                                DataTypeDescriptor::getRecordClass,
-                                DataTypeDescriptor::getRecordTypeIdentifier)
-                        : new ArrayMap<>();
+                toArrayMap(
+                        dataTypeDescriptors,
+                        DataTypeDescriptor::getRecordClass,
+                        DataTypeDescriptor::getRecordTypeIdentifier);
 
         mHealthDataCategories =
-                Flags.healthConnectMappings()
-                        ? toArraySet(dataTypeDescriptors, DataTypeDescriptor::getDataCategory)
-                        : new ArraySet<>();
+                toArraySet(dataTypeDescriptors, DataTypeDescriptor::getDataCategory);
     }
 
     /**
@@ -159,10 +136,6 @@ public final class HealthConnectMappings {
      * @see RecordTypeIdentifier
      */
     public Set<Integer> getAllRecordTypeIdentifiers() {
-        if (!Flags.healthConnectMappings()) {
-            return RecordTypeIdentifier.VALID_TYPES;
-        }
-
         return mRecordIdToDescriptorMap.keySet();
     }
 
@@ -171,21 +144,11 @@ public final class HealthConnectMappings {
      * @hide
      */
     public boolean isWritePermission(@NonNull String permissionName) {
-        if (!Flags.healthConnectMappings()) {
-            return HealthPermissions.isWritePermission(permissionName);
-        }
-
         return mWritePermissionToDataCategoryMap.containsKey(permissionName);
     }
 
     /** @hide */
     public String getHealthReadPermission(@HealthPermissionCategory.Type int permissionCategory) {
-        if (!Flags.healthConnectMappings()) {
-            return Objects.requireNonNull(
-                    HealthPermissions.getHealthReadPermission(permissionCategory),
-                    "Read permission not found for permission category:" + permissionCategory);
-        }
-
         return Objects.requireNonNull(
                 mPermissionCategoryToReadPermissionMap.get(permissionCategory),
                 "Read permission not found for permission category:" + permissionCategory);
@@ -193,10 +156,6 @@ public final class HealthConnectMappings {
 
     /** @hide */
     public String getHealthWritePermission(@HealthPermissionCategory.Type int permissionCategory) {
-        if (!Flags.healthConnectMappings()) {
-            return HealthPermissions.getHealthWritePermission(permissionCategory);
-        }
-
         return Objects.requireNonNull(
                 mPermissionCategoryToWritePermissionMap.get(permissionCategory),
                 "Write permission not found for permission category:" + permissionCategory);
@@ -209,10 +168,6 @@ public final class HealthConnectMappings {
      */
     @HealthDataCategory.Type
     public int getHealthDataCategoryForWritePermission(@Nullable String permissionName) {
-        if (!Flags.healthConnectMappings()) {
-            return HealthPermissions.getHealthDataCategoryForWritePermission(permissionName);
-        }
-
         return mWritePermissionToDataCategoryMap.getOrDefault(permissionName, DEFAULT_INT);
     }
 
@@ -221,10 +176,6 @@ public final class HealthConnectMappings {
      * @hide
      */
     public String[] getWriteHealthPermissionsFor(@HealthDataCategory.Type int dataCategory) {
-        if (!Flags.healthConnectMappings()) {
-            return HealthPermissions.getWriteHealthPermissionsFor(dataCategory);
-        }
-
         return mDataCategoryToWritePermissionsMap.getOrDefault(dataCategory, new String[] {});
     }
 
@@ -232,38 +183,22 @@ public final class HealthConnectMappings {
      * Returns a mapping from {@link RecordTypeIdentifier} to corresponding {@link RecordInternal}.
      */
     public Map<Integer, Class<? extends RecordInternal<?>>> getRecordIdToInternalRecordClassMap() {
-        if (!Flags.healthConnectMappings()) {
-            return mRecordMapper.getRecordIdToInternalRecordClassMap();
-        }
-
         return mRecordIdToInternalRecordClassMap;
     }
 
     /** Returns a mapping from {@link RecordTypeIdentifier} to corresponding {@link Record}. */
     public Map<Integer, Class<? extends Record>> getRecordIdToExternalRecordClassMap() {
-        if (!Flags.healthConnectMappings()) {
-            return mRecordMapper.getRecordIdToExternalRecordClassMap();
-        }
-
         return mRecordIdToRecordClassMap;
     }
 
     /** Returns record type id for give record class. */
     @RecordTypeIdentifier.RecordType
     public int getRecordType(Class<? extends Record> recordClass) {
-        if (!Flags.healthConnectMappings()) {
-            return mRecordMapper.getRecordType(recordClass);
-        }
-
         return Objects.requireNonNull(mRecordClassToRecordIdMap.get(recordClass));
     }
 
     /** Checks whether the given {@code recordClass} can be mapped. */
     public boolean hasRecordType(Class<? extends Record> recordClass) {
-        if (!Flags.healthConnectMappings()) {
-            return mRecordMapper.hasRecordType(recordClass);
-        }
-
         return mRecordClassToRecordIdMap.containsKey(recordClass);
     }
 
@@ -271,11 +206,6 @@ public final class HealthConnectMappings {
     @HealthPermissionCategory.Type
     public int getHealthPermissionCategoryForRecordType(
             @RecordTypeIdentifier.RecordType int recordType) {
-        if (!Flags.healthConnectMappings()) {
-            return RecordTypePermissionCategoryMapper.getHealthPermissionCategoryForRecordType(
-                    recordType);
-        }
-
         return Objects.requireNonNull(
                         mRecordIdToDescriptorMap.get(recordType),
                         "Unsupported record type: " + recordType)
@@ -285,10 +215,6 @@ public final class HealthConnectMappings {
     /** Returns {@link HealthDataCategory} for the input {@link RecordTypeIdentifier.RecordType}. */
     @HealthDataCategory.Type
     public int getRecordCategoryForRecordType(@RecordTypeIdentifier.RecordType int recordType) {
-        if (!Flags.healthConnectMappings()) {
-            return RecordTypeRecordCategoryMapper.getRecordCategoryForRecordType(recordType);
-        }
-
         return Objects.requireNonNull(
                         mRecordIdToDescriptorMap.get(recordType),
                         "Unsupported record type: " + recordType)
@@ -297,17 +223,6 @@ public final class HealthConnectMappings {
 
     /** Returns a set of all supported data categories. */
     public Set<Integer> getAllHealthDataCategories() {
-        if (!Flags.healthConnectMappings()) {
-            return Set.of(
-                    HealthDataCategory.ACTIVITY,
-                    HealthDataCategory.BODY_MEASUREMENTS,
-                    HealthDataCategory.CYCLE_TRACKING,
-                    HealthDataCategory.NUTRITION,
-                    HealthDataCategory.SLEEP,
-                    HealthDataCategory.VITALS,
-                    HealthDataCategory.WELLNESS);
-        }
-
         return mHealthDataCategories;
     }
 

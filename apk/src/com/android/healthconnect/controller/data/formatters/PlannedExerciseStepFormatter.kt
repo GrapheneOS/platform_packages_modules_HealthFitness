@@ -20,7 +20,7 @@ import android.health.connect.datatypes.ExerciseCompletionGoal
 import android.health.connect.datatypes.PlannedExerciseStep
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry
-import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSectionContent
+import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseFormattedSectionContent
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseStepEntry
 import com.android.healthconnect.controller.data.formatters.shared.LengthFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
@@ -51,7 +51,12 @@ constructor(
         val performanceGoals = step.performanceGoals
         return buildList {
             if (!step.description.isNullOrBlank()) {
-                add(FormattedSectionContent(title = step.description.toString(), bulleted = true))
+                add(
+                    PlannedExerciseFormattedSectionContent(
+                        title = step.description.toString(),
+                        bulleted = true,
+                    )
+                )
             }
 
             if (performanceGoals.isNotEmpty()) {

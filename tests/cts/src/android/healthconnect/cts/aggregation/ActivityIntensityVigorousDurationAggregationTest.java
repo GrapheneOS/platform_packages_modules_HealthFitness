@@ -27,7 +27,6 @@ import static android.healthconnect.testing.shared.recordfactory.RecordFactory.Y
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
-import static com.android.healthfitness.flags.Flags.FLAG_HEALTH_CONNECT_MAPPINGS;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -53,11 +52,7 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.List;
 
-@RequiresFlagsEnabled({
-    FLAG_ACTIVITY_INTENSITY,
-    FLAG_ACTIVITY_INTENSITY_DB,
-    FLAG_HEALTH_CONNECT_MAPPINGS
-})
+@RequiresFlagsEnabled({FLAG_ACTIVITY_INTENSITY, FLAG_ACTIVITY_INTENSITY_DB})
 @ApiTest(
         apis = {"android.health.connect.datatypes.ActivityIntensityRecord#VIGOROUS_DURATION_TOTAL"})
 public class ActivityIntensityVigorousDurationAggregationTest

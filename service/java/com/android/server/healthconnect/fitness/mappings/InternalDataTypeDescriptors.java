@@ -147,7 +147,6 @@ import android.annotation.Nullable;
 import android.health.HealthFitnessStatsLog;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
-import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.recordhelpers.ActiveCaloriesBurnedRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ActivityIntensityRecordHelper;
@@ -209,10 +208,6 @@ public class InternalDataTypeDescriptors {
 
     @VisibleForTesting(visibility = PACKAGE)
     static List<InternalDataTypeDescriptor> getAllInternalDataTypeDescriptors() {
-        if (!Flags.healthConnectMappings()) {
-            return List.of();
-        }
-
         return listOfNonNull(
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_ACTIVE_CALORIES_BURNED)
