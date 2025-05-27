@@ -20,7 +20,6 @@ package com.android.healthconnect.controller.permissions.app
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
-import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
@@ -93,17 +92,6 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
     private val manageAppCategory: PreferenceGroup by pref(MANAGE_APP_CATEGORY)
     private val footer: FooterPreference by pref(FOOTER)
     private val dateFormatter by lazy { LocalDateTimeFormatter(requireContext()) }
-    private val onSwitchChangeListener = OnCheckedChangeListener { switchView, isChecked ->
-        if (isChecked) {
-            val permissionsUpdated = viewModel.grantAllFitnessPermissions(packageName)
-            if (!permissionsUpdated) {
-                switchView.isChecked = false
-                Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
-            }
-        } else {
-            showRevokeAllPermissions()
-        }
-    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
@@ -271,12 +259,26 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
     }
 
     private fun setupAllowAllPreference() {
-        allowAllPreference.addOnSwitchChangeListener(onSwitchChangeListener)
-        viewModel.allFitnessPermissionsGranted.observe(viewLifecycleOwner) { isAllGranted ->
-            allowAllPreference.removeOnSwitchChangeListener(onSwitchChangeListener)
-            allowAllPreference.isChecked = isAllGranted
-            allowAllPreference.addOnSwitchChangeListener(onSwitchChangeListener)
+
+        val onChecked = suspend {
+            val permissionsUpdated = viewModel.grantAllFitnessPermissions(packageName)
+            if (!permissionsUpdated) {
+                Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
+                false
+            }
+            true
         }
+        val onUnchecked = suspend {
+            showRevokeAllPermissions()
+            true
+        }
+
+        allowAllPreference.setUpStateManagement(
+            viewLifecycleOwner,
+            viewModel.allFitnessPermissionsGranted,
+            onChecked,
+            onUnchecked,
+        )
     }
 
     private fun showRevokeAllPermissions() {

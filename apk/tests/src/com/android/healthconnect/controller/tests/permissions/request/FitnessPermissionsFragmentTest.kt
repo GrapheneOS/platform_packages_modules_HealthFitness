@@ -756,10 +756,8 @@ class FitnessPermissionsFragmentTest {
         onView(withText(allowAllPreference?.title?.toString())).perform(click())
 
         verify(viewModel).updateFitnessPermissions(eq(true))
-        // TODO (b/325680041) this is not triggered?
-        //
-        // verify(healthConnectLogger).logInteraction(PermissionsElement.ALLOW_ALL_SWITCH,
-        // UIAction.ACTION_TOGGLE_ON)
+        verify(healthConnectLogger)
+            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_ON)
     }
 
     @Test
@@ -795,6 +793,8 @@ class FitnessPermissionsFragmentTest {
         onView(withText(allowAllPreference?.title?.toString())).perform(click())
 
         assertThat(viewModel.grantedFitnessPermissions.value).isEmpty()
+        verify(healthConnectLogger)
+            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_OFF)
     }
 
     @Test

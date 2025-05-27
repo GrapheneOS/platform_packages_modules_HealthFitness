@@ -67,6 +67,7 @@ import com.android.healthconnect.controller.utils.logging.AppAccessElement
 import com.android.healthconnect.controller.utils.logging.DisconnectAppDialogElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.logging.UIAction
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -555,6 +556,32 @@ class MedicalAppFragmentTest {
             .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
         verify(healthConnectLogger)
             .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_DELETE_CHECKBOX)
+        verify(healthConnectLogger)
+            .logInteraction(
+                AppAccessElement.ALLOW_ALL_PERMISSIONS_SWITCH_ACTIVE,
+                UIAction.ACTION_TOGGLE_OFF,
+            )
+    }
+
+    @Test
+    fun toggleOnAllowAll_togglesAllPermissionsOn() {
+        val writePermission = MedicalPermission(ALL_MEDICAL_DATA)
+        val readPermission = MedicalPermission(VACCINES)
+        whenever(viewModel.medicalPermissions).then {
+            MutableLiveData(listOf(writePermission, readPermission))
+        }
+        whenever(viewModel.allMedicalPermissionsGranted).then { MediatorLiveData(false) }
+        launchFragment<MedicalAppFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
+        )
+
+        onView(withText("Allow all")).perform(click())
+
+        verify(healthConnectLogger)
+            .logInteraction(
+                AppAccessElement.ALLOW_ALL_PERMISSIONS_SWITCH_INACTIVE,
+                UIAction.ACTION_TOGGLE_ON,
+            )
     }
 
     @Test
