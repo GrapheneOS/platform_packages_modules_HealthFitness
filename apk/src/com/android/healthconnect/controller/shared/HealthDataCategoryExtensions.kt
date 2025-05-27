@@ -33,7 +33,6 @@ import com.android.healthconnect.controller.shared.CategoriesMappers.SLEEP_PERMI
 import com.android.healthconnect.controller.shared.CategoriesMappers.VITALS_PERMISSION_GROUPS
 import com.android.healthconnect.controller.shared.CategoriesMappers.WELLNESS_PERMISSION_GROUPS
 import com.android.healthconnect.controller.utils.AttributeResolver
-import com.android.healthfitness.flags.Flags
 
 object HealthDataCategoryExtensions {
     /** Additional category for medical permission types. */
@@ -44,10 +43,6 @@ object HealthDataCategoryExtensions {
 
     private fun createDataCategoryToHealthPermissionTypeMap():
         Map<Int, List<HealthPermissionType>> {
-
-        if (!Flags.healthConnectMappings()) {
-            return emptyMap()
-        }
 
         val specialCases =
             mapOf(
@@ -70,10 +65,6 @@ object HealthDataCategoryExtensions {
     }
 
     fun @receiver:HealthDataCategoryInt Int.healthPermissionTypes(): List<HealthPermissionType> {
-        if (!Flags.healthConnectMappings()) {
-            return this.healthPermissionTypesLegacy()
-        }
-
         return DATA_CATEGORY_TO_HEALTH_PERMISSION_TYPE_MAP[this]
             ?: throw IllegalArgumentException("Category $this is not supported.")
     }
@@ -224,20 +215,7 @@ val FITNESS_DATA_CATEGORIES = getAllFitnessDataCategories()
  *
  * Allows code being unit tested with different flag values.
  */
-fun getAllFitnessDataCategories() =
-    if (Flags.healthConnectMappings()) HealthConnectMappings.getInstance().allHealthDataCategories
-    else getAllFitnessDataCategoriesLegacy()
-
-fun getAllFitnessDataCategoriesLegacy() =
-    listOf(
-        HealthDataCategory.ACTIVITY,
-        HealthDataCategory.BODY_MEASUREMENTS,
-        HealthDataCategory.CYCLE_TRACKING,
-        HealthDataCategory.NUTRITION,
-        HealthDataCategory.SLEEP,
-        HealthDataCategory.VITALS,
-        HealthDataCategory.WELLNESS,
-    )
+fun getAllFitnessDataCategories() = HealthConnectMappings.getInstance().allHealthDataCategories
 
 /** Denotes that the annotated [Integer] represents a [HealthDataCategory]. */
 @Retention(AnnotationRetention.BINARY)

@@ -116,9 +116,7 @@ public final class AconfigFlagHelper {
 
     /** Returns a boolean indicating whether Activity Intensity data type is enabled. */
     public static boolean isActivityIntensityEnabled() {
-        return Flags.activityIntensity()
-                && isDbFlagEnabled(DB_VERSION_ACTIVITY_INTENSITY)
-                && Flags.healthConnectMappings();
+        return Flags.activityIntensity() && isDbFlagEnabled(DB_VERSION_ACTIVITY_INTENSITY);
     }
 
     /** Returns a boolean indicating whether Ecosystem Metrics is enabled. */
@@ -134,7 +132,7 @@ public final class AconfigFlagHelper {
 
     /** Returns a boolean indicating whether Nicotine Intake data type is enabled. */
     public static boolean isNicotineIntakeEnabled() {
-        return Flags.smoking() && Flags.smokingDb() && Flags.healthConnectMappings();
+        return Flags.smoking() && Flags.smokingDb();
     }
 
     /** Returns a boolean indicating whether exercise segment improvements are enabled. */

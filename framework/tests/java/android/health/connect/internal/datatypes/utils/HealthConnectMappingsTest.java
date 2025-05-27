@@ -25,14 +25,9 @@ import static android.health.connect.internal.datatypes.utils.DataTypeDescriptor
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import static java.util.function.Predicate.isEqual;
-import static java.util.function.Predicate.not;
-
-import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissionCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Record;
-import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
@@ -51,7 +46,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
-@EnableFlags({Flags.FLAG_HEALTH_CONNECT_MAPPINGS})
 public class HealthConnectMappingsTest {
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
@@ -67,20 +61,6 @@ public class HealthConnectMappingsTest {
         assertThat(recordTypeIds).hasSize(getAllDataTypeDescriptors().size());
     }
 
-    @DisableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING})
-    @Test
-    public void getAllRecordTypeIdentifiers_equalsToLegacy() {
-        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
-
-        // UNKNOWN is not actually a valid record type id. Not removing it from VALID_TYPES to keep
-        // the existing implementation intact. The new implementation does not return it.
-        assertThat(healthConnectMappings.getAllRecordTypeIdentifiers())
-                .containsExactlyElementsIn(
-                        RecordTypeIdentifier.VALID_TYPES.stream()
-                                .filter(not(isEqual(RECORD_TYPE_UNKNOWN)))
-                                .toList());
-    }
-
     @Test
     public void getHealthReadPermission() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -89,20 +69,6 @@ public class HealthConnectMappingsTest {
                             healthConnectMappings.getHealthReadPermission(
                                     descriptor.getPermissionCategory()))
                     .isEqualTo(descriptor.getReadPermission());
-        }
-    }
-
-    @DisableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING})
-    @Test
-    public void getHealthReadPermission_equalsToLegacy() {
-        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
-        for (DataTypeDescriptor descriptor : getAllDataTypeDescriptors()) {
-            assertThat(
-                            healthConnectMappings.getHealthReadPermission(
-                                    descriptor.getPermissionCategory()))
-                    .isEqualTo(
-                            HealthPermissions.getHealthReadPermission(
-                                    descriptor.getPermissionCategory()));
         }
     }
 
@@ -118,21 +84,6 @@ public class HealthConnectMappingsTest {
         }
     }
 
-    @DisableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING})
-    @Test
-    public void getHealthWritePermission_equalsToLegacy() {
-        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
-        for (DataTypeDescriptor descriptor : getAllDataTypeDescriptors()) {
-            assertWithMessage(descriptor.getRecordClass().getSimpleName())
-                    .that(
-                            healthConnectMappings.getHealthWritePermission(
-                                    descriptor.getPermissionCategory()))
-                    .isEqualTo(
-                            HealthPermissions.getHealthWritePermission(
-                                    descriptor.getPermissionCategory()));
-        }
-    }
-
     @Test
     public void isWritePermission() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -143,17 +94,6 @@ public class HealthConnectMappingsTest {
             assertWithMessage(descriptor.getReadPermission())
                     .that(healthConnectMappings.isWritePermission(descriptor.getReadPermission()))
                     .isFalse();
-        }
-    }
-
-    @DisableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING})
-    @Test
-    public void isWritePermission_equalsToLegacy() {
-        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
-        for (DataTypeDescriptor descriptor : getAllDataTypeDescriptors()) {
-            assertWithMessage(descriptor.getReadPermission())
-                    .that(healthConnectMappings.isWritePermission(descriptor.getReadPermission()))
-                    .isEqualTo(HealthPermissions.isWritePermission(descriptor.getReadPermission()));
         }
     }
 
@@ -226,28 +166,6 @@ public class HealthConnectMappingsTest {
         assertThat(healthConnectMappings.getWriteHealthPermissionsFor(100)).isEmpty();
     }
 
-    @DisableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING})
-    @Test
-    public void getWriteHealthPermissionsFor_equalsToLegacy() {
-        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
-
-        for (DataTypeDescriptor descriptor : getAllDataTypeDescriptors()) {
-            String[] permissions =
-                    healthConnectMappings.getWriteHealthPermissionsFor(
-                            descriptor.getDataCategory());
-
-            // The HealthPermissions implementation uses static fields and because WELLNESS is
-            // flagged it doesn't respect @EnableFlags and can't be made consistent.
-            if (descriptor.getDataCategory() != HealthDataCategory.WELLNESS) {
-                assertThat(permissions)
-                        .asList()
-                        .containsExactlyElementsIn(
-                                HealthPermissions.getWriteHealthPermissionsFor(
-                                        descriptor.getDataCategory()));
-            }
-        }
-    }
-
     @Test
     public void getRecordIdToExternalRecordClassMap() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -258,16 +176,6 @@ public class HealthConnectMappingsTest {
         assertThat(map).hasSize(getAllDataTypeDescriptors().size());
         assertThat(map.keySet()).isEqualTo(healthConnectMappings.getAllRecordTypeIdentifiers());
         assertThat(map.values()).containsNoDuplicates();
-    }
-
-    @DisableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING})
-    @Test
-    public void getRecordIdToExternalRecordClassMap_equalsToLegacy() {
-        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
-
-        assertThat(healthConnectMappings.getRecordIdToExternalRecordClassMap())
-                .containsExactlyEntriesIn(
-                        RecordMapper.getInstance().getRecordIdToExternalRecordClassMap());
     }
 
     @Test
@@ -282,16 +190,6 @@ public class HealthConnectMappingsTest {
         assertThat(map.values()).containsNoDuplicates();
     }
 
-    @DisableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING})
-    @Test
-    public void getRecordIdToInternalRecordClassMap_equalsToLegacy() {
-        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
-
-        assertThat(healthConnectMappings.getRecordIdToInternalRecordClassMap())
-                .containsExactlyEntriesIn(
-                        RecordMapper.getInstance().getRecordIdToInternalRecordClassMap());
-    }
-
     @Test
     public void getRecordType() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -302,18 +200,6 @@ public class HealthConnectMappingsTest {
         }
     }
 
-    @DisableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING})
-    @Test
-    public void getRecordType_equalsToLegacy() {
-        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
-        for (var descriptor : getAllDataTypeDescriptors()) {
-            assertWithMessage(descriptor.getRecordClass().getSimpleName())
-                    .that(healthConnectMappings.getRecordType(descriptor.getRecordClass()))
-                    .isEqualTo(
-                            RecordMapper.getInstance().getRecordType(descriptor.getRecordClass()));
-        }
-    }
-
     @Test
     public void hasRecordType() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -321,35 +207,6 @@ public class HealthConnectMappingsTest {
             assertWithMessage(descriptor.getRecordClass().getSimpleName())
                     .that(healthConnectMappings.hasRecordType(descriptor.getRecordClass()))
                     .isTrue();
-        }
-    }
-
-    @DisableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING})
-    @Test
-    public void hasRecordType_equalsToLegacy() {
-        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
-        for (var descriptor : getAllDataTypeDescriptors()) {
-            assertWithMessage(descriptor.getRecordClass().getSimpleName())
-                    .that(healthConnectMappings.hasRecordType(descriptor.getRecordClass()))
-                    .isEqualTo(
-                            RecordMapper.getInstance().hasRecordType(descriptor.getRecordClass()));
-        }
-    }
-
-    @DisableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING})
-    @Test
-    public void getHealthPermissionCategoryForRecordType_equalsToLegacy() {
-        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
-        for (var descriptor : getAllDataTypeDescriptors()) {
-            int permissionCategory =
-                    healthConnectMappings.getHealthPermissionCategoryForRecordType(
-                            descriptor.getRecordTypeIdentifier());
-            assertWithMessage(descriptor.getRecordClass().getSimpleName())
-                    .that(permissionCategory)
-                    .isEqualTo(
-                            RecordTypePermissionCategoryMapper
-                                    .getHealthPermissionCategoryForRecordType(
-                                            descriptor.getRecordTypeIdentifier()));
         }
     }
 
@@ -432,7 +289,6 @@ public class HealthConnectMappingsTest {
         Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
         Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB
     })
-
     @Test
     public void nicotineIntakeFlagEnabled_containsNicotineIntake() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();

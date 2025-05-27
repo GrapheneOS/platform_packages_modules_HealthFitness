@@ -37,7 +37,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
-import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -89,23 +88,6 @@ public class InternalHealthConnectMappingsTest {
         assertThat(allRecordIdsForUuid).doesNotContain(RECORD_TYPE_ID_FOR_UUID_UNKNOWN);
     }
 
-    @DisableFlags(Flags.FLAG_ACTIVITY_INTENSITY)
-    @Test
-    public void getRecordTypeIdForUuid_equalsToLegacy() {
-        List<InternalDataTypeDescriptor> descriptors = getAllInternalDataTypeDescriptors();
-        InternalHealthConnectMappings mappings =
-                new InternalHealthConnectMappings(new HealthConnectMappings());
-
-        for (var descriptor : descriptors) {
-            String className = descriptor.getRecordHelper().getClass().getSimpleName();
-            int recordTypeId = descriptor.getRecordTypeIdentifier();
-
-            assertWithMessage(className)
-                    .that(mappings.getRecordTypeIdForUuid(recordTypeId))
-                    .isEqualTo(RecordTypeForUuidMappings.getRecordTypeIdForUuid(recordTypeId));
-        }
-    }
-
     @Test
     public void getRecordHelpers() {
         List<InternalDataTypeDescriptor> descriptors = getAllInternalDataTypeDescriptors();
@@ -119,20 +101,6 @@ public class InternalHealthConnectMappingsTest {
         for (var descriptor : descriptors) {
             assertThat(recordHelpers).contains(descriptor.getRecordHelper());
         }
-    }
-
-    @DisableFlags(Flags.FLAG_ACTIVITY_INTENSITY)
-    @Test
-    public void getRecordHelpers_equalsToLegacy() {
-        List<InternalDataTypeDescriptor> descriptors = getAllInternalDataTypeDescriptors();
-        InternalHealthConnectMappings mappings =
-                new InternalHealthConnectMappings(descriptors, new HealthConnectMappings());
-
-        assertThat(mappings.getRecordHelpers().stream().map(Object::getClass).toList())
-                .containsExactlyElementsIn(
-                        RecordHelperProvider.getRecordHelpers().stream()
-                                .map(x -> x.getClass())
-                                .toList());
     }
 
     @Test
@@ -154,20 +122,6 @@ public class InternalHealthConnectMappingsTest {
                                 .map(Object::getClass)
                                 .toList())
                 .containsNoDuplicates();
-    }
-
-    @DisableFlags(Flags.FLAG_ACTIVITY_INTENSITY)
-    @Test
-    public void getRecordHelper_equalsToLegacy() {
-        List<InternalDataTypeDescriptor> descriptors = getAllInternalDataTypeDescriptors();
-        InternalHealthConnectMappings mappings =
-                new InternalHealthConnectMappings(descriptors, new HealthConnectMappings());
-
-        for (var descriptor : descriptors) {
-            int recordTypeId = descriptor.getRecordTypeIdentifier();
-            assertThat(mappings.getRecordHelper(recordTypeId))
-                    .isInstanceOf(RecordHelperProvider.getRecordHelper(recordTypeId).getClass());
-        }
     }
 
     @Test
@@ -263,24 +217,6 @@ public class InternalHealthConnectMappingsTest {
                 .isFalse();
     }
 
-    @DisableFlags(Flags.FLAG_ACTIVITY_INTENSITY)
-    @Test
-    public void supportsPriority_equalsToLegacy() {
-        InternalHealthConnectMappings mappings =
-                new InternalHealthConnectMappings(new HealthConnectMappings());
-
-        for (var descriptor : getAllInternalDataTypeDescriptors()) {
-            for (var operationType : AggregationType.OPERATION_VALID_TYPES) {
-                assertThat(
-                                mappings.supportsPriority(
-                                        descriptor.getRecordTypeIdentifier(), operationType))
-                        .isEqualTo(
-                                StorageUtils.supportsPriority(
-                                        descriptor.getRecordTypeIdentifier(), operationType));
-            }
-        }
-    }
-
     @Test
     public void isDerived() {
         InternalHealthConnectMappings mappings =
@@ -289,8 +225,6 @@ public class InternalHealthConnectMappingsTest {
         for (var descriptor : getAllInternalDataTypeDescriptors()) {
             assertThat(mappings.isDerivedType(descriptor.getRecordTypeIdentifier()))
                     .isEqualTo(descriptor.isDerived());
-            assertThat(mappings.isDerivedType(descriptor.getRecordTypeIdentifier()))
-                    .isEqualTo(StorageUtils.isDerivedType(descriptor.getRecordTypeIdentifier()));
         }
     }
 }
