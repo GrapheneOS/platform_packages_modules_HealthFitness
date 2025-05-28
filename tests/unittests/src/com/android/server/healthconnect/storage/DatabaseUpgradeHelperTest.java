@@ -148,6 +148,7 @@ public class DatabaseUpgradeHelperTest {
     @EnableFlags({
         FLAG_PHR_CHANGE_LOGS,
         FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void onUpgrade_phrChangeLogs_schemaUpToDate() {
         try (var db = createEmptyDatabase()) {
@@ -171,6 +172,7 @@ public class DatabaseUpgradeHelperTest {
     @EnableFlags({
         FLAG_PHR_CHANGE_LOGS,
         FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void onUpgrade_phrChangeLogs_idempotent() {
         try (var db = createEmptyDatabase()) {

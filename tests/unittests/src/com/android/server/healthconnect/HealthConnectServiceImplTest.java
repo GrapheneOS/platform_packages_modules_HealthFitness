@@ -61,6 +61,7 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.getUpsertM
 import static android.healthconnect.testing.unittest.TaskUtils.waitForAllScheduledTasksToComplete;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
+import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
@@ -2517,7 +2518,11 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    @EnableFlags({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void testGetChangeLogs_emptyToken_phrFlagOn_throwsIllegalArgumentException()
             throws Exception {
         // Grant permissions to pass initial checks
@@ -2554,7 +2559,11 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    @DisableFlags({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void testGetChangeLogs_emptyToken_phrFlagOff_throwsIllegalArgumentException()
             throws Exception {
         // Grant permissions to pass initial checks
@@ -2651,7 +2660,11 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    @EnableFlags({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void testGetChangeLogs_validRequest_returnsChangeLogs_phr() throws Exception {
         // Grant necessary permissions
         when(mPermissionManager.checkPermissionForPreflight(any(), any()))

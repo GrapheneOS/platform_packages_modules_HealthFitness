@@ -44,6 +44,7 @@ import static android.healthconnect.testing.unittest.PhrTestUtils.ACCESS_LOG_EQU
 import static android.healthconnect.testing.unittest.PhrTestUtils.makeUpsertRequest;
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.isPhrChangeLogsEnabled;
+import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
@@ -1938,7 +1939,11 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    @EnableFlags({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void insertMedicalResourcesOfSameType_createsChangeLogs() {
         long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource =
@@ -1959,7 +1964,11 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    @EnableFlags({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void insertMedicalResourcesOfDifferentTypes_createsChangeLogs() {
         long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
         String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
@@ -1984,7 +1993,11 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    @EnableFlags({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void insertAndUpdateMedicalResources_createsChangeLogs() throws JSONException {
         long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
         String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
@@ -2022,7 +2035,11 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    @EnableFlags({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void insertMedicalResourcesOfSameType_delete_createsChangeLogs() {
         long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
         MedicalDataSource dataSource =
@@ -2046,7 +2063,11 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    @EnableFlags({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void insertMedicalResourcesOfDifferentTypes_delete_createsChangeLogs() {
         long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
         String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
@@ -2079,7 +2100,11 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PHR_CHANGE_LOGS, FLAG_PHR_CHANGE_LOGS_DB})
+    @EnableFlags({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void insertAndUpdateMedicalResources_delete_createsChangeLogs() throws JSONException {
         long appId = mAppInfoHelper.getAppInfoId(DATA_SOURCE_PACKAGE_NAME);
         String dataSource = mUtil.insertR4MedicalDataSource("ds", DATA_SOURCE_PACKAGE_NAME).getId();
