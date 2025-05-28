@@ -29,6 +29,7 @@ java_sdk_library {
     permitted_packages: [
         "com.android.server.healthconnect",
         "com.android.healthfitness.flags",
+        "com.android.healthfitness.beta.test",
     ],
     srcs: [":service-healthfitness-sources"],
     sdk_version: "system_server_current",
@@ -49,6 +50,7 @@ java_sdk_library {
         // in the framework jar which is included in this service jar.
         // See go/fixing-strict-java-packages.
         "healthfitness-aconfig-flags-lib",
+        "health_fitness.beta.test.flag_lib",
         "healthfitness-aconfig-flags-helper",
     ],
     static_libs: [
