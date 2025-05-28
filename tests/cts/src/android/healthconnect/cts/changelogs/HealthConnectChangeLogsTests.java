@@ -49,6 +49,7 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateM
 
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
+import static com.android.healthfitness.flags.Flags.phrChangeLogs;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -187,7 +188,9 @@ public class HealthConnectChangeLogsTests {
                         .build();
 
         assertThat(changeLogTokenRequest.getRecordTypes()).containsExactly(StepsRecord.class);
-        assertThat(changeLogTokenRequest.getMedicalResourceTypes()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(changeLogTokenRequest.getMedicalResourceTypes()).isEmpty();
+        }
         assertThat(changeLogTokenRequest.getDataOriginFilters()).containsExactly(dataOriginFilter);
     }
 
@@ -388,8 +391,10 @@ public class HealthConnectChangeLogsTests {
 
         assertThat(response.getUpsertedRecords()).isEmpty();
         assertThat(response.getDeletedLogs()).isEmpty();
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
@@ -421,8 +426,10 @@ public class HealthConnectChangeLogsTests {
 
         assertThat(response.getUpsertedRecords()).containsExactlyElementsIn(testRecords);
         assertThat(response.getDeletedLogs()).isEmpty();
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
@@ -462,8 +469,10 @@ public class HealthConnectChangeLogsTests {
 
         assertThat(response.getUpsertedRecords()).isEmpty();
         assertThat(response.getDeletedLogs()).isEmpty();
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
@@ -508,8 +517,10 @@ public class HealthConnectChangeLogsTests {
 
         assertThat(response.getUpsertedRecords()).isEmpty();
         assertThat(response.getDeletedLogs()).isEmpty();
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
@@ -560,8 +571,10 @@ public class HealthConnectChangeLogsTests {
         ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords()).containsExactly(stepsRecord);
         assertThat(response.getDeletedLogs()).isEmpty();
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
@@ -608,8 +621,10 @@ public class HealthConnectChangeLogsTests {
                 .comparingElementsUsing(DELETED_LOG_TO_RECORD_CORRESPONDENCE)
                 .containsExactlyElementsIn(testRecords);
         assertThat(response.getUpsertedRecords()).isEmpty();
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
@@ -654,8 +669,10 @@ public class HealthConnectChangeLogsTests {
                 .comparingElementsUsing(DELETED_LOG_TO_RECORD_CORRESPONDENCE)
                 .containsExactly(insertedRecord);
         assertThat(response.getUpsertedRecords()).isEmpty();
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
@@ -682,8 +699,10 @@ public class HealthConnectChangeLogsTests {
         ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
 
         assertThat(response.getUpsertedRecords()).containsExactlyElementsIn(expectedRecords);
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
@@ -706,8 +725,10 @@ public class HealthConnectChangeLogsTests {
         assertThat(response.getDeletedLogs())
                 .comparingElementsUsing(DELETED_LOG_TO_RECORD_CORRESPONDENCE)
                 .containsExactlyElementsIn(testRecords);
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
@@ -736,8 +757,10 @@ public class HealthConnectChangeLogsTests {
         assertThat(response.getDeletedLogs())
                 .comparingElementsUsing(DELETED_LOG_TO_RECORD_CORRESPONDENCE)
                 .containsExactly(stepsRecord);
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
@@ -795,8 +818,10 @@ public class HealthConnectChangeLogsTests {
                 .comparingElementsUsing(STEPS_RECORD_CORRESPONDENCE)
                 .containsExactly(getStepsRecord(/* steps= */ 123, insertedRecordMetadata));
         assertThat(response.getDeletedLogs()).isEmpty();
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
@@ -818,8 +843,10 @@ public class HealthConnectChangeLogsTests {
                 .comparingElementsUsing(STEPS_RECORD_CORRESPONDENCE)
                 .containsExactly(getStepsRecord(/* steps= */ 123, insertedRecordMetadata));
         assertThat(response.getDeletedLogs()).isEmpty();
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
@@ -846,8 +873,10 @@ public class HealthConnectChangeLogsTests {
         assertThat(response.getDeletedLogs())
                 .comparingElementsUsing(DELETED_LOG_TO_STRING_ID_CORRESPONDENCE)
                 .containsExactly(insertedRecordMetadata.getId());
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
@@ -868,8 +897,10 @@ public class HealthConnectChangeLogsTests {
         assertThat(response.getDeletedLogs())
                 .comparingElementsUsing(DELETED_LOG_TO_STRING_ID_CORRESPONDENCE)
                 .containsExactly(insertedRecordId);
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
@@ -883,8 +914,10 @@ public class HealthConnectChangeLogsTests {
         ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords()).isEmpty();
         assertThat(response.getDeletedLogs()).isEmpty();
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
@@ -916,8 +949,10 @@ public class HealthConnectChangeLogsTests {
         ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords()).containsExactly(testRecords.get(0));
         assertThat(response.getDeletedLogs()).isEmpty();
-        assertThat(response.getUpsertedMedicalResources()).isEmpty();
-        assertThat(response.getDeletedMedicalResources()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
     }
 
     @Test
