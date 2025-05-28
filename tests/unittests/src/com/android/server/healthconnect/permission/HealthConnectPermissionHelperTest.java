@@ -1800,7 +1800,6 @@ public class HealthConnectPermissionHelperTest {
     public void isRequestingFitnessPermission_whenNoPermissionsRequested_returnsFalse()
             throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo = new PackageInfo();
-        // For now add a few of the HealthPermissions just for the test.
         mockPackageInfo.requestedPermissions = new String[] {};
         when(mPackageManager.getPackageInfo(eq(HC_PACKAGE_NAME), any()))
                 .thenReturn(mockPackageInfo);
@@ -1880,6 +1879,110 @@ public class HealthConnectPermissionHelperTest {
         when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
                 .thenReturn(mockPackageInfo);
         assertFalse(mPermissionHelper.hasGrantedFitnessPermission(mockPackageInfo));
+    }
+
+    @Test
+    public void hasDeniedFitnessPermission_whenNoFitnessRequested_returnsFalse()
+            throws PackageManager.NameNotFoundException {
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {
+                            HealthPermissions.READ_MEDICAL_DATA_VACCINES,
+                            HealthPermissions.WRITE_MEDICAL_DATA,
+                            HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+                        },
+                        new int[] {
+                            0,
+                            PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                            PackageInfo.REQUESTED_PERMISSION_GRANTED
+                        });
+        when(mPackageManager.getPackageInfo(eq(HC_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        assertFalse(mPermissionHelper.hasDeniedFitnessPermission(mockPackageInfo, CURRENT_USER));
+    }
+
+    @Test
+    public void hasDeniedFitnessPermission_whenNoFitnessDenied_returnsFalse()
+            throws PackageManager.NameNotFoundException {
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {
+                            HealthPermissions.READ_MEDICAL_DATA_VACCINES,
+                            HealthPermissions.READ_STEPS,
+                            HealthPermissions.WRITE_BLOOD_PRESSURE,
+                        },
+                        new int[] {
+                            0,
+                            PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                            PackageInfo.REQUESTED_PERMISSION_GRANTED
+                        });
+        mockPackageInfo.packageName = TEST_PACKAGE_NAME;
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        when(mPackageManager.checkPermission(
+                        eq(HealthPermissions.READ_MEDICAL_DATA_VACCINES), any()))
+                .thenReturn(PackageManager.PERMISSION_DENIED);
+        when(mPackageManager.checkPermission(eq(HealthPermissions.READ_STEPS), any()))
+                .thenReturn(PackageManager.PERMISSION_GRANTED);
+        when(mPackageManager.checkPermission(eq(HealthPermissions.WRITE_BLOOD_PRESSURE), any()))
+                .thenReturn(PackageManager.PERMISSION_GRANTED);
+        assertFalse(mPermissionHelper.hasDeniedFitnessPermission(mockPackageInfo, CURRENT_USER));
+    }
+
+    @Test
+    public void hasDeniedFitnessPermission_whenOneFitnessDeniedUserSet_returnsTrue()
+            throws PackageManager.NameNotFoundException {
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {
+                            HealthPermissions.READ_MEDICAL_DATA_VACCINES,
+                            HealthPermissions.READ_STEPS,
+                            HealthPermissions.WRITE_BLOOD_PRESSURE,
+                        },
+                        new int[] {0, 0, PackageInfo.REQUESTED_PERMISSION_GRANTED});
+        mockPackageInfo.packageName = TEST_PACKAGE_NAME;
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        when(mPackageManager.checkPermission(
+                        eq(HealthPermissions.READ_MEDICAL_DATA_VACCINES), any()))
+                .thenReturn(PackageManager.PERMISSION_DENIED);
+        when(mPackageManager.checkPermission(eq(HealthPermissions.READ_STEPS), any()))
+                .thenReturn(PackageManager.PERMISSION_DENIED);
+        when(mPackageManager.checkPermission(eq(HealthPermissions.WRITE_BLOOD_PRESSURE), any()))
+                .thenReturn(PackageManager.PERMISSION_GRANTED);
+        when(mPackageManager.getPermissionFlags(eq(HealthPermissions.READ_STEPS), any(), any()))
+                .thenReturn(PackageManager.FLAG_PERMISSION_USER_SET);
+        assertTrue(mPermissionHelper.hasDeniedFitnessPermission(mockPackageInfo, CURRENT_USER));
+    }
+
+    @Test
+    public void hasDeniedFitnessPermission_whenOneFitnessDeniedUserFixed_returnsTrue()
+            throws PackageManager.NameNotFoundException {
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {
+                            HealthPermissions.READ_MEDICAL_DATA_VACCINES,
+                            HealthPermissions.READ_STEPS,
+                            HealthPermissions.WRITE_BLOOD_PRESSURE,
+                        },
+                        new int[] {0, 0, PackageInfo.REQUESTED_PERMISSION_GRANTED});
+        mockPackageInfo.packageName = TEST_PACKAGE_NAME;
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        when(mPackageManager.checkPermission(
+                        eq(HealthPermissions.READ_MEDICAL_DATA_VACCINES), any()))
+                .thenReturn(PackageManager.PERMISSION_DENIED);
+        when(mPackageManager.checkPermission(eq(HealthPermissions.READ_STEPS), any()))
+                .thenReturn(PackageManager.PERMISSION_DENIED);
+        when(mPackageManager.checkPermission(eq(HealthPermissions.WRITE_BLOOD_PRESSURE), any()))
+                .thenReturn(PackageManager.PERMISSION_GRANTED);
+        when(mPackageManager.getPermissionFlags(eq(HealthPermissions.READ_STEPS), any(), any()))
+                .thenReturn(PackageManager.FLAG_PERMISSION_USER_FIXED);
+        assertTrue(mPermissionHelper.hasDeniedFitnessPermission(mockPackageInfo, CURRENT_USER));
     }
 
     @Test
@@ -2015,6 +2118,9 @@ public class HealthConnectPermissionHelperTest {
                     createPermissionInfo(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
                     createPermissionInfo(HealthPermissions.READ_SKIN_TEMPERATURE),
                     createPermissionInfo(HealthPermissions.READ_OXYGEN_SATURATION),
+                    createPermissionInfo(HealthPermissions.READ_MEDICAL_DATA_VACCINES),
+                    createPermissionInfo(HealthPermissions.READ_STEPS),
+                    createPermissionInfo(HealthPermissions.WRITE_BLOOD_PRESSURE)
                 };
         when(mPackageManager.getPackageInfo(eq(HC_PACKAGE_NAME), any()))
                 .thenReturn(mockPackageInfo);
