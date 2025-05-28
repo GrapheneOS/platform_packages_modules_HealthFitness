@@ -149,6 +149,7 @@ public final class OnboardingStateManager {
                 mPackageInfoUtils
                         .getPackagesCompatibleWithHealthConnect(mContext, mUserHandle)
                         .stream()
+                        .filter(info -> !isSystemApp(info.packageName))
                         .filter(this::hasFitnessPerm)
                         .toList();
         if (compatibleFitnessApps.isEmpty()) {
@@ -188,6 +189,12 @@ public final class OnboardingStateManager {
 
     private boolean hasFitnessPerm(PackageInfo app) {
         return mHealthConnectPermissionHelper.isRequestingFitnessPermission(app);
+    }
+
+    // TODO(b/421165586): Consider using ApplicationInfo.FLAG_SYSTEM
+    private boolean isSystemApp(String packageName) {
+        return mHealthConnectPermissionHelper.hasNonUserSensitiveHealthPermission(
+                packageName, mUserHandle, mContext);
     }
 
     private boolean hasBeenUsed(PackageInfo app) {

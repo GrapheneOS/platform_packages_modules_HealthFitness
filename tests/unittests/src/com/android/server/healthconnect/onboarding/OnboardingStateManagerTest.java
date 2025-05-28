@@ -101,6 +101,7 @@ public class OnboardingStateManagerTest {
     private static final String APP_PKG_2 = "com.example.app2";
     private static final String APP_PKG_3 = "com.example.app3";
     private static final String APP_PKG_4 = "com.example.app4";
+    private static final String SYSTEM_APP_PKG = "com.system.app";
     private static final Instant NOW = Instant.now();
     private static final long EIGHT_DAYS_AGO = NOW.minus(Duration.ofDays(8)).toEpochMilli();
     private static final long SEVEN_DAYS_AGO = NOW.minus(Duration.ofDays(7)).toEpochMilli();
@@ -114,11 +115,16 @@ public class OnboardingStateManagerTest {
         setAppConnectedFitnessPermission(APP_PKG_3, /* isConnected= */ false);
         setAppConnectedFitnessPermission(APP_PKG_4, /* isConnected= */ false);
 
-        mFakeAppInfoMap = new HashMap<>(4);
+        when(mHealthConnectPermissionHelper.hasNonUserSensitiveHealthPermission(
+                        eq(SYSTEM_APP_PKG), any(), any()))
+                .thenReturn(true);
+
+        mFakeAppInfoMap = new HashMap<>(5);
         mFakeAppInfoMap.put(APP_PKG_1, createAppInfo(APP_PKG_1, false));
         mFakeAppInfoMap.put(APP_PKG_2, createAppInfo(APP_PKG_2, false));
         mFakeAppInfoMap.put(APP_PKG_3, createAppInfo(APP_PKG_3, false));
         mFakeAppInfoMap.put(APP_PKG_4, createAppInfo(APP_PKG_4, false));
+        mFakeAppInfoMap.put(SYSTEM_APP_PKG, createAppInfo(SYSTEM_APP_PKG, false));
         when(mAppInfoHelper.getAppInfoMap()).thenReturn(mFakeAppInfoMap);
 
         mFakeAccessLogs = new ArrayList<>();
@@ -371,6 +377,39 @@ public class OnboardingStateManagerTest {
         assertThat(mOnboardingStateManager.updateAndGetOnboardingState())
                 .isEqualTo(ONBOARDING_BANNER_STATE_HIDE);
         verifyNoStateChange();
+    }
+
+    @Test
+    public void updateAndGetOnboardingState_onlySystemAppConnected_returnsZeroConnected() {
+        setAppConnectedFitnessPermission(SYSTEM_APP_PKG, true);
+        setAppRequestsFitnessPermission(APP_PKG_1, true);
+        setAppRequestsFitnessPermission(APP_PKG_2, true);
+        setCompatibleApps(
+                ImmutableList.of(
+                        createPackageInfo(APP_PKG_1, EIGHT_DAYS_AGO), // candidate
+                        createPackageInfo(APP_PKG_2, EIGHT_DAYS_AGO), // candidate
+                        createPackageInfo(SYSTEM_APP_PKG, EIGHT_DAYS_AGO))); // system app
+
+        assertThat(mOnboardingStateManager.updateAndGetOnboardingState())
+                .isEqualTo(ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
+        verifyStateChange(ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
+    }
+
+    @Test
+    public void updateAndGetOnboardingState_systemAndOneOtherAppConnected_returnsOneConnected() {
+        setAppConnectedFitnessPermission(SYSTEM_APP_PKG, true);
+        setAppConnectedFitnessPermission(APP_PKG_1, /* isConnected= */ true);
+        setAppRequestsFitnessPermission(APP_PKG_2, true);
+
+        setCompatibleApps(
+                ImmutableList.of(
+                        createPackageInfo(SYSTEM_APP_PKG, EIGHT_DAYS_AGO), // system app
+                        createPackageInfo(APP_PKG_1, EIGHT_DAYS_AGO), // connected
+                        createPackageInfo(APP_PKG_2, EIGHT_DAYS_AGO))); // candidate
+
+        assertThat(mOnboardingStateManager.updateAndGetOnboardingState())
+                .isEqualTo(ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED);
+        verifyStateChange(ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED);
     }
 
     /**

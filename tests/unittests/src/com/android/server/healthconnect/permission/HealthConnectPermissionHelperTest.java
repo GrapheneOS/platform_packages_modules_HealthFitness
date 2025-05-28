@@ -44,6 +44,7 @@ import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
+import androidx.annotation.Nullable;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SdkSuppress;
 
@@ -1881,6 +1882,130 @@ public class HealthConnectPermissionHelperTest {
         assertFalse(mPermissionHelper.hasGrantedFitnessPermission(mockPackageInfo));
     }
 
+    @Test
+    public void hasNonUserSensitiveHealthPermission_appNotFound_returnsFalse() throws Exception {
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenThrow(new PackageManager.NameNotFoundException());
+
+        assertFalse(
+                mPermissionHelper.hasNonUserSensitiveHealthPermission(
+                        TEST_PACKAGE_NAME, CURRENT_USER, mContext));
+    }
+
+    @Test
+    public void hasNonUserSensitiveHealthPermission_noDeclaredPermission_returnsFalse()
+            throws Exception {
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        /* requestedPermissions= */ null,
+                        /* requestedPermissionsFlags= */ null);
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        assertFalse(
+                mPermissionHelper.hasNonUserSensitiveHealthPermission(
+                        TEST_PACKAGE_NAME, CURRENT_USER, mContext));
+    }
+
+    @Test
+    public void hasNonUserSensitiveHealthPermission_allPermissionsUserSensitive_returnsFalse()
+            throws Exception {
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {
+                            HealthPermissions.READ_HEART_RATE,
+                            HealthPermissions.READ_SKIN_TEMPERATURE,
+                        },
+                        new int[] {
+                            0, PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                        });
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        when(mPackageManager.getPermissionFlags(
+                        HealthPermissions.READ_HEART_RATE, TEST_PACKAGE_NAME, CURRENT_USER))
+                .thenReturn(PackageManager.FLAG_PERMISSION_USER_SENSITIVE_WHEN_DENIED);
+
+        when(mPackageManager.getPermissionFlags(
+                        HealthPermissions.READ_SKIN_TEMPERATURE, TEST_PACKAGE_NAME, CURRENT_USER))
+                .thenReturn(PackageManager.FLAG_PERMISSION_USER_SENSITIVE_WHEN_GRANTED);
+
+        assertFalse(
+                mPermissionHelper.hasNonUserSensitiveHealthPermission(
+                        TEST_PACKAGE_NAME, CURRENT_USER, mContext));
+    }
+
+    @Test
+    public void hasNonUserSensitiveHealthPermission_grantedNonUserSensitivePermission_returnsTrue()
+            throws Exception {
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {
+                            HealthPermissions.READ_HEART_RATE,
+                        },
+                        new int[] {
+                            PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                        });
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        // lack of permission flags means the permissions are denied/granted non user sensitive
+
+        assertTrue(
+                mPermissionHelper.hasNonUserSensitiveHealthPermission(
+                        TEST_PACKAGE_NAME, CURRENT_USER, mContext));
+    }
+
+    @Test
+    public void hasNonUserSensitiveHealthPermission_deniedNonUserSensitivePermission_returnsTrue()
+            throws Exception {
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {
+                            HealthPermissions.READ_HEART_RATE,
+                            HealthPermissions.READ_SKIN_TEMPERATURE,
+                        },
+                        new int[] {
+                            0, PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                        });
+
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        when(mPackageManager.getPermissionFlags(
+                        HealthPermissions.READ_SKIN_TEMPERATURE, TEST_PACKAGE_NAME, CURRENT_USER))
+                .thenReturn(PackageManager.FLAG_PERMISSION_REVOKED_COMPAT);
+
+        assertTrue(
+                mPermissionHelper.hasNonUserSensitiveHealthPermission(
+                        TEST_PACKAGE_NAME, CURRENT_USER, mContext));
+    }
+
+    @Test
+    public void hasNonUserSensitiveHealthPermission_nonHealthPermission_returnsFalse()
+            throws Exception {
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {"android.permission.CAMERA", "android.permission.INTERNET"},
+                        new int[] {
+                            0, PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                        });
+
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        // lack of permission flags means the permissions are denied/granted non user sensitive
+
+        assertFalse(
+                mPermissionHelper.hasNonUserSensitiveHealthPermission(
+                        TEST_PACKAGE_NAME, CURRENT_USER, mContext));
+    }
+
     private void setUpHealthPermissions() throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo = new PackageInfo();
         // For now add a few of the HealthPermissions just for the test.
@@ -1895,7 +2020,8 @@ public class HealthConnectPermissionHelperTest {
                 .thenReturn(mockPackageInfo);
     }
 
-    private PackageInfo getMockPackageInfo(int targetSdkVersion, String[] requestedPermissions) {
+    private PackageInfo getMockPackageInfo(
+            int targetSdkVersion, @Nullable String[] requestedPermissions) {
         ApplicationInfo appInfo = new ApplicationInfo();
         appInfo.targetSdkVersion = targetSdkVersion;
         PackageInfo mockPackageInfo = new PackageInfo();
@@ -1905,7 +2031,9 @@ public class HealthConnectPermissionHelperTest {
     }
 
     private PackageInfo getMockPackageInfo(
-            int targetSdkVersion, String[] requestedPermissions, int[] requestedPermissionsFlags) {
+            int targetSdkVersion,
+            @Nullable String[] requestedPermissions,
+            @Nullable int[] requestedPermissionsFlags) {
         PackageInfo mockPackageInfo = getMockPackageInfo(targetSdkVersion, requestedPermissions);
         mockPackageInfo.requestedPermissionsFlags = requestedPermissionsFlags;
         return mockPackageInfo;
