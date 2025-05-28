@@ -26,14 +26,16 @@ class LoadDataEntries(private val healthConnectManager: HealthConnectManager) : 
 
     override suspend fun load(input: LoadEntriesInput): List<Record> {
 
+        if (input.dataType == HealthPermissionType.MENSTRUATION_PERIOD) {
+            val loadMenstruationEntries = LoadMenstruationEntries(healthConnectManager)
+            return loadMenstruationEntries.load(input)
+        }
+
         val timeFilter =
-            TimeInstantRangeFilter.Builder()
-                .setStartTime(input.startTime)
-                .setEndTime(input.endTime)
-                .build()
+            TimeInstantRangeFilter.Builder().setStartTime(input.startTime).setEndTime(input.endTime)
         return GeneralUtils.readRecords(
             recordType = input.dataType.recordClass!!.java,
-            timeFilterRange = timeFilter,
+            timeFilterRange = timeFilter.build(),
             numberOfRecordsPerBatch = 1000L,
             manager = healthConnectManager,
         )
