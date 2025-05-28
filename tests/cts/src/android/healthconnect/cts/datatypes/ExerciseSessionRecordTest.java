@@ -34,6 +34,7 @@ import static android.healthconnect.testing.shared.DataFactory.sessionEndTime;
 import static android.healthconnect.testing.shared.DataFactory.sessionStartTime;
 
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS;
+import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -66,8 +67,9 @@ import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.SetFlagsRule;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import android.util.Pair;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -93,7 +95,8 @@ import java.util.UUID;
 @RunWith(AndroidJUnit4.class)
 public class ExerciseSessionRecordTest {
 
-    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
@@ -129,7 +132,10 @@ public class ExerciseSessionRecordTest {
     }
 
     @Test
-    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS})
+    @RequiresFlagsEnabled({
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void testExerciseSessionWithRpe_buildSession_buildCorrectObject() {
         ExerciseSessionRecord record = buildSessionWithRpe();
         assertThat(record.getStartTime()).isEqualTo(sessionStartTime(mNow));
@@ -152,7 +158,10 @@ public class ExerciseSessionRecordTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS})
+    @RequiresFlagsEnabled({
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void testBuildSessionWithRpeTooHigh_throwsException() {
         Metadata metadata = generateMetadata();
         new ExerciseSessionRecord.Builder(
@@ -165,7 +174,10 @@ public class ExerciseSessionRecordTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS})
+    @RequiresFlagsEnabled({
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void testBuildSessionWithRpeNegative_throwsException() {
         Metadata metadata = generateMetadata();
         new ExerciseSessionRecord.Builder(
@@ -419,7 +431,10 @@ public class ExerciseSessionRecordTest {
     }
 
     @Test
-    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS})
+    @RequiresFlagsEnabled({
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void testRead_insertAndReadByIdWithRpe_recordsAreEqual() throws InterruptedException {
         List<Record> records =
                 TestUtils.insertRecords(List.of(buildExerciseSession(), buildSessionWithRpe()));
