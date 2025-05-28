@@ -20,6 +20,9 @@ import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
 import static android.healthconnect.testing.shared.DataFactory.sessionEndTime;
 import static android.healthconnect.testing.shared.DataFactory.sessionStartTime;
 
+import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS;
+import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
@@ -30,13 +33,21 @@ import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.units.Mass;
 import android.healthconnect.testing.shared.DataFactory;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.time.Instant;
 import java.util.List;
 
 public class ExerciseSegmentTest {
+
+    @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
+
     private static final Instant START_TIME = Instant.ofEpochMilli((long) 1e1);
     private static final Instant END_TIME = Instant.ofEpochMilli((long) 1e2);
 
@@ -59,6 +70,10 @@ public class ExerciseSegmentTest {
     }
 
     @Test
+    @RequiresFlagsEnabled({
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void testExerciseSegmentWithNewFields_buildSegment_buildCorrectObject() {
         ExerciseSegment segment =
                 new ExerciseSegment.Builder(
@@ -94,6 +109,10 @@ public class ExerciseSegmentTest {
     }
 
     @Test
+    @RequiresFlagsEnabled({
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void testExerciseSegment_buildWithoutRpe_throwsException() {
         ExerciseSegment segment =
                 new ExerciseSegment.Builder(
@@ -105,6 +124,10 @@ public class ExerciseSegmentTest {
     }
 
     @Test
+    @RequiresFlagsEnabled({
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void testExerciseSegment_buildWithoutSetIndex_throwsException() {
         ExerciseSegment segment =
                 new ExerciseSegment.Builder(
