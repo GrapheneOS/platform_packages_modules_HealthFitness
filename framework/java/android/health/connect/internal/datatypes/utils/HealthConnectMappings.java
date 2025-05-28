@@ -147,6 +147,15 @@ public final class HealthConnectMappings {
         return mWritePermissionToDataCategoryMap.containsKey(permissionName);
     }
 
+    /**
+     * @return true if {@code permissionName} is a fitness-permission
+     * @hide
+     */
+    public boolean isFitnessPermission(@NonNull String permissionName) {
+        return mPermissionCategoryToReadPermissionMap.containsValue(permissionName)
+                || mPermissionCategoryToWritePermissionMap.containsValue(permissionName);
+    }
+
     /** @hide */
     public String getHealthReadPermission(@HealthPermissionCategory.Type int permissionCategory) {
         return Objects.requireNonNull(
