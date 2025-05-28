@@ -18,7 +18,6 @@ package android.health.connect.datatypes;
 
 import static android.health.connect.datatypes.ExerciseSegmentType.ExerciseSegmentTypes;
 
-import android.annotation.FlaggedApi;
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -36,7 +35,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /** A single step within an {@link PlannedExerciseBlock} e.g. 8x 60kg barbell squats. */
-@FlaggedApi("com.android.healthconnect.flags.training_plans")
 public final class PlannedExerciseStep {
     @ExerciseSegmentTypes private final int mExerciseType;
     @ExerciseCategory private final int mExerciseCategory;

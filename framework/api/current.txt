@@ -218,7 +218,7 @@ package android.health.connect {
     field public static final String WRITE_NUTRITION = "android.permission.health.WRITE_NUTRITION";
     field public static final String WRITE_OVULATION_TEST = "android.permission.health.WRITE_OVULATION_TEST";
     field public static final String WRITE_OXYGEN_SATURATION = "android.permission.health.WRITE_OXYGEN_SATURATION";
-    field @FlaggedApi("com.android.healthconnect.flags.training_plans") public static final String WRITE_PLANNED_EXERCISE = "android.permission.health.WRITE_PLANNED_EXERCISE";
+    field public static final String WRITE_PLANNED_EXERCISE = "android.permission.health.WRITE_PLANNED_EXERCISE";
     field public static final String WRITE_POWER = "android.permission.health.WRITE_POWER";
     field public static final String WRITE_RESPIRATORY_RATE = "android.permission.health.WRITE_RESPIRATORY_RATE";
     field public static final String WRITE_RESTING_HEART_RATE = "android.permission.health.WRITE_RESTING_HEART_RATE";
@@ -811,7 +811,7 @@ package android.health.connect.datatypes {
     field @NonNull public static final android.health.connect.datatypes.ExerciseCompletionGoal.UnknownGoal INSTANCE;
   }
 
-  @FlaggedApi("com.android.healthconnect.flags.training_plans") public static final class ExerciseCompletionGoal.UnspecifiedGoal extends android.health.connect.datatypes.ExerciseCompletionGoal {
+  public static final class ExerciseCompletionGoal.UnspecifiedGoal extends android.health.connect.datatypes.ExerciseCompletionGoal {
     field @NonNull public static final android.health.connect.datatypes.ExerciseCompletionGoal.UnspecifiedGoal INSTANCE;
   }
 
@@ -863,7 +863,7 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.units.Velocity getMinSpeed();
   }
 
-  @FlaggedApi("com.android.healthconnect.flags.training_plans") public static final class ExercisePerformanceGoal.UnknownGoal extends android.health.connect.datatypes.ExercisePerformanceGoal {
+  public static final class ExercisePerformanceGoal.UnknownGoal extends android.health.connect.datatypes.ExercisePerformanceGoal {
     field @NonNull public static final android.health.connect.datatypes.ExercisePerformanceGoal.UnknownGoal INSTANCE;
   }
 
@@ -1577,7 +1577,7 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.OxygenSaturationRecord.Builder setZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  @FlaggedApi("com.android.healthconnect.flags.training_plans") public final class PlannedExerciseBlock {
+  public final class PlannedExerciseBlock {
     method @Nullable public CharSequence getDescription();
     method public int getRepetitions();
     method @NonNull public java.util.List<android.health.connect.datatypes.PlannedExerciseStep> getSteps();
@@ -1593,7 +1593,7 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.PlannedExerciseBlock.Builder setSteps(@NonNull java.util.List<android.health.connect.datatypes.PlannedExerciseStep>);
   }
 
-  @FlaggedApi("com.android.healthconnect.flags.training_plans") public final class PlannedExerciseSessionRecord extends android.health.connect.datatypes.IntervalRecord {
+  public final class PlannedExerciseSessionRecord extends android.health.connect.datatypes.IntervalRecord {
     method @NonNull public java.util.List<android.health.connect.datatypes.PlannedExerciseBlock> getBlocks();
     method @Nullable public String getCompletedExerciseSessionId();
     method @NonNull public java.time.Duration getDuration();
@@ -1623,7 +1623,7 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.PlannedExerciseSessionRecord.Builder setTitle(@Nullable CharSequence);
   }
 
-  @FlaggedApi("com.android.healthconnect.flags.training_plans") public final class PlannedExerciseStep {
+  public final class PlannedExerciseStep {
     method @NonNull public android.health.connect.datatypes.ExerciseCompletionGoal getCompletionGoal();
     method @Nullable public CharSequence getDescription();
     method public int getExerciseCategory();

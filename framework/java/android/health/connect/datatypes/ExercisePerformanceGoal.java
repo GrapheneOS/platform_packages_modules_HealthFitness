@@ -318,7 +318,6 @@ public abstract class ExercisePerformanceGoal {
     }
 
     /** An {@link ExercisePerformanceGoal} that is unknown. */
-    @FlaggedApi("com.android.healthconnect.flags.training_plans")
     public static final class UnknownGoal extends ExercisePerformanceGoal {
         private UnknownGoal() {}
 
