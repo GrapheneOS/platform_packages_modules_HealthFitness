@@ -17,11 +17,11 @@ package android.healthconnect.cts.ui
 
 import android.health.connect.datatypes.StepsRecord
 import android.healthconnect.cts.lib.ActivityLauncher.launchMainActivity
-import android.healthconnect.cts.lib.TestAppProxy
 import android.healthconnect.cts.lib.UiTestUtils.navigateToNewPage
 import android.healthconnect.cts.lib.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.cts.lib.UiTestUtils.scrollDownToAndFindTextContains
 import android.healthconnect.testing.cts.TestUtils
+import android.healthconnect.testing.cts.testapphelpers.TestAppProxy
 import android.healthconnect.testing.shared.DataFactory.getEmptyMetadata
 import android.healthconnect.testing.shared.DeviceSupportUtils
 import android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION

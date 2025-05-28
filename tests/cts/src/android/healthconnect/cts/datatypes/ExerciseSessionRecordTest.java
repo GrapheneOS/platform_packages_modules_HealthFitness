@@ -18,7 +18,6 @@ package android.healthconnect.cts.datatypes;
 
 import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUMENT;
 import static android.health.connect.RecordIdFilter.fromId;
-import static android.healthconnect.cts.lib.TestAppProxy.APP_WRITE_PERMS_ONLY;
 import static android.healthconnect.testing.cts.TestUtils.copyRecordIdsViaReflection;
 import static android.healthconnect.testing.cts.TestUtils.distinctByUuid;
 import static android.healthconnect.testing.cts.TestUtils.getRecordIds;
@@ -26,6 +25,7 @@ import static android.healthconnect.testing.cts.TestUtils.insertRecordAndGetId;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.readRecords;
 import static android.healthconnect.testing.cts.TestUtils.updateRecords;
+import static android.healthconnect.testing.cts.testapphelpers.TestAppProxy.APP_WRITE_PERMS_ONLY;
 import static android.healthconnect.testing.shared.DataFactory.buildExerciseRoute;
 import static android.healthconnect.testing.shared.DataFactory.buildExerciseSession;
 import static android.healthconnect.testing.shared.DataFactory.buildLocationTimePoint;

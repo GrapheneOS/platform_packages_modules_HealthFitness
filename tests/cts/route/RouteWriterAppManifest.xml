@@ -25,7 +25,7 @@
     <uses-permission android:name="android.permission.health.WRITE_EXERCISE_ROUTE"/>
 
     <application android:label="CtsExerciseRouteTestRouteWriterApp">
-        <activity android:name="android.healthconnect.cts.testhelper.TestAppActivity"
+        <activity android:name="android.healthconnect.testing.testapp.TestAppActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="android.healthconnect.cts.testhelper.TestAppReceiver"
+        <receiver android:name="android.healthconnect.testing.testapp.TestAppReceiver"
             android:exported="true"/>
     </application>
 </manifest>

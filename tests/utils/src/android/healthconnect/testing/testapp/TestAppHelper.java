@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.testhelper;
+package android.healthconnect.testing.testapp;
 
-import static android.healthconnect.cts.lib.BundleHelper.AGGREGATE_STEPS_COUNT_TOTAL_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.CREATE_MEDICAL_DATA_SOURCE_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.DELETE_MEDICAL_DATA_SOURCE_WITH_DATA_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.DELETE_MEDICAL_RESOURCES_BY_IDS_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.DELETE_MEDICAL_RESOURCES_BY_REQUEST_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.DELETE_RECORDS_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.GET_CHANGE_LOG_TOKEN_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.GET_MEDICAL_DATA_SOURCES_USING_IDS_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.GET_MEDICAL_DATA_SOURCES_USING_REQUEST_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.INSERT_RECORDS_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.INTENT_EXCEPTION;
-import static android.healthconnect.cts.lib.BundleHelper.QUERY_TYPE;
-import static android.healthconnect.cts.lib.BundleHelper.READ_CHANGE_LOGS_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.READ_MEDICAL_RESOURCES_BY_IDS_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.READ_MEDICAL_RESOURCES_BY_REQUEST_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.READ_RECORDS_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.READ_RECORDS_USING_IDS_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.SELF_REVOKE_PERMISSION_REQUEST;
-import static android.healthconnect.cts.lib.BundleHelper.UPDATE_RECORDS_QUERY;
-import static android.healthconnect.cts.lib.BundleHelper.UPSERT_MEDICAL_RESOURCES_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.AGGREGATE_STEPS_COUNT_TOTAL_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.CREATE_MEDICAL_DATA_SOURCE_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.DELETE_MEDICAL_DATA_SOURCE_WITH_DATA_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.DELETE_MEDICAL_RESOURCES_BY_IDS_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.DELETE_MEDICAL_RESOURCES_BY_REQUEST_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.DELETE_RECORDS_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.GET_CHANGE_LOG_TOKEN_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.GET_MEDICAL_DATA_SOURCES_USING_IDS_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.GET_MEDICAL_DATA_SOURCES_USING_REQUEST_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.INSERT_RECORDS_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.INTENT_EXCEPTION;
+import static android.healthconnect.testing.cts.BundleHelper.QUERY_TYPE;
+import static android.healthconnect.testing.cts.BundleHelper.READ_CHANGE_LOGS_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.READ_MEDICAL_RESOURCES_BY_IDS_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.READ_MEDICAL_RESOURCES_BY_REQUEST_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.READ_RECORDS_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.READ_RECORDS_USING_IDS_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.SELF_REVOKE_PERMISSION_REQUEST;
+import static android.healthconnect.testing.cts.BundleHelper.UPDATE_RECORDS_QUERY;
+import static android.healthconnect.testing.cts.BundleHelper.UPSERT_MEDICAL_RESOURCES_QUERY;
 
 import android.content.Context;
 import android.content.Intent;
@@ -59,7 +59,7 @@ import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
-import android.healthconnect.cts.lib.BundleHelper;
+import android.healthconnect.testing.cts.BundleHelper;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
 import android.healthconnect.testing.cts.TestUtils;
 import android.os.Bundle;

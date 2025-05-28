@@ -32,7 +32,7 @@ import android.healthconnect.cts.lib.UiTestUtils.revokePermissionViaPackageManag
 import android.healthconnect.cts.lib.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.cts.lib.UiTestUtils.skipOnboardingIfAppears
 import android.healthconnect.cts.ui.HealthConnectBaseTest
-import android.healthconnect.cts.utils.ProxyActivity
+import android.healthconnect.testing.cts.testapphelpers.ProxyActivity
 import android.os.Build
 import androidx.test.filters.SdkSuppress
 import com.android.compatibility.common.util.SystemUtil

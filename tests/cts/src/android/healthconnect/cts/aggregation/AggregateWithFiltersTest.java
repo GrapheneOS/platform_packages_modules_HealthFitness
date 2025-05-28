@@ -56,7 +56,7 @@ import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
-import android.healthconnect.cts.lib.TestAppProxy;
+import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 

@@ -16,15 +16,5 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="android.healthconnect.testing.cts">
-
-    <queries>
-        <intent>
-            <!-- Visibility of the controller is required by
-                 HealthConnectManager#getHealthPermissions to look up the
-                 health permission group info. Refer to it via intent as
-                 overlays may change the package name. -->
-            <action android:name="android.health.connect.action.MANAGE_HEALTH_PERMISSIONS" />
-        </intent>
-    </queries>
+    package="android.healthconnect.testing.testapp">
 </manifest>

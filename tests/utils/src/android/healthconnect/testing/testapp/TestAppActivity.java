@@ -14,26 +14,30 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.testhelper;
+package android.healthconnect.testing.testapp;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 /**
  * Receives requests from test cases and forwards to Health Connect.
  *
- * <p>Used for testing HC API calls on behalf of other apps in the background.
+ * <p>Used for testing HC API calls on behalf of other apps in the foreground.
  */
-public class TestAppReceiver extends BroadcastReceiver {
-
-    private static final String TAG = TestAppReceiver.class.getSimpleName();
+public class TestAppActivity extends Activity {
+    private static final String TAG = TestAppActivity.class.getSimpleName();
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        Log.i(TAG, TAG + " onReceive(): " + intent);
-        Intent returnIntent = TestAppHelper.handleRequest(context, intent.getExtras());
-        setResultExtras(returnIntent.getExtras());
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        Log.d(TAG, TAG + " onCreate(): " + intent + " - extra: " + intent.getExtras());
+        Intent returnIntent =
+                TestAppHelper.handleRequest(getApplicationContext(), intent.getExtras());
+        // Return the result to the test.
+        setResult(RESULT_OK, returnIntent);
+        finish();
     }
 }
