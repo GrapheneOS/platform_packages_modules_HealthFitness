@@ -60,8 +60,6 @@ android_robolectric_test {
         "androidx.test.core",
         "androidx.test.ext.junit",
         "TestParameterInjector",
-        // Beware of adding cts-healthconnect-utils or cts-healthconnect-phr-lib here.
-        // These can add issues with mocking, a strange to diagnose dexcache==null issue.
         "flag-junit",
         "framework-annotations-lib",
         "healthfitness-aconfig-flags-lib",

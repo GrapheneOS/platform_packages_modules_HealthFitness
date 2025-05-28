@@ -27,15 +27,14 @@ android_test {
         "src/**/*.kt",
     ],
     static_libs: [
-        "cts-healthconnect-lib",
         "modules-utils-build_system",
         "androidx.test.rules",
         "androidx.test.ext.truth",
         "compatibility-device-util-axt",
         "ctstestrunner-axt",
         "cts-wm-util",
+        "healthfitness-testing-cts",
         "testng",
-        "cts-healthconnect-utils",
     ],
     test_suites: [
         "cts",
@@ -62,8 +61,7 @@ android_test_helper_app {
     name: "CtsExerciseRouteTestRouteWriterApp",
     manifest: "RouteWriterAppManifest.xml",
     static_libs: [
-        "cts-healthconnect-lib",
-        "cts-healthconnect-test-helper",
+        "healthfitness-testing-testapp",
     ],
     min_sdk_version: "34",
     target_sdk_version: "34",
@@ -74,8 +72,7 @@ android_test_helper_app {
     name: "CtsExerciseRouteTestRouteReaderWriterApp",
     manifest: "RouteReaderWriterAppManifest.xml",
     static_libs: [
-        "cts-healthconnect-lib",
-        "cts-healthconnect-test-helper",
+        "healthfitness-testing-testapp",
     ],
     min_sdk_version: "34",
     target_sdk_version: "34",

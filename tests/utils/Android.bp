@@ -60,6 +60,7 @@ android_library {
     manifest: "AndroidManifest_cts.xml",
     srcs: [
         "src/android/healthconnect/testing/cts/**/*.java",
+        "src/android/healthconnect/testing/cts/**/*.kt",
     ],
     static_libs: [
         "androidx.test.ext.junit",
@@ -74,7 +75,7 @@ android_library {
     sdk_version: "test_current",
 }
 
-// Library for using a testapp within a cts / integration tests,
+// Library for test apps used by cts / integration tests.
 android_library {
     name: "healthfitness-testing-testapp",
     manifest: "AndroidManifest_cts.xml",

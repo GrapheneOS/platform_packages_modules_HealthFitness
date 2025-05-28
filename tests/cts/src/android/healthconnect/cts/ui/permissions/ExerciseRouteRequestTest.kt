@@ -27,8 +27,6 @@ import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.ExerciseRoute
 import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.ExerciseSessionType
-import android.healthconnect.cts.lib.UiTestUtils.clickOnText
-import android.healthconnect.cts.lib.UiTestUtils.waitDisplayed
 import android.healthconnect.cts.ui.HealthConnectBaseTest
 import android.healthconnect.testing.cts.PermissionUtils.getDeclaredHealthPermissions
 import android.healthconnect.testing.cts.PermissionUtils.runWithUserFixedPermission
@@ -37,6 +35,8 @@ import android.healthconnect.testing.cts.TestUtils.insertRecordAndGetId
 import android.healthconnect.testing.cts.testapphelpers.ProxyActivity
 import android.healthconnect.testing.cts.testapphelpers.TestAppProxy
 import android.healthconnect.testing.cts.testapphelpers.TestAppRule
+import android.healthconnect.testing.cts.ui.UiTestUtils.clickOnText
+import android.healthconnect.testing.cts.ui.UiTestUtils.waitDisplayed
 import android.healthconnect.testing.shared.DataFactory.getEmptyMetadata
 import android.healthconnect.testing.shared.DeviceSupportUtils
 import androidx.test.uiautomator.By
