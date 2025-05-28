@@ -43,6 +43,10 @@ apex {
     bootclasspath_fragments: ["com.android.healthfitness-bootclasspath-fragment"],
     systemserverclasspath_fragments: ["com.android.healthfitness-systemserverclasspath-fragment"],
     visibility: ["//packages/modules/common/build"],
+    licenses: [
+        "Android-Apache-2.0",
+        "opensourcerequest",
+    ],
 }
 
 sdk {

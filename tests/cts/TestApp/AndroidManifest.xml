@@ -55,7 +55,7 @@
             </intent-filter>
         </activity-alias>
 
-        <activity android:name="android.healthconnect.cts.utils.ProxyActivity"
+        <activity android:name="android.healthconnect.testing.cts.testapphelpers.ProxyActivity"
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.healthconnect.cts.ACTION_START_ACTIVITY_FOR_RESULT"/>

@@ -63,8 +63,8 @@ import android.health.connect.ReadMedicalResourcesResponse;
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
-import android.healthconnect.cts.lib.TestAppProxy;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
+import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
 import android.os.OutcomeReceiver;
 import android.util.Log;
 

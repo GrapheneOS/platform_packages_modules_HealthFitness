@@ -556,7 +556,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_REMOVE_OLD_ONBOARDING)
     fun requestFitnessPermissions_onboardingNotDone_redirectsToOnboarding() {
         val permissions =
             arrayOf(READ_EXERCISE, READ_SLEEP, WRITE_ACTIVE_CALORIES_BURNED, WRITE_SLEEP)
@@ -570,7 +570,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING)
+    @EnableFlags(Flags.FLAG_REMOVE_OLD_ONBOARDING)
     fun requestFitnessPermissions_onboardingNotDone_onboardingFlagOn_hidesOnboarding() {
         val permissions =
             arrayOf(READ_EXERCISE, READ_SLEEP, WRITE_ACTIVE_CALORIES_BURNED, WRITE_SLEEP)
@@ -590,7 +590,7 @@ class PermissionsActivityTest {
         android.permission.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
     )
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_REMOVE_OLD_ONBOARDING)
     fun requestFitnessPermissions_notSplitPermissionRequest_redirectsToOnboarding() {
         val permissions = arrayOf(READ_HEART_RATE)
         val startActivityIntent =

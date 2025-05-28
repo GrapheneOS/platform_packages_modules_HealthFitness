@@ -124,7 +124,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application android:label="CtsHealthConnectTestAppAWithNormalReadWritePermission">
-        <activity android:name="android.healthconnect.cts.testhelper.TestAppActivity"
+        <activity android:name="android.healthconnect.testing.testapp.TestAppActivity"
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -135,7 +135,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="android.healthconnect.cts.utils.ProxyActivity"
+        <activity android:name="android.healthconnect.testing.cts.testapphelpers.ProxyActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.healthconnect.cts.ACTION_START_ACTIVITY_FOR_RESULT"/>
@@ -143,7 +143,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="android.healthconnect.cts.testhelper.TestAppReceiver"
+        <receiver android:name="android.healthconnect.testing.testapp.TestAppReceiver"
             android:exported="true"/>
     </application>
 </manifest>

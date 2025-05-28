@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.lib;
+package android.healthconnect.testing.cts.testapphelpers;
 
 import static android.Manifest.permission.FORCE_STOP_PACKAGES;
 import static android.Manifest.permission.GET_RUNTIME_PERMISSIONS;
 import static android.app.Activity.RESULT_OK;
 import static android.content.pm.PackageManager.FLAG_PERMISSION_ONE_TIME;
 import static android.health.connect.datatypes.FhirVersion.parseFhirVersion;
-import static android.healthconnect.cts.lib.BundleHelper.INTENT_EXCEPTION;
-import static android.healthconnect.cts.lib.BundleHelper.QUERY_TYPE;
+import static android.healthconnect.testing.cts.BundleHelper.INTENT_EXCEPTION;
+import static android.healthconnect.testing.cts.BundleHelper.QUERY_TYPE;
 
 import static com.android.compatibility.common.util.SystemUtil.eventually;
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
@@ -54,7 +54,7 @@ import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
-import android.healthconnect.cts.utils.ProxyActivity;
+import android.healthconnect.testing.cts.BundleHelper;
 import android.os.Bundle;
 import android.os.Process;
 import android.util.Log;
@@ -72,9 +72,10 @@ import java.util.concurrent.TimeoutException;
 /** Performs API calls to HC on behalf of test apps. */
 public class TestAppProxy {
     private static final String TAG = "TestAppProxy";
-    private static final String TEST_APP_RECEIVER_CLASS_NAME =
-            "android.healthconnect.cts.testhelper.TestAppReceiver";
     private static final long POLLING_TIMEOUT_MILLIS = TimeUnit.SECONDS.toMillis(55);
+
+    private static final String TEST_APP_RECEIVER_CLASS_NAME =
+            "android.healthconnect.testing.testapp.TestAppReceiver";
 
     public static final TestAppProxy APP_WRITE_PERMS_ONLY =
             TestAppProxy.forPackageName("android.healthconnect.cts.testapp.writePermsOnly");

@@ -29,6 +29,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.never;
@@ -41,10 +42,12 @@ import static java.util.Collections.emptySet;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.health.connect.HealthConnectOnboardingState;
+import android.health.connect.HealthPermissions;
 import android.health.connect.accesslog.AccessLog;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.os.UserHandle;
 
+import androidx.test.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
@@ -79,7 +82,7 @@ public class OnboardingStateManagerTest {
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
-    @Mock private Context mContext;
+    private Context mContext;
     @Mock private PreferenceHelper mPreferenceHelper;
     @Mock private HealthConnectPermissionHelper mHealthConnectPermissionHelper;
     @Mock private MockListener mMockListener;
@@ -105,10 +108,11 @@ public class OnboardingStateManagerTest {
 
     @Before
     public void setUp() {
-        setAppConnected(APP_PKG_1, /* isConnected= */ false);
-        setAppConnected(APP_PKG_2, /* isConnected= */ false);
-        setAppConnected(APP_PKG_3, /* isConnected= */ false);
-        setAppConnected(APP_PKG_4, /* isConnected= */ false);
+        mContext = InstrumentationRegistry.getTargetContext();
+        setAppConnectedFitnessPermission(APP_PKG_1, /* isConnected= */ false);
+        setAppConnectedFitnessPermission(APP_PKG_2, /* isConnected= */ false);
+        setAppConnectedFitnessPermission(APP_PKG_3, /* isConnected= */ false);
+        setAppConnectedFitnessPermission(APP_PKG_4, /* isConnected= */ false);
 
         mFakeAppInfoMap = new HashMap<>(4);
         mFakeAppInfoMap.put(APP_PKG_1, createAppInfo(APP_PKG_1, false));
@@ -174,10 +178,10 @@ public class OnboardingStateManagerTest {
 
     @Test
     public void updateAndGetOnboardingState_allAppsConnected_returnsHide() {
-        setAppConnected(APP_PKG_1, /* isConnected= */ true);
-        setAppConnected(APP_PKG_2, /* isConnected= */ true);
-        setAppConnected(APP_PKG_3, /* isConnected= */ true);
-        setAppConnected(APP_PKG_4, /* isConnected= */ true);
+        setAppConnectedFitnessPermission(APP_PKG_1, /* isConnected= */ true);
+        setAppConnectedFitnessPermission(APP_PKG_2, /* isConnected= */ true);
+        setAppConnectedFitnessPermission(APP_PKG_3, /* isConnected= */ true);
+        setAppConnectedFitnessPermission(APP_PKG_4, /* isConnected= */ true);
 
         setCompatibleApps(
                 ImmutableList.of(
@@ -194,12 +198,32 @@ public class OnboardingStateManagerTest {
         verifyStateChange(ONBOARDING_BANNER_STATE_HIDE);
     }
 
-    // TODO(b/417974138): Add test case for fitness permission
+    @Test
+    public void updateAndGetOnboardingState_onlyAppsWithoutFitnessPermissions_returnsHide() {
+        setAppConnectedFitnessPermission(APP_PKG_1, /* isConnected= */ false);
+        setAppConnectedFitnessPermission(APP_PKG_2, /* isConnected= */ false);
+        setAppConnectedFitnessPermission(APP_PKG_3, /* isConnected= */ false);
+        setAppRequestsFitnessPermission(APP_PKG_1, false);
+        setAppRequestsFitnessPermission(APP_PKG_2, false);
+        setAppRequestsFitnessPermission(APP_PKG_3, false);
+
+        setCompatibleApps(
+                ImmutableList.of(
+                        createPackageInfo(APP_PKG_1, EIGHT_DAYS_AGO),
+                        createPackageInfo(APP_PKG_2, SEVEN_DAYS_AGO),
+                        createPackageInfo(APP_PKG_3, SIX_DAYS_AGO)));
+        setOnboardingStateInPreference(ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
+        clearInvocations(mPreferenceHelper, mMockListener);
+
+        assertThat(mOnboardingStateManager.updateAndGetOnboardingState())
+                .isEqualTo(ONBOARDING_BANNER_STATE_HIDE);
+        verifyStateChange(ONBOARDING_BANNER_STATE_HIDE);
+    }
 
     @Test
     public void updateAndGetOnboardingState_twoConnectedApps_returnsHide() {
-        setAppConnected(APP_PKG_1, /* isConnected= */ true);
-        setAppConnected(APP_PKG_2, /* isConnected= */ true);
+        setAppConnectedFitnessPermission(APP_PKG_1, /* isConnected= */ true);
+        setAppConnectedFitnessPermission(APP_PKG_2, /* isConnected= */ true);
 
         setCompatibleApps(
                 ImmutableList.of(
@@ -218,6 +242,9 @@ public class OnboardingStateManagerTest {
 
     @Test
     public void updateAndGetOnboardingState_zeroConnected_noCandidate_returnsHide() {
+        setAppRequestsFitnessPermission(APP_PKG_1, true);
+        setAppRequestsFitnessPermission(APP_PKG_2, true);
+        setAppRequestsFitnessPermission(APP_PKG_3, true);
         setCompatibleApps(
                 ImmutableList.of(
                         createPackageInfo(APP_PKG_1, SIX_DAYS_AGO), // too new
@@ -236,6 +263,10 @@ public class OnboardingStateManagerTest {
 
     @Test
     public void updateAndGetOnboardingState_zeroConnected_oneCandidate_returnsHide() {
+        setAppRequestsFitnessPermission(APP_PKG_1, true);
+        setAppRequestsFitnessPermission(APP_PKG_2, true);
+        setAppRequestsFitnessPermission(APP_PKG_3, true);
+        setAppRequestsFitnessPermission(APP_PKG_4, true);
         setCompatibleApps(
                 ImmutableList.of(
                         createPackageInfo(APP_PKG_1, EIGHT_DAYS_AGO), // candidate
@@ -255,6 +286,8 @@ public class OnboardingStateManagerTest {
 
     @Test
     public void updateAndGetOnboardingState_zeroConnected_twoCandidates_returnsZeroConnected() {
+        setAppRequestsFitnessPermission(APP_PKG_1, true);
+        setAppRequestsFitnessPermission(APP_PKG_2, true);
         setCompatibleApps(
                 ImmutableList.of(
                         createPackageInfo(APP_PKG_1, EIGHT_DAYS_AGO),
@@ -267,7 +300,10 @@ public class OnboardingStateManagerTest {
 
     @Test
     public void updateAndGetOnboardingState_oneConnected_noCandidate_returnsHide() {
-        setAppConnected(APP_PKG_1, /* isConnected= */ true);
+        setAppConnectedFitnessPermission(APP_PKG_1, /* isConnected= */ true);
+        setAppRequestsFitnessPermission(APP_PKG_2, true);
+        setAppRequestsFitnessPermission(APP_PKG_3, true);
+        setAppRequestsFitnessPermission(APP_PKG_4, true);
 
         setCompatibleApps(
                 ImmutableList.of(
@@ -289,7 +325,8 @@ public class OnboardingStateManagerTest {
 
     @Test
     public void updateAndGetOnboardingState_oneConnected_oneCandidate_returnsOneConnected() {
-        setAppConnected(APP_PKG_1, /* isConnected= */ true);
+        setAppConnectedFitnessPermission(APP_PKG_1, /* isConnected= */ true);
+        setAppRequestsFitnessPermission(APP_PKG_2, true);
 
         setCompatibleApps(
                 ImmutableList.of(
@@ -303,8 +340,8 @@ public class OnboardingStateManagerTest {
 
     @Test
     public void updateAndGetOnboardingState_zeroAppToOneAppConnected_updatesAndNotifies() {
-        setAppConnected(APP_PKG_2, /* isConnected= */ true);
-
+        setAppConnectedFitnessPermission(APP_PKG_2, /* isConnected= */ true);
+        setAppRequestsFitnessPermission(APP_PKG_1, true);
         setCompatibleApps(
                 ImmutableList.of(
                         createPackageInfo(APP_PKG_1, EIGHT_DAYS_AGO), // candidate
@@ -320,8 +357,8 @@ public class OnboardingStateManagerTest {
 
     @Test
     public void updateAndGetOnboardingState_stateDoesNotChange_notNotified() {
-        setAppConnected(APP_PKG_1, /* isConnected= */ true);
-        setAppConnected(APP_PKG_2, /* isConnected= */ true);
+        setAppConnectedFitnessPermission(APP_PKG_1, /* isConnected= */ true);
+        setAppConnectedFitnessPermission(APP_PKG_2, /* isConnected= */ true);
 
         setCompatibleApps(
                 ImmutableList.of(
@@ -364,10 +401,25 @@ public class OnboardingStateManagerTest {
     }
 
     /** Sets the connected state for the given package name. */
-    private void setAppConnected(String packageName, boolean isConnected) {
-        when(mHealthConnectPermissionHelper.hasGrantedHealthPermissions(
-                        eq(packageName), eq(mUserHandle)))
+    private void setAppConnectedFitnessPermission(String packageName, boolean isConnected) {
+        when(mHealthConnectPermissionHelper.hasGrantedFitnessPermission(
+                        argThat(
+                                argument ->
+                                        argument != null
+                                                && packageName.equals(argument.packageName))))
                 .thenReturn(isConnected);
+        if (isConnected) {
+            setAppRequestsFitnessPermission(packageName, true);
+        }
+    }
+
+    private void setAppRequestsFitnessPermission(String packageName, boolean requests) {
+        when(mHealthConnectPermissionHelper.isRequestingFitnessPermission(
+                        argThat(
+                                argument ->
+                                        argument != null
+                                                && packageName.equals(argument.packageName))))
+                .thenReturn(requests);
     }
 
     private void setAppUsedWithData(String packageName) {
@@ -392,9 +444,22 @@ public class OnboardingStateManagerTest {
 
     /** Helper method to create a PackageInfo object. */
     private PackageInfo createPackageInfo(String packageName, long firstInstallTime) {
+        String[] defaultPermissions = {
+            HealthPermissions.READ_ACTIVE_CALORIES_BURNED,
+            HealthPermissions.READ_STEPS,
+            HealthPermissions.WRITE_BLOOD_PRESSURE,
+            HealthPermissions.READ_HEALTH_DATA_HISTORY,
+            HealthPermissions.WRITE_MEDICAL_DATA
+        };
+        return createPackageInfo(packageName, firstInstallTime, defaultPermissions);
+    }
+
+    private PackageInfo createPackageInfo(
+            String packageName, long firstInstallTime, String[] requestedPermissions) {
         PackageInfo pkgInfo = new PackageInfo();
         pkgInfo.packageName = packageName;
         pkgInfo.firstInstallTime = firstInstallTime;
+        pkgInfo.requestedPermissions = requestedPermissions;
         return pkgInfo;
     }
 

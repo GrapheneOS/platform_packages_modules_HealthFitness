@@ -32,8 +32,8 @@ import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.ExerciseSessionRecord;
-import android.healthconnect.cts.lib.TestAppProxy;
-import android.healthconnect.cts.lib.TestAppRule;
+import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
+import android.healthconnect.testing.cts.testapphelpers.TestAppRule;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 

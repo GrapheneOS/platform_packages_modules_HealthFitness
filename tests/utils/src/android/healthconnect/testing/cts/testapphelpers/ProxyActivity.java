@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.utils;
+package android.healthconnect.testing.cts.testapphelpers;
 
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 

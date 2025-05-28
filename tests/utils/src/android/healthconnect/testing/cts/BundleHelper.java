@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.lib;
+package android.healthconnect.testing.cts;
 
 import static java.util.Objects.requireNonNull;
 

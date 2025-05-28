@@ -1777,6 +1777,110 @@ public class HealthConnectPermissionHelperTest {
                         eq(CURRENT_USER));
     }
 
+    @Test
+    public void isRequestingFitnessPermission_whenOneFitnessRequested_returnsTrue()
+            throws PackageManager.NameNotFoundException {
+        PackageInfo mockPackageInfo = new PackageInfo();
+        mockPackageInfo.requestedPermissions =
+                new String[] {
+                    HealthPermissions.READ_HEART_RATE,
+                    HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+                    HealthPermissions.READ_HEALTH_DATA_HISTORY,
+                    HealthPermissions.WRITE_STEPS,
+                    HealthPermissions.WRITE_MEDICAL_DATA
+                };
+        when(mPackageManager.getPackageInfo(eq(HC_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        assertTrue(mPermissionHelper.isRequestingFitnessPermission(mockPackageInfo));
+    }
+
+    @Test
+    public void isRequestingFitnessPermission_whenNoPermissionsRequested_returnsFalse()
+            throws PackageManager.NameNotFoundException {
+        PackageInfo mockPackageInfo = new PackageInfo();
+        // For now add a few of the HealthPermissions just for the test.
+        mockPackageInfo.requestedPermissions = new String[] {};
+        when(mPackageManager.getPackageInfo(eq(HC_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        assertFalse(mPermissionHelper.isRequestingFitnessPermission(mockPackageInfo));
+    }
+
+    @Test
+    public void isRequestingFitnessPermission_whenOnlyMedicalAndAdditionalRequested_returnsFalse()
+            throws PackageManager.NameNotFoundException {
+        PackageInfo mockPackageInfo = new PackageInfo();
+        mockPackageInfo.requestedPermissions =
+                new String[] {
+                    HealthPermissions.READ_MEDICAL_DATA_PREGNANCY,
+                    HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+                    HealthPermissions.READ_HEALTH_DATA_HISTORY,
+                    HealthPermissions.WRITE_MEDICAL_DATA
+                };
+        when(mPackageManager.getPackageInfo(eq(HC_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        assertFalse(mPermissionHelper.isRequestingFitnessPermission(mockPackageInfo));
+    }
+
+    @Test
+    public void hasGrantedFitnessPermission_whenOneFitnessGranted_returnsTrue()
+            throws PackageManager.NameNotFoundException {
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {
+                            HealthPermissions.READ_HEART_RATE,
+                            HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+                        },
+                        new int[] {
+                            PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                            PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                        });
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        assertTrue(mPermissionHelper.hasGrantedFitnessPermission(mockPackageInfo));
+    }
+
+    @Test
+    public void hasGrantedFitnessPermission_whenNoPermissionsGranted_returnsFalse()
+            throws PackageManager.NameNotFoundException {
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {
+                            HealthPermissions.READ_HEART_RATE,
+                            HealthPermissions.WRITE_MEDICAL_DATA,
+                            HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+                        },
+                        new int[] {0, 0, 0});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        assertFalse(mPermissionHelper.hasGrantedFitnessPermission(mockPackageInfo));
+    }
+
+    @Test
+    public void hasGrantedFitnessPermission_whenOnlyMedicalAndAdditionalGranted_returnsFalse()
+            throws PackageManager.NameNotFoundException {
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {
+                            HealthPermissions.READ_HEART_RATE,
+                            HealthPermissions.WRITE_MEDICAL_DATA,
+                            HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+                        },
+                        new int[] {
+                            0,
+                            PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                            PackageInfo.REQUESTED_PERMISSION_GRANTED
+                        });
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        assertFalse(mPermissionHelper.hasGrantedFitnessPermission(mockPackageInfo));
+    }
+
     private void setUpHealthPermissions() throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo = new PackageInfo();
         // For now add a few of the HealthPermissions just for the test.

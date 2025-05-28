@@ -16,7 +16,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="android.healthconnect.testing.unittest">
+    package="android.healthconnect.testing.cts">
 
     <queries>
         <intent>

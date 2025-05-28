@@ -39,7 +39,7 @@ import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.units.Length;
-import android.healthconnect.cts.lib.TestAppProxy;
+import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
 
 import androidx.test.core.app.ApplicationProvider;
 
