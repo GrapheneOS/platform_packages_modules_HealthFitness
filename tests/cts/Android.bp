@@ -36,7 +36,6 @@ android_test {
         "framework-sdkextensions.stubs.module_lib",
     ],
     srcs: [
-        ":healthfitness-cts-testapp-srcs",
         "src/android/healthconnect/cts/*.java",
         "src/android/healthconnect/cts/aggregation/*.java",
         "src/android/healthconnect/cts/backgroundread/*.java",
@@ -209,11 +208,7 @@ android_test {
         "framework-healthfitness.stubs.system",
     ],
     srcs: [
-        ":healthfitness-cts-testapp-srcs",
-        ":healthfitness-cts-testapp2-srcs",
-        ":healthfitness-cts-systemtestapp-srcs",
         "src/android/healthconnect/cts/ui/**/*.kt",
-        "src/com/android/cts/install/lib/*.java",
     ],
     // Tag this module as a cts test artifact
     test_suites: [
