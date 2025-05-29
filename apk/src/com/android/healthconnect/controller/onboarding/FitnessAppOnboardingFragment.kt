@@ -232,6 +232,7 @@ class FitnessAppOnboardingFragment : Hilt_FitnessAppOnboardingFragment() {
                             FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_PERMISSION_BUTTON
                         it.logNameInactive =
                             FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_PERMISSION_BUTTON
+                        it.permission = permission
                         it.setOnPreferenceChangeListener { _, newValue ->
                             val checked = newValue as Boolean
                             viewModel.updatePermission(permission, checked)
