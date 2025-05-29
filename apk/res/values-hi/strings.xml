@@ -677,7 +677,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 सेट}one{# सेट}other{# सेट}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 सेट}one{# सेट}other{# सेट}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"कसरत के सेगमेंट"</string>
-    <string name="segment_set_index_format" msgid="5299538353624573851">"<xliff:g id="SET_INDEX">%1$d</xliff:g> सेट करें"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"सेट <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
     <string name="segment_rpe_format" msgid="1456617736401131975">"आरपीई: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
     <string name="segment_rpe_format_long" msgid="3492398127594227129">"कसरत के दौरान मेहनत करने की दर: <xliff:g id="RPE">%1$s</xliff:g>"</string>
     <string name="session_rpe_header" msgid="6436164288422834973">"आरपीई"</string>
@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Health Connect से ऐप्लिकेशन को कनेक्ट किया गया"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"यह प्रोसेस पूरी होने ही वाली है"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"सेटअप पूरा करने और डेटा शेयर करने के लिए, अभी ये ऐप्लिकेशन खोलें"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"कनेक्ट किए गए अलग-अलग ऐप्लिकेशन में सेहत से जुड़ा डेटा देखें"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"कनेक्ट किए गए अलग-अलग ऐप्लिकेशन के बीच, सेहत और फ़िटनेस का डेटा शेयर करना शुरू करें"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"सेट अप करें"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"दूसरा ऐप्लिकेशन कनेक्ट करें"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"<xliff:g id="APP_NAME">%1$s</xliff:g> के साथ सेहत और फ़िटनेस का डेटा शेयर करने के लिए, एक और ऐप्लिकेशन सेट अप करें"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"जारी रखें"</string>
 </resources>

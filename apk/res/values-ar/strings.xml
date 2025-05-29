@@ -677,7 +677,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{التكرار مرة واحدة}zero{التكرار # مرة}two{التكرار مرّتَان}few{التكرار # مرات}many{التكرار # مرة}other{التكرار # مرة}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{التكرار مرة واحدة}zero{التكرار # مرة}two{التكرار مرّتَان}few{التكرار # مرات}many{التكرار # مرة}other{التكرار # مرة}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"شرائح التمرين الرياضي"</string>
-    <string name="segment_set_index_format" msgid="5299538353624573851">"ضبط <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"المجموعة <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
     <string name="segment_rpe_format" msgid="1456617736401131975">"معدّل الجهد المبذول: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
     <string name="segment_rpe_format_long" msgid="3492398127594227129">"معدّل الجهد المبذول: <xliff:g id="RPE">%1$s</xliff:g>"</string>
     <string name="session_rpe_header" msgid="6436164288422834973">"معدّل الجهد المبذول"</string>
@@ -708,7 +708,7 @@
     <string name="dumbbell_triceps_extension_right_arm" msgid="1498470275564554389">"تمرين تمديد العضلات الثلاثية بالدمبل باليد اليمنى"</string>
     <string name="dumbbell_triceps_extension_two_arm" msgid="5409860665522903159">"تمرين تمديد العضلات الثلاثية بالدمبل بكلتا اليدين"</string>
     <string name="elliptical" msgid="5148914059968910839">"تمارين جهاز الحركة البيضاوية"</string>
-    <string name="exercise_class" msgid="32582249527931454">"حصة التمارين الرياضية"</string>
+    <string name="exercise_class" msgid="32582249527931454">"تمارين رياضية"</string>
     <string name="fencing" msgid="410347890025055779">"مبارزة"</string>
     <string name="football_american" msgid="8564554592554502623">"كرة القدم الأمريكية"</string>
     <string name="football_australian" msgid="5524598297723674661">"كرة القدم الأسترالية"</string>
@@ -1010,7 +1010,7 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"الحذف التلقائي للبيانات"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{بعد شهر واحد}zero{بعد # شهر}two{بعد شهرَين}few{بعد # أشهر}many{بعد # شهرًا}other{بعد # شهر}}"</string>
     <string name="range_never" msgid="4429478261788361233">"أبدًا"</string>
-    <string name="range_off" msgid="8178520557618184215">"الخيار غير مفعَّل"</string>
+    <string name="range_off" msgid="8178520557618184215">"الميزة غير مفعَّلة"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"عند تغيير هذه الإعدادات، يحذف تطبيق Health Connect البيانات الحالية بما يتوافق مع الإعدادات المفضّلة الجديدة"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{هل تريد حذف البيانات تلقائيًا بعد شهر واحد؟}zero{هل تريد حذف البيانات تلقائيًا بعد # شهر؟}two{هل تريد حذف البيانات تلقائيًا بعد # شهرَين؟}few{هل تريد حذف البيانات تلقائيًا بعد # أشهر؟}many{هل تريد حذف البيانات تلقائيًا بعد # شهرًا؟}other{هل تريد حذف البيانات تلقائيًا بعد # شهر؟}}"</string>
     <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{يؤدي هذا أيضًا إلى حذف البيانات الأقدم من شهر واحد من تطبيق Health Connect.\n\nلحذف البيانات نهائيًا من التطبيقات المرتبطة، يُرجى اختيار كل التطبيقات التي قد تكون بياناتك محفوظة فيها.}zero{يؤدي هذا أيضًا إلى حذف البيانات الأقدم من # شهر من تطبيق Health Connect.\n\nلحذف البيانات نهائيًا من التطبيقات المرتبطة، يُرجى اختيار كل التطبيقات التي قد تكون بياناتك محفوظة فيها.}two{يؤدي هذا أيضًا إلى حذف البيانات الأقدم من شهرين من تطبيق Health Connect.\n\nلحذف البيانات نهائيًا من التطبيقات المرتبطة، يُرجى اختيار كل التطبيقات التي قد تكون بياناتك محفوظة فيها.}few{يؤدي هذا أيضًا إلى حذف البيانات الأقدم من # أشهر من تطبيق Health Connect.\n\nلحذف البيانات نهائيًا من التطبيقات المرتبطة، يُرجى اختيار كل التطبيقات التي قد تكون بياناتك محفوظة فيها.}many{يؤدي هذا أيضًا إلى حذف البيانات الأقدم من # شهرًا من تطبيق Health Connect.\n\nلحذف البيانات نهائيًا من التطبيقات المرتبطة، يُرجى اختيار كل التطبيقات التي قد تكون بياناتك محفوظة فيها.}other{يؤدي هذا أيضًا إلى حذف البيانات الأقدم من # شهر من تطبيق Health Connect.\n\nلحذف البيانات نهائيًا من التطبيقات المرتبطة، يُرجى اختيار كل التطبيقات التي قد تكون بياناتك محفوظة فيها.}}"</string>
@@ -1220,38 +1220,21 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{استخدمه تطبيق واحد}zero{استخدمه # تطبيق}two{استخدمه تطبيقان}few{استخدمته # تطبيقات}many{استخدمه # تطبيقًا}other{استخدمه # تطبيق}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"لم يتم استخدام الإذن في آخر 24 ساعة"</string>
     <string name="accessed" msgid="4424701457530587176">"آخر استخدام: ‎<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <!-- no translation found for connect_first_two_apps_title (2117437769113976529) -->
-    <skip />
-    <!-- no translation found for connect_first_two_apps_description (6756143365112887865) -->
-    <skip />
-    <!-- no translation found for connect_second_app_title (6609568573884272692) -->
-    <skip />
-    <!-- no translation found for connect_second_app_description (159030733462822101) -->
-    <skip />
-    <!-- no translation found for set_up_later (223888663943501921) -->
-    <skip />
-    <!-- no translation found for available_apps_to_connect (8425012138408583646) -->
-    <skip />
-    <!-- no translation found for apps_onboarding_footer (5814165211234454165) -->
-    <skip />
-    <!-- no translation found for apps_onboarding_footer_link (385298243785385467) -->
-    <skip />
-    <!-- no translation found for onboarded_app_content_description (8571163043712952164) -->
-    <skip />
-    <!-- no translation found for almost_done_title (3966589349311156772) -->
-    <skip />
-    <!-- no translation found for almost_done_description (8414648601371946510) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"ربط أول تطبيقَين"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"يمكن ربط هذين التطبيقين لبدء مشاركة بيانات الصحة واللياقة البدنية بينهما"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"ربط تطبيق ثانٍ"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"يمكنك إعداد تطبيق آخر لمشاركة بيانات الصحة واللياقة البدنية مع \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
+    <string name="set_up_later" msgid="223888663943501921">"الإعداد لاحقًا"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"التطبيقات المتوفّرة للربط"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"يسمح لك تطبيق Health Connect بتخزين بيانات الصحة واللياقة البدنية في مكان واحد ومشاركتها بين التطبيقات على هاتفك، ما يجعل تطبيقاتك تعمل معًا بشكل أفضل."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"مزيد من المعلومات حول Health Connect"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"تم ربط التطبيق بتطبيق Health Connect"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"لقد أوشكت على الانتهاء"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"يُرجى فتح هذه التطبيقات الآن لإكمال عملية الإعداد وبدء مشاركة البيانات"</string>
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"الاطّلاع على بياناتك الصحية في جميع التطبيقات"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"يمكنك بدء مشاركة بيانات الصحة واللياقة البدنية بين التطبيقات"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"إعداد"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"ربط تطبيق ثانٍ"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"يمكنك إعداد تطبيق آخر لمشاركة بيانات الصحة واللياقة البدنية مع \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"متابعة"</string>
 </resources>

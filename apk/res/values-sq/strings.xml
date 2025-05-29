@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Aplikacioni u lidh me Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Thuajse mbarove"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Hapi këto aplikacione tani për të përfunduar konfigurimin dhe për të filluar ndarjen e të dhënave"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Shiko të dhënat e shëndetit nëpër aplikacione"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Fillo të ndash të dhënat e shëndetit dhe fitnesit midis aplikacioneve"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Konfiguro"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Lidh një aplikacion të dytë"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Konfiguro një aplikacion tjetër për të ndarë të dhënat e shëndetit dhe të fitnesit me <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Vazhdo"</string>
 </resources>

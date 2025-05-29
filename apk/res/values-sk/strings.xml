@@ -288,8 +288,8 @@
     <string name="basal_body_temperature_lowercase_label" msgid="3363829208971016662">"bazálna telesná teplota"</string>
     <string name="basal_body_temperature_read_content_description" msgid="3342604362011725500">"Čítanie údajov o bazálnej telesnej teplote"</string>
     <string name="basal_body_temperature_write_content_description" msgid="1081636817359407622">"Zapisovanie údajov o bazálnej telesnej teplote"</string>
-    <string name="blood_glucose_uppercase_label" msgid="7462421849184720721">"Glykémia"</string>
-    <string name="blood_glucose_lowercase_label" msgid="5036157221577793772">"glykémia"</string>
+    <string name="blood_glucose_uppercase_label" msgid="7462421849184720721">"Cukor v krvi"</string>
+    <string name="blood_glucose_lowercase_label" msgid="5036157221577793772">"cukor v krvi"</string>
     <string name="blood_glucose_read_content_description" msgid="563393834563809318">"Čítanie údajov o glykémii"</string>
     <string name="blood_glucose_write_content_description" msgid="7688360165458091174">"Zapisovanie údajov o glykémii"</string>
     <string name="blood_pressure_uppercase_label" msgid="1091450873620857062">"Krvný tlak"</string>
@@ -304,8 +304,8 @@
     <string name="heart_rate_lowercase_label" msgid="693492686337628283">"pulz"</string>
     <string name="heart_rate_read_content_description" msgid="4165867166260001259">"Čítanie údajov o pulze"</string>
     <string name="heart_rate_write_content_description" msgid="2876667918366409170">"Zapisovanie údajov o pulze"</string>
-    <string name="heart_rate_variability_uppercase_label" msgid="2047887230527012536">"Variabilita pulzu"</string>
-    <string name="heart_rate_variability_lowercase_label" msgid="2332638559415663836">"variabilita pulzu"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="2047887230527012536">"Variabilita tepu"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="2332638559415663836">"variabilita tepu"</string>
     <string name="heart_rate_variability_read_content_description" msgid="5812707457872629556">"Čítanie údajov o variabilite pulzu"</string>
     <string name="heart_rate_variability_write_content_description" msgid="3628171603035566114">"Zapisovanie údajov o variabilite pulzu"</string>
     <string name="oxygen_saturation_uppercase_label" msgid="1396254185616418355">"Saturácia kyslíkom"</string>
@@ -316,8 +316,8 @@
     <string name="respiratory_rate_lowercase_label" msgid="8138249029197360098">"rýchlosť dýchania"</string>
     <string name="respiratory_rate_read_content_description" msgid="8545898979648419722">"Čítanie údajov o rýchlosti dýchania"</string>
     <string name="respiratory_rate_write_content_description" msgid="7689533746809591931">"Zapisovanie údajov o rýchlosti dýchania"</string>
-    <string name="resting_heart_rate_uppercase_label" msgid="5700827752396195453">"Pokojový pulz"</string>
-    <string name="resting_heart_rate_lowercase_label" msgid="4533866739695973169">"pokojový pulz"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="5700827752396195453">"Pokojový tep"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="4533866739695973169">"pokojový tep"</string>
     <string name="resting_heart_rate_read_content_description" msgid="1068160055773401020">"Čítanie údajov o pokojovom pulze"</string>
     <string name="resting_heart_rate_write_content_description" msgid="8848198128082739995">"Zapisovanie údajov o pokojovom pulze"</string>
     <string name="skin_temperature_uppercase_label" msgid="4880306019368461268">"Teplota kože"</string>
@@ -677,7 +677,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 opak.}few{# opak.}many{# reps}other{# opak.}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 opakovanie}few{# opakovania}many{# repetitions}other{# opakovaní}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Segmenty cvičenia"</string>
-    <string name="segment_set_index_format" msgid="5299538353624573851">"Nastaviť <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Série: <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
     <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
     <string name="segment_rpe_format_long" msgid="3492398127594227129">"Miera vnímanej námahy: <xliff:g id="RPE">%1$s</xliff:g>"</string>
     <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Aplikácia je pripojená k Dátam o zdraví"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Takmer hotovo"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Ak chcete dokončiť nastavenie a začať zdieľať údaje, otvorte tieto aplikácie"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Zobrazujte si zdravotné údaje v rôznych aplikáciách"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Začnite zdieľať údaje o zdraví a kondícii medzi svojimi aplikáciami"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Nastaviť"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Pripojenie druhej aplikácie"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Nastavte ešte jednu aplikáciu, s ktorou chcete zdieľať údaje o zdraví a kondícii s aplikáciou <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Pokračovať"</string>
 </resources>

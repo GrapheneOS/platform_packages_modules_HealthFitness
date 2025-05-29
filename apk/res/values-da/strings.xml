@@ -304,8 +304,8 @@
     <string name="heart_rate_lowercase_label" msgid="693492686337628283">"puls"</string>
     <string name="heart_rate_read_content_description" msgid="4165867166260001259">"Læs puls"</string>
     <string name="heart_rate_write_content_description" msgid="2876667918366409170">"Skriv puls"</string>
-    <string name="heart_rate_variability_uppercase_label" msgid="2047887230527012536">"Hjertefrekvensvariabilitet"</string>
-    <string name="heart_rate_variability_lowercase_label" msgid="2332638559415663836">"hjertefrekvensvariabilitet"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="2047887230527012536">"Pulsvariation"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="2332638559415663836">"pulsvariation"</string>
     <string name="heart_rate_variability_read_content_description" msgid="5812707457872629556">"Læs hjertefrekvensvariabilitet"</string>
     <string name="heart_rate_variability_write_content_description" msgid="3628171603035566114">"Skriv hjertefrekvensvariabilitet"</string>
     <string name="oxygen_saturation_uppercase_label" msgid="1396254185616418355">"Iltmætning"</string>
@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Appen er knyttet til Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Næsten færdig"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Åbn disse apps nu for at fuldføre konfigurationen og starte datadelingen"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Se dine sundhedsdata i alle apps"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Begynd at dele sundheds- og træningsdata mellem dine apps"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Konfigurer"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Tilknyt en anden app"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Konfigurer en app mere for at dele sundheds- og træningsdata med <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Fortsæt"</string>
 </resources>

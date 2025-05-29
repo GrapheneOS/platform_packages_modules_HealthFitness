@@ -676,8 +676,8 @@
     <string name="elapsed_time_placeholder" msgid="5154979833935704302">"--:--"</string>
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 rip}other{# rip}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 ripetizione}other{# ripetizioni}}"</string>
-    <string name="exercise_segments_header" msgid="2992953017179406012">"Segmenti esercizio fisico"</string>
-    <string name="segment_set_index_format" msgid="5299538353624573851">"Imposta <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="exercise_segments_header" msgid="2992953017179406012">"Segmenti degli esercizi"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Serie <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
     <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
     <string name="segment_rpe_format_long" msgid="3492398127594227129">"Grado di sforzo percepito: <xliff:g id="RPE">%1$s</xliff:g>"</string>
     <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
@@ -708,7 +708,7 @@
     <string name="dumbbell_triceps_extension_right_arm" msgid="1498470275564554389">"Estensione tricipite braccio destro con manubrio"</string>
     <string name="dumbbell_triceps_extension_two_arm" msgid="5409860665522903159">"Estensione tricipiti due braccia con manubrio"</string>
     <string name="elliptical" msgid="5148914059968910839">"Ellittica"</string>
-    <string name="exercise_class" msgid="32582249527931454">"Corso di attività fisica"</string>
+    <string name="exercise_class" msgid="32582249527931454">"Sessione di allenamento"</string>
     <string name="fencing" msgid="410347890025055779">"Scherma"</string>
     <string name="football_american" msgid="8564554592554502623">"Football americano"</string>
     <string name="football_australian" msgid="5524598297723674661">"Football australiano"</string>
@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"App collegata a Connessione Salute"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Operazione quasi terminata"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Apri queste app ora per completare la configurazione e avviare la condivisione dei dati"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Visualizza i tuoi dati relativi alla salute tra le app"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Inizia a condividere dati relativi alla salute e all\'attività fisica tra le tue app"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Configura"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Collega una seconda app"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Configura un\'altra app per condividere dati relativi alla salute e all\'attività fisica con <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Continua"</string>
 </resources>

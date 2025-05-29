@@ -676,7 +676,7 @@
     <string name="elapsed_time_placeholder" msgid="5154979833935704302">"--:--"</string>
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 répétition}one{# répétition}other{# répétitions}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 répétition}one{# répétition}other{# répétitions}}"</string>
-    <string name="exercise_segments_header" msgid="2992953017179406012">"Segments d\'exercice"</string>
+    <string name="exercise_segments_header" msgid="2992953017179406012">"Séquences d\'exercice"</string>
     <string name="segment_set_index_format" msgid="5299538353624573851">"Définir <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
     <string name="segment_rpe_format" msgid="1456617736401131975">"RPE : <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
     <string name="segment_rpe_format_long" msgid="3492398127594227129">"Taux d\'effort perçu : <xliff:g id="RPE">%1$s</xliff:g>"</string>
@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Application connectée à Santé Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Presque terminé"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Ouvrez ces applis maintenant pour terminer la configuration et commencer le partage de données"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Consultez vos données de santé dans toutes les applis"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Commencez à partager des données de santé et de remise en forme entre vos applis"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Configurer"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Associer une deuxième application"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Configurez une application supplémentaire pour partager des données de santé et de remise en forme avec <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Continuer"</string>
 </resources>

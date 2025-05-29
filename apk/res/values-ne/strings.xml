@@ -677,16 +677,11 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{१ पटक दोहोर्‍याइयो}other{# पटक दोहोर्‍याइयो}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{१ पटक दोहोर्‍याइयो}other{# पटक दोहोर्‍याइयो}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"कसरतका खण्डहरू"</string>
-    <!-- no translation found for segment_set_index_format (5299538353624573851) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format (1456617736401131975) -->
-    <skip />
-    <!-- no translation found for segment_rpe_format_long (3492398127594227129) -->
-    <skip />
-    <!-- no translation found for session_rpe_header (6436164288422834973) -->
-    <skip />
-    <!-- no translation found for session_rpe_header_long (9193080712374662004) -->
-    <skip />
+    <string name="segment_set_index_format" msgid="5299538353624573851">"<xliff:g id="SET_INDEX">%1$d</xliff:g> सेट गर्नुहोस्"</string>
+    <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
+    <string name="segment_rpe_format_long" msgid="3492398127594227129">"कसरत गर्दा शरीरले गर्ने मेहनतको स्तर: <xliff:g id="RPE">%1$s</xliff:g>"</string>
+    <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
+    <string name="session_rpe_header_long" msgid="9193080712374662004">"कसरत गर्दा शरीरले गर्ने मेहनतको स्तर"</string>
     <string name="exercise_laps_header" msgid="117228630553856372">"ल्याप"</string>
     <string name="back_extension" msgid="426518933137440577">"ब्याक एक्स्टेन्सन"</string>
     <string name="badminton" msgid="8839727076522086870">"ब्याडमिन्टन"</string>
@@ -1236,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"यो एप Health Connect मा कनेक्ट गरिएको छ"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"लगभग पूरा भयो"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"सेटअप गर्ने कार्य पूरा गर्न र जानकारी सेयर गर्न थाल्न अहिले नै यी एपहरू खोल्नुहोस्"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"विभिन्न एपहरूमा आफ्नो स्वास्थ्यसम्बन्धी जानकारी हेर्नुहोस्"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"आफ्ना एपका बिचमा स्वास्थ्य र व्यायामसम्बन्धी जानकारी सेयर गर्न थाल्नुहोस्"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"सेटअप गर्नुहोस्"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"दोस्रो एप कनेक्ट गर्नुहोस्"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"<xliff:g id="APP_NAME">%1$s</xliff:g> सँग स्वास्थ्य र व्यायामसम्बन्धी जानकारी सेयर गर्न थप एउटा एप सेटअप गर्नुहोस्"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"जारी राख्नुहोस्"</string>
 </resources>

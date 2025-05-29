@@ -1220,38 +1220,21 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{යෙදුම් 1කින් භාවිත කෙරේ}one{යෙදුම් #කින් භාවිත කෙරේ}other{යෙදුම් #කින් භාවිත කෙරේ}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"පසුගිය පැය 24 තුළ භාවිත කර නැත"</string>
     <string name="accessed" msgid="4424701457530587176">"ප්‍රවේශ වූයේ <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <!-- no translation found for connect_first_two_apps_title (2117437769113976529) -->
-    <skip />
-    <!-- no translation found for connect_first_two_apps_description (6756143365112887865) -->
-    <skip />
-    <!-- no translation found for connect_second_app_title (6609568573884272692) -->
-    <skip />
-    <!-- no translation found for connect_second_app_description (159030733462822101) -->
-    <skip />
-    <!-- no translation found for set_up_later (223888663943501921) -->
-    <skip />
-    <!-- no translation found for available_apps_to_connect (8425012138408583646) -->
-    <skip />
-    <!-- no translation found for apps_onboarding_footer (5814165211234454165) -->
-    <skip />
-    <!-- no translation found for apps_onboarding_footer_link (385298243785385467) -->
-    <skip />
-    <!-- no translation found for onboarded_app_content_description (8571163043712952164) -->
-    <skip />
-    <!-- no translation found for almost_done_title (3966589349311156772) -->
-    <skip />
-    <!-- no translation found for almost_done_description (8414648601371946510) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"ඔබේ පළමු යෙදුම් 2 සම්බන්ධ කරන්න"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"සෞඛ්‍ය සහ යෝග්‍යතා දත්ත බෙදා ගැනීම ආරම්භ කිරීමට මෙම යෙදුම් සම්බන්ධ කරන්න"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"දෙවන යෙදුමක් සම්බන්ධ කරන්න"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"<xliff:g id="APP_NAME">%1$s</xliff:g> සමග සෞඛ්‍ය සහ යෝග්‍යතා දත්ත බෙදා ගැනීමට තවත් එක් යෙදුමක් පිහිටුවන්න"</string>
+    <string name="set_up_later" msgid="223888663943501921">"පසුව පිහිටුවන්න"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"සම්බන්ධ වීමට ඇති යෙදුම්"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect මඟින් ඔබේ සෞඛ්‍ය සහ යෝග්‍යතා දත්ත එක තැනක ගබඩා කර ඔබේ දුරකථනයේ යෙදුම් අතර බෙදා ගැනීමට ඉඩ සලසයි, එමඟින් ඔබේ යෙදුම් එකට වඩා හොඳින් ක්‍රියා කරයි."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Health Connect පිළිබඳ වැඩිදුර"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"Health Connect වෙත සම්බන්ධිත යෙදුම"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"බොහෝ දුරට නිමයි"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"පිහිටුවීම අවසන් කර දත්ත බෙදා ගැනීම ආරම්භ කිරීමට දැන් මෙම යෙදුම් විවෘත කරන්න"</string>
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"යෙදුම් හරහා ඔබේ සෞඛ්‍ය දත්ත බලන්න"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"ඔබේ යෙදුම් අතර සෞඛ්‍ය සහ යෝග්‍යතා දත්ත බෙදා ගැනීම ආරම්භ කරන්න"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"පිහිටුවන්න"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"දෙවන යෙදුමක් සම්බන්ධ කරන්න"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"<xliff:g id="APP_NAME">%1$s</xliff:g> සමග සෞඛ්‍ය සහ යෝග්‍යතා දත්ත බෙදා ගැනීමට තවත් එක් යෙදුමක් පිහිටුවන්න"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"ඉදිරියට යන්න"</string>
 </resources>
