@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.healthconnect.cts.lib
+
+package android.healthconnect.testing.cts.ui
 
 import android.Manifest
-import android.Manifest.permission.REVOKE_RUNTIME_PERMISSIONS
 import android.content.Context
 import android.content.pm.PackageManager
-import android.content.pm.PackageManager.PERMISSION_DENIED
-import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.health.connect.HealthPermissions
-import android.health.connect.datatypes.*
+import android.health.connect.datatypes.DataOrigin
+import android.health.connect.datatypes.Device
+import android.health.connect.datatypes.DistanceRecord
+import android.health.connect.datatypes.Metadata
+import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.units.Length
 import android.os.SystemClock
 import android.util.Log
-import androidx.test.uiautomator.*
-import com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity
-import com.android.compatibility.common.util.UiAutomatorUtils2.*
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.BySelector
+import androidx.test.uiautomator.Direction
+import androidx.test.uiautomator.StaleObjectException
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.UiObject2
+import androidx.test.uiautomator.UiObjectNotFoundException
+import androidx.test.uiautomator.UiScrollable
+import androidx.test.uiautomator.UiSelector
+import androidx.test.uiautomator.Until
+import com.android.compatibility.common.util.SystemUtil
+import com.android.compatibility.common.util.UiAutomatorUtils2
 import com.android.compatibility.common.util.UiDumpUtils
 import java.time.Duration
 import java.time.Instant
@@ -85,7 +96,7 @@ object UiTestUtils {
         uiObjectAction: (UiObject2) -> Unit = {},
     ) {
         waitFor("$selector to be displayed", waitTimeout) {
-            uiObjectAction(waitFindObject(selector, it.toMillis()))
+            uiObjectAction(UiAutomatorUtils2.waitFindObject(selector, it.toMillis()))
             true
         }
     }
@@ -99,7 +110,7 @@ object UiTestUtils {
         selector: BySelector,
         timeout: Duration = FIND_OBJECT_TIMEOUT,
     ): UiObject2? {
-        return getUiDevice().wait(Until.findObject(selector), timeout.toMillis())
+        return UiAutomatorUtils2.getUiDevice().wait(Until.findObject(selector), timeout.toMillis())
     }
 
     /**
@@ -119,7 +130,7 @@ object UiTestUtils {
      */
     fun findObjectAndClick(selector: BySelector) {
         findObject(selector).click()
-        getUiDevice().waitForIdle()
+        UiAutomatorUtils2.getUiDevice().waitForIdle()
     }
 
     fun clickOnDescAndWaitForNewWindow(text: String) {
@@ -249,14 +260,19 @@ object UiTestUtils {
     }
 
     fun scrollDownTo(selector: BySelector) {
-        val scrollable = waitFindObjectOrNull(By.scrollable(true), FIND_OBJECT_TIMEOUT.toMillis())
+        val scrollable =
+            UiAutomatorUtils2.waitFindObjectOrNull(
+                By.scrollable(true),
+                FIND_OBJECT_TIMEOUT.toMillis(),
+            )
 
         scrollable?.scrollUntil(Direction.DOWN, Until.findObject(selector))
         findObject(selector)
     }
 
     fun scrollUpTo(selector: BySelector) {
-        waitFindObject(By.scrollable(true)).scrollUntil(Direction.UP, Until.findObject(selector))
+        UiAutomatorUtils2.waitFindObject(By.scrollable(true))
+            .scrollUntil(Direction.UP, Until.findObject(selector))
     }
 
     fun scrollUpToAndFindText(text: String) {
@@ -268,7 +284,7 @@ object UiTestUtils {
         try {
             waitDisplayed(selector) { it.click() }
         } catch (e: Exception) {
-            val scrollable = getUiDevice().findObject(By.scrollable(true))
+            val scrollable = UiAutomatorUtils2.getUiDevice().findObject(By.scrollable(true))
 
             if (scrollable == null) {
                 throw objectNotFoundExceptionWithDump(
@@ -282,7 +298,7 @@ object UiTestUtils {
 
             obj.click()
         }
-        getUiDevice().waitForIdle()
+        UiAutomatorUtils2.getUiDevice().waitForIdle()
     }
 
     fun scrollDownToAndFindText(text: String) {
@@ -296,7 +312,7 @@ object UiTestUtils {
     }
 
     fun skipOnboardingIfAppears() {
-        getUiDevice().waitForIdle()
+        UiAutomatorUtils2.getUiDevice().waitForIdle()
 
         val getStartedButton =
             findObjectWithRetry({ _ -> findObjectOrNull(By.text("Get started")) })
@@ -346,7 +362,7 @@ object UiTestUtils {
     /** Waits for the given [selector] not to be displayed. */
     fun waitNotDisplayed(selector: BySelector, timeout: Duration = NOT_DISPLAYED_TIMEOUT) {
         waitFor("$selector not to be displayed", timeout) {
-            waitFindObjectOrNull(selector, it.toMillis()) == null
+            UiAutomatorUtils2.waitFindObjectOrNull(selector, it.toMillis()) == null
         }
     }
 
@@ -384,7 +400,7 @@ object UiTestUtils {
     ) {
         val elapsedStartMillis = SystemClock.elapsedRealtime()
         while (true) {
-            getUiDevice().waitForIdle()
+            UiAutomatorUtils2.getUiDevice().waitForIdle()
             val durationSinceStart =
                 Duration.ofMillis(SystemClock.elapsedRealtime() - elapsedStartMillis)
             if (durationSinceStart >= uiAutomatorConditionTimeout) {
@@ -499,10 +515,10 @@ object UiTestUtils {
 
     fun grantPermissionViaPackageManager(context: Context, packageName: String, permName: String) {
         val pm = context.packageManager
-        if (pm.checkPermission(permName, packageName) == PERMISSION_GRANTED) {
+        if (pm.checkPermission(permName, packageName) == PackageManager.PERMISSION_GRANTED) {
             return
         }
-        runWithShellPermissionIdentity(
+        SystemUtil.runWithShellPermissionIdentity(
             { pm.grantRuntimePermission(packageName, permName, context.user) },
             Manifest.permission.GRANT_RUNTIME_PERMISSIONS,
         )
@@ -519,7 +535,7 @@ object UiTestUtils {
                 HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
             )
 
-        runWithShellPermissionIdentity(
+        SystemUtil.runWithShellPermissionIdentity(
             {
                 val permissions =
                     try {
@@ -550,7 +566,7 @@ object UiTestUtils {
         val pm = context.packageManager
 
         var result = false
-        runWithShellPermissionIdentity(
+        SystemUtil.runWithShellPermissionIdentity(
             {
                 val permissions =
                     try {
@@ -591,8 +607,8 @@ object UiTestUtils {
     fun revokePermissionViaPackageManager(context: Context, packageName: String, permName: String) {
         val pm = context.packageManager
 
-        if (pm.checkPermission(permName, packageName) == PERMISSION_DENIED) {
-            runWithShellPermissionIdentity(
+        if (pm.checkPermission(permName, packageName) == PackageManager.PERMISSION_DENIED) {
+            SystemUtil.runWithShellPermissionIdentity(
                 {
                     pm.updatePermissionFlags(
                         permName,
@@ -602,13 +618,13 @@ object UiTestUtils {
                         context.user,
                     )
                 },
-                REVOKE_RUNTIME_PERMISSIONS,
+                Manifest.permission.REVOKE_RUNTIME_PERMISSIONS,
             )
             return
         }
-        runWithShellPermissionIdentity(
+        SystemUtil.runWithShellPermissionIdentity(
             { pm.revokeRuntimePermission(packageName, permName, context.user, /* reason= */ "") },
-            REVOKE_RUNTIME_PERMISSIONS,
+            Manifest.permission.REVOKE_RUNTIME_PERMISSIONS,
         )
     }
 

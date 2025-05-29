@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.healthconnect.cts.lib
 
-import android.Manifest.permission.GRANT_RUNTIME_PERMISSIONS
+package android.healthconnect.testing.cts.ui
+
+import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.EXTRA_PACKAGE_NAME
-import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES
+import android.content.pm.PackageManager
 import android.health.connect.HealthConnectManager
-import android.healthconnect.cts.lib.UiTestUtils.TEST_APP_PACKAGE_NAME
-import android.healthconnect.cts.lib.UiTestUtils.skipOnboardingIfAppears
 import com.android.compatibility.common.util.SystemUtil
-import com.android.compatibility.common.util.UiAutomatorUtils2.getUiDevice
+import com.android.compatibility.common.util.UiAutomatorUtils2
 
 /** A class that provides a way to launch the Health Connect [MainActivity] in tests. */
 object ActivityLauncher {
@@ -36,7 +34,7 @@ object ActivityLauncher {
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         executeBlockAndExit(block) {
             startActivity(intent)
-            skipOnboardingIfAppears()
+            UiTestUtils.skipOnboardingIfAppears()
         }
     }
 
@@ -47,12 +45,12 @@ object ActivityLauncher {
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         executeBlockAndExit(block) {
             startActivity(intent)
-            skipOnboardingIfAppears()
+            UiTestUtils.skipOnboardingIfAppears()
         }
     }
 
     fun Context.launchRequestPermissionActivity(
-        packageName: String = TEST_APP_PACKAGE_NAME,
+        packageName: String = UiTestUtils.TEST_APP_PACKAGE_NAME,
         permissions: List<String>,
         block: () -> Unit,
     ) {
@@ -60,16 +58,16 @@ object ActivityLauncher {
             Intent(HealthConnectManager.ACTION_REQUEST_HEALTH_PERMISSIONS).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions.toTypedArray())
-                putExtra(EXTRA_PACKAGE_NAME, packageName)
+                putExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES, permissions.toTypedArray())
+                putExtra(Intent.EXTRA_PACKAGE_NAME, packageName)
             }
         executeBlockAndExit(block) {
             SystemUtil.runWithShellPermissionIdentity(
                 {
                     startActivity(intent)
-                    skipOnboardingIfAppears()
+                    UiTestUtils.skipOnboardingIfAppears()
                 },
-                GRANT_RUNTIME_PERMISSIONS,
+                Manifest.permission.GRANT_RUNTIME_PERMISSIONS,
             )
         }
     }
@@ -83,15 +81,15 @@ object ActivityLauncher {
             SystemUtil.runWithShellPermissionIdentity(
                 {
                     startActivity(intent)
-                    skipOnboardingIfAppears()
+                    UiTestUtils.skipOnboardingIfAppears()
                 },
-                GRANT_RUNTIME_PERMISSIONS,
+                Manifest.permission.GRANT_RUNTIME_PERMISSIONS,
             )
         }
     }
 
     private fun executeBlockAndExit(block: () -> Unit, launchActivity: () -> Unit) {
-        val uiDevice = getUiDevice()
+        val uiDevice = UiAutomatorUtils2.getUiDevice()
         uiDevice.waitForIdle()
         launchActivity()
         uiDevice.waitForIdle()
