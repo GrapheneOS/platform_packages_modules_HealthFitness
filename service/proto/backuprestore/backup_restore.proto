@@ -100,6 +100,7 @@ message IntervalRecord {
     Hydration hydration = 109;
     MenstruationPeriod menstruation_period = 110;
     MindfulnessSession mindfulness_session = 111;
+    NicotineIntake nicotine_intake = 121;
     Nutrition nutrition = 112;
     PlannedExerciseSession planned_exercise_session = 113;
     Power power = 114;
@@ -298,6 +299,12 @@ message MindfulnessSession {
   int32 mindfulness_session_type = 1;
   optional string title = 2;
   optional string notes = 3;
+}
+
+message NicotineIntake {
+  int32 nicotine_intake_type = 1;
+  int32 quantity = 2;
+  optional double nicotine_intake = 3;
 }
 
 message Nutrition {
