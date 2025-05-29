@@ -36,7 +36,7 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ആപ്പിന് ആക്സസ് ഉണ്ട്"</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{ഒരു ആപ്പിന് ആക്സസ് ഉണ്ട്}other{# ആപ്പുകൾക്ക് ആക്‌സസ് ഉണ്ട്}}"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"ഒന്നുമില്ല"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"എൻട്രിയുടെ വിശദാംശങ്ങൾ"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"എൻട്രി വിശദാംശങ്ങൾ"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"ഡാറ്റ ബ്രൗസ് ചെയ്യുക"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"ഡാറ്റയും ഏതെല്ലാം ആപ്പുകൾക്ക് അത് ആക്‌സസ് ചെയ്യാനാകുമെന്നും കാണുക"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"സ്വയമേവ ഇല്ലാതാക്കൽ, ഡാറ്റാ ഉറവിടങ്ങൾ, ബാക്കപ്പ്, പുനഃസ്ഥാപിക്കൽ"</string>

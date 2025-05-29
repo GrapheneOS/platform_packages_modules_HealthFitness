@@ -36,7 +36,7 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> apl mempunyai akses"</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{1 apl memiliki akses}other{# apl memiliki akses}}"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Tiada"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"Butiran kemasukan"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"Butiran masukan"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Semak imbas data"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Lihat data dan apl yang boleh mengakses data tersebut"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Autopadam, sumber data, sandaran dan pemulihan"</string>
@@ -677,7 +677,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 ulangan}other{# ulangan}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 ulangan}other{# ulangan}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Segmen senaman"</string>
-    <string name="segment_set_index_format" msgid="5299538353624573851">"Tetapkan <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Set <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
     <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
     <string name="segment_rpe_format_long" msgid="3492398127594227129">"Kadar penggunaan yang dikesan: <xliff:g id="RPE">%1$s</xliff:g>"</string>
     <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>

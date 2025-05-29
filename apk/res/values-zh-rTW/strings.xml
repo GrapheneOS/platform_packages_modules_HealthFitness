@@ -1221,26 +1221,20 @@
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"過去 24 小時內未使用"</string>
     <string name="accessed" msgid="4424701457530587176">"上次存取時間：<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
     <string name="connect_first_two_apps_title" msgid="2117437769113976529">"連結前 2 個應用程式"</string>
-    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"連結這些應用程式，即可開始在這些應用程式間共用健康與健身資料"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"連結這些應用程式，即可開始在這些程式間共用健康與健身資料"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"連結第二個應用程式"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"設定另一個應用程式，與「<xliff:g id="APP_NAME">%1$s</xliff:g>」共用健康與健身資料"</string>
     <string name="set_up_later" msgid="223888663943501921">"稍後再設定"</string>
     <string name="available_apps_to_connect" msgid="8425012138408583646">"可連結的應用程式"</string>
-    <string name="apps_onboarding_footer" msgid="5814165211234454165">"「健康資料同步」可讓你集中存放健康與健身資料，提供給手機的各個應用程式共用，相互搭配取得更優異的成果。"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"「健康資料同步」可讓你集中存放健康與健身資料，提供給手機的各個應用程式共用，相互搭配更流暢。"</string>
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"進一步瞭解「健康資料同步」"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"應用程式已連結至「健康資料同步」"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"即將完成"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"立即開啟這些應用程式，即可完成設定並開始共用資料"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"在各應用程式中查看健康資料"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"開始在應用程式間共用健康與健身資料"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"設定"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"連結第二個應用程式"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"設定另一個應用程式，與「<xliff:g id="APP_NAME">%1$s</xliff:g>」共用健康與健身資料"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"繼續"</string>
 </resources>

@@ -676,8 +676,8 @@
     <string name="elapsed_time_placeholder" msgid="5154979833935704302">"--:--"</string>
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{重複 1 次}other{重複 # 次}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{重複 1 次}other{重複 # 次}}"</string>
-    <string name="exercise_segments_header" msgid="2992953017179406012">"運動分段"</string>
-    <string name="segment_set_index_format" msgid="5299538353624573851">"指定值：<xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="exercise_segments_header" msgid="2992953017179406012">"運動環節"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"第 <xliff:g id="SET_INDEX">%1$d</xliff:g> 組"</string>
     <string name="segment_rpe_format" msgid="1456617736401131975">"RPE：<xliff:g id="RPE_0">%1$s</xliff:g>"</string>
     <string name="segment_rpe_format_long" msgid="3492398127594227129">"運動自覺強度：<xliff:g id="RPE">%1$s</xliff:g>"</string>
     <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
@@ -708,7 +708,7 @@
     <string name="dumbbell_triceps_extension_right_arm" msgid="1498470275564554389">"右臂啞鈴肱三頭肌伸展"</string>
     <string name="dumbbell_triceps_extension_two_arm" msgid="5409860665522903159">"兩臂啞鈴肱三頭肌伸展"</string>
     <string name="elliptical" msgid="5148914059968910839">"橢圓滑步機"</string>
-    <string name="exercise_class" msgid="32582249527931454">"運動課程"</string>
+    <string name="exercise_class" msgid="32582249527931454">"運動班"</string>
     <string name="fencing" msgid="410347890025055779">"劍擊"</string>
     <string name="football_american" msgid="8564554592554502623">"美式足球"</string>
     <string name="football_australian" msgid="5524598297723674661">"澳式足球"</string>
@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"應用程式已連結至「健康資料同步」"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"即將完成"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"立即開啟這些應用程式，以完成設定並開始分享資料"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"查看各個應用程式的健康資料"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"開始在應用程式之間分享健康和健身資料"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"設定"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"連結第二個應用程式"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"設定另一個應用程式與「<xliff:g id="APP_NAME">%1$s</xliff:g>」分享健康和健身資料"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"繼續"</string>
 </resources>

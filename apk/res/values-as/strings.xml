@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Health Connectৰ সৈতে এপ্ সংযোগ কৰা হৈছে"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"প্ৰায় সম্পূৰ্ণ হৈছে"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"ছেট আপ সম্পূৰ্ণ কৰি ডেটা শ্বেয়াৰ কৰিবলৈ আৰম্ভ কৰিবলৈ এতিয়াও এই এপ্‌সমূহ খোলক"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"সমগ্ৰ এপত আপোনাৰ স্বাস্থ্য সম্পৰ্কীয় ডেটা চাওক"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"আপোনাৰ এপ্‌সমূহৰ মাজত স্বাস্থ্য আৰু শৰীৰচৰ্চা সম্পৰ্কীয় ডেটা শ্বেয়াৰ কৰা আৰম্ভ কৰক"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"ছেট আপ কৰক"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"এটা দ্বিতীয় এপ্‌ সংযোগ কৰক"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"<xliff:g id="APP_NAME">%1$s</xliff:g>ৰ সৈতে স্বাস্থ্য আৰু শৰীৰচৰ্চা সম্পৰ্কীয় ডেটা শ্বেয়াৰ কৰিবলৈ আৰু এটা এপ্‌ ছেট আপ কৰক"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"অব্যাহত ৰাখক"</string>
 </resources>

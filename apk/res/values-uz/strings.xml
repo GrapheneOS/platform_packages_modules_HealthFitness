@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Ilova Health Connect xizmatiga ulandi"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Deyarli tayyor"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Sozlashni yakunlash va maʼlumot ulashishni boshlash uchun bu ilovalarni hoziroq oching"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Ilovalar orasidagi salomatlik maʼlumotlaringizni koʻrish"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Ilovalar orasida salomatlik va fitnes axborotlarini ulashishni boshlash"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Sozlash"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Ikkinchi ilovani ulash"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"<xliff:g id="APP_NAME">%1$s</xliff:g> bilan salomatlik va fitnes maʼlumotlarini ulashish uchun yana bitta ilovani sozlang"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Davom etish"</string>
 </resources>

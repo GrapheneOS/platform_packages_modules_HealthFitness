@@ -382,11 +382,11 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Lege fest, welche Daten diese App in Health Connect schreiben darf"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Lege fest, welche Daten diese App in Health Connect lesen und schreiben darf"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Lege fest, welche Daten diese App in Health Connect lesen darf"</string>
-    <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Wenn du der App Lesezugriff gibst, kann sie neue Daten und die Daten der letzten 30 Tage lesen"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Wenn du der App Lesezugriff gibst, kann sie neue Daten und die Daten der letzten 30 Tage lesen."</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Wenn du der App Lesezugriff gibst, kann sie neue und frühere Daten lesen"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> Zugriff auf Health Connect erlauben?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ erlauben, auf Fitness- und Wellnessdaten zuzugreifen?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"Wie <xliff:g id="APP_NAME">%1$s</xliff:g> mit deinen Daten umgeht, erfährst du in der <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> des Entwicklers"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"Wie <xliff:g id="APP_NAME">%1$s</xliff:g> mit deinen Daten umgeht, erfährst du in der <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> des Entwicklers."</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"Datenschutzerklärung"</string>
     <string name="medical_request_header" msgid="2300521519021510027">"<xliff:g id="APP_NAME">%1$s</xliff:g> Zugriff auf deine Gesundheitsdaten erlauben?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Wenn du der App Zugriff gewährst, kann sie Daten zu Allergien, Laborergebnissen, Impfungen und mehr lesen und schreiben\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"App mit Health Connect verbunden"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Fast fertig"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Öffne diese Apps jetzt, um die Einrichtung abzuschließen und das Teilen von Daten zu starten"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Gesundheitsdaten in verschiedenen Apps anzeigen"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Lass zu, dass zwischen Apps Gesundheits- und Fitnessdaten freigegeben werden dürfen"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Einrichten"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Zweite App verbinden"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Richte eine weitere App ein, um Gesundheits- und Fitnessdaten mit <xliff:g id="APP_NAME">%1$s</xliff:g> zu teilen"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Weiter"</string>
 </resources>
