@@ -18,14 +18,13 @@ package android.healthconnect.cts.route;
 
 import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTES;
 import static android.health.connect.HealthPermissions.WRITE_EXERCISE_ROUTE;
-import static android.healthconnect.cts.route.ExerciseRouteTestHelper.ROUTES_READER_WRITER_APP;
-import static android.healthconnect.cts.route.ExerciseRouteTestHelper.ROUTE_WRITER_APP;
+import static android.healthconnect.cts.route.ExerciseRouteTestHelper.ROUTES_READER_WRITER_APP_PACKAGE_NAME;
+import static android.healthconnect.cts.route.ExerciseRouteTestHelper.ROUTE_WRITER_APP_PACKAGE_NAME;
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.assertCorrectHealthPermissions;
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.getExerciseSessionWithAnotherRoute;
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.getExerciseSessionWithRoute;
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.getExerciseSessionWithoutRoute;
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.readAllExerciseSessionRecordsPrivileged;
-import static android.healthconnect.testing.cts.PermissionUtils.runWithRevokedPermissions;
 import static android.healthconnect.testing.cts.TestUtils.connectAppsWithGrantedPermissions;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
@@ -43,6 +42,8 @@ import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.ExerciseSessionRecord;
+import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
+import android.healthconnect.testing.cts.testapphelpers.TestAppRule;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 
@@ -55,11 +56,22 @@ import java.util.List;
 
 public class ExerciseRouteNoReadWritePermissionTest {
 
-    @Rule
-    public AssumptionCheckerRule mSupportedHardwareRule =
+    @Rule(order = 0)
+    public final AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
+
+    @Rule(order = 1)
+    public final TestAppRule mRouteWriterAppRule =
+            new TestAppRule.Builder(ROUTE_WRITER_APP_PACKAGE_NAME).build();
+
+    @Rule(order = 2)
+    public final TestAppRule mRoutesReaderWriterAppRule =
+            new TestAppRule.Builder(ROUTES_READER_WRITER_APP_PACKAGE_NAME).build();
+
+    private final TestAppProxy mRouteWriterApp = mRouteWriterAppRule.getProxy();
+    private final TestAppProxy mRoutesReaderWriteApp = mRoutesReaderWriterAppRule.getProxy();
 
     @Before
     public void setUp() throws Exception {
@@ -76,14 +88,11 @@ public class ExerciseRouteNoReadWritePermissionTest {
     public void insertRecords_canNotInsertRoute() {
         ExerciseSessionRecord otherAppSession = getExerciseSessionWithRoute(getEmptyMetadata());
 
+        mRouteWriterAppRule.revokeHealthPermission(WRITE_EXERCISE_ROUTE);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
-                        () ->
-                                runWithRevokedPermissions(
-                                        () -> ROUTE_WRITER_APP.insertRecords(otherAppSession),
-                                        ROUTE_WRITER_APP.getPackageName(),
-                                        WRITE_EXERCISE_ROUTE));
+                        () -> mRouteWriterApp.insertRecords(otherAppSession));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
     }
@@ -93,14 +102,12 @@ public class ExerciseRouteNoReadWritePermissionTest {
             throws Exception {
         ExerciseSessionRecord sessionWithRoute =
                 getExerciseSessionWithRoute(getMetadataForClientId("client id"));
-        ROUTE_WRITER_APP.insertRecords(sessionWithRoute);
+        mRouteWriterApp.insertRecords(sessionWithRoute);
         ExerciseSessionRecord updatedSessionWithoutRoute =
                 getExerciseSessionWithoutRoute(getMetadataForClientId("client id"));
 
-        runWithRevokedPermissions(
-                () -> ROUTE_WRITER_APP.insertRecords(updatedSessionWithoutRoute),
-                ROUTE_WRITER_APP.getPackageName(),
-                WRITE_EXERCISE_ROUTE);
+        mRouteWriterAppRule.revokeHealthPermission(WRITE_EXERCISE_ROUTE);
+        mRouteWriterApp.insertRecords(updatedSessionWithoutRoute);
 
         List<ExerciseSessionRecord> records = readAllExerciseSessionRecordsPrivileged();
         assertThat(records).hasSize(1);
@@ -113,20 +120,15 @@ public class ExerciseRouteNoReadWritePermissionTest {
             throws Exception {
         ExerciseSessionRecord sessionWithRoute =
                 getExerciseSessionWithRoute(getMetadataForClientId("client id"));
-        ROUTE_WRITER_APP.insertRecords(sessionWithRoute);
+        mRouteWriterApp.insertRecords(sessionWithRoute);
         ExerciseSessionRecord sessionWithUpdatedRoute =
                 getExerciseSessionWithAnotherRoute(getMetadataForClientId("client id"));
 
+        mRouteWriterAppRule.revokeHealthPermission(WRITE_EXERCISE_ROUTE);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
-                        () ->
-                                runWithRevokedPermissions(
-                                        () ->
-                                                ROUTE_WRITER_APP.insertRecords(
-                                                        sessionWithUpdatedRoute),
-                                        ROUTE_WRITER_APP.getPackageName(),
-                                        WRITE_EXERCISE_ROUTE));
+                        () -> mRouteWriterApp.insertRecords(sessionWithUpdatedRoute));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
         List<ExerciseSessionRecord> records = readAllExerciseSessionRecordsPrivileged();
@@ -140,18 +142,15 @@ public class ExerciseRouteNoReadWritePermissionTest {
             throws Exception {
         ExerciseSessionRecord sessionWithoutRoute =
                 getExerciseSessionWithoutRoute(getMetadataForClientId("client id"));
-        ROUTE_WRITER_APP.insertRecords(sessionWithoutRoute);
+        mRouteWriterApp.insertRecords(sessionWithoutRoute);
         ExerciseSessionRecord sessionWithAddedRoute =
                 getExerciseSessionWithRoute(getMetadataForClientId("client id"));
 
+        mRouteWriterAppRule.revokeHealthPermission(WRITE_EXERCISE_ROUTE);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
-                        () ->
-                                runWithRevokedPermissions(
-                                        () -> ROUTE_WRITER_APP.insertRecords(sessionWithAddedRoute),
-                                        ROUTE_WRITER_APP.getPackageName(),
-                                        WRITE_EXERCISE_ROUTE));
+                        () -> mRouteWriterApp.insertRecords(sessionWithAddedRoute));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
         List<ExerciseSessionRecord> records = readAllExerciseSessionRecordsPrivileged();
@@ -163,14 +162,12 @@ public class ExerciseRouteNoReadWritePermissionTest {
     @Test
     public void updateRecords_withoutRoute_routeDoesNotGetDeleted() throws Exception {
         ExerciseSessionRecord sessionWithRoute = getExerciseSessionWithRoute(getEmptyMetadata());
-        String sessionId = ROUTE_WRITER_APP.insertRecords(sessionWithRoute).get(0);
+        String sessionId = mRouteWriterApp.insertRecords(sessionWithRoute).get(0);
         ExerciseSessionRecord updatedSessionWithoutRoute =
                 getExerciseSessionWithoutRoute(getMetadataForId(sessionId));
 
-        runWithRevokedPermissions(
-                ROUTE_WRITER_APP.getPackageName(),
-                WRITE_EXERCISE_ROUTE,
-                () -> ROUTE_WRITER_APP.updateRecords(updatedSessionWithoutRoute));
+        mRouteWriterAppRule.revokeHealthPermission(WRITE_EXERCISE_ROUTE);
+        mRouteWriterApp.updateRecords(updatedSessionWithoutRoute);
 
         List<ExerciseSessionRecord> records = readAllExerciseSessionRecordsPrivileged();
         assertThat(records).hasSize(1);
@@ -181,20 +178,15 @@ public class ExerciseRouteNoReadWritePermissionTest {
     @Test
     public void updateRecords_withUpdatedRoute_throws_routeDoesNotGetUpdated() throws Exception {
         ExerciseSessionRecord sessionWithRoute = getExerciseSessionWithRoute(getEmptyMetadata());
-        String sessionId = ROUTE_WRITER_APP.insertRecords(sessionWithRoute).get(0);
+        String sessionId = mRouteWriterApp.insertRecords(sessionWithRoute).get(0);
         ExerciseSessionRecord sessionWithUpdatedRoute =
                 getExerciseSessionWithAnotherRoute(getMetadataForId(sessionId));
 
+        mRouteWriterAppRule.revokeHealthPermission(WRITE_EXERCISE_ROUTE);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
-                        () ->
-                                runWithRevokedPermissions(
-                                        ROUTE_WRITER_APP.getPackageName(),
-                                        WRITE_EXERCISE_ROUTE,
-                                        () ->
-                                                ROUTE_WRITER_APP.updateRecords(
-                                                        sessionWithUpdatedRoute)));
+                        () -> mRouteWriterApp.updateRecords(sessionWithUpdatedRoute));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
         List<ExerciseSessionRecord> records = readAllExerciseSessionRecordsPrivileged();
@@ -207,20 +199,15 @@ public class ExerciseRouteNoReadWritePermissionTest {
     public void updateRecords_withAddedRoute_throws_routeDoesNotGetAdded() throws Exception {
         ExerciseSessionRecord sessionWithoutRoute =
                 getExerciseSessionWithoutRoute(getEmptyMetadata());
-        String sessionId = ROUTE_WRITER_APP.insertRecords(sessionWithoutRoute).get(0);
+        String sessionId = mRouteWriterApp.insertRecords(sessionWithoutRoute).get(0);
         ExerciseSessionRecord sessionWithAddedRoute =
                 getExerciseSessionWithRoute(getMetadataForId(sessionId));
 
+        mRouteWriterAppRule.revokeHealthPermission(WRITE_EXERCISE_ROUTE);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
-                        () ->
-                                runWithRevokedPermissions(
-                                        ROUTE_WRITER_APP.getPackageName(),
-                                        WRITE_EXERCISE_ROUTE,
-                                        () ->
-                                                ROUTE_WRITER_APP.updateRecords(
-                                                        sessionWithAddedRoute)));
+                        () -> mRouteWriterApp.updateRecords(sessionWithAddedRoute));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
         List<ExerciseSessionRecord> records = readAllExerciseSessionRecordsPrivileged();
@@ -232,18 +219,14 @@ public class ExerciseRouteNoReadWritePermissionTest {
     @Test
     public void readRecords_usingFilters_canAccessOwnRoute() throws Exception {
         ExerciseSessionRecord sessionWithRoute = getExerciseSessionWithRoute(getEmptyMetadata());
-        ROUTES_READER_WRITER_APP.insertRecords(sessionWithRoute);
+        mRoutesReaderWriteApp.insertRecords(sessionWithRoute);
 
+        mRoutesReaderWriterAppRule.revokeHealthPermission(READ_EXERCISE_ROUTES);
+        mRoutesReaderWriterAppRule.revokeHealthPermission(WRITE_EXERCISE_ROUTE);
         List<ExerciseSessionRecord> records =
-                runWithRevokedPermissions(
-                        () ->
-                                ROUTES_READER_WRITER_APP.readRecords(
-                                        new ReadRecordsRequestUsingFilters.Builder<>(
-                                                        ExerciseSessionRecord.class)
-                                                .build()),
-                        ROUTES_READER_WRITER_APP.getPackageName(),
-                        READ_EXERCISE_ROUTES,
-                        WRITE_EXERCISE_ROUTE);
+                mRoutesReaderWriteApp.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(ExerciseSessionRecord.class)
+                                .build());
 
         assertThat(records).hasSize(1);
         assertThat(records.get(0).hasRoute()).isTrue();
@@ -253,19 +236,15 @@ public class ExerciseRouteNoReadWritePermissionTest {
     @Test
     public void readRecords_usingIds_canAccessOwnRoute() throws Exception {
         ExerciseSessionRecord sessionWithRoute = getExerciseSessionWithRoute(getEmptyMetadata());
-        String sessionId = ROUTES_READER_WRITER_APP.insertRecords(sessionWithRoute).get(0);
+        String sessionId = mRoutesReaderWriteApp.insertRecords(sessionWithRoute).get(0);
 
+        mRoutesReaderWriterAppRule.revokeHealthPermission(READ_EXERCISE_ROUTES);
+        mRoutesReaderWriterAppRule.revokeHealthPermission(WRITE_EXERCISE_ROUTE);
         List<ExerciseSessionRecord> records =
-                runWithRevokedPermissions(
-                        () ->
-                                ROUTES_READER_WRITER_APP.readRecords(
-                                        new ReadRecordsRequestUsingIds.Builder<>(
-                                                        ExerciseSessionRecord.class)
-                                                .addId(sessionId)
-                                                .build()),
-                        ROUTES_READER_WRITER_APP.getPackageName(),
-                        READ_EXERCISE_ROUTES,
-                        WRITE_EXERCISE_ROUTE);
+                mRoutesReaderWriteApp.readRecords(
+                        new ReadRecordsRequestUsingIds.Builder<>(ExerciseSessionRecord.class)
+                                .addId(sessionId)
+                                .build());
 
         assertThat(records).hasSize(1);
         assertThat(records.get(0).hasRoute()).isTrue();
@@ -275,21 +254,17 @@ public class ExerciseRouteNoReadWritePermissionTest {
     @Test
     public void getChangelogs_canAccessOwnRoute() throws Exception {
         String token =
-                ROUTES_READER_WRITER_APP.getChangeLogToken(
+                mRoutesReaderWriteApp.getChangeLogToken(
                         new ChangeLogTokenRequest.Builder()
                                 .addRecordType(ExerciseSessionRecord.class)
                                 .build());
         ExerciseSessionRecord sessionWithRoute = getExerciseSessionWithRoute(getEmptyMetadata());
-        ROUTES_READER_WRITER_APP.insertRecords(sessionWithRoute);
+        mRoutesReaderWriteApp.insertRecords(sessionWithRoute);
 
+        mRoutesReaderWriterAppRule.revokeHealthPermission(READ_EXERCISE_ROUTES);
+        mRoutesReaderWriterAppRule.revokeHealthPermission(WRITE_EXERCISE_ROUTE);
         ChangeLogsResponse response =
-                runWithRevokedPermissions(
-                        () ->
-                                ROUTES_READER_WRITER_APP.getChangeLogs(
-                                        new ChangeLogsRequest.Builder(token).build()),
-                        ROUTES_READER_WRITER_APP.getPackageName(),
-                        READ_EXERCISE_ROUTES,
-                        WRITE_EXERCISE_ROUTE);
+                mRoutesReaderWriteApp.getChangeLogs(new ChangeLogsRequest.Builder(token).build());
 
         List<ExerciseSessionRecord> records =
                 response.getUpsertedRecords().stream()

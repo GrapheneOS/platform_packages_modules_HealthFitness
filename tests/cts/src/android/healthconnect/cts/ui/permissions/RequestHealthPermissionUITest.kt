@@ -18,16 +18,16 @@ package android.healthconnect.cts.ui.permissions
 
 import android.content.pm.PackageManager
 import android.health.connect.HealthPermissions
-import android.healthconnect.cts.lib.ActivityLauncher.launchRequestPermissionActivity
-import android.healthconnect.cts.lib.UiTestUtils.TEST_APP_PACKAGE_NAME
-import android.healthconnect.cts.lib.UiTestUtils.clickOnTextAndWaitForNewWindow
-import android.healthconnect.cts.lib.UiTestUtils.findText
-import android.healthconnect.cts.lib.UiTestUtils.findTextAndClick
-import android.healthconnect.cts.lib.UiTestUtils.grantPermissionViaPackageManager
-import android.healthconnect.cts.lib.UiTestUtils.revokePermissionViaPackageManager
-import android.healthconnect.cts.lib.UiTestUtils.scrollDownToAndFindText
-import android.healthconnect.cts.lib.UiTestUtils.waitForObjectNotFound
 import android.healthconnect.cts.ui.HealthConnectBaseTest
+import android.healthconnect.testing.cts.ui.ActivityLauncher.launchRequestPermissionActivity
+import android.healthconnect.testing.cts.ui.UiTestUtils.TEST_APP_PACKAGE_NAME
+import android.healthconnect.testing.cts.ui.UiTestUtils.clickOnTextAndWaitForNewWindow
+import android.healthconnect.testing.cts.ui.UiTestUtils.findText
+import android.healthconnect.testing.cts.ui.UiTestUtils.findTextAndClick
+import android.healthconnect.testing.cts.ui.UiTestUtils.grantPermissionViaPackageManager
+import android.healthconnect.testing.cts.ui.UiTestUtils.revokePermissionViaPackageManager
+import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndFindText
+import android.healthconnect.testing.cts.ui.UiTestUtils.waitForObjectNotFound
 import android.os.Build
 import androidx.test.filters.SdkSuppress
 import androidx.test.uiautomator.By

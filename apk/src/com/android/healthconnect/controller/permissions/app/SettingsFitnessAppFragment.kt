@@ -316,6 +316,7 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
                         )
                         it.logNameActive = PermissionsElement.PERMISSION_SWITCH
                         it.logNameInactive = PermissionsElement.PERMISSION_SWITCH
+                        it.permission = permission
                         it.setOnPreferenceChangeListener { _, newValue ->
                             val checked = newValue as Boolean
                             // Shown warning when revoking permission from system apps.

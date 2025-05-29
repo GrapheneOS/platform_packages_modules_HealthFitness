@@ -307,6 +307,7 @@ class MedicalAppFragment : Hilt_MedicalAppFragment() {
                         )
                         it.logNameActive = AppAccessElement.PERMISSION_SWITCH_ACTIVE
                         it.logNameInactive = AppAccessElement.PERMISSION_SWITCH_INACTIVE
+                        it.permission = permission
                         it.setOnPreferenceChangeListener { _, newValue ->
                             allowAllPreference.removeOnSwitchChangeListener(onSwitchChangeListener)
                             val checked = newValue as Boolean

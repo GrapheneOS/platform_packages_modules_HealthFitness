@@ -27,17 +27,16 @@ import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.ExerciseRoute
 import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.ExerciseSessionType
-import android.healthconnect.cts.lib.UiTestUtils.clickOnText
-import android.healthconnect.cts.lib.UiTestUtils.waitDisplayed
 import android.healthconnect.cts.ui.HealthConnectBaseTest
 import android.healthconnect.testing.cts.PermissionUtils.getDeclaredHealthPermissions
-import android.healthconnect.testing.cts.PermissionUtils.runWithRevokedPermission
 import android.healthconnect.testing.cts.PermissionUtils.runWithUserFixedPermission
 import android.healthconnect.testing.cts.TestUtils
 import android.healthconnect.testing.cts.TestUtils.insertRecordAndGetId
 import android.healthconnect.testing.cts.testapphelpers.ProxyActivity
 import android.healthconnect.testing.cts.testapphelpers.TestAppProxy
 import android.healthconnect.testing.cts.testapphelpers.TestAppRule
+import android.healthconnect.testing.cts.ui.UiTestUtils.clickOnText
+import android.healthconnect.testing.cts.ui.UiTestUtils.waitDisplayed
 import android.healthconnect.testing.shared.DataFactory.getEmptyMetadata
 import android.healthconnect.testing.shared.DeviceSupportUtils
 import androidx.test.uiautomator.By
@@ -168,16 +167,12 @@ class ExerciseRouteRequestTest : HealthConnectBaseTest() {
         val recordId: String = routeReaderWriterApp.insertRecords(record).get(0)
         val requestIntent =
             Intent(ACTION_REQUEST_EXERCISE_ROUTE).putExtra(EXTRA_SESSION_ID, recordId)
+        routeReaderWriterAppRule.revokeHealthPermission(HealthPermissions.WRITE_EXERCISE_ROUTE)
 
         val result =
-            runWithRevokedPermission(
-                routeReaderWriterApp.packageName,
-                HealthPermissions.WRITE_EXERCISE_ROUTE,
-            ) {
-                routeReaderWriterApp.startActivityForResult(requestIntent) {
-                    waitDisplayed(By.text("Allow all routes"))
-                    clickOnText("Allow this route")
-                }
+            routeReaderWriterApp.startActivityForResult(requestIntent) {
+                waitDisplayed(By.text("Allow all routes"))
+                clickOnText("Allow this route")
             }
 
         assertThat(result.resultCode).isEqualTo(Activity.RESULT_OK)
@@ -195,15 +190,11 @@ class ExerciseRouteRequestTest : HealthConnectBaseTest() {
         val recordId: String = routeReaderWriterApp.insertRecords(record).get(0)
         val requestIntent =
             Intent(ACTION_REQUEST_EXERCISE_ROUTE).putExtra(EXTRA_SESSION_ID, recordId)
+        routeReaderWriterAppRule.revokeHealthPermission(HealthPermissions.WRITE_EXERCISE_ROUTE)
 
         val result =
-            runWithRevokedPermission(
-                routeReaderWriterApp.packageName,
-                HealthPermissions.WRITE_EXERCISE_ROUTE,
-            ) {
-                runWithUserFixedPermission(routeReaderWriterApp.packageName, READ_EXERCISE_ROUTES) {
-                    routeReaderWriterApp.startActivityForResult(requestIntent)
-                }
+            runWithUserFixedPermission(routeReaderWriterApp.packageName, READ_EXERCISE_ROUTES) {
+                routeReaderWriterApp.startActivityForResult(requestIntent)
             }
 
         assertThat(result.resultCode).isEqualTo(Activity.RESULT_CANCELED)
@@ -220,14 +211,9 @@ class ExerciseRouteRequestTest : HealthConnectBaseTest() {
         val requestIntent =
             Intent(ACTION_REQUEST_EXERCISE_ROUTE).putExtra(EXTRA_SESSION_ID, recordId)
         routeReaderWriterAppRule.grantHealthPermission(READ_EXERCISE_ROUTES)
+        routeReaderWriterAppRule.revokeHealthPermission(HealthPermissions.WRITE_EXERCISE_ROUTE)
 
-        val result =
-            runWithRevokedPermission(
-                routeReaderWriterApp.packageName,
-                HealthPermissions.WRITE_EXERCISE_ROUTE,
-            ) {
-                routeReaderWriterApp.startActivityForResult(requestIntent)
-            }
+        val result = routeReaderWriterApp.startActivityForResult(requestIntent)
 
         assertThat(result.resultCode).isEqualTo(Activity.RESULT_OK)
         val extras = result.resultData.extras!!
@@ -303,16 +289,12 @@ class ExerciseRouteRequestTest : HealthConnectBaseTest() {
         val recordId = insertRecordAndGetId(record)
         val requestIntent =
             Intent(ACTION_REQUEST_EXERCISE_ROUTE).putExtra(EXTRA_SESSION_ID, recordId)
+        routeReaderWriterAppRule.revokeHealthPermission(HealthPermissions.WRITE_EXERCISE_ROUTE)
 
         val result =
-            runWithRevokedPermission(
-                routeReaderWriterApp.getPackageName(),
-                HealthPermissions.WRITE_EXERCISE_ROUTE,
-            ) {
-                routeReaderWriterApp.startActivityForResult(requestIntent) {
-                    waitDisplayed(By.text("Allow this route"))
-                    clickOnText("Allow all routes")
-                }
+            routeReaderWriterApp.startActivityForResult(requestIntent) {
+                waitDisplayed(By.text("Allow this route"))
+                clickOnText("Allow all routes")
             }
 
         assertThat(result.resultCode).isEqualTo(Activity.RESULT_OK)
@@ -331,14 +313,10 @@ class ExerciseRouteRequestTest : HealthConnectBaseTest() {
         val requestIntent =
             Intent(ACTION_REQUEST_EXERCISE_ROUTE).putExtra(EXTRA_SESSION_ID, recordId)
         routeReaderWriterAppRule.grantHealthPermission(READ_EXERCISE_ROUTES)
+        routeReaderWriterAppRule.revokeHealthPermission(HealthPermissions.READ_EXERCISE)
 
         assertThrows(SecurityException::class.java) {
-            runWithRevokedPermission(
-                routeReaderWriterApp.getPackageName(),
-                HealthPermissions.READ_EXERCISE,
-            ) {
-                routeReaderWriterApp.startActivityForResult(requestIntent)
-            }
+            routeReaderWriterApp.startActivityForResult(requestIntent)
         }
     }
 
@@ -440,16 +418,12 @@ class ExerciseRouteRequestTest : HealthConnectBaseTest() {
         val recordId: String = routeReaderWriterApp.insertRecords(record).get(0)
         val requestIntent =
             Intent(ACTION_REQUEST_EXERCISE_ROUTE).putExtra(EXTRA_SESSION_ID, recordId)
+        routeReaderWriterAppRule.revokeHealthPermission(HealthPermissions.WRITE_EXERCISE_ROUTE)
 
         val result =
-            runWithRevokedPermission(
-                routeReaderWriterApp.packageName,
-                HealthPermissions.WRITE_EXERCISE_ROUTE,
-            ) {
-                routeReaderWriterApp.startActivityForResult(requestIntent) {
-                    waitDisplayed(By.text("Allow all routes"))
-                    clickOnText("Allow this route")
-                }
+            routeReaderWriterApp.startActivityForResult(requestIntent) {
+                waitDisplayed(By.text("Allow all routes"))
+                clickOnText("Allow this route")
             }
 
         assertThat(result.resultCode).isEqualTo(Activity.RESULT_OK)

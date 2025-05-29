@@ -1,0 +1,48 @@
+/*
+ * Copyright (C) 2025 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package android.healthconnect.cts.datatypes.api;
+
+import android.health.connect.HealthPermissions;
+import android.health.connect.datatypes.NicotineIntakeRecord;
+import android.healthconnect.testing.shared.recordfactory.NicotineIntakeRecordFactory;
+import android.platform.test.annotations.AppModeFull;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.android.healthfitness.flags.Flags;
+
+import org.junit.runner.RunWith;
+
+@AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
+@RunWith(AndroidJUnit4.class)
+@RequiresFlagsEnabled({
+    Flags.FLAG_SMOKING,
+    Flags.FLAG_SMOKING_DB,
+    Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
+    Flags.FLAG_HEALTH_CONNECT_MAPPINGS,
+    Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    Flags.FLAG_PHR_CHANGE_LOGS_DB
+})
+public class NicotineIntakeRecordApiTest extends BaseApiTest<NicotineIntakeRecord> {
+    public NicotineIntakeRecordApiTest() {
+        super(
+                () -> NicotineIntakeRecord.class,
+                HealthPermissions.READ_NICOTINE_INTAKE,
+                HealthPermissions.WRITE_NICOTINE_INTAKE,
+                new NicotineIntakeRecordFactory());
+    }
+}

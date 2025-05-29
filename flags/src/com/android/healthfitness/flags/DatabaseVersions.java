@@ -37,6 +37,7 @@ public final class DatabaseVersions {
     public static final int DB_VERSION_ECOSYSTEM_METRICS = 17;
     public static final int DB_VERSION_CLOUD_BACKUP_AND_RESTORE = 18;
     public static final int DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS = 19;
+    public static final int DB_VERSION_NICOTINE_INTAKE = 21;
 
     /**
      * Modifies change_log_table and change_log_request_table.

@@ -22,6 +22,7 @@ import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_D
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
+import static com.android.healthfitness.flags.Flags.FLAG_SMOKING_DB;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.checkTableExists;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -87,6 +88,7 @@ public class HealthConnectDatabaseTest {
         FLAG_ACTIVITY_INTENSITY_DB,
         Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
         FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
+        FLAG_SMOKING_DB
     })
     public void onCreate_dbWithLatestSchemaCreated() {
         SQLiteDatabase sqliteDatabase =

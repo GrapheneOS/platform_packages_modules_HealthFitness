@@ -37,6 +37,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -211,6 +212,7 @@ class MedicalAppFragmentTest {
             assertThat(writeCategory?.preferenceCount).isEqualTo(0)
         }
         onView(withText("Vaccines")).check(matches(isDisplayed()))
+        onView(withContentDescription("Vaccines. Read Access. On")).check(matches(isDisplayed()))
         onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
     }
 
@@ -260,6 +262,43 @@ class MedicalAppFragmentTest {
         }
         onView(withText("All health records")).check(matches(isDisplayed()))
         onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun permissionSwitchOn_contentDescription() {
+        val writePermission = MedicalPermission(ALL_MEDICAL_DATA)
+        val readPermission = MedicalPermission(VACCINES)
+        whenever(viewModel.medicalPermissions).then {
+            MutableLiveData(listOf(writePermission, readPermission))
+        }
+        whenever(viewModel.grantedMedicalPermissions).then {
+            MutableLiveData(setOf(writePermission, readPermission))
+        }
+
+        launchFragment<MedicalAppFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
+        )
+
+        onView(withContentDescription("All health records. Write Access. On"))
+            .check(matches(isDisplayed()))
+        onView(withContentDescription("Vaccines. Read Access. On")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun permissionSwitchOff_contentDescription() {
+        val writePermission = MedicalPermission(ALL_MEDICAL_DATA)
+        val readPermission = MedicalPermission(VACCINES)
+        whenever(viewModel.medicalPermissions).then {
+            MutableLiveData(listOf(writePermission, readPermission))
+        }
+
+        launchFragment<MedicalAppFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
+        )
+
+        onView(withContentDescription("All health records. Write Access. Off"))
+            .check(matches(isDisplayed()))
+        onView(withContentDescription("Vaccines. Read Access. Off")).check(matches(isDisplayed()))
     }
 
     @Test

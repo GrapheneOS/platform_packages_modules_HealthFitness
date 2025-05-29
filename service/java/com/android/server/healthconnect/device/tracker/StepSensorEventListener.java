@@ -18,6 +18,7 @@ package com.android.server.healthconnect.device.tracker;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_AUTOMATICALLY_RECORDED;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 import android.content.Context;
@@ -48,6 +49,7 @@ class StepSensorEventListener implements SensorEventListener {
 
     private static final String TAG = "HealthConnectStepSensorEventListener";
     private static final long BATCHING_DURATION_MILLIS = SECONDS.toMillis(60);
+    @VisibleForTesting static final double MIN_STEPS_PER_MINUTE = 30;
 
     @VisibleForTesting static final long BOOT_TIME_NANOS = computeBootTimeNanos();
 
@@ -118,7 +120,7 @@ class StepSensorEventListener implements SensorEventListener {
                         // This will write in the first received event immediately and then future
                         // events every 60 seconds (BATCHING_DURATION_NANOS) until there are no
                         // steps for 60 seconds
-                        writeBatchAndScheduleNextWrite();
+                        writeBatchAndScheduleNextWrite(/* isDelayedTask= */ false);
                     }
                 });
     }
@@ -157,7 +159,7 @@ class StepSensorEventListener implements SensorEventListener {
         return false;
     }
 
-    private void writeBatchAndScheduleNextWrite() {
+    private void writeBatchAndScheduleNextWrite(boolean isDelayedTask) {
         int stepDelta =
                 mPendingData.sensorValue
                         - mLastSavedData
@@ -169,17 +171,86 @@ class StepSensorEventListener implements SensorEventListener {
             return;
         }
 
-        long realEventTimestampNanos =
+        long realStartTimestampNanos =
+                calculateRealEventTimestampNanos(
+                        estimateStartTime(
+                                stepDelta,
+                                mLastSavedData.sensorTimestampNanos,
+                                mPendingData.sensorTimestampNanos,
+                                isDelayedTask));
+        long realEndTimestampNanos =
                 calculateRealEventTimestampNanos(mPendingData.sensorTimestampNanos);
-        writeSteps(getStepsRecordInternal(stepDelta, realEventTimestampNanos));
+        writeSteps(
+                getStepsRecordInternal(stepDelta, realStartTimestampNanos, realEndTimestampNanos));
         mLastSavedData = mPendingData;
 
         mPendingBatchWriteFuture =
                 mThreadScheduler.schedulePassiveTrackerTask(
-                        this::writeBatchAndScheduleNextWrite, getBatchingDurationMillis());
+                        () -> writeBatchAndScheduleNextWrite(/* isDelayedTask= */ true),
+                        getBatchingDurationMillis());
         if (mPendingBatchWriteFuture.isEmpty()) {
             Slog.e(TAG, "Failed to schedule a write");
         }
+    }
+
+    /**
+     * Estimates start time in nanos since device boot.
+     *
+     * <p>The earliest possible and default start time is the end timestamp of the last saved data
+     * point. If a low step cadence is detected and write was not triggered from a delayed task, we
+     * extrapolate the start timestamp from a minimum cadence. If the write was triggered from a
+     * delayed task, the extrapolated start timestamp will be the end of the last event timestamp.
+     *
+     * <p>We only receive steps when AP is awake. If the device is asleep and the user takes steps,
+     * we won't know the start timestamp of the steps event. If the step cadence is low (a small
+     * number of steps over a large duration), we can trim and estimate the start timestamp by
+     * applying a {@link MIN_STEPS_PER_MINUTE}.
+     */
+    // TODO(b/418989797): Use the last device wake time as a potential start timestamp.
+    @VisibleForTesting
+    static long estimateStartTime(
+            int stepDelta,
+            long endOfLastDataPointNanos,
+            long endOfCurrentDataPointNanos,
+            boolean isDelayedTask) {
+        if (isDelayedTask) {
+            // As these are continuous steps, the start time should always be the end of the last
+            // event
+            return endOfLastDataPointNanos;
+        }
+
+        long startTimestampNanos = endOfLastDataPointNanos;
+
+        // Check if the interval is too large, and trim it down to avoid large deltas with few steps
+        float cadence = getCadence(stepDelta, startTimestampNanos, endOfCurrentDataPointNanos);
+        if (cadence < MIN_STEPS_PER_MINUTE) {
+            double estimatedDurationMinutes = stepDelta / MIN_STEPS_PER_MINUTE;
+            long estimatedDurationNanos = (long) (estimatedDurationMinutes * MINUTES.toNanos(1));
+
+            // Ensure the trimmed start time is not earlier than the end of the last data point
+            startTimestampNanos =
+                    Math.max(
+                            endOfCurrentDataPointNanos - estimatedDurationNanos,
+                            startTimestampNanos);
+        }
+
+        return startTimestampNanos;
+    }
+
+    /**
+     * Returns the cadence in steps/minute.
+     *
+     * @return the cadence as a float, or a negative value if start is not before end.
+     */
+    private static float getCadence(int delta, long startNanos, long endNanos) {
+        long duration = endNanos - startNanos;
+        if (duration <= 0) {
+            Slog.e(TAG, "Invalid start and end timestamps");
+            return -1;
+        }
+
+        float durationMinutes = (float) duration / MINUTES.toNanos(1);
+        return delta / durationMinutes;
     }
 
     @VisibleForTesting
@@ -187,15 +258,14 @@ class StepSensorEventListener implements SensorEventListener {
         return BATCHING_DURATION_MILLIS;
     }
 
-    private StepsRecordInternal getStepsRecordInternal(float stepCount, long eventEndTimeNanos) {
+    private StepsRecordInternal getStepsRecordInternal(
+            float stepCount, long eventStartTimeNanos, long eventEndTimeNanos) {
         StepsRecordInternal record = new StepsRecordInternal();
         record.setCount((int) stepCount);
         record.setRecordingMethod(RECORDING_METHOD_AUTOMATICALLY_RECORDED);
 
+        Instant startTime = Instant.ofEpochSecond(0L, eventStartTimeNanos);
         Instant endTime = Instant.ofEpochSecond(0L, eventEndTimeNanos);
-        // TODO(b/397400522): Extrapolate start time if there is a large step delta.
-        // startTime should never equal endTime as this isn't supported in Jetpack records.
-        Instant startTime = endTime.minusMillis(1);
         record.setStartTime(startTime.toEpochMilli());
         record.setEndTime(endTime.toEpochMilli());
         record.setStartZoneOffset(

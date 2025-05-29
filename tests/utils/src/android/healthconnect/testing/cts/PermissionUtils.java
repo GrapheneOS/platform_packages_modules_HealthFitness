@@ -32,7 +32,6 @@ import static java.util.Objects.requireNonNull;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.UiAutomation;
 import android.content.AttributionSource;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -44,17 +43,13 @@ import android.permission.PermissionManager;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.compatibility.common.util.SystemUtil;
-import com.android.compatibility.common.util.ThrowingRunnable;
 import com.android.compatibility.common.util.ThrowingSupplier;
-
-import com.google.common.collect.Sets;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public final class PermissionUtils {
 
@@ -181,11 +176,15 @@ public final class PermissionUtils {
     @SuppressLint("MissingPermission")
     public static void revokeHealthPermission(
             String packageName, String permission, String reason) {
+        Context context = ApplicationProvider.getApplicationContext();
+        checkArgument(
+                !context.getPackageName().equals(packageName),
+                "Can not be called on self, only on other apps");
+
         if (!getGrantedHealthPermissions(packageName).contains(permission)) {
             return;
         }
 
-        Context context = ApplicationProvider.getApplicationContext();
         PackageManager packageManager = context.getPackageManager();
         UserHandle user = context.getUser();
 
@@ -228,52 +227,6 @@ public final class PermissionUtils {
         // Apps are killed following a revoke. Wait for this to ensure that it doesn't interfere
         // with subsequent interactions with the app.
         waitForNoRunningProcesses(packageName);
-    }
-
-    /** Revokes permission for the package for the duration of the runnable. */
-    public static void runWithRevokedPermissions(
-            String packageName, String permission, ThrowingRunnable runnable) throws Exception {
-        runWithRevokedPermissions(
-                (ThrowingSupplier<Void>)
-                        () -> {
-                            runnable.run();
-                            return null;
-                        },
-                packageName,
-                permission);
-    }
-
-    /** Revokes permission for the package for the duration of the supplier. */
-    public static <T> T runWithRevokedPermission(
-            String packageName, String permission, ThrowingSupplier<T> supplier) throws Exception {
-        return runWithRevokedPermissions(supplier, packageName, permission);
-    }
-
-    /** Revokes permission for the package for the duration of the supplier. */
-    public static <T> T runWithRevokedPermissions(
-            ThrowingSupplier<T> supplier, String packageName, String... permissions)
-            throws Exception {
-        Context context = ApplicationProvider.getApplicationContext();
-        checkArgument(
-                !context.getPackageName().equals(packageName),
-                "Can not be called on self, only on other apps");
-
-        UiAutomation uiAutomation =
-                androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
-                        .getUiAutomation();
-
-        var grantedPermissions =
-                Sets.intersection(
-                        Set.copyOf(getGrantedHealthPermissions(packageName)), Set.of(permissions));
-
-        try {
-            grantedPermissions.forEach(
-                    permission -> uiAutomation.revokeRuntimePermission(packageName, permission));
-            return supplier.get();
-        } finally {
-            grantedPermissions.forEach(
-                    permission -> uiAutomation.grantRuntimePermission(packageName, permission));
-        }
     }
 
     /** Flags the permission as USER_FIXED for the duration of the supplier. */
