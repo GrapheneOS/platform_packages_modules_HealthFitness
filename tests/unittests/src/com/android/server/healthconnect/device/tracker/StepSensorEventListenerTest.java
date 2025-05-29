@@ -16,6 +16,7 @@
 package com.android.server.healthconnect.device.tracker;
 
 import static com.android.server.healthconnect.device.tracker.StepSensorEventListener.BOOT_TIME_NANOS;
+import static com.android.server.healthconnect.device.tracker.StepSensorEventListener.MIN_STEPS_PER_MINUTE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -23,7 +24,9 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -127,17 +130,35 @@ public class StepSensorEventListenerTest {
 
     @Test
     @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
-    public void onSensorChanged_writesSteps() throws Exception {
-        int stepCount = 10;
-        long timestampNanos = 1234567890;
+    public void onSensorChangedAfterBoot_highCadence_writesStepsSinceBoot() throws Exception {
+        int stepCount = 100;
+        long endTimestampNanos = MINUTES.toNanos(2);
+        long expectedStartTimestampNanos = 0;
 
-        triggerStepEvent(stepCount, timestampNanos);
+        triggerStepEvent(stepCount, endTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(1);
-        assertRecord(records.get(0), stepCount, timestampNanos);
+        assertRecord(records.get(0), stepCount, expectedStartTimestampNanos, endTimestampNanos);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void onSensorChangedAfterBoot_lowCadence_writesStepsWithEstimatedStart()
+            throws Exception {
+        int stepCount = 10;
+        long endTimestampNanos = MINUTES.toNanos(10);
+        long expectedStartTimestampNanos = endTimestampNanos - getDurationNanosForSteps(stepCount);
+
+        triggerStepEvent(stepCount, endTimestampNanos);
+        awaitPassiveSensorTasksComplete();
+        List<RecordInternal<?>> records =
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+
+        assertThat(records).hasSize(1);
+        assertRecord(records.get(0), stepCount, expectedStartTimestampNanos, endTimestampNanos);
     }
 
     @Test
@@ -146,22 +167,33 @@ public class StepSensorEventListenerTest {
         // The first event is always written instantly and the second is written through the
         // scheduled future
         int firstStepCount = 10;
-        long firstTimestampNanos = 1234567890;
+        long firstEndTimestampNanos = MINUTES.toNanos(10);
+        long expectedFirstStartTimestampNanos =
+                firstEndTimestampNanos - getDurationNanosForSteps(firstStepCount);
         int secondStepCount = firstStepCount + 5;
         long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
-        long secondTimestampNanos = firstTimestampNanos + secondTimestampDelayNanos;
+        long secondEndTimestampNanos = firstEndTimestampNanos + secondTimestampDelayNanos;
+        long expectedSecondStartTimestampNanos = firstEndTimestampNanos;
 
-        triggerStepEvent(firstStepCount, firstTimestampNanos);
+        triggerStepEvent(firstStepCount, firstEndTimestampNanos);
         sleep(secondTimestampDelayNanos);
-        triggerStepEvent(secondStepCount, secondTimestampNanos);
+        triggerStepEvent(secondStepCount, secondEndTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(2);
-        assertRecord(records.get(0), firstStepCount, firstTimestampNanos);
+        assertRecord(
+                records.get(0),
+                firstStepCount,
+                expectedFirstStartTimestampNanos,
+                firstEndTimestampNanos);
         // We convert the cumulative step count to deltas and write in the deltas.
-        assertRecord(records.get(1), secondStepCount - firstStepCount, secondTimestampNanos);
+        assertRecord(
+                records.get(1),
+                secondStepCount - firstStepCount,
+                expectedSecondStartTimestampNanos,
+                secondEndTimestampNanos);
     }
 
     @Test
@@ -169,27 +201,38 @@ public class StepSensorEventListenerTest {
     public void onSensorChangedThrice_writesTwice() throws Exception {
         // The first event is always written instantly and the second and third events are merged
         // and written through the scheduled future
-        int firstStepCount = 15;
-        long firstTimestampNanos = 1234567890;
+        int firstStepCount = 10;
+        long firstEndTimestampNanos = MINUTES.toNanos(10);
+        long expectedFirstStartTimestampNanos =
+                firstEndTimestampNanos - getDurationNanosForSteps(firstStepCount);
         int secondStepCount = firstStepCount + 10;
         long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
-        long secondTimestampNanos = firstTimestampNanos + secondTimestampDelayNanos;
+        long secondEndTimestampNanos = firstEndTimestampNanos + secondTimestampDelayNanos;
         int thirdStepCount = secondStepCount + 5;
         long thirdTimestampDelayNanos = MILLISECONDS.toNanos(100);
-        long thirdTimestampNanos = secondTimestampNanos + thirdTimestampDelayNanos;
+        long thirdEndTimestampNanos = secondEndTimestampNanos + thirdTimestampDelayNanos;
+        long expectedThirdStartTimestampNanos = firstEndTimestampNanos;
 
-        triggerStepEvent(firstStepCount, firstTimestampNanos);
+        triggerStepEvent(firstStepCount, firstEndTimestampNanos);
         sleep(secondTimestampDelayNanos);
-        triggerStepEvent(secondStepCount, secondTimestampNanos);
+        triggerStepEvent(secondStepCount, secondEndTimestampNanos);
         sleep(thirdTimestampDelayNanos);
-        triggerStepEvent(thirdStepCount, thirdTimestampNanos);
+        triggerStepEvent(thirdStepCount, thirdEndTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(2);
-        assertRecord(records.get(0), firstStepCount, firstTimestampNanos);
-        assertRecord(records.get(1), thirdStepCount - firstStepCount, thirdTimestampNanos);
+        assertRecord(
+                records.get(0),
+                firstStepCount,
+                expectedFirstStartTimestampNanos,
+                firstEndTimestampNanos);
+        assertRecord(
+                records.get(1),
+                thirdStepCount - firstStepCount,
+                expectedThirdStartTimestampNanos,
+                thirdEndTimestampNanos);
     }
 
     @Test
@@ -197,39 +240,51 @@ public class StepSensorEventListenerTest {
     public void onSensorChangedTwice_bothStepCountsAreDuplicate_ignoresSecondEvent()
             throws Exception {
         int firstStepCount = 10;
-        long firstTimestampNanos = 1234567890;
+        long firstEndTimestampNanos = MINUTES.toNanos(10);
+        long expectedFirstStartTimestampNanos =
+                firstEndTimestampNanos - getDurationNanosForSteps(firstStepCount);
         long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
-        long secondTimestampNanos = firstTimestampNanos + secondTimestampDelayNanos;
+        long secondEndTimestampNanos = firstEndTimestampNanos + secondTimestampDelayNanos;
 
-        triggerStepEvent(firstStepCount, firstTimestampNanos);
+        triggerStepEvent(firstStepCount, firstEndTimestampNanos);
         sleep(secondTimestampDelayNanos);
-        triggerStepEvent(firstStepCount, secondTimestampNanos);
+        triggerStepEvent(firstStepCount, secondEndTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(1);
-        assertRecord(records.get(0), firstStepCount, firstTimestampNanos);
+        assertRecord(
+                records.get(0),
+                firstStepCount,
+                expectedFirstStartTimestampNanos,
+                firstEndTimestampNanos);
     }
 
     @Test
     @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
     public void onSensorChangedTwice_secondStepCountIsLower_ignoresSecondEvent() throws Exception {
         int firstStepCount = 10;
-        long firstTimestampNanos = 1234567890;
+        long firstEndTimestampNanos = MINUTES.toNanos(10);
+        long expectedFirstStartTimestampNanos =
+                firstEndTimestampNanos - getDurationNanosForSteps(firstStepCount);
         int secondStepCount = firstStepCount - 5;
         long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
-        long secondTimestampNanos = firstTimestampNanos + secondTimestampDelayNanos;
+        long secondEndTimestampNanos = firstEndTimestampNanos + secondTimestampDelayNanos;
 
-        triggerStepEvent(firstStepCount, firstTimestampNanos);
+        triggerStepEvent(firstStepCount, firstEndTimestampNanos);
         sleep(secondTimestampDelayNanos);
-        triggerStepEvent(secondStepCount, secondTimestampNanos);
+        triggerStepEvent(secondStepCount, secondEndTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(1);
-        assertRecord(records.get(0), firstStepCount, firstTimestampNanos);
+        assertRecord(
+                records.get(0),
+                firstStepCount,
+                expectedFirstStartTimestampNanos,
+                firstEndTimestampNanos);
     }
 
     @Test
@@ -237,39 +292,153 @@ public class StepSensorEventListenerTest {
     public void onSensorChangedTwice_bothTimestampsAreDuplicate_ignoresSecondEvent()
             throws Exception {
         int firstStepCount = 10;
-        long firstTimestampNanos = 1234567890;
+        long firstEndTimestampNanos = MINUTES.toNanos(10);
+        long expectedFirstStartTimestampNanos =
+                firstEndTimestampNanos - getDurationNanosForSteps(firstStepCount);
         int secondStepCount = firstStepCount + 5;
         long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
 
-        triggerStepEvent(firstStepCount, firstTimestampNanos);
+        triggerStepEvent(firstStepCount, firstEndTimestampNanos);
         sleep(secondTimestampDelayNanos);
-        triggerStepEvent(secondStepCount, firstTimestampNanos);
+        triggerStepEvent(secondStepCount, firstEndTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(1);
-        assertRecord(records.get(0), firstStepCount, firstTimestampNanos);
+        assertRecord(
+                records.get(0),
+                firstStepCount,
+                expectedFirstStartTimestampNanos,
+                firstEndTimestampNanos);
     }
 
     @Test
     @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
     public void onSensorChangedTwice_secondTimestampsIsLower_ignoresSecondEvent() throws Exception {
         int firstStepCount = 10;
-        long firstTimestampNanos = 1234567890;
+        long firstEndTimestampNanos = MINUTES.toNanos(10);
+        long expectedFirstStartTimestampNanos =
+                firstEndTimestampNanos - getDurationNanosForSteps(firstStepCount);
         int secondStepCount = firstStepCount + 5;
         long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
-        long secondTimestampNanos = firstTimestampNanos - secondTimestampDelayNanos;
+        long secondEndTimestampNanos = firstEndTimestampNanos - secondTimestampDelayNanos;
 
-        triggerStepEvent(firstStepCount, firstTimestampNanos);
+        triggerStepEvent(firstStepCount, firstEndTimestampNanos);
         sleep(secondTimestampDelayNanos);
-        triggerStepEvent(secondStepCount, secondTimestampNanos);
+        triggerStepEvent(secondStepCount, secondEndTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
         assertThat(records).hasSize(1);
-        assertRecord(records.get(0), firstStepCount, firstTimestampNanos);
+        assertRecord(
+                records.get(0),
+                firstStepCount,
+                expectedFirstStartTimestampNanos,
+                firstEndTimestampNanos);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void onSensorChangedSoonAfterBoot_writesStartTimestampAsBootTime() throws Exception {
+        int stepCount = 10;
+        long endTimestampNanos = SECONDS.toNanos(10);
+        long expectedStartTimestampNanos = 0;
+
+        triggerStepEvent(stepCount, endTimestampNanos);
+        awaitPassiveSensorTasksComplete();
+        List<RecordInternal<?>> records =
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+
+        assertThat(records).hasSize(1);
+        assertRecord(records.get(0), stepCount, expectedStartTimestampNanos, endTimestampNanos);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void eventSoonAfterPreviousEvent_returnsStartAsEndOfPreviousEvent() {
+        int stepDelta = 1;
+        long endOfLastDataPointNanos = SECONDS.toNanos(100);
+        long endOfCurrentDataPointNanos = endOfLastDataPointNanos + SECONDS.toNanos(50);
+
+        long startTime =
+                StepSensorEventListener.estimateStartTime(
+                        stepDelta,
+                        endOfLastDataPointNanos,
+                        endOfCurrentDataPointNanos,
+                        /* isDelayedTask= */ true);
+
+        assertThat(startTime).isEqualTo(endOfLastDataPointNanos);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void eventOneMinuteAfterPreviousEvent_returnsStartAsEndOfPreviousEvent() {
+        int stepDelta = 1;
+        long endOfLastDataPointNanos = SECONDS.toNanos(100);
+        long endOfCurrentDataPointNanos = endOfLastDataPointNanos + MINUTES.toNanos(1);
+
+        long startTime =
+                StepSensorEventListener.estimateStartTime(
+                        stepDelta,
+                        endOfLastDataPointNanos,
+                        endOfCurrentDataPointNanos,
+                        /* isDelayedTask= */ true);
+
+        assertThat(startTime).isEqualTo(endOfLastDataPointNanos);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void eventTwoMinutesAfterPreviousEvent_highCadence_returnsStartAsEndOfPreviousEvent() {
+        int stepDelta = 90;
+        long endOfLastDataPointNanos = SECONDS.toNanos(100);
+        long endOfCurrentDataPointNanos = endOfLastDataPointNanos + MINUTES.toNanos(2);
+
+        long startTime =
+                StepSensorEventListener.estimateStartTime(
+                        stepDelta,
+                        endOfLastDataPointNanos,
+                        endOfCurrentDataPointNanos,
+                        /* isDelayedTask= */ false);
+
+        assertThat(startTime).isEqualTo(endOfLastDataPointNanos);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void eventTwoMinutesAfterPreviousEvent_lowCadence_returnsEstimatedStartTime() {
+        int stepDelta = 1;
+        long endOfLastDataPointNanos = SECONDS.toNanos(100);
+        long endOfCurrentDataPointNanos = endOfLastDataPointNanos + MINUTES.toNanos(2);
+
+        long startTime =
+                StepSensorEventListener.estimateStartTime(
+                        stepDelta,
+                        endOfLastDataPointNanos,
+                        endOfCurrentDataPointNanos,
+                        /* isDelayedTask= */ false);
+
+        assertThat(startTime)
+                .isEqualTo(endOfCurrentDataPointNanos - getDurationNanosForSteps(stepDelta));
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void eventTwoMinutesAfterPreviousEvent_lowCadence_returnsLongerEstimatedStartTime() {
+        int stepDelta = 45; // 30 steps per minute cadence means this would take 1 minute 30 seconds
+        long endOfLastDataPointNanos = SECONDS.toNanos(100);
+        long endOfCurrentDataPointNanos = endOfLastDataPointNanos + MINUTES.toNanos(2);
+
+        long startTime =
+                StepSensorEventListener.estimateStartTime(
+                        stepDelta,
+                        endOfLastDataPointNanos,
+                        endOfCurrentDataPointNanos,
+                        /* isDelayedTask= */ false);
+
+        assertThat(startTime).isEqualTo(endOfCurrentDataPointNanos - SECONDS.toNanos(90));
     }
 
     @Test
@@ -338,17 +507,29 @@ public class StepSensorEventListenerTest {
         Thread.sleep(NANOSECONDS.toMillis(nanos));
     }
 
-    private static void assertRecord(RecordInternal<?> record, int stepCount, long timestampNanos) {
+    private static void assertRecord(
+            RecordInternal<?> record,
+            int stepCount,
+            long startTimestampNanos,
+            long endTimestampNanos) {
         StepsRecordInternal stepsRecord = (StepsRecordInternal) record;
         assertThat(stepsRecord.getCount()).isEqualTo(stepCount);
-        // Start timestamp is always 1ms before the end timestamp.
         assertThat(stepsRecord.getStartTimeInMillis())
-                .isEqualTo(getTimestampAfterBoot(timestampNanos) - 1);
+                .isEqualTo(getTimestampAfterBoot(startTimestampNanos));
         assertThat(stepsRecord.getEndTimeInMillis())
-                .isEqualTo(getTimestampAfterBoot(timestampNanos));
+                .isEqualTo(getTimestampAfterBoot(endTimestampNanos));
     }
 
     private static long getTimestampAfterBoot(long timestampSinceBootNanos) {
         return NANOSECONDS.toMillis(BOOT_TIME_NANOS + timestampSinceBootNanos);
+    }
+
+    /**
+     * Returns the time it would take to travel a specified number of steps based on the minimum
+     * cadence.
+     */
+    private long getDurationNanosForSteps(int stepCount) {
+        double minutesPerStep = (1 / MIN_STEPS_PER_MINUTE);
+        return (long) (stepCount * minutesPerStep * MINUTES.toNanos(1));
     }
 }
