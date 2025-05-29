@@ -371,16 +371,6 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mAppInfoHelper,
                                 mHealthConnectMappings)
                         : builder.mHealthConnectPermissionHelper;
-        mPermissionPackageChangesOrchestrator =
-                builder.mPermissionPackageChangesOrchestrator == null
-                        ? new PermissionPackageChangesOrchestrator(
-                                mPermissionIntentAppsTracker,
-                                mFirstGrantTimeManager,
-                                mHealthConnectPermissionHelper,
-                                userHandle,
-                                mHealthDataCategoryPriorityHelper,
-                                mThreadScheduler)
-                        : builder.mPermissionPackageChangesOrchestrator;
         mMigrationCleaner =
                 builder.mMigrationCleaner == null
                         ? new MigrationCleaner(
@@ -505,6 +495,17 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthDataCategoryPriorityHelper,
                                 mUserManager)
                         : builder.mTrackerManager;
+        mPermissionPackageChangesOrchestrator =
+                builder.mPermissionPackageChangesOrchestrator == null
+                        ? new PermissionPackageChangesOrchestrator(
+                                mPermissionIntentAppsTracker,
+                                mFirstGrantTimeManager,
+                                mTrackerManager,
+                                mHealthConnectPermissionHelper,
+                                userHandle,
+                                mHealthDataCategoryPriorityHelper,
+                                mThreadScheduler)
+                        : builder.mPermissionPackageChangesOrchestrator;
         mCloudBackupManager =
                 // TODO(b/400105647): Remove duplicate flag check once excess code size is resolved.
                 builder.mCloudBackupManager == null
