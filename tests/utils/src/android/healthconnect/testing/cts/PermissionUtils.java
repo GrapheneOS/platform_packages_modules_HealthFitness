@@ -51,6 +51,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Utilities for granting and revoking health permissions in CTS and integration tests.
+ *
+ * <p>Prefer {@link android.healthconnect.testing.cts.testapphelpers.TestAppRule} over direct use of
+ * this class, as that ensures that permissions are in a consistent state before and after tests.
+ */
 public final class PermissionUtils {
 
     /** Copy of hidden {@link android.health.connect.HealthPermissions#READ_EXERCISE_ROUTE}. */
@@ -146,7 +152,9 @@ public final class PermissionUtils {
     /**
      * Grants the specified health permissions to the app specified by {@code packageName}.
      *
-     * @see HealthConnectManager#grantHealthPermission(String, String)
+     * <p>Permissions are granted via {@link PackageManager#grantRuntimePermission}, as {@link
+     * HealthConnectManager#grantHealthPermission} is hidden and so can't be used by CTS. Unlike the
+     * {@code HealthConnectManager} method, this does not modify any permission flags.
      */
     public static void grantHealthPermissions(String packageName, Collection<String> permissions) {
         for (String permission : permissions) {
@@ -160,6 +168,9 @@ public final class PermissionUtils {
      * <p>Permissions are revoked via {@link PackageManager#revokeRuntimePermission}, as {@link
      * HealthConnectManager#revokeHealthPermission} is hidden and so can't be used by CTS. Unlike
      * the {@code HealthConnectManager} method, this does not modify any permission flags.
+     *
+     * <p>If the app is currently running, it will be killed by the system after the revoke and this
+     * method blocks until that has happened.
      */
     @SuppressLint("MissingPermission")
     public static void revokeHealthPermission(String packageName, String permission) {
@@ -172,6 +183,9 @@ public final class PermissionUtils {
      * <p>Permissions are revoked via {@link PackageManager#revokeRuntimePermission}, as {@link
      * HealthConnectManager#revokeHealthPermission} is hidden and so can't be used by CTS. Unlike
      * the {@code HealthConnectManager} method, this does not modify any permission flags.
+     *
+     * <p>If the app is currently running, it will be killed by the system after the revoke and this
+     * method blocks until that has happened.
      */
     @SuppressLint("MissingPermission")
     public static void revokeHealthPermission(
@@ -203,6 +217,9 @@ public final class PermissionUtils {
      * <p>Permissions are revoked via {@link PackageManager#revokeRuntimePermission}, as {@link
      * HealthConnectManager#revokeAllHealthPermissions} is hidden and so can't be used by CTS.
      * Unlike the {@code HealthConnectManager} method, this does not modify any permission flags.
+     *
+     * <p>If the app is currently running, it will be killed by the system after the revoke and this
+     * method blocks until that has happened.
      */
     @SuppressLint("MissingPermission")
     public static void revokeAllHealthPermissions(String packageName, String reason) {
