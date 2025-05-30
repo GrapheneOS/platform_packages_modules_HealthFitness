@@ -134,16 +134,24 @@ constructor(
                         potentialFitnessApps
                             .groupBy { it.isConnected }
                             .getOrDefault(true, emptyList())
+                    val potentialApps = potentialFitnessApps.filter { !it.isConnected }
                     if (allowedApps.isEmpty()) {
-                        _connectedApps.postValue(
-                            OnboardingFragmentState.ZeroAppsConnected(potentialFitnessApps)
-                        )
+                        val result =
+                            if (potentialApps.size >= 2) {
+                                OnboardingFragmentState.ZeroAppsConnected(potentialFitnessApps)
+                            } else {
+                                OnboardingFragmentState.NoApps
+                            }
+                        _connectedApps.postValue(result)
                     } else if (allowedApps.size == 1) {
                         val connectedApp = potentialFitnessApps.filter { it.isConnected }[0]
-                        val potentialApps = potentialFitnessApps.filter { !it.isConnected }
-                        _connectedApps.postValue(
-                            OnboardingFragmentState.OneAppConnected(connectedApp, potentialApps)
-                        )
+                        val result =
+                            if (potentialApps.isNotEmpty()) {
+                                OnboardingFragmentState.OneAppConnected(connectedApp, potentialApps)
+                            } else {
+                                OnboardingFragmentState.NoApps
+                            }
+                        _connectedApps.postValue(result)
                     } else {
                         val potentialApps = potentialFitnessApps.filter { !it.isConnected }
                         _connectedApps.postValue(
