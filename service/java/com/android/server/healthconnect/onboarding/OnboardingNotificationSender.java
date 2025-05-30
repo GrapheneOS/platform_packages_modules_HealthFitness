@@ -36,6 +36,7 @@ import android.graphics.drawable.Icon;
 import android.health.connect.HealthConnectManager;
 import android.os.UserHandle;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
@@ -110,6 +111,10 @@ public final class OnboardingNotificationSender {
 
     /** Sends a notification for onboarding scenario where there's no app connected to HC. */
     public void sendNoAppConnectedNotification(UserHandle userHandle) {
+        if (!Flags.onboardingNotification()) {
+            return;
+        }
+
         mHealthConnectNotificationSender.sendNotificationAsUser(
                 createNoAppConnectedNotification(), userHandle);
         mNotificationStateManager.unsetFlags(SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION);
@@ -117,6 +122,10 @@ public final class OnboardingNotificationSender {
 
     /** Sends a notification for onboarding scenario where there's one app connected to HC. */
     public void sendOneAppConnectedNotification(UserHandle userHandle) {
+        if (!Flags.onboardingNotification()) {
+            return;
+        }
+
         mHealthConnectNotificationSender.sendNotificationAsUser(
                 createOneAppConnectedNotification(), userHandle);
         mNotificationStateManager.unsetFlags(SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION);

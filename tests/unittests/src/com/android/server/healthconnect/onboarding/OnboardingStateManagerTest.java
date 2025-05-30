@@ -23,6 +23,7 @@ import static android.health.connect.HealthPermissionCategory.ACTIVE_CALORIES_BU
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_READ;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SPEED;
 
+import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.server.healthconnect.onboarding.OnboardingStateManager.ONBOARDING_STATE_PREFERENCE_KEY_PREFIX;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -46,6 +47,9 @@ import android.health.connect.HealthPermissions;
 import android.health.connect.accesslog.AccessLog;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.os.UserHandle;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -81,6 +85,8 @@ import java.util.concurrent.TimeoutException;
 public class OnboardingStateManagerTest {
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
     @Mock private PreferenceHelper mPreferenceHelper;
     @Mock private HealthConnectPermissionHelper mHealthConnectPermissionHelper;
     @Mock private MockListener mMockListener;
@@ -170,6 +176,26 @@ public class OnboardingStateManagerTest {
     }
 
     @Test
+    @DisableFlags(FLAG_ONBOARDING)
+    public void updateAndGetOnboardingState_flagDisabled_returnsHide() {
+        // Two compatible but not connected apps
+        // If the flag is enabled, this should be the zero app connected state
+        setAppRequestsFitnessPermission(APP_PKG_1, true);
+        setAppRequestsFitnessPermission(APP_PKG_2, true);
+        setCompatibleApps(
+                ImmutableList.of(
+                        createPackageInfo(APP_PKG_1, EIGHT_DAYS_AGO),
+                        createPackageInfo(APP_PKG_2, EIGHT_DAYS_AGO)));
+
+        setOnboardingStateInPreference(ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED);
+
+        assertThat(mOnboardingStateManager.updateAndGetOnboardingState())
+                .isEqualTo(ONBOARDING_BANNER_STATE_HIDE);
+        verifyNoStateChange();
+    }
+
+    @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void updateAndGetOnboardingState_noCompatibleApps_returnsHide() {
         setCompatibleApps(emptyList());
 
@@ -182,6 +208,7 @@ public class OnboardingStateManagerTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void updateAndGetOnboardingState_allAppsConnected_returnsHide() {
         setAppConnectedFitnessPermission(APP_PKG_1, /* isConnected= */ true);
         setAppConnectedFitnessPermission(APP_PKG_2, /* isConnected= */ true);
@@ -204,6 +231,7 @@ public class OnboardingStateManagerTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void updateAndGetOnboardingState_onlyAppsWithoutFitnessPermissions_returnsHide() {
         setAppConnectedFitnessPermission(APP_PKG_1, /* isConnected= */ false);
         setAppConnectedFitnessPermission(APP_PKG_2, /* isConnected= */ false);
@@ -226,6 +254,7 @@ public class OnboardingStateManagerTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void updateAndGetOnboardingState_twoConnectedApps_returnsHide() {
         setAppConnectedFitnessPermission(APP_PKG_1, /* isConnected= */ true);
         setAppConnectedFitnessPermission(APP_PKG_2, /* isConnected= */ true);
@@ -246,6 +275,7 @@ public class OnboardingStateManagerTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void updateAndGetOnboardingState_zeroConnected_noCandidate_returnsHide() {
         setAppRequestsFitnessPermission(APP_PKG_1, true);
         setAppRequestsFitnessPermission(APP_PKG_2, true);
@@ -267,6 +297,7 @@ public class OnboardingStateManagerTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void updateAndGetOnboardingState_zeroConnected_oneCandidate_returnsHide() {
         setAppRequestsFitnessPermission(APP_PKG_1, true);
         setAppRequestsFitnessPermission(APP_PKG_2, true);
@@ -290,6 +321,7 @@ public class OnboardingStateManagerTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void
             updateAndGetOnboardingState_zeroConnected_oneCandidateDeniedPermission_returnsHide() {
         setAppRequestsFitnessPermission(APP_PKG_1, true);
@@ -315,6 +347,7 @@ public class OnboardingStateManagerTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void updateAndGetOnboardingState_zeroConnected_twoCandidates_returnsZeroConnected() {
         setAppRequestsFitnessPermission(APP_PKG_1, true);
         setAppRequestsFitnessPermission(APP_PKG_2, true);
@@ -329,6 +362,7 @@ public class OnboardingStateManagerTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void updateAndGetOnboardingState_oneConnected_noCandidate_returnsHide() {
         setAppConnectedFitnessPermission(APP_PKG_1, /* isConnected= */ true);
         setAppRequestsFitnessPermission(APP_PKG_2, true);
@@ -354,6 +388,7 @@ public class OnboardingStateManagerTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void updateAndGetOnboardingState_oneConnected_oneCandidate_returnsOneConnected() {
         setAppConnectedFitnessPermission(APP_PKG_1, /* isConnected= */ true);
         setAppRequestsFitnessPermission(APP_PKG_2, true);
@@ -369,6 +404,7 @@ public class OnboardingStateManagerTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void updateAndGetOnboardingState_zeroAppToOneAppConnected_updatesAndNotifies() {
         setAppConnectedFitnessPermission(APP_PKG_2, /* isConnected= */ true);
         setAppRequestsFitnessPermission(APP_PKG_1, true);
@@ -386,6 +422,7 @@ public class OnboardingStateManagerTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void updateAndGetOnboardingState_stateDoesNotChange_notNotified() {
         setAppConnectedFitnessPermission(APP_PKG_1, /* isConnected= */ true);
         setAppConnectedFitnessPermission(APP_PKG_2, /* isConnected= */ true);

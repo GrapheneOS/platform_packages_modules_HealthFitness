@@ -28,6 +28,7 @@ import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.os.UserHandle;
 import android.util.Slog;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
@@ -126,6 +127,10 @@ public final class OnboardingStateManager {
      */
     @HealthConnectOnboardingState.OnboardingState
     public int updateAndGetOnboardingState() {
+        if (!Flags.onboarding()) {
+            return ONBOARDING_BANNER_STATE_HIDE;
+        }
+
         int onboardingState = evaluateCurrentOnboardingState();
         updateOnboardingState(onboardingState);
         return onboardingState;
