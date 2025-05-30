@@ -133,20 +133,13 @@ public final class OnboardingStateManager {
 
     /** Updates the onboarding state. */
     private void updateOnboardingState(@HealthConnectOnboardingState.OnboardingState int state) {
-        mStatesLock.writeLock().lock();
         if (state == getOnboardingState()) {
             if (Constants.DEBUG) {
                 Slog.d(TAG, "The new state same as the current state.");
             }
             return;
         }
-
-        try {
-            updateOnboardingStateGuarded(state);
-        } finally {
-            mStatesLock.writeLock().unlock();
-        }
-
+        updateOnboardingStateGuarded(state);
         updateListeners(state);
     }
 
