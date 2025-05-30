@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.searchapps.SearchHealthPermissionApps
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteAllDataUseCase
+import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.utils.postValueIfUpdated
@@ -87,14 +88,19 @@ constructor(
     fun loadConnectedApps() {
         viewModelScope.launch {
             _connectedApps.postValueIfUpdated(
-                loadHealthPermissionApps.invoke().filter {
-                    val showSystemAppsValue = _showSystemApps.value ?: false
-                    if (showSystemAppsValue) {
-                        true
-                    } else {
-                        !it.appMetadata.isSystem
+                loadHealthPermissionApps
+                    .invoke()
+                    .filterNot {
+                        it.appMetadata.packageName == Constants.DEVICE_DATA_PROVIDER_PACKAGE
                     }
-                }
+                    .filter {
+                        val showSystemAppsValue = _showSystemApps.value ?: false
+                        if (showSystemAppsValue) {
+                            true
+                        } else {
+                            !it.appMetadata.isSystem
+                        }
+                    }
             )
         }
     }

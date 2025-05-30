@@ -33,12 +33,23 @@ import static org.mockito.Mockito.when;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.ApplicationInfoFlags;
 import android.graphics.drawable.Drawable;
+import android.health.connect.datatypes.AppInfo;
+import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
+import android.healthconnect.testing.unittest.RecordInternalFactory;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
+import com.android.server.healthconnect.device.DeviceDataSource;
+import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -54,6 +65,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 @RunWith(AndroidJUnit4.class)
 public class AppInfoHelperTest {
 
@@ -62,10 +78,18 @@ public class AppInfoHelperTest {
 
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Mock private Context mContext;
     @Mock private Drawable mDrawable;
     @Mock private PackageManager mPackageManager;
+    @Mock private DeviceDataSourcesHelper mMockDeviceDataSourcesHelper;
+    @Mock private DeviceDataSource mMockDeviceDataSource;
+
+    private static final String DEVICE_PROVIDER_PACKAGE_NAME =
+            DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE;
+    private static final String ORIGINAL_DEVICE_APP_NAME = "Original Android OS";
+    private static final String EXPECTED_DEVICE_APP_NAME = "My Pixel Watch";
 
     private AppInfoHelper mAppInfoHelper;
     private FitnessTestUtils mFitnessTestUtils;
@@ -81,12 +105,19 @@ public class AppInfoHelperTest {
         when(mDrawable.getIntrinsicHeight()).thenReturn(200);
         when(mDrawable.getIntrinsicWidth()).thenReturn(200);
 
+        mMockDeviceDataSourcesHelper = mock(DeviceDataSourcesHelper.class);
+        mMockDeviceDataSource = mock(DeviceDataSource.class);
+        when(mMockDeviceDataSourcesHelper.getCurrentDevice(any()))
+                .thenReturn(mMockDeviceDataSource);
+        when(mMockDeviceDataSource.getDisplayName()).thenReturn(EXPECTED_DEVICE_APP_NAME);
+
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
                         .setHealthPermissionIntentAppsTracker(
                                 mock(HealthPermissionIntentAppsTracker.class))
                         .setAppOpLogsHelper(mock(AppOpLogsHelper.class))
+                        .setDeviceDataSourcesHelper(mMockDeviceDataSourcesHelper)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
@@ -95,13 +126,128 @@ public class AppInfoHelperTest {
 
     @After
     public void tearDown() throws Exception {
-        reset(mDrawable, mContext, mPackageManager);
+        reset(
+                mDrawable,
+                mContext,
+                mPackageManager,
+                mMockDeviceDataSourcesHelper,
+                mMockDeviceDataSource);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    public void getAppInfoMap_deviceProviderNameUpdated_whenFlagEnabled()
+            throws PackageManager.NameNotFoundException {
+        setAppAsNotInstalled(DEVICE_PROVIDER_PACKAGE_NAME);
+        setAppAsNotInstalled(TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DEVICE_PROVIDER_PACKAGE_NAME);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(
+                DEVICE_PROVIDER_PACKAGE_NAME, ORIGINAL_DEVICE_APP_NAME, null);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
+        Instant now = Instant.now();
+        mFitnessTestUtils.insertRecords(
+                DEVICE_PROVIDER_PACKAGE_NAME,
+                List.of(
+                        RecordInternalFactory.buildStepsRecord(
+                                UUID.randomUUID().toString(),
+                                now.toEpochMilli(),
+                                now.plusSeconds(1).toEpochMilli(),
+                                100)));
+        mFitnessTestUtils.insertRecords(
+                TEST_PACKAGE_NAME,
+                List.of(
+                        RecordInternalFactory.buildStepsRecord(
+                                UUID.randomUUID().toString(),
+                                now.plusSeconds(10).toEpochMilli(),
+                                now.plusSeconds(11).toEpochMilli(),
+                                200)));
+
+        mAppInfoHelper.clearCache();
+        Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
+
+        assertThat(appInfoInternalMap).containsKey(DEVICE_PROVIDER_PACKAGE_NAME);
+        AppInfo deviceAppInfo = appInfoInternalMap.get(DEVICE_PROVIDER_PACKAGE_NAME).toExternal();
+        assertThat(deviceAppInfo.getName()).isEqualTo(EXPECTED_DEVICE_APP_NAME);
+
+        assertThat(appInfoInternalMap).containsKey(TEST_PACKAGE_NAME);
+        AppInfo testAppInfo = appInfoInternalMap.get(TEST_PACKAGE_NAME).toExternal();
+        assertThat(testAppInfo.getName()).isEqualTo(TEST_APP_NAME);
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    public void getAppInfoMap_deviceProviderNameNotUpdated_whenFlagDisabled()
+            throws PackageManager.NameNotFoundException {
+        setAppAsNotInstalled(DEVICE_PROVIDER_PACKAGE_NAME);
+        setAppAsNotInstalled(TEST_PACKAGE_NAME);
+
+        mFitnessTestUtils.insertApp(DEVICE_PROVIDER_PACKAGE_NAME);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(
+                DEVICE_PROVIDER_PACKAGE_NAME, ORIGINAL_DEVICE_APP_NAME, null);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
+
+        Instant now = Instant.now();
+        mFitnessTestUtils.insertRecords(
+                DEVICE_PROVIDER_PACKAGE_NAME,
+                List.of(
+                        RecordInternalFactory.buildStepsRecord(
+                                UUID.randomUUID().toString(),
+                                now.toEpochMilli(),
+                                now.plusSeconds(1).toEpochMilli(),
+                                100)));
+        mFitnessTestUtils.insertRecords(
+                TEST_PACKAGE_NAME,
+                List.of(
+                        RecordInternalFactory.buildStepsRecord(
+                                UUID.randomUUID().toString(),
+                                now.plusSeconds(10).toEpochMilli(),
+                                now.plusSeconds(11).toEpochMilli(),
+                                200)));
+
+        mAppInfoHelper.clearCache();
+        Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
+
+        assertThat(appInfoInternalMap).containsKey(DEVICE_PROVIDER_PACKAGE_NAME);
+        AppInfo deviceAppInfo = appInfoInternalMap.get(DEVICE_PROVIDER_PACKAGE_NAME).toExternal();
+        assertThat(deviceAppInfo.getName()).isEqualTo(ORIGINAL_DEVICE_APP_NAME);
+
+        assertThat(appInfoInternalMap).containsKey(TEST_PACKAGE_NAME);
+        AppInfo testAppInfo = appInfoInternalMap.get(TEST_PACKAGE_NAME).toExternal();
+        assertThat(testAppInfo.getName()).isEqualTo(TEST_APP_NAME);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    public void getAppInfoMap_regularPackageNameUnchanged_whenFlagEnabled()
+            throws PackageManager.NameNotFoundException {
+        setAppAsNotInstalled(TEST_PACKAGE_NAME);
+
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
+        Instant now = Instant.now();
+        mFitnessTestUtils.insertRecords(
+                TEST_PACKAGE_NAME,
+                List.of(
+                        RecordInternalFactory.buildStepsRecord(
+                                UUID.randomUUID().toString(),
+                                now.toEpochMilli(),
+                                now.plusSeconds(1).toEpochMilli(),
+                                200)));
+
+        mAppInfoHelper.clearCache();
+        Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
+
+        assertThat(appInfoInternalMap).containsKey(TEST_PACKAGE_NAME);
+        AppInfo testAppInfo = appInfoInternalMap.get(TEST_PACKAGE_NAME).toExternal();
+        assertThat(testAppInfo.getName()).isEqualTo(TEST_APP_NAME);
     }
 
     @Test
     public void testUpdateAppInfoIfNotInstalled_withoutIcon_getIconFromPackageName()
             throws PackageManager.NameNotFoundException {
-        setAppAsNotInstalled();
+        setAppAsNotInstalled(TEST_PACKAGE_NAME);
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
         mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
@@ -114,7 +260,7 @@ public class AppInfoHelperTest {
     @Test
     public void testUpdateAppInfoIfNotInstalled_withoutIcon_getDefaultIconIfPackageIsNotFound()
             throws PackageManager.NameNotFoundException {
-        setAppAsNotInstalled();
+        setAppAsNotInstalled(TEST_PACKAGE_NAME);
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
         mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
@@ -132,7 +278,8 @@ public class AppInfoHelperTest {
 
         mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
 
-        verify(mPackageManager, times(1)).getApplicationInfo(eq(TEST_PACKAGE_NAME), any());
+        verify(mPackageManager, times(1))
+                .getApplicationInfo(eq(TEST_PACKAGE_NAME), any(ApplicationInfoFlags.class));
         verify(mPackageManager, times(0)).getApplicationIcon(TEST_PACKAGE_NAME);
         assertThat(mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME).getName()).isNull();
     }
@@ -140,7 +287,7 @@ public class AppInfoHelperTest {
     @Test
     public void testRestoreAppInfo_appNotInstalled_updatesName()
             throws PackageManager.NameNotFoundException {
-        setAppAsNotInstalled();
+        setAppAsNotInstalled(TEST_PACKAGE_NAME);
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
         mAppInfoHelper.restoreAppInfo(TEST_PACKAGE_NAME, TEST_APP_NAME);
@@ -151,7 +298,7 @@ public class AppInfoHelperTest {
     @Test
     public void testRestoreAppInfo_appNotInstalled_noPreviousEntry_addsEntry()
             throws PackageManager.NameNotFoundException {
-        setAppAsNotInstalled();
+        setAppAsNotInstalled(TEST_PACKAGE_NAME);
 
         mAppInfoHelper.restoreAppInfo(TEST_PACKAGE_NAME, TEST_APP_NAME);
         assertThat(mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME).getName())
@@ -172,7 +319,7 @@ public class AppInfoHelperTest {
     public void
             testAddAppInfoIfNoRecordExists_appNotInstalledNoRecordExists_successfullyAddsRecord()
                     throws PackageManager.NameNotFoundException {
-        setAppAsNotInstalled();
+        setAppAsNotInstalled(TEST_PACKAGE_NAME);
 
         assertThat(doesRecordExistForPackage()).isFalse();
 
@@ -191,7 +338,8 @@ public class AppInfoHelperTest {
 
         mAppInfoHelper.addAppInfoIfNoAppInfoEntryExists(TEST_PACKAGE_NAME, TEST_APP_NAME);
 
-        verify(mPackageManager, times(0)).getApplicationInfo(eq(TEST_PACKAGE_NAME), any());
+        verify(mPackageManager, times(0))
+                .getApplicationInfo(eq(TEST_PACKAGE_NAME), any(ApplicationInfoFlags.class));
         verify(mPackageManager, times(0)).getApplicationIcon(TEST_PACKAGE_NAME);
     }
 
@@ -205,24 +353,24 @@ public class AppInfoHelperTest {
     @Test
     public void testGetOrInsertAppInfoIdNoThrow_appNotInstalled_returnsDefaultLong()
             throws Exception {
-        setAppAsNotInstalled();
+        setAppAsNotInstalled(TEST_PACKAGE_NAME);
         assertThat(mAppInfoHelper.getOrInsertAppInfoIdNoThrow(TEST_PACKAGE_NAME))
                 .isEqualTo(DEFAULT_LONG);
     }
 
-    private void setAppAsNotInstalled() throws PackageManager.NameNotFoundException {
-        when(mPackageManager.getApplicationInfo(eq(TEST_PACKAGE_NAME), any()))
+    private void setAppAsNotInstalled(String packageName)
+            throws PackageManager.NameNotFoundException {
+        when(mPackageManager.getApplicationInfo(eq(packageName), any(ApplicationInfoFlags.class)))
                 .thenThrow(new PackageManager.NameNotFoundException());
-        when(mPackageManager.getApplicationIcon(TEST_PACKAGE_NAME))
+        when(mPackageManager.getApplicationIcon(eq(packageName)))
                 .thenThrow(new PackageManager.NameNotFoundException());
     }
 
     private void setAppAsInstalled() throws PackageManager.NameNotFoundException {
         ApplicationInfo expectedAppInfo = new ApplicationInfo();
         expectedAppInfo.packageName = TEST_PACKAGE_NAME;
-        expectedAppInfo.flags = 0;
-
-        when(mPackageManager.getApplicationInfo(eq(TEST_PACKAGE_NAME), any()))
+        when(mPackageManager.getApplicationInfo(
+                        eq(TEST_PACKAGE_NAME), any(ApplicationInfoFlags.class)))
                 .thenReturn(expectedAppInfo);
         when(mPackageManager.getApplicationLabel(expectedAppInfo)).thenReturn("Test package");
         when(mPackageManager.getApplicationIcon(expectedAppInfo)).thenReturn(mDrawable);

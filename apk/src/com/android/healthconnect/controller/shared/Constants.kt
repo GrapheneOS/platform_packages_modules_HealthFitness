@@ -44,4 +44,7 @@ object Constants {
     // Lock screen banners
     const val LOCK_SCREEN_BANNER_SEEN_FITNESS = "lock_screen_banner_seen_fitness"
     const val LOCK_SCREEN_BANNER_SEEN_MEDICAL = "lock_screen_banner_seen_medical"
+
+    // Device data
+    const val DEVICE_DATA_PROVIDER_PACKAGE = "android"
 }

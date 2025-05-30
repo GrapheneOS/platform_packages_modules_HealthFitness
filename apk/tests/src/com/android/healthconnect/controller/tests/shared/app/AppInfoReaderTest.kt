@@ -23,6 +23,7 @@ import android.content.pm.PackageManager
 import android.content.pm.PackageManager.ApplicationInfoFlags
 import android.content.pm.PackageManager.NameNotFoundException
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.IGetContributorAppInfoUseCase
@@ -35,11 +36,15 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.stub
+import org.mockito.kotlin.verify
 
 private const val PACKAGE_NAME = "com.example.test"
 private const val STORED_LABEL = "Stored label"
 private const val PACKAGE_MANAGER_LABEL = "PackageManager label"
+private const val DEVICE_DATA_PROVIDER_PACKAGE_NAME = Constants.DEVICE_DATA_PROVIDER_PACKAGE
+private const val DEVICE_DATA_PROVIDER_LABEL = "Device data provider label"
 
 @RunWith(AndroidJUnit4::class)
 class AppInfoReaderTest {
@@ -117,13 +122,52 @@ class AppInfoReaderTest {
         val appMetadata2 = appInfoReader.getAppMetadata(PACKAGE_NAME, isSystem = true)
         assertThat(appMetadata2.isSystem).isTrue()
     }
+
+    @Test
+    fun deviceDataProviderPackage_returnsMetadataFromStorage() {
+        runBlocking {
+            val appMetadata = appInfoReader.getAppMetadata(DEVICE_DATA_PROVIDER_PACKAGE_NAME)
+            assertThat(appMetadata.packageName).isEqualTo(DEVICE_DATA_PROVIDER_PACKAGE_NAME)
+            assertThat(appMetadata.appName).isEqualTo(DEVICE_DATA_PROVIDER_LABEL)
+            verify(mockPackageManager, never()).getApplicationLabel(any())
+            verify(mockPackageManager, never())
+                .getApplicationIcon(DEVICE_DATA_PROVIDER_PACKAGE_NAME)
+        }
+    }
+
+    @Test
+    fun regularPackage_usesPackageManagerFirst() {
+        runBlocking {
+            val applicationInfo =
+                ApplicationInfo().apply() {
+                    packageName = PACKAGE_NAME
+                    enabled = true
+                }
+            mockPackageManager.stub {
+                on { getApplicationInfo(eq(PACKAGE_NAME), any<ApplicationInfoFlags>()) } doReturn
+                    applicationInfo
+                on { getApplicationLabel(applicationInfo) } doReturn PACKAGE_MANAGER_LABEL
+            }
+
+            val appMetadata = appInfoReader.getAppMetadata(PACKAGE_NAME)
+            assertThat(appMetadata.packageName).isEqualTo(PACKAGE_NAME)
+            // Verifies it's not STORED_LABEL
+            assertThat(appMetadata.appName).isEqualTo(PACKAGE_MANAGER_LABEL)
+        }
+    }
 }
 
 private class FakeGetContributorAppInfoUseCase : IGetContributorAppInfoUseCase {
     override suspend fun invoke(): Map<String, AppMetadata> {
         return mapOf(
             PACKAGE_NAME to
-                AppMetadata(packageName = PACKAGE_NAME, appName = STORED_LABEL, icon = null)
+                AppMetadata(packageName = PACKAGE_NAME, appName = STORED_LABEL, icon = null),
+            DEVICE_DATA_PROVIDER_PACKAGE_NAME to
+                AppMetadata(
+                    packageName = DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                    appName = DEVICE_DATA_PROVIDER_LABEL,
+                    icon = null,
+                ),
         )
     }
 }

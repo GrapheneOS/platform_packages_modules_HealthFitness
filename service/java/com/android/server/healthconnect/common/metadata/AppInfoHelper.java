@@ -55,6 +55,9 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.Slog;
 
+import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
@@ -116,17 +119,20 @@ public final class AppInfoHelper extends DatabaseHelper {
     private HealthConnectContext mUserContext;
     private final TransactionManager mTransactionManager;
     private final InternalHealthConnectMappings mInternalHealthConnectMappings;
+    private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
     private final HealthConnectMappings mHealthConnectMappings;
 
     public AppInfoHelper(
             HealthConnectContext userContext,
             TransactionManager transactionManager,
             InternalHealthConnectMappings internalHealthConnectMappings,
+            DeviceDataSourcesHelper deviceDataSourcesHelper,
             DatabaseHelpers databaseHelpers) {
         super(databaseHelpers);
         mUserContext = userContext;
         mTransactionManager = transactionManager;
         mInternalHealthConnectMappings = internalHealthConnectMappings;
+        mDeviceDataSourcesHelper = deviceDataSourcesHelper;
         mHealthConnectMappings = internalHealthConnectMappings.getExternalMappings();
     }
 
@@ -411,6 +417,15 @@ public final class AppInfoHelper extends DatabaseHelper {
                 long rowId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
                 String packageName = getCursorString(cursor, PACKAGE_COLUMN_NAME);
                 String appName = getCursorString(cursor, APPLICATION_COLUMN_NAME);
+                if (Flags.stepTrackingEnabled()
+                        && Objects.equals(
+                                packageName, DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE)) {
+                    // TODO(b/422986550): don't cache this as it may change at runtime.
+                    appName =
+                            mDeviceDataSourcesHelper
+                                    .getCurrentDevice(mUserContext)
+                                    .getDisplayName();
+                }
                 byte[] icon = getCursorBlob(cursor, APP_ICON_COLUMN_NAME);
                 Bitmap bitmap = decodeBitmap(icon);
                 String recordTypesUsed = getCursorString(cursor, RECORD_TYPES_USED_COLUMN_NAME);
