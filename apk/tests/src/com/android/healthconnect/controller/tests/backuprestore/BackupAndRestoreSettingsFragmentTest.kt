@@ -34,7 +34,6 @@ import android.os.Bundle
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
@@ -104,10 +103,13 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.firstValue
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
@@ -858,7 +860,8 @@ class BackupAndRestoreSettingsFragmentTest {
         }
         val settingUIComponentName =
             ComponentName("com.example.testsettings", "com.example.testsettings.MockActivity")
-        val settingsStartIntent = Intent("android.health.connect.action.VIEW_HC_BACKUP_SETTINGS")
+        val settingsStartIntent =
+            Intent("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
         val mockPackageManager =
             mockOutSettingsReceiverActivityWithPermission(
                 settingUIComponentName,
@@ -867,20 +870,29 @@ class BackupAndRestoreSettingsFragmentTest {
             )
 
         // Pretend that the activity to handle the intent exists.
-        Intents.intending(hasAction("android.health.connect.action.VIEW_HC_BACKUP_SETTINGS"))
+        Intents.intending(
+                hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
+            )
             .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, Intent()))
 
-        // Ask to trigger the intent
-        getBackupAndRestoreSettingsFragment()
-            ?.openBackupRestoreSettingsIfPermitted(settingsStartIntent, mockPackageManager)
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()) {
+            (this as BackupAndRestoreSettingsFragment).packageManager = mockPackageManager
+        }
+
+        onView(withText("Backup")).perform(click())
 
         // The package manager should have requested the resolving activity.
+        val intentCaptor: ArgumentCaptor<Intent> = ArgumentCaptor.forClass(Intent::class.java)
         verify(mockPackageManager)
-            .resolveActivity(eq(settingsStartIntent), eq(PackageManager.MATCH_DEFAULT_ONLY))
+            .resolveActivity(intentCaptor.capture(), eq(PackageManager.MATCH_DEFAULT_ONLY))
+        val actualIntent = intentCaptor.firstValue
+        assertThat(actualIntent.action)
+            .isEqualTo("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
+        assertThat(intentCaptor.allValues.size).isEqualTo(1)
 
         // And an intent should have been sent to it.
         intended(hasComponent(settingUIComponentName))
-        intended(hasAction("android.health.connect.action.VIEW_HC_BACKUP_SETTINGS"))
+        intended(hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS"))
     }
 
     @Test
@@ -891,7 +903,8 @@ class BackupAndRestoreSettingsFragmentTest {
         }
         val settingUIComponentName =
             ComponentName("com.example.testsettings", "com.example.testsettings.MockActivity")
-        val settingsStartIntent = Intent("android.health.connect.action.VIEW_HC_BACKUP_SETTINGS")
+        val settingsStartIntent =
+            Intent("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
         val mockPackageManager =
             mockOutSettingsReceiverActivityWithPermission(
                 settingUIComponentName,
@@ -900,20 +913,29 @@ class BackupAndRestoreSettingsFragmentTest {
             )
 
         // Pretend that the activity to handle the intent exists.
-        Intents.intending(hasAction("android.health.connect.action.VIEW_HC_BACKUP_SETTINGS"))
+        Intents.intending(
+                hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
+            )
             .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, Intent()))
 
-        // Ask to trigger the intent
-        getBackupAndRestoreSettingsFragment()
-            ?.openBackupRestoreSettingsIfPermitted(settingsStartIntent, mockPackageManager)
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()) {
+            (this as BackupAndRestoreSettingsFragment).packageManager = mockPackageManager
+        }
+
+        onView(withText("Backup")).perform(click())
 
         // The package manager should have requested the resolving activity.
+        val intentCaptor: ArgumentCaptor<Intent> = ArgumentCaptor.forClass(Intent::class.java)
         verify(mockPackageManager)
-            .resolveActivity(eq(settingsStartIntent), eq(PackageManager.MATCH_DEFAULT_ONLY))
+            .resolveActivity(intentCaptor.capture(), eq(PackageManager.MATCH_DEFAULT_ONLY))
+        val actualIntent = intentCaptor.firstValue
+        assertThat(actualIntent.action)
+            .isEqualTo("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
+        assertThat(intentCaptor.allValues.size).isEqualTo(1)
 
         // And an intent should have been sent to it.
         intended(hasComponent(settingUIComponentName))
-        intended(hasAction("android.health.connect.action.VIEW_HC_BACKUP_SETTINGS"))
+        intended(hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS"))
     }
 
     @Test
@@ -924,7 +946,8 @@ class BackupAndRestoreSettingsFragmentTest {
         }
         val settingUIComponentName =
             ComponentName("com.example.testsettings", "com.example.testsettings.MockActivity")
-        val settingsStartIntent = Intent("android.health.connect.action.VIEW_HC_BACKUP_SETTINGS")
+        val settingsStartIntent =
+            Intent("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
         val mockPackageManager =
             mockOutSettingsReceiverActivityWithPermission(
                 settingUIComponentName,
@@ -933,43 +956,37 @@ class BackupAndRestoreSettingsFragmentTest {
             )
 
         // Pretend that the activity to handle the intent exists.
-        Intents.intending(hasAction("android.health.connect.action.VIEW_HC_BACKUP_SETTINGS"))
+        Intents.intending(
+                hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
+            )
             .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, Intent()))
 
-        // Ask to send the intent
-        getBackupAndRestoreSettingsFragment()
-            ?.openBackupRestoreSettingsIfPermitted(settingsStartIntent, mockPackageManager)
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()) {
+            (this as BackupAndRestoreSettingsFragment).packageManager = mockPackageManager
+        }
+
+        onView(withText("Backup")).perform(click())
 
         // The package manager should have requested the resolver.
+        val intentCaptor: ArgumentCaptor<Intent> = ArgumentCaptor.forClass(Intent::class.java)
         verify(mockPackageManager)
-            .resolveActivity(eq(settingsStartIntent), eq(PackageManager.MATCH_DEFAULT_ONLY))
+            .resolveActivity(intentCaptor.capture(), eq(PackageManager.MATCH_DEFAULT_ONLY))
+        val actualIntent = intentCaptor.firstValue
+        assertThat(actualIntent.action)
+            .isEqualTo("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
+        assertThat(intentCaptor.allValues.size).isEqualTo(1)
 
         // But as the resolver doesn't hold permissions, no intent action was sent.
         intended(not(hasComponent(settingUIComponentName)))
-        intended(not(hasAction("android.health.connect.action.VIEW_HC_BACKUP_SETTINGS")))
+        intended(
+            not(hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS"))
+        )
     }
 
     @Test
     @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_HC_UI)
     fun cloudBackupRestore_backupOptionHiddenIfNoSettingsResolverPresent() {
         // TODO: b/358032341 hide the UI if no resolver is available & test functionality here
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_HC_UI)
-    fun cloudBackupRestore_clickBackup() {
-        whenever(exportSettingsViewModel.storedExportSettings).then {
-            MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY))
-        }
-
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Backup")).perform(click())
-        // TODO: b/358032341 Refactor BackupAndRestoreSettingsFragment to use a lateInit variable
-        // for packageManager, then use the lambda in launchFragment to set the packageManager.
-        // With this in place we can test that the intent is fired on click and consolidating this
-        // test
-        // with cloudBackupRestore_triggersSettingsUI.
     }
 
     private fun mockOutSettingsReceiverActivityWithPermission(
@@ -979,7 +996,7 @@ class BackupAndRestoreSettingsFragmentTest {
     ): PackageManager {
 
         // Mock out the call for finding the resolving activity by providing an imaginary
-        // package and activity that can resolve ACTION_VIEW_HC_BACKUP_SETTINGS
+        // package and activity that can resolve ACTION_SHOW_HEALTH_CONNECT_BACKUP_SETTINGS
         val mockPackageManagerLocal: PackageManager = mock()
         val resolveInfo =
             ResolveInfo().apply {
@@ -993,11 +1010,12 @@ class BackupAndRestoreSettingsFragmentTest {
                         name = receiverComponent.className
                     }
             }
-        // Make our imaginary activity the resolver for ACTION_VIEW_HC_BACKUP_SETTINGS
+
+        // Make our imaginary activity the resolver for ACTION_SHOW_HEALTH_CONNECT_BACKUP_SETTINGS
         whenever(
                 mockPackageManagerLocal.resolveActivity(
-                    forIntent,
-                    PackageManager.MATCH_DEFAULT_ONLY,
+                    argThat { intent -> intent != null && forIntent.action == intent.action },
+                    eq(PackageManager.MATCH_DEFAULT_ONLY),
                 )
             )
             .thenReturn(resolveInfo)
@@ -1022,19 +1040,5 @@ class BackupAndRestoreSettingsFragmentTest {
         }
 
         return mockPackageManagerLocal
-    }
-
-    /** Get the fragment instance so we can pass in the PackageManager mock */
-    private fun getBackupAndRestoreSettingsFragment(): BackupAndRestoreSettingsFragment? {
-        var testFragment: BackupAndRestoreSettingsFragment? = null
-        val scenario: ActivityScenario<TestActivity> =
-            launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-        scenario.onActivity { activity ->
-            val fragmentManager: FragmentManager = activity.supportFragmentManager
-            testFragment =
-                fragmentManager.findFragmentById(android.R.id.content)
-                    as? BackupAndRestoreSettingsFragment
-        }
-        return testFragment
     }
 }
