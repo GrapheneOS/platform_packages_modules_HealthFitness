@@ -1882,8 +1882,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    public void hasDeniedFitnessPermission_whenNoFitnessRequested_returnsFalse()
-            throws PackageManager.NameNotFoundException {
+    public void hasDeniedFitnessPermission_whenNoFitnessRequested_returnsFalse() {
         PackageInfo mockPackageInfo =
                 getMockPackageInfo(
                         Build.VERSION_CODES.BAKLAVA,
@@ -1891,14 +1890,7 @@ public class HealthConnectPermissionHelperTest {
                             HealthPermissions.READ_MEDICAL_DATA_VACCINES,
                             HealthPermissions.WRITE_MEDICAL_DATA,
                             HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
-                        },
-                        new int[] {
-                            0,
-                            PackageInfo.REQUESTED_PERMISSION_GRANTED,
-                            PackageInfo.REQUESTED_PERMISSION_GRANTED
                         });
-        when(mPackageManager.getPackageInfo(eq(HC_PACKAGE_NAME), any()))
-                .thenReturn(mockPackageInfo);
         assertFalse(mPermissionHelper.hasDeniedFitnessPermission(mockPackageInfo, CURRENT_USER));
     }
 
@@ -1912,11 +1904,6 @@ public class HealthConnectPermissionHelperTest {
                             HealthPermissions.READ_MEDICAL_DATA_VACCINES,
                             HealthPermissions.READ_STEPS,
                             HealthPermissions.WRITE_BLOOD_PRESSURE,
-                        },
-                        new int[] {
-                            0,
-                            PackageInfo.REQUESTED_PERMISSION_GRANTED,
-                            PackageInfo.REQUESTED_PERMISSION_GRANTED
                         });
         mockPackageInfo.packageName = TEST_PACKAGE_NAME;
         when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
@@ -1941,8 +1928,7 @@ public class HealthConnectPermissionHelperTest {
                             HealthPermissions.READ_MEDICAL_DATA_VACCINES,
                             HealthPermissions.READ_STEPS,
                             HealthPermissions.WRITE_BLOOD_PRESSURE,
-                        },
-                        new int[] {0, 0, PackageInfo.REQUESTED_PERMISSION_GRANTED});
+                        });
         mockPackageInfo.packageName = TEST_PACKAGE_NAME;
         when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
                 .thenReturn(mockPackageInfo);
@@ -1968,8 +1954,7 @@ public class HealthConnectPermissionHelperTest {
                             HealthPermissions.READ_MEDICAL_DATA_VACCINES,
                             HealthPermissions.READ_STEPS,
                             HealthPermissions.WRITE_BLOOD_PRESSURE,
-                        },
-                        new int[] {0, 0, PackageInfo.REQUESTED_PERMISSION_GRANTED});
+                        });
         mockPackageInfo.packageName = TEST_PACKAGE_NAME;
         when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
                 .thenReturn(mockPackageInfo);
