@@ -28,7 +28,6 @@ import com.android.healthconnect.controller.onboarding.api.OnboardingState
 import com.android.healthconnect.controller.shared.Constants.ONBOARDING_ONE_APP_BANNER_SEEN
 import com.android.healthconnect.controller.shared.Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN
 import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
-import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -96,8 +95,7 @@ constructor(
         return if (connectedApps is OnboardingFragmentState.ZeroAppsConnected) {
             OnboardingBannerState.ZeroAppsOnboardingBanner
         } else if (connectedApps is OnboardingFragmentState.OneAppConnected) {
-            val connectedApp = connectedApps.connectedApp
-            OnboardingBannerState.OneAppOnboardingBanner(connectedApp.appMetadata)
+            OnboardingBannerState.OneAppOnboardingBanner
         } else {
             OnboardingBannerState.NoOnboardingBanner
         }
@@ -147,7 +145,10 @@ constructor(
                             OnboardingFragmentState.OneAppConnected(connectedApp, potentialApps)
                         )
                     } else {
-                        _connectedApps.postValue(OnboardingFragmentState.AlmostDone(allowedApps))
+                        val potentialApps = potentialFitnessApps.filter { !it.isConnected }
+                        _connectedApps.postValue(
+                            OnboardingFragmentState.AlmostDone(allowedApps, potentialApps)
+                        )
                     }
                 }
             }
@@ -199,14 +200,16 @@ constructor(
             val potentialApps: List<ConnectedFitnessAppMetadata>,
         ) : OnboardingFragmentState()
 
-        data class AlmostDone(val connectedApps: List<ConnectedFitnessAppMetadata>) :
-            OnboardingFragmentState()
+        data class AlmostDone(
+            val connectedApps: List<ConnectedFitnessAppMetadata>,
+            val potentialApps: List<ConnectedFitnessAppMetadata> = emptyList(),
+        ) : OnboardingFragmentState()
     }
 
     sealed class OnboardingBannerState {
         object ZeroAppsOnboardingBanner : OnboardingBannerState()
 
-        class OneAppOnboardingBanner(val connectedApp: AppMetadata) : OnboardingBannerState()
+        object OneAppOnboardingBanner : OnboardingBannerState()
 
         object NoOnboardingBanner : OnboardingBannerState()
     }

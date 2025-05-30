@@ -1470,7 +1470,7 @@ class HomeFragmentTest {
         }
         launchFragment<HomeFragment>(Bundle()).use { scenario ->
             onView(withText("See your health data across apps")).check(matches(isDisplayed()))
-            onView(withText("Start sharing health and fitness data between your apps"))
+            onView(withText("Start sharing fitness and wellness data between your apps"))
                 .check(matches(isDisplayed()))
             onView(withText("Set up")).check(matches(isDisplayed()))
             onView(withText("Connect a second app")).check(doesNotExist())
@@ -1512,7 +1512,7 @@ class HomeFragmentTest {
             }
             .use { scenario ->
                 onView(withText("See your health data across apps")).check(matches(isDisplayed()))
-                onView(withText("Start sharing health and fitness data between your apps"))
+                onView(withText("Start sharing fitness and wellness data between your apps"))
                     .check(matches(isDisplayed()))
                 onView(withText("Set up")).check(matches(isDisplayed()))
                 onView(withText("Connect a second app")).check(doesNotExist())
@@ -1536,17 +1536,11 @@ class HomeFragmentTest {
     @EnableFlags(Flags.FLAG_ONBOARDING)
     fun onboardingBannerStateOneApp_showsOneAppBanner() {
         whenever(onboardingViewModel.onboardingBannerState).then {
-            MediatorLiveData(
-                OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner(TEST_APP)
-            )
+            MediatorLiveData(OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner)
         }
         launchFragment<HomeFragment>(Bundle()).use { scenario ->
             onView(withText("Connect a second app")).check(matches(isDisplayed()))
-            onView(
-                    withText(
-                        "Set up one more app to share health and fitness data with $TEST_APP_NAME"
-                    )
-                )
+            onView(withText("Set up another app so it can start sharing fitness and wellness data"))
                 .check(matches(isDisplayed()))
             onView(withText("Continue")).check(matches(isDisplayed()))
             onView(withText("See your health data across apps")).check(doesNotExist())
@@ -1577,9 +1571,7 @@ class HomeFragmentTest {
     @DisableFlags(Flags.FLAG_ONBOARDING)
     fun whenOnboardingFlagDisabled_onboardingViewModelNotCalled() {
         whenever(onboardingViewModel.onboardingBannerState).then {
-            MediatorLiveData(
-                OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner(TEST_APP)
-            )
+            MediatorLiveData(OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner)
         }
         launchFragment<HomeFragment>(Bundle()).use { scenario ->
             onView(withText("See your health data across apps")).check(doesNotExist())
@@ -1592,9 +1584,7 @@ class HomeFragmentTest {
     @EnableFlags(Flags.FLAG_ONBOARDING)
     fun onboardingBannerStateOneApp_clickOnContinue_navigatesToOnboardingActivity() {
         whenever(onboardingViewModel.onboardingBannerState).then {
-            MediatorLiveData(
-                OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner(TEST_APP)
-            )
+            MediatorLiveData(OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner)
         }
         launchFragment<HomeFragment>(Bundle()) {
                 navHostController.setGraph(R.navigation.nav_graph)
@@ -1605,7 +1595,7 @@ class HomeFragmentTest {
                 onView(withText("Connect a second app")).check(matches(isDisplayed()))
                 onView(
                         withText(
-                            "Set up one more app to share health and fitness data with $TEST_APP_NAME"
+                            "Set up another app so it can start sharing fitness and wellness data"
                         )
                     )
                     .check(matches(isDisplayed()))

@@ -314,7 +314,7 @@ class TrampolineActivityTest {
             )
             .use {
                 onIdle()
-                onView(withText("Connect your first 2 apps")).check(matches(isDisplayed()))
+                onView(withText("Connect your first app")).check(matches(isDisplayed()))
                 onView(withText(TEST_APP.appName)).check(matches(isDisplayed()))
             }
     }

@@ -50,17 +50,20 @@ import java.util.Optional;
  */
 public final class OnboardingNotificationSender {
     @VisibleForTesting
-    static final String START_USING_HC_NOTIFICATION_TITLE = "zero_apps_onboarding_banner_title";
+    static final String START_USING_HC_NOTIFICATION_TITLE =
+            "zero_apps_onboarding_notification_title";
 
     @VisibleForTesting
-    static final String START_USING_HC_NOTIFICATION_CONTENT = "zero_apps_onboarding_banner_summary";
+    static final String START_USING_HC_NOTIFICATION_CONTENT =
+            "zero_apps_onboarding_notification_summary";
 
     @VisibleForTesting
-    static final String CONNECT_MORE_APPS_NOTIFICATION_TITLE = "one_app_onboarding_banner_title";
+    static final String CONNECT_MORE_APPS_NOTIFICATION_TITLE =
+            "one_app_onboarding_notification_title";
 
     @VisibleForTesting
     static final String CONNECT_MORE_APPS_NOTIFICATION_CONTENT =
-            "one_app_onboarding_banner_summary";
+            "one_app_onboarding_notification_summary";
 
     // Unique random ID for onboarding notifications, which makes sure we only have one onboarding
     // notification at a time.

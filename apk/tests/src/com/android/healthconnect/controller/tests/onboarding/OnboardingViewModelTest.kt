@@ -315,11 +315,6 @@ class OnboardingViewModelTest {
         val actual = testObserver.getLastValue()
         assertThat(actual is OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner)
             .isTrue()
-        assertThat(
-                (actual as OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner)
-                    .connectedApp
-            )
-            .isEqualTo(TEST_APP)
     }
 
     @Test
