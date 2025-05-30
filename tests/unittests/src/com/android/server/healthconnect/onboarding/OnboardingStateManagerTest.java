@@ -81,8 +81,6 @@ import java.util.concurrent.TimeoutException;
 public class OnboardingStateManagerTest {
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
-
-    private Context mContext;
     @Mock private PreferenceHelper mPreferenceHelper;
     @Mock private HealthConnectPermissionHelper mHealthConnectPermissionHelper;
     @Mock private MockListener mMockListener;
@@ -94,6 +92,7 @@ public class OnboardingStateManagerTest {
     private OnboardingStateManager mOnboardingStateManager;
     private Map<String, AppInfoInternal> mFakeAppInfoMap;
     private List<AccessLog> mFakeAccessLogs;
+    private Context mContext;
 
     private static final int USER_ID_INT = (int) (Math.random() * 100);
     private static final String PREF_KEY = ONBOARDING_STATE_PREFERENCE_KEY_PREFIX + USER_ID_INT;
@@ -291,6 +290,31 @@ public class OnboardingStateManagerTest {
     }
 
     @Test
+    public void
+            updateAndGetOnboardingState_zeroConnected_oneCandidateDeniedPermission_returnsHide() {
+        setAppRequestsFitnessPermission(APP_PKG_1, true);
+        setAppRequestsFitnessPermission(APP_PKG_2, true);
+        setAppRequestsFitnessPermission(APP_PKG_3, true);
+        setAppRequestsFitnessPermission(APP_PKG_4, true);
+        setCompatibleApps(
+                ImmutableList.of(
+                        createPackageInfo(APP_PKG_1, EIGHT_DAYS_AGO), // candidate
+                        createPackageInfo(APP_PKG_2, EIGHT_DAYS_AGO), // has access log
+                        createPackageInfo(APP_PKG_3, EIGHT_DAYS_AGO), // has data
+                        createPackageInfo(APP_PKG_4, EIGHT_DAYS_AGO))); // has denied permission
+        setAppsUsedWithAccessLog(APP_PKG_2);
+        setAppUsedWithData(APP_PKG_3);
+        setAppUsedWithPermission(APP_PKG_4, true);
+
+        setOnboardingStateInPreference(ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED);
+        clearInvocations(mPreferenceHelper, mMockListener);
+
+        assertThat(mOnboardingStateManager.updateAndGetOnboardingState())
+                .isEqualTo(ONBOARDING_BANNER_STATE_HIDE);
+        verifyStateChange(ONBOARDING_BANNER_STATE_HIDE);
+    }
+
+    @Test
     public void updateAndGetOnboardingState_zeroConnected_twoCandidates_returnsZeroConnected() {
         setAppRequestsFitnessPermission(APP_PKG_1, true);
         setAppRequestsFitnessPermission(APP_PKG_2, true);
@@ -469,6 +493,16 @@ public class OnboardingStateManagerTest {
         AccessLog log =
                 new AccessLog(packageName, List.of(RECORD_TYPE_SPEED), 8765, OPERATION_TYPE_READ);
         mFakeAccessLogs.add(log);
+    }
+
+    private void setAppUsedWithPermission(String packageName, boolean isUsed) {
+        when(mHealthConnectPermissionHelper.hasDeniedFitnessPermission(
+                        argThat(
+                                argument ->
+                                        argument != null
+                                                && packageName.equals(argument.packageName)),
+                        any()))
+                .thenReturn(isUsed);
     }
 
     /** Helper method to create a AppInfoInternal object. */

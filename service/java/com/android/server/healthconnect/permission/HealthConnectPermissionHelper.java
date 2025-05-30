@@ -576,6 +576,36 @@ public final class HealthConnectPermissionHelper {
         return false;
     }
 
+    /**
+     * @return true if {@code packageInfo} has a USER_SET or USER_FIXED fitness permission.
+     */
+    public boolean hasDeniedFitnessPermission(PackageInfo packageInfo, UserHandle userHandle) {
+        if (packageInfo == null || packageInfo.requestedPermissions == null) {
+            return false;
+        }
+
+        for (int i = 0; i < packageInfo.requestedPermissions.length; i++) {
+            String currentPermission = packageInfo.requestedPermissions[i];
+            if (mHealthConnectMappings.isFitnessPermission(currentPermission)) {
+                boolean isAlreadyDenied =
+                        mPackageManager.checkPermission(currentPermission, packageInfo.packageName)
+                                == PackageManager.PERMISSION_DENIED;
+                int permissionFlags =
+                        getHealthPermissionFlags(
+                                packageInfo.packageName, userHandle, currentPermission);
+                if (isAlreadyDenied
+                        && ((permissionFlags & PackageManager.FLAG_PERMISSION_USER_SET) != 0
+                                || (permissionFlags & PackageManager.FLAG_PERMISSION_USER_FIXED)
+                                        != 0)) {
+                    // If the permission is denied and the flags are USER_SET or USER_FIXED,
+                    // the permission has been explicitly denied by the user
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /** Returns if the app is targeting SDK 35 and requesting the given permission. */
     private boolean isAppRequestingPermissionWithOutdatedTargetSdk(
             String packageName, UserHandle userHandle, String permission, int buildVersion) {
@@ -721,7 +751,7 @@ public final class HealthConnectPermissionHelper {
 
     private void enforceValidHealthPermission(String permissionName) {
         if (!HealthConnectManager.getHealthPermissions(mContext).contains(permissionName)) {
-            throw new IllegalArgumentException("invalid health permission");
+            throw new IllegalArgumentException("invalid health permission " + permissionName);
         }
     }
 
