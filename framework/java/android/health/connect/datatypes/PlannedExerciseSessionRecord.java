@@ -16,7 +16,6 @@
 
 package android.health.connect.datatypes;
 
-import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.internal.datatypes.PlannedExerciseSessionRecordInternal;
@@ -41,7 +40,6 @@ import java.util.stream.Collectors;
  * may be in the future.
  */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_PLANNED_EXERCISE_SESSION)
-@FlaggedApi("com.android.healthconnect.flags.training_plans")
 public final class PlannedExerciseSessionRecord extends IntervalRecord {
     private final Boolean mHasExplicitTime;
 

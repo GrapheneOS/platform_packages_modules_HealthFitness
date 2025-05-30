@@ -803,7 +803,6 @@ public final class HealthPermissions {
      *
      * <p>Protection level: dangerous.
      */
-    @FlaggedApi("com.android.healthconnect.flags.training_plans")
     public static final String WRITE_PLANNED_EXERCISE =
             "android.permission.health.WRITE_PLANNED_EXERCISE";
 

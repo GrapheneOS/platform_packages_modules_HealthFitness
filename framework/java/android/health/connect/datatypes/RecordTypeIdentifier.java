@@ -363,7 +363,6 @@ public final class RecordTypeIdentifier {
      *
      * @see PlannedExerciseSessionRecord
      */
-    @FlaggedApi("com.android.healthconnect.flags.training_plans")
     public static final int RECORD_TYPE_PLANNED_EXERCISE_SESSION = 40;
 
     /**
