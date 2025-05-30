@@ -23,10 +23,12 @@ package com.android.server.healthconnect.device.tracker;
  */
 public interface TrackerManager {
     /**
-     * Called at startup. This will start continuous trackers e.g. step tracking if requirements are
-     * met.
+     * Called at startup or when tracking may need to start or stop. This will start continuous
+     * trackers e.g. step tracking if requirements are met and disable continuous trackers if
+     * requirements are no longer met e.g. an app with {@code android.permission.health.READ_STEPS}
+     * is uninstalled.
      */
-    void initialize();
+    void initializeOrRefresh();
 
     /**
      * Explicitly enable/disable step tracking. This should be done when a connected app has been

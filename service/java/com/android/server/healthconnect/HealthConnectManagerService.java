@@ -273,7 +273,7 @@ public class HealthConnectManagerService extends SystemService {
             threadScheduler.scheduleInternalTask(
                     () -> {
                         try {
-                            mHealthConnectInjector.getTrackerManager().initialize();
+                            mHealthConnectInjector.getTrackerManager().initializeOrRefresh();
                         } catch (Exception e) {
                             Slog.e(TAG, "Failed to initialize steps tracker.", e);
                         }

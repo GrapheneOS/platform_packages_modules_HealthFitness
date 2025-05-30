@@ -30,6 +30,7 @@ import android.util.Slog;
 
 import com.android.modules.utils.BackgroundThread;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 
 /**
@@ -43,6 +44,7 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
     static final IntentFilter sPackageFilter = buildPackageChangeFilter();
     private final HealthPermissionIntentAppsTracker mPermissionIntentTracker;
     private final FirstGrantTimeManager mFirstGrantTimeManager;
+    private final TrackerManager mTrackerManager;
     private final HealthConnectPermissionHelper mPermissionHelper;
     private UserHandle mCurrentForegroundUser;
     private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
@@ -51,12 +53,14 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
     public PermissionPackageChangesOrchestrator(
             HealthPermissionIntentAppsTracker permissionIntentTracker,
             FirstGrantTimeManager grantTimeManager,
+            TrackerManager trackerManager,
             HealthConnectPermissionHelper permissionHelper,
             UserHandle userHandle,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             HealthConnectThreadScheduler threadScheduler) {
         mPermissionIntentTracker = permissionIntentTracker;
         mFirstGrantTimeManager = grantTimeManager;
+        mTrackerManager = trackerManager;
         mPermissionHelper = permissionHelper;
         mCurrentForegroundUser = userHandle;
         mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
@@ -109,6 +113,11 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
         if (isPackageRemoved) {
             final int uid = intent.getIntExtra(Intent.EXTRA_UID, /* default value= */ -1);
             mFirstGrantTimeManager.onPackageRemoved(packageName, uid, userHandle);
+
+            // Refresh passive tracking in case an app previously eligible for tracking is
+            // uninstalled
+            mTrackerManager.initializeOrRefresh();
+
             // Call remove app from Priority list only if userHandle equals the
             // current foreground user and current foreground user is in unlocked state
             UserManager userManager = context.getSystemService(UserManager.class);
