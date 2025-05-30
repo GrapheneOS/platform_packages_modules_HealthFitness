@@ -21,6 +21,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.HealthAppPreference
@@ -30,6 +31,8 @@ import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.preference.HealthSetupFragment
 import com.android.healthconnect.controller.shared.preference.HealthSetupHeaderPreference
+import com.android.healthconnect.controller.shared.preference.LegacyTopIntroPreference
+import com.android.healthconnect.controller.shared.preference.topIntroPreference
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.logging.AlmostDonePageElement
@@ -50,9 +53,11 @@ import javax.inject.Inject
 @AndroidEntryPoint(HealthSetupFragment::class)
 class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
 
+    private val topIntroKey = "top_intro"
     private val viewModel: OnboardingViewModel by activityViewModels()
+    private val topIntroAlmostDone: TopIntroPreference by pref("top_intro_almost_done")
     private val appsCategory: PreferenceGroup by pref("apps_category")
-    private val topIntro: TopIntroPreference by pref("top_intro")
+    private val moreAppsCategory: PreferenceGroup by pref("more_apps_category")
     private val header: HealthSetupHeaderPreference by pref("header_pref")
     private val footer: FooterPreference by pref("footer_pref")
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
@@ -68,13 +73,6 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
         healthConnectLogger.logImpression(
             CommonOnboardingPageElement.MORE_ABOUT_HEALTH_CONNECT_BUTTON
         )
-        footer.setLearnMoreText(getString(R.string.apps_onboarding_footer_link))
-        footer.setLearnMoreAction {
-            healthConnectLogger.logInteraction(
-                CommonOnboardingPageElement.MORE_ABOUT_HEALTH_CONNECT_BUTTON
-            )
-            deviceInfoUtils.openHCGetStartedLink(requireActivity())
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -105,7 +103,7 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
 
                 is OnboardingViewModel.OnboardingFragmentState.AlmostDone -> {
                     setLoading(false)
-                    setupAlmostDone(state.connectedApps)
+                    setupAlmostDone(state.connectedApps, state.potentialApps)
                 }
             }
         }
@@ -116,15 +114,27 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
 
         header.title = getString(R.string.connect_first_two_apps_title)
         header.icon = AttributeResolver.getDrawable(requireContext(), R.attr.healthConnectIcon)
-        topIntro.title = getString(R.string.connect_first_two_apps_description)
+        header.isVisible = true
 
-        showContents()
+        preferenceScreen.removePreferenceRecursively(topIntroKey)
+        preferenceScreen.addPreference(
+            topIntroPreference(
+                context = requireContext(),
+                preferenceKey = topIntroKey,
+                preferenceTitle = getString(R.string.apps_onboarding_footer),
+                learnMoreText = getString(R.string.apps_onboarding_footer_link),
+                learnMoreAction = { deviceInfoUtils.openHCGetStartedLink(requireActivity()) },
+            )
+        )
+
         updateSetupLaterButton(
             ConnectTwoAppsOnboardingPageElement
                 .CONNECT_FIRST_TWO_APPS_ONBOARDING_SET_UP_LATER_BUTTON
         )
 
         showZeroAppsConnected(potentialApps)
+        moreAppsCategory.isVisible = false
+        footer.isVisible = false
     }
 
     private fun showZeroAppsConnected(potentialApps: List<ConnectedFitnessAppMetadata>) {
@@ -141,15 +151,27 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
 
         header.title = getString(R.string.connect_second_app_title)
         header.icon = AttributeResolver.getDrawable(requireContext(), R.attr.syncIcon)
-        topIntro.title =
-            getString(R.string.connect_second_app_description, connectedApp.appMetadata.appName)
+        header.isVisible = true
 
-        showContents()
+        preferenceScreen.removePreferenceRecursively(topIntroKey)
+        preferenceScreen.addPreference(
+            topIntroPreference(
+                context = requireContext(),
+                preferenceKey = topIntroKey,
+                preferenceTitle = getString(R.string.apps_onboarding_footer),
+                learnMoreText = getString(R.string.apps_onboarding_footer_link),
+                learnMoreAction = { deviceInfoUtils.openHCGetStartedLink(requireActivity()) },
+            )
+        )
+
         updateSetupLaterButton(
             ConnectSecondAddOnboardingPageElement.CONNECT_SECOND_APP_ONBOARDING_SET_UP_LATER_BUTTON
         )
 
         showOneAppConnected(connectedApp, potentialApps)
+
+        moreAppsCategory.isVisible = false
+        footer.isVisible = false
     }
 
     private fun showOneAppConnected(
@@ -167,21 +189,52 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
         potentialApps.forEach { appsCategory.addPreference(getPotentialAppPreference(it)) }
     }
 
-    private fun setupAlmostDone(allowedApps: List<ConnectedFitnessAppMetadata>) {
+    private fun setupAlmostDone(
+        allowedApps: List<ConnectedFitnessAppMetadata>,
+        potentialApps: List<ConnectedFitnessAppMetadata>,
+    ) {
         this.setPageName(PageName.ALMOST_DONE_PAGE)
 
         header.title = getString(R.string.almost_done_title)
         header.icon = AttributeResolver.getDrawable(requireContext(), R.attr.checkmarkIcon)
-        topIntro.title = getString(R.string.almost_done_description)
+        header.isVisible = true
 
-        showContents()
+        // TODO (b/421362889) remove once TopIntroPreference learnMore text field is hidden
+        val oldTopIntro = preferenceScreen.findPreference<Preference>(topIntroKey)
+        if (oldTopIntro is TopIntroPreference) {
+            oldTopIntro.setLearnMoreText("")
+        } else if (oldTopIntro is LegacyTopIntroPreference) {
+            oldTopIntro.setLearnMoreText("")
+        }
+        preferenceScreen.removePreferenceRecursively(topIntroKey)
+        topIntroAlmostDone.title =
+            if (potentialApps.isEmpty()) {
+                getString(R.string.almost_done_description_all_connected)
+            } else {
+                getString(R.string.almost_done_description_more_to_connect)
+            }
+        topIntroAlmostDone.isVisible = true
+
         updateDoneButton()
 
-        showAlmostDoneApps(allowedApps)
+        showAlmostDoneApps(allowedApps, potentialApps)
+
+        footer.isVisible = true
+        footer.setLearnMoreText(getString(R.string.apps_onboarding_footer_link))
+        footer.setLearnMoreAction {
+            healthConnectLogger.logInteraction(
+                CommonOnboardingPageElement.MORE_ABOUT_HEALTH_CONNECT_BUTTON
+            )
+            deviceInfoUtils.openHCGetStartedLink(requireActivity())
+        }
     }
 
-    private fun showAlmostDoneApps(allowedApps: List<ConnectedFitnessAppMetadata>) {
+    private fun showAlmostDoneApps(
+        allowedApps: List<ConnectedFitnessAppMetadata>,
+        potentialApps: List<ConnectedFitnessAppMetadata>,
+    ) {
         appsCategory.removeAll()
+        appsCategory.title = getString(R.string.almost_done_connected_apps)
         appsCategory.isVisible = true
         allowedApps.forEach {
             appsCategory.addPreference(
@@ -189,6 +242,15 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
                     it.logName = AlmostDonePageElement.ONBOARDING_APP_BUTTON
                 }
             )
+        }
+
+        if (potentialApps.isNotEmpty()) {
+            moreAppsCategory.removeAll()
+            moreAppsCategory.isVisible = true
+
+            potentialApps.forEach { moreAppsCategory.addPreference(getPotentialAppPreference(it)) }
+        } else {
+            moreAppsCategory.isVisible = false
         }
     }
 
@@ -269,12 +331,6 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
                 true
             }
         }
-    }
-
-    private fun showContents() {
-        header.isVisible = true
-        topIntro.isVisible = true
-        footer.isVisible = true
     }
 
     override fun onResume() {

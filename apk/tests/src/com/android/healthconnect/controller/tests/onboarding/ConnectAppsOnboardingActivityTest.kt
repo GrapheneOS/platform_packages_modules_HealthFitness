@@ -100,7 +100,7 @@ class ConnectAppsOnboardingActivityTest {
 
         launchActivityForResult<ConnectAppsOnboardingActivity>(startActivityIntent).use {
             onIdle()
-            onView(withText("Connect your first 2 apps")).check(matches(isDisplayed()))
+            onView(withText("Connect your first app")).check(matches(isDisplayed()))
         }
     }
 }
