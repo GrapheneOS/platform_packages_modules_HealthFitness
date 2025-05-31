@@ -45,6 +45,7 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.UserHandle;
+import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -67,7 +68,6 @@ import org.mockito.junit.MockitoRule;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
-@EnableFlags(FLAG_ONBOARDING)
 public class OnboardingNotificationJobTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
@@ -98,6 +98,7 @@ public class OnboardingNotificationJobTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void scheduleJobIfNotScheduled_noExistingJob_scheduled() {
         when(mOnboardingNotificationJobScheduler.getAllPendingJobs()).thenReturn(List.of());
 
@@ -111,6 +112,7 @@ public class OnboardingNotificationJobTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void scheduleJobIfNotScheduled_existingJob_notScheduled() {
         JobInfo dummyJob =
                 new JobInfo.Builder(
@@ -130,6 +132,25 @@ public class OnboardingNotificationJobTest {
     }
 
     @Test
+    @DisableFlags(FLAG_ONBOARDING)
+    public void executeOnboardingNotificationJob_flagDisabled_noOp() {
+        when(mOnboardingStateManager.updateAndGetOnboardingState())
+                .thenReturn(ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
+        when(mOnboardingNotificationStateManager.getOnboardingNotificationState())
+                .thenReturn(SHOULD_SHOW_ALL_NOTIFICATIONS);
+
+        executeOnboardingNotificationJob(
+                mContext,
+                mOnboardingStateManager,
+                mOnboardingNotificationSender,
+                mOnboardingNotificationStateManager,
+                mUserHandle);
+
+        verifyNoNotificationSent();
+    }
+
+    @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void executeOnboardingNotificationJob_noAppConnected_notificationSent() {
         when(mOnboardingStateManager.updateAndGetOnboardingState())
                 .thenReturn(ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
@@ -148,6 +169,7 @@ public class OnboardingNotificationJobTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void executeOnboardingNotificationJob_noAppConnected_shouldNotShow_noNotification() {
         when(mOnboardingStateManager.updateAndGetOnboardingState())
                 .thenReturn(ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
@@ -167,6 +189,7 @@ public class OnboardingNotificationJobTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void executeOnboardingNotificationJob_oneAppConnected_notificationSent() {
         when(mOnboardingStateManager.updateAndGetOnboardingState())
                 .thenReturn(ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED);
@@ -185,6 +208,7 @@ public class OnboardingNotificationJobTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void executeOnboardingNotificationJob_oneAppConnected_shouldNotShow_noNotification() {
         when(mOnboardingStateManager.updateAndGetOnboardingState())
                 .thenReturn(ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED);
@@ -204,6 +228,7 @@ public class OnboardingNotificationJobTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void executeOnboardingNotificationJob_hide_noNotification() {
         when(mOnboardingStateManager.updateAndGetOnboardingState())
                 .thenReturn(ONBOARDING_BANNER_STATE_HIDE);
@@ -219,6 +244,7 @@ public class OnboardingNotificationJobTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void executeOnboardingNotificationJob_shouldShowNoNotification_jobCancelled() {
         when(mOnboardingNotificationStateManager.getOnboardingNotificationState())
                 .thenReturn(SHOULD_SHOW_NO_NOTIFICATION);

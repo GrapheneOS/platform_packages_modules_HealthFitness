@@ -677,7 +677,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 повт.}one{# повт.}other{# повт.}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 повторување}one{# повторување}other{# повторувања}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Сегменти на вежбање"</string>
-    <string name="segment_set_index_format" msgid="5299538353624573851">"Поставете: <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Сет: <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
     <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
     <string name="segment_rpe_format_long" msgid="3492398127594227129">"Стапка на забележан напор: <xliff:g id="RPE">%1$s</xliff:g>"</string>
     <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Апликацијата е поврзана со Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Речиси е готово"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Отворете ги апликацииве сега за да го довршите поставувањето и да започнете со споделување податоци"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Прегледајте ги здравствените податоци на апликациите"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Започнете со споделување здравствени и податоци за фитнес меѓу вашите апликации"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Поставете"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Поврзете втора апликација"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Поставете уште една апликација за да споделувате здравствени и податоци за фитнес со <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Продолжете"</string>
 </resources>

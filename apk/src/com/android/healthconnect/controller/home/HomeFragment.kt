@@ -50,7 +50,6 @@ import com.android.healthconnect.controller.shared.Constants.LOCK_SCREEN_BANNER_
 import com.android.healthconnect.controller.shared.Constants.MIGRATION_NOT_COMPLETE_DIALOG_SEEN
 import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
 import com.android.healthconnect.controller.shared.HealthPermissionReader
-import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
@@ -96,9 +95,6 @@ class HomeFragment : Hilt_HomeFragment() {
         private const val MANAGE_DATA_PREFERENCE_KEY = "manage_data"
         private const val BROWSE_MEDICAL_DATA_PREFERENCE_KEY = "medical_data"
         private const val EXPORT_ERROR_BANNER_PREFERENCE_KEY = "export_error_banner"
-        private const val START_USING_HC_BANNER_KEY = "start_using_hc"
-        private const val CONNECT_MORE_APPS_BANNER_KEY = "connect_more_apps"
-        private const val SEE_COMPATIBLE_APPS_BANNER_KEY = "see_compatible_apps"
         private const val LOCK_SCREEN_BANNER_KEY = "lock_screen_banner"
         private const val ONBOARDING_ZERO_APPS_BANNER_KEY = "onboarding_zero_apps_banner_key"
         private const val ONBOARDING_ONE_APP_BANNER_KEY = "onboarding_one_app_banner_key"
@@ -264,7 +260,7 @@ class HomeFragment : Hilt_HomeFragment() {
             is OnboardingViewModel.OnboardingBannerState.ZeroAppsOnboardingBanner ->
                 showZeroAppsConnectedBanner()
             is OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner ->
-                showOneAppConnectedBanner(state.connectedApp)
+                showOneAppConnectedBanner()
             else -> hideOnboardingBanners()
         }
     }
@@ -278,12 +274,12 @@ class HomeFragment : Hilt_HomeFragment() {
         }
     }
 
-    private fun showOneAppConnectedBanner(app: AppMetadata) {
+    private fun showOneAppConnectedBanner() {
         if (
             bannerGroup.findPreference<HealthBannerPreference>(ONBOARDING_ONE_APP_BANNER_KEY) ==
                 null
         ) {
-            bannerGroup.addPreference(getOneAppConnectedBanner(app))
+            bannerGroup.addPreference(getOneAppConnectedBanner())
         }
     }
 
@@ -323,7 +319,7 @@ class HomeFragment : Hilt_HomeFragment() {
             }
     }
 
-    private fun getOneAppConnectedBanner(app: AppMetadata): HealthBannerPreference {
+    private fun getOneAppConnectedBanner(): HealthBannerPreference {
         return HealthBannerPreference(requireContext(), HomePageElement.ONE_APP_CONNECTED_BANNER)
             .also { banner ->
                 banner.setPositiveButton(
@@ -341,7 +337,7 @@ class HomeFragment : Hilt_HomeFragment() {
                     bannerGroup.removePreferenceRecursively(ONBOARDING_ONE_APP_BANNER_KEY)
                 }
                 banner.title = getString(R.string.one_app_onboarding_banner_title)
-                banner.summary = getString(R.string.one_app_onboarding_banner_summary, app.appName)
+                banner.summary = getString(R.string.one_app_onboarding_banner_summary)
                 banner.icon =
                     AttributeResolver.getNullableDrawable(requireContext(), R.attr.syncIcon)
                 banner.key = ONBOARDING_ONE_APP_BANNER_KEY

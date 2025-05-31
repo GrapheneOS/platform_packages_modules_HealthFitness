@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Health Connect-д холбогдсон апп"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Бараг дууслаа"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Тохируулгыг дуусгаж, өгөгдөл хуваалцаж эхлэхийн тулд одоо эдгээр аппыг нээнэ үү"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Эрүүл мэндийнхээ өгөгдлийг аппууд дээр харах"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Эрүүл мэнд, фитнесийн өгөгдлөө аппуудынхаа хооронд хуваалцаж эхлээрэй"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Тохируулах"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Хоёр дахь апп холбох"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"<xliff:g id="APP_NAME">%1$s</xliff:g>-тай эрүүл мэнд, фитнесийн өгөгдөл хуваалцахын тулд өөр нэг апп тохируулна уу"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Үргэлжлүүлэх"</string>
 </resources>

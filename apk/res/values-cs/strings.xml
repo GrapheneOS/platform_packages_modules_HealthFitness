@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Aplikace propojená s platformou Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Téměř hotovo"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Pokud chcete nastavení dokončit a začít sdílet data, otevřete teď tyto aplikace"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Mějte zdravotní údaje k dispozici v různých aplikacích"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Začněte sdílet údaje o zdraví a kondici mezi svými aplikacemi"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Nastavit"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Připojte druhou aplikaci"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Nastavte další aplikaci ke sdílení údajů o zdraví a kondici s aplikací <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Pokračovat"</string>
 </resources>

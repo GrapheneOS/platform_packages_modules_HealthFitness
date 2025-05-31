@@ -17,9 +17,14 @@
 package com.android.server.healthconnect.permission;
 
 import static android.Manifest.permission.INTERACT_ACROSS_USERS_FULL;
+import static android.content.pm.PackageManager.FLAG_PERMISSION_USER_SENSITIVE_WHEN_DENIED;
+import static android.content.pm.PackageManager.FLAG_PERMISSION_USER_SENSITIVE_WHEN_GRANTED;
+import static android.content.pm.PackageManager.GET_PERMISSIONS;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
 import static android.health.connect.HealthPermissions.READ_HEART_RATE;
+
+import static com.android.server.healthconnect.permission.PackageInfoUtils.getPackageInfoUnchecked;
 
 import android.annotation.Nullable;
 import android.app.ActivityManager;
@@ -35,6 +40,7 @@ import android.os.Build;
 import android.os.UserHandle;
 import android.util.ArrayMap;
 import android.util.ArraySet;
+import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
@@ -320,10 +326,10 @@ public final class HealthConnectPermissionHelper {
         PackageInfo packageInfo;
         try {
             packageInfo =
-                    PackageInfoUtils.getPackageInfoUnchecked(
+                    getPackageInfoUnchecked(
                             packageName,
                             userHandle,
-                            PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS),
+                            PackageManager.PackageInfoFlags.of(GET_PERMISSIONS),
                             mContext);
         } catch (IllegalArgumentException e) {
             // If the package can't be found, be conservative and assume they
@@ -368,6 +374,62 @@ public final class HealthConnectPermissionHelper {
                                 !isFromSplitPermission(
                                         permissionFlags.getOrDefault(requestedPermission, 0),
                                         targetSdkVersion));
+    }
+
+    /**
+     * Returns whether or not the given {@code packageName} has any health permission automatically
+     * granted or denied by the system.
+     */
+    public boolean hasNonUserSensitiveHealthPermission(
+            String packageName, UserHandle user, Context context) {
+        PackageInfo app;
+        try {
+            app =
+                    getPackageInfoUnchecked(
+                            packageName,
+                            user,
+                            PackageManager.PackageInfoFlags.of(GET_PERMISSIONS),
+                            context);
+        } catch (IllegalArgumentException e) {
+            Slog.w(TAG, "Invalid package name " + packageName);
+            return false;
+        }
+
+        String[] declaredPermissions = app.requestedPermissions;
+        int[] packageFlags = app.requestedPermissionsFlags;
+        if (declaredPermissions == null || packageFlags == null) {
+            return false;
+        }
+
+        Set<String> healthPermissions = HealthConnectManager.getHealthPermissions(mContext);
+        int permissionCnt = declaredPermissions.length;
+        for (int i = 0; i < permissionCnt; i++) {
+            int packageFlag = packageFlags[i];
+            String permission = declaredPermissions[i];
+            if (!healthPermissions.contains(permission)) {
+                continue;
+            }
+
+            int permissionFlag = getHealthPermissionFlags(packageName, user, permission);
+            boolean isPermissionGranted = isPermissionGranted(packageFlag, permissionFlag);
+
+            if (!isUserSensitive(isPermissionGranted, permissionFlag)) {
+                // if an app has any non-user-sensitive permission, it's considered a system app
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isPermissionGranted(int packageFlag, int permissionFlag) {
+        return (packageFlag & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0
+                && (permissionFlag & PackageManager.FLAG_PERMISSION_REVOKED_COMPAT) == 0;
+    }
+
+    private boolean isUserSensitive(boolean isGranted, int permissionFlag) {
+        return isGranted
+                ? (permissionFlag & FLAG_PERMISSION_USER_SENSITIVE_WHEN_GRANTED) != 0
+                : (permissionFlag & FLAG_PERMISSION_USER_SENSITIVE_WHEN_DENIED) != 0;
     }
 
     /** Returns true if we should enforce permission usage intent for this package. */
@@ -443,10 +505,10 @@ public final class HealthConnectPermissionHelper {
         PackageInfo packageInfo;
         try {
             packageInfo =
-                    PackageInfoUtils.getPackageInfoUnchecked(
+                    getPackageInfoUnchecked(
                             packageName,
                             userHandle,
-                            PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS),
+                            PackageManager.PackageInfoFlags.of(GET_PERMISSIONS),
                             mContext);
         } catch (IllegalArgumentException e) {
             // If the package can't be found, default to consider as not containing split
@@ -514,6 +576,36 @@ public final class HealthConnectPermissionHelper {
         return false;
     }
 
+    /**
+     * @return true if {@code packageInfo} has a USER_SET or USER_FIXED fitness permission.
+     */
+    public boolean hasDeniedFitnessPermission(PackageInfo packageInfo, UserHandle userHandle) {
+        if (packageInfo == null || packageInfo.requestedPermissions == null) {
+            return false;
+        }
+
+        for (int i = 0; i < packageInfo.requestedPermissions.length; i++) {
+            String currentPermission = packageInfo.requestedPermissions[i];
+            if (mHealthConnectMappings.isFitnessPermission(currentPermission)) {
+                boolean isAlreadyDenied =
+                        mPackageManager.checkPermission(currentPermission, packageInfo.packageName)
+                                == PackageManager.PERMISSION_DENIED;
+                int permissionFlags =
+                        getHealthPermissionFlags(
+                                packageInfo.packageName, userHandle, currentPermission);
+                if (isAlreadyDenied
+                        && ((permissionFlags & PackageManager.FLAG_PERMISSION_USER_SET) != 0
+                                || (permissionFlags & PackageManager.FLAG_PERMISSION_USER_FIXED)
+                                        != 0)) {
+                    // If the permission is denied and the flags are USER_SET or USER_FIXED,
+                    // the permission has been explicitly denied by the user
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /** Returns if the app is targeting SDK 35 and requesting the given permission. */
     private boolean isAppRequestingPermissionWithOutdatedTargetSdk(
             String packageName, UserHandle userHandle, String permission, int buildVersion) {
@@ -529,10 +621,10 @@ public final class HealthConnectPermissionHelper {
         PackageInfo packageInfo;
         try {
             packageInfo =
-                    PackageInfoUtils.getPackageInfoUnchecked(
+                    getPackageInfoUnchecked(
                             packageName,
                             userHandle,
-                            PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS),
+                            PackageManager.PackageInfoFlags.of(GET_PERMISSIONS),
                             mContext);
         } catch (IllegalArgumentException e) {
             // If the package can't be found, default to consider as not containing split
@@ -659,13 +751,12 @@ public final class HealthConnectPermissionHelper {
 
     private void enforceValidHealthPermission(String permissionName) {
         if (!HealthConnectManager.getHealthPermissions(mContext).contains(permissionName)) {
-            throw new IllegalArgumentException("invalid health permission");
+            throw new IllegalArgumentException("invalid health permission " + permissionName);
         }
     }
 
     private void enforceValidPackage(String packageName, UserHandle user) {
-        PackageInfoUtils.getPackageInfoUnchecked(
-                packageName, user, PackageManager.PackageInfoFlags.of(0), mContext);
+        getPackageInfoUnchecked(packageName, user, PackageManager.PackageInfoFlags.of(0), mContext);
     }
 
     private void enforceManageHealthPermissions(String message) {
@@ -724,10 +815,10 @@ public final class HealthConnectPermissionHelper {
     private void enforceValidHealthPermissions(
             String packageName, UserHandle user, List<String> permissions) {
         PackageInfo packageInfo =
-                PackageInfoUtils.getPackageInfoUnchecked(
+                getPackageInfoUnchecked(
                         packageName,
                         user,
-                        PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS),
+                        PackageManager.PackageInfoFlags.of(GET_PERMISSIONS),
                         mContext);
 
         Set<String> requestedPermissions = new ArraySet<>(packageInfo.requestedPermissions);

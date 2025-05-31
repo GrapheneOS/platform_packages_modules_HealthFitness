@@ -136,42 +136,40 @@ class OnboardingViewModelTest {
     }
 
     @Test
-    fun loadConnectedApps_noAppsConnected_onboardingFragmentStateZeroAppsConnected() = runTest {
-        loadFitnessPermissionApps.setConnectedApps(
-            listOf(
-                ConnectedFitnessAppMetadata(TEST_APP, false),
-                ConnectedFitnessAppMetadata(TEST_APP_2, false),
-                ConnectedFitnessAppMetadata(TEST_APP_3, false),
-            )
-        )
-        val testObserver = TestObserver<OnboardingViewModel.OnboardingFragmentState>()
-        viewModel.connectedApps.observeForever(testObserver)
-        viewModel.loadConnectedApps()
-        advanceUntilIdle()
-
-        val actual = testObserver.getLastValue()
-        assertThat(actual is OnboardingViewModel.OnboardingFragmentState.ZeroAppsConnected).isTrue()
-        assertThat(
-                (actual as OnboardingViewModel.OnboardingFragmentState.ZeroAppsConnected)
-                    .potentialApps
-            )
-            .containsExactlyElementsIn(
+    fun loadConnectedApps_noAppsConnected_twoAvailable_onboardingFragmentStateZeroAppsConnected() =
+        runTest {
+            loadFitnessPermissionApps.setConnectedApps(
                 listOf(
                     ConnectedFitnessAppMetadata(TEST_APP, false),
                     ConnectedFitnessAppMetadata(TEST_APP_2, false),
                     ConnectedFitnessAppMetadata(TEST_APP_3, false),
                 )
             )
-    }
+            val testObserver = TestObserver<OnboardingViewModel.OnboardingFragmentState>()
+            viewModel.connectedApps.observeForever(testObserver)
+            viewModel.loadConnectedApps()
+            advanceUntilIdle()
+
+            val actual = testObserver.getLastValue()
+            assertThat(actual is OnboardingViewModel.OnboardingFragmentState.ZeroAppsConnected)
+                .isTrue()
+            assertThat(
+                    (actual as OnboardingViewModel.OnboardingFragmentState.ZeroAppsConnected)
+                        .potentialApps
+                )
+                .containsExactlyElementsIn(
+                    listOf(
+                        ConnectedFitnessAppMetadata(TEST_APP, false),
+                        ConnectedFitnessAppMetadata(TEST_APP_2, false),
+                        ConnectedFitnessAppMetadata(TEST_APP_3, false),
+                    )
+                )
+        }
 
     @Test
-    fun loadConnectedApps_oneAppConnected_onboardingFragmentStateOneAppConnected() = runTest {
+    fun loadConnectedApps_noAppsConnected_oneAvailable_onboardingFragmentStateNoApps() = runTest {
         loadFitnessPermissionApps.setConnectedApps(
-            listOf(
-                ConnectedFitnessAppMetadata(TEST_APP, true),
-                ConnectedFitnessAppMetadata(TEST_APP_2, false),
-                ConnectedFitnessAppMetadata(TEST_APP_3, false),
-            )
+            listOf(ConnectedFitnessAppMetadata(TEST_APP, false))
         )
         val testObserver = TestObserver<OnboardingViewModel.OnboardingFragmentState>()
         viewModel.connectedApps.observeForever(testObserver)
@@ -179,19 +177,54 @@ class OnboardingViewModelTest {
         advanceUntilIdle()
 
         val actual = testObserver.getLastValue()
-        assertThat(actual is OnboardingViewModel.OnboardingFragmentState.OneAppConnected).isTrue()
-        assertThat(
-                (actual as OnboardingViewModel.OnboardingFragmentState.OneAppConnected).connectedApp
-            )
-            .isEqualTo(ConnectedFitnessAppMetadata(TEST_APP, true))
-        assertThat(actual.potentialApps)
-            .containsExactlyElementsIn(
+        assertThat(actual is OnboardingViewModel.OnboardingFragmentState.NoApps).isTrue()
+    }
+
+    @Test
+    fun loadConnectedApps_oneAppConnected_noneAvailable_onboardingFragmentStateNoApps() = runTest {
+        loadFitnessPermissionApps.setConnectedApps(
+            listOf(ConnectedFitnessAppMetadata(TEST_APP, true))
+        )
+        val testObserver = TestObserver<OnboardingViewModel.OnboardingFragmentState>()
+        viewModel.connectedApps.observeForever(testObserver)
+        viewModel.loadConnectedApps()
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual is OnboardingViewModel.OnboardingFragmentState.NoApps).isTrue()
+    }
+
+    @Test
+    fun loadConnectedApps_oneAppConnected_oneAvailable_onboardingFragmentStateOneAppConnected() =
+        runTest {
+            loadFitnessPermissionApps.setConnectedApps(
                 listOf(
+                    ConnectedFitnessAppMetadata(TEST_APP, true),
                     ConnectedFitnessAppMetadata(TEST_APP_2, false),
                     ConnectedFitnessAppMetadata(TEST_APP_3, false),
                 )
             )
-    }
+            val testObserver = TestObserver<OnboardingViewModel.OnboardingFragmentState>()
+            viewModel.connectedApps.observeForever(testObserver)
+            viewModel.loadConnectedApps()
+            advanceUntilIdle()
+
+            val actual = testObserver.getLastValue()
+            assertThat(actual is OnboardingViewModel.OnboardingFragmentState.OneAppConnected)
+                .isTrue()
+            assertThat(
+                    (actual as OnboardingViewModel.OnboardingFragmentState.OneAppConnected)
+                        .connectedApp
+                )
+                .isEqualTo(ConnectedFitnessAppMetadata(TEST_APP, true))
+            assertThat(actual.potentialApps)
+                .containsExactlyElementsIn(
+                    listOf(
+                        ConnectedFitnessAppMetadata(TEST_APP_2, false),
+                        ConnectedFitnessAppMetadata(TEST_APP_3, false),
+                    )
+                )
+        }
 
     @Test
     fun loadConnectedApps_twoAppsConnected_onboardingFragmentStateAlmostDone() = runTest {
@@ -315,11 +348,6 @@ class OnboardingViewModelTest {
         val actual = testObserver.getLastValue()
         assertThat(actual is OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner)
             .isTrue()
-        assertThat(
-                (actual as OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner)
-                    .connectedApp
-            )
-            .isEqualTo(TEST_APP)
     }
 
     @Test

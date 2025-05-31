@@ -674,7 +674,7 @@
     <string name="amrap_performance_goal" msgid="2225285957050151025">"جتنی بار ممکن ہو اتنی بار کریں"</string>
     <string name="rate_of_perceived_exertion_goal" msgid="7025839991503747361">"کوشش کی سطح: ‎<xliff:g id="VALUE">%1$d</xliff:g>‎/10"</string>
     <string name="elapsed_time_placeholder" msgid="5154979833935704302">"--:--"</string>
-    <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 تکرار}other{# تکرار}}"</string>
+    <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 بار}other{# بار}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 تکرار}other{# تکرار}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"ورزش سے متعلق سیگمنٹس"</string>
     <string name="segment_set_index_format" msgid="5299538353624573851">"سیٹ کردہ <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>

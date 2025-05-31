@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Aplicació connectada a Salut connectada"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Ja queda poc"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Obre aquestes aplicacions ara per acabar la configuració i començar a compartir dades"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Consulta les teves dades de salut en aplicacions"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Comença a compartir dades de salut i fitnes entre les teves aplicacions"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Configura"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Connecta una segona aplicació"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Configura una aplicació més per compartir dades de salut i fitnes amb <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Continua"</string>
 </resources>

@@ -430,7 +430,7 @@
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>."</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Gedetailleerde broncode: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"Apps met dit recht kunnen de gegevens over je gezondheid en fitness lezen en schrijven."</string>
-    <string name="connected_apps_text" msgid="1177626440966855831">"Bepaal welke apps toegang hebben tot gegevens die zijn opgeslagen in Health Connect. Tik op een app om te weten welke gegevens de app kan lezen of schrijven."</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"Bepaal welke apps toegang hebben tot gegevens die zijn opgeslagen in Health Connect. Tik op een app om te controleren welke gegevens de app kan lezen of schrijven."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Toegang toegestaan"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Toegang niet toegestaan"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"Moet worden geüpdatet"</string>
@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"App gekoppeld aan Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Bijna klaar"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Open deze apps nu om de instellingen af te ronden en gegevens delen te starten"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Je gezondheidsgegevens bekijken in verschillende apps"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Begin met gezondheids- en fitnessgegevens delen tussen je apps"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Instellen"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Een 2e app koppelen"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Stel nog één app in om gezondheids- en fitnessgegevens te delen met <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Doorgaan"</string>
 </resources>

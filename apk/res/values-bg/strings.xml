@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Приложението е свързано с Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Почти готово"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Отворете тези приложения сега, за да завършите настройването и да започнете да споделяте данни"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Преглеждайте здравните си данни в различни приложения"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Започнете да споделяте данни за здравето и физическата активност между приложенията си"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Настройване"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Свържете второ приложение"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Настройте още едно приложение, за да споделяте данни за здравето и физическата активност с(ъс) <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Напред"</string>
 </resources>

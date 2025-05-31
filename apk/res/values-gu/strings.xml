@@ -708,7 +708,7 @@
     <string name="dumbbell_triceps_extension_right_arm" msgid="1498470275564554389">"રાઇટ આર્મ ડમ્બેલ ટ્રાઇસેપ એક્સ્ટેન્શન"</string>
     <string name="dumbbell_triceps_extension_two_arm" msgid="5409860665522903159">"ટૂ આર્મ ડમ્બેલ ટ્રાઇસેપ એક્સ્ટેન્શન"</string>
     <string name="elliptical" msgid="5148914059968910839">"ઇલિપ્ટિકલ"</string>
-    <string name="exercise_class" msgid="32582249527931454">"વ્યાયામનો વર્ગ"</string>
+    <string name="exercise_class" msgid="32582249527931454">"વ્યાયામનો ક્લાસ"</string>
     <string name="fencing" msgid="410347890025055779">"તલવારબાજી"</string>
     <string name="football_american" msgid="8564554592554502623">"અમેરિકન ફૂટબૉલ"</string>
     <string name="football_australian" msgid="5524598297723674661">"ઑસ્ટ્રેલિયન ફૂટબૉલ"</string>
@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Health Connect સાથે કનેક્ટેડ ઍપ"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"લગભગ થઈ જ ગયું"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"સેટઅપ પૂર્ણ કરવા માટે હમણાં જ આ ઍપ ખોલો અને ડેટા શેરિંગ શરૂ કરો"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"બધી ઍપમાં તમારા આરોગ્યનો ડેટા જુઓ"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"તમારી બધી ઍપ વચ્ચે આરોગ્ય અને ફિટનેસ સંબંધિત ડેટા શેર કરવાનું શરૂ કરો"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"સેટઅપ કરો"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"બીજી કોઈ ઍપ કનેક્ટ કરો"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"<xliff:g id="APP_NAME">%1$s</xliff:g> સાથે આરોગ્ય અને ફિટનેસ સંબંધિત ડેટા શેર કરવા માટે વધુ એક ઍપનું સેટઅપ કરો"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"ચાલુ રાખો"</string>
 </resources>

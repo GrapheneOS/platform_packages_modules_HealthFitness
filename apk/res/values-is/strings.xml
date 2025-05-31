@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Forrit tengt Heilsutengingu"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Næstum búið"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Opnaðu þessi forrit núna til að ljúka uppsetningu og byrja gagnadeilingu"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Hafðu aðgang að heilsugögnunum þínum í mörgum forritum"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Byrjaðu að deila heilsu- og hreystigögnum á milli forritanna þinna"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Setja upp"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Tengdu annað forrit"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Settu upp eitt eða fleiri forrit til að deila heilsu- og hreystigögnum með <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Halda áfram"</string>
 </resources>

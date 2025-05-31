@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Η εφαρμογή συνδέθηκε στο Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Η διαδικασία έχει σχεδόν ολοκληρωθεί"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Ανοίξτε αυτές τις εφαρμογές τώρα για να ολοκληρώσετε τη ρύθμιση και να ξεκινήσετε την κοινοποίηση δεδομένων"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Προβολή των δεδομένων υγείας σας σε όλες τις εφαρμογές"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Ξεκινήστε την κοινή χρήση δεδομένων υγείας και φυσικής κατάστασης μεταξύ των εφαρμογών σας"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Ρύθμιση"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Σύνδεση δεύτερης εφαρμογής"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Ρυθμίστε μια ακόμη εφαρμογή για κοινή χρήση δεδομένων υγείας και φυσικής κατάστασης με την εφαρμογή <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Συνέχεια"</string>
 </resources>

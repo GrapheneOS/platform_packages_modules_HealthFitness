@@ -295,7 +295,6 @@ public abstract class ExerciseCompletionGoal {
      * An {@link ExerciseCompletionGoal} that has no specific target metric. It is up to the user to
      * determine when the associated {@link PlannedExerciseStep} is complete.
      */
-    @FlaggedApi("com.android.healthconnect.flags.training_plans")
     public static final class UnspecifiedGoal extends ExerciseCompletionGoal {
         private UnspecifiedGoal() {}
 

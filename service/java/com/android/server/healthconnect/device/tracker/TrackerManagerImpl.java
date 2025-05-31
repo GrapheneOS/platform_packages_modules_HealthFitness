@@ -75,7 +75,7 @@ public class TrackerManagerImpl implements TrackerManager {
     }
 
     @Override
-    public void initialize() {
+    public void initializeOrRefresh() {
         if (!Flags.stepTrackingEnabled()) {
             Slog.d(TAG, "Step tracking flag disabled. Aborting initialization.");
             return;
