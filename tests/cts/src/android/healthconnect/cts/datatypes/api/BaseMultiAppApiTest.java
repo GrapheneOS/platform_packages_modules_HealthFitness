@@ -17,8 +17,6 @@
 package android.healthconnect.cts.datatypes.api;
 
 import static android.healthconnect.testing.cts.PermissionUtils.getGrantedHealthPermissions;
-import static android.healthconnect.testing.cts.PermissionUtils.runWithRevokedPermission;
-import static android.healthconnect.testing.cts.PermissionUtils.runWithRevokedPermissions;
 import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadata;
 import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadataWithId;
 
@@ -33,8 +31,9 @@ import android.health.connect.RecordIdFilter;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.Record;
-import android.healthconnect.cts.lib.TestAppProxy;
 import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
+import android.healthconnect.testing.cts.testapphelpers.TestAppRule;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.healthconnect.testing.shared.recordfactory.RecordFactory;
@@ -61,8 +60,21 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                     .atTime(11, 0)
                     .atZone(ZoneId.systemDefault());
     private static final String TEST_PACKAGE_NAME = getTestPackageName();
-    private static final TestAppProxy APP_A_WITH_READ_WRITE_PERMS =
-            TestAppProxy.forPackageName("android.healthconnect.cts.testapp.readWritePerms.A");
+
+    @Rule(order = 0)
+    public final AssumptionCheckerRule mSupportedHardwareRule =
+            new AssumptionCheckerRule(
+                    DeviceSupportUtils::isHealthConnectFullySupported,
+                    "Tests should run on supported hardware only.");
+
+    @Rule(order = 1)
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
+
+    @Rule(order = 2)
+    public final TestAppRule mAppWithReadWritePermsRule =
+            new TestAppRule.Builder("android.healthconnect.cts.testapp.readWritePerms.A").build();
+
+    private final TestAppProxy mAppWithReadWritePerms = mAppWithReadWritePermsRule.getProxy();
 
     /**
      * The record class may be unavailable on older builds. Using a supplier makes sure the class
@@ -87,21 +99,12 @@ abstract class BaseMultiAppApiTest<T extends Record> {
         mRecordFactory = recordFactory;
     }
 
-    @Rule
-    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
-
-    @Rule
-    public AssumptionCheckerRule mSupportedHardwareRule =
-            new AssumptionCheckerRule(
-                    DeviceSupportUtils::isHealthConnectFullySupported,
-                    "Tests should run on supported hardware only.");
-
     @Before
     public void setUp() throws InterruptedException {
         mRecordClass = mRecordClassSupplier.get();
         assertThat(getGrantedHealthPermissions(getTestPackageName()))
                 .containsAtLeast(mReadPermission, mWritePermission);
-        assertThat(getGrantedHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName()))
+        assertThat(getGrantedHealthPermissions(mAppWithReadWritePerms.getPackageName()))
                 .containsAtLeast(mReadPermission, mWritePermission);
         TestUtils.deleteAllStagedRemoteData();
     }
@@ -120,16 +123,11 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(10).toInstant(),
                                 YESTERDAY_11AM.plusMinutes(30).toInstant()));
 
+        mAppWithReadWritePermsRule.revokeHealthPermission(mWritePermission);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
-                        () ->
-                                runWithRevokedPermissions(
-                                        APP_A_WITH_READ_WRITE_PERMS.getPackageName(),
-                                        mWritePermission,
-                                        () ->
-                                                APP_A_WITH_READ_WRITE_PERMS.insertRecords(
-                                                        recordsToInsert)));
+                        () -> mAppWithReadWritePerms.insertRecords(recordsToInsert));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
     }
@@ -145,7 +143,7 @@ abstract class BaseMultiAppApiTest<T extends Record> {
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
 
         List<? extends Record> returnedRecords =
-                APP_A_WITH_READ_WRITE_PERMS.readRecords(
+                mAppWithReadWritePerms.readRecords(
                         new ReadRecordsRequestUsingIds.Builder<>(mRecordClass)
                                 .addId(recordIds.get(0))
                                 .build());
@@ -165,15 +163,12 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(30).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
 
+        mAppWithReadWritePermsRule.revokeHealthPermission(mReadPermission);
         List<? extends Record> returnedRecords =
-                runWithRevokedPermissions(
-                        () ->
-                                APP_A_WITH_READ_WRITE_PERMS.readRecords(
-                                        new ReadRecordsRequestUsingIds.Builder<>(mRecordClass)
-                                                .addId(recordIds.get(0))
-                                                .build()),
-                        APP_A_WITH_READ_WRITE_PERMS.getPackageName(),
-                        mReadPermission);
+                mAppWithReadWritePerms.readRecords(
+                        new ReadRecordsRequestUsingIds.Builder<>(mRecordClass)
+                                .addId(recordIds.get(0))
+                                .build());
 
         // TODO(b/309778116): this should be an error rather than an empty response.
         assertThat(returnedRecords).isEmpty();
@@ -187,10 +182,10 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                                 newEmptyMetadata(),
                                 YESTERDAY_11AM.plusMinutes(10).toInstant(),
                                 YESTERDAY_11AM.plusMinutes(30).toInstant()));
-        List<String> recordIds = APP_A_WITH_READ_WRITE_PERMS.insertRecords(recordsToInsert);
+        List<String> recordIds = mAppWithReadWritePerms.insertRecords(recordsToInsert);
 
         List<? extends Record> returnedRecords =
-                APP_A_WITH_READ_WRITE_PERMS.readRecords(
+                mAppWithReadWritePerms.readRecords(
                         new ReadRecordsRequestUsingIds.Builder<>(mRecordClass)
                                 .addId(recordIds.get(0))
                                 .build());
@@ -200,7 +195,7 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                         withIdAndPackageName(
                                 recordsToInsert.get(0),
                                 recordIds.get(0),
-                                APP_A_WITH_READ_WRITE_PERMS.getPackageName()));
+                                mAppWithReadWritePerms.getPackageName()));
     }
 
     @Test
@@ -211,22 +206,18 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                                 newEmptyMetadata(),
                                 YESTERDAY_11AM.plusMinutes(10).toInstant(),
                                 YESTERDAY_11AM.plusMinutes(30).toInstant()));
-        List<String> recordIds = APP_A_WITH_READ_WRITE_PERMS.insertRecords(recordsToInsert);
+        List<String> recordIds = mAppWithReadWritePerms.insertRecords(recordsToInsert);
 
+        mAppWithReadWritePermsRule.revokeHealthPermission(mReadPermission);
+        mAppWithReadWritePermsRule.revokeHealthPermission(mWritePermission);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
                         () ->
-                                runWithRevokedPermissions(
-                                        () ->
-                                                APP_A_WITH_READ_WRITE_PERMS.readRecords(
-                                                        new ReadRecordsRequestUsingIds.Builder<>(
-                                                                        mRecordClass)
-                                                                .addId(recordIds.get(0))
-                                                                .build()),
-                                        APP_A_WITH_READ_WRITE_PERMS.getPackageName(),
-                                        mReadPermission,
-                                        mWritePermission));
+                                mAppWithReadWritePerms.readRecords(
+                                        new ReadRecordsRequestUsingIds.Builder<>(mRecordClass)
+                                                .addId(recordIds.get(0))
+                                                .build()));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
     }
@@ -239,19 +230,15 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                                 newEmptyMetadata(),
                                 YESTERDAY_11AM.plusMinutes(10).toInstant(),
                                 YESTERDAY_11AM.plusMinutes(30).toInstant()));
-        List<String> recordIds = APP_A_WITH_READ_WRITE_PERMS.insertRecords(recordsToInsert);
+        List<String> recordIds = mAppWithReadWritePerms.insertRecords(recordsToInsert);
 
+        mAppWithReadWritePermsRule.revokeHealthPermission(mWritePermission);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
                         () ->
-                                runWithRevokedPermissions(
-                                        APP_A_WITH_READ_WRITE_PERMS.getPackageName(),
-                                        mWritePermission,
-                                        () ->
-                                                APP_A_WITH_READ_WRITE_PERMS.deleteRecords(
-                                                        RecordIdFilter.fromId(
-                                                                mRecordClass, recordIds.get(0)))));
+                                mAppWithReadWritePerms.deleteRecords(
+                                        RecordIdFilter.fromId(mRecordClass, recordIds.get(0))));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
         assertThat(readAllRecords())
@@ -259,7 +246,7 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                         withIdAndPackageName(
                                 recordsToInsert.get(0),
                                 recordIds.get(0),
-                                APP_A_WITH_READ_WRITE_PERMS.getPackageName()));
+                                mAppWithReadWritePerms.getPackageName()));
     }
 
     @Test
@@ -276,7 +263,7 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                 assertThrows(
                         HealthConnectException.class,
                         () ->
-                                APP_A_WITH_READ_WRITE_PERMS.deleteRecords(
+                                mAppWithReadWritePerms.deleteRecords(
                                         RecordIdFilter.fromId(mRecordClass, recordIds.get(0))));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
@@ -293,23 +280,18 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                                 newEmptyMetadata(),
                                 YESTERDAY_11AM.plusMinutes(10).toInstant(),
                                 YESTERDAY_11AM.plusMinutes(30).toInstant()));
-        List<String> recordIds = APP_A_WITH_READ_WRITE_PERMS.insertRecords(recordsToInsert);
+        List<String> recordIds = mAppWithReadWritePerms.insertRecords(recordsToInsert);
         Record updatedRecord =
                 mRecordFactory.newEmptyRecord(
                         newEmptyMetadataWithId(recordIds.get(0)),
                         YESTERDAY_11AM.plusMinutes(20).toInstant(),
                         YESTERDAY_11AM.plusMinutes(35).toInstant());
 
+        mAppWithReadWritePermsRule.revokeHealthPermission(mWritePermission);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
-                        () ->
-                                runWithRevokedPermissions(
-                                        APP_A_WITH_READ_WRITE_PERMS.getPackageName(),
-                                        mWritePermission,
-                                        () ->
-                                                APP_A_WITH_READ_WRITE_PERMS.updateRecords(
-                                                        List.of(updatedRecord))));
+                        () -> mAppWithReadWritePerms.updateRecords(List.of(updatedRecord)));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
         assertThat(readAllRecords())
@@ -317,7 +299,7 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                         withIdAndPackageName(
                                 recordsToInsert.get(0),
                                 recordIds.get(0),
-                                APP_A_WITH_READ_WRITE_PERMS.getPackageName()));
+                                mAppWithReadWritePerms.getPackageName()));
     }
 
     @Test
@@ -338,7 +320,7 @@ abstract class BaseMultiAppApiTest<T extends Record> {
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
-                        () -> APP_A_WITH_READ_WRITE_PERMS.updateRecords(List.of(updatedRecord)));
+                        () -> mAppWithReadWritePerms.updateRecords(List.of(updatedRecord)));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
         assertThat(readAllRecords())
@@ -348,37 +330,30 @@ abstract class BaseMultiAppApiTest<T extends Record> {
 
     @Test
     public void getChangesToken_noReadPermission_throws() {
+        mAppWithReadWritePermsRule.revokeHealthPermission(mReadPermission);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
                         () ->
-                                runWithRevokedPermission(
-                                        APP_A_WITH_READ_WRITE_PERMS.getPackageName(),
-                                        mReadPermission,
-                                        () ->
-                                                APP_A_WITH_READ_WRITE_PERMS.getChangeLogToken(
-                                                        new ChangeLogTokenRequest.Builder()
-                                                                .addRecordType(mRecordClass)
-                                                                .build())));
+                                mAppWithReadWritePerms.getChangeLogToken(
+                                        new ChangeLogTokenRequest.Builder()
+                                                .addRecordType(mRecordClass)
+                                                .build()));
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
     }
 
     @Test
     public void getChanges_noReadPermission_throws() throws Exception {
         String token =
-                APP_A_WITH_READ_WRITE_PERMS.getChangeLogToken(
+                mAppWithReadWritePerms.getChangeLogToken(
                         new ChangeLogTokenRequest.Builder().addRecordType(mRecordClass).build());
+        mAppWithReadWritePermsRule.revokeHealthPermission(mReadPermission);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
                         () ->
-                                runWithRevokedPermission(
-                                        APP_A_WITH_READ_WRITE_PERMS.getPackageName(),
-                                        mReadPermission,
-                                        () ->
-                                                APP_A_WITH_READ_WRITE_PERMS.getChangeLogs(
-                                                        new ChangeLogsRequest.Builder(token)
-                                                                .build())));
+                                mAppWithReadWritePerms.getChangeLogs(
+                                        new ChangeLogsRequest.Builder(token).build()));
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
     }
 

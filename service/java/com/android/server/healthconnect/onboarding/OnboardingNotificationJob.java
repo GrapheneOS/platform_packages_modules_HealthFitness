@@ -103,6 +103,10 @@ public final class OnboardingNotificationJob {
             OnboardingNotificationSender notificationSender,
             OnboardingNotificationStateManager notificationShownStateManager,
             UserHandle userHandle) {
+        if (!Flags.onboarding()) {
+            return;
+        }
+
         int notificationState = notificationShownStateManager.getOnboardingNotificationState();
         if (notificationState == SHOULD_SHOW_NO_NOTIFICATION) {
             cancelAllJobs(context);

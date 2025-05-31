@@ -33,12 +33,13 @@ import com.android.healthconnect.controller.data.entries.ExpressiveEntriesAdapte
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ExercisePerformanceGoalEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ExerciseSessionEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedHeaderlessSessionDetail
-import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSectionContent
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSectionTitle
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSegment
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSessionDetail
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ItemDataEntrySeparator
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseBlockEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseFormattedSectionContent
+import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseFormattedSectionTitle
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseSessionEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseStepEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ReverseSessionDetail
@@ -104,6 +105,9 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
     }
     private val plannedExerciseBlockViewBinder by lazy { PlannedExerciseBlockViewBinder() }
     private val plannedExerciseStepViewBinder by lazy { PlannedExerciseStepViewBinder() }
+    private val plannedExerciseSectionTitleViewBinder by lazy {
+        PlannedExerciseSectionTitleViewBinder()
+    }
     private val exercisePerformanceGoalViewBinder by lazy { ExercisePerformanceGoalViewBinder() }
     private val formattedSectionContentViewBinder by lazy { FormattedSectionContentViewBinder() }
     private val exerciseSessionItemViewBinder by lazy {
@@ -198,13 +202,20 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
             .setViewBinder(SessionHeader::class.java, sessionHeaderViewBinder)
             .setViewBinder(ReverseSessionDetail::class.java, reverseSessionDetailViewBinder)
             .setViewBinder(FormattedSectionTitle::class.java, formattedSectionTitleViewBinder)
-            .setViewBinder(FormattedSectionContent::class.java, formattedSectionContentViewBinder)
+            .setViewBinder(
+                PlannedExerciseFormattedSectionContent::class.java,
+                formattedSectionContentViewBinder,
+            )
             .setViewBinder(
                 PlannedExerciseSessionEntry::class.java,
                 plannedExerciseSessionViewBinder,
             )
             .setViewBinder(PlannedExerciseBlockEntry::class.java, plannedExerciseBlockViewBinder)
             .setViewBinder(PlannedExerciseStepEntry::class.java, plannedExerciseStepViewBinder)
+            .setViewBinder(
+                PlannedExerciseFormattedSectionTitle::class.java,
+                plannedExerciseSectionTitleViewBinder,
+            )
             .setViewBinder(
                 ExercisePerformanceGoalEntry::class.java,
                 exercisePerformanceGoalViewBinder,
@@ -228,13 +239,20 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
             .setViewBinder(SessionHeader::class.java, sessionHeaderViewBinder)
             .setViewBinder(ReverseSessionDetail::class.java, reverseSessionDetailViewBinder)
             .setViewBinder(FormattedSectionTitle::class.java, formattedSectionTitleViewBinder)
-            .setViewBinder(FormattedSectionContent::class.java, formattedSectionContentViewBinder)
+            .setViewBinder(
+                PlannedExerciseFormattedSectionContent::class.java,
+                formattedSectionContentViewBinder,
+            )
             .setViewBinder(
                 PlannedExerciseSessionEntry::class.java,
                 plannedExerciseSessionViewBinder,
             )
             .setViewBinder(PlannedExerciseBlockEntry::class.java, plannedExerciseBlockViewBinder)
             .setViewBinder(PlannedExerciseStepEntry::class.java, plannedExerciseStepViewBinder)
+            .setViewBinder(
+                PlannedExerciseFormattedSectionTitle::class.java,
+                plannedExerciseSectionTitleViewBinder,
+            )
             .setViewBinder(
                 ExercisePerformanceGoalEntry::class.java,
                 exercisePerformanceGoalViewBinder,

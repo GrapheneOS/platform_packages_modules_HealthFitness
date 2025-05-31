@@ -648,7 +648,7 @@
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 sprat}one{# sprat}few{# sprata}other{# spratova}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 m}one{# m}few{# m}other{# m}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 metar}one{# metar}few{# metra}other{# metara}}"</string>
-    <string name="cycling_rpm" msgid="2271215098150068276">"{count,plural, =1{1 o/min}one{# o/min}few{# o/min}other{# o/min}}"</string>
+    <string name="cycling_rpm" msgid="2271215098150068276">"{count,plural, =1{1 obrt./min}one{# obrt./min}few{# obrt./min}other{# obrt./min}}"</string>
     <string name="cycling_rpm_long" msgid="4914848042733587007">"{count,plural, =1{1 obrtaj u minuti}one{# obrtaj u minuti}few{# obrtaja u minuti}other{# obrtaja u minuti}}"</string>
     <string name="cycling_cadence_series_range_long" msgid="6852892013260504985">"od <xliff:g id="MIN">%1$s</xliff:g> do <xliff:g id="MAX">%2$s</xliff:g>"</string>
     <string name="sexual_activity_protected" msgid="4259473257597274326">"Sa zaštitom"</string>
@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Aplikacija je povezana s Health Connectom"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Skoro je gotovo"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Otvorite ove aplikacije da završite postavljanje i započnite dijeljenje podataka"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Pogledajte zdravstvene podatke u aplikacijama"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Počnite dijeliti podatke o zdravlju i fitnesu između aplikacija"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Postavi"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Povežite drugu aplikaciju"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Postavite još jednu aplikaciju za dijeljenje podataka o zdravlju i fitnesu s aplikacijom <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Nastavi"</string>
 </resources>

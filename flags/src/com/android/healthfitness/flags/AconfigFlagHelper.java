@@ -20,6 +20,7 @@ import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ACTIVI
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ECOSYSTEM_METRICS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 import static com.android.internal.annotations.VisibleForTesting.Visibility.PRIVATE;
@@ -111,14 +112,14 @@ public final class AconfigFlagHelper {
         map.put(DB_VERSION_CLOUD_BACKUP_AND_RESTORE, Flags::cloudBackupAndRestoreDb);
         map.put(DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS, Flags::exerciseSegmentImprovementsDb);
         map.put(DB_VERSION_PHR_CHANGE_LOGS, Flags::phrChangeLogsDb);
+        map.put(DB_VERSION_NICOTINE_INTAKE, Flags::smokingDb);
+
         return map;
     }
 
     /** Returns a boolean indicating whether Activity Intensity data type is enabled. */
     public static boolean isActivityIntensityEnabled() {
-        return Flags.activityIntensity()
-                && isDbFlagEnabled(DB_VERSION_ACTIVITY_INTENSITY)
-                && Flags.healthConnectMappings();
+        return Flags.activityIntensity() && isDbFlagEnabled(DB_VERSION_ACTIVITY_INTENSITY);
     }
 
     /** Returns a boolean indicating whether Ecosystem Metrics is enabled. */
@@ -134,7 +135,7 @@ public final class AconfigFlagHelper {
 
     /** Returns a boolean indicating whether Nicotine Intake data type is enabled. */
     public static boolean isNicotineIntakeEnabled() {
-        return Flags.smoking() && Flags.smokingDb() && Flags.healthConnectMappings();
+        return Flags.smoking() && isDbFlagEnabled(DB_VERSION_NICOTINE_INTAKE);
     }
 
     /** Returns a boolean indicating whether exercise segment improvements are enabled. */

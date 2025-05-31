@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.backuprestore;
 
+import static android.health.connect.Constants.DEFAULT_DOUBLE;
 import static android.health.connect.Constants.DEFAULT_FLOAT;
 import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.datatypes.units.Temperature.fromCelsius;
@@ -62,6 +63,7 @@ import android.health.connect.internal.datatypes.LeanBodyMassRecordInternal;
 import android.health.connect.internal.datatypes.MenstruationFlowRecordInternal;
 import android.health.connect.internal.datatypes.MenstruationPeriodRecordInternal;
 import android.health.connect.internal.datatypes.MindfulnessSessionRecordInternal;
+import android.health.connect.internal.datatypes.NicotineIntakeRecordInternal;
 import android.health.connect.internal.datatypes.NutritionRecordInternal;
 import android.health.connect.internal.datatypes.OvulationTestRecordInternal;
 import android.health.connect.internal.datatypes.OxygenSaturationRecordInternal;
@@ -118,6 +120,7 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.L
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstruationFlow;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstruationPeriod;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MindfulnessSession;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.NicotineIntake;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Nutrition;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.OvulationTest;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.OxygenSaturation;
@@ -156,7 +159,7 @@ import java.util.UUID;
  */
 public final class RecordProtoConverter {
 
-    public static final int PROTO_VERSION = 1;
+    public static final int PROTO_VERSION = 2;
 
     private final Map<Integer, Class<? extends RecordInternal<?>>> mDataTypeClassMap =
             HealthConnectMappings.getInstance().getRecordIdToInternalRecordClassMap();
@@ -251,6 +254,9 @@ public final class RecordProtoConverter {
                 instanceof MindfulnessSessionRecordInternal mindfulnessSessionRecordInternal) {
             builder.setMindfulnessSession(
                     toMindfulnessSessionProto(mindfulnessSessionRecordInternal));
+        } else if (intervalRecordInternal
+                instanceof NicotineIntakeRecordInternal nicotineIntakeRecordInternal) {
+            builder.setNicotineIntake(toNicotineIntakeProto(nicotineIntakeRecordInternal));
         } else if (intervalRecordInternal
                 instanceof NutritionRecordInternal nutritionRecordInternal) {
             builder.setNutrition(toNutritionProto(nutritionRecordInternal));
@@ -454,6 +460,19 @@ public final class RecordProtoConverter {
         }
         if (mindfulnessSessionRecordInternal.getNotes() != null) {
             builder.setNotes(mindfulnessSessionRecordInternal.getNotes());
+        }
+
+        return builder.build();
+    }
+
+    private static NicotineIntake toNicotineIntakeProto(
+            NicotineIntakeRecordInternal nicotineIntakeRecordInternal) {
+        NicotineIntake.Builder builder =
+                NicotineIntake.newBuilder()
+                        .setNicotineIntakeType(nicotineIntakeRecordInternal.getNicotineIntakeType())
+                        .setQuantity(nicotineIntakeRecordInternal.getQuantity());
+        if (nicotineIntakeRecordInternal.getNicotineIntakeGrams() != DEFAULT_DOUBLE) {
+            builder.setNicotineIntake(nicotineIntakeRecordInternal.getNicotineIntakeGrams());
         }
 
         return builder.build();
@@ -1158,6 +1177,10 @@ public final class RecordProtoConverter {
                     intervalRecordInternal =
                             populateMindfulnessSessionRecordInternal(
                                     intervalRecordProto.getMindfulnessSession());
+            case NICOTINE_INTAKE ->
+                    intervalRecordInternal =
+                            populateNicotineIntakeRecordInternal(
+                                    intervalRecordProto.getNicotineIntake());
             case NUTRITION ->
                     intervalRecordInternal =
                             populateNutritionRecordInternal(intervalRecordProto.getNutrition());
@@ -1352,6 +1375,20 @@ public final class RecordProtoConverter {
             mindfulnessSessionRecordInternal.setNotes(mindfulnessSessionProto.getNotes());
         }
         return mindfulnessSessionRecordInternal;
+    }
+
+    private static NicotineIntakeRecordInternal populateNicotineIntakeRecordInternal(
+            NicotineIntake nicotineIntakeProto) {
+        NicotineIntakeRecordInternal nicotineIntakeRecordInternal =
+                new NicotineIntakeRecordInternal();
+        nicotineIntakeRecordInternal
+                .setNicotineIntakeType(nicotineIntakeProto.getNicotineIntakeType())
+                .setQuantity(nicotineIntakeProto.getQuantity());
+        if (nicotineIntakeProto.hasNicotineIntake()) {
+            nicotineIntakeRecordInternal.setNicotineIntakeGrams(
+                    nicotineIntakeProto.getNicotineIntake());
+        }
+        return nicotineIntakeRecordInternal;
     }
 
     private static NutritionRecordInternal populateNutritionRecordInternal(
@@ -1885,6 +1922,7 @@ public final class RecordProtoConverter {
             case HYDRATION -> RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
             case MENSTRUATION_PERIOD -> RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_PERIOD;
             case MINDFULNESS_SESSION -> RecordTypeIdentifier.RECORD_TYPE_MINDFULNESS_SESSION;
+            case NICOTINE_INTAKE -> RecordTypeIdentifier.RECORD_TYPE_NICOTINE_INTAKE;
             case NUTRITION -> RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
             case PLANNED_EXERCISE_SESSION ->
                     RecordTypeIdentifier.RECORD_TYPE_PLANNED_EXERCISE_SESSION;

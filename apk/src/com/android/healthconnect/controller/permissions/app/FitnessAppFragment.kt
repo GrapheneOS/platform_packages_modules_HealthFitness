@@ -87,10 +87,12 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
     }
 
     @Inject lateinit var logger: HealthConnectLogger
+
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
     private var packageName: String = ""
     private var appName: String = ""
+
     // TODO (b/376085888) rename as proxy for whether app also has medical/additional permissions
     // Or use viewModel
     private var showManageAppSection: Boolean = true
@@ -163,7 +165,8 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
             }
         }
 
-        deletionViewModel.appPermissionTypesReloadNeeded.observe(viewLifecycleOwner) { isReloadNeeded ->
+        deletionViewModel.appPermissionTypesReloadNeeded.observe(viewLifecycleOwner) {
+            isReloadNeeded ->
             if (isReloadNeeded) appPermissionViewModel.loadPermissionsForPackage(packageName)
         }
 
@@ -173,6 +176,7 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
                 is RevokeAllState.Loading -> {
                     showLoadingDialog()
                 }
+
                 else -> {
                     dismissLoadingDialog()
                 }
@@ -337,6 +341,7 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
                         )
                         it.logNameActive = AppAccessElement.PERMISSION_SWITCH_ACTIVE
                         it.logNameInactive = AppAccessElement.PERMISSION_SWITCH_INACTIVE
+                        it.permission = permission
                         it.setOnPreferenceChangeListener { _, newValue ->
                             allowAllPreference.removeOnSwitchChangeListener(onSwitchChangeListener)
                             val checked = newValue as Boolean

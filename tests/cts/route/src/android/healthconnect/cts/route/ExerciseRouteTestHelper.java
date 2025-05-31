@@ -39,7 +39,7 @@ import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.units.Length;
-import android.healthconnect.cts.lib.TestAppProxy;
+import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -49,11 +49,15 @@ import java.util.List;
 
 final class ExerciseRouteTestHelper {
 
+    static final String ROUTE_WRITER_APP_PACKAGE_NAME =
+            "android.healthconnect.cts.route.testapp.writer";
     static final TestAppProxy ROUTE_WRITER_APP =
-            TestAppProxy.forPackageName("android.healthconnect.cts.route.testapp.writer");
+            TestAppProxy.forPackageName(ROUTE_WRITER_APP_PACKAGE_NAME);
 
+    static final String ROUTES_READER_WRITER_APP_PACKAGE_NAME =
+            "android.healthconnect.cts.route.testapp.readerWriter";
     static final TestAppProxy ROUTES_READER_WRITER_APP =
-            TestAppProxy.forPackageName("android.healthconnect.cts.route.testapp.readerWriter");
+            TestAppProxy.forPackageName(ROUTES_READER_WRITER_APP_PACKAGE_NAME);
 
     static final Instant START_TIME = yesterdayAt("11:00").truncatedTo(ChronoUnit.MILLIS);
 
@@ -68,9 +72,9 @@ final class ExerciseRouteTestHelper {
         Context context = ApplicationProvider.getApplicationContext();
         assertThat(getGrantedHealthPermissions(context.getPackageName()))
                 .containsExactly(READ_EXERCISE, WRITE_EXERCISE, WRITE_EXERCISE_ROUTE);
-        assertThat(getGrantedHealthPermissions(ROUTE_WRITER_APP.getPackageName()))
+        assertThat(getGrantedHealthPermissions(ROUTE_WRITER_APP_PACKAGE_NAME))
                 .containsExactly(WRITE_EXERCISE, WRITE_EXERCISE_ROUTE);
-        assertThat(getGrantedHealthPermissions(ROUTES_READER_WRITER_APP.getPackageName()))
+        assertThat(getGrantedHealthPermissions(ROUTES_READER_WRITER_APP_PACKAGE_NAME))
                 .containsExactly(
                         READ_EXERCISE,
                         READ_EXERCISE_ROUTES,

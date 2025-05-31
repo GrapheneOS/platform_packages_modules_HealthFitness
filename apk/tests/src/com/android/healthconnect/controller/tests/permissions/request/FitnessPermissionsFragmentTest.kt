@@ -33,6 +33,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -623,6 +624,77 @@ class FitnessPermissionsFragmentTest {
             )
         Espresso.onIdle()
         onView(withText("Exercise")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun whenPermissionSwitchIsOn_forReadWrite_correctContentDescriptionIsDisplayed() {
+        whenever(viewModel.fitnessScreenState).then {
+            MutableLiveData(
+                FitnessScreenState.ShowFitnessReadWrite(
+                    hasMedical = false,
+                    appMetadata = appMetadata,
+                    fitnessPermissions = fitnessReadWritePermissions,
+                    historyGranted = false,
+                )
+            )
+        }
+
+        launchFragment<FitnessPermissionsFragment>(bundleOf())
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                    hasDescendant(withText("Exercise"))
+                )
+            )
+        Espresso.onIdle()
+        onView(withText("Exercise")).perform(click())
+        Espresso.onIdle()
+        onView(withContentDescription("Exercise. Write Access. On")).check(matches(isDisplayed()))
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                    hasDescendant(withText("Sleep"))
+                )
+            )
+        Espresso.onIdle()
+        onView(withText("Sleep")).perform(click())
+        Espresso.onIdle()
+        onView(withContentDescription("Sleep. Read Access. On")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun whenPermissionSwitchIsOff_forReadWrite_correctContentDescriptionIsDisplayed() {
+        whenever(viewModel.fitnessScreenState).then {
+            MutableLiveData(
+                FitnessScreenState.ShowFitnessWrite(
+                    hasMedical = false,
+                    appMetadata = appMetadata,
+                    fitnessPermissions = fitnessReadWritePermissions,
+                )
+            )
+        }
+
+        launchFragment<FitnessPermissionsFragment>(bundleOf())
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                    hasDescendant(withText("Exercise"))
+                )
+            )
+        Espresso.onIdle()
+        onView(withContentDescription("Exercise. Write Access. Off")).check(matches(isDisplayed()))
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                    hasDescendant(withText("Sleep"))
+                )
+            )
+        Espresso.onIdle()
+        onView(withContentDescription("Sleep. Read Access. Off")).check(matches(isDisplayed()))
     }
 
     @Test

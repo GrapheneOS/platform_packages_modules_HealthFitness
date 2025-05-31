@@ -15,12 +15,12 @@
  */
 package android.healthconnect.cts.ui.phr
 
-import android.healthconnect.cts.lib.ActivityLauncher.launchMainActivity
-import android.healthconnect.cts.lib.UiTestUtils.findText
-import android.healthconnect.cts.lib.UiTestUtils.navigateToAppPermissions
-import android.healthconnect.cts.lib.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.cts.ui.HealthConnectBaseTest
 import android.healthconnect.testing.cts.TestUtils
+import android.healthconnect.testing.cts.ui.ActivityLauncher.launchMainActivity
+import android.healthconnect.testing.cts.ui.UiTestUtils.findText
+import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToAppPermissions
+import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndFindText
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import org.junit.Before

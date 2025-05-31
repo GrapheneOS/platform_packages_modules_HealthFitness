@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Праграма падключана да праграмы \"Здароўе і спорт\""</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Амаль гатова"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Адкрыйце гэтыя праграмы зараз, каб завяршыць наладжванне і пачаць абагульванне даных"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Праглядайце вашы даныя пра здароўе з розных праграм"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Абагульвайце даныя пра здароўе і фізічную актыўнасць паміж вашымі праграмамі"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Наладзіць"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Падключыце другую праграму"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Наладзьце яшчэ адну праграму для абагульвання даных пра здароўе і фізічную актыўнасць з праграмай \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Працягнуць"</string>
 </resources>

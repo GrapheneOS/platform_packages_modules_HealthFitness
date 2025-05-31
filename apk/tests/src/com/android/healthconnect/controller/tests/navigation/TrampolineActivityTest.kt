@@ -284,7 +284,7 @@ class TrampolineActivityTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_REMOVE_OLD_ONBOARDING)
     fun homeSettingsAction_onboardingNotDone_redirectsToOnboarding() {
         showOnboarding(context, true)
 
@@ -295,7 +295,7 @@ class TrampolineActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING)
+    @EnableFlags(Flags.FLAG_REMOVE_OLD_ONBOARDING)
     fun homeSettingsAction_onboardingNotDone_onboardingFlagOn_hidesOnboarding() {
         showOnboarding(context, true)
 
@@ -314,7 +314,7 @@ class TrampolineActivityTest {
             )
             .use {
                 onIdle()
-                onView(withText("Connect your first 2 apps")).check(matches(isDisplayed()))
+                onView(withText("Connect your first app")).check(matches(isDisplayed()))
                 onView(withText(TEST_APP.appName)).check(matches(isDisplayed()))
             }
     }

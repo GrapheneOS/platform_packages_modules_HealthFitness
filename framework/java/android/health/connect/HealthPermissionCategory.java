@@ -170,7 +170,6 @@ public class HealthPermissionCategory {
     public static final int SKIN_TEMPERATURE = 39;
 
     /** Permission category for {PlannedExerciseSession} */
-    @FlaggedApi("com.android.healthconnect.flags.training_plans")
     public static final int PLANNED_EXERCISE = 40;
 
     // WELLNESS

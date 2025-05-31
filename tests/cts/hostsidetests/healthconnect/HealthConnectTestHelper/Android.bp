@@ -28,10 +28,9 @@ java_library {
         "compatibility-device-util-axt",
         "healthfitness-testing-shared",
         "platform-test-annotations",
-        "cts-healthconnect-utils",
-        "cts-healthconnect-lib",
         "cts-healthconnect-phr-lib",
         "healthfitness-testing-cts",
+        "healthfitness-testing-testapp",
     ],
     sdk_version: "test_current",
 }

@@ -16,14 +16,14 @@
 
 package android.healthconnect.cts.ui.phr
 
-import android.healthconnect.cts.lib.ActivityLauncher.launchMainActivity
-import android.healthconnect.cts.lib.TestAppProxy
-import android.healthconnect.cts.lib.UiTestUtils.clickOnTextAndWaitForNewWindow
-import android.healthconnect.cts.lib.UiTestUtils.findText
-import android.healthconnect.cts.lib.UiTestUtils.navigateToNewPage
-import android.healthconnect.cts.lib.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.cts.ui.HealthConnectBaseTest
 import android.healthconnect.testing.cts.TestUtils
+import android.healthconnect.testing.cts.testapphelpers.TestAppProxy
+import android.healthconnect.testing.cts.ui.ActivityLauncher.launchMainActivity
+import android.healthconnect.testing.cts.ui.UiTestUtils.clickOnTextAndWaitForNewWindow
+import android.healthconnect.testing.cts.ui.UiTestUtils.findText
+import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToNewPage
+import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_ALLERGY
 import android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION
 import android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest

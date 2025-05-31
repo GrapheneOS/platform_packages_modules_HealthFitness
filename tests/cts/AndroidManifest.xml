@@ -34,7 +34,7 @@
               <action android:name="android.health.connect.action.SHOW_MIGRATION_INFO"/>
           </intent-filter>
       </activity>
-      <activity android:name="android.healthconnect.cts.utils.ProxyActivity" />
+      <activity android:name="android.healthconnect.testing.cts.testapphelpers.ProxyActivity" />
     </application>
 
     <instrumentation android:name="androidx.test.runner.AndroidJUnitRunner"
@@ -75,6 +75,7 @@
     <uses-permission android:name="android.permission.health.READ_LEAN_BODY_MASS"/>
     <uses-permission android:name="android.permission.health.READ_MENSTRUATION"/>
     <uses-permission android:name="android.permission.health.READ_MINDFULNESS"/>
+    <uses-permission android:name="android.permission.health.READ_NICOTINE_INTAKE"/>
     <uses-permission android:name="android.permission.health.READ_NUTRITION"/>
     <uses-permission android:name="android.permission.health.READ_OVULATION_TEST"/>
     <uses-permission android:name="android.permission.health.READ_OXYGEN_SATURATION"/>
@@ -127,6 +128,7 @@
     <uses-permission android:name="android.permission.health.WRITE_LEAN_BODY_MASS"/>
     <uses-permission android:name="android.permission.health.WRITE_MENSTRUATION"/>
     <uses-permission android:name="android.permission.health.WRITE_MINDFULNESS"/>
+    <uses-permission android:name="android.permission.health.WRITE_NICOTINE_INTAKE"/>
     <uses-permission android:name="android.permission.health.WRITE_NUTRITION"/>
     <uses-permission android:name="android.permission.health.WRITE_OVULATION_TEST"/>
     <uses-permission android:name="android.permission.health.WRITE_OXYGEN_SATURATION"/>

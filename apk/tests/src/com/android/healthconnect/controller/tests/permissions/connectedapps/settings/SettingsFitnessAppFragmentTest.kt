@@ -32,6 +32,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -50,8 +51,12 @@ import com.android.healthconnect.controller.permissions.app.AppPermissionViewMod
 import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel.RevokeAllState
 import com.android.healthconnect.controller.permissions.app.SettingsFitnessAppFragment
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
+import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.DISTANCE
+import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.EXERCISE
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.READ
+import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.WRITE
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
@@ -262,6 +267,45 @@ class SettingsFitnessAppFragmentTest {
         onView(withText("Allow all")).check(matches(isDisplayed()))
         onView(withText("Allowed to read")).check(doesNotExist())
         onView(withText("Allowed to write")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun whenPermissionSwitchIsOn_forReadWrite_correctContentDescriptionIsDisplayed() {
+        val writePermission =
+            FitnessPermission(FitnessPermissionType.EXERCISE, PermissionsAccessType.WRITE)
+        val readPermission =
+            FitnessPermission(FitnessPermissionType.DISTANCE, PermissionsAccessType.READ)
+        whenever(viewModel.fitnessPermissions).then {
+            MutableLiveData(listOf(writePermission, readPermission))
+        }
+        whenever(viewModel.grantedFitnessPermissions).then {
+            MutableLiveData(setOf(writePermission, readPermission))
+        }
+
+        launchFragment<SettingsFitnessAppFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+        )
+
+        onView(withContentDescription("Exercise. Write Access. On")).check(matches(isDisplayed()))
+        onView(withContentDescription("Distance. Read Access. On")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun whenPermissionSwitchIsOff_forReadWrite_correctContentDescriptionIsDisplayed() {
+        val writePermission =
+            FitnessPermission(FitnessPermissionType.EXERCISE, PermissionsAccessType.WRITE)
+        val readPermission =
+            FitnessPermission(FitnessPermissionType.DISTANCE, PermissionsAccessType.READ)
+        whenever(viewModel.fitnessPermissions).then {
+            MutableLiveData(listOf(writePermission, readPermission))
+        }
+
+        launchFragment<SettingsFitnessAppFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+        )
+
+        onView(withContentDescription("Exercise. Write Access. Off")).check(matches(isDisplayed()))
+        onView(withContentDescription("Distance. Read Access. Off")).check(matches(isDisplayed()))
     }
 
     @Test

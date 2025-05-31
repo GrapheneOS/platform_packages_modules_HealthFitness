@@ -23,13 +23,11 @@ import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
 import android.annotation.FlaggedApi;
 import android.annotation.IntDef;
 import android.annotation.SystemApi;
-import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.Set;
 
 /**
  * Identifier for each data type, as returned by {@link Record#getRecordType()}. This is used at
@@ -365,7 +363,6 @@ public final class RecordTypeIdentifier {
      *
      * @see PlannedExerciseSessionRecord
      */
-    @FlaggedApi("com.android.healthconnect.flags.training_plans")
     public static final int RECORD_TYPE_PLANNED_EXERCISE_SESSION = 40;
 
     /**
@@ -389,59 +386,6 @@ public final class RecordTypeIdentifier {
      */
     @FlaggedApi(FLAG_SMOKING)
     public static final int RECORD_TYPE_NICOTINE_INTAKE = 43;
-
-    /**
-     * Valid set of values for this IntDef. Update this set when add new type or deprecate existing
-     * type.
-     *
-     * @deprecated Use {@link HealthConnectMappings#getAllRecordTypeIdentifiers()}
-     * @hide
-     */
-    @Deprecated
-    public static final Set<Integer> VALID_TYPES =
-            Set.of(
-                    RECORD_TYPE_UNKNOWN,
-                    RECORD_TYPE_STEPS,
-                    RECORD_TYPE_HEART_RATE,
-                    RECORD_TYPE_BASAL_METABOLIC_RATE,
-                    RECORD_TYPE_CYCLING_PEDALING_CADENCE,
-                    RECORD_TYPE_POWER,
-                    RECORD_TYPE_SPEED,
-                    RECORD_TYPE_STEPS_CADENCE,
-                    RECORD_TYPE_DISTANCE,
-                    RECORD_TYPE_WHEELCHAIR_PUSHES,
-                    RECORD_TYPE_TOTAL_CALORIES_BURNED,
-                    RECORD_TYPE_FLOORS_CLIMBED,
-                    RECORD_TYPE_ELEVATION_GAINED,
-                    RECORD_TYPE_ACTIVE_CALORIES_BURNED,
-                    RECORD_TYPE_HYDRATION,
-                    RECORD_TYPE_NUTRITION,
-                    RECORD_TYPE_RESPIRATORY_RATE,
-                    RECORD_TYPE_BONE_MASS,
-                    RECORD_TYPE_RESTING_HEART_RATE,
-                    RECORD_TYPE_BODY_FAT,
-                    RECORD_TYPE_VO2_MAX,
-                    RECORD_TYPE_CERVICAL_MUCUS,
-                    RECORD_TYPE_BASAL_BODY_TEMPERATURE,
-                    RECORD_TYPE_MENSTRUATION_FLOW,
-                    RECORD_TYPE_OXYGEN_SATURATION,
-                    RECORD_TYPE_BLOOD_PRESSURE,
-                    RECORD_TYPE_HEIGHT,
-                    RECORD_TYPE_BLOOD_GLUCOSE,
-                    RECORD_TYPE_WEIGHT,
-                    RECORD_TYPE_LEAN_BODY_MASS,
-                    RECORD_TYPE_SEXUAL_ACTIVITY,
-                    RECORD_TYPE_BODY_TEMPERATURE,
-                    RECORD_TYPE_OVULATION_TEST,
-                    RECORD_TYPE_EXERCISE_SESSION,
-                    RECORD_TYPE_PLANNED_EXERCISE_SESSION,
-                    RECORD_TYPE_BODY_WATER_MASS,
-                    RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD,
-                    RECORD_TYPE_MENSTRUATION_PERIOD,
-                    RECORD_TYPE_INTERMENSTRUAL_BLEEDING,
-                    RECORD_TYPE_SLEEP_SESSION,
-                    RECORD_TYPE_SKIN_TEMPERATURE,
-                    RECORD_TYPE_MINDFULNESS_SESSION);
 
     private RecordTypeIdentifier() {}
 

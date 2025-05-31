@@ -17,16 +17,16 @@ package android.healthconnect.cts.ui.permissions
 
 import android.content.pm.PackageManager
 import android.health.connect.HealthPermissions
-import android.healthconnect.cts.lib.ActivityLauncher.launchRequestPermissionActivity
-import android.healthconnect.cts.lib.UiTestUtils.TEST_APP_2_PACKAGE_NAME
-import android.healthconnect.cts.lib.UiTestUtils.clickOnTextAndWaitForNewWindow
-import android.healthconnect.cts.lib.UiTestUtils.findText
-import android.healthconnect.cts.lib.UiTestUtils.findTextAndClick
-import android.healthconnect.cts.lib.UiTestUtils.grantPermissionViaPackageManager
-import android.healthconnect.cts.lib.UiTestUtils.revokePermissionViaPackageManager
-import android.healthconnect.cts.lib.UiTestUtils.scrollDownToAndFindText
-import android.healthconnect.cts.lib.UiTestUtils.verifyTextNotFound
 import android.healthconnect.cts.ui.HealthConnectBaseTest
+import android.healthconnect.testing.cts.ui.ActivityLauncher.launchRequestPermissionActivity
+import android.healthconnect.testing.cts.ui.UiTestUtils.TEST_APP_2_PACKAGE_NAME
+import android.healthconnect.testing.cts.ui.UiTestUtils.clickOnTextAndWaitForNewWindow
+import android.healthconnect.testing.cts.ui.UiTestUtils.findText
+import android.healthconnect.testing.cts.ui.UiTestUtils.findTextAndClick
+import android.healthconnect.testing.cts.ui.UiTestUtils.grantPermissionViaPackageManager
+import android.healthconnect.testing.cts.ui.UiTestUtils.revokePermissionViaPackageManager
+import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndFindText
+import android.healthconnect.testing.cts.ui.UiTestUtils.verifyTextNotFound
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import com.google.common.truth.Truth
@@ -35,8 +35,7 @@ import org.junit.Test
 
 class MedicalPermissionsRequestUITest : HealthConnectBaseTest() {
 
-    @get:Rule
-    val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
+    @get:Rule val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @Test
     fun requestMedicalWrite_allow_grantsPermission() {

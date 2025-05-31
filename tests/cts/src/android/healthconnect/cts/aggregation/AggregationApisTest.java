@@ -68,7 +68,7 @@ import android.health.connect.datatypes.WeightRecord;
 import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
-import android.healthconnect.cts.lib.TestAppProxy;
+import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 

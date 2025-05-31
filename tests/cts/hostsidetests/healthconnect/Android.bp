@@ -23,8 +23,8 @@ android_test_helper_app {
     platform_apis: true,
     static_libs: [
         "ctstestrunner-axt",
-        "cts-healthconnect-lib",
         "cts-healthconnect-phr-lib",
+        "healthfitness-testing-testapp",
     ],
     sdk_version: "test_current",
     min_sdk_version: "34",

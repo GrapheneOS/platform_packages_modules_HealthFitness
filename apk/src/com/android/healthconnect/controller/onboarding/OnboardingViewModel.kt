@@ -28,7 +28,6 @@ import com.android.healthconnect.controller.onboarding.api.OnboardingState
 import com.android.healthconnect.controller.shared.Constants.ONBOARDING_ONE_APP_BANNER_SEEN
 import com.android.healthconnect.controller.shared.Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN
 import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
-import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -96,8 +95,7 @@ constructor(
         return if (connectedApps is OnboardingFragmentState.ZeroAppsConnected) {
             OnboardingBannerState.ZeroAppsOnboardingBanner
         } else if (connectedApps is OnboardingFragmentState.OneAppConnected) {
-            val connectedApp = connectedApps.connectedApp
-            OnboardingBannerState.OneAppOnboardingBanner(connectedApp.appMetadata)
+            OnboardingBannerState.OneAppOnboardingBanner
         } else {
             OnboardingBannerState.NoOnboardingBanner
         }
@@ -136,18 +134,29 @@ constructor(
                         potentialFitnessApps
                             .groupBy { it.isConnected }
                             .getOrDefault(true, emptyList())
+                    val potentialApps = potentialFitnessApps.filter { !it.isConnected }
                     if (allowedApps.isEmpty()) {
-                        _connectedApps.postValue(
-                            OnboardingFragmentState.ZeroAppsConnected(potentialFitnessApps)
-                        )
+                        val result =
+                            if (potentialApps.size >= 2) {
+                                OnboardingFragmentState.ZeroAppsConnected(potentialFitnessApps)
+                            } else {
+                                OnboardingFragmentState.NoApps
+                            }
+                        _connectedApps.postValue(result)
                     } else if (allowedApps.size == 1) {
                         val connectedApp = potentialFitnessApps.filter { it.isConnected }[0]
+                        val result =
+                            if (potentialApps.isNotEmpty()) {
+                                OnboardingFragmentState.OneAppConnected(connectedApp, potentialApps)
+                            } else {
+                                OnboardingFragmentState.NoApps
+                            }
+                        _connectedApps.postValue(result)
+                    } else {
                         val potentialApps = potentialFitnessApps.filter { !it.isConnected }
                         _connectedApps.postValue(
-                            OnboardingFragmentState.OneAppConnected(connectedApp, potentialApps)
+                            OnboardingFragmentState.AlmostDone(allowedApps, potentialApps)
                         )
-                    } else {
-                        _connectedApps.postValue(OnboardingFragmentState.AlmostDone(allowedApps))
                     }
                 }
             }
@@ -199,14 +208,16 @@ constructor(
             val potentialApps: List<ConnectedFitnessAppMetadata>,
         ) : OnboardingFragmentState()
 
-        data class AlmostDone(val connectedApps: List<ConnectedFitnessAppMetadata>) :
-            OnboardingFragmentState()
+        data class AlmostDone(
+            val connectedApps: List<ConnectedFitnessAppMetadata>,
+            val potentialApps: List<ConnectedFitnessAppMetadata> = emptyList(),
+        ) : OnboardingFragmentState()
     }
 
     sealed class OnboardingBannerState {
         object ZeroAppsOnboardingBanner : OnboardingBannerState()
 
-        class OneAppOnboardingBanner(val connectedApp: AppMetadata) : OnboardingBannerState()
+        object OneAppOnboardingBanner : OnboardingBannerState()
 
         object NoOnboardingBanner : OnboardingBannerState()
     }

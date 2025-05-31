@@ -1698,6 +1698,9 @@
     <string name="allowed_to_access" description="Text to display view permission mode (all the time or while in use).">Allowed to access</string>
     <string name="allowed_to_read" description="Subtitle to display which permissions are allowed">Allowed to read</string>
     <string name="give_permission_prompt" description="Text to display what permissions are allowed.">These permissions give <xliff:g id="app_name" example="Run Tracker">%1$s</xliff:g> access to data from your device sensors.</string>
+    <string name="write_access" description="Label for switches to toggle write permissions.">Write Access</string>
+    <string name="read_access" description="Label for switches to toggle read permissions.">Read Access</string>
+    <string name="health_switch_content_description" description="A11y content description for a switch."><xliff:g id="switch_title" example="Steps">%1$s</xliff:g>. <xliff:g id="switch_function" example="Write Access">%2$s</xliff:g>. <xliff:g id="switch_state" example="On">%3$s</xliff:g></string>
     <!-- endregion -->
 
     <!-- region Permission Manager  -->
@@ -1725,7 +1728,7 @@
     <!-- endregion -->
 
     <!-- region Apps Onboarding -->
-    <string name="connect_first_two_apps_title" description="Title of page to connect the first two apps to Health Connect. [CHAR_LIMIT=NONE]">Connect your first 2 apps</string>
+    <string name="connect_first_two_apps_title" description="Title of page to connect the first two apps to Health Connect. [CHAR_LIMIT=NONE]">Connect your first app</string>
     <string name="connect_first_two_apps_description" description="Description of page to connect the first two apps to Health Connect. [CHAR_LIMIT=NONE]">Connect these apps to start sharing health and fitness data between them</string>
     <string name="connect_second_app_title" description="Title of page to connect a second app to Health Connect. [CHAR_LIMIT=NONE]">Connect a second app</string>
     <string name="connect_second_app_description" description="Description of page to connect a second app to Health Connect. [CHAR_LIMIT=NONE]">Set up one more app to share health and fitness data with <xliff:g id="app_name" example="Run Tracker">%1$s</xliff:g></string>
@@ -1735,13 +1738,24 @@
     <string name="apps_onboarding_footer_link" description="Link for footer of page that lists available apps to connect to Health Connect. [CHAR_LIMIT=NONE]">More about Health&#160;Connect</string>
     <string name="onboarded_app_content_description" description="Content description of a button that indicates that an app has been connected to Health Connect. [CHAR_LIMIT=50]">App connected to Health&#160;Connect</string>
     <string name="almost_done_title" description="Title of page to finish connecting apps to Health Connect by opening the apps. [CHAR_LIMIT=NONE]">Almost done</string>
-    <string name="almost_done_description" description="Description of page to finish connecting apps to Health Connect by opening the apps. [CHAR_LIMIT=NONE]">Open these apps now to finish setup and start data sharing</string>
+    <string name="almost_done_description_all_connected" description="Description of page to finish connecting apps to Health Connect by opening the apps. [CHAR_LIMIT=NONE]">Open these apps now to finish setup and start data sharing</string>
+    <string name="almost_done_description_more_to_connect" description="Description of page to finish connecting apps to Health Connect by opening the apps. [CHAR_LIMIT=NONE]">Open these apps now to finish setup and start data sharing, or keep connecting available apps</string>
+    <string name="almost_done_connected_apps" description="Title of section of apps that have been connected to Health Connect. [CHAR_LIMIT=NONE]">Connected apps</string>
+    <string name="almost_done_available_to_connect" description="Title of section of apps that have not yet been connected to Health Connect. [CHAR_LIMIT=NONE]">Available apps to connect</string>
     <string name="zero_apps_onboarding_banner_title" description="Title of banner to take users to a page where they can connect apps to Health Connect [CHAR_LIMIT=NONE]">See your health data across apps</string>
-    <string name="zero_apps_onboarding_banner_summary" description="Summary of banner to take users to a page where they can connect apps to Health Connect [CHAR_LIMIT=NONE]">Start sharing health and fitness data between your apps</string>
+    <string name="zero_apps_onboarding_banner_summary" description="Summary of banner to take users to a page where they can connect apps to Health Connect [CHAR_LIMIT=NONE]">Start sharing fitness and wellness data between your apps</string>
     <string name="zero_apps_onboarding_banner_button" description="Button of banner to take users to a page where they can connect apps to Health Connect [CHAR_LIMIT=NONE]">Set up</string>
     <string name="one_app_onboarding_banner_title" description="Title of banner to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Connect a second app</string>
-    <string name="one_app_onboarding_banner_summary" description="Summary of banner to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Set up one more app to share health and fitness data with <xliff:g id="app_name" example="Run Tracker">%1$s</xliff:g></string>
+    <string name="one_app_onboarding_banner_summary" description="Summary of banner to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Set up another app so it can start sharing fitness and wellness data</string>
     <string name="one_app_onboarding_banner_button" description="Button of banner to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Continue</string>
 
+    <!-- region Apps Onboarding Notification -->
+    <string name="zero_apps_onboarding_notification_title" description="Title of notification to take users to a page where they can connect apps to Health Connect [CHAR_LIMIT=NONE]">See your health data across apps</string>
+    <string name="zero_apps_onboarding_notification_summary" description="Summary of notification to take users to a page where they can connect apps to Health Connect [CHAR_LIMIT=NONE]">Health&#160;Connect lets you share fitness and wellness data between your apps. See which apps you can connect now.</string>
+
+    <string name="one_app_onboarding_notification_title" description="Title of notification to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Connect a second app</string>
+    <string name="one_app_onboarding_notification_summary" description="Summary of notification to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Set up another app so it can start sharing fitness and wellness data</string>
+
+    <!-- endregion -->
     <!-- endregion -->
 </resources>

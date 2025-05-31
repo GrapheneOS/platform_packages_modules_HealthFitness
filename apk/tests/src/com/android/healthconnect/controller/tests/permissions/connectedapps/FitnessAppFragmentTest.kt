@@ -38,6 +38,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -236,6 +237,41 @@ class FitnessAppFragmentTest {
             assertThat(writeCategory?.preferenceCount).isEqualTo(1)
         }
         onView(withText("Exercise")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun whenPermissionSwitchIsOn_forReadWrite_correctContentDescriptionIsDisplayed() {
+        val writePermission = FitnessPermission(EXERCISE, WRITE)
+        val readPermission = FitnessPermission(DISTANCE, READ)
+        whenever(viewModel.fitnessPermissions).then {
+            MutableLiveData(listOf(writePermission, readPermission))
+        }
+        whenever(viewModel.grantedFitnessPermissions).then {
+            MutableLiveData(setOf(writePermission, readPermission))
+        }
+
+        launchFragment<FitnessAppFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
+        )
+
+        onView(withContentDescription("Exercise. Write Access. On")).check(matches(isDisplayed()))
+        onView(withContentDescription("Distance. Read Access. On")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun whenPermissionSwitchIsOff_forReadWrite_correctContentDescriptionIsDisplayed() {
+        val writePermission = FitnessPermission(EXERCISE, WRITE)
+        val readPermission = FitnessPermission(DISTANCE, READ)
+        whenever(viewModel.fitnessPermissions).then {
+            MutableLiveData(listOf(writePermission, readPermission))
+        }
+
+        launchFragment<FitnessAppFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
+        )
+
+        onView(withContentDescription("Exercise. Write Access. Off")).check(matches(isDisplayed()))
+        onView(withContentDescription("Distance. Read Access. Off")).check(matches(isDisplayed()))
     }
 
     @Test

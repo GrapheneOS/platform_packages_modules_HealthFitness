@@ -21,7 +21,7 @@
 
     <application android:debuggable="true">
         <uses-library android:name="android.test.runner"/>
-        <activity android:name="android.healthconnect.cts.utils.ProxyActivity"
+        <activity android:name="android.healthconnect.testing.cts.testapphelpers.ProxyActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>

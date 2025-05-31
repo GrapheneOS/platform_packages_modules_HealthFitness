@@ -24,11 +24,11 @@ import android.health.connect.datatypes.units.Velocity
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ExercisePerformanceGoalEntry
-import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSectionContent
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ItemDataEntrySeparator
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseBlockEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseFormattedSectionContent
+import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseFormattedSectionTitle
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseStepEntry
-import com.android.healthconnect.controller.data.entries.FormattedEntry.SessionHeader
 import com.android.healthconnect.controller.data.formatters.PlannedExerciseSessionRecordFormatter
 import com.android.healthconnect.controller.tests.utils.getPlannedExerciseBlock
 import com.android.healthconnect.controller.tests.utils.getPlannedExerciseSessionRecord
@@ -242,8 +242,8 @@ class PlannedExerciseSessionRecordFormatterTest {
             .isEqualTo(
                 listOf(
                     ItemDataEntrySeparator(),
-                    SessionHeader("Notes"),
-                    FormattedSectionContent("Morning quick run by the park"),
+                    PlannedExerciseFormattedSectionTitle("Notes"),
+                    PlannedExerciseFormattedSectionContent("Morning quick run by the park"),
                     ItemDataEntrySeparator(),
                     PlannedExerciseBlockEntry(
                         block = exerciseBlock1,

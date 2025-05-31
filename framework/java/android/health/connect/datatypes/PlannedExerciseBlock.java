@@ -16,7 +16,6 @@
 
 package android.health.connect.datatypes;
 
-import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.internal.datatypes.PlannedExerciseBlockInternal;
@@ -30,7 +29,6 @@ import java.util.stream.Collectors;
  * Represents a series of {@link PlannedExerciseStep}. Part of a {@link
  * PlannedExerciseSessionRecord}.
  */
-@FlaggedApi("com.android.healthconnect.flags.training_plans")
 public final class PlannedExerciseBlock {
     private final int mRepetitions;
     @Nullable private final CharSequence mDescription;

@@ -79,7 +79,6 @@ import com.android.healthfitness.flags.Flags;
 
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 // TODO(b/255340973): consider generate this class.
@@ -804,7 +803,6 @@ public final class HealthPermissions {
      *
      * <p>Protection level: dangerous.
      */
-    @FlaggedApi("com.android.healthconnect.flags.training_plans")
     public static final String WRITE_PLANNED_EXERCISE =
             "android.permission.health.WRITE_PLANNED_EXERCISE";
 
@@ -1018,18 +1016,6 @@ public final class HealthPermissions {
     private HealthPermissions() {}
 
     /**
-     * @return true if {@code permissionName} is a write-permission
-     * @hide
-     * @deprecated use {@link HealthConnectMappings#isWritePermission(String)}
-     */
-    @Deprecated
-    public static boolean isWritePermission(@NonNull String permissionName) {
-        Objects.requireNonNull(permissionName);
-
-        return sWritePermissionsSet.contains(permissionName);
-    }
-
-    /**
      * @deprecated Use {@link HealthConnectMappings#getHealthDataCategoryForWritePermission(String)}
      * @return {@link HealthDataCategory} for a WRITE {@code permissionName}. -1 if permission
      *     category for {@code permissionName} is not found (or if {@code permissionName} is READ)
@@ -1044,56 +1030,6 @@ public final class HealthPermissions {
 
         return sWriteHealthPermissionToHealthDataCategoryMap.getOrDefault(
                 permissionName, DEFAULT_INT);
-    }
-
-    /**
-     * @return {@link HealthDataCategory} for {@code permissionName}. -1 if permission category for
-     *     {@code permissionName} is not found
-     * @deprecated Use {@link HealthConnectMappings#getWriteHealthPermissionsFor(int)}
-     * @hide
-     */
-    @Deprecated
-    public static String[] getWriteHealthPermissionsFor(@HealthDataCategory.Type int dataCategory) {
-        if (sDataCategoryToWritePermissionsMap.isEmpty()) {
-            populateWriteHealthPermissionToHealthDataCategoryMap();
-        }
-
-        return sDataCategoryToWritePermissionsMap.getOrDefault(dataCategory, new String[] {});
-    }
-
-    /**
-     * @deprecated Use {@link HealthConnectMappings#getHealthReadPermission(int)}.
-     * @hide
-     */
-    @Deprecated
-    @Nullable
-    public static String getHealthReadPermission(
-            @HealthPermissionCategory.Type int permissionCategory) {
-        if (sHealthCategoryToReadPermissionMap.isEmpty()) {
-            populateHealthPermissionToHealthPermissionCategoryMap();
-        }
-
-        return sHealthCategoryToReadPermissionMap.get(permissionCategory);
-    }
-
-    /**
-     * @deprecated Use {@link HealthConnectMappings#getHealthWritePermission(int)}.
-     * @hide
-     */
-    @Deprecated
-    public static String getHealthWritePermission(
-            @HealthPermissionCategory.Type int permissionCategory) {
-        if (sHealthCategoryToWritePermissionMap.isEmpty()) {
-            populateHealthPermissionToHealthPermissionCategoryMap();
-        }
-
-        String healthWritePermission = sHealthCategoryToWritePermissionMap.get(permissionCategory);
-        Objects.requireNonNull(
-                healthWritePermission,
-                "Health write permission not found for "
-                        + "PermissionCategory : "
-                        + permissionCategory);
-        return healthWritePermission;
     }
 
     /**

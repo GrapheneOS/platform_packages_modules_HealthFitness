@@ -677,7 +677,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 powt.}few{# powt.}many{# powt.}other{# powt.}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 powtórzenie}few{# powtórzenia}many{# powtórzeń}other{# powtórzenia}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Czas aktywności"</string>
-    <string name="segment_set_index_format" msgid="5299538353624573851">"Ustawiono <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Seria <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
     <string name="segment_rpe_format" msgid="1456617736401131975">"Skala RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
     <string name="segment_rpe_format_long" msgid="3492398127594227129">"Skala odczuwanego wysiłku: <xliff:g id="RPE">%1$s</xliff:g>"</string>
     <string name="session_rpe_header" msgid="6436164288422834973">"Skala RPE"</string>
@@ -1220,38 +1220,21 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Używane przez 1 aplikację}few{Używane przez # aplikacje}many{Używane przez # aplikacji}other{Używane przez # aplikacji}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Nieużywane w ciągu ostatnich 24 godzin"</string>
     <string name="accessed" msgid="4424701457530587176">"Ostatni dostęp: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <!-- no translation found for connect_first_two_apps_title (2117437769113976529) -->
-    <skip />
-    <!-- no translation found for connect_first_two_apps_description (6756143365112887865) -->
-    <skip />
-    <!-- no translation found for connect_second_app_title (6609568573884272692) -->
-    <skip />
-    <!-- no translation found for connect_second_app_description (159030733462822101) -->
-    <skip />
-    <!-- no translation found for set_up_later (223888663943501921) -->
-    <skip />
-    <!-- no translation found for available_apps_to_connect (8425012138408583646) -->
-    <skip />
-    <!-- no translation found for apps_onboarding_footer (5814165211234454165) -->
-    <skip />
-    <!-- no translation found for apps_onboarding_footer_link (385298243785385467) -->
-    <skip />
-    <!-- no translation found for onboarded_app_content_description (8571163043712952164) -->
-    <skip />
-    <!-- no translation found for almost_done_title (3966589349311156772) -->
-    <skip />
-    <!-- no translation found for almost_done_description (8414648601371946510) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Połącz pierwsze 2 aplikacje"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Połącz te aplikacje, aby rozpocząć udostępnianie między nimi danych o zdrowiu i aktywności fizycznej"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"Połącz drugą aplikację"</string>
+    <string name="connect_second_app_description" msgid="159030733462822101">"Skonfiguruj jeszcze 1 aplikację, aby udostępniać dane o zdrowiu i aktywności fizycznej aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="set_up_later" msgid="223888663943501921">"Skonfiguruj później"</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"Dostępne aplikacje do połączenia"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect pozwala przechowywać dane o zdrowiu i aktywności fizycznej w jednym miejscu oraz udostępniać je między aplikacjami na telefonie, aby lepiej ze sobą współpracowały."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Więcej informacji o Health Connect"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"Aplikacja została połączona z Health Connect"</string>
+    <string name="almost_done_title" msgid="3966589349311156772">"Prawie gotowe"</string>
+    <string name="almost_done_description" msgid="8414648601371946510">"Otwórz teraz te aplikacje, aby dokończyć konfigurowanie i rozpocząć udostępnianie danych"</string>
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Przeglądaj dane dotyczące zdrowia w różnych aplikacjach"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Zacznij udostępniać dane o zdrowiu i aktywności fizycznej między aplikacjami"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Skonfiguruj"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Połącz drugą aplikację"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Skonfiguruj jeszcze 1 aplikację, aby udostępniać dane o zdrowiu i aktywności fizycznej aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Dalej"</string>
 </resources>

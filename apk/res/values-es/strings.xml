@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Aplicación conectada a Salud conectada"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Casi listo"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Abre estas aplicaciones ahora para finalizar la configuración y empezar a compartir datos"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Consulta tus datos de salud en todas las aplicaciones"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Empieza a compartir datos de salud y actividad física entre tus aplicaciones"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Configurar"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Conecta una segunda aplicación"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Configura otra aplicación para compartir datos de salud y actividad física con <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Continuar"</string>
 </resources>

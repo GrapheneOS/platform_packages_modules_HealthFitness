@@ -37,6 +37,7 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 
 import org.junit.Before;
@@ -61,6 +62,7 @@ public class PermissionPackageChangesOrchestratorTest {
     @Mock private HealthConnectPermissionHelper mHelper;
     @Mock private HealthPermissionIntentAppsTracker mTracker;
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
+    @Mock private TrackerManager mTrackerManager;
     @Mock private UserHandle mUserHandle;
 
     @Mock private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
@@ -73,6 +75,7 @@ public class PermissionPackageChangesOrchestratorTest {
                 new PermissionPackageChangesOrchestrator(
                         mTracker,
                         mFirstGrantTimeManager,
+                        mTrackerManager,
                         mHelper,
                         mUserHandle,
                         mHealthDataCategoryPriorityHelper,
@@ -118,6 +121,14 @@ public class PermissionPackageChangesOrchestratorTest {
     }
 
     @Test
+    public void testPackageRemoved_refreshesPassiveTracker() {
+        mOrchestrator.onReceive(
+                mContext,
+                buildPackageIntent(Intent.ACTION_PACKAGE_REMOVED, /* isReplaced= */ false));
+        verify(mTrackerManager).initializeOrRefresh();
+    }
+
+    @Test
     public void testPackageRemoved_removesFromPriorityList_whenNewAggregationOff() {
         mOrchestrator.onReceive(
                 mContext,
@@ -137,6 +148,14 @@ public class PermissionPackageChangesOrchestratorTest {
                 .onPackageRemoved(eq(SELF_PACKAGE_NAME), eq(mCurrentUid), eq(CURRENT_USER));
         verify(mHelper, never())
                 .revokeAllHealthPermissions(eq(SELF_PACKAGE_NAME), anyString(), eq(CURRENT_USER));
+    }
+
+    @Test
+    public void testPackageReplaced_passiveTrackerNotRefreshed() {
+        mOrchestrator.onReceive(
+                mContext,
+                buildPackageIntent(Intent.ACTION_PACKAGE_REMOVED, /* isReplaced= */ true));
+        verify(mTrackerManager, never()).initializeOrRefresh();
     }
 
     @Test

@@ -64,6 +64,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -83,8 +84,8 @@ public class TrackerManagerImplTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
 
-    @Mock private Context mContext;
-    @Mock private PackageManager mPackageManager;
+    private Context mContext;
+    private PackageManager mPackageManager;
     @Mock private HealthConnectPermissionHelper mPermissionHelper;
     @Mock private SensorManager mSensorManager;
     @Mock private UserManager mUserManager;
@@ -124,14 +125,14 @@ public class TrackerManagerImplTest {
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void stepTrackingEnabled_initialize_doesNotThrow() {
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
-        manager.initialize();
+        manager.initializeOrRefresh();
     }
 
     @Test
     @DisableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void stepTrackingDisabled_initialize_doesNotThrow() {
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
-        manager.initialize();
+        manager.initializeOrRefresh();
     }
 
     @Test
@@ -188,7 +189,7 @@ public class TrackerManagerImplTest {
         grantAppStepsPermission(TEST_PACKAGE_NAME);
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
 
-        manager.initialize();
+        manager.initializeOrRefresh();
 
         verify(mSensorManager).getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         // We don't subscribe because there is no step sensor
@@ -202,7 +203,7 @@ public class TrackerManagerImplTest {
         when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
 
-        manager.initialize();
+        manager.initializeOrRefresh();
 
         verify(mSensorManager)
                 .registerListener(
@@ -216,13 +217,13 @@ public class TrackerManagerImplTest {
         grantAppStepsPermission(TEST_PACKAGE_NAME);
         when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
-        manager.initialize();
+        manager.initializeOrRefresh();
         verify(mSensorManager)
                 .registerListener(
                         any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
 
         revokeStepsPermissionForAllApps();
-        manager.initialize();
+        manager.initializeOrRefresh();
 
         verify(mSensorManager).unregisterListener(any(StepSensorEventListener.class));
     }
@@ -235,7 +236,7 @@ public class TrackerManagerImplTest {
         when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
 
-        manager.initialize();
+        manager.initializeOrRefresh();
 
         verify(mSensorManager, never()).registerListener(any(), any(), anyInt(), anyInt());
     }
@@ -247,7 +248,7 @@ public class TrackerManagerImplTest {
         assertThat(mAppInfoHelper.getAppInfoMap()).isEmpty();
 
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
-        manager.initialize();
+        manager.initializeOrRefresh();
 
         assertThat(mAppInfoHelper.getAppInfoMap().get(DEVICE_DATA_PROVIDER_PACKAGE)).isNotNull();
     }
@@ -259,9 +260,62 @@ public class TrackerManagerImplTest {
         doReturn(false).when(mUserManager).isUserUnlocked();
 
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
-        manager.initialize();
+        manager.initializeOrRefresh();
 
         assertThat(mAppInfoHelper.getAppInfoMap()).isEmpty();
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void onInitialize_addsListenerForPermissionChanges() {
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mPackageManager)
+                .addOnPermissionsChangeListener(
+                        any(PackageManager.OnPermissionsChangedListener.class));
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void onAppPermissionGranted_listenerTriggered_refreshesTrackerStatusAndSubscribes()
+            throws Exception {
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
+                ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
+        manager.initializeOrRefresh();
+        verify(mPackageManager).addOnPermissionsChangeListener(permissionsListenerCaptor.capture());
+        verify(mSensorManager).unregisterListener(any(StepSensorEventListener.class));
+
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        permissionsListenerCaptor.getValue().onPermissionsChanged(/* uid= */ 0);
+
+        verify(mSensorManager)
+                .registerListener(
+                        any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void onAppPermissionRevoked_listenerTriggered_refreshesTrackerStatusAndUnsubscribes()
+            throws Exception {
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
+                ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
+        manager.initializeOrRefresh();
+        verify(mPackageManager).addOnPermissionsChangeListener(permissionsListenerCaptor.capture());
+        verify(mSensorManager)
+                .registerListener(
+                        any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+
+        revokeStepsPermissionForAllApps();
+        permissionsListenerCaptor.getValue().onPermissionsChanged(/* uid= */ 0);
+
+        verify(mSensorManager).unregisterListener(any(StepSensorEventListener.class));
     }
 
     private void grantAppStepsPermission(String packageName) {

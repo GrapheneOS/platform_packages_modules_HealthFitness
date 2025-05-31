@@ -26,8 +26,10 @@ java_library {
         "androidx.test.ext.junit",
         "androidx.test.ext.truth",
         "androidx.test.rules",
+        "healthfitness-aconfig-flags-lib",
     ],
     sdk_version: "test_current",
+    jarjar_rules: ":health-cts-jarjar-rules",
 }
 
 // Library for testing helpers that can only be used in unittests,
@@ -58,6 +60,7 @@ android_library {
     manifest: "AndroidManifest_cts.xml",
     srcs: [
         "src/android/healthconnect/testing/cts/**/*.java",
+        "src/android/healthconnect/testing/cts/**/*.kt",
     ],
     static_libs: [
         "androidx.test.ext.junit",
@@ -67,6 +70,27 @@ android_library {
         "healthfitness-aconfig-flags-lib",
         "healthfitness-aconfig-flags-helper",
         "healthfitness-testing-shared",
+    ],
+    min_sdk_version: "34",
+    sdk_version: "test_current",
+}
+
+// Library for test apps used by cts / integration tests.
+android_library {
+    name: "healthfitness-testing-testapp",
+    manifest: "AndroidManifest_cts.xml",
+    srcs: [
+        "src/android/healthconnect/testing/testapp/**/*.java",
+    ],
+    static_libs: [
+        "androidx.test.ext.junit",
+        "androidx.test.ext.truth",
+        "androidx.test.rules",
+        "compatibility-device-util-axt",
+        "healthfitness-aconfig-flags-lib",
+        "healthfitness-aconfig-flags-helper",
+        "healthfitness-testing-shared",
+        "healthfitness-testing-cts",
     ],
     min_sdk_version: "34",
     sdk_version: "test_current",

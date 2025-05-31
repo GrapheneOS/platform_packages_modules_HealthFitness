@@ -54,6 +54,7 @@ public class TrackerManagerImpl implements TrackerManager {
     private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     private final StepSensorEventListener mListener;
     private final UserManager mUserManager;
+    private final PackageManager mPackageManager;
 
     public TrackerManagerImpl(
             Context context,
@@ -70,16 +71,17 @@ public class TrackerManagerImpl implements TrackerManager {
                 new StepSensorEventListener(
                         mContext, threadScheduler, deviceRecordHelper, deviceDataSourcesHelper);
         mUserManager = userManager;
+        mPackageManager = context.getPackageManager();
     }
 
     @Override
-    public void initialize() {
+    public void initializeOrRefresh() {
         if (!Flags.stepTrackingEnabled()) {
             Slog.d(TAG, "Step tracking flag disabled. Aborting initialization.");
             return;
         }
 
-        if (mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_WATCH)) {
+        if (mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)) {
             // Health Connect runs on Wear for permission management but we don't want to enable
             // passive step tracking for it
             return;
@@ -91,6 +93,30 @@ public class TrackerManagerImpl implements TrackerManager {
             return;
         }
 
+        mPackageManager.addOnPermissionsChangeListener(
+                uid -> {
+                    if (android.health.connect.Constants.DEBUG) {
+                        Slog.d(TAG, "Permissions changed, refreshing tracker status");
+                    }
+                    // If tracking wasn't enabled and an app gets the READ_STEPS permission, we'll
+                    // start tracking. If tracking was enabled and READ_STEPS was revoked for all
+                    // apps, we'll disable tracking.
+                    refreshTrackerStatus();
+                });
+
+        refreshTrackerStatus();
+    }
+
+    @Override
+    public void setStepTrackingEnabled(boolean enabled) {
+        if (Flags.stepTrackingEnabled()) {
+            // Implementation goes here. Do nothing for now.
+        }
+    }
+
+    /** Updates the Sensor Manager subscription in case app permissions have changed. */
+    // TODO(b/397419957): Call this when an app is uninstalled in case we want to disable tracking
+    private void refreshTrackerStatus() {
         if (packagesEligibleForStepTracking(mContext, mPermissionHelper).isEmpty()) {
             Slog.d(TAG, "No packages eligible for step tracking. Aborting initialization.");
             unsubscribeFromSensorManager();
@@ -108,13 +134,6 @@ public class TrackerManagerImpl implements TrackerManager {
                 mContext.getUser());
 
         subscribeToSensorManager();
-    }
-
-    @Override
-    public void setStepTrackingEnabled(boolean enabled) {
-        if (Flags.stepTrackingEnabled()) {
-            // Implementation goes here. Do nothing for now.
-        }
     }
 
     /**

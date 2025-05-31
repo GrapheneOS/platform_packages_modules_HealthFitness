@@ -1226,7 +1226,7 @@
     <string name="connect_second_app_description" msgid="159030733462822101">"ຕັ້ງຄ່າອີກໜຶ່ງແອັບເພື່ອແບ່ງປັນຂໍ້ມູນສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍກັບ <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="set_up_later" msgid="223888663943501921">"ຕັ້ງຄ່າໃນພາຍຫຼັງ"</string>
     <string name="available_apps_to_connect" msgid="8425012138408583646">"ແອັບຕ່າງໆທີ່ສາມາດເຊື່ອມຕໍ່ໄດ້"</string>
-    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect ຈະເຮັດໃຫ້ທ່ານຈັດເກັບຂໍ້ມູນສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍຂອງທ່ານໄວ້ໃນບ່ອນດຽວແລະ ແບ່ງປັນມັນລະຫວ່າງແອັບຕ່າງໆຢູ່ໂທລະສັບຂອງທ່ານໄດ້, ເຮັດໃຫ້ແອັບຂອງທ່ານເຮັດວຽກຮ່ວມກັນໄດ້ດີຂຶ້ນ."</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect ຈະເຮັດໃຫ້ທ່ານຈັດເກັບຂໍ້ມູນສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍຂອງທ່ານໄວ້ໃນບ່ອນດຽວ ແລະ ແບ່ງປັນມັນລະຫວ່າງແອັບຕ່າງໆຢູ່ໂທລະສັບຂອງທ່ານໄດ້, ເຮັດໃຫ້ແອັບຂອງທ່ານເຮັດວຽກຮ່ວມກັນໄດ້ດີຂຶ້ນ."</string>
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"ເພີ່ມເຕີມກ່ຽວກັບ Health Connect"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"ເຊື່ອມຕໍ່ແອັບຫາ Health Connect ແລ້ວ"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"ເກືອບສຳເລັດແລ້ວ"</string>

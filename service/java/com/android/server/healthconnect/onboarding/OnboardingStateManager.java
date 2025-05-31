@@ -28,6 +28,7 @@ import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.os.UserHandle;
 import android.util.Slog;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
@@ -126,6 +127,10 @@ public final class OnboardingStateManager {
      */
     @HealthConnectOnboardingState.OnboardingState
     public int updateAndGetOnboardingState() {
+        if (!Flags.onboarding()) {
+            return ONBOARDING_BANNER_STATE_HIDE;
+        }
+
         int onboardingState = evaluateCurrentOnboardingState();
         updateOnboardingState(onboardingState);
         return onboardingState;
@@ -133,20 +138,13 @@ public final class OnboardingStateManager {
 
     /** Updates the onboarding state. */
     private void updateOnboardingState(@HealthConnectOnboardingState.OnboardingState int state) {
-        mStatesLock.writeLock().lock();
         if (state == getOnboardingState()) {
             if (Constants.DEBUG) {
                 Slog.d(TAG, "The new state same as the current state.");
             }
             return;
         }
-
-        try {
-            updateOnboardingStateGuarded(state);
-        } finally {
-            mStatesLock.writeLock().unlock();
-        }
-
+        updateOnboardingStateGuarded(state);
         updateListeners(state);
     }
 
@@ -156,8 +154,10 @@ public final class OnboardingStateManager {
                 mPackageInfoUtils
                         .getPackagesCompatibleWithHealthConnect(mContext, mUserHandle)
                         .stream()
+                        .filter(info -> !isSystemApp(info.packageName))
                         .filter(this::hasFitnessPerm)
                         .toList();
+
         if (compatibleFitnessApps.isEmpty()) {
             return ONBOARDING_BANNER_STATE_HIDE;
         }
@@ -165,6 +165,7 @@ public final class OnboardingStateManager {
         // compatible but not connected apps are potential candidates
         List<PackageInfo> potentialCandidates =
                 compatibleFitnessApps.stream().filter(app -> !isConnected(app)).toList();
+
         if (potentialCandidates.isEmpty()) {
             return ONBOARDING_BANNER_STATE_HIDE;
         }
@@ -179,37 +180,50 @@ public final class OnboardingStateManager {
                         .filter(app -> !hasBeenUsed(app))
                         .filter(this::installed7DaysAgo)
                         .count();
-
         if (connectedFitnessAppsCount == 0 && candidateAppsCount >= 2) {
             return ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
         }
         if (connectedFitnessAppsCount == 1 && candidateAppsCount >= 1) {
             return ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
         }
+
         return ONBOARDING_BANNER_STATE_HIDE;
     }
 
     private boolean isConnected(PackageInfo app) {
-        return mHealthConnectPermissionHelper.hasGrantedHealthPermissions(
-                app.packageName, mUserHandle);
+        return mHealthConnectPermissionHelper.hasGrantedFitnessPermission(app);
     }
 
     private boolean hasFitnessPerm(PackageInfo app) {
-        // TODO(b/417974138) implement this
-        return true;
+        return mHealthConnectPermissionHelper.isRequestingFitnessPermission(app);
+    }
+
+    // TODO(b/421165586): Consider using ApplicationInfo.FLAG_SYSTEM
+    private boolean isSystemApp(String packageName) {
+        return mHealthConnectPermissionHelper.hasNonUserSensitiveHealthPermission(
+                packageName, mUserHandle, mContext);
+    }
+
+    private boolean hasDeniedFitnessPerm(PackageInfo app) {
+        return mHealthConnectPermissionHelper.hasDeniedFitnessPermission(app, mUserHandle);
     }
 
     private boolean hasBeenUsed(PackageInfo app) {
-        // TODO(b/403256600): check if the user has denied permissions for the app
+        if (hasDeniedFitnessPerm(app)) {
+            return true;
+        }
+
         AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(app.packageName);
         if (appInfo == null) {
             return false;
         }
 
+        // We don't need to filter these - they are created only for fitness data
         Set<Integer> recordTypesUsed = appInfo.getRecordTypesUsed();
         boolean hasData = recordTypesUsed != null && !recordTypesUsed.isEmpty();
         boolean hasAccessLog =
                 mAccessLogsHelper.queryAccessLogs(mUserHandle).stream()
+                        .filter(log -> !log.getRecordTypes().isEmpty())
                         .anyMatch(log -> log.getPackageName().equals(app.packageName));
         return hasData || hasAccessLog;
     }
@@ -225,8 +239,8 @@ public final class OnboardingStateManager {
             @HealthConnectOnboardingState.OnboardingState int state) {
         switch (state) {
             case ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED,
-                    ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED,
-                    ONBOARDING_BANNER_STATE_HIDE:
+            ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED,
+            ONBOARDING_BANNER_STATE_HIDE:
                 updateOnboardingStatePreference(state);
                 return;
             default:

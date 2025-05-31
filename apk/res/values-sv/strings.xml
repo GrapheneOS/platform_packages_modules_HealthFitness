@@ -36,7 +36,7 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> app har åtkomst"</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{1 app har åtkomst}other{# appar har åtkomst}}"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Inga"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"Information om dataposten"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"Information om datapost"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Bläddra bland data"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Se datan och vilka appar som har åtkomst till den"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Automatisk radering, datakällor, säkerhetskopiering och återställning"</string>
@@ -677,7 +677,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 repetition}other{# repetitioner}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 repetition}other{# repetitioner}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Träningssegment"</string>
-    <string name="segment_set_index_format" msgid="5299538353624573851">"Ställ in <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Set <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
     <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
     <string name="segment_rpe_format_long" msgid="3492398127594227129">"Grad av upplevd ansträngning: <xliff:g id="RPE">%1$s</xliff:g>"</string>
     <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Appen är ansluten till Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Nästan klart"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Öppna apparna nu för att slutföra konfigurationen och börja dela data"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Se din hälsodata i olika appar"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Börja dela hälso- och träningsdata mellan dina appar"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Ställ in"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Anslut en andra app"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Ställ in en app till på att dela hälso- och träningsdata med <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Fortsätt"</string>
 </resources>

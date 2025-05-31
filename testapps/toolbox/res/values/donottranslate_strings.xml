@@ -14,7 +14,7 @@
   limitations under the License.
 -->
 
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label">HC Toolbox</string>
     <string name="not_implemented">Not implemented</string>
     <string name="insert_data">Insert Data</string>
@@ -472,6 +472,7 @@
     <string name="menstruation_flow_Medium">Medium</string>
     <string name="menstruation_flow_light">Light</string>
     <string name="menstruation_flow_unknown">Unknown Flow</string>
+    <string name="menstruation_flow_description">Period day <xliff:g id="day_of_period" example="1">%1$s</xliff:g> of <xliff:g id="total_days_of_period" example="2">%2$s</xliff:g>.</string>
     <!-- endregion -->
 
     <!-- region Mindfulness -->

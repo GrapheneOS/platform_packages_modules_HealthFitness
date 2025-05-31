@@ -20,6 +20,7 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURC
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createDifferentVaccineMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResource;
 
+import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 
@@ -113,6 +114,7 @@ public class ChangeLogsResponseTest {
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
         FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testParceling_flagEnabled() {
         Record upsertedRecord = RecordFactory.makePopulatedRecord(RECORD_TYPE_STEPS);
@@ -147,6 +149,7 @@ public class ChangeLogsResponseTest {
     @RequiresFlagsDisabled({
         FLAG_PHR_CHANGE_LOGS,
         FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testParceling_flagDisabled() {
         Record upsertedRecord = RecordFactory.makePopulatedRecord(RECORD_TYPE_STEPS);

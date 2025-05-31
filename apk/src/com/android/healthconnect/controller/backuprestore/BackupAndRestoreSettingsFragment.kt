@@ -16,8 +16,13 @@
 
 package com.android.healthconnect.controller.backuprestore
 
+import android.Manifest.permission.BACKUP
+import android.Manifest.permission.BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.health.connect.HealthConnectManager.ACTION_SHOW_HEALTH_CONNECT_BACKUP_SETTINGS
 import android.icu.text.MessageFormat
 import android.net.Uri
 import android.os.Bundle
@@ -137,8 +142,11 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
         }
 
         if (cloudBackupAndRestoreHcUi()) {
-            backupDataPreference.setOnPreferenceClickListener {
-                openBackupRestoreSettings()
+            backupDataPreference.setOnPreferenceClickListener() {
+                openBackupRestoreSettingsIfPermitted(
+                    Intent(ACTION_SHOW_HEALTH_CONNECT_BACKUP_SETTINGS),
+                    requireContext().packageManager,
+                )
                 true
             }
         }
@@ -431,8 +439,54 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
         triggerImportLauncher.launch(importRequestIntent)
     }
 
-    private fun openBackupRestoreSettings() {
-        // TODO: b/358032341 Click through to B&R setup
+    // TODO: b/410065836 Do not send the intent if  the handler activity is not guarded with the
+    // {@link HealthPermissions#START_BACKUP_RESTORE_SETTINGS_PERMISSION}
+    // TODO: b/410065836 Do not send the intent if there is more than one receiver activity
+    // TODO: b/410065836 Add logging and user messaging to indicate when HC B&R is not supported
+    // on this device, e.g. either hide the UI completely in more cases like no permission or show
+    // a screen to indicate that no UI is available.
+    fun openBackupRestoreSettingsIfPermitted(
+        implicitIntent: Intent,
+        packageManager: PackageManager,
+    ) {
+        val componentName = implicitIntent.resolveActivity(packageManager)
+
+        if (componentName == null) {
+            Slog.e(
+                TAG,
+                "No component found to show the Health Connect Backup and restore " +
+                    "settings screen.",
+            )
+            return
+        }
+
+        if (!holdsPermissionToShowBRSettings(componentName.packageName, packageManager)) {
+            Slog.e(
+                TAG,
+                "The following component can show the Health Connect Backup and " +
+                    "restore settings screen, but does not have permission to do so: \n" +
+                    componentName.toString(),
+            )
+            return
+        }
+
+        val explicitIntent = Intent(implicitIntent)
+        explicitIntent.component = componentName
+
+        // TODO: b/410065836 Register for activity results to handle failures and receive results.
+        startActivity(explicitIntent)
+    }
+
+    private fun holdsPermissionToShowBRSettings(
+        packageName: String,
+        packageManager: PackageManager,
+    ): Boolean {
+        val holdsAndroidBackupPermission =
+            packageManager.checkPermission(BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS, packageName)
+        val holdsHealthConnectBackupPermission = packageManager.checkPermission(BACKUP, packageName)
+
+        return (holdsAndroidBackupPermission == PERMISSION_GRANTED ||
+            holdsHealthConnectBackupPermission == PERMISSION_GRANTED)
     }
 
     private fun onRequestImport(result: ActivityResult) {

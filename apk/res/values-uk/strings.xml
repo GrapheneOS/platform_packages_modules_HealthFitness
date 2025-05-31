@@ -1231,16 +1231,10 @@
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Додаток підключено до Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Майже готово"</string>
     <string name="almost_done_description" msgid="8414648601371946510">"Відкрийте ці додатки, щоб завершити налаштування й почати надсилати дані"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_title (280885921481737546) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_summary (279064080688912586) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_banner_button (126646934243245089) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_title (8807871827449709985) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_summary (7405386784227352135) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_banner_button (460055569609324756) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Переглядайте дані про здоров’я в різних додатках"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Почніть обмінюватися даними про здоров’я і фітнес між додатками"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Налаштувати"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Підключіть другий додаток"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Налаштуйте ще один додаток, щоб обмінюватися даними про здоров’я і фітнес із додатком <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Продовжити"</string>
 </resources>

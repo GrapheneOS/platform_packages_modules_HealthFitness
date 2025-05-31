@@ -70,6 +70,7 @@ public class RecordTypeIdForUuid {
     public static final int RECORD_TYPE_ID_FOR_UUID_PLANNED_EXERCISE_SESSION = 72;
     public static final int RECORD_TYPE_ID_FOR_UUID_MINDFULNESS_SESSION = 73;
     public static final int RECORD_TYPE_ID_FOR_UUID_ACTIVITY_INTENSITY = 74;
+    public static final int RECORD_TYPE_ID_FOR_UUID_NICOTINE_INTAKE = 75;
 
     /** @hide */
     @IntDef({
@@ -115,7 +116,8 @@ public class RecordTypeIdForUuid {
         RECORD_TYPE_ID_FOR_UUID_VO2_MAX,
         RECORD_TYPE_ID_FOR_UUID_WEIGHT,
         RECORD_TYPE_ID_FOR_UUID_WHEELCHAIR_PUSHES,
-        RECORD_TYPE_ID_FOR_UUID_ACTIVITY_INTENSITY
+        RECORD_TYPE_ID_FOR_UUID_ACTIVITY_INTENSITY,
+        RECORD_TYPE_ID_FOR_UUID_NICOTINE_INTAKE
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface Type {}
