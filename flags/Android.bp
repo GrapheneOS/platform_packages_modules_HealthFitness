@@ -18,6 +18,28 @@ package {
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
+// TODO b/421151649 remove test flags after end to end testing is completed
+aconfig_declarations {
+    name: "health_fitness.beta.test.flags",
+    package: "com.android.healthfitness.beta.test",
+    container: "com.android.healthfitness",
+    srcs: ["mainline_beta_test.aconfig"],
+}
+
+// TODO b/421151649 remove test flags after end to end testing is completed
+java_aconfig_library {
+    name: "health_fitness.beta.test.flag_lib",
+    aconfig_declarations: "health_fitness.beta.test.flags",
+    min_sdk_version: "34",
+    apex_available: [
+        "com.android.healthfitness",
+    ],
+    defaults: ["framework-minus-apex-aconfig-java-defaults"],
+    visibility: [
+        "//packages/modules/HealthFitness:__subpackages__",
+    ],
+}
+
 aconfig_declarations {
     name: "healthconnect-aconfig-flags",
     package: "com.android.healthconnect.flags",
@@ -85,6 +107,7 @@ java_library {
     ],
     static_libs: [
         "healthfitness-aconfig-flags-lib",
+        "health_fitness.beta.test.flag_lib",
     ],
     apex_available: [
         "com.android.healthfitness",
