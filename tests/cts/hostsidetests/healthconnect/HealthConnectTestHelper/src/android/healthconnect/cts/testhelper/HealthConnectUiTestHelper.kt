@@ -18,7 +18,6 @@ package android.healthconnect.cts.testhelper
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.health.connect.HealthConnectManager
 import android.healthconnect.testing.cts.TestUtils
 import android.healthconnect.testing.cts.ui.ActivityLauncher.launchMainActivity
 import android.healthconnect.testing.cts.ui.UiTestUtils
@@ -43,8 +42,6 @@ class HealthConnectUiTestHelper {
     @get:Rule val disableAnimationRule = DisableAnimationRule()
 
     private val context: Context = ApplicationProvider.getApplicationContext()
-    private val mHealthConnectManager: HealthConnectManager? =
-        context.getSystemService<HealthConnectManager>(HealthConnectManager::class.java)
 
     @Before
     fun setUpClass() {
@@ -57,13 +54,12 @@ class HealthConnectUiTestHelper {
 
     @Before
     fun before() {
-        // TODO inert app here
-        TestUtils.deleteAllFitnessDataAddedByTestApp()
+        TestUtils.deleteAllDataFromHealthConnect()
     }
 
     @After
     fun after() {
-        TestUtils.deleteAllFitnessDataAddedByTestApp()
+        TestUtils.deleteAllDataFromHealthConnect()
     }
 
     private fun unlockDevice() {
