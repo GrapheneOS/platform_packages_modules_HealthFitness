@@ -72,6 +72,7 @@ import com.android.healthfitness.flags.Flags.exportImportFastFollow
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsThemeHelper
+import com.google.common.annotations.VisibleForTesting
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.Duration
 import java.time.Instant
@@ -101,6 +102,8 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
     @Inject lateinit var toastManager: ToastManager
     @Inject lateinit var timeSource: TimeSource
 
+    @VisibleForTesting lateinit var packageManager: PackageManager
+
     private val exportSettingsViewModel: ExportSettingsViewModel by viewModels()
     private val exportStatusViewModel: ExportStatusViewModel by viewModels()
     private val importStatusViewModel: ImportStatusViewModel by viewModels()
@@ -124,6 +127,11 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
 
     private val footerPreference: FooterPreference by pref("backup_restore_footer")
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        packageManager = requireContext().packageManager
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.backup_and_restore_settings_screen, rootKey)
@@ -145,7 +153,7 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
             backupDataPreference.setOnPreferenceClickListener() {
                 openBackupRestoreSettingsIfPermitted(
                     Intent(ACTION_SHOW_HEALTH_CONNECT_BACKUP_SETTINGS),
-                    requireContext().packageManager,
+                    packageManager,
                 )
                 true
             }
