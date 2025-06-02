@@ -18,6 +18,7 @@ package com.android.server.healthconnect.onboarding;
 
 import static android.app.Notification.EXTRA_BIG_TEXT;
 import static android.app.Notification.EXTRA_TITLE;
+import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING_NOTIFICATION;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.CONNECT_MORE_APPS_NOTIFICATION_CONTENT;
@@ -85,6 +86,7 @@ public class OnboardingNotificationSenderTest {
         when(mUserHandle.getIdentifier()).thenReturn(USER_ID_INT);
         when(mResourcesContext.getStringByNameOrThrow(any()))
                 .thenAnswer(invocation -> invocation.getArgument(0));
+        when(mNotificationSender.sendNotificationAsUser(any(), eq(mUserHandle))).thenReturn(true);
 
         mContext = InstrumentationRegistry.getInstrumentation().getContext();
         mOnboardingNotificationSender =
@@ -113,6 +115,7 @@ public class OnboardingNotificationSenderTest {
         assertThat(notification.extras.getString(EXTRA_BIG_TEXT))
                 .isEqualTo(START_USING_HC_NOTIFICATION_CONTENT);
         assertThat(notification.actions).isNull();
+        assertThat(notification.getChannelId()).isEqualTo(NOTIFICATION_CHANNEL_ID);
 
         PendingIntent pendingIntent = notification.contentIntent;
         assertThat(pendingIntent.getCreatorPackage()).isEqualTo(mContext.getPackageName());
@@ -143,6 +146,19 @@ public class OnboardingNotificationSenderTest {
         mOnboardingNotificationSender.sendNoAppConnectedNotification(mUserHandle);
 
         verify(mNotificationSender, never()).sendNotificationAsUser(any(), eq(mUserHandle));
+        verify(mPreferenceHelper, never()).insertOrReplacePreference(any(), any());
+    }
+
+    @Test
+    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
+    public void sendNoAppConnectedNotification_channelBlocked_noOp() {
+        when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
+                .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
+        when(mNotificationSender.sendNotificationAsUser(any(), eq(mUserHandle))).thenReturn(false);
+
+        mOnboardingNotificationSender.sendNoAppConnectedNotification(mUserHandle);
+
+        verify(mPreferenceHelper, never()).insertOrReplacePreference(any(), any());
     }
 
     @Test
@@ -158,6 +174,7 @@ public class OnboardingNotificationSenderTest {
         assertThat(notification.extras.getString(EXTRA_BIG_TEXT))
                 .isEqualTo(CONNECT_MORE_APPS_NOTIFICATION_CONTENT);
         assertThat(notification.actions).isNull();
+        assertThat(notification.getChannelId()).isEqualTo(NOTIFICATION_CHANNEL_ID);
 
         PendingIntent pendingIntent = notification.contentIntent;
         assertThat(pendingIntent.getCreatorPackage()).isEqualTo(mContext.getPackageName());
@@ -187,5 +204,18 @@ public class OnboardingNotificationSenderTest {
         mOnboardingNotificationSender.sendOneAppConnectedNotification(mUserHandle);
 
         verify(mNotificationSender, never()).sendNotificationAsUser(any(), eq(mUserHandle));
+        verify(mPreferenceHelper, never()).insertOrReplacePreference(any(), any());
+    }
+
+    @Test
+    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
+    public void sendOneAppConnectedNotification_channelBlocked_noOp() {
+        when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
+                .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
+        when(mNotificationSender.sendNotificationAsUser(any(), eq(mUserHandle))).thenReturn(false);
+
+        mOnboardingNotificationSender.sendOneAppConnectedNotification(mUserHandle);
+
+        verify(mPreferenceHelper, never()).insertOrReplacePreference(any(), any());
     }
 }
