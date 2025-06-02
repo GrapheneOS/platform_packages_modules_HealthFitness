@@ -59,35 +59,28 @@ class WheelchairPushesFormatterTest {
     @Test
     fun formatValue_one() {
         val record = getRecord(1)
-        runBlocking {
-            assertThat(formatter.formatValue(record, preferences)).isEqualTo("1 wheelchair push")
-        }
+        runBlocking { assertThat(formatter.formatValue(record)).isEqualTo("1 wheelchair push") }
     }
 
     @Test
     fun formatValue_many() {
         val record = getRecord(1234)
         runBlocking {
-            assertThat(formatter.formatValue(record, preferences))
-                .isEqualTo("1,234 wheelchair pushes")
+            assertThat(formatter.formatValue(record)).isEqualTo("1,234 wheelchair pushes")
         }
     }
 
     @Test
     fun formatA11yValue_one() {
         val record = getRecord(1)
-        runBlocking {
-            assertThat(formatter.formatA11yValue(record, preferences))
-                .isEqualTo("1 wheelchair push")
-        }
+        runBlocking { assertThat(formatter.formatA11yValue(record)).isEqualTo("1 wheelchair push") }
     }
 
     @Test
     fun formatA11yValue_many() {
         val record = getRecord(1234)
         runBlocking {
-            assertThat(formatter.formatA11yValue(record, preferences))
-                .isEqualTo("1,234 wheelchair pushes")
+            assertThat(formatter.formatA11yValue(record)).isEqualTo("1,234 wheelchair pushes")
         }
     }
 

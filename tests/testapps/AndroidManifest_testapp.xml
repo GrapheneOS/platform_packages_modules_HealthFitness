@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2025 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,22 +16,25 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="android.healthconnect.cts.testapp.data.manage.permissions"
-          android:versionCode="1"
-          android:versionName="1.0">
+    package="android.healthconnect.testing.testapp">
 
-    <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA_PERMISSIONS"/>
-
-
-    <application android:label="CtsHealthConnectTestAppWithDataManagePermission">
+    <application>
         <activity android:name="android.healthconnect.testing.testapp.TestAppActivity"
-                  android:exported="true">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
                 <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name="android.healthconnect.testing.cts.testapphelpers.ProxyActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.healthconnect.cts.ACTION_START_ACTIVITY_FOR_RESULT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 

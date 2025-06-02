@@ -58,22 +58,20 @@ class RespiratoryRateFormatterTest {
 
     @Test
     fun testFormatValue_zero() = runBlocking {
-        assertThat(formatter.formatValue(getRecord(0.0), preferences)).isEqualTo("0 rpm")
-        assertThat(formatter.formatA11yValue(getRecord(0.0), preferences))
-            .isEqualTo("0 respirations per minute")
+        assertThat(formatter.formatValue(getRecord(0.0))).isEqualTo("0 rpm")
+        assertThat(formatter.formatA11yValue(getRecord(0.0))).isEqualTo("0 respirations per minute")
     }
 
     @Test
     fun testFormatValue_one() = runBlocking {
-        assertThat(formatter.formatValue(getRecord(1.0), preferences)).isEqualTo("1 rpm")
-        assertThat(formatter.formatA11yValue(getRecord(1.0), preferences))
-            .isEqualTo("1 respiration per minute")
+        assertThat(formatter.formatValue(getRecord(1.0))).isEqualTo("1 rpm")
+        assertThat(formatter.formatA11yValue(getRecord(1.0))).isEqualTo("1 respiration per minute")
     }
 
     @Test
     fun testFormatValue_many() = runBlocking {
-        assertThat(formatter.formatValue(getRecord(17.3), preferences)).isEqualTo("17 rpm")
-        assertThat(formatter.formatA11yValue(getRecord(17.3), preferences))
+        assertThat(formatter.formatValue(getRecord(17.3))).isEqualTo("17 rpm")
+        assertThat(formatter.formatA11yValue(getRecord(17.3)))
             .isEqualTo("17 respirations per minute")
     }
 

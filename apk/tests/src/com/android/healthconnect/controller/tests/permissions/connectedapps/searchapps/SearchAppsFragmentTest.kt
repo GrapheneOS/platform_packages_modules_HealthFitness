@@ -99,7 +99,8 @@ class SearchAppsFragmentTest {
         onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
         onView(withText("Inactive apps")).check(matches(isDisplayed()))
         onView(withText(TEST_APP_NAME_3)).check(matches(isDisplayed()))
-        onView(withContentDescription("Delete data")).check(matches(isDisplayed()))
+        onView(withContentDescription("Delete data for Health Connect test app 3 button"))
+            .check(matches(isDisplayed()))
         onView(withText(R.string.connected_apps_text)).check(matches(isDisplayed()))
 
         verify(healthConnectLogger, atLeast(1)).setPageId(PageName.SEARCH_APPS_PAGE)

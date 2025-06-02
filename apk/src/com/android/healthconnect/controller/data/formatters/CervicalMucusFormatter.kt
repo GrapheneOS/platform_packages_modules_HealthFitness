@@ -31,18 +31,21 @@ import android.health.connect.datatypes.CervicalMucusRecord.CervicalMucusSensati
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.StringJoiner
 import javax.inject.Inject
 
 /** Formatter for printing CervicalMucusRecord data. */
-class CervicalMucusFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<CervicalMucusRecord>(context) {
+class CervicalMucusFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<CervicalMucusRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: CervicalMucusRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: CervicalMucusRecord): String {
         val stringJoiner = StringJoiner(" ")
         if (record.appearance != APPEARANCE_UNKNOWN) {
             stringJoiner.add(formatAppearances(record.appearance))
@@ -68,11 +71,8 @@ class CervicalMucusFormatter @Inject constructor(@ApplicationContext private val
         }
     }
 
-    override suspend fun formatA11yValue(
-        record: CervicalMucusRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
-        return formatValue(record, unitPreferences)
+    override suspend fun formatA11yValue(record: CervicalMucusRecord): String {
+        return formatValue(record)
     }
 
     private fun formatAppearances(appearances: Int): String {

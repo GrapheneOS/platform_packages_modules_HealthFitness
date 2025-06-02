@@ -31,31 +31,32 @@ import javax.inject.Singleton
 
 /** Formatter for printing HeartRate data. */
 @Singleton
-class HeartRateFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<HeartRateRecord>(context), RecordDetailsFormatter<HeartRateRecord> {
-
-    private val timeFormatter = LocalDateTimeFormatter(context)
+class HeartRateFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) :
+    EntryFormatter<HeartRateRecord>(context, timeFormatter, unitPreferences),
+    RecordDetailsFormatter<HeartRateRecord> {
 
     override suspend fun formatRecord(
         record: HeartRateRecord,
         header: String,
         headerA11y: String,
-        unitPreferences: UnitPreferences,
     ): FormattedEntry {
         return FormattedEntry.SeriesDataEntry(
             uuid = record.metadata.id,
             header = header,
             headerA11y = headerA11y,
-            title = formatValue(record, unitPreferences),
-            titleA11y = formatA11yValue(record, unitPreferences),
+            title = formatValue(record),
+            titleA11y = formatA11yValue(record),
             dataType = record::class,
         )
     }
 
-    override suspend fun formatValue(
-        record: HeartRateRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: HeartRateRecord): String {
         return if (record.samples.size == 1) {
             formatSampleValue(R.string.heart_rate_value, record.samples.first().beatsPerMinute)
         } else {
@@ -65,10 +66,7 @@ class HeartRateFormatter @Inject constructor(@ApplicationContext private val con
         }
     }
 
-    override suspend fun formatA11yValue(
-        record: HeartRateRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: HeartRateRecord): String {
         return if (record.samples.size == 1) {
             formatSampleValue(R.string.heart_rate_long_value, record.samples.first().beatsPerMinute)
         } else {

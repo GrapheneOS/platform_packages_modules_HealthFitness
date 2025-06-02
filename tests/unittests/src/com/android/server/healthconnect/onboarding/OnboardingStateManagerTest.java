@@ -441,6 +441,7 @@ public class OnboardingStateManagerTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void updateAndGetOnboardingState_onlySystemAppConnected_returnsZeroConnected() {
         setAppConnectedFitnessPermission(SYSTEM_APP_PKG, true);
         setAppRequestsFitnessPermission(APP_PKG_1, true);
@@ -457,6 +458,7 @@ public class OnboardingStateManagerTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void updateAndGetOnboardingState_systemAndOneOtherAppConnected_returnsOneConnected() {
         setAppConnectedFitnessPermission(SYSTEM_APP_PKG, true);
         setAppConnectedFitnessPermission(APP_PKG_1, /* isConnected= */ true);

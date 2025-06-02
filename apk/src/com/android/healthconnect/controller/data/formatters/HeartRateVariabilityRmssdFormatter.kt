@@ -25,26 +25,24 @@ import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing HeartRateVariabilityRmssdRecord data. */
 class HeartRateVariabilityRmssdFormatter
 @Inject
-constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<HeartRateVariabilityRmssdRecord>(context) {
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<HeartRateVariabilityRmssdRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: HeartRateVariabilityRmssdRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: HeartRateVariabilityRmssdRecord): String {
         return formatHRV(R.string.milliseconds, record.heartRateVariabilityMillis)
     }
 
-    override suspend fun formatA11yValue(
-        record: HeartRateVariabilityRmssdRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: HeartRateVariabilityRmssdRecord): String {
         return formatHRV(R.string.milliseconds_long, record.heartRateVariabilityMillis)
     }
 

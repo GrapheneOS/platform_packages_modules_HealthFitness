@@ -22,24 +22,24 @@ import com.android.healthconnect.controller.data.formatters.shared.EntryFormatte
 import com.android.healthconnect.controller.data.formatters.shared.LengthFormatter
 import com.android.healthconnect.controller.data.formatters.shared.UnitFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing Distance data. */
-class DistanceFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<DistanceRecord>(context), UnitFormatter<Length> {
+class DistanceFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<DistanceRecord>(context, timeFormatter, unitPreferences), UnitFormatter<Length> {
 
-    override suspend fun formatValue(
-        record: DistanceRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: DistanceRecord): String {
         return LengthFormatter.formatValue(context, record.distance, unitPreferences)
     }
 
-    override suspend fun formatA11yValue(
-        record: DistanceRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: DistanceRecord): String {
         return LengthFormatter.formatA11yValue(context, record.distance, unitPreferences)
     }
 

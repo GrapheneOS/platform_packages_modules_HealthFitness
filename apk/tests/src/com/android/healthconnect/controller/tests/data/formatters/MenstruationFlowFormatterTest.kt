@@ -66,28 +66,28 @@ class MenstruationFlowFormatterTest {
     fun formatValue_heavy_showsAppearance() = runBlocking {
         val record = getRecord(type = FLOW_HEAVY)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Heavy flow")
+        assertThat(formatter.formatValue(record)).isEqualTo("Heavy flow")
     }
 
     @Test
     fun formatValue_medium_showsAppearance() = runBlocking {
         val record = getRecord(type = FLOW_MEDIUM)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Medium flow")
+        assertThat(formatter.formatValue(record)).isEqualTo("Medium flow")
     }
 
     @Test
     fun formatValue_light_showsAppearance() = runBlocking {
         val record = getRecord(type = FLOW_LIGHT)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Light flow")
+        assertThat(formatter.formatValue(record)).isEqualTo("Light flow")
     }
 
     @Test
     fun formatValue_unknown_showsAppearance() = runBlocking {
         val record = getRecord(type = FLOW_UNKNOWN)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Unknown flow")
+        assertThat(formatter.formatValue(record)).isEqualTo("Unknown flow")
     }
 
     private fun getRecord(@MenstruationFlowTypes type: Int): MenstruationFlowRecord {

@@ -35,6 +35,7 @@ class ExercisePerformanceGoalFormatter
 constructor(
     @ApplicationContext private val context: Context,
     private val speedFormatter: SpeedFormatter,
+    private val unitPreferences: UnitPreferences,
 ) {
     private val ACTIVITY_TYPES_WITH_CADENCE_MOTION =
         listOf(
@@ -44,21 +45,16 @@ constructor(
             ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_WHEELCHAIR,
         )
 
-    fun formatGoal(
-        goal: ExercisePerformanceGoal,
-        unitPreferences: UnitPreferences,
-        exerciseSegmentType: Int,
-    ): FormattedEntry {
+    fun formatGoal(goal: ExercisePerformanceGoal, exerciseSegmentType: Int): FormattedEntry {
         return ExercisePerformanceGoalEntry(
             goal = goal,
-            title = formatPerformanceGoal(goal, unitPreferences, exerciseSegmentType),
-            titleA11y = formatPerformanceGoalA11y(goal, unitPreferences, exerciseSegmentType),
+            title = formatPerformanceGoal(goal, exerciseSegmentType),
+            titleA11y = formatPerformanceGoalA11y(goal, exerciseSegmentType),
         )
     }
 
     private fun formatPerformanceGoal(
         performanceGoal: ExercisePerformanceGoal,
-        unitPreferences: UnitPreferences,
         exerciseSegmentType: Int,
     ): String {
         return when (performanceGoal) {
@@ -111,12 +107,10 @@ constructor(
                         R.string.performance_goals_range,
                         speedFormatter.formatSpeedValue(
                             performanceGoal.maxSpeed,
-                            unitPreferences,
                             exerciseSegmentType,
                         ),
                         speedFormatter.formatSpeedValue(
                             performanceGoal.minSpeed,
-                            unitPreferences,
                             exerciseSegmentType,
                         ),
                     )
@@ -125,12 +119,10 @@ constructor(
                         R.string.performance_goals_range,
                         speedFormatter.formatSpeedValue(
                             performanceGoal.minSpeed,
-                            unitPreferences,
                             exerciseSegmentType,
                         ),
                         speedFormatter.formatSpeedValue(
                             performanceGoal.maxSpeed,
-                            unitPreferences,
                             exerciseSegmentType,
                         ),
                     )
@@ -163,7 +155,6 @@ constructor(
 
     private fun formatPerformanceGoalA11y(
         performanceGoal: ExercisePerformanceGoal,
-        unitPreferences: UnitPreferences,
         exerciseSegmentType: Int,
     ): String {
         return when (performanceGoal) {
@@ -216,12 +207,10 @@ constructor(
                         R.string.performance_goals_range,
                         speedFormatter.formatA11ySpeedValue(
                             performanceGoal.maxSpeed,
-                            unitPreferences,
                             exerciseSegmentType,
                         ),
                         speedFormatter.formatA11ySpeedValue(
                             performanceGoal.minSpeed,
-                            unitPreferences,
                             exerciseSegmentType,
                         ),
                     )
@@ -230,12 +219,10 @@ constructor(
                         R.string.performance_goals_range,
                         speedFormatter.formatA11ySpeedValue(
                             performanceGoal.minSpeed,
-                            unitPreferences,
                             exerciseSegmentType,
                         ),
                         speedFormatter.formatA11ySpeedValue(
                             performanceGoal.maxSpeed,
-                            unitPreferences,
                             exerciseSegmentType,
                         ),
                     )

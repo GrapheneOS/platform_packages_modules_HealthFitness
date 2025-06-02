@@ -63,22 +63,20 @@ class HeartRateFormatterTest {
     @Test
     fun formatValue_returnsHeartRateValues() {
         val record: HeartRateRecord = getHeartRateRecord(listOf(100, 102))
-        runBlocking {
-            assertThat(formatter.formatValue(record, preferences)).isEqualTo("100 bpm - 102 bpm")
-        }
+        runBlocking { assertThat(formatter.formatValue(record)).isEqualTo("100 bpm - 102 bpm") }
     }
 
     @Test
     fun formatValue_singleSampleValue_returnsSingleHeartRateValue() {
         val record: HeartRateRecord = getHeartRateRecord(listOf(100))
-        runBlocking { assertThat(formatter.formatValue(record, preferences)).isEqualTo("100 bpm") }
+        runBlocking { assertThat(formatter.formatValue(record)).isEqualTo("100 bpm") }
     }
 
     @Test
     fun formatA11yValue_pluralValue_returnsA11yHeartRateValues() {
         val record: HeartRateRecord = getHeartRateRecord(listOf(100, 102))
         runBlocking {
-            assertThat(formatter.formatA11yValue(record, preferences))
+            assertThat(formatter.formatA11yValue(record))
                 .isEqualTo("from 100 beats per minute to 102 beats per minute")
         }
     }
@@ -86,10 +84,7 @@ class HeartRateFormatterTest {
     @Test
     fun formatA11yValue_singleSampleValue_returnsA11yHeartRateValues() {
         val record: HeartRateRecord = getHeartRateRecord(listOf(1))
-        runBlocking {
-            assertThat(formatter.formatA11yValue(record, preferences))
-                .isEqualTo("1 beat per minute")
-        }
+        runBlocking { assertThat(formatter.formatA11yValue(record)).isEqualTo("1 beat per minute") }
     }
 
     @Test

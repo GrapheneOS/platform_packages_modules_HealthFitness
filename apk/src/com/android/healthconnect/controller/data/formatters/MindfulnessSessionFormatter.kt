@@ -33,6 +33,7 @@ import com.android.healthconnect.controller.data.formatters.DurationFormatter.fo
 import com.android.healthconnect.controller.data.formatters.DurationFormatter.formatDurationShort
 import com.android.healthconnect.controller.data.formatters.shared.BaseFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Duration
 import javax.inject.Inject
@@ -40,14 +41,16 @@ import javax.inject.Inject
 /** Formatter for printing MindfulnessSessionRecord data. */
 class MindfulnessSessionFormatter
 @Inject
-constructor(@ApplicationContext private val context: Context) :
-    BaseFormatter<MindfulnessSessionRecord>(context) {
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : BaseFormatter<MindfulnessSessionRecord>(context, timeFormatter, unitPreferences) {
 
     override suspend fun formatRecord(
         record: MindfulnessSessionRecord,
         header: String,
         headerA11y: String,
-        unitPreferences: UnitPreferences,
     ): FormattedEntry {
         return FormattedEntry.ExerciseSessionEntry(
             uuid = record.metadata.id,

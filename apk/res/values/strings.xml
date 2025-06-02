@@ -769,6 +769,7 @@
 
     <!-- region Deletion -->
     <string name="delete_button_content_description" description="Content description of a button that starts the deletion flow. [CHAR_LIMIT=50]">Delete data</string>
+    <string name="delete_inactive_app_data_button_content_description" description="Content description for a button to delete data for a specific inactive app. [CHAR_LIMIT=NONE]">Delete data for %1$s button</string>
     <string name="enter_deletion_button_content_description" description="Content description of a button that enters the deletion state">Enter deletion</string>
     <string name="exit_deletion_button_content_description" description="Content description of a button that exits the deletion state">Exit deletion</string>
     <!-- endregion -->

@@ -24,5 +24,4 @@
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:background="?android:attr/selectableItemBackground"
     android:scaleType="center"
-    android:src="?attr/deleteIcon"
-    android:contentDescription="@string/delete_button_content_description"/>
+    android:src="?attr/deleteIcon" />

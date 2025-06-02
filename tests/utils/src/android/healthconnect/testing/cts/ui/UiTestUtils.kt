@@ -19,6 +19,7 @@ package android.healthconnect.testing.cts.ui
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.health.connect.HealthConnectManager
 import android.health.connect.HealthPermissions
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Device
@@ -542,7 +543,9 @@ object UiTestUtils {
                         mPackageManager
                             .getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
                             .requestedPermissions
-                            ?.toList() ?: emptyList()
+                            ?.filter { permName ->
+                                HealthConnectManager.isHealthPermission(context, permName)
+                            } ?: emptyList()
                     } catch (e: PackageManager.NameNotFoundException) {
                         emptyList()
                     }
@@ -562,7 +565,7 @@ object UiTestUtils {
         )
     }
 
-    fun hasUserFixedPermissions(context: Context, packageName: String): Boolean {
+    fun hasUserFixedHealthPermissions(context: Context, packageName: String): Boolean {
         val pm = context.packageManager
 
         var result = false
@@ -572,7 +575,10 @@ object UiTestUtils {
                     try {
                         pm.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
                             .requestedPermissions
-                            ?.toList() ?: emptyList()
+                            ?.toList()
+                            ?.filter { permName ->
+                                HealthConnectManager.isHealthPermission(context, permName)
+                            } ?: emptyList()
                     } catch (e: PackageManager.NameNotFoundException) {
                         emptyList()
                     }
@@ -592,13 +598,15 @@ object UiTestUtils {
         return result
     }
 
-    fun revokeAllPermissionsViaPackageManager(context: Context, packageName: String) {
+    fun revokeAllHealthPermissionsViaPackageManager(context: Context, packageName: String) {
         val pm = context.packageManager
         try {
             val packageInfo = pm.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
-            packageInfo.requestedPermissions?.forEach { permName ->
-                revokePermissionViaPackageManager(context, packageName, permName)
-            }
+            packageInfo.requestedPermissions
+                ?.filter { permName -> HealthConnectManager.isHealthPermission(context, permName) }
+                ?.forEach { permName ->
+                    revokePermissionViaPackageManager(context, packageName, permName)
+                }
         } catch (e: PackageManager.NameNotFoundException) {
             // ignore.
         }

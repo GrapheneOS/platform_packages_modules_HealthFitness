@@ -32,22 +32,21 @@ class PlannedExerciseStepFormatter
 @Inject
 constructor(
     @ApplicationContext private val context: Context,
+    private val unitPreferences: UnitPreferences,
+    private val stepsFormatter: StepsFormatter,
     private val exercisePerformanceGoalFormatter: ExercisePerformanceGoalFormatter,
     private val exerciseSegmentTypeFormatter: ExerciseSegmentTypeFormatter,
 ) {
 
-    fun formatStep(step: PlannedExerciseStep, unitPreferences: UnitPreferences): FormattedEntry {
+    fun formatStep(step: PlannedExerciseStep): FormattedEntry {
         return PlannedExerciseStepEntry(
             step = step,
-            title = formatStepTitle(step, unitPreferences),
-            titleA11y = formatStepTitleA11y(step, unitPreferences),
+            title = formatStepTitle(step),
+            titleA11y = formatStepTitleA11y(step),
         )
     }
 
-    fun formatStepDetails(
-        step: PlannedExerciseStep,
-        unitPreferences: UnitPreferences,
-    ): List<FormattedEntry> {
+    fun formatStepDetails(step: PlannedExerciseStep): List<FormattedEntry> {
         val performanceGoals = step.performanceGoals
         return buildList {
             if (!step.description.isNullOrBlank()) {
@@ -64,7 +63,6 @@ constructor(
                     add(
                         exercisePerformanceGoalFormatter.formatGoal(
                             performanceGoal,
-                            unitPreferences,
                             step.exerciseType,
                         )
                     )
@@ -73,43 +71,34 @@ constructor(
         }
     }
 
-    private fun formatStepTitle(
-        step: PlannedExerciseStep,
-        unitPreferences: UnitPreferences,
-    ): String {
+    private fun formatStepTitle(step: PlannedExerciseStep): String {
         val completionGoal = step.completionGoal
         val exerciseSegmentType = step.exerciseType
         return context.getString(
             R.string.planned_exercise_step_title,
-            formatCompletionGoal(completionGoal, unitPreferences),
+            formatCompletionGoal(completionGoal),
             exerciseSegmentTypeFormatter.getSegmentType(exerciseSegmentType),
         )
     }
 
-    private fun formatStepTitleA11y(
-        step: PlannedExerciseStep,
-        unitPreferences: UnitPreferences,
-    ): String {
+    private fun formatStepTitleA11y(step: PlannedExerciseStep): String {
         val completionGoal = step.completionGoal
         val exerciseSegmentType = step.exerciseType
         return context.getString(
             R.string.planned_exercise_step_title,
-            formatCompletionGoalA11y(completionGoal, unitPreferences),
+            formatCompletionGoalA11y(completionGoal),
             exerciseSegmentTypeFormatter.getSegmentType(exerciseSegmentType),
         )
     }
 
-    private fun formatCompletionGoal(
-        completionGoal: ExerciseCompletionGoal,
-        unitPreferences: UnitPreferences,
-    ): String {
+    private fun formatCompletionGoal(completionGoal: ExerciseCompletionGoal): String {
         return when (completionGoal) {
             is ExerciseCompletionGoal.DistanceGoal ->
                 LengthFormatter.formatValue(context, completionGoal.distance, unitPreferences)
             is ExerciseCompletionGoal.DurationGoal ->
                 DurationFormatter.formatDurationShort(context, completionGoal.duration)
             is ExerciseCompletionGoal.StepsGoal ->
-                StepsFormatter(context).formatUnit(completionGoal.steps.toLong())
+                stepsFormatter.formatUnit(completionGoal.steps.toLong())
             is ExerciseCompletionGoal.RepetitionsGoal -> completionGoal.repetitions.toString()
             is ExerciseCompletionGoal.ActiveCaloriesBurnedGoal ->
                 context.getString(
@@ -139,17 +128,14 @@ constructor(
         }
     }
 
-    private fun formatCompletionGoalA11y(
-        completionGoal: ExerciseCompletionGoal,
-        unitPreferences: UnitPreferences,
-    ): String {
+    private fun formatCompletionGoalA11y(completionGoal: ExerciseCompletionGoal): String {
         return when (completionGoal) {
             is ExerciseCompletionGoal.DistanceGoal ->
                 LengthFormatter.formatA11yValue(context, completionGoal.distance, unitPreferences)
             is ExerciseCompletionGoal.DurationGoal ->
                 DurationFormatter.formatDurationLong(context, completionGoal.duration)
             is ExerciseCompletionGoal.StepsGoal ->
-                StepsFormatter(context).formatA11yUnit(completionGoal.steps.toLong())
+                stepsFormatter.formatA11yUnit(completionGoal.steps.toLong())
             is ExerciseCompletionGoal.RepetitionsGoal -> completionGoal.repetitions.toString()
             is ExerciseCompletionGoal.ActiveCaloriesBurnedGoal ->
                 context.getString(

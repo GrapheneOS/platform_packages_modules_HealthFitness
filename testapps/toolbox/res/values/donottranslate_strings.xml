@@ -199,7 +199,7 @@
 
     <!-- Onboarding Screen -->
     <string name="onboarding_title">3P Onboarding screen / flow</string>
-    <string name="onboarding_message">Please allow health permissions for testing.</string>
+    <string name="onboarding_message">Please allow fitness permissions for testing.</string>
     <string name="continue_string">Continue</string>
     <!-- endregion -->
 

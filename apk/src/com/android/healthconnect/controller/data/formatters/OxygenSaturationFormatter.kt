@@ -21,29 +21,27 @@ import android.icu.text.MessageFormat
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for Oxygen Saturation percentage. */
 class OxygenSaturationFormatter
 @Inject
-constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<OxygenSaturationRecord>(context) {
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<OxygenSaturationRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: OxygenSaturationRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: OxygenSaturationRecord): String {
         return MessageFormat.format(
             context.getString(R.string.percent),
             mapOf("value" to record.percentage.value),
         )
     }
 
-    override suspend fun formatA11yValue(
-        record: OxygenSaturationRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: OxygenSaturationRecord): String {
         return MessageFormat.format(
             context.getString(R.string.percent_long),
             mapOf("value" to record.percentage.value),

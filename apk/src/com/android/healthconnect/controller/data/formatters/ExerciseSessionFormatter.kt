@@ -109,17 +109,18 @@ import kotlin.math.floor
 class ExerciseSessionFormatter
 @Inject
 constructor(
-    @ApplicationContext private val context: Context,
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
     private val exerciseSegmentTypeFormatter: ExerciseSegmentTypeFormatter,
-) : BaseFormatter<ExerciseSessionRecord>(context), RecordDetailsFormatter<ExerciseSessionRecord> {
-
-    private val timeFormatter = LocalDateTimeFormatter(context)
+) :
+    BaseFormatter<ExerciseSessionRecord>(context, timeFormatter, unitPreferences),
+    RecordDetailsFormatter<ExerciseSessionRecord> {
 
     override suspend fun formatRecord(
         record: ExerciseSessionRecord,
         header: String,
         headerA11y: String,
-        unitPreferences: UnitPreferences,
     ): FormattedEntry {
         return ExerciseSessionEntry(
             uuid = record.metadata.id,
@@ -253,7 +254,10 @@ constructor(
         val segmentType = exerciseSegmentTypeFormatter.getSegmentType(type)
         if (repetitionsCount != 0 || !AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
             val repetitions =
-            format(context.getString(R.string.repetitions_long), mapOf("count" to repetitionsCount))
+                format(
+                    context.getString(R.string.repetitions_long),
+                    mapOf("count" to repetitionsCount),
+                )
             return context.getString(R.string.repetitions_format, segmentType, repetitions)
         }
         return segmentType

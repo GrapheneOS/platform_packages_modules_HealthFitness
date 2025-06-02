@@ -21,7 +21,6 @@ import android.icu.text.MessageFormat
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseBlockEntry
-import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -77,20 +76,12 @@ constructor(
         }
     }
 
-    fun formatBlockDetails(
-        block: PlannedExerciseBlock,
-        unitPreferences: UnitPreferences,
-    ): List<FormattedEntry> {
+    fun formatBlockDetails(block: PlannedExerciseBlock): List<FormattedEntry> {
         val exerciseSteps = block.steps
         return buildList {
             exerciseSteps.forEach { plannedExerciseStep ->
-                add(plannedExerciseStepFormatter.formatStep(plannedExerciseStep, unitPreferences))
-                addAll(
-                    plannedExerciseStepFormatter.formatStepDetails(
-                        plannedExerciseStep,
-                        unitPreferences,
-                    )
-                )
+                add(plannedExerciseStepFormatter.formatStep(plannedExerciseStep))
+                addAll(plannedExerciseStepFormatter.formatStepDetails(plannedExerciseStep))
             }
         }
     }

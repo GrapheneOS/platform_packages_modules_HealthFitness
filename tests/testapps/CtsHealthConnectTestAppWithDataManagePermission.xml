@@ -16,13 +16,12 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="android.healthconnect.cts.route.testapp.writer"
-    android:versionCode="1"
-    android:versionName="1.0">
+          package="android.healthconnect.cts.testapp.data.manage.permissions"
+          android:versionCode="1"
+          android:versionName="1.0">
 
-    <uses-permission android:name="android.permission-group.HEALTH"/>
-    <uses-permission android:name="android.permission.health.WRITE_EXERCISE"/>
-    <uses-permission android:name="android.permission.health.WRITE_EXERCISE_ROUTE"/>
+    <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA_PERMISSIONS"/>
 
-    <application android:label="CtsExerciseRouteTestRouteWriterApp" />
+
+    <application android:label="CtsHealthConnectTestAppWithDataManagePermission"/>
 </manifest>

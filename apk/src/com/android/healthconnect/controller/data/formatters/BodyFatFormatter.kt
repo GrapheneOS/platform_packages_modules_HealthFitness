@@ -21,27 +21,27 @@ import android.icu.text.MessageFormat.format
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for body fat percentage. */
-class BodyFatFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<BodyFatRecord>(context) {
+class BodyFatFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<BodyFatRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: BodyFatRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: BodyFatRecord): String {
         return format(
             context.getString(R.string.percent),
             mapOf("value" to record.percentage.value),
         )
     }
 
-    override suspend fun formatA11yValue(
-        record: BodyFatRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: BodyFatRecord): String {
         return format(
             context.getString(R.string.percent_long),
             mapOf("value" to record.percentage.value),

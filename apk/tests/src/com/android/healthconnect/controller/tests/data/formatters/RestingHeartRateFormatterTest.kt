@@ -59,24 +59,20 @@ class RestingHeartRateFormatterTest {
     @Test
     fun formatValue_returnsSingleHeartRateValue() {
         val record = getRecord(100)
-        runBlocking { assertThat(formatter.formatValue(record, preferences)).isEqualTo("100 bpm") }
+        runBlocking { assertThat(formatter.formatValue(record)).isEqualTo("100 bpm") }
     }
 
     @Test
     fun formatA11yValue_one_returnsA11yHeartRateValues() {
         val record = getRecord(1)
-        runBlocking {
-            assertThat(formatter.formatA11yValue(record, preferences))
-                .isEqualTo("1 beat per minute")
-        }
+        runBlocking { assertThat(formatter.formatA11yValue(record)).isEqualTo("1 beat per minute") }
     }
 
     @Test
     fun formatA11yValue_many_returnsA11yHeartRateValues() {
         val record = getRecord(100)
         runBlocking {
-            assertThat(formatter.formatA11yValue(record, preferences))
-                .isEqualTo("100 beats per minute")
+            assertThat(formatter.formatA11yValue(record)).isEqualTo("100 beats per minute")
         }
     }
 

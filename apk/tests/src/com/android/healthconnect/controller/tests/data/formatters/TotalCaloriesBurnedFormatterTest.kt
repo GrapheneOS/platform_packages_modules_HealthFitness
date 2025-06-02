@@ -58,7 +58,7 @@ class TotalCaloriesBurnedFormatterTest {
         preferences.setEnergyUnit(EnergyUnit.CALORIE)
         val record = getTotalCaloriesBurnedRecord(calories = 3000.0)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("3 Cal")
+        assertThat(formatter.formatValue(record)).isEqualTo("3 Cal")
     }
 
     @Test
@@ -66,7 +66,7 @@ class TotalCaloriesBurnedFormatterTest {
         preferences.setEnergyUnit(EnergyUnit.KILOJOULE)
         val record = getTotalCaloriesBurnedRecord(calories = 3107.0)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("13 kJ")
+        assertThat(formatter.formatValue(record)).isEqualTo("13 kJ")
     }
 
     @Test
@@ -74,7 +74,7 @@ class TotalCaloriesBurnedFormatterTest {
         preferences.setEnergyUnit(EnergyUnit.CALORIE)
         val record = getTotalCaloriesBurnedRecord(calories = 3000.0)
 
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("3 calories")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("3 calories")
     }
 
     @Test
@@ -82,7 +82,7 @@ class TotalCaloriesBurnedFormatterTest {
         preferences.setEnergyUnit(EnergyUnit.KILOJOULE)
         val record = getTotalCaloriesBurnedRecord(calories = 3107.0)
 
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("13 kilojoules")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("13 kilojoules")
     }
 
     private fun getTotalCaloriesBurnedRecord(calories: Double): TotalCaloriesBurnedRecord {

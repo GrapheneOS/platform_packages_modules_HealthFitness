@@ -30,40 +30,38 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing StepsCadence series data. */
-class StepsCadenceFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<StepsCadenceRecord>(context), RecordDetailsFormatter<StepsCadenceRecord> {
-
-    private val timeFormatter = LocalDateTimeFormatter(context)
+class StepsCadenceFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) :
+    EntryFormatter<StepsCadenceRecord>(context, timeFormatter, unitPreferences),
+    RecordDetailsFormatter<StepsCadenceRecord> {
 
     override suspend fun formatRecord(
         record: StepsCadenceRecord,
         header: String,
         headerA11y: String,
-        unitPreferences: UnitPreferences,
     ): FormattedEntry {
         return FormattedEntry.SeriesDataEntry(
             uuid = record.metadata.id,
             header = header,
             headerA11y = headerA11y,
-            title = formatValue(record, unitPreferences),
-            titleA11y = formatA11yValue(record, unitPreferences),
+            title = formatValue(record),
+            titleA11y = formatA11yValue(record),
             dataType = record::class,
         )
     }
 
     /** Returns localized average StepsCadence from multiple data points. */
-    override suspend fun formatValue(
-        record: StepsCadenceRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: StepsCadenceRecord): String {
         return formatRange(R.string.steps_per_minute, record.samples)
     }
 
     /** Returns localized StepsCadence value. */
-    override suspend fun formatA11yValue(
-        record: StepsCadenceRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: StepsCadenceRecord): String {
         return formatRange(R.string.steps_per_minute_long, record.samples)
     }
 

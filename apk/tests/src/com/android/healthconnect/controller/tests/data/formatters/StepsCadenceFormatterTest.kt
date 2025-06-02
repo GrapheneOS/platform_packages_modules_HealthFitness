@@ -26,7 +26,7 @@ import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.units.UnitPreferences
-import com.google.common.truth.Truth.*
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.ZoneId
@@ -62,38 +62,37 @@ class StepsCadenceFormatterTest {
     @Test
     fun formatValue_noEntries_returnsNoData() = runBlocking {
         val record = getStepsCadence(listOf())
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("No data")
+        assertThat(formatter.formatValue(record)).isEqualTo("No data")
     }
 
     @Test
     fun formatA11yValue_noEntries_returnsNoData() = runBlocking {
         val record = getStepsCadence(listOf())
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("No data")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("No data")
     }
 
     @Test
     fun formatValue_returnsCorrectValue() = runBlocking {
         val record = getStepsCadence(listOf(1.0))
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("1 step/min")
+        assertThat(formatter.formatValue(record)).isEqualTo("1 step/min")
     }
 
     @Test
     fun formatValue_oneEntry_returnsCorrectValue() = runBlocking {
         val record = getStepsCadence(listOf(10.3))
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("10.3 steps/min")
+        assertThat(formatter.formatValue(record)).isEqualTo("10.3 steps/min")
     }
 
     @Test
     fun formatValue_multipleEntries_returnsAverageValue() = runBlocking {
         val record = getStepsCadence(listOf(10.3, 20.1))
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("15.2 steps/min")
+        assertThat(formatter.formatValue(record)).isEqualTo("15.2 steps/min")
     }
 
     @Test
     fun formatA11yValue_returnsAverageValue() = runBlocking {
         val record = getStepsCadence(listOf(10.3, 20.1))
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("15.2 steps per minute")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("15.2 steps per minute")
     }
 
     @Test

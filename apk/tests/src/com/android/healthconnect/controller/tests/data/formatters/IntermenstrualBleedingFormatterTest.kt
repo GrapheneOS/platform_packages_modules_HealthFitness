@@ -60,12 +60,12 @@ class IntermenstrualBleedingFormatterTest {
 
     @Test
     fun formatValue() = runBlocking {
-        assertThat(formatter.formatValue(getRecord(), preferences)).isEqualTo("Spotting")
+        assertThat(formatter.formatValue(getRecord())).isEqualTo("Spotting")
     }
 
     @Test
     fun formatA11yValue() = runBlocking {
-        assertThat(formatter.formatA11yValue(getRecord(), preferences)).isEqualTo("Spotting")
+        assertThat(formatter.formatA11yValue(getRecord())).isEqualTo("Spotting")
     }
 
     private fun getRecord(): IntermenstrualBleedingRecord {

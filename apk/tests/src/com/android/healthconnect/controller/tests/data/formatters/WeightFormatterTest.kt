@@ -64,7 +64,7 @@ class WeightFormatterTest {
         preferences.setWeightUnit(WeightUnit.KILOGRAM)
         val record = getRecord(0.0)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("0 kg")
+        assertThat(formatter.formatValue(record)).isEqualTo("0 kg")
     }
 
     @Test
@@ -72,14 +72,14 @@ class WeightFormatterTest {
         preferences.setWeightUnit(WeightUnit.KILOGRAM)
         val record = getRecord(0.2)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("0.2 kg")
+        assertThat(formatter.formatValue(record)).isEqualTo("0.2 kg")
     }
 
     fun formatA11yValue_kilogram_zero() = runBlocking {
         preferences.setWeightUnit(WeightUnit.KILOGRAM)
         val record = getRecord(0.0)
 
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("0 kilograms")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("0 kilograms")
     }
 
     @Test
@@ -87,7 +87,7 @@ class WeightFormatterTest {
         preferences.setWeightUnit(WeightUnit.KILOGRAM)
         val record = getRecord(0.2)
 
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("0.2 kilograms")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("0.2 kilograms")
     }
 
     @Test
@@ -95,7 +95,7 @@ class WeightFormatterTest {
         preferences.setWeightUnit(WeightUnit.POUND)
         val record = getRecord(0.0)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("0 lb")
+        assertThat(formatter.formatValue(record)).isEqualTo("0 lb")
     }
 
     @Test
@@ -103,14 +103,14 @@ class WeightFormatterTest {
         preferences.setWeightUnit(WeightUnit.POUND)
         val record = getRecord(0.2)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("0.4 lb")
+        assertThat(formatter.formatValue(record)).isEqualTo("0.4 lb")
     }
 
     fun formatA11yValue_pound_zero() = runBlocking {
         preferences.setWeightUnit(WeightUnit.POUND)
         val record = getRecord(0.0)
 
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("0 pounds")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("0 pounds")
     }
 
     @Test
@@ -118,7 +118,7 @@ class WeightFormatterTest {
         preferences.setWeightUnit(WeightUnit.POUND)
         val record = getRecord(0.2)
 
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("0.4 pounds")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("0.4 pounds")
     }
 
     @Test
@@ -126,7 +126,7 @@ class WeightFormatterTest {
         preferences.setWeightUnit(WeightUnit.STONE)
         val record = getRecord(0.0)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("0 st")
+        assertThat(formatter.formatValue(record)).isEqualTo("0 st")
     }
 
     @Test
@@ -134,14 +134,14 @@ class WeightFormatterTest {
         preferences.setWeightUnit(WeightUnit.STONE)
         val record = getRecord(13.5)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("2 st 1.8 lb")
+        assertThat(formatter.formatValue(record)).isEqualTo("2 st 1.8 lb")
     }
 
     fun formatA11yValue_stone_zero() = runBlocking {
         preferences.setWeightUnit(WeightUnit.STONE)
         val record = getRecord(0.0)
 
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("0 stones")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("0 stones")
     }
 
     @Test
@@ -149,7 +149,7 @@ class WeightFormatterTest {
         preferences.setWeightUnit(WeightUnit.STONE)
         val record = getRecord(13.5)
 
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("2 stones 1.8 pounds")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("2 stones 1.8 pounds")
     }
 
     private fun getRecord(massInKg: Double): WeightRecord {

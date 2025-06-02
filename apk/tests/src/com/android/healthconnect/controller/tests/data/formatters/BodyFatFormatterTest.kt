@@ -59,37 +59,37 @@ class BodyFatFormatterTest {
     @Test
     fun formatValue_zero() = runBlocking {
         val bodyFat = getBodyFat(0.0)
-        assertThat(formatter.formatValue(bodyFat, preferences)).isEqualTo("0%")
+        assertThat(formatter.formatValue(bodyFat)).isEqualTo("0%")
     }
 
     @Test
     fun formatValue_one() = runBlocking {
         val bodyFat = getBodyFat(1.0)
-        assertThat(formatter.formatValue(bodyFat, preferences)).isEqualTo("1%")
+        assertThat(formatter.formatValue(bodyFat)).isEqualTo("1%")
     }
 
     @Test
     fun formatValue_fraction() = runBlocking {
         val bodyFat = getBodyFat(32.2)
-        assertThat(formatter.formatValue(bodyFat, preferences)).isEqualTo("32.2%")
+        assertThat(formatter.formatValue(bodyFat)).isEqualTo("32.2%")
     }
 
     @Test
     fun formatA11yValue_zero() = runBlocking {
         val bodyFat = getBodyFat(0.0)
-        assertThat(formatter.formatA11yValue(bodyFat, preferences)).isEqualTo("0 percent")
+        assertThat(formatter.formatA11yValue(bodyFat)).isEqualTo("0 percent")
     }
 
     @Test
     fun formatA11yValue_one() = runBlocking {
         val bodyFat = getBodyFat(1.0)
-        assertThat(formatter.formatA11yValue(bodyFat, preferences)).isEqualTo("1 percent")
+        assertThat(formatter.formatA11yValue(bodyFat)).isEqualTo("1 percent")
     }
 
     @Test
     fun formatA11yValue_fraction() = runBlocking {
         val bodyFat = getBodyFat(32.2)
-        assertThat(formatter.formatA11yValue(bodyFat, preferences)).isEqualTo("32.2 percent")
+        assertThat(formatter.formatA11yValue(bodyFat)).isEqualTo("32.2 percent")
     }
 
     private fun getBodyFat(value: Double): BodyFatRecord {

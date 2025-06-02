@@ -66,6 +66,7 @@ java_sdk_library {
     permitted_packages: [
         "android.health",
         "com.android.healthfitness.flags",
+        "com.android.healthfitness.beta.test",
     ],
     srcs: [":framework-healthfitness-sources"],
     defaults: ["framework-module-defaults"],
@@ -79,10 +80,12 @@ java_sdk_library {
     static_libs: [
         "healthfitness-statsd",
         "healthfitness-aconfig-flags-lib",
+        "health_fitness.beta.test.flag_lib",
         "healthfitness-aconfig-flags-helper",
     ],
     aconfig_declarations: [
         "healthconnect-aconfig-flags",
+        "health_fitness.beta.test.flags",
     ],
     errorprone: {
         extra_check_modules: [
