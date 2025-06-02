@@ -33,38 +33,36 @@ import javax.inject.Singleton
 
 /** Formatter for printing Power series data. */
 @Singleton
-class PowerFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<PowerRecord>(context), RecordDetailsFormatter<PowerRecord> {
-
-    private val timeFormatter = LocalDateTimeFormatter(context)
+class PowerFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) :
+    EntryFormatter<PowerRecord>(context, timeFormatter, unitPreferences),
+    RecordDetailsFormatter<PowerRecord> {
 
     override suspend fun formatRecord(
         record: PowerRecord,
         header: String,
         headerA11y: String,
-        unitPreferences: UnitPreferences,
     ): FormattedEntry {
         return FormattedEntry.SeriesDataEntry(
             uuid = record.metadata.id,
             header = header,
             headerA11y = headerA11y,
-            title = formatValue(record, unitPreferences),
-            titleA11y = formatA11yValue(record, unitPreferences),
+            title = formatValue(record),
+            titleA11y = formatA11yValue(record),
             dataType = record::class,
         )
     }
 
-    override suspend fun formatValue(
-        record: PowerRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: PowerRecord): String {
         return format(R.string.watt_format, record.samples)
     }
 
-    override suspend fun formatA11yValue(
-        record: PowerRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: PowerRecord): String {
         return format(R.string.watt_format_long, record.samples)
     }
 

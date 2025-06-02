@@ -24,24 +24,24 @@ import com.android.healthconnect.controller.data.formatters.MassFormatter.format
 import com.android.healthconnect.controller.data.formatters.MassFormatter.formatValue
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing BodyWaterMassRecord data. */
-class BodyWaterMassFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<BodyWaterMassRecord>(context) {
+class BodyWaterMassFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<BodyWaterMassRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: BodyWaterMassRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: BodyWaterMassRecord): String {
         return formatValue(context, record.bodyWaterMass, unitPreferences.getWeightUnit())
     }
 
-    override suspend fun formatA11yValue(
-        record: BodyWaterMassRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: BodyWaterMassRecord): String {
         return formatA11yValue(context, record.bodyWaterMass, unitPreferences.getWeightUnit())
     }
 }

@@ -65,8 +65,8 @@ class SpeedFormatterTest {
     @Test
     fun formatValue_noEntries_returnsNoData() = runBlocking {
         val record = getSpeedRecord(listOf())
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("No data")
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("No data")
+        assertThat(formatter.formatValue(record)).isEqualTo("No data")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("No data")
     }
 
     @Test
@@ -74,7 +74,7 @@ class SpeedFormatterTest {
         preferences.setDistanceUnit(KILOMETERS)
 
         val record = getSpeedRecord(listOf(12.0))
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("43.2 km/h")
+        assertThat(formatter.formatValue(record)).isEqualTo("43.2 km/h")
     }
 
     @Test
@@ -82,7 +82,7 @@ class SpeedFormatterTest {
         preferences.setDistanceUnit(KILOMETERS)
 
         val record = getSpeedRecord(listOf(4.0, 13.5, 9.3))
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("32.16 km/h")
+        assertThat(formatter.formatValue(record)).isEqualTo("32.16 km/h")
     }
 
     @Test
@@ -90,7 +90,7 @@ class SpeedFormatterTest {
         preferences.setDistanceUnit(MILES)
 
         val record = getSpeedRecord(listOf(12.0))
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("26.843 mph")
+        assertThat(formatter.formatValue(record)).isEqualTo("26.843 mph")
     }
 
     @Test
@@ -98,7 +98,7 @@ class SpeedFormatterTest {
         preferences.setDistanceUnit(MILES)
 
         val record = getSpeedRecord(listOf(4.0, 13.5, 9.3))
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("19.983 mph")
+        assertThat(formatter.formatValue(record)).isEqualTo("19.983 mph")
     }
 
     @Test
@@ -106,8 +106,7 @@ class SpeedFormatterTest {
         preferences.setDistanceUnit(KILOMETERS)
 
         val record = getSpeedRecord(listOf(12.0))
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("43.2 kilometres per hour")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("43.2 kilometres per hour")
     }
 
     @Test
@@ -115,8 +114,7 @@ class SpeedFormatterTest {
         preferences.setDistanceUnit(DistanceUnit.KILOMETERS)
 
         val record = getSpeedRecord(listOf(4.0, 13.5, 9.3))
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("32.16 kilometres per hour")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("32.16 kilometres per hour")
     }
 
     @Test
@@ -124,8 +122,7 @@ class SpeedFormatterTest {
         preferences.setDistanceUnit(MILES)
 
         val record = getSpeedRecord(listOf(12.0))
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("26.843 miles per hour")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("26.843 miles per hour")
     }
 
     @Test
@@ -133,8 +130,7 @@ class SpeedFormatterTest {
         preferences.setDistanceUnit(MILES)
 
         val record = getSpeedRecord(listOf(4.0, 13.5, 9.3))
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("19.983 miles per hour")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("19.983 miles per hour")
     }
 
     @Test

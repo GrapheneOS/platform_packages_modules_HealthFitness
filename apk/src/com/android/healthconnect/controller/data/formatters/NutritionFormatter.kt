@@ -28,18 +28,21 @@ import com.android.healthconnect.controller.data.formatters.EnergyFormatter.form
 import com.android.healthconnect.controller.data.formatters.MealFormatter.formatMealType
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.StringJoiner
 import javax.inject.Inject
 
 /** Formatter for printing NutritionRecord data. */
-class NutritionFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<NutritionRecord>(context) {
+class NutritionFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<NutritionRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: NutritionRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: NutritionRecord): String {
         val nutritionData =
             getAggregations(
                 record,
@@ -52,10 +55,7 @@ class NutritionFormatter @Inject constructor(@ApplicationContext private val con
         return nutritionData.ifEmpty { "-" }
     }
 
-    override suspend fun formatA11yValue(
-        record: NutritionRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: NutritionRecord): String {
         val nutritionData =
             getAggregations(
                 record,

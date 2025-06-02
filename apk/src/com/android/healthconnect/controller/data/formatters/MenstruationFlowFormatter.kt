@@ -24,19 +24,20 @@ import android.health.connect.datatypes.MenstruationFlowRecord.MenstruationFlowT
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing MenstruationRecord data. */
 class MenstruationFlowFormatter
 @Inject
-constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<MenstruationFlowRecord>(context) {
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<MenstruationFlowRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: MenstruationFlowRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: MenstruationFlowRecord): String {
         return when (record.flow) {
             FLOW_LIGHT -> return context.getString(R.string.flow_light)
             FLOW_MEDIUM -> return context.getString(R.string.flow_medium)
@@ -48,10 +49,7 @@ constructor(@ApplicationContext private val context: Context) :
         }
     }
 
-    override suspend fun formatA11yValue(
-        record: MenstruationFlowRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
-        return formatValue(record, unitPreferences)
+    override suspend fun formatA11yValue(record: MenstruationFlowRecord): String {
+        return formatValue(record)
     }
 }

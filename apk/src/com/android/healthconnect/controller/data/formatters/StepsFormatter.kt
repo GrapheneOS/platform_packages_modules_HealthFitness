@@ -22,26 +22,26 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.data.formatters.shared.UnitFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 /** Formatter for printing Steps data. */
 @Singleton
-class StepsFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<StepsRecord>(context), UnitFormatter<Long> {
+class StepsFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<StepsRecord>(context, timeFormatter, unitPreferences), UnitFormatter<Long> {
 
-    override suspend fun formatValue(
-        record: StepsRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: StepsRecord): String {
         return formatUnit(record.count)
     }
 
-    override suspend fun formatA11yValue(
-        record: StepsRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: StepsRecord): String {
         return formatA11yUnit(record.count)
     }
 

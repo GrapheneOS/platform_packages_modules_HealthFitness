@@ -17,24 +17,24 @@ import android.content.Context
 import android.health.connect.datatypes.BoneMassRecord
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing BoneMassRecord data. */
-class BoneMassFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<BoneMassRecord>(context) {
+class BoneMassFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<BoneMassRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: BoneMassRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: BoneMassRecord): String {
         return MassFormatter.formatValue(context, record.mass, unitPreferences.getWeightUnit())
     }
 
-    override suspend fun formatA11yValue(
-        record: BoneMassRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: BoneMassRecord): String {
         return MassFormatter.formatA11yValue(context, record.mass, unitPreferences.getWeightUnit())
     }
 }

@@ -215,7 +215,7 @@ class PlannedExerciseBlockFormatterTest {
                         ),
                     ),
             )
-        assertThat(formatter.formatBlockDetails(exerciseBlock, unitPreferences))
+        assertThat(formatter.formatBlockDetails(exerciseBlock))
             .isEqualTo(
                 listOf(
                     PlannedExerciseStepEntry(

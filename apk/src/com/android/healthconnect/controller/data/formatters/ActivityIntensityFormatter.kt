@@ -22,19 +22,20 @@ import android.health.connect.datatypes.ActivityIntensityRecord.ACTIVITY_INTENSI
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing [ActivityIntensityRecord] data. */
 class ActivityIntensityFormatter
 @Inject
-constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<ActivityIntensityRecord>(context) {
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<ActivityIntensityRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: ActivityIntensityRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: ActivityIntensityRecord): String {
         return when (record.activityIntensityType) {
             ACTIVITY_INTENSITY_TYPE_MODERATE ->
                 return context.getString(R.string.activity_intensity_type_moderate)
@@ -46,10 +47,7 @@ constructor(@ApplicationContext private val context: Context) :
         }
     }
 
-    override suspend fun formatA11yValue(
-        record: ActivityIntensityRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
-        return formatValue(record, unitPreferences)
+    override suspend fun formatA11yValue(record: ActivityIntensityRecord): String {
+        return formatValue(record)
     }
 }

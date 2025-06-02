@@ -20,27 +20,31 @@ import android.health.connect.datatypes.Record
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedDataEntry
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 
 /** Abstract formatter for Records to Formatted Entries. */
-abstract class EntryFormatter<T : Record>(context: Context) : BaseFormatter<T>(context) {
+abstract class EntryFormatter<T : Record>(
+    context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : BaseFormatter<T>(context, timeFormatter, unitPreferences) {
 
     override suspend fun formatRecord(
         record: T,
         header: String,
         headerA11y: String,
-        unitPreferences: UnitPreferences,
     ): FormattedEntry {
         return FormattedDataEntry(
             uuid = record.metadata.id,
             header = header,
             headerA11y = headerA11y,
-            title = formatValue(record, unitPreferences),
-            titleA11y = formatA11yValue(record, unitPreferences),
+            title = formatValue(record),
+            titleA11y = formatA11yValue(record),
             dataType = record::class,
         )
     }
 
-    abstract suspend fun formatValue(record: T, unitPreferences: UnitPreferences): String
+    abstract suspend fun formatValue(record: T): String
 
-    abstract suspend fun formatA11yValue(record: T, unitPreferences: UnitPreferences): String
+    abstract suspend fun formatA11yValue(record: T): String
 }

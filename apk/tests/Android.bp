@@ -432,6 +432,7 @@ android_robolectric_test {
     sdk_version: "module_current",
     srcs: [
         "src/com/android/healthconnect/controller/tests/TestActivity.kt",
+        "src/com/android/healthconnect/controller/tests/data/formatters/**/*.kt",
         "src/com/android/healthconnect/controller/tests/units/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utils/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utiltests/**/*.kt",

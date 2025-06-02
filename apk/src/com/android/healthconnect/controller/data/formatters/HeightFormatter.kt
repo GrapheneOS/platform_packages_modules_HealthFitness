@@ -27,22 +27,25 @@ import com.android.healthconnect.controller.units.HeightUnit.CENTIMETERS
 import com.android.healthconnect.controller.units.HeightUnit.FEET
 import com.android.healthconnect.controller.units.LengthConverter.convertHeightFromMeters
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
 /** Formatter for printing Height data. */
-class HeightFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<HeightRecord>(context) {
+class HeightFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<HeightRecord>(context, timeFormatter, unitPreferences) {
 
     companion object {
         private const val FEET_IN_INCHES = 12
     }
 
-    override suspend fun formatValue(
-        record: HeightRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: HeightRecord): String {
         return formatHeight(
             R.string.height_ft_compacted,
             R.string.height_in_compacted,
@@ -53,10 +56,7 @@ class HeightFormatter @Inject constructor(@ApplicationContext private val contex
         )
     }
 
-    override suspend fun formatA11yValue(
-        record: HeightRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: HeightRecord): String {
         return formatHeight(
             R.string.height_ft_long,
             R.string.height_in_long,

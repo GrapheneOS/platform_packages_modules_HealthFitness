@@ -80,7 +80,6 @@ class ExercisePerformanceGoalFormatterTest {
         Truth.assertThat(
                 formatter.formatGoal(
                     WeightGoal(Mass.fromGrams(1000.0)),
-                    unitPreferences = unitPreferences,
                     EXERCISE_SEGMENT_TYPE_WEIGHTLIFTING,
                 )
             )
@@ -98,7 +97,6 @@ class ExercisePerformanceGoalFormatterTest {
         Truth.assertThat(
                 formatter.formatGoal(
                     PowerGoal(Power.fromWatts(30.0), Power.fromWatts(100.0)),
-                    unitPreferences = unitPreferences,
                     EXERCISE_SEGMENT_TYPE_WEIGHTLIFTING,
                 )
             )
@@ -116,7 +114,6 @@ class ExercisePerformanceGoalFormatterTest {
         Truth.assertThat(
                 formatter.formatGoal(
                     AmrapGoal.INSTANCE,
-                    unitPreferences = unitPreferences,
                     EXERCISE_SEGMENT_TYPE_WEIGHTLIFTING,
                 )
             )
@@ -134,7 +131,6 @@ class ExercisePerformanceGoalFormatterTest {
         Truth.assertThat(
                 formatter.formatGoal(
                     CadenceGoal(50.0, 60.0),
-                    unitPreferences = unitPreferences,
                     EXERCISE_SEGMENT_TYPE_BIKING,
                 )
             )
@@ -152,7 +148,6 @@ class ExercisePerformanceGoalFormatterTest {
         Truth.assertThat(
                 formatter.formatGoal(
                     CadenceGoal(50.0, 60.0),
-                    unitPreferences = unitPreferences,
                     EXERCISE_SEGMENT_TYPE_RUNNING,
                 )
             )
@@ -174,7 +169,6 @@ class ExercisePerformanceGoalFormatterTest {
                         Velocity.fromMetersPerSecond(15.0),
                         Velocity.fromMetersPerSecond(25.0),
                     ),
-                    unitPreferences = unitPreferences,
                     EXERCISE_SEGMENT_TYPE_BIKING,
                 )
             )
@@ -199,7 +193,6 @@ class ExercisePerformanceGoalFormatterTest {
                         Velocity.fromMetersPerSecond(10.0),
                         Velocity.fromMetersPerSecond(20.0),
                     ),
-                    unitPreferences = unitPreferences,
                     EXERCISE_SEGMENT_TYPE_RUNNING,
                 )
             )
@@ -225,7 +218,6 @@ class ExercisePerformanceGoalFormatterTest {
                             Velocity.fromMetersPerSecond(50.0),
                             Velocity.fromMetersPerSecond(100.0),
                         ),
-                        unitPreferences = unitPreferences,
                         EXERCISE_SEGMENT_TYPE_SWIMMING_BACKSTROKE,
                     )
                 )
@@ -252,7 +244,6 @@ class ExercisePerformanceGoalFormatterTest {
                             Velocity.fromMetersPerSecond(25.0),
                             Velocity.fromMetersPerSecond(50.0),
                         ),
-                        unitPreferences = unitPreferences,
                         EXERCISE_SEGMENT_TYPE_SWIMMING_BACKSTROKE,
                     )
                 )
@@ -277,7 +268,6 @@ class ExercisePerformanceGoalFormatterTest {
                         Velocity.fromMetersPerSecond(25.0),
                         Velocity.fromMetersPerSecond(15.0),
                     ),
-                    unitPreferences = unitPreferences,
                     EXERCISE_SEGMENT_TYPE_BIKING,
                 )
             )
@@ -302,7 +292,6 @@ class ExercisePerformanceGoalFormatterTest {
                         Velocity.fromMetersPerSecond(10.0),
                         Velocity.fromMetersPerSecond(20.0),
                     ),
-                    unitPreferences = unitPreferences,
                     EXERCISE_SEGMENT_TYPE_RUNNING,
                 )
             )
@@ -328,7 +317,6 @@ class ExercisePerformanceGoalFormatterTest {
                             Velocity.fromMetersPerSecond(0.0),
                             Velocity.fromMetersPerSecond(0.0),
                         ),
-                        unitPreferences = unitPreferences,
                         EXERCISE_SEGMENT_TYPE_RUNNING,
                     )
                 )
@@ -354,7 +342,6 @@ class ExercisePerformanceGoalFormatterTest {
                             Velocity.fromMetersPerSecond(0.01),
                             Velocity.fromMetersPerSecond(0.02),
                         ),
-                        unitPreferences = unitPreferences,
                         EXERCISE_SEGMENT_TYPE_RUNNING,
                     )
                 )
@@ -375,7 +362,6 @@ class ExercisePerformanceGoalFormatterTest {
         Truth.assertThat(
                 formatter.formatGoal(
                     HeartRateGoal(100, 150),
-                    unitPreferences = unitPreferences,
                     EXERCISE_SEGMENT_TYPE_RUNNING,
                 )
             )
@@ -393,7 +379,6 @@ class ExercisePerformanceGoalFormatterTest {
         Truth.assertThat(
                 formatter.formatGoal(
                     RateOfPerceivedExertionGoal(4),
-                    unitPreferences = unitPreferences,
                     EXERCISE_SEGMENT_TYPE_WEIGHTLIFTING,
                 )
             )
@@ -411,7 +396,6 @@ class ExercisePerformanceGoalFormatterTest {
         Truth.assertThat(
                 formatter.formatGoal(
                     UnknownGoal.INSTANCE,
-                    unitPreferences = unitPreferences,
                     EXERCISE_SEGMENT_TYPE_UNKNOWN,
                 )
             )

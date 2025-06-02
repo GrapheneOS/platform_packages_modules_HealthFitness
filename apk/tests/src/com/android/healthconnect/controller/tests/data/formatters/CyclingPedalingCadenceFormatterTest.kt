@@ -64,37 +64,36 @@ class CyclingPedalingCadenceFormatterTest {
     fun formatValue_noData() = runBlocking {
         val record = getRecord(listOf())
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("No data")
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("No data")
+        assertThat(formatter.formatValue(record)).isEqualTo("No data")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("No data")
     }
 
     @Test
     fun formatValue_onePoint() = runBlocking {
         val record = getRecord(listOf(40.0))
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("40 rpm")
+        assertThat(formatter.formatValue(record)).isEqualTo("40 rpm")
     }
 
     @Test
     fun formatA11yValue_onePoint() = runBlocking {
         val record = getRecord(listOf(40.0))
 
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("40 revolutions per minute")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("40 revolutions per minute")
     }
 
     @Test
     fun formatValue_multiplePoints() = runBlocking {
         val record = getRecord(listOf(23.0, 40.0, 43.0))
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("23 rpm - 43 rpm")
+        assertThat(formatter.formatValue(record)).isEqualTo("23 rpm - 43 rpm")
     }
 
     @Test
     fun formatA11yValue_multiplePoints() = runBlocking {
         val record = getRecord(listOf(23.0, 40.0, 43.0))
 
-        assertThat(formatter.formatA11yValue(record, preferences))
+        assertThat(formatter.formatA11yValue(record))
             .isEqualTo("from 23 revolutions per minute to 43 revolutions per minute")
     }
 

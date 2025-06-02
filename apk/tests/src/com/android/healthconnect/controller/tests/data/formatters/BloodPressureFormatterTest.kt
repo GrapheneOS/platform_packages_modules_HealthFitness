@@ -67,15 +67,14 @@ class BloodPressureFormatterTest {
     fun formatValue() = runBlocking {
         val record = getRecord(systolic = 123.1, diastolic = 81.7)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("123/82 mmHg")
+        assertThat(formatter.formatValue(record)).isEqualTo("123/82 mmHg")
     }
 
     @Test
     fun formatA11yValue() = runBlocking {
         val record = getRecord(systolic = 123.1, diastolic = 81.7)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("123/82 millimetre of mercury")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("123/82 millimetre of mercury")
     }
 
     @Test
@@ -83,7 +82,7 @@ class BloodPressureFormatterTest {
         val record =
             getRecord(systolic = 123.1, diastolic = 81.7, position = BODY_POSITION_STANDING_UP)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("123/82 mmHg Standing up")
+        assertThat(formatter.formatValue(record)).isEqualTo("123/82 mmHg Standing up")
     }
 
     @Test
@@ -91,7 +90,7 @@ class BloodPressureFormatterTest {
         val record =
             getRecord(systolic = 123.1, diastolic = 81.7, position = BODY_POSITION_STANDING_UP)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
+        assertThat(formatter.formatA11yValue(record))
             .isEqualTo("123/82 millimetre of mercury Standing up")
     }
 
@@ -104,8 +103,7 @@ class BloodPressureFormatterTest {
                 location = BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM,
             )
 
-        assertThat(formatter.formatValue(record, preferences))
-            .isEqualTo("123/82 mmHg Left upper arm")
+        assertThat(formatter.formatValue(record)).isEqualTo("123/82 mmHg Left upper arm")
     }
 
     @Test
@@ -117,7 +115,7 @@ class BloodPressureFormatterTest {
                 location = BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM,
             )
 
-        assertThat(formatter.formatA11yValue(record, preferences))
+        assertThat(formatter.formatA11yValue(record))
             .isEqualTo("123/82 millimetre of mercury Left upper arm")
     }
 
@@ -131,7 +129,7 @@ class BloodPressureFormatterTest {
                 location = BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM,
             )
 
-        assertThat(formatter.formatValue(record, preferences))
+        assertThat(formatter.formatValue(record))
             .isEqualTo("123/82 mmHg Left upper arm Standing up")
     }
 
@@ -145,7 +143,7 @@ class BloodPressureFormatterTest {
                 location = BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM,
             )
 
-        assertThat(formatter.formatA11yValue(record, preferences))
+        assertThat(formatter.formatA11yValue(record))
             .isEqualTo("123/82 millimetre of mercury Left upper arm Standing up")
     }
 

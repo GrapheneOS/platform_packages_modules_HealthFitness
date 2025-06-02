@@ -64,21 +64,21 @@ class SexualActivityFormatterTest {
     fun formatValue_protected() = runBlocking {
         val record = getRecord(type = PROTECTION_USED_PROTECTED)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Protected")
+        assertThat(formatter.formatValue(record)).isEqualTo("Protected")
     }
 
     @Test
     fun formatValue_unprotected() = runBlocking {
         val record = getRecord(type = PROTECTION_USED_UNPROTECTED)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Unprotected")
+        assertThat(formatter.formatValue(record)).isEqualTo("Unprotected")
     }
 
     @Test
     fun formatValue_other() = runBlocking {
         val record = getRecord(type = 0)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Sexual activity")
+        assertThat(formatter.formatValue(record)).isEqualTo("Sexual activity")
     }
 
     private fun getRecord(@SexualActivityProtectionUsedTypes type: Int): SexualActivityRecord {

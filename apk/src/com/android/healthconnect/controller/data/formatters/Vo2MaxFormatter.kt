@@ -28,24 +28,24 @@ import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing Vo2MaxRecord data. */
-class Vo2MaxFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<Vo2MaxRecord>(context) {
+class Vo2MaxFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<Vo2MaxRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: Vo2MaxRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: Vo2MaxRecord): String {
         return formatVo2Max(R.string.vo2_max, record)
     }
 
-    override suspend fun formatA11yValue(
-        record: Vo2MaxRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: Vo2MaxRecord): String {
         return formatVo2Max(R.string.vo2_max_long, record)
     }
 

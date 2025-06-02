@@ -78,8 +78,7 @@ class PlannedExerciseStepFormatterTest {
                                 ),
                             )
                         )
-                        .build(),
-                    unitPreferences,
+                        .build()
                 )
             )
             .isEqualTo(
@@ -116,8 +115,7 @@ class PlannedExerciseStepFormatterTest {
                                 ),
                             )
                         )
-                        .build(),
-                    unitPreferences,
+                        .build()
                 )
             )
             .isEqualTo(

@@ -58,38 +58,37 @@ class OxygenSaturationFormatterTest {
     @Test
     fun formatValue_zero() = runBlocking {
         val oxygenSaturation = getOxygenSaturation(0.0)
-        assertThat(formatter.formatValue(oxygenSaturation, preferences)).isEqualTo("0%")
+        assertThat(formatter.formatValue(oxygenSaturation)).isEqualTo("0%")
     }
 
     @Test
     fun formatValue_one() = runBlocking {
         val oxygenSaturation = getOxygenSaturation(1.0)
-        assertThat(formatter.formatValue(oxygenSaturation, preferences)).isEqualTo("1%")
+        assertThat(formatter.formatValue(oxygenSaturation)).isEqualTo("1%")
     }
 
     @Test
     fun formatValue_fraction() = runBlocking {
         val oxygenSaturation = getOxygenSaturation(32.2)
-        assertThat(formatter.formatValue(oxygenSaturation, preferences)).isEqualTo("32.2%")
+        assertThat(formatter.formatValue(oxygenSaturation)).isEqualTo("32.2%")
     }
 
     @Test
     fun formatA11yValue_zero() = runBlocking {
         val oxygenSaturation = getOxygenSaturation(0.0)
-        assertThat(formatter.formatA11yValue(oxygenSaturation, preferences)).isEqualTo("0 percent")
+        assertThat(formatter.formatA11yValue(oxygenSaturation)).isEqualTo("0 percent")
     }
 
     @Test
     fun formatA11yValue_one() = runBlocking {
         val oxygenSaturation = getOxygenSaturation(1.0)
-        assertThat(formatter.formatA11yValue(oxygenSaturation, preferences)).isEqualTo("1 percent")
+        assertThat(formatter.formatA11yValue(oxygenSaturation)).isEqualTo("1 percent")
     }
 
     @Test
     fun formatA11yValue_fraction() = runBlocking {
         val oxygenSaturation = getOxygenSaturation(32.2)
-        assertThat(formatter.formatA11yValue(oxygenSaturation, preferences))
-            .isEqualTo("32.2 percent")
+        assertThat(formatter.formatA11yValue(oxygenSaturation)).isEqualTo("32.2 percent")
     }
 
     private fun getOxygenSaturation(value: Double): OxygenSaturationRecord {
