@@ -30,7 +30,7 @@
   <application android:label="Health Connect cts test app 2">
     <uses-library android:name="android.test.runner"/>
 
-    <activity android:name=".MainActivity"
+    <activity android:name="android.healthconnect.testing.testapp.MainActivity"
         android:label="MainActivity2"
         android:exported="true">
       <intent-filter>

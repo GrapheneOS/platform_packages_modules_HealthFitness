@@ -24,7 +24,7 @@
   <application android:label="Health Connect cts system test app">
     <uses-library android:name="android.test.runner"/>
 
-    <activity android:name=".MainActivity"
+    <activity android:name="android.healthconnect.testing.testapp.MainActivity"
         android:label="MainActivitySystem"
         android:exported="true">
       <intent-filter>
