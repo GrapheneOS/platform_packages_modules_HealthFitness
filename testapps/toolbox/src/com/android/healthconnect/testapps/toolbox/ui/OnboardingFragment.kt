@@ -25,7 +25,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
 import androidx.fragment.app.Fragment
-import com.android.healthconnect.testapps.toolbox.Constants.HEALTH_PERMISSIONS
+import com.android.healthconnect.testapps.toolbox.Constants.FITNESS_PERMISSIONS
 import com.android.healthconnect.testapps.toolbox.R
 
 class OnboardingFragment : Fragment() {
@@ -51,7 +51,7 @@ class OnboardingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.continue_button).setOnClickListener {
-            mRequestPermissionLauncher.launch(HEALTH_PERMISSIONS)
+            mRequestPermissionLauncher.launch(FITNESS_PERMISSIONS)
         }
     }
 
