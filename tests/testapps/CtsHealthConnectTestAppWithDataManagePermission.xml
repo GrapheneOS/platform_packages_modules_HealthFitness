@@ -23,19 +23,5 @@
     <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA_PERMISSIONS"/>
 
 
-    <application android:label="CtsHealthConnectTestAppWithDataManagePermission">
-        <activity android:name="android.healthconnect.testing.testapp.TestAppActivity"
-                  android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
-                <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
-            </intent-filter>
-        </activity>
-
-        <receiver android:name="android.healthconnect.testing.testapp.TestAppReceiver"
-            android:exported="true"/>
-    </application>
+    <application android:label="CtsHealthConnectTestAppWithDataManagePermission"/>
 </manifest>

@@ -125,27 +125,5 @@
     <!-- Used to check if App Ops considers the app to be in the background -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
-    <application android:label="CtsHealthConnectTestAppAWithNormalReadWritePermission">
-        <activity android:name="android.healthconnect.testing.testapp.TestAppActivity"
-                  android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
-                <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
-            </intent-filter>
-        </activity>
-
-        <activity android:name="android.healthconnect.testing.cts.testapphelpers.ProxyActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.healthconnect.cts.ACTION_START_ACTIVITY_FOR_RESULT"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <receiver android:name="android.healthconnect.testing.testapp.TestAppReceiver"
-            android:exported="true"/>
-    </application>
+    <application android:label="CtsHealthConnectTestAppAWithNormalReadWritePermission"/>
 </manifest>
