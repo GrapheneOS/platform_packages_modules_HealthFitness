@@ -54,13 +54,5 @@
                 <action android:name="android.health.connect.action.SHOW_ONBOARDING"/>
             </intent-filter>
         </activity-alias>
-
-        <activity android:name="android.healthconnect.testing.cts.testapphelpers.ProxyActivity"
-                  android:exported="true">
-            <intent-filter>
-                <action android:name="android.healthconnect.cts.ACTION_START_ACTIVITY_FOR_RESULT"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
     </application>
 </manifest>
