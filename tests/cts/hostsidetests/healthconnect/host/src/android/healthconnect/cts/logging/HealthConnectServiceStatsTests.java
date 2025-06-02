@@ -16,6 +16,7 @@
 
 package android.healthconnect.cts.logging;
 
+import static android.healthconnect.cts.HostSideTestUtil.TEST_APP_PKG_NAME;
 import static android.healthconnect.cts.HostSideTestUtil.grantPermissionsWithAdb;
 import static android.healthconnect.cts.HostSideTestUtil.isHardwareSupported;
 import static android.healthfitness.api.ApiMethod.CREATE_MEDICAL_DATA_SOURCE;
@@ -41,7 +42,6 @@ import android.healthfitness.api.ApiMethod;
 import android.healthfitness.api.ApiStatus;
 import android.healthfitness.api.ForegroundState;
 import android.healthfitness.api.RateLimit;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.host.HostFlagsValueProvider;
 
@@ -69,7 +69,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     public final CheckFlagsRule mCheckFlagsRule =
             HostFlagsValueProvider.createCheckFlagsRule(this::getDevice);
 
-    private static final String TEST_APP_PKG_NAME = "android.healthconnect.cts.testhelper";
     private static final List<String> TEST_APP_PERMISSIONS =
             List.of(
                     "android.permission.health.WRITE_BLOOD_PRESSURE",
