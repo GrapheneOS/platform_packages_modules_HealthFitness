@@ -952,10 +952,16 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             logger);
                     throwExceptionIfDataSyncInProgress();
                     if (isPhrChangeLogsEnabled()) {
-                        if (request.getRecordTypeIds().isEmpty()
-                                && request.getMedicalResourceTypes().isEmpty()) {
+                        boolean hasRecordTypes = !request.getRecordTypeIds().isEmpty();
+                        boolean hasMedicalResourceTypes =
+                                !request.getMedicalResourceTypes().isEmpty();
+                        if (!hasRecordTypes && !hasMedicalResourceTypes) {
                             throw new IllegalArgumentException(
-                                    "At least one record or medical resource type must be set.");
+                                    "At least one Record type or Medical Resource type must be"
+                                            + " set");
+                        } else if (hasRecordTypes && hasMedicalResourceTypes) {
+                            throw new IllegalArgumentException(
+                                    "Record types and Medical Resource types can't both be set");
                         }
                     } else {
                         if (request.getRecordTypeIds().isEmpty()) {
@@ -966,6 +972,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
                     mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                             request.getRecordTypeIds(), attributionSource);
+                    if (isPhrChangeLogsEnabled()) {
+                        mMedicalDataPermissionEnforcer.enforceMedicalResourceTypesReadPermissions(
+                                request.getMedicalResourceTypes(), attributionSource);
+                    }
+
                     callback.onResult(
                             new ChangeLogTokenResponse(
                                     mChangeLogsRequestHelper.getToken(
@@ -1038,10 +1049,16 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             mChangeLogsRequestHelper.getRequest(
                                     callerPackageName, request.getToken());
                     if (isPhrChangeLogsEnabled()) {
-                        if (changeLogsTokenRequest.getRecordTypes().isEmpty()
-                                && changeLogsTokenRequest.getMedicalResourceTypes().isEmpty()) {
+                        boolean hasRecordTypes = !changeLogsTokenRequest.getRecordTypes().isEmpty();
+                        boolean hasMedicalResourceTypes =
+                                !changeLogsTokenRequest.getMedicalResourceTypes().isEmpty();
+                        if (!hasRecordTypes && !hasMedicalResourceTypes) {
                             throw new IllegalArgumentException(
-                                    "At least one record or medical resource type must be set.");
+                                    "At least one Record type or Medical Resource type must be"
+                                            + " set");
+                        } else if (hasRecordTypes && hasMedicalResourceTypes) {
+                            throw new IllegalArgumentException(
+                                    "Record types and Medical Resource types can't both be set");
                         }
                     } else {
                         if (changeLogsTokenRequest.getRecordTypes().isEmpty()) {
@@ -1055,8 +1072,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     // enforce permissions instead of allowing self read.
                     mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                             changeLogsTokenRequest.getRecordTypes(), attributionSource);
-                    mMedicalDataPermissionEnforcer.enforceMedicalResourceTypesReadPermissions(
-                            changeLogsTokenRequest.getMedicalResourceTypes(), attributionSource);
+                    if (isPhrChangeLogsEnabled()) {
+                        mMedicalDataPermissionEnforcer.enforceMedicalResourceTypesReadPermissions(
+                                changeLogsTokenRequest.getMedicalResourceTypes(),
+                                attributionSource);
+                    }
 
                     final ChangeLogsHelper.ChangeLogsResponse changeLogsResponse =
                             mChangeLogsHelper.getChangeLogs(
