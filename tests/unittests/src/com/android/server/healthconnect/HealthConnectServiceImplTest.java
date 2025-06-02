@@ -2416,6 +2416,34 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
+    @EnableFlags({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
+    public void testGetChangeLogToken_noPermissions_throwsSecurityException_phr() throws Exception {
+        // Deny necessary permissions
+        when(mPermissionManager.checkPermissionForPreflight(any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+        when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+        ChangeLogTokenRequest request =
+                new ChangeLogTokenRequest.Builder()
+                        .addMedicalResourceType(MEDICAL_RESOURCE_TYPE_VACCINES)
+                        .addDataOriginFilter(
+                                new DataOrigin.Builder().setPackageName(mTestPackageName).build())
+                        .build();
+
+        mHealthConnectService.getChangeLogToken(
+                mAttributionSource, request, mGetChangeLogTokenCallback);
+
+        verify(mGetChangeLogTokenCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_SECURITY);
+        verify(mChangeLogsRequestHelper, never()).getToken(anyLong(), anyString(), any());
+    }
+
+    @Test
     public void testGetChangeLogToken_validRequest_returnsToken() throws Exception {
         // Grant necessary permissions
         when(mPermissionManager.checkPermissionForPreflight(any(), any()))
@@ -2476,6 +2504,41 @@ public class HealthConnectServiceImplTest {
                         List.of(mTestPackageName),
                         List.of(RECORD_TYPE_HEART_RATE),
                         List.of(), // No medical types
+                        mTestPackageName,
+                        100L); // Example row ID
+        when(mChangeLogsRequestHelper.getRequest(mTestPackageName, token)).thenReturn(tokenRequest);
+
+        mHealthConnectService.getChangeLogs(
+                mAttributionSource, request, mChangeLogsResponseCallback);
+
+        verify(mChangeLogsResponseCallback, timeout(TIMEOUT_MILLIS))
+                .onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_SECURITY);
+    }
+
+    @Test
+    @EnableFlags({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
+    public void testGetChangeLogs_noPermissions_throwsSecurityException_phr() throws Exception {
+        // Deny necessary permissions
+        when(mPermissionManager.checkPermissionForPreflight(any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+        when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+        setBackgroundReadPermission(PERMISSION_GRANTED);
+        when(mAppOpsManagerLocal.isUidInForeground(anyInt())).thenReturn(true);
+        String token = "test-token-123";
+        ChangeLogsRequest request = new ChangeLogsRequest.Builder(token).build();
+        // Mock getRequest to return a valid TokenRequest to proceed further before permission check
+        ChangeLogsRequestHelper.TokenRequest tokenRequest =
+                new ChangeLogsRequestHelper.TokenRequest(
+                        List.of(mTestPackageName),
+                        List.of(),
+                        List.of(MEDICAL_RESOURCE_TYPE_VACCINES), // No medical types
                         mTestPackageName,
                         100L); // Example row ID
         when(mChangeLogsRequestHelper.getRequest(mTestPackageName, token)).thenReturn(tokenRequest);
@@ -2554,7 +2617,50 @@ public class HealthConnectServiceImplTest {
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_INVALID_ARGUMENT);
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
-                .contains("At least one record or medical resource type must be set.");
+                .contains("At least one Record type or Medical Resource type must be set");
+        verify(mChangeLogsHelper, never()).getChangeLogs(any(), any(), any(), any());
+    }
+
+    @Test
+    @EnableFlags({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
+    public void testGetChangeLogs_bothTypesToken_phrFlagOn_throwsIllegalArgumentException()
+            throws Exception {
+        // Grant permissions to pass initial checks
+        when(mPermissionManager.checkPermissionForPreflight(any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
+                .thenReturn(PermissionManager.PERMISSION_GRANTED);
+        setBackgroundReadPermission(PERMISSION_GRANTED);
+        when(mAppOpsManagerLocal.isUidInForeground(anyInt()))
+                .thenReturn(true); // Simulate foreground call
+        String emptyToken = "empty-token";
+        ChangeLogsRequest request = new ChangeLogsRequest.Builder(emptyToken).build();
+        // Token request with no data types defined.
+        ChangeLogsRequestHelper.TokenRequest tokenRequest =
+                new ChangeLogsRequestHelper.TokenRequest(
+                        List.of(),
+                        List.of(RECORD_TYPE_HEART_RATE, RECORD_TYPE_STEPS),
+                        List.of(
+                                MEDICAL_RESOURCE_TYPE_VACCINES,
+                                MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES),
+                        mTestPackageName,
+                        100L);
+        when(mChangeLogsRequestHelper.getRequest(mTestPackageName, emptyToken))
+                .thenReturn(tokenRequest);
+
+        mHealthConnectService.getChangeLogs(
+                mAttributionSource, request, mChangeLogsResponseCallback);
+
+        verify(mChangeLogsResponseCallback, timeout(TIMEOUT_MILLIS))
+                .onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_INVALID_ARGUMENT);
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
+                .contains("Record types and Medical Resource types can't both be set");
         verify(mChangeLogsHelper, never()).getChangeLogs(any(), any(), any(), any());
     }
 
