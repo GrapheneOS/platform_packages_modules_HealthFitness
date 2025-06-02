@@ -25,12 +25,14 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissionCategory;
+import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 
 import java.util.Collection;
@@ -177,6 +179,9 @@ public final class HealthConnectMappings {
      */
     @HealthDataCategory.Type
     public int getHealthDataCategoryForWritePermission(@Nullable String permissionName) {
+        if (!Flags.healthConnectMappingsFollowUp()) {
+            return HealthPermissions.getHealthDataCategoryForWritePermission(permissionName);
+        }
         return mWritePermissionToDataCategoryMap.getOrDefault(permissionName, DEFAULT_INT);
     }
 
