@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.testhelper;
+package android.healthconnect.cts.hosttestapp;
 
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.queryAccessLogs;
@@ -102,8 +102,6 @@ public class DailyLogsTests {
      */
     @Test
     public void deleteAllStagedRemoteData() throws InterruptedException {
-        TestUtils.deleteAllFitnessDataAddedByTestApp();
-        TestUtils.deleteAllStagedRemoteData();
-        mPhrTestUtils.deleteAllMedicalData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 }

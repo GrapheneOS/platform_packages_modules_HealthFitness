@@ -16,26 +16,6 @@ package {
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
-android_test_helper_app {
-    name: "CtsHealthConnectTestApp",
-    defaults: ["cts_defaults"],
-    manifest: "HealthConnectTestHelper/CtsHealthConnectTestApp.xml",
-    platform_apis: true,
-    static_libs: [
-        "ctstestrunner-axt",
-        "cts-healthconnect-phr-lib",
-        "healthfitness-testing-testapp",
-    ],
-    sdk_version: "test_current",
-    min_sdk_version: "34",
-    target_sdk_version: "34",
-    srcs: [
-        "HealthConnectTestHelper/src/**/*.java",
-        "HealthConnectTestHelper/src/**/*.kt",
-    ],
-    libs: ["junit"],
-}
-
 java_test_host {
     name: "CtsHealthConnectHostTestCases",
     team: "trendy_team_android_health",
@@ -66,6 +46,6 @@ java_test_host {
     ],
     java_resource_dirs: ["host/res"],
     device_common_data: [
-        ":CtsHealthConnectTestApp",
+        ":CtsHealthConnectTestAppForHostTest",
     ],
 }

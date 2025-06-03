@@ -16,6 +16,7 @@
 
 package android.healthconnect.cts.logging;
 
+import static android.healthconnect.cts.HostSideTestUtil.TEST_APP_PKG_NAME;
 import static android.healthconnect.cts.HostSideTestUtil.isHardwareSupported;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -25,7 +26,6 @@ import android.cts.statsdatom.lib.ConfigUtils;
 import android.cts.statsdatom.lib.DeviceUtils;
 import android.cts.statsdatom.lib.ReportUtils;
 import android.healthconnect.cts.HostSideTestUtil;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 
 import com.android.os.StatsLog;
 import com.android.os.healthfitness.api.ApiExtensionAtoms;
@@ -53,7 +53,6 @@ import java.util.Map;
 
 public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements IBuildReceiver {
 
-    public static final String TEST_APP_PKG_NAME = "android.healthconnect.cts.testhelper";
     private static final int NUMBER_OF_RETRIES = 10;
     private static final String DAILY_LOG_TESTS_ACTIVITY = ".DailyLogsTests";
     private static final String HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY =

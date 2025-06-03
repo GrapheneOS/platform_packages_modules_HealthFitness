@@ -16,7 +16,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="android.healthconnect.cts.testhelper"
+          package="android.healthconnect.cts.hosttestapp"
           android:versionCode="1"
           android:versionName="1.0">
 
@@ -46,7 +46,7 @@
     <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_VISITS"/>
     <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_VITAL_SIGNS"/>
 
-    <application android:label="CtsHealthConnectTestApp">
+    <application android:label="CtsHostTestApp">
         <uses-library android:name="android.test.runner"/>
 
         <activity android:name="android.healthconnect.testing.testapp.TestAppActivity"
@@ -66,13 +66,10 @@
                 <action android:name="android.health.connect.action.SHOW_MIGRATION_INFO"/>
             </intent-filter>
         </activity>
-
-        <receiver android:name="android.healthconnect.testing.testapp.TestAppReceiver"
-            android:exported="true"/>
     </application>
 
     <instrumentation android:name="androidx.test.runner.AndroidJUnitRunner"
-        android:targetPackage="android.healthconnect.cts.testhelper"
-        android:label="CTS tests of Health Connect">
+        android:targetPackage="android.healthconnect.cts.hosttestapp"
+        android:label="Hostside CTS tests of Health Connect">
     </instrumentation>
 </manifest>

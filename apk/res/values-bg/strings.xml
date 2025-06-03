@@ -565,6 +565,8 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Назад"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Начало"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Изтриване на данните"</string>
+    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
+    <skip />
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Стартиране на изтриването"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Изход от изтриването"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Изберете данните за изтриване от Health Connect"</string>
@@ -1204,6 +1206,12 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"С разрешение за достъп"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"С разрешение за четене"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Тези разрешения дават на <xliff:g id="APP_NAME">%1$s</xliff:g> достъп до данните от сензорите на устройството ви."</string>
+    <!-- no translation found for write_access (571547306854732263) -->
+    <skip />
+    <!-- no translation found for read_access (3317759826769372785) -->
+    <skip />
+    <!-- no translation found for health_switch_content_description (1297823949479201621) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> от <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> приложения имат разрешение"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Няма заявяващи достъп приложения"</string>
     <string name="allowed" msgid="4158456017482263737">"Разрешено"</string>
@@ -1220,7 +1228,8 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Използва се от 1 приложение}other{Използва се от # приложения}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Не е използвано през последните 24 часа"</string>
     <string name="accessed" msgid="4424701457530587176">"Осъществен достъп: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Свържете първите си 2 приложения"</string>
+    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
+    <skip />
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Свържете тези приложения, за да започнат да споделят помежду си данни за здравето и физическата активност"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Свържете второ приложение"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Настройте още едно приложение, за да споделяте данни за здравето и физическата активност с(ъс) <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1230,11 +1239,28 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Още за Health Connect"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Приложението е свързано с Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Почти готово"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"Отворете тези приложения сега, за да завършите настройването и да започнете да споделяте данни"</string>
+    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
+    <skip />
+    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
+    <skip />
+    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
+    <skip />
+    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
+    <skip />
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Преглеждайте здравните си данни в различни приложения"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Започнете да споделяте данни за здравето и физическата активност между приложенията си"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
+    <skip />
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Настройване"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Свържете второ приложение"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Настройте още едно приложение, за да споделяте данни за здравето и физическата активност с(ъс) <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
+    <skip />
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Напред"</string>
+    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
+    <skip />
 </resources>
