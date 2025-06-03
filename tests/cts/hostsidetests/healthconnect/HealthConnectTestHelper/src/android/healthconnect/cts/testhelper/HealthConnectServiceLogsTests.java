@@ -105,7 +105,8 @@ public class HealthConnectServiceLogsTests {
 
     @Before
     public void before() throws InterruptedException {
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
+
         // b/372766760: In theory, declared permissions are meant to be auto granted. However,
         // this seems to be unreliable and has led to test failures where the permissions don't
         // get granted as expected. We do it explicitly here as a precaution.
@@ -114,14 +115,12 @@ public class HealthConnectServiceLogsTests {
         Record record =
                 new StepsRecord.Builder(getEmptyMetadata(), EPOCH, Instant.now(), 123).build();
         insertRecords(List.of(record));
-
-        TestUtils.deleteAllFitnessDataAddedByTestApp();
-        mPhrTestUtils.deleteAllMedicalData();
+        TestUtils.deleteAllFitnessData();
     }
 
     @After
     public void after() throws InterruptedException {
-        TestUtils.deleteAllFitnessDataAddedByTestApp();
+        TestUtils.deleteAllFitnessData();
         mPhrTestUtils.deleteAllMedicalData();
     }
 
