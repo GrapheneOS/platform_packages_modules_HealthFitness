@@ -115,7 +115,7 @@ class UnitsFragmentTest {
 
     @Test
     fun unitsScreen_setHeightUnit_updatesValue() {
-        unitPreferences.setHeightUnit(HeightUnit.CENTIMETERS)
+        unitPreferences.heightUnit = HeightUnit.CENTIMETERS
 
         launchFragment<UnitsFragment>(bundleOf())
 
@@ -124,7 +124,7 @@ class UnitsFragmentTest {
 
     @Test
     fun unitsScreen_setWeightUnit_updatesValue() {
-        unitPreferences.setWeightUnit(WeightUnit.STONE)
+        unitPreferences.weightUnit = WeightUnit.STONE
 
         launchFragment<UnitsFragment>(bundleOf())
 
@@ -133,7 +133,7 @@ class UnitsFragmentTest {
 
     @Test
     fun unitsScreen_setTemperatureUnit_updatesValue() {
-        unitPreferences.setTemperatureUnit(TemperatureUnit.KELVIN)
+        unitPreferences.temperatureUnit = TemperatureUnit.KELVIN
 
         launchFragment<UnitsFragment>(bundleOf())
 
@@ -142,7 +142,7 @@ class UnitsFragmentTest {
 
     @Test
     fun unitsScreen_setDistanceUnit_updatesValue() {
-        unitPreferences.setDistanceUnit(DistanceUnit.KILOMETERS)
+        unitPreferences.distanceUnit = DistanceUnit.KILOMETERS
 
         launchFragment<UnitsFragment>(bundleOf())
 
@@ -151,7 +151,7 @@ class UnitsFragmentTest {
 
     @Test
     fun unitsScreen_setEnergyUnit_updatesValue() {
-        unitPreferences.setEnergyUnit(EnergyUnit.KILOJOULE)
+        unitPreferences.energyUnit = EnergyUnit.KILOJOULE
 
         launchFragment<UnitsFragment>(bundleOf())
 
@@ -165,7 +165,7 @@ class UnitsFragmentTest {
         onView(withText(R.string.height_uppercase_label)).perform(click())
         onView(withText(R.string.height_unit_centimeters_label)).perform(click())
 
-        assertThat(unitPreferences.getHeightUnit()).isEqualTo(HeightUnit.CENTIMETERS)
+        assertThat(unitPreferences.heightUnit).isEqualTo(HeightUnit.CENTIMETERS)
     }
 
     @Test
@@ -175,7 +175,7 @@ class UnitsFragmentTest {
         onView(withText(R.string.distance_uppercase_label)).perform(click())
         onView(withText(R.string.distance_unit_kilometers_label)).perform(click())
 
-        assertThat(unitPreferences.getDistanceUnit()).isEqualTo(DistanceUnit.KILOMETERS)
+        assertThat(unitPreferences.distanceUnit).isEqualTo(DistanceUnit.KILOMETERS)
     }
 
     @Test
@@ -185,7 +185,7 @@ class UnitsFragmentTest {
         onView(withText(R.string.weight_uppercase_label)).perform(click())
         onView(withText(R.string.weight_unit_kilogram_label)).perform(click())
 
-        assertThat(unitPreferences.getWeightUnit()).isEqualTo(WeightUnit.KILOGRAM)
+        assertThat(unitPreferences.weightUnit).isEqualTo(WeightUnit.KILOGRAM)
     }
 
     @Test
@@ -195,7 +195,7 @@ class UnitsFragmentTest {
         onView(withText(R.string.energy_unit_title)).perform(click())
         onView(withText(R.string.energy_unit_kilojoule_label)).perform(click())
 
-        assertThat(unitPreferences.getEnergyUnit()).isEqualTo(EnergyUnit.KILOJOULE)
+        assertThat(unitPreferences.energyUnit).isEqualTo(EnergyUnit.KILOJOULE)
     }
 
     @Test
@@ -205,6 +205,6 @@ class UnitsFragmentTest {
         onView(withText(R.string.temperature_unit_title)).perform(click())
         onView(withText(R.string.temperature_unit_kelvin_label)).perform(click())
 
-        assertThat(unitPreferences.getTemperatureUnit()).isEqualTo(TemperatureUnit.KELVIN)
+        assertThat(unitPreferences.temperatureUnit).isEqualTo(TemperatureUnit.KELVIN)
     }
 }

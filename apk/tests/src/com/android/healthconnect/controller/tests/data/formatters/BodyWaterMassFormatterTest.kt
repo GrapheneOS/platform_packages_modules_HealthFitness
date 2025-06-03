@@ -60,7 +60,7 @@ class BodyWaterMassFormatterTest {
 
     @Test
     fun formatValue_kilogram_zero() = runBlocking {
-        preferences.setWeightUnit(WeightUnit.KILOGRAM)
+        preferences.weightUnit = WeightUnit.KILOGRAM
         val record = getRecord(0.0)
 
         assertThat(formatter.formatValue(record)).isEqualTo("0 kg")
@@ -68,14 +68,14 @@ class BodyWaterMassFormatterTest {
 
     @Test
     fun formatValue_kilogram_fraction() = runBlocking {
-        preferences.setWeightUnit(WeightUnit.KILOGRAM)
+        preferences.weightUnit = WeightUnit.KILOGRAM
         val record = getRecord(0.2)
 
         assertThat(formatter.formatValue(record)).isEqualTo("0.2 kg")
     }
 
     fun formatA11yValue_kilogram_zero() = runBlocking {
-        preferences.setWeightUnit(WeightUnit.KILOGRAM)
+        preferences.weightUnit = WeightUnit.KILOGRAM
         val record = getRecord(0.0)
 
         assertThat(formatter.formatA11yValue(record)).isEqualTo("0 kilograms")
@@ -83,7 +83,7 @@ class BodyWaterMassFormatterTest {
 
     @Test
     fun formatA11yValue_kilogram_fraction() = runBlocking {
-        preferences.setWeightUnit(WeightUnit.KILOGRAM)
+        preferences.weightUnit = WeightUnit.KILOGRAM
         val record = getRecord(0.2)
 
         assertThat(formatter.formatA11yValue(record)).isEqualTo("0.2 kilograms")
@@ -91,7 +91,7 @@ class BodyWaterMassFormatterTest {
 
     @Test
     fun formatValue_pound_zero() = runBlocking {
-        preferences.setWeightUnit(WeightUnit.POUND)
+        preferences.weightUnit = WeightUnit.POUND
         val record = getRecord(0.0)
 
         assertThat(formatter.formatValue(record)).isEqualTo("0 lb")
@@ -99,14 +99,14 @@ class BodyWaterMassFormatterTest {
 
     @Test
     fun formatValue_pound_fraction() = runBlocking {
-        preferences.setWeightUnit(WeightUnit.POUND)
+        preferences.weightUnit = WeightUnit.POUND
         val record = getRecord(0.2)
 
         assertThat(formatter.formatValue(record)).isEqualTo("0.4 lb")
     }
 
     fun formatA11yValue_pound_zero() = runBlocking {
-        preferences.setWeightUnit(WeightUnit.POUND)
+        preferences.weightUnit = WeightUnit.POUND
         val record = getRecord(0.0)
 
         assertThat(formatter.formatA11yValue(record)).isEqualTo("0 pounds")
@@ -114,7 +114,7 @@ class BodyWaterMassFormatterTest {
 
     @Test
     fun formatA11yValue_pound_fraction() = runBlocking {
-        preferences.setWeightUnit(WeightUnit.POUND)
+        preferences.weightUnit = WeightUnit.POUND
         val record = getRecord(0.2)
 
         assertThat(formatter.formatA11yValue(record)).isEqualTo("0.4 pounds")
@@ -122,7 +122,7 @@ class BodyWaterMassFormatterTest {
 
     @Test
     fun formatValue_stone_zero() = runBlocking {
-        preferences.setWeightUnit(WeightUnit.STONE)
+        preferences.weightUnit = WeightUnit.STONE
         val record = getRecord(0.0)
 
         assertThat(formatter.formatValue(record)).isEqualTo("0 st")
@@ -130,14 +130,14 @@ class BodyWaterMassFormatterTest {
 
     @Test
     fun formatValue_stone_fraction() = runBlocking {
-        preferences.setWeightUnit(WeightUnit.STONE)
+        preferences.weightUnit = WeightUnit.STONE
         val record = getRecord(13.5)
 
         assertThat(formatter.formatValue(record)).isEqualTo("2 st 1.8 lb")
     }
 
     fun formatA11yValue_stone_zero() = runBlocking {
-        preferences.setWeightUnit(WeightUnit.STONE)
+        preferences.weightUnit = WeightUnit.STONE
         val record = getRecord(0.0)
 
         assertThat(formatter.formatA11yValue(record)).isEqualTo("0 stones")
@@ -145,7 +145,7 @@ class BodyWaterMassFormatterTest {
 
     @Test
     fun formatA11yValue_stone_fraction() = runBlocking {
-        preferences.setWeightUnit(WeightUnit.STONE)
+        preferences.weightUnit = WeightUnit.STONE
         val record = getRecord(13.5)
 
         assertThat(formatter.formatA11yValue(record)).isEqualTo("2 stones 1.8 pounds")

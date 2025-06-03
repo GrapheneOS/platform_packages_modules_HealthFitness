@@ -60,7 +60,7 @@ class DistanceFormatterTest {
 
     @Test
     fun formatValue_metricUnit_returnsCorrectValue() = runBlocking {
-        preferences.setDistanceUnit(KILOMETERS)
+        preferences.distanceUnit = KILOMETERS
         val record = getDistanceRecord(10087.0)
 
         assertThat(formatter.formatValue(record)).isEqualTo("10.087 km")
@@ -68,7 +68,7 @@ class DistanceFormatterTest {
 
     @Test
     fun formatValue_imperialUnit_returnsCorrectValue() = runBlocking {
-        preferences.setDistanceUnit(MILES)
+        preferences.distanceUnit = MILES
         val record = getDistanceRecord(9088.0)
 
         assertThat(formatter.formatValue(record)).isEqualTo("5.647 miles")
@@ -76,7 +76,7 @@ class DistanceFormatterTest {
 
     @Test
     fun formatValueA11y_metricUnit_returnsCorrectValue() = runBlocking {
-        preferences.setDistanceUnit(KILOMETERS)
+        preferences.distanceUnit = KILOMETERS
         val record = getDistanceRecord(1007.0)
 
         assertThat(formatter.formatA11yValue(record)).isEqualTo("1.007 kilometers")
@@ -84,7 +84,7 @@ class DistanceFormatterTest {
 
     @Test
     fun formatValueA11y_imperialUnit_returnsCorrectValue() = runBlocking {
-        preferences.setDistanceUnit(MILES)
+        preferences.distanceUnit = MILES
         val record = getDistanceRecord(1009.0)
 
         assertThat(formatter.formatA11yValue(record)).isEqualTo("0.627 miles")

@@ -51,7 +51,7 @@ constructor(
             R.string.height_in_compacted,
             R.string.height_cm,
             R.string.feet_inches_format,
-            unitPreferences.getHeightUnit(),
+            unitPreferences.heightUnit,
             record.height,
         )
     }
@@ -62,7 +62,7 @@ constructor(
             R.string.height_in_long,
             R.string.height_cm_long,
             R.string.feet_inches_format_long,
-            unitPreferences.getHeightUnit(),
+            unitPreferences.heightUnit,
             record.height,
         )
     }

@@ -66,7 +66,7 @@ class BodyTemperatureFormatterTest {
 
     @Test
     fun formatValue_celsius() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
+        preferences.temperatureUnit = TemperatureUnit.CELSIUS
 
         assertThat(formatter.formatValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0)))
             .isEqualTo("0℃")
@@ -78,7 +78,7 @@ class BodyTemperatureFormatterTest {
 
     @Test
     fun formatA11yValue_celsius() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
+        preferences.temperatureUnit = TemperatureUnit.CELSIUS
 
         assertThat(
                 formatter.formatA11yValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0))
@@ -96,7 +96,7 @@ class BodyTemperatureFormatterTest {
 
     @Test
     fun formatValue_kelvin() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.KELVIN)
+        preferences.temperatureUnit = TemperatureUnit.KELVIN
 
         assertThat(formatter.formatValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0)))
             .isEqualTo("273.15K")
@@ -108,7 +108,7 @@ class BodyTemperatureFormatterTest {
 
     @Test
     fun formatA11yValue_kelvin() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.KELVIN)
+        preferences.temperatureUnit = TemperatureUnit.KELVIN
 
         assertThat(
                 formatter.formatA11yValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0))
@@ -126,7 +126,7 @@ class BodyTemperatureFormatterTest {
 
     @Test
     fun formatValue_fahrenheit() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.FAHRENHEIT)
+        preferences.temperatureUnit = TemperatureUnit.FAHRENHEIT
 
         assertThat(formatter.formatValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0)))
             .isEqualTo("32℉")
@@ -138,7 +138,7 @@ class BodyTemperatureFormatterTest {
 
     @Test
     fun formatA11yValue_fahrenheit() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.FAHRENHEIT)
+        preferences.temperatureUnit = TemperatureUnit.FAHRENHEIT
 
         assertThat(
                 formatter.formatA11yValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0))
@@ -156,7 +156,7 @@ class BodyTemperatureFormatterTest {
 
     @Test
     fun formatValue_formatsLocations() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
+        preferences.temperatureUnit = TemperatureUnit.CELSIUS
 
         assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_EAR, 1.0)))
             .isEqualTo("1℃ Ear")

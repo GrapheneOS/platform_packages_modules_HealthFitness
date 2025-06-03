@@ -35,11 +35,11 @@ object EnergyFormatter {
         unitPreferences: UnitPreferences,
     ): String {
         val res =
-            when (unitPreferences.getEnergyUnit()) {
+            when (unitPreferences.energyUnit) {
                 CALORIE -> R.string.calories
                 KILOJOULE -> R.string.kj
             }
-        return formatEnergy(context, res, energy, unitPreferences.getEnergyUnit())
+        return formatEnergy(context, res, energy, unitPreferences.energyUnit)
     }
 
     fun formatEnergyA11yValue(
@@ -48,11 +48,11 @@ object EnergyFormatter {
         unitPreferences: UnitPreferences,
     ): String {
         val res =
-            when (unitPreferences.getEnergyUnit()) {
+            when (unitPreferences.energyUnit) {
                 CALORIE -> R.string.calories_long
                 KILOJOULE -> R.string.kj_long
             }
-        return formatEnergy(context, res, energy, unitPreferences.getEnergyUnit())
+        return formatEnergy(context, res, energy, unitPreferences.energyUnit)
     }
 
     private fun formatEnergy(

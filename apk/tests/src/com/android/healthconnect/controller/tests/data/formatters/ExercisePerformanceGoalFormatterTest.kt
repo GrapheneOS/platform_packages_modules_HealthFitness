@@ -76,7 +76,7 @@ class ExercisePerformanceGoalFormatterTest {
 
     @Test
     fun formatGoal_weightPerformanceGoal() = runBlocking {
-        unitPreferences.setWeightUnit(WeightUnit.POUND)
+        unitPreferences.weightUnit = WeightUnit.POUND
         Truth.assertThat(
                 formatter.formatGoal(
                     WeightGoal(Mass.fromGrams(1000.0)),
@@ -162,7 +162,7 @@ class ExercisePerformanceGoalFormatterTest {
 
     @Test
     fun formatGoal_metricSystem_speedPerformanceGoal() = runBlocking {
-        unitPreferences.setDistanceUnit(DistanceUnit.KILOMETERS)
+        unitPreferences.distanceUnit = DistanceUnit.KILOMETERS
         Truth.assertThat(
                 formatter.formatGoal(
                     SpeedGoal(
@@ -186,7 +186,7 @@ class ExercisePerformanceGoalFormatterTest {
 
     @Test
     fun formatGoal_exerciseSegmentTypeWithPace_speedPerformanceGoal_metricSystem() = runBlocking {
-        unitPreferences.setDistanceUnit(DistanceUnit.KILOMETERS)
+        unitPreferences.distanceUnit = DistanceUnit.KILOMETERS
         Truth.assertThat(
                 formatter.formatGoal(
                     SpeedGoal(
@@ -211,7 +211,7 @@ class ExercisePerformanceGoalFormatterTest {
     @Test
     fun formatGoal_swimmingExerciseSegmentType_speedPerformanceGoal_metricSystem_localeUK() =
         runBlocking {
-            unitPreferences.setDistanceUnit(DistanceUnit.KILOMETERS)
+            unitPreferences.distanceUnit = DistanceUnit.KILOMETERS
             Truth.assertThat(
                     formatter.formatGoal(
                         SpeedGoal(
@@ -237,7 +237,7 @@ class ExercisePerformanceGoalFormatterTest {
     fun formatGoal_swimmingExerciseSegmentType_speedPerformanceGoal_imperialSystem_localeUS() =
         runBlocking {
             Locale.setDefault(Locale.US)
-            unitPreferences.setDistanceUnit(DistanceUnit.MILES)
+            unitPreferences.distanceUnit = DistanceUnit.MILES
             Truth.assertThat(
                     formatter.formatGoal(
                         SpeedGoal(
@@ -261,7 +261,7 @@ class ExercisePerformanceGoalFormatterTest {
 
     @Test
     fun formatGoal_speedPerformanceGoal_imperialSystem() = runBlocking {
-        unitPreferences.setDistanceUnit(DistanceUnit.MILES)
+        unitPreferences.distanceUnit = DistanceUnit.MILES
         Truth.assertThat(
                 formatter.formatGoal(
                     SpeedGoal(
@@ -285,7 +285,7 @@ class ExercisePerformanceGoalFormatterTest {
 
     @Test
     fun formatGoal_exerciseSegmentTypeWithPace_speedPerformanceGoal_imperialSystem() = runBlocking {
-        unitPreferences.setDistanceUnit(DistanceUnit.MILES)
+        unitPreferences.distanceUnit = DistanceUnit.MILES
         Truth.assertThat(
                 formatter.formatGoal(
                     SpeedGoal(
@@ -310,7 +310,7 @@ class ExercisePerformanceGoalFormatterTest {
     @Test
     fun formatGoal_exerciseSegmentTypeWithPace_speedPerformanceGoal_withZeroValue_metricSystem() =
         runBlocking {
-            unitPreferences.setDistanceUnit(DistanceUnit.KILOMETERS)
+            unitPreferences.distanceUnit = DistanceUnit.KILOMETERS
             Truth.assertThat(
                     formatter.formatGoal(
                         SpeedGoal(
@@ -335,7 +335,7 @@ class ExercisePerformanceGoalFormatterTest {
     @Test
     fun formatGoal_swimmingExerciseSegmentType_speedPerformanceGoal_withUnRealisticValue_metricSystem() =
         runBlocking {
-            unitPreferences.setDistanceUnit(DistanceUnit.KILOMETERS)
+            unitPreferences.distanceUnit = DistanceUnit.KILOMETERS
             Truth.assertThat(
                     formatter.formatGoal(
                         SpeedGoal(

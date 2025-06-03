@@ -81,7 +81,7 @@ class NutritionFormatterTest {
 
     @Test
     fun formatValue_kj_formatsEnergy() = runBlocking {
-        preferences.setEnergyUnit(EnergyUnit.KILOJOULE)
+        preferences.energyUnit = EnergyUnit.KILOJOULE
         val record = getBuilder().setEnergy(fromCalories(1234567.0)).build()
 
         assertThat(formatter.formatValue(record)).isEqualTo("Energy: 5,165 kJ")
@@ -89,7 +89,7 @@ class NutritionFormatterTest {
 
     @Test
     fun formatA11yValue_kj_formatsMass() = runBlocking {
-        preferences.setEnergyUnit(EnergyUnit.KILOJOULE)
+        preferences.energyUnit = EnergyUnit.KILOJOULE
         val record = getBuilder().setEnergy(fromCalories(1234567.0)).build()
 
         assertThat(formatter.formatA11yValue(record)).isEqualTo("Energy: 5,165 kilojoules")
@@ -97,7 +97,7 @@ class NutritionFormatterTest {
 
     @Test
     fun formatValue_cal_formatsEnergy() = runBlocking {
-        preferences.setEnergyUnit(EnergyUnit.CALORIE)
+        preferences.energyUnit = EnergyUnit.CALORIE
         val record = getBuilder().setEnergy(fromCalories(295000.0)).build()
 
         assertThat(formatter.formatValue(record)).isEqualTo("Energy: 295 Cal")
@@ -105,7 +105,7 @@ class NutritionFormatterTest {
 
     @Test
     fun formatA11yValue_cal_formatsMass() = runBlocking {
-        preferences.setEnergyUnit(EnergyUnit.CALORIE)
+        preferences.energyUnit = EnergyUnit.CALORIE
         val record = getBuilder().setEnergy(fromCalories(295000.0)).build()
 
         assertThat(formatter.formatA11yValue(record)).isEqualTo("Energy: 295 calories")
@@ -113,7 +113,7 @@ class NutritionFormatterTest {
 
     @Test
     fun formatValue_formatsAllFields() = runBlocking {
-        preferences.setEnergyUnit(EnergyUnit.CALORIE)
+        preferences.energyUnit = EnergyUnit.CALORIE
         val record =
             getBuilder()
                 .setMealName("Custom meal")

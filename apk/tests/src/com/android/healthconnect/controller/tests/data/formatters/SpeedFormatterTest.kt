@@ -71,7 +71,7 @@ class SpeedFormatterTest {
 
     @Test
     fun formatValue_oneEntry_metricUnit_returnsCorrectValue() = runBlocking {
-        preferences.setDistanceUnit(KILOMETERS)
+        preferences.distanceUnit = KILOMETERS
 
         val record = getSpeedRecord(listOf(12.0))
         assertThat(formatter.formatValue(record)).isEqualTo("43.2 km/h")
@@ -79,7 +79,7 @@ class SpeedFormatterTest {
 
     @Test
     fun formatValue_multipleEntries_metricUnit_returnsAverageValue() = runBlocking {
-        preferences.setDistanceUnit(KILOMETERS)
+        preferences.distanceUnit = KILOMETERS
 
         val record = getSpeedRecord(listOf(4.0, 13.5, 9.3))
         assertThat(formatter.formatValue(record)).isEqualTo("32.16 km/h")
@@ -87,7 +87,7 @@ class SpeedFormatterTest {
 
     @Test
     fun formatValue_oneEntry_imperialUnit_returnsCorrectValue() = runBlocking {
-        preferences.setDistanceUnit(MILES)
+        preferences.distanceUnit = MILES
 
         val record = getSpeedRecord(listOf(12.0))
         assertThat(formatter.formatValue(record)).isEqualTo("26.843 mph")
@@ -95,7 +95,7 @@ class SpeedFormatterTest {
 
     @Test
     fun formatValue_multipleEntries_imperialUnit_returnsAverageValue() = runBlocking {
-        preferences.setDistanceUnit(MILES)
+        preferences.distanceUnit = MILES
 
         val record = getSpeedRecord(listOf(4.0, 13.5, 9.3))
         assertThat(formatter.formatValue(record)).isEqualTo("19.983 mph")
@@ -103,7 +103,7 @@ class SpeedFormatterTest {
 
     @Test
     fun formatA11yValue_oneEntry_metricUnit_returnsCorrectValue() = runBlocking {
-        preferences.setDistanceUnit(KILOMETERS)
+        preferences.distanceUnit = KILOMETERS
 
         val record = getSpeedRecord(listOf(12.0))
         assertThat(formatter.formatA11yValue(record)).isEqualTo("43.2 kilometres per hour")
@@ -111,7 +111,7 @@ class SpeedFormatterTest {
 
     @Test
     fun formatA11yValue_multipleEntries_metricUnit_returnsAverageValue() = runBlocking {
-        preferences.setDistanceUnit(DistanceUnit.KILOMETERS)
+        preferences.distanceUnit = DistanceUnit.KILOMETERS
 
         val record = getSpeedRecord(listOf(4.0, 13.5, 9.3))
         assertThat(formatter.formatA11yValue(record)).isEqualTo("32.16 kilometres per hour")
@@ -119,7 +119,7 @@ class SpeedFormatterTest {
 
     @Test
     fun formatA11yValue_oneEntry_imperialUnit_returnsCorrectValue() = runBlocking {
-        preferences.setDistanceUnit(MILES)
+        preferences.distanceUnit = MILES
 
         val record = getSpeedRecord(listOf(12.0))
         assertThat(formatter.formatA11yValue(record)).isEqualTo("26.843 miles per hour")
@@ -127,7 +127,7 @@ class SpeedFormatterTest {
 
     @Test
     fun formatA11yValue_multipleEntries_imperialUnit_returnsAverageValue() = runBlocking {
-        preferences.setDistanceUnit(MILES)
+        preferences.distanceUnit = MILES
 
         val record = getSpeedRecord(listOf(4.0, 13.5, 9.3))
         assertThat(formatter.formatA11yValue(record)).isEqualTo("19.983 miles per hour")
@@ -141,7 +141,7 @@ class SpeedFormatterTest {
 
     @Test
     fun formatRecordDetails_multipleEntries_withImperialUnit_returnsSampleList() = runBlocking {
-        preferences.setDistanceUnit(MILES)
+        preferences.distanceUnit = MILES
 
         val record = getSpeedRecord(listOf(4.0, 13.5))
 
@@ -161,7 +161,7 @@ class SpeedFormatterTest {
 
     @Test
     fun formatRecordDetails_multipleEntries_withMetricUnit__returnsSampleList() = runBlocking {
-        preferences.setDistanceUnit(KILOMETERS)
+        preferences.distanceUnit = KILOMETERS
 
         val record = getSpeedRecord(listOf(4.0, 13.5))
 
