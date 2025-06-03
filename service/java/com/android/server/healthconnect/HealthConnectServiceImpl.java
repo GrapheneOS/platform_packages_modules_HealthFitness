@@ -3288,7 +3288,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 "Caller does not have " + MANAGE_HEALTH_DATA_PERMISSION);
                         callback.onResult(
                                 new HealthConnectOnboardingState(
-                                        mOnboardingStateManager.updateAndGetOnboardingState()));
+                                        mOnboardingStateManager.updateAndGetOnboardingState(
+                                                /* bypassInstallTime= */ true)));
                     } catch (SecurityException e) {
                         Log.e(TAG, "getHealthConnectOnboardingState: Exception encountered", e);
                         tryAndThrowException(errorCallback, e, ERROR_SECURITY);

@@ -151,6 +151,20 @@ public class OnboardingNotificationJobTest {
 
     @Test
     @EnableFlags(FLAG_ONBOARDING)
+    public void executeOnboardingNotificationJob_callsUpdateAndGetOnboardingState_withoutBypass() {
+        executeOnboardingNotificationJob(
+                mContext,
+                mOnboardingStateManager,
+                mOnboardingNotificationSender,
+                mOnboardingNotificationStateManager,
+                mUserHandle);
+        verify(mOnboardingStateManager).updateAndGetOnboardingState();
+        verify(mOnboardingStateManager, never())
+                .updateAndGetOnboardingState(/* bypassInstallTime= */ true);
+    }
+
+    @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void executeOnboardingNotificationJob_noAppConnected_notificationSent() {
         when(mOnboardingStateManager.updateAndGetOnboardingState())
                 .thenReturn(ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);

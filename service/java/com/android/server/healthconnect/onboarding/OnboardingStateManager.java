@@ -127,11 +127,20 @@ public final class OnboardingStateManager {
      */
     @HealthConnectOnboardingState.OnboardingState
     public int updateAndGetOnboardingState() {
+        return updateAndGetOnboardingState(false);
+    }
+
+    /**
+     * Evaluates the current onboarding state, updates the value in storage, and returns the current
+     * state.
+     */
+    @HealthConnectOnboardingState.OnboardingState
+    public int updateAndGetOnboardingState(boolean bypassInstallTime) {
         if (!Flags.onboarding()) {
             return ONBOARDING_BANNER_STATE_HIDE;
         }
 
-        int onboardingState = evaluateCurrentOnboardingState();
+        int onboardingState = evaluateCurrentOnboardingState(bypassInstallTime);
         updateOnboardingState(onboardingState);
         return onboardingState;
     }
@@ -149,7 +158,7 @@ public final class OnboardingStateManager {
     }
 
     @HealthConnectOnboardingState.OnboardingState
-    private int evaluateCurrentOnboardingState() {
+    private int evaluateCurrentOnboardingState(boolean bypassInstallTime) {
         List<PackageInfo> compatibleFitnessApps =
                 mPackageInfoUtils
                         .getPackagesCompatibleWithHealthConnect(mContext, mUserHandle)
@@ -178,7 +187,14 @@ public final class OnboardingStateManager {
         long candidateAppsCount =
                 potentialCandidates.stream()
                         .filter(app -> !hasBeenUsed(app))
-                        .filter(this::installed7DaysAgo)
+                        .filter(
+                                app -> {
+                                    if (!bypassInstallTime) {
+                                        return installed7DaysAgo(app);
+                                    } else {
+                                        return true;
+                                    }
+                                })
                         .count();
         if (connectedFitnessAppsCount == 0 && candidateAppsCount >= 2) {
             return ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
