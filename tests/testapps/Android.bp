@@ -98,6 +98,26 @@ android_test_helper_app {
 }
 
 android_test_helper_app {
+    name: "CtsHealthConnectTestAppForHostTest",
+    manifest: "CtsHealthConnectTestAppForHostTest.xml",
+    defaults: ["cts_defaults"],
+    platform_apis: true,
+    srcs: [
+        "src/android/healthconnect/cts/hosttestapp/**/*.java",
+        "src/android/healthconnect/cts/hosttestapp/**/*.kt",
+    ],
+    static_libs: [
+        "ctstestrunner-axt",
+        "cts-healthconnect-phr-lib",
+        "healthfitness-testing-testapp",
+    ],
+    libs: ["junit"],
+    sdk_version: "test_current",
+    min_sdk_version: "34",
+    target_sdk_version: "34",
+}
+
+android_test_helper_app {
     name: "HealthFitnessCtsTestApp",
     manifest: "CtsTestAppAndroidManifest.xml",
     static_libs: [

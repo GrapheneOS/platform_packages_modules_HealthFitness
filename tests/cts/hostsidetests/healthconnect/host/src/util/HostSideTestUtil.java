@@ -32,7 +32,7 @@ import java.util.List;
 
 public class HostSideTestUtil {
 
-    public static final String TEST_APP_PKG_NAME = "android.healthconnect.cts.testhelper";
+    public static final String TEST_APP_PKG_NAME = "android.healthconnect.cts.hosttestapp";
     public static final String DAILY_LOG_TESTS_ACTIVITY = ".DailyLogsTests";
     private static final int NUMBER_OF_RETRIES = 10;
 

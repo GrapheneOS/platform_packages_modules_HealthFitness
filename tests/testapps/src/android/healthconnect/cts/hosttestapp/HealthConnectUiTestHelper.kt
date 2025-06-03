@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.testhelper
+package android.healthconnect.cts.hosttestapp
 
 import android.content.Context
 import android.content.pm.PackageManager
