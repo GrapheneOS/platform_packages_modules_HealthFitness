@@ -143,6 +143,10 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
     }
 
     public TokenRequest getRequest(String packageName, String token) {
+        if (token.isBlank()) {
+            throw new IllegalArgumentException("Invalid token");
+        }
+
         ReadTableRequest readTableRequest =
                 new ReadTableRequest(TABLE_NAME)
                         .setWhereClause(
