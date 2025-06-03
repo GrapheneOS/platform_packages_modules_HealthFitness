@@ -114,24 +114,27 @@ public final class OnboardingNotificationSender {
 
     /** Sends a notification for onboarding scenario where there's no app connected to HC. */
     public void sendNoAppConnectedNotification(UserHandle userHandle) {
-        if (!Flags.onboardingNotification()) {
-            return;
-        }
-
-        mHealthConnectNotificationSender.sendNotificationAsUser(
-                createNoAppConnectedNotification(), userHandle);
-        mNotificationStateManager.unsetFlags(SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION);
+        sendNotification(
+                userHandle,
+                createNoAppConnectedNotification(),
+                SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION);
     }
 
     /** Sends a notification for onboarding scenario where there's one app connected to HC. */
     public void sendOneAppConnectedNotification(UserHandle userHandle) {
+        sendNotification(
+                userHandle,
+                createOneAppConnectedNotification(),
+                SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION);
+    }
+
+    private void sendNotification(UserHandle userHandle, Notification notification, int flag) {
         if (!Flags.onboardingNotification()) {
             return;
         }
-
-        mHealthConnectNotificationSender.sendNotificationAsUser(
-                createOneAppConnectedNotification(), userHandle);
-        mNotificationStateManager.unsetFlags(SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION);
+        if (mHealthConnectNotificationSender.sendNotificationAsUser(notification, userHandle)) {
+            mNotificationStateManager.unsetFlags(flag);
+        }
     }
 
     private Notification createNoAppConnectedNotification() {
