@@ -32,6 +32,7 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.DurationFormatter.formatDurationLong
 import com.android.healthconnect.controller.data.formatters.DurationFormatter.formatDurationShort
 import com.android.healthconnect.controller.data.formatters.shared.BaseFormatter
+import com.android.healthconnect.controller.data.formatters.shared.UnitFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -45,7 +46,9 @@ constructor(
     @ApplicationContext context: Context,
     timeFormatter: LocalDateTimeFormatter,
     unitPreferences: UnitPreferences,
-) : BaseFormatter<MindfulnessSessionRecord>(context, timeFormatter, unitPreferences) {
+) :
+    BaseFormatter<MindfulnessSessionRecord>(context, timeFormatter, unitPreferences),
+    UnitFormatter<Long> {
 
     override suspend fun formatRecord(
         record: MindfulnessSessionRecord,
@@ -70,6 +73,14 @@ constructor(
 
     private fun formatA11yValue(record: MindfulnessSessionRecord): String {
         return formatSession(record) { duration -> formatDurationLong(context, duration) }
+    }
+
+    override fun formatUnit(durationMillis: Long): String {
+        return formatDurationShort(context, Duration.ofMillis(durationMillis))
+    }
+
+    override fun formatA11yUnit(durationMillis: Long): String {
+        return formatDurationLong(context, Duration.ofMillis(durationMillis))
     }
 
     private fun formatSession(

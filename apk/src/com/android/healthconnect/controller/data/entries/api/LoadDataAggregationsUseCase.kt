@@ -25,6 +25,7 @@ import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.AggregationType
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.DistanceRecord
+import android.health.connect.datatypes.MindfulnessSessionRecord
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord
@@ -34,11 +35,13 @@ import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.data.formatters.DistanceFormatter
+import com.android.healthconnect.controller.data.formatters.MindfulnessSessionFormatter
 import com.android.healthconnect.controller.data.formatters.SleepSessionFormatter
 import com.android.healthconnect.controller.data.formatters.StepsFormatter
 import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.DISTANCE
+import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.MINDFULNESS
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.SLEEP
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.STEPS
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.TOTAL_CALORIES_BURNED
@@ -62,6 +65,7 @@ constructor(
     private val totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter,
     private val distanceFormatter: DistanceFormatter,
     private val sleepSessionFormatter: SleepSessionFormatter,
+    private val mindfulnessSessionFormatter: MindfulnessSessionFormatter,
     private val healthConnectManager: HealthConnectManager,
     private val appInfoReader: AppInfoReader,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
@@ -117,6 +121,15 @@ constructor(
                     readAggregations<Long>(
                         timeFilterRange,
                         SleepSessionRecord.SLEEP_DURATION_TOTAL,
+                        input.packageName,
+                        showDataOrigin,
+                        input.permissionType,
+                    )
+                }
+                MINDFULNESS -> {
+                    readAggregations<Long>(
+                        timeFilterRange,
+                        MindfulnessSessionRecord.MINDFULNESS_DURATION_TOTAL,
                         input.packageName,
                         showDataOrigin,
                         input.permissionType,
@@ -178,6 +191,13 @@ constructor(
                             aggregation = sleepSessionFormatter.formatUnit(aggregationResult),
                             aggregationA11y =
                                 sleepSessionFormatter.formatA11yUnit(aggregationResult),
+                            contributingApps = contributingApps,
+                        )
+                    MINDFULNESS ->
+                        FormattedAggregation(
+                            aggregation = mindfulnessSessionFormatter.formatUnit(aggregationResult),
+                            aggregationA11y =
+                                mindfulnessSessionFormatter.formatA11yUnit(aggregationResult),
                             contributingApps = contributingApps,
                         )
                     else -> {
