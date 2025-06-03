@@ -565,6 +565,8 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"ተመለስ"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"ይጀምሩ"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"ውሂብን ይሰርዙ"</string>
+    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
+    <skip />
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"ወደ ስረዛ ግባ"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"ከስረዛ ውጣ"</string>
     <string name="time_range_title" msgid="5777596779865648336">"ከጤና አገናኝ ለመሰረዝ ውሂብ ይምረጡ"</string>
@@ -1204,6 +1206,12 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"ለመድረስ የተፈቀደለት"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"ለማንበብ የተፈቀደለት"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"እነዚህ ፈቃዶች ከመሣሪያዎ ዳሳሾች ለ<xliff:g id="APP_NAME">%1$s</xliff:g> የውሂብ መዳረሻ ይሰጣሉ።"</string>
+    <!-- no translation found for write_access (571547306854732263) -->
+    <skip />
+    <!-- no translation found for read_access (3317759826769372785) -->
+    <skip />
+    <!-- no translation found for health_switch_content_description (1297823949479201621) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> ከ<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> መተግበሪያዎች ተፈቅዶላቸዋል"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"ምንም መተግበሪያዎች እየጠየቁ አይደለም"</string>
     <string name="allowed" msgid="4158456017482263737">"ተፈቅዷል"</string>
@@ -1220,7 +1228,8 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{በ1 መተግበሪያ ጥቅም ላይ ውሏል}one{በ# መተግበሪያዎች ጥቅም ላይ ውሏል}other{በ# መተግበሪያዎች ጥቅም ላይ ውሏል}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"ባለፉት 24 ሰዓታት ውስጥ ጥቅም ላይ አልዋለም"</string>
     <string name="accessed" msgid="4424701457530587176">"<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g> ላይ ተደርሶበታል"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"የመጀመሪያዎችዎን 2 መተግበሪያዎች ያገናኙ"</string>
+    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
+    <skip />
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"በመካከላቸው የጤና እና አካል ብቃትውሂብ ለማጋራት እነዚህን መተግበሪያዎች ያገናኙ"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"ሁለተኛ መተግበሪያ ያገናኙ"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"ከ<xliff:g id="APP_NAME">%1$s</xliff:g> ጋር የጤና እና አካል ብቃት ውሂብ ለማጋራት አንድ ተጨማሪ መተግበሪያ ይምረጡ"</string>
@@ -1230,11 +1239,28 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"ስለ የጤና አገናኝ ተጨማሪ"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"ከጤና አገናኝ ጋር የተገናኘ መተግበሪያ"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"ለመጠናቀቅ ተቃርቧል"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"ውቅረትን ለመጨረስ እና ውሂብ መጋራትን ለመጀመር አሁን እነዚህን መተግበሪያዎች ይክፈቱ"</string>
+    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
+    <skip />
+    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
+    <skip />
+    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
+    <skip />
+    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
+    <skip />
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"የእርስዎን የጤና ውሂብ በመላው መተግበሪያዎች ላይ ይመልከቱ"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"የጤና እና አካል ብቃት ውሂብን በመተግበሪያዎችዎ መካከል ማጋራት ይጀምሩ"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
+    <skip />
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"ያዋቅሩ"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"ሁለተኛ መተግበሪያ ያገናኙ"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"ከ<xliff:g id="APP_NAME">%1$s</xliff:g> ጋር የጤና እና አካል ብቃት ውሂብ ለማጋራት አንድ ተጨማሪ መተግበሪያ ያዋቅሩ"</string>
+    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
+    <skip />
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"ቀጥል"</string>
+    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
+    <skip />
 </resources>

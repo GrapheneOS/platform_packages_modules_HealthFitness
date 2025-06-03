@@ -565,6 +565,8 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Kembali"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Mulai"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Hapus data"</string>
+    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
+    <skip />
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Masuk ke penghapusan"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Keluar dari penghapusan"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Pilih data yang akan dihapus dari Health Connect"</string>
@@ -1204,6 +1206,12 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Diizinkan untuk mengakses"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Diizinkan untuk membaca"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Izin ini memberi <xliff:g id="APP_NAME">%1$s</xliff:g> akses ke data dari sensor perangkat Anda."</string>
+    <!-- no translation found for write_access (571547306854732263) -->
+    <skip />
+    <!-- no translation found for read_access (3317759826769372785) -->
+    <skip />
+    <!-- no translation found for health_switch_content_description (1297823949479201621) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> dari <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplikasi diizinkan"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Tidak ada aplikasi yang meminta"</string>
     <string name="allowed" msgid="4158456017482263737">"Diizinkan"</string>
@@ -1220,7 +1228,8 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Digunakan oleh 1 aplikasi}other{Digunakan oleh # aplikasi}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Tidak digunakan dalam 24 jam terakhir"</string>
     <string name="accessed" msgid="4424701457530587176">"Diakses <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Hubungkan 2 aplikasi pertama Anda"</string>
+    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
+    <skip />
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Hubungkan aplikasi ini untuk mulai berbagi data kesehatan dan kebugaran antar-aplikasi"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Hubungkan aplikasi kedua"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Siapkan satu aplikasi lagi untuk berbagi data kesehatan dan kebugaran dengan <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1230,11 +1239,28 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Selengkapnya tentang Health Connect"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Aplikasi terhubung ke Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Hampir selesai"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"Buka aplikasi ini sekarang untuk menyelesaikan penyiapan dan memulai berbagi data"</string>
+    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
+    <skip />
+    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
+    <skip />
+    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
+    <skip />
+    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
+    <skip />
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Lihat data kesehatan Anda di berbagai aplikasi"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Mulai berbagi data kesehatan dan kebugaran antar-aplikasi"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
+    <skip />
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Siapkan"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Hubungkan aplikasi kedua"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Siapkan satu aplikasi lagi untuk berbagi data kesehatan dan kebugaran dengan <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
+    <skip />
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Lanjutkan"</string>
+    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
+    <skip />
 </resources>
