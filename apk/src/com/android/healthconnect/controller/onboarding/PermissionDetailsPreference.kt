@@ -80,6 +80,16 @@ constructor(
         accessInfo = holder.findViewById(R.id.access_info) as TextView
         privacyPolicy = holder.findViewById(R.id.privacy_policy) as TextView
 
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.BAKLAVA) {
+            // Set preference padding horizontal and vertical
+            holder.itemView.setPadding(
+                context.resources.getDimension(R.dimen.horizontal_padding_detailed_perms).toInt(),
+                context.resources.getDimension(R.dimen.vertical_padding_detailed_perms).toInt(),
+                context.resources.getDimension(R.dimen.horizontal_padding_detailed_perms).toInt(),
+                context.resources.getDimension(R.dimen.vertical_padding_detailed_perms).toInt(),
+            )
+        }
+
         updateDetailedPermissions()
     }
 

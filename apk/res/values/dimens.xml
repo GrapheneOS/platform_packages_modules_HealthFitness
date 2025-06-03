@@ -59,4 +59,6 @@
     <dimen name="item_exercise_session_marginEnd">@dimen/spacing_large</dimen>
 
     <dimen name="radius_full">360dp</dimen>
+    <dimen name="horizontal_padding_detailed_perms">24dp</dimen>
+    <dimen name="vertical_padding_detailed_perms">12dp</dimen>
 </resources>
