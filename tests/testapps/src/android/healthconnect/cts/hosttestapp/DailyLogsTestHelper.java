@@ -48,7 +48,7 @@ import java.util.List;
 @NonApiTest(
         exemptionReasons = {},
         justification = "METRIC")
-public class DailyLogsTests {
+public class DailyLogsTestHelper {
 
     private final HealthConnectManager mHealthConnectManager =
             InstrumentationRegistry.getContext().getSystemService(HealthConnectManager.class);
@@ -101,7 +101,7 @@ public class DailyLogsTests {
      * collected and verified.
      */
     @Test
-    public void deleteAllStagedRemoteData() throws InterruptedException {
+    public void deleteAllDataFromHealthConnect() throws InterruptedException {
         TestUtils.deleteAllDataFromHealthConnect();
     }
 }
