@@ -42,7 +42,7 @@
     {
       "name": "HealthConnectBackupRestoreUnitTests"
     },
-    // TODO(b/369604571): Enable this after we have updated this to support mainline targets.
+    // TODO(b/409549484): Enable this after we have updated this to support mainline targets.
     //{
     //  "name": "CtsHealthConnectHostTestCases"
     //},
@@ -96,46 +96,6 @@
     },
     {
        "name": "CtsHealthFitnessDeviceTestCasesNotAllPermissionsAreGranted"
-    }
-  ],
-  // DEPRECATED
-  // Old mainline presubmit mapping, replaced by "healthfitness-mainline-presubmit".
-  "mainline-presubmit": [
-    {
-      "name": "CtsHealthFitnessDeviceTestCases[com.google.android.healthfitness.apex]"
-    },
-    {
-      "name": "CtsHealthFitnessDeviceTestCasesNoPermission[com.google.android.healthfitness.apex]"
-    },
-    {
-       "name": "HealthConnectControllerDataScreensNewTests[com.google.android.healthfitness.apex]"
-    },
-    {
-       "name": "HealthConnectControllerDeletionTests[com.google.android.healthfitness.apex]"
-    },
-    {
-       "name": "HealthConnectControllerExerciseRouteTests[com.google.android.healthfitness.apex]"
-    },
-    {
-       "name": "HealthConnectControllerExportTests[com.google.android.healthfitness.apex]"
-    },
-    {
-       "name": "HealthConnectControllerHomePageAndOnboardingTests[com.google.android.healthfitness.apex]"
-    },
-    {
-       "name": "HealthConnectControllerManageDataTests[com.google.android.healthfitness.apex]"
-    },
-    {
-       "name": "HealthConnectControllerMigrationTests[com.google.android.healthfitness.apex]"
-    },
-    {
-       "name": "HealthConnectControllerNavigationTests[com.google.android.healthfitness.apex]"
-    },
-    {
-       "name": "HealthConnectControllerPermissionTests[com.google.android.healthfitness.apex]"
-    },
-    {
-       "name": "HealthConnectControllerExtraTests[com.google.android.healthfitness.apex]"
     }
   ],
   // This runs our test modules on android targets
@@ -241,5 +201,14 @@
             }
         ]
     }
+  ],
+  "postsubmit": [
+    {
+        "name": "HealthFitnessFrameworkUnitTests"
+    }
+  ],
+  // DEPRECATED
+  // Old mainline presubmit mapping, replaced by "healthfitness-mainline-presubmit".
+  "mainline-presubmit": [
   ]
 }
