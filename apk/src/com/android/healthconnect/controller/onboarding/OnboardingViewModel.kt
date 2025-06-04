@@ -51,8 +51,6 @@ constructor(
     val connectedApps: LiveData<OnboardingFragmentState>
         get() = _connectedApps
 
-    private val appsInteractedWith = mutableSetOf<String>()
-
     private val _internalOnboardingBannerState = MutableLiveData<OnboardingState>()
 
     private val _onboardingBannerState =
@@ -118,11 +116,6 @@ constructor(
                         return@launch
                     }
 
-                    for (currentApp in potentialFitnessApps) {
-                        if (currentApp.appMetadata.packageName in appsInteractedWith) {
-                            currentApp.isConnected = true
-                        }
-                    }
                     potentialFitnessApps.sortWith(
                         // TODO (b/416744614) additional sorting criteria for apps
                         // Show connected apps first
@@ -187,10 +180,6 @@ constructor(
                 sharedPreferences.getBoolean(ONBOARDING_ONE_APP_BANNER_SEEN, false)
             else -> false
         }
-    }
-
-    fun setAppInteractedWith(packageName: String) {
-        appsInteractedWith.add(packageName)
     }
 
     sealed class OnboardingFragmentState {

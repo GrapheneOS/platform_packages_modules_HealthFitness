@@ -385,7 +385,6 @@ class ConnectAppsOnboardingFragmentTest {
         Intents.intended(hasAction(ACTION_SHOW_ONBOARDING))
         Intents.intended(hasPackage(TEST_APP_PACKAGE_NAME))
 
-        verify(viewModel).setAppInteractedWith(TEST_APP_PACKAGE_NAME)
         verify(healthConnectLogger)
             .logInteraction(CommonOnboardingPageElement.APP_WITH_ONBOARDING_BUTTON)
     }

@@ -17,6 +17,8 @@
 package com.android.healthconnect.controller.onboarding
 
 import android.content.Context
+import android.content.pm.PackageManager
+import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
 import com.android.healthconnect.controller.permissions.app.LoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.shared.HealthPermissionReader
@@ -42,6 +44,7 @@ constructor(
     private val healthPermissionReader: HealthPermissionReader,
     private val loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase,
     private val appInfoReader: AppInfoReader,
+    private val getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) :
     ILoadFitnessPermissionAppsUseCase,
@@ -75,6 +78,28 @@ constructor(
                             .filterIsInstance<HealthPermission.FitnessPermission>()
 
                     val isConnected = grantedFitnessPermissions.isNotEmpty()
+                    if (!isConnected) {
+                        // Check if any permission has been denied
+                        val permissionFlags =
+                            getHealthPermissionsFlagsUseCase.invoke(
+                                packageName,
+                                fitnessPermissions.map { it.toString() }.toList(),
+                            )
+
+                        val userSetOrFixedPermissions =
+                            permissionFlags
+                                .filter { (_, flags) ->
+                                    flags.and(PackageManager.FLAG_PERMISSION_USER_FIXED) != 0 ||
+                                        flags.and(PackageManager.FLAG_PERMISSION_USER_SET) != 0
+                                }
+                                .keys
+                                .toList()
+
+                        if (userSetOrFixedPermissions.isNotEmpty()) {
+                            return@mapNotNull null
+                        }
+                    }
+
                     val onboardingIntent =
                         healthPermissionReader.getOnboardingActivityIntent(context, packageName)
                     if (onboardingIntent != null) {

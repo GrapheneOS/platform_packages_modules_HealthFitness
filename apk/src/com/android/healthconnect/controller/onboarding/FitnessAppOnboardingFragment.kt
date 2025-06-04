@@ -102,9 +102,6 @@ class FitnessAppOnboardingFragment : Hilt_FitnessAppOnboardingFragment() {
             )
             findNavController().popBackStack()
             viewModel.done()
-            // The user interacted with this app, so regardless of permissions
-            // status we should mark it as connected
-            onboardingViewModel.setAppInteractedWith(packageName)
         }
 
         val backButton = secondaryButton
