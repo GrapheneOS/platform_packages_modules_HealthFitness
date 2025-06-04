@@ -18,7 +18,6 @@
 
 package com.android.healthconnect.controller.tests.data.formatters
 
-import android.content.Context
 import android.health.connect.datatypes.ActivityIntensityRecord
 import android.health.connect.datatypes.Metadata
 import android.platform.test.annotations.RequiresFlagsEnabled
@@ -28,7 +27,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.ActivityIntensityFormatter
-import com.android.healthconnect.controller.tests.utils.ClearTimeFormatRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
@@ -61,17 +59,13 @@ class ActivityIntensityFormatterTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    @get:Rule val clearTimeFormatRule = ClearTimeFormatRule()
-
     @Inject lateinit var formatter: ActivityIntensityFormatter
-    private lateinit var context: Context
 
     @Before
     fun setup() {
-        context = InstrumentationRegistry.getInstrumentation().context
+        val context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.UK)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
-
         hiltRule.inject()
     }
 

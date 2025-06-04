@@ -26,7 +26,6 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedDataEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SeriesDataEntry
 import com.android.healthconnect.controller.data.formatters.shared.HealthDataEntryFormatter
-import com.android.healthconnect.controller.tests.utils.ClearTimeFormatRule
 import com.android.healthconnect.controller.tests.utils.getBasalMetabolicRateRecord
 import com.android.healthconnect.controller.tests.utils.getHeartRateRecord
 import com.android.healthconnect.controller.tests.utils.getSamplePlannedExerciseSessionRecord
@@ -50,7 +49,6 @@ import org.junit.runner.RunWith
 class HealthDataEntryFormatterTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @get:Rule val clearTimeFormatRule = ClearTimeFormatRule()
 
     @Inject lateinit var formatter: HealthDataEntryFormatter
 

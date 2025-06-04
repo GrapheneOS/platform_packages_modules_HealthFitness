@@ -35,7 +35,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.ExerciseSessionFormatter
-import com.android.healthconnect.controller.tests.utils.ClearTimeFormatRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
@@ -61,8 +60,6 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class ExerciseSessionFormatterTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule val clearTimeFormatRule = ClearTimeFormatRule()
 
     @get:Rule val mSetFlagsRule: SetFlagsRule = SetFlagsRule()
 

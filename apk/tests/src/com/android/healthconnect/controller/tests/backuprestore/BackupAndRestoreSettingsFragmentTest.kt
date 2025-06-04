@@ -69,7 +69,6 @@ import com.android.healthconnect.controller.exportimport.api.ImportUiStatus
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiStatus
 import com.android.healthconnect.controller.tests.TestActivity
-import com.android.healthconnect.controller.tests.utils.ClearTimeFormatRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
@@ -112,7 +111,6 @@ import org.mockito.kotlin.eq
 import org.mockito.kotlin.firstValue
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
-import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -134,7 +132,6 @@ class BackupAndRestoreSettingsFragmentTest {
     private val testDispatcher = StandardTestDispatcher()
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @get:Rule val clearTimeFormatRule = ClearTimeFormatRule()
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
     @get:Rule val setFlagsRule = SetFlagsRule()
 
