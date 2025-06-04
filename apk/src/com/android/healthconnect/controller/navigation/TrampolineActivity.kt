@@ -121,8 +121,7 @@ class TrampolineActivity : Hilt_TrampolineActivity() {
                     }
                 }
             }
-            // TODO (b/416731816) redirect to onboarding using new intent
-            "android.health.connect.action.SYNC_MORE_APPS" -> {
+            HealthConnectManager.ACTION_SYNC_MORE_APPS -> {
                 Intent(this, ConnectAppsOnboardingActivity::class.java)
             }
             else -> {
