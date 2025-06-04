@@ -298,6 +298,29 @@ public class OnboardingStateManagerTest {
 
     @Test
     @EnableFlags(FLAG_ONBOARDING)
+    public void updateAndGetOnboardingStateWithBypass_considersNewApps() {
+        setAppRequestsFitnessPermission(APP_PKG_1, true);
+        setAppRequestsFitnessPermission(APP_PKG_2, true);
+        setAppRequestsFitnessPermission(APP_PKG_3, true);
+        setCompatibleApps(
+                ImmutableList.of(
+                        createPackageInfo(APP_PKG_1, SIX_DAYS_AGO),
+                        createPackageInfo(APP_PKG_2, NOW.toEpochMilli()),
+                        createPackageInfo(
+                                APP_PKG_3, NOW.minus(Duration.ofDays(1)).toEpochMilli())));
+
+        setOnboardingStateInPreference(ONBOARDING_BANNER_STATE_HIDE);
+        clearInvocations(mPreferenceHelper, mMockListener);
+
+        assertThat(
+                        mOnboardingStateManager.updateAndGetOnboardingState(
+                                /* bypassInstallTime= */ true))
+                .isEqualTo(ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
+        verifyStateChange(ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
+    }
+
+    @Test
+    @EnableFlags(FLAG_ONBOARDING)
     public void updateAndGetOnboardingState_zeroConnected_oneCandidate_returnsHide() {
         setAppRequestsFitnessPermission(APP_PKG_1, true);
         setAppRequestsFitnessPermission(APP_PKG_2, true);

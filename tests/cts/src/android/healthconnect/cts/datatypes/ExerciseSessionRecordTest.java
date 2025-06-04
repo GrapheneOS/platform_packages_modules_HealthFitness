@@ -75,6 +75,8 @@ import android.util.Pair;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.Flags;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -128,7 +130,9 @@ public class ExerciseSessionRecordTest {
         assertThat(record.getTitle()).isNull();
         assertThat(record.getSegments()).isEmpty();
         assertThat(record.getLaps()).isEmpty();
-        assertThat(record.hasRateOfPerceivedExertion()).isEqualTo(false);
+        if (Flags.exerciseSegmentImprovements()) {
+            assertThat(record.hasRateOfPerceivedExertion()).isEqualTo(false);
+        }
     }
 
     @Test
@@ -210,6 +214,10 @@ public class ExerciseSessionRecordTest {
     }
 
     @Test
+    @RequiresFlagsEnabled({
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
     public void testExerciseSession_buildSessionWithAllFields_buildCorrectObject() {
         ExerciseRoute route = buildExerciseRoute();
         String notes = "rain";
@@ -404,7 +412,6 @@ public class ExerciseSessionRecordTest {
                         .setEndZoneOffset(ZoneOffset.MAX)
                         .setStartZoneOffset(ZoneOffset.MIN)
                         .setNotes(notes)
-                        .setRateOfPerceivedExertion(4.0f)
                         .setTitle(title);
 
         assertThat(builder.setStartZoneOffset(startZoneOffset).build().getStartZoneOffset())

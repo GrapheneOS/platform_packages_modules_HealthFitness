@@ -2359,7 +2359,8 @@ public class HealthConnectServiceImplTest {
     public void testGetOnboardingStatus_noAppConnected_returnsTheUpdatedOnboardingStatus()
             throws Exception {
         int onboardingState = ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
-        when(mOnboardingStateManager.updateAndGetOnboardingState()).thenReturn(onboardingState);
+        when(mOnboardingStateManager.updateAndGetOnboardingState(/* bypassInstallTime= */ true))
+                .thenReturn(onboardingState);
 
         mHealthConnectService.getHealthConnectOnboardingState(
                 mGetHealthConnectOnboardingStateCallback);
@@ -2372,7 +2373,8 @@ public class HealthConnectServiceImplTest {
     public void testGetOnboardingStatus_oneAppConnected_returnsTheUpdatedOnboardingStatus()
             throws Exception {
         int onboardingState = ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
-        when(mOnboardingStateManager.updateAndGetOnboardingState()).thenReturn(onboardingState);
+        when(mOnboardingStateManager.updateAndGetOnboardingState(/* bypassInstallTime= */ true))
+                .thenReturn(onboardingState);
 
         mHealthConnectService.getHealthConnectOnboardingState(
                 mGetHealthConnectOnboardingStateCallback);

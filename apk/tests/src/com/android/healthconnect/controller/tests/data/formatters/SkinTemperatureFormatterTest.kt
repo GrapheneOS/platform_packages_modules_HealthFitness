@@ -99,7 +99,7 @@ class SkinTemperatureFormatterTest {
 
     @Test
     fun getRecord_singleDeltaInCelsius_formattedCorrectly() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
+        preferences.temperatureUnit = TemperatureUnit.CELSIUS
 
         val formattedTimeRange: String = dateTimeFormatter.formatTimeRange(startTime, endTime)
         val formattedTimeRangeA11y: String =
@@ -136,7 +136,7 @@ class SkinTemperatureFormatterTest {
 
     @Test
     fun getRecord_multipleDeltaInCelsius_formattedCorrectly() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
+        preferences.temperatureUnit = TemperatureUnit.CELSIUS
 
         val formattedTimeRange: String = dateTimeFormatter.formatTimeRange(startTime, endTime)
         val formattedTimeRangeA11y: String =
@@ -173,7 +173,7 @@ class SkinTemperatureFormatterTest {
 
     @Test
     fun getRecord_singleDeltaInFahrenheit_formattedCorrectly() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.FAHRENHEIT)
+        preferences.temperatureUnit = TemperatureUnit.FAHRENHEIT
 
         val formattedTimeRange: String = dateTimeFormatter.formatTimeRange(startTime, endTime)
         val formattedTimeRangeA11y: String =
@@ -210,7 +210,7 @@ class SkinTemperatureFormatterTest {
 
     @Test
     fun getRecord_multipleDeltaInFahrenheit_formattedCorrectly() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.FAHRENHEIT)
+        preferences.temperatureUnit = TemperatureUnit.FAHRENHEIT
 
         val formattedTimeRange: String = dateTimeFormatter.formatTimeRange(startTime, endTime)
         val formattedTimeRangeA11y: String =
@@ -247,7 +247,7 @@ class SkinTemperatureFormatterTest {
 
     @Test
     fun getRecord_singleDeltaInKelvin_formattedCorrectly() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.KELVIN)
+        preferences.temperatureUnit = TemperatureUnit.KELVIN
 
         val formattedTimeRange: String = dateTimeFormatter.formatTimeRange(startTime, endTime)
         val formattedTimeRangeA11y: String =
@@ -284,7 +284,7 @@ class SkinTemperatureFormatterTest {
 
     @Test
     fun getRecord_multipleDeltaInKelvin_formattedCorrectly() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.KELVIN)
+        preferences.temperatureUnit = TemperatureUnit.KELVIN
 
         val formattedTimeRange: String = dateTimeFormatter.formatTimeRange(startTime, endTime)
         val formattedTimeRangeA11y: String =
@@ -321,7 +321,7 @@ class SkinTemperatureFormatterTest {
 
     @Test
     fun getRecordDetails_singleDeltaInCelsius_formattedCorrectly() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
+        preferences.temperatureUnit = TemperatureUnit.CELSIUS
 
         val formattedEntries: List<FormattedEntry> =
             skinTemperatureFormatter.formatRecordDetails(skinTempRecordSingleDelta)
@@ -349,7 +349,7 @@ class SkinTemperatureFormatterTest {
 
     @Test
     fun getRecordDetails_multipleDeltaInCelsius_formattedCorrectly() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
+        preferences.temperatureUnit = TemperatureUnit.CELSIUS
 
         val formattedEntries: List<FormattedEntry> =
             skinTemperatureFormatter.formatRecordDetails(skinTempRecordMultipleDeltas)
@@ -397,7 +397,7 @@ class SkinTemperatureFormatterTest {
 
     @Test
     fun getRecordDetails_singleDeltaInFahrenheit_formattedCorrectly() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.FAHRENHEIT)
+        preferences.temperatureUnit = TemperatureUnit.FAHRENHEIT
 
         val formattedEntries: List<FormattedEntry> =
             skinTemperatureFormatter.formatRecordDetails(skinTempRecordSingleDelta)
@@ -425,7 +425,7 @@ class SkinTemperatureFormatterTest {
 
     @Test
     fun getRecordDetails_multipleDeltaInFahrenheit_formattedCorrectly() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.FAHRENHEIT)
+        preferences.temperatureUnit = TemperatureUnit.FAHRENHEIT
 
         val formattedEntries: List<FormattedEntry> =
             skinTemperatureFormatter.formatRecordDetails(skinTempRecordMultipleDeltas)
@@ -473,7 +473,7 @@ class SkinTemperatureFormatterTest {
 
     @Test
     fun getRecordDetails_singleDeltaInKelvin_formattedCorrectly() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.KELVIN)
+        preferences.temperatureUnit = TemperatureUnit.KELVIN
 
         val formattedEntries: List<FormattedEntry> =
             skinTemperatureFormatter.formatRecordDetails(skinTempRecordSingleDelta)
@@ -501,7 +501,7 @@ class SkinTemperatureFormatterTest {
 
     @Test
     fun getRecordDetails_multipleDeltaInKelvin_formattedCorrectly() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.KELVIN)
+        preferences.temperatureUnit = TemperatureUnit.KELVIN
 
         val formattedEntries: List<FormattedEntry> =
             skinTemperatureFormatter.formatRecordDetails(skinTempRecordMultipleDeltas)
@@ -609,7 +609,7 @@ class SkinTemperatureFormatterTest {
             "Toe",
             ReverseEntryType.MEASUREMENT_LOCATION,
         ) &&
-            when (preferences.getTemperatureUnit()) {
+            when (preferences.temperatureUnit) {
                 TemperatureUnit.CELSIUS ->
                     isReverseSessionDetailCorrect(
                         baselineEntry,

@@ -31,10 +31,10 @@ constructor(
 ) : EntryFormatter<LeanBodyMassRecord>(context, timeFormatter, unitPreferences) {
 
     override suspend fun formatValue(record: LeanBodyMassRecord): String {
-        return MassFormatter.formatValue(context, record.mass, unitPreferences.getWeightUnit())
+        return MassFormatter.formatValue(context, record.mass, unitPreferences.weightUnit)
     }
 
     override suspend fun formatA11yValue(record: LeanBodyMassRecord): String {
-        return MassFormatter.formatA11yValue(context, record.mass, unitPreferences.getWeightUnit())
+        return MassFormatter.formatA11yValue(context, record.mass, unitPreferences.weightUnit)
     }
 }

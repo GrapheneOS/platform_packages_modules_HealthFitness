@@ -35,7 +35,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.ExerciseSessionFormatter
-import com.android.healthconnect.controller.tests.utils.ClearTimeFormatRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
@@ -61,8 +60,6 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class ExerciseSessionFormatterTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule val clearTimeFormatRule = ClearTimeFormatRule()
 
     @get:Rule val mSetFlagsRule: SetFlagsRule = SetFlagsRule()
 
@@ -106,7 +103,7 @@ class ExerciseSessionFormatterTest {
         Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     )
     fun formatRecordDetails_segmentImprovementsDisabledReturnSegments() = runBlocking {
-        unitPreferences.setDistanceUnit(KILOMETERS)
+        unitPreferences.distanceUnit = KILOMETERS
         val segments =
             buildList<ExerciseSegment> {
                 add(
@@ -159,7 +156,7 @@ class ExerciseSessionFormatterTest {
     )
     fun formatRecordDetails_segmentImprovementsDisabledReturnSegmentsWithoutNewFields() =
         runBlocking {
-            unitPreferences.setDistanceUnit(KILOMETERS)
+            unitPreferences.distanceUnit = KILOMETERS
             val segments =
                 buildList<ExerciseSegment> {
                     add(
@@ -219,8 +216,8 @@ class ExerciseSessionFormatterTest {
     )
     @Ignore("b/417271616") // Ignore failing test.
     fun formatRecordDetails_segmentImprovementsEnabledWithNewFields() = runBlocking {
-        unitPreferences.setDistanceUnit(KILOMETERS)
-        unitPreferences.setWeightUnit(KILOGRAM)
+        unitPreferences.distanceUnit = KILOMETERS
+        unitPreferences.weightUnit = KILOGRAM
         val segments =
             buildList<ExerciseSegment> {
                 add(
@@ -292,8 +289,8 @@ class ExerciseSessionFormatterTest {
     )
     @Ignore("b/417271616") // Ignore failing test.
     fun formatRecordDetails_segmentImprovementsEnabledWithoutNewFields() = runBlocking {
-        unitPreferences.setDistanceUnit(KILOMETERS)
-        unitPreferences.setWeightUnit(KILOGRAM)
+        unitPreferences.distanceUnit = KILOMETERS
+        unitPreferences.weightUnit = KILOGRAM
         val segments =
             buildList<ExerciseSegment> {
                 add(
@@ -361,8 +358,8 @@ class ExerciseSessionFormatterTest {
         Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     )
     fun formatRecordDetails_zeroRepetitionsHidesRepCount() = runBlocking {
-        unitPreferences.setDistanceUnit(KILOMETERS)
-        unitPreferences.setWeightUnit(KILOGRAM)
+        unitPreferences.distanceUnit = KILOMETERS
+        unitPreferences.weightUnit = KILOGRAM
         val segments =
             buildList<ExerciseSegment> {
                 add(

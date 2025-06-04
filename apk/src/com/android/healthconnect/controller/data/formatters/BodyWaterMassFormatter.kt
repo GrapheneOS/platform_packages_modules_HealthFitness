@@ -38,10 +38,10 @@ constructor(
 ) : EntryFormatter<BodyWaterMassRecord>(context, timeFormatter, unitPreferences) {
 
     override suspend fun formatValue(record: BodyWaterMassRecord): String {
-        return formatValue(context, record.bodyWaterMass, unitPreferences.getWeightUnit())
+        return formatValue(context, record.bodyWaterMass, unitPreferences.weightUnit)
     }
 
     override suspend fun formatA11yValue(record: BodyWaterMassRecord): String {
-        return formatA11yValue(context, record.bodyWaterMass, unitPreferences.getWeightUnit())
+        return formatA11yValue(context, record.bodyWaterMass, unitPreferences.weightUnit)
     }
 }

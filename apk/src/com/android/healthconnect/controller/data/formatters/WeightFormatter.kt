@@ -31,14 +31,10 @@ constructor(
 ) : EntryFormatter<WeightRecord>(context, timeFormatter, unitPreferences) {
 
     override suspend fun formatValue(record: WeightRecord): String {
-        return MassFormatter.formatValue(context, record.weight, unitPreferences.getWeightUnit())
+        return MassFormatter.formatValue(context, record.weight, unitPreferences.weightUnit)
     }
 
     override suspend fun formatA11yValue(record: WeightRecord): String {
-        return MassFormatter.formatA11yValue(
-            context,
-            record.weight,
-            unitPreferences.getWeightUnit(),
-        )
+        return MassFormatter.formatA11yValue(context, record.weight, unitPreferences.weightUnit)
     }
 }
