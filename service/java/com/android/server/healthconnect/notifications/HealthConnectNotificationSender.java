@@ -192,6 +192,7 @@ public final class HealthConnectNotificationSender {
                 notificationManager.getNotificationChannel(notification.getChannelId());
         if (channel.getImportance() == IMPORTANCE_NONE) {
             Slog.i(TAG, "Notifications channel " + channel.getName() + " is blocked by user");
+            // TODO(b/417206526): Add logging - notification channel blocked
             return false;
         }
         notifyFromSystem(notificationManager, notification);
