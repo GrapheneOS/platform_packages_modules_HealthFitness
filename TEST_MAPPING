@@ -42,10 +42,9 @@
     {
       "name": "HealthConnectBackupRestoreUnitTests"
     },
-    // TODO(b/409549484): Enable this after we have updated this to support mainline targets.
-    //{
-    //  "name": "CtsHealthConnectHostTestCases"
-    //},
+    {
+      "name": "CtsHealthConnectHostTestCases"
+    },
     {
       "name": "CtsHealthConnectHostSideDeviceTestCases"
     },
