@@ -27,7 +27,7 @@ import com.android.healthconnect.controller.units.HeightUnit
 import com.android.healthconnect.controller.units.TemperatureUnit
 import com.android.healthconnect.controller.units.UnitPreferences
 import com.android.healthconnect.controller.units.WeightUnit
-import com.google.common.truth.Truth.*
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.util.Locale
@@ -40,7 +40,7 @@ import org.junit.runner.RunWith
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class UnitPreferencesTest {
+class ApplicationContextUnitPreferencesTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     private lateinit var context: Context
@@ -67,77 +67,77 @@ class UnitPreferencesTest {
     fun defaultUnits_localeFR() {
         context.setLocale(Locale.FRANCE)
 
-        assertThat(unitPreferences.getDistanceUnit()).isEqualTo(DistanceUnit.KILOMETERS)
-        assertThat(unitPreferences.getHeightUnit()).isEqualTo(HeightUnit.CENTIMETERS)
-        assertThat(unitPreferences.getWeightUnit()).isEqualTo(WeightUnit.KILOGRAM)
-        assertThat(unitPreferences.getEnergyUnit()).isEqualTo(EnergyUnit.CALORIE)
-        assertThat(unitPreferences.getTemperatureUnit()).isEqualTo(TemperatureUnit.CELSIUS)
+        assertThat(unitPreferences.distanceUnit).isEqualTo(DistanceUnit.KILOMETERS)
+        assertThat(unitPreferences.heightUnit).isEqualTo(HeightUnit.CENTIMETERS)
+        assertThat(unitPreferences.weightUnit).isEqualTo(WeightUnit.KILOGRAM)
+        assertThat(unitPreferences.energyUnit).isEqualTo(EnergyUnit.CALORIE)
+        assertThat(unitPreferences.temperatureUnit).isEqualTo(TemperatureUnit.CELSIUS)
     }
 
     @Test
     fun defaultUnits_localeGB() {
         context.setLocale(Locale.UK)
 
-        assertThat(unitPreferences.getDistanceUnit()).isEqualTo(DistanceUnit.MILES)
-        assertThat(unitPreferences.getHeightUnit()).isEqualTo(HeightUnit.FEET)
-        assertThat(unitPreferences.getWeightUnit()).isEqualTo(WeightUnit.STONE)
-        assertThat(unitPreferences.getEnergyUnit()).isEqualTo(EnergyUnit.CALORIE)
-        assertThat(unitPreferences.getTemperatureUnit()).isEqualTo(TemperatureUnit.CELSIUS)
+        assertThat(unitPreferences.distanceUnit).isEqualTo(DistanceUnit.MILES)
+        assertThat(unitPreferences.heightUnit).isEqualTo(HeightUnit.FEET)
+        assertThat(unitPreferences.weightUnit).isEqualTo(WeightUnit.STONE)
+        assertThat(unitPreferences.energyUnit).isEqualTo(EnergyUnit.CALORIE)
+        assertThat(unitPreferences.temperatureUnit).isEqualTo(TemperatureUnit.CELSIUS)
     }
 
     @Test
     fun defaultUnits_localeUS() {
         context.setLocale(Locale.US)
 
-        assertThat(unitPreferences.getDistanceUnit()).isEqualTo(DistanceUnit.MILES)
-        assertThat(unitPreferences.getHeightUnit()).isEqualTo(HeightUnit.FEET)
-        assertThat(unitPreferences.getWeightUnit()).isEqualTo(WeightUnit.POUND)
-        assertThat(unitPreferences.getEnergyUnit()).isEqualTo(EnergyUnit.CALORIE)
-        assertThat(unitPreferences.getTemperatureUnit()).isEqualTo(TemperatureUnit.FAHRENHEIT)
+        assertThat(unitPreferences.distanceUnit).isEqualTo(DistanceUnit.MILES)
+        assertThat(unitPreferences.heightUnit).isEqualTo(HeightUnit.FEET)
+        assertThat(unitPreferences.weightUnit).isEqualTo(WeightUnit.POUND)
+        assertThat(unitPreferences.energyUnit).isEqualTo(EnergyUnit.CALORIE)
+        assertThat(unitPreferences.temperatureUnit).isEqualTo(TemperatureUnit.FAHRENHEIT)
     }
 
     @Test
     fun setDistanceUnit_updatesValue() {
         context.setLocale(Locale.US)
 
-        unitPreferences.setDistanceUnit(DistanceUnit.KILOMETERS)
+        unitPreferences.distanceUnit = DistanceUnit.KILOMETERS
 
-        assertThat(unitPreferences.getDistanceUnit()).isEqualTo(DistanceUnit.KILOMETERS)
+        assertThat(unitPreferences.distanceUnit).isEqualTo(DistanceUnit.KILOMETERS)
     }
 
     @Test
     fun setHeightUnit_updatesValue() {
         context.setLocale(Locale.US)
 
-        unitPreferences.setHeightUnit(HeightUnit.CENTIMETERS)
+        unitPreferences.heightUnit = HeightUnit.CENTIMETERS
 
-        assertThat(unitPreferences.getHeightUnit()).isEqualTo(HeightUnit.CENTIMETERS)
+        assertThat(unitPreferences.heightUnit).isEqualTo(HeightUnit.CENTIMETERS)
     }
 
     @Test
     fun setWeightUnit_updatesValue() {
         context.setLocale(Locale.US)
 
-        unitPreferences.setWeightUnit(WeightUnit.KILOGRAM)
+        unitPreferences.weightUnit = WeightUnit.KILOGRAM
 
-        assertThat(unitPreferences.getWeightUnit()).isEqualTo(WeightUnit.KILOGRAM)
+        assertThat(unitPreferences.weightUnit).isEqualTo(WeightUnit.KILOGRAM)
     }
 
     @Test
     fun setEnergyUnit_updatesValue() {
         context.setLocale(Locale.US)
 
-        unitPreferences.setEnergyUnit(EnergyUnit.KILOJOULE)
+        unitPreferences.energyUnit = EnergyUnit.KILOJOULE
 
-        assertThat(unitPreferences.getEnergyUnit()).isEqualTo(EnergyUnit.KILOJOULE)
+        assertThat(unitPreferences.energyUnit).isEqualTo(EnergyUnit.KILOJOULE)
     }
 
     @Test
     fun setTemperatureUnit_updatesValue() {
         context.setLocale(Locale.US)
 
-        unitPreferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
+        unitPreferences.temperatureUnit = TemperatureUnit.CELSIUS
 
-        assertThat(unitPreferences.getTemperatureUnit()).isEqualTo(TemperatureUnit.CELSIUS)
+        assertThat(unitPreferences.temperatureUnit).isEqualTo(TemperatureUnit.CELSIUS)
     }
 }

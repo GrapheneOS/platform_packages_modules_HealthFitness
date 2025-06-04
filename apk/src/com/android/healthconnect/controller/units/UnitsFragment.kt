@@ -20,17 +20,20 @@ import androidx.annotation.StringRes
 import androidx.preference.ListPreference
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
-import com.android.healthconnect.controller.units.DistanceUnit.*
-import com.android.healthconnect.controller.units.EnergyUnit.*
-import com.android.healthconnect.controller.units.HeightUnit.*
+import com.android.healthconnect.controller.units.ApplicationContextUnitPreferences.Companion.DISTANCE_UNIT_PREF_KEY
+import com.android.healthconnect.controller.units.ApplicationContextUnitPreferences.Companion.ENERGY_UNIT_PREF_KEY
+import com.android.healthconnect.controller.units.ApplicationContextUnitPreferences.Companion.HEIGHT_UNIT_PREF_KEY
+import com.android.healthconnect.controller.units.ApplicationContextUnitPreferences.Companion.TEMPERATURE_UNIT_PREF_KEY
+import com.android.healthconnect.controller.units.ApplicationContextUnitPreferences.Companion.WEIGHT_UNIT_PREF_KEY
+import com.android.healthconnect.controller.units.DistanceUnit.KILOMETERS
+import com.android.healthconnect.controller.units.DistanceUnit.MILES
+import com.android.healthconnect.controller.units.EnergyUnit.CALORIE
+import com.android.healthconnect.controller.units.EnergyUnit.KILOJOULE
+import com.android.healthconnect.controller.units.HeightUnit.CENTIMETERS
+import com.android.healthconnect.controller.units.HeightUnit.FEET
 import com.android.healthconnect.controller.units.TemperatureUnit.CELSIUS
 import com.android.healthconnect.controller.units.TemperatureUnit.FAHRENHEIT
 import com.android.healthconnect.controller.units.TemperatureUnit.KELVIN
-import com.android.healthconnect.controller.units.UnitPreferences.Companion.DISTANCE_UNIT_PREF_KEY
-import com.android.healthconnect.controller.units.UnitPreferences.Companion.ENERGY_UNIT_PREF_KEY
-import com.android.healthconnect.controller.units.UnitPreferences.Companion.HEIGHT_UNIT_PREF_KEY
-import com.android.healthconnect.controller.units.UnitPreferences.Companion.TEMPERATURE_UNIT_PREF_KEY
-import com.android.healthconnect.controller.units.UnitPreferences.Companion.WEIGHT_UNIT_PREF_KEY
 import com.android.healthconnect.controller.units.UnitPreferencesStrings.getUnitLabel
 import com.android.healthconnect.controller.units.WeightUnit.KILOGRAM
 import com.android.healthconnect.controller.units.WeightUnit.POUND
@@ -60,7 +63,7 @@ class UnitsFragment : Hilt_UnitsFragment() {
                 HEIGHT_UNIT_PREF_KEY,
                 UnitsElement.CHANGE_UNITS_HEIGHT_BUTTON,
                 R.string.height_unit_title,
-                unitsPreferences.getHeightUnit().toString(),
+                unitsPreferences.heightUnit.toString(),
             ) { newUnit ->
                 val newHeightUnit = HeightUnit.valueOf(newUnit)
                 val logName =
@@ -69,14 +72,14 @@ class UnitsFragment : Hilt_UnitsFragment() {
                         FEET -> UnitsElement.FEET_AND_INCHES_BUTTON
                     }
                 logger.logInteraction(logName)
-                unitsPreferences.setHeightUnit(newHeightUnit)
+                unitsPreferences.heightUnit = newHeightUnit
             }
         val weight =
             createUnitPreference(
                 WEIGHT_UNIT_PREF_KEY,
                 UnitsElement.CHANGE_UNITS_WEIGHT_BUTTON,
                 R.string.weight_unit_title,
-                unitsPreferences.getWeightUnit().toString(),
+                unitsPreferences.weightUnit.toString(),
             ) { newUnit ->
                 val newWeightUnit = WeightUnit.valueOf(newUnit)
                 val logName =
@@ -86,14 +89,14 @@ class UnitsFragment : Hilt_UnitsFragment() {
                         STONE -> UnitsElement.STONES_BUTTON
                     }
                 logger.logInteraction(logName)
-                unitsPreferences.setWeightUnit(newWeightUnit)
+                unitsPreferences.weightUnit = newWeightUnit
             }
         val distance =
             createUnitPreference(
                 DISTANCE_UNIT_PREF_KEY,
                 UnitsElement.CHANGE_UNITS_DISTANCE_BUTTON,
                 R.string.distance_unit_title,
-                unitsPreferences.getDistanceUnit().toString(),
+                unitsPreferences.distanceUnit.toString(),
             ) { newUnit ->
                 val newDistanceUnit = DistanceUnit.valueOf(newUnit)
                 val logName =
@@ -102,14 +105,14 @@ class UnitsFragment : Hilt_UnitsFragment() {
                         MILES -> UnitsElement.MILES_BUTTON
                     }
                 logger.logInteraction(logName)
-                unitsPreferences.setDistanceUnit(newDistanceUnit)
+                unitsPreferences.distanceUnit = newDistanceUnit
             }
         val energy =
             createUnitPreference(
                 ENERGY_UNIT_PREF_KEY,
                 UnitsElement.CHANGE_UNITS_ENERGY_BUTTON,
                 R.string.energy_unit_title,
-                unitsPreferences.getEnergyUnit().toString(),
+                unitsPreferences.energyUnit.toString(),
             ) { newUnit ->
                 val newEnergyUnit = EnergyUnit.valueOf(newUnit)
                 val logName =
@@ -118,14 +121,14 @@ class UnitsFragment : Hilt_UnitsFragment() {
                         KILOJOULE -> UnitsElement.KILOJOULES_BUTTON
                     }
                 logger.logInteraction(logName)
-                unitsPreferences.setEnergyUnit(newEnergyUnit)
+                unitsPreferences.energyUnit = newEnergyUnit
             }
         val temperature =
             createUnitPreference(
                 TEMPERATURE_UNIT_PREF_KEY,
                 UnitsElement.CHANGE_UNITS_TEMPERATURE_BUTTON,
                 R.string.temperature_unit_title,
-                unitsPreferences.getTemperatureUnit().toString(),
+                unitsPreferences.temperatureUnit.toString(),
             ) { newUnit ->
                 val newTemperatureUnit = TemperatureUnit.valueOf(newUnit)
                 val logName =
@@ -135,7 +138,7 @@ class UnitsFragment : Hilt_UnitsFragment() {
                         KELVIN -> UnitsElement.KELVIN_BUTTON
                     }
                 logger.logInteraction(logName)
-                unitsPreferences.setTemperatureUnit(newTemperatureUnit)
+                unitsPreferences.temperatureUnit = newTemperatureUnit
             }
         preferenceScreen.addPreference(height)
         preferenceScreen.addPreference(weight)

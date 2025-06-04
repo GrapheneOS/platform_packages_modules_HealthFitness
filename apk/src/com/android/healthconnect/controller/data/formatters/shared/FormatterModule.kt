@@ -15,13 +15,11 @@
  */
 package com.android.healthconnect.controller.data.formatters.shared
 
-import android.content.Context
+import com.android.healthconnect.controller.units.ApplicationContextUnitPreferences
 import com.android.healthconnect.controller.units.UnitPreferences
-import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
 /**
@@ -31,13 +29,8 @@ import dagger.hilt.components.SingletonComponent
  */
 @Module
 @InstallIn(SingletonComponent::class)
-class FormatterModule {
-    @Provides
-    fun providesApplicationDateTimeFormatter(
-        @ApplicationContext context: Context
-    ): LocalDateTimeFormatter = LocalDateTimeFormatter(context)
+abstract class FormatterModule {
 
-    @Provides
-    fun providesApplicationUnitPreferences(@ApplicationContext context: Context): UnitPreferences =
-        UnitPreferences(context)
+    @Binds
+    abstract fun bindUnitPreferences(prefs: ApplicationContextUnitPreferences): UnitPreferences
 }

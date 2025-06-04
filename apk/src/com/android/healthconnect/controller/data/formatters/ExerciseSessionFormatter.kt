@@ -279,10 +279,10 @@ constructor(
         context.getString(R.string.segment_set_index_format, setIndex)
 
     private fun formatSegmentWeight(mass: Mass) =
-        MassFormatter.formatValue(context, mass, unitPreferences.getWeightUnit())
+        MassFormatter.formatValue(context, mass, unitPreferences.weightUnit)
 
     private fun formatSegmentWeightA11y(mass: Mass) =
-        MassFormatter.formatA11yValue(context, mass, unitPreferences.getWeightUnit())
+        MassFormatter.formatA11yValue(context, mass, unitPreferences.weightUnit)
 
     private fun formatSegmentRpe(rpe: Float) =
         context.getString(R.string.segment_rpe_format, formatRpeValue(rpe))

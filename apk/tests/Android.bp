@@ -420,6 +420,9 @@ filegroup {
         // Uses UserSettings from compatibility util. This shell command to set user settings,
         // and waits for callback, which doesn't work under robolectric.
         "src/com/android/healthconnect/controller/tests/utiltests/LocalDateTimeFormatterTest.kt",
+        // Get app name ends up using HealthConnectManager via AppInfoReader which is not mocked
+        // properly yet
+        "src/com/android/healthconnect/controller/tests/data/formatters/HealthDataEntryFormatterTest.kt",
     ],
     path: "src",
 }

@@ -98,19 +98,19 @@ constructor(
     }
 
     fun formatSpeedValue(@StringRes res: Int, speed: Double): String {
-        val speedWithUnit = convertToDistancePerHour(unitPreferences.getDistanceUnit(), speed)
+        val speedWithUnit = convertToDistancePerHour(unitPreferences.distanceUnit, speed)
         return MessageFormat.format(context.getString(res), mapOf("value" to speedWithUnit))
     }
 
     fun getUnitRes(): Int {
-        return when (unitPreferences.getDistanceUnit()) {
+        return when (unitPreferences.distanceUnit) {
             MILES -> R.string.velocity_speed_miles
             KILOMETERS -> R.string.velocity_speed_km
         }
     }
 
     fun getA11yUnitRes(): Int {
-        return when (unitPreferences.getDistanceUnit()) {
+        return when (unitPreferences.distanceUnit) {
             MILES -> R.string.velocity_speed_miles_long
             KILOMETERS -> R.string.velocity_speed_km_long
         }
@@ -151,10 +151,7 @@ constructor(
         val timePerUnitInSeconds =
             if (speed.inMetersPerSecond != 0.0)
                 3600 /
-                    convertToDistancePerHour(
-                        unitPreferences.getDistanceUnit(),
-                        speed.inMetersPerSecond,
-                    )
+                    convertToDistancePerHour(unitPreferences.distanceUnit, speed.inMetersPerSecond)
             else speed.inMetersPerSecond
 
         // Display "--:--" if pace value is unrealistic
@@ -166,14 +163,14 @@ constructor(
     }
 
     private fun getUnitResInMinPerDistance(unitPreferences: UnitPreferences): Int {
-        return when (unitPreferences.getDistanceUnit()) {
+        return when (unitPreferences.distanceUnit) {
             MILES -> R.string.velocity_minute_miles
             KILOMETERS -> R.string.velocity_minute_km
         }
     }
 
     private fun getA11yUnitResInMinPerDistance(unitPreferences: UnitPreferences): Int {
-        return when (unitPreferences.getDistanceUnit()) {
+        return when (unitPreferences.distanceUnit) {
             MILES -> R.string.velocity_minute_miles_long
             KILOMETERS -> R.string.velocity_minute_km_long
         }
@@ -184,9 +181,7 @@ constructor(
         speed: Velocity,
     ): String {
         val timePerUnitInSeconds =
-            if (
-                unitPreferences.getDistanceUnit() == MILES && Locale.getDefault().equals(Locale.US)
-            ) {
+            if (unitPreferences.distanceUnit == MILES && Locale.getDefault().equals(Locale.US)) {
                 val yardsPerSecond = speed.inMetersPerSecond * METER_TO_YARD
                 if (yardsPerSecond != 0.0) 100 / yardsPerSecond else yardsPerSecond
             } else {
@@ -203,7 +198,7 @@ constructor(
     }
 
     private fun getUnitResInMinPerOneHundredDistance(): Int {
-        return when (unitPreferences.getDistanceUnit()) {
+        return when (unitPreferences.distanceUnit) {
             MILES ->
                 if (Locale.getDefault().equals(Locale.US))
                     R.string.velocity_minute_per_one_hundred_yards
@@ -213,7 +208,7 @@ constructor(
     }
 
     private fun getA11yUnitResInMinPerOneHundredDistance(): Int {
-        return when (unitPreferences.getDistanceUnit()) {
+        return when (unitPreferences.distanceUnit) {
             MILES ->
                 if (Locale.getDefault().equals(Locale.US))
                     R.string.velocity_minute_per_one_hundred_yards_long

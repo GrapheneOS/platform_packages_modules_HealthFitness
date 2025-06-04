@@ -139,11 +139,7 @@ constructor(
                     ),
                 )
             is ExercisePerformanceGoal.WeightGoal ->
-                MassFormatter.formatValue(
-                    context,
-                    performanceGoal.mass,
-                    unitPreferences.getWeightUnit(),
-                )
+                MassFormatter.formatValue(context, performanceGoal.mass, unitPreferences.weightUnit)
             is ExercisePerformanceGoal.RateOfPerceivedExertionGoal ->
                 context.getString(R.string.rate_of_perceived_exertion_goal, performanceGoal.rpe)
             else -> {
@@ -242,7 +238,7 @@ constructor(
                 MassFormatter.formatA11yValue(
                     context,
                     performanceGoal.mass,
-                    unitPreferences.getWeightUnit(),
+                    unitPreferences.weightUnit,
                 )
             is ExercisePerformanceGoal.RateOfPerceivedExertionGoal ->
                 context.getString(R.string.rate_of_perceived_exertion_goal, performanceGoal.rpe)

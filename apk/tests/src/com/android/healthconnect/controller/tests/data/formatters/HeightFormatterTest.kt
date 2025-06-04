@@ -61,7 +61,7 @@ class HeightFormatterTest {
     @Test
     fun format_withZeroValue_withCentimetersUnit() = runBlocking {
         val height = getHeightRecord(0.0)
-        preferences.setHeightUnit(CENTIMETERS)
+        preferences.heightUnit = CENTIMETERS
         assertThat(formatter.formatValue(height)).isEqualTo("0 cm")
         assertThat(formatter.formatA11yValue(height)).isEqualTo("0 centimeters")
     }
@@ -69,7 +69,7 @@ class HeightFormatterTest {
     @Test
     fun format_withZeroValue_withFeetUnit() = runBlocking {
         val height = getHeightRecord(0.0)
-        preferences.setHeightUnit(FEET)
+        preferences.heightUnit = FEET
         assertThat(formatter.formatValue(height)).isEqualTo("0′0″")
         assertThat(formatter.formatA11yValue(height)).isEqualTo("0 feet 0 inches")
     }
@@ -77,7 +77,7 @@ class HeightFormatterTest {
     @Test
     fun format_withFractionsValue_withCentimetersUnit() = runBlocking {
         val height = getHeightRecord(0.01)
-        preferences.setHeightUnit(CENTIMETERS)
+        preferences.heightUnit = CENTIMETERS
         assertThat(formatter.formatValue(height)).isEqualTo("1 cm")
         assertThat(formatter.formatA11yValue(height)).isEqualTo("1 centimeter")
     }
@@ -85,7 +85,7 @@ class HeightFormatterTest {
     @Test
     fun format_withFractionsValue_withFeetUnit() = runBlocking {
         val height = getHeightRecord(0.01)
-        preferences.setHeightUnit(FEET)
+        preferences.heightUnit = FEET
         assertThat(formatter.formatValue(height)).isEqualTo("0′0″")
         assertThat(formatter.formatA11yValue(height)).isEqualTo("0 feet 0 inches")
     }
@@ -93,7 +93,7 @@ class HeightFormatterTest {
     @Test
     fun format_withRegularValue_withCentimetersUnit() = runBlocking {
         val height = getHeightRecord(1.75)
-        preferences.setHeightUnit(CENTIMETERS)
+        preferences.heightUnit = CENTIMETERS
         assertThat(formatter.formatValue(height)).isEqualTo("175 cm")
         assertThat(formatter.formatA11yValue(height)).isEqualTo("175 centimeters")
     }
@@ -101,7 +101,7 @@ class HeightFormatterTest {
     @Test
     fun format_withRegularValue_withfeetUnit() = runBlocking {
         val height = getHeightRecord(1.75)
-        preferences.setHeightUnit(FEET)
+        preferences.heightUnit = FEET
         assertThat(formatter.formatValue(height)).isEqualTo("5′9″")
         assertThat(formatter.formatA11yValue(height)).isEqualTo("5 feet 9 inches")
     }

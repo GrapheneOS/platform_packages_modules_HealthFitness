@@ -32,7 +32,7 @@ object TemperatureDeltaFormatter {
         unitPreferences: UnitPreferences,
     ): String {
         val res =
-            when (unitPreferences.getTemperatureUnit()) {
+            when (unitPreferences.temperatureUnit) {
                 TemperatureUnit.CELSIUS -> R.string.temperatureDelta_celsius
                 TemperatureUnit.FAHRENHEIT -> R.string.temperatureDelta_fahrenheit
                 TemperatureUnit.KELVIN -> R.string.temperatureDelta_kelvin
@@ -46,7 +46,7 @@ object TemperatureDeltaFormatter {
         unitPreferences: UnitPreferences,
     ): String {
         val res =
-            when (unitPreferences.getTemperatureUnit()) {
+            when (unitPreferences.temperatureUnit) {
                 TemperatureUnit.CELSIUS -> R.string.temperatureDelta_average_celsius
                 TemperatureUnit.FAHRENHEIT -> R.string.temperatureDelta_average_fahrenheit
                 TemperatureUnit.KELVIN -> R.string.temperatureDelta_average_kelvin
@@ -60,7 +60,7 @@ object TemperatureDeltaFormatter {
         unitPreferences: UnitPreferences,
     ): String {
         val res =
-            when (unitPreferences.getTemperatureUnit()) {
+            when (unitPreferences.temperatureUnit) {
                 TemperatureUnit.CELSIUS -> R.string.temperatureDelta_celsius_long
                 TemperatureUnit.FAHRENHEIT -> R.string.temperatureDelta_fahrenheit_long
                 TemperatureUnit.KELVIN -> R.string.temperatureDelta_kelvin_long
@@ -74,7 +74,7 @@ object TemperatureDeltaFormatter {
         unitPreferences: UnitPreferences,
     ): String {
         val res =
-            when (unitPreferences.getTemperatureUnit()) {
+            when (unitPreferences.temperatureUnit) {
                 TemperatureUnit.CELSIUS -> R.string.temperatureDelta_average_celsius_long
                 TemperatureUnit.FAHRENHEIT -> R.string.temperatureDelta_average_fahrenheit_long
                 TemperatureUnit.KELVIN -> R.string.temperatureDelta_average_kelvin_long
@@ -93,7 +93,7 @@ object TemperatureDeltaFormatter {
             round(
                 convertTemperatureDelta(
                     temperatureDelta.inCelsius,
-                    unitPreferences.getTemperatureUnit(),
+                    unitPreferences.temperatureUnit,
                 ) * 10
             ) / 10
         val formattedTemp =

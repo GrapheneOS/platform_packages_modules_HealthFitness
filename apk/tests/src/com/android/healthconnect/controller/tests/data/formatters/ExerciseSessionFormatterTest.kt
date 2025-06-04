@@ -103,7 +103,7 @@ class ExerciseSessionFormatterTest {
         Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     )
     fun formatRecordDetails_segmentImprovementsDisabledReturnSegments() = runBlocking {
-        unitPreferences.setDistanceUnit(KILOMETERS)
+        unitPreferences.distanceUnit = KILOMETERS
         val segments =
             buildList<ExerciseSegment> {
                 add(
@@ -156,7 +156,7 @@ class ExerciseSessionFormatterTest {
     )
     fun formatRecordDetails_segmentImprovementsDisabledReturnSegmentsWithoutNewFields() =
         runBlocking {
-            unitPreferences.setDistanceUnit(KILOMETERS)
+            unitPreferences.distanceUnit = KILOMETERS
             val segments =
                 buildList<ExerciseSegment> {
                     add(
@@ -216,8 +216,8 @@ class ExerciseSessionFormatterTest {
     )
     @Ignore("b/417271616") // Ignore failing test.
     fun formatRecordDetails_segmentImprovementsEnabledWithNewFields() = runBlocking {
-        unitPreferences.setDistanceUnit(KILOMETERS)
-        unitPreferences.setWeightUnit(KILOGRAM)
+        unitPreferences.distanceUnit = KILOMETERS
+        unitPreferences.weightUnit = KILOGRAM
         val segments =
             buildList<ExerciseSegment> {
                 add(
@@ -289,8 +289,8 @@ class ExerciseSessionFormatterTest {
     )
     @Ignore("b/417271616") // Ignore failing test.
     fun formatRecordDetails_segmentImprovementsEnabledWithoutNewFields() = runBlocking {
-        unitPreferences.setDistanceUnit(KILOMETERS)
-        unitPreferences.setWeightUnit(KILOGRAM)
+        unitPreferences.distanceUnit = KILOMETERS
+        unitPreferences.weightUnit = KILOGRAM
         val segments =
             buildList<ExerciseSegment> {
                 add(
@@ -358,8 +358,8 @@ class ExerciseSessionFormatterTest {
         Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     )
     fun formatRecordDetails_zeroRepetitionsHidesRepCount() = runBlocking {
-        unitPreferences.setDistanceUnit(KILOMETERS)
-        unitPreferences.setWeightUnit(KILOGRAM)
+        unitPreferences.distanceUnit = KILOMETERS
+        unitPreferences.weightUnit = KILOGRAM
         val segments =
             buildList<ExerciseSegment> {
                 add(

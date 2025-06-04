@@ -34,7 +34,7 @@ object LengthFormatter {
             return ""
         }
         val res =
-            when (unitPreferences.getDistanceUnit()) {
+            when (unitPreferences.distanceUnit) {
                 DistanceUnit.KILOMETERS -> R.string.distance_km
                 DistanceUnit.MILES -> R.string.distance_miles
             }
@@ -50,7 +50,7 @@ object LengthFormatter {
             return ""
         }
         val res =
-            when (unitPreferences.getDistanceUnit()) {
+            when (unitPreferences.distanceUnit) {
                 DistanceUnit.KILOMETERS -> R.string.distance_km_long
                 DistanceUnit.MILES -> R.string.distance_miles_long
             }
@@ -64,10 +64,7 @@ object LengthFormatter {
         unitPreferences: UnitPreferences,
     ): String {
         val value =
-            LengthConverter.convertDistanceFromMeters(
-                unitPreferences.getDistanceUnit(),
-                length.inMeters,
-            )
+            LengthConverter.convertDistanceFromMeters(unitPreferences.distanceUnit, length.inMeters)
         return MessageFormat.format(context.getString(res), mapOf("dist" to value))
     }
 }
