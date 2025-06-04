@@ -16,6 +16,7 @@
 
 package android.healthconnect.cts.aggregation;
 
+import static android.healthconnect.testing.cts.TestUtils.connectAppsWithGrantedPermissions;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGroupByDuration;
 import static android.healthconnect.testing.cts.TestUtils.insertRecord;
@@ -108,6 +109,8 @@ abstract class BaseDurationAggregationTest<RecordType extends IntervalRecord, Re
     @Before
     public void setUp() throws Exception {
         TestUtils.deleteAllStagedRemoteData();
+        // TODO(b/421834796): Remove once AppInfo is created on demand on all tested branches.
+        connectAppsWithGrantedPermissions();
     }
 
     @After
