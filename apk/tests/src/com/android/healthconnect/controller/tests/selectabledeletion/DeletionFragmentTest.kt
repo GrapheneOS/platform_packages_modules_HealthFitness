@@ -36,7 +36,6 @@ import com.android.healthconnect.controller.selectabledeletion.DeletionConstants
 import com.android.healthconnect.controller.selectabledeletion.DeletionFragment
 import com.android.healthconnect.controller.selectabledeletion.DeletionType
 import com.android.healthconnect.controller.selectabledeletion.DeletionViewModel
-import com.android.healthconnect.controller.tests.utils.ClearTimeFormatRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
@@ -63,7 +62,6 @@ import org.mockito.kotlin.whenever
 @RunWith(AndroidJUnit4::class)
 class DeletionFragmentTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @get:Rule val clearTimeFormatRule = ClearTimeFormatRule()
 
     @BindValue val viewModel: DeletionViewModel = Mockito.mock(DeletionViewModel::class.java)
     private lateinit var context: Context

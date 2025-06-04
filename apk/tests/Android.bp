@@ -441,6 +441,16 @@ android_robolectric_test {
         "src/**/safetycenter/*.kt",
         ":robo-ui-tests-sources-exclude",
     ],
+    // Enable robolectric changes we need for tests, that were contributed back and aren't default
+    // yet.
+    test_options: {
+        test_runner_options: [
+            {
+                name: "java-flags",
+                value: "-Drobolectric.allowPlatformPermissions=true",
+            },
+        ],
+    },
     // defaults : ["health-connect-controller-tests-default"],
     static_libs: [
         // This is required to get mocking of final classes
