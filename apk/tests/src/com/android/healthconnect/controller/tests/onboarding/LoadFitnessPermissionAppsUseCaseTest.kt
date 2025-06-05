@@ -18,11 +18,14 @@ package com.android.healthconnect.controller.tests.onboarding
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.health.connect.HealthConnectManager.ACTION_SHOW_ONBOARDING
+import android.health.connect.HealthPermissions.READ_EXERCISE_ROUTES
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.LoadFitnessPermissionAppsUseCase
+import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
 import com.android.healthconnect.controller.permissions.app.LoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission.AdditionalPermission
@@ -68,6 +71,7 @@ class LoadFitnessPermissionAppsUseCaseTest {
     private val getGrantedHealthPermissionsUseCase = FakeGetGrantedHealthPermissionsUseCase()
     private lateinit var useCase: LoadFitnessPermissionAppsUseCase
     private var appInfoReader: AppInfoReader = mock()
+    private val getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase = mock()
 
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -114,6 +118,7 @@ class LoadFitnessPermissionAppsUseCaseTest {
                 healthPermissionReader,
                 loadAppPermissionsStatusUseCase,
                 appInfoReader,
+                getHealthPermissionsFlagsUseCase,
                 Dispatchers.Main,
             )
 
@@ -261,6 +266,115 @@ class LoadFitnessPermissionAppsUseCaseTest {
         getGrantedHealthPermissionsUseCase.updateData(
             fitnessAppPackageName,
             listOf(readSkinTemperaturePermission.toString()),
+        )
+
+        val actual = useCase.invoke(Unit)
+        advanceUntilIdle()
+
+        assertThat(actual is UseCaseResults.Success).isTrue()
+        assertThat((actual as UseCaseResults.Success).data)
+            .containsExactlyElementsIn(
+                listOf(
+                    ConnectedFitnessAppMetadata(combinedApp, true),
+                    ConnectedFitnessAppMetadata(fitnessApp, true),
+                    ConnectedFitnessAppMetadata(fitnessApp2, true),
+                )
+            )
+    }
+
+    @Test
+    fun appsWithDeniedPermissionsUserSet_areNotIncluded() = runTest {
+        mockAppMetadata()
+
+        whenever(getHealthPermissionsFlagsUseCase.invoke(any(), any())).then {
+            mapOf(readSkinTemperaturePermission to PackageManager.FLAG_PERMISSION_USER_SET)
+        }
+
+        getGrantedHealthPermissionsUseCase.updateData(
+            medicalAppPackageName,
+            listOf(writeMedicalData.toString(), readAllergies.toString()),
+        )
+        getGrantedHealthPermissionsUseCase.updateData(
+            combinedAppPackageName,
+            listOf(
+                writeMedicalData.toString(),
+                readAllergies.toString(),
+                readExercisePermission.toString(),
+            ),
+        )
+        getGrantedHealthPermissionsUseCase.updateData(fitnessAppPackageName, listOf())
+
+        val actual = useCase.invoke(Unit)
+        advanceUntilIdle()
+
+        assertThat(actual is UseCaseResults.Success).isTrue()
+        assertThat((actual as UseCaseResults.Success).data)
+            .containsExactlyElementsIn(
+                listOf(
+                    ConnectedFitnessAppMetadata(combinedApp, true),
+                    ConnectedFitnessAppMetadata(fitnessApp2, true),
+                )
+            )
+    }
+
+    @Test
+    fun appsWithDeniedPermissionsUserFixed_areNotIncluded() = runTest {
+        mockAppMetadata()
+
+        whenever(getHealthPermissionsFlagsUseCase.invoke(any(), any())).then {
+            mapOf(readSkinTemperaturePermission to PackageManager.FLAG_PERMISSION_USER_FIXED)
+        }
+
+        getGrantedHealthPermissionsUseCase.updateData(
+            medicalAppPackageName,
+            listOf(writeMedicalData.toString(), readAllergies.toString()),
+        )
+        getGrantedHealthPermissionsUseCase.updateData(
+            combinedAppPackageName,
+            listOf(
+                writeMedicalData.toString(),
+                readAllergies.toString(),
+                readExercisePermission.toString(),
+            ),
+        )
+        getGrantedHealthPermissionsUseCase.updateData(fitnessAppPackageName, listOf())
+
+        val actual = useCase.invoke(Unit)
+        advanceUntilIdle()
+
+        assertThat(actual is UseCaseResults.Success).isTrue()
+        assertThat((actual as UseCaseResults.Success).data)
+            .containsExactlyElementsIn(
+                listOf(
+                    ConnectedFitnessAppMetadata(combinedApp, true),
+                    ConnectedFitnessAppMetadata(fitnessApp2, true),
+                )
+            )
+    }
+
+    @Test
+    fun appsWithSomeGranted_someDeniedPermissionsUserFixed_areConnected() = runTest {
+        mockAppMetadata()
+
+        whenever(getHealthPermissionsFlagsUseCase.invoke(any(), any())).then {
+            mapOf(readSkinTemperaturePermission to PackageManager.FLAG_PERMISSION_USER_FIXED)
+        }
+
+        getGrantedHealthPermissionsUseCase.updateData(
+            medicalAppPackageName,
+            listOf(writeMedicalData.toString(), readAllergies.toString()),
+        )
+        getGrantedHealthPermissionsUseCase.updateData(
+            combinedAppPackageName,
+            listOf(
+                writeMedicalData.toString(),
+                readAllergies.toString(),
+                readExercisePermission.toString(),
+            ),
+        )
+        getGrantedHealthPermissionsUseCase.updateData(
+            fitnessAppPackageName,
+            listOf(readHeartRatePermission.toString()),
         )
 
         val actual = useCase.invoke(Unit)
