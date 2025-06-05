@@ -52,6 +52,7 @@ import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMa
 import com.android.server.healthconnect.logging.BackupRestoreLogger;
 import com.android.server.healthconnect.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.logging.ExportImportLogger;
+import com.android.server.healthconnect.logging.NotificationStatsLogger;
 import com.android.server.healthconnect.logging.UsageStatsCollector;
 import com.android.server.healthconnect.migration.MigrationBroadcastScheduler;
 import com.android.server.healthconnect.migration.MigrationCleaner;
@@ -336,6 +337,12 @@ public abstract class HealthConnectInjector {
      * Getter for {@link ExportImportLogger} instance initialised by the Health Connect Injector.
      */
     public abstract ExportImportLogger getExportImportLogger();
+
+    /**
+     * Getter for {@link NotificationStatsLogger} instance initialised by the Health Connect
+     * Injector.
+     */
+    public abstract NotificationStatsLogger getNotificationStatsLogger();
 
     /**
      * Getter for {@link BackupRestoreLogger} instance initialised by the Health Connect Injector.
