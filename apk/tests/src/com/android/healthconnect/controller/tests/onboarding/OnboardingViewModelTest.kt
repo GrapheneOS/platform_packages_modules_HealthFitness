@@ -26,7 +26,6 @@ import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_3
-import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_3
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadFitnessPermissionAppsUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadOnboardingStateUseCase
@@ -90,37 +89,6 @@ class OnboardingViewModelTest {
         viewModel.loadConnectedApps()
         advanceUntilIdle()
         assertThat(loadFitnessPermissionApps.invocations).isEqualTo(1)
-    }
-
-    @Test
-    fun setAppConnected_modifiesListAndKeepsSorted() = runTest {
-        loadFitnessPermissionApps.setConnectedApps(
-            listOf(
-                ConnectedFitnessAppMetadata(TEST_APP, false),
-                ConnectedFitnessAppMetadata(TEST_APP_2, false),
-                ConnectedFitnessAppMetadata(TEST_APP_3, false),
-            )
-        )
-
-        val testObserver = TestObserver<OnboardingViewModel.OnboardingFragmentState>()
-        viewModel.connectedApps.observeForever(testObserver)
-        viewModel.setAppInteractedWith(TEST_APP_PACKAGE_NAME_3)
-        viewModel.loadConnectedApps()
-        advanceUntilIdle()
-
-        val actual = testObserver.getLastValue()
-        assertThat(actual is OnboardingViewModel.OnboardingFragmentState.OneAppConnected).isTrue()
-        assertThat(
-                (actual as OnboardingViewModel.OnboardingFragmentState.OneAppConnected).connectedApp
-            )
-            .isEqualTo(ConnectedFitnessAppMetadata(TEST_APP_3, true))
-        assertThat(actual.potentialApps)
-            .containsExactlyElementsIn(
-                listOf(
-                    ConnectedFitnessAppMetadata(TEST_APP, false),
-                    ConnectedFitnessAppMetadata(TEST_APP_2, false),
-                )
-            )
     }
 
     @Test

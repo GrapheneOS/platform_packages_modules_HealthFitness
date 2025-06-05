@@ -38,7 +38,7 @@ import org.junit.Test
  * <p>They only trigger the APIs, but don't test anything themselves.
  */
 @NonApiTest(exemptionReasons = [], justification = "METRIC")
-class HealthConnectUiTestHelper {
+class UiTestHelper {
     @get:Rule val disableAnimationRule = DisableAnimationRule()
 
     private val context: Context = ApplicationProvider.getApplicationContext()

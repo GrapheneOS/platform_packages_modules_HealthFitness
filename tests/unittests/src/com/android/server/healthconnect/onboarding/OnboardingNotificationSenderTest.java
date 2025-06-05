@@ -117,10 +117,15 @@ public class OnboardingNotificationSenderTest {
         assertThat(notification.actions).isNull();
         assertThat(notification.getChannelId()).isEqualTo(NOTIFICATION_CHANNEL_ID);
 
-        PendingIntent pendingIntent = notification.contentIntent;
-        assertThat(pendingIntent.getCreatorPackage()).isEqualTo(mContext.getPackageName());
-        assertThat(pendingIntent.isActivity()).isTrue();
-        assertThat(pendingIntent.isImmutable()).isTrue();
+        PendingIntent contentIntent = notification.contentIntent;
+        assertThat(contentIntent.getCreatorPackage()).isEqualTo(mContext.getPackageName());
+        assertThat(contentIntent.isBroadcast()).isTrue();
+        assertThat(contentIntent.isImmutable()).isTrue();
+
+        PendingIntent deleteIntent = notification.deleteIntent;
+        assertThat(deleteIntent.getCreatorPackage()).isEqualTo(mContext.getPackageName());
+        assertThat(deleteIntent.isBroadcast()).isTrue();
+        assertThat(deleteIntent.isImmutable()).isTrue();
     }
 
     @Test
@@ -176,10 +181,15 @@ public class OnboardingNotificationSenderTest {
         assertThat(notification.actions).isNull();
         assertThat(notification.getChannelId()).isEqualTo(NOTIFICATION_CHANNEL_ID);
 
-        PendingIntent pendingIntent = notification.contentIntent;
-        assertThat(pendingIntent.getCreatorPackage()).isEqualTo(mContext.getPackageName());
-        assertThat(pendingIntent.isActivity()).isTrue();
-        assertThat(pendingIntent.isImmutable()).isTrue();
+        PendingIntent contentIntent = notification.contentIntent;
+        assertThat(contentIntent.getCreatorPackage()).isEqualTo(mContext.getPackageName());
+        assertThat(contentIntent.isBroadcast()).isTrue();
+        assertThat(contentIntent.isImmutable()).isTrue();
+
+        PendingIntent deleteIntent = notification.deleteIntent;
+        assertThat(deleteIntent.getCreatorPackage()).isEqualTo(mContext.getPackageName());
+        assertThat(deleteIntent.isBroadcast()).isTrue();
+        assertThat(deleteIntent.isImmutable()).isTrue();
     }
 
     @Test

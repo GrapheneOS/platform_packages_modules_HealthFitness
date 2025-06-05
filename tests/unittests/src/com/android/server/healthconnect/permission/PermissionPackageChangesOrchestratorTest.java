@@ -193,7 +193,7 @@ public class PermissionPackageChangesOrchestratorTest {
     }
 
     private void setIntentIsPresent(boolean isIntentPresent) {
-        when(mTracker.updateAndGetSupportsPackageUsageIntent(SELF_PACKAGE_NAME, CURRENT_USER))
+        when(mTracker.updateAndGetSupportsPermissionUsageIntent(SELF_PACKAGE_NAME, CURRENT_USER))
                 .thenReturn(isIntentPresent);
     }
 

@@ -82,7 +82,7 @@ public class HealthPermissionIntentAppsTracker {
             if (mUserToHealthPackageNamesMap.get(userHandle).contains(packageName)) {
                 return true;
             }
-            return updateAndGetSupportsPackageUsageIntent(packageName, userHandle);
+            return updateAndGetSupportsPermissionUsageIntent(packageName, userHandle);
         }
     }
 
@@ -91,7 +91,7 @@ public class HealthPermissionIntentAppsTracker {
      * android.content.Intent#ACTION_VIEW_PERMISSION_USAGE} with {@link
      * HealthConnectManager#CATEGORY_HEALTH_PERMISSIONS} support is currently disabled.
      */
-    boolean updateAndGetSupportsPackageUsageIntent(String packageName, UserHandle userHandle) {
+    boolean updateAndGetSupportsPermissionUsageIntent(String packageName, UserHandle userHandle) {
         synchronized (mLock) {
             if (!mUserToHealthPackageNamesMap.containsKey(userHandle)) {
                 mUserToHealthPackageNamesMap.put(userHandle, new ArraySet<>());

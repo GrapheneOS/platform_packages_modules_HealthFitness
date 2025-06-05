@@ -102,9 +102,8 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
         // This call also has a (unintended?) positive side-effect of removing the package from
         // the intent tracker, if the package was removed. Keep calling this even if
         // isPackageRemoved is true.
-        boolean removePermissions;
-        removePermissions =
-                !mPermissionIntentTracker.updateAndGetSupportsPackageUsageIntent(
+        boolean supportsIntent =
+                mPermissionIntentTracker.updateAndGetSupportsPermissionUsageIntent(
                         packageName, userHandle);
 
         // If the package was removed, we reset grant time. If the package is present but the health
@@ -132,8 +131,8 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
             return;
         }
 
-        // If we don't need to remove or enforce the rationale intent, we are done.
-        if (!removePermissions
+        // If the package supports the intent, or we shouldn't enforce it, we are done.
+        if (supportsIntent
                 || !mPermissionHelper.shouldEnforcePermissionUsageIntent(packageName, userHandle)) {
             return;
         }

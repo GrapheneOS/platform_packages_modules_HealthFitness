@@ -18,6 +18,8 @@
     package="com.android.healthconnect.controller">
 
     <protected-broadcast android:name="android.health.connect.action.HEALTH_CONNECT_MIGRATION_READY" />
+    <protected-broadcast android:name="android.health.connect.action.ONBOARDING_NOTIFICATION_DISMISSED" />
+    <protected-broadcast android:name="android.health.connect.action.ONBOARDING_NOTIFICATION_CLICKED" />
 
     <uses-permission android:name="android.permission.MANAGE_HEALTH_PERMISSIONS" />
     <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA" />

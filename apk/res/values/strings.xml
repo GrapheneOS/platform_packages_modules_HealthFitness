@@ -1755,7 +1755,7 @@
     <string name="zero_apps_onboarding_notification_summary" description="Summary of notification to take users to a page where they can connect apps to Health Connect [CHAR_LIMIT=NONE]">Health&#160;Connect lets you share fitness and wellness data between your apps. See which apps you can connect now.</string>
 
     <string name="one_app_onboarding_notification_title" description="Title of notification to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Connect a second app</string>
-    <string name="one_app_onboarding_notification_summary" description="Summary of notification to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Set up another app so it can start sharing fitness and wellness data</string>
+    <string name="one_app_onboarding_notification_summary" description="Summary of notification to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Set up another app with Health&#160;Connect so it can start sharing fitness and wellness data</string>
 
     <!-- endregion -->
     <!-- endregion -->
