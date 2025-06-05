@@ -22,11 +22,15 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.medical.DisplayNameExtractor
 import com.android.healthconnect.controller.data.formatters.medical.MedicalEntryFormatter
 import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
 import com.android.healthconnect.controller.tests.utils.CoroutineTestRule
+import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION_LONG
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import javax.inject.Inject
@@ -38,6 +42,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
@@ -53,16 +59,25 @@ class MedicalEntryFormatterTest {
     private val medicalDataSourceReader: MedicalDataSourceReader =
         Mockito.mock(MedicalDataSourceReader::class.java)
 
-    @Inject lateinit var appInfoReader: AppInfoReader
+    @BindValue val appInfoReader: AppInfoReader = mock()
     private lateinit var context: Context
 
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
         MockitoAnnotations.initMocks(this)
         context = InstrumentationRegistry.getInstrumentation().context
         hiltRule.inject()
+        whenever(appInfoReader.getAppMetadata(any(), any()))
+            .thenReturn(
+                AppMetadata(
+                    packageName = TEST_APP_PACKAGE_NAME,
+                    appName = TEST_APP_NAME,
+                    icon = null,
+                    isSystem = false,
+                )
+            )
         formatter =
             MedicalEntryFormatter(
                 medicalDataSourceReader,
