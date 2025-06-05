@@ -32,6 +32,7 @@ import com.android.server.healthconnect.exportimport.ExportImportJobs;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigratorPackageChangesReceiver;
+import com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationJob;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 
@@ -119,6 +120,7 @@ public class HealthConnectManagerService extends SystemService {
                 .registerBroadcastReceiver(mContext);
         new MigratorPackageChangesReceiver(mHealthConnectInjector.getMigrationStateManager())
                 .registerBroadcastReceiver(mContext);
+        new HealthConnectOnboardingReceiver().registerBroadcastReceiver(mContext);
         publishBinderService(Context.HEALTHCONNECT_SERVICE, mHealthConnectService);
     }
 
