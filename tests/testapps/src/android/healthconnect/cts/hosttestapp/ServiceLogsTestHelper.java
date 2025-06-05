@@ -23,7 +23,6 @@ import static android.healthconnect.testing.cts.TestUtils.deleteRecordsOfType;
 import static android.healthconnect.testing.cts.TestUtils.deleteRecordsOfTypes;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.shared.DataFactory.getBloodPressureRecord;
-import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
 import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
 import static android.healthconnect.testing.shared.DataFactory.getHeightRecord;
 import static android.healthconnect.testing.shared.DataFactory.getMetadataForId;
@@ -35,7 +34,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
-import static java.time.Instant.EPOCH;
 import static java.util.Objects.requireNonNull;
 
 import android.content.Context;
@@ -64,7 +62,6 @@ import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
-import android.healthconnect.testing.cts.PermissionUtils;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.aggregation.TimeFilterFactory;
 import android.os.OutcomeReceiver;
@@ -73,8 +70,6 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.android.compatibility.common.util.NonApiTest;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.time.Duration;
@@ -94,7 +89,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @NonApiTest(
         exemptionReasons = {},
         justification = "METRIC")
-public class HealthConnectServiceLogsTests {
+public class ServiceLogsTestHelper {
 
     public static final int TIMEOUT_SECONDS = 5;
 
@@ -102,27 +97,6 @@ public class HealthConnectServiceLogsTests {
     private final HealthConnectManager mHealthConnectManager =
             requireNonNull(mContext.getSystemService(HealthConnectManager.class));
     private final PhrCtsTestUtils mPhrTestUtils = new PhrCtsTestUtils(mHealthConnectManager);
-
-    @Before
-    public void before() throws InterruptedException {
-        TestUtils.deleteAllDataFromHealthConnect();
-
-        // b/372766760: In theory, declared permissions are meant to be auto granted. However,
-        // this seems to be unreliable and has led to test failures where the permissions don't
-        // get granted as expected. We do it explicitly here as a precaution.
-        PermissionUtils.grantAllHealthPermissions(mContext.getPackageName());
-        // insert a record so the test app gets an app id in HC
-        Record record =
-                new StepsRecord.Builder(getEmptyMetadata(), EPOCH, Instant.now(), 123).build();
-        insertRecords(List.of(record));
-        TestUtils.deleteAllFitnessData();
-    }
-
-    @After
-    public void after() throws InterruptedException {
-        TestUtils.deleteAllFitnessData();
-        mPhrTestUtils.deleteAllMedicalData();
-    }
 
     @Test
     public void testCreateMedicalDataSourceSuccess() throws InterruptedException {

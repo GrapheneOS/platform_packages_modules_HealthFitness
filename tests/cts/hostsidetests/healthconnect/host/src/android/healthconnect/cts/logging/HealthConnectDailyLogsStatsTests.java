@@ -16,7 +16,12 @@
 
 package android.healthconnect.cts.logging;
 
+import static android.healthconnect.cts.HostSideTestUtil.DAILY_LOG_TESTS_HELPER;
+import static android.healthconnect.cts.HostSideTestUtil.SERVICE_LOG_TESTS_HELPER;
+import static android.healthconnect.cts.HostSideTestUtil.TEST_APP_PERMISSIONS;
 import static android.healthconnect.cts.HostSideTestUtil.TEST_APP_PKG_NAME;
+import static android.healthconnect.cts.HostSideTestUtil.clearData;
+import static android.healthconnect.cts.HostSideTestUtil.grantPermissionsWithAdb;
 import static android.healthconnect.cts.HostSideTestUtil.isHardwareSupported;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -54,9 +59,7 @@ import java.util.Map;
 public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements IBuildReceiver {
 
     private static final int NUMBER_OF_RETRIES = 10;
-    private static final String DAILY_LOG_TESTS_ACTIVITY = ".DailyLogsTests";
-    private static final String HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY =
-            ".HealthConnectServiceLogsTests";
+
     private IBuildInfo mCtsBuild;
     private Instant mTestStartTime;
     private Instant mTestStartTimeOnDevice;
@@ -68,16 +71,17 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         }
         super.setUp();
         assertThat(mCtsBuild).isNotNull();
-        assertThat(isHardwareSupported(getDevice())).isTrue();
         // TODO(b/313055175): Do not disable rate limiting once b/300238889 is resolved.
         HostSideTestUtil.setupRateLimitingFeatureFlag(getDevice());
         mTestStartTime = Instant.now();
         mTestStartTimeOnDevice = Instant.ofEpochMilli(getDevice().getDeviceDate());
         ConfigUtils.removeConfig(getDevice());
         ReportUtils.clearReports(getDevice());
-        clearData();
-        // Doing this to avoid any access log entries which might make the test flaky.
-        increaseDeviceTimeByDays(/* numberOfDays= */ 31);
+        // b/396574091: Grant all permissions that the test helper app needs.
+        // This is another attempt to pre-grant permissions to the test helper app, another attempt
+        // was made in ag/31589102 but didn't seem to fix the problem.
+        grantPermissionsWithAdb(getDevice(), TEST_APP_PKG_NAME, TEST_APP_PERMISSIONS);
+        clearData(getDevice());
     }
 
     @Override
@@ -85,12 +89,12 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         if (!isHardwareSupported(getDevice())) {
             return;
         }
-        ConfigUtils.removeConfig(getDevice());
-        ReportUtils.clearReports(getDevice());
-        clearData();
         // TODO(b/313055175): Do not disable rate limiting once b/300238889 is resolved.
         HostSideTestUtil.restoreRateLimitingFeatureFlag(getDevice());
         resetTime();
+        ConfigUtils.removeConfig(getDevice());
+        ReportUtils.clearReports(getDevice());
+        clearData(getDevice());
         super.tearDown();
     }
 
@@ -199,8 +203,7 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
                 getDevice(),
                 TEST_APP_PKG_NAME,
                 new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
-        triggerTestInTestApp(
-                HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY, "testHealthConnectInsertRecords");
+        triggerTestInTestApp(SERVICE_LOG_TESTS_HELPER, "testHealthConnectInsertRecords");
         increaseDeviceTimeByDays(/* numberOfDays= */ 1);
 
         List<StatsLog.EventMetricData> data =
@@ -223,8 +226,7 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
                 getDevice(),
                 TEST_APP_PKG_NAME,
                 new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
-        triggerTestInTestApp(
-                HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY, "testHealthConnectInsertRecords");
+        triggerTestInTestApp(SERVICE_LOG_TESTS_HELPER, "testHealthConnectInsertRecords");
         increaseDeviceTimeByDays(/* numberOfDays= */ 10);
 
         List<StatsLog.EventMetricData> data =
@@ -247,8 +249,7 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
                 getDevice(),
                 TEST_APP_PKG_NAME,
                 new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
-        triggerTestInTestApp(
-                HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY, "testHealthConnectInsertRecords");
+        triggerTestInTestApp(SERVICE_LOG_TESTS_HELPER, "testHealthConnectInsertRecords");
         increaseDeviceTimeByDays(/* numberOfDays= */ 35);
 
         List<StatsLog.EventMetricData> data =
@@ -271,8 +272,7 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
                 getDevice(),
                 TEST_APP_PKG_NAME,
                 new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
-        triggerTestInTestApp(
-                HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY, "testHealthConnectReadRecords");
+        triggerTestInTestApp(SERVICE_LOG_TESTS_HELPER, "testHealthConnectReadRecords");
         increaseDeviceTimeByDays(/* numberOfDays= */ 1);
 
         List<StatsLog.EventMetricData> data =
@@ -295,8 +295,7 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
                 getDevice(),
                 TEST_APP_PKG_NAME,
                 new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
-        triggerTestInTestApp(
-                HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY, "testHealthConnectReadRecords");
+        triggerTestInTestApp(SERVICE_LOG_TESTS_HELPER, "testHealthConnectReadRecords");
         increaseDeviceTimeByDays(/* numberOfDays= */ 10);
 
         List<StatsLog.EventMetricData> data =
@@ -319,8 +318,7 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
                 getDevice(),
                 TEST_APP_PKG_NAME,
                 new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
-        triggerTestInTestApp(
-                HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY, "testHealthConnectReadRecords");
+        triggerTestInTestApp(SERVICE_LOG_TESTS_HELPER, "testHealthConnectReadRecords");
         increaseDeviceTimeByDays(/* numberOfDays= */ 35);
 
         List<StatsLog.EventMetricData> data =
@@ -343,8 +341,7 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
                 getDevice(),
                 TEST_APP_PKG_NAME,
                 new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
-        triggerTestInTestApp(
-                HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY, "testHealthConnectDeleteRecords");
+        triggerTestInTestApp(SERVICE_LOG_TESTS_HELPER, "testHealthConnectDeleteRecords");
         increaseDeviceTimeByDays(/* numberOfDays= */ 35);
 
         List<StatsLog.EventMetricData> data =
@@ -413,7 +410,7 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         }
 
         ExtensionRegistry extensionRegistry =
-                triggerTestInTestApp(DAILY_LOG_TESTS_ACTIVITY, testName);
+                triggerTestInTestApp(DAILY_LOG_TESTS_HELPER, testName);
         triggerDailyJob(); // This will run the job which calls DailyLogger to log some metrics.
         List<StatsLog.EventMetricData> data =
                 ReportUtils.getEventMetricDataList(getDevice(), extensionRegistry);
@@ -422,13 +419,6 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
             return getEventMetricDataList(testName, retryCount - 1);
         }
         return data;
-    }
-
-    private void clearData() throws Exception {
-        triggerTestInTestApp(DAILY_LOG_TESTS_ACTIVITY, "deleteAllStagedRemoteData");
-        // Next two lines will delete newly added Access Logs as all access logs over 7 days are
-        // deleted by the AutoDeleteService which is run by the daily job.
-        increaseDeviceTimeByDays(10);
     }
 
     private ExtensionRegistry triggerTestInTestApp(String className, String testName)

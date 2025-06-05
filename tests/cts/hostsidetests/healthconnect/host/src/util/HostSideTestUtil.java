@@ -33,7 +33,10 @@ import java.util.List;
 public class HostSideTestUtil {
 
     public static final String TEST_APP_PKG_NAME = "android.healthconnect.cts.hosttestapp";
-    public static final String DAILY_LOG_TESTS_ACTIVITY = ".DailyLogsTests";
+
+    public static final String DAILY_LOG_TESTS_HELPER = ".DailyLogsTestHelper";
+    public static final String SERVICE_LOG_TESTS_HELPER = ".ServiceLogsTestHelper";
+    public static final String UI_TESTS_HELPER = ".UiTestHelper";
     private static final int NUMBER_OF_RETRIES = 10;
 
     private static final String FEATURE_TV = "android.hardware.type.television";
@@ -46,9 +49,30 @@ public class HostSideTestUtil {
     private static final String NAMESPACE_HEALTH_FITNESS = "health_fitness";
     private static String sRateLimiterFlagDefaultValue;
 
+    public static final List<String> TEST_APP_PERMISSIONS =
+            List.of(
+                    "android.permission.health.WRITE_BLOOD_PRESSURE",
+                    "android.permission.health.WRITE_HEART_RATE",
+                    "android.permission.health.WRITE_STEPS",
+                    "android.permission.health.READ_BLOOD_PRESSURE",
+                    "android.permission.health.READ_HEART_RATE",
+                    "android.permission.health.WRITE_MEDICAL_DATA",
+                    "android.permission.health.READ_MEDICAL_DATA_VACCINES",
+                    "android.permission.health.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES",
+                    "android.permission.health.READ_MEDICAL_DATA_CONDITIONS",
+                    "android.permission.health.READ_MEDICAL_DATA_LABORATORY_RESULTS",
+                    "android.permission.health.READ_MEDICAL_DATA_MEDICATIONS",
+                    "android.permission.health.READ_MEDICAL_DATA_PERSONAL_DETAILS",
+                    "android.permission.health.READ_MEDICAL_DATA_PRACTITIONER_DETAILS",
+                    "android.permission.health.READ_MEDICAL_DATA_PREGNANCY",
+                    "android.permission.health.READ_MEDICAL_DATA_PROCEDURES",
+                    "android.permission.health.READ_MEDICAL_DATA_SOCIAL_HISTORY",
+                    "android.permission.health.READ_MEDICAL_DATA_VISITS",
+                    "android.permission.health.READ_MEDICAL_DATA_VITAL_SIGNS");
+
     /** Clears all data on the device, including access logs. */
     public static void clearData(ITestDevice device) throws Exception {
-        triggerTestInTestApp(device, DAILY_LOG_TESTS_ACTIVITY, "deleteAllStagedRemoteData");
+        triggerTestInTestApp(device, DAILY_LOG_TESTS_HELPER, "deleteAllDataFromHealthConnect");
         // Next two lines will delete newly added Access Logs as all access logs over 7 days are
         // deleted by the AutoDeleteService which is run by the daily job.
         increaseDeviceTimeByDays(device, 10);

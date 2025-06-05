@@ -22,6 +22,7 @@ import android.cts.statsdatom.lib.DeviceUtils
 import android.cts.statsdatom.lib.ReportUtils
 import android.healthconnect.cts.HostSideTestUtil
 import android.healthconnect.cts.HostSideTestUtil.TEST_APP_PKG_NAME
+import android.healthconnect.cts.HostSideTestUtil.UI_TESTS_HELPER
 import android.healthconnect.cts.HostSideTestUtil.isHardwareSupported
 import android.healthfitness.ui.ElementId
 import android.healthfitness.ui.PageId
@@ -91,12 +92,7 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
         if (!isHardwareSupported(device)) {
             return
         }
-        DeviceUtils.runDeviceTests(
-            device,
-            TEST_APP_PKG_NAME,
-            ".HealthConnectUiTestHelper",
-            "openHomeFragment",
-        )
+        DeviceUtils.runDeviceTests(device, TEST_APP_PKG_NAME, UI_TESTS_HELPER, "openHomeFragment")
         Thread.sleep(AtomTestUtils.WAIT_TIME_LONG.toLong())
         val registry = ExtensionRegistry.newInstance()
         UiExtensionAtoms.registerAllExtensions(registry)
