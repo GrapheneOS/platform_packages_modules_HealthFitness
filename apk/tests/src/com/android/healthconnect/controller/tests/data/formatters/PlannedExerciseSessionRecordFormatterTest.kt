@@ -30,13 +30,19 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedE
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseFormattedSectionTitle
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseStepEntry
 import com.android.healthconnect.controller.data.formatters.PlannedExerciseSessionRecordFormatter
+import com.android.healthconnect.controller.data.formatters.shared.FormatterModule
+import com.android.healthconnect.controller.tests.utils.di.FakeUnitPreferences
 import com.android.healthconnect.controller.tests.utils.getPlannedExerciseBlock
 import com.android.healthconnect.controller.tests.utils.getPlannedExerciseSessionRecord
 import com.android.healthconnect.controller.tests.utils.getPlannedExerciseStep
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.DistanceUnit
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
@@ -48,10 +54,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@UninstallModules(FormatterModule::class)
 @RunWith(AndroidJUnit4::class)
 class PlannedExerciseSessionRecordFormatterTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
+    @BindValue val unitPreferences: UnitPreferences = FakeUnitPreferences()
     @Inject lateinit var formatter: PlannedExerciseSessionRecordFormatter
     private lateinit var context: Context
 
@@ -60,7 +68,7 @@ class PlannedExerciseSessionRecordFormatterTest {
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.UK)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
-
+        unitPreferences.distanceUnit = DistanceUnit.KILOMETERS
         hiltRule.inject()
     }
 
