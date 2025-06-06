@@ -23,7 +23,7 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Rechten en gegevens"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Beheer de gezondheids- en fitnessgegevens op je apparaat en bepaal welke apps er toegang toe krijgen"</string>
     <string name="data_title" msgid="4456619761533380816">"Gegevens en toegang"</string>
-    <string name="browse_medical_data" msgid="6963802956096683273">"Browsen door medisch dossier"</string>
+    <string name="browse_medical_data" msgid="6963802956096683273">"Browsen door medische dossiers"</string>
     <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"Bekijk je medische dossiers en welke apps er toegang toe hebben"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Alle categorieën"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Alle categorieën bekijken"</string>
@@ -565,8 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Terug"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Aan de slag"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Gegevens verwijderen"</string>
-    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
-    <skip />
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Knop Gegevens voor %1$s verwijderen"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Verwijdering openen"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Verwijdering afsluiten"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Kies gegevens om te verwijderen uit Health Connect"</string>
@@ -1206,12 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Toegang toegestaan"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Lezen toegestaan"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Met deze rechten heeft <xliff:g id="APP_NAME">%1$s</xliff:g> toegang tot gegevens van de apparaatsensoren."</string>
-    <!-- no translation found for write_access (571547306854732263) -->
-    <skip />
-    <!-- no translation found for read_access (3317759826769372785) -->
-    <skip />
-    <!-- no translation found for health_switch_content_description (1297823949479201621) -->
-    <skip />
+    <string name="write_access" msgid="571547306854732263">"Schrijftoegang"</string>
+    <string name="read_access" msgid="3317759826769372785">"Leestoegang"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> van <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> apps toegestaan"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Geen apps die dit aanvragen"</string>
     <string name="allowed" msgid="4158456017482263737">"Toegestaan"</string>
@@ -1228,8 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Gebruikt door 1 app}other{Gebruikt door # apps}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Niet gebruikt in de afgelopen 24 uur"</string>
     <string name="accessed" msgid="4424701457530587176">"Geopend: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
-    <skip />
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Je eerste app koppelen"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Koppel deze apps om gezondheids- en fitnessgegevens tussen de apps te delen"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Een 2e app koppelen"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Stel nog één app in om gezondheids- en fitnessgegevens te delen met <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1239,28 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Meer informatie over Health Connect"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"App gekoppeld aan Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Bijna klaar"</string>
-    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
-    <skip />
-    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
-    <skip />
-    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
-    <skip />
-    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
-    <skip />
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Open deze apps nu om de instellingen af te ronden en te beginnen met gegevens delen"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Open deze apps nu om de instellingen af te ronden en te beginnen met gegevens delen, of ga door met beschikbare apps koppelen"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Gekoppelde apps"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Beschikbare apps om te koppelen"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Je gezondheidsgegevens bekijken in verschillende apps"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Begin met fitness- en welzijnsgegevens delen tussen je apps"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Instellen"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Een 2e app koppelen"</string>
-    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
-    <skip />
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Stel een andere app in zodat deze fitness- en welzijnsgegevens kan delen"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Doorgaan"</string>
-    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Je gezondheidsgegevens bekijken in verschillende apps"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Met Health Connect kun je fitness- en welzijnsgegevens delen tussen je apps. Bekijk welke apps je nu kunt koppelen."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Een 2e app koppelen"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
     <skip />
 </resources>

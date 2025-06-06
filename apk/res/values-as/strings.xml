@@ -565,6 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"উভতি যাওক"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"আৰম্ভ কৰক"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"ডেটা মচক"</string>
+    <!-- String.format failed for translation -->
     <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
     <skip />
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"মচা অৱস্থাটোত সোমাওক"</string>
@@ -679,7 +680,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{১ বাৰ পুনৰাবৃত্তি}one{# বাৰ পুনৰাবৃত্তি}other{# বাৰ পুনৰাবৃত্তি}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{১ বাৰ পুনৰাবৃত্তি}one{# বাৰ পুনৰাবৃত্তি}other{# বাৰ পুনৰাবৃত্তি}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"ব্যায়ামৰ বিভিন্ন ভাগ"</string>
-    <string name="segment_set_index_format" msgid="5299538353624573851">"<xliff:g id="SET_INDEX">%1$d</xliff:g> ছেট কৰক"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"ছেট <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
     <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
     <string name="segment_rpe_format_long" msgid="3492398127594227129">"অনুভূত পৰিশ্ৰমৰ হাৰ: <xliff:g id="RPE">%1$s</xliff:g>"</string>
     <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
@@ -1206,12 +1207,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"এক্সেছৰ অনুমতি দিয়া হৈছে"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"পঢ়িবলৈ অনুমতি দিয়া হৈছে"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"এই অনুমতিসমূহে <xliff:g id="APP_NAME">%1$s</xliff:g>ক আপোনাৰ ডিভাইচৰ ছেন্সৰৰ পৰা ডেটা এক্সেছ কৰিবলৈ দিয়ে।"</string>
-    <!-- no translation found for write_access (571547306854732263) -->
-    <skip />
-    <!-- no translation found for read_access (3317759826769372785) -->
-    <skip />
-    <!-- no translation found for health_switch_content_description (1297823949479201621) -->
-    <skip />
+    <string name="write_access" msgid="571547306854732263">"এক্সেছ লিখক"</string>
+    <string name="read_access" msgid="3317759826769372785">"এক্সেছ পঢ়ক"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>। <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>। <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g>ৰ ভিতৰত <xliff:g id="NUMBER_0">%1$d</xliff:g>টা এপক অনুমতি দিয়া হৈছে"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"কোনো এপৰ অনুৰোধ জনোৱা হোৱা নাই"</string>
     <string name="allowed" msgid="4158456017482263737">"অনুমতি দিয়া হৈছে"</string>
@@ -1228,8 +1226,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{১ টা এপে ব্যৱহাৰ কৰিছে}one{# টা এপে ব্যৱহাৰ কৰিছে}other{# টা এপে ব্যৱহাৰ কৰিছে}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"যোৱা ২৪ ঘণ্টাত ব্যৱহাৰ কৰা হোৱা নাই"</string>
     <string name="accessed" msgid="4424701457530587176">"<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>ত এক্সেছ কৰিছিল"</string>
-    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
-    <skip />
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"আপোনাৰ প্ৰথম এপ্‌ সংযোগ কৰা"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"এই এপ্‌সমূহৰ মাজত স্বাস্থ্য আৰু শৰীৰচৰ্চাৰ ডেটা শ্বেয়াৰ কৰিবলৈ আৰম্ভ কৰিবলৈ এই এপ্‌সমূহ সংযোগ কৰক"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"এটা দ্বিতীয় এপ্ সংযোগ কৰক"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"<xliff:g id="APP_NAME">%1$s</xliff:g>ৰ সৈতে স্বাস্থ্য আৰু শৰীৰচৰ্চাৰ ডেটা শ্বেয়াৰ কৰিবলৈ আৰু এটা এপ্ ছেট আপ কৰক"</string>
@@ -1239,28 +1236,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Health Connectৰ বিষয়ে অধিক"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Health Connectৰ সৈতে এপ্ সংযোগ কৰা হৈছে"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"প্ৰায় সম্পূৰ্ণ হৈছে"</string>
-    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
-    <skip />
-    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
-    <skip />
-    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
-    <skip />
-    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
-    <skip />
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"ছেট আপ সম্পূৰ্ণ কৰি ডেটা শ্বেয়াৰ কৰা আৰম্ভ কৰিবলৈ এতিয়াই এই এপ্‌সমূহ খোলক"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"ছেট আপ সম্পূৰ্ণ কৰি ডেটা শ্বেয়াৰ কৰা আৰম্ভ কৰিবলৈ এতিয়াই এই এপ্‌সমূহ খোলক বা উপলব্ধ এপ্‌সমূহ সংযোগ কৰি থাকক"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"সংযোজিত এপ্"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"সংযোগ কৰিবলৈ উপলব্ধ এপ্"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"সমগ্ৰ এপত আপোনাৰ স্বাস্থ্য সম্পৰ্কীয় ডেটা চাওক"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"আপোনাৰ এপ্‌সমূহৰ মাজত ফিটনেছ আৰু সুস্থতাৰ ডেটা শ্বেয়াৰ কৰিবলৈ আৰম্ভ কৰক"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"ছেট আপ কৰক"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"এটা দ্বিতীয় এপ্‌ সংযোগ কৰক"</string>
-    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
-    <skip />
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"আন এটা এপ্‌ ছেট আপ কৰক যাতে ই ফিটনেছ আৰু সুস্থতাৰ ডেটা শ্বেয়াৰ কৰিবলৈ আৰম্ভ কৰিব পাৰে"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"অব্যাহত ৰাখক"</string>
-    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"সমগ্ৰ এপত আপোনাৰ স্বাস্থ্য সম্পৰ্কীয় ডেটা চাওক"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connectএ আপোনাৰ এপ্‌সমূহৰ মাজত ফিটনেছ আৰু সুস্থতাৰ ডেটা শ্বেয়াৰ কৰিবলৈ দিয়ে। আপুনি এতিয়া কোনবোৰ এপ্‌ সংযোগ কৰিব পাৰে চাওক।"</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"এটা দ্বিতীয় এপ্‌ সংযোগ কৰা"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
     <skip />
 </resources>

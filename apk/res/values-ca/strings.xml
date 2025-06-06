@@ -565,8 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Torna"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Comença"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Suprimeix les dades"</string>
-    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
-    <skip />
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Botó Suprimeix les dades de %1$s"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Entra a la supressió"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Surt de la supressió"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Tria les dades per suprimir de Salut connectada"</string>
@@ -1206,12 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Amb permís d\'accés"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Amb permís de lectura"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Aquests permisos donen a <xliff:g id="APP_NAME">%1$s</xliff:g> accés a les dades dels sensors del teu dispositiu."</string>
-    <!-- no translation found for write_access (571547306854732263) -->
-    <skip />
-    <!-- no translation found for read_access (3317759826769372785) -->
-    <skip />
-    <!-- no translation found for health_switch_content_description (1297823949479201621) -->
-    <skip />
+    <string name="write_access" msgid="571547306854732263">"Accés d\'escriptura"</string>
+    <string name="read_access" msgid="3317759826769372785">"Accés de lectura"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> de <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplicacions permeses"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Cap aplicació ho ha sol·licitat"</string>
     <string name="allowed" msgid="4158456017482263737">"Es permet"</string>
@@ -1228,8 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Utilitzat per 1 aplicació}other{Utilitzat per # aplicacions}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"No s\'ha utilitzat en les 24 darreres hores"</string>
     <string name="accessed" msgid="4424701457530587176">"Hora del darrer accés: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
-    <skip />
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Connecta la teva primera aplicació"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Connecta aquestes aplicacions perquè comparteixin dades de salut i fitnes entre elles"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Connecta una segona aplicació"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Configura una aplicació més per compartir dades de salut i fitnes amb <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1239,28 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Més informació sobre Salut connectada"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Aplicació connectada a Salut connectada"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Ja queda poc"</string>
-    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
-    <skip />
-    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
-    <skip />
-    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
-    <skip />
-    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
-    <skip />
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Obre aquestes aplicacions ara per acabar la configuració i començar a compartir dades"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Obre aquestes aplicacions ara per acabar la configuració i començar a compartir dades, o continua connectant les aplicacions disponibles"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Aplicacions connectades"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Aplicacions disponibles per connectar"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Consulta les teves dades de salut en aplicacions"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Comença a compartir dades de fitnes i benestar entre les teves aplicacions"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Configura"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Connecta una segona aplicació"</string>
-    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
-    <skip />
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Configura una altra aplicació perquè pugui començar a compartir dades de fitnes i benestar"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Continua"</string>
-    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Consulta les teves dades de salut en aplicacions"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Salut connectada et permet compartir dades de fitnes i benestar entre les teves aplicacions. Consulta quines aplicacions pots connectar ara."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Connecta una segona aplicació"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
     <skip />
 </resources>

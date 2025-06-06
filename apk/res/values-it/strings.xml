@@ -31,7 +31,7 @@
     <string name="connected_apps_title" msgid="279942692804743223">"Autorizzazioni app"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Gestisci app e autorizzazioni"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"Ha accesso <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> app su <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>"</string>
-    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"App con accesso: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> su <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>"</string>
+    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"Hanno accesso <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> app su <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>"</string>
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"Hanno accesso <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> app"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"Ha accesso <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> app"</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{1 app ha accesso}other{# app hanno accesso}}"</string>
@@ -64,7 +64,7 @@
     <string name="manage_permissions" msgid="8394221950712608160">"Gestisci autorizzazioni"</string>
     <string name="recent_access_time_content_descritption" msgid="1137471676075811472">"Ora: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
     <string name="recent_access_empty_state_title" msgid="4767157641389217682">"Nessun accesso recente"</string>
-    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"Le app che hanno acceduto di recente ai tuoi dati verranno mostrate automaticamente qui"</string>
+    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"Le app che hanno avuto accesso ai tuoi dati di recente verranno mostrate automaticamente qui"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"Visualizza tutto"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"Impossibile caricare l\'accesso recente"</string>
     <string name="recent_access_inactive_app" msgid="8754221676902025802">"Quest\'app non è più disponibile"</string>
@@ -565,8 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Indietro"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Inizia"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Elimina dati"</string>
-    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
-    <skip />
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Pulsante Elimina i dati di %1$s"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Entra a eliminazione"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Esci da eliminazione"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Scegli i dati di Connessione Salute da eliminare"</string>
@@ -1150,7 +1149,7 @@
     <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"Trova altre app da sincronizzare con <xliff:g id="APP_NAME">%s</xliff:g> tramite Connessione Salute"</string>
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"Vedi nello store"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"Imposta un blocco schermo"</string>
-    <string name="lock_screen_banner_content" msgid="3392527073622152481">"Per una maggiore sicurezza dei tuoi dati sanitari, imposta un PIN, una sequenza o una password per questo dispositivo"</string>
+    <string name="lock_screen_banner_content" msgid="3392527073622152481">"Per una maggiore sicurezza dei dati relativi alla tua salute, imposta un PIN, una sequenza o una password per questo dispositivo"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Imposta il blocco schermo"</string>
     <string name="select_all" msgid="837499881590001166">"Seleziona tutto"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Le app collegate non potranno più leggere questi dati di Connessione Salute"</string>
@@ -1206,12 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Autorizzazioni di accesso"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Autorizzazioni di lettura"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Queste autorizzazioni consentono a <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere ai dati dei sensori del tuo dispositivo."</string>
-    <!-- no translation found for write_access (571547306854732263) -->
-    <skip />
-    <!-- no translation found for read_access (3317759826769372785) -->
-    <skip />
-    <!-- no translation found for health_switch_content_description (1297823949479201621) -->
-    <skip />
+    <string name="write_access" msgid="571547306854732263">"Accesso in scrittura"</string>
+    <string name="read_access" msgid="3317759826769372785">"Accesso in lettura"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"App autorizzate: <xliff:g id="NUMBER_0">%1$d</xliff:g> su <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Nessuna app richiede l\'autorizzazione"</string>
     <string name="allowed" msgid="4158456017482263737">"Autorizzata"</string>
@@ -1228,8 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Utilizzata da 1 app}other{Utilizzata da # app}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Autorizzazione non utilizzata nelle ultime 24 ore"</string>
     <string name="accessed" msgid="4424701457530587176">"Ultimo accesso: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
-    <skip />
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Collega la prima app"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Connetti queste app per iniziare a condividere i dati relativi alla salute e all\'attività fisica"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Collega una seconda app"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Configura un\'altra app per condividere dati relativi alla salute e all\'attività fisica con <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1239,28 +1234,18 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Scopri di più su Connessione Salute"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"App collegata a Connessione Salute"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Operazione quasi terminata"</string>
-    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
-    <skip />
-    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
-    <skip />
-    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
-    <skip />
-    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
-    <skip />
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Apri queste app ora per completare la configurazione e avviare la condivisione dei dati"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Apri queste app ora per completare la configurazione e avviare la condivisione dei dati oppure continua a collegare le app disponibili"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"App collegate"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"App disponibili per la connessione"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Visualizza i tuoi dati relativi alla salute tra le app"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Inizia a condividere dati relativi al benessere e all\'attività fisica tra le tue app"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Configura"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Collega una seconda app"</string>
-    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
-    <skip />
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Configura un\'altra app in modo che possa iniziare a condividere dati relativi al benessere e all\'attività fisica"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Continua"</string>
-    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
-    <skip />
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Visualizza i tuoi dati relativi alla salute tra le app"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Connessione Salute ti consente di condividere dati relativi al benessere e all\'attività fisica tra le tue app. Scopri subito a quali app puoi connetterti."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Collega una seconda app"</string>
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configura un\'altra app con Connessione Salute in modo che possa iniziare a condividere dati relativi a benessere e attività fisica"</string>
 </resources>

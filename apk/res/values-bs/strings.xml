@@ -404,7 +404,7 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Izbriši i podatke aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g> iz Health Connecta"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Ukloniti sva odobrenja za fitnes i wellness?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Iz aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g> izbriši i podatke o fitnesu koji potiču iz Health Connecta"</string>
-    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Ukloniti sva odobrenja za zdravstvene evidencije?"</string>
+    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Ukloniti sva odobrenja za zdravstvenu evidenciju?"</string>
     <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"Iz aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g> izbriši i zdravstvene evidencije koje potiču iz Health Connecta"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti zapisivati podatke iz Health Connecta.\n\nOvo ne utiče na druga odobrenja koja ova aplikacija može imati, kao što je odobrenje za kameru, mikrofon ili lokaciju."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti zapisivati podatke iz Health Connecta, uključujući pozadinske podatke.\n\nOvo ne utiče na druga odobrenja koja ova aplikacija može imati, kao što je odobrenje za kameru, mikrofon ili lokaciju."</string>
@@ -565,8 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Nazad"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Započnite"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Brisanje podataka"</string>
-    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
-    <skip />
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Dugme za brisanje podataka za aplikaciju %1$s"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Ulazak u brisanje"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Izlazak iz brisanja"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Odaberite podatke za brisanje iz Health Connecta"</string>
@@ -1206,12 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Dozvoljen pristup"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Dozvoljeno čitanje"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Ova odobrenja daju aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> pristup podacima sa senzora uređaja."</string>
-    <!-- no translation found for write_access (571547306854732263) -->
-    <skip />
-    <!-- no translation found for read_access (3317759826769372785) -->
-    <skip />
-    <!-- no translation found for health_switch_content_description (1297823949479201621) -->
-    <skip />
+    <string name="write_access" msgid="571547306854732263">"Pristup za pisanje"</string>
+    <string name="read_access" msgid="3317759826769372785">"Pristup za čitanje"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"Aplikacije s odobrenjem: <xliff:g id="NUMBER_0">%1$d</xliff:g> od <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Nijedna aplikacija ne traži odobrenje"</string>
     <string name="allowed" msgid="4158456017482263737">"Dozvoljeno"</string>
@@ -1228,8 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Koristi 1 aplikacija}one{Koristi # aplikacija}few{Koriste # aplikacije}other{Koristi # aplikacija}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Nije korišteno u prethodna 24 sata"</string>
     <string name="accessed" msgid="4424701457530587176">"Pristupljeno je u <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
-    <skip />
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Povežite prvu aplikaciju"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Povežite ove aplikacije da između njih počnete dijeliti podatke o zdravlju i fitnesu"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Povežite drugu aplikaciju"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Postavite još jednu aplikaciju za dijeljenje podataka o zdravlju i fitnesu s aplikacijom <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1239,28 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Više o Health Connectu"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Aplikacija je povezana s Health Connectom"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Skoro je gotovo"</string>
-    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
-    <skip />
-    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
-    <skip />
-    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
-    <skip />
-    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
-    <skip />
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Otvorite ove aplikacije sada da završite postavljanje i započnete dijeljenje podataka"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Otvorite ove aplikacije sada da završite postavljanje i započnete dijeljenje podataka ili nastavite povezivati dostupne aplikacije"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Povezane aplikacije"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Dostupne aplikacije za povezivanje"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Pogledajte zdravstvene podatke u aplikacijama"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Počnite dijeliti podatke o fitnesu i wellnessu između aplikacija"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Postavi"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Povežite drugu aplikaciju"</string>
-    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
-    <skip />
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Postavite još jednu aplikaciju da može početi dijeliti podatke o fitnesu i wellnessu"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Nastavi"</string>
-    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Pogledajte zdravstvene podatke u aplikacijama"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect vam omogućava da dijelite podatke o fitnesu i wellnessu između aplikacija. Pogledajte koje aplikacije možete povezati sada."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Povežite drugu aplikaciju"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
     <skip />
 </resources>
