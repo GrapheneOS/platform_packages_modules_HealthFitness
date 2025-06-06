@@ -29,7 +29,7 @@ import static android.healthconnect.cts.aggregation.Utils.assertDoubleWithTolera
 import static android.healthconnect.cts.aggregation.Utils.assertEnergyWithTolerance;
 import static android.healthconnect.cts.aggregation.Utils.assertLengthWithTolerance;
 import static android.healthconnect.cts.aggregation.Utils.assertMassWithTolerance;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGroupByDuration;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGroupByPeriod;
@@ -104,14 +104,14 @@ public class AggregationApisTest {
 
     @Before
     public void setUp() throws InterruptedException {
-        deleteAllDataFromHealthConnect();
+        deleteAllStagedRemoteData();
         setupAggregation(mPackageName, HealthDataCategory.ACTIVITY);
         setupAggregation(mPackageName, HealthDataCategory.BODY_MEASUREMENTS);
     }
 
     @After
-    public void tearDown() throws InterruptedException {
-        deleteAllDataFromHealthConnect();
+    public void tearDown() {
+        deleteAllStagedRemoteData();
     }
 
     @Test

@@ -20,7 +20,7 @@ import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_I
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_MEDICATIONS;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.testing.cts.TestUtils.deleteRecords;
 import static android.healthconnect.testing.cts.TestUtils.deleteRecordsByIdFilter;
 import static android.healthconnect.testing.cts.TestUtils.getChangeLogToken;
@@ -30,6 +30,7 @@ import static android.healthconnect.testing.cts.TestUtils.insertRecordAndGetId;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.readRecords;
 import static android.healthconnect.testing.cts.TestUtils.updateRecords;
+import static android.healthconnect.testing.cts.TestUtils.verifyDeleteRecords;
 import static android.healthconnect.testing.shared.DataFactory.buildExerciseSession;
 import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
 import static android.healthconnect.testing.shared.DataFactory.getBasalMetabolicRateRecord;
@@ -60,6 +61,7 @@ import static java.time.temporal.ChronoUnit.MILLIS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 import android.content.Context;
+import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.MedicalResourceId;
@@ -164,11 +166,17 @@ public class HealthConnectChangeLogsTests {
     public void setUp() throws Exception {
         HealthConnectManager manager = TestUtils.getHealthConnectManager();
         mPhrCtsTestUtils = new PhrCtsTestUtils(manager);
+        mPhrCtsTestUtils.deleteAllMedicalData();
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        deleteAllDataFromHealthConnect();
+        verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(
+                                new DataOrigin.Builder().setPackageName(mPackageName).build())
+                        .build());
+        deleteAllStagedRemoteData();
     }
 
     @Test

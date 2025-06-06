@@ -15,7 +15,7 @@
  */
 package android.healthconnect.tests;
 
-import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.readAllRecords;
 import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadata;
@@ -63,7 +63,7 @@ public class DailyJobTest {
     @Before
     public void setUp() throws Exception {
         Context mContext = ApplicationProvider.getApplicationContext();
-        deleteAllDataFromHealthConnect();
+        deleteAllStagedRemoteData();
 
         PermissionUtils.grantHealthPermission(
                 mContext.getPackageName(), HealthPermissions.READ_STEPS);
@@ -84,7 +84,7 @@ public class DailyJobTest {
     public void tearDown() throws Exception {
         // Set retention period to 0 to disable auto-delete.
         TestUtils.setRecordRetentionPeriodInDays(0);
-        deleteAllDataFromHealthConnect();
+        deleteAllStagedRemoteData();
     }
 
     @Test

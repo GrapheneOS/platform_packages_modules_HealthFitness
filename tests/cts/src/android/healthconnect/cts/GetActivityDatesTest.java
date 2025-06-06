@@ -59,8 +59,8 @@ public class GetActivityDatesTest {
                     "Tests should run on supported hardware only.");
 
     @Before
-    public void setUp() throws InterruptedException {
-        TestUtils.deleteAllDataFromHealthConnect();
+    public void setUp() {
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @Test

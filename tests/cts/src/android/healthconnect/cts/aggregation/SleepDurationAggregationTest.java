@@ -73,12 +73,17 @@ public class SleepDurationAggregationTest {
 
     @Before
     public void setUp() throws InterruptedException {
-        TestUtils.deleteAllDataFromHealthConnect();
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        TestUtils.deleteAllDataFromHealthConnect();
+        TestUtils.verifyDeleteRecords(
+                SleepSessionRecord.class,
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build());
     }
 
     @Test
