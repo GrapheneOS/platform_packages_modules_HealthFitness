@@ -233,6 +233,7 @@ import com.android.server.healthconnect.utils.TimeSource;
 import org.json.JSONException;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -3301,6 +3302,39 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         tryAndThrowException(errorCallback, e, ERROR_INTERNAL);
                     }
                 });
+    }
+
+    /**
+     * "dumpsys" infrastructure. This should get included in bug reports.
+     *
+     * <p>Note: To print, run "adb shell dumpsys healthconnect".
+     */
+    @Override
+    public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
+        if (mContext.checkCallingOrSelfPermission(android.Manifest.permission.DUMP)
+                != PackageManager.PERMISSION_GRANTED) {
+            pw.println(
+                    "Permission Denial: can't dump health connect from pid="
+                            + Binder.getCallingPid()
+                            + ", uid="
+                            + Binder.getCallingUid()
+                            + " without permission "
+                            + android.Manifest.permission.DUMP);
+            return;
+        }
+
+        // Storage Dump
+        pw.println("Health Connect Storage Status");
+        pw.printf(
+                "Database Version : %d, Database Size : %d kb \n\n",
+                mTransactionManager.getDatabaseVersion(),
+                mTransactionManager.getDatabaseSize() / 1024);
+
+        // B&R State
+        pw.println("Health Connect Backup Status");
+        pw.printf(
+                "Data Restore State : %d, Data Restore Error : %d \n\n",
+                mBackupRestore.getDataRestoreState(), mBackupRestore.getDataRestoreError());
     }
 
     // Cancel BR timeouts - this might be needed when a user is going into background.

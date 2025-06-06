@@ -213,8 +213,11 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -2873,6 +2876,18 @@ public class HealthConnectServiceImplTest {
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_SECURITY);
         verify(mChangeLogsHelper, never()).getChangeLogs(any(), any(), any(), any());
+    }
+
+    @Test
+    public void testDump_doesNotCrash() throws Exception {
+        mHealthConnectService.dump(
+                new FileDescriptor(),
+                new PrintWriter(
+                        new OutputStream() {
+                            @Override
+                            public void write(int i) throws IOException {}
+                        }),
+                null);
     }
 
     private void setUpCreateMedicalDataSourceDefaultMocks() {
