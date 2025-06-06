@@ -69,15 +69,15 @@ public class HealthPermissionCategoryPriorityTests {
     private HealthConnectManager mManager;
 
     @Before
-    public void setUp() {
+    public void setUp() throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
         mManager = requireNonNull(context.getSystemService(HealthConnectManager.class));
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @After
-    public void tearDown() {
-        TestUtils.deleteAllStagedRemoteData();
+    public void tearDown() throws InterruptedException {
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test

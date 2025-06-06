@@ -24,6 +24,7 @@ import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
 import static android.health.connect.HealthPermissions.READ_HEART_RATE;
 import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.testing.cts.TestUtils.updatePriorityWithManageHealthDataPermission;
 
@@ -125,20 +126,22 @@ public class HealthConnectWithManagePermissionsTest {
                 runWithShellPermissionIdentity(
                         () -> mContext.getSystemService(HealthConnectManager.class),
                         MANAGE_HEALTH_PERMISSIONS);
-        mPackageManager = mContext.getPackageManager();
+        deleteAllDataFromHealthConnect();
 
+        mPackageManager = mContext.getPackageManager();
         for (String permission :
                 PermissionUtils.getDeclaredHealthPermissions(DEFAULT_APP_PACKAGE)) {
             revokePermissionViaPackageManager(DEFAULT_APP_PACKAGE, permission);
             resetPermissionFlags(DEFAULT_APP_PACKAGE, permission);
             assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, permission);
         }
-        deleteAllStagedRemoteData(mHealthConnectManager);
     }
 
     @After
-    public void tearDown() {
-        deleteAllStagedRemoteData(mHealthConnectManager);
+    public void tearDown() throws InterruptedException {
+        // Call this first so that we clear migration status, before calling delete record APIs.
+        deleteAllStagedRemoteData();
+        deleteAllDataFromHealthConnect();
     }
 
     @Test
@@ -839,7 +842,8 @@ public class HealthConnectWithManagePermissionsTest {
             assertNotNull(exception);
         }
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
-        deleteAllStagedRemoteData(mHealthConnectManager);
+        // Call to clear migration status.
+        deleteAllStagedRemoteData();
 
         // Revoke permission
         TestUtils.startMigrationWithShellPermissionIdentity();

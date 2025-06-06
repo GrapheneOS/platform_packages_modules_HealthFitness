@@ -19,7 +19,7 @@ package android.healthconnect.cts.backgroundread;
 import static android.health.connect.HealthConnectException.ERROR_SECURITY;
 import static android.health.connect.HealthDataCategory.ACTIVITY;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.getRecordIds;
 import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
@@ -93,12 +93,12 @@ public class BackgroundReadTest {
         mManager = requireNonNull(mContext.getSystemService(HealthConnectManager.class));
         mTestApp = mTestAppRule.getProxy();
 
-        deleteAllStagedRemoteData();
+        deleteAllDataFromHealthConnect();
     }
 
     @After
     public void tearDown() throws Exception {
-        deleteAllStagedRemoteData();
+        deleteAllDataFromHealthConnect();
     }
 
     @Test
