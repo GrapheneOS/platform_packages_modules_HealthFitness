@@ -416,9 +416,8 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/utils/AnimationUtils.kt",
         "src/com/android/healthconnect/controller/tests/data/access/AccessFragmentTest.kt",
         "src/com/android/healthconnect/controller/tests/data/rawfhir/RawFhirFragmentTest.kt",
-        // Unable to resolve target for intent:
-        // com.android.healthconnect.controller/.tests.TestActivity
-        // Possibly we should be using a different "InstrumentationFor"
+        // The first click on some preferences doesn't seem to create a view that can be found for
+        // the second click. To be investigated.
         "src/com/android/healthconnect/controller/tests/units/UnitsFragmentTest.kt",
         // It seems like Localization data (specifically WeekFields) are not fetched correctly
         // under robolectric.
@@ -436,6 +435,8 @@ android_robolectric_test {
     srcs: [
         // TODO: b/419191898 - Update this to get as many Controller tests bivalent as possible
         "src/com/android/healthconnect/controller/tests/TestActivity.kt",
+        "src/com/android/healthconnect/controller/tests/autodelete/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/data/entrydetails/**/*.kt",
         "src/com/android/healthconnect/controller/tests/data/formatters/**/*.kt",
         "src/com/android/healthconnect/controller/tests/data/rawfhir/**/*.kt",
         "src/com/android/healthconnect/controller/tests/units/**/*.kt",
@@ -453,6 +454,10 @@ android_robolectric_test {
             {
                 name: "java-flags",
                 value: "-Drobolectric.allowPlatformPermissions=true",
+            },
+            {
+                name: "java-flags",
+                value: "-Drobolectric.looperMode=INSTRUMENTATION_TEST",
             },
         ],
     },
@@ -482,5 +487,32 @@ android_robolectric_test {
         "flag-junit",
     ],
     java_resource_dirs: ["config"],
-    instrumentation_for: "HealthConnectController",
+    instrumentation_for: "RoboTestApp",
+}
+
+// An app for robolectric to use to get the resources, and manifest
+// Loads AndroidTest.xml from this directory.
+android_app {
+    name: "RoboTestApp",
+    platform_apis: true,
+    // Even though this is never run on the device, Soong complains if the libraries don't match
+    // the manifest. Add the libraries here.
+    // https://source.android.com/docs/core/runtime/art-class-loader-context
+    uses_libs: [
+        "android.test.runner",
+    ],
+    static_libs: [
+        "HealthConnectLibrary",
+        "platform-parametric-runner-lib",
+    ],
+    // Even though this is never run on the device, Soong complains if the libraries don't match
+    // the manifest. Add the libraries here.
+    // https://source.android.com/docs/core/runtime/art-class-loader-context
+    optional_uses_libs: [
+        "androidx.window.extensions",
+        "androidx.window.sidecar",
+        "org.apache.http.legacy",
+        "wear-sdk",
+    ],
+
 }
