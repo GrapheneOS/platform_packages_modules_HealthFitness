@@ -62,7 +62,6 @@ import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
-import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.HeartRateRecord;
@@ -112,20 +111,17 @@ public class HealthConnectAccessLogsTest {
     private final AppOpsManager mAppOpsManager = mContext.getSystemService(AppOpsManager.class);
 
     @Before
-    public void setup() {
-        clearAccessLogHistory();
+    public void setup() throws InterruptedException {
+        TestUtils.deleteAllDataFromHealthConnect();
+        clearAppOpsHistory();
         // TODO(b/421834796): Remove once AppInfo is created on demand on all tested branches.
         connectAppsWithGrantedPermissions();
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        String packageName = mContext.getPackageName();
-        verifyDeleteRecords(
-                new DeleteUsingFiltersRequest.Builder()
-                        .addDataOrigin(new DataOrigin.Builder().setPackageName(packageName).build())
-                        .build());
-        clearAccessLogHistory();
+        TestUtils.deleteAllDataFromHealthConnect();
+        clearAppOpsHistory();
     }
 
     @Test
@@ -503,8 +499,7 @@ public class HealthConnectAccessLogsTest {
         assertThat(log.getOperationType()).isEqualTo(OPERATION_TYPE_DELETE);
     }
 
-    private void clearAccessLogHistory() {
-        TestUtils.deleteAllStagedRemoteData();
+    private void clearAppOpsHistory() throws InterruptedException {
         String packageName = mContext.getPackageName();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
             runWithShellPermissionIdentity(

@@ -18,7 +18,7 @@ package android.healthconnect.cts.aggregation;
 
 import static android.health.connect.datatypes.BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL;
 import static android.healthconnect.cts.aggregation.Utils.assertEnergyWithTolerance;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGroupByDuration;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
@@ -71,13 +71,13 @@ public class BasalCaloriesAggregationTest {
         Context context = ApplicationProvider.getApplicationContext();
         String packageName = context.getPackageName();
 
-        deleteAllStagedRemoteData();
+        deleteAllDataFromHealthConnect();
         setupAggregation(packageName, HealthDataCategory.BODY_MEASUREMENTS);
     }
 
     @After
-    public void tearDown() {
-        deleteAllStagedRemoteData();
+    public void tearDown() throws InterruptedException {
+        deleteAllDataFromHealthConnect();
     }
 
     @Test
