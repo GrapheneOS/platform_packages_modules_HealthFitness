@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.tests.data.formatters.medical
 
 import android.content.Context
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.formatters.medical.PrettyJsonExtractor
 import com.android.healthconnect.controller.data.formatters.medical.PrettyJsonGroup
@@ -27,8 +28,10 @@ import javax.inject.Inject
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class PrettyJsonExtractorTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

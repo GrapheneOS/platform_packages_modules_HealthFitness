@@ -19,24 +19,24 @@ import android.icu.text.MessageFormat.format
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing FloorsRecord data. */
-class FloorsFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<FloorsClimbedRecord>(context) {
+class FloorsFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<FloorsClimbedRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: FloorsClimbedRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: FloorsClimbedRecord): String {
         return format(context.getString(R.string.floors_climbed), mapOf("count" to record.floors))
     }
 
-    override suspend fun formatA11yValue(
-        record: FloorsClimbedRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
-        return formatValue(record, unitPreferences)
+    override suspend fun formatA11yValue(record: FloorsClimbedRecord): String {
+        return formatValue(record)
     }
 }

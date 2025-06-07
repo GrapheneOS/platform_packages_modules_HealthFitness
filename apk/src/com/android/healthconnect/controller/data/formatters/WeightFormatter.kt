@@ -17,28 +17,24 @@ import android.content.Context
 import android.health.connect.datatypes.WeightRecord
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing WeightRecord data. */
-class WeightFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<WeightRecord>(context) {
+class WeightFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<WeightRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: WeightRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
-        return MassFormatter.formatValue(context, record.weight, unitPreferences.getWeightUnit())
+    override suspend fun formatValue(record: WeightRecord): String {
+        return MassFormatter.formatValue(context, record.weight, unitPreferences.weightUnit)
     }
 
-    override suspend fun formatA11yValue(
-        record: WeightRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
-        return MassFormatter.formatA11yValue(
-            context,
-            record.weight,
-            unitPreferences.getWeightUnit(),
-        )
+    override suspend fun formatA11yValue(record: WeightRecord): String {
+        return MassFormatter.formatA11yValue(context, record.weight, unitPreferences.weightUnit)
     }
 }

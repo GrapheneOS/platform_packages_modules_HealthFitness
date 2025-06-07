@@ -118,7 +118,6 @@ import android.health.connect.datatypes.WheelchairPushesRecord;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationException;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
-import android.healthconnect.testing.shared.aggregation.TimeFilterFactory;
 import android.os.OutcomeReceiver;
 import android.util.Log;
 
@@ -466,22 +465,23 @@ public final class TestUtils {
         }
     }
 
-    public static void deleteAllFitnessData() throws InterruptedException {
-        verifyDeleteRecords(
-                new DeleteUsingFiltersRequest.Builder()
-                        .setTimeRangeFilter(TimeFilterFactory.getOpenEndTimeFilter(Instant.EPOCH))
-                        .build());
+    /**
+     * Delete all data and state from Health Connect.
+     *
+     * <p>Note: Despite the name, this test method might not be full proof, and some state might be
+     * left around. For example, this doesn't currently change any permissions. If you see any gaps,
+     * modify either by adding another API call here, or to the implementation of {@link
+     * HealthConnectManager#deleteAllStagedRemoteData()}.
+     */
+    public static void deleteAllDataFromHealthConnect() throws InterruptedException {
+        deleteAllFitnessData();
+        deleteAllMedicalData();
+        deleteAllStagedRemoteData();
     }
 
-    /**
-     * Delete all fitness records added by the test app that are stored in the Health Connect
-     * database.
-     */
-    public static void deleteAllFitnessDataAddedByTestApp() throws InterruptedException {
-        verifyDeleteRecords(
-                new DeleteUsingFiltersRequest.Builder()
-                        .setTimeRangeFilter(TimeFilterFactory.getOpenEndTimeFilter(Instant.EPOCH))
-                        .build());
+    /** Delete all fitness records stored in the Health Connect database. */
+    public static void deleteAllFitnessData() throws InterruptedException {
+        verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
     }
 
     /**

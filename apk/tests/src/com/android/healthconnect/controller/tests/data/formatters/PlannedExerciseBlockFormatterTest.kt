@@ -65,7 +65,7 @@ class PlannedExerciseBlockFormatterTest {
 
     @Test
     fun formatBlock_singleRepetition() = runBlocking {
-        unitPreferences.setDistanceUnit(DistanceUnit.KILOMETERS)
+        unitPreferences.distanceUnit = DistanceUnit.KILOMETERS
         val exerciseBlock =
             getPlannedExerciseBlock(
                 repetitions = 1,
@@ -99,7 +99,7 @@ class PlannedExerciseBlockFormatterTest {
 
     @Test
     fun formatBlock_multipleRepetitions() = runBlocking {
-        unitPreferences.setDistanceUnit(DistanceUnit.KILOMETERS)
+        unitPreferences.distanceUnit = DistanceUnit.KILOMETERS
         val exerciseBlock =
             getPlannedExerciseBlock(
                 repetitions = 2,
@@ -146,7 +146,7 @@ class PlannedExerciseBlockFormatterTest {
 
     @Test
     fun formatBlock_nullDescription_omitsDescriptionEntirely() = runBlocking {
-        unitPreferences.setDistanceUnit(DistanceUnit.KILOMETERS)
+        unitPreferences.distanceUnit = DistanceUnit.KILOMETERS
         val exerciseBlock =
             getPlannedExerciseBlock(
                 repetitions = 1,
@@ -180,7 +180,7 @@ class PlannedExerciseBlockFormatterTest {
 
     @Test
     fun formatBlockDetails() = runBlocking {
-        unitPreferences.setDistanceUnit(DistanceUnit.KILOMETERS)
+        unitPreferences.distanceUnit = DistanceUnit.KILOMETERS
         val exerciseBlock =
             getPlannedExerciseBlock(
                 repetitions = 2,
@@ -215,7 +215,7 @@ class PlannedExerciseBlockFormatterTest {
                         ),
                     ),
             )
-        assertThat(formatter.formatBlockDetails(exerciseBlock, unitPreferences))
+        assertThat(formatter.formatBlockDetails(exerciseBlock))
             .isEqualTo(
                 listOf(
                     PlannedExerciseStepEntry(

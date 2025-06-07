@@ -21,9 +21,12 @@ import static android.health.connect.Constants.CHANNEL_GROUP_ID;
 import static android.health.connect.Constants.CHANNEL_GROUP_NAME_RESOURCE;
 import static android.health.connect.Constants.CHANNEL_NAME_RESOURCE;
 import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
-import static android.health.connect.HealthConnectManager.ACTION_SYNC_MORE_APPS;
+import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
+import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
 
-import static com.android.server.healthconnect.notifications.NotificationUtils.getPendingIntent;
+import static com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver.ACTION_ONBOARDING_NOTIFICATION_CLICKED;
+import static com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver.ACTION_ONBOARDING_NOTIFICATION_DISMISSED;
+import static com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver.EXTRA_ONBOARDING_STATE;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager.SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION;
 
@@ -31,9 +34,8 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Icon;
-import android.health.connect.HealthConnectManager;
+import android.health.connect.HealthConnectOnboardingState;
 import android.os.UserHandle;
 
 import com.android.healthfitness.flags.Flags;
@@ -71,9 +73,6 @@ public final class OnboardingNotificationSender {
     // TODO(b/414949807): Move to a central place
     private static final int FIXED_NOTIFICATION_ID = 9878;
     private static final String NOTIFICATION_TAG = "HcOnboardingTag";
-
-    private static final Intent FALLBACK_INTENT =
-            new Intent(HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS);
 
     private final Context mContext;
     private final HealthConnectResourcesContext mResContext;
@@ -114,44 +113,56 @@ public final class OnboardingNotificationSender {
 
     /** Sends a notification for onboarding scenario where there's no app connected to HC. */
     public void sendNoAppConnectedNotification(UserHandle userHandle) {
-        if (!Flags.onboardingNotification()) {
-            return;
-        }
-
-        mHealthConnectNotificationSender.sendNotificationAsUser(
-                createNoAppConnectedNotification(), userHandle);
-        mNotificationStateManager.unsetFlags(SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION);
+        sendNotification(
+                userHandle,
+                createNoAppConnectedNotification(),
+                SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION);
     }
 
     /** Sends a notification for onboarding scenario where there's one app connected to HC. */
     public void sendOneAppConnectedNotification(UserHandle userHandle) {
+        sendNotification(
+                userHandle,
+                createOneAppConnectedNotification(),
+                SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION);
+    }
+
+    private void sendNotification(UserHandle userHandle, Notification notification, int flag) {
         if (!Flags.onboardingNotification()) {
             return;
         }
-
-        mHealthConnectNotificationSender.sendNotificationAsUser(
-                createOneAppConnectedNotification(), userHandle);
-        mNotificationStateManager.unsetFlags(SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION);
+        if (mHealthConnectNotificationSender.sendNotificationAsUser(notification, userHandle)) {
+            mNotificationStateManager.unsetFlags(flag);
+            // TODO(b/417206526): Add logging - notification sent
+        }
     }
 
     private Notification createNoAppConnectedNotification() {
         return createNotification(
                 mResContext.getStringByNameOrThrow(START_USING_HC_NOTIFICATION_TITLE),
                 mResContext.getStringByNameOrThrow(START_USING_HC_NOTIFICATION_CONTENT),
-                getSyncMoreAppsPendingIntent());
+                ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
     }
 
     private Notification createOneAppConnectedNotification() {
         return createNotification(
                 mResContext.getStringByNameOrThrow(CONNECT_MORE_APPS_NOTIFICATION_TITLE),
                 mResContext.getStringByNameOrThrow(CONNECT_MORE_APPS_NOTIFICATION_CONTENT),
-                getSyncMoreAppsPendingIntent());
+                ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED);
     }
 
-    private Notification createNotification(String title, String content, PendingIntent intent) {
+    private Notification createNotification(
+            String title,
+            String content,
+            @HealthConnectOnboardingState.OnboardingState int onboardingState) {
         return mNotificationUtils
                 .createNotificationTitleAndBodyText(title, content, getAppIcon().orElse(null))
-                .setContentIntent(intent)
+                .setContentIntent(
+                        getBroadcastPendingIntent(
+                                ACTION_ONBOARDING_NOTIFICATION_CLICKED, onboardingState))
+                .setDeleteIntent(
+                        getBroadcastPendingIntent(
+                                ACTION_ONBOARDING_NOTIFICATION_DISMISSED, onboardingState))
                 .setAutoCancel(true)
                 .build();
     }
@@ -166,11 +177,14 @@ public final class OnboardingNotificationSender {
         return mAppIcon;
     }
 
-    private PendingIntent getSyncMoreAppsPendingIntent() {
-        Intent intent = new Intent(ACTION_SYNC_MORE_APPS);
-        ResolveInfo resolveInfo = mContext.getPackageManager().resolveActivity(intent, 0);
-        return resolveInfo != null
-                ? getPendingIntent(mContext, intent)
-                : getPendingIntent(mContext, FALLBACK_INTENT);
+    private PendingIntent getBroadcastPendingIntent(
+            String action, @HealthConnectOnboardingState.OnboardingState int onboardingState) {
+        Intent intent = new Intent(action);
+        intent.putExtra(EXTRA_ONBOARDING_STATE, onboardingState);
+        return PendingIntent.getBroadcast(
+                mContext,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 }

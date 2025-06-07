@@ -565,6 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Vissza"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Kezdő lépések"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Adatok törlése"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"A(z) %1$s adatainak törlése gomb"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Belépés a törlésbe"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Kilépés a törlésből"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Válassza ki a Health Connectből törölni kívánt adatokat"</string>
@@ -1204,6 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Hozzáférés engedélyezve"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Olvashat"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Ezek az engedélyek hozzáférést biztosítanak a(z) <xliff:g id="APP_NAME">%1$s</xliff:g> számára az eszköze érzékelőiből származó adatokhoz."</string>
+    <string name="write_access" msgid="571547306854732263">"Írási hozzáférés"</string>
+    <string name="read_access" msgid="3317759826769372785">"Olvasási hozzáférés"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g>/<xliff:g id="NUMBER_0">%1$d</xliff:g> alkalmazás kapott engedélyt"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Nincsenek kérelmező alkalmazások"</string>
     <string name="allowed" msgid="4158456017482263737">"Engedélyezve"</string>
@@ -1220,7 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 alkalmazás használja}other{# alkalmazás használja}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Semmi nem használta az elmúlt 24 órában"</string>
     <string name="accessed" msgid="4424701457530587176">"Hozzáférés: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Az első két alkalmazás összekapcsolása"</string>
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Az első alkalmazás összekapcsolása"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Kapcsolja össze ezeket az alkalmazásokat, hogy elkezdhesse közöttük az egészségügyi és fitneszadatok megosztását."</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Második alkalmazás összekapcsolása"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Állítson be még egy alkalmazást az egészségügyi és fitneszadatok <xliff:g id="APP_NAME">%1$s</xliff:g> szolgáltatással való megosztásához."</string>
@@ -1230,11 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"További információ a Health Connectről"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Alkalmazás összekapcsolva a Health Connecttel"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Majdnem kész"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"Nyissa meg ezeket az alkalmazásokat a beállítás befejezéséhez és az adatmegosztás elindításához."</string>
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Nyissa meg ezeket az alkalmazásokat a beállítás befejezéséhez és az adatmegosztás elindításához."</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Nyissa meg ezeket az alkalmazásokat a beállítás befejezéséhez és az adatmegosztás elindításához, vagy folytassa a rendelkezésre álló alkalmazások összekapcsolását."</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Összekapcsolt alkalmazások"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Rendelkezésre álló összekapcsolható alkalmazások"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Egészségügyi adatok megjelenítése különböző alkalmazásokban"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Egészségügyi és fitneszadatok alkalmazások közötti megosztásának megkezdése"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Kezdje meg a fitnesz- és wellnessadatok alkalmazások közötti megosztását"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Beállítás"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Második alkalmazás összekapcsolása"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Állítson be még egy alkalmazást az egészségügyi és fitneszadatok <xliff:g id="APP_NAME">%1$s</xliff:g> alkalmazással való megosztásához"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Állítson be egy másik alkalmazást, hogy elkezdhesse a fitnesz- és wellnessadatok megosztását"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Tovább"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Egészségügyi adatok megjelenítése különböző alkalmazásokban"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"A Health Connect segítségével megoszthatja fitnesz- és wellness-adatait az alkalmazásai között. Megtekintheti, hogy mely jelenleg alkalmazásokat tudja összekapcsolni."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"A második alkalmazás összekapcsolása"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
+    <skip />
 </resources>

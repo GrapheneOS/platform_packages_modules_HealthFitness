@@ -565,6 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Kthehu prapa"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Fillo"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Fshi të dhënat"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Fshi të dhënat për butonin %1$s"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Kalo te fshirja"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Dil nga fshirja"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Zgjidh të dhënat për t\'i fshirë nga Health Connect"</string>
@@ -1204,6 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Lejohet të qaset"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Lejohet të lexojë"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Këto leje i japin qasje <xliff:g id="APP_NAME">%1$s</xliff:g> te të dhënat nga sensorët e pajisjes sate."</string>
+    <string name="write_access" msgid="571547306854732263">"Qasje për të shkruar"</string>
+    <string name="read_access" msgid="3317759826769372785">"Qasje për të lexuar"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"Lejohen <xliff:g id="NUMBER_0">%1$d</xliff:g> nga <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplikacione"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Asnjë aplikacion nuk po kërkon"</string>
     <string name="allowed" msgid="4158456017482263737">"Lejohet"</string>
@@ -1220,7 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Përdorur nga 1 aplikacion}other{Përdorur nga # aplikacione}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Asnjë përdorim gjatë 24 orëve të fundit"</string>
     <string name="accessed" msgid="4424701457530587176">"Qasja e fundit në <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Lidh 2 aplikacionet e tua të para"</string>
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Lidh aplikacionin tënd të parë"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Lidhi këto aplikacione për të filluar të ndash të dhënat e shëndetit dhe të fitnesit mes tyre"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Lidh një aplikacion të dytë"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Konfiguro një aplikacion tjetër për të ndarë të dhënat e shëndetit dhe të fitnesit me <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1230,11 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Më shumë rreth Health Connect"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Aplikacioni u lidh me Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Thuajse mbarove"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"Hapi këto aplikacione tani për të përfunduar konfigurimin dhe për të filluar ndarjen e të dhënave"</string>
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Hapi këto aplikacione tani për të përfunduar konfigurimin dhe për të filluar ndarjen e të dhënave"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Hapi këto aplikacione tani për të përfunduar konfigurimin dhe për të filluar ndarjen e të dhënave ose vazhdo të lidhësh aplikacionet e disponueshme"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Aplikacionet e lidhura"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Aplikacionet e disponueshme për t\'i lidhur"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Shiko të dhënat e shëndetit nëpër aplikacione"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Fillo të ndash të dhënat e shëndetit dhe fitnesit midis aplikacioneve"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Fillo të ndash të dhënat e fitnesit dhe mirëqenies midis aplikacioneve"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Konfiguro"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Lidh një aplikacion të dytë"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Konfiguro një aplikacion tjetër për të ndarë të dhënat e shëndetit dhe të fitnesit me <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Konfiguro një aplikacion tjetër që ai të mund të fillojë të ndajë të dhënat për fitnesin dhe mirëqenien"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Vazhdo"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Shiko të dhënat e shëndetit nëpër aplikacione"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect të lejon të ndash të dhënat e fitnesit dhe mirëqenies midis aplikacioneve. Shiko se cilat aplikacione mund të lidhësh tani."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Lidh një aplikacion të dytë"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
+    <skip />
 </resources>

@@ -34,6 +34,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.testing.cts.TestUtils.finishMigrationWithShellPermissionIdentity;
 import static android.healthconnect.testing.cts.TestUtils.getRecordById;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
@@ -50,14 +51,12 @@ import static java.time.ZoneOffset.UTC;
 import static java.time.temporal.ChronoUnit.DAYS;
 import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.MINUTES;
-import static java.util.Objects.requireNonNull;
 
 import android.app.UiAutomation;
 import android.content.Context;
 import android.health.connect.AggregateRecordsGroupedByDurationResponse;
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
-import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
@@ -151,23 +150,14 @@ public class HealthConnectManagerTest {
 
     @Before
     public void before() throws InterruptedException {
-        deleteAllRecords();
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
         mContext = ApplicationProvider.getApplicationContext();
-        mManager = requireNonNull(mContext.getSystemService(HealthConnectManager.class));
+        mManager = TestUtils.getHealthConnectManager();
     }
 
     @After
     public void after() throws InterruptedException {
-        TestUtils.deleteAllStagedRemoteData();
-    }
-
-    private void deleteAllRecords() throws InterruptedException {
-        TestUtils.verifyDeleteRecords(
-                new DeleteUsingFiltersRequest.Builder()
-                        .addDataOrigin(
-                                new DataOrigin.Builder().setPackageName(APP_PACKAGE_NAME).build())
-                        .build());
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test
@@ -754,6 +744,9 @@ public class HealthConnectManagerTest {
                                 mManager.stageAllHealthConnectRemoteData(
                                         pfdsByFileName, executor, receiver),
                         STAGE_HEALTH_CONNECT_REMOTE_DATA);
+
+        // Cleanup the staged data.
+        deleteAllStagedRemoteData();
     }
 
     @Test

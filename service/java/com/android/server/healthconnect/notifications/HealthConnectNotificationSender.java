@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.notifications;
 
+import static android.app.NotificationManager.IMPORTANCE_NONE;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
@@ -167,18 +169,34 @@ public final class HealthConnectNotificationSender {
         }
     }
 
-    /** Send the passed-in {@code notification} to the user. */
-    public void sendNotificationAsUser(Notification notification, UserHandle userHandle) {
+    /**
+     * Sends the passed-in {@code notification} to the user.
+     *
+     * <p>Attempting to send a notification doesn't guarantee a successful delivery. For example,
+     * the user could block notification channel from settings, in which case the notification would
+     * not actually be posted by the system.
+     *
+     * @return true if the notification is actually sent, false otherwise.
+     */
+    public boolean sendNotificationAsUser(Notification notification, UserHandle userHandle) {
         Slog.i(TAG, "Sending notification as user.");
 
         if (!mIsEnabled) {
             Slog.i(TAG, "Notifications have been disabled.");
-            return;
+            return false;
         }
 
         createNotificationChannel(userHandle);
         NotificationManager notificationManager = getNotificationManagerForUser(userHandle);
+        NotificationChannel channel =
+                notificationManager.getNotificationChannel(notification.getChannelId());
+        if (channel.getImportance() == IMPORTANCE_NONE) {
+            Slog.i(TAG, "Notifications channel " + channel.getName() + " is blocked by user");
+            // TODO(b/417206526): Add logging - notification channel blocked
+            return false;
+        }
         notifyFromSystem(notificationManager, notification);
+        return true;
     }
 
     /** Cancels all Health Connect notifications on this channel. */

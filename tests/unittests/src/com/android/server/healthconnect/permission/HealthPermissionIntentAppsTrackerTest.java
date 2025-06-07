@@ -125,7 +125,9 @@ public class HealthPermissionIntentAppsTrackerTest {
         // This call doesn't update the cache and continues returning true.
         assertThat(mTracker.supportsPermissionUsageIntent(SELF_PACKAGE_NAME, CURRENT_USER))
                 .isTrue();
-        assertThat(mTracker.updateAndGetSupportsPackageUsageIntent(SELF_PACKAGE_NAME, CURRENT_USER))
+        assertThat(
+                        mTracker.updateAndGetSupportsPermissionUsageIntent(
+                                SELF_PACKAGE_NAME, CURRENT_USER))
                 .isFalse();
         assertThat(mTracker.supportsPermissionUsageIntent(SELF_PACKAGE_NAME, CURRENT_USER))
                 .isFalse();

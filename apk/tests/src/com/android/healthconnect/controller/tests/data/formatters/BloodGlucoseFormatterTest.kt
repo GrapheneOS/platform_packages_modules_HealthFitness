@@ -76,84 +76,77 @@ class BloodGlucoseFormatterTest {
     fun formatValue_zero() = runBlocking {
         val record = getRecord(0.0)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("0 mmol/L")
+        assertThat(formatter.formatValue(record)).isEqualTo("0 mmol/L")
     }
 
     @Test
     fun formatA11yValue_zero() = runBlocking {
         val record = getRecord(0.0)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("0 millimoles per liter")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("0 millimoles per liter")
     }
 
     @Test
     fun formatValue_one() = runBlocking {
         val record = getRecord(1.0)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("1 mmol/L")
+        assertThat(formatter.formatValue(record)).isEqualTo("1 mmol/L")
     }
 
     @Test
     fun formatA11yValue_one() = runBlocking {
         val record = getRecord(1.0)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("1 millimole per liter")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("1 millimole per liter")
     }
 
     @Test
     fun formatValue_normal() = runBlocking {
         val record = getRecord(25.0)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("25 mmol/L")
+        assertThat(formatter.formatValue(record)).isEqualTo("25 mmol/L")
     }
 
     @Test
     fun formatA11yValue_normal() = runBlocking {
         val record = getRecord(25.0)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("25 millimoles per liter")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("25 millimoles per liter")
     }
 
     @Test
     fun formatValue_dinner_showsMealTypes() = runBlocking {
         val record = getRecord(level = 25.0, mealType = MEAL_TYPE_DINNER)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("25 millimoles per liter Dinner")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("25 millimoles per liter Dinner")
     }
 
     @Test
     fun formatValue_snack_showsMealTypes() = runBlocking {
         val record = getRecord(level = 25.0, mealType = MEAL_TYPE_SNACK)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("25 millimoles per liter Snack")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("25 millimoles per liter Snack")
     }
 
     @Test
     fun formatValue_lunch_showsMealTypes() = runBlocking {
         val record = getRecord(level = 25.0, mealType = MEAL_TYPE_LUNCH)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("25 millimoles per liter Lunch")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("25 millimoles per liter Lunch")
     }
 
     @Test
     fun formatValue_breakfast_showsMealTypes() = runBlocking {
         val record = getRecord(level = 25.0, mealType = MEAL_TYPE_BREAKFAST)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("25 millimoles per liter Breakfast")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("25 millimoles per liter Breakfast")
     }
 
     @Test
     fun formatValue_beforeMeal_showsRelationToMeal() = runBlocking {
         val record = getRecord(level = 25.0, relationToMeal = RELATION_TO_MEAL_BEFORE_MEAL)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
+        assertThat(formatter.formatA11yValue(record))
             .isEqualTo("25 millimoles per liter Before meal")
     }
 
@@ -161,7 +154,7 @@ class BloodGlucoseFormatterTest {
     fun formatValue_afterMeal_showsRelationToMeal() = runBlocking {
         val record = getRecord(level = 25.0, relationToMeal = RELATION_TO_MEAL_AFTER_MEAL)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
+        assertThat(formatter.formatA11yValue(record))
             .isEqualTo("25 millimoles per liter After meal")
     }
 
@@ -169,23 +162,21 @@ class BloodGlucoseFormatterTest {
     fun formatValue_fasting_showsRelationToMeal() = runBlocking {
         val record = getRecord(level = 25.0, relationToMeal = RELATION_TO_MEAL_FASTING)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("25 millimoles per liter Fasting")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("25 millimoles per liter Fasting")
     }
 
     @Test
     fun formatValue_general_showsRelationToMeal() = runBlocking {
         val record = getRecord(level = 25.0, relationToMeal = RELATION_TO_MEAL_GENERAL)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("25 millimoles per liter General")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("25 millimoles per liter General")
     }
 
     @Test
     fun formatValue_wholeBlood_showsSpecimenSource() = runBlocking {
         val record = getRecord(level = 25.0, source = SPECIMEN_SOURCE_WHOLE_BLOOD)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
+        assertThat(formatter.formatA11yValue(record))
             .isEqualTo("25 millimoles per liter Whole blood")
     }
 
@@ -193,31 +184,28 @@ class BloodGlucoseFormatterTest {
     fun formatValue_serum_showsSpecimenSource() = runBlocking {
         val record = getRecord(level = 25.0, source = SPECIMEN_SOURCE_SERUM)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("25 millimoles per liter Serum")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("25 millimoles per liter Serum")
     }
 
     @Test
     fun formatValue_tears_showsSpecimenSource() = runBlocking {
         val record = getRecord(level = 25.0, source = SPECIMEN_SOURCE_TEARS)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("25 millimoles per liter Tears")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("25 millimoles per liter Tears")
     }
 
     @Test
     fun formatValue_plasma_showsSpecimenSource() = runBlocking {
         val record = getRecord(level = 25.0, source = SPECIMEN_SOURCE_PLASMA)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
-            .isEqualTo("25 millimoles per liter Plasma")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("25 millimoles per liter Plasma")
     }
 
     @Test
     fun formatValue_capillaryBlood_showsSpecimenSource() = runBlocking {
         val record = getRecord(level = 25.0, source = SPECIMEN_SOURCE_CAPILLARY_BLOOD)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
+        assertThat(formatter.formatA11yValue(record))
             .isEqualTo("25 millimoles per liter Capillary blood")
     }
 
@@ -225,7 +213,7 @@ class BloodGlucoseFormatterTest {
     fun formatValue_interstitialFluid_showsSpecimenSource() = runBlocking {
         val record = getRecord(level = 25.0, source = SPECIMEN_SOURCE_INTERSTITIAL_FLUID)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
+        assertThat(formatter.formatA11yValue(record))
             .isEqualTo("25 millimoles per liter Interstitial fluid")
     }
 
@@ -239,7 +227,7 @@ class BloodGlucoseFormatterTest {
                 mealType = MEAL_TYPE_LUNCH,
             )
 
-        assertThat(formatter.formatA11yValue(record, preferences))
+        assertThat(formatter.formatA11yValue(record))
             .isEqualTo("25 millimoles per liter Interstitial fluid Lunch Fasting")
     }
 

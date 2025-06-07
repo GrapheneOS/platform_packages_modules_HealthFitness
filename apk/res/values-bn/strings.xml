@@ -565,6 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"ফিরে যান"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"শুরু করুন"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"ডেটা মুছে দিন"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"%1$s বোতামের জন্য ডেটা মুছুন"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"\'মুছে দিন\' স্ট্যাটাসে যান"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"\'মুছে দিন\' স্ট্যাটাস ছেড়ে বেরিয়ে আসুন"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Health Connect থেকে মুছে ফেলার জন্য ডেটা বেছে নিন"</string>
@@ -677,7 +678,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{১ বার পুনরাবৃত্তি}one{# বার পুনরাবৃত্তি}other{# বার পুনরাবৃত্তি}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{১ বার পুনরাবৃত্তি}one{# বার পুনরাবৃত্তি}other{# বার পুনরাবৃত্তি}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"ব্যায়ামের বিভাগ"</string>
-    <string name="segment_set_index_format" msgid="5299538353624573851">"<xliff:g id="SET_INDEX">%1$d</xliff:g>-এ সেট করুন"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"সেট <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
     <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
     <string name="segment_rpe_format_long" msgid="3492398127594227129">"শরীরচর্চার সময় পরিশ্রমের হার: <xliff:g id="RPE">%1$s</xliff:g>"</string>
     <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
@@ -1204,6 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"অ্যাক্সেসের অনুমতি আছে"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"পড়ার অনুমতি দেওয়া হয়েছে"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"এইসব অনুমতি আপনার ডিভাইস সেন্সর থেকে ডেটাতে <xliff:g id="APP_NAME">%1$s</xliff:g> অ্যাপকে অ্যাক্সেস করতে দেয়।"</string>
+    <string name="write_access" msgid="571547306854732263">"লেখার অ্যাক্সেস"</string>
+    <string name="read_access" msgid="3317759826769372785">"পড়ার অ্যাক্সেস"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>। <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>। <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g>টি অ্যাপের মধ্যে <xliff:g id="NUMBER_0">%1$d</xliff:g>টি অনুমোদিত"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"কোনও অ্যাপ অনুমতি দেওয়ার অনুরোধ করেনি"</string>
     <string name="allowed" msgid="4158456017482263737">"অনুমোদিত"</string>
@@ -1220,7 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{১টি অ্যাপ ব্যবহার করেছে}one{#টি অ্যাপ ব্যবহার করেছে}other{#টি অ্যাপ ব্যবহার করেছে}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"গত ২৪ ঘণ্টায় ব্যবহার করা হয়নি"</string>
     <string name="accessed" msgid="4424701457530587176">"<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>-এ অ্যাক্সেস করা হয়েছে"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"আপনার প্রথম ২টি অ্যাপ কানেক্ট করুন"</string>
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"আপনার প্রথম অ্যাপ কানেক্ট করুন"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"সেগুলির মধ্যে স্বাস্থ্য ও ফিটনেস সম্পর্কিত ডেটা শেয়ারিং চালু করার জন্য এইসব অ্যাপ কানেক্ট করুন"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"দ্বিতীয় কোনও অ্যাপ কানেক্ট করুন"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"<xliff:g id="APP_NAME">%1$s</xliff:g>-এর সাথে স্বাস্থ্য ও ফিটনেস সম্পর্কিত ডেটা শেয়ার করার জন্য আরও একটি অ্যাপ সেট-আপ করুন"</string>
@@ -1230,11 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Health Connect সম্পর্কে আরও তথ্য"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"অ্যাপ Health Connect-এর সাথে কানেক্ট করা আছে"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"হয়ে এসেছে"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"সেট-আপ সম্পূর্ণ এবং ডেটা শেয়ারিং চালু করতে এইসব অ্যাপ এখনই খুলুন"</string>
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"সেট-আপ সম্পূর্ণ এবং ডেটা শেয়ারিং চালু করতে এইসব অ্যাপ এখনই খুলুন"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"সেট-আপ সম্পূর্ণ এবং ডেটা শেয়ারিং চালু করতে, এইসব অ্যাপ এখনই খুলুন অথবা উপলভ্য অ্যাপ কানেক্ট করতে থাকুন"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"কানেক্ট করা অ্যাপ"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"কানেক্ট করার জন্য উপলভ্য অ্যাপ"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"বিভিন্ন অ্যাপ জুড়ে আপনার স্বাস্থ্য সংক্রান্ত ডেটা দেখুন"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"আপনার একাধিক অ্যাপের মধ্যে স্বাস্থ্য ও ফিটনেস সংক্রান্ত ডেটা শেয়ার করা শুরু করুন"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"আপনার বিভিন্ন অ্যাপের মধ্যে ফিটনেস ও সুস্থতা সম্পর্কিত ডেটা শেয়ার করুন"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"সেট-আপ করুন"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"দ্বিতীয় কোনও অ্যাপ কানেক্ট করুন"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"<xliff:g id="APP_NAME">%1$s</xliff:g>-এর সাথে স্বাস্থ্য ও ফিটনেস সংক্রান্ত ডেটা শেয়ার করতে আরও একটি অ্যাপ সেট-আপ করুন"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"অন্য অ্যাপ সেট-আপ করুন যাতে এটি ফিটনেস ও সুস্থতা সম্পর্কিত ডেটা শেয়ার করা চালু করতে পারে"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"চালিয়ে যান"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"বিভিন্ন অ্যাপ জুড়ে আপনার স্বাস্থ্য সংক্রান্ত ডেটা দেখুন"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect আপনার বিভিন্ন অ্যাপের মধ্যে ফিটনেস ও সুস্থতা সম্পর্কিত ডেটা শেয়ার করতে দেয়। আপনি এখন কোন অ্যাপ কানেক্ট করতে পারবেন তা দেখুন।"</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"দ্বিতীয় কোনও অ্যাপ কানেক্ট করুন"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
+    <skip />
 </resources>

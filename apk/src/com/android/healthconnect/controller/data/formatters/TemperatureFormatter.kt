@@ -15,7 +15,17 @@
 package com.android.healthconnect.controller.data.formatters
 
 import android.content.Context
-import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.*
+import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_ARMPIT
+import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_EAR
+import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_FINGER
+import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_FOREHEAD
+import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_MOUTH
+import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_RECTUM
+import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_TEMPORAL_ARTERY
+import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_TOE
+import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_UNKNOWN
+import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_VAGINA
+import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_WRIST
 import android.health.connect.datatypes.units.Temperature
 import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
@@ -32,7 +42,7 @@ object TemperatureFormatter {
         unitPreferences: UnitPreferences,
     ): String {
         val res =
-            when (unitPreferences.getTemperatureUnit()) {
+            when (unitPreferences.temperatureUnit) {
                 TemperatureUnit.CELSIUS -> R.string.temperature_celsius
                 TemperatureUnit.FAHRENHEIT -> R.string.temperature_fahrenheit
                 TemperatureUnit.KELVIN -> R.string.temperature_kelvin
@@ -54,7 +64,7 @@ object TemperatureFormatter {
         unitPreferences: UnitPreferences,
     ): String {
         val res =
-            when (unitPreferences.getTemperatureUnit()) {
+            when (unitPreferences.temperatureUnit) {
                 TemperatureUnit.CELSIUS -> R.string.temperature_celsius_long
                 TemperatureUnit.FAHRENHEIT -> R.string.temperature_fahrenheit_long
                 TemperatureUnit.KELVIN -> R.string.temperature_kelvin_long
@@ -100,7 +110,7 @@ object TemperatureFormatter {
         val temp =
             TemperatureConverter.convertFromCelsius(
                 temperature.inCelsius,
-                unitPreferences.getTemperatureUnit(),
+                unitPreferences.temperatureUnit,
             )
         return MessageFormat.format(context.getString(res), mapOf("value" to temp))
     }

@@ -59,33 +59,32 @@ class ElevationFormatterTest {
 
     @Test
     fun testFormatValue() = runBlocking {
-        assertThat(formatter.formatValue(getRecord(1500.0), preferences)).isEqualTo("1,500 m")
+        assertThat(formatter.formatValue(getRecord(1500.0))).isEqualTo("1,500 m")
     }
 
     @Test
     fun testFormatValue_small() = runBlocking {
-        assertThat(formatter.formatValue(getRecord(0.3), preferences)).isEqualTo("0.3 m")
+        assertThat(formatter.formatValue(getRecord(0.3))).isEqualTo("0.3 m")
     }
 
     @Test
     fun testFormatValue_one() = runBlocking {
-        assertThat(formatter.formatValue(getRecord(1.0), preferences)).isEqualTo("1 m")
+        assertThat(formatter.formatValue(getRecord(1.0))).isEqualTo("1 m")
     }
 
     @Test
     fun testFormatA11yValue() = runBlocking {
-        assertThat(formatter.formatA11yValue(getRecord(1500.0), preferences))
-            .isEqualTo("1,500 meters")
+        assertThat(formatter.formatA11yValue(getRecord(1500.0))).isEqualTo("1,500 meters")
     }
 
     @Test
     fun testFormatA11yValue_small() = runBlocking {
-        assertThat(formatter.formatA11yValue(getRecord(0.3), preferences)).isEqualTo("0.3 meters")
+        assertThat(formatter.formatA11yValue(getRecord(0.3))).isEqualTo("0.3 meters")
     }
 
     @Test
     fun testFormatA11yValue_one() = runBlocking {
-        assertThat(formatter.formatA11yValue(getRecord(1.0), preferences)).isEqualTo("1 meter")
+        assertThat(formatter.formatA11yValue(getRecord(1.0))).isEqualTo("1 meter")
     }
 
     private fun getRecord(meters: Double): ElevationGainedRecord {

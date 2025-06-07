@@ -34,7 +34,6 @@ import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDat
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
-import com.android.healthconnect.controller.tests.utils.ClearTimeFormatRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
@@ -68,7 +67,6 @@ import org.mockito.invocation.InvocationOnMock
 class LoadMenstruationDataUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @get:Rule val clearTimeFormatRule = ClearTimeFormatRule()
 
     private lateinit var context: Context
     private lateinit var loadMenstruationDataUseCase: LoadMenstruationDataUseCase

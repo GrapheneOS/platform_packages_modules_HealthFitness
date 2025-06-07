@@ -393,6 +393,7 @@ class UseCaseModule {
         healthPermissionReader: HealthPermissionReader,
         loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase,
         appInfoReader: AppInfoReader,
+        getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase,
         @IoDispatcher dispatcher: CoroutineDispatcher,
     ): ILoadFitnessPermissionAppsUseCase {
         return LoadFitnessPermissionAppsUseCase(
@@ -400,6 +401,7 @@ class UseCaseModule {
             healthPermissionReader,
             loadAppPermissionsStatusUseCase,
             appInfoReader,
+            getHealthPermissionsFlagsUseCase,
             dispatcher,
         )
     }

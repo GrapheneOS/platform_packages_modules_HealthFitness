@@ -27,6 +27,7 @@ import android.content.Intent.makeMainActivity
 import android.health.connect.HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS
 import android.health.connect.HealthConnectManager.ACTION_MANAGE_HEALTH_DATA
 import android.health.connect.HealthConnectManager.ACTION_MANAGE_HEALTH_PERMISSIONS
+import android.health.connect.HealthConnectManager.ACTION_SYNC_MORE_APPS
 import android.health.connect.HealthDataCategory
 import android.os.Build
 import android.platform.test.annotations.DisableFlags
@@ -309,14 +310,11 @@ class TrampolineActivityTest {
     @EnableFlags(Flags.FLAG_ONBOARDING)
     fun syncMoreAppsAction_showsConnectAppsOnboarding() {
         // TODO (b/416731816) replace with correct action
-        launchActivityForResult<TrampolineActivity>(
-                createStartIntent("android.health.connect.action.SYNC_MORE_APPS")
-            )
-            .use {
-                onIdle()
-                onView(withText("Connect your first app")).check(matches(isDisplayed()))
-                onView(withText(TEST_APP.appName)).check(matches(isDisplayed()))
-            }
+        launchActivityForResult<TrampolineActivity>(createStartIntent(ACTION_SYNC_MORE_APPS)).use {
+            onIdle()
+            onView(withText("Connect your first app")).check(matches(isDisplayed()))
+            onView(withText(TEST_APP.appName)).check(matches(isDisplayed()))
+        }
     }
 
     @Test

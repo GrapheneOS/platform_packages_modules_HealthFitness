@@ -30,6 +30,8 @@ import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
+import static com.android.healthfitness.flags.Flags.FLAG_SMOKING_DB;
 import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.onUpgrade;
 
 import android.database.sqlite.SQLiteDatabase;
@@ -44,6 +46,7 @@ import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSegmentRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.NicotineIntakeRecordHelper;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper;
@@ -61,7 +64,8 @@ public class DatabaseUpgradeHelperTest {
     private static final int NUM_OF_TABLES_AT_MIN_SUPPORTED_VERSION = 57;
     private static final int NUM_OF_TABLES_AT_MINDFULNESS_VERSION = 64;
     private static final int NUM_OF_TABLES_AT_EXERCISE_SEGMENT_IMPROVEMENTS_VERSION = 70;
-    private static final int NUM_OF_TABLES_IN_STAGING = 71;
+    private static final int NUM_OF_TABLES_AT_NICOTINE_INTAKE_VERSION = 71;
+    private static final int NUM_OF_TABLES_IN_STAGING = NUM_OF_TABLES_AT_NICOTINE_INTAKE_VERSION;
     private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_NICOTINE_INTAKE;
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
@@ -196,6 +200,26 @@ public class DatabaseUpgradeHelperTest {
                     List.of(
                             ChangeLogsHelper.MEDICAL_RESOURCE_TYPE_COLUMN_NAME,
                             ChangeLogsHelper.MEDICAL_DATA_SOURCE_ID_COLUMN_NAME));
+        }
+    }
+
+    @Test
+    @EnableFlags({
+        FLAG_SMOKING,
+        FLAG_SMOKING_DB,
+    })
+    public void onUpgrade_nicotineIntake_schemaUpToDate() {
+        try (var db = createEmptyDatabase()) {
+            onUpgrade(db, 0, DB_VERSION_NICOTINE_INTAKE);
+
+            assertNumberOfTables(db, NUM_OF_TABLES_AT_NICOTINE_INTAKE_VERSION);
+            assertColumnsExist(
+                    db,
+                    NicotineIntakeRecordHelper.TABLE_NAME,
+                    List.of(
+                            NicotineIntakeRecordHelper.NICOTINE_INTAKE_TYPE_COLUMN_NAME,
+                            NicotineIntakeRecordHelper.QUANTITY_COLUMN_NAME,
+                            NicotineIntakeRecordHelper.QUANTITY_COLUMN_NAME));
         }
     }
 

@@ -17,7 +17,13 @@ package com.android.healthconnect.controller.tests.data.formatters
 
 import android.content.Context
 import android.health.connect.datatypes.Vo2MaxRecord
-import android.health.connect.datatypes.Vo2MaxRecord.Vo2MaxMeasurementMethod.*
+import android.health.connect.datatypes.Vo2MaxRecord.Vo2MaxMeasurementMethod.MEASUREMENT_METHOD_COOPER_TEST
+import android.health.connect.datatypes.Vo2MaxRecord.Vo2MaxMeasurementMethod.MEASUREMENT_METHOD_HEART_RATE_RATIO
+import android.health.connect.datatypes.Vo2MaxRecord.Vo2MaxMeasurementMethod.MEASUREMENT_METHOD_METABOLIC_CART
+import android.health.connect.datatypes.Vo2MaxRecord.Vo2MaxMeasurementMethod.MEASUREMENT_METHOD_MULTISTAGE_FITNESS_TEST
+import android.health.connect.datatypes.Vo2MaxRecord.Vo2MaxMeasurementMethod.MEASUREMENT_METHOD_OTHER
+import android.health.connect.datatypes.Vo2MaxRecord.Vo2MaxMeasurementMethod.MEASUREMENT_METHOD_ROCKPORT_FITNESS_TEST
+import android.health.connect.datatypes.Vo2MaxRecord.Vo2MaxMeasurementMethod.Vo2MaxMeasurementMethodTypes
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.formatters.Vo2MaxFormatter
@@ -61,14 +67,14 @@ class Vo2MaxFormatterTest {
     fun formatValue_zero() = runBlocking {
         val record = getRecord(0.0)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("0 mL/(kg·min)")
+        assertThat(formatter.formatValue(record)).isEqualTo("0 mL/(kg·min)")
     }
 
     @Test
     fun formatA11yValue_zero() = runBlocking {
         val record = getRecord(0.0)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
+        assertThat(formatter.formatA11yValue(record))
             .isEqualTo("0 milliliters of oxygen per kilogram of body mass per minute")
     }
 
@@ -76,7 +82,7 @@ class Vo2MaxFormatterTest {
     fun formatA11yValue_one() = runBlocking {
         val record = getRecord(1.0)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
+        assertThat(formatter.formatA11yValue(record))
             .isEqualTo("1 milliliter of oxygen per kilogram of body mass per minute")
     }
 
@@ -84,14 +90,14 @@ class Vo2MaxFormatterTest {
     fun formatValue() = runBlocking {
         val record = getRecord(17.3)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("17.3 mL/(kg·min)")
+        assertThat(formatter.formatValue(record)).isEqualTo("17.3 mL/(kg·min)")
     }
 
     @Test
     fun formatA11yValue() = runBlocking {
         val record = getRecord(17.3)
 
-        assertThat(formatter.formatA11yValue(record, preferences))
+        assertThat(formatter.formatA11yValue(record))
             .isEqualTo("17.3 milliliters of oxygen per kilogram of body mass per minute")
     }
 
@@ -99,31 +105,28 @@ class Vo2MaxFormatterTest {
     fun formatValue_hrRation_showsMethod() = runBlocking {
         val record = getRecord(17.3, MEASUREMENT_METHOD_HEART_RATE_RATIO)
 
-        assertThat(formatter.formatValue(record, preferences))
-            .isEqualTo("17.3 mL/(kg·min) Heart rate ratio")
+        assertThat(formatter.formatValue(record)).isEqualTo("17.3 mL/(kg·min) Heart rate ratio")
     }
 
     @Test
     fun formatValue_metabolicCart_showsMethod() = runBlocking {
         val record = getRecord(17.3, MEASUREMENT_METHOD_METABOLIC_CART)
 
-        assertThat(formatter.formatValue(record, preferences))
-            .isEqualTo("17.3 mL/(kg·min) Metabolic cart")
+        assertThat(formatter.formatValue(record)).isEqualTo("17.3 mL/(kg·min) Metabolic cart")
     }
 
     @Test
     fun formatValue_cooperTest_showsMethod() = runBlocking {
         val record = getRecord(17.3, MEASUREMENT_METHOD_COOPER_TEST)
 
-        assertThat(formatter.formatValue(record, preferences))
-            .isEqualTo("17.3 mL/(kg·min) Cooper test")
+        assertThat(formatter.formatValue(record)).isEqualTo("17.3 mL/(kg·min) Cooper test")
     }
 
     @Test
     fun formatValue_multistageFitnessTest_showsMethod() = runBlocking {
         val record = getRecord(17.3, MEASUREMENT_METHOD_MULTISTAGE_FITNESS_TEST)
 
-        assertThat(formatter.formatValue(record, preferences))
+        assertThat(formatter.formatValue(record))
             .isEqualTo("17.3 mL/(kg·min) Multistage fitness test")
     }
 
@@ -131,7 +134,7 @@ class Vo2MaxFormatterTest {
     fun formatValue_rockportFitnessTest_showsMethod() = runBlocking {
         val record = getRecord(17.3, MEASUREMENT_METHOD_ROCKPORT_FITNESS_TEST)
 
-        assertThat(formatter.formatValue(record, preferences))
+        assertThat(formatter.formatValue(record))
             .isEqualTo("17.3 mL/(kg·min) Rockport fitness test")
     }
 

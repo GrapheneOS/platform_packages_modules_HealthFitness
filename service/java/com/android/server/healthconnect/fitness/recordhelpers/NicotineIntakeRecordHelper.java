@@ -28,6 +28,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.NicotineIntakeRecordInternal;
 import android.util.Pair;
 
+import com.android.internal.annotations.VisibleForTesting;
+
 import java.util.List;
 
 /**
@@ -37,10 +39,13 @@ import java.util.List;
  */
 public class NicotineIntakeRecordHelper extends IntervalRecordHelper<NicotineIntakeRecordInternal> {
 
-    private static final String TABLE_NAME = "nicotine_intake_record_table";
-    private static final String NICOTINE_INTAKE_TYPE_COLUMN_NAME = "nicotine_intake_type";
-    private static final String QUANTITY_COLUMN_NAME = "quantity";
-    private static final String NICOTINE_INTAKE_COLUMN_NAME = "nicotine_intake";
+    @VisibleForTesting public static final String TABLE_NAME = "nicotine_intake_record_table";
+
+    @VisibleForTesting
+    public static final String NICOTINE_INTAKE_TYPE_COLUMN_NAME = "nicotine_intake_type";
+
+    @VisibleForTesting public static final String QUANTITY_COLUMN_NAME = "quantity";
+    @VisibleForTesting public static final String NICOTINE_INTAKE_COLUMN_NAME = "nicotine_intake";
 
     public NicotineIntakeRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_NICOTINE_INTAKE);

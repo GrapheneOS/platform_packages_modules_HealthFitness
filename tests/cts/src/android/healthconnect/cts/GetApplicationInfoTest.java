@@ -19,9 +19,9 @@ package android.healthconnect.cts;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
+import static android.healthconnect.testing.cts.TestUtils.getHealthConnectManager;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
-import static android.healthconnect.testing.cts.TestUtils.verifyDeleteRecords;
 import static android.healthconnect.testing.cts.testapphelpers.TestAppProxy.APP_WRITE_PERMS_ONLY;
 import static android.healthconnect.testing.shared.DataFactory.getTestRecords;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
@@ -31,18 +31,13 @@ import static com.android.compatibility.common.util.SystemUtil.getEventually;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static java.util.Objects.requireNonNull;
-
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.health.connect.ApplicationInfoResponse;
-import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.AppInfo;
-import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.MedicalDataSource;
-import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
@@ -75,29 +70,17 @@ public class GetApplicationInfoTest {
 
     private Context mContext;
     private HealthConnectManager mManager;
-    private PhrCtsTestUtils mPhrTestUtils;
 
     @Before
     public void setUp() throws InterruptedException {
-        deleteAllStagedRemoteData();
         mContext = ApplicationProvider.getApplicationContext();
-        deleteAllRecords(mContext.getApplicationInfo().packageName);
-        mManager = requireNonNull(mContext.getSystemService(HealthConnectManager.class));
-        mPhrTestUtils = new PhrCtsTestUtils(mManager);
-        mPhrTestUtils.deleteAllMedicalData();
+        deleteAllDataFromHealthConnect();
+        mManager = getHealthConnectManager();
     }
 
     @After
     public void after() throws InterruptedException {
-        deleteAllStagedRemoteData();
-        mPhrTestUtils.deleteAllMedicalData();
-    }
-
-    private void deleteAllRecords(String packageName) throws InterruptedException {
-        verifyDeleteRecords(
-                new DeleteUsingFiltersRequest.Builder()
-                        .addDataOrigin(new DataOrigin.Builder().setPackageName(packageName).build())
-                        .build());
+        deleteAllDataFromHealthConnect();
     }
 
     @Test

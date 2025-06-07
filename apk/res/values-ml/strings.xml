@@ -402,7 +402,7 @@
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"<xliff:g id="APP_NAME">%1$s</xliff:g> ആപ്പിന് ഇനി മുമ്പത്തെ ഡാറ്റ ഉൾപ്പെടെ, Health Connect-ൽ നിന്നുള്ള ഒരു ഡാറ്റയും വായിക്കാനോ എഴുതാനോ കഴിയില്ല.\n\nലൊക്കേഷനോ ക്യാമറയോ മൈക്രോഫോണോ പോലെ ഈ ആപ്പിന് ഉണ്ടായിരിക്കാനിടയുള്ള മറ്റ് അനുമതികളെ ഇത് ബാധിക്കില്ല."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"<xliff:g id="APP_NAME">%1$s</xliff:g> ആപ്പിന് ഇനി പശ്ചാത്തല, മുമ്പത്തെ ഡാറ്റ ഉൾപ്പെടെ, Health Connect-ൽ നിന്നുള്ള ഒരു ഡാറ്റയും വായിക്കാനോ എഴുതാനോ കഴിയില്ല.\n\nലൊക്കേഷനോ ക്യാമറയോ മൈക്രോഫോണോ പോലെ ഈ ആപ്പിന് ഉണ്ടായിരിക്കാനിടയുള്ള മറ്റ് അനുമതികളെ ഇത് ബാധിക്കില്ല."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect-ൽ നിന്നുള്ള <xliff:g id="APP_NAME">%1$s</xliff:g> ഡാറ്റയും ഇല്ലാതാക്കുക"</string>
-    <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"എല്ലാ ഫിറ്റ്‌നസ്, ആരോഗ്യക്ഷമതാ അനുമതികളും നീക്കം ചെയ്യണോ?"</string>
+    <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"എല്ലാ ഫിറ്റ്‌നസ്, വെൽനസ് അനുമതികളും നീക്കം ചെയ്യണോ?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Health Connect-ൽ നിന്നുള്ള <xliff:g id="APP_NAME">%1$s</xliff:g> എന്നതിൽ നിന്ന് ഫിറ്റ്‌നസ് ഡാറ്റയും ഇല്ലാതാക്കുക"</string>
     <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"എല്ലാ ആരോഗ്യ റെക്കോർഡ് അനുമതികളും നീക്കം ചെയ്യണോ?"</string>
     <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"Health Connect-ൽ നിന്നുള്ള <xliff:g id="APP_NAME">%1$s</xliff:g> എന്നതിൽ നിന്നുള്ള ആരോഗ്യ റെക്കോർഡുകളും ഇല്ലാതാക്കുക"</string>
@@ -461,7 +461,7 @@
     <string name="additional_access_summary" msgid="1076197455435130191">"മുമ്പത്തെ ഡാറ്റ, പശ്ചാത്തല ഡാറ്റ"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"ഈ ആപ്പിനുള്ള അധിക അനുമതികൾ നീക്കം ചെയ്തു"</string>
     <string name="permissions_header" msgid="6519976063360071569">"അനുമതികൾ"</string>
-    <string name="fitness_permissions" msgid="586264186537460254">"ഫിറ്റ്നസും ശാരീരികക്ഷമതയും"</string>
+    <string name="fitness_permissions" msgid="586264186537460254">"ഫിറ്റ്നസും വെൽനസും"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"വ്യായാമവും ഉറക്കവും പോഷകാഹാരവും മറ്റും"</string>
     <string name="medical_permissions" msgid="1224097151249321566">"ആരോഗ്യ റെക്കോർഡുകൾ"</string>
     <string name="medical_permissions_lowercase" msgid="3969792205103436491">"ആരോഗ്യ റെക്കോർഡുകൾ"</string>
@@ -558,13 +558,14 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Play Store-ലേക്ക് പോകുക"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Health Connect ഉപയോഗിച്ച് തുടങ്ങൂ"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"നിങ്ങളുടെ ആരോഗ്യവും ഫിറ്റ്നസും സംബന്ധിച്ച ഡാറ്റ Health Connect സംഭരിക്കുന്നു, ഇതിലൂടെ നിങ്ങളുടെ ഉപകരണത്തിലെ വ്യത്യസ്ത ആപ്പുകൾ എളുപ്പത്തിൽ സമന്വയിപ്പിക്കാനാകും"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"വ്യത്യസ്ത ആപ്പുകളിൽ നിന്നുള്ള നിങ്ങളുടെ ആരോഗ്യവും ഫിറ്റ്‍നസും സംബന്ധിച്ച ഡാറ്റ, Health Connect സംഭരിക്കുകയും സമന്വയിപ്പിക്കുകയും ചെയ്യുന്നു.\n\nവ്യായാമ സെഷനുകൾ, ചുവടുകൾ, പോഷകാഹാരം, ഉറക്കം എന്നിവയും മറ്റും ഉൾപ്പെടെയുള്ള "<b>"ഫിറ്റ്നസ്, വെൽനസ് ഡാറ്റ"</b>\n\n"വാക്‌സിനുകളും ലാബ് ഫലങ്ങളും മറ്റും ഉൾപ്പെടെയുള്ള "<b>"ആരോഗ്യ റെക്കോർഡുകൾ"</b></string>
+    <string name="onboarding_description_health_records" msgid="6586657048844511252">"വ്യത്യസ്ത ആപ്പുകളിൽ നിന്നുള്ള നിങ്ങളുടെ ഹെൽത്തും ഫിറ്റ്‍നസും സംബന്ധിച്ച ഡാറ്റ, Health Connect സംഭരിക്കുകയും സമന്വയിപ്പിക്കുകയും ചെയ്യുന്നു.\n\nവ്യായാമ സെഷനുകൾ, ചുവടുകൾ, പോഷകാഹാരം, ഉറക്കം എന്നിവയും മറ്റും ഉൾപ്പെടെയുള്ള "<b>"ഫിറ്റ്നസ്, വെൽനസ് ഡാറ്റ"</b>\n\n"വാക്‌സിനുകളും ലാബ് ഫലങ്ങളും മറ്റും ഉൾപ്പെടെയുള്ള "<b>"ഹെൽത്ത് റെക്കോർഡുകൾ"</b></string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connect ഉപയോഗിച്ച് ഇനിപ്പറയുന്നവ ചെയ്യാം"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"നിങ്ങളുടെ ആപ്പുകളുമായി ഡാറ്റ പങ്കിടുക"</b>\n"ഓരോ ആപ്പിനും റീഡ് ചെയ്യാനോ Health Connect-ലേക്ക് റൈറ്റ് ചെയ്യാനോ കഴിയുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"നിങ്ങളുടെ ക്രമീകരണവും സ്വകാര്യതയും മാനേജ് ചെയ്യുക"</b>\n"ആപ്പ് അനുമതികൾ മാറ്റുക, ഏതുസമയത്തും നിങ്ങളുടെ ഡാറ്റ മാനേജ് ചെയ്യുക"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"മടങ്ങുക"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"ആരംഭിക്കുക"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"ഡാറ്റ ഇല്ലാതാക്കുക"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"%1$s ബട്ടണിനായുള്ള ഡാറ്റ ഇല്ലാതാക്കുക"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"ഇല്ലാതാക്കലിലേക്ക് പോകുക"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"ഇല്ലാതാക്കലിൽ നിന്ന് പുറത്തുകടക്കുക"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Health Connect-ൽ നിന്ന് ഇല്ലാതാക്കാനുള്ള ഡാറ്റ തിരഞ്ഞെടുക്കൂ"</string>
@@ -1033,7 +1034,7 @@
     <string name="see_actions_button_content_description" msgid="2004104767369363475">"ആപ്പ് ഉറവിടങ്ങളുടെ ലിസ്‌റ്റിൽ നിന്ന് <xliff:g id="SELECTED_APP">%s</xliff:g> നീക്കം ചെയ്യാനോ പുനഃക്രമീകരിക്കാനോ ഉള്ള ബട്ടൺ"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"പുനഃക്രമീകരിക്കാൻ ഡബിൾ ടാപ്പ് ചെയ്‌ത് വലിച്ചിടുക"</string>
     <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="SELECTED_APP">%2$s</xliff:g> ലിസ്‌റ്റിൽ <xliff:g id="POSITION">%1$s</xliff:g> സ്ഥാനത്ത്"</string>
-    <string name="search_keywords_home" msgid="5386515593026555327">"ഫിറ്റ്‌നസ്, ആരോഗ്യം"</string>
+    <string name="search_keywords_home" msgid="5386515593026555327">"ഫിറ്റ്‌നസും വെൽനസും"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"അനുമതികൾ"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, ആരോഗ്യ ഡാറ്റ, ആരോഗ്യ വിഭാഗങ്ങൾ, ഡാറ്റാ ആക്‌സസ്, ആക്റ്റിവിറ്റി, ശാരീരിക അളവുകൾ, സൈക്കിൾ ട്രാക്കിംഗ്, പോഷകാഹാരം, ഉറക്കം, പ്രധാന ആരോഗ്യ വിവരങ്ങൾ"</string>
     <string name="search_breadcrumbs_permissions" msgid="2667471090347475796">"Health Connect &gt; ആപ്പ് അനുമതികൾ"</string>
@@ -1204,6 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"ആക്സസ് ചെയ്യാൻ അനുവദിച്ചു"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"റീഡ് ചെയ്യാനുള്ള അനുവാദം"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"ഈ അനുമതികൾ നിങ്ങളുടെ ഉപകരണ സെൻസറുകളിൽ നിന്നുള്ള ഡാറ്റയിലേക്ക് <xliff:g id="APP_NAME">%1$s</xliff:g> ആപ്പിന് ആക്സസ് നൽകുന്നു."</string>
+    <string name="write_access" msgid="571547306854732263">"എഴുതാനുള്ള ആക്‌സസ്"</string>
+    <string name="read_access" msgid="3317759826769372785">"വായനാ ആക്‌സസ്"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> / <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> ആപ്പുകൾ അനുവദനീയം"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"ആപ്പുകളൊന്നും അഭ്യർത്ഥിക്കുന്നില്ല"</string>
     <string name="allowed" msgid="4158456017482263737">"അനുവാദം ലഭിച്ചു"</string>
@@ -1220,7 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{ഒരു ആപ്പ് ഉപയോഗിച്ചു}other{# ആപ്പുകൾ ഉപയോഗിച്ചു}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"കഴിഞ്ഞ 24 മണിക്കൂറിനിടെ ഉപയോഗിച്ചിട്ടില്ല"</string>
     <string name="accessed" msgid="4424701457530587176">"<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>-ന് ആക്‌സസ് ചെയ്തു"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"ആദ്യത്തെ 2 ആപ്പുകൾ കണക്റ്റ് ചെയ്യുക"</string>
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"നിങ്ങളുടെ ആദ്യത്തെ ആപ്പ് കണക്റ്റ് ചെയ്യുക"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"ഈ ആപ്പുകൾക്കിടയിൽ ആരോഗ്യ, ഫിറ്റ്‌നസ് ഡാറ്റ പങ്കിടാൻ ആരംഭിക്കുന്നതിന് അവ കണക്റ്റ് ചെയ്യുക"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"രണ്ടാമതൊരു ആപ്പ് കണക്റ്റ് ചെയ്യുക"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"<xliff:g id="APP_NAME">%1$s</xliff:g> എന്നതുമായി ആരോഗ്യ, ഫിറ്റ്‌നസ് ഡാറ്റ പങ്കിടുന്നതിന് ഒരു ആപ്പ് കൂടി സജ്ജീകരിക്കുക"</string>
@@ -1230,11 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Health Connect-നെ കുറിച്ച് കൂടുതൽ"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Health Connect-ലേക്ക് ആപ്പ് കണക്റ്റ് ചെയ്തു"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"ഏതാണ്ട് പൂർത്തിയായി"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"സജ്ജീകരണം പൂർത്തിയാക്കി ഡാറ്റാ പങ്കിടൽ ആരംഭിക്കാൻ ഇപ്പോൾ തന്നെ ഈ ആപ്പുകൾ തുറക്കൂ"</string>
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"സജ്ജീകരണം പൂർത്തിയാക്കി ഡാറ്റാ പങ്കിടൽ ആരംഭിക്കാൻ ഇപ്പോൾ തന്നെ ഈ ആപ്പുകൾ തുറക്കൂ"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"സജ്ജീകരണം പൂർത്തിയാക്കി ഡാറ്റാ പങ്കിടൽ ആരംഭിക്കാൻ ഇപ്പോൾ തന്നെ ഈ ആപ്പുകൾ തുറക്കൂ അല്ലെങ്കിൽ ലഭ്യമായ ആപ്പുകൾ കണക്റ്റ് ചെയ്യുന്നത് തുടരൂ"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"കണക്റ്റ് ചെയ്ത ആപ്പുകൾ"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"കണക്റ്റ് ചെയ്യാൻ ലഭ്യമായ ആപ്പുകൾ"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"ആപ്പുകളിലുടനീളം നിങ്ങളുടെ ആരോഗ്യ ഡാറ്റ കാണുക"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"നിങ്ങളുടെ ആപ്പുകൾക്കിടയിൽ ആരോഗ്യ, ഫിറ്റ്‌നസ് ഡാറ്റ പങ്കിടാൻ ആരംഭിക്കുക"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"നിങ്ങളുടെ ആപ്പുകൾക്കിടയിൽ ഫിറ്റ്‌നസ്, വെൽനസ് ഡാറ്റ പങ്കിടാൻ ആരംഭിക്കുക"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"സജ്ജീകരിക്കുക"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"രണ്ടാമതൊരു ആപ്പ് കണക്റ്റ് ചെയ്യുക"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"<xliff:g id="APP_NAME">%1$s</xliff:g> എന്നതുമായി ആരോഗ്യ, ഫിറ്റ്‌നസ് ഡാറ്റ പങ്കിടുന്നതിന് ഒരു ആപ്പ് കൂടി സജ്ജീകരിക്കുക"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"ഫിറ്റ്‌നസ്, വെൽനസ് ഡാറ്റ പങ്കിടാൻ തുടങ്ങുന്നതിന് മറ്റൊരു ആപ്പ് സജ്ജീകരിക്കുക"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"തുടരുക"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"ആപ്പുകളിലുടനീളമുള്ള നിങ്ങളുടെ ആരോഗ്യ ഡാറ്റ കാണുക"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect വഴി നിങ്ങളുടെ ആപ്പുകൾക്കിടയിൽ ഫിറ്റ്‌നസ്, വെൽനസ് ഡാറ്റ പങ്കിടാനാകും. നിങ്ങൾക്ക് ഇപ്പോൾ കണക്‌റ്റ് ചെയ്യാനാകുന്ന ആപ്പുകൾ ഏതൊക്കെയെന്ന് കാണുക."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"രണ്ടാമതൊരു ആപ്പ് കണക്റ്റ് ചെയ്യുക"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
+    <skip />
 </resources>

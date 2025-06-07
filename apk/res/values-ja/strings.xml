@@ -63,7 +63,7 @@
     <string name="separator" msgid="5521285473288943819">"、 "</string>
     <string name="manage_permissions" msgid="8394221950712608160">"権限を管理"</string>
     <string name="recent_access_time_content_descritption" msgid="1137471676075811472">"時間: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="recent_access_empty_state_title" msgid="4767157641389217682">"最近アクセスしたアプリはありません"</string>
+    <string name="recent_access_empty_state_title" msgid="4767157641389217682">"最近のアクセスはありません"</string>
     <string name="recent_access_empty_state_description" msgid="6334951450158128989">"あなたのデータに最近アクセスしたアプリが自動的にここに表示されます"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"すべて表示"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"最近のアクセスを読み込めませんでした"</string>
@@ -565,6 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"戻る"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"使ってみる"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"データを削除します"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"%1$s のデータを削除するボタン"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"削除を開始"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"削除を終了"</string>
     <string name="time_range_title" msgid="5777596779865648336">"ヘルスコネクトから削除するデータの選択"</string>
@@ -1204,6 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"アクセスの許可"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"読み取りの許可"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"これらの権限により、<xliff:g id="APP_NAME">%1$s</xliff:g> はデバイスのセンサーからデータにアクセスできるようになります。"</string>
+    <string name="write_access" msgid="571547306854732263">"書き込みアクセス権"</string>
+    <string name="read_access" msgid="3317759826769372785">"読み取りアクセス権"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>、<xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>。<xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g>/<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> 個のアプリを許可"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"リクエストしているアプリはありません"</string>
     <string name="allowed" msgid="4158456017482263737">"許可されているアプリ"</string>
@@ -1220,7 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 件のアプリが使用}other{# 件のアプリが使用}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"過去 24 時間は使用されていません"</string>
     <string name="accessed" msgid="4424701457530587176">"<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>にアクセス"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"最初の 2 つのアプリを接続する"</string>
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"最初のアプリを接続"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"これらのアプリを接続して、健康とフィットネスに関するデータを共有しましょう"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"2 つ目のアプリを接続する"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"<xliff:g id="APP_NAME">%1$s</xliff:g> さんと健康とフィットネスに関するデータを共有するには、アプリをもう 1 つ設定してください"</string>
@@ -1230,11 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"ヘルスコネクトの詳細"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"アプリをヘルスコネクトに接続しました"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"もう少しで完了です"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"設定を完了してデータ共有を開始するには、これらのアプリを今すぐ開いてください"</string>
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"設定を完了してデータ共有を開始するには、これらのアプリを今すぐ開いてください"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"設定を完了してデータ共有を開始するには、これらのアプリを今すぐ開いてください。または、利用可能なアプリの接続を続けてください"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"接続済みのアプリ"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"接続できるアプリ"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"健康に関するデータをさまざまなアプリで確認できます"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"健康とフィットネスに関するデータをアプリ間で共有しましょう"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"フィットネスとウェルネスに関するデータをアプリ間で共有しましょう"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"設定"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"2 つ目のアプリを接続できます"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"アプリをもう 1 つ設定して、健康とフィットネスに関するデータを<xliff:g id="APP_NAME">%1$s</xliff:g>と共有できるようにしましょう"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"別のアプリを設定して、フィットネスとウェルネスに関するデータを共有できるようにしましょう"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"続行"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"健康に関するデータをさまざまなアプリで確認"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"ヘルスコネクトを使用すると、フィットネスとウェルネスに関するデータをアプリ間で共有できます。接続できるアプリをご確認ください。"</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"2 つ目のアプリを接続"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
+    <skip />
 </resources>

@@ -19,6 +19,7 @@ package com.android.healthconnect.controller.shared.inactiveapp
 import android.content.Context
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
@@ -55,6 +56,10 @@ class InactiveAppPreference(context: Context) : AppPreference(context) {
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
+
+        val deleteButton: ImageView? = holder.findViewById(R.id.delete_button) as ImageView?
+        deleteButton?.contentDescription =
+            context.getString(R.string.delete_inactive_app_data_button_content_description, title)
 
         val widgetFrame: ViewGroup? = holder.findViewById(android.R.id.widget_frame) as ViewGroup?
         widgetFrame?.setOnClickListener(deleteButtonListener)

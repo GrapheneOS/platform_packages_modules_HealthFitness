@@ -26,6 +26,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
@@ -69,6 +70,7 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
     private lateinit var contentParent: FrameLayout
     private lateinit var fab: ExtendedFloatingActionButton
     private var recyclerView: RecyclerView? = null
+    private var isFabImpressionLogged: Boolean = false
 
     private val mRecentAccessTodayPreferenceGroup: PreferenceGroup by pref(RECENT_ACCESS_TODAY_KEY)
 
@@ -76,6 +78,8 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
         pref(RECENT_ACCESS_YESTERDAY_KEY)
 
     private val mRecentAccessNoDataPreference: Preference by pref(RECENT_ACCESS_NO_DATA_KEY)
+
+    private var destinationChangedListener: NavController.OnDestinationChangedListener? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
@@ -90,10 +94,9 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
         val rootView = super.onCreateView(inflater, container, savedInstanceState)
 
         contentParent = requireActivity().findViewById(android.R.id.content)
-        inflater.inflate(R.layout.widget_floating_action_button, contentParent)
-
-        fab = contentParent.findViewById(R.id.extended_fab)
-        fab.isVisible = true
+        val fabLayout =
+            inflater.inflate(R.layout.widget_floating_action_button, contentParent, false)
+        fab = fabLayout.findViewById(R.id.extended_fab)
 
         recyclerView = rootView.findViewById(androidx.preference.R.id.recycler_view)
         val bottomPadding =
@@ -103,27 +106,72 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
         return rootView
     }
 
+    /**
+     * Updates the visibility and state of the FAB (Floating Action Button) based on the current
+     * navigation destination and the state of recent access apps.
+     *
+     * The FAB is shown only when:
+     * - The current screen is the Recent Access screen.
+     * - There is data to display in the Recent Access screen.
+     *
+     * If the FAB is visible, its impression is logged. If the FAB is not visible, it's removed from
+     * the view hierarchy and its impression is not logged.
+     */
+    private fun updateFabState() {
+        val navController = findNavController()
+        val isRecentAccessScreen = navController.currentDestination?.id == R.id.recentAccessFragment
+        val recentAccessState = viewModel.recentAccessApps.value
+        val hasData =
+            recentAccessState is RecentAccessState.WithData &&
+                recentAccessState.recentAccessEntries.isNotEmpty()
+
+        if (isRecentAccessScreen && hasData) {
+            if (fab.parent == null) {
+                contentParent.addView(fab)
+            }
+            fab.isVisible = true
+            if (!isFabImpressionLogged) {
+                logger.logImpression(RecentAccessElement.MANAGE_PERMISSIONS_FAB)
+                isFabImpressionLogged = true
+            }
+        } else {
+            fab.isVisible = false
+            if (fab.parent != null) {
+                contentParent.removeView(fab)
+            }
+            isFabImpressionLogged = false
+        }
+    }
+
     override fun onPause() {
-        // Prevents FAB from being permanently attached to the activity layout
-        contentParent.removeView(fab)
         super.onPause()
+        fab.isVisible = false
+        if (fab.parent != null) {
+            contentParent.removeView(fab)
+        }
+        destinationChangedListener?.let {
+            findNavController().removeOnDestinationChangedListener(it)
+            destinationChangedListener = null
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadRecentAccessApps()
 
-        if (fab.parent == null) {
-            contentParent.addView(fab)
-        }
-        logger.logImpression(RecentAccessElement.MANAGE_PERMISSIONS_FAB)
+        viewModel.loadRecentAccessApps()
+        updateFabState()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.loadRecentAccessApps()
+        val navController = findNavController()
+        destinationChangedListener =
+            NavController.OnDestinationChangedListener { _, _, _ -> updateFabState() }
+        navController.addOnDestinationChangedListener(destinationChangedListener!!)
+
         viewModel.recentAccessApps.observe(viewLifecycleOwner) { state ->
+            updateFabState()
             when (state) {
                 is RecentAccessState.Loading -> {
                     setLoading(true)
@@ -137,6 +185,8 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
                 }
             }
         }
+
+        updateFabState()
     }
 
     private fun updateRecentApps(recentAppsList: List<RecentAccessEntry>) {
@@ -149,18 +199,16 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
             mRecentAccessTodayPreferenceGroup.isVisible = false
             mRecentAccessNoDataPreference.isVisible = true
             mRecentAccessNoDataPreference.isSelectable = false
-            fab.isVisible = false
         } else {
-            // if the first entry is yesterday, we don't need the 'Today' section
             mRecentAccessTodayPreferenceGroup.isVisible = recentAppsList[0].isToday
-
-            // if the last entry is today, we don't need the 'Yesterday' section
             mRecentAccessYesterdayPreferenceGroup.isVisible = !recentAppsList.last().isToday
 
             fab.setOnClickListener {
                 logger.logInteraction(RecentAccessElement.MANAGE_PERMISSIONS_FAB)
-                findNavController()
-                    .navigate(R.id.action_recentAccessFragment_to_connectedAppsFragment)
+                if (findNavController().currentDestination?.id == R.id.recentAccessFragment) {
+                    findNavController()
+                        .navigate(R.id.action_recentAccessFragment_to_connectedAppsFragment)
+                }
             }
 
             recentAppsList.forEachIndexed { index, recentApp ->
@@ -208,6 +256,7 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
                 }
             }
         }
+        updateFabState()
     }
 
     private fun navigateToAppInfoOrOnboarding(recentApp: RecentAccessEntry) {
@@ -229,9 +278,6 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
                     recentApp.metadata.packageName,
                 )
         ) {
-            // return early as we no longer need to navigate to the permissions management
-            // screen since the client app makes a permission request as part of their
-            // onboarding activity.
             return
         }
         findNavController()

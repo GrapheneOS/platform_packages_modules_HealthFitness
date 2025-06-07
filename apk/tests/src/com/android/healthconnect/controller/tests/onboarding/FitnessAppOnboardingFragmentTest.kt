@@ -38,7 +38,6 @@ import com.android.healthconnect.controller.onboarding.FitnessAppOnboardingViewM
 import com.android.healthconnect.controller.onboarding.OnboardingViewModel
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.DISTANCE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.EXERCISE
-import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.READ
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.WRITE
@@ -150,8 +149,8 @@ class FitnessAppOnboardingFragmentTest {
                 FitnessAppOnboardingViewModel.FitnessAppOnboardingFragmentState.ShowFitnessRead(
                     TEST_APP,
                     mapOf(
-                        HealthPermission.FitnessPermission(DISTANCE, READ) to true,
-                        HealthPermission.FitnessPermission(EXERCISE, READ) to false,
+                        FitnessPermission(DISTANCE, READ) to true,
+                        FitnessPermission(EXERCISE, READ) to false,
                     ),
                     true,
                 )
@@ -191,8 +190,8 @@ class FitnessAppOnboardingFragmentTest {
                 FitnessAppOnboardingViewModel.FitnessAppOnboardingFragmentState.ShowFitnessWrite(
                     TEST_APP,
                     mapOf(
-                        HealthPermission.FitnessPermission(DISTANCE, WRITE) to true,
-                        HealthPermission.FitnessPermission(EXERCISE, WRITE) to false,
+                        FitnessPermission(DISTANCE, WRITE) to true,
+                        FitnessPermission(EXERCISE, WRITE) to false,
                     ),
                 )
             )
@@ -233,8 +232,8 @@ class FitnessAppOnboardingFragmentTest {
                     .ShowFitnessReadWrite(
                         TEST_APP,
                         mapOf(
-                            HealthPermission.FitnessPermission(DISTANCE, READ) to true,
-                            HealthPermission.FitnessPermission(EXERCISE, WRITE) to false,
+                            FitnessPermission(DISTANCE, READ) to true,
+                            FitnessPermission(EXERCISE, WRITE) to false,
                         ),
                         true,
                     )
@@ -276,8 +275,8 @@ class FitnessAppOnboardingFragmentTest {
                     .ShowFitnessReadWrite(
                         TEST_APP,
                         mapOf(
-                            HealthPermission.FitnessPermission(EXERCISE, WRITE) to true,
-                            HealthPermission.FitnessPermission(DISTANCE, READ) to true,
+                            FitnessPermission(EXERCISE, WRITE) to true,
+                            FitnessPermission(DISTANCE, READ) to true,
                         ),
                         true,
                     )
@@ -309,8 +308,8 @@ class FitnessAppOnboardingFragmentTest {
                     .ShowFitnessReadWrite(
                         TEST_APP,
                         mapOf(
-                            HealthPermission.FitnessPermission(EXERCISE, WRITE) to false,
-                            HealthPermission.FitnessPermission(DISTANCE, READ) to false,
+                            FitnessPermission(EXERCISE, WRITE) to false,
+                            FitnessPermission(DISTANCE, READ) to false,
                         ),
                         true,
                     )
@@ -342,8 +341,8 @@ class FitnessAppOnboardingFragmentTest {
                     .ShowFitnessReadWrite(
                         TEST_APP,
                         mapOf(
-                            HealthPermission.FitnessPermission(DISTANCE, READ) to true,
-                            HealthPermission.FitnessPermission(EXERCISE, WRITE) to true,
+                            FitnessPermission(DISTANCE, READ) to true,
+                            FitnessPermission(EXERCISE, WRITE) to true,
                         ),
                         true,
                     )
@@ -389,8 +388,8 @@ class FitnessAppOnboardingFragmentTest {
                     .ShowFitnessReadWrite(
                         TEST_APP,
                         mapOf(
-                            HealthPermission.FitnessPermission(DISTANCE, READ) to false,
-                            HealthPermission.FitnessPermission(EXERCISE, WRITE) to true,
+                            FitnessPermission(DISTANCE, READ) to false,
+                            FitnessPermission(EXERCISE, WRITE) to true,
                         ),
                         true,
                     )
@@ -424,8 +423,8 @@ class FitnessAppOnboardingFragmentTest {
                     .ShowFitnessReadWrite(
                         TEST_APP,
                         mapOf(
-                            HealthPermission.FitnessPermission(DISTANCE, READ) to true,
-                            HealthPermission.FitnessPermission(EXERCISE, WRITE) to true,
+                            FitnessPermission(DISTANCE, READ) to true,
+                            FitnessPermission(EXERCISE, WRITE) to true,
                         ),
                         true,
                     )
@@ -458,8 +457,8 @@ class FitnessAppOnboardingFragmentTest {
                     .ShowFitnessReadWrite(
                         TEST_APP,
                         mapOf(
-                            HealthPermission.FitnessPermission(DISTANCE, READ) to false,
-                            HealthPermission.FitnessPermission(EXERCISE, WRITE) to true,
+                            FitnessPermission(DISTANCE, READ) to false,
+                            FitnessPermission(EXERCISE, WRITE) to true,
                         ),
                         true,
                     )
@@ -492,8 +491,8 @@ class FitnessAppOnboardingFragmentTest {
                     .ShowFitnessReadWrite(
                         TEST_APP,
                         mapOf(
-                            HealthPermission.FitnessPermission(DISTANCE, READ) to false,
-                            HealthPermission.FitnessPermission(EXERCISE, WRITE) to true,
+                            FitnessPermission(DISTANCE, READ) to false,
+                            FitnessPermission(EXERCISE, WRITE) to true,
                         ),
                         true,
                     )
@@ -530,8 +529,8 @@ class FitnessAppOnboardingFragmentTest {
                     .ShowFitnessReadWrite(
                         TEST_APP,
                         mapOf(
-                            HealthPermission.FitnessPermission(DISTANCE, READ) to false,
-                            HealthPermission.FitnessPermission(EXERCISE, WRITE) to true,
+                            FitnessPermission(DISTANCE, READ) to false,
+                            FitnessPermission(EXERCISE, WRITE) to true,
                         ),
                         true,
                     )
@@ -552,7 +551,6 @@ class FitnessAppOnboardingFragmentTest {
                 onIdle()
                 onView(withText("Done")).perform(click())
                 verify(viewModel).done()
-                verify(onboardingViewModel).setAppInteractedWith(TEST_APP_PACKAGE_NAME)
             }
         verify(healthConnectLogger)
             .logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_DONE_BUTTON)
@@ -570,8 +568,8 @@ class FitnessAppOnboardingFragmentTest {
                     .ShowFitnessReadWrite(
                         TEST_APP,
                         mapOf(
-                            HealthPermission.FitnessPermission(DISTANCE, READ) to true,
-                            HealthPermission.FitnessPermission(EXERCISE, WRITE) to false,
+                            FitnessPermission(DISTANCE, READ) to true,
+                            FitnessPermission(EXERCISE, WRITE) to false,
                         ),
                         true,
                     )
@@ -586,8 +584,7 @@ class FitnessAppOnboardingFragmentTest {
             )
             .use { scenario ->
                 onView(withText("Distance")).perform(scrollTo()).perform(click())
-                verify(viewModel)
-                    .updatePermission(HealthPermission.FitnessPermission(DISTANCE, READ), false)
+                verify(viewModel).updatePermission(FitnessPermission(DISTANCE, READ), false)
             }
         verify(healthConnectLogger)
             .logInteraction(
@@ -604,8 +601,8 @@ class FitnessAppOnboardingFragmentTest {
                     .ShowFitnessReadWrite(
                         TEST_APP,
                         mapOf(
-                            HealthPermission.FitnessPermission(DISTANCE, READ) to false,
-                            HealthPermission.FitnessPermission(EXERCISE, WRITE) to false,
+                            FitnessPermission(DISTANCE, READ) to false,
+                            FitnessPermission(EXERCISE, WRITE) to false,
                         ),
                         true,
                     )
@@ -620,8 +617,7 @@ class FitnessAppOnboardingFragmentTest {
             )
             .use { scenario ->
                 onView(withText("Distance")).perform(scrollTo()).perform(click())
-                verify(viewModel)
-                    .updatePermission(HealthPermission.FitnessPermission(DISTANCE, READ), true)
+                verify(viewModel).updatePermission(FitnessPermission(DISTANCE, READ), true)
             }
         verify(healthConnectLogger)
             .logInteraction(

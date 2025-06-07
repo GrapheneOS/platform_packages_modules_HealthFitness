@@ -565,6 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Назад"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Начать"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Удалить данные"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Кнопка удаления данных для приложения \"%1$s\""</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Перейти к удалению"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Отменить удаление"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Выберите, какие данные удалить из сервиса"</string>
@@ -1204,6 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Разрешен доступ"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Разрешено чтение данных"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Эти разрешения дают приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к данным датчиков устройства."</string>
+    <string name="write_access" msgid="571547306854732263">"Доступ для записи"</string>
+    <string name="read_access" msgid="3317759826769372785">"Доступ для чтения"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>."</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"Приложений с разрешением: <xliff:g id="NUMBER_0">%1$d</xliff:g> из <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Нет запросов от приложений"</string>
     <string name="allowed" msgid="4158456017482263737">"Разрешено"</string>
@@ -1220,7 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Использовало 1 приложение}one{Использовало # приложение}few{Использовало # приложения}many{Использовало # приложений}other{Использовало # приложения}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Не использовалось последние 24 часа"</string>
     <string name="accessed" msgid="4424701457530587176">"Последний раз использовалось в <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Подключите первые два приложения"</string>
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Подключите первое приложение"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Подключите эти приложения, чтобы они могли обмениваться данными о здоровье и физической активности."</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Подключите второе приложение"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Настройте ещё одно приложение для передачи данных о физической активности в приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\"."</string>
@@ -1230,11 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"О платформе \"Здоровье и спорт\""</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Подключено к платформе \"Здоровье и спорт\""</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Почти готово…"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"Чтобы завершить настройку и начать передачу данных, откройте эти приложения."</string>
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Чтобы завершить настройку и начать передачу данных, откройте эти приложения."</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Чтобы завершить настройку и начать передачу данных, откройте эти приложения или подключите другие доступные приложения."</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Связанные приложения"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Приложения, которые можно подключить"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Вся информация о здоровье – на одной платформе"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Настройте передачу данных о здоровье и физической активности между приложениями."</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Начните обмениваться данными о физической активности и самочувствии между приложениями."</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Настроить"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Подключите второе приложение"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Настройте ещё одно приложение, чтобы отправлять данные о здоровье и физической активности в приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\"."</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Настройте ещё одно приложение для обмена данными о физической активности и самочувствии."</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Продолжить"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Вся информация о здоровье – на одной платформе"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"С помощью платформы \"Здоровье и спорт\" вы можете обмениваться данными о физической активности и самочувствии между приложениями. Узнайте, какие приложения можно подключить."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Подключите второе приложение"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
+    <skip />
 </resources>

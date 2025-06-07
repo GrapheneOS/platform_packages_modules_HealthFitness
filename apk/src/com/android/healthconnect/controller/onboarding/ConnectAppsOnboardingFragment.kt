@@ -261,7 +261,6 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
         setupLaterButton.text = getString(R.string.set_up_later)
         setupLaterButton.setOnClickListener {
             healthConnectLogger.logInteraction(elementName)
-            // TODO (b/399086212) set banner seen
             requireActivity().finish()
         }
     }
@@ -273,7 +272,6 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
         doneButton.text = getString(R.string.delete_dialog_done_button)
         doneButton.setOnClickListener {
             healthConnectLogger.logInteraction(AlmostDonePageElement.ONBOARDING_DONE_BUTTON)
-            // TODO (b/399086212) set banner seen?
             requireActivity().finish()
         }
     }
@@ -323,11 +321,7 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
                                 SHOW_MANAGE_APP_SECTION to false,
                             ),
                         )
-                } else {
-                    // Mark app as having been interacted with
-                    viewModel.setAppInteractedWith(connectedApp.appMetadata.packageName)
                 }
-
                 true
             }
         }

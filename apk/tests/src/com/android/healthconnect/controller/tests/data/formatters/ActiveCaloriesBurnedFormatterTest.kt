@@ -55,34 +55,34 @@ class ActiveCaloriesBurnedFormatterTest {
 
     @Test
     fun formatValue_calories_returnsFormattedEnergy() = runBlocking {
-        preferences.setEnergyUnit(EnergyUnit.CALORIE)
+        preferences.energyUnit = EnergyUnit.CALORIE
         val record = getActiveCaloriesBurnedRecord(calories = 3000.0)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("3 Cal")
+        assertThat(formatter.formatValue(record)).isEqualTo("3 Cal")
     }
 
     @Test
     fun formatValue_kj_returnsFormattedEnergy() = runBlocking {
-        preferences.setEnergyUnit(EnergyUnit.KILOJOULE)
+        preferences.energyUnit = EnergyUnit.KILOJOULE
         val record = getActiveCaloriesBurnedRecord(calories = 3107.0)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("13 kJ")
+        assertThat(formatter.formatValue(record)).isEqualTo("13 kJ")
     }
 
     @Test
     fun formatA11yValue_calories_returnsFormattedEnergy() = runBlocking {
-        preferences.setEnergyUnit(EnergyUnit.CALORIE)
+        preferences.energyUnit = EnergyUnit.CALORIE
         val record = getActiveCaloriesBurnedRecord(calories = 13000.0)
 
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("13 calories")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("13 calories")
     }
 
     @Test
     fun formatA11yValue_kj_returnsFormattedEnergy() = runBlocking {
-        preferences.setEnergyUnit(EnergyUnit.KILOJOULE)
+        preferences.energyUnit = EnergyUnit.KILOJOULE
         val record = getActiveCaloriesBurnedRecord(calories = 3107.0)
 
-        assertThat(formatter.formatA11yValue(record, preferences)).isEqualTo("13 kilojoules")
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("13 kilojoules")
     }
 
     private fun getActiveCaloriesBurnedRecord(calories: Double): ActiveCaloriesBurnedRecord {

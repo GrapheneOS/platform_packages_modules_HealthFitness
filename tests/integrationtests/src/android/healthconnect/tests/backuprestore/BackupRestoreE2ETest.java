@@ -19,7 +19,7 @@ package android.healthconnect.tests.backuprestore;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermission;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeAllHealthPermissions;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.getHealthConnectDataRestoreState;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.readAllRecords;
@@ -143,8 +143,7 @@ public class BackupRestoreE2ETest {
                 "backup_local_transport_parameters",
                 "is_device_transfer=true");
 
-        deleteAllStagedRemoteData();
-        verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
+        deleteAllDataFromHealthConnect();
         mPhrTestUtil = new PhrCtsTestUtils(mHealthConnectManager);
     }
 

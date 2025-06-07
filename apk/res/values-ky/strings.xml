@@ -565,6 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Артка кайтуу"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Баштадык"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Колдонмодогу нерселер өчүрүлөт"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"%1$s маалыматын өчүрүү баскычы"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Өчүрүүгө өтүү"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Өчүрүүдөн чыгуу"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Health Connect\'тен өчүрүү үчүн маалыматты тандаңыз"</string>
@@ -1204,6 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Кирүүгө уруксат берилген"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Окууга уруксат берилген"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Бул уруксаттар <xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосуна түзмөгүңүздүн сенсорлорунан маалыматка кирүү мүмкүнчүлүгүн берет."</string>
+    <string name="write_access" msgid="571547306854732263">"Жаза алат"</string>
+    <string name="read_access" msgid="3317759826769372785">"Окуй алат"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> колдонмонун ичинен <xliff:g id="NUMBER_0">%1$d</xliff:g> уруксат берилген"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Уруксат сураган колдонмолор жок"</string>
     <string name="allowed" msgid="4158456017482263737">"Уруксат берилген"</string>
@@ -1220,7 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 колдонмо пайдаланды}other{# колдонмо пайдаланды}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Акыркы 24 сааттын ичинде колдонулган жок"</string>
     <string name="accessed" msgid="4424701457530587176">"Cаат <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g> колдонулду"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Алгачкы 2 колдонмону байланыштырыңыз"</string>
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Биринчи колдонмону байланыштырыңыз"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Ден соолук жана спорт маалыматтарын бөлүшүп баштоо үчүн бул колдонмолорду байланыштырыңыз"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Экинчи колдонмону тууралоо"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Ден соолук жана спорт маалыматтарын <xliff:g id="APP_NAME">%1$s</xliff:g> менен бөлүшүү үчүн дагы бир колдонмону тууралаңыз"</string>
@@ -1230,11 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Health Connect жөнүндө кеңири маалымат"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Колдонмо Health Connect менен байланыштырылды"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Бүткөнү калды"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"Тууралап бүтүрүү жана маалыматты бөлүшүп баштоо үчүн бул колдонмолорду ачыңыз"</string>
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Тууралап бүтүрүү жана маалыматты бөлүшүп баштоо үчүн бул колдонмолорду ачыңыз"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Тууралап бүтүрүү жана маалыматты бөлүшүп баштоо үчүн бул колдонмолорду ачыңыз же жеткиликтүү колдонмолорду байланыштыра бериңиз"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Байланышкан колдонмолор"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Байланыштырууга жеткиликтүү колдонмолор"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Ден соолукка байланыштуу маалыматты колдонмолордо көрүү"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Ден соолук жана спорт маалыматтарын колдонмолоруңуздун арасында бөлүшүп баштаңыз"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Дене бойду чыңдоо жана саламаттыгыңызга байланыштуу маалыматты колдонмолоруңуздун арасында бөлүшүп баштаңыз"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Тууралоо"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Экинчи колдонмону тууралоо"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Ден соолук жана спорт маалыматтарын <xliff:g id="APP_NAME">%1$s</xliff:g> менен бөлүшүү үчүн дагы бир колдонмону тууралаңыз"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Дене бойду чыңдоо жана саламаттыгыңызга байланыштуу маалыматты бөлүшүп баштоо үчүн башка колдонмону тууралаңыз"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Улантуу"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Ден соолукка байланыштуу маалыматты колдонмолордо көрүү"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect — дене бойду чыңдоо жана саламаттыгыңызга байланыштуу маалыматты колдонмолоруңуздун арасында бөлүшүүгө мүмкүндүк берет. Кайсы колдонмолорду азыр байланыштырууга болорун көрүңүз."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Экинчи колдонмону тууралоо"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
+    <skip />
 </resources>

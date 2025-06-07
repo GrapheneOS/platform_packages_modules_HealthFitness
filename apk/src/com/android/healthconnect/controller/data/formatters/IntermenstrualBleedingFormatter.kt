@@ -23,26 +23,24 @@ import android.health.connect.datatypes.IntermenstrualBleedingRecord
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing IntermenstrualBleedingRecord data. */
 class IntermenstrualBleedingFormatter
 @Inject
-constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<IntermenstrualBleedingRecord>(context) {
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<IntermenstrualBleedingRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: IntermenstrualBleedingRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: IntermenstrualBleedingRecord): String {
         return context.getString(R.string.spotting)
     }
 
-    override suspend fun formatA11yValue(
-        record: IntermenstrualBleedingRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
-        return formatValue(record, unitPreferences)
+    override suspend fun formatA11yValue(record: IntermenstrualBleedingRecord): String {
+        return formatValue(record)
     }
 }

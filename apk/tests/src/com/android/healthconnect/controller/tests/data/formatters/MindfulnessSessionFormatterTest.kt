@@ -26,7 +26,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.MindfulnessSessionFormatter
-import com.android.healthconnect.controller.tests.utils.ClearTimeFormatRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
@@ -52,8 +51,6 @@ class MindfulnessSessionFormatterTest {
     @get:Rule val setFlagsRule = SetFlagsRule()
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule val clearTimeFormatRule = ClearTimeFormatRule()
 
     @Inject lateinit var formatter: MindfulnessSessionFormatter
     private lateinit var context: Context

@@ -22,19 +22,20 @@ import android.health.connect.datatypes.SexualActivityRecord.SexualActivityProte
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing SexualActivityRecord data. */
 class SexualActivityFormatter
 @Inject
-constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<SexualActivityRecord>(context) {
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<SexualActivityRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: SexualActivityRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: SexualActivityRecord): String {
 
         return when (record.protectionUsed) {
             PROTECTION_USED_PROTECTED -> context.getString(R.string.sexual_activity_protected)
@@ -45,10 +46,7 @@ constructor(@ApplicationContext private val context: Context) :
         }
     }
 
-    override suspend fun formatA11yValue(
-        record: SexualActivityRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
-        return formatValue(record, unitPreferences)
+    override suspend fun formatA11yValue(record: SexualActivityRecord): String {
+        return formatValue(record)
     }
 }

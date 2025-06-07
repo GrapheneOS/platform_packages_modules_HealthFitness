@@ -24,9 +24,9 @@ import static android.healthconnect.testing.cts.PermissionUtils.grantAllHealthPe
 import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermission;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeAllHealthPermissions;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeHealthPermission;
+import static android.healthconnect.testing.cts.TestUtils.connectAppsWithGrantedPermissions;
 import static android.healthconnect.testing.cts.TestUtils.createReadRecordsRequestUsingFilters;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllFitnessDataAddedByTestApp;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.fetchDataOriginsPriorityOrder;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
 import static android.healthconnect.testing.cts.TestUtils.getApplicationInfo;
@@ -173,12 +173,13 @@ public class HealthConnectDeviceTest {
         grantAllHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
         grantAllHealthPermissions(APP_B_WITH_READ_WRITE_PERMS.getPackageName());
         grantAllHealthPermissions(APP_WITH_WRITE_PERMS_ONLY.getPackageName());
+        // TODO(b/421834796): Remove once AppInfo is created on demand on all tested branches.
+        connectAppsWithGrantedPermissions();
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        deleteAllFitnessDataAddedByTestApp();
-        deleteAllStagedRemoteData();
+        deleteAllDataFromHealthConnect();
         grantAllHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
         grantAllHealthPermissions(APP_B_WITH_READ_WRITE_PERMS.getPackageName());
         grantAllHealthPermissions(APP_WITH_WRITE_PERMS_ONLY.getPackageName());

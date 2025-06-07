@@ -565,6 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Назад"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Пачаць"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Выдаліць даныя"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Кнопка выдалення даных для праграмы \"%1$s\""</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Увайсці ў стан выдалення"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Выйсці са стану выдалення"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Якія даныя выдаліць з праграмы \"Здароўе і спорт\""</string>
@@ -1204,6 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Доступ дазволены"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Дазволена счытваць"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"З гэтымі дазволамі праграма \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" можа атрымліваць доступ да даных з датчыкаў прылады."</string>
+    <string name="write_access" msgid="571547306854732263">"Дазволы на запіс"</string>
+    <string name="read_access" msgid="3317759826769372785">"Дазволы на прагляд"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"Праграм з дазволам: <xliff:g id="NUMBER_0">%1$d</xliff:g> з <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Ні адна праграма не запытвае дазвол"</string>
     <string name="allowed" msgid="4158456017482263737">"Дазволена"</string>
@@ -1220,7 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Выкарыстоўваўся 1 праграмай}one{Выкарыстоўваўся # праграмай}few{Выкарыстоўваўся # праграмамі}many{Выкарыстоўваўся # праграмамі}other{Выкарыстоўваўся # праграмы}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"За апошнія 24 гадзіны дазвол не выкарыстоўваўся"</string>
     <string name="accessed" msgid="4424701457530587176">"Апошні доступ: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Падключыце свае першыя дзве праграмы"</string>
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Падключыце першую праграму"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Падключыце гэтыя праграмы, каб пачаць абмен данымі пра здароўе і фізічную актыўнасць паміж імі"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Падключыце другую праграму"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Наладзьце яшчэ адну праграму для абмену данымі пра здароўе і фізічную актыўнасць з праграмай \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
@@ -1230,11 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Падрабязней пра праграму \"Здароўе і спорт\""</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Праграма падключана да праграмы \"Здароўе і спорт\""</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Амаль гатова"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"Адкрыйце гэтыя праграмы зараз, каб завяршыць наладжванне і пачаць абагульванне даных"</string>
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Адкрыйце гэтыя праграмы зараз, каб завяршыць наладжванне і пачаць абагульванне даных"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Адкрыйце гэтыя праграмы зараз, каб завяршыць наладжванне і пачаць абагульванне даных, або працягвайце падключэнне даступных праграм"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Падключаныя праграмы"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Праграмы, даступныя для падключэння"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Праглядайце вашы даныя пра здароўе з розных праграм"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Абагульвайце даныя пра здароўе і фізічную актыўнасць паміж вашымі праграмамі"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Пачніце абагульваць даныя пра фізічную актыўнасць і фізічны стан паміж праграмамі"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Наладзіць"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Падключыце другую праграму"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Наладзьце яшчэ адну праграму для абагульвання даных пра здароўе і фізічную актыўнасць з праграмай \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Наладзьце яшчэ адну праграму, каб пачаць абагульваць яе даныя пра фізічную актыўнасць і фізічны стан"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Працягнуць"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Праглядайце вашы даныя пра здароўе з розных праграм"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"З дапамогай платформы \"Здароўе і спорт\" можна абагульваць вашы даныя пра фізічную актыўнасць і фізічны стан паміж праграмамі. Паглядзіце, якія праграмы можна падключыць ужо зараз."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Падключыце другую праграму"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
+    <skip />
 </resources>

@@ -565,6 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Retour"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Faire vos premiers pas"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Supprimer les données"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Bouton Supprimer les données pour %1$s"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Entrer en mode Suppression"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Quitter le mode Suppression"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Choisir quelles données supprimer de Connexion santé"</string>
@@ -1204,6 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Autorisée à accéder"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Autorisée à lire"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Ces autorisations permettent à <xliff:g id="APP_NAME">%1$s</xliff:g> d\'accéder aux données des capteurs de votre appareil."</string>
+    <string name="write_access" msgid="571547306854732263">"Accès en écriture"</string>
+    <string name="read_access" msgid="3317759826769372785">"Accès en lecture"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> applis autorisées sur <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Aucune appli ne demande une autorisation"</string>
     <string name="allowed" msgid="4158456017482263737">"Autorisée"</string>
@@ -1220,7 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Utilisée par 1 appli}one{Utilisée par # appli}other{Utilisée par # applis}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Aucune utilisation au cours des dernières 24 heures"</string>
     <string name="accessed" msgid="4424701457530587176">"Dernier accès : <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Connecter vos deux premières applis"</string>
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Connecter votre première appli"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Connectez ces applis pour commencer à partager des données de santé et d\'activité physique entre elles"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Connecter une deuxième appli"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Configurez une autre appli pour partager vos données de santé et d\'activité physique avec <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1230,11 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"En savoir plus sur Connexion santé"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Appli connectée à Connexion santé"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Presque terminé"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"Ouvrez ces applis maintenant pour terminer la configuration et commencer à partager des données"</string>
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Ouvrez ces applis maintenant pour terminer la configuration et commencer à partager des données"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Ouvrez ces applis maintenant pour terminer la configuration et commencer à partager des données, ou continuez à connecter les applis accessibles"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Applis connectées"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Applis accessibles pour se connecter"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Consulter vos données de santé dans plusieurs applis"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Commencez à partager vos données de santé et d\'activité physique entre vos applis"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Commencez à partager vos données d\'activité physique et de bien-être entre vos applis"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Configurer"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Connecter une deuxième appli"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Configurez une autre appli pour partager vos données de santé et d\'activité physique avec <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Configurez une autre appli pour qu\'elle puisse commencer à partager des données d\'activité physique et de bien-être"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Continuer"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Consulter vos données relatives à la santé dans toutes vos applis"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Connexion santé vous permet de partager des données d\'activité physique et de bien-être entre vos applis. Découvrez quelles applis vous pouvez connecter maintenant."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Connecter une deuxième appli"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
+    <skip />
 </resources>

@@ -70,42 +70,42 @@ class CervicalMucusFormatterTest {
     fun formatValue_dry_showsAppearance() = runBlocking {
         val record = getRecord(appearance = APPEARANCE_DRY)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Dry")
+        assertThat(formatter.formatValue(record)).isEqualTo("Dry")
     }
 
     @Test
     fun formatValue_sticky_showsAppearance() = runBlocking {
         val record = getRecord(appearance = APPEARANCE_STICKY)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Sticky")
+        assertThat(formatter.formatValue(record)).isEqualTo("Sticky")
     }
 
     @Test
     fun formatValue_creamy_showsAppearance() = runBlocking {
         val record = getRecord(appearance = APPEARANCE_CREAMY)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Creamy")
+        assertThat(formatter.formatValue(record)).isEqualTo("Creamy")
     }
 
     @Test
     fun formatValue_watery_showsAppearance() = runBlocking {
         val record = getRecord(appearance = APPEARANCE_WATERY)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Watery")
+        assertThat(formatter.formatValue(record)).isEqualTo("Watery")
     }
 
     @Test
     fun formatValue_Sticky_showsAppearance() = runBlocking {
         val record = getRecord(appearance = APPEARANCE_EGG_WHITE)
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Egg white")
+        assertThat(formatter.formatValue(record)).isEqualTo("Egg white")
     }
 
     @Test
     fun formatValue_unknownAppearanceAndSensation_unknownType() = runBlocking {
         val record = getRecord()
 
-        assertThat(formatter.formatValue(record, preferences)).isEqualTo("Unknown type")
+        assertThat(formatter.formatValue(record)).isEqualTo("Unknown type")
     }
 
     private fun getRecord(

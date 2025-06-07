@@ -48,7 +48,6 @@ class LocalDateTimeFormatterTest {
     @Inject @ApplicationContext lateinit var context: Context
     private lateinit var systemSettings: UserSettings
 
-    private var previousTimeFormat: String? = null
     private var previousDefaultTimeZone: TimeZone? = null
     private var previousLocale: Locale? = null
 
@@ -59,11 +58,6 @@ class LocalDateTimeFormatterTest {
         hiltRule.inject()
 
         systemSettings = UserSettings(context, Namespace.SYSTEM)
-        previousTimeFormat = systemSettings.get(System.TIME_12_24)
-        if (previousTimeFormat != null) {
-            // Clear setting so locale-defined time format is used.
-            systemSettings.syncSet(System.TIME_12_24, null)
-        }
 
         previousDefaultTimeZone = TimeZone.getDefault()
         previousLocale = Locale.getDefault()
@@ -74,9 +68,6 @@ class LocalDateTimeFormatterTest {
 
     @After
     fun tearDown() {
-        if (previousTimeFormat != null) {
-            systemSettings.syncSet(System.TIME_12_24, previousTimeFormat)
-        }
         TimeZone.setDefault(previousDefaultTimeZone)
         previousLocale?.let { locale -> Locale.setDefault(locale) }
     }

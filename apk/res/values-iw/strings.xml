@@ -24,7 +24,7 @@
     <string name="home_subtitle" msgid="2154213430054477787">"ניהול נתוני הבריאות והכושר במכשיר, ובחירה האפליקציות שיכולות לגשת לנתונים"</string>
     <string name="data_title" msgid="4456619761533380816">"נתונים וגישה"</string>
     <string name="browse_medical_data" msgid="6963802956096683273">"עיון בסיכום המצב הבריאותי"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"צפייה בסיכומים של המצב הבריאותי שלך והצגת האפליקציות שיכולות לגשת אליהם"</string>
+    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"צפייה בסיכומים של המצב הבריאותי שלך, מידע על האפליקציות שיכולות לגשת לסיכומים"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"כל הקטגוריות"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"לכל הקטגוריות"</string>
     <string name="no_data" msgid="1906986019249068659">"אין נתונים"</string>
@@ -64,7 +64,7 @@
     <string name="manage_permissions" msgid="8394221950712608160">"ניהול ההרשאות"</string>
     <string name="recent_access_time_content_descritption" msgid="1137471676075811472">"זמן: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
     <string name="recent_access_empty_state_title" msgid="4767157641389217682">"לא הייתה גישה לאחרונה"</string>
-    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"אפליקציות שקיבלו גישה לנתונים שלך לאחרונה יופיעו כאן באופן אוטומטי"</string>
+    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"אפליקציות שניגשו לנתונים שלך לאחרונה יופיעו כאן באופן אוטומטי"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"צפייה בכל הפרטים"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"לא ניתן לטעון את הנתונים מהגישה האחרונה"</string>
     <string name="recent_access_inactive_app" msgid="8754221676902025802">"האפליקציה לא זמינה יותר"</string>
@@ -565,6 +565,8 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"הקודם"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"קדימה, מתחילים"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"מחיקת נתונים"</string>
+    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
+    <skip />
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"כניסה למצב מחיקה"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"יציאה ממצב מחיקה"</string>
     <string name="time_range_title" msgid="5777596779865648336">"בחירת הנתונים שיימחקו מ-Health Connect"</string>
@@ -677,7 +679,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{חזרה אחת}one{# חזרות}two{# חזרות}other{# חזרות}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{חזרה אחת}one{# חזרות}two{# חזרות}other{# חזרות}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"מקטעים של פעילות גופנית"</string>
-    <string name="segment_set_index_format" msgid="5299538353624573851">"הגדרה של <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"סט <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
     <string name="segment_rpe_format" msgid="1456617736401131975">"‫RPE:‏ <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
     <string name="segment_rpe_format_long" msgid="3492398127594227129">"שיעור המאמץ הנתפס: <xliff:g id="RPE">%1$s</xliff:g>"</string>
     <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
@@ -1148,7 +1150,7 @@
     <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"כדאי לחפש עוד אפליקציות שמסתנכרנות עם <xliff:g id="APP_NAME">%s</xliff:g> דרך Health Connect"</string>
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"לעיון בחנות האפליקציות"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"הגדרה של נעילת מסך"</string>
-    <string name="lock_screen_banner_content" msgid="3392527073622152481">"כדי לשפר את האבטחה של נתוני הבריאות, מומלץ להגדיר קוד אימות, קו פתיחת נעילה או סיסמה למכשיר הזה"</string>
+    <string name="lock_screen_banner_content" msgid="3392527073622152481">"כדי לשפר את האבטחה של נתוני הבריאות, מומלץ להגדיר למכשיר הזה קוד אימות, קו פתיחת נעילה או סיסמה"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"הגדרת נעילת מסך"</string>
     <string name="select_all" msgid="837499881590001166">"בחירת הכול"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"האפליקציות המקושרות לא יוכלו יותר לקרוא את הנתונים האלה מ-Health Connect"</string>
@@ -1204,6 +1206,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"יש הרשאת גישה"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"יש הרשאת קריאה"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"ההרשאות האלה נותנות לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> גישה לנתונים מהחיישנים במכשיר."</string>
+    <string name="write_access" msgid="571547306854732263">"הרשאת כתיבה"</string>
+    <string name="read_access" msgid="3317759826769372785">"הרשאת קריאה"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"‫<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. ‏<xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"‫<xliff:g id="NUMBER_0">%1$d</xliff:g> מתוך <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> אפליקציות קיבלו הרשאה"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"אין בקשה מאף אפליקציה"</string>
     <string name="allowed" msgid="4158456017482263737">"יש הרשאה"</string>
@@ -1220,7 +1225,8 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{אפליקציה אחת השתמשה בהרשאה}one{‫# אפליקציות השתמשו בהרשאה}two{‫# אפליקציות השתמשו בהרשאה}other{‫# אפליקציות השתמשו בהרשאה}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"לא נעשה שימוש ב-24 השעות האחרונות"</string>
     <string name="accessed" msgid="4424701457530587176">"הגישה האחרונה: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"קישור שתי האפליקציות הראשונות"</string>
+    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
+    <skip />
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"אפשר לקשר את האפליקציות האלה כדי להתחיל לשתף נתוני בריאות וכושר ביניהן"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"חיבור אפליקציה שנייה"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"צריך להגדיר אפליקציה נוספת כדי לשתף נתוני בריאות וכושר עם <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1230,11 +1236,28 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"מידע נוסף על Health Connect"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"האפליקציה מקושרת ל-Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"כמעט סיימת"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"כדי לסיים את ההגדרה ולהתחיל לשתף נתונים, צריך לפתוח עכשיו את האפליקציות האלה"</string>
+    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
+    <skip />
+    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
+    <skip />
+    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
+    <skip />
+    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
+    <skip />
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"רוצה לראות את נתוני הבריאות באפליקציות שונות?"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"אפשר להתחיל לשתף נתוני בריאות וכושר בין האפליקציות"</string>
+    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
+    <skip />
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"הגדרה"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"חיבור אפליקציה שנייה"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"כדי לשתף נתוני בריאות וכושר עם <xliff:g id="APP_NAME">%1$s</xliff:g>, צריך להגדיר אפליקציה נוספת"</string>
+    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
+    <skip />
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"המשך"</string>
+    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
+    <skip />
+    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
+    <skip />
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
+    <skip />
 </resources>

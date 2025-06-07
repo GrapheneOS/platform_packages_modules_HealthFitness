@@ -66,196 +66,117 @@ class BodyTemperatureFormatterTest {
 
     @Test
     fun formatValue_celsius() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
+        preferences.temperatureUnit = TemperatureUnit.CELSIUS
 
-        assertThat(
-                formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0),
-                    preferences,
-                )
-            )
+        assertThat(formatter.formatValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0)))
             .isEqualTo("0℃")
-        assertThat(
-                formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0),
-                    preferences,
-                )
-            )
+        assertThat(formatter.formatValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0)))
             .isEqualTo("1℃")
-        assertThat(
-                formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3),
-                    preferences,
-                )
-            )
+        assertThat(formatter.formatValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3)))
             .isEqualTo("43.3℃")
     }
 
     @Test
     fun formatA11yValue_celsius() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
+        preferences.temperatureUnit = TemperatureUnit.CELSIUS
 
         assertThat(
-                formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0),
-                    preferences,
-                )
+                formatter.formatA11yValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0))
             )
             .isEqualTo("0 degrees Celsius")
         assertThat(
-                formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0),
-                    preferences,
-                )
+                formatter.formatA11yValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0))
             )
             .isEqualTo("1 degree Celsius")
         assertThat(
-                formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3),
-                    preferences,
-                )
+                formatter.formatA11yValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3))
             )
             .isEqualTo("43.3 degrees Celsius")
     }
 
     @Test
     fun formatValue_kelvin() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.KELVIN)
+        preferences.temperatureUnit = TemperatureUnit.KELVIN
 
-        assertThat(
-                formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0),
-                    preferences,
-                )
-            )
+        assertThat(formatter.formatValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0)))
             .isEqualTo("273.15K")
-        assertThat(
-                formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0),
-                    preferences,
-                )
-            )
+        assertThat(formatter.formatValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0)))
             .isEqualTo("274.15K")
-        assertThat(
-                formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3),
-                    preferences,
-                )
-            )
+        assertThat(formatter.formatValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3)))
             .isEqualTo("316.45K")
     }
 
     @Test
     fun formatA11yValue_kelvin() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.KELVIN)
+        preferences.temperatureUnit = TemperatureUnit.KELVIN
 
         assertThat(
-                formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0),
-                    preferences,
-                )
+                formatter.formatA11yValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0))
             )
             .isEqualTo("273.15 kelvins")
         assertThat(
-                formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0),
-                    preferences,
-                )
+                formatter.formatA11yValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0))
             )
             .isEqualTo("274.15 kelvins")
         assertThat(
-                formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3),
-                    preferences,
-                )
+                formatter.formatA11yValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3))
             )
             .isEqualTo("316.45 kelvins")
     }
 
     @Test
     fun formatValue_fahrenheit() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.FAHRENHEIT)
+        preferences.temperatureUnit = TemperatureUnit.FAHRENHEIT
 
-        assertThat(
-                formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0),
-                    preferences,
-                )
-            )
+        assertThat(formatter.formatValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0)))
             .isEqualTo("32℉")
-        assertThat(
-                formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0),
-                    preferences,
-                )
-            )
+        assertThat(formatter.formatValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0)))
             .isEqualTo("33.8℉")
-        assertThat(
-                formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3),
-                    preferences,
-                )
-            )
+        assertThat(formatter.formatValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3)))
             .isEqualTo("109.94℉")
     }
 
     @Test
     fun formatA11yValue_fahrenheit() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.FAHRENHEIT)
+        preferences.temperatureUnit = TemperatureUnit.FAHRENHEIT
 
         assertThat(
-                formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0),
-                    preferences,
-                )
+                formatter.formatA11yValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0))
             )
             .isEqualTo("32 degrees Fahrenheit")
         assertThat(
-                formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0),
-                    preferences,
-                )
+                formatter.formatA11yValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0))
             )
             .isEqualTo("33.8 degrees Fahrenheit")
         assertThat(
-                formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3),
-                    preferences,
-                )
+                formatter.formatA11yValue(getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3))
             )
             .isEqualTo("109.94 degrees Fahrenheit")
     }
 
     @Test
     fun formatValue_formatsLocations() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
+        preferences.temperatureUnit = TemperatureUnit.CELSIUS
 
-        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_EAR, 1.0), preferences))
+        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_EAR, 1.0)))
             .isEqualTo("1℃ Ear")
-        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_ARMPIT, 1.0), preferences))
+        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_ARMPIT, 1.0)))
             .isEqualTo("1℃ Armpit")
-        assertThat(
-                formatter.formatValue(getRecord(MEASUREMENT_LOCATION_FOREHEAD, 1.0), preferences)
-            )
+        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_FOREHEAD, 1.0)))
             .isEqualTo("1℃ Forehead")
-        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_MOUTH, 1.0), preferences))
+        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_MOUTH, 1.0)))
             .isEqualTo("1℃ Mouth")
-        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_FINGER, 1.0), preferences))
+        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_FINGER, 1.0)))
             .isEqualTo("1℃ Finger")
-        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_RECTUM, 1.0), preferences))
+        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_RECTUM, 1.0)))
             .isEqualTo("1℃ Rectum")
-        assertThat(
-                formatter.formatValue(
-                    getRecord(MEASUREMENT_LOCATION_TEMPORAL_ARTERY, 1.0),
-                    preferences,
-                )
-            )
+        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_TEMPORAL_ARTERY, 1.0)))
             .isEqualTo("1℃ Temporal artery")
-        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_TOE, 1.0), preferences))
+        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_TOE, 1.0)))
             .isEqualTo("1℃ Toe")
-        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_VAGINA, 1.0), preferences))
+        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_VAGINA, 1.0)))
             .isEqualTo("1℃ Vagina")
-        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_WRIST, 1.0), preferences))
+        assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_WRIST, 1.0)))
             .isEqualTo("1℃ Wrist")
     }
 

@@ -25,7 +25,7 @@ import static android.health.connect.datatypes.HeartRateRecord.HEART_MEASUREMENT
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.health.connect.datatypes.WeightRecord.WEIGHT_MAX;
 import static android.health.connect.datatypes.WeightRecord.WEIGHT_MIN;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGroupByDuration;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGroupByPeriod;
@@ -93,13 +93,13 @@ public class AggregateWithFiltersTest {
 
     @Before
     public void setUp() throws InterruptedException {
-        deleteAllStagedRemoteData();
+        deleteAllDataFromHealthConnect();
         setupAggregation(mPackageName, ACTIVITY);
     }
 
     @After
-    public void tearDown() {
-        deleteAllStagedRemoteData();
+    public void tearDown() throws InterruptedException {
+        deleteAllDataFromHealthConnect();
     }
 
     @Test

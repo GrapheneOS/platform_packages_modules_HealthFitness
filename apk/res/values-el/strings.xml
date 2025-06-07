@@ -565,6 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Επιστροφή"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Έναρξη"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Διαγραφή δεδομένων"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Κουμπί διαγραφής δεδομένων εφαρμογής %1$s"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Έναρξη διαγραφής"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Έξοδος από τη διαγραφή"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Επιλογή δεδομένων για διαγραφή από το Health Connect"</string>
@@ -1204,6 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Επιτρέπεται η πρόσβαση"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Επιτρέπεται η ανάγνωση"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Αυτές οι άδειες παρέχουν στην εφαρμογή <xliff:g id="APP_NAME">%1$s</xliff:g> πρόσβαση σε δεδομένα από τους αισθητήρες της συσκευής σας."</string>
+    <string name="write_access" msgid="571547306854732263">"Πρόσβαση εγγραφής"</string>
+    <string name="read_access" msgid="3317759826769372785">"Πρόσβαση ανάγνωσης"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"Επιτρέπονται <xliff:g id="NUMBER_0">%1$d</xliff:g> από <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> εφαρμογές"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Δεν υπάρχουν αιτήματα από εφαρμογές"</string>
     <string name="allowed" msgid="4158456017482263737">"Επιτρέπεται"</string>
@@ -1220,7 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Χρησιμοποιήθηκε από 1 εφαρμογή}other{Χρησιμοποιήθηκε από # εφαρμογές}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Δεν έχει χρησιμοποιηθεί τις τελευταίες 24 ώρες"</string>
     <string name="accessed" msgid="4424701457530587176">"Πρόσβαση στις <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Σύνδεση των πρώτων 2 εφαρμογών σας"</string>
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Σύνδεση της πρώτης σας εφαρμογής"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Συνδέστε αυτές τις εφαρμογές για να ξεκινήσετε την κοινοποίηση δεδομένων υγείας και φυσικής κατάστασης μεταξύ τους"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Σύνδεση δεύτερης εφαρμογής"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Ρυθμίστε μια ακόμη εφαρμογή για κοινοποίηση δεδομένων υγείας και φυσικής κατάστασης με την εφαρμογή <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1230,11 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Περισσότερα σχετικά με το Health Connect"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Η εφαρμογή συνδέθηκε στο Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Η διαδικασία έχει σχεδόν ολοκληρωθεί"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"Ανοίξτε αυτές τις εφαρμογές τώρα για να ολοκληρώσετε τη ρύθμιση και να ξεκινήσετε την κοινοποίηση δεδομένων"</string>
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Ανοίξτε αυτές τις εφαρμογές τώρα για να ολοκληρώσετε τη ρύθμιση και να ξεκινήσετε την κοινοποίηση δεδομένων"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Ανοίξτε αυτές τις εφαρμογές τώρα για να ολοκληρώσετε τη ρύθμιση και να ξεκινήσετε την κοινοποίηση δεδομένων ή συνεχίστε να συνδέετε διαθέσιμες εφαρμογές"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Συνδεδεμένες εφαρμογές"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Διαθέσιμες εφαρμογές για σύνδεση"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Προβολή των δεδομένων υγείας σας σε όλες τις εφαρμογές"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Ξεκινήστε την κοινή χρήση δεδομένων υγείας και φυσικής κατάστασης μεταξύ των εφαρμογών σας"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Ξεκινήστε την κοινοποίηση δεδομένων φυσικής κατάστασης και ευεξίας μεταξύ των εφαρμογών σας"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Ρύθμιση"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Σύνδεση δεύτερης εφαρμογής"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Ρυθμίστε μια ακόμη εφαρμογή για κοινή χρήση δεδομένων υγείας και φυσικής κατάστασης με την εφαρμογή <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Ρυθμίστε μια άλλη εφαρμογή, ώστε να ξεκινήσει την κοινοποίηση δεδομένων φυσικής κατάστασης και ευεξίας"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Συνέχεια"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Προβολή των δεδομένων υγείας σας σε όλες τις εφαρμογές"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Το Health Connect σας επιτρέπει να κοινοποιείτε δεδομένα φυσικής κατάστασης και ευεξίας μεταξύ των εφαρμογών σας. Δείτε ποιες εφαρμογές μπορείτε να συνδέσετε τώρα."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Σύνδεση δεύτερης εφαρμογής"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
+    <skip />
 </resources>

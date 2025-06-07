@@ -66,7 +66,7 @@ class TemperatureDeltaFormatterTest {
     /** default values */
     @Test
     fun formatSingleValue_celsius() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
+        preferences.temperatureUnit = TemperatureUnit.CELSIUS
         val expectedFormattedTempStrings = listOf("-2.5℃", "-1℃", "0℃", "+1℃", "+1.3℃", "+2.5℃")
 
         allTestTemps.forEachIndexed { index: Int, tempDelta: Delta ->
@@ -77,7 +77,7 @@ class TemperatureDeltaFormatterTest {
 
     @Test
     fun formatSingleValue_fahrenheit() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.FAHRENHEIT)
+        preferences.temperatureUnit = TemperatureUnit.FAHRENHEIT
         val expectedFormattedTempStrings = listOf("-4.5℉", "-1.8℉", "0℉", "+1.8℉", "+2.4℉", "+4.5℉")
 
         allTestTemps.forEachIndexed { index: Int, tempDelta: Delta ->
@@ -88,7 +88,7 @@ class TemperatureDeltaFormatterTest {
 
     @Test
     fun formatSingleValue_kelvin() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.KELVIN)
+        preferences.temperatureUnit = TemperatureUnit.KELVIN
         val expectedFormattedTempStrings = listOf("-2.5K", "-1K", "0K", "+1K", "+1.3K", "+2.5K")
 
         allTestTemps.forEachIndexed { index: Int, tempDelta: Delta ->
@@ -99,7 +99,7 @@ class TemperatureDeltaFormatterTest {
 
     @Test
     fun formatAverageValue_celsius() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
+        preferences.temperatureUnit = TemperatureUnit.CELSIUS
         val expectedFormattedTempStrings =
             listOf(
                 "-2.5℃ (avg variation)",
@@ -118,7 +118,7 @@ class TemperatureDeltaFormatterTest {
 
     @Test
     fun formatAverageValue_fahrenheit() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.FAHRENHEIT)
+        preferences.temperatureUnit = TemperatureUnit.FAHRENHEIT
         val expectedFormattedTempStrings =
             listOf(
                 "-4.5℉ (avg variation)",
@@ -137,7 +137,7 @@ class TemperatureDeltaFormatterTest {
 
     @Test
     fun formatAverageValue_kelvin() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.KELVIN)
+        preferences.temperatureUnit = TemperatureUnit.KELVIN
         val expectedFormattedTempStrings =
             listOf(
                 "-2.5K (avg variation)",
@@ -157,7 +157,7 @@ class TemperatureDeltaFormatterTest {
     /** a11y values */
     @Test
     fun formatSingleValue_celsius_long() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
+        preferences.temperatureUnit = TemperatureUnit.CELSIUS
         val expectedFormattedTempStrings =
             listOf(
                 "-2.5 degrees Celsius",
@@ -176,7 +176,7 @@ class TemperatureDeltaFormatterTest {
 
     @Test
     fun formatSingleValue_fahrenheit_long() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.FAHRENHEIT)
+        preferences.temperatureUnit = TemperatureUnit.FAHRENHEIT
         val expectedFormattedTempStrings =
             listOf(
                 "-4.5 degrees Fahrenheit",
@@ -195,7 +195,7 @@ class TemperatureDeltaFormatterTest {
 
     @Test
     fun formatSingleValue_kelvin_long() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.KELVIN)
+        preferences.temperatureUnit = TemperatureUnit.KELVIN
         val expectedFormattedTempStrings =
             listOf(
                 "-2.5 kelvins",
@@ -214,7 +214,7 @@ class TemperatureDeltaFormatterTest {
 
     @Test
     fun formatAverageValue_celsius_long() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
+        preferences.temperatureUnit = TemperatureUnit.CELSIUS
         val expectedFormattedTempStrings =
             listOf(
                 "-2.5 degrees Celsius (average variation)",
@@ -233,7 +233,7 @@ class TemperatureDeltaFormatterTest {
 
     @Test
     fun formatAverageValue_fahrenheit_long() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.FAHRENHEIT)
+        preferences.temperatureUnit = TemperatureUnit.FAHRENHEIT
         val expectedFormattedTempStrings =
             listOf(
                 "-4.5 degrees Fahrenheit (average variation)",
@@ -252,7 +252,7 @@ class TemperatureDeltaFormatterTest {
 
     @Test
     fun formatAverageValue_kelvin_long() = runBlocking {
-        preferences.setTemperatureUnit(TemperatureUnit.KELVIN)
+        preferences.temperatureUnit = TemperatureUnit.KELVIN
         val expectedFormattedTempStrings =
             listOf(
                 "-2.5 kelvins (average variation)",

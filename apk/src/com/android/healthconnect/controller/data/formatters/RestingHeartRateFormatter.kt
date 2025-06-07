@@ -22,6 +22,7 @@ import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -30,20 +31,17 @@ import javax.inject.Singleton
 @Singleton
 class RestingHeartRateFormatter
 @Inject
-constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<RestingHeartRateRecord>(context) {
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<RestingHeartRateRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: RestingHeartRateRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: RestingHeartRateRecord): String {
         return formatSampleValue(R.string.heart_rate_value, record.beatsPerMinute)
     }
 
-    override suspend fun formatA11yValue(
-        record: RestingHeartRateRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: RestingHeartRateRecord): String {
         return formatSampleValue(R.string.heart_rate_long_value, record.beatsPerMinute)
     }
 

@@ -25,12 +25,16 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.data.formatters.MenstruationPeriodFormatter
+import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Duration.ofDays
@@ -39,10 +43,14 @@ import java.util.Locale
 import java.util.TimeZone
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -50,16 +58,19 @@ class MenstruationPeriodFormatterTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
+    @BindValue val appInfoReader: AppInfoReader = mock()
     @Inject lateinit var formatter: MenstruationPeriodFormatter
     @Inject lateinit var preferences: UnitPreferences
     private lateinit var context: Context
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.US)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
         hiltRule.inject()
+        whenever(appInfoReader.getAppMetadata(any(), any()))
+            .thenReturn(AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null, false))
     }
 
     @Test

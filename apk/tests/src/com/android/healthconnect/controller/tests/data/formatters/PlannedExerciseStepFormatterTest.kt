@@ -31,11 +31,16 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.PlannedExerciseStepFormatter
+import com.android.healthconnect.controller.data.formatters.shared.FormatterModule
+import com.android.healthconnect.controller.tests.utils.di.FakeUnitPreferences
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.DistanceUnit.KILOMETERS
 import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
@@ -47,12 +52,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @HiltAndroidTest
+@UninstallModules(FormatterModule::class)
 @RunWith(AndroidJUnit4::class)
 class PlannedExerciseStepFormatterTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @BindValue val unitPreferences: UnitPreferences = FakeUnitPreferences()
 
     @Inject lateinit var formatter: PlannedExerciseStepFormatter
-    @Inject lateinit var unitPreferences: UnitPreferences
     private lateinit var context: Context
 
     @Before
@@ -60,6 +66,7 @@ class PlannedExerciseStepFormatterTest {
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.UK)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
+        unitPreferences.distanceUnit = KILOMETERS
 
         hiltRule.inject()
     }
@@ -78,8 +85,7 @@ class PlannedExerciseStepFormatterTest {
                                 ),
                             )
                         )
-                        .build(),
-                    unitPreferences,
+                        .build()
                 )
             )
             .isEqualTo(
@@ -116,8 +122,7 @@ class PlannedExerciseStepFormatterTest {
                                 ),
                             )
                         )
-                        .build(),
-                    unitPreferences,
+                        .build()
                 )
             )
             .isEqualTo(

@@ -19,6 +19,7 @@ import android.content.Context
 import android.health.connect.datatypes.BasalBodyTemperatureRecord
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,13 +28,13 @@ import javax.inject.Singleton
 @Singleton
 class BasalBodyTemperatureFormatter
 @Inject
-constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<BasalBodyTemperatureRecord>(context) {
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<BasalBodyTemperatureRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: BasalBodyTemperatureRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatValue(record: BasalBodyTemperatureRecord): String {
         return TemperatureFormatter.formatValue(
             context,
             record.temperature,
@@ -42,10 +43,7 @@ constructor(@ApplicationContext private val context: Context) :
         )
     }
 
-    override suspend fun formatA11yValue(
-        record: BasalBodyTemperatureRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
+    override suspend fun formatA11yValue(record: BasalBodyTemperatureRecord): String {
         return TemperatureFormatter.formatA11tValue(
             context,
             record.temperature,

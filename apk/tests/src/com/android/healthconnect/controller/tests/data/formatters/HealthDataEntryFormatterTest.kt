@@ -26,13 +26,17 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedDataEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SeriesDataEntry
 import com.android.healthconnect.controller.data.formatters.shared.HealthDataEntryFormatter
-import com.android.healthconnect.controller.tests.utils.ClearTimeFormatRule
+import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.getBasalMetabolicRateRecord
 import com.android.healthconnect.controller.tests.utils.getHeartRateRecord
 import com.android.healthconnect.controller.tests.utils.getSamplePlannedExerciseSessionRecord
 import com.android.healthconnect.controller.tests.utils.getStepsRecord
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.ZoneId
@@ -40,27 +44,33 @@ import java.util.Locale
 import java.util.TimeZone
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class HealthDataEntryFormatterTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @get:Rule val clearTimeFormatRule = ClearTimeFormatRule()
 
+    @BindValue val appInfoReader: AppInfoReader = mock()
     @Inject lateinit var formatter: HealthDataEntryFormatter
 
     private lateinit var context: Context
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.UK)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
+        whenever(appInfoReader.getAppMetadata(any(), any()))
+            .thenReturn(AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null, false))
 
         hiltRule.inject()
     }

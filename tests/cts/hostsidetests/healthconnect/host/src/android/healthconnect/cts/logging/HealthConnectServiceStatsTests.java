@@ -16,6 +16,10 @@
 
 package android.healthconnect.cts.logging;
 
+import static android.healthconnect.cts.HostSideTestUtil.SERVICE_LOG_TESTS_HELPER;
+import static android.healthconnect.cts.HostSideTestUtil.TEST_APP_PERMISSIONS;
+import static android.healthconnect.cts.HostSideTestUtil.TEST_APP_PKG_NAME;
+import static android.healthconnect.cts.HostSideTestUtil.clearData;
 import static android.healthconnect.cts.HostSideTestUtil.grantPermissionsWithAdb;
 import static android.healthconnect.cts.HostSideTestUtil.isHardwareSupported;
 import static android.healthfitness.api.ApiMethod.CREATE_MEDICAL_DATA_SOURCE;
@@ -41,7 +45,6 @@ import android.healthfitness.api.ApiMethod;
 import android.healthfitness.api.ApiStatus;
 import android.healthfitness.api.ForegroundState;
 import android.healthfitness.api.RateLimit;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.host.HostFlagsValueProvider;
 
@@ -69,27 +72,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     public final CheckFlagsRule mCheckFlagsRule =
             HostFlagsValueProvider.createCheckFlagsRule(this::getDevice);
 
-    private static final String TEST_APP_PKG_NAME = "android.healthconnect.cts.testhelper";
-    private static final List<String> TEST_APP_PERMISSIONS =
-            List.of(
-                    "android.permission.health.WRITE_BLOOD_PRESSURE",
-                    "android.permission.health.WRITE_HEART_RATE",
-                    "android.permission.health.WRITE_STEPS",
-                    "android.permission.health.READ_BLOOD_PRESSURE",
-                    "android.permission.health.READ_HEART_RATE",
-                    "android.permission.health.WRITE_MEDICAL_DATA",
-                    "android.permission.health.READ_MEDICAL_DATA_VACCINES",
-                    "android.permission.health.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES",
-                    "android.permission.health.READ_MEDICAL_DATA_CONDITIONS",
-                    "android.permission.health.READ_MEDICAL_DATA_LABORATORY_RESULTS",
-                    "android.permission.health.READ_MEDICAL_DATA_MEDICATIONS",
-                    "android.permission.health.READ_MEDICAL_DATA_PERSONAL_DETAILS",
-                    "android.permission.health.READ_MEDICAL_DATA_PRACTITIONER_DETAILS",
-                    "android.permission.health.READ_MEDICAL_DATA_PREGNANCY",
-                    "android.permission.health.READ_MEDICAL_DATA_PROCEDURES",
-                    "android.permission.health.READ_MEDICAL_DATA_SOCIAL_HISTORY",
-                    "android.permission.health.READ_MEDICAL_DATA_VISITS",
-                    "android.permission.health.READ_MEDICAL_DATA_VITAL_SIGNS");
     private IBuildInfo mCtsBuild;
 
     @Before
@@ -97,15 +79,16 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         if (!isHardwareSupported(getDevice())) {
             return;
         }
+        assertThat(mCtsBuild).isNotNull();
         // TODO(b/313055175): Do not disable rate limiting once b/300238889 is resolved.
         HostSideTestUtil.setupRateLimitingFeatureFlag(getDevice());
-        assertThat(mCtsBuild).isNotNull();
         ConfigUtils.removeConfig(getDevice());
         ReportUtils.clearReports(getDevice());
         // b/396574091: Grant all permissions that the test helper app needs.
         // This is another attempt to pre-grant permissions to the test helper app, another attempt
         // was made in ag/31589102 but didn't seem to fix the problem.
         grantPermissionsWithAdb(getDevice(), TEST_APP_PKG_NAME, TEST_APP_PERMISSIONS);
+        clearData(getDevice());
     }
 
     @After
@@ -114,6 +97,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         HostSideTestUtil.restoreRateLimitingFeatureFlag(getDevice());
         ConfigUtils.removeConfig(getDevice());
         ReportUtils.clearReports(getDevice());
+        clearData(getDevice());
     }
 
     @Override
@@ -332,7 +316,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         }
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectInsertRecords");
-        assertThat(data.size()).isAtLeast(2);
+        assertThat(data.size()).isAtLeast(1);
         StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.INSERT_DATA);
         assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
@@ -352,7 +336,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         }
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectInsertRecordsError");
-        assertThat(data.size()).isAtLeast(2);
+        assertThat(data.size()).isAtLeast(1);
         StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.INSERT_DATA);
         assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
@@ -373,7 +357,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectUpdateRecords");
 
-        assertThat(data.size()).isAtLeast(3);
+        assertThat(data.size()).isAtLeast(2);
         StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.UPDATE_DATA);
         assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
@@ -394,7 +378,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectUpdateRecordsError");
 
-        assertThat(data.size()).isAtLeast(3);
+        assertThat(data.size()).isAtLeast(2);
         StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.UPDATE_DATA);
         assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
@@ -440,7 +424,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         }
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectDeleteRecordsError");
-        assertThat(data.size()).isAtLeast(3);
+        assertThat(data.size()).isAtLeast(2);
         StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.DELETE_DATA, ERROR);
         assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
@@ -459,7 +443,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         }
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectReadRecords");
-        assertThat(data.size()).isAtLeast(3);
+        assertThat(data.size()).isAtLeast(2);
         StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.READ_DATA);
         assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
@@ -480,7 +464,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         }
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectReadRecordsError");
-        assertThat(data.size()).isAtLeast(2);
+        assertThat(data.size()).isAtLeast(1);
         StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.READ_DATA);
         assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
@@ -500,7 +484,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         }
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectGetChangeLogToken");
-        assertThat(data.size()).isAtLeast(2);
+        assertThat(data.size()).isAtLeast(1);
         StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.GET_CHANGES_TOKEN);
         assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
@@ -520,7 +504,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         }
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectGetChangeLogTokenError");
-        assertThat(data.size()).isAtLeast(2);
+        assertThat(data.size()).isAtLeast(1);
         StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.GET_CHANGES_TOKEN);
         assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
@@ -540,7 +524,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         }
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectGetChangeLogs");
-        assertThat(data.size()).isAtLeast(5);
+        assertThat(data.size()).isAtLeast(4);
         StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.GET_CHANGES);
         assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
@@ -561,7 +545,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         }
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectGetChangeLogsError");
-        assertThat(data.size()).isAtLeast(2);
+        assertThat(data.size()).isAtLeast(1);
         StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.GET_CHANGES);
         assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
@@ -581,7 +565,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         }
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectAggregatedData");
-        assertThat(data.size()).isAtLeast(2);
+        assertThat(data.size()).isAtLeast(1);
         StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.READ_AGGREGATED_DATA);
         assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
@@ -602,7 +586,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         }
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectAggregatedDataError");
-        assertThat(data.size()).isAtLeast(2);
+        assertThat(data.size()).isAtLeast(1);
         StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.READ_AGGREGATED_DATA);
         assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
@@ -624,7 +608,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
                 new int[] {ApiExtensionAtoms.HEALTH_CONNECT_API_CALLED_FIELD_NUMBER});
 
         DeviceUtils.runDeviceTests(
-                getDevice(), TEST_APP_PKG_NAME, ".HealthConnectServiceLogsTests", testName);
+                getDevice(), TEST_APP_PKG_NAME, SERVICE_LOG_TESTS_HELPER, testName);
         ExtensionRegistry registry = ExtensionRegistry.newInstance();
         ApiExtensionAtoms.registerAllExtensions(registry);
 
@@ -646,17 +630,11 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     private static StatsLog.EventMetricData getEventForApiMethod(
             List<StatsLog.EventMetricData> data, ApiMethod apiMethod) {
-        boolean isFirstCall = true;
         for (StatsLog.EventMetricData datum : data) {
             HealthConnectApiCalled atom =
                     datum.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
 
             if (atom.getApiMethod().equals(apiMethod)) {
-                if (ApiMethod.INSERT_DATA.equals(apiMethod) && isFirstCall) {
-                    // skip the insert api call in setup
-                    isFirstCall = false;
-                    continue;
-                }
                 return datum;
             }
         }

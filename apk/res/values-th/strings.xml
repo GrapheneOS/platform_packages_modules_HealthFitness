@@ -565,6 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"ย้อนกลับ"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"เริ่มต้นใช้งาน"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"ลบข้อมูล"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"ปุ่มลบข้อมูลของ %1$s"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"เข้าไปที่การลบ"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"ออกจากการลบ"</string>
     <string name="time_range_title" msgid="5777596779865648336">"เลือกข้อมูลที่จะลบออกจาก Health Connect"</string>
@@ -1204,6 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"อนุญาตให้เข้าถึง"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"อนุญาตให้อ่าน"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"สิทธิ์เหล่านี้จะให้ <xliff:g id="APP_NAME">%1$s</xliff:g> เข้าถึงข้อมูลจากเซ็นเซอร์ของอุปกรณ์ได้"</string>
+    <string name="write_access" msgid="571547306854732263">"สิทธิ์ในการเขียน"</string>
+    <string name="read_access" msgid="3317759826769372785">"สิทธิ์ในการอ่าน"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g> <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g> <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"อนุญาตแล้ว <xliff:g id="NUMBER_0">%1$d</xliff:g> จาก <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> แอป"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"ไม่มีแอปที่ขอ"</string>
     <string name="allowed" msgid="4158456017482263737">"อนุญาต"</string>
@@ -1220,7 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{ใช้โดยแอป 1 แอป}other{ใช้โดยแอป # แอป}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"ไม่ได้ใช้ใน 24 ชั่วโมงที่ผ่านมา"</string>
     <string name="accessed" msgid="4424701457530587176">"เข้าถึงเมื่อ <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"เชื่อมต่อแอป 2 แอปแรก"</string>
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"เชื่อมต่อแอปแรก"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"เชื่อมต่อแอปเหล่านี้เพื่อเริ่มแชร์ข้อมูลสุขภาพและการออกกำลังกายระหว่างแอป"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"เชื่อมต่อแอปที่สอง"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"ตั้งค่าแอปอีก 1 แอปเพื่อแชร์ข้อมูลสุขภาพและการออกกำลังกายกับแอป <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1230,11 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"ข้อมูลเพิ่มเติมเกี่ยวกับ Health Connect"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"แอปเชื่อมต่อกับ Health Connect แล้ว"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"เกือบเสร็จแล้ว"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"เปิดแอปเหล่านี้เลยเพื่อตั้งค่าให้เสร็จสิ้นและเริ่มแชร์ข้อมูล"</string>
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"เปิดแอปเหล่านี้เลยเพื่อตั้งค่าให้เสร็จสิ้นและเริ่มแชร์ข้อมูล"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"เปิดแอปเหล่านี้เลยเพื่อตั้งค่าให้เสร็จสิ้นและเริ่มแชร์ข้อมูล หรือเชื่อมต่อแอปที่มีอยู่ต่อไป"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"แอปที่เชื่อมต่อ"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"แอปที่พร้อมเชื่อมต่อ"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"ดูข้อมูลสุขภาพในแอปต่างๆ"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"เริ่มแชร์ข้อมูลสุขภาพและการออกกำลังกายระหว่างแอป"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"เริ่มแชร์ข้อมูลการออกกำลังกายและสุขภาวะระหว่างแอป"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"ตั้งค่า"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"เชื่อมต่อแอปที่สอง"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"ตั้งค่าแอปอีก 1 แอปเพื่อแชร์ข้อมูลสุขภาพและการออกกำลังกายกับแอป <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"ตั้งค่าแอปอื่นเพื่อให้เริ่มแชร์ข้อมูลการออกกำลังกายและสุขภาวะได้"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"ดำเนินการต่อ"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"ดูข้อมูลสุขภาพในแอปต่างๆ"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect ให้คุณแชร์ข้อมูลการออกกำลังกายและสุขภาวะระหว่างแอปต่างๆ ได้ ดูแอปที่คุณสามาถเชื่อมต่อได้เลย"</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"เชื่อมต่อแอปที่สอง"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
+    <skip />
 </resources>

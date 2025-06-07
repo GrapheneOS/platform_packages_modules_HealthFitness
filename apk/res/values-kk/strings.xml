@@ -41,7 +41,7 @@
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Деректерді және оларды пайдалана алатын қолданбаларды көру"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Автоматты түрде жою, деректер көзі, сақтық көшірме жасау және қалпына келтіру"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"Басқа элементтер"</string>
-    <string name="banner_group_fewer_items" msgid="3792478123282046349">"Азырақ элемент"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"Жию"</string>
     <string name="settings_manage_permission" msgid="3805037674102124581">"Health Connect"</string>
     <string name="settings_combined_permissions" msgid="3660209476196545539">"Health Connect"</string>
     <string name="settings_fitness_permissions" msgid="8133228907519227359">"Health Connect"</string>
@@ -565,6 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Артқа"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Бастау"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Деректерді жою"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"%1$s түймесінің деректерін жою"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Жою күйіне өту"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Жою күйінен шығу"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Health Connect-тегі жойылатын деректерді таңдаңыз"</string>
@@ -1204,6 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Пайдалануға рұқсат берілген"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Оқуға рұқсат берілген"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Бұл рұқсаттар <xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасына құрылғыңыздың датчиктерінен алынған деректерді пайдалануға мүмкіндік береді."</string>
+    <string name="write_access" msgid="571547306854732263">"Жазу рұқсаты"</string>
+    <string name="read_access" msgid="3317759826769372785">"Оқу рұқсаты"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g>/<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> қолданбаға рұқсат берілген"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Рұқсат сұрап жатқан қолданбалар жоқ"</string>
     <string name="allowed" msgid="4158456017482263737">"Рұқсат берілген"</string>
@@ -1220,7 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 қолданба пайдаланды.}other{# қолданба пайдаланды.}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Соңғы 24 сағатта пайдаланылмады."</string>
     <string name="accessed" msgid="4424701457530587176">"Пайдаланылған уақыты: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Алғашқы 2 қолданбаны байланыстырыңыз"</string>
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Бірінші қолданбаңызды байланыстырыңыз"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Денсаулық және фитнес деректерін осы қолданбалар арасында бөлісуді бастау үшін қолданбаларды байланыстырыңыз."</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Екінші қолданбаны байланыстырыңыз"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Денсаулық және фитнес деректерін <xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасымен бөлісу үшін тағы бір қолданба параметрлерін орнатыңыз."</string>
@@ -1230,11 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Health Connect туралы қосымша ақпарат"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Health Connect-пен байланысқан қолданба"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Аз қалды"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"Орнатуды аяқтау және деректерді бөлісуді бастау үшін осы қолданбаларды қазір ашыңыз."</string>
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Параметрлерді реттеуді аяқтау және деректерді бөлісуді бастау үшін осы қолданбаларды қазір ашыңыз."</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Параметрлерді реттеуді және деректерді бөлісуді бастау үшін осы қолданбаларды қазір ашыңыз немесе қолжетімді қолданбаларды байланыстыруды жалғастырыңыз."</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Байланысқан қолданбалар"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Байланыстыруға болатын қолданбалар"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Денсаулық деректерін әртүрлі қолданбалардан көріңіз"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Денсаулық және фитнес деректерін қолданбалар арасында бөлісуді бастаңыз."</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Фитнес пен денсаулық деректерін қолданбалар арасында бөлісуді бастаңыз"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Реттеу"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Екінші қолданбаны байланыстырыңыз"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Денсаулық және фитнес деректерін <xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасымен бөлісу үшін тағы бір қолданба параметрлерін орнатыңыз."</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Фитнес пен денсаулық деректерін бөлісуді бастауы үшін, басқа қолданба параметрлерін реттеңіз"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Жалғастыру"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Денсаулық деректерін әртүрлі қолданбалардан көріңіз"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect фитнес пен денсаулық деректерін қолданбалар арасында бөлісуге мүмкіндік береді. Қазір қандай қолданбаларды байланыстыруға болатынын көріңіз."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Екінші қолданбаны байланыстырыңыз"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
+    <skip />
 </resources>

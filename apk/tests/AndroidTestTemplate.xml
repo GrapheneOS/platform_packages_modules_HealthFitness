@@ -42,6 +42,8 @@
     <option name="run-command" value="settings put system font_scale 0.85" />
     <option name="run-command" value="wm density reset" />
     <option name="run-command" value="wm size reset" />
+    <!-- Reset 12/24 setting to just use Locale -->
+    <option name="run-command" value="settings delete system time_12_24" />
     <!-- disable DeprecatedAbi warning -->
     <option name="run-command" value="setprop debug.wm.disable_deprecated_abi_dialog 1" />
     <!-- Disable KeyguardSliceProvider b/397607594 -->

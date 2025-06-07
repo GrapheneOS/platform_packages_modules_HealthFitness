@@ -17,24 +17,24 @@ import android.content.Context
 import android.health.connect.datatypes.LeanBodyMassRecord
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing LeanBodyMassRecord data. */
-class LeanBodyMassFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<LeanBodyMassRecord>(context) {
+class LeanBodyMassFormatter
+@Inject
+constructor(
+    @ApplicationContext context: Context,
+    timeFormatter: LocalDateTimeFormatter,
+    unitPreferences: UnitPreferences,
+) : EntryFormatter<LeanBodyMassRecord>(context, timeFormatter, unitPreferences) {
 
-    override suspend fun formatValue(
-        record: LeanBodyMassRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
-        return MassFormatter.formatValue(context, record.mass, unitPreferences.getWeightUnit())
+    override suspend fun formatValue(record: LeanBodyMassRecord): String {
+        return MassFormatter.formatValue(context, record.mass, unitPreferences.weightUnit)
     }
 
-    override suspend fun formatA11yValue(
-        record: LeanBodyMassRecord,
-        unitPreferences: UnitPreferences,
-    ): String {
-        return MassFormatter.formatA11yValue(context, record.mass, unitPreferences.getWeightUnit())
+    override suspend fun formatA11yValue(record: LeanBodyMassRecord): String {
+        return MassFormatter.formatA11yValue(context, record.mass, unitPreferences.weightUnit)
     }
 }

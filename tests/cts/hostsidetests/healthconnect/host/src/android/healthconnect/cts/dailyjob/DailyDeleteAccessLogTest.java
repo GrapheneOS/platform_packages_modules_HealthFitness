@@ -16,7 +16,7 @@
 
 package android.healthconnect.cts.dailyjob;
 
-import static android.healthconnect.cts.HostSideTestUtil.DAILY_LOG_TESTS_ACTIVITY;
+import static android.healthconnect.cts.HostSideTestUtil.DAILY_LOG_TESTS_HELPER;
 import static android.healthconnect.cts.HostSideTestUtil.clearData;
 import static android.healthconnect.cts.HostSideTestUtil.increaseDeviceTimeByDays;
 import static android.healthconnect.cts.HostSideTestUtil.isHardwareSupported;
@@ -32,7 +32,7 @@ import com.android.tradefed.testtype.IBuildReceiver;
 
 import java.time.Instant;
 
-//TODO(b/381409777) Flaky tests on healthfitness release branch.
+// TODO(b/399381777) Flaky tests on healthfitness release branch.
 // public class DailyDeleteAccessLogTest extends DeviceTestCase implements IBuildReceiver {
     // private IBuildInfo mCtsBuild;
     // private Instant mTestStartTime;
@@ -64,7 +64,6 @@ import java.time.Instant;
     // public void setBuild(IBuildInfo buildInfo) {
     //     mCtsBuild = buildInfo;
     // }
-
 
     // public void testAccessLogsAreDeleted() throws Exception {
     //     if (!isHardwareSupported(getDevice())) {

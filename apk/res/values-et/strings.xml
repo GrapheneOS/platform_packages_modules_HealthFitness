@@ -64,7 +64,7 @@
     <string name="manage_permissions" msgid="8394221950712608160">"Lubade haldamine"</string>
     <string name="recent_access_time_content_descritption" msgid="1137471676075811472">"Aeg: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
     <string name="recent_access_empty_state_title" msgid="4767157641389217682">"Hiljutine juurdepääs puudub"</string>
-    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"Siin kuvatakse automaatselt rakendused, mis on hiljuti teie andmetele juurde pääsenud"</string>
+    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"Siin kuvatakse automaatselt rakendused, mis on hiljuti teie andmetele juurde pääsenud."</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"Kuva kõik"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"Hiljutist juurdepääsu ei saanud laadida"</string>
     <string name="recent_access_inactive_app" msgid="8754221676902025802">"See rakendus ei ole enam saadaval"</string>
@@ -565,6 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Mine tagasi"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Alustage"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Kustuta andmed"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Rakenduse %1$s kustutamise nupp"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Alusta kustutamist"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Tühista kustutamine"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Andmed, mis rakendusest Health Connect kustutada"</string>
@@ -1204,6 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Lubatud juurde pääseda"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Lubatud lugeda"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Need load annavad rakendusele <xliff:g id="APP_NAME">%1$s</xliff:g> juurdepääsu teie seadme andurite andmetele."</string>
+    <string name="write_access" msgid="571547306854732263">"Kirjutusjuurdepääs"</string>
+    <string name="read_access" msgid="3317759826769372785">"Lugemisõigusega juurdepääs"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> rakendus(t) <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>-st on lubatud"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Ükski rakendus ei taotle"</string>
     <string name="allowed" msgid="4158456017482263737">"Lubatud"</string>
@@ -1220,7 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Kasutab 1 rakendus}other{Kasutavad # rakendust}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Pole viimase 24 tunni jooksul kasutatud"</string>
     <string name="accessed" msgid="4424701457530587176">"Juurde pääsetud <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Ühendage oma kaks esimest rakendust"</string>
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Esimese rakenduse ühendamine"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Ühendage need rakendused, et jagada nende vahel tervise- ja treeninguandmeid"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Ühendage teine rakendus"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Seadistage üks või mitu rakendust, et jagada tervise- ja treeninguandmeid rakendusega <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1230,11 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Lisateave Health Connecti kohta"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Rakendus on Health Connectiga ühendatud"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Peaaegu valmis"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"Seadistuse lõpuleviimiseks ja andmete jagamise alustamiseks avage kohe need rakendused"</string>
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Seadistuse lõpuleviimiseks ja andmete jagamise alustamiseks avage kohe need rakendused"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Seadistuse lõpuleviimiseks ja andmete jagamise alustamiseks avage kohe need rakendused või jätkake saadaolevate rakenduste ühendamist"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Ühendatud rakendused"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Saadaolevad ühendatavad rakendused"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Vaadake eri rakendustest pärinevaid terviseandmed"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Alustage tervise- ja treeninguandmete jagamist oma rakenduste vahel"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Hakake oma rakenduste vahel treeningu- ja heaoluandmeid jagama"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Seadistamine"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Ühendage teine rakendus"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Seadistage üks või mitu rakendust, et jagada tervise- ja treeninguandmeid rakendusega <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Seadistage teine rakendus, et sellega treeningu- ja heaoluandmeid jagada"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Jätka"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Vaadake eri rakendustest pärinevaid terviseandmed"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect võimaldab teil oma treeningu- ja heaoluandmeid rakenduste vahel jagada. Vaadake, milliseid rakendusi saate kohe ühendada."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Teise rakenduse ühendamine"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
+    <skip />
 </resources>

@@ -565,6 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Gaan terug"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Begin hier"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Vee data uit"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Vee data vir %1$s-knoppie uit"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Gaan na uitveetoestand"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Verlaat uitveetoestand"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Kies data om in Health Connect uit te vee"</string>
@@ -1204,6 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Toegelaat om toegang te kry"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Toegelaat om te lees"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Hierdie toestemmings gee <xliff:g id="APP_NAME">%1$s</xliff:g> toegang tot data van jou toestelsensors af."</string>
+    <string name="write_access" msgid="571547306854732263">"Skryftoegang"</string>
+    <string name="read_access" msgid="3317759826769372785">"Leestoegang"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> van <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> apps toegelaat"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Geen apps wat versoek nie"</string>
     <string name="allowed" msgid="4158456017482263737">"Toegelaat"</string>
@@ -1220,7 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Gebruik deur 1 app}other{Gebruik deur # apps}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Nie in die afgelope 24 uur gebruik nie"</string>
     <string name="accessed" msgid="4424701457530587176">"<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g> laas toegang verkry"</string>
-    <string name="connect_first_two_apps_title" msgid="2117437769113976529">"Verbind jou eerste 2 apps"</string>
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Koppel jou eerste app"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Verbind hierdie apps om te begin om gesondheid- en fiksheiddata tussen hulle te deel"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Verbind ’n tweede app"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Stel nog een app op om gesondheid- en fiksheiddata met <xliff:g id="APP_NAME">%1$s</xliff:g> te deel"</string>
@@ -1230,11 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Meer oor Health Connect"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"App is met Health Connect verbind"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Amper klaar"</string>
-    <string name="almost_done_description" msgid="8414648601371946510">"Maak hierdie apps nou oop om die opstelling te voltooi en datadeling te begin"</string>
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Maak hierdie apps nou oop om die opstelling te voltooi en datadeling te begin"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Maak hierdie apps nou oop om die opstelling te voltooi en datadeling te begin of hou aan om beskikbare apps te koppel"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Gekoppelde apps"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Beskikbare apps om te koppel"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Sien jou gesondheiddata in alle apps"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="279064080688912586">"Begin om gesondheid- en fiksheiddata tussen jou apps te deel"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Begin om fiksheid- en welstanddata tussen jou apps te deel"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Stel op"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Verbind ’n tweede app"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="7405386784227352135">"Stel nog een app op om gesondheid- en fiksheiddata met <xliff:g id="APP_NAME">%1$s</xliff:g> te deel"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Stel ’n ander app op sodat dit fiksheid- en welstanddata kan begin deel"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Gaan voort"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Sien jou gesondheiddata in alle apps"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Met Health Connect kan jy fiksheid- en welstanddata tussen jou apps deel. Kyk watter apps jy nou kan koppel."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Koppel ’n tweede app"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
+    <skip />
 </resources>
