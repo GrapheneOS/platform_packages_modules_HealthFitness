@@ -24,13 +24,13 @@
     <string name="home_subtitle" msgid="2154213430054477787">"Управувајте со податоците за здравје и фитнес на вашиот уред и контролирајте кои апликации може да пристапуваат до нив"</string>
     <string name="data_title" msgid="4456619761533380816">"Податоци и пристап"</string>
     <string name="browse_medical_data" msgid="6963802956096683273">"Прелистувајте здравствена евиденција"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"Погледнете ја вашата здравствена евиденција и кои апликации може да пристапат до неа"</string>
+    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"Погледнете ја вашата здравствена евиденција и кои апликации може да пристапуваат до неа"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Сите категории"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Преглед на сите категории"</string>
     <string name="no_data" msgid="1906986019249068659">"Нема податоци"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"Дозволи за апликации"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Управувајте со апликациите и дозволите"</string>
-    <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"Пристап имаат <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> од <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> апликации"</string>
+    <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> од <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> апликации има пристап"</string>
     <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> од <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> апликации имаат пристап"</string>
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> апликации имаат пристап"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> апликација има пристап"</string>
@@ -1206,12 +1206,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Дозволено да пристапува"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Дозволено да чита"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Дозволиве овозможуваат „<xliff:g id="APP_NAME">%1$s</xliff:g>“ да пристапува до податоците од сензорите на уредот."</string>
-    <!-- no translation found for write_access (571547306854732263) -->
-    <skip />
-    <!-- no translation found for read_access (3317759826769372785) -->
-    <skip />
-    <!-- no translation found for health_switch_content_description (1297823949479201621) -->
-    <skip />
+    <string name="write_access" msgid="571547306854732263">"Пристап за пишување"</string>
+    <string name="read_access" msgid="3317759826769372785">"Пристап за читање"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"Апликации со дозвола: <xliff:g id="NUMBER_0">%1$d</xliff:g> од <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Нема барања од апликации"</string>
     <string name="allowed" msgid="4158456017482263737">"Дозволено"</string>
@@ -1247,7 +1244,7 @@
     <skip />
     <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
     <skip />
-    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Прегледајте ги здравствените податоци на апликациите"</string>
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Гледајте ги вашите здравствени податоци во разни апликации"</string>
     <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
     <skip />
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Поставете"</string>
@@ -1261,6 +1258,6 @@
     <skip />
     <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
     <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
     <skip />
 </resources>

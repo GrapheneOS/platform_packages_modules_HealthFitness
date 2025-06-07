@@ -148,8 +148,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Permite que esta aplicación acceda aos datos de Saúde conectada engadidos antes do <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Permite que esta aplicación acceda a todos os datos anteriores de Saude conectada"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"<xliff:g id="APP_NAME">%1$s</xliff:g> non pode acceder a ningún dato de actividade física porque carece dos permisos de lectura necesarios"</string>
-    <string name="additional_access_medical_read_footer" msgid="4640796038121080343">"<xliff:g id="APP_NAME">%1$s</xliff:g> xa pode acceder aos datos anteriores dos teus rexistros de información sanitaria. Para cambiar esta opción, desactiva os permisos de acceso aos devanditos rexistros para esa aplicación."</string>
-    <string name="additional_access_medical_read_footer_link" msgid="2797623091827504856">"Xestionar os permisos de acceso aos rexistros de información sanitaria"</string>
+    <string name="additional_access_medical_read_footer" msgid="4640796038121080343">"<xliff:g id="APP_NAME">%1$s</xliff:g> xa pode acceder aos datos anteriores dos teus rexistros de información sanitaria. Para cambiar esta opción, desactiva os permisos de acceso á información sanitaria para esa aplicación."</string>
+    <string name="additional_access_medical_read_footer_link" msgid="2797623091827504856">"Xestionar os permisos de acceso á información sanitaria"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Activa polo menos un permiso de lectura para habilitar o acceso aos datos anteriores ou en segundo plano por parte desta aplicación"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Activa polo menos un permiso de lectura para habilitar o acceso en segundo plano por parte desta aplicación"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Activa polo menos un permiso de lectura para habilitar o acceso aos datos anteriores por parte desta aplicación"</string>
@@ -404,7 +404,7 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Eliminar tamén os datos de <xliff:g id="APP_NAME">%1$s</xliff:g> almacenados en Saúde conectada"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Queres quitar todos os permisos de forma física e benestar?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Eliminar tamén de Saúde conectada os datos de actividade física de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Queres quitar os permisos do rexistro de información sanit.?"</string>
+    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Queres quitar os permisos de acceso á información sanitaria?"</string>
     <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"Eliminar tamén de Saúde conectada os rexistros de información sanitaria de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> xa non poderá ler nin escribir estes datos de Saúde conectada.\n\nEsta acción non lles afecta a outros permisos que poida ter esta aplicación, como os de acceso á localización, á cámara ou ao micrófono."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> xa non poderá ler nin escribir estes datos de Saúde conectada, incluídos os datos en segundo plano.\n\nEsta acción non lles afecta a outros permisos que poida ter esta aplicación, como os de acceso á localización, á cámara ou ao micrófono."</string>
@@ -565,8 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Atrás"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Comezar"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Elimina os datos"</string>
-    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
-    <skip />
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Botón para eliminar os datos de %1$s"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Acceder á eliminación"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Saír da eliminación"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Escoller datos para eliminar de Saúde conectada"</string>
@@ -679,7 +678,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 repetición}other{# repeticións}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 repetición}other{# repeticións}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Segmentos de exercicio"</string>
-    <string name="segment_set_index_format" msgid="5299538353624573851">"Definir en <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"Serie <xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
     <string name="segment_rpe_format" msgid="1456617736401131975">"RPE: <xliff:g id="RPE_0">%1$s</xliff:g>"</string>
     <string name="segment_rpe_format_long" msgid="3492398127594227129">"Escala de percepción do esforzo (RPE): <xliff:g id="RPE">%1$s</xliff:g>"</string>
     <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
@@ -1206,12 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Con permiso de acceso"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Con permiso de lectura"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Con estes permisos, a aplicación <xliff:g id="APP_NAME">%1$s</xliff:g> pode acceder aos datos dos sensores do teu dispositivo."</string>
-    <!-- no translation found for write_access (571547306854732263) -->
-    <skip />
-    <!-- no translation found for read_access (3317759826769372785) -->
-    <skip />
-    <!-- no translation found for health_switch_content_description (1297823949479201621) -->
-    <skip />
+    <string name="write_access" msgid="571547306854732263">"Acceso de escritura"</string>
+    <string name="read_access" msgid="3317759826769372785">"Acceso de lectura"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> de <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplicacións con permiso"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Non hai ningunha solicitude por parte das aplicacións"</string>
     <string name="allowed" msgid="4158456017482263737">"Con permiso"</string>
@@ -1228,8 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Utilizado por 1 aplicación}other{Utilizado por # aplicacións}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Non utilizado nas últimas 24 horas"</string>
     <string name="accessed" msgid="4424701457530587176">"Último acceso: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
-    <skip />
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Conecta a primeira aplicación"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Conecta estas aplicacións e comeza a compartir datos de saúde e de actividade física entre elas"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Conecta unha segunda aplicación"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Configura outra aplicación para compartir datos de saúde e de actividade física con <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1239,28 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Máis información sobre Saúde conectada"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Aplicación con conexión a Saúde conectada"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Estamos acabando"</string>
-    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
-    <skip />
-    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
-    <skip />
-    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
-    <skip />
-    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
-    <skip />
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Abre agora estas aplicacións para finalizar a configuración e comezar a compartir datos"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Abre agora estas aplicacións para finalizar a configuración e comezar a compartir datos, ou sigue conectando entre si as aplicacións dispoñibles"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Aplicacións conectadas"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Aplicacións que podes conectar"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Consulta os teus datos de saúde en distintas aplicacións"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Comeza a compartir datos sobre a actividade física e o benestar entre as túas aplicacións"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Configurar"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Conecta unha segunda aplicación"</string>
-    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
-    <skip />
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Configura outra aplicación para que poida comezar a compartir datos sobre a actividade física e o benestar"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Continuar"</string>
-    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Consulta os teus datos de saúde en distintas aplicacións"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Saúde conectada permíteche compartir datos sobre a actividade física e o benestar entre as túas aplicacións. Mira que aplicacións podes conectar agora."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Conecta unha segunda aplicación"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
     <skip />
 </resources>

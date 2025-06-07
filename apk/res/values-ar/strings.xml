@@ -1141,7 +1141,7 @@
     <string name="tab_entries" msgid="3402700951602029493">"الإدخالات"</string>
     <string name="tab_access" msgid="7818197975407243701">"إذن الوصول"</string>
     <string name="start_using_hc_banner_title" msgid="2030178284749796384">"بدء استخدام Health Connect"</string>
-    <string name="start_using_hc_banner_content" msgid="3171560198945933334">"مزامنة التطبيقات الرئيسية لمشاركة بيانات الصحة واللياقة البدنية بينها"</string>
+    <string name="start_using_hc_banner_content" msgid="3171560198945933334">"يتيح لك مزامنة التطبيقات الرئيسية لمشاركة بيانات الصحة واللياقة البدنية بينها"</string>
     <string name="start_using_hc_set_up_button" msgid="7486865297236439364">"إعداد"</string>
     <string name="connect_more_apps_banner_title" msgid="4746581834305054229">"ننصحك بربط المزيد من التطبيقات"</string>
     <string name="connect_more_apps_banner_content" msgid="8104544246031860111">"ما عليك سوى مشاركة البيانات بين \"<xliff:g id="APP_NAME">%s</xliff:g>\" والتطبيقات المختصّة بالصحة على هاتفك"</string>
@@ -1206,12 +1206,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"مسموح له بالوصول إلى البيانات"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"مسموح له بقراءة التالي"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"تمنح هذه الأذونات \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" إمكانية الوصول إلى بيانات أدوات الاستشعار في جهازك."</string>
-    <!-- no translation found for write_access (571547306854732263) -->
-    <skip />
-    <!-- no translation found for read_access (3317759826769372785) -->
-    <skip />
-    <!-- no translation found for health_switch_content_description (1297823949479201621) -->
-    <skip />
+    <string name="write_access" msgid="571547306854732263">"الإذن بالكتابة"</string>
+    <string name="read_access" msgid="3317759826769372785">"الإذن بالقراءة"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"عدد التطبيقات المسموح لها: <xliff:g id="NUMBER_0">%1$d</xliff:g> من أصل <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"ما مِن تطبيقات تطلب هذا الإذن"</string>
     <string name="allowed" msgid="4158456017482263737">"التطيقات المسموح لها"</string>
@@ -1261,6 +1258,6 @@
     <skip />
     <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
     <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
     <skip />
 </resources>

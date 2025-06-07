@@ -565,8 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"返回"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"開始使用"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"刪除資料"</string>
-    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
-    <skip />
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"用於刪除「%1$s」資料的按鈕"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"進入刪除狀態"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"退出刪除狀態"</string>
     <string name="time_range_title" msgid="5777596779865648336">"選擇要從「健康資料同步」中刪除的資料"</string>
@@ -679,7 +678,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{重複 1 次}other{重複 # 次}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{重複 1 次}other{重複 # 次}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"運動時段"</string>
-    <string name="segment_set_index_format" msgid="5299538353624573851">"指定值：<xliff:g id="SET_INDEX">%1$d</xliff:g>"</string>
+    <string name="segment_set_index_format" msgid="5299538353624573851">"第 <xliff:g id="SET_INDEX">%1$d</xliff:g> 組"</string>
     <string name="segment_rpe_format" msgid="1456617736401131975">"RPE：<xliff:g id="RPE_0">%1$s</xliff:g>"</string>
     <string name="segment_rpe_format_long" msgid="3492398127594227129">"運動自覺強度：<xliff:g id="RPE">%1$s</xliff:g>"</string>
     <string name="session_rpe_header" msgid="6436164288422834973">"RPE"</string>
@@ -1206,12 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"允許存取"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"允許讀取"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"這些權限可讓「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取裝置感應器的資料。"</string>
-    <!-- no translation found for write_access (571547306854732263) -->
-    <skip />
-    <!-- no translation found for read_access (3317759826769372785) -->
-    <skip />
-    <!-- no translation found for health_switch_content_description (1297823949479201621) -->
-    <skip />
+    <string name="write_access" msgid="571547306854732263">"寫入權限"</string>
+    <string name="read_access" msgid="3317759826769372785">"讀取權限"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>，<xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>，<xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"已授權給 <xliff:g id="NUMBER_0">%1$d</xliff:g> 個應用程式 (共 <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> 個)"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"沒有任何應用程式提出要求"</string>
     <string name="allowed" msgid="4158456017482263737">"允許"</string>
@@ -1228,8 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 個應用程式使用過}other{# 個應用程式使用過}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"過去 24 小時內未使用"</string>
     <string name="accessed" msgid="4424701457530587176">"上次存取時間：<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
-    <skip />
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"連結第一個應用程式"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"連結這些應用程式，即可開始在這些程式間共用健康與健身資料"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"連結第二個應用程式"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"設定另一個應用程式，與「<xliff:g id="APP_NAME">%1$s</xliff:g>」共用健康與健身資料"</string>
@@ -1239,28 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"進一步瞭解「健康資料同步」"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"應用程式已連結至「健康資料同步」"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"即將完成"</string>
-    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
-    <skip />
-    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
-    <skip />
-    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
-    <skip />
-    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
-    <skip />
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"立即開啟這些應用程式，就能完成設定並開始共用資料"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"立即開啟這些應用程式，就能完成設定並開始共用資料。你也可以繼續連結可用的應用程式"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"連結的應用程式"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"可連結的應用程式"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"在各應用程式中查看健康資料"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"開始在應用程式間共用健身和保健資料"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"設定"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"連結第二個應用程式"</string>
-    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
-    <skip />
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"設定另一個應用程式，開始共用健身和保健資料"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"繼續"</string>
-    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"在各應用程式中查看健康資料"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"你可以透過「健康資料同步」在應用程式間共用健身和保健資料。瞭解目前可以連結哪些應用程式。"</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"連結第二個應用程式"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
     <skip />
 </resources>

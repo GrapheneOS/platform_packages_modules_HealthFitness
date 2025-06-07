@@ -1206,12 +1206,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Přístup povolen"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Smí číst"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Tato oprávnění dávají aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup k datům ze senzorů vašeho zařízení."</string>
-    <!-- no translation found for write_access (571547306854732263) -->
-    <skip />
-    <!-- no translation found for read_access (3317759826769372785) -->
-    <skip />
-    <!-- no translation found for health_switch_content_description (1297823949479201621) -->
-    <skip />
+    <string name="write_access" msgid="571547306854732263">"Přístup pro zápis"</string>
+    <string name="read_access" msgid="3317759826769372785">"Přístup pro čtení"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"Povoleno u aplikací: <xliff:g id="NUMBER_0">%1$d</xliff:g> z <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Žádná aplikace nežádá"</string>
     <string name="allowed" msgid="4158456017482263737">"Povoleno"</string>
@@ -1261,6 +1258,6 @@
     <skip />
     <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
     <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
     <skip />
 </resources>

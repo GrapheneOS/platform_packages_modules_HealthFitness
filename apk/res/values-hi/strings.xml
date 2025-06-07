@@ -63,8 +63,8 @@
     <string name="separator" msgid="5521285473288943819">", "</string>
     <string name="manage_permissions" msgid="8394221950712608160">"अनुमतियां मैनेज करें"</string>
     <string name="recent_access_time_content_descritption" msgid="1137471676075811472">"समय: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="recent_access_empty_state_title" msgid="4767157641389217682">"किसी ऐप्लिकेशन ने हाल ही में, स्वास्थ्य से जुड़ा डेटा ऐक्सेस नहीं किया है"</string>
-    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"हाल ही में, आपके स्वास्थ्य से जुड़ा डेटा ऐक्सेस करने वाले ऐप्लिकेशन, यहां अपने-आप दिखेंगे"</string>
+    <string name="recent_access_empty_state_title" msgid="4767157641389217682">"सेहत से जुड़ा डेटा हाल ही में ऐक्सेस नहीं किया गया है"</string>
+    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"इस बात की जानकारी यहां अपने-आप दिखेगी कि किस ऐप्लिकेशन ने हाल ही में आपकी सेहत से जुड़ा डेटा ऐक्सेस किया है"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"पूरी जानकारी देखें"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"हाल ही में ऐक्सेस किए गए डेटा को लोड नहीं किया जा सका"</string>
     <string name="recent_access_inactive_app" msgid="8754221676902025802">"यह ऐप्लिकेशन अब उपलब्ध नहीं है"</string>
@@ -1206,12 +1206,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"डेटा ऐक्सेस करने की अनुमति है"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"डेटा देखने की अनुमति है"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"ये अनुमतियां देने पर, <xliff:g id="APP_NAME">%1$s</xliff:g> आपके डिवाइस के सेंसर से डेटा ऐक्सेस कर सकता है."</string>
-    <!-- no translation found for write_access (571547306854732263) -->
-    <skip />
-    <!-- no translation found for read_access (3317759826769372785) -->
-    <skip />
-    <!-- no translation found for health_switch_content_description (1297823949479201621) -->
-    <skip />
+    <string name="write_access" msgid="571547306854732263">"बदलाव करने का ऐक्सेस"</string>
+    <string name="read_access" msgid="3317759826769372785">"देखने का ऐक्सेस"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> में से <xliff:g id="NUMBER_0">%1$d</xliff:g> ऐप्लिकेशन को अनुमति है"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"किसी भी ऐप्लिकेशन ने अनुमति देने का अनुरोध नहीं किया है"</string>
     <string name="allowed" msgid="4158456017482263737">"अनुमति है"</string>
@@ -1261,6 +1258,6 @@
     <skip />
     <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
     <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
     <skip />
 </resources>

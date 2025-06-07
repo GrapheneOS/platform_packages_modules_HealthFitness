@@ -565,8 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Nazaj"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Začnite"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Izbriši podatke"</string>
-    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
-    <skip />
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Gumb za izbris podatkov aplikacije %1$s"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Odpiranje načina za brisanje"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Zapiranje načina za brisanje"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Izbira podatkov za izbris iz storitve Health Connect"</string>
@@ -971,7 +970,7 @@
     <string name="feet_inches_format" msgid="768610500549967860">"<xliff:g id="FT">%1$s</xliff:g><xliff:g id="IN">%2$s</xliff:g>⁠"</string>
     <string name="feet_inches_format_long" msgid="5187265716573430363">"<xliff:g id="FT">%1$s</xliff:g> <xliff:g id="IN">%2$s</xliff:g>⁠"</string>
     <string name="calories_long" msgid="7225535148232419419">"{count,plural, =1{1 kalorija}one{# kalorija}two{# kaloriji}few{# kalorije}other{# kalorij}}"</string>
-    <string name="calories" msgid="320906359079319632">"{count,plural, =1{1 kal.}one{# kal.}two{# kal.}few{# kal.}other{# kal.}}"</string>
+    <string name="calories" msgid="320906359079319632">"{count,plural, =1{1 kcal}one{# kcal}two{# kcal}few{# kcal}other{# kcal}}"</string>
     <string name="kj" msgid="2742876437259085714">"{count,plural, =1{1 kJ}one{# kJ}two{# kJ}few{# kJ}other{# kJ}}"</string>
     <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{1 kilodžul}one{# kilodžul}two{# kilodžula}few{# kilodžuli}other{# kilodžulov}}"</string>
     <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{1 %}one{# %}two{# %}few{# %}other{# %}}"</string>
@@ -1206,12 +1205,9 @@
     <string name="allowed_to_access" msgid="4179317387300812335">"Dovoljen dostop"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Dovoljeno branje"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Ta dovoljenja aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> omogočajo dostop do podatkov iz tipal naprave."</string>
-    <!-- no translation found for write_access (571547306854732263) -->
-    <skip />
-    <!-- no translation found for read_access (3317759826769372785) -->
-    <skip />
-    <!-- no translation found for health_switch_content_description (1297823949479201621) -->
-    <skip />
+    <string name="write_access" msgid="571547306854732263">"Dostop za pisanje"</string>
+    <string name="read_access" msgid="3317759826769372785">"Dostop za branje"</string>
+    <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"Dovoljene aplikacije: <xliff:g id="NUMBER_0">%1$d</xliff:g> od <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Nobena aplikacija ne zahteva"</string>
     <string name="allowed" msgid="4158456017482263737">"Dovoljeno"</string>
@@ -1228,8 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Uporablja ga 1 aplikacija}one{Uporablja ga # aplikacija}two{Uporabljata ga # aplikaciji}few{Uporabljajo ga # aplikacije}other{Uporablja ga # aplikacij}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Brez uporabe v zadnjih 24 urah"</string>
     <string name="accessed" msgid="4424701457530587176">"Zadnji dostop: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
-    <skip />
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Povežite prvo aplikacijo"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Povežite te aplikacije, če želite začeti deljenje podatkov o zdravju in telesni pripravljenosti med njimi"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Povezava druge aplikacije"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Nastavite še eno aplikacijo, če želite deliti podatke o zdravju in telesni pripravljenosti z aplikacijo <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1239,28 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Več o storitvi Health Connect"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Aplikacija je povezana s storitvijo Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Skoraj končano"</string>
-    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
-    <skip />
-    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
-    <skip />
-    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
-    <skip />
-    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
-    <skip />
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Odprite te aplikacije zdaj, če želite dokončati nastavitev in začeti deliti podatke"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Odprite te aplikacije zdaj, če želite dokončati nastavitev in začeti deliti podatke, ali pa nadaljujte povezovanje razpoložljivih aplikacij"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Povezane aplikacije"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Razpoložljive aplikacije za povezavo"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Oglejte si podatke o zdravju v različnih aplikacijah"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Začnite deliti podatke o telesni pripravljenosti in počutju med aplikacijami"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Nastavi"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Povezava druge aplikacije"</string>
-    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
-    <skip />
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Nastavite drugo aplikacijo, da bo lahko začela deliti podatke o telesni pripravljenosti in počutju"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Naprej"</string>
-    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Oglejte si podatke o zdravju v različnih aplikacijah"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect vam omogoča deljenje podatkov o telesni pripravljenosti in počutju med aplikacijami. Oglejte si, katere aplikacije lahko povežete v tem trenutku."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Povežite drugo aplikacijo"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
     <skip />
 </resources>

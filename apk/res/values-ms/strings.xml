@@ -24,7 +24,7 @@
     <string name="home_subtitle" msgid="2154213430054477787">"Urus data kesihatan dan kecergasan pada peranti anda dan kawal apl yang boleh mengakses data tersebut"</string>
     <string name="data_title" msgid="4456619761533380816">"Data dan akses"</string>
     <string name="browse_medical_data" msgid="6963802956096683273">"Semak imbas rekod kesihatan"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"Lihat rekod kesihatan anda dan apl yang boleh mengakses data tersebut"</string>
+    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"Lihat rekod kesihatan anda dan apl yang boleh mengakses rekod tersebut"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Semua kategori"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Lihat semua kategori"</string>
     <string name="no_data" msgid="1906986019249068659">"Tiada data"</string>
@@ -565,8 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Kembali"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Mulakan"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Padamkan data"</string>
-    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
-    <skip />
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Butang padam data %1$s"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Akses pemadaman"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Keluar daripada pemadaman"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Pilih data untuk dipadamkan daripada Health Connect"</string>
@@ -1225,8 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Digunakan oleh 1 apl}other{Digunakan oleh # apl}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Tidak digunakan dalam tempoh 24 jam yang lalu"</string>
     <string name="accessed" msgid="4424701457530587176">"Diakses <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
-    <skip />
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Sambungkan apl pertama anda"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Sambungkan apl ini untuk mula berkongsi data kesihatan dan kecergasan antara apl tersebut"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Sambungkan apl kedua"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Sediakan satu atau beberapa apl untuk berkongsi data kesihatan dan kecergasan dengan <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1236,28 +1234,19 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Maklumat lanjut tentang Health Connect"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Apl yang disambungkan kepada Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Hampir selesai"</string>
-    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
-    <skip />
-    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
-    <skip />
-    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
-    <skip />
-    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
-    <skip />
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Buka apl ini sekarang untuk menyelesaikan persediaan dan memulakan perkongsian data"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Buka apl ini sekarang untuk menyelesaikan persediaan dan memulakan perkongsian data atau meneruskan penyambungan data yang tersedia"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Apl disambungkan"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Apl yang tersedia untuk disambungkan"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Lihat data kesihatan anda merentas apl"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Mulakan perkongsian data kecergasan dan kesihatan antara apl anda"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Sediakan"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Sambungkan apl kedua"</string>
-    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
-    <skip />
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Sediakan apl lain supaya apl tersebut boleh mula berkongsi data kecergasan dan kesihatan"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Teruskan"</string>
-    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (949161772080898977) -->
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Lihat data kesihatan anda merentas apl"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect membolehkan anda berkongsi data kecergasan dan kesihatan antara apl anda. Lihat apl yang boleh anda sambungkan sekarang."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Sambungkan apl kedua"</string>
+    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
     <skip />
 </resources>
