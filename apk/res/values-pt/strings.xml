@@ -38,7 +38,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Nenhuma"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Detalhes da entrada"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Procurar dados"</string>
-    <string name="browse_data_subtitle" msgid="7025164374898103993">"Ver os dados e quais apps podem ter acesso a eles"</string>
+    <string name="browse_data_subtitle" msgid="7025164374898103993">"Veja os dados e quais apps podem acessá-los"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Exclusão automática, fontes de dados, backup e restauração"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"Mais itens"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"Menos itens"</string>
