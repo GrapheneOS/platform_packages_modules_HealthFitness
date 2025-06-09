@@ -16,6 +16,7 @@
 package com.android.server.healthconnect.phr.validations;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION;
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_XHTML_VALIDATION;
 import static com.android.server.healthconnect.phr.validations.FhirPrimitiveTypeValidator.validate;
 import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_BOOLEAN;
 import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_CANONICAL;
@@ -1166,11 +1167,8 @@ public class FhirPrimitiveTypeValidatorTest {
     @Test
     public void testValidate_r4XhtmlValid_succeeds() throws JSONException {
         JSONObject jsonObjectNarrative =
-                new JSONObject()
-                        .put("status", "generated")
-                        .put(
-                                "div",
-                                "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Narrative</p></div>");
+                new JSONObject(new ImmunizationBuilder().setTextNarrative().toJson())
+                        .getJSONObject("text");
 
         validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
     }
@@ -1192,7 +1190,7 @@ public class FhirPrimitiveTypeValidatorTest {
 
     @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION})
     @Test
-    public void testValidate_r4XHTMLInvalid_objectIsInt_throws() throws JSONException {
+    public void testValidate_r4XhtmlInvalid_objectIsInt_throws() throws JSONException {
         JSONObject jsonObjectNarrative =
                 new JSONObject(
                         """
@@ -1211,5 +1209,379 @@ public class FhirPrimitiveTypeValidatorTest {
                                         "text.div",
                                         R4_FHIR_TYPE_XHTML));
         assertThat(exception).hasMessageThat().contains(STRING_TYPE_EXCEPTION_MESSAGE + "text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XhtmlInvalid_containsDoctypeDeclaration_throws()
+            throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"
+                                    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <p>Narrative</p>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains("Found invalid xhtml containing DOCTYPE declaration in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XhtmlInvalid_containsProcessingInstruction_throws()
+            throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <p>Narrative</p>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml containing processing instruction in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XhtmlWithCDATA_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <p>
+                                    <![CDATA[In this section, we can use <, >, and & freely]]>
+                                    </p>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains("Found invalid xhtml containing CDATA section in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION})
+    @DisableFlags({FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XhtmlInvalidMissingClosingTag_flagDisabled_succeeds()
+            throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        // Missing </p> closing tab
+                        .put(
+                                "div",
+                                "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Narrative</div>");
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XhtmlInvalid_missingClosingTag_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        // Missing </p> closing tab
+                        .put(
+                                "div",
+                                "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Narrative</div>");
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception).hasMessageThat().contains("Failed to parse xhtml in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XhtmlInvalid_mismatchingClosingTag_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        // Mismatching </p> closing tag
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <p>Narrative</P>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception).hasMessageThat().contains("Failed to parse xhtml in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XhtmlInvalid_unquotedAttributeValue_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        // Unquoted attribute value for "class=test"
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <p class=test>Narrative</p>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception).hasMessageThat().contains("Failed to parse xhtml in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XhtmlInvalid_unterminatedCharacterReference_throws()
+            throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <p>Narrative &</p>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception).hasMessageThat().contains("Failed to parse xhtml in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4Xhtml_unknownCharacterReference_succeeds() throws JSONException {
+        // TODO (b/402780942) Right now unknown character references (such as html entity `&nbsp;`)
+        //  don't throw an exception. Consider validating that they can be resolved.
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <p>Narrative &nbsp;</p>
+                                    </div>
+                                """);
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XhtmlInvalid_invalidCharacter_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        // Invalid <> around the class attribute value
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <p class:"<test>">Narrative</p>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception).hasMessageThat().contains("Failed to parse xhtml in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XhtmlCharacterReference_succeeds() throws JSONException {
+        // &#160; character reference resolves to a space, so should be valid
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <p>Narrative &#160; Narrative</p>
+                                    </div>
+                                """);
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XhtmlNamespacePrefix_resolvesAndSucceeds() throws JSONException {
+        // myprefix:p namespace prefix should resolve to the declared prefix
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns:myprefix=\"http://www.w3.org/1999/xhtml\">
+                                    <myprefix:p>Narrative</myprefix:p>
+                                    </div>
+                                """);
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XhtmlWithComment_succeeds() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <!-- This is a comment -->
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <p>Narrative</p></div>
+                                """);
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XhtmlWithSelfClosingTag_succeeds() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <br/>
+                                    </div>
+                                """);
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XhtmlWitOpenTagLeftAtEnd_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <p>Narrative</p>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains("Missing closing tag for xhtml element in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlIllegalAttributeFormat_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <p :illegalAttr=\"test\">Narrative</p>
+                                    </div>
+
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .isEqualTo("Failed to parse xhtml in field: text.div");
     }
 }
