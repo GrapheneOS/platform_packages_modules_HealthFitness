@@ -19,8 +19,13 @@ package com.android.server.healthconnect.onboarding;
 import static android.app.Notification.EXTRA_BIG_TEXT;
 import static android.app.Notification.EXTRA_TITLE;
 import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
+import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
+import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING_NOTIFICATION;
+import static com.android.server.healthconnect.logging.NotificationStatsLogger.ACTION_NOTIFICATION_SENT;
+import static com.android.server.healthconnect.logging.NotificationStatsTestUtils.verifyEventLogged;
+import static com.android.server.healthconnect.logging.NotificationStatsTestUtils.verifyNothingLogged;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.CONNECT_MORE_APPS_NOTIFICATION_CONTENT;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.CONNECT_MORE_APPS_NOTIFICATION_TITLE;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.START_USING_HC_NOTIFICATION_CONTENT;
@@ -51,6 +56,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
+import com.android.server.healthconnect.logging.NotificationStatsLogger;
 import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 
@@ -74,6 +80,7 @@ public class OnboardingNotificationSenderTest {
     @Mock private HealthConnectResourcesContext mResourcesContext;
     @Mock private PreferenceHelper mPreferenceHelper;
     @Mock private UserHandle mUserHandle;
+    @Mock private NotificationStatsLogger mNotificationStatsLogger;
     private Context mContext;
     private OnboardingNotificationSender mOnboardingNotificationSender;
     @Captor ArgumentCaptor<Notification> mNotificationCaptor;
@@ -93,7 +100,8 @@ public class OnboardingNotificationSenderTest {
                 new OnboardingNotificationSender(
                         mContext,
                         mResourcesContext,
-                        new OnboardingNotificationStateManager(mPreferenceHelper, mUserHandle));
+                        new OnboardingNotificationStateManager(mPreferenceHelper, mUserHandle),
+                        mNotificationStatsLogger);
         mOnboardingNotificationSender.setNotificationSenderForTesting(mNotificationSender);
     }
 
@@ -143,6 +151,20 @@ public class OnboardingNotificationSenderTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
+    public void sendNoAppConnectedNotification_logged() {
+        when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
+                .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
+
+        mOnboardingNotificationSender.sendNoAppConnectedNotification(mUserHandle);
+
+        verifyEventLogged(
+                mNotificationStatsLogger,
+                ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED,
+                ACTION_NOTIFICATION_SENT);
+    }
+
+    @Test
     @DisableFlags(FLAG_ONBOARDING_NOTIFICATION)
     public void sendNoAppConnectedNotification_flagDisabled_noOp() {
         when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
@@ -152,6 +174,7 @@ public class OnboardingNotificationSenderTest {
 
         verify(mNotificationSender, never()).sendNotificationAsUser(any(), eq(mUserHandle));
         verify(mPreferenceHelper, never()).insertOrReplacePreference(any(), any());
+        verifyNothingLogged(mNotificationStatsLogger);
     }
 
     @Test
@@ -206,6 +229,20 @@ public class OnboardingNotificationSenderTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
+    public void sendOneAppConnectedNotification_logged() {
+        when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
+                .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
+
+        mOnboardingNotificationSender.sendOneAppConnectedNotification(mUserHandle);
+
+        verifyEventLogged(
+                mNotificationStatsLogger,
+                ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED,
+                ACTION_NOTIFICATION_SENT);
+    }
+
+    @Test
     @DisableFlags(FLAG_ONBOARDING_NOTIFICATION)
     public void sendOneAppConnectedNotification_flagDisabled_noOp() {
         when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
@@ -215,6 +252,7 @@ public class OnboardingNotificationSenderTest {
 
         verify(mNotificationSender, never()).sendNotificationAsUser(any(), eq(mUserHandle));
         verify(mPreferenceHelper, never()).insertOrReplacePreference(any(), any());
+        verifyNothingLogged(mNotificationStatsLogger);
     }
 
     @Test

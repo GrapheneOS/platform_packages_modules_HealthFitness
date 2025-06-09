@@ -65,6 +65,7 @@ import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMa
 import com.android.server.healthconnect.logging.BackupRestoreLogger;
 import com.android.server.healthconnect.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.logging.ExportImportLogger;
+import com.android.server.healthconnect.logging.NotificationStatsLogger;
 import com.android.server.healthconnect.logging.UsageStatsCollector;
 import com.android.server.healthconnect.migration.MigrationBroadcastScheduler;
 import com.android.server.healthconnect.migration.MigrationCleaner;
@@ -157,6 +158,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final File mEnvironmentDataDirectory;
     private final HealthFitnessStatsLog mHealthFitnesssStatsLog;
     private final ExportImportLogger mExportImportLogger;
+    private final NotificationStatsLogger mNotificationStatsLogger;
     private final TrackerManager mTrackerManager;
     private final GrantTimeXmlHelper mGrantTimeXmlHelper;
     private final BackupRestoreLogger mBackupRestoreLogger;
@@ -185,6 +187,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         mHealthFitnesssStatsLog =
                 builder.mStatsLog == null ? new HealthFitnessStatsLog() : builder.mStatsLog;
         mExportImportLogger = new ExportImportLogger(mHealthFitnesssStatsLog);
+        mNotificationStatsLogger = new NotificationStatsLogger(mHealthFitnesssStatsLog);
         mBackupRestoreLogger = new BackupRestoreLogger(mHealthFitnesssStatsLog);
 
         HealthConnectContext hcContext =
@@ -481,7 +484,10 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         mOnboardingNotificationSender =
                 builder.mOnboardingNotificationSender == null
                         ? new OnboardingNotificationSender(
-                                context, resourcesContext, mOnboardingNotificationStateManager)
+                                context,
+                                resourcesContext,
+                                mOnboardingNotificationStateManager,
+                                mNotificationStatsLogger)
                         : builder.mOnboardingNotificationSender;
         mDeviceRecordHelper = new DeviceRecordHelper(mFitnessRecordUpsertHelper);
         mTrackerManager =
@@ -811,6 +817,10 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Override
     public ExportImportLogger getExportImportLogger() {
         return mExportImportLogger;
+    }
+
+    public NotificationStatsLogger getNotificationStatsLogger() {
+        return mNotificationStatsLogger;
     }
 
     @Override
