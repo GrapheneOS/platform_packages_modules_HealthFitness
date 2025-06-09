@@ -94,24 +94,12 @@ public class PlannedExerciseSessionRecordTest {
 
     @Before
     public void setUp() throws InterruptedException {
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        verifyDeleteRecords(
-                PlannedExerciseSessionRecord.class,
-                new TimeInstantRangeFilter.Builder()
-                        .setStartTime(Instant.EPOCH)
-                        .setEndTime(Instant.now())
-                        .build());
-        verifyDeleteRecords(
-                ExerciseSessionRecord.class,
-                new TimeInstantRangeFilter.Builder()
-                        .setStartTime(Instant.EPOCH)
-                        .setEndTime(Instant.now())
-                        .build());
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test

@@ -34,7 +34,6 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.testing.cts.TestUtils.finishMigrationWithShellPermissionIdentity;
 import static android.healthconnect.testing.cts.TestUtils.getRecordById;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;

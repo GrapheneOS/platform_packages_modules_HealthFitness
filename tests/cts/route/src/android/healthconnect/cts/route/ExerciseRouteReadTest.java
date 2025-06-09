@@ -20,7 +20,7 @@ import static android.healthconnect.cts.route.ExerciseRouteTestHelper.ROUTE_WRIT
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.assertCorrectHealthPermissions;
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.getExerciseSessionWithRoute;
 import static android.healthconnect.testing.cts.TestUtils.connectAppsWithGrantedPermissions;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.getChangeLogToken;
 import static android.healthconnect.testing.cts.TestUtils.getChangeLogs;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
@@ -64,7 +64,7 @@ public class ExerciseRouteReadTest {
 
     @After
     public void tearDown() throws InterruptedException {
-        deleteAllStagedRemoteData();
+        deleteAllDataFromHealthConnect();
     }
 
     @Test

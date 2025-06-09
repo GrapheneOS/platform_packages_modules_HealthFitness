@@ -43,15 +43,13 @@ class AllMedicalDataFragmentTest : HealthConnectBaseTest() {
 
     @Before
     fun setup() {
-        TestUtils.deleteAllStagedRemoteData()
-        TestUtils.deleteAllMedicalData()
+        TestUtils.deleteAllDataFromHealthConnect()
         insertMedicalData()
     }
 
     @After
     fun tearDown() {
-        TestUtils.deleteAllStagedRemoteData()
-        TestUtils.deleteAllMedicalData()
+        TestUtils.deleteAllDataFromHealthConnect()
     }
 
     private fun insertMedicalData() {

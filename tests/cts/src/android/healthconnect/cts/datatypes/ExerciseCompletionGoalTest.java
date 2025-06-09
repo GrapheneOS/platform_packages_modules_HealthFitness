@@ -16,14 +16,12 @@
 
 package android.healthconnect.cts.datatypes;
 
-import static android.healthconnect.testing.cts.TestUtils.verifyDeleteRecords;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import static java.time.Month.APRIL;
 import static java.time.temporal.ChronoUnit.HOURS;
 
-import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.ExerciseCompletionGoal;
 import android.health.connect.datatypes.ExerciseSessionType;
@@ -47,7 +45,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -61,12 +58,7 @@ public class ExerciseCompletionGoalTest {
 
     @After
     public void tearDown() throws InterruptedException {
-        verifyDeleteRecords(
-                PlannedExerciseSessionRecord.class,
-                new TimeInstantRangeFilter.Builder()
-                        .setStartTime(Instant.EPOCH)
-                        .setEndTime(Instant.now())
-                        .build());
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test

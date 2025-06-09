@@ -17,7 +17,7 @@
 package android.healthconnect.tests.exportimport;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.deleteRecords;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.readAllRecords;
@@ -110,7 +110,7 @@ public class ExportImportApiTest {
         mHealthConnectManager = mContext.getSystemService(HealthConnectManager.class);
         mPhrCtsTestUtils = new PhrCtsTestUtils(mHealthConnectManager);
 
-        deleteAllStagedRemoteData();
+        deleteAllDataFromHealthConnect();
         JobUtils.cancelJobIfScheduled(JOB_NAMESPACE);
         mExportedDbContext =
                 HealthConnectContext.create(
@@ -126,7 +126,7 @@ public class ExportImportApiTest {
 
     @After
     public void tearDown() throws Exception {
-        deleteAllStagedRemoteData();
+        deleteAllDataFromHealthConnect();
         JobUtils.cancelJobIfScheduled(JOB_NAMESPACE);
         SQLiteDatabase.deleteDatabase(
                 mExportedDbContext.getDatabasePath(REMOTE_EXPORT_DATABASE_FILE_NAME));

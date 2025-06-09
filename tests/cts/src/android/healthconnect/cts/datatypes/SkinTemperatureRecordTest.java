@@ -82,20 +82,14 @@ public class SkinTemperatureRecordTest {
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
-    @After
-    public void tearDown() throws InterruptedException {
-        TestUtils.verifyDeleteRecords(
-                SkinTemperatureRecord.class,
-                new TimeInstantRangeFilter.Builder()
-                        .setStartTime(Instant.EPOCH)
-                        .setEndTime(Instant.now())
-                        .build());
-        TestUtils.deleteAllStagedRemoteData();
-    }
-
     @Before
     public void setUp() throws InterruptedException {
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
+    }
+
+    @After
+    public void tearDown() throws InterruptedException {
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test

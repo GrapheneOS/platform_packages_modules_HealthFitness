@@ -27,12 +27,10 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
-import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.MindfulnessSessionRecord;
-import android.health.connect.datatypes.SkinTemperatureRecord;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
@@ -64,20 +62,14 @@ public class MindfulnessSessionRecordTest {
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
-    @After
-    public void tearDown() throws InterruptedException {
-        TestUtils.verifyDeleteRecords(
-                SkinTemperatureRecord.class,
-                new TimeInstantRangeFilter.Builder()
-                        .setStartTime(Instant.EPOCH)
-                        .setEndTime(Instant.now())
-                        .build());
-        TestUtils.deleteAllStagedRemoteData();
-    }
-
     @Before
     public void setUp() throws InterruptedException {
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
+    }
+
+    @After
+    public void tearDown() throws InterruptedException {
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test

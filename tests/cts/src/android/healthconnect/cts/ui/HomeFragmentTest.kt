@@ -55,8 +55,7 @@ class HomeFragmentTest : HealthConnectBaseTest() {
                 return
             }
 
-            TestUtils.deleteAllStagedRemoteData()
-            TestUtils.deleteAllMedicalData()
+            TestUtils.deleteAllDataFromHealthConnect()
 
             val now = Instant.now().truncatedTo(ChronoUnit.MILLIS)
             APP_A_WITH_READ_WRITE_PERMS.insertRecords(
@@ -70,8 +69,7 @@ class HomeFragmentTest : HealthConnectBaseTest() {
             if (!DeviceSupportUtils.isHealthConnectFullySupported()) {
                 return
             }
-            TestUtils.deleteAllStagedRemoteData()
-            TestUtils.deleteAllMedicalData()
+            TestUtils.deleteAllDataFromHealthConnect()
         }
     }
 
