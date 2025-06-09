@@ -96,12 +96,18 @@ public class HeartRateRecordTest {
 
     @After
     public void tearDown() throws InterruptedException {
-        TestUtils.deleteAllDataFromHealthConnect();
+        TestUtils.verifyDeleteRecords(
+                HeartRateRecord.class,
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build());
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @Before
     public void setUp() throws InterruptedException {
-        TestUtils.deleteAllDataFromHealthConnect();
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @Test

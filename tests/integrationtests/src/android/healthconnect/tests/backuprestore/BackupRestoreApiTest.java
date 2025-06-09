@@ -16,14 +16,17 @@
 
 package android.healthconnect.tests.backuprestore;
 
-import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 import static android.os.ParcelFileDescriptor.MODE_READ_ONLY;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.app.UiAutomation;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.health.connect.DeleteUsingFiltersRequest;
+import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.BodyFatRecord;
@@ -43,7 +46,6 @@ import androidx.annotation.NonNull;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -57,6 +59,7 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /** Integration test for the backup-restore functionality of HealthConnect service. */
 @RunWith(AndroidJUnit4.class)
@@ -76,13 +79,6 @@ public class BackupRestoreApiTest {
     public void setUp() throws Exception {
         mContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         mService = mContext.getSystemService(HealthConnectManager.class);
-
-        deleteAllDataFromHealthConnect();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        deleteAllDataFromHealthConnect();
     }
 
     // This test uses a db created using DATABASE_VERSION 7 (Last bumped on 2023-03-17T17:23:29Z).
@@ -94,6 +90,10 @@ public class BackupRestoreApiTest {
     // using a newer version of HF module) and replacing the db in the app's resources.
     @Test
     public void testMergeStagedData_withEmptyHealthDb_mergesAllData() throws Exception {
+        // Step 0: reset everything as some tests leave stuff behind.
+        verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
+        deleteAllStagedRemoteData();
+
         List<BodyFatRecord> bodyFatRecordsRead = TestUtils.readAllRecords(BodyFatRecord.class);
         List<HeightRecord> heightRecordsRead = TestUtils.readAllRecords(HeightRecord.class);
 
@@ -138,6 +138,9 @@ public class BackupRestoreApiTest {
         for (var bodyFatRecordRead : bodyFatRecordsRead) {
             assertThat(bodyFats).contains(bodyFatRecordRead.getPercentage().getValue());
         }
+
+        verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
+        deleteAllStagedRemoteData();
     }
 
     private File getBackupDataDir() {
@@ -199,6 +202,38 @@ public class BackupRestoreApiTest {
             InstrumentationRegistry.getInstrumentation()
                     .getUiAutomation()
                     .dropShellPermissionIdentity();
+        }
+    }
+
+    public void verifyDeleteRecords(DeleteUsingFiltersRequest request) throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        try {
+            CountDownLatch latch = new CountDownLatch(1);
+            AtomicReference<HealthConnectException> exceptionAtomicReference =
+                    new AtomicReference<>();
+            assertThat(mService).isNotNull();
+            mService.deleteRecords(
+                    request,
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(Void result) {
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(HealthConnectException healthConnectException) {
+                            exceptionAtomicReference.set(healthConnectException);
+                            latch.countDown();
+                        }
+                    });
+            assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+            if (exceptionAtomicReference.get() != null) {
+                throw exceptionAtomicReference.get();
+            }
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
         }
     }
 }

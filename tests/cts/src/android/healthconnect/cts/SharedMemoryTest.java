@@ -16,7 +16,7 @@
 
 package android.healthconnect.cts;
 
-import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.testing.cts.TestUtils.insertRecordAndGetId;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.readAllRecords;
@@ -78,13 +78,13 @@ public class SharedMemoryTest {
                     "Tests should run on supported hardware only.");
 
     @Before
-    public void before() throws InterruptedException {
-        deleteAllDataFromHealthConnect();
+    public void before() {
+        deleteAllStagedRemoteData();
     }
 
     @After
-    public void after() throws InterruptedException {
-        deleteAllDataFromHealthConnect();
+    public void after() {
+        deleteAllStagedRemoteData();
     }
 
     @Test

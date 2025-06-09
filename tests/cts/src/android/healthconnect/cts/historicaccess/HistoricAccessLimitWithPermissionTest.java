@@ -18,7 +18,7 @@ package android.healthconnect.cts.historicaccess;
 
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.health.connect.datatypes.WeightRecord.WEIGHT_AVG;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
 import static android.healthconnect.testing.cts.TestUtils.getChangeLogToken;
 import static android.healthconnect.testing.cts.TestUtils.getChangeLogs;
@@ -79,12 +79,12 @@ public class HistoricAccessLimitWithPermissionTest {
 
     @Before
     public void setUp() throws InterruptedException {
-        deleteAllDataFromHealthConnect();
+        deleteAllStagedRemoteData();
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        deleteAllDataFromHealthConnect();
+        deleteAllStagedRemoteData();
     }
 
     @Test

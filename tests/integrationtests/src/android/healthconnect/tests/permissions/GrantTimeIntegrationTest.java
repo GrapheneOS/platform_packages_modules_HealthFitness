@@ -22,6 +22,7 @@ import static com.android.compatibility.common.util.SystemUtil.runWithShellPermi
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import android.Manifest;

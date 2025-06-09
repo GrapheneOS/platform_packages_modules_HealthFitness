@@ -90,7 +90,7 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
         assertThat(getGrantedHealthPermissions(APP_WITH_READ_WRITE_PERMISSIONS))
             .containsAtLeastElementsIn(permissions)
 
-        TestUtils.deleteAllDataFromHealthConnect()
+        TestUtils.deleteAllStagedRemoteData()
 
         val record = createRecord()
 
@@ -102,7 +102,7 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
 
     @After
     fun tearDown() {
-        TestUtils.deleteAllDataFromHealthConnect()
+        TestUtils.deleteAllStagedRemoteData()
         permissions.forEach {
             grantPermissionViaPackageManager(context, APP_WITH_READ_WRITE_PERMISSIONS, it)
             assertPermissionGranted(it, APP_WITH_READ_WRITE_PERMISSIONS)

@@ -109,12 +109,18 @@ public class StepsRecordTest {
 
     @Before
     public void setUp() throws InterruptedException {
-        TestUtils.deleteAllDataFromHealthConnect();
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        TestUtils.deleteAllDataFromHealthConnect();
+        verifyDeleteRecords(
+                StepsRecord.class,
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                        .build());
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @Test

@@ -88,12 +88,17 @@ public class ExerciseDurationAggregationTest {
                         .addAggregationType(EXERCISE_DURATION_TOTAL)
                         .build();
 
-        TestUtils.deleteAllDataFromHealthConnect();
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        TestUtils.deleteAllDataFromHealthConnect();
+        TestUtils.verifyDeleteRecords(
+                ExerciseSessionRecord.class,
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build());
     }
 
     @Test
