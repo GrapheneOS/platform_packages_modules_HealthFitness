@@ -93,6 +93,9 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @After
     public void tearDown() throws Exception {
+        if (!isHardwareSupported(getDevice())) {
+            return;
+        }
         // TODO(b/313055175): Do not disable rate limiting once b/300238889 is resolved.
         HostSideTestUtil.restoreRateLimitingFeatureFlag(getDevice());
         ConfigUtils.removeConfig(getDevice());
