@@ -31,7 +31,7 @@ import static android.health.connect.datatypes.SpeedRecord.SPEED_AVG;
 import static android.health.connect.datatypes.SpeedRecord.SPEED_MAX;
 import static android.health.connect.datatypes.SpeedRecord.SPEED_MIN;
 import static android.healthconnect.cts.aggregation.Utils.assertDoubleWithTolerance;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
@@ -83,13 +83,13 @@ public class SeriesAggregationTest {
 
     @Before
     public void setUp() throws InterruptedException {
-        deleteAllStagedRemoteData();
+        deleteAllDataFromHealthConnect();
         setupAggregation(mPackageName, ACTIVITY);
     }
 
     @After
-    public void tearDown() {
-        deleteAllStagedRemoteData();
+    public void tearDown() throws InterruptedException {
+        deleteAllDataFromHealthConnect();
     }
 
     @Test

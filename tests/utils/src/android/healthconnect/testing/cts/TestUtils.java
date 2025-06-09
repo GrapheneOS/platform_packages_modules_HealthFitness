@@ -474,9 +474,12 @@ public final class TestUtils {
      * HealthConnectManager#deleteAllStagedRemoteData()}.
      */
     public static void deleteAllDataFromHealthConnect() throws InterruptedException {
+        // Call this first since this resets migration and B&R states, which can otherwise block
+        // the other API calls.
+        deleteAllStagedRemoteData();
+
         deleteAllFitnessData();
         deleteAllMedicalData();
-        deleteAllStagedRemoteData();
     }
 
     /** Delete all fitness records stored in the Health Connect database. */
