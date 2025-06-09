@@ -19,6 +19,9 @@ package com.android.server.healthconnect.onboarding;
 import static android.health.connect.HealthConnectManager.ACTION_SYNC_MORE_APPS;
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_HIDE;
 
+import static com.android.server.healthconnect.logging.NotificationStatsLogger.ACTION_NOTIFICATION_CLICKED;
+import static com.android.server.healthconnect.logging.NotificationStatsLogger.ACTION_NOTIFICATION_DISMISSED;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +33,7 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.modules.utils.BackgroundThread;
+import com.android.server.healthconnect.logging.NotificationStatsLogger;
 
 /**
  * Receiver class for onboarding notification clicked or dismissed events.
@@ -58,6 +62,12 @@ public final class HealthConnectOnboardingReceiver extends BroadcastReceiver {
     private static final String TAG = "HealthConnectOnboardingReceiver";
     private static final IntentFilter sPackageFilter = buildPackageChangeFilter();
 
+    private final NotificationStatsLogger mNotificationStatsLogger;
+
+    public HealthConnectOnboardingReceiver(NotificationStatsLogger notificationStatsLogger) {
+        mNotificationStatsLogger = notificationStatsLogger;
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if (!Flags.onboarding()) {
@@ -74,11 +84,11 @@ public final class HealthConnectOnboardingReceiver extends BroadcastReceiver {
                 intent.getIntExtra(EXTRA_ONBOARDING_STATE, ONBOARDING_BANNER_STATE_HIDE);
         if (action.equals(ACTION_ONBOARDING_NOTIFICATION_DISMISSED)) {
             Slog.d(TAG, "Onboarding notification dismissed, onboarding state: " + onboardingState);
-            // TODO(b/417206526): Add logging - notification dismissed (with extra)
+            mNotificationStatsLogger.logAction(onboardingState, ACTION_NOTIFICATION_DISMISSED);
         } else if (action.equals(ACTION_ONBOARDING_NOTIFICATION_CLICKED)) {
             Slog.d(TAG, "Onboarding notification clicked, onboarding state: " + onboardingState);
             context.startActivity(getIntentForOnboardingFlow(context));
-            // TODO(b/417206526): Add logging - notification clicked (with extra)
+            mNotificationStatsLogger.logAction(onboardingState, ACTION_NOTIFICATION_CLICKED);
         }
     }
 

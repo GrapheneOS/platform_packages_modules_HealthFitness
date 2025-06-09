@@ -17,9 +17,16 @@
 package com.android.server.healthconnect.onboarding;
 
 import static android.health.connect.HealthConnectManager.ACTION_SYNC_MORE_APPS;
+import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
+import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
+import static com.android.server.healthconnect.logging.NotificationStatsLogger.ACTION_NOTIFICATION_CLICKED;
+import static com.android.server.healthconnect.logging.NotificationStatsLogger.ACTION_NOTIFICATION_DISMISSED;
+import static com.android.server.healthconnect.logging.NotificationStatsTestUtils.verifyEventLogged;
 import static com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver.ACTION_ONBOARDING_NOTIFICATION_CLICKED;
+import static com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver.ACTION_ONBOARDING_NOTIFICATION_DISMISSED;
+import static com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver.EXTRA_ONBOARDING_STATE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -33,11 +40,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.health.connect.HealthConnectOnboardingState;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.android.server.healthconnect.logging.NotificationStatsLogger;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -56,13 +66,14 @@ public class HealthConnectOnboardingReceiverTest {
 
     @Mock private Context mContext;
     @Mock private PackageManager mPackageManager;
+    @Mock private NotificationStatsLogger mNotificationStatsLogger;
     @Captor ArgumentCaptor<Intent> mIntentArgumentCaptor;
 
     private HealthConnectOnboardingReceiver mOnboardingReceiver;
 
     @Before
     public void setUp() {
-        mOnboardingReceiver = new HealthConnectOnboardingReceiver();
+        mOnboardingReceiver = new HealthConnectOnboardingReceiver(mNotificationStatsLogger);
         when(mPackageManager.resolveActivity(any(), anyInt())).thenReturn(new ResolveInfo());
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
     }
@@ -85,5 +96,29 @@ public class HealthConnectOnboardingReceiverTest {
         mOnboardingReceiver.onReceive(mContext, new Intent(ACTION_ONBOARDING_NOTIFICATION_CLICKED));
 
         verify(mContext, never()).startActivity(any());
+    }
+
+    @Test
+    @EnableFlags(FLAG_ONBOARDING)
+    public void onReceive_notificationClickedIntent_logged() {
+        @HealthConnectOnboardingState.OnboardingState
+        int onboardingState = ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
+        Intent intent = new Intent(ACTION_ONBOARDING_NOTIFICATION_CLICKED);
+        intent.putExtra(EXTRA_ONBOARDING_STATE, onboardingState);
+        mOnboardingReceiver.onReceive(mContext, intent);
+
+        verifyEventLogged(mNotificationStatsLogger, onboardingState, ACTION_NOTIFICATION_CLICKED);
+    }
+
+    @Test
+    @EnableFlags(FLAG_ONBOARDING)
+    public void onReceive_notificationDismissedIntent_logged() {
+        @HealthConnectOnboardingState.OnboardingState
+        int onboardingState = ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
+        Intent intent = new Intent(ACTION_ONBOARDING_NOTIFICATION_DISMISSED);
+        intent.putExtra(EXTRA_ONBOARDING_STATE, onboardingState);
+        mOnboardingReceiver.onReceive(mContext, intent);
+
+        verifyEventLogged(mNotificationStatsLogger, onboardingState, ACTION_NOTIFICATION_DISMISSED);
     }
 }

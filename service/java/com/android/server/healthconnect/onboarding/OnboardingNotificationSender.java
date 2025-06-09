@@ -24,6 +24,7 @@ import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
 
+import static com.android.server.healthconnect.logging.NotificationStatsLogger.ACTION_NOTIFICATION_SENT;
 import static com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver.ACTION_ONBOARDING_NOTIFICATION_CLICKED;
 import static com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver.ACTION_ONBOARDING_NOTIFICATION_DISMISSED;
 import static com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver.EXTRA_ONBOARDING_STATE;
@@ -40,6 +41,7 @@ import android.os.UserHandle;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.logging.NotificationStatsLogger;
 import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.notifications.NotificationUtils;
@@ -78,6 +80,7 @@ public final class OnboardingNotificationSender {
     private final HealthConnectResourcesContext mResContext;
     private final NotificationUtils mNotificationUtils;
     private final OnboardingNotificationStateManager mNotificationStateManager;
+    private final NotificationStatsLogger mNotificationStatsLogger;
 
     // TODO(b/414949807): Move to NotificationUtils
     private Optional<Icon> mAppIcon = Optional.empty();
@@ -86,11 +89,13 @@ public final class OnboardingNotificationSender {
     public OnboardingNotificationSender(
             Context context,
             HealthConnectResourcesContext resContext,
-            OnboardingNotificationStateManager notificationStateManager) {
+            OnboardingNotificationStateManager notificationStateManager,
+            NotificationStatsLogger notificationStatsLogger) {
         mContext = context;
         mResContext = resContext;
         mNotificationUtils = new NotificationUtils(context, NOTIFICATION_CHANNEL_ID);
         mNotificationStateManager = notificationStateManager;
+        mNotificationStatsLogger = notificationStatsLogger;
         mHealthConnectNotificationSender =
                 new HealthConnectNotificationSender.Builder()
                         .setContext(context)
@@ -116,7 +121,8 @@ public final class OnboardingNotificationSender {
         sendNotification(
                 userHandle,
                 createNoAppConnectedNotification(),
-                SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION);
+                SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION,
+                ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
     }
 
     /** Sends a notification for onboarding scenario where there's one app connected to HC. */
@@ -124,16 +130,21 @@ public final class OnboardingNotificationSender {
         sendNotification(
                 userHandle,
                 createOneAppConnectedNotification(),
-                SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION);
+                SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION,
+                ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED);
     }
 
-    private void sendNotification(UserHandle userHandle, Notification notification, int flag) {
+    private void sendNotification(
+            UserHandle userHandle,
+            Notification notification,
+            int flag,
+            @HealthConnectOnboardingState.OnboardingState int onboardingState) {
         if (!Flags.onboardingNotification()) {
             return;
         }
         if (mHealthConnectNotificationSender.sendNotificationAsUser(notification, userHandle)) {
             mNotificationStateManager.unsetFlags(flag);
-            // TODO(b/417206526): Add logging - notification sent
+            mNotificationStatsLogger.logAction(onboardingState, ACTION_NOTIFICATION_SENT);
         }
     }
 

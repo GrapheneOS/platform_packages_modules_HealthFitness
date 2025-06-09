@@ -744,9 +744,6 @@ public class HealthConnectManagerTest {
                                 mManager.stageAllHealthConnectRemoteData(
                                         pfdsByFileName, executor, receiver),
                         STAGE_HEALTH_CONNECT_REMOTE_DATA);
-
-        // Cleanup the staged data.
-        deleteAllStagedRemoteData();
     }
 
     @Test

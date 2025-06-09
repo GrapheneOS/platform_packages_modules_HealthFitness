@@ -139,8 +139,6 @@ public class HealthConnectWithManagePermissionsTest {
 
     @After
     public void tearDown() throws InterruptedException {
-        // Call this first so that we clear migration status, before calling delete record APIs.
-        deleteAllStagedRemoteData();
         deleteAllDataFromHealthConnect();
     }
 
