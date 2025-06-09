@@ -411,18 +411,18 @@ android_test {
 filegroup {
     name: "robo-ui-tests-sources-exclude",
     srcs: [
-        // Uses org.mockito.kotlin.mock() to mock a Hilt Singleton class HealthConnectLogger
-        // for some reason Mockito won't mock it in robolectric mode
+        // TODO: b/419191898 - Update this to get as many Controller tests bivalent as possible
+        // This uses UiDevice to set animation settings, exclude for now
+        "src/com/android/healthconnect/controller/tests/utils/AnimationUtils.kt",
+        "src/com/android/healthconnect/controller/tests/data/access/AccessFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/data/rawfhir/RawFhirFragmentTest.kt",
+        // Unable to resolve target for intent:
+        // com.android.healthconnect.controller/.tests.TestActivity
+        // Possibly we should be using a different "InstrumentationFor"
         "src/com/android/healthconnect/controller/tests/units/UnitsFragmentTest.kt",
         // It seems like Localization data (specifically WeekFields) are not fetched correctly
         // under robolectric.
         "src/com/android/healthconnect/controller/tests/utiltests/TimeUtilsTest.kt",
-        // Uses UserSettings from compatibility util. This shell command to set user settings,
-        // and waits for callback, which doesn't work under robolectric.
-        "src/com/android/healthconnect/controller/tests/utiltests/LocalDateTimeFormatterTest.kt",
-        // Get app name ends up using HealthConnectManager via AppInfoReader which is not mocked
-        // properly yet
-        "src/com/android/healthconnect/controller/tests/data/formatters/HealthDataEntryFormatterTest.kt",
     ],
     path: "src",
 }
@@ -434,8 +434,10 @@ android_robolectric_test {
     name: "HealthConnectControllerRoboUITests",
     sdk_version: "module_current",
     srcs: [
+        // TODO: b/419191898 - Update this to get as many Controller tests bivalent as possible
         "src/com/android/healthconnect/controller/tests/TestActivity.kt",
         "src/com/android/healthconnect/controller/tests/data/formatters/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/data/rawfhir/**/*.kt",
         "src/com/android/healthconnect/controller/tests/units/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utils/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utiltests/**/*.kt",
@@ -470,13 +472,14 @@ android_robolectric_test {
         "hilt_android_testing",
         "kotlinx_coroutines_test",
         // test dependencies
+        "androidx.navigation_navigation-testing",
         "androidx.test.espresso.contrib",
         "androidx.test.espresso.intents",
         "androidx.test.espresso.core",
         "androidx.test.ext.junit",
         "androidx.test.ext.truth",
         "androidx.test.rules",
-        "compatibility-device-util-axt",
+        "flag-junit",
     ],
     java_resource_dirs: ["config"],
     instrumentation_for: "HealthConnectController",

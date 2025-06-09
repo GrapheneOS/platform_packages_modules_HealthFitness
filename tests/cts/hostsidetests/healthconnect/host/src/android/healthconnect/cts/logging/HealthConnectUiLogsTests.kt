@@ -77,6 +77,9 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
 
     @Throws(Exception::class)
     override fun tearDown() {
+        if (!isHardwareSupported(device)) {
+            return
+        }
         ConfigUtils.removeConfig(device)
         ReportUtils.clearReports(device)
         // TODO(b/313055175): Do not disable rate limiting once b/300238889 is resolved.
