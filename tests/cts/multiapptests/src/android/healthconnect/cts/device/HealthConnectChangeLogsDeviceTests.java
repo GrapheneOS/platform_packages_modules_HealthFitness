@@ -39,7 +39,7 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.StepsRecord;
-import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
+import android.healthconnect.testing.cts.PhrCtsTestUtils;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;

@@ -32,10 +32,10 @@ android_test {
         "framework-healthfitness.impl",
     ],
     static_libs: [
+        "androidx.test.ext.truth",
         "androidx.test.rules",
         "compatibility-device-util-axt",
-        "androidx.test.ext.truth",
-        "cts-healthconnect-phr-lib",
+        "healthfitness-testing-cts",
     ],
     srcs: [
         "src/android/healthconnect/tests/backuprestore/*.java",
@@ -107,7 +107,6 @@ android_test {
         "androidx.test.rules",
         "compatibility-device-util-axt",
         "androidx.test.ext.truth",
-        "cts-healthconnect-phr-lib",
         "healthconnect-documentprovider-utils",
         "healthfitness-aconfig-flags-lib",
         "healthfitness-testing-cts",

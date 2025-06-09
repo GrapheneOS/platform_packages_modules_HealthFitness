@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.phr.utils;
+package android.healthconnect.testing.cts;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
@@ -63,7 +63,6 @@ import android.health.connect.ReadMedicalResourcesResponse;
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
-import android.healthconnect.testing.cts.HealthConnectReceiver;
 import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
 import android.os.OutcomeReceiver;
 import android.util.Log;

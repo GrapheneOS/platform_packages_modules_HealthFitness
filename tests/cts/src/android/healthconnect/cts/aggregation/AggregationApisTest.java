@@ -25,10 +25,6 @@ import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.health.connect.datatypes.WeightRecord.WEIGHT_AVG;
 import static android.health.connect.datatypes.WeightRecord.WEIGHT_MAX;
 import static android.health.connect.datatypes.WeightRecord.WEIGHT_MIN;
-import static android.healthconnect.cts.aggregation.Utils.assertDoubleWithTolerance;
-import static android.healthconnect.cts.aggregation.Utils.assertEnergyWithTolerance;
-import static android.healthconnect.cts.aggregation.Utils.assertLengthWithTolerance;
-import static android.healthconnect.cts.aggregation.Utils.assertMassWithTolerance;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGroupByDuration;
@@ -40,7 +36,11 @@ import static android.healthconnect.testing.shared.DataFactory.getDistanceRecord
 import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.DataFactory.getWeightRecord;
-import static android.healthconnect.testing.shared.aggregation.TimeFilterFactory.getTimeFilter;
+import static android.healthconnect.testing.shared.TimeFilterFactory.getTimeFilter;
+import static android.healthconnect.testing.shared.UnitUtils.assertDoubleWithTolerance;
+import static android.healthconnect.testing.shared.UnitUtils.assertEnergyWithTolerance;
+import static android.healthconnect.testing.shared.UnitUtils.assertLengthWithTolerance;
+import static android.healthconnect.testing.shared.UnitUtils.assertMassWithTolerance;
 
 import static com.google.common.truth.Truth.assertThat;
 
