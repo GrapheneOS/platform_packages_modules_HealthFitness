@@ -69,15 +69,15 @@ public class ReadByFilterTests {
                     "Tests should run on supported hardware only.");
 
     @Before
-    public void setup() {
+    public void setup() throws InterruptedException {
         mContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         mTestApp = TestAppProxy.forPackageName(PKG_TEST_APP);
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @After
-    public void tearDown() {
-        TestUtils.deleteAllStagedRemoteData();
+    public void tearDown() throws InterruptedException {
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test

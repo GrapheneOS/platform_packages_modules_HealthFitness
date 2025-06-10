@@ -121,9 +121,8 @@ public class ReadMedicalResourcesByIdsCtsTest {
                 PHR_BACKGROUND_APP.getPackageName(), "to test specific permissions");
         revokeAllHealthPermissions(
                 PHR_FOREGROUND_APP.getPackageName(), "to test specific permissions");
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
         mUtil = new PhrCtsTestUtils(TestUtils.getHealthConnectManager());
-        mUtil.deleteAllMedicalData();
         mManager = TestUtils.getHealthConnectManager();
         if (TestUtils.setLowerRateLimitsForTesting(true)) {
             mUtil.mLimitsAdjustmentForTesting = 10;
@@ -132,7 +131,7 @@ public class ReadMedicalResourcesByIdsCtsTest {
 
     @After
     public void after() throws InterruptedException {
-        mUtil.deleteAllMedicalData();
+        TestUtils.deleteAllDataFromHealthConnect();
         TestUtils.setLowerRateLimitsForTesting(false);
     }
 

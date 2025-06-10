@@ -178,15 +178,15 @@ public class DataMigrationTest {
                     "Tests should run on supported hardware only.");
 
     @Before
-    public void setUp() {
+    public void setUp() throws InterruptedException {
         mTargetContext = InstrumentationRegistry.getTargetContext();
         mManager = mTargetContext.getSystemService(HealthConnectManager.class);
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @After
-    public void tearDown() {
-        TestUtils.deleteAllStagedRemoteData();
+    public void tearDown() throws InterruptedException {
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test

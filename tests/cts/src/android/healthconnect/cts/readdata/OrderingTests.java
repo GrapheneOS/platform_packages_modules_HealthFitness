@@ -55,13 +55,13 @@ public class OrderingTests {
                     "Tests should run on supported hardware only.");
 
     @Before
-    public void setup() {
-        TestUtils.deleteAllStagedRemoteData();
+    public void setup() throws InterruptedException {
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @After
-    public void tearDown() {
-        TestUtils.deleteAllStagedRemoteData();
+    public void tearDown() throws InterruptedException {
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test
