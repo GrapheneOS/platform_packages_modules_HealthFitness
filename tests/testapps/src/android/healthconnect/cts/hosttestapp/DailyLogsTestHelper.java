@@ -29,7 +29,7 @@ import static com.google.common.truth.Truth.assertThat;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
-import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
+import android.healthconnect.testing.cts.PhrCtsTestUtils;
 import android.healthconnect.testing.cts.TestUtils;
 
 import androidx.test.InstrumentationRegistry;

@@ -55,7 +55,7 @@ import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.PlannedExerciseSessionRecord;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.units.Energy;
-import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
+import android.healthconnect.testing.cts.PhrCtsTestUtils;
 import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.ParcelFileDescriptor;

@@ -37,9 +37,9 @@ import static android.healthconnect.testing.shared.DataFactory.getDistanceRecord
 import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.DataFactory.getWeightRecord;
-import static android.healthconnect.testing.shared.aggregation.TimeFilterFactory.getOpenEndTimeFilter;
-import static android.healthconnect.testing.shared.aggregation.TimeFilterFactory.getOpenStartTimeFilter;
-import static android.healthconnect.testing.shared.aggregation.TimeFilterFactory.getTimeFilter;
+import static android.healthconnect.testing.shared.TimeFilterFactory.getOpenEndTimeFilter;
+import static android.healthconnect.testing.shared.TimeFilterFactory.getOpenStartTimeFilter;
+import static android.healthconnect.testing.shared.TimeFilterFactory.getTimeFilter;
 
 import static com.google.common.truth.Truth.assertThat;
 

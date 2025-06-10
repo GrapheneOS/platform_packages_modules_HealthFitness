@@ -108,7 +108,7 @@ android_test_helper_app {
     ],
     static_libs: [
         "ctstestrunner-axt",
-        "cts-healthconnect-phr-lib",
+        "healthfitness-testing-cts",
         "healthfitness-testing-testapp",
     ],
     libs: ["junit"],

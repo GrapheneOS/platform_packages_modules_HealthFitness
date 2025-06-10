@@ -30,13 +30,13 @@ import static android.health.connect.datatypes.PowerRecord.POWER_MIN;
 import static android.health.connect.datatypes.SpeedRecord.SPEED_AVG;
 import static android.health.connect.datatypes.SpeedRecord.SPEED_MAX;
 import static android.health.connect.datatypes.SpeedRecord.SPEED_MIN;
-import static android.healthconnect.cts.aggregation.Utils.assertDoubleWithTolerance;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
 import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
-import static android.healthconnect.testing.shared.aggregation.TimeFilterFactory.getTimeFilter;
+import static android.healthconnect.testing.shared.TimeFilterFactory.getTimeFilter;
+import static android.healthconnect.testing.shared.UnitUtils.assertDoubleWithTolerance;
 
 import static com.google.common.truth.Truth.assertThat;
 
