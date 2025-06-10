@@ -32,6 +32,7 @@
 package com.android.healthconnect.controller.tests.data.entrydetails
 
 import android.content.Context
+import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.ExerciseCompletionGoal
 import android.health.connect.datatypes.ExercisePerformanceGoal
 import android.health.connect.datatypes.ExerciseRoute
@@ -74,6 +75,11 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.PLANNED_EXERCISE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.SKIN_TEMPERATURE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.SLEEP
+import com.android.healthconnect.controller.service.HealthManagerModule
+import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TestData.WARSAW_ROUTE
 import com.android.healthconnect.controller.tests.utils.getPlannedExerciseBlock
 import com.android.healthconnect.controller.tests.utils.getPlannedExerciseStep
@@ -85,36 +91,50 @@ import com.android.healthconnect.controller.utils.logging.PageName
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.atMost
+import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
+@UninstallModules(HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
 class DataEntryDetailsFragmentTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    @BindValue
-    val viewModel: DataEntryDetailsViewModel = mock(DataEntryDetailsViewModel::class.java)
+    @BindValue val appInfoReader: AppInfoReader = mock()
+    @BindValue val viewModel: DataEntryDetailsViewModel = mock()
+    @BindValue val healthConnectManager: HealthConnectManager = mock()
     private lateinit var context: Context
 
-    @BindValue val healthConnectLogger: HealthConnectLogger = org.mockito.kotlin.mock()
+    @BindValue val healthConnectLogger: HealthConnectLogger = mock()
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
+        whenever(appInfoReader.getAppMetadata(any(), any()))
+            .thenReturn(
+                AppMetadata(
+                    packageName = TEST_APP_PACKAGE_NAME,
+                    appName = TEST_APP_NAME,
+                    icon = null,
+                    isSystem = false,
+                )
+            )
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.UK)
