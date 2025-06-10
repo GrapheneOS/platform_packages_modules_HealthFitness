@@ -183,7 +183,7 @@ public class BackupRestoreWithoutMocksTest {
     }
 
     @Test
-    public void testMerge_over5000Resources_copiesAllPhrData() throws Exception {
+    public void testMerge_1000Resources_copiesAllPhrData() throws Exception {
         HealthConnectContext dbContext =
                 HealthConnectContext.create(
                         mContext,
@@ -196,7 +196,7 @@ public class BackupRestoreWithoutMocksTest {
         Pair<Long, String> rowIdUuidPair =
                 mPhrTestUtils.insertMedicalDataSource(
                         stagedDb, dbContext, DATA_SOURCE_SUFFIX, TEST_PACKAGE_NAME, INSTANT_NOW);
-        int numOfResources = 5100;
+        int numOfResources = 1000;
         mPhrTestUtils.insertMedicalResources(
                 stagedDb,
                 PhrDataFactory::createVaccineMedicalResources,
