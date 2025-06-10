@@ -64,7 +64,7 @@
     <string name="manage_permissions" msgid="8394221950712608160">"ნებართვების მართვა"</string>
     <string name="recent_access_time_content_descritption" msgid="1137471676075811472">"დრო: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
     <string name="recent_access_empty_state_title" msgid="4767157641389217682">"ბოლოდროინდელი წვდომა არ არის"</string>
-    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"აპები, რომლებსაც ახლახან ჰქონდათ წვდომა თქვენს მონაცემებზე, ავტომატურად გამოჩნდება აქ"</string>
+    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"აპები, რომლებსაც ახლახან ჰქონდა წვდომა თქვენს მონაცემებზე, ავტომატურად გამოჩნდება აქ"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"ყველას ნახვა"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"ბოლო წვდომის ჩატვირთვა ვერ მოხერხდა"</string>
     <string name="recent_access_inactive_app" msgid="8754221676902025802">"ეს აპი აღარ არის ხელმისაწვდომი"</string>
