@@ -38,6 +38,7 @@ import android.content.Intent;
 import android.graphics.drawable.Icon;
 import android.health.connect.HealthConnectOnboardingState;
 import android.os.UserHandle;
+import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
@@ -75,6 +76,7 @@ public final class OnboardingNotificationSender {
     // TODO(b/414949807): Move to a central place
     private static final int FIXED_NOTIFICATION_ID = 9878;
     private static final String NOTIFICATION_TAG = "HcOnboardingTag";
+    private static final String TAG = "OnboardingNotificationSender";
 
     private final Context mContext;
     private final HealthConnectResourcesContext mResContext;
@@ -140,6 +142,7 @@ public final class OnboardingNotificationSender {
             int flag,
             @HealthConnectOnboardingState.OnboardingState int onboardingState) {
         if (!Flags.onboardingNotification()) {
+            Slog.d(TAG, "Onboarding notification flag disabled");
             return;
         }
         if (mHealthConnectNotificationSender.sendNotificationAsUser(notification, userHandle)) {
