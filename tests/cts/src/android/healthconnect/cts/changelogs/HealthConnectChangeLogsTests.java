@@ -78,7 +78,7 @@ import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
-import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
+import android.healthconnect.testing.cts.PhrCtsTestUtils;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;

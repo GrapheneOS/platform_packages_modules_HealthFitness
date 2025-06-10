@@ -72,13 +72,7 @@ public class HeartRateVariabilityRmssdRecordTest {
 
     @After
     public void tearDown() throws InterruptedException {
-        TestUtils.verifyDeleteRecords(
-                HeartRateVariabilityRmssdRecord.class,
-                new TimeInstantRangeFilter.Builder()
-                        .setStartTime(Instant.EPOCH)
-                        .setEndTime(Instant.now())
-                        .build());
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test

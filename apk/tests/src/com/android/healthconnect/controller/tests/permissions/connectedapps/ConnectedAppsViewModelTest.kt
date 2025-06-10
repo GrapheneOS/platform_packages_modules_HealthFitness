@@ -186,4 +186,32 @@ class ConnectedAppsViewModelTest {
 
         verify(deleteAllDataUseCase).invoke()
     }
+
+    @Test
+    fun loadConnectedApps_filtersOutDeviceDataProviderPackage() = runTest {
+        (loadHealthPermissionApps as FakeHealthPermissionAppsUseCase).updateList(
+            listOf(
+                ConnectedAppMetadata(TEST_APP, status = ConnectedAppStatus.ALLOWED),
+                ConnectedAppMetadata(
+                    TEST_APP_2.copy(packageName = "android"),
+                    status = ConnectedAppStatus.DENIED,
+                ),
+                ConnectedAppMetadata(OLD_TEST_APP, status = ConnectedAppStatus.NEEDS_UPDATE),
+            )
+        )
+        val testObserver = TestObserver<List<ConnectedAppMetadata>>()
+        viewModel.connectedApps.observeForever(testObserver)
+        viewModel.loadConnectedApps()
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual)
+            .containsExactlyElementsIn(
+                listOf(
+                    ConnectedAppMetadata(TEST_APP, status = ConnectedAppStatus.ALLOWED),
+                    ConnectedAppMetadata(OLD_TEST_APP, status = ConnectedAppStatus.NEEDS_UPDATE),
+                )
+            )
+        assertThat(actual.any { it.appMetadata.packageName == "android" }).isFalse()
+    }
 }

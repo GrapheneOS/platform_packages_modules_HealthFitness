@@ -50,13 +50,13 @@ class AppEntriesFragmentTest : HealthConnectBaseTest() {
 
     @Before
     fun setup() {
-        TestUtils.deleteAllStagedRemoteData()
+        TestUtils.deleteAllDataFromHealthConnect()
         insertData()
     }
 
     @After
     fun tearDown() {
-        TestUtils.deleteAllStagedRemoteData()
+        TestUtils.deleteAllDataFromHealthConnect()
     }
 
     companion object {

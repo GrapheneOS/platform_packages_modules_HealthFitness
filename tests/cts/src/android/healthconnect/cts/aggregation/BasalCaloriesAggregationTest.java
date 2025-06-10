@@ -17,7 +17,6 @@
 package android.healthconnect.cts.aggregation;
 
 import static android.health.connect.datatypes.BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL;
-import static android.healthconnect.cts.aggregation.Utils.assertEnergyWithTolerance;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGroupByDuration;
@@ -27,6 +26,7 @@ import static android.healthconnect.testing.shared.DataFactory.getBasalMetabolic
 import static android.healthconnect.testing.shared.DataFactory.getBaseHeightRecord;
 import static android.healthconnect.testing.shared.DataFactory.getBaseLeanBodyMassRecord;
 import static android.healthconnect.testing.shared.DataFactory.getBaseWeightRecord;
+import static android.healthconnect.testing.shared.UnitUtils.assertEnergyWithTolerance;
 
 import static com.google.common.truth.Truth.assertThat;
 

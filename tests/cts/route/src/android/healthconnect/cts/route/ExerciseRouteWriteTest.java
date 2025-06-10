@@ -25,7 +25,7 @@ import static android.healthconnect.cts.route.ExerciseRouteTestHelper.getExercis
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.getRoute;
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.readAllExerciseSessionRecordsPrivileged;
 import static android.healthconnect.testing.cts.TestUtils.connectAppsWithGrantedPermissions;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.updateRecords;
 import static android.healthconnect.testing.cts.TestUtils.yesterdayAt;
@@ -65,7 +65,7 @@ public class ExerciseRouteWriteTest {
 
     @After
     public void tearDown() throws InterruptedException {
-        deleteAllStagedRemoteData();
+        deleteAllDataFromHealthConnect();
     }
 
     @Test

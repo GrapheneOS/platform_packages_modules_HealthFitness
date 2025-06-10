@@ -82,18 +82,12 @@ public class CyclingPedalingCadenceRecordTest {
 
     @Before
     public void setUp() throws InterruptedException {
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        TestUtils.verifyDeleteRecords(
-                CyclingPedalingCadenceRecord.class,
-                new TimeInstantRangeFilter.Builder()
-                        .setStartTime(Instant.EPOCH)
-                        .setEndTime(Instant.now())
-                        .build());
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test

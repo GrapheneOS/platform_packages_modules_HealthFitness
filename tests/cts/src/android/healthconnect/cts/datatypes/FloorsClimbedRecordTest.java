@@ -79,13 +79,7 @@ public class FloorsClimbedRecordTest {
 
     @After
     public void tearDown() throws InterruptedException {
-        TestUtils.verifyDeleteRecords(
-                FloorsClimbedRecord.class,
-                new TimeInstantRangeFilter.Builder()
-                        .setStartTime(Instant.EPOCH)
-                        .setEndTime(Instant.now())
-                        .build());
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test

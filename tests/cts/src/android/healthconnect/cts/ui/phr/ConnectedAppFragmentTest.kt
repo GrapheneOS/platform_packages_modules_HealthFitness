@@ -33,7 +33,7 @@ class ConnectedAppFragmentTest : HealthConnectBaseTest() {
 
     @Before
     fun setup() {
-        TestUtils.deleteAllStagedRemoteData()
+        TestUtils.deleteAllDataFromHealthConnect()
     }
 
     @Test

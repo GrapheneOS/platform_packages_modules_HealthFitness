@@ -16,7 +16,7 @@
 
 package android.healthconnect.cts.nopermission;
 
-import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.permission.flags.Flags.FLAG_HEALTH_CONNECT_BACKUP_RESTORE_PERMISSION_ENABLED;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
@@ -72,14 +72,14 @@ public class CloudBackupRestoreNoPermissionsGrantedTest {
     private HealthConnectManager mManager;
 
     @Before
-    public void setup() {
-        deleteAllStagedRemoteData();
+    public void setup() throws InterruptedException {
+        deleteAllDataFromHealthConnect();
         mManager = TestUtils.getHealthConnectManager();
     }
 
     @After
-    public void teardown() {
-        deleteAllStagedRemoteData();
+    public void teardown() throws InterruptedException {
+        deleteAllDataFromHealthConnect();
     }
 
     @Test

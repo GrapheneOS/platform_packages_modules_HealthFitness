@@ -22,6 +22,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission.Me
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
@@ -76,10 +77,13 @@ constructor(
                     }
                 }
                 // Apps that are inactive: can no longer READ or WRITE, but still have data in
-                // Health
-                // Connect.
+                // Health Connect.
                 contributingApps.forEach { app ->
-                    if (!readOrWriteAppPackageNameSet.contains(app.packageName)) {
+                    if (
+                        !readOrWriteAppPackageNameSet.contains(app.packageName) &&
+                            // Permissions are irrelevant to the device data provider package.
+                            app.packageName != Constants.DEVICE_DATA_PROVIDER_PACKAGE
+                    ) {
                         // Inactive apps don't navigate to appInfoScreen hence no need to specify
                         // appPermissionsType.
                         val appAccessMetadata = AppAccessMetadata(appMetadata = app)

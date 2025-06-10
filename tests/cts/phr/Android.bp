@@ -48,7 +48,7 @@ android_test {
         "testng",
         "flag-junit",
         "healthfitness-aconfig-flags-lib",
-        "cts-healthconnect-phr-lib",
+        "healthfitness-testing-cts",
     ],
     target_sdk_version: "34",
     min_sdk_version: "34",
@@ -58,21 +58,6 @@ android_test {
         ":CtsPhrTestHelperApp2",
     ],
     jarjar_rules: ":health-cts-jarjar-rules",
-}
-
-java_library {
-    name: "cts-healthconnect-phr-lib",
-    srcs: [
-        "src/android/healthconnect/cts/phr/utils/*.java",
-    ],
-    static_libs: [
-        "androidx.appcompat_appcompat",
-        "androidx.test.rules",
-        "platform-test-annotations",
-        "healthfitness-testing-cts",
-        "healthfitness-testing-testapp",
-    ],
-    sdk_version: "test_current",
 }
 
 android_test_helper_app {

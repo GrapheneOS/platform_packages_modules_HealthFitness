@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.testing.shared.aggregation;
+package android.healthconnect.testing.shared;
 
 import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.TimeInstantRangeFilter;

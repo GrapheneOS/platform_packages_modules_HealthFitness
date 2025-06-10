@@ -21,7 +21,7 @@ import static android.healthconnect.cts.route.ExerciseRouteTestHelper.ROUTE_WRIT
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.assertCorrectHealthPermissions;
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.getExerciseSessionWithRoute;
 import static android.healthconnect.testing.cts.TestUtils.connectAppsWithGrantedPermissions;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -65,15 +65,15 @@ public class ExerciseRouteBackgroundReadTest {
 
     @Before
     public void setUp() throws Exception {
+        deleteAllDataFromHealthConnect();
+
         assertCorrectHealthPermissions();
         connectAppsWithGrantedPermissions();
-
-        deleteAllStagedRemoteData();
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        deleteAllStagedRemoteData();
+        deleteAllDataFromHealthConnect();
     }
 
     @Test

@@ -26,7 +26,7 @@ import static android.healthconnect.cts.route.ExerciseRouteTestHelper.getExercis
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.getExerciseSessionWithoutRoute;
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.readAllExerciseSessionRecordsPrivileged;
 import static android.healthconnect.testing.cts.TestUtils.connectAppsWithGrantedPermissions;
-import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
 import static android.healthconnect.testing.shared.DataFactory.getMetadataForClientId;
 import static android.healthconnect.testing.shared.DataFactory.getMetadataForId;
@@ -81,7 +81,7 @@ public class ExerciseRouteNoReadWritePermissionTest {
 
     @After
     public void tearDown() throws InterruptedException {
-        deleteAllStagedRemoteData();
+        deleteAllDataFromHealthConnect();
     }
 
     @Test

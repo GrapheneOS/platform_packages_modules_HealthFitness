@@ -61,9 +61,9 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
-import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
+import android.healthconnect.testing.cts.PhrCtsTestUtils;
 import android.healthconnect.testing.cts.TestUtils;
-import android.healthconnect.testing.shared.aggregation.TimeFilterFactory;
+import android.healthconnect.testing.shared.TimeFilterFactory;
 import android.os.OutcomeReceiver;
 
 import androidx.test.core.app.ApplicationProvider;

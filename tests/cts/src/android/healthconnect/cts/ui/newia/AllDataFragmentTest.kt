@@ -63,13 +63,13 @@ class AllDataFragmentTest : HealthConnectBaseTest() {
         // set to the past and this protects against that as Health Connect records generally can't
         // be in the future.
         runShellCommand("su 0 date -s $TEST_SYSTEM_CLOCK_TIME")
-        TestUtils.deleteAllStagedRemoteData()
+        TestUtils.deleteAllDataFromHealthConnect()
         insertData()
     }
 
     @After
     fun tearDown() {
-        TestUtils.deleteAllStagedRemoteData()
+        TestUtils.deleteAllDataFromHealthConnect()
         if (!previousDate.isEmpty()) {
             runShellCommand("su 0 date -s $previousDate")
         }
