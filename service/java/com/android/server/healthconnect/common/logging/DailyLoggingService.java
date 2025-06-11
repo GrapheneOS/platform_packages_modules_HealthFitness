@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.logging;
+package com.android.server.healthconnect.common.logging;
 
 import android.health.HealthFitnessStatsLog;
 import android.util.Slog;

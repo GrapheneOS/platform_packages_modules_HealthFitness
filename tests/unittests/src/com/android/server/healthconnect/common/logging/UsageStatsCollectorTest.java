@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.logging;
+package com.android.server.healthconnect.common.logging;
 
 import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_CONDITIONS;
 import static android.health.connect.HealthPermissions.READ_STEPS;
 import static android.health.connect.HealthPermissions.WRITE_STEPS;
 
-import static com.android.server.healthconnect.logging.UsageStatsCollector.EXPORT_PERIOD_PREFERENCE_KEY;
-import static com.android.server.healthconnect.logging.UsageStatsCollector.USER_MOST_RECENT_ACCESS_LOG_TIME;
+import static com.android.server.healthconnect.common.logging.UsageStatsCollector.EXPORT_PERIOD_PREFERENCE_KEY;
+import static com.android.server.healthconnect.common.logging.UsageStatsCollector.USER_MOST_RECENT_ACCESS_LOG_TIME;
 
 import static com.google.common.truth.Truth.assertThat;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.logging;
+package com.android.server.healthconnect.backuprestore;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_BACKUP_INVOKED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_BACKUP_INVOKED__BACKUP_TYPE__DATA_BACKUP_TYPE_INCREMENTAL;

@@ -32,7 +32,6 @@ import android.util.Slog;
 import androidx.annotation.Nullable;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.logging.NotificationStatsLogger;
 import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 
 import java.util.Objects;

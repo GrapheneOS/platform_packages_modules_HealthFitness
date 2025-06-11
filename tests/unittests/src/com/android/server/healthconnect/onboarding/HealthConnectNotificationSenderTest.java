@@ -21,7 +21,7 @@ import static android.health.connect.Constants.CHANNEL_GROUP_NAME_RESOURCE;
 import static android.health.connect.Constants.CHANNEL_NAME_RESOURCE;
 import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
 
-import static com.android.server.healthconnect.logging.NotificationStatsTestUtils.verifyChannelBlockedLogged;
+import static com.android.server.healthconnect.notifications.NotificationStatsTestUtils.verifyChannelBlockedLogged;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -37,9 +37,9 @@ import android.os.UserHandle;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.server.healthconnect.logging.NotificationStatsLogger;
 import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
+import com.android.server.healthconnect.notifications.NotificationStatsLogger;
 
 import org.junit.Before;
 import org.junit.Rule;

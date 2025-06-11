@@ -67,7 +67,6 @@ import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriori
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
-import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
