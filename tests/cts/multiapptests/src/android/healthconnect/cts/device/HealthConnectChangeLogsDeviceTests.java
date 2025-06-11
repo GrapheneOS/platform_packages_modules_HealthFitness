@@ -76,15 +76,6 @@ public class HealthConnectChangeLogsDeviceTests {
                                     deletedLog.getDeletedRecordId().equals(stringId),
                             "has matching string id");
 
-    private static final Correspondence<ChangeLogsResponse.DeletedMedicalResource, MedicalResource>
-            DELETED_MEDICAL_RESOURCE_CORRESPONDENCE =
-                    Correspondence.from(
-                            (deletedMedicalResource, medicalResource) ->
-                                    deletedMedicalResource
-                                            .getDeletedMedicalResourceId()
-                                            .equals(medicalResource.getId()),
-                            "has matching medical resource id");
-
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
@@ -333,7 +324,14 @@ public class HealthConnectChangeLogsDeviceTests {
         ChangeLogsResponse response = APP_A_WITH_READ_WRITE_PERMS.getChangeLogs(changeLogsRequest);
 
         assertThat(response.getDeletedMedicalResources())
-                .comparingElementsUsing(DELETED_MEDICAL_RESOURCE_CORRESPONDENCE)
+                .comparingElementsUsing(
+                        Correspondence
+                                .<ChangeLogsResponse.DeletedMedicalResource, MedicalResource>from(
+                                        (deletedMedicalResource, medicalResource) ->
+                                                deletedMedicalResource
+                                                        .getDeletedMedicalResourceId()
+                                                        .equals(medicalResource.getId()),
+                                        "has matching medical resource id"))
                 .containsExactly(medicalResourceInsertedByAppA, medicalResourceInsertedByAppB);
         assertThat(response.getUpsertedMedicalResources()).isEmpty();
     }
@@ -379,7 +377,14 @@ public class HealthConnectChangeLogsDeviceTests {
         ChangeLogsResponse response = APP_A_WITH_READ_WRITE_PERMS.getChangeLogs(changeLogsRequest);
 
         assertThat(response.getDeletedMedicalResources())
-                .comparingElementsUsing(DELETED_MEDICAL_RESOURCE_CORRESPONDENCE)
+                .comparingElementsUsing(
+                        Correspondence
+                                .<ChangeLogsResponse.DeletedMedicalResource, MedicalResource>from(
+                                        (deletedMedicalResource, medicalResource) ->
+                                                deletedMedicalResource
+                                                        .getDeletedMedicalResourceId()
+                                                        .equals(medicalResource.getId()),
+                                        "has matching medical resource id"))
                 .containsExactly(medicalResourceInsertedByAppB);
         assertThat(response.getUpsertedMedicalResources()).isEmpty();
     }
