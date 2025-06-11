@@ -436,6 +436,7 @@ android_robolectric_test {
         // TODO: b/419191898 - Update this to get as many Controller tests bivalent as possible
         "src/com/android/healthconnect/controller/tests/TestActivity.kt",
         "src/com/android/healthconnect/controller/tests/autodelete/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/backuprestore/**/*.kt",
         "src/com/android/healthconnect/controller/tests/data/entrydetails/**/*.kt",
         "src/com/android/healthconnect/controller/tests/data/formatters/**/*.kt",
         "src/com/android/healthconnect/controller/tests/data/rawfhir/**/*.kt",
@@ -503,7 +504,6 @@ android_app {
     ],
     static_libs: [
         "HealthConnectLibrary",
-        "platform-parametric-runner-lib",
     ],
     // Even though this is never run on the device, Soong complains if the libraries don't match
     // the manifest. Add the libraries here.
@@ -514,5 +514,4 @@ android_app {
         "org.apache.http.legacy",
         "wear-sdk",
     ],
-
 }
