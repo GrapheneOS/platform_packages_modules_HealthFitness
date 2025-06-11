@@ -24,7 +24,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.health.connect.HealthConnectManager;
 import android.os.UserHandle;
-import android.util.Log;
+import android.util.Slog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +125,7 @@ public final class PackageInfoUtils {
                             packageName, PackageManager.PackageInfoFlags.of(GET_PERMISSIONS));
         } catch (PackageManager.NameNotFoundException e) {
             // App not found.
-            Log.e(TAG, "NameNotFoundException for " + packageName);
+            Slog.e(TAG, "NameNotFoundException for " + packageName);
             return null;
         }
     }
@@ -136,7 +136,7 @@ public final class PackageInfoUtils {
         PackageManager packageManager = getPackageManagerAsUser(context, user);
         String[] packages = packageManager.getPackagesForUid(uid);
         if (packages == null || packages.length == 0) {
-            Log.e(TAG, "Can't get package names for UID: " + uid);
+            Slog.e(TAG, "Can't get package names for UID: " + uid);
             return null;
         }
         try {
@@ -145,7 +145,7 @@ public final class PackageInfoUtils {
                             packages[0], PackageManager.PackageInfoFlags.of(0));
             return info.sharedUserId;
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "Package " + packages[0] + " not found.");
+            Slog.e(TAG, "Package " + packages[0] + " not found.");
             return null;
         }
     }
@@ -160,7 +160,7 @@ public final class PackageInfoUtils {
                                     packageName,
                                     PackageManager.PackageInfoFlags.of(/* flags= */ 0));
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "NameNotFound exception for " + packageName);
+            Slog.e(TAG, "NameNotFound exception for " + packageName);
         }
         return uid;
     }

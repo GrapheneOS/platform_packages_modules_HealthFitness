@@ -30,7 +30,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Binder;
 import android.os.UserHandle;
-import android.util.Log;
+import android.util.Slog;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -74,7 +74,7 @@ public final class MigrationNotificationSender {
             if (notificationManager != null) {
                 notifyFromSystem(notificationManager, notification);
             } else {
-                Log.w(TAG, "Unable to get NotificationManager service for user");
+                Slog.w(TAG, "Unable to get NotificationManager service for user");
             }
         } catch (MigrationNotificationFactory.IllegalMigrationNotificationStateException ignored) {
             // Do not send any notification
@@ -87,7 +87,7 @@ public final class MigrationNotificationSender {
         if (notificationManager != null) {
             cancelFromSystem(notificationManager);
         } else {
-            Log.w(TAG, "Unable to get NotificationManager service for user");
+            Slog.w(TAG, "Unable to get NotificationManager service for user");
         }
     }
 
@@ -107,7 +107,7 @@ public final class MigrationNotificationSender {
             // We use the same (tag, id)
             notificationManager.notify(NOTIFICATION_TAG, FIXED_NOTIFICATION_ID, notification);
         } catch (Throwable e) {
-            Log.w(TAG, "Unable to send system notification", e);
+            Slog.w(TAG, "Unable to send system notification", e);
         } finally {
             Binder.restoreCallingIdentity(callingId);
         }
@@ -119,7 +119,7 @@ public final class MigrationNotificationSender {
             // We use the same (tag, id)
             notificationManager.cancel(NOTIFICATION_TAG, FIXED_NOTIFICATION_ID);
         } catch (Throwable e) {
-            Log.w(TAG, "Unable to cancel system notification", e);
+            Slog.w(TAG, "Unable to cancel system notification", e);
         } finally {
             Binder.restoreCallingIdentity(callingId);
         }
@@ -151,12 +151,12 @@ public final class MigrationNotificationSender {
                 notificationManager.createNotificationChannelGroup(group);
                 notificationManager.createNotificationChannel(notificationChannel);
             } else {
-                Log.w(
+                Slog.w(
                         TAG,
                         "Unable to get NotificationManager service for user, no channel createdd");
             }
         } catch (Throwable e) {
-            Log.w(TAG, "Unable to create notification channel", e);
+            Slog.w(TAG, "Unable to create notification channel", e);
         } finally {
             Binder.restoreCallingIdentity(callingId);
         }

@@ -58,7 +58,6 @@ import android.os.UserHandle;
 import android.text.format.DateUtils;
 import android.util.ArrayMap;
 import android.util.ArraySet;
-import android.util.Log;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
@@ -383,9 +382,9 @@ public final class BackupRestore {
                     callback.onError(new StageRemoteDataException(exceptionsByFileName));
                 }
             } catch (RemoteException e) {
-                Log.e(TAG, "Restore response could not be sent to the caller.", e);
+                Slog.e(TAG, "Restore response could not be sent to the caller.", e);
             } catch (SecurityException e) {
-                Log.e(
+                Slog.e(
                         TAG,
                         "Restore response could not be sent due to conflicting AIDL definitions",
                         e);

@@ -25,7 +25,6 @@ import android.health.connect.Constants;
 import android.net.Uri;
 import android.os.UserHandle;
 import android.os.UserManager;
-import android.util.Log;
 import android.util.Slog;
 
 import com.android.modules.utils.BackgroundThread;
@@ -52,7 +51,7 @@ public class MigratorPackageChangesReceiver extends BroadcastReceiver {
         String packageName = getPackageName(intent);
         UserHandle userHandle = getUserHandle(intent);
         if (packageName == null || userHandle == null) {
-            Log.w(TAG, "Can't extract info from the input intent");
+            Slog.w(TAG, "Can't extract info from the input intent");
             return;
         }
 
@@ -110,7 +109,7 @@ public class MigratorPackageChangesReceiver extends BroadcastReceiver {
         if (uid >= 0) {
             return UserHandle.getUserHandleForUid(uid);
         } else {
-            Log.w(TAG, "UID extra is missing from intent");
+            Slog.w(TAG, "UID extra is missing from intent");
             return null;
         }
     }

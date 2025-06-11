@@ -18,7 +18,7 @@ package com.android.server.healthconnect.common.preferences;
 
 import android.annotation.Nullable;
 import android.health.connect.Constants;
-import android.util.Log;
+import android.util.Slog;
 
 import java.time.Instant;
 
@@ -82,7 +82,7 @@ public class PreferencesManager {
             return Instant.ofEpochMilli(epochMilli);
         } catch (Exception exception) {
             if (Constants.DEBUG) {
-                Log.e(
+                Slog.e(
                         TAG,
                         "Stored epoch milli for \""
                                 + PREFS_KEY_PHR_LAST_READ_MEDICAL_RESOURCES_API

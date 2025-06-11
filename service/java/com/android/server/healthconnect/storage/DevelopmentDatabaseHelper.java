@@ -19,7 +19,7 @@ package com.android.server.healthconnect.storage;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
@@ -74,7 +74,7 @@ public final class DevelopmentDatabaseHelper {
             } catch (SQLException ex) {
                 // In the event of failure for a non development user, carry on silently.
                 // There is nothing that can be done.
-                Log.w(TAG, "Unable to drop dev db settings table", ex);
+                Slog.w(TAG, "Unable to drop dev db settings table", ex);
             }
             return;
         }

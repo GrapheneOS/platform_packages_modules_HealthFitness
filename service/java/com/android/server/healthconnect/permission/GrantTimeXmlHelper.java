@@ -19,7 +19,7 @@ package com.android.server.healthconnect.permission;
 import android.annotation.Nullable;
 import android.util.ArrayMap;
 import android.util.AtomicFile;
-import android.util.Log;
+import android.util.Slog;
 import android.util.Xml;
 
 import libcore.io.IoUtils;
@@ -72,7 +72,7 @@ public final class GrantTimeXmlHelper {
             serializer.endDocument();
             atomicFile.finishWrite(outputStream);
         } catch (Exception e) {
-            Log.wtf(TAG, "Failed to write, restoring backup: " + file, e);
+            Slog.wtf(TAG, "Failed to write, restoring backup: " + file, e);
             atomicFile.failWrite(outputStream);
         } finally {
             IoUtils.closeQuietly(outputStream);
@@ -92,7 +92,7 @@ public final class GrantTimeXmlHelper {
             parser.setInput(inputStream, /* inputEncoding= */ null);
             return parseXml(parser);
         } catch (FileNotFoundException e) {
-            Log.w(TAG, file.getPath() + " not found");
+            Slog.w(TAG, file.getPath() + " not found");
             return null;
         } catch (XmlPullParserException | IOException e) {
             throw new IllegalStateException("Failed to read " + file, e);
@@ -201,7 +201,7 @@ public final class GrantTimeXmlHelper {
                     }
                 default:
                     {
-                        Log.w(TAG, "Tag " + parser.getName() + " is not parsed");
+                        Slog.w(TAG, "Tag " + parser.getName() + " is not parsed");
                     }
             }
             type = parser.next();

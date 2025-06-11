@@ -26,7 +26,6 @@ import android.content.Context;
 import android.health.HealthFitnessStatsLog;
 import android.os.Binder;
 import android.os.UserHandle;
-import android.util.Log;
 import android.util.Slog;
 
 import androidx.annotation.Nullable;
@@ -255,7 +254,7 @@ public final class HealthConnectNotificationSender {
         try {
             notificationManager.cancel(mNotificationTag, mFixedNotificationId);
         } catch (Throwable e) {
-            Log.w(TAG, "Unable to cancel system notification", e);
+            Slog.w(TAG, "Unable to cancel system notification", e);
         } finally {
             Binder.restoreCallingIdentity(callingId);
         }
