@@ -94,10 +94,9 @@ public class GetMedicalDataSourcesByRequestCtsTest {
         // To make sure we don't leave any state behind after running each test.
         revokeAllHealthPermissions(PHR_BACKGROUND_APP_PKG, "to test specific permissions");
         revokeAllHealthPermissions(PHR_FOREGROUND_APP_PKG, "to test specific permissions");
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
         mManager = TestUtils.getHealthConnectManager();
         mUtil = new PhrCtsTestUtils(mManager);
-        mUtil.deleteAllMedicalData();
         if (TestUtils.setLowerRateLimitsForTesting(true)) {
             mUtil.mLimitsAdjustmentForTesting = 10;
         }
@@ -105,7 +104,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
 
     @After
     public void after() throws InterruptedException {
-        mUtil.deleteAllMedicalData();
+        TestUtils.deleteAllDataFromHealthConnect();
         TestUtils.setLowerRateLimitsForTesting(false);
     }
 

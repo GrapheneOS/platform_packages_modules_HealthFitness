@@ -91,10 +91,9 @@ public class CreateMedicalDataSourceCtsTest {
                 PHR_BACKGROUND_APP.getPackageName(), "to test specific permissions");
         revokeAllHealthPermissions(
                 PHR_FOREGROUND_APP.getPackageName(), "to test specific permissions");
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
         mManager = TestUtils.getHealthConnectManager();
         mUtil = new PhrCtsTestUtils(mManager);
-        mUtil.deleteAllMedicalData();
         if (TestUtils.setLowerRateLimitsForTesting(true)) {
             mUtil.mLimitsAdjustmentForTesting = 10;
         }
@@ -102,7 +101,7 @@ public class CreateMedicalDataSourceCtsTest {
 
     @After
     public void after() throws InterruptedException {
-        mUtil.deleteAllMedicalData();
+        TestUtils.deleteAllDataFromHealthConnect();
         TestUtils.setLowerRateLimitsForTesting(false);
     }
 

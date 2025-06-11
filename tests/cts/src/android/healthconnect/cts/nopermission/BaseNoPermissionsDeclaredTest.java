@@ -80,13 +80,13 @@ abstract class BaseNoPermissionsDeclaredTest<T extends Record> {
 
     @Before
     public void setUp() throws InterruptedException {
+        TestUtils.deleteAllDataFromHealthConnect();
         assertThat(getDeclaredHealthPermissions(getTestPackageName())).isEmpty();
-        TestUtils.deleteAllStagedRemoteData();
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test

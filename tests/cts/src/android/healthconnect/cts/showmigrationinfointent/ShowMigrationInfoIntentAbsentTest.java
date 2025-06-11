@@ -21,7 +21,6 @@ import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecu
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
-import android.content.Context;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.migration.MigrationException;
 import android.healthconnect.testing.cts.TestOutcomeReceiver;
@@ -33,7 +32,6 @@ import android.os.ext.SdkExtensions;
 import android.platform.test.annotations.AppModeFull;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.After;
 import org.junit.Before;
@@ -55,15 +53,14 @@ public class ShowMigrationInfoIntentAbsentTest {
                     "Tests should run on supported hardware only.");
 
     @Before
-    public void setUp() {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        mManager = context.getSystemService(HealthConnectManager.class);
-        TestUtils.deleteAllStagedRemoteData();
+    public void setup() throws InterruptedException {
+        mManager = TestUtils.getHealthConnectManager();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @After
-    public void tearDown() {
-        TestUtils.deleteAllStagedRemoteData();
+    public void tearDown() throws InterruptedException {
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test
