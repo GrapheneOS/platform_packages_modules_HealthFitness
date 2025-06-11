@@ -70,7 +70,7 @@ class StepSensorEventListener implements SensorEventListener {
             new SensorData(/* sensorValue= */ 0, /* sensorTimestampNanos= */ 0);
     private SensorData mPendingData =
             new SensorData(/* sensorValue= */ 0, /* sensorTimestampNanos= */ 0);
-    private Optional<ScheduledFuture<?>> mPendingBatchWriteFuture = Optional.empty();
+    @VisibleForTesting Optional<ScheduledFuture<?>> mPendingBatchWriteFuture = Optional.empty();
 
     StepSensorEventListener(
             Context context,
