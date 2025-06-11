@@ -51,7 +51,6 @@ import android.health.connect.datatypes.AppInfo;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
-import android.util.Log;
 import android.util.Pair;
 import android.util.Slog;
 
@@ -476,7 +475,7 @@ public final class AppInfoHelper extends DatabaseHelper {
             Set<Integer> recordTypes, String packageName) {
         AppInfoInternal appInfo = getAppInfoMap().get(packageName);
         if (appInfo == null) {
-            Log.e(
+            Slog.e(
                     TAG,
                     "AppInfo for the current package: "
                             + packageName
@@ -582,7 +581,7 @@ public final class AppInfoHelper extends DatabaseHelper {
                                         packageName, appInfo, /* recordTypesUsed */ null);
                             }
                             if (DEBUG) {
-                                Log.d(
+                                Slog.d(
                                         TAG,
                                         "Syncing packages and corresponding recordTypesUsed for"
                                                 + " package : "
@@ -623,7 +622,7 @@ public final class AppInfoHelper extends DatabaseHelper {
             String packageName) {
         AppInfoInternal appInfo = getAppInfoMap().get(packageName);
         if (appInfo == null) {
-            Log.e(
+            Slog.e(
                     TAG,
                     "AppInfo for the current package: "
                             + packageName
@@ -674,7 +673,7 @@ public final class AppInfoHelper extends DatabaseHelper {
         getAppInfoMap().put(packageName, appInfo);
         getIdPackageNameMap().put(appInfo.getId(), packageName);
         if (DEBUG) {
-            Log.d(
+            Slog.d(
                     TAG,
                     "Updated app info table. PackageName : "
                             + packageName

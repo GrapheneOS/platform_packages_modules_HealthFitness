@@ -68,6 +68,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -353,6 +355,50 @@ public class StepSensorEventListenerTest {
 
         assertThat(records).hasSize(1);
         assertRecord(records.get(0), stepCount, expectedStartTimestampNanos, endTimestampNanos);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void onSensorChanged_pendingBatchWriteFutureNotEmpty() throws Exception {
+        int stepDelta = 10;
+        long endTimestampNanos = MINUTES.toNanos(10);
+
+        triggerStepEvent(stepDelta, endTimestampNanos);
+        // Wait for the scheduled task to instantly process the event and schedule the next write
+        mThreadScheduler
+                .mPassiveTrackerExecutor
+                .submit(
+                        () -> {
+                            // This runnable will execute after the task triggered by
+                            // triggerStepEvent() has been processed by the executor.
+                        })
+                .get();
+
+        assertThat(mStepSensorEventListener.mPendingBatchWriteFuture).isPresent();
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void afterOnSensorChanged_noNewEventsReceived_stopsSchedulingWrites() throws Exception {
+        int timeoutBuffer = 100;
+        int stepDelta = 10;
+        long endTimestampNanos = MINUTES.toNanos(10);
+        triggerStepEvent(stepDelta, endTimestampNanos);
+        // Wait for the future task to be scheduled
+        mThreadScheduler.mPassiveTrackerExecutor.submit(() -> {}).get();
+        Optional<ScheduledFuture<?>> pendingFutureOptional =
+                mStepSensorEventListener.mPendingBatchWriteFuture;
+        assertThat(pendingFutureOptional).isPresent();
+        ScheduledFuture<?> pendingFuture = pendingFutureOptional.get();
+
+        // Wait for the future task to execute and complete.
+        // The task itself is responsible for clearing mPendingBatchWriteFuture through
+        // #writeBatchAndScheduleNextWrite.
+        pendingFuture.get(
+                mStepSensorEventListener.getBatchingDurationMillis() + timeoutBuffer,
+                TimeUnit.MILLISECONDS);
+
+        assertThat(mStepSensorEventListener.mPendingBatchWriteFuture).isEmpty();
     }
 
     @Test

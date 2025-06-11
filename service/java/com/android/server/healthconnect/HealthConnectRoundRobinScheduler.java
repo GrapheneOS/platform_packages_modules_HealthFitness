@@ -17,7 +17,7 @@
 package com.android.server.healthconnect;
 
 import android.annotation.Nullable;
-import android.util.Log;
+import android.util.Slog;
 
 import com.android.internal.annotations.GuardedBy;
 
@@ -56,7 +56,7 @@ public final class HealthConnectRoundRobinScheduler {
             // switch), ignore this request. This most likely means that we won't be able to deliver
             // the result back anyway.
             if (mPauseScheduler) {
-                Log.e(TAG, "Unable to schedule task for uid: " + uid);
+                Slog.e(TAG, "Unable to schedule task for uid: " + uid);
                 return;
             }
 

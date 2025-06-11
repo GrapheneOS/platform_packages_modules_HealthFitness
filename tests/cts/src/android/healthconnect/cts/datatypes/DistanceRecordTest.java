@@ -51,7 +51,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -78,27 +77,13 @@ public class DistanceRecordTest {
                     "Tests should run on supported hardware only.");
 
     @Before
-    public void setUp() throws InterruptedException {
+    public void setup() throws InterruptedException {
         TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @After
     public void tearDown() throws InterruptedException {
         TestUtils.deleteAllDataFromHealthConnect();
-    }
-
-    @BeforeClass
-    public static void setup() throws InterruptedException {
-        if (!DeviceSupportUtils.isHealthConnectFullySupported()) {
-            return;
-        }
-        TestUtils.verifyDeleteRecords(
-                DistanceRecord.class,
-                new TimeInstantRangeFilter.Builder()
-                        .setStartTime(Instant.EPOCH)
-                        .setEndTime(Instant.now())
-                        .build());
-        TestUtils.deleteAllStagedRemoteData();
     }
 
     @Test

@@ -22,7 +22,6 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.isNull
 import android.annotation.Nullable;
 import android.database.Cursor;
 import android.health.connect.Constants;
-import android.util.Log;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
@@ -165,7 +164,7 @@ class SessionDurationAggregationData extends AggregationRecordData {
         if (zoneOffset == null) {
             // This should not happen, but if we get asked to use local time without getting a zone
             // offset, treat as no offset.
-            Log.w(TAG, "Asked to calculate a local time without a zone offset");
+            Slog.w(TAG, "Asked to calculate a local time without a zone offset");
             offsetMillis = 0;
         } else {
             offsetMillis = MILLIS_IN_SECOND * zoneOffset.getTotalSeconds();

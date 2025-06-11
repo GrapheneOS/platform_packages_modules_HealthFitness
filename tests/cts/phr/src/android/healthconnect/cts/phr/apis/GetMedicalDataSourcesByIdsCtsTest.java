@@ -94,10 +94,9 @@ public class GetMedicalDataSourcesByIdsCtsTest {
         // To make sure we don't leave any state behind after running each test.
         revokeAllHealthPermissions(PHR_BACKGROUND_APP_PKG, "to test specific permissions");
         revokeAllHealthPermissions(PHR_FOREGROUND_APP_PKG, "to test specific permissions");
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
         mManager = TestUtils.getHealthConnectManager();
         mUtil = new PhrCtsTestUtils(TestUtils.getHealthConnectManager());
-        mUtil.deleteAllMedicalData();
         if (TestUtils.setLowerRateLimitsForTesting(true)) {
             // 10 comes from the setLowerRateLimitsForTesting method in RateLimiter.
             mUtil.mLimitsAdjustmentForTesting = 10;
@@ -106,7 +105,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
 
     @After
     public void after() throws InterruptedException {
-        mUtil.deleteAllMedicalData();
+        TestUtils.deleteAllDataFromHealthConnect();
         TestUtils.setLowerRateLimitsForTesting(false);
     }
 

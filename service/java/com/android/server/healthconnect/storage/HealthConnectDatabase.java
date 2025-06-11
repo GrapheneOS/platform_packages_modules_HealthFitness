@@ -20,7 +20,7 @@ import static com.android.healthfitness.flags.AconfigFlagHelper.getDbVersion;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+import android.util.Slog;
 
 import androidx.annotation.VisibleForTesting;
 
@@ -68,7 +68,7 @@ public final class HealthConnectDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.i(TAG, "onDowngrade oldVersion = " + oldVersion + " newVersion = " + newVersion);
+        Slog.i(TAG, "onDowngrade oldVersion = " + oldVersion + " newVersion = " + newVersion);
     }
 
     @Override

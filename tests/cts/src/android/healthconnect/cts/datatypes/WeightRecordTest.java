@@ -101,7 +101,7 @@ public class WeightRecordTest {
     public void setUp() throws InterruptedException {
         mContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         mTestApp = TestAppProxy.forPackageName(PKG_TEST_APP);
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @After

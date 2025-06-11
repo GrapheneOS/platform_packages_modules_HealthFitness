@@ -83,15 +83,14 @@ public class QueryAllMedicalResourceTypeInfosCtsTest {
 
     @Before
     public void setUp() throws Exception {
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
         mManager = TestUtils.getHealthConnectManager();
         mUtil = new PhrCtsTestUtils(mManager);
-        mUtil.deleteAllMedicalData();
     }
 
     @After
     public void after() throws InterruptedException {
-        mUtil.deleteAllMedicalData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test

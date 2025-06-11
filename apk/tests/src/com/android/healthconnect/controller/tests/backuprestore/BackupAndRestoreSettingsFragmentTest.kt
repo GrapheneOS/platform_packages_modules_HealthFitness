@@ -46,6 +46,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.Intents.intending
+import androidx.test.espresso.intent.VerificationModes.times
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -974,9 +975,10 @@ class BackupAndRestoreSettingsFragmentTest {
         assertThat(intentCaptor.allValues.size).isEqualTo(1)
 
         // But as the resolver doesn't hold permissions, no intent action was sent.
-        intended(not(hasComponent(settingUIComponentName)))
+        intended(hasComponent(settingUIComponentName), times(0))
         intended(
-            not(hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS"))
+            hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS"),
+            times(0),
         )
     }
 

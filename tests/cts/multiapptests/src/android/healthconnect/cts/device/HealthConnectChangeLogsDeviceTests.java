@@ -17,7 +17,6 @@
 package android.healthconnect.cts.device;
 
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
-import static android.healthconnect.testing.cts.TestUtils.verifyDeleteRecords;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
@@ -28,10 +27,8 @@ import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.health.connect.HealthConnectManager;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordIdFilter;
-import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
@@ -39,7 +36,6 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.StepsRecord;
-import android.healthconnect.testing.cts.PhrCtsTestUtils;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
@@ -80,15 +76,6 @@ public class HealthConnectChangeLogsDeviceTests {
                                     deletedLog.getDeletedRecordId().equals(stringId),
                             "has matching string id");
 
-    private static final Correspondence<ChangeLogsResponse.DeletedMedicalResource, MedicalResource>
-            DELETED_MEDICAL_RESOURCE_CORRESPONDENCE =
-                    Correspondence.from(
-                            (deletedMedicalResource, medicalResource) ->
-                                    deletedMedicalResource
-                                            .getDeletedMedicalResourceId()
-                                            .equals(medicalResource.getId()),
-                            "has matching medical resource id");
-
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
@@ -100,16 +87,12 @@ public class HealthConnectChangeLogsDeviceTests {
 
     @Before
     public void setUp() throws Exception {
-        TestUtils.deleteAllStagedRemoteData();
-        HealthConnectManager manager = TestUtils.getHealthConnectManager();
-        PhrCtsTestUtils util = new PhrCtsTestUtils(manager);
-        util.deleteAllMedicalData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        verifyDeleteRecords(
-                StepsRecord.class, new TimeInstantRangeFilter.Builder().setEndTime(NOW).build());
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test
@@ -341,7 +324,14 @@ public class HealthConnectChangeLogsDeviceTests {
         ChangeLogsResponse response = APP_A_WITH_READ_WRITE_PERMS.getChangeLogs(changeLogsRequest);
 
         assertThat(response.getDeletedMedicalResources())
-                .comparingElementsUsing(DELETED_MEDICAL_RESOURCE_CORRESPONDENCE)
+                .comparingElementsUsing(
+                        Correspondence
+                                .<ChangeLogsResponse.DeletedMedicalResource, MedicalResource>from(
+                                        (deletedMedicalResource, medicalResource) ->
+                                                deletedMedicalResource
+                                                        .getDeletedMedicalResourceId()
+                                                        .equals(medicalResource.getId()),
+                                        "has matching medical resource id"))
                 .containsExactly(medicalResourceInsertedByAppA, medicalResourceInsertedByAppB);
         assertThat(response.getUpsertedMedicalResources()).isEmpty();
     }
@@ -387,7 +377,14 @@ public class HealthConnectChangeLogsDeviceTests {
         ChangeLogsResponse response = APP_A_WITH_READ_WRITE_PERMS.getChangeLogs(changeLogsRequest);
 
         assertThat(response.getDeletedMedicalResources())
-                .comparingElementsUsing(DELETED_MEDICAL_RESOURCE_CORRESPONDENCE)
+                .comparingElementsUsing(
+                        Correspondence
+                                .<ChangeLogsResponse.DeletedMedicalResource, MedicalResource>from(
+                                        (deletedMedicalResource, medicalResource) ->
+                                                deletedMedicalResource
+                                                        .getDeletedMedicalResourceId()
+                                                        .equals(medicalResource.getId()),
+                                        "has matching medical resource id"))
                 .containsExactly(medicalResourceInsertedByAppB);
         assertThat(response.getUpsertedMedicalResources()).isEmpty();
     }

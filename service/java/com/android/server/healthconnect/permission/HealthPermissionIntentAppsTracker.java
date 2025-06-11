@@ -26,7 +26,7 @@ import android.health.connect.HealthConnectManager;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.util.ArraySet;
-import android.util.Log;
+import android.util.Slog;
 
 import com.android.internal.annotations.GuardedBy;
 
@@ -162,7 +162,7 @@ public class HealthPermissionIntentAppsTracker {
         if (info == null
                 || info.activityInfo == null
                 || info.activityInfo.applicationInfo == null) {
-            Log.w(TAG, "Can't fetch application info from resolve info.");
+            Slog.w(TAG, "Can't fetch application info from resolve info.");
             return null;
         }
         return info.activityInfo.applicationInfo.packageName;
@@ -170,9 +170,9 @@ public class HealthPermissionIntentAppsTracker {
 
     private void logStateIfDebugMode(UserHandle userHandle) {
         if (Constants.DEBUG) {
-            Log.d(TAG, "State for user: " + userHandle.getIdentifier());
+            Slog.d(TAG, "State for user: " + userHandle.getIdentifier());
             synchronized (mLock) {
-                Log.d(TAG, mUserToHealthPackageNamesMap.toString());
+                Slog.d(TAG, mUserToHealthPackageNamesMap.toString());
             }
         }
     }

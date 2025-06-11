@@ -101,17 +101,18 @@ abstract class BaseMultiAppApiTest<T extends Record> {
 
     @Before
     public void setUp() throws InterruptedException {
+        TestUtils.deleteAllDataFromHealthConnect();
+
         mRecordClass = mRecordClassSupplier.get();
         assertThat(getGrantedHealthPermissions(getTestPackageName()))
                 .containsAtLeast(mReadPermission, mWritePermission);
         assertThat(getGrantedHealthPermissions(mAppWithReadWritePerms.getPackageName()))
                 .containsAtLeast(mReadPermission, mWritePermission);
-        TestUtils.deleteAllStagedRemoteData();
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @Test

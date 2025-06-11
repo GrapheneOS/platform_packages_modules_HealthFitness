@@ -74,7 +74,7 @@ public class FloorsClimbedRecordTest {
 
     @Before
     public void setUp() throws InterruptedException {
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
     }
 
     @After

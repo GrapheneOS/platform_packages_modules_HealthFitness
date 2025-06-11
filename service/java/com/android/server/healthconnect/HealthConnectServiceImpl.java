@@ -171,7 +171,6 @@ import android.os.RemoteException;
 import android.os.UserHandle;
 import android.permission.PermissionManager;
 import android.util.ArrayMap;
-import android.util.Log;
 import android.util.Pair;
 import android.util.Slog;
 
@@ -1740,7 +1739,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             try {
                                 callback.onResult();
                             } catch (RemoteException e) {
-                                Log.e(TAG, "Restore response could not be sent to the caller.", e);
+                                Slog.e(TAG, "Restore response could not be sent to the caller.", e);
                             }
                             return;
                         }
@@ -1748,7 +1747,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 pfdsByFileName, exceptionsByFileName, userHandle, callback);
                     });
         } catch (SecurityException | IllegalStateException e) {
-            Log.e(TAG, "Exception encountered while staging", e);
+            Slog.e(TAG, "Exception encountered while staging", e);
             try {
                 @HealthConnectException.ErrorCode
                 int errorCode = (e instanceof SecurityException) ? ERROR_SECURITY : ERROR_INTERNAL;
@@ -1756,7 +1755,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
                 callback.onError(new StageRemoteDataException(exceptionsByFileName));
             } catch (RemoteException remoteException) {
-                Log.e(TAG, "Stage data response could not be sent to the caller.", e);
+                Slog.e(TAG, "Stage data response could not be sent to the caller.", e);
             }
         }
     }
@@ -1867,7 +1866,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 dataRestoreError,
                                                 mMigrationStateManager.getMigrationState()));
                             } catch (RemoteException remoteException) {
-                                Log.e(
+                                Slog.e(
                                         TAG,
                                         "HealthConnectDataState could not be sent to the caller.",
                                         remoteException);
@@ -1880,7 +1879,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 new HealthConnectException(
                                                         ERROR_IO, e.getMessage())));
                             } catch (RemoteException remoteException) {
-                                Log.e(
+                                Slog.e(
                                         TAG,
                                         "Exception for getHealthConnectDataState could not be sent"
                                                 + " to the caller.",
@@ -1891,7 +1890,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     uid,
                     holdsDataManagementPermission);
         } catch (SecurityException | IllegalStateException e) {
-            Log.e(TAG, "getHealthConnectDataState: Exception encountered", e);
+            Slog.e(TAG, "getHealthConnectDataState: Exception encountered", e);
             @HealthConnectException.ErrorCode
             int errorCode = (e instanceof SecurityException) ? ERROR_SECURITY : ERROR_INTERNAL;
             try {
@@ -1899,7 +1898,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         new HealthConnectExceptionParcel(
                                 new HealthConnectException(errorCode, e.getMessage())));
             } catch (RemoteException remoteException) {
-                Log.e(TAG, "getHealthConnectDataState error could not be sent", e);
+                Slog.e(TAG, "getHealthConnectDataState error could not be sent", e);
             }
         }
     }
@@ -1927,7 +1926,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                             mMigrationUiStateManager
                                                     .getHealthConnectMigrationUiState()));
                         } catch (RemoteException remoteException) {
-                            Log.e(
+                            Slog.e(
                                     TAG,
                                     "HealthConnectMigrationUiState could not be sent to the"
                                             + " caller.",
@@ -1941,7 +1940,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                     ERROR_SECURITY,
                                                     securityException.getMessage())));
                         } catch (RemoteException remoteException) {
-                            Log.e(
+                            Slog.e(
                                     TAG,
                                     "Exception for HealthConnectMigrationUiState could not be sent"
                                             + " to the caller.",
@@ -1954,7 +1953,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     new HealthConnectExceptionParcel(
                                             new HealthConnectException(ERROR_IO, e.getMessage())));
                         } catch (RemoteException remoteException) {
-                            Log.e(
+                            Slog.e(
                                     TAG,
                                     "Exception for HealthConnectMigrationUiState could not be sent"
                                             + " to the caller.",
@@ -3292,13 +3291,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         mOnboardingStateManager.updateAndGetOnboardingState(
                                                 /* bypassInstallTime= */ true)));
                     } catch (SecurityException e) {
-                        Log.e(TAG, "getHealthConnectOnboardingState: Exception encountered", e);
+                        Slog.e(TAG, "getHealthConnectOnboardingState: Exception encountered", e);
                         tryAndThrowException(errorCallback, e, ERROR_SECURITY);
                     } catch (UnsupportedOperationException e) {
-                        Log.e(TAG, "getHealthConnectOnboardingState: Exception encountered", e);
+                        Slog.e(TAG, "getHealthConnectOnboardingState: Exception encountered", e);
                         tryAndThrowException(errorCallback, e, ERROR_UNSUPPORTED_OPERATION);
                     } catch (Exception e) {
-                        Log.e(TAG, "getHealthConnectOnboardingState: Exception encountered", e);
+                        Slog.e(TAG, "getHealthConnectOnboardingState: Exception encountered", e);
                         tryAndThrowException(errorCallback, e, ERROR_INTERNAL);
                     }
                 });
@@ -3724,7 +3723,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             callback.onError(
                     new MigrationException(exception.toString(), errorCode, failedEntityId));
         } catch (RemoteException e) {
-            Log.e(TAG, "Unable to send result to the callback", e);
+            Slog.e(TAG, "Unable to send result to the callback", e);
         }
     }
 
@@ -3737,7 +3736,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     new HealthConnectExceptionParcel(
                             new HealthConnectException(errorCode, exception.toString())));
         } catch (RemoteException e) {
-            Log.e(TAG, "Unable to send result to the callback", e);
+            Slog.e(TAG, "Unable to send result to the callback", e);
         }
     }
 

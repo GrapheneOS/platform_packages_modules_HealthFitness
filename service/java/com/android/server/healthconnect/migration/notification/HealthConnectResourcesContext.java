@@ -97,6 +97,9 @@ public final class HealthConnectResourcesContext extends ContextWrapper {
     private ResolveInfo resolvePackageInfo() {
         List<ResolveInfo> resolveInfos =
                 getPackageManager().queryIntentActivities(new Intent(mResourcesApkAction), mFlags);
+        if (resolveInfos.isEmpty()) {
+            Slog.e(TAG, "Cannot find any system apps handling action " + RESOURCES_APK_ACTION);
+        }
 
         if (resolveInfos.size() > 1) {
             // multiple apps found, log a warning, but continue
@@ -175,6 +178,8 @@ public final class HealthConnectResourcesContext extends ContextWrapper {
             Context resourcesApkContext = getResourcesApkContext();
             if (resourcesApkContext != null) {
                 mResourcesFromApk = resourcesApkContext.getResources();
+            } else {
+                Slog.w(TAG, "No resources context available for package " + mResourcesApkPkgName);
             }
         }
         return mResourcesFromApk;
@@ -195,6 +200,7 @@ public final class HealthConnectResourcesContext extends ContextWrapper {
     public String getStringByNameOrThrow(String name) {
         String string = getStringByName(name);
         if (string == null) {
+            Slog.e(TAG, "Cannot find string with name " + name);
             throw new IllegalArgumentException("Cannot find string with name " + name);
         }
         return string;
@@ -215,6 +221,7 @@ public final class HealthConnectResourcesContext extends ContextWrapper {
     public String getStringByNameWithArgsOrThrow(String name, Object... formatArgs) {
         String string = getStringByNameWithArgs(name, formatArgs);
         if (string == null) {
+            Slog.e(TAG, "Cannot find string with name " + name);
             throw new IllegalArgumentException("Cannot find string with name " + name);
         }
         return string;
@@ -230,6 +237,7 @@ public final class HealthConnectResourcesContext extends ContextWrapper {
 
         Resources resources = getResources();
         if (resources == null) {
+            Slog.w(TAG, "Health Connect resource is null");
             return Resources.ID_NULL;
         }
 

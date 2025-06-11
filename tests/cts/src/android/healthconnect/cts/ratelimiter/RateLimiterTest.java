@@ -88,7 +88,7 @@ public class RateLimiterTest {
 
     @Before
     public void setUp() throws InterruptedException {
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
         if (TestUtils.setLowerRateLimitsForTesting(true)) {
             mLimitsAdjustmentForTesting = 10;
         }
@@ -96,7 +96,7 @@ public class RateLimiterTest {
 
     @After
     public void tearDown() throws InterruptedException {
-        TestUtils.deleteAllStagedRemoteData();
+        TestUtils.deleteAllDataFromHealthConnect();
         TestUtils.setLowerRateLimitsForTesting(false);
     }
 

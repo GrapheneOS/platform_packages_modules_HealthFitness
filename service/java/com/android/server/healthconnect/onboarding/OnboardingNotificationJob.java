@@ -35,6 +35,7 @@ import android.content.Context;
 import android.health.connect.HealthConnectOnboardingState;
 import android.os.PersistableBundle;
 import android.os.UserHandle;
+import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.HealthConnectDailyService;
@@ -51,6 +52,7 @@ public final class OnboardingNotificationJob {
     public static final String ONBOARDING_NOTIFICATION_JOB_NAMESPACE =
             "HEALTH_CONNECT_ONBOARDING_NOTIFICATION_JOB";
     private static final int MIN_JOB_ID = OnboardingNotificationJob.class.hashCode();
+    private static final String TAG = "OnboardingNotificationJob";
 
     /** Schedule the onboarding notification job if it's not yet scheduled. */
     public static void scheduleJobIfNotScheduled(Context context, UserHandle userHandle) {
@@ -104,11 +106,13 @@ public final class OnboardingNotificationJob {
             OnboardingNotificationStateManager notificationShownStateManager,
             UserHandle userHandle) {
         if (!Flags.onboarding()) {
+            Slog.d(TAG, "Onboarding flag is disabled");
             return;
         }
 
         int notificationState = notificationShownStateManager.getOnboardingNotificationState();
         if (notificationState == SHOULD_SHOW_NO_NOTIFICATION) {
+            Slog.d(TAG, "All onboarding notifications were seen. Cancelling the job.");
             cancelAllJobs(context);
         }
 
@@ -119,11 +123,15 @@ public final class OnboardingNotificationJob {
             case ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED:
                 if ((notificationState & SHOULD_SHOW_NO_APP_CONNECTED_NOTIFICATION) != 0) {
                     notificationSender.sendNoAppConnectedNotification(userHandle);
+                } else {
+                    Slog.d(TAG, "User has seen zero app connected notification");
                 }
                 break;
             case ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED:
                 if ((notificationState & SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION) != 0) {
                     notificationSender.sendOneAppConnectedNotification(userHandle);
+                } else {
+                    Slog.d(TAG, "User has seen one app connected notification");
                 }
                 break;
             case ONBOARDING_BANNER_STATE_HIDE:
