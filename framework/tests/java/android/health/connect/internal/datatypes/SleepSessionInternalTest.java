@@ -19,7 +19,7 @@ package android.health.connect.internal.datatypes;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.SleepSessionRecord;
-import android.health.connect.testing.StringUtil;
+import android.healthconnect.testing.shared.StringUtil;
 import android.healthconnect.testing.unittest.RecordInternalFactory;
 import android.os.Parcel;
 

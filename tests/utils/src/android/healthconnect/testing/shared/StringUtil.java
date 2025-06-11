@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.health.connect.testing;
+package android.healthconnect.testing.shared;
 
 import static com.google.common.truth.Truth.assertThat;
 

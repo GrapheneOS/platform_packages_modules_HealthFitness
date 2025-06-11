@@ -15,7 +15,6 @@
  */
 package com.android.server.healthconnect.common.changelog;
 
-import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_ID;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createDifferentVaccineMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResource;
@@ -31,7 +30,8 @@ import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
-import android.health.connect.testing.RecordFactory;
+import android.health.connect.datatypes.StepsRecord;
+import android.healthconnect.testing.shared.recordfactory.RecordFactory;
 import android.os.Parcel;
 import android.platform.test.annotations.RequiresFlagsDisabled;
 import android.platform.test.annotations.RequiresFlagsEnabled;
@@ -61,7 +61,7 @@ public class ChangeLogsResponseTest {
     @Test
     public void testConstructor_primary() {
         List<Record> upsertedRecords =
-                List.of(RecordFactory.makePopulatedRecord(RECORD_TYPE_STEPS));
+                List.of(RecordFactory.newFullRecordForType(StepsRecord.class));
         List<ChangeLogsResponse.DeletedLog> deletedLogs =
                 List.of(new ChangeLogsResponse.DeletedLog(TEST_RECORD_ID, Instant.now()));
         List<MedicalResource> upsertedMedicalResources =
@@ -92,7 +92,7 @@ public class ChangeLogsResponseTest {
     @Test
     @SuppressWarnings("deprecation") // Testing deprecated constructor
     public void testConstructor_deprecated() {
-        Record record = RecordFactory.makePopulatedRecord(RECORD_TYPE_STEPS);
+        Record record = RecordFactory.newFullRecordForType(StepsRecord.class);
         RecordsParcel recordsParcel = new RecordsParcel(List.of(record.toRecordInternal()));
         List<ChangeLogsResponse.DeletedLog> deletedLogs =
                 List.of(new ChangeLogsResponse.DeletedLog(TEST_RECORD_ID, DELETION_TIME));
@@ -117,7 +117,7 @@ public class ChangeLogsResponseTest {
         FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testParceling_flagEnabled() {
-        Record upsertedRecord = RecordFactory.makePopulatedRecord(RECORD_TYPE_STEPS);
+        Record upsertedRecord = RecordFactory.newFullRecordForType(StepsRecord.class);
         ChangeLogsResponse.DeletedLog deletedLog =
                 new ChangeLogsResponse.DeletedLog(TEST_RECORD_ID, DELETION_TIME);
         MedicalResource upsertedMedicalResource = createVaccineMedicalResource(DATA_SOURCE_ID);
@@ -152,7 +152,7 @@ public class ChangeLogsResponseTest {
         FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testParceling_flagDisabled() {
-        Record upsertedRecord = RecordFactory.makePopulatedRecord(RECORD_TYPE_STEPS);
+        Record upsertedRecord = RecordFactory.newFullRecordForType(StepsRecord.class);
         ChangeLogsResponse.DeletedLog deletedLog =
                 new ChangeLogsResponse.DeletedLog(TEST_RECORD_ID, DELETION_TIME);
         MedicalResource upsertedMedicalResource =

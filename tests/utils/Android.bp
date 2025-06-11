@@ -17,6 +17,7 @@ package {
 }
 
 // Library for testing helpers that can be used across unittests and integration tests (also cts).
+// We shouldn't depend on framework/service impl since this is used in cts tests.
 java_library {
     name: "healthfitness-testing-shared",
     srcs: [
@@ -32,9 +33,8 @@ java_library {
     jarjar_rules: ":health-cts-jarjar-rules",
 }
 
-// Library for testing helpers that can only be used in unittests,
-// Note: When using java_library, it doesn't allow us to use "module_current" as the sdk_version,
-// which in turn doesn't allow access to hidden methods.
+// Library for testing helpers that can only be used in unittests.
+// This can depend on framework/service impl since this is for unit tests.
 android_library {
     name: "healthfitness-testing-unittest",
     manifest: "AndroidManifest_unittest.xml",
@@ -54,7 +54,8 @@ android_library {
     sdk_version: "module_current",
 }
 
-// Library for testing helpers that can only be used in cts / integration tests,
+// Library for testing helpers that can only be used in cts / integration tests.
+// We shouldn't depend on framework/service impl since this is used in cts tests.
 android_library {
     name: "healthfitness-testing-cts",
     manifest: "AndroidManifest_cts.xml",
