@@ -28,16 +28,15 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 
 public final class NicotineIntakeRecordFactory extends RecordFactory<NicotineIntakeRecord> {
-
-    private static final String KEY_NICOTINE_INTAKE_TYPE = PREFIX + "NICOTINE_INTAKE_TYPE";
     private static final String KEY_QUANTITY = PREFIX + "QUANTITY";
+    private static final String KEY_TYPE = PREFIX + "TYPE";
     private static final String KEY_NICOTINE_INTAKE = PREFIX + "NICOTINE_INTAKE";
 
     @Override
     public NicotineIntakeRecord newFullRecord(
             Metadata metadata, Instant startTime, Instant endTime) {
         return new NicotineIntakeRecord.Builder(
-                        metadata, startTime, endTime, /* quantity= */ 50, NICOTINE_INTAKE_TYPE_VAPE)
+                        metadata, startTime, endTime, 1, NICOTINE_INTAKE_TYPE_CIGARETTE)
                 .setStartZoneOffset(ZoneOffset.ofHours(3))
                 .setEndZoneOffset(ZoneOffset.ofHours(-2))
                 .setNicotineIntake(Mass.fromGrams(0.005))
@@ -48,11 +47,7 @@ public final class NicotineIntakeRecordFactory extends RecordFactory<NicotineInt
     public NicotineIntakeRecord anotherFullRecord(
             Metadata metadata, Instant startTime, Instant endTime) {
         return new NicotineIntakeRecord.Builder(
-                        metadata,
-                        startTime,
-                        endTime,
-                        /* quantity= */ 5,
-                        NICOTINE_INTAKE_TYPE_CIGARETTE)
+                        metadata, startTime, endTime, 10, NICOTINE_INTAKE_TYPE_VAPE)
                 .setStartZoneOffset(ZoneOffset.ofHours(-1))
                 .setEndZoneOffset(ZoneOffset.ofHours(2))
                 .setNicotineIntake(Mass.fromGrams(0.12))
@@ -63,11 +58,7 @@ public final class NicotineIntakeRecordFactory extends RecordFactory<NicotineInt
     public NicotineIntakeRecord newEmptyRecord(
             Metadata metadata, Instant startTime, Instant endTime) {
         return new NicotineIntakeRecord.Builder(
-                        metadata,
-                        startTime,
-                        endTime,
-                        /* quantity= */ 3,
-                        NICOTINE_INTAKE_TYPE_CIGARETTE)
+                        metadata, startTime, endTime, 1, NICOTINE_INTAKE_TYPE_CIGARETTE)
                 .build();
     }
 
@@ -89,9 +80,8 @@ public final class NicotineIntakeRecordFactory extends RecordFactory<NicotineInt
     @Override
     protected Bundle getValuesBundleForRecord(NicotineIntakeRecord record) {
         Bundle values = new Bundle();
-        values.putInt(KEY_NICOTINE_INTAKE_TYPE, record.getNicotineIntakeType());
         values.putInt(KEY_QUANTITY, record.getQuantity());
-
+        values.putInt(KEY_TYPE, record.getNicotineIntakeType());
         if (record.getNicotineIntake() != null) {
             values.putDouble(KEY_NICOTINE_INTAKE, record.getNicotineIntake().getInGrams());
         }
@@ -106,12 +96,13 @@ public final class NicotineIntakeRecordFactory extends RecordFactory<NicotineInt
             ZoneOffset startZoneOffset,
             ZoneOffset endZoneOffset,
             Bundle bundle) {
-        int nicotineIntakeType = bundle.getInt(KEY_NICOTINE_INTAKE_TYPE);
-        int quantity = bundle.getInt(KEY_QUANTITY);
-
         NicotineIntakeRecord.Builder record =
                 new NicotineIntakeRecord.Builder(
-                                metadata, startTime, endTime, quantity, nicotineIntakeType)
+                                metadata,
+                                startTime,
+                                endTime,
+                                bundle.getInt(KEY_QUANTITY),
+                                bundle.getInt(KEY_TYPE))
                         .setStartZoneOffset(startZoneOffset)
                         .setEndZoneOffset(endZoneOffset);
         if (bundle.containsKey(KEY_NICOTINE_INTAKE)) {

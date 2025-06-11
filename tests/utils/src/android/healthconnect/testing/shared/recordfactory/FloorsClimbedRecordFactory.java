@@ -16,63 +16,68 @@
 
 package android.healthconnect.testing.shared.recordfactory;
 
+import android.health.connect.datatypes.FloorsClimbedRecord;
 import android.health.connect.datatypes.Metadata;
-import android.health.connect.datatypes.StepsRecord;
 import android.os.Bundle;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 
 /** Note: This class is AI generated, validate before using, and remove this note */
-public final class StepsRecordFactory extends RecordFactory<StepsRecord> {
-    private static final String KEY_COUNT = PREFIX + "COUNT";
+public final class FloorsClimbedRecordFactory extends RecordFactory<FloorsClimbedRecord> {
+    private static final String KEY_FLOORS = PREFIX + "FLOORS";
 
     @Override
-    public StepsRecord newFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 100)
+    public FloorsClimbedRecord newFullRecord(
+            Metadata metadata, Instant startTime, Instant endTime) {
+        return new FloorsClimbedRecord.Builder(metadata, startTime, endTime, 10.0)
                 .setStartZoneOffset(ZoneOffset.ofHours(3))
                 .setEndZoneOffset(ZoneOffset.ofHours(-2))
                 .build();
     }
 
     @Override
-    public StepsRecord anotherFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 200)
+    public FloorsClimbedRecord anotherFullRecord(
+            Metadata metadata, Instant startTime, Instant endTime) {
+        return new FloorsClimbedRecord.Builder(metadata, startTime, endTime, 20.0)
                 .setStartZoneOffset(ZoneOffset.ofHours(-1))
                 .setEndZoneOffset(ZoneOffset.ofHours(2))
                 .build();
     }
 
     @Override
-    public StepsRecord newEmptyRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 100).build();
+    public FloorsClimbedRecord newEmptyRecord(
+            Metadata metadata, Instant startTime, Instant endTime) {
+        return new FloorsClimbedRecord.Builder(metadata, startTime, endTime, 10.0).build();
     }
 
     @Override
-    protected StepsRecord recordWithMetadata(StepsRecord record, Metadata metadata) {
-        return new StepsRecord.Builder(
-                        metadata, record.getStartTime(), record.getEndTime(), record.getCount())
+    protected FloorsClimbedRecord recordWithMetadata(
+            FloorsClimbedRecord record, Metadata metadata) {
+        return new FloorsClimbedRecord.Builder(
+                        metadata, record.getStartTime(), record.getEndTime(), record.getFloors())
                 .setStartZoneOffset(record.getStartZoneOffset())
                 .setEndZoneOffset(record.getEndZoneOffset())
                 .build();
     }
 
     @Override
-    protected Bundle getValuesBundleForRecord(StepsRecord record) {
+    protected Bundle getValuesBundleForRecord(FloorsClimbedRecord record) {
         Bundle values = new Bundle();
-        values.putLong(KEY_COUNT, record.getCount());
+        values.putDouble(KEY_FLOORS, record.getFloors());
         return values;
     }
 
     @Override
-    public StepsRecord newRecordFromValuesBundle(
+    public FloorsClimbedRecord newRecordFromValuesBundle(
             Metadata metadata,
             Instant startTime,
             Instant endTime,
             ZoneOffset startZoneOffset,
             ZoneOffset endZoneOffset,
             Bundle bundle) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, bundle.getLong(KEY_COUNT, 100))
+        return new FloorsClimbedRecord.Builder(
+                        metadata, startTime, endTime, bundle.getDouble(KEY_FLOORS))
                 .setStartZoneOffset(startZoneOffset)
                 .setEndZoneOffset(endZoneOffset)
                 .build();

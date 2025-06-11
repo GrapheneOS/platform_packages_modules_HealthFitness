@@ -16,63 +16,76 @@
 
 package android.healthconnect.testing.shared.recordfactory;
 
+import android.health.connect.datatypes.ElevationGainedRecord;
 import android.health.connect.datatypes.Metadata;
-import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.units.Length;
 import android.os.Bundle;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 
 /** Note: This class is AI generated, validate before using, and remove this note */
-public final class StepsRecordFactory extends RecordFactory<StepsRecord> {
-    private static final String KEY_COUNT = PREFIX + "COUNT";
+public final class ElevationGainedRecordFactory extends RecordFactory<ElevationGainedRecord> {
+    private static final String KEY_ELEVATION = PREFIX + "ELEVATION";
 
     @Override
-    public StepsRecord newFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 100)
+    public ElevationGainedRecord newFullRecord(
+            Metadata metadata, Instant startTime, Instant endTime) {
+        return new ElevationGainedRecord.Builder(
+                        metadata, startTime, endTime, Length.fromMeters(100))
                 .setStartZoneOffset(ZoneOffset.ofHours(3))
                 .setEndZoneOffset(ZoneOffset.ofHours(-2))
                 .build();
     }
 
     @Override
-    public StepsRecord anotherFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 200)
+    public ElevationGainedRecord anotherFullRecord(
+            Metadata metadata, Instant startTime, Instant endTime) {
+        return new ElevationGainedRecord.Builder(
+                        metadata, startTime, endTime, Length.fromMeters(200))
                 .setStartZoneOffset(ZoneOffset.ofHours(-1))
                 .setEndZoneOffset(ZoneOffset.ofHours(2))
                 .build();
     }
 
     @Override
-    public StepsRecord newEmptyRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 100).build();
+    public ElevationGainedRecord newEmptyRecord(
+            Metadata metadata, Instant startTime, Instant endTime) {
+        return new ElevationGainedRecord.Builder(
+                        metadata, startTime, endTime, Length.fromMeters(100))
+                .build();
     }
 
     @Override
-    protected StepsRecord recordWithMetadata(StepsRecord record, Metadata metadata) {
-        return new StepsRecord.Builder(
-                        metadata, record.getStartTime(), record.getEndTime(), record.getCount())
+    protected ElevationGainedRecord recordWithMetadata(
+            ElevationGainedRecord record, Metadata metadata) {
+        return new ElevationGainedRecord.Builder(
+                        metadata, record.getStartTime(), record.getEndTime(), record.getElevation())
                 .setStartZoneOffset(record.getStartZoneOffset())
                 .setEndZoneOffset(record.getEndZoneOffset())
                 .build();
     }
 
     @Override
-    protected Bundle getValuesBundleForRecord(StepsRecord record) {
+    protected Bundle getValuesBundleForRecord(ElevationGainedRecord record) {
         Bundle values = new Bundle();
-        values.putLong(KEY_COUNT, record.getCount());
+        values.putDouble(KEY_ELEVATION, record.getElevation().getInMeters());
         return values;
     }
 
     @Override
-    public StepsRecord newRecordFromValuesBundle(
+    public ElevationGainedRecord newRecordFromValuesBundle(
             Metadata metadata,
             Instant startTime,
             Instant endTime,
             ZoneOffset startZoneOffset,
             ZoneOffset endZoneOffset,
             Bundle bundle) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, bundle.getLong(KEY_COUNT, 100))
+        return new ElevationGainedRecord.Builder(
+                        metadata,
+                        startTime,
+                        endTime,
+                        Length.fromMeters(bundle.getDouble(KEY_ELEVATION)))
                 .setStartZoneOffset(startZoneOffset)
                 .setEndZoneOffset(endZoneOffset)
                 .build();

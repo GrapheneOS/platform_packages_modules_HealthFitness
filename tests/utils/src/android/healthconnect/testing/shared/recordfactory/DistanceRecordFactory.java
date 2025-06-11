@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 The Android Open Source Project
+ * Copyright (C) 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,63 +16,69 @@
 
 package android.healthconnect.testing.shared.recordfactory;
 
+import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.Metadata;
-import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.units.Length;
 import android.os.Bundle;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 
 /** Note: This class is AI generated, validate before using, and remove this note */
-public final class StepsRecordFactory extends RecordFactory<StepsRecord> {
-    private static final String KEY_COUNT = PREFIX + "COUNT";
+public final class DistanceRecordFactory extends RecordFactory<DistanceRecord> {
+    private static final String KEY_DISTANCE = PREFIX + "DISTANCE";
 
     @Override
-    public StepsRecord newFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 100)
+    public DistanceRecord newFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
+        return new DistanceRecord.Builder(metadata, startTime, endTime, Length.fromMeters(100))
                 .setStartZoneOffset(ZoneOffset.ofHours(3))
                 .setEndZoneOffset(ZoneOffset.ofHours(-2))
                 .build();
     }
 
     @Override
-    public StepsRecord anotherFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 200)
+    public DistanceRecord anotherFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
+        return new DistanceRecord.Builder(metadata, startTime, endTime, Length.fromMeters(200))
                 .setStartZoneOffset(ZoneOffset.ofHours(-1))
                 .setEndZoneOffset(ZoneOffset.ofHours(2))
                 .build();
     }
 
     @Override
-    public StepsRecord newEmptyRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 100).build();
+    public DistanceRecord newEmptyRecord(Metadata metadata, Instant startTime, Instant endTime) {
+        return new DistanceRecord.Builder(metadata, startTime, endTime, Length.fromMeters(100))
+                .build();
     }
 
     @Override
-    protected StepsRecord recordWithMetadata(StepsRecord record, Metadata metadata) {
-        return new StepsRecord.Builder(
-                        metadata, record.getStartTime(), record.getEndTime(), record.getCount())
+    protected DistanceRecord recordWithMetadata(DistanceRecord record, Metadata metadata) {
+        return new DistanceRecord.Builder(
+                        metadata, record.getStartTime(), record.getEndTime(), record.getDistance())
                 .setStartZoneOffset(record.getStartZoneOffset())
                 .setEndZoneOffset(record.getEndZoneOffset())
                 .build();
     }
 
     @Override
-    protected Bundle getValuesBundleForRecord(StepsRecord record) {
+    protected Bundle getValuesBundleForRecord(DistanceRecord record) {
         Bundle values = new Bundle();
-        values.putLong(KEY_COUNT, record.getCount());
+        values.putDouble(KEY_DISTANCE, record.getDistance().getInMeters());
         return values;
     }
 
     @Override
-    public StepsRecord newRecordFromValuesBundle(
+    public DistanceRecord newRecordFromValuesBundle(
             Metadata metadata,
             Instant startTime,
             Instant endTime,
             ZoneOffset startZoneOffset,
             ZoneOffset endZoneOffset,
             Bundle bundle) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, bundle.getLong(KEY_COUNT, 100))
+        return new DistanceRecord.Builder(
+                        metadata,
+                        startTime,
+                        endTime,
+                        Length.fromMeters(bundle.getDouble(KEY_DISTANCE)))
                 .setStartZoneOffset(startZoneOffset)
                 .setEndZoneOffset(endZoneOffset)
                 .build();
