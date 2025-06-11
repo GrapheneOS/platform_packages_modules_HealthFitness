@@ -29,7 +29,7 @@ import android.os.UserHandle;
 import android.os.UserManager;
 import android.util.ArrayMap;
 import android.util.ArraySet;
-import android.util.Log;
+import android.util.Slog;
 
 import com.android.internal.annotations.GuardedBy;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
@@ -179,7 +179,7 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
 
         final String[] packageNames = mPackageInfoHelper.getPackagesForUid(mContext, user, uid);
         if (packageNames == null) {
-            Log.w(TAG, "onPermissionsChanged: no known packages for UID: " + uid);
+            Slog.w(TAG, "onPermissionsChanged: no known packages for UID: " + uid);
             return;
         }
 
@@ -195,7 +195,7 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
                 mThreadScheduler.scheduleInternalTask(
                         () -> updateFirstGrantTimesFromPermissionState(uid, user, packageNames));
             } catch (RejectedExecutionException executionException) {
-                Log.e(
+                Slog.e(
                         TAG,
                         "Can't queue internal task in #onPermissionsChanged for uid=" + uid,
                         executionException);
@@ -370,7 +370,7 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
         }
         Optional<Instant> firstGrantTime = mUidToGrantTimeCache.get(uid);
         if (firstGrantTime.isPresent() && firstGrantTime.get().isBefore(stagedTime)) {
-            Log.w(
+            Slog.w(
                     TAG,
                     "Backup grant time is later than currently stored grant time, "
                             + "skip restoring grant time for uid "
@@ -403,7 +403,7 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
 
         mGrantTimeLock.writeLock().lock();
         try {
-            Log.i(
+            Slog.i(
                     TAG,
                     "State for user: "
                             + user.getIdentifier()
@@ -466,7 +466,7 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
             }
             return restoredState;
         } catch (Exception e) {
-            Log.e(TAG, "Error while reading from datastore: " + e);
+            Slog.e(TAG, "Error while reading from datastore: " + e);
             return new UserGrantTimeState(CURRENT_VERSION);
         }
     }
@@ -529,7 +529,7 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
     private boolean setPackageGrantTimeIfNotRecorded(
             UserGrantTimeState grantTimeState, String packageName) {
         if (!grantTimeState.containsPackageGrantTime(packageName)) {
-            Log.w(
+            Slog.w(
                     TAG,
                     "No recorded grant time for package:"
                             + packageName
@@ -544,7 +544,7 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
     private boolean setSharedUserGrantTimeIfNotRecorded(
             UserGrantTimeState grantTimeState, String sharedUserIdName) {
         if (!grantTimeState.containsSharedUserGrantTime(sharedUserIdName)) {
-            Log.w(
+            Slog.w(
                     TAG,
                     "No recorded grant time for shared user:"
                             + sharedUserIdName
@@ -563,7 +563,7 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
         recordedButNotValid.removeAll(validApps);
 
         if (!recordedButNotValid.isEmpty()) {
-            Log.w(
+            Slog.w(
                     TAG,
                     "Packages "
                             + recordedButNotValid
@@ -583,7 +583,7 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
         recordedButNotValid.removeAll(validSharedUsers);
 
         if (!recordedButNotValid.isEmpty()) {
-            Log.w(
+            Slog.w(
                     TAG,
                     "Shared users "
                             + recordedButNotValid
@@ -606,7 +606,7 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
 
     private void logIfInDebugMode(String prefixMessage, Object objectToLog) {
         if (Constants.DEBUG) {
-            Log.d(TAG, prefixMessage + objectToLog);
+            Slog.d(TAG, prefixMessage + objectToLog);
         }
     }
 

@@ -19,7 +19,7 @@ package com.android.server.healthconnect.permission;
 import android.annotation.Nullable;
 import android.health.connect.Constants;
 import android.os.UserHandle;
-import android.util.Log;
+import android.util.Slog;
 
 import com.android.server.healthconnect.utils.FilesUtil;
 
@@ -55,7 +55,7 @@ public class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeData
     public UserGrantTimeState readForUser(UserHandle user, @DataType int dataType) {
         File file = getFile(user, dataType);
         if (Constants.DEBUG) {
-            Log.d(TAG, "Reading xml from " + file);
+            Slog.d(TAG, "Reading xml from " + file);
         }
         return mGrantTimeXmlHelper.parseGrantTime(file);
     }
@@ -70,7 +70,7 @@ public class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeData
             UserGrantTimeState grantTimesState, UserHandle user, @DataType int dataType) {
         File file = getFile(user, dataType);
         if (Constants.DEBUG) {
-            Log.d(TAG, "Writing xml to " + file);
+            Slog.d(TAG, "Writing xml to " + file);
         }
         mGrantTimeXmlHelper.serializeGrantTimes(file, grantTimesState);
     }
