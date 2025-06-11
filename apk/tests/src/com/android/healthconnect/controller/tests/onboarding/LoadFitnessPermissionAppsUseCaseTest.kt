@@ -78,13 +78,10 @@ class LoadFitnessPermissionAppsUseCaseTest {
 
     private val readExercisePermission =
         FitnessPermission(FitnessPermissionType.EXERCISE, PermissionsAccessType.READ)
-    private val readNutritionPermission =
-        FitnessPermission(FitnessPermissionType.NUTRITION, PermissionsAccessType.READ)
     private val readHeartRatePermission =
         FitnessPermission(FitnessPermissionType.HEART_RATE, PermissionsAccessType.READ)
     private val readSkinTemperaturePermission =
         FitnessPermission(FitnessPermissionType.SKIN_TEMPERATURE, PermissionsAccessType.READ)
-    private val readExerciseRoutesPermission = AdditionalPermission.READ_EXERCISE_ROUTES
     private val readHistoryDataPermission = AdditionalPermission.READ_HEALTH_DATA_HISTORY
     private val readDataInBackgroundPermission = AdditionalPermission.READ_HEALTH_DATA_IN_BACKGROUND
     private val readImmunization = MedicalPermission(MedicalPermissionType.VACCINES)

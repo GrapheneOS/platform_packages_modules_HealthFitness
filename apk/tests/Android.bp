@@ -412,10 +412,22 @@ filegroup {
     name: "robo-ui-tests-sources-exclude",
     srcs: [
         // TODO: b/419191898 - Update this to get as many Controller tests bivalent as possible
-        // This uses UiDevice to set animation settings, exclude for now
+        // These use UiDevice to set animation settings, exclude for now
         "src/com/android/healthconnect/controller/tests/utils/AnimationUtils.kt",
+        "src/com/android/healthconnect/controller/tests/data/alldata/AllDataFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/data/appdata/AppDataFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/data/entries/AllEntriesFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/data/entries/AppEntriesFragmentTest.kt",
         "src/com/android/healthconnect/controller/tests/data/access/AccessFragmentTest.kt",
         "src/com/android/healthconnect/controller/tests/data/rawfhir/RawFhirFragmentTest.kt",
+        // This gets an "NoActivityResumedException" on two tests. Needs more investigation
+        // However, does use "showOnboarding()" which might not work on robolectric as it uses
+        // SharedPreferences.
+        "src/com/android/healthconnect/controller/tests/data/DataManagementActivityTest.kt",
+        // This needs more investigation
+        "src/com/android/healthconnect/controller/tests/data/access/LoadAccessUseCaseTest.kt",
+        // This test is not finding something in the view. Needs more investigation.
+        "src/com/android/healthconnect/controller/tests/data/entries/MockedAllEntriesFragmentTest.kt",
         // The first click on some preferences doesn't seem to create a view that can be found for
         // the second click. To be investigated.
         "src/com/android/healthconnect/controller/tests/units/UnitsFragmentTest.kt",
@@ -437,9 +449,7 @@ android_robolectric_test {
         "src/com/android/healthconnect/controller/tests/TestActivity.kt",
         "src/com/android/healthconnect/controller/tests/autodelete/**/*.kt",
         "src/com/android/healthconnect/controller/tests/backuprestore/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/data/entrydetails/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/data/formatters/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/data/rawfhir/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/data/**/*.kt",
         "src/com/android/healthconnect/controller/tests/units/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utils/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utiltests/**/*.kt",

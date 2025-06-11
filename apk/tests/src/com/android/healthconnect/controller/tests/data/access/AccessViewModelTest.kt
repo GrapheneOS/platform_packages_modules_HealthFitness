@@ -15,12 +15,14 @@
  */
 package com.android.healthconnect.controller.tests.data.access
 
+import android.health.connect.HealthConnectManager
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.data.access.AccessViewModel
 import com.android.healthconnect.controller.data.access.AppAccessMetadata
 import com.android.healthconnect.controller.data.access.AppAccessState
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
+import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppPermissionsType.COMBINED_PERMISSIONS
 import com.android.healthconnect.controller.shared.app.AppPermissionsType.MEDICAL_PERMISSIONS_ONLY
@@ -31,8 +33,10 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_3
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadAccessUseCase
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -47,15 +51,18 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.mock
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
+@UninstallModules(HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
 class AccessViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    @BindValue val healthConnectManager: HealthConnectManager = mock()
     private lateinit var viewModel: AccessViewModel
     private val fakeLoadAccessUseCase = FakeLoadAccessUseCase()
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -79,9 +86,12 @@ class AccessViewModelTest {
     fun loadAppMetadataMap_returnsCorrectApps() = runTest {
         val expected =
             mapOf(
-                AppAccessState.Read to listOf(AppAccessMetadata(TEST_APP), AppAccessMetadata((TEST_APP_2))),
+                AppAccessState.Read to
+                    listOf(AppAccessMetadata(TEST_APP), AppAccessMetadata((TEST_APP_2))),
                 AppAccessState.Write to listOf(AppAccessMetadata(TEST_APP_2, COMBINED_PERMISSIONS)),
-                AppAccessState.Inactive to listOf(AppAccessMetadata(TEST_APP_3, MEDICAL_PERMISSIONS_ONLY)))
+                AppAccessState.Inactive to
+                    listOf(AppAccessMetadata(TEST_APP_3, MEDICAL_PERMISSIONS_ONLY)),
+            )
         fakeLoadAccessUseCase.updateMap(expected)
 
         val testObserver = TestObserver<AccessViewModel.AccessScreenState>()
@@ -96,10 +106,13 @@ class AccessViewModelTest {
     @Test
     fun loadAppMetadataMap_medicalPermissions_returnsCorrectApps() = runTest {
         val expected =
-                mapOf(
-                        AppAccessState.Read to listOf(AppAccessMetadata(TEST_APP), AppAccessMetadata((TEST_APP_2))),
-                        AppAccessState.Write to listOf(AppAccessMetadata(TEST_APP_2, COMBINED_PERMISSIONS)),
-                        AppAccessState.Inactive to listOf(AppAccessMetadata(TEST_APP_3, MEDICAL_PERMISSIONS_ONLY)))
+            mapOf(
+                AppAccessState.Read to
+                    listOf(AppAccessMetadata(TEST_APP), AppAccessMetadata((TEST_APP_2))),
+                AppAccessState.Write to listOf(AppAccessMetadata(TEST_APP_2, COMBINED_PERMISSIONS)),
+                AppAccessState.Inactive to
+                    listOf(AppAccessMetadata(TEST_APP_3, MEDICAL_PERMISSIONS_ONLY)),
+            )
         fakeLoadAccessUseCase.updateMap(expected)
 
         val testObserver = TestObserver<AccessViewModel.AccessScreenState>()
@@ -108,6 +121,6 @@ class AccessViewModelTest {
         advanceUntilIdle()
 
         assertThat(testObserver.getLastValue())
-                .isEqualTo(AccessViewModel.AccessScreenState.WithData(expected))
+            .isEqualTo(AccessViewModel.AccessScreenState.WithData(expected))
     }
 }

@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.data.entriesandaccess
 
+import android.health.connect.HealthConnectManager
 import androidx.core.os.bundleOf
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -25,21 +26,32 @@ import com.android.healthconnect.controller.data.appdata.AppDataFragment.Compani
 import com.android.healthconnect.controller.data.entriesandaccess.EntriesAndAccessFragment
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.STEPS
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType.VACCINES
+import com.android.healthconnect.controller.service.HealthManagerModule
+import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.mock
 
 @HiltAndroidTest
+@UninstallModules(HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
 class EntriesAndAccessFragmentTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @BindValue lateinit var appInfoReader: AppInfoReader
+    @BindValue val healthConnectManager: HealthConnectManager = mock()
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
     }
 
@@ -54,7 +66,8 @@ class EntriesAndAccessFragmentTest {
     @Test
     fun entriesAndAccessInit_medicalData_showsTabs() {
         launchFragment<EntriesAndAccessFragment>(
-            bundleOf(PERMISSION_TYPE_NAME_KEY to VACCINES.name))
+            bundleOf(PERMISSION_TYPE_NAME_KEY to VACCINES.name)
+        )
 
         onView(withText("Entries")).check(matches(isDisplayed()))
         onView(withText("Access")).check(matches(isDisplayed()))
