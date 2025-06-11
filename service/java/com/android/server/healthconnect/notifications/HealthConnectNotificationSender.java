@@ -203,16 +203,37 @@ public final class HealthConnectNotificationSender {
             return false;
         }
 
-        createNotificationChannel(userHandle);
+        final long callingId = Binder.clearCallingIdentity();
         NotificationManager notificationManager = getNotificationManagerForUser(userHandle);
-        NotificationChannel channel =
-                notificationManager.getNotificationChannel(notification.getChannelId());
-        if (channel.getImportance() == IMPORTANCE_NONE) {
-            Slog.i(TAG, "Notifications channel " + channel.getName() + " is blocked by user");
-            mNotificationStatsLogger.logChannelBlocked();
-            return false;
+
+        try {
+            try {
+                createNotificationChannel(notificationManager);
+            } catch (Throwable e) {
+                Slog.w(TAG, "Unable to create notification channel", e);
+                return false;
+            }
+
+            try {
+                if (isChannelBlocked(notificationManager, notification.getChannelId())) {
+                    mNotificationStatsLogger.logChannelBlocked();
+                    return false;
+                }
+            } catch (Throwable e) {
+                Slog.w(TAG, "Unable to get notification channel", e);
+                return false;
+            }
+
+            try {
+                notificationManager.notify(mNotificationTag, mFixedNotificationId, notification);
+            } catch (Throwable e) {
+                Slog.w(TAG, "Unable to send system notification", e);
+                return false;
+            }
+        } finally {
+            Binder.restoreCallingIdentity(callingId);
         }
-        notifyFromSystem(notificationManager, notification);
+
         return true;
     }
 
@@ -229,18 +250,6 @@ public final class HealthConnectNotificationSender {
         return Objects.requireNonNull(contextAsUser.getSystemService(NotificationManager.class));
     }
 
-    private void notifyFromSystem(
-            NotificationManager notificationManager, Notification notification) {
-        final long callingId = Binder.clearCallingIdentity();
-        try {
-            notificationManager.notify(mNotificationTag, mFixedNotificationId, notification);
-        } catch (Throwable e) {
-            Log.w(TAG, "Unable to send system notification", e);
-        } finally {
-            Binder.restoreCallingIdentity(callingId);
-        }
-    }
-
     private void cancelFromSystem(NotificationManager notificationManager) {
         final long callingId = Binder.clearCallingIdentity();
         try {
@@ -252,7 +261,7 @@ public final class HealthConnectNotificationSender {
         }
     }
 
-    private void createNotificationChannel(UserHandle userHandle) {
+    private void createNotificationChannel(NotificationManager notificationManager) {
         CharSequence channelGroupName =
                 mResourcesContext.getStringByNameOrThrow(mChannelGroupNameResource);
         CharSequence channelName = mResourcesContext.getStringByNameOrThrow(mChannelNameResource);
@@ -266,18 +275,17 @@ public final class HealthConnectNotificationSender {
         notificationChannel.setGroup(mChannelGroupId);
         notificationChannel.setBlockable(true);
 
-        final long callingId = Binder.clearCallingIdentity();
+        notificationManager.createNotificationChannelGroup(group);
+        notificationManager.createNotificationChannel(notificationChannel);
+    }
 
-        NotificationManager notificationManager = getNotificationManagerForUser(userHandle);
-
-        try {
-            notificationManager.createNotificationChannelGroup(group);
-            notificationManager.createNotificationChannel(notificationChannel);
-        } catch (Throwable e) {
-            Log.w(TAG, "Unable to create notification channel", e);
-        } finally {
-            Binder.restoreCallingIdentity(callingId);
+    private boolean isChannelBlocked(NotificationManager notificationManager, String channelId) {
+        NotificationChannel channel = notificationManager.getNotificationChannel(channelId);
+        if (channel.getImportance() == IMPORTANCE_NONE) {
+            Slog.i(TAG, "Notifications channel " + channel.getName() + " is blocked by user");
+            return true;
         }
+        return false;
     }
 
     /** @hide */
