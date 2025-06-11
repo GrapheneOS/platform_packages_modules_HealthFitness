@@ -535,3 +535,39 @@ flag {
     is_fixed_read_only: true
     is_exported: false
 }
+
+flag {
+    name: "matchmaking"
+    namespace: "health_fitness_aconfig"
+    description: "Guards matchmaking APIs"
+    bug: "424125125"
+    is_fixed_read_only: true
+    is_exported: false
+}
+
+flag {
+    name: "matchmaking_counter"
+    namespace: "health_fitness_aconfig"
+    description: "Guards internal user-fixed counter for matchmaking"
+    bug: "424125125"
+    is_fixed_read_only: true
+    is_exported: false
+}
+
+flag {
+    name: "matchmaking_ui"
+    namespace: "health_fitness_aconfig"
+    description: "Guards matchmaking UI changes"
+    bug: "424125125"
+    is_fixed_read_only: true
+    is_exported: false
+}
+
+flag {
+    name: "matchmaking_opt_out"
+    namespace: "health_fitness_aconfig"
+    description: "Allows apps to opt out from matchmaking"
+    bug: "424125125"
+    is_fixed_read_only: true
+    is_exported: false
+}
