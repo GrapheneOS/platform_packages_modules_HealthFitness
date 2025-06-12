@@ -82,7 +82,6 @@ class OnboardingActivity : Hilt_OnboardingActivity() {
     private var targetIntent: Intent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        EdgeToEdgeUtils.enable(this)
         if (SettingsThemeHelper.isExpressiveTheme(this)) {
             setTheme(R.style.Theme_HealthConnect_Expressive)
         }
