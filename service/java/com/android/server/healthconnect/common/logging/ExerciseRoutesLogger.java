@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.logging;
+package com.android.server.healthconnect.common.logging;
 
 import static android.health.HealthFitnessStatsLog.EXERCISE_ROUTE_API_CALLED;
 import static android.health.HealthFitnessStatsLog.EXERCISE_ROUTE_API_CALLED__OPERATION__OPERATION_READ;

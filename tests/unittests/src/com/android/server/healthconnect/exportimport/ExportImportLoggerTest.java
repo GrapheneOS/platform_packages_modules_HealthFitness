@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 The Android Open Source Project
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package healthconnect.logging;
+package com.android.server.healthconnect.exportimport;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_EXPORT_INVOKED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_EXPORT_INVOKED__STATUS__EXPORT_STATUS_STARTED;
@@ -30,8 +30,6 @@ import static org.mockito.Mockito.verify;
 import android.health.HealthFitnessStatsLog;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-
-import com.android.server.healthconnect.logging.ExportImportLogger;
 
 import org.junit.Rule;
 import org.junit.Test;

@@ -23,9 +23,9 @@ import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BAN
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING_NOTIFICATION;
-import static com.android.server.healthconnect.logging.NotificationStatsLogger.ACTION_NOTIFICATION_SENT;
-import static com.android.server.healthconnect.logging.NotificationStatsTestUtils.verifyEventLogged;
-import static com.android.server.healthconnect.logging.NotificationStatsTestUtils.verifyNothingLogged;
+import static com.android.server.healthconnect.notifications.NotificationStatsLogger.ACTION_NOTIFICATION_SENT;
+import static com.android.server.healthconnect.notifications.NotificationStatsTestUtils.verifyEventLogged;
+import static com.android.server.healthconnect.notifications.NotificationStatsTestUtils.verifyNothingLogged;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.CONNECT_MORE_APPS_NOTIFICATION_CONTENT;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.CONNECT_MORE_APPS_NOTIFICATION_TITLE;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationSender.START_USING_HC_NOTIFICATION_CONTENT;
@@ -56,9 +56,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
-import com.android.server.healthconnect.logging.NotificationStatsLogger;
 import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
+import com.android.server.healthconnect.notifications.NotificationStatsLogger;
 
 import org.junit.After;
 import org.junit.Before;

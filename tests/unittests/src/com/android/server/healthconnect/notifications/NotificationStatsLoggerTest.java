@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.logging;
+package com.android.server.healthconnect.notifications;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_NOTIFICATION__NOTIFICATION_ACTION__NOTIFICATION_ACTION_CHANNEL_BLOCKED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_NOTIFICATION__NOTIFICATION_ID__NOTIFICATION_ID_UNKNOWN;
@@ -22,11 +22,11 @@ import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BAN
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
 
-import static com.android.server.healthconnect.logging.NotificationStatsLogger.ACTION_NOTIFICATION_CLICKED;
-import static com.android.server.healthconnect.logging.NotificationStatsLogger.ACTION_NOTIFICATION_DISMISSED;
-import static com.android.server.healthconnect.logging.NotificationStatsLogger.ACTION_NOTIFICATION_SENT;
-import static com.android.server.healthconnect.logging.NotificationStatsLogger.onboardingStateToNotificationId;
-import static com.android.server.healthconnect.logging.NotificationStatsTestUtils.verifyEventLogged;
+import static com.android.server.healthconnect.notifications.NotificationStatsLogger.ACTION_NOTIFICATION_CLICKED;
+import static com.android.server.healthconnect.notifications.NotificationStatsLogger.ACTION_NOTIFICATION_DISMISSED;
+import static com.android.server.healthconnect.notifications.NotificationStatsLogger.ACTION_NOTIFICATION_SENT;
+import static com.android.server.healthconnect.notifications.NotificationStatsLogger.onboardingStateToNotificationId;
+import static com.android.server.healthconnect.notifications.NotificationStatsTestUtils.verifyEventLogged;
 
 import static com.google.common.truth.Truth.assertThat;
 

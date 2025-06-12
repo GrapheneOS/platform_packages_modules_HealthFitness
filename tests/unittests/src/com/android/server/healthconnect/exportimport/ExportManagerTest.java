@@ -65,7 +65,6 @@ import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.exportimport.ExportManager.ErrorReporter;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
-import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.storage.HealthConnectContext;

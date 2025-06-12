@@ -28,10 +28,10 @@ import android.os.PersistableBundle;
 import android.os.UserHandle;
 
 import com.android.server.healthconnect.HealthConnectDailyService;
-import com.android.server.healthconnect.logging.DailyLoggingService;
-import com.android.server.healthconnect.logging.DatabaseStatsCollector;
-import com.android.server.healthconnect.logging.EcosystemStatsCollector;
-import com.android.server.healthconnect.logging.UsageStatsCollector;
+import com.android.server.healthconnect.common.logging.DailyLoggingService;
+import com.android.server.healthconnect.common.logging.DatabaseStatsCollector;
+import com.android.server.healthconnect.common.logging.EcosystemStatsCollector;
+import com.android.server.healthconnect.common.logging.UsageStatsCollector;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
