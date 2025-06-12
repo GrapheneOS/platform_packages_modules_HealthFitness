@@ -40,9 +40,7 @@ public final class BackupChange implements Parcelable {
     // A change ID that uniquely identifies the specific data point this change refers to.
     @NonNull private final String mChangeId;
 
-    private final boolean mIsDeletion;
-
-    // Only present if isDeletion is false.
+    // Only present if the change is an upsertion, rather than a deletion.
     // The data is a byte array to keep the data opaque from the client.
     // As long as the client doesn't parse the data, it doesn't know what type of data this is.
     @Nullable private final byte[] mData;
@@ -57,7 +55,7 @@ public final class BackupChange implements Parcelable {
      */
     @NonNull
     public static BackupChange ofDeletion(@NonNull String changeId) {
-        return new BackupChange(changeId, /* isDeletion= */ true, /* data= */ null);
+        return new BackupChange(changeId, /* data= */ null);
     }
 
     /**
@@ -72,40 +70,37 @@ public final class BackupChange implements Parcelable {
      */
     @NonNull
     public static BackupChange ofUpsertion(@NonNull String changeId, @NonNull byte[] data) {
-        return new BackupChange(changeId, /* isDeletion= */ false, data);
+        return new BackupChange(changeId, data);
     }
 
     /**
      * @param changeId A change ID that uniquely identifies the specific data point this change
      *     refers to.
-     * @param isDeletion Whether this change is a deletion.
-     * @param data The data to be backed up. Only present if isDeletion is false.
+     * @param data The data to be backed up. Null if the change is a deletion.
      */
-    private BackupChange(@NonNull String changeId, boolean isDeletion, @Nullable byte[] data) {
+    private BackupChange(@NonNull String changeId, @Nullable byte[] data) {
         mChangeId = changeId;
-        mIsDeletion = isDeletion;
         mData = data;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BackupChange that)) return false;
-        return mIsDeletion == that.mIsDeletion
-                && mChangeId.equals(that.mChangeId)
-                && Arrays.equals(mData, that.mData);
+        return this == o
+                || ((o instanceof BackupChange that)
+                        && mChangeId.equals(that.mChangeId)
+                        && Arrays.equals(mData, that.mData));
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(mChangeId, mIsDeletion);
+        int result = Objects.hash(mChangeId);
         result = 31 * result + Arrays.hashCode(mData);
         return result;
     }
 
     private BackupChange(Parcel in) {
         mChangeId = in.readString();
-        mIsDeletion = in.readByte() != 0;
+        var unused = in.readByte();
         mData = in.readBlob();
     }
 
@@ -136,7 +131,7 @@ public final class BackupChange implements Parcelable {
      *     if a deletion change is received.
      */
     public boolean isDeletion() {
-        return mIsDeletion;
+        return mData == null;
     }
 
     /**
@@ -159,7 +154,7 @@ public final class BackupChange implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(mChangeId);
-        dest.writeByte((byte) (mIsDeletion ? 1 : 0));
+        dest.writeByte((byte) (isDeletion() ? 1 : 0));
         dest.writeBlob(mData);
     }
 }
