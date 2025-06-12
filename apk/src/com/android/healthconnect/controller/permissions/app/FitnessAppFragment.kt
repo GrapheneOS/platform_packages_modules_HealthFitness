@@ -20,7 +20,6 @@ package com.android.healthconnect.controller.permissions.app
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
-import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
@@ -282,26 +281,27 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
         return manageDataCategory.children.none { it.key == KEY_ADDITIONAL_ACCESS }
     }
 
-    private val onSwitchChangeListener = OnCheckedChangeListener { buttonView, isChecked ->
-        if (isChecked) {
+    private fun setupAllowAllPreference() {
+
+        val onChecked = suspend {
             val permissionsUpdated = appPermissionViewModel.grantAllFitnessPermissions(packageName)
             if (!permissionsUpdated) {
-                buttonView.isChecked = false
                 Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
+                false
             }
-        } else {
+            true
+        }
+        val onUnchecked = suspend {
             showRevokeAllFitnessPermissions()
+            true
         }
-    }
 
-    private fun setupAllowAllPreference() {
-        allowAllPreference.addOnSwitchChangeListener(onSwitchChangeListener)
-        appPermissionViewModel.allFitnessPermissionsGranted.observe(viewLifecycleOwner) {
-            isAllGranted ->
-            allowAllPreference.removeOnSwitchChangeListener(onSwitchChangeListener)
-            allowAllPreference.isChecked = isAllGranted
-            allowAllPreference.addOnSwitchChangeListener(onSwitchChangeListener)
-        }
+        allowAllPreference.setUpStateManagement(
+            viewLifecycleOwner,
+            appPermissionViewModel.allFitnessPermissionsGranted,
+            onChecked,
+            onUnchecked,
+        )
     }
 
     private fun showRevokeAllFitnessPermissions() {
@@ -343,7 +343,6 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
                         it.logNameInactive = AppAccessElement.PERMISSION_SWITCH_INACTIVE
                         it.permission = permission
                         it.setOnPreferenceChangeListener { _, newValue ->
-                            allowAllPreference.removeOnSwitchChangeListener(onSwitchChangeListener)
                             val checked = newValue as Boolean
                             val permissionUpdated =
                                 appPermissionViewModel.updatePermission(
@@ -359,7 +358,6 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
                                     )
                                     .show()
                             }
-                            allowAllPreference.addOnSwitchChangeListener(onSwitchChangeListener)
                             permissionUpdated
                         }
                     }

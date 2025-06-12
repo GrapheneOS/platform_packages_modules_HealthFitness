@@ -374,8 +374,8 @@ class MedicalPermissionsFragmentTest {
                 )
             )
         }
-        val activityScenario = launchFragment<MedicalPermissionsFragment>(bundleOf())
 
+        val activityScenario = launchFragment<MedicalPermissionsFragment>(bundleOf())
         var allowAllPreference: HealthMainSwitchPreference? = null
         activityScenario.onActivity { activity: TestActivity ->
             val fragment =
@@ -385,14 +385,11 @@ class MedicalPermissionsFragmentTest {
             allowAllPreference?.isChecked =
                 false // makes sure the preference is on so OnPreferenceChecked is triggered
         }
-
         onView(withText(allowAllPreference?.title?.toString())).perform(scrollTo()).perform(click())
 
         verify(viewModel).updateMedicalPermissions(eq(true))
-        // TODO (b/325680041) this is not triggered?
-        //
-        // verify(healthConnectLogger).logInteraction(PermissionsElement.ALLOW_ALL_SWITCH,
-        // UIAction.ACTION_TOGGLE_ON)
+        verify(healthConnectLogger)
+            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_ON)
     }
 
     @Test
@@ -410,8 +407,8 @@ class MedicalPermissionsFragmentTest {
                 )
             )
         }
-        val activityScenario = launchFragment<MedicalPermissionsFragment>(bundleOf())
 
+        val activityScenario = launchFragment<MedicalPermissionsFragment>(bundleOf())
         var allowAllPreference: HealthMainSwitchPreference? = null
         activityScenario.onActivity { activity: TestActivity ->
             val fragment =
@@ -421,10 +418,11 @@ class MedicalPermissionsFragmentTest {
             allowAllPreference?.isChecked =
                 true // makes sure the preference is on so OnPreferenceChecked is triggered
         }
-
         onView(withText(allowAllPreference?.title?.toString())).perform(scrollTo()).perform(click())
 
         assertThat(viewModel.grantedMedicalPermissions.value).isEmpty()
+        verify(healthConnectLogger)
+            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_OFF)
     }
 
     @Test

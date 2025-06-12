@@ -20,7 +20,6 @@ package com.android.healthconnect.controller.permissions.app
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
-import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
@@ -86,17 +85,6 @@ class SettingsMedicalAppFragment : Hilt_SettingsMedicalAppFragment() {
     private val writePermissionCategory: PreferenceGroup by pref(WRITE_CATEGORY)
     private val manageAppCategory: PreferenceGroup by pref(MANAGE_APP_CATEGORY)
     private val footer: FooterPreference by pref(FOOTER)
-    private val onSwitchChangeListener = OnCheckedChangeListener { switchView, isChecked ->
-        if (isChecked) {
-            val permissionsUpdated = viewModel.grantAllMedicalPermissions(packageName)
-            if (!permissionsUpdated) {
-                switchView.isChecked = false
-                Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
-            }
-        } else {
-            showRevokeAllPermissions()
-        }
-    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
@@ -254,12 +242,26 @@ class SettingsMedicalAppFragment : Hilt_SettingsMedicalAppFragment() {
     }
 
     private fun setupAllowAllPreference() {
-        allowAllPreference.addOnSwitchChangeListener(onSwitchChangeListener)
-        viewModel.allMedicalPermissionsGranted.observe(viewLifecycleOwner) { isAllGranted ->
-            allowAllPreference.removeOnSwitchChangeListener(onSwitchChangeListener)
-            allowAllPreference.isChecked = isAllGranted
-            allowAllPreference.addOnSwitchChangeListener(onSwitchChangeListener)
+
+        val onChecked = suspend {
+            val permissionsUpdated = viewModel.grantAllMedicalPermissions(packageName)
+            if (!permissionsUpdated) {
+                Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
+                false
+            }
+            true
         }
+        val onUnchecked = suspend {
+            showRevokeAllPermissions()
+            true
+        }
+
+        allowAllPreference.setUpStateManagement(
+            viewLifecycleOwner,
+            viewModel.allMedicalPermissionsGranted,
+            onChecked,
+            onUnchecked,
+        )
     }
 
     private fun showRevokeAllPermissions() {

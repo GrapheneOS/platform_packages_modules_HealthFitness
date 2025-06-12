@@ -17,7 +17,6 @@ package com.android.healthconnect.controller.permissions.request
 
 import android.os.Bundle
 import android.view.View
-import android.widget.CompoundButton.OnCheckedChangeListener
 import androidx.fragment.app.activityViewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
@@ -65,16 +64,6 @@ class FitnessPermissionsFragment : Hilt_FitnessPermissionsFragment() {
     private val readPermissionCategory: PreferenceGroup by pref(READ_CATEGORY)
 
     private val writePermissionCategory: PreferenceGroup by pref(WRITE_CATEGORY)
-
-    private val onSwitchChangeListener = OnCheckedChangeListener { _, grant ->
-        readPermissionCategory.children.forEach { preference ->
-            (preference as TwoStatePreference).isChecked = grant
-        }
-        writePermissionCategory.children.forEach { preference ->
-            (preference as TwoStatePreference).isChecked = grant
-        }
-        viewModel.updateFitnessPermissions(grant)
-    }
 
     init {
         this.setPageName(PageName.REQUEST_PERMISSIONS_PAGE)
@@ -182,14 +171,32 @@ class FitnessPermissionsFragment : Hilt_FitnessPermissionsFragment() {
     }
 
     private fun setupAllowAll() {
-        viewModel.allFitnessPermissionsGranted.observe(viewLifecycleOwner) { allPermissionsGranted
-            ->
-            // does not trigger removing/enabling all permissions
-            allowAllPreference.removeOnSwitchChangeListener(onSwitchChangeListener)
-            allowAllPreference.isChecked = allPermissionsGranted
-            allowAllPreference.addOnSwitchChangeListener(onSwitchChangeListener)
+
+        val onChecked = suspend {
+            toggleAllFitnessPermissions(true)
+            true
         }
-        allowAllPreference.addOnSwitchChangeListener(onSwitchChangeListener)
+        val onUnchecked = suspend {
+            toggleAllFitnessPermissions(false)
+            true
+        }
+
+        allowAllPreference.setUpStateManagement(
+            viewLifecycleOwner,
+            viewModel.allFitnessPermissionsGranted,
+            onChecked,
+            onUnchecked,
+        )
+    }
+
+    private fun toggleAllFitnessPermissions(isChecked: Boolean) {
+        readPermissionCategory.children.forEach { preference ->
+            (preference as TwoStatePreference).isChecked = isChecked
+        }
+        writePermissionCategory.children.forEach { preference ->
+            (preference as TwoStatePreference).isChecked = isChecked
+        }
+        viewModel.updateFitnessPermissions(isChecked)
     }
 
     private fun updateDataList(permissionsList: List<HealthPermission.FitnessPermission>) {

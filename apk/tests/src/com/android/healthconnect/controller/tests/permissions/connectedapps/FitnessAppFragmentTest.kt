@@ -73,6 +73,7 @@ import com.android.healthconnect.controller.utils.logging.AppAccessElement
 import com.android.healthconnect.controller.utils.logging.DisconnectAppDialogElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.logging.UIAction
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -417,6 +418,34 @@ class FitnessAppFragmentTest {
             .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
         verify(healthConnectLogger)
             .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_DELETE_CHECKBOX)
+
+        verify(healthConnectLogger)
+            .logInteraction(
+                AppAccessElement.ALLOW_ALL_PERMISSIONS_SWITCH_ACTIVE,
+                UIAction.ACTION_TOGGLE_OFF,
+            )
+    }
+
+    @Test
+    fun toggleOnAllowAll_togglesAllPermissionsOn() {
+        val writePermission = FitnessPermission(EXERCISE, WRITE)
+        val readPermission = FitnessPermission(DISTANCE, READ)
+        whenever(viewModel.allFitnessPermissionsGranted).then { MediatorLiveData(false) }
+        whenever(viewModel.revokeFitnessShouldIncludeBackground()).thenReturn(false)
+        whenever(viewModel.revokeFitnessShouldIncludePastData()).thenReturn(false)
+        whenever(viewModel.fitnessPermissions).then {
+            MutableLiveData(listOf(writePermission, readPermission))
+        }
+        launchFragment<FitnessAppFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
+        )
+        onView(withText("Allow all")).perform(click())
+
+        verify(healthConnectLogger)
+            .logInteraction(
+                AppAccessElement.ALLOW_ALL_PERMISSIONS_SWITCH_INACTIVE,
+                UIAction.ACTION_TOGGLE_ON,
+            )
     }
 
     @Test
