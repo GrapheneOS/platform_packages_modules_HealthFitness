@@ -19,7 +19,6 @@ package com.android.healthconnect.controller.onboarding
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
-import android.widget.CompoundButton.OnCheckedChangeListener
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -185,18 +184,24 @@ class FitnessAppOnboardingFragment : Hilt_FitnessAppOnboardingFragment() {
         )
     }
 
-    private val onSwitchChangeListener = OnCheckedChangeListener { buttonView, isChecked ->
-        viewModel.updateAllPermissions(isChecked)
-    }
-
     private fun setupAllowAllPreference() {
+
         allowAllPreference.isVisible = true
-        allowAllPreference.addOnSwitchChangeListener(onSwitchChangeListener)
-        viewModel.allFitnessPermissionsGranted.observe(viewLifecycleOwner) { allGranted ->
-            allowAllPreference.removeOnSwitchChangeListener(onSwitchChangeListener)
-            allowAllPreference.isChecked = allGranted
-            allowAllPreference.addOnSwitchChangeListener(onSwitchChangeListener)
+        val onChecked = suspend {
+            viewModel.updateAllPermissions(true)
+            true
         }
+        val onUnchecked = suspend {
+            viewModel.updateAllPermissions(false)
+            true
+        }
+
+        allowAllPreference.setUpStateManagement(
+            viewLifecycleOwner,
+            viewModel.allFitnessPermissionsGranted,
+            onChecked,
+            onUnchecked,
+        )
     }
 
     private fun updatePermissions(permsMap: Map<FitnessPermission, Boolean>) {

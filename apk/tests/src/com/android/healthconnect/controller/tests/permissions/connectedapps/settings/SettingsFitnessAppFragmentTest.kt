@@ -52,7 +52,11 @@ import com.android.healthconnect.controller.permissions.app.AppPermissionViewMod
 import com.android.healthconnect.controller.permissions.app.SettingsFitnessAppFragment
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
+import com.android.healthconnect.controller.permissions.data.HealthPermission.MedicalPermission
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.READ
+import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.WRITE
+import com.android.healthconnect.controller.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
@@ -65,6 +69,7 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
+import com.android.healthconnect.controller.utils.logging.UIAction
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -341,6 +346,52 @@ class SettingsFitnessAppFragmentTest {
             .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
         onIdle()
         onView(withText("Sleep")).perform(scrollTo()).check(matches(not(isChecked())))
+    }
+
+    @Test
+    fun toggleOnAllowAll_togglesAllPermissionsOn() {
+        val readStepsPermission =
+            FitnessPermission(FitnessPermissionType.STEPS, PermissionsAccessType.READ)
+        val writeSleepPermission =
+            FitnessPermission(FitnessPermissionType.SLEEP, PermissionsAccessType.WRITE)
+        whenever(viewModel.fitnessPermissions).then {
+            MutableLiveData(listOf(readStepsPermission, writeSleepPermission))
+        }
+        whenever(viewModel.grantAllFitnessPermissions(TEST_APP_PACKAGE_NAME)).then { true }
+
+        launchFragment<SettingsFitnessAppFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+        )
+        onView(withText("Allow all")).perform(click())
+
+        verify(healthConnectLogger)
+            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_ON)
+    }
+
+    @Test
+    fun toggleOffAllowAll_togglesAllPermissionsOff() {
+        val readStepsPermission =
+            FitnessPermission(FitnessPermissionType.STEPS, PermissionsAccessType.READ)
+        val writeSleepPermission =
+            FitnessPermission(FitnessPermissionType.SLEEP, PermissionsAccessType.WRITE)
+        whenever(viewModel.fitnessPermissions).then {
+            MutableLiveData(listOf(readStepsPermission, writeSleepPermission))
+        }
+        whenever(viewModel.medicalPermissions).then {
+            MutableLiveData(emptyList<MedicalPermission>())
+        }
+        whenever(viewModel.grantedFitnessPermissions).then {
+            MutableLiveData(setOf(readStepsPermission, writeSleepPermission))
+        }
+        whenever(viewModel.allFitnessPermissionsGranted).then { MediatorLiveData(true) }
+
+        launchFragment<SettingsFitnessAppFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
+        )
+        onView(withText("Allow all")).perform(click())
+
+        verify(healthConnectLogger)
+            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_OFF)
     }
 
     @Test

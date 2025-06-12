@@ -17,15 +17,24 @@ package com.android.healthconnect.controller.shared.preference
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.CompoundButton.OnCheckedChangeListener
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import com.android.healthconnect.controller.utils.logging.ElementName
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import com.android.healthconnect.controller.utils.logging.UIAction
 import com.android.healthconnect.controller.utils.logging.UnknownGenericElement
 import com.android.settingslib.widget.MainSwitchPreference
 import dagger.hilt.android.EntryPointAccessors
+import kotlinx.coroutines.launch
 
-/** A [MainSwitchPreference] that allows logging. */
+/**
+ * A [MainSwitchPreference] that allows logging.
+ *
+ * Use the method [setUpStateManagement] to set up the state management, logging and to define
+ * functions to be called when the switch is checked or unchecked.
+ */
 class HealthMainSwitchPreference
 @JvmOverloads
 constructor(context: Context, attrs: AttributeSet? = null) : MainSwitchPreference(context, attrs) {
@@ -33,29 +42,14 @@ constructor(context: Context, attrs: AttributeSet? = null) : MainSwitchPreferenc
     private var logger: HealthConnectLogger
     var logNameActive: ElementName = UnknownGenericElement.UNKNOWN_SWITCH_ACTIVE_PREFERENCE
     var logNameInactive: ElementName = UnknownGenericElement.UNKNOWN_SWITCH_INACTIVE_PREFERENCE
-    private var loggingSwitchListener: OnCheckedChangeListener
 
     init {
         val hiltEntryPoint =
             EntryPointAccessors.fromApplication(
-                context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
+                context.applicationContext,
+                HealthConnectLoggerEntryPoint::class.java,
+            )
         logger = hiltEntryPoint.logger()
-        loggingSwitchListener = OnCheckedChangeListener { buttonView, newValue ->
-            if (buttonView.isPressed) {
-                if (newValue) {
-                    logger.logInteraction(
-                        logNameInactive,
-                        com.android.healthconnect.controller.utils.logging.UIAction
-                            .ACTION_TOGGLE_ON)
-                } else {
-                    logger.logInteraction(
-                        logNameActive,
-                        com.android.healthconnect.controller.utils.logging.UIAction
-                            .ACTION_TOGGLE_OFF)
-                }
-            }
-        }
-        this.addOnSwitchChangeListener(loggingSwitchListener)
     }
 
     override fun onAttached() {
@@ -64,6 +58,47 @@ constructor(context: Context, attrs: AttributeSet? = null) : MainSwitchPreferenc
             logger.logImpression(logNameActive)
         } else {
             logger.logImpression(logNameInactive)
+        }
+    }
+
+    /**
+     * Sets up the state management, logging and functions for the switch.
+     *
+     * @param onCheckedAction A function that is called when the switch is checked.
+     * @param onUncheckedAction A function that is called when the switch is unchecked.
+     */
+    fun setUpStateManagement(
+        lifecycleOwner: LifecycleOwner,
+        observedLiveData: LiveData<Boolean>,
+        onCheckedAction: suspend () -> Boolean,
+        onUncheckedAction: suspend () -> Boolean,
+    ) {
+
+        onPreferenceChangeListener = null
+        onPreferenceChangeListener = OnPreferenceChangeListener { _, newValue ->
+            val isCheckedByUser = newValue as Boolean
+            if (isCheckedByUser) {
+                logger.logInteraction(logNameInactive, UIAction.ACTION_TOGGLE_ON)
+            } else {
+                logger.logInteraction(logNameActive, UIAction.ACTION_TOGGLE_OFF)
+            }
+
+            lifecycleOwner.lifecycleScope.launch {
+                val success =
+                    if (isCheckedByUser) {
+                        onCheckedAction()
+                    } else {
+                        onUncheckedAction()
+                    }
+            }
+            true
+        }
+
+        observedLiveData.observe(lifecycleOwner) { isObservedChecked ->
+            val originalListener = onPreferenceChangeListener
+            onPreferenceChangeListener = null
+            isChecked = isObservedChecked
+            onPreferenceChangeListener = originalListener
         }
     }
 }

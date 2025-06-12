@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.logging;
+package com.android.server.healthconnect.notifications;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_NOTIFICATION;
 

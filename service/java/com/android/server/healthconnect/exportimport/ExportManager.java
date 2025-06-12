@@ -25,8 +25,8 @@ import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXP
 
 import static com.android.healthfitness.flags.Flags.exportImportFastFollow;
 import static com.android.healthfitness.flags.Flags.extendExportImportTelemetry;
+import static com.android.server.healthconnect.exportimport.ExportImportLogger.NO_VALUE_RECORDED;
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_EXPORT_UNSUCCESSFUL_GENERIC_ERROR;
-import static com.android.server.healthconnect.logging.ExportImportLogger.NO_VALUE_RECORDED;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -39,7 +39,6 @@ import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
-import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;

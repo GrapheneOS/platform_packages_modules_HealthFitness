@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package healthconnect.logging;
+package com.android.server.healthconnect.logging;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN;
@@ -50,8 +50,8 @@ import android.health.HealthFitnessStatsLog;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
-import com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods;
+import com.android.server.healthconnect.common.logging.HealthConnectServiceLogger;
+import com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods;
 
 import org.junit.Rule;
 import org.junit.Test;

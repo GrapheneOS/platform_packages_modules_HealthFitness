@@ -19,8 +19,8 @@ package com.android.server.healthconnect.onboarding;
 import static android.health.connect.HealthConnectManager.ACTION_SYNC_MORE_APPS;
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_HIDE;
 
-import static com.android.server.healthconnect.logging.NotificationStatsLogger.ACTION_NOTIFICATION_CLICKED;
-import static com.android.server.healthconnect.logging.NotificationStatsLogger.ACTION_NOTIFICATION_DISMISSED;
+import static com.android.server.healthconnect.notifications.NotificationStatsLogger.ACTION_NOTIFICATION_CLICKED;
+import static com.android.server.healthconnect.notifications.NotificationStatsLogger.ACTION_NOTIFICATION_DISMISSED;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -33,7 +33,7 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.modules.utils.BackgroundThread;
-import com.android.server.healthconnect.logging.NotificationStatsLogger;
+import com.android.server.healthconnect.notifications.NotificationStatsLogger;
 
 /**
  * Receiver class for onboarding notification clicked or dismissed events.

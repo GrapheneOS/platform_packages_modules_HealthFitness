@@ -34,7 +34,6 @@ import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
-import com.android.server.healthconnect.logging.BackupRestoreLogger;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BackupData;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Record;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;

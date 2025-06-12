@@ -24,7 +24,7 @@ import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
 
-import static com.android.server.healthconnect.logging.NotificationStatsLogger.ACTION_NOTIFICATION_SENT;
+import static com.android.server.healthconnect.notifications.NotificationStatsLogger.ACTION_NOTIFICATION_SENT;
 import static com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver.ACTION_ONBOARDING_NOTIFICATION_CLICKED;
 import static com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver.ACTION_ONBOARDING_NOTIFICATION_DISMISSED;
 import static com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver.EXTRA_ONBOARDING_STATE;
@@ -42,9 +42,9 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.logging.NotificationStatsLogger;
 import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
+import com.android.server.healthconnect.notifications.NotificationStatsLogger;
 import com.android.server.healthconnect.notifications.NotificationUtils;
 
 import java.util.Optional;

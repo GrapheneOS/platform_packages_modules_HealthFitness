@@ -36,7 +36,6 @@ import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
-import com.android.server.healthconnect.logging.BackupRestoreLogger;
 import com.android.server.healthconnect.storage.TransactionManager;
 
 import java.time.Clock;

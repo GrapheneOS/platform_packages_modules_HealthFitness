@@ -17,7 +17,6 @@ package com.android.healthconnect.controller.permissions.request
 
 import android.os.Bundle
 import android.view.View
-import android.widget.CompoundButton.OnCheckedChangeListener
 import androidx.fragment.app.activityViewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
@@ -67,16 +66,6 @@ class MedicalPermissionsFragment : Hilt_MedicalPermissionsFragment() {
     private val readPermissionCategory: PreferenceGroup by pref(READ_CATEGORY)
 
     private val writePermissionCategory: PreferenceGroup by pref(WRITE_CATEGORY)
-
-    private val onSwitchChangeListener = OnCheckedChangeListener { _, grant ->
-        readPermissionCategory.children.forEach { preference ->
-            (preference as TwoStatePreference).isChecked = grant
-        }
-        writePermissionCategory.children.forEach { preference ->
-            (preference as TwoStatePreference).isChecked = grant
-        }
-        viewModel.updateMedicalPermissions(grant)
-    }
 
     init {
         this.setPageName(PageName.REQUEST_MEDICAL_PERMISSIONS_PAGE)
@@ -187,14 +176,32 @@ class MedicalPermissionsFragment : Hilt_MedicalPermissionsFragment() {
     }
 
     private fun setupAllowAll() {
-        viewModel.allMedicalPermissionsGranted.observe(viewLifecycleOwner) { allPermissionsGranted
-            ->
-            // does not trigger removing/enabling all permissions
-            allowAllPreference.removeOnSwitchChangeListener(onSwitchChangeListener)
-            allowAllPreference.isChecked = allPermissionsGranted
-            allowAllPreference.addOnSwitchChangeListener(onSwitchChangeListener)
+
+        val onChecked = suspend {
+            toggleAllMedicalPermissions(true)
+            true
         }
-        allowAllPreference.addOnSwitchChangeListener(onSwitchChangeListener)
+        val onUnchecked = suspend {
+            toggleAllMedicalPermissions(false)
+            true
+        }
+
+        allowAllPreference.setUpStateManagement(
+            viewLifecycleOwner,
+            viewModel.allMedicalPermissionsGranted,
+            onChecked,
+            onUnchecked,
+        )
+    }
+
+    private fun toggleAllMedicalPermissions(isChecked: Boolean) {
+        readPermissionCategory.children.forEach { preference ->
+            (preference as TwoStatePreference).isChecked = isChecked
+        }
+        writePermissionCategory.children.forEach { preference ->
+            (preference as TwoStatePreference).isChecked = isChecked
+        }
+        viewModel.updateMedicalPermissions(isChecked)
     }
 
     private fun updateDataList(permissionsList: List<HealthPermission.MedicalPermission>) {
