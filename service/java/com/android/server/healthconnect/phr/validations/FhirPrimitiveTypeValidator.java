@@ -16,12 +16,15 @@
 package com.android.server.healthconnect.phr.validations;
 
 import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_BASE64_BINARY;
+import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_BOOLEAN;
 import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_CANONICAL;
 import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_CODE;
 import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_DATE;
 import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_DATE_TIME;
+import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_DECIMAL;
 import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_ID;
 import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_INSTANT;
+import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_INTEGER;
 import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_MARKDOWN;
 import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_OID;
 import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_POSITIVE_INT;
@@ -33,16 +36,10 @@ import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_URL
 import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_UUID;
 
 import android.annotation.Nullable;
-import android.util.Xml;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.proto.R4FhirType;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -143,10 +140,11 @@ public class FhirPrimitiveTypeValidator {
                         fullFieldName);
                 break;
             case R4_FHIR_TYPE_XHTML:
+                // TODO:b/401504262 - Consider additional xhtml type validations to minimise
+                //  security risk to downstream apps. The xhtml type does not have a regex
+                //  specified, but a constraint that specifies that only basic html tags should be
+                //  allowed. See https://build.fhir.org/narrative.html#xhtml.
                 validateStringType(fieldObject, fullFieldName);
-                if (Flags.phrXhtmlValidation()) {
-                    validateXhtmlString((String) fieldObject, fullFieldName);
-                }
                 break;
             default:
                 throw new IllegalStateException(
@@ -214,75 +212,6 @@ public class FhirPrimitiveTypeValidator {
                             + fullFieldName
                             + ". The value found is: "
                             + value);
-        }
-    }
-
-    private static void validateXhtmlString(String xhtml, String fullFieldName) {
-        XmlPullParser parser = createXmlPullParserAndSetInput(xhtml);
-
-        while (getNextTokenAndHandleException(parser, fullFieldName)
-                != XmlPullParser.END_DOCUMENT) {
-            int eventType;
-            try {
-                eventType = parser.getEventType();
-            } catch (XmlPullParserException e) {
-                throw new IllegalArgumentException(
-                        "Failed to parse xhtml in field: " + fullFieldName);
-            }
-            switch (eventType) {
-                case XmlPullParser.PROCESSING_INSTRUCTION:
-                    throw new IllegalArgumentException(
-                            "Found invalid xhtml containing processing instruction in field: "
-                                    + fullFieldName);
-                case XmlPullParser.DOCDECL:
-                    throw new IllegalArgumentException(
-                            "Found invalid xhtml containing DOCTYPE declaration in field: "
-                                    + fullFieldName);
-                case XmlPullParser.CDSECT:
-                    throw new IllegalArgumentException(
-                            "Found invalid xhtml containing CDATA section in field: "
-                                    + fullFieldName);
-                case XmlPullParser.START_TAG:
-                    // TODO: b/402780942 - Validate elements and attributes.
-                    break;
-                default:
-                    // Other event types can be ignored as they are mostly the html content,
-                    // comments or END_TAG (which is covered by validating START_TAG).
-            }
-        }
-        // After the end of the document has been reached the parsing depth should be 0. If not,
-        // this means that there are still open tags left that have not been closed.
-        if (parser.getDepth() != 0) {
-            throw new IllegalArgumentException(
-                    "Missing closing tag for xhtml element in field: " + fullFieldName);
-        }
-    }
-
-    private static XmlPullParser createXmlPullParserAndSetInput(String xhtml) {
-        XmlPullParser parser = Xml.newPullParser();
-        try {
-            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
-            // We don't allow DOCTYPE declarations so no need to process them
-            parser.setFeature(XmlPullParser.FEATURE_PROCESS_DOCDECL, false);
-        } catch (XmlPullParserException e) {
-            throw new IllegalStateException("Failed to set xml parsing feature");
-        }
-
-        try {
-            parser.setInput(new StringReader(xhtml));
-        } catch (XmlPullParserException e) {
-            throw new IllegalStateException("Failed to set xml parsing input");
-        }
-        return parser;
-    }
-
-    private static int getNextTokenAndHandleException(XmlPullParser parser, String fullFieldName) {
-        try {
-            return parser.nextToken();
-        } catch (XmlPullParserException | IOException | RuntimeException e) {
-            // We catch RuntimeException as well because the parser can throw it due to invalid
-            // input.
-            throw new IllegalArgumentException("Failed to parse xhtml in field: " + fullFieldName);
         }
     }
 
