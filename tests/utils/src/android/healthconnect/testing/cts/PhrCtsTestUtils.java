@@ -88,6 +88,7 @@ public class PhrCtsTestUtils {
     public static final int CHUNK_SIZE_LIMIT_IN_BYTES = 5000000;
     private static final int MAX_NUMBER_OF_MEDICAL_RESOURCES_PER_INSERT_REQUEST = 20;
     private static final int MAXIMUM_PAGE_SIZE = 5000;
+    public static final String PHR_DEFAULT_APP_PKG = "android.healthconnect.cts.phr";
     public static final String PHR_BACKGROUND_APP_PKG =
             "android.healthconnect.cts.phr.testhelper.app1";
     public static final String PHR_FOREGROUND_APP_PKG =
