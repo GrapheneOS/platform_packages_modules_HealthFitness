@@ -174,6 +174,7 @@ public final class AppInfoHelper extends DatabaseHelper {
                 appInfo = getAppInfo(packageName);
             } catch (NameNotFoundException e) {
                 if (requireAllFields) {
+                    Slog.e(TAG, "Could not find package info", e);
                     throw new IllegalStateException("Could not find package info", e);
                 }
 
@@ -357,6 +358,7 @@ public final class AppInfoHelper extends DatabaseHelper {
         try {
             return getOrInsertAppInfoId(Optional.of(db), packageName);
         } catch (NameNotFoundException e) {
+            Slog.e(TAG, "Could not find package info for package", e);
             throw new IllegalStateException("Could not find package info for package", e);
         }
     }
@@ -371,6 +373,7 @@ public final class AppInfoHelper extends DatabaseHelper {
         try {
             return getOrInsertAppInfoId(Optional.empty(), packageName);
         } catch (NameNotFoundException e) {
+            Slog.e(TAG, "Could not find package info for package", e);
             throw new IllegalStateException("Could not find package info for package", e);
         }
     }
