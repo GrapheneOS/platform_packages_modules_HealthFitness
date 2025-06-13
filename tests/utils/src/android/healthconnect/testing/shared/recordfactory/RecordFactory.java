@@ -264,4 +264,17 @@ public abstract class RecordFactory<T extends Record> {
         }
         return null;
     }
+
+    /** Returns a full record for given data type. */
+    public static Record newFullRecordForType(Class<? extends Record> recordClass) {
+        RecordFactory<? extends Record> factory = forDataType(recordClass);
+        if (factory == null) {
+            throw new UnsupportedOperationException(
+                    "Record class is not supported by record factory: " + recordClass);
+        }
+        return factory.newFullRecord(
+                RecordFactory.newFullMetadataWithClientIdAndVersion("foo-client-id", 123),
+                Instant.now().minusSeconds(200),
+                Instant.now().minusSeconds(100));
+    }
 }

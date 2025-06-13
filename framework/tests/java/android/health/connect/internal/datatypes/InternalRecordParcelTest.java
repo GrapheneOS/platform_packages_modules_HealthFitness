@@ -20,7 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.Record;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
-import android.health.connect.testing.RecordFactory;
+import android.healthconnect.testing.shared.recordfactory.AnotherRecordFactory;
 import android.os.Parcel;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -73,7 +73,7 @@ public class InternalRecordParcelTest {
      *   <li>How do we test equality between two {@link RecordInternal}s? We actually test equality
      *       on the equivalent records themselves
      *   <li>How do we get a fully populated instance? This is delegated to a test utility method
-     *       {@link RecordFactory} that is tested by this class exercising it.
+     *       {@link AnotherRecordFactory} that is tested by this class exercising it.
      * </ul>
      *
      * Note: this test is not a replacement for unit tests. It does not test all edge conditions. It
@@ -91,9 +91,11 @@ public class InternalRecordParcelTest {
                 recordIdToInternalRecord.entrySet()) {
             int recordType = entry.getKey();
             Class<? extends RecordInternal<?>> recordInternalClass = entry.getValue();
+            Class<? extends Record> recordExternalClass =
+                    mappings.getRecordIdToExternalRecordClassMap().get(recordType);
             // Create a fully populated Record of every type (so we can use it for equality
             // testing later).
-            Record record = RecordFactory.makePopulatedRecord(recordType);
+            Record record = AnotherRecordFactory.makePopulatedRecord(recordExternalClass);
             // Convert to an internal record.
             RecordInternal<?> internalRecord = record.toRecordInternal();
             // Check that the factory was working properly and gave us a record of the type
