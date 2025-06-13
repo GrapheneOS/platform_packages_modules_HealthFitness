@@ -82,7 +82,7 @@ public abstract class SeriesRecordHelper<
     }
 
     @Override
-    final void populateSpecificContentValues(ContentValues contentValues, T record) {
+    void populateSpecificContentValues(ContentValues contentValues, T record) {
         // Empty as we don't want to populate any additional in the main table.
     }
 
@@ -93,10 +93,11 @@ public abstract class SeriesRecordHelper<
     }
 
     /**
-     * A typical series data type should not use the main table to store any of its data, and should
-     * instead implement get addition table related functions. Hence, an empty final function
+     * Note: Most series data type do not use the main table to store any of its data. This is why
+     * we return an empty list by default.
      */
-    final List<Pair<String, String>> getIntervalRecordColumnInfo() {
+    @Override
+    List<Pair<String, String>> getIntervalRecordColumnInfo() {
         // We don't want to populate anything additional in the main table. Series data types use
         // additional table to store all the data.
         return Collections.emptyList();
