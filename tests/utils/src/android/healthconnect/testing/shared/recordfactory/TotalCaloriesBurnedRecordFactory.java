@@ -17,62 +17,76 @@
 package android.healthconnect.testing.shared.recordfactory;
 
 import android.health.connect.datatypes.Metadata;
-import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
+import android.health.connect.datatypes.units.Energy;
 import android.os.Bundle;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 
 /** Note: This class is AI generated, validate before using, and remove this note */
-public final class StepsRecordFactory extends RecordFactory<StepsRecord> {
-    private static final String KEY_COUNT = PREFIX + "COUNT";
+public final class TotalCaloriesBurnedRecordFactory
+        extends RecordFactory<TotalCaloriesBurnedRecord> {
+    private static final String KEY_ENERGY = PREFIX + "ENERGY";
 
     @Override
-    public StepsRecord newFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 100)
+    public TotalCaloriesBurnedRecord newFullRecord(
+            Metadata metadata, Instant startTime, Instant endTime) {
+        return new TotalCaloriesBurnedRecord.Builder(
+                        metadata, startTime, endTime, Energy.fromCalories(100.0))
                 .setStartZoneOffset(ZoneOffset.ofHours(3))
                 .setEndZoneOffset(ZoneOffset.ofHours(-2))
                 .build();
     }
 
     @Override
-    public StepsRecord anotherFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 200)
+    public TotalCaloriesBurnedRecord anotherFullRecord(
+            Metadata metadata, Instant startTime, Instant endTime) {
+        return new TotalCaloriesBurnedRecord.Builder(
+                        metadata, startTime, endTime, Energy.fromCalories(200.0))
                 .setStartZoneOffset(ZoneOffset.ofHours(-1))
                 .setEndZoneOffset(ZoneOffset.ofHours(2))
                 .build();
     }
 
     @Override
-    public StepsRecord newEmptyRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 100).build();
+    public TotalCaloriesBurnedRecord newEmptyRecord(
+            Metadata metadata, Instant startTime, Instant endTime) {
+        return new TotalCaloriesBurnedRecord.Builder(
+                        metadata, startTime, endTime, Energy.fromCalories(100.0))
+                .build();
     }
 
     @Override
-    protected StepsRecord recordWithMetadata(StepsRecord record, Metadata metadata) {
-        return new StepsRecord.Builder(
-                        metadata, record.getStartTime(), record.getEndTime(), record.getCount())
+    protected TotalCaloriesBurnedRecord recordWithMetadata(
+            TotalCaloriesBurnedRecord record, Metadata metadata) {
+        return new TotalCaloriesBurnedRecord.Builder(
+                        metadata, record.getStartTime(), record.getEndTime(), record.getEnergy())
                 .setStartZoneOffset(record.getStartZoneOffset())
                 .setEndZoneOffset(record.getEndZoneOffset())
                 .build();
     }
 
     @Override
-    protected Bundle getValuesBundleForRecord(StepsRecord record) {
+    protected Bundle getValuesBundleForRecord(TotalCaloriesBurnedRecord record) {
         Bundle values = new Bundle();
-        values.putLong(KEY_COUNT, record.getCount());
+        values.putDouble(KEY_ENERGY, record.getEnergy().getInCalories());
         return values;
     }
 
     @Override
-    public StepsRecord newRecordFromValuesBundle(
+    public TotalCaloriesBurnedRecord newRecordFromValuesBundle(
             Metadata metadata,
             Instant startTime,
             Instant endTime,
             ZoneOffset startZoneOffset,
             ZoneOffset endZoneOffset,
             Bundle bundle) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, bundle.getLong(KEY_COUNT, 100))
+        return new TotalCaloriesBurnedRecord.Builder(
+                        metadata,
+                        startTime,
+                        endTime,
+                        Energy.fromCalories(bundle.getDouble(KEY_ENERGY, 100.0)))
                 .setStartZoneOffset(startZoneOffset)
                 .setEndZoneOffset(endZoneOffset)
                 .build();

@@ -17,40 +17,44 @@
 package android.healthconnect.testing.shared.recordfactory;
 
 import android.health.connect.datatypes.Metadata;
-import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.WheelchairPushesRecord;
 import android.os.Bundle;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 
 /** Note: This class is AI generated, validate before using, and remove this note */
-public final class StepsRecordFactory extends RecordFactory<StepsRecord> {
+public final class WheelchairPushesRecordFactory extends RecordFactory<WheelchairPushesRecord> {
     private static final String KEY_COUNT = PREFIX + "COUNT";
 
     @Override
-    public StepsRecord newFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 100)
+    public WheelchairPushesRecord newFullRecord(
+            Metadata metadata, Instant startTime, Instant endTime) {
+        return new WheelchairPushesRecord.Builder(metadata, startTime, endTime, 100)
                 .setStartZoneOffset(ZoneOffset.ofHours(3))
                 .setEndZoneOffset(ZoneOffset.ofHours(-2))
                 .build();
     }
 
     @Override
-    public StepsRecord anotherFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 200)
+    public WheelchairPushesRecord anotherFullRecord(
+            Metadata metadata, Instant startTime, Instant endTime) {
+        return new WheelchairPushesRecord.Builder(metadata, startTime, endTime, 200)
                 .setStartZoneOffset(ZoneOffset.ofHours(-1))
                 .setEndZoneOffset(ZoneOffset.ofHours(2))
                 .build();
     }
 
     @Override
-    public StepsRecord newEmptyRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 100).build();
+    public WheelchairPushesRecord newEmptyRecord(
+            Metadata metadata, Instant startTime, Instant endTime) {
+        return new WheelchairPushesRecord.Builder(metadata, startTime, endTime, 100).build();
     }
 
     @Override
-    protected StepsRecord recordWithMetadata(StepsRecord record, Metadata metadata) {
-        return new StepsRecord.Builder(
+    protected WheelchairPushesRecord recordWithMetadata(
+            WheelchairPushesRecord record, Metadata metadata) {
+        return new WheelchairPushesRecord.Builder(
                         metadata, record.getStartTime(), record.getEndTime(), record.getCount())
                 .setStartZoneOffset(record.getStartZoneOffset())
                 .setEndZoneOffset(record.getEndZoneOffset())
@@ -58,21 +62,22 @@ public final class StepsRecordFactory extends RecordFactory<StepsRecord> {
     }
 
     @Override
-    protected Bundle getValuesBundleForRecord(StepsRecord record) {
+    protected Bundle getValuesBundleForRecord(WheelchairPushesRecord record) {
         Bundle values = new Bundle();
         values.putLong(KEY_COUNT, record.getCount());
         return values;
     }
 
     @Override
-    public StepsRecord newRecordFromValuesBundle(
+    public WheelchairPushesRecord newRecordFromValuesBundle(
             Metadata metadata,
             Instant startTime,
             Instant endTime,
             ZoneOffset startZoneOffset,
             ZoneOffset endZoneOffset,
             Bundle bundle) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, bundle.getLong(KEY_COUNT, 100))
+        return new WheelchairPushesRecord.Builder(
+                        metadata, startTime, endTime, bundle.getLong(KEY_COUNT, 100))
                 .setStartZoneOffset(startZoneOffset)
                 .setEndZoneOffset(endZoneOffset)
                 .build();
