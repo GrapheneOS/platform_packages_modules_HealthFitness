@@ -20,7 +20,6 @@ import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTOR
 
 import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
-import android.annotation.Nullable;
 import android.annotation.SystemApi;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -79,7 +78,7 @@ public final class RestoreChange implements Parcelable {
     /**
      * @return the data to be restored back to Health Connect, serialized as bytes.
      */
-    @Nullable
+    @NonNull
     public byte[] getData() {
         return mData;
     }
