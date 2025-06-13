@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Shiko të dhënat e shëndetit nëpër aplikacione"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect të lejon të ndash të dhënat e fitnesit dhe mirëqenies midis aplikacioneve. Shiko se cilat aplikacione mund të lidhësh tani."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Lidh një aplikacion të dytë"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Konfiguro një aplikacion tjetër me Health Connect që të mund të fillojë të ndajë të dhënat e fitnesit dhe mirëqenies"</string>
 </resources>
