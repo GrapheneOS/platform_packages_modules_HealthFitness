@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Veja os seus dados de saúde em várias apps"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"A Saúde Connect permite-lhe partilhar dados de fitness e bem-estar entre as suas apps. Veja que apps pode associar agora."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Associe uma segunda app"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configure outra app com a Saúde Connect para que possa começar a partilhar dados de fitness e bem-estar"</string>
 </resources>

@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"యాప్‌లలో మీ ఆరోగ్యానికి సంబంధించిన డేటాను చూడండి"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"మీ యాప్‌ల మధ్య ఫిట్‌నెస్, వెల్‌నెస్ డేటాను షేర్ చేసే వీలును Health Connect మీకు కల్పిస్తుంది. మీరు ఇప్పుడు ఏ యాప్‌లను కనెక్ట్ చేయవచ్చో చూడండి."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"రెండవ యాప్‌ను కనెక్ట్ చేయండి"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Health Connectను ఉపయోగించి వేరొక యాప్‌ను సెటప్ చేయండి, తద్వారా అది ఫిట్‌నెస్, వెల్‌నెస్ డేటాను షేర్ చేయడాన్ని ప్రారంభిస్తుంది"</string>
 </resources>

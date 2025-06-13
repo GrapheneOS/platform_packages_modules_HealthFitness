@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Confira seus dados de saúde em vários apps"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Compartilhe dados de bem-estar e condicionamento físico entre aplicativos usando o app Conexão Saúde. Confira quais você pode conectar agora."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Conecte um segundo app"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configure outro aplicativo com o app Conexão Saúde para começar a compartilhar dados de condicionamento físico e bem-estar"</string>
 </resources>

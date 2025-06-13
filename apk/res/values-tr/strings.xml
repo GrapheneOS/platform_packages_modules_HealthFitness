@@ -382,7 +382,7 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Bu uygulamanın Health Connect\'e yazmasını istediğiniz verileri seçin"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Bu uygulamanın okumasını veya Health Connect\'e yazmasını istediğiniz verileri seçin"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Bu uygulamanın Health Connect\'ten okumasını istediğiniz verileri seçin"</string>
-    <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Veri okuma izni verirseniz uygulama yeni verileri ve son 30 gün içindeki verileri okuyabilir"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Veri okuma izni verirseniz uygulama yeni verileri ve son 30 gün içindeki verileri okuyabilir."</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Veri okuma izni verirseniz uygulama yeni ve geçmiş verileri okuyabilir"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasının Health Connect\'e erişmesine izin verilsin mi?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulaması, fitness ve sağlıklı yaşam verilerine erişebilsin mi?"</string>
@@ -451,7 +451,7 @@
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Artık erişimi olmayan ancak verileri Health Connect\'te saklanmaya devam eden uygulamalar"</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g>, <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> tarihinden sonra eklenen verileri okuyabilir"</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"Bu uygulamanın erişebileceği diğer Android izinlerini yönetmek için Ayarlar &gt; Uygulamalar bölümüne gidin"</string>
-    <string name="manage_permissions_rationale" msgid="2780008055185441703">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasının verilerinizi nasıl işlediğini geliştiricinin gizlilik politikasından öğrenebilirsiniz"</string>
+    <string name="manage_permissions_rationale" msgid="2780008055185441703">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasının verilerinizi nasıl işlediğini geliştiricinin gizlilik politikasından öğrenebilirsiniz."</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Bu uygulamanın erişebileceği diğer Android izinlerini yönetmek için Ayarlar bölümüne gidip Uygulamalar seçeneğine dokunun"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Gizlilik politikasına göz atın"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Son 24 saat içinde erişildi"</string>
@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Uygulamalardaki sağlık verilerinizi görün"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect, fitness ve sağlıklı yaşam verilerini uygulamalarınız arasında paylaşmanıza olanak tanır. Hangi uygulamalara bağlanabileceğinizi hemen öğrenin."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"İkinci bir uygulamayı bağlayın"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Fitness ve sağlıklı yaşam verilerini paylaşmaya başlaması için Health Connect ile başka bir uygulama kurun"</string>
 </resources>

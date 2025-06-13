@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Hafðu aðgang að heilsugögnunum þínum í mörgum forritum"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Heilsutenging gerir þér kleift að deila gögnum um heilsu og vellíðan á milli forritanna þinna. Sjáðu forritin sem þú getur tengt núna."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Tengdu annað forrit"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Settu upp annað forrit í Heilsutengingu þannig að það geti byrjað að deila gögnum sem tengjast hreysti og vellíðan."</string>
 </resources>

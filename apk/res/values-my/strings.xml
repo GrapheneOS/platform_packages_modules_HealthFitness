@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"အက်ပ်များတွင် သင့်ကျန်းမာရေးဒေတာကို ကြည့်ပါ"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect သုံးပါက သင့်အက်ပ်များအကြား ကျန်းမာကြံ့ခိုင်ရေးဒေတာ မျှဝေနိုင်သည်။ ယခု သင်ချိတ်ဆက်နိုင်သည့်အက်ပ်များကို ကြည့်ပါ။"</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"ဒုတိယအက်ပ်ကို ချိတ်ဆက်ပါ"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"ကြံ့ခိုင်ရေးနှင့် အထွေထွေသုခ ဒေတာကို စတင်မျှဝေနိုင်ရန် အက်ပ်နောက်တစ်ခုကို Health Connect နှင့် စနစ်ထည့်သွင်းပါ"</string>
 </resources>

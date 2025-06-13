@@ -106,26 +106,26 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Læs forbrændte kalorier"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Tillader, at appen læser de forbrændte kalorier"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til data i baggrunden?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"Hvis du tillader det, kan denne app tilgå trænings- og helbredsdata samt sundhedsoplysninger, når du ikke bruger appen."</string>
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"Hvis du tillader det, kan denne app tilgå trænings- og velværedata samt sundhedsoplysninger, når du ikke bruger appen."</string>
     <string name="background_read_medical_single_request_description_medical_granted" msgid="5162456401369633859">"Hvis du tillader det, kan denne app tilgå sundhedsoplysninger, når du ikke bruger appen."</string>
-    <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Hvis du tillader det, kan denne app tilgå trænings- og helbredsdata, når du ikke bruger appen."</string>
+    <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Hvis du tillader det, kan denne app tilgå trænings- og velværedata, når du ikke bruger appen."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Hvis du tillader det, kan appen tilgå Health Connect-data, når du ikke bruger appen."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"Vil du tillade, at <xliff:g id="APP_NAME">%1$s</xliff:g> kan tilgå gamle data?"</string>
-    <string name="history_read_medical_single_request_description" msgid="6408051015819625330">"Hvis du tillader det, kan denne app tilgå trænings- og helbredsdata, der er tilføjet før <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>."</string>
-    <string name="history_read_medical_single_request_description_fallback" msgid="6685832866184737207">"Hvis du tillader det, kan denne app tilgå alle tidligere trænings- og helbredsdata."</string>
+    <string name="history_read_medical_single_request_description" msgid="6408051015819625330">"Hvis du tillader det, kan denne app tilgå trænings- og velværedata, der er tilføjet før <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>."</string>
+    <string name="history_read_medical_single_request_description_fallback" msgid="6685832866184737207">"Hvis du tillader det, kan denne app tilgå alle tidligere trænings- og velværedata."</string>
     <string name="history_read_single_request_description" msgid="9140843675330318112">"Hvis du tillader det, kan denne app tilgå Health Connect-data, der er tilføjet før <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>."</string>
     <string name="history_read_single_request_description_fallback" msgid="7685531357676523654">"Hvis du tillader det, kan denne app tilgå alle tidligere Health Connect-data."</string>
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> yderligere adgang?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g> anmoder også om adgang til disse Health Connect-indstillinger"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Adgang til alle data i baggrunden"</string>
     <string name="background_read_medical_combined_request_title_medical_granted" msgid="7245376864667067106">"Adgang til sundhedsoplysninger i baggrunden"</string>
-    <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Adgang til trænings- og sundhedsdata i baggrunden"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"Giv denne app adgang til trænings- og helbredsdata samt sundhedsoplysninger, når du ikke bruger appen"</string>
+    <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Adgang til trænings- og velværedata i baggrunden"</string>
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"Giv denne app adgang til trænings- og velværedata samt sundhedsoplysninger, når du ikke bruger appen"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Giv denne app adgang til disse data, når du ikke bruger appen"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Giv denne app adgang til disse data, når du ikke bruger appen"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Adgang til data i baggrunden"</string>
     <string name="background_read_combined_request_description" msgid="2423480522986545286">"Giv denne app tilladelse til at tilgå Health Connect-data, når du ikke bruger appen"</string>
-    <string name="history_read_medical_combined_request_title" msgid="1262267962861942478">"Adgang til tidligere trænings- og sundhedsdata"</string>
+    <string name="history_read_medical_combined_request_title" msgid="1262267962861942478">"Adgang til tidligere trænings- og velværedata"</string>
     <string name="history_read_medical_combined_request_description" msgid="7550922315652791771">"Giv denne app adgang til data, der er tilføjet før <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_medical_combined_request_description_fallback" msgid="3567968660826834911">"Giv denne app adgang til alle tidligere data"</string>
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Adgang til gamle data"</string>
@@ -135,13 +135,13 @@
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Læs mere om tilladelser"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Adgang til alle data i baggrunden"</string>
     <string name="background_read_medical_access_title_medical_granted" msgid="7852915238347056139">"Adgang til sundhedsoplysninger i baggrunden"</string>
-    <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Adgang til trænings- og sundhedsdata i baggrunden"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"Giv denne app adgang til trænings- og helbredsdata samt sundhedsoplysninger, når du ikke bruger appen"</string>
+    <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Adgang til trænings- og velværedata i baggrunden"</string>
+    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"Giv denne app adgang til trænings- og velværedata samt sundhedsoplysninger, når du ikke bruger appen"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Giv denne app adgang til disse data, når du ikke bruger appen"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Giv denne app adgang til disse data, når du ikke bruger appen"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Adgang til data i baggrunden"</string>
     <string name="background_read_access_description" msgid="2360433029368320323">"Giv denne app tilladelse til at tilgå Health Connect-data, når du ikke bruger appen"</string>
-    <string name="history_read_medical_access_title" msgid="1375462150672418692">"Adgang til tidligere trænings- og sundhedsdata"</string>
+    <string name="history_read_medical_access_title" msgid="1375462150672418692">"Adgang til tidligere trænings- og velværedata"</string>
     <string name="history_read_medical_access_description" msgid="5615959269427106141">"Giv denne app adgang til data, der er tilføjet før <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_medical_access_description_fallback" msgid="3888547064992673535">"Giv denne app adgang til alle tidligere data"</string>
     <string name="history_read_access_title" msgid="870048398702887144">"Adgang til gamle data"</string>
@@ -385,7 +385,7 @@
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Hvis du giver læseadgang, kan appen læse nye data og data fra de seneste 30 dage"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Hvis du giver læseadgang, kan appen læse nye og gamle data"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til Health Connect?"</string>
-    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til trænings- og helbredsdata?"</string>
+    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til trænings- og velværedata?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Du kan se, hvordan <xliff:g id="APP_NAME">%1$s</xliff:g> håndterer dine data, i appens <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"privatlivspolitik"</string>
     <string name="medical_request_header" msgid="2300521519021510027">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til dine sundhedsoplysninger?"</string>
@@ -558,7 +558,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Gå til Play Butik"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Kom godt i gang med Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect opbevarer dine sundheds- og træningsdata, så du nemt kan synkronisere forskellige apps på din enhed"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect gemmer og synkroniserer dine sundheds- og træningsdata fra forskellige apps.\n\n"<b>"Trænings- og sundhedsdata,"</b>" herunder træningspas, skridt, ernæring, søvn m.m.\n\n"<b>"Sundhedsoplysninger,"</b>" herunder vaccinationer, prøvesvar m.m."</string>
+    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect gemmer og synkroniserer dine trænings- og velværedata fra forskellige apps.\n\n"<b>"Trænings- og velværedata ,"</b>" herunder træningspas, skridt, ernæring, søvn m.m.\n\n"<b>"Sundhedsoplysninger,"</b>" herunder vaccinationer, prøvesvar m.m."</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Med Health Connect kan du gøre følgende"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Del data med dine apps"</b>\n"Vælg, hvilke data hver app kan læse eller skrive til Health Connect"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Administrer indstillinger og privatliv"</b>\n"Du kan til enhver tid ændre apptilladelser og administrere dine data"</string>
@@ -1194,14 +1194,14 @@
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Tillad valgte"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"Mens appen bruges"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Afvis alle"</string>
-    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til trænings- og helbredsdata?"</string>
+    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til trænings- og velværedata?"</string>
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"<xliff:g id="APP_NAME">%1$s</xliff:g> anmoder om adgang til <xliff:g id="DATA_TYPES">%2$s</xliff:g>.\n\nVælg, om du vil give tilladelse til alle datatyper, eller om du vil administrere dem individuelt."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitness og sundhed"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Hele tiden"</string>
     <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"Mens du bruger appen"</string>
-    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan til enhver tid tilgå alle dine trænings- og sundhedsdata"</string>
-    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan tilgå alle dine trænings- og sundhedsdata, når appen er i brug"</string>
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan til enhver tid tilgå alle dine trænings- og velværedata"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan tilgå alle dine trænings- og velværedata, når appen er i brug"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Har adgang"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Har tilladelse til at læse"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Disse tilladelser giver <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til data fra din enheds sensorer."</string>
@@ -1216,9 +1216,9 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"Vil du fjerne adgangen til <xliff:g id="DATA_TYPE">%s</xliff:g> for alle apps på dit ur?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"Flueben"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Kryds"</string>
-    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan i øjeblikket tilgå trænings- og sundhedsdata til enhver tid"</string>
-    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan i øjeblikket tilgå trænings- og sundhedsdata, når appen er i brug"</string>
-    <string name="allow_all_the_time_prompt" msgid="3749806575200677882">"Vælg, hvornår <xliff:g id="APP_NAME">%1$s</xliff:g> skulle kunne tilgå dine trænings- og sundhedsdata"</string>
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan i øjeblikket tilgå trænings- og velværedata til enhver tid"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan i øjeblikket tilgå trænings- og velværedata, når appen er i brug"</string>
+    <string name="allow_all_the_time_prompt" msgid="3749806575200677882">"Vælg, hvornår <xliff:g id="APP_NAME">%1$s</xliff:g> skulle kunne tilgå dine trænings- og velværedata"</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> har adgang til <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Administrer tilladelser for træning og sundhed"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Anvendes af 1 app}one{Anvendes af # app}other{Anvendes af # apps}}"</string>
@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Se dine sundhedsdata i alle apps"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Med Health Connect kan du dele trænings- og velværedata mellem dine apps. Se, hvilke apps du kan tilknytte nu."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Tilknyt en anden app"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Knyt en anden app til Health Connect, så den kan begynde at dele trænings- og velværedata"</string>
 </resources>

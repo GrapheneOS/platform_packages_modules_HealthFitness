@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"सर्व अ‍ॅप्सवर तुमचा आरोग्यासंबंधित डेटा पहा"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect हे तुम्हाला तुमच्या अ‍ॅप्सदरम्यान फिटनेस आणि स्वास्थ्याशी संबंधित डेटा शेअर करू देते. तुम्ही आता कोणती अ‍ॅप्स कनेक्ट करू शकता हे पहा."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"दुसरे अ‍ॅप कनेक्ट करा"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Health Connect सह दुसरे अ‍ॅप सेट करा जेणेकरून ते फिटनेस आणि स्वास्थ्याशी संबंधित डेटा शेअर करणे सुरू करू शकेल"</string>
 </resources>

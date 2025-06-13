@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Ден соолукка байланыштуу маалыматты колдонмолордо көрүү"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect — дене бойду чыңдоо жана саламаттыгыңызга байланыштуу маалыматты колдонмолоруңуздун арасында бөлүшүүгө мүмкүндүк берет. Кайсы колдонмолорду азыр байланыштырууга болорун көрүңүз."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Экинчи колдонмону тууралоо"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Health Connect менен башка колдонмону тууралаңыз. Ал дене бойду чыңдоо жана саламаттыгыңызга байланыштуу маалыматты бөлүшүп баштасын."</string>
 </resources>

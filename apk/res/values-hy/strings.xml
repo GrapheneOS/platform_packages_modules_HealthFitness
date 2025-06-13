@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Տարբեր հավելվածներից առողջության մասին բոլոր տվյալները մեկ վայրում"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect-ի օգնությամբ դուք կարող եք սկսել ձեր հավելվածների միջև ֆիզիկական ակտիվության և բարեկեցության մասին տվյալների փոխանակումը։ Տեսեք, թե որ հավելվածները կարող եք կապել հիմա։"</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Կապեք երկրորդ հավելվածը"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Կապեք ևս մի հավելված Health Connect-ի հետ՝ ձեր ֆիզիկական ակտիվության և բարեկեցության մասին տվյալներով կիսվելու համար"</string>
 </resources>
