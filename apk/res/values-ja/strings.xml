@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"健康に関するデータをさまざまなアプリで確認"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"ヘルスコネクトを使用すると、フィットネスとウェルネスに関するデータをアプリ間で共有できます。接続できるアプリをご確認ください。"</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"2 つ目のアプリを接続"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"ヘルスコネクトに別のアプリを設定して、フィットネスとウェルネスに関するデータを共有できるようにしましょう"</string>
 </resources>

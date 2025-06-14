@@ -565,7 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Mine tagasi"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Alustage"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Kustuta andmed"</string>
-    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Rakenduse %1$s kustutamise nupp"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Rakenduse %1$s andmete kustutamise nupp"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Alusta kustutamist"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Tühista kustutamine"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Andmed, mis rakendusest Health Connect kustutada"</string>
@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Vaadake eri rakendustest pärinevaid terviseandmed"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect võimaldab teil oma treeningu- ja heaoluandmeid rakenduste vahel jagada. Vaadake, milliseid rakendusi saate kohe ühendada."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Teise rakenduse ühendamine"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Seadistage Health Connectiga teine rakendus, et see saaks hakata jagama treeningu- ja heaoluandmeid"</string>
 </resources>

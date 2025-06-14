@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Consulter vos données relatives à la santé dans toutes vos applis"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Connexion santé vous permet de partager des données d\'activité physique et de bien-être entre vos applis. Découvrez quelles applis vous pouvez connecter maintenant."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Connecter une deuxième appli"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configurez une autre appli avec Connexion santé pour qu\'elle puisse commencer à partager des données d\'activité physique et de bien-être"</string>
 </resources>

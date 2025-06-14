@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Sien jou gesondheiddata in alle apps"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Met Health Connect kan jy fiksheid- en welstanddata tussen jou apps deel. Kyk watter apps jy nou kan koppel."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Koppel ’n tweede app"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Stel ’n ander app met Health Connect op sodat dit kan begin om fiksheid- en welstanddata te deel"</string>
 </resources>

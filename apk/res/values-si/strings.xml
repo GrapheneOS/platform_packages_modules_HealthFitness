@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"යෙදුම් හරහා ඔබේ සෞඛ්‍ය දත්ත බලන්න"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect මඟින් ඔබේ යෙදුම් අතර යෝග්‍යතා සහ සුවතා දත්ත බෙදා ගැනීමට ඔබට ඉඩ දෙයි. ඔබට දැන් සම්බන්ධ කළ හැකි යෙදුම් මොනවා දැයි බලන්න."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"දෙවන යෙදුමක් සම්බන්ධ කරන්න"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"යෝග්‍යතා සහ සුවතා දත්ත බෙදා ගැනීම ආරම්භ කළ හැකි වන පරිදි Health Connect සමග තවත් යෙදුමක් පිහිටුවන්න"</string>
 </resources>

@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"ஆப்ஸ் முழுவதும் உங்கள் ஆரோக்கியம் தொடர்பான தரவைப் பாருங்கள்"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect மூலம் உங்கள் ஆப்ஸுக்கு இடையில் ஃபிட்னஸ் மற்றும் ஆரோக்கியம் குறித்த தரவைப் பகிரலாம். இப்போது எந்தெந்த ஆப்ஸை இணைக்கலாம் என்று பாருங்கள்."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"இரண்டாவது ஆப்ஸை இணையுங்கள்"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"ஃபிட்னஸ் மற்றும் ஆரோக்கியம் குறித்த தரவைப் பகிரும் வகையில் மற்றொரு ஆப்ஸை Health Connect ஆப்ஸுடன் அமைக்கலாம்"</string>
 </resources>

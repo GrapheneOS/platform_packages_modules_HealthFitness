@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Egészségügyi adatok megjelenítése különböző alkalmazásokban"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"A Health Connect segítségével megoszthatja fitnesz- és wellness-adatait az alkalmazásai között. Megtekintheti, hogy mely jelenleg alkalmazásokat tudja összekapcsolni."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"A második alkalmazás összekapcsolása"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Állítson be egy másik alkalmazást a Health Connecttel, hogy elkezdhesse megosztani az app a fitnesz- és wellnessadatokat"</string>
 </resources>

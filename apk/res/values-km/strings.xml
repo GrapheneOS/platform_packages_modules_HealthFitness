@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"មើលទិន្នន័យសុខភាពរបស់អ្នកនៅលើកម្មវិធីនានា"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect អនុញ្ញាតឱ្យអ្នកចែករំលែកទិន្នន័យសម្បទា និងសុខុមាលភាពរវាងកម្មវិធីរបស់អ្នក។ មើល​ថាតើអ្នកអាចភ្ជាប់កម្មវិធីណាខ្លះបាននៅពេលនេះ។"</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"ភ្ជាប់កម្មវិធីទីពីរ"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"រៀបចំកម្មវិធីមួយទៀតជាមួយ Health Connect ដូច្នេះកម្មវិធីនោះអាចចាប់ផ្ដើមចែករំលែកទិន្នន័យសម្បទា និងសុខុមាលភាពបាន"</string>
 </resources>

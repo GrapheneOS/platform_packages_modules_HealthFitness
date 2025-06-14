@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Se din hälsodata i olika appar"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Med Health Connect kan du dela tränings- och hälsodata mellan dina appar. Se vilka appar du kan ansluta nu."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Anslut en andra app"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Ställ in en annan app med Health Connect så att den kan börja dela tränings- och hälsodata"</string>
 </resources>
