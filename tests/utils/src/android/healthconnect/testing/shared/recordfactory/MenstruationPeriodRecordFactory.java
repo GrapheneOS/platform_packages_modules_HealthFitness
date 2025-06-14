@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 The Android Open Source Project
+ * Copyright (C) 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,63 +16,63 @@
 
 package android.healthconnect.testing.shared.recordfactory;
 
+import android.health.connect.datatypes.MenstruationPeriodRecord;
 import android.health.connect.datatypes.Metadata;
-import android.health.connect.datatypes.StepsRecord;
 import android.os.Bundle;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 
-/** Note: This class is AI generated, validate before using, and remove this note */
-public final class StepsRecordFactory extends RecordFactory<StepsRecord> {
-    private static final String KEY_COUNT = PREFIX + "COUNT";
+public final class MenstruationPeriodRecordFactory extends RecordFactory<MenstruationPeriodRecord> {
 
     @Override
-    public StepsRecord newFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 100)
+    public MenstruationPeriodRecord newFullRecord(
+            Metadata metadata, Instant startTime, Instant endTime) {
+        return new MenstruationPeriodRecord.Builder(metadata, startTime, endTime)
                 .setStartZoneOffset(ZoneOffset.ofHours(3))
                 .setEndZoneOffset(ZoneOffset.ofHours(-2))
                 .build();
     }
 
     @Override
-    public StepsRecord anotherFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 200)
+    public MenstruationPeriodRecord anotherFullRecord(
+            Metadata metadata, Instant startTime, Instant endTime) {
+        return new MenstruationPeriodRecord.Builder(metadata, startTime, endTime)
                 .setStartZoneOffset(ZoneOffset.ofHours(-1))
                 .setEndZoneOffset(ZoneOffset.ofHours(2))
                 .build();
     }
 
     @Override
-    public StepsRecord newEmptyRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, 100).build();
+    public MenstruationPeriodRecord newEmptyRecord(
+            Metadata metadata, Instant startTime, Instant endTime) {
+        return new MenstruationPeriodRecord.Builder(metadata, startTime, endTime).build();
     }
 
     @Override
-    protected StepsRecord recordWithMetadata(StepsRecord record, Metadata metadata) {
-        return new StepsRecord.Builder(
-                        metadata, record.getStartTime(), record.getEndTime(), record.getCount())
+    protected MenstruationPeriodRecord recordWithMetadata(
+            MenstruationPeriodRecord record, Metadata metadata) {
+        return new MenstruationPeriodRecord.Builder(
+                        metadata, record.getStartTime(), record.getEndTime())
                 .setStartZoneOffset(record.getStartZoneOffset())
                 .setEndZoneOffset(record.getEndZoneOffset())
                 .build();
     }
 
     @Override
-    protected Bundle getValuesBundleForRecord(StepsRecord record) {
-        Bundle values = new Bundle();
-        values.putLong(KEY_COUNT, record.getCount());
-        return values;
+    protected Bundle getValuesBundleForRecord(MenstruationPeriodRecord record) {
+        return new Bundle();
     }
 
     @Override
-    public StepsRecord newRecordFromValuesBundle(
+    public MenstruationPeriodRecord newRecordFromValuesBundle(
             Metadata metadata,
             Instant startTime,
             Instant endTime,
             ZoneOffset startZoneOffset,
             ZoneOffset endZoneOffset,
             Bundle bundle) {
-        return new StepsRecord.Builder(metadata, startTime, endTime, bundle.getLong(KEY_COUNT, 100))
+        return new MenstruationPeriodRecord.Builder(metadata, startTime, endTime)
                 .setStartZoneOffset(startZoneOffset)
                 .setEndZoneOffset(endZoneOffset)
                 .build();

@@ -22,7 +22,6 @@ import static android.health.connect.datatypes.AggregationType.AggregationTypeId
 
 import static com.android.server.healthconnect.fitness.recordhelpers.SeriesRecordHelper.PARENT_KEY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.HealthConnectDatabase.createTable;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL_NOT_NULL;
@@ -45,8 +44,6 @@ import android.util.Pair;
 import androidx.annotation.Nullable;
 
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
-import com.android.server.healthconnect.storage.request.CreateTableRequest;
-import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 
 import java.util.HashSet;
@@ -60,7 +57,9 @@ import java.util.UUID;
  * @hide
  */
 public final class SkinTemperatureRecordHelper
-        extends IntervalRecordHelper<SkinTemperatureRecordInternal> {
+        extends SeriesRecordHelper<
+                SkinTemperatureRecordInternal,
+                SkinTemperatureRecordInternal.SkinTemperatureDeltaSample> {
 
     private static final String TABLE_NAME = "skin_temperature_record_table";
 
@@ -82,50 +81,16 @@ public final class SkinTemperatureRecordHelper
         return TABLE_NAME;
     }
 
+    @Override
     String getSeriesDataTableName() {
         return SERIES_TABLE_NAME;
     }
 
     @Override
-    List<CreateTableRequest> getChildTableCreateRequests() {
-        return List.of(
-                new CreateTableRequest(getSeriesDataTableName(), getSeriesTableColumnInfo())
-                        .addForeignKey(
-                                getMainTableName(),
-                                List.of(PARENT_KEY_COLUMN_NAME),
-                                List.of(PRIMARY_COLUMN_NAME)));
-    }
-
-    @Override
-    SqlJoin getJoinForReadRequest() {
-        return new SqlJoin(
-                getMainTableName(),
-                getSeriesDataTableName(),
-                PRIMARY_COLUMN_NAME,
-                PARENT_KEY_COLUMN_NAME);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    List<UpsertTableRequest> getChildTableUpsertRequests(SkinTemperatureRecordInternal record) {
-        return record.getSamples().stream()
-                .map(
-                        sample -> {
-                            ContentValues contentValues = new ContentValues();
-                            populateSampleTo(
-                                    contentValues,
-                                    (SkinTemperatureRecordInternal.SkinTemperatureDeltaSample)
-                                            sample);
-                            return new UpsertTableRequest(getSeriesDataTableName(), contentValues)
-                                    .setParentColumnForChildTables(PARENT_KEY_COLUMN_NAME);
-                        })
-                .toList();
-    }
-
-    @Override
-    SkinTemperatureRecordInternal populateSpecificRecordValue(Cursor cursor) {
+    SkinTemperatureRecordInternal populateSpecificValues(Cursor cursor) {
         int measurementLocation =
                 getCursorInt(cursor, SKIN_TEMPERATURE_MEASUREMENT_LOCATION_COLUMN_NAME);
+        double baseline = getCursorDouble(cursor, SKIN_TEMPERATURE_BASELINE_COLUMN_NAME);
 
         HashSet<SkinTemperatureRecordInternal.SkinTemperatureDeltaSample>
                 skinTemperatureDeltaSamples = new HashSet<>();
@@ -141,7 +106,6 @@ public final class SkinTemperatureRecordHelper
         cursor.moveToPrevious();
         SkinTemperatureRecordInternal recordInternal =
                 new SkinTemperatureRecordInternal(skinTemperatureDeltaSamples);
-        double baseline = getCursorDouble(cursor, SKIN_TEMPERATURE_BASELINE_COLUMN_NAME);
 
         recordInternal.setMeasurementLocation(measurementLocation);
         recordInternal.setBaseline(Temperature.fromCelsius(baseline));
@@ -164,13 +128,14 @@ public final class SkinTemperatureRecordHelper
                 Pair.create(SKIN_TEMPERATURE_BASELINE_COLUMN_NAME, REAL));
     }
 
-    List<Pair<String, String>> getSeriesTableColumnInfo() {
+    @Override
+    List<Pair<String, String>> getSeriesRecordColumnInfo() {
         return List.of(
-                Pair.create(PARENT_KEY_COLUMN_NAME, INTEGER),
                 Pair.create(SKIN_TEMPERATURE_DELTA_COLUMN_NAME, REAL_NOT_NULL),
                 Pair.create(EPOCH_MILLIS_COLUMN_NAME, INTEGER_NOT_NULL));
     }
 
+    @Override
     void populateSampleTo(
             ContentValues contentValues,
             SkinTemperatureRecordInternal.SkinTemperatureDeltaSample sample) {

@@ -374,12 +374,14 @@ public class HealthConnectManager {
      *
      * <ul>
      *   <li>There is no component available to handle the intent action
-     *   <li>More than one component is available to handle the intent action
      *   <li>The component that can handle the action does not hold either of the required
      *       permissions
      *   <li>The handler activity is not guarded with the {@link
      *       HealthPermissions#START_BACKUP_RESTORE_SETTINGS_PERMISSION}
      * </ul>
+     *
+     * If more than one component can handle the intent, package manager default
+     * resolution rules will be used to resolve the intent.
      *
      * @hide
      */

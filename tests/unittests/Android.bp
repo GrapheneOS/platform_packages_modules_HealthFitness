@@ -68,7 +68,6 @@ android_test {
     test_config: "AndroidTest.xml",
     srcs: [
         "src/**/*.java",
-        ":healthfitness-framework-test-src",
     ],
     exclude_srcs: [
         "src/com/android/server/healthconnect/common/accesslog/AppOpLogsHelperTest.java",
