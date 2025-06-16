@@ -602,6 +602,10 @@
     <string name="raw_fhir_content_description" description="Content description for a JSON file that is an electronic health care record [CHAR_LIMIT=NONE]">Detailed source code: <xliff:g example="Open bracket. Field name Value John Doe. Field age Value 30. close bracket." id="source_code">%1$s</xliff:g></string>
     <!-- endregion -->
 
+    <!-- region Pretty FHIR -->
+    <string name="pretty_fhir_header_view_source_data" description="Clickable label that redirects to the raw FHIR screen">View source data</string>
+    <!-- endregion -->
+
     <!-- region Connected apps -->
     <string name="health_permission_header_description" description="Description text shown on screen for managing which apps have access to health and fitness data. Note: Health Connect is the brand [CHAR_LIMIT=NONE]">Apps with this permission can read and write your health and fitness data.</string>
     <string name="connected_apps_text" description="Description text shown on screen for managing which apps have access to health and fitness data. Note: Health Connect is the brand [CHAR_LIMIT=NONE]">Control which apps can access data stored in Health&#160;Connect. Tap an app to review the data it can read or write.</string>
