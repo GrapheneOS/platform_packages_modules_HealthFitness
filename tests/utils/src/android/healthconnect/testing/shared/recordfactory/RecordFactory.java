@@ -21,17 +21,54 @@ import static android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_AUTOMATICALLY_RECORDED;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_MANUAL_ENTRY;
 
+import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.ActivityIntensityRecord;
+import android.health.connect.datatypes.BasalBodyTemperatureRecord;
+import android.health.connect.datatypes.BasalMetabolicRateRecord;
+import android.health.connect.datatypes.BloodGlucoseRecord;
+import android.health.connect.datatypes.BloodPressureRecord;
+import android.health.connect.datatypes.BodyFatRecord;
+import android.health.connect.datatypes.BodyTemperatureRecord;
+import android.health.connect.datatypes.BodyWaterMassRecord;
+import android.health.connect.datatypes.BoneMassRecord;
+import android.health.connect.datatypes.CervicalMucusRecord;
+import android.health.connect.datatypes.CyclingPedalingCadenceRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.DistanceRecord;
+import android.health.connect.datatypes.ElevationGainedRecord;
+import android.health.connect.datatypes.ExerciseSessionRecord;
+import android.health.connect.datatypes.FloorsClimbedRecord;
+import android.health.connect.datatypes.HeartRateRecord;
+import android.health.connect.datatypes.HeartRateVariabilityRmssdRecord;
+import android.health.connect.datatypes.HeightRecord;
+import android.health.connect.datatypes.HydrationRecord;
+import android.health.connect.datatypes.IntermenstrualBleedingRecord;
+import android.health.connect.datatypes.LeanBodyMassRecord;
+import android.health.connect.datatypes.MenstruationFlowRecord;
+import android.health.connect.datatypes.MenstruationPeriodRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.MindfulnessSessionRecord;
 import android.health.connect.datatypes.NicotineIntakeRecord;
+import android.health.connect.datatypes.NutritionRecord;
+import android.health.connect.datatypes.OvulationTestRecord;
+import android.health.connect.datatypes.OxygenSaturationRecord;
+import android.health.connect.datatypes.PlannedExerciseSessionRecord;
+import android.health.connect.datatypes.PowerRecord;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.RespiratoryRateRecord;
+import android.health.connect.datatypes.RestingHeartRateRecord;
+import android.health.connect.datatypes.SexualActivityRecord;
+import android.health.connect.datatypes.SkinTemperatureRecord;
+import android.health.connect.datatypes.SleepSessionRecord;
+import android.health.connect.datatypes.SpeedRecord;
+import android.health.connect.datatypes.StepsCadenceRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
+import android.health.connect.datatypes.Vo2MaxRecord;
+import android.health.connect.datatypes.WeightRecord;
+import android.health.connect.datatypes.WheelchairPushesRecord;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
 
 import com.android.healthfitness.flags.Flags;
 
@@ -298,30 +335,105 @@ public abstract class RecordFactory<T extends Record> {
     }
 
     /** Returns a record test helper for given data type. */
-    @Nullable
     public static RecordFactory<? extends Record> forDataType(Class<? extends Record> recordClass) {
-        if (recordClass.equals(ActivityIntensityRecord.class)) {
+        if (recordClass.equals(ActiveCaloriesBurnedRecord.class)) {
+            return new ActiveCaloriesBurnedRecordFactory();
+        } else if (recordClass.equals(ActivityIntensityRecord.class)) {
             return new ActivityIntensityRecordFactory();
+        } else if (recordClass.equals(BasalBodyTemperatureRecord.class)) {
+            return new BasalBodyTemperatureRecordFactory();
+        } else if (recordClass.equals(BasalMetabolicRateRecord.class)) {
+            return new BasalMetabolicRateRecordFactory();
+        } else if (recordClass.equals(BloodGlucoseRecord.class)) {
+            return new BloodGlucoseRecordFactory();
+        } else if (recordClass.equals(BloodPressureRecord.class)) {
+            return new BloodPressureRecordFactory();
+        } else if (recordClass.equals(BodyFatRecord.class)) {
+            return new BodyFatRecordFactory();
+        } else if (recordClass.equals(BodyTemperatureRecord.class)) {
+            return new BodyTemperatureRecordFactory();
+        } else if (recordClass.equals(BodyWaterMassRecord.class)) {
+            return new BodyWaterMassRecordFactory();
+        } else if (recordClass.equals(BoneMassRecord.class)) {
+            return new BoneMassRecordFactory();
+        } else if (recordClass.equals(CervicalMucusRecord.class)) {
+            return new CervicalMucusRecordFactory();
+        } else if (recordClass.equals(CyclingPedalingCadenceRecord.class)) {
+            return new CyclingPedalingCadenceRecordFactory();
+        } else if (recordClass.equals(DistanceRecord.class)) {
+            return new DistanceRecordFactory();
+        } else if (recordClass.equals(ElevationGainedRecord.class)) {
+            return new ElevationGainedRecordFactory();
+        } else if (recordClass.equals(ExerciseSessionRecord.class)) {
+            return new ExerciseSessionRecordFactory();
+        } else if (recordClass.equals(FloorsClimbedRecord.class)) {
+            return new FloorsClimbedRecordFactory();
+        } else if (recordClass.equals(HeartRateRecord.class)) {
+            return new HeartRateRecordFactory();
+        } else if (recordClass.equals(HeartRateVariabilityRmssdRecord.class)) {
+            return new HeartRateVariabilityRmssdRecordFactory();
+        } else if (recordClass.equals(HeightRecord.class)) {
+            return new HeightRecordFactory();
+        } else if (recordClass.equals(HydrationRecord.class)) {
+            return new HydrationRecordFactory();
+        } else if (recordClass.equals(IntermenstrualBleedingRecord.class)) {
+            return new IntermenstrualBleedingRecordFactory();
+        } else if (recordClass.equals(LeanBodyMassRecord.class)) {
+            return new LeanBodyMassRecordFactory();
+        } else if (recordClass.equals(MenstruationFlowRecord.class)) {
+            return new MenstruationFlowRecordFactory();
+        } else if (recordClass.equals(MenstruationPeriodRecord.class)) {
+            return new MenstruationPeriodRecordFactory();
         } else if (recordClass.equals(MindfulnessSessionRecord.class)) {
             return new MindfulnessSessionRecordFactory();
         } else if (Flags.smoking() && recordClass.equals(NicotineIntakeRecord.class)) {
             return new NicotineIntakeRecordFactory();
+        } else if (recordClass.equals(NutritionRecord.class)) {
+            return new NutritionRecordFactory();
+        } else if (recordClass.equals(OvulationTestRecord.class)) {
+            return new OvulationTestRecordFactory();
+        } else if (recordClass.equals(OxygenSaturationRecord.class)) {
+            return new OxygenSaturationRecordFactory();
+        } else if (recordClass.equals(PlannedExerciseSessionRecord.class)) {
+            return new PlannedExerciseSessionRecordFactory();
+        } else if (recordClass.equals(PowerRecord.class)) {
+            return new PowerRecordFactory();
+        } else if (recordClass.equals(RespiratoryRateRecord.class)) {
+            return new RespiratoryRateRecordFactory();
+        } else if (recordClass.equals(RestingHeartRateRecord.class)) {
+            return new RestingHeartRateRecordFactory();
+        } else if (recordClass.equals(SexualActivityRecord.class)) {
+            return new SexualActivityRecordFactory();
+        } else if (recordClass.equals(SkinTemperatureRecord.class)) {
+            return new SkinTemperatureRecordFactory();
+        } else if (recordClass.equals(SleepSessionRecord.class)) {
+            return new SleepSessionRecordFactory();
+        } else if (recordClass.equals(SpeedRecord.class)) {
+            return new SpeedRecordFactory();
+        } else if (recordClass.equals(StepsCadenceRecord.class)) {
+            return new StepsCadenceRecordFactory();
         } else if (recordClass.equals(StepsRecord.class)) {
             return new StepsRecordFactory();
+        } else if (recordClass.equals(TotalCaloriesBurnedRecord.class)) {
+            return new TotalCaloriesBurnedRecordFactory();
+        } else if (recordClass.equals(Vo2MaxRecord.class)) {
+            return new Vo2MaxRecordFactory();
+        } else if (recordClass.equals(WeightRecord.class)) {
+            return new WeightRecordFactory();
+        } else if (recordClass.equals(WheelchairPushesRecord.class)) {
+            return new WheelchairPushesRecordFactory();
         }
-        return null;
+        throw new UnsupportedOperationException(
+                "Record class is not supported by record factory: " + recordClass);
     }
 
     /** Returns a full record for given data type. */
     public static Record newFullRecordForType(Class<? extends Record> recordClass) {
         RecordFactory<? extends Record> factory = forDataType(recordClass);
-        if (factory == null) {
-            throw new UnsupportedOperationException(
-                    "Record class is not supported by record factory: " + recordClass);
-        }
         return factory.newFullRecord(
                 RecordFactory.newFullMetadataWithClientIdAndVersion("foo-client-id", 123),
-                Instant.now().minusSeconds(200),
-                Instant.now().minusSeconds(100));
+                // Health Connect stores time in millis.
+                Instant.now().truncatedTo(ChronoUnit.MILLIS).minusSeconds(200),
+                Instant.now().truncatedTo(ChronoUnit.MILLIS).minusSeconds(100));
     }
 }
