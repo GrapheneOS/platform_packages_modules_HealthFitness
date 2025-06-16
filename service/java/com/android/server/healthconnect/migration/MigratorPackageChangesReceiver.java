@@ -48,6 +48,15 @@ public class MigratorPackageChangesReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        // Avoid crashing the system server.
+        try {
+            onReceiveInternal(context, intent);
+        } catch (RuntimeException e) {
+            Slog.wtf(TAG, "Failed to handle intent: " + intent, e);
+        }
+    }
+
+    private void onReceiveInternal(Context context, Intent intent) {
         String packageName = getPackageName(intent);
         UserHandle userHandle = getUserHandle(intent);
         if (packageName == null || userHandle == null) {
