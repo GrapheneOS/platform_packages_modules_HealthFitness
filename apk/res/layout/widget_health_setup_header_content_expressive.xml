@@ -17,13 +17,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <ImageView
         android:id="@+id/icon"
         android:layout_width="@dimen/app_header_icon_size"
         android:layout_height="@dimen/app_header_icon_size"
-        android:contentDescription="@string/app_label"
         android:layout_gravity="center_horizontal"
-        android:backgroundTint="@color/settingslib_materialColorPrimary"/>
+        android:backgroundTint="@color/settingslib_materialColorPrimary" />
 
     <TextView
         android:id="@+id/title"
@@ -39,5 +39,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?attr/headerSummary"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </LinearLayout>
