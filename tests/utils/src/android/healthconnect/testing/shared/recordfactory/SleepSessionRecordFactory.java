@@ -22,10 +22,15 @@ import android.os.Bundle;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /** Note: This class is AI generated, validate before using, and remove this note */
 public final class SleepSessionRecordFactory extends RecordFactory<SleepSessionRecord> {
+    private static final String KEY_TITLE = PREFIX + "TITLE";
+    private static final String KEY_NOTES = PREFIX + "NOTES";
+    private static final String KEY_STAGES = PREFIX + "STAGES";
 
     @Override
     public SleepSessionRecord newFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
@@ -38,6 +43,8 @@ public final class SleepSessionRecordFactory extends RecordFactory<SleepSessionR
                                         SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_DEEP)))
                 .setStartZoneOffset(ZoneOffset.ofHours(3))
                 .setEndZoneOffset(ZoneOffset.ofHours(-2))
+                .setTitle("My sleep session")
+                .setNotes("A long night's sleep")
                 .build();
     }
 
@@ -53,6 +60,8 @@ public final class SleepSessionRecordFactory extends RecordFactory<SleepSessionR
                                         SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_LIGHT)))
                 .setStartZoneOffset(ZoneOffset.ofHours(-1))
                 .setEndZoneOffset(ZoneOffset.ofHours(2))
+                .setTitle("My nap")
+                .setNotes("A short nap")
                 .build();
     }
 
@@ -68,13 +77,38 @@ public final class SleepSessionRecordFactory extends RecordFactory<SleepSessionR
                 .setStages(record.getStages())
                 .setStartZoneOffset(record.getStartZoneOffset())
                 .setEndZoneOffset(record.getEndZoneOffset())
+                .setTitle(record.getTitle())
+                .setNotes(record.getNotes())
                 .build();
     }
 
+    private static final String KEY_STAGES_START_TIMES = KEY_STAGES + "_START_TIMES";
+    private static final String KEY_STAGES_END_TIMES = KEY_STAGES + "_END_TIMES";
+    private static final String KEY_STAGES_TYPES = KEY_STAGES + "_TYPES";
+
     @Override
     protected Bundle getValuesBundleForRecord(SleepSessionRecord record) {
-        // TODO(b/424728751): Implement.
-        return new Bundle();
+        Bundle values = new Bundle();
+        values.putCharSequence(KEY_TITLE, record.getTitle());
+        values.putCharSequence(KEY_NOTES, record.getNotes());
+
+        long[] stageStartTimes =
+                record.getStages().stream()
+                        .mapToLong(stage -> stage.getStartTime().toEpochMilli())
+                        .toArray();
+        long[] stageEndTimes =
+                record.getStages().stream()
+                        .mapToLong(stage -> stage.getEndTime().toEpochMilli())
+                        .toArray();
+        ArrayList<Integer> stageTypes = new ArrayList<>();
+        for (SleepSessionRecord.Stage stage : record.getStages()) {
+            stageTypes.add(stage.getType());
+        }
+        values.putLongArray(KEY_STAGES_START_TIMES, stageStartTimes);
+        values.putLongArray(KEY_STAGES_END_TIMES, stageEndTimes);
+        values.putIntegerArrayList(KEY_STAGES_TYPES, stageTypes);
+
+        return values;
     }
 
     @Override
@@ -85,9 +119,32 @@ public final class SleepSessionRecordFactory extends RecordFactory<SleepSessionR
             ZoneOffset startZoneOffset,
             ZoneOffset endZoneOffset,
             Bundle bundle) {
-        return new SleepSessionRecord.Builder(metadata, startTime, endTime)
-                .setStartZoneOffset(startZoneOffset)
-                .setEndZoneOffset(endZoneOffset)
-                .build();
+        SleepSessionRecord.Builder builder =
+                new SleepSessionRecord.Builder(metadata, startTime, endTime)
+                        .setStartZoneOffset(startZoneOffset)
+                        .setEndZoneOffset(endZoneOffset);
+        if (bundle.containsKey(KEY_TITLE)) {
+            builder.setTitle(bundle.getString(KEY_TITLE));
+        }
+        if (bundle.containsKey(KEY_NOTES)) {
+            builder.setNotes(bundle.getString(KEY_NOTES));
+        }
+
+        long[] stageStartTimes = bundle.getLongArray(KEY_STAGES_START_TIMES);
+        if (stageStartTimes != null) {
+            long[] stageEndTimes = bundle.getLongArray(KEY_STAGES_END_TIMES);
+            ArrayList<Integer> stageTypes = bundle.getIntegerArrayList(KEY_STAGES_TYPES);
+            List<SleepSessionRecord.Stage> stages = new ArrayList<>();
+            for (int i = 0; i < stageStartTimes.length; i++) {
+                stages.add(
+                        new SleepSessionRecord.Stage(
+                                Instant.ofEpochMilli(stageStartTimes[i]),
+                                Instant.ofEpochMilli(stageEndTimes[i]),
+                                stageTypes.get(i)));
+            }
+            builder.setStages(stages);
+        }
+
+        return builder.build();
     }
 }
