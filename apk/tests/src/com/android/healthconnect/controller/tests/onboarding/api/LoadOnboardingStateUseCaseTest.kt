@@ -17,22 +17,27 @@
 package com.android.healthconnect.controller.tests.onboarding.api
 
 import android.health.connect.HealthConnectOnboardingState
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.onboarding.api.LoadOnboardingStateUseCase
 import com.android.healthconnect.controller.onboarding.api.OnboardingState
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthOnboardingManager
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
+@EnableFlags(Flags.FLAG_ONBOARDING)
 class LoadOnboardingStateUseCaseTest {
-
+    @get:Rule val setFlagsRule = SetFlagsRule()
     private val healthOnboardingManager = FakeHealthOnboardingManager()
 
     @Test
