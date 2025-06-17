@@ -14,6 +14,7 @@
 package com.android.healthconnect.controller.tests.data.entries.api
 
 import android.content.Context
+import android.health.connect.GetMedicalDataSourcesRequest
 import android.health.connect.HealthConnectManager
 import android.health.connect.ReadMedicalResourcesInitialRequest
 import android.health.connect.ReadMedicalResourcesResponse
@@ -50,6 +51,8 @@ import com.android.healthconnect.controller.data.formatters.MenstruationPeriodFo
 import com.android.healthconnect.controller.data.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
+import com.android.healthconnect.controller.service.HealthManagerModule
+import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
 import com.android.healthconnect.controller.tests.utils.BODYTEMPERATURE_MONTH
 import com.android.healthconnect.controller.tests.utils.BODYWATERMASS_WEEK
@@ -81,6 +84,7 @@ import com.android.healthconnect.controller.tests.utils.WEIGHT_DAY_100
 import com.android.healthconnect.controller.tests.utils.WEIGHT_MONTH_100
 import com.android.healthconnect.controller.tests.utils.WEIGHT_STARTDATE_100
 import com.android.healthconnect.controller.tests.utils.WEIGHT_WEEK_100
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.forDataType
 import com.android.healthconnect.controller.tests.utils.getMixedRecordsAcrossThreeDays
 import com.android.healthconnect.controller.tests.utils.getMixedRecordsAcrossTwoDays
@@ -98,6 +102,7 @@ import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
@@ -115,23 +120,25 @@ import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Captor
 import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.junit.MockitoJUnit
+import org.mockito.kotlin.mock
 import org.mockito.stubbing.Stubber
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@UninstallModules(HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
 class LoadEntriesHelperUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val mockitoRule = MockitoJUnit.rule()
     @BindValue @JvmField val timeSource = TestTimeSource
 
     private val defaultStartTime: Instant = START_TIME
 
-    private val healthConnectManager: HealthConnectManager =
-        Mockito.mock(HealthConnectManager::class.java)
-
+    @BindValue lateinit var appInfoReader: AppInfoReader
+    @BindValue val healthConnectManager: HealthConnectManager = mock()
     @Inject lateinit var healthDataEntryFormatter: HealthDataEntryFormatter
     @Inject lateinit var menstruationPeriodFormatter: MenstruationPeriodFormatter
     @Inject lateinit var dataSourceReader: MedicalDataSourceReader
@@ -164,9 +171,9 @@ class LoadEntriesHelperUseCaseTest {
     @Captor lateinit var immunizationCaptor: ArgumentCaptor<ReadMedicalResourcesInitialRequest>
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
-        MockitoAnnotations.initMocks(this)
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.US)
         loadEntriesHelper =
@@ -576,7 +583,7 @@ class LoadEntriesHelperUseCaseTest {
                 )
             )
             .`when`(healthConnectManager)
-            .getMedicalDataSources(any<List<String>>(), any(), any())
+            .getMedicalDataSources(any<GetMedicalDataSourcesRequest>(), any(), any())
 
         val input =
             setupReadMedicalResourceTest(MedicalPermissionType.VACCINES, TEST_APP_PACKAGE_NAME)

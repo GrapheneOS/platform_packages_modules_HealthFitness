@@ -30,6 +30,7 @@ import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.getBasalMetabolicRateRecord
 import com.android.healthconnect.controller.tests.utils.getHeartRateRecord
 import com.android.healthconnect.controller.tests.utils.getSamplePlannedExerciseSessionRecord
@@ -59,7 +60,7 @@ class HealthDataEntryFormatterTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    @BindValue val appInfoReader: AppInfoReader = mock()
+    @BindValue lateinit var appInfoReader: AppInfoReader
     @Inject lateinit var formatter: HealthDataEntryFormatter
 
     private lateinit var context: Context
@@ -69,8 +70,7 @@ class HealthDataEntryFormatterTest {
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.UK)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
-        whenever(appInfoReader.getAppMetadata(any(), any()))
-            .thenReturn(AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null, false))
+        appInfoReader = createFakeAppInfoReader()
 
         hiltRule.inject()
     }

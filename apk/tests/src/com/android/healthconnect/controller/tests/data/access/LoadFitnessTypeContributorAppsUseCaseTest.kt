@@ -34,11 +34,12 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_3
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -56,18 +57,18 @@ class LoadFitnessTypeContributorAppsUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
+    @BindValue lateinit var appInfoReader: AppInfoReader
     private lateinit var context: Context
     private val healthConnectManager: HealthConnectManager =
         Mockito.mock(HealthConnectManager::class.java)
     private lateinit var loadFitnessTypeContributorAppsUseCase:
         LoadFitnessTypeContributorAppsUseCase
 
-    @Inject lateinit var appInfoReader: AppInfoReader
-
     @Before
-    fun setup() {
+    fun setup() = runTest {
         MockitoAnnotations.initMocks(this)
         context = InstrumentationRegistry.getInstrumentation().context
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         loadFitnessTypeContributorAppsUseCase =
             LoadFitnessTypeContributorAppsUseCase(

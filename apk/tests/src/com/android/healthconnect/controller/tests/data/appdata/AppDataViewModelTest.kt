@@ -44,13 +44,14 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE_DIFFERENT_APP
 import com.android.healthconnect.controller.tests.utils.TestObserver
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.util.Locale
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -79,7 +80,7 @@ class AppDataViewModelTest {
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
     private val testDispatcher = UnconfinedTestDispatcher()
 
-    @Inject lateinit var appInfoReader: AppInfoReader
+    @BindValue lateinit var appInfoReader: AppInfoReader
 
     var manager: HealthConnectManager = mock(HealthConnectManager::class.java)
 
@@ -87,10 +88,11 @@ class AppDataViewModelTest {
     private lateinit var context: Context
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
         MockitoAnnotations.initMocks(this)
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.US)
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
         viewModel = AppDataViewModel(appInfoReader, AllDataUseCase(manager, Dispatchers.Main))

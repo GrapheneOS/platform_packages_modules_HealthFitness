@@ -81,6 +81,7 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TestData.WARSAW_ROUTE
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.getPlannedExerciseBlock
 import com.android.healthconnect.controller.tests.utils.getPlannedExerciseStep
 import com.android.healthconnect.controller.tests.utils.launchFragment
@@ -117,7 +118,7 @@ import org.mockito.kotlin.whenever
 class DataEntryDetailsFragmentTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    @BindValue val appInfoReader: AppInfoReader = mock()
+    @BindValue lateinit var appInfoReader: AppInfoReader
     @BindValue val viewModel: DataEntryDetailsViewModel = mock()
     @BindValue val healthConnectManager: HealthConnectManager = mock()
     private lateinit var context: Context
@@ -126,15 +127,7 @@ class DataEntryDetailsFragmentTest {
 
     @Before
     fun setup() = runTest {
-        whenever(appInfoReader.getAppMetadata(any(), any()))
-            .thenReturn(
-                AppMetadata(
-                    packageName = TEST_APP_PACKAGE_NAME,
-                    appName = TEST_APP_NAME,
-                    icon = null,
-                    isSystem = false,
-                )
-            )
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.UK)
