@@ -20,6 +20,7 @@ import android.health.connect.datatypes.ExercisePerformanceGoal
 import android.health.connect.datatypes.ExerciseRoute
 import android.health.connect.datatypes.PlannedExerciseBlock
 import android.health.connect.datatypes.PlannedExerciseStep
+import com.android.healthconnect.controller.data.formatters.medical.PrettyJsonGroup
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewItemDisplayType
 import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewItemDisplayType.GROUP_ITEM
@@ -93,6 +94,15 @@ sealed class FormattedEntry(
     data class FormattedSectionTitle(val title: String) : FormattedEntry(uuid = "", HEADER_ITEM)
 
     data class ItemDataEntrySeparator(val title: String = "") : FormattedEntry(uuid = "", SPACE)
+
+    data class FormattedRawFhir(val fhir: String, val fhirContentDescription: String) :
+        FormattedEntry("", STANDALONE_ITEM)
+
+    data class FormattedPrettyFhir(val header: String, val content: PrettyJsonGroup) :
+        FormattedEntry("", GROUP_ITEM)
+
+    data class FormattedPrettyFhirDetailsHeader(val header: String, val title: String) :
+        FormattedEntry("", STANDALONE_ITEM)
 
     data class SelectAllHeader(val title: String = "Select all") :
         FormattedEntry(uuid = "", STANDALONE_ITEM)
