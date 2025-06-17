@@ -23,6 +23,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.data.entries.FormattedEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedMedicalDataEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedPrettyFhir
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedPrettyFhirDetailsHeader
+import com.android.healthconnect.controller.data.formatters.medical.PrettyFhirFormatter
+import com.android.healthconnect.controller.data.formatters.medical.PrettyJsonExtractor
+import com.android.healthconnect.controller.data.formatters.medical.PrettyJsonGroup
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -32,30 +39,37 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class RawFhirViewModel
 @Inject
-constructor(private val rawFhirUseCase: RawFhirUseCase, private val formatter: RawFhirFormatter) :
-    ViewModel() {
+constructor(
+    private val rawFhirUseCase: RawFhirUseCase,
+    private val formatter: RawFhirFormatter,
+    private val prettyFhirFormatter: PrettyFhirFormatter,
+) : ViewModel() {
 
     companion object {
-        private const val TAG = "RawFhirViewModel"
+        private const val TAG = "FhirViewModel"
     }
 
     private val _rawFhir = MutableLiveData<RawFhirState>()
+    private val _prettyFhir = MutableLiveData<PrettyFhirState>()
 
     /** Provides a [FhirResource]s to be displayed in [RawFhirFragment]. */
     val rawFhir: LiveData<RawFhirState>
         get() = _rawFhir
 
-    fun loadFhirResource(medicalResourceId: MedicalResourceId) {
+    val prettyFhir: LiveData<PrettyFhirState>
+        get() = _prettyFhir
+
+    fun loadRawFhirResource(medicalResourceId: MedicalResourceId) {
         _rawFhir.postValue(RawFhirState.Loading)
         viewModelScope.launch {
             when (val result = rawFhirUseCase.loadFhirResource(medicalResourceId)) {
                 is UseCaseResults.Success -> {
-                    val formattedFhir =
-                        FormattedFhir(
+                    val formattedRawFhir =
+                        FormattedEntry.FormattedRawFhir(
                             formatter.format(result.data),
                             formatter.fhirContentDescription(result.data),
                         )
-                    _rawFhir.postValue(RawFhirState.WithData(listOf(formattedFhir)))
+                    _rawFhir.postValue(RawFhirState.WithData(listOf(formattedRawFhir)))
                 }
                 is UseCaseResults.Failed -> {
                     _rawFhir.postValue(RawFhirState.Error)
@@ -64,13 +78,79 @@ constructor(private val rawFhirUseCase: RawFhirUseCase, private val formatter: R
         }
     }
 
+    fun loadPrettyFhirResource(medicalDataEntry: FormattedMedicalDataEntry) {
+        _prettyFhir.postValue(PrettyFhirState.Loading)
+
+        viewModelScope.launch {
+            when (
+                val result = rawFhirUseCase.loadFhirResource(medicalDataEntry.medicalResourceId)
+            ) {
+                is UseCaseResults.Success -> {
+                    val formattedRawFhir =
+                        FormattedEntry.FormattedRawFhir(
+                            formatter.format(result.data),
+                            formatter.fhirContentDescription(result.data),
+                        )
+                    _rawFhir.postValue(RawFhirState.WithData(listOf(formattedRawFhir)))
+                    val formattedEntries = mutableListOf<FormattedEntry>()
+
+                    val medicalDataEntryHeader = addMedicalDataEntryHeader(medicalDataEntry)
+                    val formattedPrettyFhirEntries = addFormattedPrettyFhirEntries(result.data)
+
+                    formattedEntries.add(medicalDataEntryHeader)
+                    formattedEntries.add(FormattedEntry.ItemDataEntrySeparator())
+                    formattedEntries.addAll(formattedPrettyFhirEntries)
+
+                    _prettyFhir.postValue(PrettyFhirState.WithData(formattedEntries))
+                }
+
+                is UseCaseResults.Failed -> {
+                    _prettyFhir.postValue(PrettyFhirState.Error)
+                }
+            }
+        }
+    }
+
+    private fun addMedicalDataEntryHeader(
+        medicalDataEntry: FormattedMedicalDataEntry
+    ): FormattedPrettyFhirDetailsHeader {
+        return FormattedPrettyFhirDetailsHeader(
+            header = medicalDataEntry.header,
+            title = medicalDataEntry.title,
+        )
+    }
+
+    private fun addFormattedPrettyFhirEntries(
+        rawFhirResource: FhirResource
+    ): List<FormattedPrettyFhir> {
+        val formattedEntries: MutableList<FormattedPrettyFhir> = mutableListOf()
+
+        val prettyFhirJson = prettifyRawFhirResource(rawFhirResource)
+
+        val formattedPrettyFhirList: List<FormattedPrettyFhir> =
+            prettyFhirJson.map { prettyJsonGroup -> prettyFhirFormatter.format(prettyJsonGroup) }
+
+        formattedEntries.addAll(formattedPrettyFhirList)
+        return formattedEntries
+    }
+
+    private fun prettifyRawFhirResource(rawFhirResources: FhirResource): List<PrettyJsonGroup> {
+        return PrettyJsonExtractor().extract(rawFhirResources.data)
+    }
+
     sealed class RawFhirState {
         data object Loading : RawFhirState()
 
         data object Error : RawFhirState()
 
-        data class WithData(val fhirResource: List<FormattedFhir>) : RawFhirState()
+        data class WithData(val fhirResource: List<FormattedEntry>) : RawFhirState()
     }
 
-    data class FormattedFhir(val fhir: String, val fhirContentDescription: String)
+    sealed class PrettyFhirState {
+        data object Loading : PrettyFhirState()
+
+        data object Error : PrettyFhirState()
+
+        data class WithData(val prettyFhirResources: List<FormattedEntry>) : PrettyFhirState()
+    }
 }

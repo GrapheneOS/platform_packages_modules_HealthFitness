@@ -27,7 +27,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel.FormattedFhir
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedRawFhir
 import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel.RawFhirState.Error
 import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel.RawFhirState.Loading
 import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel.RawFhirState.WithData
@@ -85,14 +85,14 @@ class RawFhirFragment : Hilt_RawFhirFragment() {
         loadingView = view.findViewById(R.id.loading)
         detailsAdapter =
             RecyclerViewAdapter.Builder()
-                .setViewBinder(FormattedFhir::class.java, rawFhirViewBinder)
+                .setViewBinder(FormattedRawFhir::class.java, rawFhirViewBinder)
                 .build()
         recyclerView =
             view.findViewById<RecyclerView?>(R.id.data_entries_list).apply {
                 layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
                 adapter = detailsAdapter
             }
-        viewModel.loadFhirResource(medicalResourceId)
+        viewModel.loadRawFhirResource(medicalResourceId)
         return view
     }
 
@@ -122,7 +122,7 @@ class RawFhirFragment : Hilt_RawFhirFragment() {
         }
     }
 
-    class RawFhirViewBinder : SimpleViewBinder<FormattedFhir, View> {
+    class RawFhirViewBinder : SimpleViewBinder<FormattedRawFhir, View> {
         private lateinit var logger: HealthConnectLogger
 
         override fun newView(parent: ViewGroup): View {
@@ -136,7 +136,7 @@ class RawFhirFragment : Hilt_RawFhirFragment() {
                 .inflate(R.layout.item_raw_fhir_entry, parent, false)
         }
 
-        override fun bind(view: View, data: FormattedFhir, index: Int) {
+        override fun bind(view: View, data: FormattedRawFhir, index: Int) {
             val rawFhir = view.findViewById<TextView>(R.id.item_raw_fhir)
             rawFhir.text = data.fhir
             rawFhir.contentDescription = data.fhirContentDescription

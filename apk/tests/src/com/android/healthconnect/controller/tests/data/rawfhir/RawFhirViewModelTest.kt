@@ -23,10 +23,20 @@ import android.health.connect.datatypes.MedicalResource
 import android.os.OutcomeReceiver
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.android.healthconnect.controller.data.entries.FormattedEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedPrettyFhir
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedPrettyFhirDetailsHeader
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedRawFhir
+import com.android.healthconnect.controller.data.entries.FormattedEntry.ItemDataEntrySeparator
+import com.android.healthconnect.controller.data.formatters.medical.PrettyFhirFormatter
+import com.android.healthconnect.controller.data.formatters.medical.PrettyJsonGroup
+import com.android.healthconnect.controller.data.formatters.medical.PrettyJsonLine
 import com.android.healthconnect.controller.data.rawfhir.RawFhirFormatter
 import com.android.healthconnect.controller.data.rawfhir.RawFhirUseCase
 import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
+import com.android.healthconnect.controller.tests.utils.TEST_FORMATTED_MEDICAL_DATA_ENTRY_IMMUNIZATION
+import com.android.healthconnect.controller.tests.utils.TEST_FORMATTED_MEDICAL_DATA_ENTRY_IMMUNIZATION_LONG
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION_LONG
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_INVALID_JSON
@@ -68,7 +78,8 @@ class RawFhirViewModelTest {
 
     var manager: HealthConnectManager = mock(HealthConnectManager::class.java)
 
-    @Inject lateinit var formatter: RawFhirFormatter
+    @Inject lateinit var rawFhirFormatter: RawFhirFormatter
+    @Inject lateinit var prettyFhirFormatter: PrettyFhirFormatter
     private lateinit var viewModel: RawFhirViewModel
     private lateinit var context: Context
 
@@ -79,7 +90,12 @@ class RawFhirViewModelTest {
         context.setLocale(Locale.US)
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
-        viewModel = RawFhirViewModel(RawFhirUseCase(manager, Dispatchers.Main), formatter)
+        viewModel =
+            RawFhirViewModel(
+                RawFhirUseCase(manager, Dispatchers.Main),
+                rawFhirFormatter,
+                prettyFhirFormatter,
+            )
     }
 
     @After
@@ -99,7 +115,7 @@ class RawFhirViewModelTest {
 
         val testObserver = TestObserver<RawFhirViewModel.RawFhirState>()
         viewModel.rawFhir.observeForever(testObserver)
-        viewModel.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
+        viewModel.loadRawFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
         advanceUntilIdle()
 
         assertThat(testObserver.getLastValue()).isEqualTo(RawFhirViewModel.RawFhirState.Error)
@@ -118,14 +134,14 @@ class RawFhirViewModelTest {
 
         val testObserver = TestObserver<RawFhirViewModel.RawFhirState>()
         viewModel.rawFhir.observeForever(testObserver)
-        viewModel.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
+        viewModel.loadRawFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
         advanceUntilIdle()
 
         val expected =
             listOf(
-                RawFhirViewModel.FormattedFhir(
+                FormattedRawFhir(
                     fhir =
-                    "{\n" +
+                        "{\n" +
                             "    \"resourceType\": \"Immunization\",\n" +
                             "    \"id\": \"immunization-1\",\n" +
                             "    \"status\": \"completed\",\n" +
@@ -170,12 +186,12 @@ class RawFhirViewModelTest {
 
         val testObserver = TestObserver<RawFhirViewModel.RawFhirState>()
         viewModel.rawFhir.observeForever(testObserver)
-        viewModel.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION_LONG.id)
+        viewModel.loadRawFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION_LONG.id)
         advanceUntilIdle()
 
         val expected =
             listOf(
-                RawFhirViewModel.FormattedFhir(
+                FormattedRawFhir(
                     fhir =
                         "{\n" +
                             "    \"resourceType\": \"Immunization\",\n" +
@@ -273,18 +289,294 @@ class RawFhirViewModelTest {
 
         val testObserver = TestObserver<RawFhirViewModel.RawFhirState>()
         viewModel.rawFhir.observeForever(testObserver)
-        viewModel.loadFhirResource(TEST_MEDICAL_RESOURCE_INVALID_JSON.id)
+        viewModel.loadRawFhirResource(TEST_MEDICAL_RESOURCE_INVALID_JSON.id)
         advanceUntilIdle()
 
         val expected =
             listOf(
-                RawFhirViewModel.FormattedFhir(
+                FormattedEntry.FormattedRawFhir(
                     TEST_MEDICAL_RESOURCE_INVALID_JSON.fhirResource.data,
                     TEST_MEDICAL_RESOURCE_INVALID_JSON.fhirResource.data,
                 )
             )
         assertThat(testObserver.getLastValue())
             .isEqualTo(RawFhirViewModel.RawFhirState.WithData(expected))
+    }
+
+    @Test
+    fun smallImmunizationFhir_returnsPrettyFhir() = runTest {
+        val medicalResources: List<MedicalResource> = listOf(TEST_MEDICAL_RESOURCE_IMMUNIZATION)
+        val medicalDataEntry = TEST_FORMATTED_MEDICAL_DATA_ENTRY_IMMUNIZATION
+        doAnswer(prepareAnswer(medicalResources))
+            .`when`(manager)
+            .readMedicalResources(
+                ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+            )
+        val testObserver = TestObserver<RawFhirViewModel.PrettyFhirState>()
+        val EMPTY_PRETTY_JSON_GROUP =
+            PrettyJsonGroup(nestedLines = emptyList()) // More concise for standalone entries
+        val expected =
+            listOf(
+                FormattedPrettyFhirDetailsHeader("Test app • Test hospital", "Test immunization"),
+                ItemDataEntrySeparator(),
+                FormattedPrettyFhir(
+                    header = "Resource Type: Immunization",
+                    content = EMPTY_PRETTY_JSON_GROUP,
+                ),
+                FormattedPrettyFhir(
+                    header = "Id: immunization-1",
+                    content = EMPTY_PRETTY_JSON_GROUP,
+                ),
+                FormattedPrettyFhir(
+                    header = "Status: completed",
+                    content = EMPTY_PRETTY_JSON_GROUP,
+                ),
+                FormattedPrettyFhir(
+                    header = "Vaccine Code:",
+                    content =
+                        PrettyJsonGroup(
+                            nestedLines =
+                                listOf(
+                                    PrettyJsonLine(depth = 1, line = "Coding:"),
+                                    PrettyJsonLine(
+                                        depth = 2,
+                                        line = "System: http://hl7.org/fhir/sid/cvx",
+                                    ),
+                                    PrettyJsonLine(depth = 2, line = "Code: 115"),
+                                    PrettyJsonLine(depth = 2, line = ""),
+                                    PrettyJsonLine(
+                                        depth = 2,
+                                        line = "System: http://hl7.org/fhir/sid/ndc",
+                                    ),
+                                    PrettyJsonLine(depth = 2, line = "Code: 58160-842-11"),
+                                    PrettyJsonLine(depth = 1, line = "Text: Tdap"),
+                                )
+                        ),
+                ),
+                FormattedPrettyFhir(
+                    header = "Patient:",
+                    content =
+                        PrettyJsonGroup(
+                            nestedLines =
+                                listOf(
+                                    PrettyJsonLine(
+                                        depth = 1,
+                                        line = "Reference: Patient/patient_1",
+                                    ),
+                                    PrettyJsonLine(depth = 1, line = "Display: Example, Anne"),
+                                )
+                        ),
+                ),
+                FormattedPrettyFhir(
+                    header = "Occurrence Date Time: 2018-05-21",
+                    content = EMPTY_PRETTY_JSON_GROUP,
+                ),
+            )
+
+        viewModel.prettyFhir.observeForever(testObserver)
+        viewModel.loadPrettyFhirResource(medicalDataEntry)
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue())
+            .isEqualTo(RawFhirViewModel.PrettyFhirState.WithData(expected))
+    }
+
+    @Test
+    fun longImmunizationFhir_returnsPrettyFhir() = runTest {
+        val medicalResources: List<MedicalResource> =
+            listOf(TEST_MEDICAL_RESOURCE_IMMUNIZATION_LONG)
+        val medicalDataEntry = TEST_FORMATTED_MEDICAL_DATA_ENTRY_IMMUNIZATION_LONG
+        doAnswer(prepareAnswer(medicalResources))
+            .`when`(manager)
+            .readMedicalResources(
+                ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+            )
+        val testObserver = TestObserver<RawFhirViewModel.PrettyFhirState>()
+        val EMPTY_PRETTY_JSON_GROUP =
+            PrettyJsonGroup(nestedLines = emptyList()) // More concise for standalone entries
+        val expected: List<FormattedEntry> =
+            listOf(
+                FormattedPrettyFhirDetailsHeader(
+                    "Test app • Test hospital",
+                    "Test immunization long",
+                ),
+                ItemDataEntrySeparator(),
+                FormattedPrettyFhir(
+                    header = "Resource Type: Immunization",
+                    content = EMPTY_PRETTY_JSON_GROUP,
+                ),
+                FormattedPrettyFhir(
+                    header = "Id: immunization-1",
+                    content = EMPTY_PRETTY_JSON_GROUP,
+                ),
+                FormattedPrettyFhir(
+                    header = "Status: completed",
+                    content = EMPTY_PRETTY_JSON_GROUP,
+                ),
+                FormattedPrettyFhir(
+                    header = "Vaccine Code:",
+                    content =
+                        PrettyJsonGroup(
+                            nestedLines =
+                                listOf(
+                                    PrettyJsonLine(depth = 1, line = "Coding:"),
+                                    PrettyJsonLine(
+                                        depth = 2,
+                                        line = "System: http://hl7.org/fhir/sid/cvx",
+                                    ),
+                                    PrettyJsonLine(depth = 2, line = "Code: 115"),
+                                    PrettyJsonLine(depth = 2, line = ""),
+                                    PrettyJsonLine(
+                                        depth = 2,
+                                        line = "System: http://hl7.org/fhir/sid/ndc",
+                                    ),
+                                    PrettyJsonLine(depth = 2, line = "Code: 58160-842-11"),
+                                    PrettyJsonLine(depth = 1, line = "Text: Tdap"),
+                                )
+                        ),
+                ),
+                FormattedPrettyFhir(
+                    header = "Patient:",
+                    content =
+                        PrettyJsonGroup(
+                            nestedLines =
+                                listOf(
+                                    PrettyJsonLine(
+                                        depth = 1,
+                                        line = "Reference: Patient/patient_1",
+                                    ),
+                                    PrettyJsonLine(depth = 1, line = "Display: Example, Anne"),
+                                )
+                        ),
+                ),
+                FormattedPrettyFhir(
+                    header = "Encounter:",
+                    content =
+                        PrettyJsonGroup(
+                            nestedLines =
+                                listOf(
+                                    PrettyJsonLine(
+                                        depth = 1,
+                                        line = "Reference: Encounter/encounter_unk",
+                                    ),
+                                    PrettyJsonLine(depth = 1, line = "Display: GP Visit"),
+                                )
+                        ),
+                ),
+                FormattedPrettyFhir(
+                    header = "Occurrence Date Time: 2018-05-21",
+                    content = EMPTY_PRETTY_JSON_GROUP,
+                ),
+                FormattedPrettyFhir(
+                    header = "Primary Source: true",
+                    content = EMPTY_PRETTY_JSON_GROUP,
+                ),
+                FormattedPrettyFhir(
+                    header = "Manufacturer:",
+                    content =
+                        PrettyJsonGroup(
+                            nestedLines =
+                                listOf(PrettyJsonLine(depth = 1, line = "Display: Sanofi Pasteur"))
+                        ),
+                ),
+                FormattedPrettyFhir(header = "Lot Number: 1", content = EMPTY_PRETTY_JSON_GROUP),
+                FormattedPrettyFhir(
+                    header = "Site:",
+                    content =
+                        PrettyJsonGroup(
+                            nestedLines =
+                                listOf(
+                                    PrettyJsonLine(depth = 1, line = "Coding:"),
+                                    PrettyJsonLine(
+                                        depth = 2,
+                                        line =
+                                            "System: http://terminology.hl7.org/CodeSystem/v3-ActSite",
+                                    ),
+                                    PrettyJsonLine(depth = 2, line = "Code: LA"),
+                                    PrettyJsonLine(depth = 2, line = "Display: Left Arm"),
+                                    PrettyJsonLine(depth = 1, line = "Text: Left Arm"),
+                                )
+                        ),
+                ),
+                FormattedPrettyFhir(
+                    header = "Route:",
+                    content =
+                        PrettyJsonGroup(
+                            nestedLines =
+                                listOf(
+                                    PrettyJsonLine(depth = 1, line = "Coding:"),
+                                    PrettyJsonLine(
+                                        depth = 2,
+                                        line =
+                                            "System: http://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration",
+                                    ),
+                                    PrettyJsonLine(depth = 2, line = "Code: IM"),
+                                    PrettyJsonLine(
+                                        depth = 2,
+                                        line = "Display: Injection, intramuscular",
+                                    ),
+                                    PrettyJsonLine(
+                                        depth = 1,
+                                        line = "Text: Injection, intramuscular",
+                                    ),
+                                )
+                        ),
+                ),
+                FormattedPrettyFhir(
+                    header = "Dose Quantity:",
+                    content =
+                        PrettyJsonGroup(
+                            nestedLines =
+                                listOf(
+                                    PrettyJsonLine(depth = 1, line = "Value: 0.5"),
+                                    PrettyJsonLine(depth = 1, line = "Unit: mL"),
+                                )
+                        ),
+                ),
+                FormattedPrettyFhir(
+                    header = "Performer:",
+                    content =
+                        PrettyJsonGroup(
+                            nestedLines =
+                                listOf(
+                                    PrettyJsonLine(depth = 1, line = "Function:"),
+                                    PrettyJsonLine(depth = 2, line = "Coding:"),
+                                    PrettyJsonLine(
+                                        depth = 3,
+                                        line =
+                                            "System: http://terminology.hl7.org/CodeSystem/v2-0443",
+                                    ),
+                                    PrettyJsonLine(depth = 3, line = "Code: AP"),
+                                    PrettyJsonLine(
+                                        depth = 3,
+                                        line = "Display: Administering Provider",
+                                    ),
+                                    PrettyJsonLine(
+                                        depth = 2,
+                                        line = "Text: Administering Provider",
+                                    ),
+                                    PrettyJsonLine(depth = 1, line = "Actor:"),
+                                    PrettyJsonLine(
+                                        depth = 2,
+                                        line = "Reference: Practitioner/practitioner_1",
+                                    ),
+                                    PrettyJsonLine(depth = 2, line = "Type: Practitioner"),
+                                    PrettyJsonLine(depth = 2, line = "Display: Dr Maria Hernandez"),
+                                )
+                        ),
+                ),
+            )
+
+        viewModel.prettyFhir.observeForever(testObserver)
+        viewModel.loadPrettyFhirResource(medicalDataEntry)
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue())
+            .isEqualTo(RawFhirViewModel.PrettyFhirState.WithData(expected))
     }
 
     private fun prepareAnswer(

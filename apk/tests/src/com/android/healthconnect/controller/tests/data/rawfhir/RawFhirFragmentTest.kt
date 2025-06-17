@@ -27,6 +27,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withSubstring
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedRawFhir
 import com.android.healthconnect.controller.data.rawfhir.RawFhirFragment
 import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel
 import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel.RawFhirState.Error
@@ -199,7 +200,7 @@ class RawFhirFragmentTest {
             MutableLiveData(
                 WithData(
                     listOf(
-                        RawFhirViewModel.FormattedFhir(
+                        FormattedRawFhir(
                             fhir = fhirResource,
                             fhirContentDescription = contentDescription,
                         )
