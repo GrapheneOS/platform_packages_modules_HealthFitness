@@ -31,7 +31,9 @@ import com.android.healthconnect.controller.data.formatters.MenstruationPeriodFo
 import com.android.healthconnect.controller.data.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.datasources.api.LoadPriorityEntriesUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
+import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
+import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.TEST_APP
@@ -40,6 +42,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_3
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_3
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadPriorityListUseCase
 import com.android.healthconnect.controller.tests.utils.forDataType
 import com.android.healthconnect.controller.tests.utils.fromDataSource
@@ -49,8 +52,10 @@ import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.tests.utils.verifySleepSessionListsEqual
 import com.android.healthconnect.controller.utils.toInstantAtStartOfDay
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -73,15 +78,17 @@ import org.mockito.kotlin.times
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@UninstallModules(HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
 class LoadPriorityEntriesUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @BindValue lateinit var appInfoReader: AppInfoReader
     private lateinit var context: Context
 
     private val loadPriorityListUseCase = FakeLoadPriorityListUseCase()
     private lateinit var loadEntriesHelper: LoadEntriesHelper
-    private val healthConnectManager = Mockito.mock(HealthConnectManager::class.java)
+    @BindValue val healthConnectManager = Mockito.mock(HealthConnectManager::class.java)
 
     private lateinit var loadPriorityEntriesUseCase: LoadPriorityEntriesUseCase
     @Inject lateinit var healthDataEntryFormatter: HealthDataEntryFormatter
@@ -89,8 +96,9 @@ class LoadPriorityEntriesUseCaseTest {
     @Inject lateinit var dataSourceReader: MedicalDataSourceReader
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
         MockitoAnnotations.initMocks(this)
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.US)

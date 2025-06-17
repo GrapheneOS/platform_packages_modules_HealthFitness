@@ -420,6 +420,7 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/data/entries/AppEntriesFragmentTest.kt",
         "src/com/android/healthconnect/controller/tests/data/access/AccessFragmentTest.kt",
         "src/com/android/healthconnect/controller/tests/data/rawfhir/RawFhirFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/datasources/DataSourcesFragmentTest.kt",
         // This gets an "NoActivityResumedException" on two tests. Needs more investigation
         // However, does use "showOnboarding()" which might not work on robolectric as it uses
         // SharedPreferences.
@@ -450,6 +451,7 @@ android_robolectric_test {
         "src/com/android/healthconnect/controller/tests/autodelete/**/*.kt",
         "src/com/android/healthconnect/controller/tests/backuprestore/**/*.kt",
         "src/com/android/healthconnect/controller/tests/data/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/datasources/**/*.kt",
         "src/com/android/healthconnect/controller/tests/units/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utils/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utiltests/**/*.kt",

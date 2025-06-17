@@ -16,15 +16,16 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_3
 import com.android.healthconnect.controller.tests.utils.TestObserver
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadMostRecentAggregationsUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadPotentialPriorityListUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadPriorityListUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeUpdatePriorityListUseCase
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -58,7 +59,7 @@ class DataSourcesViewModelTest {
 
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @Inject lateinit var appInfoReader: AppInfoReader
+    @BindValue lateinit var appInfoReader: AppInfoReader
 
     private lateinit var viewModel: DataSourcesViewModel
     private val loadMostRecentAggregationsUseCase = FakeLoadMostRecentAggregationsUseCase()
@@ -67,7 +68,8 @@ class DataSourcesViewModelTest {
     private val updatePriorityListUseCase = FakeUpdatePriorityListUseCase()
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
         viewModel =

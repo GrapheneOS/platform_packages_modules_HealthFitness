@@ -39,10 +39,11 @@ import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_3
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -66,7 +67,7 @@ class LoadPotentialPriorityListUseCaseTest {
     private lateinit var getGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase
     private lateinit var loadPriorityListUseCase: LoadPriorityListUseCase
     private lateinit var loadPotentialPriorityListUseCase: LoadPotentialPriorityListUseCase
-    @Inject lateinit var appInfoReader: AppInfoReader
+    @BindValue lateinit var appInfoReader: AppInfoReader
 
     private val healthPermissionManager: HealthPermissionManager =
         Mockito.mock(HealthPermissionManager::class.java)
@@ -76,7 +77,8 @@ class LoadPotentialPriorityListUseCaseTest {
         Mockito.mock(HealthPermissionReader::class.java)
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().context
         getGrantedHealthPermissionsUseCase =
