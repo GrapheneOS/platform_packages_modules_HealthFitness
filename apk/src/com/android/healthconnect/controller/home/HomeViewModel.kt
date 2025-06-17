@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.home
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -44,6 +45,10 @@ constructor(
     private val keyguardManagerUtil: KeyguardManagerUtil,
 ) : ViewModel() {
 
+    companion object {
+        private const val TAG = "HomeViewModel"
+    }
+
     private val _connectedApps = MutableLiveData<List<ConnectedAppMetadata>>()
     val connectedApps: LiveData<List<ConnectedAppMetadata>>
         get() = _connectedApps
@@ -69,9 +74,14 @@ constructor(
 
     fun loadConnectedApps() {
         viewModelScope.launch {
-            _connectedApps.postValueIfUpdated(
-                loadHealthPermissionApps.invoke().filter { !it.appMetadata.isSystem }
-            )
+            try {
+                _connectedApps.postValueIfUpdated(
+                    loadHealthPermissionApps.invoke().filter { !it.appMetadata.isSystem }
+                )
+            } catch (exception: Exception) {
+                Log.e(TAG, "Error loading connected apps", exception)
+                _connectedApps.postValueIfUpdated(emptyList())
+            }
         }
     }
 
