@@ -565,8 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"ආපසු යන්න"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"පටන් ගන්න"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"දත්ත මකන්න"</string>
-    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
-    <skip />
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"%1$s බොත්තම සඳහා දත්ත මකන්න"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"මකා දැමීමට ඇතුළු වන්න"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"මකා දැමීමෙන් පිටවන්න"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Health Connect වෙතින් මැකීමට දත්ත තෝරා ගන්න"</string>
@@ -1225,8 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{යෙදුම් 1කින් භාවිත කෙරේ}one{යෙදුම් #කින් භාවිත කෙරේ}other{යෙදුම් #කින් භාවිත කෙරේ}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"පසුගිය පැය 24 තුළ භාවිත කර නැත"</string>
     <string name="accessed" msgid="4424701457530587176">"ප්‍රවේශ වූයේ <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
-    <skip />
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"ඔබේ පළමු යෙදුම සම්බන්ධ කරන්න"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"සෞඛ්‍ය සහ යෝග්‍යතා දත්ත බෙදා ගැනීම ආරම්භ කිරීමට මෙම යෙදුම් සම්බන්ධ කරන්න"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"දෙවන යෙදුමක් සම්බන්ධ කරන්න"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"<xliff:g id="APP_NAME">%1$s</xliff:g> සමග සෞඛ්‍ය සහ යෝග්‍යතා දත්ත බෙදා ගැනීමට තවත් එක් යෙදුමක් පිහිටුවන්න"</string>
@@ -1236,28 +1234,18 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Health Connect පිළිබඳ වැඩිදුර"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Health Connect වෙත සම්බන්ධිත යෙදුම"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"බොහෝ දුරට නිමයි"</string>
-    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
-    <skip />
-    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
-    <skip />
-    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
-    <skip />
-    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
-    <skip />
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"පිහිටුවීම අවසන් කර දත්ත බෙදා ගැනීම ආරම්භ කිරීමට දැන් මෙම යෙදුම් විවෘත කරන්න"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"පිහිටුවීම අවසන් කර දත්ත බෙදා ගැනීම ආරම්භ කිරීමට හෝ ලබා ගත හැකි යෙදුම් සම්බන්ධ කිරීම දිගටම කරගෙන යාමට මෙම යෙදුම් දැන් විවෘත කරන්න"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"සම්බන්ධිත යෙදුම්"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"සම්බන්ධ වීමට ඇති යෙදුම්"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"යෙදුම් හරහා ඔබේ සෞඛ්‍ය දත්ත බලන්න"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"ඔබේ යෙදුම් අතර යෝග්‍යතා සහ සුවතා දත්ත බෙදා ගැනීම ආරම්භ කරන්න"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"පිහිටුවන්න"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"දෙවන යෙදුමක් සම්බන්ධ කරන්න"</string>
-    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
-    <skip />
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"යෝග්‍යතා සහ සුවතා දත්ත බෙදා ගැනීම ආරම්භ කළ හැකි වන පරිදි වෙනත් යෙදුමක් පිහිටුවන්න"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"ඉදිරියට යන්න"</string>
-    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"යෙදුම් හරහා ඔබේ සෞඛ්‍ය දත්ත බලන්න"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect මඟින් ඔබේ යෙදුම් අතර යෝග්‍යතා සහ සුවතා දත්ත බෙදා ගැනීමට ඔබට ඉඩ දෙයි. ඔබට දැන් සම්බන්ධ කළ හැකි යෙදුම් මොනවා දැයි බලන්න."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"දෙවන යෙදුමක් සම්බන්ධ කරන්න"</string>
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"යෝග්‍යතා සහ සුවතා දත්ත බෙදා ගැනීම ආරම්භ කළ හැකි වන පරිදි Health Connect සමග තවත් යෙදුමක් පිහිටුවන්න"</string>
 </resources>

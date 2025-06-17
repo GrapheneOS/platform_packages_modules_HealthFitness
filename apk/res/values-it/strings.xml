@@ -557,7 +557,7 @@
     <string name="export_import_install_apps_text" msgid="5026922993254770904">"Per maggiori dettagli, installa le app di spazio di archiviazione sul cloud per vederle qui"</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Vai al Play Store"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Inizia a usare Connessione Salute"</string>
-    <string name="onboarding_description" msgid="3479157507808350452">"Connessione Salute archivia i dati relativi alla salute e all\'attività fisica e ti consente di sincronizzare facilmente le varie app installate sul dispositivo"</string>
+    <string name="onboarding_description" msgid="3479157507808350452">"Connessione Salute archivia i dati su salute e fitness e ti consente di sincronizzare facilmente le varie app installate sul dispositivo"</string>
     <string name="onboarding_description_health_records" msgid="6586657048844511252">"Connessione Salute archivia e sincronizza i dati relativi alla salute e all\'attività fisica di diverse app.\n\n"<b>"Dati su fitness e benessere,"</b>" tra cui sessioni di allenamento, passi, alimentazione, sonno e altro ancora\n\n"<b>"Riepiloghi salute,"</b>" tra cui vaccini, risultati di laboratorio e altro ancora"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Con Connessione Salute"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Condividi i dati con le tue app"</b>\n"Scegli i dati che ciascuna app può leggere o scrivere su Connessione Salute"</string>
@@ -1140,7 +1140,7 @@
     <string name="tab_entries" msgid="3402700951602029493">"Voci"</string>
     <string name="tab_access" msgid="7818197975407243701">"Accesso"</string>
     <string name="start_using_hc_banner_title" msgid="2030178284749796384">"Inizia a usare Connessione Salute"</string>
-    <string name="start_using_hc_banner_content" msgid="3171560198945933334">"Sincronizza le tue prime app per condividere dati relativi all\'attività fisica e alla salute tra di loro"</string>
+    <string name="start_using_hc_banner_content" msgid="3171560198945933334">"Sincronizza le tue prime app per condividere dati su salute e fitness tra di loro"</string>
     <string name="start_using_hc_set_up_button" msgid="7486865297236439364">"Configura"</string>
     <string name="connect_more_apps_banner_title" msgid="4746581834305054229">"Collega altre app"</string>
     <string name="connect_more_apps_banner_content" msgid="8104544246031860111">"Inizia a condividere i dati tra <xliff:g id="APP_NAME">%s</xliff:g> e le app per la salute sul tuo smartphone"</string>
