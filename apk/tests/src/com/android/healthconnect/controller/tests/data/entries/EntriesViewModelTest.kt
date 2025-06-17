@@ -30,12 +30,14 @@ import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadDataAggregationsUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadDataEntriesUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadMedicalEntriesUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadMenstruationDataUseCase
 import com.android.healthconnect.controller.utils.TimeSource
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
@@ -108,7 +110,7 @@ class EntriesViewModelTest {
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
     private val testDispatcher = UnconfinedTestDispatcher()
 
-    @Inject lateinit var appInfoReader: AppInfoReader
+    @BindValue lateinit var appInfoReader: AppInfoReader
     private val timeSource: TimeSource = TestTimeSource
     private val fakeLoadDataEntriesUseCase = FakeLoadDataEntriesUseCase()
     private val fakeLoadMenstruationDataUseCase = FakeLoadMenstruationDataUseCase()
@@ -119,7 +121,8 @@ class EntriesViewModelTest {
     private lateinit var context: Context
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
         context = InstrumentationRegistry.getInstrumentation().context

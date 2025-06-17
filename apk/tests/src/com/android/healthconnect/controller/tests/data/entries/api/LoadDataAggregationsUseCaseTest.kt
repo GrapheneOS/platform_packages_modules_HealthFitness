@@ -35,14 +35,18 @@ import com.android.healthconnect.controller.data.formatters.SleepSessionFormatte
 import com.android.healthconnect.controller.data.formatters.StepsFormatter
 import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
+import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import java.time.Duration
 import java.time.Instant
 import java.util.Locale
@@ -61,14 +65,16 @@ import org.mockito.invocation.InvocationOnMock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@UninstallModules(HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
 class LoadDataAggregationsUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     private lateinit var context: Context
-    private val healthConnectManager: HealthConnectManager =
-        Mockito.mock(HealthConnectManager::class.java)
+    @BindValue lateinit var appInfoReader: AppInfoReader
+    @BindValue
+    val healthConnectManager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
     private lateinit var loadDataAggregationsUseCase: LoadDataAggregationsUseCase
 
     @Inject lateinit var loadEntriesHelper: LoadEntriesHelper
@@ -81,13 +87,12 @@ class LoadDataAggregationsUseCaseTest {
 
     @Inject lateinit var sleepSessionFormatter: SleepSessionFormatter
 
-    @Inject lateinit var appInfoReader: AppInfoReader
-
     @Before
-    fun setup() {
+    fun setup() = runTest {
         MockitoAnnotations.initMocks(this)
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.US)
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         loadDataAggregationsUseCase =
             LoadDataAggregationsUseCase(

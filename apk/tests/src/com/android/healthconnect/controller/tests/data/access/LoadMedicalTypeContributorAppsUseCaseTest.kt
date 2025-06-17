@@ -31,10 +31,11 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE_2
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE_DIFFERENT_APP
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -52,18 +53,18 @@ class LoadMedicalTypeContributorAppsUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
+    @BindValue lateinit var appInfoReader: AppInfoReader
     private lateinit var context: Context
     private val healthConnectManager: HealthConnectManager =
         Mockito.mock(HealthConnectManager::class.java)
     private lateinit var loadMedicalTypeContributorAppsUseCase:
         LoadMedicalTypeContributorAppsUseCase
 
-    @Inject lateinit var appInfoReader: AppInfoReader
-
     @Before
-    fun setup() {
+    fun setup() = runTest {
         MockitoAnnotations.initMocks(this)
         context = InstrumentationRegistry.getInstrumentation().context
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         loadMedicalTypeContributorAppsUseCase =
             LoadMedicalTypeContributorAppsUseCase(
@@ -78,8 +79,7 @@ class LoadMedicalTypeContributorAppsUseCaseTest {
         Mockito.doAnswer(prepareAnswer(listOf()))
             .`when`(healthConnectManager)
             .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
-        val result =
-            loadMedicalTypeContributorAppsUseCase.invoke(MedicalPermissionType.VACCINES)
+        val result = loadMedicalTypeContributorAppsUseCase.invoke(MedicalPermissionType.VACCINES)
         val expected = listOf<AppMetadata>()
         assertThat(result).isEqualTo(expected)
     }
@@ -100,8 +100,7 @@ class LoadMedicalTypeContributorAppsUseCaseTest {
         Mockito.doAnswer(prepareAnswer(medicalResourceTypeInfos))
             .`when`(healthConnectManager)
             .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
-        val result =
-            loadMedicalTypeContributorAppsUseCase.invoke(MedicalPermissionType.VACCINES)
+        val result = loadMedicalTypeContributorAppsUseCase.invoke(MedicalPermissionType.VACCINES)
         assertThat(result.size).isEqualTo(1)
         assertThat(result[0].packageName).isEqualTo(TEST_APP_PACKAGE_NAME)
     }

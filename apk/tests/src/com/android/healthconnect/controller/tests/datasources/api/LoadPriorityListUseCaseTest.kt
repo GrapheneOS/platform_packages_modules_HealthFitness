@@ -27,11 +27,12 @@ import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.tests.utils.CoroutineTestRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.google.common.truth.Truth
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -52,12 +53,13 @@ class LoadPriorityListUseCaseTest {
     @get:Rule val coroutineTestRule = CoroutineTestRule()
 
     private val manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
-    @Inject lateinit var appInfoReader: AppInfoReader
+    @BindValue lateinit var appInfoReader: AppInfoReader
     private lateinit var usecase: LoadPriorityListUseCase
     private lateinit var context: Context
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().context
         usecase = LoadPriorityListUseCase(manager, appInfoReader, Dispatchers.Main)

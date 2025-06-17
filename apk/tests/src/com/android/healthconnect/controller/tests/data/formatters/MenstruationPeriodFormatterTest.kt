@@ -30,6 +30,7 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.units.UnitPreferences
@@ -58,7 +59,7 @@ class MenstruationPeriodFormatterTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    @BindValue val appInfoReader: AppInfoReader = mock()
+    @BindValue lateinit var appInfoReader: AppInfoReader
     @Inject lateinit var formatter: MenstruationPeriodFormatter
     @Inject lateinit var preferences: UnitPreferences
     private lateinit var context: Context
@@ -68,9 +69,8 @@ class MenstruationPeriodFormatterTest {
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.US)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
-        whenever(appInfoReader.getAppMetadata(any(), any()))
-            .thenReturn(AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null, false))
     }
 
     @Test

@@ -33,10 +33,12 @@ import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDat
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataUseCase
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.service.HealthManagerModule
+import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.forDataType
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
@@ -73,14 +75,16 @@ class LoadMenstruationDataUseCaseTest {
 
     @Inject lateinit var loadEntriesHelper: LoadEntriesHelper
 
+    @BindValue lateinit var appInfoReader: AppInfoReader
     @BindValue
     val healthConnectManager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
         MockitoAnnotations.initMocks(this)
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.US)
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
         loadMenstruationDataUseCase =

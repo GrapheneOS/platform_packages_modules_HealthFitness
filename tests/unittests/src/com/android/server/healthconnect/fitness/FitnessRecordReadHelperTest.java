@@ -879,41 +879,6 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    public void readRecordsAndPageToken_byFilters_unknownApp_doesNotReturnRoute() {
-        ExerciseSessionRecordInternal session =
-                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
-        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, session);
-
-        ReadRecordsRequestParcel request =
-                new ReadRecordsRequestUsingFilters.Builder<>(ExerciseSessionRecord.class)
-                        .setTimeRangeFilter(
-                                new TimeInstantRangeFilter.Builder()
-                                        .setStartTime(Instant.EPOCH)
-                                        .setEndTime(Instant.ofEpochSecond(100000))
-                                        .build())
-                        .build()
-                        .toReadRecordsRequestParcel();
-        List<RecordInternal<?>> returnedRecords =
-                mFitnessRecordReadHelper.readRecords(
-                                mTransactionManager,
-                                UNKNOWN_PACKAGE_NAME,
-                                request,
-                                WRITE_EXERCISE_ROUTE_EXTRA_PERM,
-                                /* startDateAccessMillis= */ 0,
-                                /* isInForeground= */ true,
-                                /* shouldRecordAccessLogs */ false,
-                                /* enforceSelfRead= */ false,
-                                /* packageNamesByAppIds= */ null)
-                        .first;
-
-        assertThat(returnedRecords).hasSize(1);
-        ExerciseSessionRecordInternal returnedRecord =
-                (ExerciseSessionRecordInternal) returnedRecords.get(0);
-        assertThat(returnedRecord.hasRoute()).isTrue();
-        assertThat(returnedRecord.getRoute()).isNull();
-    }
-
-    @Test
     public void readRecordsAndPageToken_byFilters_withReadRoutePermission_returnsRoute() {
         ExerciseSessionRecordInternal session =
                 buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));

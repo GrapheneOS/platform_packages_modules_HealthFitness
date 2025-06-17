@@ -217,7 +217,7 @@ public class ExerciseRouteNoReadWritePermissionTest {
     }
 
     @Test
-    public void readRecords_usingFilters_canAccessOwnRoute() throws Exception {
+    public void readRecords_usingFilters_canNotAccessOwnRoute() throws Exception {
         ExerciseSessionRecord sessionWithRoute = getExerciseSessionWithRoute(getEmptyMetadata());
         mRoutesReaderWriteApp.insertRecords(sessionWithRoute);
 
@@ -234,7 +234,7 @@ public class ExerciseRouteNoReadWritePermissionTest {
     }
 
     @Test
-    public void readRecords_usingIds_canAccessOwnRoute() throws Exception {
+    public void readRecords_usingIds_canNotAccessOwnRoute() throws Exception {
         ExerciseSessionRecord sessionWithRoute = getExerciseSessionWithRoute(getEmptyMetadata());
         String sessionId = mRoutesReaderWriteApp.insertRecords(sessionWithRoute).get(0);
 

@@ -16,7 +16,6 @@
 
 package com.android.server.healthconnect.fitness.recordhelpers;
 
-import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.PARENT_KEY;
 import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTE;
 import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTES;
@@ -327,8 +326,7 @@ public final class ExerciseSessionRecordHelper
             boolean isInForeground,
             AppInfoHelper appInfoHelper) {
         int routeAccessType =
-                getExerciseRouteReadAccessType(
-                        packageName, grantedExtraReadPermissions, isInForeground, appInfoHelper);
+                getExerciseRouteReadAccessType(grantedExtraReadPermissions, isInForeground);
 
         if (routeAccessType == ROUTE_READ_ACCESS_TYPE_NONE) {
             return Collections.emptyList();
@@ -385,8 +383,7 @@ public final class ExerciseSessionRecordHelper
             boolean isInForeground,
             AppInfoHelper appInfoHelper) {
         int routeAccessType =
-                getExerciseRouteReadAccessType(
-                        packageName, grantedExtraReadPermissions, isInForeground, appInfoHelper);
+                getExerciseRouteReadAccessType(grantedExtraReadPermissions, isInForeground);
 
         if (routeAccessType == ROUTE_READ_ACCESS_TYPE_NONE) {
             return Collections.emptyList();
@@ -598,30 +595,18 @@ public final class ExerciseSessionRecordHelper
     }
 
     private int getExerciseRouteReadAccessType(
-            String packageName,
-            Set<String> grantedExtraReadPermissions,
-            boolean isInForeground,
-            AppInfoHelper appInfoHelper) {
-        if (grantedExtraReadPermissions.isEmpty()) {
-            return ROUTE_READ_ACCESS_TYPE_NONE;
-        }
-
+            Set<String> grantedExtraReadPermissions, boolean isInForeground) {
         boolean isController = grantedExtraReadPermissions.contains(READ_EXERCISE_ROUTE);
-
         if (isController) {
             // HC UI Controller has access to all routes.
             return ROUTE_READ_ACCESS_TYPE_ALL;
         }
-
-        long appId = appInfoHelper.getAppInfoId(packageName);
-
-        if (appId == DEFAULT_LONG) {
-            return ROUTE_READ_ACCESS_TYPE_NONE;
+        if (isInForeground && grantedExtraReadPermissions.contains(READ_EXERCISE_ROUTES)) {
+            return ROUTE_READ_ACCESS_TYPE_ALL;
         }
-
-        boolean canReadAllRoutes =
-                isInForeground && grantedExtraReadPermissions.contains(READ_EXERCISE_ROUTES);
-
-        return canReadAllRoutes ? ROUTE_READ_ACCESS_TYPE_ALL : ROUTE_READ_ACCESS_TYPE_OWN;
+        if (grantedExtraReadPermissions.contains(WRITE_EXERCISE_ROUTE)) {
+            return ROUTE_READ_ACCESS_TYPE_OWN;
+        }
+        return ROUTE_READ_ACCESS_TYPE_NONE;
     }
 }

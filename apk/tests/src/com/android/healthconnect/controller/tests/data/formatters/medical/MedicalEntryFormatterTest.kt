@@ -29,6 +29,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION_LONG
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -59,7 +60,7 @@ class MedicalEntryFormatterTest {
     private val medicalDataSourceReader: MedicalDataSourceReader =
         Mockito.mock(MedicalDataSourceReader::class.java)
 
-    @BindValue val appInfoReader: AppInfoReader = mock()
+    @BindValue lateinit var appInfoReader: AppInfoReader
     private lateinit var context: Context
 
     private val testDispatcher = StandardTestDispatcher()
@@ -68,16 +69,8 @@ class MedicalEntryFormatterTest {
     fun setup() = runTest {
         MockitoAnnotations.initMocks(this)
         context = InstrumentationRegistry.getInstrumentation().context
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
-        whenever(appInfoReader.getAppMetadata(any(), any()))
-            .thenReturn(
-                AppMetadata(
-                    packageName = TEST_APP_PACKAGE_NAME,
-                    appName = TEST_APP_NAME,
-                    icon = null,
-                    isSystem = false,
-                )
-            )
         formatter =
             MedicalEntryFormatter(
                 medicalDataSourceReader,
