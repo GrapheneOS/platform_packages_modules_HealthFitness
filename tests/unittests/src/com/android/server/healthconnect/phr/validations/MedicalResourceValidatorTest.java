@@ -48,6 +48,7 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.getUpsertM
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getUpsertMedicalResourceRequestBuilder;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import static org.junit.Assert.assertThrows;
 
@@ -68,11 +69,9 @@ import android.healthconnect.testing.shared.phr.ProcedureBuilder;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.phr.UpsertMedicalResourceInternalRequest;
-
-import com.google.testing.junit.testparameterinjector.TestParameter;
-import com.google.testing.junit.testparameterinjector.TestParameterInjector;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,7 +82,10 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-@RunWith(TestParameterInjector.class)
+// We use AndroidJUnit4, because TestParameterInjector didn't work for
+// robolectric tests in combination with the android.util.Xml class
+// (b/424162678).
+@RunWith(AndroidJUnit4.class)
 public class MedicalResourceValidatorTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
@@ -93,7 +95,7 @@ public class MedicalResourceValidatorTest {
     public void testValidateAndCreateInternalRequest_validAndR4_populatesInternalRequest() {
         UpsertMedicalResourceRequest upsertRequest =
                 new UpsertMedicalResourceRequest.Builder(
-                                DATA_SOURCE_ID, FHIR_VERSION_R4, FHIR_DATA_IMMUNIZATION)
+                        DATA_SOURCE_ID, FHIR_VERSION_R4, FHIR_DATA_IMMUNIZATION)
                         .build();
         UpsertMedicalResourceInternalRequest expected =
                 new UpsertMedicalResourceInternalRequest()
@@ -116,7 +118,7 @@ public class MedicalResourceValidatorTest {
     public void testValidateAndCreateInternalRequest_validAndR4B_populatesInternalRequest() {
         UpsertMedicalResourceRequest upsertRequest =
                 new UpsertMedicalResourceRequest.Builder(
-                                DATA_SOURCE_ID, FHIR_VERSION_R4B, FHIR_DATA_IMMUNIZATION)
+                        DATA_SOURCE_ID, FHIR_VERSION_R4B, FHIR_DATA_IMMUNIZATION)
                         .build();
         UpsertMedicalResourceInternalRequest expected =
                 new UpsertMedicalResourceInternalRequest()
@@ -144,7 +146,7 @@ public class MedicalResourceValidatorTest {
     public void testValidateAndCreateInternalRequest_nullValidator_succeeds() {
         UpsertMedicalResourceRequest upsertRequest =
                 new UpsertMedicalResourceRequest.Builder(
-                                DATA_SOURCE_ID, FHIR_VERSION_R4, FHIR_DATA_IMMUNIZATION)
+                        DATA_SOURCE_ID, FHIR_VERSION_R4, FHIR_DATA_IMMUNIZATION)
                         .build();
         UpsertMedicalResourceInternalRequest expected =
                 new UpsertMedicalResourceInternalRequest()
@@ -171,7 +173,7 @@ public class MedicalResourceValidatorTest {
                         .toJson();
         UpsertMedicalResourceRequest upsertRequest =
                 new UpsertMedicalResourceRequest.Builder(
-                                DATA_SOURCE_ID, FHIR_VERSION_R4, immunizationWithUnknownField)
+                        DATA_SOURCE_ID, FHIR_VERSION_R4, immunizationWithUnknownField)
                         .build();
         UpsertMedicalResourceInternalRequest expected =
                 new UpsertMedicalResourceInternalRequest()
@@ -196,7 +198,7 @@ public class MedicalResourceValidatorTest {
 
         UpsertMedicalResourceRequest request =
                 new UpsertMedicalResourceRequest.Builder(
-                                DATA_SOURCE_ID, FHIR_VERSION_R4, immunizationWithUnknownField)
+                        DATA_SOURCE_ID, FHIR_VERSION_R4, immunizationWithUnknownField)
                         .build();
         MedicalResourceValidator validator =
                 new MedicalResourceValidator(request, getFhirResourceValidator());
@@ -239,9 +241,9 @@ public class MedicalResourceValidatorTest {
     public void testValidateAndCreateInternalRequest_nullValidatorMissingId_throws() {
         UpsertMedicalResourceRequest request =
                 new UpsertMedicalResourceRequest.Builder(
-                                DATA_SOURCE_ID,
-                                FHIR_VERSION_R4,
-                                FHIR_DATA_IMMUNIZATION_ID_NOT_EXISTS)
+                        DATA_SOURCE_ID,
+                        FHIR_VERSION_R4,
+                        FHIR_DATA_IMMUNIZATION_ID_NOT_EXISTS)
                         .build();
         MedicalResourceValidator validator = new MedicalResourceValidator(request, null);
 
@@ -652,52 +654,62 @@ public class MedicalResourceValidatorTest {
     }
 
     @Test
-    public void testCalculateMedicalResourceType_pregnancyStatus_pregnancy(
-            @TestParameter PregnancyStatusTestValue testValue) {
-        String fhirData =
-                new ObservationBuilder()
-                        .setCode(LOINC, testValue.mCode)
-                        .setValueCodeableConcept(SNOMED_CT, testValue.mValue)
-                        .toJson();
-        MedicalResourceValidator validator = makeValidator(fhirData);
+    public void testCalculateMedicalResourceType_pregnancyStatus_pregnancy() {
+        for (PregnancyStatusTestValue testValue : PregnancyStatusTestValue.values()) {
+            String fhirData =
+                    new ObservationBuilder()
+                            .setCode(LOINC, testValue.mCode)
+                            .setValueCodeableConcept(SNOMED_CT, testValue.mValue)
+                            .toJson();
+            MedicalResourceValidator validator = makeValidator(fhirData);
 
-        int type = validator.validateAndCreateInternalRequest().getMedicalResourceType();
+            int type = validator.validateAndCreateInternalRequest().getMedicalResourceType();
 
-        assertThat(type).isEqualTo(MedicalResource.MEDICAL_RESOURCE_TYPE_PREGNANCY);
+            assertWithMessage("Failed for PregnancyStatusTestValue: " + testValue.name())
+                    .that(type)
+                    .isEqualTo(MedicalResource.MEDICAL_RESOURCE_TYPE_PREGNANCY);
+        }
     }
 
     @Test
-    public void testCalculateMedicalResourceType_pregnancyOutcome_pregnancy(
-            @TestParameter PregnancyOutcomeTestValue testValue) {
-        String fhirData =
-                new ObservationBuilder()
-                        .setCode(LOINC, testValue.mCode)
-                        .setValueQuantity(testValue.mCount, QuantityUnits.COUNT)
-                        .toJson();
-        MedicalResourceValidator validator = makeValidator(fhirData);
+    public void testCalculateMedicalResourceType_pregnancyOutcome_pregnancy() {
+        for (PregnancyOutcomeTestValue testValue : PregnancyOutcomeTestValue.values()) {
+            String fhirData =
+                    new ObservationBuilder()
+                            .setCode(LOINC, testValue.mCode)
+                            .setValueQuantity(testValue.mCount, QuantityUnits.COUNT)
+                            .toJson();
+            MedicalResourceValidator validator = makeValidator(fhirData);
 
-        int type = validator.validateAndCreateInternalRequest().getMedicalResourceType();
+            int type = validator.validateAndCreateInternalRequest().getMedicalResourceType();
 
-        assertThat(type).isEqualTo(MedicalResource.MEDICAL_RESOURCE_TYPE_PREGNANCY);
+            assertWithMessage("Failed for PregnancyOutcomeTestValue: " + testValue.name())
+                    .that(type)
+                    .isEqualTo(MedicalResource.MEDICAL_RESOURCE_TYPE_PREGNANCY);
+        }
     }
 
     @Test
-    public void testCalculateMedicalResourceType_expectedDeliveryDate_pregnancy(
-            @TestParameter({"11778-8", "11779-6", "11780-4"}) String code) {
-        // https://build.fhir.org/ig/HL7/fhir-ips/ValueSet-edd-method-uv-ips.html
-        String fhirData =
-                new ObservationBuilder()
-                        .setCode(LOINC, code)
-                        .removeAllEffectiveMultiTypeFields()
-                        .set("effectiveDateTime", "2021-04-20")
-                        .removeAllValueMultiTypeFields()
-                        .set("valueDateTime", "2021-08-07")
-                        .toJson();
-        MedicalResourceValidator validator = makeValidator(fhirData);
+    public void testCalculateMedicalResourceType_expectedDeliveryDate_pregnancy() {
+        String[] codes = {"11778-8", "11779-6", "11780-4"};
+        for (String code : codes) {
+            // https://build.fhir.org/ig/HL7/fhir-ips/ValueSet-edd-method-uv-ips.html
+            String fhirData =
+                    new ObservationBuilder()
+                            .setCode(LOINC, code)
+                            .removeAllEffectiveMultiTypeFields()
+                            .set("effectiveDateTime", "2021-04-20")
+                            .removeAllValueMultiTypeFields()
+                            .set("valueDateTime", "2021-08-07")
+                            .toJson();
+            MedicalResourceValidator validator = makeValidator(fhirData);
 
-        int type = validator.validateAndCreateInternalRequest().getMedicalResourceType();
+            int type = validator.validateAndCreateInternalRequest().getMedicalResourceType();
 
-        assertThat(type).isEqualTo(MedicalResource.MEDICAL_RESOURCE_TYPE_PREGNANCY);
+            assertWithMessage("Failed for Expected Delivery Date Code: " + code)
+                    .that(type)
+                    .isEqualTo(MedicalResource.MEDICAL_RESOURCE_TYPE_PREGNANCY);
+        }
     }
 
     @Test
@@ -711,20 +723,23 @@ public class MedicalResourceValidatorTest {
     }
 
     @Test
-    public void testCalculateMedicalResourceType_smoking_socialHistory(
-            @TestParameter SmokingTestValue value) {
-        // https://build.fhir.org/ig/HL7/fhir-ips/StructureDefinition-Observation-tobaccouse-uv-ips.html
-        String fhirData =
-                new ObservationBuilder()
-                        .setCode(LOINC, value.mCode)
-                        .removeAllValueMultiTypeFields()
-                        .set("valueCodeableConcept", value.mValueCodeableConcept)
-                        .toJson();
-        MedicalResourceValidator validator = makeValidator(fhirData);
+    public void testCalculateMedicalResourceType_smoking_socialHistory() {
+      // https://build.fhir.org/ig/HL7/fhir-ips/StructureDefinition-Observation-tobaccouse-uv-ips.html
+        for (SmokingTestValue value : SmokingTestValue.values()) {
+            String fhirData =
+                    new ObservationBuilder()
+                            .setCode(LOINC, value.mCode)
+                            .removeAllValueMultiTypeFields()
+                            .set("valueCodeableConcept", value.mValueCodeableConcept)
+                            .toJson();
+            MedicalResourceValidator validator = makeValidator(fhirData);
 
-        int type = validator.validateAndCreateInternalRequest().getMedicalResourceType();
+            int type = validator.validateAndCreateInternalRequest().getMedicalResourceType();
 
-        assertThat(type).isEqualTo(MedicalResource.MEDICAL_RESOURCE_TYPE_SOCIAL_HISTORY);
+            assertWithMessage("Failed for SmokingTestValue: " + value.name())
+                    .that(type)
+                    .isEqualTo(MedicalResource.MEDICAL_RESOURCE_TYPE_SOCIAL_HISTORY);
+        }
     }
 
     @Test
@@ -753,19 +768,22 @@ public class MedicalResourceValidatorTest {
     }
 
     @Test
-    public void testCalculateMedicalResourceType_vitalSigns_vitalSigns(
-            @TestParameter VitalSignsTestValue value) {
-        // From https://hl7.org/fhir/R5/observation-vitalsigns.html
-        String fhirData =
-                new ObservationBuilder()
-                        .setCode(LOINC, value.mCode)
-                        .setValueQuantity(value.mValue, value.mUnits)
-                        .toJson();
-        MedicalResourceValidator validator = makeValidator(fhirData);
+    public void testCalculateMedicalResourceType_vitalSigns_vitalSigns() {
+        for (VitalSignsTestValue value : VitalSignsTestValue.values()) {
+            // From https://hl7.org/fhir/R5/observation-vitalsigns.html
+            String fhirData =
+                    new ObservationBuilder()
+                            .setCode(LOINC, value.mCode)
+                            .setValueQuantity(value.mValue, value.mUnits)
+                            .toJson();
+            MedicalResourceValidator validator = makeValidator(fhirData);
 
-        int type = validator.validateAndCreateInternalRequest().getMedicalResourceType();
+            int type = validator.validateAndCreateInternalRequest().getMedicalResourceType();
 
-        assertThat(type).isEqualTo(MedicalResource.MEDICAL_RESOURCE_TYPE_VITAL_SIGNS);
+            assertWithMessage("Failed for VitalSignsTestValue: " + value.name())
+                    .that(type)
+                    .isEqualTo(MedicalResource.MEDICAL_RESOURCE_TYPE_VITAL_SIGNS);
+        }
     }
 
     @Test
