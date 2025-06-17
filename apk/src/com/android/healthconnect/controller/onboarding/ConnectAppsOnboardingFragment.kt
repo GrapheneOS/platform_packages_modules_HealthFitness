@@ -15,7 +15,9 @@
  */
 package com.android.healthconnect.controller.onboarding
 
+import android.content.Intent
 import android.content.Intent.EXTRA_PACKAGE_NAME
+import android.health.connect.HealthConnectManager
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
@@ -261,6 +263,7 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
         setupLaterButton.text = getString(R.string.set_up_later)
         setupLaterButton.setOnClickListener {
             healthConnectLogger.logInteraction(elementName)
+            startActivity(Intent(HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS))
             requireActivity().finish()
         }
     }
@@ -272,6 +275,7 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
         doneButton.text = getString(R.string.delete_dialog_done_button)
         doneButton.setOnClickListener {
             healthConnectLogger.logInteraction(AlmostDonePageElement.ONBOARDING_DONE_BUTTON)
+            startActivity(Intent(HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS))
             requireActivity().finish()
         }
     }
