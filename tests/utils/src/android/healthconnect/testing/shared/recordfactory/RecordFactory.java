@@ -114,6 +114,53 @@ public abstract class RecordFactory<T extends Record> {
             ZoneOffset endZoneOffset,
             Bundle bundle);
 
+    /** Converts the given record into a string representation */
+    public String recordToString(T record) {
+        // TODO(b/424728751): Implement and make this abstract.
+        throw new UnsupportedOperationException(
+                "recordToString not implemented for " + record.getClass());
+    }
+
+    /** Converts the given record into a string representation */
+    public String toString(Record record) {
+        return recordToString((T) record);
+    }
+
+    /** Returns a string representation of the given metadata. */
+    public static String metadataToString(Metadata metadata) {
+        return "Metadata {"
+                + "\n\tid = "
+                + metadata.getId()
+                + ",\n\tclientRecordId = "
+                + metadata.getClientRecordId()
+                + ",\n\tclientRecordVersion = "
+                + metadata.getClientRecordVersion()
+                + ",\n\tdataOrigin = "
+                + metadata.getDataOrigin().getPackageName()
+                + ",\n\tlastModifiedTime = "
+                + metadata.getLastModifiedTime()
+                + ",\n\trecordingMethod = "
+                + metadata.getRecordingMethod()
+                + ",\n\tdevice = "
+                + deviceToString(metadata.getDevice())
+                + "\n}";
+    }
+
+    private static String deviceToString(Device device) {
+        if (device == null) {
+            return "null";
+        }
+
+        return "Device {"
+                + "\n\t\ttype = "
+                + device.getType()
+                + ",\n\t\tmanufacturer = "
+                + device.getManufacturer()
+                + ",\n\t\tmodel = "
+                + device.getModel()
+                + "\n\t}";
+    }
+
     /** Returns the record with id and package name overridden by the given ones. */
     public final T recordWithIdAndPackageName(Record record, String id, String packageName) {
         return recordWithMetadata(
