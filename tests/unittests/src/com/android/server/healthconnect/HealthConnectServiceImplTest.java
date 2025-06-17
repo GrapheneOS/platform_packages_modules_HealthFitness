@@ -63,6 +63,7 @@ import static android.healthconnect.testing.unittest.TaskUtils.waitForAllSchedul
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
+import static com.android.healthfitness.flags.Flags.FLAG_MATCHMAKING;
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
@@ -118,6 +119,7 @@ import android.content.pm.PermissionInfo;
 import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteException;
 import android.health.HealthFitnessStatsLog;
+import android.health.connect.CanConnectMatchingAppsRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectException;
@@ -128,6 +130,7 @@ import android.health.connect.ReadMedicalResourcesInitialRequest;
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
+import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
@@ -152,6 +155,8 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
+import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
@@ -191,6 +196,7 @@ import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.MigrationTestUtils;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
+import com.android.server.healthconnect.onboarding.matchingapps.MatchingAppsManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
@@ -295,7 +301,8 @@ public class HealthConnectServiceImplTest {
                     "getLatestMetadataForBackup",
                     "restoreLatestMetadata",
                     "canRestore",
-                    "restoreChanges");
+                    "restoreChanges",
+                    "canConnectMatchingApps");
 
     /** Health connect service APIs that do not block calls when data sync is in progress. */
     public static final Set<String> DO_NOT_BLOCK_CALLS_DURING_DATA_SYNC_LIST =
@@ -360,12 +367,15 @@ public class HealthConnectServiceImplTest {
     @Mock IReadMedicalResourcesResponseCallback mReadMedicalResourcesResponseCallback;
     @Mock IEmptyResponseCallback mEmptyResponseCallback;
     @Mock IMedicalResourceListParcelResponseCallback mMedicalResourceListParcelResponseCallback;
+    @Mock ICanConnectMatchingAppsCallback mCanConnectMatchingAppsCallback;
+
     @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
     @Mock private ChangeLogsHelper mChangeLogsHelper;
     @Mock private ChangeLogsRequestHelper mChangeLogsRequestHelper;
     @Mock private IGetChangeLogTokenCallback mGetChangeLogTokenCallback;
     @Mock private IChangeLogsResponseCallback mChangeLogsResponseCallback;
     @Mock private OnboardingStateManager mOnboardingStateManager;
+    @Mock private MatchingAppsManager mMatchingAppsManager;
     @Captor ArgumentCaptor<HealthConnectExceptionParcel> mErrorCaptor;
     @Captor private ArgumentCaptor<HealthConnectOnboardingState> mOnboardingStateCaptor;
     private FakeTimeSource mFakeTimeSource;
@@ -425,6 +435,7 @@ public class HealthConnectServiceImplTest {
                         .setChangeLogsHelper(mChangeLogsHelper)
                         .setChangeLogsRequestHelper(mChangeLogsRequestHelper)
                         .setOnboardingStateManager(mOnboardingStateManager)
+                        .setMatchingAppsManager(mMatchingAppsManager)
                         .build();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
         mInternalTaskScheduler = mThreadScheduler.mInternalBackgroundExecutor;
@@ -472,7 +483,8 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getBackupRestoreLogger(),
                         healthConnectInjector.getExportImportNotificationFactory(),
                         healthConnectInjector.getCloudBackupManager(),
-                        healthConnectInjector.getCloudRestoreManager());
+                        healthConnectInjector.getCloudRestoreManager(),
+                        healthConnectInjector.getMatchingAppsManager());
         mBackupRestore = healthConnectInjector.getBackupRestore();
     }
 
@@ -2877,6 +2889,84 @@ public class HealthConnectServiceImplTest {
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_SECURITY);
         verify(mChangeLogsHelper, never()).getChangeLogs(any(), any(), any(), any());
+    }
+
+    @Test
+    @DisableFlags(FLAG_MATCHMAKING)
+    public void testCanConnectMatchingApps_flagOff_exception() throws Exception {
+        CanConnectMatchingAppsRequest request = new CanConnectMatchingAppsRequest.Builder().build();
+
+        mHealthConnectService.canConnectMatchingApps(
+                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+
+        verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1))
+                .onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @EnableFlags(FLAG_MATCHMAKING)
+    public void testCanConnectMatchingApps_noManageDataPermission_success() throws Exception {
+        setDataManagementPermission(PERMISSION_DENIED);
+        Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
+        CanConnectMatchingAppsRequest request =
+                new CanConnectMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
+        mHealthConnectService.canConnectMatchingApps(
+                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+        when(mMatchingAppsManager.canConnectMatchingApps(recordTypes, mTestPackageName))
+                .thenReturn(false);
+
+        verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1)).onResult(false);
+        verifyNoMoreInteractions(mCanConnectMatchingAppsCallback);
+    }
+
+    @Test
+    @EnableFlags(FLAG_MATCHMAKING)
+    public void testCanConnectMatchingApps_emptySetPassed_success() throws Exception {
+        Set<Class<? extends Record>> recordTypes = Set.of();
+        CanConnectMatchingAppsRequest request =
+                new CanConnectMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
+        when(mMatchingAppsManager.canConnectMatchingApps(recordTypes, mTestPackageName))
+                .thenReturn(false);
+
+        mHealthConnectService.canConnectMatchingApps(
+                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+
+        verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1)).onResult(false);
+        verifyNoMoreInteractions(mCanConnectMatchingAppsCallback);
+    }
+
+    @Test
+    @EnableFlags(FLAG_MATCHMAKING)
+    public void testCanConnectMatchingApps_nonEmptySetPassed_success() throws Exception {
+        Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
+        CanConnectMatchingAppsRequest request =
+                new CanConnectMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
+        when(mMatchingAppsManager.canConnectMatchingApps(recordTypes, mTestPackageName))
+                .thenReturn(false);
+
+        mHealthConnectService.canConnectMatchingApps(
+                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+
+        verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1)).onResult(false);
+        verifyNoMoreInteractions(mCanConnectMatchingAppsCallback);
+    }
+
+    @Test
+    @EnableFlags(FLAG_MATCHMAKING)
+    public void testCanConnectMatchingApps_areAvailableApps_success() throws Exception {
+        Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
+        CanConnectMatchingAppsRequest request =
+                new CanConnectMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
+        when(mMatchingAppsManager.canConnectMatchingApps(recordTypes, mTestPackageName))
+                .thenReturn(true);
+
+        mHealthConnectService.canConnectMatchingApps(
+                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+
+        verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1)).onResult(true);
+        verifyNoMoreInteractions(mCanConnectMatchingAppsCallback);
     }
 
     @Test

@@ -65,6 +65,7 @@ import com.android.server.healthconnect.notifications.NotificationStatsLogger;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationSender;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager;
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
+import com.android.server.healthconnect.onboarding.matchingapps.MatchingAppsManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
@@ -381,6 +382,12 @@ public abstract class HealthConnectInjector {
      */
     @Nullable
     public abstract CloudRestoreManager getCloudRestoreManager();
+
+    /**
+     * Getter for {@link MatchingAppsManager} instance initialised by the Health Connect Injector.
+     */
+    @Nullable
+    public abstract MatchingAppsManager getMatchingAppsManager();
 
     /** Used to initialize the Injector. */
     public static void setInstance(HealthConnectInjector healthConnectInjector) {

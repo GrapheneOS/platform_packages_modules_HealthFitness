@@ -5,6 +5,7 @@ import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.MedicalResourceId;
+import android.health.connect.CanConnectMatchingAppsRequest;
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.aidl.ActivityDatesRequestParcel;
 import android.health.connect.aidl.AggregateDataRequestParcel;
@@ -35,6 +36,7 @@ import android.health.connect.aidl.IMigrationCallback;
 import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
 import android.health.connect.aidl.IReadRecordsResponseCallback;
 import android.health.connect.aidl.IRecordTypeInfoResponseCallback;
+import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.RecordsParcel;
@@ -567,4 +569,17 @@ interface IHealthConnectService {
      * @hide
      */
     void getHealthConnectOnboardingState(in IGetHealthConnectOnboardingStateCallback callback);
+
+    /**
+     * Checks if there are any other applications available on the user's device that could
+     * potentially become new data sources for specific Record types.
+     *
+     * @param attributionSource attribution source for the data.
+     * @param request request containing the {@link Record} types to check for.
+     * @param callback Callback to receive result of performing this operation.
+     */
+    void canConnectMatchingApps(
+            in AttributionSource attributionSource,
+            in CanConnectMatchingAppsRequest request,
+            in ICanConnectMatchingAppsCallback callback);
 }
