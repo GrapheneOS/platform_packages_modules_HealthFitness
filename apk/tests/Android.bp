@@ -424,6 +424,10 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/exportimport/ExportDestinationFragmentTest.kt",
         "src/com/android/healthconnect/controller/tests/exportimport/ExportFrequencyFragmentTest.kt",
         "src/com/android/healthconnect/controller/tests/exportimport/ImportSourceLocationFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/home/HomeFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/migration/AppUpdateRequiredFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/migration/MigrationPausedFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/migration/ModuleUpdateRequiredFragmentTest.kt",
         // This gets an "NoActivityResumedException" on two tests. Needs more investigation
         // However, does use "showOnboarding()" which might not work on robolectric as it uses
         // SharedPreferences.
@@ -436,6 +440,8 @@ filegroup {
         // an intent is not fired under robolectric. The test could be modified to instead check
         // exit status, but needs some work to work bivalently and be a good test.
         "src/com/android/healthconnect/controller/tests/exportimport/ImportConfirmationDialogFragmentTest.kt",
+        // The calls to startActivity are not starting the activity in this class under Robolectric
+        "src/com/android/healthconnect/controller/tests/migration/MigrationActivityTest.kt",
         // The first click on some preferences doesn't seem to create a view that can be found for
         // the second click. To be investigated.
         "src/com/android/healthconnect/controller/tests/units/UnitsFragmentTest.kt",
@@ -460,6 +466,9 @@ android_robolectric_test {
         "src/com/android/healthconnect/controller/tests/data/**/*.kt",
         "src/com/android/healthconnect/controller/tests/datasources/**/*.kt",
         "src/com/android/healthconnect/controller/tests/exportimport/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/home/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/managedata/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/migration/**/*.kt",
         "src/com/android/healthconnect/controller/tests/units/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utils/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utiltests/**/*.kt",
