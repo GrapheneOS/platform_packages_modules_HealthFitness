@@ -52,7 +52,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.scrollToBottomOfPreferenceScreen
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.logging.FitnessAppOnboardingPageElement
@@ -64,7 +63,6 @@ import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import kotlin.collections.mapOf
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -94,7 +92,6 @@ class FitnessAppOnboardingFragmentTest {
     fun setup() {
         val context = InstrumentationRegistry.getInstrumentation().context
         hiltRule.inject()
-        toggleAnimation(false)
         navHostController = TestNavHostController(context)
 
         whenever(viewModel.allFitnessPermissionsGranted).then { MutableLiveData(false) }
@@ -110,7 +107,6 @@ class FitnessAppOnboardingFragmentTest {
 
     @After
     fun tearDown() {
-        toggleAnimation(true)
         reset(healthConnectLogger)
     }
 

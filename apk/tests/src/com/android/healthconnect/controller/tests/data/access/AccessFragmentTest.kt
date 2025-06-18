@@ -45,7 +45,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.logging.DataAccessElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -82,7 +81,6 @@ class AccessFragmentTest {
     @Before
     fun setup() {
         hiltRule.inject()
-        toggleAnimation(false)
         context = InstrumentationRegistry.getInstrumentation().context
         navHostController = TestNavHostController(context)
         context.setLocale(Locale.US)
@@ -90,7 +88,6 @@ class AccessFragmentTest {
 
     @After
     fun tearDown() {
-        toggleAnimation(true)
         reset(healthConnectLogger)
     }
 

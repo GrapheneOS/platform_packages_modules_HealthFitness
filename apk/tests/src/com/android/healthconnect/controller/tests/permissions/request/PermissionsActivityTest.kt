@@ -89,7 +89,6 @@ import com.android.healthconnect.controller.tests.utils.UNSUPPORTED_TEST_APP_PAC
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionManager
 import com.android.healthconnect.controller.tests.utils.showOnboarding
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthfitness.flags.Flags
@@ -157,7 +156,6 @@ class PermissionsActivityTest {
         }
         whenever(loadAccessDateUseCase.invoke(any())).thenReturn(NOW)
         showOnboarding(context, false)
-        toggleAnimation(false)
         (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
             TEST_APP_PACKAGE_NAME,
             listOf(),
@@ -166,7 +164,6 @@ class PermissionsActivityTest {
 
     @After
     fun tearDown() {
-        toggleAnimation(true)
         (permissionManager as FakeHealthPermissionManager).reset()
     }
 

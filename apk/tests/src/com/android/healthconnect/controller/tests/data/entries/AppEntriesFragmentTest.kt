@@ -64,7 +64,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IM
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION_3
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.tests.utils.withIndex
 import com.android.healthconnect.controller.utils.logging.DataEntriesElement
 import com.android.healthconnect.controller.utils.logging.EntriesElement
@@ -75,6 +74,9 @@ import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.ZoneId
+import java.util.Locale
+import java.util.TimeZone
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -92,9 +94,6 @@ import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import java.time.ZoneId
-import java.util.Locale
-import java.util.TimeZone
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -113,7 +112,6 @@ class AppEntriesFragmentTest {
     @Before
     fun setup() {
         hiltRule.inject()
-        toggleAnimation(false)
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.UK)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
@@ -144,7 +142,6 @@ class AppEntriesFragmentTest {
     @After
     fun tearDown() {
         reset(healthConnectLogger)
-        toggleAnimation(true)
     }
 
     @Test

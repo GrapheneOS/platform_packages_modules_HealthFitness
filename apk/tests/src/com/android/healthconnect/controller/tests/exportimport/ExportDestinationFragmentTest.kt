@@ -63,7 +63,6 @@ import com.android.healthconnect.controller.tests.utils.checkBoxOf
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthDataExportManager
 import com.android.healthconnect.controller.tests.utils.launchFragment
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.tests.utils.withTitleAndSummary
 import com.android.healthconnect.controller.tests.utils.withTitleNoSummary
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
@@ -149,7 +148,6 @@ class ExportDestinationFragmentTest {
         context = InstrumentationRegistry.getInstrumentation().context
         navHostController = TestNavHostController(context)
         Intents.init()
-        toggleAnimation(false)
     }
 
     @After
@@ -157,7 +155,6 @@ class ExportDestinationFragmentTest {
         Intents.release()
         reset(healthConnectLogger)
         fakeHealthDataExportManager.reset()
-        toggleAnimation(true)
     }
 
     @Test

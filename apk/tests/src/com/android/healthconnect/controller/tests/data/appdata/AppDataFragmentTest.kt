@@ -60,7 +60,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.android.healthconnect.controller.tests.utils.launchFragment
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.logging.AppDataElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -116,12 +115,10 @@ class AppDataFragmentTest {
         navHostController = TestNavHostController(context)
         val allDataUseCase = AllDataUseCase(manager, Dispatchers.Main)
         appDataViewModel = AppDataViewModel(appInfoReader, allDataUseCase)
-        toggleAnimation(false)
     }
 
     @After
     fun tearDown() {
-        toggleAnimation(true)
         Dispatchers.resetMain()
         reset(healthConnectLogger)
     }

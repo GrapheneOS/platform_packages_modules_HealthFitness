@@ -37,7 +37,6 @@ import com.android.healthconnect.controller.exportimport.api.ExportFrequency
 import com.android.healthconnect.controller.exportimport.api.ExportSettingsViewModel
 import com.android.healthconnect.controller.tests.utils.checkBoxOf
 import com.android.healthconnect.controller.tests.utils.launchFragment
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.logging.ExportFrequencyElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.google.common.truth.Truth.assertThat
@@ -77,14 +76,12 @@ class ExportFrequencyFragmentTest {
         whenever(exportSettingsViewModel.selectedExportFrequency).then {
             MutableLiveData(ExportFrequency.EXPORT_FREQUENCY_NEVER)
         }
-        toggleAnimation(false)
     }
 
     @After
     fun tearDown() {
         reset(healthConnectLogger)
         reset(exportSettingsViewModel)
-        toggleAnimation(true)
     }
 
     @Test

@@ -34,7 +34,6 @@ import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel.RawFhi
 import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel.RawFhirState.WithData
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION
 import com.android.healthconnect.controller.tests.utils.launchFragment
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.RawFhirPageElement
@@ -143,12 +142,10 @@ class RawFhirFragmentTest {
     @Before
     fun setup() {
         hiltRule.inject()
-        toggleAnimation(false)
     }
 
     @After
     fun tearDown() {
-        toggleAnimation(true)
         reset(healthConnectLogger)
     }
 
