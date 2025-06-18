@@ -412,21 +412,6 @@ filegroup {
     name: "robo-ui-tests-sources-exclude",
     srcs: [
         // TODO: b/419191898 - Update this to get as many Controller tests bivalent as possible
-        // These use UiDevice to set animation settings, exclude for now
-        "src/com/android/healthconnect/controller/tests/data/alldata/AllDataFragmentTest.kt",
-        "src/com/android/healthconnect/controller/tests/data/appdata/AppDataFragmentTest.kt",
-        "src/com/android/healthconnect/controller/tests/data/entries/AllEntriesFragmentTest.kt",
-        "src/com/android/healthconnect/controller/tests/data/entries/AppEntriesFragmentTest.kt",
-        "src/com/android/healthconnect/controller/tests/data/access/AccessFragmentTest.kt",
-        "src/com/android/healthconnect/controller/tests/data/rawfhir/RawFhirFragmentTest.kt",
-        "src/com/android/healthconnect/controller/tests/datasources/DataSourcesFragmentTest.kt",
-        "src/com/android/healthconnect/controller/tests/exportimport/ExportDestinationFragmentTest.kt",
-        "src/com/android/healthconnect/controller/tests/exportimport/ExportFrequencyFragmentTest.kt",
-        "src/com/android/healthconnect/controller/tests/exportimport/ImportSourceLocationFragmentTest.kt",
-        "src/com/android/healthconnect/controller/tests/home/HomeFragmentTest.kt",
-        "src/com/android/healthconnect/controller/tests/migration/AppUpdateRequiredFragmentTest.kt",
-        "src/com/android/healthconnect/controller/tests/migration/MigrationPausedFragmentTest.kt",
-        "src/com/android/healthconnect/controller/tests/migration/ModuleUpdateRequiredFragmentTest.kt",
         // This gets an "NoActivityResumedException" on two tests. Needs more investigation
         // However, does use "showOnboarding()" which might not work on robolectric as it uses
         // SharedPreferences.
