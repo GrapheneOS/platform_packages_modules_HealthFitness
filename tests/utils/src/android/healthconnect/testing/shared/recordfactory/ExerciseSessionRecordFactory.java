@@ -27,6 +27,7 @@ import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.units.Length;
 import android.os.Bundle;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public final class ExerciseSessionRecordFactory extends RecordFactory<ExerciseSe
     private static final String KEY_LAPS = PREFIX + "LAPS";
     private static final String KEY_SEGMENTS = PREFIX + "SEGMENTS";
     private static final String KEY_ROUTE = PREFIX + "ROUTE";
+    private static final String KEY_HAS_ROUTE = PREFIX + "HAS_ROUTE";
     private static final String KEY_PLANNED_EXERCISE_SESSION_ID =
             PREFIX + "PLANNED_EXERCISE_SESSION_ID";
 
@@ -72,12 +74,14 @@ public final class ExerciseSessionRecordFactory extends RecordFactory<ExerciseSe
                         new ExerciseRoute(
                                 List.of(
                                         new ExerciseRoute.Location.Builder(
-                                                        Instant.now(), 12.3, 45.6)
+                                                        startTime.plusMillis(1), 12.3, 45.6)
+                                                .setAltitude(Length.fromMeters(100.0))
                                                 .setHorizontalAccuracy(Length.fromMeters(10.0))
                                                 .setVerticalAccuracy(Length.fromMeters(20.0))
                                                 .build(),
                                         new ExerciseRoute.Location.Builder(
-                                                        Instant.now(), 13.4, 46.7)
+                                                        startTime.plusMillis(2), 13.4, 46.7)
+                                                .setAltitude(Length.fromMeters(100.0))
                                                 .setHorizontalAccuracy(Length.fromMeters(11.0))
                                                 .setVerticalAccuracy(Length.fromMeters(22.0))
                                                 .build())))
@@ -113,12 +117,12 @@ public final class ExerciseSessionRecordFactory extends RecordFactory<ExerciseSe
                         new ExerciseRoute(
                                 List.of(
                                         new ExerciseRoute.Location.Builder(
-                                                        Instant.now(), 22.3, 55.6)
+                                                        startTime.plusMillis(3), 22.3, 55.6)
                                                 .setHorizontalAccuracy(Length.fromMeters(10.0))
                                                 .setVerticalAccuracy(Length.fromMeters(20.0))
                                                 .build(),
                                         new ExerciseRoute.Location.Builder(
-                                                        Instant.now(), 23.3, 56.6)
+                                                        startTime.plusMillis(4), 23.3, 56.6)
                                                 .setHorizontalAccuracy(Length.fromMeters(11.0))
                                                 .setVerticalAccuracy(Length.fromMeters(22.0))
                                                 .build())))
@@ -162,6 +166,12 @@ public final class ExerciseSessionRecordFactory extends RecordFactory<ExerciseSe
     private static final String KEY_SEGMENTS_TYPES = KEY_SEGMENTS + "_TYPES";
     private static final String KEY_SEGMENTS_REPS = KEY_SEGMENTS + "_REPS";
     private static final String KEY_ROUTE_LOCATIONS = KEY_ROUTE + "_LOCATIONS";
+    private static final String KEY_LOCATION_TIME = "time";
+    private static final String KEY_LOCATION_LATITUDE = "latitude";
+    private static final String KEY_LOCATION_LONGITUDE = "longitude";
+    private static final String KEY_LOCATION_ALTITUDE = "altitude";
+    private static final String KEY_LOCATION_HORIZONTAL_ACCURACY = "horizontalAccuracy";
+    private static final String KEY_LOCATION_VERTICAL_ACCURACY = "verticalAccuracy";
 
     @Override
     protected Bundle getValuesBundleForRecord(ExerciseSessionRecord record) {
@@ -206,21 +216,28 @@ public final class ExerciseSessionRecordFactory extends RecordFactory<ExerciseSe
         values.putIntegerArrayList(KEY_SEGMENTS_TYPES, segmentTypes);
         values.putIntegerArrayList(KEY_SEGMENTS_REPS, segmentRepetitions);
 
+        values.putBoolean(KEY_HAS_ROUTE, record.hasRoute());
         if (record.getRoute() != null) {
             Bundle routeBundle = new Bundle();
             ArrayList<Bundle> locationBundles = new ArrayList<>();
             for (ExerciseRoute.Location location : record.getRoute().getRouteLocations()) {
                 Bundle locationBundle = new Bundle();
-                locationBundle.putLong("time", location.getTime().toEpochMilli());
-                locationBundle.putDouble("latitude", location.getLatitude());
-                locationBundle.putDouble("longitude", location.getLongitude());
+                locationBundle.putLong(KEY_LOCATION_TIME, location.getTime().toEpochMilli());
+                locationBundle.putDouble(KEY_LOCATION_LATITUDE, location.getLatitude());
+                locationBundle.putDouble(KEY_LOCATION_LONGITUDE, location.getLongitude());
+                if (location.getAltitude() != null) {
+                    locationBundle.putDouble(
+                            KEY_LOCATION_ALTITUDE, location.getAltitude().getInMeters());
+                }
                 if (location.getHorizontalAccuracy() != null) {
                     locationBundle.putDouble(
-                            "horizontalAccuracy", location.getHorizontalAccuracy().getInMeters());
+                            KEY_LOCATION_HORIZONTAL_ACCURACY,
+                            location.getHorizontalAccuracy().getInMeters());
                 }
                 if (location.getVerticalAccuracy() != null) {
                     locationBundle.putDouble(
-                            "verticalAccuracy", location.getVerticalAccuracy().getInMeters());
+                            KEY_LOCATION_VERTICAL_ACCURACY,
+                            location.getVerticalAccuracy().getInMeters());
                 }
                 locationBundles.add(locationBundle);
             }
@@ -296,6 +313,10 @@ public final class ExerciseSessionRecordFactory extends RecordFactory<ExerciseSe
             builder.setSegments(segments);
         }
 
+        if (!bundle.containsKey(KEY_ROUTE) && bundle.getBoolean(KEY_HAS_ROUTE)) {
+            // Handle the `route == null && hasRoute == true` case which is a valid state.
+            setHasRoute(builder, true);
+        }
         if (bundle.containsKey(KEY_ROUTE)) {
             Bundle routeBundle = bundle.getBundle(KEY_ROUTE);
             ArrayList<Bundle> locationBundles =
@@ -304,16 +325,22 @@ public final class ExerciseSessionRecordFactory extends RecordFactory<ExerciseSe
             for (Bundle locationBundle : locationBundles) {
                 ExerciseRoute.Location.Builder locationBuilder =
                         new ExerciseRoute.Location.Builder(
-                                Instant.ofEpochMilli(locationBundle.getLong("time")),
-                                locationBundle.getDouble("latitude"),
-                                locationBundle.getDouble("longitude"));
-                if (locationBundle.containsKey("horizontalAccuracy")) {
-                    locationBuilder.setHorizontalAccuracy(
-                            Length.fromMeters(locationBundle.getDouble("horizontalAccuracy")));
+                                Instant.ofEpochMilli(locationBundle.getLong(KEY_LOCATION_TIME)),
+                                locationBundle.getDouble(KEY_LOCATION_LATITUDE),
+                                locationBundle.getDouble(KEY_LOCATION_LONGITUDE));
+                if (locationBundle.containsKey(KEY_LOCATION_ALTITUDE)) {
+                    locationBuilder.setAltitude(
+                            Length.fromMeters(locationBundle.getDouble(KEY_LOCATION_ALTITUDE)));
                 }
-                if (locationBundle.containsKey("verticalAccuracy")) {
+                if (locationBundle.containsKey(KEY_LOCATION_HORIZONTAL_ACCURACY)) {
+                    locationBuilder.setHorizontalAccuracy(
+                            Length.fromMeters(
+                                    locationBundle.getDouble(KEY_LOCATION_HORIZONTAL_ACCURACY)));
+                }
+                if (locationBundle.containsKey(KEY_LOCATION_VERTICAL_ACCURACY)) {
                     locationBuilder.setVerticalAccuracy(
-                            Length.fromMeters(locationBundle.getDouble("verticalAccuracy")));
+                            Length.fromMeters(
+                                    locationBundle.getDouble(KEY_LOCATION_VERTICAL_ACCURACY)));
                 }
                 locations.add(locationBuilder.build());
             }
@@ -325,6 +352,24 @@ public final class ExerciseSessionRecordFactory extends RecordFactory<ExerciseSe
         }
 
         return builder.build();
+    }
+
+    /**
+     * Calls {@code ExerciseSessionRecord.Builder.setHasRoute} using reflection as the method is
+     * hidden.
+     */
+    private static void setHasRoute(ExerciseSessionRecord.Builder record, boolean hasRoute) {
+        // Getting a hidden method by its signature using getMethod() throws an exception in test
+        // apps, but iterating throw all the methods and getting the needed one works.
+        for (var method : record.getClass().getMethods()) {
+            if (method.getName().equals("setHasRoute")) {
+                try {
+                    method.invoke(record, hasRoute);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        }
     }
 
     @Override
@@ -350,6 +395,8 @@ public final class ExerciseSessionRecordFactory extends RecordFactory<ExerciseSe
                 + lapsToString(record.getLaps())
                 + ",\n\tsegments = "
                 + segmentsToString(record.getSegments())
+                + ",\n\thasRoute = "
+                + record.hasRoute()
                 + ",\n\troute = "
                 + routeToString(record.getRoute())
                 + ",\n\tplannedExerciseSessionId = "
@@ -428,6 +475,8 @@ public final class ExerciseSessionRecordFactory extends RecordFactory<ExerciseSe
                 + location.getLatitude()
                 + ",\n\t\t\tlongitude="
                 + location.getLongitude()
+                + ",\n\t\t\taltitude="
+                + location.getAltitude()
                 + ",\n\t\t\thorizontalAccuracy="
                 + location.getHorizontalAccuracy()
                 + ",\n\t\t\tverticalAccuracy="

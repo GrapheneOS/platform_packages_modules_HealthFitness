@@ -31,7 +31,7 @@ public final class BasalMetabolicRateRecordFactory extends RecordFactory<BasalMe
     @Override
     public BasalMetabolicRateRecord newFullRecord(
             Metadata metadata, Instant time, Instant endTime) {
-        return new BasalMetabolicRateRecord.Builder(metadata, time, Power.fromWatts(1500.0))
+        return new BasalMetabolicRateRecord.Builder(metadata, time, Power.fromWatts(400))
                 .setZoneOffset(ZoneOffset.ofHours(1))
                 .build();
     }
@@ -39,7 +39,7 @@ public final class BasalMetabolicRateRecordFactory extends RecordFactory<BasalMe
     @Override
     public BasalMetabolicRateRecord anotherFullRecord(
             Metadata metadata, Instant time, Instant endTime) {
-        return new BasalMetabolicRateRecord.Builder(metadata, time, Power.fromWatts(1600.0))
+        return new BasalMetabolicRateRecord.Builder(metadata, time, Power.fromWatts(300))
                 .setZoneOffset(ZoneOffset.ofHours(2))
                 .build();
     }
@@ -47,8 +47,7 @@ public final class BasalMetabolicRateRecordFactory extends RecordFactory<BasalMe
     @Override
     public BasalMetabolicRateRecord newEmptyRecord(
             Metadata metadata, Instant time, Instant endTime) {
-        return new BasalMetabolicRateRecord.Builder(metadata, time, Power.fromWatts(1500.0))
-                .build();
+        return new BasalMetabolicRateRecord.Builder(metadata, time, Power.fromWatts(400)).build();
     }
 
     @Override
