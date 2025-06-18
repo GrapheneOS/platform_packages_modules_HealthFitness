@@ -54,6 +54,7 @@ import com.android.server.healthconnect.storage.utils.WhereClauses;
 import com.google.common.collect.ImmutableList;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -112,6 +113,12 @@ public final class FitnessTestUtils {
     public List<String> insertRecords(String packageName, List<RecordInternal<?>> records) {
         return mFitnessRecordUpsertHelper.insertRecords(
                 packageName, records, /* extraPermsStateMap= */ new ArrayMap<>(), true);
+    }
+
+    /** Inserts records where the UUID and the package name need to be provided. */
+    public List<String> insertRecordsUnrestricted(RecordInternal<?>... records) {
+        return mFitnessRecordUpsertHelper.insertRecordsUnrestricted(
+                Arrays.stream(records).toList(), /* shouldGenerateChangeLog= */ true);
     }
 
     /** Inserts records attributed to the given package. */
