@@ -48,6 +48,7 @@ import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthfitness.flags.Flags
+import com.android.healthfitness.flags.Flags.permissionRequestBottomSheet
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -78,10 +79,18 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (SettingsThemeHelper.isExpressiveTheme(this)) {
-            setTheme(R.style.Theme_HealthConnect_Expressive)
-        }
         super.onCreate(savedInstanceState)
+        if (permissionRequestBottomSheet()) {
+            if (SettingsThemeHelper.isExpressiveTheme(this)) {
+                setTheme(R.style.Theme_HealthConnect_PermissionsActivity_Overlay_Expressive)
+            } else {
+                setTheme(R.style.Theme_HealthConnect_PermissionsActivity_Overlay)
+            }
+        } else {
+            if (SettingsThemeHelper.isExpressiveTheme(this)) {
+                setTheme(R.style.Theme_HealthConnect_Expressive)
+            }
+        }
 
         // If device is enabled on watch, redirect to WearGrantPermissionsActivity.
         if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_WATCH)) {
@@ -139,49 +148,40 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         }
 
         requestPermissionsViewModel.init(getPackageNameExtra(), getPermissionStrings())
-        if (
-            requestPermissionsViewModel.isAnyPermissionUserFixed(
-                getPackageNameExtra(),
-                getPermissionStrings(),
-            )
-        ) {
-            // First check if we are already in a permission request flow.
-            // Without this check, if any permissions from the previous screen
-            // were USER_FIXED, we would terminate the request without showing
-            // the subsequent screens.
-            if (
-                !requestPermissionsViewModel.isFitnessPermissionRequestConcluded() &&
-                    !requestPermissionsViewModel.isMedicalPermissionRequestConcluded()
-            ) {
-                Log.e(TAG, "App has at least one USER_FIXED permission, finishing!")
-                requestPermissionsViewModel.updatePermissionGrants()
-                handlePermissionResults()
-            }
-        }
 
-        requestPermissionsViewModel.permissionsActivityState.observe(this) { screenState ->
-            when (screenState) {
-                is PermissionsActivityState.ShowMedical -> {
-                    if (screenState.isWriteOnly) {
-                        showFragment(MedicalWritePermissionFragment())
-                    } else {
-                        showFragment(MedicalPermissionsFragment())
+        if (permissionRequestBottomSheet()) {
+            if (!isFinishing) {
+                PermissionsBottomSheetDialogFragment.newInstance()
+                    .show(supportFragmentManager, PermissionsBottomSheetDialogFragment.TAG)
+            }
+        } else {
+            requestPermissionsViewModel.permissionsActivityState.observe(this) { screenState ->
+                when (screenState) {
+                    is PermissionsActivityState.ShowMedical -> {
+                        if (screenState.isWriteOnly) {
+                            showFragment(MedicalWritePermissionFragment())
+                        } else {
+                            showFragment(MedicalPermissionsFragment())
+                        }
                     }
-                }
-                is PermissionsActivityState.ShowFitness -> {
-                    showFragment(FitnessPermissionsFragment())
-                }
-                is PermissionsActivityState.ShowAdditional -> {
-                    if (screenState.singlePermission) {
-                        showFragment(SingleAdditionalPermissionFragment())
-                    } else {
-                        showFragment(CombinedAdditionalPermissionsFragment())
+                    is PermissionsActivityState.ShowFitness -> {
+                        showFragment(FitnessPermissionsFragment())
                     }
-                }
-                else -> {
-                    // No permissions
-                    requestPermissionsViewModel.updatePermissionGrants()
-                    handlePermissionResults()
+                    is PermissionsActivityState.ShowAdditional -> {
+                        if (screenState.singlePermission) {
+                            showFragment(SingleAdditionalPermissionFragment())
+                        } else {
+                            showFragment(CombinedAdditionalPermissionsFragment())
+                        }
+                    }
+                    is PermissionsActivityState.FinishRequest -> {
+                        handlePermissionResults()
+                    }
+                    else -> {
+                        // No permissions
+                        requestPermissionsViewModel.updatePermissionGrants()
+                        handlePermissionResults()
+                    }
                 }
             }
         }
