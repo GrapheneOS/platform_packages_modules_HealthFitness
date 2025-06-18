@@ -56,7 +56,6 @@ import com.android.healthconnect.controller.tests.utils.checkBoxOf
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthDataExportManager
 import com.android.healthconnect.controller.tests.utils.launchFragment
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.tests.utils.withTitleAndSummary
 import com.android.healthconnect.controller.tests.utils.withTitleNoSummary
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
@@ -133,7 +132,6 @@ class ImportSourceLocationFragmentTest {
         Intents.init()
 
         fakeHealthDataExportManager.setExportImportDocumentProviders(listOf())
-        toggleAnimation(false)
     }
 
     @After
@@ -141,7 +139,6 @@ class ImportSourceLocationFragmentTest {
         Intents.release()
         fakeHealthDataExportManager.reset()
         reset(healthConnectLogger)
-        toggleAnimation(true)
     }
 
     @Test

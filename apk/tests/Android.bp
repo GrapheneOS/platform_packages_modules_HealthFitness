@@ -413,7 +413,6 @@ filegroup {
     srcs: [
         // TODO: b/419191898 - Update this to get as many Controller tests bivalent as possible
         // These use UiDevice to set animation settings, exclude for now
-        "src/com/android/healthconnect/controller/tests/utils/AnimationUtils.kt",
         "src/com/android/healthconnect/controller/tests/data/alldata/AllDataFragmentTest.kt",
         "src/com/android/healthconnect/controller/tests/data/appdata/AppDataFragmentTest.kt",
         "src/com/android/healthconnect/controller/tests/data/entries/AllEntriesFragmentTest.kt",

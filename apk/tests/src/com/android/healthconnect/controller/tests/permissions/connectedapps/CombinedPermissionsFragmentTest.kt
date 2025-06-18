@@ -53,7 +53,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.logging.AppAccessElement
 import com.android.healthconnect.controller.utils.logging.CombinedAppAccessElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -107,16 +106,12 @@ class CombinedPermissionsFragmentTest {
         }
         whenever(viewModel.atLeastOneHealthPermissionGranted).then { MediatorLiveData(true) }
         whenever(viewModel.revokeAllHealthPermissionsState).then { MutableLiveData(NotStarted) }
-        // disable animations
-        toggleAnimation(false)
         Intents.init()
     }
 
     @After
     fun teardown() {
         reset(healthConnectLogger)
-        // enable animations
-        toggleAnimation(true)
         Intents.release()
     }
 

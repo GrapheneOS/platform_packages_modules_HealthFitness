@@ -55,7 +55,6 @@ import com.android.healthconnect.controller.tests.utils.di.FakeAppUtils
 import com.android.healthconnect.controller.tests.utils.hasIndirectSibling
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.logging.DataSourcesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -102,14 +101,12 @@ class DataSourcesFragmentTest {
         hiltRule.inject()
         whenever(dataSourcesViewModel.getCurrentSelection()).then { HealthDataCategory.ACTIVITY }
         whenever(dataSourcesViewModel.shouldShowAddAnAppButton).then { MutableLiveData(false) }
-        toggleAnimation(false)
     }
 
     @After
     fun tearDown() {
         (appUtils as FakeAppUtils).reset()
         reset(healthConnectLogger)
-        toggleAnimation(true)
     }
 
     @Test

@@ -55,7 +55,6 @@ import com.android.healthconnect.controller.tests.utils.any
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -124,14 +123,11 @@ class FitnessPermissionsFragmentTest {
         whenever(viewModel.fitnessScreenState).then {
             MutableLiveData(FitnessScreenState.NoFitnessData)
         }
-
-        toggleAnimation(false)
     }
 
     @After
     fun teardown() {
         reset(healthConnectLogger)
-        toggleAnimation(true)
     }
 
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)

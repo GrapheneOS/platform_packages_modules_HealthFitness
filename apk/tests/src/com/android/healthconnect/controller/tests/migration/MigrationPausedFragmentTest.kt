@@ -17,7 +17,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationPausedFragment
 import com.android.healthconnect.controller.tests.utils.launchFragment
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -58,13 +57,11 @@ class MigrationPausedFragmentTest {
                 MODE_PRIVATE,
             )
         pref.edit().clear().apply()
-        toggleAnimation(false)
     }
 
     @After
     fun tearDown() {
         reset(healthConnectLogger)
-        toggleAnimation(true)
     }
 
     @Test

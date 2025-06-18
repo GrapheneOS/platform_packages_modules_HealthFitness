@@ -48,7 +48,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.launchFragment
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -106,15 +105,11 @@ class SettingsManagePermissionFragmentTest {
                 )
             )
         }
-        // disable animations
-        toggleAnimation(false)
     }
 
     @After
     fun tearDown() {
         reset(healthConnectLogger)
-        // enable animations
-        toggleAnimation(true)
     }
 
     @Test

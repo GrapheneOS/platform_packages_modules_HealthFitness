@@ -62,7 +62,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.logging.AllDataElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -112,7 +111,6 @@ class AllDataFragmentTest {
     @Before
     fun setup() {
         hiltRule.inject()
-        toggleAnimation(false)
         context = InstrumentationRegistry.getInstrumentation().context
         navHostController = TestNavHostController(context)
         context.setLocale(Locale.US)
@@ -120,8 +118,9 @@ class AllDataFragmentTest {
 
     @After
     fun tearDown() {
-        toggleAnimation(true)
         reset(healthConnectLogger)
+        // Wait for all threads to complete so the test activity is not called back after teardown
+        onIdle()
     }
 
     @Test

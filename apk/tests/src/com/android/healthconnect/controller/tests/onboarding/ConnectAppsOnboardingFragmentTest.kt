@@ -56,7 +56,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.scrollToBottomOfPreferenceScreen
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.logging.AlmostDonePageElement
@@ -104,14 +103,12 @@ class ConnectAppsOnboardingFragmentTest {
         hiltRule.inject()
         context = getInstrumentation().context
         (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(true)
-        toggleAnimation(false)
         Intents.init()
         navHostController = TestNavHostController(context)
     }
 
     @After
     fun tearDown() {
-        toggleAnimation(true)
         Intents.release()
         reset(healthConnectLogger)
     }

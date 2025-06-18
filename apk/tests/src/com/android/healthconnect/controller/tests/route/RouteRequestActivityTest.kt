@@ -55,7 +55,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
@@ -160,15 +159,11 @@ class RouteRequestActivityTest {
         whenever(viewModel.isReadRoutesPermissionDeclared(context.packageName)).thenReturn(true)
         whenever(viewModel.isSessionInaccessible(context.packageName, TEST_SESSION))
             .thenReturn(false)
-        // disable animations
-        toggleAnimation(false)
     }
 
     @After
     fun tearDown() {
         reset(healthConnectLogger)
-        // enable animations
-        toggleAnimation(true)
     }
 
     @Test
