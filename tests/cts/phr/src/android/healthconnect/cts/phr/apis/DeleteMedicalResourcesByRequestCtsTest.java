@@ -19,19 +19,24 @@ package android.healthconnect.cts.phr.apis;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VACCINES;
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
+import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_DELETE;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
 import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermission;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeAllHealthPermissions;
 import static android.healthconnect.testing.cts.PhrCtsTestUtils.MAX_FOREGROUND_WRITE_CALL_15M;
 import static android.healthconnect.testing.cts.PhrCtsTestUtils.PHR_BACKGROUND_APP;
+import static android.healthconnect.testing.cts.PhrCtsTestUtils.PHR_DEFAULT_APP_PKG;
 import static android.healthconnect.testing.cts.PhrCtsTestUtils.PHR_FOREGROUND_APP;
 import static android.healthconnect.testing.cts.TestUtils.finishMigrationWithShellPermissionIdentity;
 import static android.healthconnect.testing.cts.TestUtils.setFieldValueUsingReflection;
 import static android.healthconnect.testing.cts.TestUtils.startMigrationWithShellPermissionIdentity;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_ID;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_DATA_SOURCE_ID;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_ALLERGY;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.createAllergyMedicalResource;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
@@ -44,6 +49,7 @@ import android.app.UiAutomation;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.accesslog.AccessLog;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
@@ -63,6 +69,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -656,5 +664,106 @@ public class DeleteMedicalResourcesByRequestCtsTest {
                             readReceiver);
                     assertThat(readReceiver.getResponse()).containsExactly(backgroundAppVaccine);
                 });
+    }
+
+    @Test
+    public void testDeleteMedicalResourcesByRequest_noMatchingDataSource_noAccessLogs()
+            throws Exception {
+        mUtil.createDataSource(getCreateMedicalDataSourceRequest());
+        DeleteMedicalResourcesRequest request =
+                new DeleteMedicalResourcesRequest.Builder()
+                        .addDataSourceId(DIFFERENT_DATA_SOURCE_ID)
+                        .build();
+        List<AccessLog> accessLogsBeforeDelete = TestUtils.queryAccessLogs();
+
+        mUtil.deleteMedicalResourcesByRequest(request);
+        List<AccessLog> accessLogs = TestUtils.queryAccessLogs();
+
+        assertThat(accessLogsBeforeDelete.size()).isEqualTo(accessLogs.size());
+    }
+
+    @Test
+    public void testDeleteMedicalResourcesByRequest_noMatchingResources_noAccessLogs()
+            throws Exception {
+        // Given we have one data source with one vaccine
+        MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
+        MedicalResource vaccine = createVaccineMedicalResource(dataSource.getId());
+        mUtil.upsertMedicalResources(List.of(vaccine));
+        DeleteMedicalResourcesRequest request =
+                new DeleteMedicalResourcesRequest.Builder()
+                        .addDataSourceId(dataSource.getId())
+                        .addMedicalResourceType(MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES)
+                        .build();
+        List<AccessLog> accessLogsBeforeDelete = TestUtils.queryAccessLogs();
+
+        // If we try to delete allergies for that data source, no access logs are expected.
+        mUtil.deleteMedicalResourcesByRequest(request);
+        List<AccessLog> accessLogs = TestUtils.queryAccessLogs();
+
+        assertThat(accessLogs.size()).isEqualTo(accessLogsBeforeDelete.size());
+    }
+
+    @Test
+    public void testDeleteMedicalResourcesByRequest_accessLogsCreatedForMatchingData()
+            throws Exception {
+        // Given we have two data sources, one with a vaccine and allergy and a second one with a
+        // vaccine
+        MedicalDataSource dataSource1 =
+                mUtil.createDataSource(getCreateMedicalDataSourceRequest("1"));
+        MedicalDataSource dataSource2 =
+                mUtil.createDataSource(getCreateMedicalDataSourceRequest("2"));
+        MedicalResource vaccine1 = createVaccineMedicalResource(dataSource1.getId());
+        MedicalResource allergy1 = createAllergyMedicalResource(dataSource1.getId());
+        MedicalResource vaccine2 = createVaccineMedicalResource(dataSource2.getId());
+        mUtil.upsertMedicalResources(List.of(vaccine1, allergy1, vaccine2));
+        DeleteMedicalResourcesRequest request =
+                new DeleteMedicalResourcesRequest.Builder()
+                        .addDataSourceId(dataSource1.getId())
+                        .addMedicalResourceType(MEDICAL_RESOURCE_TYPE_VACCINES)
+                        .build();
+        Instant timeBeforeDelete = Instant.now();
+
+        // When we try to delete vaccines from the first data source
+        mUtil.deleteMedicalResourcesByRequest(request);
+        List<AccessLog> accessLogs = TestUtils.queryAccessLogs();
+        accessLogs.sort(Comparator.comparing(AccessLog::getAccessTime));
+
+        // We expect 3 accessLogs related to create/upserts and one for the delete.
+        assertThat(accessLogs).hasSize(4);
+        AccessLog deleteLog = accessLogs.get(3);
+        assertThat(deleteLog.getPackageName()).isEqualTo(PHR_DEFAULT_APP_PKG);
+        assertThat(deleteLog.getAccessTime()).isGreaterThan(timeBeforeDelete);
+        assertThat(deleteLog.getMedicalResourceTypes())
+                .containsExactly(MEDICAL_RESOURCE_TYPE_VACCINES);
+        assertThat(deleteLog.getOperationType()).isEqualTo(OPERATION_TYPE_DELETE);
+        assertThat(deleteLog.getRecordTypes()).isEmpty();
+        assertThat(deleteLog.isMedicalDataSourceAccessed()).isFalse();
+    }
+
+    @Test
+    public void testDeleteMedicalResourcesByRequest_withDataManagementPermission_noAccessLogs()
+            throws Exception {
+        MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
+        MedicalResource vaccine = createVaccineMedicalResource(dataSource.getId());
+        mUtil.upsertMedicalResources(List.of(vaccine));
+        DeleteMedicalResourcesRequest request =
+                new DeleteMedicalResourcesRequest.Builder()
+                        .addDataSourceId(dataSource.getId())
+                        .build();
+
+        // Get access logs from upsert
+        List<AccessLog> accessLogsBeforeDelete = TestUtils.queryAccessLogs();
+        HealthConnectReceiver<Void> callback = new HealthConnectReceiver<>();
+
+        runWithShellPermissionIdentity(
+                () -> {
+                    mManager.deleteMedicalResources(
+                            request, Executors.newSingleThreadExecutor(), callback);
+                    callback.verifyNoExceptionOrThrow();
+                },
+                MANAGE_HEALTH_DATA_PERMISSION);
+
+        // Check that no new access logs have been created
+        assertThat(accessLogsBeforeDelete.size()).isEqualTo(TestUtils.queryAccessLogs().size());
     }
 }

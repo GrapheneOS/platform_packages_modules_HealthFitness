@@ -18,12 +18,16 @@ package android.healthconnect.cts.phr.apis;
 import static android.health.connect.HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
+import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_UPSERT;
+import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
+import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
 import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermission;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeAllHealthPermissions;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeHealthPermission;
 import static android.healthconnect.testing.cts.PhrCtsTestUtils.CHUNK_SIZE_LIMIT_IN_BYTES;
 import static android.healthconnect.testing.cts.PhrCtsTestUtils.MAX_FOREGROUND_WRITE_CALL_15M;
 import static android.healthconnect.testing.cts.PhrCtsTestUtils.PHR_BACKGROUND_APP;
+import static android.healthconnect.testing.cts.PhrCtsTestUtils.PHR_DEFAULT_APP_PKG;
 import static android.healthconnect.testing.cts.PhrCtsTestUtils.PHR_FOREGROUND_APP;
 import static android.healthconnect.testing.cts.PhrCtsTestUtils.PHR_FOREGROUND_APP_PKG;
 import static android.healthconnect.testing.cts.PhrCtsTestUtils.RECORD_SIZE_LIMIT_IN_BYTES;
@@ -42,6 +46,7 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSION_R4;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSION_R4B;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSION_UNSUPPORTED;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.createAllergyMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createUpdatedVaccineMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
@@ -63,6 +68,7 @@ import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.UpsertMedicalResourceRequest;
+import android.health.connect.accesslog.AccessLog;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
@@ -94,13 +100,16 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Executors;
 
 @RunWith(AndroidJUnit4.class)
 public class UpsertMedicalResourcesCtsTest {
+
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
@@ -1387,6 +1396,91 @@ public class UpsertMedicalResourcesCtsTest {
                                         dataSource.getId(), FHIR_DATA_IMMUNIZATION));
 
         assertThat(exception.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
+    }
+
+    @Test
+    public void testUpsertMedicalResources_resourcesOfSameType_correctAccessLogCreated()
+            throws Exception {
+        MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
+        Instant timeBeforeUpsert = Instant.now();
+
+        mUtil.upsertVaccineMedicalResources(dataSource.getId(), /* numOfResources= */ 6);
+        List<AccessLog> accessLogs = TestUtils.queryAccessLogs();
+        accessLogs.sort(Comparator.comparing(AccessLog::getAccessTime));
+
+        // One access log is created for MedicalDataSource creation, and one for the upsert
+        assertThat(accessLogs).hasSize(2);
+        AccessLog log = accessLogs.get(1);
+        assertThat(log.getPackageName()).isEqualTo(PHR_DEFAULT_APP_PKG);
+        assertThat(log.getAccessTime()).isGreaterThan(timeBeforeUpsert);
+        assertThat(log.getMedicalResourceTypes()).containsExactly(MEDICAL_RESOURCE_TYPE_VACCINES);
+        assertThat(log.getOperationType()).isEqualTo(OPERATION_TYPE_UPSERT);
+        assertThat(log.getRecordTypes()).isEmpty();
+        assertThat(log.isMedicalDataSourceAccessed()).isFalse();
+    }
+
+    @Test
+    public void testUpsertMedicalResources_resourcesOfDifferentTypes_correctAccessLogCreated()
+            throws Exception {
+        MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
+        MedicalResource vaccine = createVaccineMedicalResource(dataSource.getId());
+        MedicalResource allergy = createAllergyMedicalResource(dataSource.getId());
+        Instant timeBeforeUpsert = Instant.now();
+
+        mUtil.upsertMedicalResources(List.of(vaccine, allergy));
+        List<AccessLog> accessLogs = TestUtils.queryAccessLogs();
+        accessLogs.sort(Comparator.comparing(AccessLog::getAccessTime));
+
+        // One access log is created for MedicalDataSource creation, and one for the upsert
+        assertThat(accessLogs).hasSize(2);
+        AccessLog log = accessLogs.get(1);
+        assertThat(log.getPackageName()).isEqualTo(PHR_DEFAULT_APP_PKG);
+        assertThat(log.getAccessTime()).isGreaterThan(timeBeforeUpsert);
+        assertThat(log.getMedicalResourceTypes())
+                .containsExactly(
+                        MEDICAL_RESOURCE_TYPE_VACCINES,
+                        MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES);
+        assertThat(log.getOperationType()).isEqualTo(OPERATION_TYPE_UPSERT);
+        assertThat(log.getRecordTypes()).isEmpty();
+        assertThat(log.isMedicalDataSourceAccessed()).isFalse();
+    }
+
+    @Test
+    public void testUpsertMedicalResources_insertThenUpdate_correctAccessLogsCreated()
+            throws Exception {
+        MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
+        MedicalResource vaccine = createVaccineMedicalResource(dataSource.getId());
+        MedicalResource allergy = createAllergyMedicalResource(dataSource.getId());
+        MedicalResource updatedVaccine = createUpdatedVaccineMedicalResource(dataSource.getId());
+        Instant timeBeforeUpsert = Instant.now();
+
+        // Initial insert
+        mUtil.upsertMedicalResources(List.of(vaccine, allergy));
+        // Update vaccine resource
+        mUtil.upsertMedicalResources(List.of(updatedVaccine));
+        List<AccessLog> accessLogs = TestUtils.queryAccessLogs();
+        accessLogs.sort(Comparator.comparing(AccessLog::getAccessTime));
+
+        // One access log is created for MedicalDataSource creation, one for insert, one for update
+        assertThat(accessLogs).hasSize(3);
+        AccessLog insertLog = accessLogs.get(1);
+        assertThat(insertLog.getPackageName()).isEqualTo(PHR_DEFAULT_APP_PKG);
+        assertThat(insertLog.getAccessTime()).isGreaterThan(timeBeforeUpsert);
+        assertThat(insertLog.getMedicalResourceTypes())
+                .containsExactly(
+                        MEDICAL_RESOURCE_TYPE_VACCINES,
+                        MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES);
+        assertThat(insertLog.getOperationType()).isEqualTo(OPERATION_TYPE_UPSERT);
+        assertThat(insertLog.getRecordTypes()).isEmpty();
+        assertThat(insertLog.isMedicalDataSourceAccessed()).isFalse();
+        AccessLog updateLog = accessLogs.get(2);
+        assertThat(updateLog.getPackageName()).isEqualTo(PHR_DEFAULT_APP_PKG);
+        assertThat(updateLog.getAccessTime()).isGreaterThan(timeBeforeUpsert);
+        assertThat(updateLog.getMedicalResourceTypes())
+                .containsExactly(MEDICAL_RESOURCE_TYPE_VACCINES);
+        assertThat(updateLog.getOperationType()).isEqualTo(OPERATION_TYPE_UPSERT);
+        assertThat(updateLog.getRecordTypes()).isEmpty();
+        assertThat(updateLog.isMedicalDataSourceAccessed()).isFalse();
     }
 
     private static UpsertMedicalResourceRequest makeImmunizationUpsertRequest(
