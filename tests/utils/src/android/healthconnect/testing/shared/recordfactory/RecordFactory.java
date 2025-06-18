@@ -152,11 +152,7 @@ public abstract class RecordFactory<T extends Record> {
             Bundle bundle);
 
     /** Converts the given record into a string representation */
-    public String recordToString(T record) {
-        // TODO(b/424728751): Implement and make this abstract.
-        throw new UnsupportedOperationException(
-                "recordToString not implemented for " + record.getClass());
-    }
+    public abstract String recordToString(T record);
 
     /** Converts the given record into a string representation */
     public String toString(Record record) {

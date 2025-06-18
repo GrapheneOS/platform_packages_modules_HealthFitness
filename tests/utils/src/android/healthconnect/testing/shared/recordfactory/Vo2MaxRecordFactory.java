@@ -96,4 +96,20 @@ public final class Vo2MaxRecordFactory extends RecordFactory<Vo2MaxRecord> {
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(Vo2MaxRecord record) {
+        return "Vo2MaxRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tvo2MillilitersPerMinuteKilogram = "
+                + record.getVo2MillilitersPerMinuteKilogram()
+                + ",\n\tmeasurementMethod = "
+                + record.getMeasurementMethod()
+                + "\n}";
+    }
 }

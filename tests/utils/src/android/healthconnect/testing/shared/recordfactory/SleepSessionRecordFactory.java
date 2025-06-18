@@ -147,4 +147,26 @@ public final class SleepSessionRecordFactory extends RecordFactory<SleepSessionR
 
         return builder.build();
     }
+
+    @Override
+    public String recordToString(SleepSessionRecord record) {
+        return "SleepSessionRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\ttitle = "
+                + record.getTitle()
+                + ",\n\tnotes = "
+                + record.getNotes()
+                + ",\n\tstages = "
+                + record.getStages()
+                + "\n}";
+    }
 }

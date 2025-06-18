@@ -102,4 +102,20 @@ public final class BasalBodyTemperatureRecordFactory
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(BasalBodyTemperatureRecord record) {
+        return "BasalBodyTemperatureRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\ttemperature = "
+                + record.getTemperature()
+                + ",\n\tmeasurementLocation = "
+                + record.getMeasurementLocation()
+                + "\n}";
+    }
 }

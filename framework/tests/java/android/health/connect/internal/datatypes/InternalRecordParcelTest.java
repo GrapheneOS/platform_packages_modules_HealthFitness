@@ -117,7 +117,8 @@ public class InternalRecordParcelTest {
             Record recordCopy = internalRecordCopy.toExternalRecord();
 
             // Check nothing has been lost
-            expect.withMessage("Failed parcel conversion for %s, %s", record.getClass(), recordType)
+            expect.withMessage(
+                            "Failed parcel conversion for %s, not equal to %s", record, recordCopy)
                     .that(recordCopy)
                     .isEqualTo(record);
         }

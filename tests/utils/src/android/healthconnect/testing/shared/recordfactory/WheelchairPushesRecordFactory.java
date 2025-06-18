@@ -82,4 +82,22 @@ public final class WheelchairPushesRecordFactory extends RecordFactory<Wheelchai
                 .setEndZoneOffset(endZoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(WheelchairPushesRecord record) {
+        return "WheelchairPushesRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tcount = "
+                + record.getCount()
+                + "\n}";
+    }
 }

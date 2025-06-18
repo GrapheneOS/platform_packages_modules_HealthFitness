@@ -77,4 +77,18 @@ public final class OvulationTestRecordFactory extends RecordFactory<OvulationTes
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(OvulationTestRecord record) {
+        return "OvulationTestRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tresult = "
+                + record.getResult()
+                + "\n}";
+    }
 }

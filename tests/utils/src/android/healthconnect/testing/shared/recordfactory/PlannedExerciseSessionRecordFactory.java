@@ -401,4 +401,28 @@ public final class PlannedExerciseSessionRecordFactory
                 throw new IllegalArgumentException("Unknown performance goal type");
         }
     }
+
+    @Override
+    public String recordToString(PlannedExerciseSessionRecord record) {
+        return "PlannedExerciseSessionRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\texerciseType = "
+                + record.getExerciseType()
+                + ",\n\ttitle = "
+                + record.getTitle()
+                + ",\n\tnotes = "
+                + record.getNotes()
+                + ",\n\tblocks = "
+                + record.getBlocks()
+                + "\n}";
+    }
 }

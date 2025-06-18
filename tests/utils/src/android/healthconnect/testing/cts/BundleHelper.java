@@ -45,7 +45,6 @@ import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
-import android.healthconnect.testing.shared.ToStringUtils;
 import android.healthconnect.testing.shared.recordfactory.RecordFactory;
 import android.os.Bundle;
 import android.util.Log;
@@ -769,12 +768,12 @@ public final class BundleHelper {
                     TAG,
                     BundleHelper.class.getSimpleName()
                             + ".java - record = "
-                            + ToStringUtils.recordToString(record));
+                            + recordFactory.toString(record));
             Log.e(
                     TAG,
                     BundleHelper.class.getSimpleName()
                             + ".java - decoded = "
-                            + ToStringUtils.recordToString(decodedRecord));
+                            + recordFactory.toString(decodedRecord));
             throw new IllegalArgumentException(
                     "Some fields are incorrectly encoded in " + record.getClass().getSimpleName());
         }

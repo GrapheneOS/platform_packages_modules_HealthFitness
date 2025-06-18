@@ -119,4 +119,22 @@ public final class HeartRateRecordFactory extends RecordFactory<HeartRateRecord>
                 .setEndZoneOffset(endZoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(HeartRateRecord record) {
+        return "HeartRateRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tsamples = "
+                + record.getSamples()
+                + "\n}";
+    }
 }

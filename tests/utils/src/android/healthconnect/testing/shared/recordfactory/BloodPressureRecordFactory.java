@@ -114,4 +114,24 @@ public final class BloodPressureRecordFactory extends RecordFactory<BloodPressur
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(BloodPressureRecord record) {
+        return "BloodPressureRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tsystolic = "
+                + record.getSystolic()
+                + ",\n\tdiastolic = "
+                + record.getDiastolic()
+                + ",\n\tbodyPosition = "
+                + record.getBodyPosition()
+                + ",\n\tmeasurementLocation = "
+                + record.getMeasurementLocation()
+                + "\n}";
+    }
 }

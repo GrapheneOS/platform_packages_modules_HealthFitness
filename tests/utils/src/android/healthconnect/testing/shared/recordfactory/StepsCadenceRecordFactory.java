@@ -123,4 +123,22 @@ public final class StepsCadenceRecordFactory extends RecordFactory<StepsCadenceR
                 .setEndZoneOffset(endZoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(StepsCadenceRecord record) {
+        return "StepsCadenceRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tsamples = "
+                + record.getSamples()
+                + "\n}";
+    }
 }

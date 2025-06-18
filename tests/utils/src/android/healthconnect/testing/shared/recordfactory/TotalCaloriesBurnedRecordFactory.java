@@ -91,4 +91,22 @@ public final class TotalCaloriesBurnedRecordFactory
                 .setEndZoneOffset(endZoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(TotalCaloriesBurnedRecord record) {
+        return "TotalCaloriesBurnedRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tenergy = "
+                + record.getEnergy()
+                + "\n}";
+    }
 }
