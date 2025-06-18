@@ -119,7 +119,7 @@ public class ExportImportApiTest {
                         REMOTE_EXPORT_DATABASE_DIR_NAME,
                         Environment.getDataDirectory());
 
-        mExportFile = mTemporaryFolder.newFile(REMOTE_EXPORT_ZIP_FILE_NAME);
+        mExportFile = new File(mTemporaryFolder.getRoot(), REMOTE_EXPORT_ZIP_FILE_NAME);
         mRemoteExportFileUri =
                 FileProvider.getUriForFile(mContext, FILE_PROVIDER_AUTHORITY, mExportFile);
     }
