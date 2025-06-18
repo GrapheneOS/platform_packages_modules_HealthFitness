@@ -45,7 +45,7 @@ class PrettyFhirHeaderViewBinder(private val onClickedViewSourceDataListener: ()
         data: FormattedEntry.FormattedPrettyFhirDetailsHeader,
         index: Int,
     ) {
-        val headerText = view.findViewById<TextView>(R.id.item_pretty_fhir_header)
+        val headerText = view.findViewById<TextView>(R.id.item_pretty_fhir_entry_header)
         val titleText = view.findViewById<TextView>(R.id.item_pretty_fhir_title)
 
         view.setOnClickListener { onClickedViewSourceDataListener() }

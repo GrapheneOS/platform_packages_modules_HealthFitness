@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,11 +20,11 @@
     android:id="@+id/entries_and_access_nav_graph"
     app:startDestination="@id/entriesAndAccessFragment">
 
-    <include app:graph="@navigation/fitness_app_nav_graph"/>
-    <include app:graph="@navigation/medical_app_nav_graph"/>
-    <include app:graph="@navigation/combined_permissions_nav_graph"/>
-    <include app:graph="@navigation/connected_apps_nav_graph"/>
-    <include app:graph="@navigation/data_sources_nav_graph"/>
+    <include app:graph="@navigation/fitness_app_nav_graph" />
+    <include app:graph="@navigation/medical_app_nav_graph" />
+    <include app:graph="@navigation/combined_permissions_nav_graph" />
+    <include app:graph="@navigation/connected_apps_nav_graph" />
+    <include app:graph="@navigation/data_sources_nav_graph" />
 
     <fragment
         android:id="@+id/entriesAndAccessFragment"
@@ -51,7 +50,7 @@
             app:destination="@id/connected_apps_nav_graph" />
         <action
             android:id="@+id/action_entriesAndAccess_to_setUnitsFragment"
-            app:destination="@id/setUnitsFragment"/>
+            app:destination="@id/setUnitsFragment" />
     </fragment>
 
     <fragment
@@ -65,8 +64,18 @@
         android:label="@string/raw_fhir_title" />
 
     <fragment
+        android:id="@+id/prettyFhirFragment"
+        android:name="com.android.healthconnect.controller.data.prettyfhir.PrettyFhirFragment"
+        android:label="@string/entry_details_title">
+
+        <action
+            android:id="@+id/action_prettyFhirFragment_to_rawFhirFragment"
+            app:destination="@id/rawFhirFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/setUnitsFragment"
         android:name="com.android.healthconnect.controller.units.UnitsFragment"
-        android:label="@string/set_units_title"/>
+        android:label="@string/set_units_title" />
 
 </navigation>
