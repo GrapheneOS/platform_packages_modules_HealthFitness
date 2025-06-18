@@ -99,4 +99,20 @@ public final class BodyTemperatureRecordFactory extends RecordFactory<BodyTemper
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(BodyTemperatureRecord record) {
+        return "BodyTemperatureRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\ttemperature = "
+                + record.getTemperature()
+                + ",\n\tmeasurementLocation = "
+                + record.getMeasurementLocation()
+                + "\n}";
+    }
 }

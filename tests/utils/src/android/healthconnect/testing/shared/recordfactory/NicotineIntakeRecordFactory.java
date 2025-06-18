@@ -110,4 +110,26 @@ public final class NicotineIntakeRecordFactory extends RecordFactory<NicotineInt
         }
         return record.build();
     }
+
+    @Override
+    public String recordToString(NicotineIntakeRecord record) {
+        return "NicotineIntakeRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tquantity = "
+                + record.getQuantity()
+                + ",\n\tnicotineIntakeType = "
+                + record.getNicotineIntakeType()
+                + ",\n\tnicotineIntake = "
+                + record.getNicotineIntake()
+                + "\n}";
+    }
 }

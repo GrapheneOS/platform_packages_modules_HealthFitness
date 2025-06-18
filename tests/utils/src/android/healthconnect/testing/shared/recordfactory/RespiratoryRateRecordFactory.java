@@ -74,4 +74,18 @@ public final class RespiratoryRateRecordFactory extends RecordFactory<Respirator
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(RespiratoryRateRecord record) {
+        return "RespiratoryRateRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\trate = "
+                + record.getRate()
+                + "\n}";
+    }
 }

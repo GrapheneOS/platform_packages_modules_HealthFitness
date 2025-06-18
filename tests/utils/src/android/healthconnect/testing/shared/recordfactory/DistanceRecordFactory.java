@@ -83,4 +83,22 @@ public final class DistanceRecordFactory extends RecordFactory<DistanceRecord> {
                 .setEndZoneOffset(endZoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(DistanceRecord record) {
+        return "DistanceRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tdistance = "
+                + record.getDistance()
+                + "\n}";
+    }
 }

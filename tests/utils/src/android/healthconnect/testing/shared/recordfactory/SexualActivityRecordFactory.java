@@ -87,4 +87,18 @@ public final class SexualActivityRecordFactory extends RecordFactory<SexualActiv
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(SexualActivityRecord record) {
+        return "SexualActivityRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tprotectionUsed = "
+                + record.getProtectionUsed()
+                + "\n}";
+    }
 }

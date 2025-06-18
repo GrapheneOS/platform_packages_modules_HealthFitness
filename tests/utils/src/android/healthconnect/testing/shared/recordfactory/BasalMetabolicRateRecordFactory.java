@@ -79,4 +79,18 @@ public final class BasalMetabolicRateRecordFactory extends RecordFactory<BasalMe
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(BasalMetabolicRateRecord record) {
+        return "BasalMetabolicRateRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tbasalMetabolicRate = "
+                + record.getBasalMetabolicRate()
+                + "\n}";
+    }
 }

@@ -76,4 +76,18 @@ public final class RestingHeartRateRecordFactory extends RecordFactory<RestingHe
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(RestingHeartRateRecord record) {
+        return "RestingHeartRateRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tbeatsPerMinute = "
+                + record.getBeatsPerMinute()
+                + "\n}";
+    }
 }

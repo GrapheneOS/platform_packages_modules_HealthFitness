@@ -74,4 +74,18 @@ public final class HeightRecordFactory extends RecordFactory<HeightRecord> {
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(HeightRecord record) {
+        return "HeightRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\theight = "
+                + record.getHeight()
+                + "\n}";
+    }
 }

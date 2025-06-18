@@ -78,4 +78,18 @@ public final class MenstruationFlowRecordFactory extends RecordFactory<Menstruat
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(MenstruationFlowRecord record) {
+        return "MenstruationFlowRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tflow = "
+                + record.getFlow()
+                + "\n}";
+    }
 }

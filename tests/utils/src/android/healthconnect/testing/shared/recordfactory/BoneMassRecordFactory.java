@@ -74,4 +74,18 @@ public final class BoneMassRecordFactory extends RecordFactory<BoneMassRecord> {
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(BoneMassRecord record) {
+        return "BoneMassRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tmass = "
+                + record.getMass()
+                + "\n}";
+    }
 }

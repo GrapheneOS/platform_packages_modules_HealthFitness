@@ -111,4 +111,24 @@ public final class BloodGlucoseRecordFactory extends RecordFactory<BloodGlucoseR
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(BloodGlucoseRecord record) {
+        return "BloodGlucoseRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tlevel = "
+                + record.getLevel()
+                + ",\n\tspecimenSource = "
+                + record.getSpecimenSource()
+                + ",\n\tmealType = "
+                + record.getMealType()
+                + ",\n\trelationToMeal = "
+                + record.getRelationToMeal()
+                + "\n}";
+    }
 }

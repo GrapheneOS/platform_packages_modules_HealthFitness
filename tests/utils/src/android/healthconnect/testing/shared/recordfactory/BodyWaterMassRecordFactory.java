@@ -76,4 +76,18 @@ public final class BodyWaterMassRecordFactory extends RecordFactory<BodyWaterMas
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(BodyWaterMassRecord record) {
+        return "BodyWaterMassRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tbodyWaterMass = "
+                + record.getBodyWaterMass()
+                + "\n}";
+    }
 }

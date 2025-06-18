@@ -74,4 +74,16 @@ public final class IntermenstrualBleedingRecordFactory
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(IntermenstrualBleedingRecord record) {
+        return "IntermenstrualBleedingRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + "\n}";
+    }
 }

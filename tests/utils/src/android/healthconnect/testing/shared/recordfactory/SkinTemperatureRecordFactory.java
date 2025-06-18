@@ -125,4 +125,26 @@ public final class SkinTemperatureRecordFactory extends RecordFactory<SkinTemper
                 .setEndZoneOffset(endZoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(SkinTemperatureRecord record) {
+        return "SkinTemperatureRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tbaseline = "
+                + record.getBaseline()
+                + ",\n\tdeltas = "
+                + record.getDeltas()
+                + ",\n\tmeasurementLocation = "
+                + record.getMeasurementLocation()
+                + "\n}";
+    }
 }

@@ -74,4 +74,18 @@ public final class LeanBodyMassRecordFactory extends RecordFactory<LeanBodyMassR
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(LeanBodyMassRecord record) {
+        return "LeanBodyMassRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tmass = "
+                + record.getMass()
+                + "\n}";
+    }
 }
