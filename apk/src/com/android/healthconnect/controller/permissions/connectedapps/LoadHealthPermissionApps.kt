@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.permissions.connectedapps
 
+import android.util.Log
 import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.shared.IQueryRecentAccessLogsUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
@@ -40,57 +41,68 @@ constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadHealthPermissionApps {
 
+    companion object {
+        private const val TAG = "LoadHealthPermissionApps"
+    }
+
     /** Returns a list of [ConnectedAppMetadata]. */
     override suspend operator fun invoke(): List<ConnectedAppMetadata> =
         withContext(dispatcher) {
-            val appsWithHealthPermissions = healthPermissionReader.getAppsWithHealthPermissions()
-            val appsWithData = getContributorAppInfoUseCase.invoke()
-            val connectedApps = mutableListOf<ConnectedAppMetadata>()
-            val recentAccess = queryRecentAccessLogsUseCase.invoke()
-            val appsWithOldHealthPermissions =
-                healthPermissionReader.getAppsWithOldHealthPermissions()
+            try {
+                val appsWithHealthPermissions =
+                    healthPermissionReader.getAppsWithHealthPermissions()
+                val appsWithData = getContributorAppInfoUseCase.invoke()
+                val connectedApps = mutableListOf<ConnectedAppMetadata>()
+                val recentAccess = queryRecentAccessLogsUseCase.invoke()
+                val appsWithOldHealthPermissions =
+                    healthPermissionReader.getAppsWithOldHealthPermissions()
 
-            connectedApps.addAll(
-                appsWithHealthPermissions.map { (packageName, isSystem) ->
-                    val metadata = appInfoReader.getAppMetadata(packageName, isSystem)
-                    val grantedPermissions = loadGrantedHealthPermissionsUseCase(packageName)
-                    val isConnected =
-                        if (grantedPermissions.isNotEmpty()) {
-                            ConnectedAppStatus.ALLOWED
-                        } else {
-                            ConnectedAppStatus.DENIED
-                        }
-                    val appPermissionsType =
-                        healthPermissionReader.getAppPermissionsType(packageName)
-                    ConnectedAppMetadata(
-                        metadata,
-                        isConnected,
-                        appPermissionsType,
-                        recentAccess[metadata.packageName],
-                    )
-                }
-            )
-
-            val inactiveApps =
-                appsWithData.values
-                    .filter { !appsWithHealthPermissions.contains(it.packageName) }
-                    .map { ConnectedAppMetadata(it, ConnectedAppStatus.INACTIVE) }
-
-            val appsThatNeedUpdating =
-                appsWithOldHealthPermissions
-                    .map { packageName ->
-                        val metadata = appInfoReader.getAppMetadata(packageName)
+                connectedApps.addAll(
+                    appsWithHealthPermissions.map { (packageName, isSystem) ->
+                        val metadata = appInfoReader.getAppMetadata(packageName, isSystem)
+                        val grantedPermissions = loadGrantedHealthPermissionsUseCase(packageName)
+                        val isConnected =
+                            if (grantedPermissions.isNotEmpty()) {
+                                ConnectedAppStatus.ALLOWED
+                            } else {
+                                ConnectedAppStatus.DENIED
+                            }
+                        val appPermissionsType =
+                            healthPermissionReader.getAppPermissionsType(packageName)
                         ConnectedAppMetadata(
-                            appMetadata = metadata,
-                            status = ConnectedAppStatus.NEEDS_UPDATE,
-                            healthUsageLastAccess = recentAccess[metadata.packageName],
+                            metadata,
+                            isConnected,
+                            appPermissionsType,
+                            recentAccess[metadata.packageName],
                         )
                     }
-                    .filter { !appsWithHealthPermissions.contains(it.appMetadata.packageName) }
+                )
 
-            connectedApps.addAll(inactiveApps)
-            connectedApps.addAll(appsThatNeedUpdating)
-            connectedApps
+                val inactiveApps =
+                    appsWithData.values
+                        .filter { !appsWithHealthPermissions.contains(it.packageName) }
+                        .map { ConnectedAppMetadata(it, ConnectedAppStatus.INACTIVE) }
+
+                val appsThatNeedUpdating =
+                    appsWithOldHealthPermissions
+                        .map { packageName ->
+                            val metadata = appInfoReader.getAppMetadata(packageName)
+                            ConnectedAppMetadata(
+                                appMetadata = metadata,
+                                status = ConnectedAppStatus.NEEDS_UPDATE,
+                                healthUsageLastAccess = recentAccess[metadata.packageName],
+                            )
+                        }
+                        .filter { !appsWithHealthPermissions.contains(it.appMetadata.packageName) }
+
+                connectedApps.addAll(inactiveApps)
+                connectedApps.addAll(appsThatNeedUpdating)
+                connectedApps
+            } catch (exception: Exception) {
+                // TODO (b/417950169) migrate to BaseUseCase for more robust error handling
+                Log.e(TAG, "Error loading connected apps", exception)
+                emptyList()
+            }
         }
 }
 

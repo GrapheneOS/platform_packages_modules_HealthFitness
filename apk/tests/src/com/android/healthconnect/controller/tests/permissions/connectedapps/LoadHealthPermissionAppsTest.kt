@@ -332,4 +332,12 @@ class LoadHealthPermissionAppsTest {
                 )
             )
     }
+
+    @Test
+    fun whenErrorThrownByHealthPermissionReader_returnsEmptyList() = runTest {
+        whenever(healthPermissionReader.getAppsWithHealthPermissions())
+            .thenThrow(RuntimeException())
+        val connectedAppsList = loadHealthPermissionApps.invoke()
+        assertThat(connectedAppsList).isEmpty()
+    }
 }
