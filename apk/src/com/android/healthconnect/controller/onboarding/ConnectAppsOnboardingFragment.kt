@@ -126,6 +126,7 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
                 preferenceTitle = getString(R.string.apps_onboarding_footer),
                 learnMoreText = getString(R.string.apps_onboarding_footer_link),
                 learnMoreAction = { deviceInfoUtils.openHCGetStartedLink(requireActivity()) },
+                preferenceOrder = 1,
             )
         )
 
@@ -163,6 +164,7 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
                 preferenceTitle = getString(R.string.apps_onboarding_footer),
                 learnMoreText = getString(R.string.apps_onboarding_footer_link),
                 learnMoreAction = { deviceInfoUtils.openHCGetStartedLink(requireActivity()) },
+                preferenceOrder = 1,
             )
         )
 
