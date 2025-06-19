@@ -74,6 +74,8 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.B
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 
+import com.google.common.truth.Correspondence;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -533,6 +535,118 @@ public class CloudBackupDatabaseHelperTest {
                 .isInstanceOf(PlannedExerciseSessionRecordInternal.class);
         assertThat(parseRecordInternal(changes.get(1)))
                 .isInstanceOf(ExerciseSessionRecordInternal.class);
+    }
+
+    @Test
+    public void getIncrementalChanges_bothUpsertAndDeletionChangesExist() {
+        // All data tables have been iterated through.
+        GetChangesForBackupResponse response =
+                mCloudBackupDatabaseHelper.getChangesAndTokenFromDataTables();
+        // Insert the step record.
+        var stepRecord =
+                buildStepsRecord(
+                        TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT);
+        List<String> recordUuids = mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, stepRecord);
+        BackupChangeToken backupChangeToken =
+                BackupChangeTokenHelper.getBackupChangeToken(
+                        mTransactionManager, response.getNextChangeToken());
+        // Delete the step record.
+        DeleteUsingFiltersRequest deleteRequest =
+                new DeleteUsingFiltersRequest.Builder()
+                        .addRecordType(StepsRecord.class)
+                        .setTimeRangeFilter(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(Instant.EPOCH)
+                                        .build())
+                        .build();
+        mFitnessRecordDeleteHelper.deleteRecords(
+                TEST_PACKAGE_NAME,
+                new DeleteUsingFiltersRequestParcel(deleteRequest),
+                /* holdsDataManagementPermission= */ false,
+                /* shouldRecordAccessLog= */ false);
+        // Insert the record again with the same uuid.
+        mFitnessTestUtils.insertRecordsUnrestricted(stepRecord.setUuid(recordUuids.get(0)));
+
+        GetChangesForBackupResponse secondResponse =
+                mCloudBackupDatabaseHelper.getIncrementalChanges(
+                        backupChangeToken.getChangeLogsRequestToken());
+
+        assertThat(secondResponse.getChanges().size()).isEqualTo(2);
+        assertThat(secondResponse.getChanges())
+                .comparingElementsUsing(
+                        Correspondence.transforming(BackupChange::isDeletion, "is deletion"))
+                .containsExactly(false, true);
+    }
+
+    @Test
+    public void getIncrementalChanges_recordInsertedThenDeleted_deletedChangeKept() {
+        // All data tables have been iterated through.
+        GetChangesForBackupResponse response =
+                mCloudBackupDatabaseHelper.getChangesAndTokenFromDataTables();
+        // Insert the step record.
+        var stepRecord =
+                buildStepsRecord(
+                        TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, stepRecord);
+        BackupChangeToken backupChangeToken =
+                BackupChangeTokenHelper.getBackupChangeToken(
+                        mTransactionManager, response.getNextChangeToken());
+        // Delete the step record.
+        DeleteUsingFiltersRequest deleteRequest =
+                new DeleteUsingFiltersRequest.Builder()
+                        .addRecordType(StepsRecord.class)
+                        .setTimeRangeFilter(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(Instant.EPOCH)
+                                        .build())
+                        .build();
+        mFitnessRecordDeleteHelper.deleteRecords(
+                TEST_PACKAGE_NAME,
+                new DeleteUsingFiltersRequestParcel(deleteRequest),
+                /* holdsDataManagementPermission= */ false,
+                /* shouldRecordAccessLog= */ false);
+
+        GetChangesForBackupResponse secondResponse =
+                mCloudBackupDatabaseHelper.getIncrementalChanges(
+                        backupChangeToken.getChangeLogsRequestToken());
+
+        assertThat(secondResponse.getChanges().size()).isEqualTo(1);
+        assertThat(secondResponse.getChanges().get(0).isDeletion()).isTrue();
+    }
+
+    @Test
+    public void getIncrementalChanges_recordInsertedThenUpdated_oneChangeReturned()
+            throws Exception {
+        // All data tables have been iterated through.
+        GetChangesForBackupResponse response =
+                mCloudBackupDatabaseHelper.getChangesAndTokenFromDataTables();
+        // Insert the step record.
+        var stepRecord =
+                buildStepsRecord(
+                        TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT);
+        List<String> recordUuids = mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, stepRecord);
+        BackupChangeToken backupChangeToken =
+                BackupChangeTokenHelper.getBackupChangeToken(
+                        mTransactionManager, response.getNextChangeToken());
+        // Update the step record again.
+        var updatedStepRecord =
+                buildStepsRecord(
+                                TEST_START_TIME_IN_MILLIS,
+                                TEST_END_TIME_IN_MILLIS,
+                                /* stepsCount= */ 500)
+                        .setUuid(recordUuids.get(0));
+        mFitnessTestUtils.updateRecords(TEST_PACKAGE_NAME, updatedStepRecord);
+
+        GetChangesForBackupResponse secondResponse =
+                mCloudBackupDatabaseHelper.getIncrementalChanges(
+                        backupChangeToken.getChangeLogsRequestToken());
+
+        assertThat(secondResponse.getChanges().size()).isEqualTo(1);
+        assertThat(secondResponse.getChanges().get(0).isDeletion()).isFalse();
+        StepsRecordInternal stepsRecord =
+                (StepsRecordInternal) parseRecordInternal(secondResponse.getChanges().get(0));
+        assertThat(stepsRecord.getCount())
+                .isEqualTo(((StepsRecordInternal) updatedStepRecord).getCount());
     }
 
     private RecordInternal<?> parseRecordInternal(BackupChange change) throws Exception {
