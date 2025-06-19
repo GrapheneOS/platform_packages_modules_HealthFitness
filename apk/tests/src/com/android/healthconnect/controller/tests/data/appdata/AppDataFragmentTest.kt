@@ -48,6 +48,7 @@ import com.android.healthconnect.controller.permissions.data.toMedicalResourceTy
 import com.android.healthconnect.controller.selectabledeletion.DeletionDataViewModel.DeletionScreenState.DELETE
 import com.android.healthconnect.controller.selectabledeletion.DeletionPermissionTypesPreference
 import com.android.healthconnect.controller.selectabledeletion.SelectAllCheckboxPreference
+import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromFitnessPermissionType
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
@@ -58,6 +59,7 @@ import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.utils.logging.AppDataElement
@@ -67,6 +69,7 @@ import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -93,6 +96,7 @@ import org.mockito.kotlin.verify
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@UninstallModules(HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
 class AppDataFragmentTest {
 
@@ -100,15 +104,16 @@ class AppDataFragmentTest {
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
     private val testDispatcher = UnconfinedTestDispatcher()
 
-    var manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
-    @Inject lateinit var appInfoReader: AppInfoReader
+    @BindValue val manager: HealthConnectManager = mock()
     @BindValue lateinit var appDataViewModel: AppDataViewModel
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
+    @BindValue lateinit var appInfoReader: AppInfoReader
     private lateinit var navHostController: TestNavHostController
     private lateinit var context: Context
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
         context = InstrumentationRegistry.getInstrumentation().context

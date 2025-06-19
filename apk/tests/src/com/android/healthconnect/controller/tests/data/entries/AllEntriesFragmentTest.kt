@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.tests.data.entries
 
 import android.content.Context
+import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.PlannedExerciseSessionRecord
@@ -51,6 +52,7 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.SLEEP
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.STEPS
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
+import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.FakeParentFragment
 import com.android.healthconnect.controller.tests.utils.NESTED_FRAGMENT_TAG
@@ -70,6 +72,7 @@ import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
@@ -79,7 +82,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -88,13 +90,14 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
+@UninstallModules(HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
 class AllEntriesFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    @BindValue val viewModel: EntriesViewModel = Mockito.mock(EntriesViewModel::class.java)
-
+    @BindValue val viewModel: EntriesViewModel = mock()
+    @BindValue val manager: HealthConnectManager = mock()
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
 
     private lateinit var context: Context
@@ -170,7 +173,7 @@ class AllEntriesFragmentTest {
 
         launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
 
-        if(SettingsThemeHelper.isExpressiveTheme(context)) {
+        if (SettingsThemeHelper.isExpressiveTheme(context)) {
             onView(withId(R.id.zerostate_view)).check(matches(isDisplayed()))
         } else {
             onView(withId(R.id.no_data_view)).check(matches(isDisplayed()))
@@ -301,7 +304,7 @@ class AllEntriesFragmentTest {
             bundleOf(PERMISSION_TYPE_NAME_KEY to MedicalPermissionType.VACCINES.name)
         )
 
-        if(SettingsThemeHelper.isExpressiveTheme(context)) {
+        if (SettingsThemeHelper.isExpressiveTheme(context)) {
             onView(withId(R.id.zerostate_view)).check(matches(isDisplayed()))
         } else {
             onView(withId(R.id.no_data_view)).check(matches(isDisplayed()))
