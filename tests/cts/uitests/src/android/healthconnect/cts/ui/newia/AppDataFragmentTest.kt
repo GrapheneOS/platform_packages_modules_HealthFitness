@@ -32,6 +32,7 @@ import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToNewPage
 import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToSeeAppData
 import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.testing.cts.ui.UiTestUtils.scrollUpTo
+import android.healthconnect.testing.cts.ui.UiTestUtils.scrollUpToAndFindText
 import android.healthconnect.testing.cts.ui.UiTestUtils.verifyObjectNotFound
 import android.healthconnect.testing.cts.ui.UiTestUtils.verifyTextNotFound
 import android.healthconnect.testing.cts.ui.UiTestUtils.waitDisplayed
@@ -81,7 +82,8 @@ class AppDataFragmentTest : HealthConnectBaseTest() {
     fun navigateToAppData_showsAppData() {
         context.launchMainActivity {
             navigateToSeeAppData("CtsHealthConnectTestAppAWithNormalReadWritePermission")
-            findText("CtsHealthConnectTestAppAWithNormalReadWritePermission")
+            // This string should be at the top of the screen
+            scrollUpToAndFindText("CtsHealthConnectTestAppAWithNormalReadWritePermission")
 
             scrollDownToAndFindText("Activity")
             scrollDownToAndFindText("Steps")
@@ -97,7 +99,8 @@ class AppDataFragmentTest : HealthConnectBaseTest() {
     fun clickOnAppDataType_navigatesToAppEntries() {
         context.launchMainActivity {
             navigateToSeeAppData("CtsHealthConnectTestAppAWithNormalReadWritePermission")
-            findText("CtsHealthConnectTestAppAWithNormalReadWritePermission")
+            // This string should be at the top of the screen
+            scrollUpToAndFindText("CtsHealthConnectTestAppAWithNormalReadWritePermission")
 
             findText("Activity")
             navigateToNewPage("Steps")
@@ -112,7 +115,8 @@ class AppDataFragmentTest : HealthConnectBaseTest() {
     fun appDataFragment_deletesAllData() {
         context.launchMainActivity {
             navigateToSeeAppData("CtsHealthConnectTestAppAWithNormalReadWritePermission")
-            findText("CtsHealthConnectTestAppAWithNormalReadWritePermission")
+            // This string should be at the top of the screen
+            scrollUpToAndFindText("CtsHealthConnectTestAppAWithNormalReadWritePermission")
 
             verifyObjectNotFound(By.text("Select all"))
             findObjectAndClick(By.desc("Enter deletion"))
