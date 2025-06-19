@@ -20,7 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.Record;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
-import android.healthconnect.testing.shared.recordfactory.AnotherRecordFactory;
+import android.healthconnect.testing.shared.recordfactory.RecordFactory;
 import android.os.Parcel;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -72,8 +72,6 @@ public class InternalRecordParcelTest {
      *   <li>How do we get a list of all record classes? We get this from HealthConnectMappings.
      *   <li>How do we test equality between two {@link RecordInternal}s? We actually test equality
      *       on the equivalent records themselves
-     *   <li>How do we get a fully populated instance? This is delegated to a test utility method
-     *       {@link AnotherRecordFactory} that is tested by this class exercising it.
      * </ul>
      *
      * Note: this test is not a replacement for unit tests. It does not test all edge conditions. It
@@ -95,7 +93,7 @@ public class InternalRecordParcelTest {
                     mappings.getRecordIdToExternalRecordClassMap().get(recordType);
             // Create a fully populated Record of every type (so we can use it for equality
             // testing later).
-            Record record = AnotherRecordFactory.makePopulatedRecord(recordExternalClass);
+            Record record = RecordFactory.newFullRecordForType(recordExternalClass);
             // Convert to an internal record.
             RecordInternal<?> internalRecord = record.toRecordInternal();
             // Check that the factory was working properly and gave us a record of the type
@@ -119,7 +117,8 @@ public class InternalRecordParcelTest {
             Record recordCopy = internalRecordCopy.toExternalRecord();
 
             // Check nothing has been lost
-            expect.withMessage("Failed parcel conversion for %s, %s", record.getClass(), recordType)
+            expect.withMessage(
+                            "Failed parcel conversion for %s, not equal to %s", record, recordCopy)
                     .that(recordCopy)
                     .isEqualTo(record);
         }

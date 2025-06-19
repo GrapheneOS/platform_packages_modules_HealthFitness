@@ -74,4 +74,18 @@ public final class WeightRecordFactory extends RecordFactory<WeightRecord> {
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(WeightRecord record) {
+        return "WeightRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tweight = "
+                + record.getWeight()
+                + "\n}";
+    }
 }

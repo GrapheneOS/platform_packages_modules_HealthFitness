@@ -79,4 +79,18 @@ public final class HeartRateVariabilityRmssdRecordFactory
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(HeartRateVariabilityRmssdRecord record) {
+        return "HeartRateVariabilityRmssdRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\theartRateVariabilityMillis = "
+                + record.getHeartRateVariabilityMillis()
+                + "\n}";
+    }
 }

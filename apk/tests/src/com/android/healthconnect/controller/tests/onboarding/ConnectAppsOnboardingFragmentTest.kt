@@ -20,6 +20,7 @@ import android.app.Activity
 import android.app.Instrumentation
 import android.content.Context
 import android.content.Intent
+import android.health.connect.HealthConnectManager
 import android.health.connect.HealthConnectManager.ACTION_SHOW_ONBOARDING
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
@@ -55,7 +56,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.scrollToBottomOfPreferenceScreen
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.logging.AlmostDonePageElement
@@ -103,14 +103,12 @@ class ConnectAppsOnboardingFragmentTest {
         hiltRule.inject()
         context = getInstrumentation().context
         (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(true)
-        toggleAnimation(false)
         Intents.init()
         navHostController = TestNavHostController(context)
     }
 
     @After
     fun tearDown() {
-        toggleAnimation(true)
         Intents.release()
         reset(healthConnectLogger)
     }
@@ -422,5 +420,81 @@ class ConnectAppsOnboardingFragmentTest {
             .isEqualTo(R.id.fitnessAppOnboardingFragment)
         verify(healthConnectLogger)
             .logInteraction(CommonOnboardingPageElement.APP_WITHOUT_ONBOARDING_BUTTON)
+    }
+
+    @Test
+    fun setupLaterButton_finishesActivity_andLaunchesHealthIntent() {
+        whenever(viewModel.connectedApps).then {
+            MutableLiveData(
+                OnboardingViewModel.OnboardingFragmentState.ZeroAppsConnected(
+                    listOf(
+                        ConnectedFitnessAppMetadata(
+                            appMetadata = TEST_APP,
+                            isConnected = false,
+                            hasOnboarding = true,
+                        ),
+                        ConnectedFitnessAppMetadata(
+                            appMetadata = TEST_APP_2,
+                            isConnected = false,
+                            hasOnboarding = false,
+                        ),
+                    )
+                )
+            )
+        }
+
+        launchFragment<ConnectAppsOnboardingFragment>().use { scenario ->
+            onView(withText("Connect your first app")).check(matches(isDisplayed()))
+            onView(withText("Available apps to connect"))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
+            onView(withText(TEST_APP.appName)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_2.appName)).perform(scrollTo()).check(matches(isDisplayed()))
+
+            onView(withText("Set up later")).check(matches(isDisplayed()))
+
+            onView(withText("Set up later")).perform(click())
+
+            Intents.intended(hasAction(HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS))
+
+            verify(healthConnectLogger)
+                .logInteraction(
+                    ConnectTwoAppsOnboardingPageElement
+                        .CONNECT_FIRST_TWO_APPS_ONBOARDING_SET_UP_LATER_BUTTON
+                )
+        }
+    }
+
+    @Test
+    fun doneButton_finishesActivity_andLaunchesHealthIntent() {
+        whenever(viewModel.connectedApps).then {
+            MutableLiveData(
+                OnboardingViewModel.OnboardingFragmentState.AlmostDone(
+                    connectedApps =
+                        listOf(
+                            ConnectedFitnessAppMetadata(TEST_APP, true),
+                            ConnectedFitnessAppMetadata(TEST_APP_2, true),
+                        ),
+                    potentialApps = listOf(ConnectedFitnessAppMetadata(TEST_APP_3, false)),
+                )
+            )
+        }
+
+        launchFragment<ConnectAppsOnboardingFragment>().use { scenario ->
+            onView(withText("Almost done")).check(matches(isDisplayed()))
+            onView(withText("Connected apps")).check(matches(isDisplayed()))
+            onView(withText(TEST_APP.appName)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_2.appName)).perform(scrollTo()).check(matches(isDisplayed()))
+
+            onView(withText("Done")).check(matches(isDisplayed()))
+
+            onView(withText("Done")).perform(click())
+
+            Intents.intended(hasAction(HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS))
+
+            verify(healthConnectLogger).logInteraction(AlmostDonePageElement.ONBOARDING_DONE_BUTTON)
+        }
     }
 }

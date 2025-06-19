@@ -519,4 +519,108 @@ public final class NutritionRecordFactory extends RecordFactory<NutritionRecord>
         }
         return builder.build();
     }
+
+    @Override
+    public String recordToString(NutritionRecord record) {
+        return "NutritionRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tmealType = "
+                + record.getMealType()
+                + ",\n\tunsaturatedFat = "
+                + record.getUnsaturatedFat()
+                + ",\n\tpotassium = "
+                + record.getPotassium()
+                + ",\n\tthiamin = "
+                + record.getThiamin()
+                + ",\n\ttransFat = "
+                + record.getTransFat()
+                + ",\n\tmanganese = "
+                + record.getManganese()
+                + ",\n\tenergyFromFat = "
+                + record.getEnergyFromFat()
+                + ",\n\tcaffeine = "
+                + record.getCaffeine()
+                + ",\n\tdietaryFiber = "
+                + record.getDietaryFiber()
+                + ",\n\tselenium = "
+                + record.getSelenium()
+                + ",\n\tvitaminB6 = "
+                + record.getVitaminB6()
+                + ",\n\tprotein = "
+                + record.getProtein()
+                + ",\n\tchloride = "
+                + record.getChloride()
+                + ",\n\tcholesterol = "
+                + record.getCholesterol()
+                + ",\n\tcopper = "
+                + record.getCopper()
+                + ",\n\tiodine = "
+                + record.getIodine()
+                + ",\n\tvitaminB12 = "
+                + record.getVitaminB12()
+                + ",\n\tzinc = "
+                + record.getZinc()
+                + ",\n\triboflavin = "
+                + record.getRiboflavin()
+                + ",\n\tenergy = "
+                + record.getEnergy()
+                + ",\n\tmolybdenum = "
+                + record.getMolybdenum()
+                + ",\n\tphosphorus = "
+                + record.getPhosphorus()
+                + ",\n\tchromium = "
+                + record.getChromium()
+                + ",\n\ttotalFat = "
+                + record.getTotalFat()
+                + ",\n\tcalcium = "
+                + record.getCalcium()
+                + ",\n\tvitaminC = "
+                + record.getVitaminC()
+                + ",\n\tvitaminE = "
+                + record.getVitaminE()
+                + ",\n\tbiotin = "
+                + record.getBiotin()
+                + ",\n\tvitaminD = "
+                + record.getVitaminD()
+                + ",\n\tniacin = "
+                + record.getNiacin()
+                + ",\n\tmagnesium = "
+                + record.getMagnesium()
+                + ",\n\ttotalCarbohydrate = "
+                + record.getTotalCarbohydrate()
+                + ",\n\tvitaminK = "
+                + record.getVitaminK()
+                + ",\n\tpolyunsaturatedFat = "
+                + record.getPolyunsaturatedFat()
+                + ",\n\tsaturatedFat = "
+                + record.getSaturatedFat()
+                + ",\n\tsodium = "
+                + record.getSodium()
+                + ",\n\tfolate = "
+                + record.getFolate()
+                + ",\n\tmonounsaturatedFat = "
+                + record.getMonounsaturatedFat()
+                + ",\n\tpantothenicAcid = "
+                + record.getPantothenicAcid()
+                + ",\n\tmealName = "
+                + record.getMealName()
+                + ",\n\tiron = "
+                + record.getIron()
+                + ",\n\tvitaminA = "
+                + record.getVitaminA()
+                + ",\n\tfolicAcid = "
+                + record.getFolicAcid()
+                + ",\n\tsugar = "
+                + record.getSugar()
+                + "\n}";
+    }
 }

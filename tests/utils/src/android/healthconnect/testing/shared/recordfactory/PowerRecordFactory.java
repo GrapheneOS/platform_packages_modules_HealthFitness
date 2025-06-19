@@ -91,8 +91,7 @@ public final class PowerRecordFactory extends RecordFactory<PowerRecord> {
                         .mapToLong(Instant::toEpochMilli)
                         .toArray();
         double[] watts =
-                record.getSamples()
-                        .stream()
+                record.getSamples().stream()
                         .mapToDouble((sample) -> sample.getPower().getInWatts())
                         .toArray();
 
@@ -123,5 +122,23 @@ public final class PowerRecordFactory extends RecordFactory<PowerRecord> {
                 .setStartZoneOffset(startZoneOffset)
                 .setEndZoneOffset(endZoneOffset)
                 .build();
+    }
+
+    @Override
+    public String recordToString(PowerRecord record) {
+        return "PowerRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tsamples = "
+                + record.getSamples()
+                + "\n}";
     }
 }

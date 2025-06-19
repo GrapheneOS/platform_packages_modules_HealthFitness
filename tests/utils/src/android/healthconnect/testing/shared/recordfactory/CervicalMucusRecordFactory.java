@@ -90,4 +90,20 @@ public final class CervicalMucusRecordFactory extends RecordFactory<CervicalMucu
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(CervicalMucusRecord record) {
+        return "CervicalMucusRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tappearance = "
+                + record.getAppearance()
+                + ",\n\tsensation = "
+                + record.getSensation()
+                + "\n}";
+    }
 }

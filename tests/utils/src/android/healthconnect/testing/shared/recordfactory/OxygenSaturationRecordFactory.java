@@ -78,4 +78,18 @@ public final class OxygenSaturationRecordFactory extends RecordFactory<OxygenSat
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(OxygenSaturationRecord record) {
+        return "OxygenSaturationRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tpercentage = "
+                + record.getPercentage()
+                + "\n}";
+    }
 }

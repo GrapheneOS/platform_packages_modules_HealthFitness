@@ -82,7 +82,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.showOnboarding
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
@@ -184,15 +183,11 @@ class MockedPermissionsActivityTest {
 
         (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(true)
         showOnboarding(context, false)
-        // disable animations
-        toggleAnimation(false)
     }
 
     @After
     fun teardown() {
         reset(healthConnectLogger)
-        // enable animations
-        toggleAnimation(true)
     }
 
     @Test

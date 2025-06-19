@@ -83,4 +83,22 @@ public final class HydrationRecordFactory extends RecordFactory<HydrationRecord>
                 .setEndZoneOffset(endZoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(HydrationRecord record) {
+        return "HydrationRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tvolume = "
+                + record.getVolume()
+                + "\n}";
+    }
 }

@@ -107,4 +107,26 @@ public final class MindfulnessSessionRecordFactory extends RecordFactory<Mindful
                 .setEndZoneOffset(endZoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(MindfulnessSessionRecord record) {
+        return "MindfulnessSessionRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tmindfulnessSessionType = "
+                + record.getMindfulnessSessionType()
+                + ",\n\ttitle = "
+                + record.getTitle()
+                + ",\n\tnotes = "
+                + record.getNotes()
+                + "\n}";
+    }
 }

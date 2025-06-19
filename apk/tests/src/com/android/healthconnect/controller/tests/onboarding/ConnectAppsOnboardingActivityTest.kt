@@ -35,14 +35,12 @@ import com.android.healthconnect.controller.onboarding.OnboardingViewModel
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -66,12 +64,6 @@ class ConnectAppsOnboardingActivityTest {
         hiltRule.inject()
         context = getInstrumentation().context
         (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(true)
-        toggleAnimation(false)
-    }
-
-    @After
-    fun tearDown() {
-        toggleAnimation(true)
     }
 
     @Test

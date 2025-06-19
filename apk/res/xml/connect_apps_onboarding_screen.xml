@@ -23,25 +23,25 @@
         android:icon="?attr/healthConnectIcon"
         app:isPreferenceVisible="false"/>
     <com.android.settingslib.widget.TopIntroPreference
-        android:order="1"
+        android:order="10"
         android:key="top_intro_almost_done"
         android:title="@string/almost_done_description_all_connected"
         app:isPreferenceVisible="false"/>
     <PreferenceCategory
         android:key="apps_category"
-        android:order="2"
+        android:order="20"
         android:title="@string/available_apps_to_connect"
         app:isPreferenceVisible="false">
     </PreferenceCategory>
     <PreferenceCategory
         android:key="more_apps_category"
-        android:order="3"
+        android:order="30"
         android:title="@string/almost_done_available_to_connect"
         app:isPreferenceVisible="false">
     </PreferenceCategory>
     <com.android.settingslib.widget.FooterPreference
         android:key="footer_pref"
         android:title="@string/apps_onboarding_footer"
-        android:order="6"
+        android:order="60"
         app:isPreferenceVisible="false"/>
 </PreferenceScreen>

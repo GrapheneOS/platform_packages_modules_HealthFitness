@@ -74,4 +74,18 @@ public final class BodyFatRecordFactory extends RecordFactory<BodyFatRecord> {
                 .setZoneOffset(zoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(BodyFatRecord record) {
+        return "BodyFatRecord{"
+                + "\n\ttime = "
+                + record.getTime()
+                + ",\n\tzoneOffset = "
+                + record.getZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tpercentage = "
+                + record.getPercentage()
+                + "\n}";
+    }
 }

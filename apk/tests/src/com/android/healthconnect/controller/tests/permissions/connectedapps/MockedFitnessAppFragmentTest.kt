@@ -40,7 +40,6 @@ import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment
-import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -68,7 +67,6 @@ class MockedFitnessAppFragmentTest {
     @Before
     fun setup() {
         hiltRule.inject()
-        toggleAnimation(false)
         whenever(healthPermissionReader.getValidHealthPermissions(TEST_APP_PACKAGE_NAME))
             .thenReturn(
                 listOf(
@@ -83,7 +81,6 @@ class MockedFitnessAppFragmentTest {
 
     @After
     fun tearDown() {
-        toggleAnimation(true)
         Mockito.reset(healthPermissionManager)
         Mockito.reset(healthPermissionReader)
     }

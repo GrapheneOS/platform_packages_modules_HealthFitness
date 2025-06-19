@@ -90,4 +90,22 @@ public final class ElevationGainedRecordFactory extends RecordFactory<ElevationG
                 .setEndZoneOffset(endZoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(ElevationGainedRecord record) {
+        return "ElevationGainedRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\televation = "
+                + record.getElevation()
+                + "\n}";
+    }
 }

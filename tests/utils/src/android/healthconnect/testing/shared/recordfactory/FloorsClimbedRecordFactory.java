@@ -82,4 +82,22 @@ public final class FloorsClimbedRecordFactory extends RecordFactory<FloorsClimbe
                 .setEndZoneOffset(endZoneOffset)
                 .build();
     }
+
+    @Override
+    public String recordToString(FloorsClimbedRecord record) {
+        return "FloorsClimbedRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tfloors = "
+                + record.getFloors()
+                + "\n}";
+    }
 }

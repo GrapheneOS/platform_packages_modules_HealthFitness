@@ -120,4 +120,22 @@ public final class ActivityIntensityRecordFactory extends RecordFactory<Activity
 
         return builder.build();
     }
+
+    @Override
+    public String recordToString(ActivityIntensityRecord record) {
+        return "ActivityIntensityRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tactivityIntensityType = "
+                + record.getActivityIntensityType()
+                + "\n}";
+    }
 }
