@@ -27,7 +27,6 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commitNow
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
@@ -76,7 +75,7 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
     @Inject lateinit var logger: HealthConnectLogger
 
     private var searchView: SearchView? = null
-    private val viewModel: ConnectedAppsViewModel by viewModels()
+    private val viewModel: ConnectedAppsViewModel by activityViewModels()
     private val deletionViewModel: DeletionViewModel by activityViewModels()
 
     private val allowedAppsCategory: PreferenceGroup by pref(ALLOWED_APPS_CATEGORY)
