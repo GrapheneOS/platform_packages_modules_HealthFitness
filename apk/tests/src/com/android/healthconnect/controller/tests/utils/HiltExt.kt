@@ -26,6 +26,10 @@ import androidx.test.core.app.ApplicationProvider
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.tests.TestActivity
 
+/**
+ * Launch an activity containing the fragment. Uses launchActivityForResult, so
+ * ActivityScenario.getResult() can be used to wait for finishing.
+ */
 inline fun <reified T : Fragment> launchFragment(
     fragmentArgs: Bundle? = null,
     @StyleRes themeResId: Int = R.style.Theme_HealthConnect,
@@ -40,7 +44,8 @@ inline fun <reified T : Fragment> launchFragment(
                 themeResId,
             )
 
-    return ActivityScenario.launch<TestActivity>(startActivityIntent).onActivity { activity ->
+    return ActivityScenario.launchActivityForResult<TestActivity>(startActivityIntent).onActivity {
+        activity ->
         val fragment: Fragment =
             activity.supportFragmentManager.fragmentFactory.instantiate(
                 T::class.java.classLoader,

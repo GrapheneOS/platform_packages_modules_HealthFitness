@@ -37,7 +37,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.compatibility.common.util.SystemUtil.eventually
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
@@ -639,7 +638,8 @@ class SettingsMedicalAppFragmentTest {
             .logInteraction(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
 
         // Needed to makes sure activity has finished
-        eventually { assertEquals(Lifecycle.State.DESTROYED, scenario.state) }
+        scenario.result
+        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
     }
 
     @Test
@@ -698,6 +698,7 @@ class SettingsMedicalAppFragmentTest {
             .logInteraction(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
 
         // Needed to makes sure activity has finished
-        eventually { assertEquals(Lifecycle.State.DESTROYED, scenario.state) }
+        scenario.result
+        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
     }
 }

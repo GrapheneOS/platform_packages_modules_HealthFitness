@@ -24,6 +24,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario.launch
+import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -31,7 +32,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.compatibility.common.util.SystemUtil.eventually
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel
@@ -46,6 +46,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionManager
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.tests.utils.showOnboarding
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -54,7 +55,6 @@ import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
-import junit.framework.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -137,8 +137,9 @@ class SettingsActivityTest {
             false
         }
 
-        launch<SettingsActivity>(intent).use { scenario ->
-            eventually { Assert.assertEquals(Lifecycle.State.DESTROYED, scenario.state) }
+        launchActivityForResult<SettingsActivity>(intent).use { scenario ->
+            scenario.result
+            assertThat(scenario.state).isEqualTo(Lifecycle.State.DESTROYED)
         }
     }
 

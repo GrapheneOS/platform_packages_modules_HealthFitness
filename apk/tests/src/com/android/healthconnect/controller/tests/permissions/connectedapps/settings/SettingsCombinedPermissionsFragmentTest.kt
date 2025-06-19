@@ -31,7 +31,6 @@ import androidx.test.espresso.matcher.ViewMatchers.isNotEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.compatibility.common.util.SystemUtil.eventually
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
@@ -59,6 +58,7 @@ import com.android.healthconnect.controller.utils.logging.DataRestoreElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -68,7 +68,6 @@ import java.util.Locale
 import java.util.TimeZone
 import org.hamcrest.Matchers.not
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -436,7 +435,8 @@ class SettingsCombinedPermissionsFragmentTest {
             .logInteraction(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
 
         // Needed to makes sure activity has finished
-        eventually { assertEquals(Lifecycle.State.DESTROYED, scenario.state) }
+        scenario.result
+        assertThat(scenario.state).isEqualTo(Lifecycle.State.DESTROYED)
     }
 
     @Test
@@ -497,7 +497,8 @@ class SettingsCombinedPermissionsFragmentTest {
             .logInteraction(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
 
         // Needed to makes sure activity has finished
-        eventually { assertEquals(Lifecycle.State.DESTROYED, scenario.state) }
+        scenario.result
+        assertThat(scenario.state).isEqualTo(Lifecycle.State.DESTROYED)
     }
 
     @Test
