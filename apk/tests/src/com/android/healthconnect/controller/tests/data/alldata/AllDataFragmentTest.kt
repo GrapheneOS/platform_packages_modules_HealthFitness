@@ -53,6 +53,7 @@ import com.android.healthconnect.controller.permissions.data.toMedicalResourceTy
 import com.android.healthconnect.controller.selectabledeletion.DeletionDataViewModel.DeletionScreenState.DELETE
 import com.android.healthconnect.controller.selectabledeletion.DeletionPermissionTypesPreference
 import com.android.healthconnect.controller.selectabledeletion.SelectAllCheckboxPreference
+import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromFitnessPermissionType
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
 import com.android.healthconnect.controller.shared.children
@@ -69,6 +70,7 @@ import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import java.util.Locale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -82,7 +84,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
@@ -94,12 +95,13 @@ import org.mockito.kotlin.verify
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@UninstallModules(HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
 class AllDataFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    var manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
+    @BindValue val manager: HealthConnectManager = mock()
 
     private val allDataUseCase: AllDataUseCase = AllDataUseCase(manager, Dispatchers.Main)
 

@@ -465,6 +465,7 @@ class ExportDestinationFragmentTest {
 
         onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
         onView(withId(R.id.primary_button_full)).perform(click())
+        onIdle()
 
         assertThat(fakeHealthDataExportManager.getExportUri())
             .isEqualTo(TEST_DOCUMENT_PROVIDER_1_ROOT_1_DOCUMENT_URI)
