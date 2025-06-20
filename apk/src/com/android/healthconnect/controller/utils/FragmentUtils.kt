@@ -23,7 +23,9 @@ import androidx.annotation.MenuRes
 import androidx.annotation.StringRes
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.preference.Preference
@@ -142,4 +144,22 @@ inline fun <P : Preference> HealthPreferenceFragment.pref(key: String): Lazy<P> 
 /** Returns a [Lazy] delegate to load the PreferenceFragment's preferences. */
 inline fun <P : Preference> PreferenceFragmentCompat.pref(key: String): Lazy<P> {
     return lazy { findPreference(key)!! }
+}
+
+/**
+ * Shows a DialogFragment, created by the dialogProvider, if one with the same tag isn't already
+ * visible.
+ *
+ * @param T The type of DialogFragment to show.
+ * @param tag The tag to associate with the DialogFragment.
+ * @param dialogProvider A lambda that creates and returns an instance of the DialogFragment.
+ */
+inline fun <reified T : DialogFragment> FragmentManager.showDialogIfNotExists(
+    tag: String,
+    dialogProvider: () -> T,
+) {
+    if (this.findFragmentByTag(tag) == null) {
+        val dialog = dialogProvider()
+        dialog.show(this, tag)
+    }
 }
