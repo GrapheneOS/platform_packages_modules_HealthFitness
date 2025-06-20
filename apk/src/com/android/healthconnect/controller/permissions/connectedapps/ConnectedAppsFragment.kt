@@ -30,7 +30,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commitNow
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
@@ -108,7 +107,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     @Inject lateinit var navigationUtils: NavigationUtils
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
-    private val viewModel: ConnectedAppsViewModel by viewModels()
+    private val viewModel: ConnectedAppsViewModel by activityViewModels()
     private val deletionViewModel: DeletionViewModel by activityViewModels()
     private lateinit var searchMenuItem: MenuItem
     private lateinit var removeAllAppsDialog: AlertDialog

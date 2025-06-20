@@ -21,6 +21,7 @@ import com.android.healthconnect.controller.permissions.connectedapps.ConnectedA
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.connectedapps.searchapps.SearchHealthPermissionApps
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteAllDataUseCase
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
@@ -46,6 +47,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
+
+private val SYSTEM_APP_INFO = AppMetadata("com.system.app", "System App", mock(), isSystem = true)
+private val NORMAL_APP_INFO = AppMetadata("com.normal.app", "Normal App", mock(), isSystem = false)
+private val SYSTEM_APP = ConnectedAppMetadata(SYSTEM_APP_INFO, status = ConnectedAppStatus.ALLOWED)
+private val NORMAL_APP = ConnectedAppMetadata(NORMAL_APP_INFO, status = ConnectedAppStatus.ALLOWED)
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -213,5 +219,69 @@ class ConnectedAppsViewModelTest {
                 )
             )
         assertThat(actual.any { it.appMetadata.packageName == "android" }).isFalse()
+    }
+
+    @Test
+    fun loadConnectedApps_whenShowSystemAppsIsFalse_filtersSystemApps() = runTest {
+        (loadHealthPermissionApps as FakeHealthPermissionAppsUseCase).updateList(
+            listOf(SYSTEM_APP, NORMAL_APP)
+        )
+        val testObserver = TestObserver<List<ConnectedAppMetadata>>()
+        viewModel.connectedApps.observeForever(testObserver)
+
+        viewModel.setShowSystemApps(false)
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual).containsExactly(NORMAL_APP)
+    }
+
+    @Test
+    fun loadConnectedApps_whenShowSystemAppsIsTrue_includesSystemApps() = runTest {
+        (loadHealthPermissionApps as FakeHealthPermissionAppsUseCase).updateList(
+            listOf(SYSTEM_APP, NORMAL_APP)
+        )
+        val testObserver = TestObserver<List<ConnectedAppMetadata>>()
+        viewModel.connectedApps.observeForever(testObserver)
+
+        viewModel.setShowSystemApps(true)
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual).containsExactlyElementsIn(listOf(SYSTEM_APP, NORMAL_APP))
+    }
+
+    @Test
+    fun searchConnectedApps_whenShowSystemAppsIsFalse_filtersSystemAppsFromResults() = runTest {
+        (loadHealthPermissionApps as FakeHealthPermissionAppsUseCase).updateList(
+            listOf(SYSTEM_APP, NORMAL_APP)
+        )
+        val testObserver = TestObserver<List<ConnectedAppMetadata>>()
+        viewModel.connectedApps.observeForever(testObserver)
+        viewModel.setShowSystemApps(false)
+        advanceUntilIdle()
+
+        viewModel.searchConnectedApps("App")
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual).containsExactly(NORMAL_APP)
+    }
+
+    @Test
+    fun searchConnectedApps_whenShowSystemAppsIsTrue_includesSystemAppsInResults() = runTest {
+        (loadHealthPermissionApps as FakeHealthPermissionAppsUseCase).updateList(
+            listOf(SYSTEM_APP, NORMAL_APP)
+        )
+        val testObserver = TestObserver<List<ConnectedAppMetadata>>()
+        viewModel.connectedApps.observeForever(testObserver)
+        viewModel.setShowSystemApps(true)
+        advanceUntilIdle()
+
+        viewModel.searchConnectedApps("App")
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual).containsExactlyElementsIn(listOf(SYSTEM_APP, NORMAL_APP))
     }
 }
