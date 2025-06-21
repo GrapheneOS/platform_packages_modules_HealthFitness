@@ -40,7 +40,7 @@
     <string name="browse_data_title" msgid="5232691805953326097">"Daten ansehen"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Daten und Apps ansehen, die darauf zugreifen können"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Automatisches Löschen, Datenquellen, Sicherung und Wiederherstellung"</string>
-    <string name="banner_group_more_items" msgid="1071243933488973950">"Mehr Elemente"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"weitere(s) Element(e)"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"Weniger Elemente"</string>
     <string name="settings_manage_permission" msgid="3805037674102124581">"Health Connect"</string>
     <string name="settings_combined_permissions" msgid="3660209476196545539">"Health Connect"</string>
@@ -429,6 +429,8 @@
     <string name="raw_fhir_field_value" msgid="369633095565031835">"<xliff:g id="PREFIX">%1$s</xliff:g> Feld <xliff:g id="FIELD">%2$s</xliff:g> Wert"</string>
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>."</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Detaillierter Quellcode: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
+    <!-- no translation found for pretty_fhir_header_view_source_data (6928222157951266082) -->
+    <skip />
     <string name="health_permission_header_description" msgid="7497601695462373927">"Apps mit dieser Berechtigung können deine Gesundheits- und Fitnessdaten lesen und Daten speichern."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Welche Apps auf die in Health Connect gespeicherten Daten zugreifen können, legst du selbst fest. Tippe auf eine App, um zu sehen, welche Daten sie lesen oder schreiben kann."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Zugriff erlaubt"</string>

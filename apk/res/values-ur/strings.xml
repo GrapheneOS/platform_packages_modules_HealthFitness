@@ -429,6 +429,8 @@
     <string name="raw_fhir_field_value" msgid="369633095565031835">"<xliff:g id="PREFIX">%1$s</xliff:g> فیلڈ <xliff:g id="FIELD">%2$s</xliff:g> قدر"</string>
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>۔"</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"تفصیلی ماخذ کوڈ: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
+    <!-- no translation found for pretty_fhir_header_view_source_data (6928222157951266082) -->
+    <skip />
     <string name="health_permission_header_description" msgid="7497601695462373927">"اس اجازت کے ساتھ ایپس آپ کی صحت اور تندرستی سے متعلق تمام ڈیٹا کو پڑھ اور لکھ سکتی ہیں۔"</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"کنٹرول کریں کہ Health Connect میں اسٹور کردہ ڈیٹا تک کن ایپس کی رسائی ہے۔ وہ ڈیٹا جسے ایپ پڑھ یا لکھ سکتی ہے کا جائزہ لینے کے لیے ایپ پر تھپتھپائیں۔"</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"اجازت یافتہ رسائی"</string>

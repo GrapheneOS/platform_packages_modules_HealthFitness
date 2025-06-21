@@ -429,6 +429,8 @@
     <string name="raw_fhir_field_value" msgid="369633095565031835">"<xliff:g id="PREFIX">%1$s</xliff:g> ਖੇਤਰ <xliff:g id="FIELD">%2$s</xliff:g> ਦਾ ਮੁੱਲ"</string>
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>."</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"ਵੇਰਵੇ ਸਹਿਤ ਸਰੋਤ ਕੋਡ: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
+    <!-- no translation found for pretty_fhir_header_view_source_data (6928222157951266082) -->
+    <skip />
     <string name="health_permission_header_description" msgid="7497601695462373927">"ਇਸ ਇਜਾਜ਼ਤ ਵਾਲੀਆਂ ਐਪਾਂ ਤੁਹਾਡੇ ਸਿਹਤ ਅਤੇ ਫਿੱਟਨੈੱਸ ਸੰਬੰਧੀ ਡਾਟੇ ਨੂੰ ਪੜ੍ਹ ਅਤੇ ਲਿੱਖ ਸਕਦੀਆਂ ਹਨ।"</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"ਕੰਟਰੋਲ ਕਰੋ ਕਿ ਕਿਹੜੀਆਂ ਐਪਾਂ Health Connect ਵਿੱਚ ਸਟੋਰ ਕੀਤੇ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਦੀਆਂ ਹਨ। ਐਪ ਵੱਲੋਂ ਪੜ੍ਹੇ ਅਤੇ ਸੰਪਾਦਨ ਕੀਤੇ ਜਾਣ ਵਾਲੇ ਡਾਟੇ ਦੀ ਸਮੀਖਿਆ ਕਰਨ ਲਈ ਇਸ \'ਤੇ ਟੈਪ ਕਰੋ।"</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"ਪਹੁੰਚ ਕਰਨ ਦੀ ਆਗਿਆ ਹੈ"</string>

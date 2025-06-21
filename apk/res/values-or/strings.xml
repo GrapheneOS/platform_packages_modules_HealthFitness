@@ -429,6 +429,8 @@
     <string name="raw_fhir_field_value" msgid="369633095565031835">"<xliff:g id="PREFIX">%1$s</xliff:g> ଫିଲ୍ଡ <xliff:g id="FIELD">%2$s</xliff:g> ମୂଲ୍ୟ"</string>
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>।"</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"ସବିଶେଷ ସୋର୍ସ କୋଡ: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
+    <!-- no translation found for pretty_fhir_header_view_source_data (6928222157951266082) -->
+    <skip />
     <string name="health_permission_header_description" msgid="7497601695462373927">"ଏହି ଅନୁମତି ଥିବା ଆପ୍ସ ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଫିଟନେସ ଡାଟାକୁ ପଢ଼ିପାରିବ ଓ ଲେଖିପାରିବ।"</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Health Connectରେ ଷ୍ଟୋର କରାଯାଇଥିବା ଡାଟାକୁ କେଉଁ ଆପ୍ସ ଆକ୍ସେସ କରିପାରିବ ତାହା ନିୟନ୍ତ୍ରଣ କରନ୍ତୁ। ଏକ ଆପ ପଢ଼ିପାରୁଥିବା କିମ୍ବା ଲେଖିପାରୁଥିବା ଡାଟାକୁ ସମୀକ୍ଷା କରିବା ପାଇଁ ଏଥିରେ ଟାପ କରନ୍ତୁ।"</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"ଆକ୍ସେସକୁ ଅନୁମତି ଦିଆଯାଇଛି"</string>
