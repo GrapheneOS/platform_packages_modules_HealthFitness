@@ -93,14 +93,7 @@ constructor(
                     .filterNot {
                         it.appMetadata.packageName == Constants.DEVICE_DATA_PROVIDER_PACKAGE
                     }
-                    .filter {
-                        val showSystemAppsValue = _showSystemApps.value ?: false
-                        if (showSystemAppsValue) {
-                            true
-                        } else {
-                            !it.appMetadata.isSystem
-                        }
-                    }
+                    .filterSystemApps()
             )
         }
     }
@@ -108,7 +101,10 @@ constructor(
     fun searchConnectedApps(searchValue: String) {
         viewModelScope.launch {
             _connectedApps.postValueIfUpdated(
-                searchHealthPermissionApps.search(loadHealthPermissionApps.invoke(), searchValue)
+                searchHealthPermissionApps.search(
+                    loadHealthPermissionApps.invoke().filterSystemApps(),
+                    searchValue,
+                )
             )
         }
     }
@@ -134,6 +130,15 @@ constructor(
 
     fun deleteAllData() {
         viewModelScope.launch { deleteAllDataUseCase.invoke() }
+    }
+
+    private fun List<ConnectedAppMetadata>.filterSystemApps(): List<ConnectedAppMetadata> {
+        val showSystemAppsValue = _showSystemApps.value ?: false
+        return if (showSystemAppsValue) {
+            this
+        } else {
+            this.filter { !it.appMetadata.isSystem }
+        }
     }
 
     sealed class DisconnectAllState {

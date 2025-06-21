@@ -25,6 +25,7 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.selectabledeletion.DeletionConstants.CONFIRMATION_KEY
 import com.android.healthconnect.controller.selectabledeletion.DeletionConstants.START_DELETION_KEY
 import com.android.healthconnect.controller.selectabledeletion.DeletionConstants.TRY_AGAIN_EVENT
+import com.android.healthconnect.controller.utils.showDialogIfNotExists
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint(Fragment::class)
@@ -82,7 +83,9 @@ class DeletionFragment : Hilt_DeletionFragment() {
 
     private fun showFailedDialog() {
         dismissLoadingDialog()
-        FailedDialogFragment().show(childFragmentManager, FailedDialogFragment.TAG)
+        childFragmentManager.showDialogIfNotExists(FailedDialogFragment.TAG) {
+            FailedDialogFragment()
+        }
     }
 
     private fun dismissLoadingDialog() {
@@ -94,18 +97,20 @@ class DeletionFragment : Hilt_DeletionFragment() {
     }
 
     private fun showLoadingDialog() {
-        if (childFragmentManager.findFragmentByTag(DeletionLoadingDialogFragment.TAG) == null) {
+        childFragmentManager.showDialogIfNotExists(DeletionLoadingDialogFragment.TAG) {
             DeletionLoadingDialogFragment()
-                .show(childFragmentManager, DeletionLoadingDialogFragment.TAG)
         }
     }
 
     private fun showConfirmationDialog() {
-        DeletionConfirmationDialogFragment()
-            .show(childFragmentManager, DeletionConfirmationDialogFragment.TAG)
+        childFragmentManager.showDialogIfNotExists(DeletionConfirmationDialogFragment.TAG) {
+            DeletionConfirmationDialogFragment()
+        }
     }
 
     private fun showSuccessDialog() {
-        SuccessDialogFragment().show(childFragmentManager, SuccessDialogFragment.TAG)
+        childFragmentManager.showDialogIfNotExists(SuccessDialogFragment.TAG) {
+            SuccessDialogFragment()
+        }
     }
 }

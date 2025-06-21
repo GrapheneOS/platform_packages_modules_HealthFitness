@@ -18,8 +18,6 @@ package android.health.connect.changelog;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 
-import static java.util.Objects.requireNonNull;
-
 import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
 import android.health.connect.HealthConnectManager;
@@ -31,7 +29,6 @@ import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
-import android.health.connect.internal.ParcelUtils;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.InternalExternalRecordConverter;
 import android.os.Parcel;
@@ -70,11 +67,11 @@ public final class ChangeLogsResponse implements Parcelable {
             boolean hasMorePages) {
         mUpsertedRecords =
                 InternalExternalRecordConverter.getInstance()
-                        .getExternalRecords(requireNonNull(upsertedRecords).getRecords());
-        mDeletedLogs = requireNonNull(deletedLogs);
+                        .getExternalRecords(Objects.requireNonNull(upsertedRecords).getRecords());
+        mDeletedLogs = Objects.requireNonNull(deletedLogs);
         mUpsertedMedicalResources = List.of();
         mDeletedMedicalResources = List.of();
-        mNextChangesToken = requireNonNull(nextChangesToken);
+        mNextChangesToken = Objects.requireNonNull(nextChangesToken);
         mHasMorePages = hasMorePages;
     }
 
@@ -90,16 +87,15 @@ public final class ChangeLogsResponse implements Parcelable {
             @NonNull List<DeletedMedicalResource> deletedMedicalResources,
             @NonNull String nextChangesToken,
             boolean hasMorePages) {
-        mUpsertedRecords = requireNonNull(upsertedRecords);
-        mDeletedLogs = requireNonNull(deletedLogs);
-        mUpsertedMedicalResources = requireNonNull(upsertedMedicalResources);
-        mDeletedMedicalResources = requireNonNull(deletedMedicalResources);
-        mNextChangesToken = requireNonNull(nextChangesToken);
+        mUpsertedRecords = Objects.requireNonNull(upsertedRecords);
+        mDeletedLogs = Objects.requireNonNull(deletedLogs);
+        mUpsertedMedicalResources = Objects.requireNonNull(upsertedMedicalResources);
+        mDeletedMedicalResources = Objects.requireNonNull(deletedMedicalResources);
+        mNextChangesToken = Objects.requireNonNull(nextChangesToken);
         mHasMorePages = hasMorePages;
     }
 
     private ChangeLogsResponse(Parcel in) {
-        in = ParcelUtils.getParcelForSharedMemoryIfRequired(in);
         mUpsertedRecords =
                 InternalExternalRecordConverter.getInstance()
                         .getExternalRecords(
@@ -207,10 +203,6 @@ public final class ChangeLogsResponse implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        ParcelUtils.putToRequiredMemory(dest, flags, this::writeToParcelInternal);
-    }
-
-    private void writeToParcelInternal(@NonNull Parcel dest) {
         List<RecordInternal<?>> recordInternals =
                 mUpsertedRecords.stream()
                         .map(Record::toRecordInternal)
@@ -265,15 +257,15 @@ public final class ChangeLogsResponse implements Parcelable {
         @FlaggedApi(FLAG_PHR_CHANGE_LOGS)
         @Deprecated
         public DeletedLog(@NonNull String deletedRecordId, long deletedTime) {
-            requireNonNull(deletedRecordId);
+            Objects.requireNonNull(deletedRecordId);
             mDeletedRecordId = deletedRecordId;
             mDeletedTime = Instant.ofEpochMilli(deletedTime);
         }
 
         @FlaggedApi(FLAG_PHR_CHANGE_LOGS)
         public DeletedLog(@NonNull String deletedRecordId, @NonNull Instant deletedTime) {
-            requireNonNull(deletedRecordId);
-            requireNonNull(deletedTime);
+            Objects.requireNonNull(deletedRecordId);
+            Objects.requireNonNull(deletedTime);
             mDeletedRecordId = deletedRecordId;
             mDeletedTime = deletedTime;
         }
@@ -327,8 +319,8 @@ public final class ChangeLogsResponse implements Parcelable {
          */
         public DeletedMedicalResource(
                 @NonNull MedicalResourceId deletedMedicalResourceId, @NonNull Instant deletedTime) {
-            requireNonNull(deletedMedicalResourceId);
-            requireNonNull(deletedTime);
+            Objects.requireNonNull(deletedMedicalResourceId);
+            Objects.requireNonNull(deletedTime);
             mDeletedMedicalResourceId = deletedMedicalResourceId;
             mDeletedTime = deletedTime;
         }
