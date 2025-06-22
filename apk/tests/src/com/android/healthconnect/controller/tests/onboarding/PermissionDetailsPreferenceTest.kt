@@ -38,6 +38,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -67,6 +68,8 @@ class PermissionDetailsPreferenceTest {
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @Test
     fun readOnly_noHistory_baklava_showsCorrectText() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA)
         val pref = PermissionDetailsPreference(context)
         pref.bind(
             appMetadata = TEST_APP,
@@ -94,6 +97,8 @@ class PermissionDetailsPreferenceTest {
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
     fun readOnly_noHistory_legacy_showsCorrectText() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT <= Build.VERSION_CODES.VANILLA_ICE_CREAM)
         val pref = PermissionDetailsPreference(context)
         pref.bind(
             appMetadata = TEST_APP,
@@ -119,6 +124,8 @@ class PermissionDetailsPreferenceTest {
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @Test
     fun readOnly_withHistory_baklava_showsCorrectText() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA)
         val pref = PermissionDetailsPreference(context)
         pref.bind(
             appMetadata = TEST_APP,
@@ -144,6 +151,8 @@ class PermissionDetailsPreferenceTest {
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
     fun readOnly_withHistory_legacy_showsCorrectText() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT <= Build.VERSION_CODES.VANILLA_ICE_CREAM)
         val pref = PermissionDetailsPreference(context)
         pref.bind(
             appMetadata = TEST_APP,
@@ -167,6 +176,8 @@ class PermissionDetailsPreferenceTest {
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @Test
     fun writeOnly_baklava_showsCorrectText() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA)
         val pref = PermissionDetailsPreference(context)
         pref.bind(
             appMetadata = TEST_APP,
@@ -190,6 +201,8 @@ class PermissionDetailsPreferenceTest {
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
     fun writeOnly_legacy_showsCorrectText() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT <= Build.VERSION_CODES.VANILLA_ICE_CREAM)
         val pref = PermissionDetailsPreference(context)
         pref.bind(
             appMetadata = TEST_APP,
@@ -211,6 +224,8 @@ class PermissionDetailsPreferenceTest {
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @Test
     fun readWrite_noHistory_baklava_showsCorrectText() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA)
         val pref = PermissionDetailsPreference(context)
         pref.bind(
             appMetadata = TEST_APP,
@@ -242,6 +257,8 @@ class PermissionDetailsPreferenceTest {
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
     fun readWrite_noHistory_legacy_showsCorrectText() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT <= Build.VERSION_CODES.VANILLA_ICE_CREAM)
         val pref = PermissionDetailsPreference(context)
         pref.bind(
             appMetadata = TEST_APP,
@@ -270,7 +287,9 @@ class PermissionDetailsPreferenceTest {
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @Test
-    fun readWrite_withHistory_bakalva_showsCorrectText() {
+    fun readWrite_withHistory_baklava_showsCorrectText() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA)
         val pref = PermissionDetailsPreference(context)
         pref.bind(
             appMetadata = TEST_APP,
@@ -300,6 +319,8 @@ class PermissionDetailsPreferenceTest {
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
     fun readWrite_withHistory_legacy_showsCorrectText() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT <= Build.VERSION_CODES.VANILLA_ICE_CREAM)
         val pref = PermissionDetailsPreference(context)
         pref.bind(
             appMetadata = TEST_APP,

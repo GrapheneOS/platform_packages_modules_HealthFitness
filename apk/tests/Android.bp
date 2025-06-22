@@ -426,6 +426,9 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/exportimport/ImportConfirmationDialogFragmentTest.kt",
         // The calls to startActivity are not starting the activity in this class under Robolectric
         "src/com/android/healthconnect/controller/tests/migration/MigrationActivityTest.kt",
+        // This code likely needs to be refactored to use Intents to avoid race conditions when
+        // detecting the started activity under robolectric.
+        "src/com/android/healthconnect/controller/tests/navigation/TrampolineActivityTest.kt",
         // The first click on some preferences doesn't seem to create a view that can be found for
         // the second click. To be investigated.
         "src/com/android/healthconnect/controller/tests/units/UnitsFragmentTest.kt",
@@ -453,6 +456,8 @@ android_robolectric_test {
         "src/com/android/healthconnect/controller/tests/home/**/*.kt",
         "src/com/android/healthconnect/controller/tests/managedata/**/*.kt",
         "src/com/android/healthconnect/controller/tests/migration/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/navigation/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/onboarding/**/*.kt",
         "src/com/android/healthconnect/controller/tests/units/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utils/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utiltests/**/*.kt",
