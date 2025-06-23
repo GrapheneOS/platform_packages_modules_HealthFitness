@@ -22,7 +22,7 @@
     <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"Permitir que a app <xliff:g id="APP_NAME">%1$s</xliff:g> aceda aos seus dados de fitness e bem-estar?"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"Escolha a que dados de fitness e bem-estar esta app pode aceder. Isto inclui os dados monitorizados e armazenados neste dispositivo, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"Escolha a que dados de fitness e bem-estar esta app pode aceder. Isto inclui os dados monitorizados e armazenados neste dispositivo, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"Escolha a que dados de fitness e bem-estar esta app pode aceder. Isto inclui os dados monitorizados e armazenados neste dispositivo, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
+    <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"Escolha a que dados de fitness e bem-estar esta app pode aceder. Isto inclui os dados monitorizados e armazenados neste dispositivo. <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_learn_more" msgid="2665249156693144626">"saiba mais"</string>
     <string name="settings_manage_permission" msgid="3585762257420446893">"Saúde, fitness e bem-estar"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"Saúde, fitness e bem-estar"</string>

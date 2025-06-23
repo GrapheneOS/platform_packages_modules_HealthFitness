@@ -429,6 +429,8 @@
     <string name="raw_fhir_field_value" msgid="369633095565031835">"<xliff:g id="PREFIX">%1$s</xliff:g> Vrijednost polja <xliff:g id="FIELD">%2$s</xliff:g>"</string>
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>."</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Detaljni izvorni kôd: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
+    <!-- no translation found for pretty_fhir_header_view_source_data (6928222157951266082) -->
+    <skip />
     <string name="health_permission_header_description" msgid="7497601695462373927">"Aplikacije s tim dopuštenjem mogu čitati i bilježiti vaše podatke o zdravlju i fitnessu."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Odredite koje aplikacije mogu pristupati podacima pohranjenim u Health Connectu. Dodirnite aplikaciju da biste pregledali podatke koje može čitati ili bilježiti."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Dopušten pristup"</string>
@@ -1240,7 +1242,7 @@
     <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Dostupne aplikacije za povezivanje"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Pogledajte svoje podatke o zdravlju u aplikacijama"</string>
     <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Započnite s dijeljenjem podataka o kondiciji i općem stanju između aplikacija"</string>
-    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Postavi"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Postavite"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Povežite drugu aplikaciju"</string>
     <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Postavite drugu aplikaciju da bi mogla početi dijeliti podatke o kondiciji i općem stanju"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Nastavi"</string>

@@ -429,6 +429,8 @@
     <string name="raw_fhir_field_value" msgid="369633095565031835">"<xliff:g id="PREFIX">%1$s</xliff:g> ఫీల్డ్ <xliff:g id="FIELD">%2$s</xliff:g> విలువ"</string>
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>."</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"వివరణాత్మక సోర్స్ కోడ్: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
+    <!-- no translation found for pretty_fhir_header_view_source_data (6928222157951266082) -->
+    <skip />
     <string name="health_permission_header_description" msgid="7497601695462373927">"ఈ అనుమతి ఉన్న యాప్‌లు మీ ఆరోగ్యానికి, ఫిట్‌నెస్‌కు చెందిన డేటాను రీడ్‌ చేసి, రైట్‌ చేయగలవు."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Health Connectలో స్టోర్ చేయబడిన డేటాను ఏ యాప్‌లు యాక్సెస్ చేయవచ్చో కంట్రోల్ చేయండి. ఒక యాప్ చదవగలిగే లేదా రాయగల డేటాను రివ్యూ చేయడానికి సదరు యాప్‌ను ట్యాప్ చేయండి."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"యాక్సెస్ అనుమతించబడింది"</string>
