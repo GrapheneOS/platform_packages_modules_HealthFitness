@@ -29,6 +29,7 @@ import android.healthconnect.testing.cts.ui.UiTestUtils.findText
 import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToNewPage
 import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToSeeAppData
 import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndFindText
+import android.healthconnect.testing.cts.ui.UiTestUtils.scrollUpToAndFindText
 import android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_ALLERGY
 import android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION
 import android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest
@@ -72,7 +73,8 @@ class MedicalAppDataFragmentTest : HealthConnectBaseTest() {
         context.launchMainActivity {
             navigateToSeeAppData("CtsHealthConnectTestAppAWithNormalReadWritePermission")
 
-            findText("CtsHealthConnectTestAppAWithNormalReadWritePermission")
+            // This string should be at the top of the screen
+            scrollUpToAndFindText("CtsHealthConnectTestAppAWithNormalReadWritePermission")
             scrollDownToAndFindText("Allergies")
             scrollDownToAndFindText("Vaccines")
         }
@@ -99,7 +101,8 @@ class MedicalAppDataFragmentTest : HealthConnectBaseTest() {
         )
         context.launchMainActivity {
             navigateToSeeAppData("CtsHealthConnectTestAppAWithNormalReadWritePermission")
-            findText("CtsHealthConnectTestAppAWithNormalReadWritePermission")
+            // This string should be at the top of the screen
+            scrollUpToAndFindText("CtsHealthConnectTestAppAWithNormalReadWritePermission")
 
             scrollDownToAndFindText("Activity")
             scrollDownToAndFindText("Steps")

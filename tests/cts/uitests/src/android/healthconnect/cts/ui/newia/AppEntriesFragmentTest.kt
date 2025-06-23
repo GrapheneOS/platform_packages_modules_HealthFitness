@@ -30,6 +30,7 @@ import android.healthconnect.testing.cts.ui.UiTestUtils.findTextAndClick
 import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToNewPage
 import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToSeeAppData
 import android.healthconnect.testing.cts.ui.UiTestUtils.scrollUpTo
+import android.healthconnect.testing.cts.ui.UiTestUtils.scrollUpToAndFindText
 import android.healthconnect.testing.cts.ui.UiTestUtils.verifyObjectNotFound
 import android.healthconnect.testing.cts.ui.UiTestUtils.verifyTextNotFound
 import android.healthconnect.testing.cts.ui.UiTestUtils.waitDisplayed
@@ -69,7 +70,8 @@ class AppEntriesFragmentTest : HealthConnectBaseTest() {
     fun appEntriesScreen_displaysCorrectly() {
         context.launchMainActivity {
             navigateToSeeAppData("CtsHealthConnectTestAppAWithNormalReadWritePermission")
-            findText("CtsHealthConnectTestAppAWithNormalReadWritePermission")
+            // This string should be at the top of the screen
+            scrollUpToAndFindText("CtsHealthConnectTestAppAWithNormalReadWritePermission")
 
             findText("Activity")
             navigateToNewPage("Steps")
