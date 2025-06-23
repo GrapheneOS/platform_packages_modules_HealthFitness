@@ -49,7 +49,7 @@ import java.util.UUID;
  */
 public final class SleepSessionRecordHelper
         extends IntervalRecordHelper<SleepSessionRecordInternal> {
-    private static final String SLEEP_SESSION_RECORD_TABLE_NAME = "sleep_session_record_table";
+    public static final String SLEEP_SESSION_RECORD_TABLE_NAME = "sleep_session_record_table";
 
     // Sleep session columns names
     private static final String NOTES_COLUMN_NAME = "notes";

@@ -59,7 +59,6 @@ import android.util.ArraySet;
 import android.util.Pair;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.common.logging.ExerciseRoutesLogger;
@@ -96,7 +95,7 @@ public final class ExerciseSessionRecordHelper
         extends IntervalRecordHelper<ExerciseSessionRecordInternal> {
     private static final String TAG = "ExerciseSessionRecordHelper";
 
-    @VisibleForTesting
+    // Table name where ExerciseSession Records are stored in the database.
     public static final String EXERCISE_SESSION_RECORD_TABLE_NAME = "exercise_session_record_table";
 
     // Exercise Session columns names
