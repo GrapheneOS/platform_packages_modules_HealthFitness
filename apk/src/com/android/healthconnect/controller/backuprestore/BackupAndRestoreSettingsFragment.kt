@@ -440,6 +440,9 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
     // TODO: b/410065836 Add logging and user messaging to indicate when HC B&R is not supported
     // on this device, e.g. either hide the UI completely in more cases like no permission or show
     // a screen to indicate that no UI is available.
+    // TODO: b/399880687 Send an equivalent intent for when a restore intent is sent, including
+    // not sending the intent if the receiver is not protected with
+    // {@link HealthPermissions#START_BACKUP_RESTORE_SETTINGS_PERMISSION}
     fun openBackupRestoreSettings(componentName: ComponentName) {
         val implicitIntent = Intent(ACTION_SHOW_HEALTH_CONNECT_BACKUP_SETTINGS)
         val explicitIntent = Intent(implicitIntent)
