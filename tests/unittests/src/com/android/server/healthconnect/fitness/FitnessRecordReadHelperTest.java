@@ -743,6 +743,26 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
+    public void readRecordsByIds_emptyIds_returnsEmptyList() {
+        ExerciseSessionRecordInternal fooSession =
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(10000));
+
+        List<RecordInternal<?>> returnedRecords =
+                mFitnessRecordReadHelper.readRecords(
+                        mTransactionManager,
+                        TEST_PACKAGE_NAME,
+                        ImmutableMap.of(
+                                RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION,
+                                ImmutableList.of()),
+                        WRITE_EXERCISE_ROUTE_EXTRA_PERM,
+                        /* startDateAccessMillis= */ 0,
+                        /* isInForeground= */ true,
+                        /* shouldRecordAccessLogs= */ false);
+
+        assertThat(returnedRecords).isEmpty();
+    }
+
+    @Test
     public void readRecordsByIds_onlyWriteRoutePermission_doesNotReturnRoutesOfOtherApps() {
         ExerciseSessionRecordInternal fooSession =
                 buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(10000));
