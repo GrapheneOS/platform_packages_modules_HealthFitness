@@ -54,8 +54,8 @@ abstract class HealthPreferenceFragment : SettingsBasePreferenceFragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         setupLogger()
+        super.onCreate(savedInstanceState)
     }
 
     override fun onResume() {
