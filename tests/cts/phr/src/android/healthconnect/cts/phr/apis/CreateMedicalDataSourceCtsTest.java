@@ -18,10 +18,12 @@ package android.healthconnect.cts.phr.apis;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
+import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_UPSERT;
 import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermission;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeAllHealthPermissions;
 import static android.healthconnect.testing.cts.PhrCtsTestUtils.MAX_FOREGROUND_WRITE_CALL_15M;
 import static android.healthconnect.testing.cts.PhrCtsTestUtils.PHR_BACKGROUND_APP;
+import static android.healthconnect.testing.cts.PhrCtsTestUtils.PHR_DEFAULT_APP_PKG;
 import static android.healthconnect.testing.cts.PhrCtsTestUtils.PHR_FOREGROUND_APP;
 import static android.healthconnect.testing.cts.TestUtils.finishMigrationWithShellPermissionIdentity;
 import static android.healthconnect.testing.cts.TestUtils.setFieldValueUsingReflection;
@@ -47,6 +49,7 @@ import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.accesslog.AccessLog;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
 import android.healthconnect.testing.cts.PhrCtsTestUtils;
@@ -65,6 +68,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -377,5 +381,26 @@ public class CreateMedicalDataSourceCtsTest {
                                         getCreateMedicalDataSourceRequest()));
 
         assertThat(exception.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
+    }
+
+    @Test
+    public void testCreateMedicalDataSource_createsAccessLogs() throws Exception {
+        CreateMedicalDataSourceRequest request = getCreateMedicalDataSourceRequest();
+        Instant timeBeforeCreate = Instant.now();
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        HealthConnectReceiver<MedicalDataSource> receiver = new HealthConnectReceiver<>();
+        mManager.createMedicalDataSource(request, executor, receiver);
+
+        assertThat(receiver.getResponse()).isInstanceOf(MedicalDataSource.class);
+        List<AccessLog> accessLogs = TestUtils.queryAccessLogs();
+        assertThat(accessLogs.size()).isEqualTo(1);
+        AccessLog accessLog = accessLogs.get(0);
+        assertThat(accessLog.getPackageName()).isEqualTo(PHR_DEFAULT_APP_PKG);
+        assertThat(accessLog.getAccessTime()).isAtLeast(timeBeforeCreate);
+        assertThat(accessLog.getMedicalResourceTypes()).isEmpty();
+        assertThat(accessLog.getOperationType()).isEqualTo(OPERATION_TYPE_UPSERT);
+        assertThat(accessLog.getRecordTypes()).isEmpty();
+        assertThat(accessLog.isMedicalDataSourceAccessed()).isTrue();
     }
 }

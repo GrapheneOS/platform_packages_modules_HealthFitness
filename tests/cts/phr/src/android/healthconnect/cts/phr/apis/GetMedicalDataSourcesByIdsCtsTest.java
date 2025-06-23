@@ -20,6 +20,7 @@ import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMIS
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
 import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VACCINES;
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
+import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_READ;
 import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermission;
 import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermissions;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeAllHealthPermissions;
@@ -40,12 +41,15 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.MEDICAL_DA
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.addCompletedStatus;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 
+import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.accesslog.AccessLog;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
@@ -70,6 +74,7 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executors;
@@ -654,5 +659,202 @@ public class GetMedicalDataSourcesByIdsCtsTest {
                 .comparingElementsUsing(MEDICAL_DATA_SOURCE_EQUIVALENCE)
                 .containsExactly(
                         dataSource1Background, dataSource2Background, dataSource1Foreground);
+    }
+
+    @Test
+    public void testGetMedicalDataSourcesById_inBgWithoutBgPermHasReadWritePerm_noAccessLog()
+            throws Exception {
+        // App has write and read permission for vaccines, but not background read permission, so
+        // can only read its own data sources
+        grantHealthPermissions(
+                PHR_BACKGROUND_APP.getPackageName(),
+                List.of(WRITE_MEDICAL_DATA, READ_MEDICAL_DATA_VACCINES));
+        MedicalDataSource dataSource =
+                PHR_BACKGROUND_APP.createMedicalDataSource(getCreateMedicalDataSourceRequest());
+        PHR_BACKGROUND_APP.upsertMedicalResource(dataSource.getId(), FHIR_DATA_IMMUNIZATION);
+        List<AccessLog> upsertAccessLogs = TestUtils.queryAccessLogs();
+
+        List<MedicalDataSource> readDataSources =
+                PHR_BACKGROUND_APP.getMedicalDataSources(List.of(dataSource.getId()));
+
+        // App can read the data source through self read, so no access logs expected.
+        assertThat(readDataSources).hasSize(1);
+        assertThat(TestUtils.queryAccessLogs()).hasSize(upsertAccessLogs.size());
+    }
+
+    @Test
+    public void testGetMedicalDataSourcesById_inBgWithBgPermReadPermForLinkedSources_accessLogs()
+            throws Exception {
+        grantHealthPermissions(
+                PHR_BACKGROUND_APP.getPackageName(),
+                List.of(READ_HEALTH_DATA_IN_BACKGROUND, READ_MEDICAL_DATA_VACCINES));
+        MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
+        mUtil.upsertMedicalData(dataSource.getId(), FHIR_DATA_IMMUNIZATION);
+        List<AccessLog> upsertAccessLogs = TestUtils.queryAccessLogs();
+        Instant timeBeforeRead = Instant.now();
+
+        List<MedicalDataSource> result =
+                PHR_BACKGROUND_APP.getMedicalDataSources(List.of(dataSource.getId()));
+        List<AccessLog> accessLogs = TestUtils.queryAccessLogs();
+        accessLogs.sort(Comparator.comparing(AccessLog::getAccessTime));
+
+        assertThat(result).hasSize(1);
+        assertThat(accessLogs).hasSize(upsertAccessLogs.size() + 1);
+        AccessLog readLog = accessLogs.get(upsertAccessLogs.size());
+        assertThat(readLog.getPackageName()).isEqualTo(PHR_BACKGROUND_APP.getPackageName());
+        assertThat(readLog.getAccessTime()).isAtLeast(timeBeforeRead);
+        assertThat(readLog.getMedicalResourceTypes()).isEmpty();
+        assertThat(readLog.getOperationType()).isEqualTo(OPERATION_TYPE_READ);
+        assertThat(readLog.getRecordTypes()).isEmpty();
+        assertThat(readLog.isMedicalDataSourceAccessed()).isTrue();
+    }
+
+    @Test
+    public void testGetMedicalDataSourcesById_inBgWithBgPerm_noMatchingDataNoAccessLogs()
+            throws Exception {
+        // App has background read and read permission for vaccines, but the data source contains
+        // no resources
+        grantHealthPermissions(
+                PHR_BACKGROUND_APP.getPackageName(),
+                List.of(READ_HEALTH_DATA_IN_BACKGROUND, READ_MEDICAL_DATA_VACCINES));
+        MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
+        List<AccessLog> upsertAccessLogs = TestUtils.queryAccessLogs();
+
+        List<MedicalDataSource> result =
+                PHR_BACKGROUND_APP.getMedicalDataSources(List.of(dataSource.getId()));
+
+        assertThat(result).isEmpty();
+        assertThat(TestUtils.queryAccessLogs()).hasSize(upsertAccessLogs.size());
+    }
+
+    @Test
+    public void testGetMedicalDataSourcesById_dataManagementPerm_noAccessLogs() throws Exception {
+        grantHealthPermissions(PHR_BACKGROUND_APP.getPackageName(), List.of(WRITE_MEDICAL_DATA));
+        MedicalDataSource dataSource =
+                PHR_BACKGROUND_APP.createMedicalDataSource(getCreateMedicalDataSourceRequest());
+        PHR_BACKGROUND_APP.upsertMedicalResource(dataSource.getId(), FHIR_DATA_IMMUNIZATION);
+        List<AccessLog> upsertAccessLogs = TestUtils.queryAccessLogs();
+        HealthConnectReceiver<List<MedicalDataSource>> callback = new HealthConnectReceiver<>();
+
+        runWithShellPermissionIdentity(
+                () -> {
+                    mManager.getMedicalDataSources(
+                            List.of(dataSource.getId()),
+                            Executors.newSingleThreadExecutor(),
+                            callback);
+                    callback.verifyNoExceptionOrThrow();
+                },
+                MANAGE_HEALTH_DATA_PERMISSION);
+
+        assertThat(TestUtils.queryAccessLogs()).hasSize(upsertAccessLogs.size());
+    }
+
+    @Test
+    public void testGetMedicalDataSourcesById_writePermOnly_noAccessLogsForSelfData()
+            throws Exception {
+        grantHealthPermission(PHR_FOREGROUND_APP.getPackageName(), WRITE_MEDICAL_DATA);
+        MedicalDataSource emptyDataSource =
+                PHR_FOREGROUND_APP.createMedicalDataSource(getCreateMedicalDataSourceRequest("1"));
+        MedicalDataSource dataSourceWithVaccine =
+                PHR_FOREGROUND_APP.createMedicalDataSource(getCreateMedicalDataSourceRequest("2"));
+        PHR_FOREGROUND_APP.upsertMedicalResource(
+                dataSourceWithVaccine.getId(), FHIR_DATA_IMMUNIZATION);
+        List<AccessLog> upsertAccessLogs = TestUtils.queryAccessLogs();
+
+        List<MedicalDataSource> result =
+                PHR_FOREGROUND_APP.getMedicalDataSources(
+                        List.of(emptyDataSource.getId(), dataSourceWithVaccine.getId()));
+
+        assertThat(result).hasSize(2);
+        assertThat(TestUtils.queryAccessLogs()).hasSize(upsertAccessLogs.size());
+    }
+
+    @Test
+    public void testGetMedicalDataSourcesById_readPermOnly_accessLogForSelfData() throws Exception {
+        grantHealthPermissions(
+                PHR_FOREGROUND_APP.getPackageName(),
+                List.of(READ_MEDICAL_DATA_VACCINES, WRITE_MEDICAL_DATA));
+        MedicalDataSource dataSourceWithVaccine =
+                PHR_FOREGROUND_APP.createMedicalDataSource(getCreateMedicalDataSourceRequest());
+        PHR_FOREGROUND_APP.upsertMedicalResource(
+                dataSourceWithVaccine.getId(), FHIR_DATA_IMMUNIZATION);
+        revokeHealthPermission(PHR_FOREGROUND_APP.getPackageName(), WRITE_MEDICAL_DATA);
+        List<AccessLog> upsertAccessLogs = TestUtils.queryAccessLogs();
+        Instant timeBeforeRead = Instant.now();
+
+        List<MedicalDataSource> result =
+                PHR_FOREGROUND_APP.getMedicalDataSources(List.of(dataSourceWithVaccine.getId()));
+
+        assertThat(result).hasSize(1);
+        List<AccessLog> accessLogs = TestUtils.queryAccessLogs();
+        int upsertAccessLogSize = upsertAccessLogs.size();
+        assertThat(accessLogs).hasSize(upsertAccessLogSize + 1);
+        AccessLog log = accessLogs.get(upsertAccessLogSize);
+        assertThat(log.getPackageName()).isEqualTo(PHR_FOREGROUND_APP.getPackageName());
+        assertThat(log.getAccessTime()).isAtLeast(timeBeforeRead);
+        assertThat(log.getMedicalResourceTypes()).isEmpty();
+        assertThat(log.getOperationType()).isEqualTo(OPERATION_TYPE_READ);
+        assertThat(log.getRecordTypes()).isEmpty();
+        assertThat(log.isMedicalDataSourceAccessed()).isTrue();
+    }
+
+    @Test
+    public void testGetMedicalDataSourcesById_readPermOnly_accessLogsForNonSelfData()
+            throws Exception {
+        grantHealthPermissions(
+                PHR_FOREGROUND_APP.getPackageName(),
+                List.of(WRITE_MEDICAL_DATA, READ_MEDICAL_DATA_VACCINES));
+        grantHealthPermissions(PHR_BACKGROUND_APP.getPackageName(), List.of(WRITE_MEDICAL_DATA));
+        MedicalDataSource dataSource =
+                PHR_BACKGROUND_APP.createMedicalDataSource(getCreateMedicalDataSourceRequest());
+        PHR_BACKGROUND_APP.upsertMedicalResource(dataSource.getId(), FHIR_DATA_IMMUNIZATION);
+        revokeHealthPermission(PHR_FOREGROUND_APP.getPackageName(), WRITE_MEDICAL_DATA);
+        List<AccessLog> upsertAccessLogs = TestUtils.queryAccessLogs();
+        Instant timeBeforeRead = Instant.now();
+
+        List<MedicalDataSource> result =
+                PHR_FOREGROUND_APP.getMedicalDataSources(List.of(dataSource.getId()));
+        List<AccessLog> accessLogs = TestUtils.queryAccessLogs();
+        accessLogs.sort(Comparator.comparing(AccessLog::getAccessTime));
+
+        assertThat(result).hasSize(1);
+        int upsertAccessLogSize = upsertAccessLogs.size();
+        assertThat(accessLogs).hasSize(upsertAccessLogSize + 1);
+        AccessLog log = accessLogs.get(upsertAccessLogSize);
+        assertThat(log.getPackageName()).isEqualTo(PHR_FOREGROUND_APP.getPackageName());
+        assertThat(log.getAccessTime()).isAtLeast(timeBeforeRead);
+        assertThat(log.getMedicalResourceTypes()).isEmpty();
+        assertThat(log.getOperationType()).isEqualTo(OPERATION_TYPE_READ);
+        assertThat(log.getRecordTypes()).isEmpty();
+        assertThat(log.isMedicalDataSourceAccessed()).isTrue();
+    }
+
+    @Test
+    public void testGetMedicalDataSourcesById_readWritePerm_accessLogsForNonSelfData()
+            throws Exception {
+        grantHealthPermissions(
+                PHR_FOREGROUND_APP.getPackageName(),
+                List.of(WRITE_MEDICAL_DATA, READ_MEDICAL_DATA_VACCINES));
+        grantHealthPermissions(PHR_BACKGROUND_APP.getPackageName(), List.of(WRITE_MEDICAL_DATA));
+        MedicalDataSource dataSource =
+                PHR_BACKGROUND_APP.createMedicalDataSource(getCreateMedicalDataSourceRequest());
+        PHR_BACKGROUND_APP.upsertMedicalResource(dataSource.getId(), FHIR_DATA_IMMUNIZATION);
+        List<AccessLog> upsertAccessLogs = TestUtils.queryAccessLogs();
+        Instant timeBeforeRead = Instant.now();
+
+        List<MedicalDataSource> result =
+                PHR_FOREGROUND_APP.getMedicalDataSources(List.of(dataSource.getId()));
+        List<AccessLog> accessLogs = TestUtils.queryAccessLogs();
+        accessLogs.sort(Comparator.comparing(AccessLog::getAccessTime));
+
+        assertThat(result).hasSize(1);
+        assertThat(accessLogs).hasSize(upsertAccessLogs.size() + 1);
+        AccessLog readLog = accessLogs.get(upsertAccessLogs.size());
+        assertThat(readLog.getPackageName()).isEqualTo(PHR_FOREGROUND_APP.getPackageName());
+        assertThat(readLog.getAccessTime()).isAtLeast(timeBeforeRead);
+        assertThat(readLog.getMedicalResourceTypes()).isEmpty();
+        assertThat(readLog.getOperationType()).isEqualTo(OPERATION_TYPE_READ);
+        assertThat(readLog.getRecordTypes()).isEmpty();
+        assertThat(readLog.isMedicalDataSourceAccessed()).isTrue();
     }
 }
