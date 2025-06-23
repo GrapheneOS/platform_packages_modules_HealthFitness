@@ -19,6 +19,7 @@ package com.android.healthconnect.controller.tests.onboarding
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.health.connect.HealthConnectManager
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.core.app.ApplicationProvider
@@ -32,6 +33,7 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.onboarding.ConnectAppsOnboardingActivity
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.OnboardingViewModel
+import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
@@ -48,12 +50,13 @@ import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
-@UninstallModules(DeviceInfoUtilsModule::class)
+@UninstallModules(DeviceInfoUtilsModule::class, HealthManagerModule::class)
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class ConnectAppsOnboardingActivityTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @BindValue val healthConnectManager: HealthConnectManager = mock()
     @BindValue val viewModel: OnboardingViewModel = mock()
     @BindValue val deviceInfoUtils: DeviceInfoUtils = FakeDeviceInfoUtils()
 

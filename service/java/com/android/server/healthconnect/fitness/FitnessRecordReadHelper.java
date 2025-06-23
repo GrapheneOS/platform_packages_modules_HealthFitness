@@ -219,7 +219,8 @@ public class FitnessRecordReadHelper {
             boolean shouldRecordAccessLog) {
         List<RecordReadTableRequest> readTableRequests = new ArrayList<>();
         recordTypeToUuids.forEach(
-                (recordType, uuids) ->
+                (recordType, uuids) -> {
+                    if (!uuids.isEmpty()) {
                         readTableRequests.add(
                                 mInternalHealthConnectMappings
                                         .getRecordHelper(recordType)
@@ -229,7 +230,9 @@ public class FitnessRecordReadHelper {
                                                 startDateAccessMillis,
                                                 grantedExtraReadPermissions,
                                                 isInForeground,
-                                                mAppInfoHelper)));
+                                                mAppInfoHelper));
+                    }
+                });
 
         return readRecords(
                 transactionManager,

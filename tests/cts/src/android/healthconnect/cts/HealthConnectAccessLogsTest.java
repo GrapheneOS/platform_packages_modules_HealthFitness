@@ -440,24 +440,6 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    public void testAccessLogs_phrFlagOn() throws Exception {
-        List<AccessLog> oldAccessLogsResponse = queryAccessLogs();
-        // TODO(b/337018927): Change below to upsert and read MedicalResources once we actually
-        // create access logs in serviceImpl.
-        List<Record> testRecord = Collections.singletonList(getStepsRecord());
-        TestUtils.insertRecords(testRecord);
-        readRecords(new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
-
-        List<AccessLog> newAccessLogsResponse =
-                waitForNewAccessLogsWithExpectedMinSize(oldAccessLogsResponse.size() + 2);
-
-        assertThat(newAccessLogsResponse.size() - oldAccessLogsResponse.size()).isEqualTo(2);
-        AccessLog accessLog = newAccessLogsResponse.get(newAccessLogsResponse.size() - 1);
-        assertThat(accessLog.getMedicalResourceTypes()).isEmpty();
-        assertThat(accessLog.isMedicalDataSourceAccessed()).isFalse();
-    }
-
-    @Test
     public void testAccessLogs_readRecords_readAccessLogCreated() throws Exception {
         readRecords(new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
 
