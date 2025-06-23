@@ -70,6 +70,10 @@ class UiTestHelper {
             SystemUtil.runShellCommandOrThrow("input keyevent 82")
         }
         SystemUtil.runShellCommandOrThrow("wm dismiss-keyguard")
+        // Skip onboarding
+        SystemUtil.runShellCommandOrThrow(
+            "am start -a android.health.connect.action.SKIP_HEALTH_CONNECT_ONBOARDING"
+        )
     }
 
     private fun isHardwareSupported(): Boolean {
