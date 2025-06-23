@@ -103,6 +103,7 @@ import android.health.connect.backuprestore.GetChangesForBackupResponse;
 import android.health.connect.backuprestore.GetLatestMetadataForBackupResponse;
 import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsRequest;
+import android.health.connect.backuprestore.UpdateHealthConnectRestoreStatusRequest;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
@@ -2938,6 +2939,29 @@ public class HealthConnectManager {
                             returnError(executor, exception, callback);
                         }
                     });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Updates the restore status in Health Connect for the last restore attempt. This is used to
+     * communicate statuses to the user, including the status of the current rstore and when some
+     * statuses last happened (e.g. last successful restore).
+     *
+     * @param request The request object containing the new status of a restore.
+     * @throws SecurityException If the caller does not have the required permissions.
+     * @hide
+     */
+    // TODO: b/430529896 remove suppression when the linter is fixed
+    @SuppressWarnings("MissingPermission")
+    @UserHandleAware
+    @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API)
+    @RequiresPermission(anyOf = {BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS, BACKUP})
+    public void updateHealthConnectRestoreStatus(
+            @NonNull UpdateHealthConnectRestoreStatusRequest request) {
+        try {
+            mService.updateHealthConnectRestoreStatus(request);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

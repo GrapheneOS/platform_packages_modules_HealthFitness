@@ -40,6 +40,7 @@ import static android.health.connect.HealthPermissions.WRITE_NUTRITION;
 import static android.health.connect.HealthPermissions.WRITE_SLEEP;
 import static android.health.connect.HealthPermissions.WRITE_STEPS;
 import static android.health.connect.HealthPermissions.getAllMedicalPermissions;
+import static android.health.connect.backuprestore.UpdateHealthConnectRestoreStatusRequest.RESTORE_STATUS_STARTED;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
@@ -157,6 +158,7 @@ import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
 import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsRequest;
+import android.health.connect.backuprestore.UpdateHealthConnectRestoreStatusRequest;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
@@ -332,7 +334,8 @@ public class HealthConnectServiceImplTest {
                     "asBinder",
                     "queryDocumentProviders",
                     "getHealthConnectOnboardingState",
-                    "updateHealthConnectBackupAndRestoreSettings");
+                    "updateHealthConnectBackupAndRestoreSettings",
+                    "updateHealthConnectRestoreStatus");
 
     static final String ONBOARDING_STATE_PREFERENCE_KEY = "onboarding_state_";
     private static final String TEST_URI = "content://com.android.server.healthconnect/testuri";
@@ -2350,6 +2353,56 @@ public class HealthConnectServiceImplTest {
                         .setAccountName("test")
                         .setBackupsEnabledState(
                                 UpdateBackupAndRestoreSettingsRequest.BACKUPS_ENABLED_TRUE)
+                        .build());
+    }
+
+    @Test
+    @EnableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API)
+    public void testUpdateHealthConnectRestoreStatus_noPermissions_throwsException() {
+
+        setBackupPermission(PERMISSION_DENIED);
+        setBackupHCDataAndSettingsPermission(PERMISSION_DENIED);
+
+        assertThrows(
+                SecurityException.class,
+                () ->
+                        mHealthConnectService.updateHealthConnectRestoreStatus(
+                                new UpdateHealthConnectRestoreStatusRequest.Builder(
+                                                RESTORE_STATUS_STARTED,
+                                                Instant.now().toEpochMilli())
+                                        .setStatusMessage("test")
+                                        .setStatusTitle("test")
+                                        .build()));
+    }
+
+    @Test
+    @EnableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API)
+    public void testUpdateHealthConnectRestoreStatus_with_Backup_Permission_succeeds() {
+
+        setBackupPermission(PERMISSION_GRANTED);
+        setBackupHCDataAndSettingsPermission(PERMISSION_DENIED);
+
+        // No security exception is thrown, because the caller has the BACKUP permission.
+        mHealthConnectService.updateHealthConnectRestoreStatus(
+                new UpdateHealthConnectRestoreStatusRequest.Builder(
+                                RESTORE_STATUS_STARTED, Instant.now().toEpochMilli())
+                        .setStatusMessage("test")
+                        .setStatusTitle("test")
+                        .build());
+    }
+
+    @Test
+    @EnableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API)
+    public void testUpdateHealthConnectRestoreStatus_with_HCBackup_Permission_succeeds() {
+        setBackupPermission(PERMISSION_GRANTED);
+        setBackupHCDataAndSettingsPermission(PERMISSION_DENIED);
+
+        // No security exception, caller has the BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS permission.
+        mHealthConnectService.updateHealthConnectRestoreStatus(
+                new UpdateHealthConnectRestoreStatusRequest.Builder(
+                                RESTORE_STATUS_STARTED, Instant.now().toEpochMilli())
+                        .setStatusMessage("test")
+                        .setStatusTitle("test")
                         .build());
     }
 

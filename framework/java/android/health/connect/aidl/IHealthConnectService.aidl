@@ -17,6 +17,7 @@ import android.health.connect.aidl.IAggregateRecordsResponseCallback;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
+import android.health.connect.backuprestore.UpdateHealthConnectRestoreStatusRequest;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
@@ -590,4 +591,12 @@ interface IHealthConnectService {
             in AttributionSource attributionSource,
             in GetMatchingAppsRequest request,
             in IGetMatchingAppsCallback callback);
+
+    /**
+     * Updates the restore status in Health Connect.
+     *
+     * @param request The UpdateHealthConnectRestoreStatusRequest
+     */
+    void updateHealthConnectRestoreStatus(
+            in UpdateHealthConnectRestoreStatusRequest request);
 }
