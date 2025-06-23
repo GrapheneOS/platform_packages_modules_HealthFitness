@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect;
 
+import static android.Manifest.permission.BACKUP;
 import static android.Manifest.permission.BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS;
 import static android.Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA;
 import static android.Manifest.permission.RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS;
@@ -135,6 +136,7 @@ import android.health.connect.aidl.UpdatePriorityRequestParcel;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
 import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.RestoreChange;
+import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsRequest;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
@@ -1842,6 +1844,20 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA, null);
         enforceIsForegroundUser(getCallingUserHandle());
         mBackupRestore.updateDataDownloadState(downloadState);
+    }
+
+    @Override
+    @RequiresApi(Build.VERSION_CODES.BAKLAVA)
+    public void updateHealthConnectBackupAndRestoreSettings(
+            UpdateBackupAndRestoreSettingsRequest request) {
+        UserHandle userHandle = Binder.getCallingUserHandle();
+        enforceIsForegroundUser(userHandle);
+
+        mDataPermissionEnforcer.enforceAnyOfPermissions(
+                BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS, BACKUP);
+
+        // TODO: b/426180714 Introduce settings storage and write the settings into it, similar to
+        // configureScheduledExport()
     }
 
     /**

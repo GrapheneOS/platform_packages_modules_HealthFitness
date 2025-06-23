@@ -57,6 +57,7 @@ import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.restore.BackupFileNamesSet;
 import android.health.connect.restore.StageRemoteDataRequest;
 import android.health.connect.backuprestore.BackupChange;
+import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsRequest;
 import android.health.connect.backuprestore.RestoreChange;
 import android.net.Uri;
 import android.os.UserHandle;
@@ -557,6 +558,14 @@ interface IHealthConnectService {
      * @param callback Callback to receive result of performing this operation.
      */
      void restoreChanges(in List<RestoreChange> changes, in IEmptyResponseCallback callback);
+
+    /**
+     * Updates settings for Health Connect backup and restore.
+     *
+     * @param request The request containing the changes to Backup and restore UI settings.
+     */
+    void updateHealthConnectBackupAndRestoreSettings(
+            in UpdateBackupAndRestoreSettingsRequest request);
 
     /**
      * Asynchronously returns the current onboarding state of the Health Connect user.

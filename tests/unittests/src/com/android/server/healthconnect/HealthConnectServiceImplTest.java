@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect;
 
+import static android.Manifest.permission.BACKUP;
+import static android.Manifest.permission.BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS;
 import static android.Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA;
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -62,8 +64,10 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedical
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedicalResourceId;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getUpsertMedicalResourceRequest;
 import static android.healthconnect.testing.unittest.TaskUtils.waitForAllScheduledTasksToComplete;
+import static android.permission.PermissionManager.PERMISSION_HARD_DENIED;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API;
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
 import static com.android.healthfitness.flags.Flags.FLAG_MATCHMAKING;
@@ -93,6 +97,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -151,6 +156,7 @@ import android.health.connect.aidl.IMigrationCallback;
 import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
 import android.health.connect.backuprestore.BackupMetadata;
+import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsRequest;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
@@ -325,7 +331,8 @@ public class HealthConnectServiceImplTest {
                     "insertMinDataMigrationSdkExtensionVersion",
                     "asBinder",
                     "queryDocumentProviders",
-                    "getHealthConnectOnboardingState");
+                    "getHealthConnectOnboardingState",
+                    "updateHealthConnectBackupAndRestoreSettings");
 
     static final String ONBOARDING_STATE_PREFERENCE_KEY = "onboarding_state_";
     private static final String TEST_URI = "content://com.android.server.healthconnect/testuri";
@@ -1390,7 +1397,7 @@ public class HealthConnectServiceImplTest {
                     throws InterruptedException {
         setUpSuccessfulMocksForPhrTelemetry();
         mFakeTimeSource.setInstant(mNow);
-        setDataManagementPermission(PERMISSION_GRANTED);
+        setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
 
         mHealthConnectService.readMedicalResourcesByRequest(
                 mAttributionSource,
@@ -1431,7 +1438,7 @@ public class HealthConnectServiceImplTest {
     public void testReadMedicalResourcesByIds_hasDataManagementPermission_expectMonthlyTimeStamp() {
         setUpSuccessfulMocksForPhrTelemetry();
         mFakeTimeSource.setInstant(mNow);
-        setDataManagementPermission(PERMISSION_GRANTED);
+        setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
 
         mHealthConnectService.readMedicalResourcesByIds(
                 mAttributionSource,
@@ -2290,6 +2297,63 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
+    @EnableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API)
+    public void testUpdateHealthConnectBackupSettings_noPermissions_throwsSecurityException() {
+
+        setBackupPermission(PERMISSION_DENIED);
+        setBackupHCDataAndSettingsPermission(PERMISSION_DENIED);
+
+        assertThrows(
+                SecurityException.class,
+                () ->
+                        mHealthConnectService.updateHealthConnectBackupAndRestoreSettings(
+                                new UpdateBackupAndRestoreSettingsRequest.Builder()
+                                        .setBackupSettingsLabel("test")
+                                        .setTurnOnBackupsInvitationText("test")
+                                        .setAccountName("test")
+                                        .setBackupsEnabledState(
+                                                UpdateBackupAndRestoreSettingsRequest
+                                                        .BACKUPS_ENABLED_TRUE)
+                                        .build()));
+    }
+
+    @Test
+    @EnableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API)
+    public void testUpdateBackupAndRestoreSettings_withBackupPermissions_succeeds() {
+
+        setBackupPermission(PERMISSION_GRANTED);
+        setBackupHCDataAndSettingsPermission(PERMISSION_DENIED);
+
+        // No security exception is thrown, because the caller has the BACKUP permission.
+        mHealthConnectService.updateHealthConnectBackupAndRestoreSettings(
+                new UpdateBackupAndRestoreSettingsRequest.Builder()
+                        .setBackupSettingsLabel("test")
+                        .setTurnOnBackupsInvitationText("test")
+                        .setAccountName("test")
+                        .setBackupsEnabledState(
+                                UpdateBackupAndRestoreSettingsRequest.BACKUPS_ENABLED_TRUE)
+                        .build());
+    }
+
+    @Test
+    @EnableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API)
+    public void testUpdateBackupAndRestoreSettings_withHCBackupPermissions_succeeds() {
+
+        setBackupPermission(PERMISSION_DENIED);
+        setBackupHCDataAndSettingsPermission(PERMISSION_GRANTED);
+
+        // No security exception, caller has the BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS permission.
+        mHealthConnectService.updateHealthConnectBackupAndRestoreSettings(
+                new UpdateBackupAndRestoreSettingsRequest.Builder()
+                        .setBackupSettingsLabel("test")
+                        .setTurnOnBackupsInvitationText("test")
+                        .setAccountName("test")
+                        .setBackupsEnabledState(
+                                UpdateBackupAndRestoreSettingsRequest.BACKUPS_ENABLED_TRUE)
+                        .build());
+    }
+
+    @Test
     @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
     public void getChangesForBackup_flagDisabled_unsupportedOperation() throws RemoteException {
         IGetChangesForBackupResponseCallback callback =
@@ -2417,9 +2481,9 @@ public class HealthConnectServiceImplTest {
     public void testGetChangeLogToken_noPermissions_throwsSecurityException() throws Exception {
         // Deny necessary permissions
         when(mPermissionManager.checkPermissionForPreflight(any(), any()))
-                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+                .thenReturn(PERMISSION_HARD_DENIED);
         when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
-                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+                .thenReturn(PERMISSION_HARD_DENIED);
         ChangeLogTokenRequest request =
                 new ChangeLogTokenRequest.Builder()
                         .addRecordType(HeartRateRecord.class)
@@ -2445,9 +2509,9 @@ public class HealthConnectServiceImplTest {
     public void testGetChangeLogToken_noPermissions_throwsSecurityException_phr() throws Exception {
         // Deny necessary permissions
         when(mPermissionManager.checkPermissionForPreflight(any(), any()))
-                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+                .thenReturn(PERMISSION_HARD_DENIED);
         when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
-                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+                .thenReturn(PERMISSION_HARD_DENIED);
         ChangeLogTokenRequest request =
                 new ChangeLogTokenRequest.Builder()
                         .addMedicalResourceType(MEDICAL_RESOURCE_TYPE_VACCINES)
@@ -2512,10 +2576,10 @@ public class HealthConnectServiceImplTest {
     public void testGetChangeLogs_noPermissions_throwsSecurityException() throws Exception {
         // Deny necessary permissions
         when(mPermissionManager.checkPermissionForPreflight(any(), any()))
-                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+                .thenReturn(PERMISSION_HARD_DENIED);
         when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
-                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
-        setBackgroundReadPermission(PERMISSION_GRANTED);
+                .thenReturn(PERMISSION_HARD_DENIED);
+        setBackgroundReadPermission(PackageManager.PERMISSION_GRANTED);
         when(mAppOpsManagerLocal.isUidInForeground(anyInt())).thenReturn(true);
         String token = "test-token-123";
         ChangeLogsRequest request = new ChangeLogsRequest.Builder(token).build();
@@ -2547,10 +2611,10 @@ public class HealthConnectServiceImplTest {
     public void testGetChangeLogs_noPermissions_throwsSecurityException_phr() throws Exception {
         // Deny necessary permissions
         when(mPermissionManager.checkPermissionForPreflight(any(), any()))
-                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+                .thenReturn(PERMISSION_HARD_DENIED);
         when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
-                .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
-        setBackgroundReadPermission(PERMISSION_GRANTED);
+                .thenReturn(PERMISSION_HARD_DENIED);
+        setBackgroundReadPermission(PackageManager.PERMISSION_GRANTED);
         when(mAppOpsManagerLocal.isUidInForeground(anyInt())).thenReturn(true);
         String token = "test-token-123";
         ChangeLogsRequest request = new ChangeLogsRequest.Builder(token).build();
@@ -2580,7 +2644,7 @@ public class HealthConnectServiceImplTest {
                 .thenReturn(PermissionManager.PERMISSION_GRANTED);
         when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
                 .thenReturn(PermissionManager.PERMISSION_GRANTED);
-        setBackgroundReadPermission(PERMISSION_GRANTED);
+        setBackgroundReadPermission(PackageManager.PERMISSION_GRANTED);
         when(mAppOpsManagerLocal.isUidInForeground(anyInt()))
                 .thenReturn(true); // Simulate foreground call
         String invalidToken = "invalid-token";
@@ -2614,7 +2678,7 @@ public class HealthConnectServiceImplTest {
                 .thenReturn(PermissionManager.PERMISSION_GRANTED);
         when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
                 .thenReturn(PermissionManager.PERMISSION_GRANTED);
-        setBackgroundReadPermission(PERMISSION_GRANTED);
+        setBackgroundReadPermission(PackageManager.PERMISSION_GRANTED);
         when(mAppOpsManagerLocal.isUidInForeground(anyInt()))
                 .thenReturn(true); // Simulate foreground call
         String emptyToken = "empty-token";
@@ -2655,7 +2719,7 @@ public class HealthConnectServiceImplTest {
                 .thenReturn(PermissionManager.PERMISSION_GRANTED);
         when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
                 .thenReturn(PermissionManager.PERMISSION_GRANTED);
-        setBackgroundReadPermission(PERMISSION_GRANTED);
+        setBackgroundReadPermission(PackageManager.PERMISSION_GRANTED);
         when(mAppOpsManagerLocal.isUidInForeground(anyInt()))
                 .thenReturn(true); // Simulate foreground call
         String emptyToken = "empty-token";
@@ -2698,7 +2762,7 @@ public class HealthConnectServiceImplTest {
                 .thenReturn(PermissionManager.PERMISSION_GRANTED);
         when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
                 .thenReturn(PermissionManager.PERMISSION_GRANTED);
-        setBackgroundReadPermission(PERMISSION_GRANTED);
+        setBackgroundReadPermission(PackageManager.PERMISSION_GRANTED);
         when(mAppOpsManagerLocal.isUidInForeground(anyInt()))
                 .thenReturn(true); // Simulate foreground call
         String emptyToken = "empty-token";
@@ -2733,7 +2797,7 @@ public class HealthConnectServiceImplTest {
                 .thenReturn(PermissionManager.PERMISSION_GRANTED);
         when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
                 .thenReturn(PermissionManager.PERMISSION_GRANTED);
-        setBackgroundReadPermission(PERMISSION_GRANTED);
+        setBackgroundReadPermission(PackageManager.PERMISSION_GRANTED);
         when(mAppOpsManagerLocal.isUidInForeground(anyInt()))
                 .thenReturn(true); // Simulate foreground call
         when(mHealthConnectPermissionHelper.getHealthDataStartDateAccessOrThrow(anyString(), any()))
@@ -2798,7 +2862,7 @@ public class HealthConnectServiceImplTest {
                 .thenReturn(PermissionManager.PERMISSION_GRANTED);
         when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
                 .thenReturn(PermissionManager.PERMISSION_GRANTED);
-        setBackgroundReadPermission(PERMISSION_GRANTED);
+        setBackgroundReadPermission(PackageManager.PERMISSION_GRANTED);
         when(mAppOpsManagerLocal.isUidInForeground(anyInt()))
                 .thenReturn(true); // Simulate foreground call
         when(mHealthConnectPermissionHelper.getHealthDataStartDateAccessOrThrow(anyString(), any()))
@@ -3256,6 +3320,15 @@ public class HealthConnectServiceImplTest {
                 .thenReturn(result);
     }
 
+    private void setBackupPermission(int result) {
+        when(mServiceContext.checkCallingPermission(eq(BACKUP))).thenReturn(result);
+    }
+
+    private void setBackupHCDataAndSettingsPermission(int result) {
+        when(mServiceContext.checkCallingPermission(eq(BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS)))
+                .thenReturn(result);
+    }
+
     private void setBackgroundReadPermission(int result) {
         when(mServiceContext.checkPermission(
                         eq(READ_HEALTH_DATA_IN_BACKGROUND), anyInt(), anyInt()))
@@ -3272,10 +3345,10 @@ public class HealthConnectServiceImplTest {
         for (String permission : getAllMedicalPermissions()) {
             // Some methods use ForPreflight while others use ForDataDelivery. Set both here.
             when(mPermissionManager.checkPermissionForPreflight(permission, mAttributionSource))
-                    .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+                    .thenReturn(PERMISSION_HARD_DENIED);
             when(mPermissionManager.checkPermissionForDataDelivery(
                             permission, mAttributionSource, null))
-                    .thenReturn(PermissionManager.PERMISSION_HARD_DENIED);
+                    .thenReturn(PERMISSION_HARD_DENIED);
         }
     }
 

@@ -16,6 +16,7 @@
 
 package android.health.connect;
 
+import static android.Manifest.permission.BACKUP;
 import static android.Manifest.permission.BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS;
 import static android.Manifest.permission.RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS;
 import static android.health.connect.Constants.DEFAULT_LONG;
@@ -101,6 +102,7 @@ import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.GetChangesForBackupResponse;
 import android.health.connect.backuprestore.GetLatestMetadataForBackupResponse;
 import android.health.connect.backuprestore.RestoreChange;
+import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsRequest;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
@@ -1620,6 +1622,32 @@ public class HealthConnectManager {
     public void updateDataDownloadState(@DataDownloadState int downloadState) {
         try {
             mService.updateDataDownloadState(downloadState);
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Updates the data to be displayed in the Health Connect Backup and restore settings.
+     *
+     * <p>This API allows passing through various settings related to Health Connect backup and
+     * restore. Values provided are persistent until explicitly overridden by a subsequent call to
+     * this method. If a parameter is not set in the request, it indicates that the corresponding
+     * existing value in the settings should not be overridden and will retain its current state.
+     *
+     * @param request The request object containing the settings to be updated.
+     * @throws SecurityException If the caller does not have the required permissions.
+     * @hide
+     */
+    // TODO: b/430529896 remove suppression when the linter is fixed
+    @SuppressWarnings("MissingPermission")
+    @UserHandleAware
+    @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API)
+    @RequiresPermission(anyOf = {BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS, BACKUP})
+    public void updateHealthConnectBackupAndRestoreSettings(
+            @NonNull UpdateBackupAndRestoreSettingsRequest request) {
+        try {
+            mService.updateHealthConnectBackupAndRestoreSettings(request);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
