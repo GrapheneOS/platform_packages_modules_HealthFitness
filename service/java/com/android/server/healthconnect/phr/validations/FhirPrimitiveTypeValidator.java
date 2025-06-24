@@ -43,6 +43,8 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -109,6 +111,8 @@ public class FhirPrimitiveTypeValidator {
                             Set.of("span", "width").stream(),
                             XHTML_TABLE_ELEMENT_ALLOWED_ATTRIBUTES.stream())
                     .collect(Collectors.toUnmodifiableSet());
+    private static final Map<String, Set<String>> XHTML_ELEMENT_TO_ATTRIBUTES_FOR_LINK_VALIDATION =
+            Map.of("a", Set.of("href"), "img", Set.of("longdesc", "src"));
 
     static void validate(Object fieldObject, String fullFieldName, R4FhirType type) {
         if (!Flags.phrFhirPrimitiveTypeValidation()) {
@@ -282,8 +286,12 @@ public class FhirPrimitiveTypeValidator {
                                             + " in field: "
                                             + fullFieldName);
                         }
-                        // TODO: b/402780942 - Add additional link validation for a.href, img.src
-                        //  and img.longdesc.
+                        if (requiresXhtmlLinkValidation(elementName, attributeName)) {
+                            validateXhtmlLink(
+                                    parser.getAttributeValue(i),
+                                    elementName + "." + attributeName,
+                                    fullFieldName);
+                        }
                     }
                     break;
                 default:
@@ -315,6 +323,56 @@ public class FhirPrimitiveTypeValidator {
             throw new IllegalStateException("Failed to set xml parsing input");
         }
         return parser;
+    }
+
+    private static boolean requiresXhtmlLinkValidation(String element, String attribute) {
+        return XHTML_ELEMENT_TO_ATTRIBUTES_FOR_LINK_VALIDATION.containsKey(element)
+                && XHTML_ELEMENT_TO_ATTRIBUTES_FOR_LINK_VALIDATION.get(element).contains(attribute);
+    }
+
+    private static void validateXhtmlLink(
+            String value, String fullElementAttributeName, String fullFieldName) {
+        URI parsedUri;
+        try {
+            parsedUri = new URI(value);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(
+                    "Found invalid xhtml link uri in field: " + fullFieldName);
+        }
+
+        String scheme = parsedUri.getScheme();
+        switch (scheme) {
+            case null:
+                // This means the URI is a relative URI, which is needed to for example refer to
+                // the id of a contained resource (e.g. #observation1), but we disallow directory
+                // traversal sequences.
+                if (parsedUri.toString().contains("../")) {
+                    throw new IllegalArgumentException(
+                            "Found invalid xhtml link containing '../' in field: " + fullFieldName);
+                }
+                break;
+            case "http":
+            case "https":
+            case "mailto":
+            case "tel":
+                // These schemes are allowed, so no action is needed
+                break;
+            case "data":
+                // The data schema is only allowed for the img.src attribute
+                if (!fullElementAttributeName.equals("img.src")) {
+                    throw new IllegalArgumentException(
+                            "Found invalid xhtml link due to disallowed data scheme in field: "
+                                    + fullFieldName);
+                }
+                // TODO(b/402780942) Reject non-image and “image/svg+xml” types.
+                break;
+            default:
+                throw new IllegalArgumentException(
+                        "Found invalid xhtml link due to disallowed "
+                                + scheme
+                                + " scheme in field: "
+                                + fullFieldName);
+        }
     }
 
     private static int getNextTokenAndHandleException(XmlPullParser parser, String fullFieldName) {
