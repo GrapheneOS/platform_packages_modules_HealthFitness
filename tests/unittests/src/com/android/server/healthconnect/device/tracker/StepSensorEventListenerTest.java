@@ -15,7 +15,6 @@
  */
 package com.android.server.healthconnect.device.tracker;
 
-import static com.android.server.healthconnect.device.tracker.StepSensorEventListener.BOOT_TIME_NANOS;
 import static com.android.server.healthconnect.device.tracker.StepSensorEventListener.MIN_STEPS_PER_MINUTE;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -567,7 +566,7 @@ public class StepSensorEventListenerTest {
     }
 
     private static long getTimestampAfterBoot(long timestampSinceBootNanos) {
-        return NANOSECONDS.toMillis(BOOT_TIME_NANOS + timestampSinceBootNanos);
+        return StepSensorEventListener.BOOT_TIME.plusNanos(timestampSinceBootNanos).toEpochMilli();
     }
 
     /**
