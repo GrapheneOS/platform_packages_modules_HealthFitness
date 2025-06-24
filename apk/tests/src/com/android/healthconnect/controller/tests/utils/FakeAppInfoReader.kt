@@ -24,32 +24,24 @@ import org.mockito.kotlin.whenever
 
 suspend fun createFakeAppInfoReader(): AppInfoReader {
     val appInfoReader: AppInfoReader = mock()
-    whenever(appInfoReader.getAppMetadata(eq(TEST_APP_PACKAGE_NAME), any()))
-        .thenReturn(
-            AppMetadata(
-                packageName = TEST_APP_PACKAGE_NAME,
-                appName = TEST_APP_NAME,
-                icon = null,
-                isSystem = false,
-            )
+    val packages =
+        listOf(
+            TEST_APP_PACKAGE_NAME to TEST_APP_NAME,
+            TEST_APP_PACKAGE_NAME_2 to TEST_APP_NAME_2,
+            TEST_APP_PACKAGE_NAME_3 to TEST_APP_NAME_3,
+            "com.android.healthconnect.controller.tests" to
+                "dagger.hilt.android.testing.HiltTestApplication",
         )
-    whenever(appInfoReader.getAppMetadata(eq(TEST_APP_PACKAGE_NAME_2), any()))
-        .thenReturn(
-            AppMetadata(
-                packageName = TEST_APP_PACKAGE_NAME_2,
-                appName = TEST_APP_NAME_2,
-                icon = null,
-                isSystem = false,
+    for ((packageName, appName) in packages) {
+        whenever(appInfoReader.getAppMetadata(eq(packageName), any()))
+            .thenReturn(
+                AppMetadata(
+                    packageName = packageName,
+                    appName = appName,
+                    icon = null,
+                    isSystem = false,
+                )
             )
-        )
-    whenever(appInfoReader.getAppMetadata(eq(TEST_APP_PACKAGE_NAME_3), any()))
-        .thenReturn(
-            AppMetadata(
-                packageName = TEST_APP_PACKAGE_NAME_3,
-                appName = TEST_APP_NAME_3,
-                icon = null,
-                isSystem = false,
-            )
-        )
+    }
     return appInfoReader
 }

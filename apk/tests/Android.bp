@@ -432,6 +432,9 @@ filegroup {
         // Needs more investigation. Just faking the appInfoReader causes the on device test to
         // fail, and isn't enough to get the robo test working.
         "src/com/android/healthconnect/controller/tests/recentaccess/RecentAccessViewModelTest.kt",
+        // Activity creation is failing because Robolectric doesn't set callingPackage before
+        // calling onCreate
+        "src/com/android/healthconnect/controller/tests/route/RouteRequestActivityTest.kt",
         // Uses the HealthPermissionsReader to get a list of permissions to test
         "src/com/android/healthconnect/controller/tests/shared/HealthDataCategoryExtensionsTest.kt",
         // Uses runWithShellPermissionIdentity.
@@ -465,6 +468,7 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/navigation/**/*.kt",
         "src/com/android/healthconnect/controller/tests/onboarding/**/*.kt",
         "src/com/android/healthconnect/controller/tests/recentaccess/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/route/**/*.kt",
         "src/com/android/healthconnect/controller/tests/searchindexables/**/*.kt",
         "src/com/android/healthconnect/controller/tests/selectabledeletion/**/*.kt",
         "src/com/android/healthconnect/controller/tests/shared/**/*.kt",
