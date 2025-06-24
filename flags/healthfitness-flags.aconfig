@@ -571,3 +571,12 @@ flag {
     is_fixed_read_only: true
     is_exported: false
 }
+
+flag {
+    name: "latency_metrics_flag"
+    namespace: "health_fitness_aconfig"
+    description: "Flag to enable collection of latency metrics."
+    bug: "427160716"
+    is_fixed_read_only: true
+    is_exported: false
+}
