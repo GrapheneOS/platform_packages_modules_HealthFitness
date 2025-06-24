@@ -478,6 +478,11 @@ android_robolectric_test {
                 name: "java-flags",
                 value: "-Drobolectric.looperMode=INSTRUMENTATION_TEST",
             },
+            {
+                name: "java-flags",
+                // TODO: b/427121240 - fix JIT failures for this class.
+                value: "-XX:CompileCommand=dontinline,android/app/ContextImpl*.*",
+            },
         ],
     },
     // defaults : ["health-connect-controller-tests-default"],
@@ -504,6 +509,7 @@ android_robolectric_test {
         "androidx.test.ext.truth",
         "androidx.test.rules",
         "flag-junit",
+        "android.permission.flags-aconfig-java-export",
     ],
     java_resource_dirs: ["config"],
     instrumentation_for: "RoboTestApp",
