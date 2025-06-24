@@ -24,10 +24,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.Constants.ONBOARDING_SHOWN_PREF_KEY
@@ -36,7 +41,6 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.OnboardingElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthfitness.flags.Flags.removeOldOnboarding
-import com.android.settingslib.collapsingtoolbar.EdgeToEdgeUtils
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -82,6 +86,7 @@ class OnboardingActivity : Hilt_OnboardingActivity() {
     private var targetIntent: Intent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         if (SettingsThemeHelper.isExpressiveTheme(this)) {
             setTheme(R.style.Theme_HealthConnect_Expressive)
         }
@@ -137,6 +142,16 @@ class OnboardingActivity : Hilt_OnboardingActivity() {
             logger.logInteraction(OnboardingElement.ONBOARDING_GO_BACK_BUTTON)
             setResult(Activity.RESULT_CANCELED)
             finish()
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(buttonArea) { view, windowInsets ->
+            val insets =
+                windowInsets.getInsets(
+                    WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
+                )
+            // Apply the bottom inset as margin
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> { bottomMargin = insets.bottom }
+            WindowInsetsCompat.CONSUMED
         }
 
         val sharedPreference = getSharedPreferences(USER_ACTIVITY_TRACKER, Context.MODE_PRIVATE)
