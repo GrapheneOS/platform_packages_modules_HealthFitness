@@ -393,13 +393,11 @@ public class HealthConnectManager {
             "android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS";
 
     /**
-     * Activity action: Launch UI to prompt user to connect more apps with Health Connect.
+     * Activity action: Launch UI to prompt user to connect more apps with Health Connect. Internal
+     * use for Health Connect.
      *
      * <p>Health Connect will show a list of fitness apps which are compatible but not connected (no
      * read or write permissions granted).
-     *
-     * <p class="note">The intent will launch an activity owned by HC, that is guarded with {@link
-     * HealthPermissions#MANAGE_HEALTH_DATA_PERMISSION}.
      *
      * @hide
      */

@@ -37,7 +37,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.compatibility.common.util.SystemUtil.eventually
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
@@ -54,8 +53,6 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.MedicalPermission
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
-import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.READ
-import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.WRITE
 import com.android.healthconnect.controller.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
@@ -682,7 +679,8 @@ class SettingsFitnessAppFragmentTest {
             .logInteraction(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
 
         // Needed to makes sure activity has finished
-        eventually { assertEquals(Lifecycle.State.DESTROYED, scenario.state) }
+        scenario.result
+        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
     }
 
     @Test
@@ -743,6 +741,7 @@ class SettingsFitnessAppFragmentTest {
             .logInteraction(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
 
         // Needed to makes sure activity has finished
-        eventually { assertEquals(Lifecycle.State.DESTROYED, scenario.state) }
+        scenario.result
+        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
     }
 }

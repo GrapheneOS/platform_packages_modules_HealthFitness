@@ -439,12 +439,11 @@ filegroup {
     path: "src",
 }
 
-// Robolectric test target for testing Health Connect Controller APK UI
-// This target is currently under development to allow bivalent tests
-// go/deviceless-tests
-android_robolectric_test {
-    name: "HealthConnectControllerRoboUITests",
-    sdk_version: "module_current",
+// A group of files to run Robolectric tests on
+// Extracted to a file group so we can run an identical set on device for comparisons on things like
+// speed and success
+filegroup {
+    name: "robo-ui-tests-sources-include",
     srcs: [
         // TODO: b/419191898 - Update this to get as many Controller tests bivalent as possible
         "src/com/android/healthconnect/controller/tests/TestActivity.kt",
@@ -462,6 +461,18 @@ android_robolectric_test {
         "src/com/android/healthconnect/controller/tests/utils/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utiltests/**/*.kt",
     ],
+    path: "src",
+}
+
+// Robolectric test target for testing Health Connect Controller APK UI
+// This target is currently under development to allow bivalent tests
+// go/deviceless-tests
+android_robolectric_test {
+    name: "HealthConnectControllerRoboUITests",
+    sdk_version: "module_current",
+    srcs: [
+        ":robo-ui-tests-sources-include",
+    ],
     exclude_srcs: [
         "src/**/safetycenter/*.kt",
         ":robo-ui-tests-sources-exclude",
@@ -477,6 +488,11 @@ android_robolectric_test {
             {
                 name: "java-flags",
                 value: "-Drobolectric.looperMode=INSTRUMENTATION_TEST",
+            },
+            {
+                name: "java-flags",
+                // TODO: b/427121240 - fix JIT failures for this class.
+                value: "-XX:CompileCommand=dontinline,android/app/ContextImpl*.*",
             },
         ],
     },
@@ -504,6 +520,7 @@ android_robolectric_test {
         "androidx.test.ext.truth",
         "androidx.test.rules",
         "flag-junit",
+        "android.permission.flags-aconfig-java-export",
     ],
     java_resource_dirs: ["config"],
     instrumentation_for: "RoboTestApp",
@@ -532,4 +549,31 @@ android_app {
         "org.apache.http.legacy",
         "wear-sdk",
     ],
+}
+
+// Designed to be an exact replica of the HealthConnectControllerRoboUITests but on device.
+// For running comparisons for things like speed, success, flakiness between device and robolectric.
+android_test {
+    name: "HealthConnectControllerOnDeviceUITests",
+    srcs: [
+        ":robo-ui-tests-sources-include",
+    ],
+    exclude_srcs: [
+        "src/**/safetycenter/*.kt",
+        ":robo-ui-tests-sources-exclude",
+    ],
+    defaults: ["health-connect-controller-tests-default"],
+    static_libs: [
+        "SafetyCenterTests",
+        "HealthConnectMigrationApis",
+        "HealthConnectExportApis",
+        "HealthConnectOnboardingApis",
+    ],
+    test_suites: [
+        "general-tests",
+    ],
+    manifest_values: {
+        applicationId: "com.android.healthconnect.controller.tests",
+    },
+    instrumentation_target_package: "com.android.healthconnect.controller.tests",
 }

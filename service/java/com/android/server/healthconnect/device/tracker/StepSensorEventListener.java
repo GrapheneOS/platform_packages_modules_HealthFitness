@@ -17,7 +17,6 @@ package com.android.server.healthconnect.device.tracker;
 
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_AUTOMATICALLY_RECORDED;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -51,7 +50,7 @@ class StepSensorEventListener implements SensorEventListener {
     private static final long BATCHING_DURATION_MILLIS = SECONDS.toMillis(60);
     @VisibleForTesting static final double MIN_STEPS_PER_MINUTE = 30;
 
-    @VisibleForTesting static final long BOOT_TIME_NANOS = computeBootTimeNanos();
+    @VisibleForTesting static final Instant BOOT_TIME = computeBootTime();
 
     private final Context mContext;
     private final HealthConnectThreadScheduler mThreadScheduler;
@@ -171,17 +170,15 @@ class StepSensorEventListener implements SensorEventListener {
             return;
         }
 
-        long realStartTimestampNanos =
-                calculateRealEventTimestampNanos(
+        Instant realStartTimestamp =
+                calculateRealEventTimestamp(
                         estimateStartTime(
                                 stepDelta,
                                 mLastSavedData.sensorTimestampNanos,
                                 mPendingData.sensorTimestampNanos,
                                 isDelayedTask));
-        long realEndTimestampNanos =
-                calculateRealEventTimestampNanos(mPendingData.sensorTimestampNanos);
-        writeSteps(
-                getStepsRecordInternal(stepDelta, realStartTimestampNanos, realEndTimestampNanos));
+        Instant realEndTimestamp = calculateRealEventTimestamp(mPendingData.sensorTimestampNanos);
+        writeSteps(getStepsRecordInternal(stepDelta, realStartTimestamp, realEndTimestamp));
         mLastSavedData = mPendingData;
 
         mPendingBatchWriteFuture =
@@ -259,19 +256,23 @@ class StepSensorEventListener implements SensorEventListener {
     }
 
     private StepsRecordInternal getStepsRecordInternal(
-            float stepCount, long eventStartTimeNanos, long eventEndTimeNanos) {
+            float stepCount, Instant eventStartTimestamp, Instant eventEndTimestamp) {
         StepsRecordInternal record = new StepsRecordInternal();
         record.setCount((int) stepCount);
         record.setRecordingMethod(RECORDING_METHOD_AUTOMATICALLY_RECORDED);
 
-        Instant startTime = Instant.ofEpochSecond(0L, eventStartTimeNanos);
-        Instant endTime = Instant.ofEpochSecond(0L, eventEndTimeNanos);
-        record.setStartTime(startTime.toEpochMilli());
-        record.setEndTime(endTime.toEpochMilli());
+        record.setStartTime(eventStartTimestamp.toEpochMilli());
+        record.setEndTime(eventEndTimestamp.toEpochMilli());
         record.setStartZoneOffset(
-                ZoneOffset.systemDefault().getRules().getOffset(startTime).getTotalSeconds());
+                ZoneOffset.systemDefault()
+                        .getRules()
+                        .getOffset(eventStartTimestamp)
+                        .getTotalSeconds());
         record.setEndZoneOffset(
-                ZoneOffset.systemDefault().getRules().getOffset(endTime).getTotalSeconds());
+                ZoneOffset.systemDefault()
+                        .getRules()
+                        .getOffset(eventEndTimestamp)
+                        .getTotalSeconds());
         record.setLastModifiedTime(System.currentTimeMillis());
 
         return record;
@@ -288,13 +289,12 @@ class StepSensorEventListener implements SensorEventListener {
                 mDeviceDataSourcesHelper.getCurrentDevice(mContext), List.of(stepsRecordInternal));
     }
 
-    private static long calculateRealEventTimestampNanos(long eventTimestampNanos) {
-        long realEventTimestamp = eventTimestampNanos + BOOT_TIME_NANOS;
+    private static Instant calculateRealEventTimestamp(long eventTimestampNanosSinceBoot) {
         // TODO(b/397400522): Add validation to ensure this is a valid timestamp.
-        return realEventTimestamp;
+        return BOOT_TIME.plusNanos(eventTimestampNanosSinceBoot);
     }
 
-    private static long computeBootTimeNanos() {
-        return MILLISECONDS.toNanos(System.currentTimeMillis() - SystemClock.elapsedRealtime());
+    private static Instant computeBootTime() {
+        return Instant.ofEpochMilli(System.currentTimeMillis() - SystemClock.elapsedRealtime());
     }
 }
