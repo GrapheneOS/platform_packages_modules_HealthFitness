@@ -429,6 +429,9 @@ filegroup {
         // This code likely needs to be refactored to use Intents to avoid race conditions when
         // detecting the started activity under robolectric.
         "src/com/android/healthconnect/controller/tests/navigation/TrampolineActivityTest.kt",
+        // Needs more investigation. Just faking the appInfoReader causes the on device test to
+        // fail, and isn't enough to get the robo test working.
+        "src/com/android/healthconnect/controller/tests/recentaccess/RecentAccessViewModelTest.kt",
         // The first click on some preferences doesn't seem to create a view that can be found for
         // the second click. To be investigated.
         "src/com/android/healthconnect/controller/tests/units/UnitsFragmentTest.kt",
@@ -458,6 +461,7 @@ android_robolectric_test {
         "src/com/android/healthconnect/controller/tests/migration/**/*.kt",
         "src/com/android/healthconnect/controller/tests/navigation/**/*.kt",
         "src/com/android/healthconnect/controller/tests/onboarding/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/recentaccess/**/*.kt",
         "src/com/android/healthconnect/controller/tests/units/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utils/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utiltests/**/*.kt",
