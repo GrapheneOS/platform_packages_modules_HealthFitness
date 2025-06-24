@@ -81,6 +81,8 @@ public final class AccessLogsHelper extends DatabaseHelper {
     private static final String OPERATION_TYPE_COLUMN_NAME = "operation_type";
     private static final String TAG = "AccessLogHelper";
 
+    @VisibleForTesting static final int MAX_ACCESS_LOG_COUNT = 10_000;
+
     @VisibleForTesting
     static final String MEDICAL_RESOURCE_TYPE_COLUMN_NAME = "medical_resource_type";
 
@@ -113,49 +115,63 @@ public final class AccessLogsHelper extends DatabaseHelper {
      * @return AccessLog list
      */
     public List<AccessLog> queryAccessLogs(UserHandle callingUserHandle) {
-        final ReadTableRequest readTableRequest = new ReadTableRequest(TABLE_NAME);
+        OrderByClause orderBy =
+                new OrderByClause().addOrderByClause(PRIMARY_COLUMN_NAME, /* isAscending= */ false);
+
+        final ReadTableRequest readTableRequest =
+                new ReadTableRequest(TABLE_NAME).setOrderBy(orderBy).setLimit(MAX_ACCESS_LOG_COUNT);
 
         List<AccessLog> accessLogsList = new ArrayList<>();
         try (Cursor cursor = mTransactionManager.read(readTableRequest)) {
-            while (cursor.moveToNext()) {
-                String packageName;
-                try {
-                    packageName =
-                            mAppInfoHelper.getPackageName(
-                                    getCursorLong(cursor, APP_ID_COLUMN_NAME));
-                } catch (PackageManager.NameNotFoundException e) {
-                    Slog.e(TAG, "Package name not found while query access logs", e);
-                    continue;
-                }
-                @RecordTypeIdentifier.RecordType
-                List<Integer> recordTypes =
-                        getCursorIntegerList(cursor, RECORD_TYPE_COLUMN_NAME, DELIMITER);
-                long accessTime = getCursorLong(cursor, ACCESS_TIME_COLUMN_NAME);
-                @OperationType.OperationTypes
-                int operationType = getCursorInt(cursor, OPERATION_TYPE_COLUMN_NAME);
-                if (!recordTypes.isEmpty()) {
-                    accessLogsList.add(
-                            new AccessLog(packageName, recordTypes, accessTime, operationType));
-                }
-                @MedicalResourceType
-                List<Integer> medicalResourceTypes =
-                        getCursorIntegerList(cursor, MEDICAL_RESOURCE_TYPE_COLUMN_NAME, DELIMITER);
-                boolean isMedicalDataSource =
-                        getCursorInt(cursor, MEDICAL_DATA_SOURCE_ACCESSED_COLUMN_NAME)
-                                == BOOLEAN_TRUE_VALUE;
-                if (!medicalResourceTypes.isEmpty() || isMedicalDataSource) {
-                    accessLogsList.add(
-                            new AccessLog(
-                                    packageName,
-                                    accessTime,
-                                    operationType,
-                                    new HashSet<>(medicalResourceTypes),
-                                    isMedicalDataSource));
-                }
+            if (cursor.moveToLast()) {
+                do {
+                    String packageName;
+                    try {
+                        packageName =
+                                mAppInfoHelper.getPackageName(
+                                        getCursorLong(cursor, APP_ID_COLUMN_NAME));
+                    } catch (PackageManager.NameNotFoundException e) {
+                        Slog.e(TAG, "Package name not found while query access logs", e);
+                        continue;
+                    }
+                    @RecordTypeIdentifier.RecordType
+                    List<Integer> recordTypes =
+                            getCursorIntegerList(cursor, RECORD_TYPE_COLUMN_NAME, DELIMITER);
+                    long accessTime = getCursorLong(cursor, ACCESS_TIME_COLUMN_NAME);
+                    @OperationType.OperationTypes
+                    int operationType = getCursorInt(cursor, OPERATION_TYPE_COLUMN_NAME);
+                    if (!recordTypes.isEmpty()) {
+                        accessLogsList.add(
+                                new AccessLog(packageName, recordTypes, accessTime, operationType));
+                    }
+                    @MedicalResourceType
+                    List<Integer> medicalResourceTypes =
+                            getCursorIntegerList(
+                                    cursor, MEDICAL_RESOURCE_TYPE_COLUMN_NAME, DELIMITER);
+                    boolean isMedicalDataSource =
+                            getCursorInt(cursor, MEDICAL_DATA_SOURCE_ACCESSED_COLUMN_NAME)
+                                    == BOOLEAN_TRUE_VALUE;
+                    if (!medicalResourceTypes.isEmpty() || isMedicalDataSource) {
+                        accessLogsList.add(
+                                new AccessLog(
+                                        packageName,
+                                        accessTime,
+                                        operationType,
+                                        new HashSet<>(medicalResourceTypes),
+                                        isMedicalDataSource));
+                    }
+                } while (cursor.moveToPrevious());
             }
         }
 
-        accessLogsList.addAll(mAppOpLogsHelper.getAccessLogsFromAppOps(callingUserHandle));
+        int remainCapacity = MAX_ACCESS_LOG_COUNT - accessLogsList.size();
+        if (remainCapacity > 0) {
+            accessLogsList.addAll(
+                    mAppOpLogsHelper.getAccessLogsFromAppOps(callingUserHandle, remainCapacity));
+        }
+        if (accessLogsList.size() == MAX_ACCESS_LOG_COUNT) {
+            Slog.w(TAG, "Access logs count reaches the max log count.");
+        }
         return accessLogsList;
     }
 

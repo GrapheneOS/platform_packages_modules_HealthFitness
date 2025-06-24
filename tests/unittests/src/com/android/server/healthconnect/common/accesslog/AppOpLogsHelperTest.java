@@ -122,7 +122,8 @@ public class AppOpLogsHelperTest {
 
         AppOpLogsHelper appOpLogsHelper =
                 new AppOpLogsHelper(mAppOpsManager, mPackageManager, mHealthPermissions);
-        List<AccessLog> accessLogs = appOpLogsHelper.getAccessLogsFromAppOps(userHandle);
+        List<AccessLog> accessLogs =
+                appOpLogsHelper.getAccessLogsFromAppOps(userHandle, /* limit= */ 10);
 
         assertThat(accessLogs.size()).isEqualTo(1);
         AccessLog accessLog = accessLogs.get(0);
@@ -167,7 +168,8 @@ public class AppOpLogsHelperTest {
 
         AppOpLogsHelper appOpLogsHelper =
                 new AppOpLogsHelper(mAppOpsManager, mPackageManager, mHealthPermissions);
-        List<AccessLog> accessLogs = appOpLogsHelper.getAccessLogsFromAppOps(userHandle);
+        List<AccessLog> accessLogs =
+                appOpLogsHelper.getAccessLogsFromAppOps(userHandle, /* limit= */ 10);
 
         assertThat(accessLogs.size()).isEqualTo(1);
         AccessLog accessLog = accessLogs.get(0);
