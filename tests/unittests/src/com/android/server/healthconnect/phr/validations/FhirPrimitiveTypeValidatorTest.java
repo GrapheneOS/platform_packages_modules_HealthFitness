@@ -1490,7 +1490,7 @@ public class FhirPrimitiveTypeValidatorTest {
                                 "div",
                                 """
                                     <div xmlns:myprefix=\"http://www.w3.org/1999/xhtml\">
-                                    <myprefix:p>Narrative</myprefix:p>
+                                    <myprefix:p myprefix:class="MyClass">Narrative</myprefix:p>
                                     </div>
                                 """);
 
@@ -1583,5 +1583,141 @@ public class FhirPrimitiveTypeValidatorTest {
         assertThat(exception)
                 .hasMessageThat()
                 .isEqualTo("Failed to parse xhtml in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlWithDisallowedTag_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <body>Body</body>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml containing disallowed element body in field:"
+                                + " text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlWithIncorrectCase_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <P>paragraph</P>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains("Found invalid xhtml containing disallowed element P in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlWithDisallowedAttribute_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <a onclick="showAlert()"></a>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml containing disallowed attribute a.onclick in field:"
+                                + " text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlAllowedAttributeOnDifferentElement_throws()
+            throws JSONException {
+        // The border attribute is allowed on the table element, but not on the col element
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <table border="1">
+                                            <col border="1"></col>
+                                        </table>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml containing disallowed attribute col.border in field:"
+                                + " text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlAttributeAllowedOnAllElements_succeeds() throws JSONException {
+        // The class attribute is allowed on all elements
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <table class="MyClass"></table>
+                                    </div>
+                                """);
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
     }
 }
