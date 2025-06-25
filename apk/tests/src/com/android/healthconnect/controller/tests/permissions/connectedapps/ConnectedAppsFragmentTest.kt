@@ -38,6 +38,7 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasPackage
 import androidx.test.espresso.matcher.RootMatchers
+import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -51,6 +52,7 @@ import com.android.healthconnect.controller.permissions.connectedapps.ConnectedA
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel.DisconnectAllState.Loading
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel.DisconnectAllState.NotStarted
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel.DisconnectAllState.Updated
+import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
@@ -82,7 +84,6 @@ import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import javax.inject.Inject
 import org.hamcrest.Matchers.`is`
 import org.junit.After
 import org.junit.Before
@@ -99,7 +100,7 @@ import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
-@UninstallModules(DeviceInfoUtilsModule::class)
+@UninstallModules(DeviceInfoUtilsModule::class, HealthManagerModule::class)
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class ConnectedAppsFragmentTest {
@@ -107,8 +108,7 @@ class ConnectedAppsFragmentTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val setFlagsRule = SetFlagsRule()
 
-    @Inject lateinit var manager: HealthConnectManager
-
+    @BindValue val manager: HealthConnectManager = mock()
     @BindValue val viewModel: ConnectedAppsViewModel = mock()
     @BindValue val healthPermissionReader: HealthPermissionReader = mock()
 
@@ -304,7 +304,7 @@ class ConnectedAppsFragmentTest {
 
         launchFragment<ConnectedAppsFragment>(Bundle())
 
-        onView(withText(R.string.loading)).check(matches(isDisplayed()))
+        onView(withText(R.string.loading)).inRoot(isDialog()).check(matches(isDisplayed()))
     }
 
     @Test
@@ -452,6 +452,7 @@ class ConnectedAppsFragmentTest {
         onView(withTagValue(`is`("Delete button inactive app"))).perform(click())
 
         onView(withText("Permanently delete all $TEST_APP_NAME data?"))
+            .inRoot(isDialog())
             .check(matches(isDisplayed()))
         verify(healthConnectLogger).logInteraction(AppPermissionsElement.INACTIVE_APP_DELETE_BUTTON)
     }

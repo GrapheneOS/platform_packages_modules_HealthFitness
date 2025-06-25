@@ -112,7 +112,7 @@ class LoadExerciseRoutePermissionUseCaseTest {
             listOf(READ_EXERCISE_ROUTES, READ_EXERCISE)
         }
 
-        val state = useCase.invoke(eq(TEST_APP_PACKAGE_NAME))
+        val state = useCase.invoke(TEST_APP_PACKAGE_NAME)
 
         val expected =
             ExerciseRouteState(
