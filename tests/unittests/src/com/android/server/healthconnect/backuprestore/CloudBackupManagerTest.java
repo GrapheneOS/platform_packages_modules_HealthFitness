@@ -227,6 +227,39 @@ public class CloudBackupManagerTest {
     }
 
     @Test
+    public void getChangesForBackup_noMoreChanges() {
+        GetChangesForBackupResponse prevResponse = mCloudBackupManager.getChangesForBackup(null);
+        mFitnessTestUtils.insertRecords(
+                TEST_PACKAGE_NAME,
+                buildStepsRecord(
+                        TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT));
+        GetChangesForBackupResponse response =
+                mCloudBackupManager.getChangesForBackup(prevResponse.getNextChangeToken());
+
+        // Call getChangesForBackup two times to make sure no changes are returned properly in
+        // the end and tokens are still valid.
+        response = mCloudBackupManager.getChangesForBackup(response.getNextChangeToken());
+        response = mCloudBackupManager.getChangesForBackup(response.getNextChangeToken());
+
+        assertThat(response.getChanges()).isEmpty();
+    }
+
+    @Test
+    public void getChangesForBackup_noMoreChangesForIncrementalBackup() {
+        mFitnessTestUtils.insertRecords(
+                TEST_PACKAGE_NAME,
+                buildStepsRecord(
+                        TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT));
+        GetChangesForBackupResponse response = mCloudBackupManager.getChangesForBackup(null);
+
+        while (!response.getChanges().isEmpty()) {
+            response = mCloudBackupManager.getChangesForBackup(response.getNextChangeToken());
+        }
+
+        assertThat(response.getChanges()).isEmpty();
+    }
+
+    @Test
     public void getChangesForBackup_changeTokenIsNull_succeed() {
         mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,

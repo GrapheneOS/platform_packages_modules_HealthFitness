@@ -40,7 +40,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import com.android.compatibility.common.util.SystemUtil.eventually
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.migration.MigrationViewModel.MigrationFragmentState.WithData
@@ -532,7 +531,8 @@ class RouteRequestActivityTest {
                 .logInteraction(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
 
             // Needed to make sure activity is destroyed
-            eventually { assertEquals(Lifecycle.State.DESTROYED, scenario.state) }
+            scenario.result
+            assertEquals(Lifecycle.State.DESTROYED, scenario.state)
         }
     }
 
@@ -584,7 +584,8 @@ class RouteRequestActivityTest {
                 .logInteraction(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
 
             // Needed to make sure activity is destroyed
-            eventually { assertEquals(Lifecycle.State.DESTROYED, scenario.state) }
+            scenario.result
+            assertEquals(Lifecycle.State.DESTROYED, scenario.state)
         }
     }
 
@@ -614,7 +615,7 @@ class RouteRequestActivityTest {
             MutableLiveData(SessionWithAttribution(TEST_SESSION, TEST_APP))
         }
 
-        launchActivityForResult<RouteRequestActivity>(startActivityIntent).use {
+        launchActivityForResult<RouteRequestActivity>(startActivityIntent).use { scenario ->
             onView(
                     withText(
                         "Health Connect is ready to be integrated with your Android system. If you give Health Connect access now, some features may not work until integration is complete."

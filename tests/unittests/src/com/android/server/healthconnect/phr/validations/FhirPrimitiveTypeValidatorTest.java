@@ -1714,7 +1714,223 @@ public class FhirPrimitiveTypeValidatorTest {
                                 "div",
                                 """
                                     <div xmlns=\"http://www.w3.org/1999/xhtml\">
-                                        <table class="MyClass"></table>
+                                        <table class=\"MyClass\"></table>
+                                    </div>
+                                """);
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLink_allowsRelativeUri() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <a href=\"#observation_1\"></a>
+                                    </div>
+                                """);
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLink_allowsHttpScheme() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <a href=\"http://example-uri\"></a>
+                                    </div>
+                                """);
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLink_allowsHttpsScheme() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <a href=\"https://example-uri.com\"></a>
+                                    </div>
+                                """);
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLink_allowsMailToScheme() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <a href=\"mailto://example@gmail.com\"></a>
+                                    </div>
+                                """);
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLink_allowsTelScheme() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <a href=\"tel://0123456789\"></a>
+                                    </div>
+                                """);
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLinkUnknownScheme_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <a href=\"unknown://scheme\"></a>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml link due to disallowed unknown scheme in field:"
+                                + " text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLinkInvalidUriChar_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <img src=\"https://www.exam{ple.com/\"></img>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains("Found invalid xhtml link uri in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLinkImgLongDesc_doesNotAllowDataScheme() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <img longdesc=\"data://image/png;base64;ABCD\"></img>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml link due to disallowed data scheme in field:"
+                                + " text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLinkAHref_doesNotAllowDataScheme() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <a href=\"data://image/png;base64;ABCD\"></a>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml link due to disallowed data scheme in field:"
+                                + " text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLinkImgSrc_allowsDataScheme() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <img src=\"data://image/png;base64;ABCD\"></img>
                                     </div>
                                 """);
 
