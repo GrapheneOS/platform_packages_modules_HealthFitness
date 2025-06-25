@@ -22,7 +22,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static com.android.server.healthconnect.backuprestore.RecordProtoConverter.PROTO_VERSION;
 import static com.android.server.healthconnect.exportimport.DatabaseMerger.RECORD_TYPE_MIGRATION_ORDERING_OVERRIDES;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.PRIMARY_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.OR;
 
 import android.annotation.Nullable;
 import android.database.Cursor;
@@ -112,7 +112,7 @@ public class CloudBackupDatabaseHelper {
 
     /**
      * Verifies whether the provided change logs token is still valid. The token is valid if the
-     * change log which is pointed by the token still exists.
+     * change log which is pointed by the token or its subsequent row still exist.
      */
     boolean isChangeLogsTokenValid(@Nullable String changeLogsPageToken) {
         if (changeLogsPageToken == null) {
@@ -122,16 +122,19 @@ public class CloudBackupDatabaseHelper {
         ChangeLogsRequestHelper.TokenRequest tokenRequest =
                 mChangeLogsRequestHelper.getRequest(/* packageName= */ "", changeLogsPageToken);
         WhereClauses whereClauses =
-                new WhereClauses(AND)
+                new WhereClauses(OR)
                         .addWhereEqualsClause(
                                 PRIMARY_COLUMN_NAME,
-                                String.valueOf(tokenRequest.getRowIdChangeLogs()));
+                                String.valueOf(tokenRequest.getRowIdChangeLogs()))
+                        .addWhereEqualsClause(
+                                PRIMARY_COLUMN_NAME,
+                                String.valueOf(tokenRequest.getRowIdChangeLogs() + 1));
         ReadTableRequest readTableRequest =
                 new ReadTableRequest(ChangeLogsHelper.TABLE_NAME).setWhereClause(whereClauses);
         try (Cursor cursor = mTransactionManager.read(readTableRequest)) {
             int count = cursor.getCount();
             Slog.i(TAG, "The number of matched change logs is: " + count);
-            return count == 1;
+            return count >= 1;
         }
     }
 

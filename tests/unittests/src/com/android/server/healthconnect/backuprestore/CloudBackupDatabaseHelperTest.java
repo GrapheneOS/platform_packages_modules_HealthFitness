@@ -382,6 +382,25 @@ public class CloudBackupDatabaseHelperTest {
     }
 
     @Test
+    public void isChangeLogsTokenValid_currentAndNextChangeLogBothExist_valid() {
+        RecordInternal<StepsRecord> stepRecord =
+                buildStepsRecord(
+                        TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, stepRecord);
+        GetChangesForBackupResponse response =
+                mCloudBackupDatabaseHelper.getChangesAndTokenFromDataTables();
+
+        // Insert a blood pressure record and generate a change log so the previous returned token
+        // does not point to the end of the table.
+        mFitnessTestUtils.insertRecords(
+                TEST_PACKAGE_NAME,
+                buildBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
+
+        assertThat(mCloudBackupDatabaseHelper.isChangeLogsTokenValid(response.getNextChangeToken()))
+                .isTrue();
+    }
+
+    @Test
     public void isChangeLogsTokenValid_nextChangeLogExists_valid() {
         RecordInternal<StepsRecord> stepRecord =
                 buildStepsRecord(
@@ -389,6 +408,21 @@ public class CloudBackupDatabaseHelperTest {
         mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, stepRecord);
         GetChangesForBackupResponse response =
                 mCloudBackupDatabaseHelper.getChangesAndTokenFromDataTables();
+        // Simulate the auto deletion requests
+        Instant now = Instant.now();
+        mTransactionManager.deleteAll(
+                List.of(
+                        new DeleteTableRequest(ChangeLogsHelper.TABLE_NAME)
+                                .setTimeFilter(
+                                        ChangeLogsHelper.TIME_COLUMN_NAME,
+                                        Instant.EPOCH.toEpochMilli(),
+                                        now.toEpochMilli()),
+                        new DeleteTableRequest(ChangeLogsRequestHelper.TABLE_NAME)
+                                .setTimeFilter(
+                                        ChangeLogsRequestHelper.TIME_COLUMN_NAME,
+                                        Instant.EPOCH.toEpochMilli(),
+                                        now.toEpochMilli())));
+
         // Insert a blood pressure record and generate a change log so the previous returned token
         // does not point to the end of the table.
         mFitnessTestUtils.insertRecords(
@@ -405,6 +439,7 @@ public class CloudBackupDatabaseHelperTest {
                 buildStepsRecord(
                         TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT);
         mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, stepRecord);
+
         GetChangesForBackupResponse response =
                 mCloudBackupDatabaseHelper.getChangesAndTokenFromDataTables();
 
