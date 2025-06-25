@@ -22,10 +22,6 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_BACKUP_IN
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_RESTORE_INVOKED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_RESTORE_INVOKED__STATUS__DATA_RESTORE_STATUS_ERROR_NONE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_RESTORE_ELIGIBILITY_CHECKED;
-import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED;
-import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_ERROR_COLLATION_FAILED;
-import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED;
-import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_ERROR_NONE;
 
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.times;
@@ -73,22 +69,6 @@ public class BackupRestoreLoggerTest {
     }
 
     @Test
-    public void test_logSettingsBackupStatus() {
-        // variable to comply with java formatter line length
-        int statusSettingsBackup =
-                HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_ERROR_COLLATION_FAILED;
-
-        mBackupRestoreLogger.logSettingsBackupStatus(
-                statusSettingsBackup, /*timeToSucceedOrFailMillis*/ 100, /*dataSize*/ 2000);
-        verify(mHealthFitnessStatsLog, times(1))
-                .write(
-                        eq(HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED),
-                        eq(statusSettingsBackup),
-                        eq(100),
-                        eq(2000));
-    }
-
-    @Test
     public void test_logDataRestoreStatus() {
         // variable to comply with java formatter line length
         int statusDataRestore =
@@ -106,22 +86,6 @@ public class BackupRestoreLoggerTest {
                         eq(100),
                         eq(50),
                         eq(45));
-    }
-
-    @Test
-    public void test_logSettingsRestoreStatus() {
-        // variable to comply with java formatter line length
-        int statusSettingsRestore =
-                HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_ERROR_NONE;
-
-        mBackupRestoreLogger.logSettingsRestoreStatus(
-                statusSettingsRestore, /*timeToSucceedOrFailMillis*/ 100, /*dataSize*/ 2000);
-        verify(mHealthFitnessStatsLog, times(1))
-                .write(
-                        eq(HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED),
-                        eq(statusSettingsRestore),
-                        eq(100),
-                        eq(2000));
     }
 
     @Test
