@@ -432,6 +432,10 @@ filegroup {
         // Needs more investigation. Just faking the appInfoReader causes the on device test to
         // fail, and isn't enough to get the robo test working.
         "src/com/android/healthconnect/controller/tests/recentaccess/RecentAccessViewModelTest.kt",
+        // Uses the HealthPermissionsReader to get a list of permissions to test
+        "src/com/android/healthconnect/controller/tests/shared/HealthDataCategoryExtensionsTest.kt",
+        // Uses runWithShellPermissionIdentity.
+        "src/com/android/healthconnect/controller/tests/shared/HealthPermissionReaderTest.kt",
         // The first click on some preferences doesn't seem to create a view that can be found for
         // the second click. To be investigated.
         "src/com/android/healthconnect/controller/tests/units/UnitsFragmentTest.kt",
@@ -461,6 +465,9 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/navigation/**/*.kt",
         "src/com/android/healthconnect/controller/tests/onboarding/**/*.kt",
         "src/com/android/healthconnect/controller/tests/recentaccess/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/searchindexables/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/selectabledeletion/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/shared/**/*.kt",
         "src/com/android/healthconnect/controller/tests/units/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utils/**/*.kt",
         "src/com/android/healthconnect/controller/tests/utiltests/**/*.kt",
@@ -496,7 +503,7 @@ android_robolectric_test {
             {
                 name: "java-flags",
                 // TODO: b/427121240 - fix JIT failures for this class.
-                value: "-XX:CompileCommand=dontinline,android/app/ContextImpl*.*",
+                value: "-XX:CompileCommand=exclude,android/app/ContextImpl*.*",
             },
         ],
     },
