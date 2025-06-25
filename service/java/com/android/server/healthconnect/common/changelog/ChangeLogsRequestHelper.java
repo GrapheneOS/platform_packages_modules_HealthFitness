@@ -37,6 +37,7 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.util.Pair;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
@@ -76,7 +77,7 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
      */
     public static final String MEDICAL_RESOURCE_TYPES_COLUMN_NAME = "medical_resource_types";
 
-    private static final String TIME_COLUMN_NAME = "time";
+    @VisibleForTesting public static final String TIME_COLUMN_NAME = "time";
 
     private final TransactionManager mTransactionManager;
 

@@ -744,8 +744,7 @@ public class FitnessRecordReadHelperTest {
 
     @Test
     public void readRecordsByIds_emptyIds_returnsEmptyList() {
-        ExerciseSessionRecordInternal fooSession =
-                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(10000));
+        buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(10000));
 
         List<RecordInternal<?>> returnedRecords =
                 mFitnessRecordReadHelper.readRecords(
