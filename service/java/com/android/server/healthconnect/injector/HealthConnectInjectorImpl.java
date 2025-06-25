@@ -45,6 +45,7 @@ import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.jobs.DailyCleanupJob;
 import com.android.server.healthconnect.common.logging.DatabaseStatsCollector;
+import com.android.server.healthconnect.common.logging.LatencyMetricsCollector;
 import com.android.server.healthconnect.common.logging.UsageStatsCollector;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
@@ -166,6 +167,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final DeviceRecordHelper mDeviceRecordHelper;
     @Nullable private final CloudBackupManager mCloudBackupManager;
     @Nullable private final CloudRestoreManager mCloudRestoreManager;
+    private final LatencyMetricsCollector mLatencyMetricsCollector;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -550,6 +552,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 Clock.systemUTC(),
                                 mBackupRestoreLogger)
                         : null;
+
+        mLatencyMetricsCollector = new LatencyMetricsCollector(mTransactionManager, mAppInfoHelper);
     }
 
     @Override
@@ -768,6 +772,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         return mBuilder.mDatabaseStatsCollector == null
                 ? new DatabaseStatsCollector(getTransactionManager())
                 : mBuilder.mDatabaseStatsCollector;
+    }
+
+    @Override
+    public LatencyMetricsCollector getLatencyMetricsCollector() {
+        return mLatencyMetricsCollector;
     }
 
     @Override
