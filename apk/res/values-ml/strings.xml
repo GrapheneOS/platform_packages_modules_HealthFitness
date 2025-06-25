@@ -429,8 +429,7 @@
     <string name="raw_fhir_field_value" msgid="369633095565031835">"<xliff:g id="PREFIX">%1$s</xliff:g> ഫീൽഡ് <xliff:g id="FIELD">%2$s</xliff:g> മൂല്യം"</string>
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>."</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"വിശദമായ സോഴ്സ് കോഡ്: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
-    <!-- no translation found for pretty_fhir_header_view_source_data (6928222157951266082) -->
-    <skip />
+    <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"ഉറവിട ഡാറ്റ കാണുക"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"ഈ അനുമതിയുള്ള ആപ്പുകൾക്ക് നിങ്ങളുടെ ആരോഗ്യവും ഫിറ്റ്‍നസും സംബന്ധിച്ച ഡാറ്റ റീഡ് ചെയ്യാനും റൈറ്റ് ചെയ്യാനുമാകും."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Health Connect-ൽ സംഭരിച്ച ഡാറ്റ ഏതെല്ലാം ആപ്പുകൾക്ക് ആക്‌സസ് ചെയ്യാനാകുമെന്നത് നിയന്ത്രിക്കുക. ഒരു ആപ്പിന് റീഡ് ചെയ്യാനോ റൈറ്റ് ചെയ്യാനോ കഴിയുന്ന ഡാറ്റ അവലോകനം ചെയ്യാൻ ആപ്പിൽ ടാപ്പ് ചെയ്യുക."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"ആക്സസിന് അനുമതി നൽകിയവ"</string>
