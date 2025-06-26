@@ -494,6 +494,21 @@ public class StepSensorEventListenerTest {
                 createSensor(), SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
     }
 
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void reset_clearsPendingDataAndCancelsFuture() throws Exception {
+        triggerStepEvent(10, MINUTES.toNanos(1));
+        // Wait for the initial processing to complete and schedule the next write
+        mThreadScheduler.mPassiveTrackerExecutor.submit(() -> {}).get();
+        assertThat(mStepSensorEventListener.mPendingBatchWriteFuture).isPresent();
+
+        mStepSensorEventListener.reset();
+
+        assertThat(mStepSensorEventListener.mPendingData.sensorValue()).isEqualTo(0);
+        assertThat(mStepSensorEventListener.mPendingData.sensorTimestampNanos()).isEqualTo(0);
+        assertThat(mStepSensorEventListener.mPendingBatchWriteFuture).isEmpty();
+    }
+
     private void triggerStepEvent(int stepCount, long timestampNanos) throws Exception {
         mStepSensorEventListener.onSensorChanged(
                 createStepSensorEvent(/* value= */ stepCount, /* timestamp= */ timestampNanos));

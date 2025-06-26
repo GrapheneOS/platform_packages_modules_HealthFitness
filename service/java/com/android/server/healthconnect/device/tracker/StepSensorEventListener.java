@@ -61,15 +61,18 @@ class StepSensorEventListener implements SensorEventListener {
     private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
 
     /** Class to hold a cumulative step data point and associated timestamp since boot time. */
-    private record SensorData(int sensorValue, long sensorTimestampNanos) {}
+    @VisibleForTesting
+    record SensorData(int sensorValue, long sensorTimestampNanos) {}
 
     // Sensor manager step count resets on device boot, which is also when the Health Connect
     // process starts.
     // TODO(b/397400522): Check if we need to handle user switching.
     private SensorData mLastSavedData =
             new SensorData(/* sensorValue= */ 0, /* sensorTimestampNanos= */ 0);
-    private SensorData mPendingData =
-            new SensorData(/* sensorValue= */ 0, /* sensorTimestampNanos= */ 0);
+
+    @VisibleForTesting
+    SensorData mPendingData = new SensorData(/* sensorValue= */ 0, /* sensorTimestampNanos= */ 0);
+
     @VisibleForTesting Optional<ScheduledFuture<?>> mPendingBatchWriteFuture = Optional.empty();
 
     StepSensorEventListener(
@@ -95,6 +98,19 @@ class StepSensorEventListener implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // Accuracy ignored.
+    }
+
+    /**
+     * Clears pending data and cancels any scheduled tasks.
+     *
+     * <p>This should only be called after {@code SensorManager#unregisterListener}.
+     */
+    public void reset() {
+        mPendingData = new SensorData(/* sensorValue= */ 0, /* sensorTimestampNanos= */ 0);
+        if (mPendingBatchWriteFuture.isPresent()) {
+            mPendingBatchWriteFuture.get().cancel(/* mayInterruptIfRunning= */ false);
+            mPendingBatchWriteFuture = Optional.empty();
+        }
     }
 
     private void processSensorEvent(SensorEvent event) {
