@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Lihat data kesehatan Anda di berbagai aplikasi"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect memungkinkan Anda berbagi data kesehatan dan kebugaran antar-aplikasi. Lihat aplikasi yang dapat Anda hubungkan sekarang."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Hubungkan aplikasi kedua"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Siapkan aplikasi lain dengan Health Connect agar dapat mulai berbagi data kebugaran dan kesehatan"</string>
 </resources>

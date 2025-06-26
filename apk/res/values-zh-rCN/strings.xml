@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"查看来自各个应用的个人健康数据"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"借助“健康数据共享”，您可以在应用之间共享健身和身心状态数据。立即查看可以关联哪些应用。"</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"关联第二个应用"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"将另一款应用与“健康数据共享”连接，以便它可以开始共享健身与健康数据"</string>
 </resources>

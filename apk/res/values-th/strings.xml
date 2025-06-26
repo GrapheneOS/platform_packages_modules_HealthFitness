@@ -1245,8 +1245,7 @@
     <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"ตั้งค่าแอปอื่นเพื่อให้เริ่มแชร์ข้อมูลการออกกำลังกายและสุขภาวะได้"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"ดำเนินการต่อ"</string>
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"ดูข้อมูลสุขภาพในแอปต่างๆ"</string>
-    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect ให้คุณแชร์ข้อมูลการออกกำลังกายและสุขภาวะระหว่างแอปต่างๆ ได้ ดูแอปที่คุณสามาถเชื่อมต่อได้เลย"</string>
-    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"เชื่อมต่อแอปที่สอง"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect ให้คุณแชร์ข้อมูลการออกกำลังกายและสุขภาวะระหว่างแอปต่างๆ ได้ ดูแอปที่คุณสามารถเชื่อมต่อได้เลย"</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"เชื่อมต่อแอปที่ 2"</string>
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"ตั้งค่าแอปอื่นด้วย Health Connect เพื่อให้แอปดังกล่าวเริ่มแชร์ข้อมูลการออกกำลังกายและสุขภาวะได้"</string>
 </resources>

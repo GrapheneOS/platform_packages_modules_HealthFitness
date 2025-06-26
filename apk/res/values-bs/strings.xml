@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Pogledajte zdravstvene podatke u aplikacijama"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect vam omogućava da dijelite podatke o fitnesu i wellnessu između aplikacija. Pogledajte koje aplikacije možete povezati sada."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Povežite drugu aplikaciju"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Postavite drugu aplikaciju s Health Connectom da može započeti dijeliti podatke o fitnesu i wellnessu"</string>
 </resources>

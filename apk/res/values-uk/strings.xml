@@ -565,8 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Назад"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Почати"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Видалити дані"</string>
-    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
-    <skip />
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Кнопка \"Видалити дані для додатка %1$s\""</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Увійти в режим видалення"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Вийти з режиму видалення"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Виберіть, які дані видалити з Health Connect"</string>
@@ -1225,8 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Використано в 1 додатку}one{Використано в # додатку}few{Використано в # додатках}many{Використано в # додатках}other{Використано в # додатка}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Дозвіл не використовувався протягом останніх 24 годин"</string>
     <string name="accessed" msgid="4424701457530587176">"Останній доступ: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
-    <skip />
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Підключіть перший додаток"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Підключіть ці додатки, щоб почати обмінюватися з ними даними про здоров’я і фізичну активність"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Підключіть другий додаток"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Налаштуйте ще один додаток, щоб обмінюватися даними про здоров’я і фізичну активність із додатком <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1236,28 +1234,18 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Докладніше про Health Connect"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Додаток підключено до Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Майже готово"</string>
-    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
-    <skip />
-    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
-    <skip />
-    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
-    <skip />
-    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
-    <skip />
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Відкрийте ці додатки, щоб завершити налаштування й почати надсилати дані"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Відкрийте ці додатки, щоб завершити налаштування й почати надсилати дані, або продовжуйте підключати доступні додатки"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Підключені додатки"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Доступні додатки для підключення"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Переглядайте дані про здоров’я в різних додатках"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Почніть обмінюватися даними про фізичну активність і самопочуття між додатками"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Налаштувати"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Підключіть другий додаток"</string>
-    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
-    <skip />
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Налаштуйте інший додаток, щоб він міг передавати дані про фізичну активність і самопочуття"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Продовжити"</string>
-    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Переглядайте дані про здоров’я в різних додатках"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"За допомогою сервісу Health Connect ви можете обмінюватися даними про фізичну активність і самопочуття між додатками. Дізнайтеся, які додатки можна підключити."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Підключіть другий додаток"</string>
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Підключіть ще один додаток до Health Connect, щоб він міг передавати дані про фізичну активність і самопочуття"</string>
 </resources>

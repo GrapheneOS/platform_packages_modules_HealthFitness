@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Consulta os teus datos de saúde en distintas aplicacións"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Saúde conectada permíteche compartir datos sobre a actividade física e o benestar entre as túas aplicacións. Mira que aplicacións podes conectar agora."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Conecta unha segunda aplicación"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configura outra aplicación con Saúde conectada para que poida comezar a compartir datos de actividade física e benestar"</string>
 </resources>

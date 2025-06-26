@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Ilovalar orasidagi salomatlik maʼlumotlaringizni koʻrish"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect sizga ilovalaringiz orasida fitnes va salomatlik maʼlumotlarini ulashish imkonini beradi. Hozirda qaysi ilovalarga ulanis mumkinligi bilan tanishing."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Ikkinchi ilovani ulash"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Fitnes va salomatlik maʼlumotlarini ulashish uchun Health Connect bilan boshqa ilovani sozlang"</string>
 </resources>

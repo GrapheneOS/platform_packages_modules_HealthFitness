@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Consulta tus datos de salud en todas las apps"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect te permite compartir datos de actividad física y bienestar entre tus apps. Consulta qué apps puedes conectar ahora."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Conecta una segunda app"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configura otra app con Health Connect para que pueda comenzar a compartir datos de actividad física y bienestar"</string>
 </resources>

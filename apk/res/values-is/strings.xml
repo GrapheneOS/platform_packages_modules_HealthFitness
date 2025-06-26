@@ -565,8 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Til baka"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Byrja"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Eyða gögnum"</string>
-    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
-    <skip />
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Hnappurinn „Eyða gögnum %1$s“"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Eyða"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Hætta að eyða"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Veldu gögnin sem þú vilt eyða úr Heilsutengingu"</string>
@@ -1225,8 +1224,7 @@
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Notuð af einu forriti}one{Notuð af # forriti}other{Notuð af # forritum}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Ekki notuð síðasta sólarhringinn"</string>
     <string name="accessed" msgid="4424701457530587176">"Opnuð kl. <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <!-- no translation found for connect_first_two_apps_title (1454255533865066646) -->
-    <skip />
+    <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Tengdu fyrsta forritið þitt"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Tengdu þessi forrit til að byrja að deila heilsu- og hreystigögnum með þeim"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Tengdu annað forrit"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Settu upp eitt forrit í viðbót til að deila heilsu- og hreystigögnum með <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1236,28 +1234,18 @@
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Nánar um Heilsutengingu"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Forrit tengt Heilsutengingu"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Næstum búið"</string>
-    <!-- no translation found for almost_done_description_all_connected (1465769717714906466) -->
-    <skip />
-    <!-- no translation found for almost_done_description_more_to_connect (3646816278951171117) -->
-    <skip />
-    <!-- no translation found for almost_done_connected_apps (7278779868120518202) -->
-    <skip />
-    <!-- no translation found for almost_done_available_to_connect (8127248100268494160) -->
-    <skip />
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Opnaðu þessi forrit núna til að ljúka við uppsetningu þeirra og byrja að deila gögnum"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Opnaðu þessi forrit núna til að ljúka við uppsetningu þeirra og byrja að deila gögnum eða haltu áfram að tengja tiltæk forrit"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Tengd forrit"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Forrit sem er hægt að tengja"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Hafðu aðgang að heilsugögnunum þínum í mörgum forritum"</string>
-    <!-- no translation found for zero_apps_onboarding_banner_summary (5058666025564192436) -->
-    <skip />
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Byrjaðu að deila gögnum sem tengjast heilsu og vellíðan á milli forritanna þinna"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Setja upp"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Tengdu annað forrit"</string>
-    <!-- no translation found for one_app_onboarding_banner_summary (6536124569531567081) -->
-    <skip />
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Settu upp annað forrit svo að það geti byrjað að deila gögnum sem tengjast heilsu þinni og vellíðan."</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Halda áfram"</string>
-    <!-- no translation found for zero_apps_onboarding_notification_title (91273455219085200) -->
-    <skip />
-    <!-- no translation found for zero_apps_onboarding_notification_summary (2147721012542285564) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_title (8943630345866204874) -->
-    <skip />
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Hafðu aðgang að heilsugögnunum þínum í mörgum forritum"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Heilsutenging gerir þér kleift að deila gögnum um heilsu og vellíðan á milli forritanna þinna. Sjáðu forritin sem þú getur tengt núna."</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Tengdu annað forrit"</string>
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Settu upp annað forrit í Heilsutengingu þannig að það geti byrjað að deila gögnum sem tengjast hreysti og vellíðan."</string>
 </resources>

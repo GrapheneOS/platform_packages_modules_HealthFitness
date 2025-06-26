@@ -1247,6 +1247,5 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"বিভিন্ন অ্যাপ জুড়ে আপনার স্বাস্থ্য সংক্রান্ত ডেটা দেখুন"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect আপনার বিভিন্ন অ্যাপের মধ্যে ফিটনেস ও সুস্থতা সম্পর্কিত ডেটা শেয়ার করতে দেয়। আপনি এখন কোন অ্যাপ কানেক্ট করতে পারবেন তা দেখুন।"</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"দ্বিতীয় কোনও অ্যাপ কানেক্ট করুন"</string>
-    <!-- no translation found for one_app_onboarding_notification_summary (7417264366326783394) -->
-    <skip />
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Health Connect-এর সাথে আরেকটি অ্যাপ সেট-আপ করুন, যাতে এটি ফিটনেস এবং সুস্থতা সম্পর্কিত ডেটা শেয়ারিং চালু করতে পারে"</string>
 </resources>
