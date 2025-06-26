@@ -500,7 +500,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mDeviceRecordHelper,
                                 mDeviceDataSourcesHelper,
                                 mHealthDataCategoryPriorityHelper,
-                                mUserManager)
+                                mUserManager,
+                                mPreferenceHelper)
                         : builder.mTrackerManager;
         mPermissionPackageChangesOrchestrator =
                 builder.mPermissionPackageChangesOrchestrator == null
