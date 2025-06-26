@@ -40,6 +40,8 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import static java.util.Collections.emptyList;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -61,6 +63,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
@@ -102,7 +105,6 @@ import java.util.UUID;
 @RunWith(AndroidJUnit4.class)
 public class ImportManagerTest {
 
-    private static final String TAG = "ImportManagerTest";
     private static final String TEST_PACKAGE_NAME = "package.name";
     private static final String TEST_DIRECTORY_NAME = "test";
     private static final UserHandle DEFAULT_USER_HANDLE = UserHandle.of(UserHandle.myUserId());
@@ -126,14 +128,13 @@ public class ImportManagerTest {
     private ExportImportSettingsStorage mExportImportSettingsStorage;
     private AppInfoHelper mAppInfoHelper;
     private DatabaseHelpers mDatabaseHelpers;
-    private DeviceInfoHelper mDeviceInfoHelper;
+    private ChangeLogsRequestHelper mChangeLogsRequestHelper;
     private InternalHealthConnectMappings mInternalHealthConnectMappings;
     private HealthConnectThreadScheduler mThreadScheduler;
 
     private final Compressor mCompressor = new Compressor();
 
     @Mock private HealthConnectNotificationSender mNotificationSender;
-
     @Mock private ExportImportNotificationFactory mNotificationFactory;
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
@@ -153,10 +154,11 @@ public class ImportManagerTest {
         mDatabaseHelpers = healthConnectInjector.getDatabaseHelpers();
         mExportImportSettingsStorage = healthConnectInjector.getExportImportSettingsStorage();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
-        mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
+        DeviceInfoHelper deviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
         mInternalHealthConnectMappings = healthConnectInjector.getInternalHealthConnectMappings();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
         mNotificationFactory = healthConnectInjector.getExportImportNotificationFactory();
+        mChangeLogsRequestHelper = healthConnectInjector.getChangeLogsRequestHelper();
 
         mStorageUtils = new StorageUtils(healthConnectInjector);
         mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
@@ -178,7 +180,7 @@ public class ImportManagerTest {
                         mTransactionManager,
                         healthConnectInjector.getFitnessRecordUpsertHelper(),
                         healthConnectInjector.getFitnessRecordReadHelper(),
-                        mDeviceInfoHelper,
+                        deviceInfoHelper,
                         mPriorityHelper,
                         fakeClock,
                         mNotificationSender,
@@ -603,10 +605,16 @@ public class ImportManagerTest {
         mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(123, 345, 100));
         File zipToImport = zipExportedDb(exportCurrentDb());
         mDatabaseHelpers.clearAllData(mTransactionManager);
-
-        // Insert a record to generate a change log.
-        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
-        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(456, 789, 120));
+        // Generate a change logs token
+        ChangeLogsRequestHelper.TokenRequest tokenRequest =
+                new ChangeLogsRequestHelper.TokenRequest(
+                        /* packageNamesToFilter= */ List.of(),
+                        emptyList(),
+                        /* medicalResourceTypes= */ List.of(),
+                        // Pass empty string to avoid package filters.
+                        /* requestingPackageName= */ "",
+                        /* rowIdChangeLogs= */ 0);
+        mChangeLogsRequestHelper.getNextPageToken(tokenRequest, /* lastRowId= */ 0);
 
         mImportManagerSpy.runImport(mContext.getUser(), Uri.fromFile(zipToImport));
 
