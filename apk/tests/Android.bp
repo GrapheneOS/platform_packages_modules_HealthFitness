@@ -432,16 +432,20 @@ filegroup {
         // This code likely needs to be refactored to use Intents to avoid race conditions when
         // detecting the started activity under robolectric.
         "src/com/android/healthconnect/controller/tests/navigation/TrampolineActivityTest.kt",
-        // Permissions tests that need investigating
-        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/LoadHealthPermissionAppsTest.kt",
-        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/MedicalAppFragmentTest.kt",
-        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/MockedFitnessAppFragmentTest.kt",
-        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/searchapps/SearchAppsFragmentTest.kt",
+        // Simple mocking did not fix the failing tests, needs more investigation
         "src/com/android/healthconnect/controller/tests/permissions/connectedapps/settings/SettingsActivityTest.kt",
+        // This seems to not terminate with call to get result when restore/migration in progress.
+        // Needs more investigation.
         "src/com/android/healthconnect/controller/tests/permissions/connectedapps/settings/SettingsCombinedPermissionsFragmentTest.kt",
+        // Just mocking permission reader leads to tests failing, needs more investigation
         "src/com/android/healthconnect/controller/tests/permissions/connectedapps/settings/SettingsFitnessAppFragmentTest.kt",
+        // This seems to not terminate with call to get result when restore/migration in progress.
+        // Needs more investigation.
         "src/com/android/healthconnect/controller/tests/permissions/connectedapps/settings/SettingsManagePermissionFragmentTest.kt",
+        // This also cannot be made to pass with a simple introduction of a mock HealthConnectManager
+        // Needs more investigation
         "src/com/android/healthconnect/controller/tests/permissions/connectedapps/settings/SettingsMedicalAppFragmentTest.kt",
+        // Permissions tests that need investigating, have not even had a simple inspection.
         "src/com/android/healthconnect/controller/tests/permissions/data/FitnessPermissionStringsTest.kt",
         "src/com/android/healthconnect/controller/tests/permissions/data/HealthPermissionTest.kt",
         "src/com/android/healthconnect/controller/tests/permissions/data/MedicalPermissionTypeTest.kt",

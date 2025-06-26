@@ -412,7 +412,9 @@ class MedicalAppFragmentTest {
         )
         onView(withText("Allow all")).perform(click())
 
-        onView(withText("Remove all health record permissions?")).check(matches(isDisplayed()))
+        onView(withText("Remove all health record permissions?"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
         onView(
                 withText(
                     "$TEST_APP_NAME will no longer be able to read or write" +
@@ -451,7 +453,9 @@ class MedicalAppFragmentTest {
         )
         onView(withText("Allow all")).perform(click())
 
-        onView(withText("Remove all health record permissions?")).check(matches(isDisplayed()))
+        onView(withText("Remove all health record permissions?"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
         onView(
                 withText(
                     "$TEST_APP_NAME will no longer be able to read or write" +
@@ -490,7 +494,9 @@ class MedicalAppFragmentTest {
         )
         onView(withText("Allow all")).perform(click())
 
-        onView(withText("Remove all health record permissions?")).check(matches(isDisplayed()))
+        onView(withText("Remove all health record permissions?"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
         onView(
                 withText(
                     "$TEST_APP_NAME will no longer be able to read or write" +
@@ -529,7 +535,9 @@ class MedicalAppFragmentTest {
         )
         onView(withText("Allow all")).perform(click())
 
-        onView(withText("Remove all health record permissions?")).check(matches(isDisplayed()))
+        onView(withText("Remove all health record permissions?"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
         onView(
                 withText(
                     "$TEST_APP_NAME will no longer be able to read or write" +
@@ -597,7 +605,7 @@ class MedicalAppFragmentTest {
         )
         onView(withText("Allow all")).perform(click())
 
-        onView(withText("Remove all")).perform(click())
+        onView(withText("Remove all")).inRoot(isDialog()).perform(click())
         verify(healthConnectLogger)
             .logInteraction(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
 

@@ -20,6 +20,7 @@ package com.android.healthconnect.controller.tests.permissions.connectedapps
 
 import android.content.Intent
 import android.content.pm.PackageManager.FLAG_PERMISSION_USER_SET
+import android.health.connect.HealthConnectManager
 import android.health.connect.HealthPermissions
 import androidx.core.os.bundleOf
 import androidx.test.espresso.Espresso.onView
@@ -34,16 +35,20 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.app.FitnessAppFragment
 import com.android.healthconnect.controller.permissions.data.HealthPermission.Companion.fromPermissionString
+import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.service.HealthPermissionManagerModule
 import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -56,16 +61,19 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
-@UninstallModules(HealthPermissionManagerModule::class)
+@UninstallModules(HealthPermissionManagerModule::class, HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
 class MockedFitnessAppFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @BindValue val manager: HealthConnectManager = mock()
     @BindValue val healthPermissionManager: HealthPermissionManager = mock()
     @BindValue val healthPermissionReader: HealthPermissionReader = mock()
+    @BindValue lateinit var appInfoReader: AppInfoReader
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         whenever(healthPermissionReader.getValidHealthPermissions(TEST_APP_PACKAGE_NAME))
             .thenReturn(

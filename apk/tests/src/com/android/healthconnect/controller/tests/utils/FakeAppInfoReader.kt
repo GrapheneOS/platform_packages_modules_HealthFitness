@@ -29,6 +29,7 @@ suspend fun createFakeAppInfoReader(): AppInfoReader {
             TEST_APP_PACKAGE_NAME to TEST_APP_NAME,
             TEST_APP_PACKAGE_NAME_2 to TEST_APP_NAME_2,
             TEST_APP_PACKAGE_NAME_3 to TEST_APP_NAME_3,
+            OLD_PERMISSIONS_TEST_APP_PACKAGE_NAME to OLD_APP_NAME,
             "com.android.healthconnect.controller.tests" to
                 "dagger.hilt.android.testing.HiltTestApplication",
         )
