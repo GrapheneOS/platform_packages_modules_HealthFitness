@@ -429,8 +429,7 @@
     <string name="raw_fhir_field_value" msgid="369633095565031835">"<xliff:g id="PREFIX">%1$s</xliff:g> Campo <xliff:g id="FIELD">%2$s</xliff:g> Valore"</string>
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>."</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Codice sorgente dettagliato: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
-    <!-- no translation found for pretty_fhir_header_view_source_data (6928222157951266082) -->
-    <skip />
+    <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"Visualizza dati di origine"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"Le app con questa autorizzazione possono leggere e scrivere i dati relativi alla salute e all\'attività fisica."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Stabilisci quali app possono accedere ai dati archiviati in Connessione Salute. Tocca un\'app per controllare quali dati può leggere o scrivere."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Accesso consentito"</string>

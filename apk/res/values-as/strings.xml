@@ -429,8 +429,7 @@
     <string name="raw_fhir_field_value" msgid="369633095565031835">"<xliff:g id="PREFIX">%1$s</xliff:g> ক্ষেত্ৰ <xliff:g id="FIELD">%2$s</xliff:g> মান"</string>
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>।"</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"সবিশেষযুক্ত উৎস ক’ড: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
-    <!-- no translation found for pretty_fhir_header_view_source_data (6928222157951266082) -->
-    <skip />
+    <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"উৎসৰ ডেটা চাওক"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"এই অনুমতিটো লাভ কৰা এপে আপোনাৰ স্বাস্থ্য আৰু শৰীৰচৰ্চাৰ ডেটা পঢ়িব আৰু লিখিব পাৰে"</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Health Connectত ষ্ট’ৰ হৈ থকা ডেটা কোনবোৰ এপে এক্সেছ কৰিব পাৰে সেয়া নিয়ন্ত্ৰণ কৰক। কোনো এটা এপে পঢ়িব অথবা লিখিব পৰা ডেটাখিনি পৰ্যালোচনা কৰিবলৈ সেই এপ্‌টোত টিপক।"</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"অনুমতি দিয়া এক্সেছ"</string>
