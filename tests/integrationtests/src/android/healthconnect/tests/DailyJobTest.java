@@ -24,11 +24,9 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import android.content.Context;
-import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.testing.cts.JobUtils;
-import android.healthconnect.testing.cts.PermissionUtils;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
@@ -64,13 +62,6 @@ public class DailyJobTest {
     public void setUp() throws Exception {
         Context mContext = ApplicationProvider.getApplicationContext();
         deleteAllDataFromHealthConnect();
-
-        PermissionUtils.grantHealthPermission(
-                mContext.getPackageName(), HealthPermissions.READ_STEPS);
-        PermissionUtils.grantHealthPermission(
-                mContext.getPackageName(), HealthPermissions.WRITE_STEPS);
-        PermissionUtils.grantHealthPermission(
-                mContext.getPackageName(), HealthPermissions.READ_HEALTH_DATA_HISTORY);
 
         SystemUtil.eventually(
                 () ->
