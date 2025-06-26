@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.tests.permissions.connectedapps
 
 import android.content.Intent
 import android.content.Intent.*
+import android.health.connect.HealthConnectManager
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MediatorLiveData
@@ -35,6 +36,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
+import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -57,6 +59,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission.Fi
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.READ
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.WRITE
+import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.Constants.SHOW_MANAGE_APP_SECTION
 import com.android.healthconnect.controller.shared.HealthPermissionReader
@@ -77,6 +80,7 @@ import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
@@ -98,12 +102,14 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
+@UninstallModules(HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
 class FitnessAppFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val setFlagsRule = SetFlagsRule()
 
+    @BindValue val manager: HealthConnectManager = mock()
     @BindValue val viewModel: AppPermissionViewModel = mock()
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
     @BindValue val healthPermissionReader: HealthPermissionReader = mock()
@@ -391,6 +397,7 @@ class FitnessAppFragmentTest {
         onView(withText("Allow all")).perform(click())
 
         onView(withText("Remove all fitness and wellness permissions?"))
+            .inRoot(isDialog())
             .check(matches(isDisplayed()))
         onView(
                 withText(
@@ -465,6 +472,7 @@ class FitnessAppFragmentTest {
         onView(withText("Allow all")).perform(click())
 
         onView(withText("Remove all fitness and wellness permissions?"))
+            .inRoot(isDialog())
             .check(matches(isDisplayed()))
         onView(
                 withText(
@@ -511,6 +519,7 @@ class FitnessAppFragmentTest {
         onView(withText("Allow all")).perform(click())
 
         onView(withText("Remove all fitness and wellness permissions?"))
+            .inRoot(isDialog())
             .check(matches(isDisplayed()))
         onView(
                 withText(
@@ -554,7 +563,9 @@ class FitnessAppFragmentTest {
         )
         onView(withText("Allow all")).perform(click())
 
-        onView(withText("Remove all permissions?")).check(matches(isDisplayed()))
+        onView(withText("Remove all permissions?"))
+            .inRoot(RootMatchers.isDialog())
+            .check(matches(isDisplayed()))
         onView(
                 withText(
                     "$TEST_APP_NAME will no longer be able to read or write" +
@@ -600,6 +611,7 @@ class FitnessAppFragmentTest {
         onView(withText("Allow all")).perform(click())
 
         onView(withText("Remove all fitness and wellness permissions?"))
+            .inRoot(isDialog())
             .check(matches(isDisplayed()))
         onView(
                 withText(
@@ -643,7 +655,7 @@ class FitnessAppFragmentTest {
         )
         onView(withText("Allow all")).perform(click())
 
-        onView(withText("Remove all permissions?")).check(matches(isDisplayed()))
+        onView(withText("Remove all permissions?")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(
                 withText(
                     "$TEST_APP_NAME will no longer be able to read or write" +
@@ -686,7 +698,7 @@ class FitnessAppFragmentTest {
         )
         onView(withText("Allow all")).perform(click())
 
-        onView(withText("Remove all permissions?")).check(matches(isDisplayed()))
+        onView(withText("Remove all permissions?")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(
                 withText(
                     "$TEST_APP_NAME will no longer be able to read or write" +
@@ -733,7 +745,7 @@ class FitnessAppFragmentTest {
         )
         onView(withText("Allow all")).perform(click())
 
-        onView(withText("Remove all")).perform(click())
+        onView(withText("Remove all")).inRoot(isDialog()).perform(click())
         verify(healthConnectLogger)
             .logInteraction(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
 

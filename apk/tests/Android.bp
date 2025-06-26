@@ -412,6 +412,9 @@ filegroup {
     name: "robo-ui-tests-sources-exclude",
     srcs: [
         // TODO: b/419191898 - Update this to get as many Controller tests bivalent as possible
+        // Not needed for Robo test
+        "src/com/android/healthconnect/controller/tests/ManifestTest.kt",
+        "src/com/android/healthconnect/controller/tests/MainActivityTest.kt",
         // This gets an "NoActivityResumedException" on two tests. Needs more investigation
         // However, does use "showOnboarding()" which might not work on robolectric as it uses
         // SharedPreferences.
@@ -429,12 +432,32 @@ filegroup {
         // This code likely needs to be refactored to use Intents to avoid race conditions when
         // detecting the started activity under robolectric.
         "src/com/android/healthconnect/controller/tests/navigation/TrampolineActivityTest.kt",
+        // Permissions tests that need investigating
+        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/LoadHealthPermissionAppsTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/MedicalAppFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/MockedFitnessAppFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/searchapps/SearchAppsFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/settings/SettingsActivityTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/settings/SettingsCombinedPermissionsFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/settings/SettingsFitnessAppFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/settings/SettingsManagePermissionFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/settings/SettingsMedicalAppFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/data/FitnessPermissionStringsTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/data/HealthPermissionTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/data/MedicalPermissionTypeTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/request/MockedPermissionsActivityTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/request/FitnessPermissionsFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/request/MedicalPermissionsFragmentTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/request/PermissionsActivityTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/request/RequestPermissionViewModelTest.kt",
         // Needs more investigation. Just faking the appInfoReader causes the on device test to
         // fail, and isn't enough to get the robo test working.
         "src/com/android/healthconnect/controller/tests/recentaccess/RecentAccessViewModelTest.kt",
         // Activity creation is failing because Robolectric doesn't set callingPackage before
         // calling onCreate
         "src/com/android/healthconnect/controller/tests/route/RouteRequestActivityTest.kt",
+        // Exclude safety centre
+        "src/com/android/healthconnect/controller/tests/safetycenter/**/*.kt",
         // Uses the HealthPermissionsReader to get a list of permissions to test
         "src/com/android/healthconnect/controller/tests/shared/HealthDataCategoryExtensionsTest.kt",
         // Uses runWithShellPermissionIdentity.
@@ -449,36 +472,6 @@ filegroup {
     path: "src",
 }
 
-// A group of files to run Robolectric tests on
-// Extracted to a file group so we can run an identical set on device for comparisons on things like
-// speed and success
-filegroup {
-    name: "robo-ui-tests-sources-include",
-    srcs: [
-        // TODO: b/419191898 - Update this to get as many Controller tests bivalent as possible
-        "src/com/android/healthconnect/controller/tests/TestActivity.kt",
-        "src/com/android/healthconnect/controller/tests/autodelete/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/backuprestore/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/data/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/datasources/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/exportimport/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/home/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/managedata/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/migration/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/navigation/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/onboarding/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/recentaccess/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/route/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/searchindexables/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/selectabledeletion/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/shared/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/units/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/utils/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/utiltests/**/*.kt",
-    ],
-    path: "src",
-}
-
 // Robolectric test target for testing Health Connect Controller APK UI
 // This target is currently under development to allow bivalent tests
 // go/deviceless-tests
@@ -486,7 +479,8 @@ android_robolectric_test {
     name: "HealthConnectControllerRoboUITests",
     sdk_version: "module_current",
     srcs: [
-        ":robo-ui-tests-sources-include",
+        "src/com/android/healthconnect/controller/tests/TestActivity.kt",
+        "src/com/android/healthconnect/controller/tests/*/**/*.kt",
     ],
     exclude_srcs: [
         "src/**/safetycenter/*.kt",
@@ -571,7 +565,8 @@ android_app {
 android_test {
     name: "HealthConnectControllerOnDeviceUITests",
     srcs: [
-        ":robo-ui-tests-sources-include",
+        "src/**/*.java",
+        "src/**/*.kt",
     ],
     exclude_srcs: [
         "src/**/safetycenter/*.kt",

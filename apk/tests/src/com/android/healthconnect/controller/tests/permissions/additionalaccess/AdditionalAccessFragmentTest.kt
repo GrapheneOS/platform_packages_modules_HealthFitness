@@ -32,6 +32,7 @@ import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.RootMatchers
+import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -1129,7 +1130,9 @@ class AdditionalAccessFragmentTest {
         onView(withText(R.string.route_permissions_label)).perform(click())
         onIdle()
 
-        onView(withId(R.id.exercise_routes_permission_dialog)).check(matches(isDisplayed()))
+        onView(withId(R.id.exercise_routes_permission_dialog))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
         verify(healthConnectLogger).logInteraction(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
         verify(healthConnectLogger)
             .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_DIALOG_CONTAINER)
