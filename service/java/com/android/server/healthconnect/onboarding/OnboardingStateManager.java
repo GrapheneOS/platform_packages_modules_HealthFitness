@@ -28,6 +28,8 @@ import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.os.UserHandle;
 import android.util.Slog;
 
+import androidx.annotation.NonNull;
+
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
@@ -159,13 +161,7 @@ public final class OnboardingStateManager {
 
     @HealthConnectOnboardingState.OnboardingState
     private int evaluateCurrentOnboardingState(boolean bypassInstallTime) {
-        List<PackageInfo> compatibleFitnessApps =
-                mPackageInfoUtils
-                        .getPackagesCompatibleWithHealthConnect(mContext, mUserHandle)
-                        .stream()
-                        .filter(info -> !isSystemApp(info.packageName))
-                        .filter(this::hasFitnessPerm)
-                        .toList();
+        List<PackageInfo> compatibleFitnessApps = getCompatibleFitnessApps();
 
         if (compatibleFitnessApps.isEmpty()) {
             return ONBOARDING_BANNER_STATE_HIDE;
@@ -204,6 +200,16 @@ public final class OnboardingStateManager {
         }
 
         return ONBOARDING_BANNER_STATE_HIDE;
+    }
+
+    @NonNull
+    private List<PackageInfo> getCompatibleFitnessApps() {
+        return mPackageInfoUtils
+                .getPackagesCompatibleWithHealthConnect(mContext, mUserHandle)
+                .stream()
+                .filter(info -> !isSystemApp(info.packageName))
+                .filter(this::hasFitnessPerm)
+                .toList();
     }
 
     private boolean isConnected(PackageInfo app) {

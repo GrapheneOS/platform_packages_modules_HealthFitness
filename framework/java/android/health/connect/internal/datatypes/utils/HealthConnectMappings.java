@@ -45,8 +45,10 @@ import java.util.stream.Collectors;
 
 /** @hide */
 public final class HealthConnectMappings {
+    public static final String WRITE = ".WRITE_";
     private final Map<Integer, DataTypeDescriptor> mRecordIdToDescriptorMap;
     private final Map<Integer, String> mPermissionCategoryToReadPermissionMap;
+    private final Map<String, Integer> mReadPermissionToPermissionCategoryMap;
     private final Map<Integer, String> mPermissionCategoryToWritePermissionMap;
     private final Map<String, Integer> mWritePermissionToDataCategoryMap;
     private final Map<Integer, String[]> mDataCategoryToWritePermissionsMap;
@@ -95,6 +97,12 @@ public final class HealthConnectMappings {
                         dataTypeDescriptors,
                         DataTypeDescriptor::getPermissionCategory,
                         DataTypeDescriptor::getReadPermission);
+
+        mReadPermissionToPermissionCategoryMap =
+                toArrayMap(
+                        dataTypeDescriptors,
+                        DataTypeDescriptor::getReadPermission,
+                        DataTypeDescriptor::getPermissionCategory);
 
         mPermissionCategoryToWritePermissionMap =
                 toArrayMap(
@@ -150,6 +158,14 @@ public final class HealthConnectMappings {
     }
 
     /**
+     * @return true if {@code permissionName} is a read-permission
+     * @hide
+     */
+    public boolean isReadPermission(@NonNull String permissionName) {
+        return mReadPermissionToPermissionCategoryMap.containsKey(permissionName);
+    }
+
+    /**
      * @return true if {@code permissionName} is a fitness-permission
      * @hide
      */
@@ -183,6 +199,30 @@ public final class HealthConnectMappings {
             return HealthPermissions.getHealthDataCategoryForWritePermission(permissionName);
         }
         return mWritePermissionToDataCategoryMap.getOrDefault(permissionName, DEFAULT_INT);
+    }
+
+    /**
+     * @return {@link HealthDataCategory} for a READ {@code permissionName}. -1 if permission
+     *     category for {@code permissionName} is not found (or if {@code permissionName} is READ)
+     * @hide
+     */
+    @HealthPermissionCategory.Type
+    public int getHealthPermissionCategoryForReadPermission(@Nullable String permissionName) {
+        return mReadPermissionToPermissionCategoryMap.getOrDefault(permissionName, DEFAULT_INT);
+    }
+
+    /**
+     * @return a write permission for given read permission or null if there is no corresponding
+     *     write permission..
+     * @hide
+     */
+    @Nullable
+    public String getWritePermissionForReadPermission(String readPermission) {
+        int permissionCategory = getHealthPermissionCategoryForReadPermission(readPermission);
+        if (permissionCategory == DEFAULT_INT) {
+            return null;
+        }
+        return getHealthWritePermission(permissionCategory);
     }
 
     /**
