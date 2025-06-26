@@ -19,6 +19,7 @@ package android.healthconnect.tests.permissions;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
+import static com.android.compatibility.common.util.SystemUtil.eventually;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -173,7 +174,8 @@ public class GrantTimeIntegrationTest {
         revokePermissionWithDelay(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
         grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
         Instant grantTime2 = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
-        assertThat(grantTime.isBefore(grantTime2)).isTrue();
+
+        eventually(() -> assertThat(grantTime.isBefore(grantTime2)).isTrue());
     }
 
     void assertStartAccessDateIsAdequate(Instant firstGrantTime) {

@@ -39,7 +39,9 @@ import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TestObserver
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import javax.inject.Inject
@@ -81,13 +83,14 @@ class AdditionalAccessViewModelTest {
     private val loadDeclaredHealthPermissionUseCase: LoadDeclaredHealthPermissionUseCase = mock()
     private val getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase = mock()
 
-    @Inject lateinit var appInfoReader: AppInfoReader
+    @BindValue lateinit var appInfoReader: AppInfoReader
 
     private lateinit var additionalAccessViewModel: AdditionalAccessViewModel
     private lateinit var loadExerciseRoutePermissionUseCase: LoadExerciseRoutePermissionUseCase
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
         loadExerciseRoutePermissionUseCase =
