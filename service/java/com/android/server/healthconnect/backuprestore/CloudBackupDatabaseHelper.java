@@ -111,8 +111,16 @@ public class CloudBackupDatabaseHelper {
     }
 
     /**
-     * Verifies whether the provided change logs token is still valid. The token is valid if the
-     * change log which is pointed by the token or its subsequent row still exist.
+     * Verifies whether the provided change logs token is still valid.
+     *
+     * <p>The token is valid:
+     *
+     * <ul>
+     *   <li>If the change log pointed by the token exists.
+     *   <li>If the next row of change log pointed by the token still exists. This could happen due
+     *       to auto deletion.
+     *   <li>If no change logs have ever been generated.
+     * </ul>
      */
     boolean isChangeLogsTokenValid(@Nullable String changeLogsPageToken) {
         if (changeLogsPageToken == null) {
@@ -121,6 +129,9 @@ public class CloudBackupDatabaseHelper {
         }
         ChangeLogsRequestHelper.TokenRequest tokenRequest =
                 mChangeLogsRequestHelper.getRequest(/* packageName= */ "", changeLogsPageToken);
+        if (tokenRequest.getRowIdChangeLogs() == 0 && mChangeLogsHelper.getLatestRowId() == 0) {
+            return true;
+        }
         WhereClauses whereClauses =
                 new WhereClauses(OR)
                         .addWhereEqualsClause(
