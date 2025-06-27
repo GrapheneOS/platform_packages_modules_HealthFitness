@@ -49,6 +49,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.SystemService;
 import com.android.server.appop.AppOpsManagerLocal;
+import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigrationStateChangeJob;
@@ -59,6 +60,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -177,6 +179,23 @@ public class HealthConnectManagerServiceTest {
 
         service.onUserSwitching(mMockTargetUser, mMockTargetUser);
         verify(mOnboardingNotificationJobScheduler, never()).cancelAll();
+    }
+
+    @Test
+    public void testUserSwitch_callsClearTracker() {
+        HealthConnectInjector injector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+        HealthConnectInjector spiedInjector = Mockito.spy(injector);
+        TrackerManager mockTrackerManager = Mockito.mock(TrackerManager.class);
+        Mockito.doReturn(mockTrackerManager).when(spiedInjector).getTrackerManager();
+        HealthConnectManagerService service =
+                new HealthConnectManagerService(mContext, spiedInjector);
+
+        service.onUserSwitching(mMockTargetUser, mMockTargetUser);
+
+        verify(mockTrackerManager, times(1)).clearTracker();
     }
 
     private HealthConnectManagerService makeServiceWithTemporaryDir() {

@@ -52,9 +52,10 @@ public class TrackerManagerImpl implements TrackerManager {
     private final Context mContext;
     private final HealthConnectPermissionHelper mPermissionHelper;
     private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
-    private final StepSensorEventListener mListener;
     private final UserManager mUserManager;
     private final PackageManager mPackageManager;
+
+    @VisibleForTesting StepSensorEventListener mListener;
 
     public TrackerManagerImpl(
             Context context,
@@ -112,6 +113,22 @@ public class TrackerManagerImpl implements TrackerManager {
         if (Flags.stepTrackingEnabled()) {
             // Implementation goes here. Do nothing for now.
         }
+    }
+
+    @Override
+    public void clearTracker() {
+        if (!Flags.stepTrackingEnabled()) {
+            return;
+        }
+
+        if (mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)) {
+            // Health Connect runs on Wear for permission management but we don't want to enable
+            // passive step tracking for it
+            return;
+        }
+
+        unsubscribeFromSensorManager();
+        mListener.reset();
     }
 
     /** Updates the Sensor Manager subscription in case app permissions have changed. */

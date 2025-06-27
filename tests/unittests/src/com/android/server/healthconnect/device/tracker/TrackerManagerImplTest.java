@@ -318,6 +318,20 @@ public class TrackerManagerImplTest {
         verify(mSensorManager).unregisterListener(any(StepSensorEventListener.class));
     }
 
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void clearTracker_unsubscribesAndResetsListener() {
+        StepSensorEventListener listenerMock = mock(StepSensorEventListener.class);
+        TrackerManagerImpl manager =
+                (TrackerManagerImpl) mHealthConnectInjector.getTrackerManager();
+        manager.mListener = listenerMock;
+
+        manager.clearTracker();
+
+        verify(mSensorManager).unregisterListener(listenerMock);
+        verify(listenerMock).reset();
+    }
+
     private void grantAppStepsPermission(String packageName) {
         PackageInfo packageInfo = new PackageInfo();
         packageInfo.packageName = packageName;

@@ -137,6 +137,7 @@ public class HealthConnectManagerService extends SystemService {
             // background.
             mHealthConnectService.cancelBackupRestoreTimeouts();
         }
+        mHealthConnectInjector.getTrackerManager().clearTracker();
 
         HealthConnectThreadScheduler threadScheduler = mHealthConnectInjector.getThreadScheduler();
         threadScheduler.shutdownThreadPools();
