@@ -43,6 +43,7 @@ import static java.util.Objects.requireNonNull;
 import android.Manifest;
 import android.app.UiAutomation;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.health.connect.AggregateRecordsGroupedByDurationResponse;
 import android.health.connect.AggregateRecordsGroupedByPeriodResponse;
@@ -1128,6 +1129,11 @@ public final class TestUtils {
             builder.addDataOrigins(getDataOrigin(packageName));
         }
         return builder.build();
+    }
+
+    /** Creates an {@link Intent} to launch the matching apps flow. */
+    public static Intent createConnectMatchingAppsIntent(Set<Class<? extends Record>> recordTypes) {
+        return getHealthConnectManager().createConnectMatchingAppsIntent(recordTypes);
     }
 
     /** Copies record ids from the one list to another in order. Workaround for b/328228842. */
