@@ -33,6 +33,7 @@ import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
 import com.android.healthconnect.controller.data.entries.api.LoadMedicalEntriesUseCase
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataUseCase
 import com.android.healthconnect.controller.data.formatters.DistanceFormatter
+import com.android.healthconnect.controller.data.formatters.MindfulnessSessionFormatter
 import com.android.healthconnect.controller.data.formatters.SleepSessionFormatter
 import com.android.healthconnect.controller.data.formatters.StepsFormatter
 import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
@@ -167,6 +168,7 @@ class UseCaseModule {
         totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter,
         distanceFormatter: DistanceFormatter,
         sleepSessionFormatter: SleepSessionFormatter,
+        mindfulnessSessionFormatter: MindfulnessSessionFormatter,
         healthConnectManager: HealthConnectManager,
         appInfoReader: AppInfoReader,
         loadEntriesHelper: LoadEntriesHelper,
@@ -177,6 +179,7 @@ class UseCaseModule {
             totalCaloriesBurnedFormatter,
             distanceFormatter,
             sleepSessionFormatter,
+            mindfulnessSessionFormatter,
             healthConnectManager,
             appInfoReader,
             dispatcher,

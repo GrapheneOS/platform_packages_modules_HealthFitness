@@ -31,6 +31,7 @@ import com.android.healthconnect.controller.data.entries.api.LoadDataAggregation
 import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.data.formatters.DistanceFormatter
+import com.android.healthconnect.controller.data.formatters.MindfulnessSessionFormatter
 import com.android.healthconnect.controller.data.formatters.SleepSessionFormatter
 import com.android.healthconnect.controller.data.formatters.StepsFormatter
 import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
@@ -58,10 +59,12 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -87,6 +90,8 @@ class LoadDataAggregationsUseCaseTest {
 
     @Inject lateinit var sleepSessionFormatter: SleepSessionFormatter
 
+    @Inject lateinit var mindfulnessSessionFormatter: MindfulnessSessionFormatter
+
     @Before
     fun setup() = runTest {
         MockitoAnnotations.initMocks(this)
@@ -101,6 +106,7 @@ class LoadDataAggregationsUseCaseTest {
                 totalCaloriesBurnedFormatter,
                 distanceFormatter,
                 sleepSessionFormatter,
+                mindfulnessSessionFormatter,
                 healthConnectManager,
                 appInfoReader,
                 Dispatchers.Main,
@@ -110,21 +116,17 @@ class LoadDataAggregationsUseCaseTest {
     @Test
     fun loadDataAggregationsUseCase_withPeriodAggregationForSteps_returnsFormattedStepsAggregation() =
         runTest {
-            Mockito.doAnswer(prepareStepsAggregationAnswer())
-                .`when`(healthConnectManager)
-                .aggregate<Long>(
-                    ArgumentMatchers.any(),
-                    ArgumentMatchers.any(),
-                    ArgumentMatchers.any(),
-                )
+            doAnswer(prepareStepsAggregationAnswer())
+                .whenever(healthConnectManager)
+                .aggregate<Long>(any(), any(), any())
 
             val input =
                 LoadAggregationInput.PeriodAggregation(
                     FitnessPermissionType.STEPS,
                     TEST_APP_PACKAGE_NAME,
-                    Instant.now(),
-                    DateNavigationPeriod.PERIOD_DAY,
-                    true,
+                    displayedStartTime = Instant.now(),
+                    period = DateNavigationPeriod.PERIOD_DAY,
+                    showDataOrigin = true,
                 )
 
             val result = loadDataAggregationsUseCase.invoke(input)
@@ -137,21 +139,17 @@ class LoadDataAggregationsUseCaseTest {
     @Test
     fun loadDataAggregationsUseCase_withPeriodAggregationForDistance_returnsFormattedDistanceAggregation() =
         runTest {
-            Mockito.doAnswer(prepareDistanceAggregationAnswer())
-                .`when`(healthConnectManager)
-                .aggregate<Length>(
-                    ArgumentMatchers.any(),
-                    ArgumentMatchers.any(),
-                    ArgumentMatchers.any(),
-                )
+            doAnswer(prepareDistanceAggregationAnswer())
+                .whenever(healthConnectManager)
+                .aggregate<Length>(any(), any(), any())
 
             val input =
                 LoadAggregationInput.PeriodAggregation(
                     FitnessPermissionType.DISTANCE,
                     TEST_APP_PACKAGE_NAME,
-                    Instant.now(),
-                    DateNavigationPeriod.PERIOD_DAY,
-                    true,
+                    displayedStartTime = Instant.now(),
+                    period = DateNavigationPeriod.PERIOD_DAY,
+                    showDataOrigin = true,
                 )
 
             val result = loadDataAggregationsUseCase.invoke(input)
@@ -164,21 +162,17 @@ class LoadDataAggregationsUseCaseTest {
     @Test
     fun loadDataAggregationsUseCase_withPeriodAggregationForCalories_returnsFormattedCaloriesAggregation() =
         runTest {
-            Mockito.doAnswer(prepareCaloriesAggregationAnswer())
-                .`when`(healthConnectManager)
-                .aggregate<Energy>(
-                    ArgumentMatchers.any(),
-                    ArgumentMatchers.any(),
-                    ArgumentMatchers.any(),
-                )
+            doAnswer(prepareCaloriesAggregationAnswer())
+                .whenever(healthConnectManager)
+                .aggregate<Energy>(any(), any(), any())
 
             val input =
                 LoadAggregationInput.PeriodAggregation(
                     FitnessPermissionType.TOTAL_CALORIES_BURNED,
                     TEST_APP_PACKAGE_NAME,
-                    Instant.now(),
-                    DateNavigationPeriod.PERIOD_DAY,
-                    true,
+                    displayedStartTime = Instant.now(),
+                    period = DateNavigationPeriod.PERIOD_DAY,
+                    showDataOrigin = true,
                 )
 
             val result = loadDataAggregationsUseCase.invoke(input)
@@ -191,21 +185,17 @@ class LoadDataAggregationsUseCaseTest {
     @Test
     fun loadDataAggregationsUseCase_withCustomAggregationForSleep_returnsFormattedSleepAggregation() =
         runTest {
-            Mockito.doAnswer(prepareSleepAggregationAnswer())
-                .`when`(healthConnectManager)
-                .aggregate<Long>(
-                    ArgumentMatchers.any(),
-                    ArgumentMatchers.any(),
-                    ArgumentMatchers.any(),
-                )
+            doAnswer(prepareSleepAggregationAnswer())
+                .whenever(healthConnectManager)
+                .aggregate<Long>(any(), any(), any())
 
             val input =
                 LoadAggregationInput.CustomAggregation(
                     FitnessPermissionType.SLEEP,
                     TEST_APP_PACKAGE_NAME,
-                    Instant.now(),
-                    Instant.now(),
-                    true,
+                    startTime = Instant.now(),
+                    endTime = Instant.now(),
+                    showDataOrigin = true,
                 )
 
             val result = loadDataAggregationsUseCase.invoke(input)
@@ -215,42 +205,68 @@ class LoadDataAggregationsUseCaseTest {
             assertThat((result as UseCaseResults.Success).data).isEqualTo(expected)
         }
 
-    private fun prepareStepsAggregationAnswer():
-        (InvocationOnMock) -> AggregateRecordsResponse<Long> {
+    @Test
+    fun loadDataAggregationsUseCase_withCustomAggregationForMindfulness_returnsFormattedMindfulnessAggregation() =
+        runTest {
+            doAnswer(prepareMindfulnessAggregationAnswer(Duration.ofHours(6).plusMinutes(15)))
+                .whenever(healthConnectManager)
+                .aggregate<Long>(any(), any(), any())
+
+            val input =
+                LoadAggregationInput.CustomAggregation(
+                    FitnessPermissionType.MINDFULNESS,
+                    TEST_APP_PACKAGE_NAME,
+                    startTime = Instant.now(),
+                    endTime = Instant.now(),
+                    showDataOrigin = true,
+                )
+
+            val result = loadDataAggregationsUseCase.invoke(input)
+
+            val expected =
+                FormattedEntry.FormattedAggregation("6h 15m", "6 hours 15 minutes", TEST_APP_NAME)
+            assertThat(result is UseCaseResults.Success).isTrue()
+            assertThat((result as UseCaseResults.Success).data).isEqualTo(expected)
+        }
+
+    private fun prepareStepsAggregationAnswer(): (InvocationOnMock) -> Unit {
         val answer = { args: InvocationOnMock ->
             val receiver = args.arguments[2] as OutcomeReceiver<AggregateRecordsResponse<Long>, *>
             receiver.onResult(getStepsAggregationResponse())
-            getStepsAggregationResponse()
         }
         return answer
     }
 
-    private fun prepareDistanceAggregationAnswer():
-        (InvocationOnMock) -> AggregateRecordsResponse<Length> {
+    private fun prepareDistanceAggregationAnswer(): (InvocationOnMock) -> Unit {
         val answer = { args: InvocationOnMock ->
             val receiver = args.arguments[2] as OutcomeReceiver<AggregateRecordsResponse<Length>, *>
             receiver.onResult(getDistanceAggregationResponse())
-            getDistanceAggregationResponse()
         }
         return answer
     }
 
-    private fun prepareCaloriesAggregationAnswer():
-        (InvocationOnMock) -> AggregateRecordsResponse<Energy> {
+    private fun prepareCaloriesAggregationAnswer(): (InvocationOnMock) -> Unit {
         val answer = { args: InvocationOnMock ->
             val receiver = args.arguments[2] as OutcomeReceiver<AggregateRecordsResponse<Energy>, *>
             receiver.onResult(getCaloriesAggregationResponse())
-            getCaloriesAggregationResponse()
         }
         return answer
     }
 
-    private fun prepareSleepAggregationAnswer():
-        (InvocationOnMock) -> AggregateRecordsResponse<Long> {
+    private fun prepareSleepAggregationAnswer(): (InvocationOnMock) -> Unit {
         val answer = { args: InvocationOnMock ->
             val receiver = args.arguments[2] as OutcomeReceiver<AggregateRecordsResponse<Long>, *>
             receiver.onResult(getSleepAggregationResponse())
-            getSleepAggregationResponse()
+        }
+        return answer
+    }
+
+    private fun prepareMindfulnessAggregationAnswer(
+        duration: Duration
+    ): (InvocationOnMock) -> Unit {
+        val answer = { args: InvocationOnMock ->
+            val receiver = args.arguments[2] as OutcomeReceiver<AggregateRecordsResponse<Long>, *>
+            receiver.onResult(getMindfulnessAggregationResponse(duration))
         }
         return answer
     }
@@ -259,7 +275,7 @@ class LoadDataAggregationsUseCaseTest {
         val aggregationResult =
             AggregateResult<Long>(
                 100,
-                null,
+                /* zoneOffset = */ null,
                 AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME)),
             )
         return AggregateRecordsResponse<Long>(
@@ -274,7 +290,7 @@ class LoadDataAggregationsUseCaseTest {
         val aggregationResult =
             AggregateResult(
                 Length.fromMeters(1000.0),
-                null,
+                /* zoneOffset = */ null,
                 AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME)),
             )
         return AggregateRecordsResponse<Length>(
@@ -289,7 +305,7 @@ class LoadDataAggregationsUseCaseTest {
         val aggregationResult =
             AggregateResult(
                 Energy.fromCalories(1500000.0),
-                null,
+                /* zoneOffset = */ null,
                 AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME)),
             )
         return AggregateRecordsResponse<Energy>(
@@ -304,12 +320,29 @@ class LoadDataAggregationsUseCaseTest {
         val aggregationResult =
             AggregateResult(
                 Duration.ofHours(11).plus(Duration.ofMinutes(5)).toMillis(),
-                null,
+                /* zoneOffset = */ null,
                 AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME)),
             )
         return AggregateRecordsResponse<Long>(
             mapOf(
                 AggregationType.AggregationTypeIdentifier.SLEEP_SESSION_DURATION_TOTAL to
+                    aggregationResult
+            )
+        )
+    }
+
+    private fun getMindfulnessAggregationResponse(
+        duration: Duration
+    ): AggregateRecordsResponse<Long> {
+        val aggregationResult =
+            AggregateResult(
+                duration.toMillis(),
+                /* zoneOffset = */ null,
+                AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME)),
+            )
+        return AggregateRecordsResponse<Long>(
+            mapOf(
+                AggregationType.AggregationTypeIdentifier.MINDFULNESS_SESSION_DURATION_TOTAL to
                     aggregationResult
             )
         )
