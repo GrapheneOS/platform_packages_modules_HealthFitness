@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.testapps.toolbox.ui
 
+import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -30,6 +31,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -154,10 +156,6 @@ class HomeFragment : Fragment() {
         view.requireViewById<Button>(R.id.backup_restore_button).setOnClickListener {
             goToBackupRestorePage()
         }
-
-        // view
-        //     .findViewById<Button>(R.id.seed_performance_insert_data_button_in_parallel)
-        //     .setOnClickListener { performanceTestingViewModel.beginInsertingData(true) }
         mNavigationController = findNavController()
 
         homeFragmentViewModel.seedAllDataState.observe(viewLifecycleOwner) { state ->
@@ -167,6 +165,42 @@ class HomeFragment : Fragment() {
                 Toast.makeText(context, R.string.toast_seed_data_success, Toast.LENGTH_SHORT).show()
             }
         }
+
+        setUpMatchmaking(view)
+    }
+
+    private fun setUpMatchmaking(view: View) {
+        val matchmakingButton = view.requireViewById<Button>(R.id.matchmaking_button)
+        homeFragmentViewModel.loadMatchmakingStatus(manager)
+        homeFragmentViewModel.canConnectMatchingApps.observe(viewLifecycleOwner) { canConnect ->
+            matchmakingButton.isVisible = canConnect
+        }
+
+        val matchingAppsIntent = homeFragmentViewModel.createMatchmakingIntent(manager)
+        matchmakingButton.setOnClickListener {
+            // TODO(b/427409014): Uncomment once HC Activity to handle intent is in place.
+            // matchmakingActivityResultLauncher.launch(matchingAppsIntent)
+            Toast.makeText(
+                    requireContext(),
+                    "Matchmaking intent can be launched",
+                    Toast.LENGTH_SHORT,
+                )
+                .show()
+        }
+    }
+
+    private val matchmakingActivityResultLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                Toast.makeText(context, "Matchmaking successful", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Matchmaking activity cancelled", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    override fun onResume() {
+        super.onResume()
+        homeFragmentViewModel.loadMatchmakingStatus(manager)
     }
 
     private fun launchHealthConnect() {
