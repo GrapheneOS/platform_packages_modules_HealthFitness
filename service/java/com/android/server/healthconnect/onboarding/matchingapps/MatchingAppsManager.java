@@ -21,7 +21,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.health.connect.datatypes.Record;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
-import android.os.UserHandle;
 
 import com.android.internal.annotations.GuardedBy;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
@@ -161,7 +160,7 @@ public final class MatchingAppsManager {
     private boolean isNotUserFixed(PackageInfo packageInfo, String permission) {
         int flags =
                 mHealthConnectPermissionHelper.getHealthPermissionFlags(
-                        packageInfo.packageName, UserHandle.CURRENT, permission);
+                        packageInfo.packageName, mUserContext.getUser(), permission);
         return (flags & PackageManager.FLAG_PERMISSION_USER_FIXED) == 0;
     }
 
