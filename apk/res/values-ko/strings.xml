@@ -429,8 +429,7 @@
     <string name="raw_fhir_field_value" msgid="369633095565031835">"<xliff:g id="PREFIX">%1$s</xliff:g> 필드 <xliff:g id="FIELD">%2$s</xliff:g> 값"</string>
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>."</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"자세한 소스 코드: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
-    <!-- no translation found for pretty_fhir_header_view_source_data (6928222157951266082) -->
-    <skip />
+    <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"소스 데이터 보기"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"이 권한이 있는 앱은 내 건강/피트니스 데이터를 읽고 쓸 수 있습니다."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"헬스 커넥트에 저장된 데이터에 액세스할 수 있는 앱을 관리합니다. 어떤 데이터를 읽거나 쓸 수 있는지 검토할 앱을 탭하세요."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"액세스가 허용된 앱"</string>

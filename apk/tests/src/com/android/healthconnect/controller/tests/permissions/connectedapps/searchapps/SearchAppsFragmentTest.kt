@@ -1,6 +1,7 @@
 package com.android.healthconnect.controller.tests.permissions.connectedapps.searchapps
 
 import android.content.Context
+import android.health.connect.HealthConnectManager
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
@@ -11,6 +12,7 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withTagValue
@@ -20,6 +22,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
 import com.android.healthconnect.controller.permissions.connectedapps.searchapps.SearchAppsFragment
+import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
@@ -39,6 +42,7 @@ import com.google.common.truth.Truth
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import org.hamcrest.Matchers.*
 import org.junit.After
 import org.junit.Before
@@ -53,6 +57,7 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
+@UninstallModules(HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
 class SearchAppsFragmentTest {
 
@@ -60,6 +65,7 @@ class SearchAppsFragmentTest {
 
     @BindValue
     val viewModel: ConnectedAppsViewModel = Mockito.mock(ConnectedAppsViewModel::class.java)
+    @BindValue val manager: HealthConnectManager = mock()
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
     private lateinit var navHostController: TestNavHostController
     private lateinit var context: Context
@@ -123,6 +129,7 @@ class SearchAppsFragmentTest {
         onView(withTagValue(`is`("Delete button inactive app"))).perform(click())
 
         onView(withText("Permanently delete all $TEST_APP_NAME_3 data?"))
+            .inRoot(isDialog())
             .check(matches(isDisplayed()))
         verify(healthConnectLogger).logInteraction(AppPermissionsElement.INACTIVE_APP_DELETE_BUTTON)
     }

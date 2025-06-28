@@ -40,6 +40,7 @@ import java.util.Locale
 import java.util.TimeZone
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -58,7 +59,7 @@ class MindfulnessSessionFormatterTest {
     @Before
     fun setup() {
         context = InstrumentationRegistry.getInstrumentation().context
-        context.setLocale(Locale.UK)
+        context.setLocale(Locale.US)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
 
         hiltRule.inject()
@@ -80,9 +81,9 @@ class MindfulnessSessionFormatterTest {
             .isEqualTo(
                 FormattedEntry.ExerciseSessionEntry(
                     uuid = "",
-                    header = "07:06 - 07:22 • com.app.name",
-                    headerA11y = "from 07:06 to 07:22 • com.app.name",
-                    title = "Unknown type • 16 m",
+                    header = "7:06 AM - 7:22 AM • com.app.name",
+                    headerA11y = "from 7:06 AM to 7:22 AM • com.app.name",
+                    title = "Unknown type • 16m",
                     titleA11y = "Unknown type • 16 minutes",
                     dataType = MindfulnessSessionRecord::class,
                     notes = null,
@@ -111,8 +112,8 @@ class MindfulnessSessionFormatterTest {
             .isEqualTo(
                 FormattedEntry.ExerciseSessionEntry(
                     uuid = "test_id",
-                    header = "07:06 - 07:22 • com.app.name",
-                    headerA11y = "from 07:06 to 07:22 • com.app.name",
+                    header = "7:06 AM - 7:22 AM • com.app.name",
+                    headerA11y = "from 7:06 AM to 7:22 AM • com.app.name",
                     title = "Meditation • foo-title",
                     titleA11y = "Meditation • foo-title",
                     dataType = MindfulnessSessionRecord::class,
@@ -121,5 +122,115 @@ class MindfulnessSessionFormatterTest {
                     isClickable = false,
                 )
             )
+    }
+
+    @Test
+    fun formatUnit_returnsMindfulnessUnit() {
+        runTest {
+            val duration = Duration.ofHours(10).plusMinutes(54).toMillis()
+
+            val formattedValue = formatter.formatUnit(duration)
+
+            assertThat(formattedValue).isEqualTo("10h 54m")
+        }
+    }
+
+    @Test
+    fun formatA11yUnit_returnsA11yMindfulnessUnit() {
+        runTest {
+            val duration = Duration.ofHours(10).plusMinutes(54).toMillis()
+
+            val formattedValue = formatter.formatA11yUnit(duration)
+
+            assertThat(formattedValue).isEqualTo("10 hours 54 minutes")
+        }
+    }
+
+    @Test
+    fun formatUnit_returnsMindfulnessUnitLargeNumber() {
+        runTest {
+            val duration = Duration.ofHours(200).plusMinutes(59).toMillis()
+
+            val formattedValue = formatter.formatUnit(duration)
+
+            assertThat(formattedValue).isEqualTo("200h 59m")
+        }
+    }
+
+    @Test
+    fun formatA11yUnit_returnsA11yMindfulnessUnitLargeNumber() {
+        runTest {
+            val duration = Duration.ofHours(200).plusMinutes(59).toMillis()
+
+            val formattedValue = formatter.formatA11yUnit(duration)
+
+            assertThat(formattedValue).isEqualTo("200 hours 59 minutes")
+        }
+    }
+
+    @Test
+    fun formatUnitMinutes_returnsMindfulnessUnitMinutes() {
+        runTest {
+            val duration = Duration.ofMinutes(14).toMillis()
+
+            val formattedValue = formatter.formatUnit(duration)
+
+            assertThat(formattedValue).isEqualTo("14m")
+        }
+    }
+
+    @Test
+    fun formatA11yUnitMinutes_returnsA11yMindfulnessUnitMinutes() {
+        runTest {
+            val duration = Duration.ofMinutes(14).toMillis()
+
+            val formattedValue = formatter.formatA11yUnit(duration)
+
+            assertThat(formattedValue).isEqualTo("14 minutes")
+        }
+    }
+
+    @Test
+    fun formatUnitMinutes_returnsMindfulnessUnitZeroMinutes() {
+        runTest {
+            val duration = Duration.ofMinutes(0).toMillis()
+
+            val formattedValue = formatter.formatUnit(duration)
+
+            assertThat(formattedValue).isEqualTo("0m")
+        }
+    }
+
+    @Test
+    fun formatA11yUnitMinutes_returnsA11yMindfulnessUnitZeroMinutes() {
+        runTest {
+            val duration = Duration.ofMinutes(0).toMillis()
+
+            val formattedValue = formatter.formatA11yUnit(duration)
+
+            assertThat(formattedValue).isEqualTo("0 minutes")
+        }
+    }
+
+    @Test
+    fun formatUnitHours_returnsMindfulnessUnitHours() {
+        runTest {
+            val duration = Duration.ofHours(14).toMillis()
+
+            val formattedValue = formatter.formatUnit(duration)
+
+            assertThat(formattedValue).isEqualTo("14h")
+        }
+    }
+
+    @Test
+    fun formatA11yUnitHours_returnsA11yMindfulnessUnitHours() {
+        runTest {
+            val duration = Duration.ofHours(14).toMillis()
+
+            val formattedValue = formatter.formatA11yUnit(duration)
+
+            assertThat(formattedValue).isEqualTo("14 hours")
+        }
     }
 }

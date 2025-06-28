@@ -429,8 +429,7 @@
     <string name="raw_fhir_field_value" msgid="369633095565031835">"<xliff:g id="PREFIX">%1$s</xliff:g> အကွက် <xliff:g id="FIELD">%2$s</xliff:g> တန်ဖိုး"</string>
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>- <xliff:g id="VALUE">%2$s</xliff:g>။"</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"အသေးစိတ် ရင်းမြစ်ကုဒ်- <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
-    <!-- no translation found for pretty_fhir_header_view_source_data (6928222157951266082) -->
-    <skip />
+    <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"ရင်းမြစ်ဒေတာကို ကြည့်ရန်"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"ဤခွင့်ပြုချက်ရှိသောအက်ပ်များသည် သင်၏ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးဒေတာကို ဖတ်ပြီး ရေးနိုင်သည်။"</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Health Connect တွင် သိမ်းထားသောဒေတာကို မည်သည့်အက်ပ်က သုံးနိုင်ကြောင်း သတ်မှတ်နိုင်သည်။ အက်ပ်ကဖတ်နိုင် (သို့) ရေးနိုင်သော ဒေတာများ ပြန်ကြည့်ရန် ၎င်းကိုတို့ပါ။"</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"သုံးခွင့်ပြုထားသည်များ"</string>

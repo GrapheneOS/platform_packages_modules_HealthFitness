@@ -429,8 +429,7 @@
     <string name="raw_fhir_field_value" msgid="369633095565031835">"<xliff:g id="PREFIX">%1$s</xliff:g> <xliff:g id="FIELD">%2$s</xliff:g> eremuaren balioa"</string>
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>."</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Iturburu-kode xehatua: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
-    <!-- no translation found for pretty_fhir_header_view_source_data (6928222157951266082) -->
-    <skip />
+    <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"Ikusi iturburuko datuak"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"Baimen hau duten aplikazioek zure osasunari eta fitnessari buruzko datuak irakurri eta idatz ditzakete."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Kontrolatu zein aplikaziok atzi ditzaketen Health Connect-eko datuak. Sakatu aplikazio bat zein datu irakurri edo idatz ditzakeen berrikusteko."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Erabiltzeko baimena dutenak"</string>
@@ -557,7 +556,7 @@
     <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"Eginda"</string>
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"Ez dago aplikaziorik erabilgarri. Instalatu hodeian biltegiratzeko aplikazioak, haiek hemen ikusteko."</string>
     <string name="export_import_install_apps_text" msgid="5026922993254770904">"Aukera gehiago izateko, instalatu hodeian biltegiratzeko aplikazioak, haiek hemen ikusteko"</string>
-    <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Joan Play Store-ra"</string>
+    <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Joan Google Play Store-ra"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Hasi Health Connect erabiltzen"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect-ek osasunari eta fitnessari buruzko datuak gordetzen ditu eta gailuko aplikazioak erraz sinkronizatzeko aukera eskaintzen du"</string>
     <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect-ek osasunari eta fitnessari buruzko datuak gordetzen eta sinkronizatzen ditu zenbait aplikaziotatik.\n\n"<b>"Fitnessari eta ongizateari buruzko datuak"</b>" (adibidez, ariketa-saioak, pausoak, elikadura, loa eta abar).\n\n"<b>"Osasunari buruzko erregistroak"</b>" (adibidez, txertoak, laborategiko emaitzak eta abar)."</string>
@@ -691,7 +690,7 @@
     <string name="barbell_shoulder_press" msgid="3800236222803424251">"Sorbalda-bultzada pisuekin"</string>
     <string name="baseball" msgid="2520520093470304570">"Beisbola"</string>
     <string name="basketball" msgid="1453863811744469210">"Saskibaloia"</string>
-    <string name="bench_press" msgid="640506654204391301">"Banku-bultzada"</string>
+    <string name="bench_press" msgid="640506654204391301">"Banku-prentsa"</string>
     <string name="bench_sit_up" msgid="6601081870476287683">"Banku-abdominalak"</string>
     <string name="biking" msgid="4108296097363777467">"Bizikletaz ibiltzea"</string>
     <string name="biking_stationary" msgid="1538524429562124202">"Bizikleta estatikoan aritzea"</string>
@@ -1005,7 +1004,7 @@
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Bilatu aplikazioak Google Play-n"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Bidali oharrak"</string>
     <string name="send_feedback_description" msgid="2887207112856240778">"Esan iezaguzu zein osasun- eta fitness-aplikazio erabili nahi dituzun Health Connect-ekin"</string>
-    <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
+    <string name="playstore_app_title" msgid="4138464328693481809">"Google Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Ezabatze automatikoa"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Ezabatze automatikoa"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Kontrolatu noiz arte biltegiratu nahi dituzun datuak Health Connect-en, denbora tarte jakin baten ondoren datu horiek automatikoki ezabatzeko aukera programatuta"</string>

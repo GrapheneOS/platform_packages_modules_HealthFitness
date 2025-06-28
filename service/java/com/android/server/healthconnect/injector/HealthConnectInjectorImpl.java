@@ -81,6 +81,7 @@ import com.android.server.healthconnect.notifications.NotificationStatsLogger;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationSender;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager;
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
+import com.android.server.healthconnect.onboarding.matchingapps.MatchingAppsManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastoreXmlPersistence;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -168,6 +169,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Nullable private final CloudBackupManager mCloudBackupManager;
     @Nullable private final CloudRestoreManager mCloudRestoreManager;
     private final LatencyMetricsCollector mLatencyMetricsCollector;
+    @Nullable private final MatchingAppsManager mMatchingAppsManager;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -554,6 +556,16 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         : null;
 
         mLatencyMetricsCollector = new LatencyMetricsCollector(mTransactionManager, mAppInfoHelper);
+
+        mMatchingAppsManager =
+                builder.mMatchingAppsManager == null && Flags.matchmaking()
+                        ? new MatchingAppsManager(
+                                hcContext,
+                                mHealthConnectPermissionHelper,
+                                mPackageInfoUtils,
+                                mHealthConnectMappings,
+                                context.getPackageManager())
+                        : builder.mMatchingAppsManager;
     }
 
     @Override
@@ -865,6 +877,12 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         return mCloudRestoreManager;
     }
 
+    @Nullable
+    @Override
+    public MatchingAppsManager getMatchingAppsManager() {
+        return mMatchingAppsManager;
+    }
+
     /**
      * Returns a new Builder of Health Connect Injector
      *
@@ -939,6 +957,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private UserManager mUserManager;
         @Nullable private CloudBackupManager mCloudBackupManager;
         @Nullable private CloudRestoreManager mCloudRestoreManager;
+        @Nullable private MatchingAppsManager mMatchingAppsManager;
 
         private Builder(Context context) {
             mContext = context;
@@ -1289,6 +1308,12 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         /** Set fake or custom {@link UserManager}. */
         public Builder setUserManager(UserManager userManager) {
             mUserManager = Objects.requireNonNull(userManager);
+            return this;
+        }
+
+        /** Set fake or custom {@link MatchingAppsManager}. */
+        public Builder setMatchingAppsManager(MatchingAppsManager matchingAppsManager) {
+            mMatchingAppsManager = Objects.requireNonNull(matchingAppsManager);
             return this;
         }
 

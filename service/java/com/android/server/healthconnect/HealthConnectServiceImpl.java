@@ -37,6 +37,7 @@ import static android.health.connect.datatypes.MedicalDataSource.validateMedical
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isPhrChangeLogsEnabled;
+import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.API_METHOD_UNKNOWN;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.CREATE_MEDICAL_DATA_SOURCE;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.DELETE_DATA;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.DELETE_MEDICAL_DATA_SOURCE_WITH_DATA;
@@ -69,6 +70,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteException;
 import android.health.HealthFitnessStatsLog;
+import android.health.connect.CanConnectMatchingAppsRequest;
 import android.health.connect.Constants;
 import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
@@ -98,6 +100,7 @@ import android.health.connect.aidl.IAccessLogsResponseCallback;
 import android.health.connect.aidl.IActivityDatesResponseCallback;
 import android.health.connect.aidl.IAggregateRecordsResponseCallback;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
+import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
@@ -212,6 +215,7 @@ import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
+import com.android.server.healthconnect.onboarding.matchingapps.MatchingAppsManager;
 import com.android.server.healthconnect.permission.DataPermissionEnforcer;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
@@ -320,6 +324,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             new WeakReference<>(null);
     private final HealthConnectThreadScheduler mThreadScheduler;
     private final HealthFitnessStatsLog mStatsLog;
+    @Nullable private final MatchingAppsManager mMatchingAppsManager;
 
     private volatile UserHandle mCurrentForegroundUser;
 
@@ -365,7 +370,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             BackupRestoreLogger backupRestoreLogger,
             ExportImportNotificationFactory exportImportNotificationFactory,
             @Nullable CloudBackupManager cloudBackupManager,
-            @Nullable CloudRestoreManager cloudRestoreManager) {
+            @Nullable CloudRestoreManager cloudRestoreManager,
+            @Nullable MatchingAppsManager matchingAppsManager) {
         mContext = context;
         mCurrentForegroundUser = context.getUser();
         mTimeSource = timeSource;
@@ -437,6 +443,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mCloudBackupManager = cloudBackupManager;
         mCloudRestoreManager = cloudRestoreManager;
         mStatsLog = statsLog;
+        mMatchingAppsManager = matchingAppsManager;
     }
 
     public void setupForUser(UserHandle currentForegroundUser) {
@@ -2972,6 +2979,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     } catch (HealthConnectException healthConnectException) {
                         errorCode = healthConnectException.getErrorCode();
                         exception = healthConnectException;
+                    } catch (UnsupportedOperationException unsupportedOperationException) {
+                        errorCode = ERROR_UNSUPPORTED_OPERATION;
+                        exception = unsupportedOperationException;
                     } catch (Exception e) { // including IllegalStateException
                         errorCode = ERROR_INTERNAL;
                         exception = e;
@@ -3301,6 +3311,53 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         tryAndThrowException(errorCallback, e, ERROR_INTERNAL);
                     }
                 });
+    }
+
+    /**
+     * @see HealthConnectManager#canConnectMatchingApps
+     */
+    @Override
+    public void canConnectMatchingApps(
+            AttributionSource attributionSource,
+            CanConnectMatchingAppsRequest request,
+            ICanConnectMatchingAppsCallback callback) {
+        checkParamsNonNull(attributionSource, request, callback);
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
+        // TODO(b/425634323): Update logger
+        final HealthConnectServiceLogger.Builder logger =
+                new HealthConnectServiceLogger.Builder(
+                                holdsDataManagementPermission, API_METHOD_UNKNOWN)
+                        .setHealthFitnessStatsLog(mStatsLog)
+                        .setPackageName(attributionSource.getPackageName());
+        ErrorCallback errorCallback = callback::onError;
+
+        scheduleLoggingHealthDataApiErrors(
+                () -> {
+                    if (mMatchingAppsManager == null || !Flags.matchmaking()) {
+                        throw new UnsupportedOperationException(
+                                "canConnectMatchingApps is not supported");
+                    }
+                    enforceIsForegroundUser(userHandle);
+                    verifyPackageNameFromUid(uid, attributionSource);
+                    throwExceptionIfDataSyncInProgress();
+                    boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
+                    if (!holdsDataManagementPermission) {
+                        tryAcquireApiCallQuota(
+                                uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, logger);
+                    }
+                    Set<Class<? extends Record>> recordTypes = request.getRecordTypes();
+                    callback.onResult(
+                            mMatchingAppsManager.canConnectMatchingApps(
+                                    recordTypes, attributionSource.getPackageName()));
+                    // TODO(b/425634323): Add logging.
+                },
+                logger,
+                errorCallback,
+                uid,
+                holdsDataManagementPermission);
     }
 
     /**

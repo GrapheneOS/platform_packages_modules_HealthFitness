@@ -110,7 +110,8 @@ public class HealthConnectManagerService extends SystemService {
                         mHealthConnectInjector.getBackupRestoreLogger(),
                         mHealthConnectInjector.getExportImportNotificationFactory(),
                         mHealthConnectInjector.getCloudBackupManager(),
-                        mHealthConnectInjector.getCloudRestoreManager());
+                        mHealthConnectInjector.getCloudRestoreManager(),
+                        mHealthConnectInjector.getMatchingAppsManager());
     }
 
     @Override
@@ -136,6 +137,7 @@ public class HealthConnectManagerService extends SystemService {
             // background.
             mHealthConnectService.cancelBackupRestoreTimeouts();
         }
+        mHealthConnectInjector.getTrackerManager().clearTracker();
 
         HealthConnectThreadScheduler threadScheduler = mHealthConnectInjector.getThreadScheduler();
         threadScheduler.shutdownThreadPools();
@@ -209,6 +211,9 @@ public class HealthConnectManagerService extends SystemService {
         mHealthConnectInjector.getBackupRestore().setupForUser(mCurrentForegroundUser);
         mHealthConnectInjector.getAppInfoHelper().setupForUser(hcContext);
         mHealthConnectInjector.getHealthDataCategoryPriorityHelper().setupForUser(hcContext);
+        if (mHealthConnectInjector.getMatchingAppsManager() != null) {
+            mHealthConnectInjector.getMatchingAppsManager().setupForUser(hcContext);
+        }
 
         if (Flags.clearCachesAfterSwitchingUser()) {
             // Clear preferences cache again after the user switching is done as there's a race

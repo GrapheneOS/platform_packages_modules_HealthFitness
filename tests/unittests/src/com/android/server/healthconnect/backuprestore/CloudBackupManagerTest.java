@@ -203,6 +203,14 @@ public class CloudBackupManagerTest {
     }
 
     @Test
+    public void getChangesForBackup_noChanges_tokenValid() {
+        GetChangesForBackupResponse response = mCloudBackupManager.getChangesForBackup(null);
+
+        // No exception is thrown, the token is valid.
+        mCloudBackupManager.getChangesForBackup(response.getNextChangeToken());
+    }
+
+    @Test
     public void getChangesForBackup_changeLogsTokenInvalid_throwsException() {
         List<RecordInternal<?>> records = new ArrayList<>();
         // Use DEFAULT_PAGE_SIZE + 1 to make sure the returned change token, which to be used for

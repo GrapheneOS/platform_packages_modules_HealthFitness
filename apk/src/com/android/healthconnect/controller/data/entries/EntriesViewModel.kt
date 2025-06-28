@@ -31,6 +31,7 @@ import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDat
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.DISTANCE
+import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.MINDFULNESS
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.STEPS
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.TOTAL_CALORIES_BURNED
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
@@ -39,6 +40,7 @@ import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthfitness.flags.Flags.mindfulnessAggregation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Instant
 import javax.inject.Inject
@@ -58,7 +60,12 @@ constructor(
 
     companion object {
         private const val TAG = "EntriesViewModel"
-        private val AGGREGATE_HEADER_DATA_TYPES = listOf(STEPS, DISTANCE, TOTAL_CALORIES_BURNED)
+
+        private val AGGREGATE_HEADER_DATA_TYPES: List<FitnessPermissionType>
+            get() =
+                if (mindfulnessAggregation())
+                    listOf(STEPS, DISTANCE, TOTAL_CALORIES_BURNED, MINDFULNESS)
+                else listOf(STEPS, DISTANCE, TOTAL_CALORIES_BURNED)
     }
 
     private val _entries = MutableLiveData<EntriesFragmentState>()

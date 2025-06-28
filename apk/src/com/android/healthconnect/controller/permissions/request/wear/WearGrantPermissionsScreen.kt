@@ -46,6 +46,7 @@ import com.android.healthconnect.controller.permissions.request.RequestPermissio
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.permissioncontroller.wear.permission.components.ScrollableScreen
 import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionButton
+import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionIconBuilder
 import com.android.permissioncontroller.wear.permission.components.theme.ResourceHelper
 
 /**
@@ -99,7 +100,7 @@ fun GrantMultipleFitnessPermissions(
         materialUIVersion = materialUIVersion,
         asScalingList = true,
         showTimeText = false,
-        image = R.drawable.ic_health_connect,
+        imageBuilder = WearPermissionIconBuilder.builder(R.drawable.ic_health_connect),
         title = res.getString(R.string.wear_allow_app_access_fitness_and_wellness_data, appName),
         subtitle =
             res.getString(
@@ -198,7 +199,7 @@ fun GrantSingleFitnessPermission(
         materialUIVersion = materialUIVersion,
         showTimeText = false,
         asScalingList = true,
-        image = R.drawable.ic_health_connect,
+        imageBuilder = WearPermissionIconBuilder.builder(R.drawable.ic_health_connect),
         title =
             res.getString(
                 R.string.wear_request_single_data_type_permission,
@@ -260,7 +261,7 @@ fun GrantReadBackgroundHealthPermission(
         materialUIVersion = materialUIVersion,
         showTimeText = false,
         asScalingList = true,
-        image = R.drawable.ic_health_connect,
+        imageBuilder = WearPermissionIconBuilder.builder(R.drawable.ic_health_connect),
         title = res.getString(R.string.allow_all_the_time_prompt, appName),
     ) {
         // Allow all the time button.

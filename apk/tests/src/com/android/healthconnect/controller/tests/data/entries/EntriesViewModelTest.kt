@@ -17,7 +17,11 @@ package com.android.healthconnect.controller.tests.data.entries
 
 import android.content.Context
 import android.health.connect.datatypes.MenstruationPeriodRecord
+import android.health.connect.datatypes.MindfulnessSessionRecord
 import android.health.connect.datatypes.StepsRecord
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.EntriesViewModel
@@ -36,12 +40,12 @@ import com.android.healthconnect.controller.tests.utils.di.FakeLoadDataEntriesUs
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadMedicalEntriesUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadMenstruationDataUseCase
 import com.android.healthconnect.controller.utils.TimeSource
+import com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS_AGGREGATION
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -103,9 +107,21 @@ class EntriesViewModelTest {
                 titleA11y = "Covid vaccine",
                 medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
             )
+
+        private val FORMATTED_MINDFULNESS =
+            FormattedEntry.FormattedDataEntry(
+                uuid = "test_id",
+                header = "8:06 - 10:09",
+                headerA11y = "from 8:06 to 10:09",
+                title = "2 h 3 m",
+                titleA11y = "2 hours 3 minutes",
+                dataType = MindfulnessSessionRecord::class,
+            )
     }
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule val setFlagsRule = SetFlagsRule()
 
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -288,5 +304,40 @@ class EntriesViewModelTest {
         advanceUntilIdle()
 
         assertThat(viewModel.allEntriesSelected.value).isTrue()
+    }
+
+    @Test
+    @EnableFlags(FLAG_MINDFULNESS_AGGREGATION)
+    fun testMindfulnessAggregation_getMindfulnesHeader() = runTest {
+        fakeLoadDataEntriesUseCase.updateList(listOf(FORMATTED_MINDFULNESS))
+        fakeLoadDataAggregationsUseCase.updateAggregation(formattedAggregation("2h 3m"))
+
+        val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
+        viewModel.entries.observeForever(testObserver)
+        viewModel.loadEntries(
+            FitnessPermissionType.MINDFULNESS,
+            Instant.ofEpochMilli(timeSource.currentTimeMillis()),
+            DateNavigationPeriod.PERIOD_WEEK,
+        )
+
+        assertThat(viewModel.getEntriesList())
+            .containsExactly(formattedAggregation("2h 3m"), FORMATTED_MINDFULNESS)
+    }
+
+    @Test
+    @DisableFlags(FLAG_MINDFULNESS_AGGREGATION)
+    fun testMindfulness_getMindfulnesHeader() = runTest {
+        fakeLoadDataEntriesUseCase.updateList(listOf(FORMATTED_MINDFULNESS))
+        fakeLoadDataAggregationsUseCase.updateAggregation(formattedAggregation("2h 3m"))
+
+        val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
+        viewModel.entries.observeForever(testObserver)
+        viewModel.loadEntries(
+            FitnessPermissionType.MINDFULNESS,
+            Instant.ofEpochMilli(timeSource.currentTimeMillis()),
+            DateNavigationPeriod.PERIOD_WEEK,
+        )
+
+        assertThat(viewModel.getEntriesList()).containsExactly(FORMATTED_MINDFULNESS)
     }
 }

@@ -29,6 +29,7 @@ import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTOR
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
 import static com.android.healthfitness.flags.Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY;
+import static com.android.healthfitness.flags.Flags.FLAG_MATCHMAKING;
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 
@@ -47,6 +48,7 @@ import android.annotation.TestApi;
 import android.annotation.UserHandleAware;
 import android.annotation.WorkerThread;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionGroupInfo;
@@ -65,6 +67,7 @@ import android.health.connect.aidl.IAccessLogsResponseCallback;
 import android.health.connect.aidl.IActivityDatesResponseCallback;
 import android.health.connect.aidl.IAggregateRecordsResponseCallback;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
+import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
@@ -380,8 +383,8 @@ public class HealthConnectManager {
      *       HealthPermissions#START_BACKUP_RESTORE_SETTINGS_PERMISSION}
      * </ul>
      *
-     * If more than one component can handle the intent, package manager default
-     * resolution rules will be used to resolve the intent.
+     * If more than one component can handle the intent, package manager default resolution rules
+     * will be used to resolve the intent.
      *
      * @hide
      */
@@ -404,6 +407,27 @@ public class HealthConnectManager {
     @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
     public static final String ACTION_SYNC_MORE_APPS =
             "android.health.connect.action.SYNC_MORE_APPS";
+
+    /**
+     * Activity action: Launch UI to show a list of apps that can read a specific record type.
+     *
+     * <p>Input: caller must provide a {@code String[]} extra {@link #EXTRA_RECORD_TYPES}.
+     *
+     * @see #createConnectMatchingAppsIntent(Set)
+     * @hide
+     */
+    @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    public static final String ACTION_CONNECT_MATCHING_APPS =
+            "android.health.connect.action.CONNECT_MATCHING_APPS";
+
+    /**
+     * A string array of record type canonical class names to be used with {@link
+     * #ACTION_CONNECT_MATCHING_APPS}.
+     *
+     * @see #createConnectMatchingAppsIntent(Set)
+     * @hide
+     */
+    public static final String EXTRA_RECORD_TYPES = "android.health.connect.extra.RECORD_TYPES";
 
     private static final String TAG = "HealthConnectManager";
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
@@ -3147,5 +3171,131 @@ public class HealthConnectManager {
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
+    }
+
+    /**
+     * Checks if launching the intent returned by {@link #createConnectMatchingAppsIntent(Set)} with
+     * the same arguments will result in showing at least one matching application.
+     *
+     * <ul>
+     *   <li>Returns {@code true} if the flow launched by the {@link Intent} from {@link
+     *       #createConnectMatchingAppsIntent(Set)} would display at least one matching app,
+     *       allowing the user to take action.
+     *   <li>Returns {@code false} if the launched flow would immediately return {@link
+     *       android.app.Activity#RESULT_CANCELED} because there are no relevant apps to show.
+     * </ul>
+     *
+     * @param recordTypes A non-null list of {@link Record} classes. See description at {@link
+     *     #createConnectMatchingAppsIntent(Set)}.
+     * @param executor A non-null {@link Executor} on which the {@code callback} will be invoked.
+     * @param callback A non-null {@link OutcomeReceiver} to receive the result. The {@code
+     *     onResult} method will be called with a boolean indicating if there are matching writing
+     *     applications to show. The {@code onError} method will be called if an error occurs.
+     * @see #createConnectMatchingAppsIntent(Set)
+     */
+    @FlaggedApi(FLAG_MATCHMAKING)
+    public void canConnectMatchingApps(
+            @NonNull Set<Class<? extends Record>> recordTypes,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<Boolean, HealthConnectException> callback) {
+        Objects.requireNonNull(recordTypes);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            mService.canConnectMatchingApps(
+                    mContext.getAttributionSource(),
+                    new CanConnectMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build(),
+                    canConnectMatchingAppsCallback(executor, callback));
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private static ICanConnectMatchingAppsCallback.Stub canConnectMatchingAppsCallback(
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<Boolean, HealthConnectException> callback) {
+        return new ICanConnectMatchingAppsCallback.Stub() {
+            @Override
+            public void onResult(boolean canConnect) {
+                Binder.clearCallingIdentity();
+                executor.execute(() -> callback.onResult(canConnect));
+            }
+
+            @Override
+            public void onError(HealthConnectExceptionParcel exception) {
+                Binder.clearCallingIdentity();
+                executor.execute(() -> callback.onError(exception.getHealthConnectException()));
+            }
+        };
+    }
+
+    /**
+     * Creates an {@link Intent} to launch a Health Connect flow where users can:
+     *
+     * <ul>
+     *   <li><b>Discover compatible apps:</b> See other installed applications that have not yet
+     *       granted permissions to write some of the {@link Record} classes the calling app can
+     *       read.
+     *   <li><b>Grant missing permissions:</b> Easily grant these discovered applications the
+     *       necessary write permissions for health data record types that haven't been granted yet.
+     *       Only {@link Record} types the calling app is permitted to read are being considered.
+     * </ul>
+     *
+     * This flow helps users connect new data sources to Health Connect, by matching record types
+     * readable by the calling app to appropriate writing apps.
+     *
+     * <p><b>How to launch this Intent</b>This intent must be launched using the {@link
+     * androidx.activity.result.ActivityResultLauncher} with an appropriate contract (e.g., {@link
+     * androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult}), or the
+     * {@link android.app.Activity#startActivityForResult(Intent, int)} API. It is not designed to
+     * be used with a {@link android.app.Activity#startActivity(Intent)} call. The launched activity
+     * may return a result code (e.g., {@link android.app.Activity#RESULT_OK} or {@link
+     * android.app.Activity#RESULT_CANCELED}) indicating the user's interaction with the flow:
+     *
+     * <ul>
+     *   <li>{@link android.app.Activity#RESULT_OK}: The user has successfully granted permissions
+     *       to at least one application.
+     *   <li>{@link android.app.Activity#RESULT_CANCELED}: The user has canceled the flow, either by
+     *       closing the activity or by not granting any permissions. {@link
+     *       android.app.Activity#RESULT_CANCELED} can also occur if the intent was launched in a
+     *       discouraged way when no matching apps are available. This can be avoided by ensuring
+     *       {@link #canConnectMatchingApps(Set, Executor, OutcomeReceiver)} returns {@code true}
+     *       before launching the intent.
+     * </ul>
+     *
+     * <p>The launched flow will only show applications that have declared, but not yet been granted
+     * write permissions (that have not been denied by the user twice) for at least one of the
+     * relevant {@code recordTypes}:
+     *
+     * <ul>
+     *   <li><b>If {@code recordTypes} is not empty:</b> The launched screen will focus on
+     *       applications capable of writing data for at least one of the specified health {@code
+     *       recordTypes}. The user can then grant write permissions to these discovered
+     *       applications specifically for these types. Record types the calling app does not have
+     *       permission to read are considered ignored.
+     *   <li><b>If {@code recordTypes} is empty:</b> The system first determines all health data
+     *       record types for which the calling application has already been granted read
+     *       permission. The launched flow will then display applications capable of writing any of
+     *       these record types, where the user can grant write permissions for these types.
+     * </ul>
+     *
+     * @param recordTypes A non-null set of {@link Record} classes. If non-empty, the flow focuses
+     *     on these specific types. If empty, the flow focuses on types for which the calling app
+     *     has permission to read.
+     * @return An {@link Intent} configured to show the flow for discovering and managing write
+     *     permissions for matching data origins. This intent must be launched using {@link
+     *     android.app.Activity#startActivityForResult(Intent, int)}.
+     * @see #canConnectMatchingApps(Set, Executor, OutcomeReceiver)
+     */
+    @FlaggedApi(FLAG_MATCHMAKING)
+    @NonNull
+    public Intent createConnectMatchingAppsIntent(
+            @NonNull Set<Class<? extends Record>> recordTypes) {
+        Objects.requireNonNull(recordTypes);
+        Intent intent = new Intent(ACTION_CONNECT_MATCHING_APPS);
+        String[] recordTypeNames =
+                recordTypes.stream().map(Class::getCanonicalName).distinct().toArray(String[]::new);
+        intent.putExtra(EXTRA_RECORD_TYPES, recordTypeNames);
+        return intent;
     }
 }

@@ -30,13 +30,14 @@ import com.android.healthconnect.controller.tests.utils.OLD_PERMISSIONS_TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_3
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.di.FakeGetContributorAppInfoUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeQueryRecentAccessLogsUseCase
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -62,12 +63,13 @@ class LoadHealthPermissionAppsTest {
     private val loadGrantedHealthPermissionsUseCase = FakeGetGrantedHealthPermissionsUseCase()
     private val getContributorAppInfoUseCase = FakeGetContributorAppInfoUseCase()
     private val queryRecentAccessLogsUseCase = FakeQueryRecentAccessLogsUseCase()
-    @Inject lateinit var appInfoReader: AppInfoReader
+    @BindValue lateinit var appInfoReader: AppInfoReader
 
     private lateinit var loadHealthPermissionApps: LoadHealthPermissionApps
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
+        appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().context
         loadHealthPermissionApps =
