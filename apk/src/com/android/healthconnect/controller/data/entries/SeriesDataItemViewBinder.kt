@@ -17,7 +17,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.android.healthconnect.controller.R
@@ -54,14 +53,13 @@ class SeriesDataItemViewBinder(
         isDeletionState: Boolean,
         isChecked: Boolean,
     ) {
-        val container = view.findViewById<RelativeLayout>(R.id.item_data_entry_container)
         val header = view.findViewById<TextView>(R.id.item_data_entry_header)
         val title = view.findViewById<TextView>(R.id.item_data_entry_title)
         val checkBox = view.findViewById<CheckBox>(R.id.item_checkbox_button)
 
         header.text = data.header
         header.contentDescription = data.headerA11y
-        container.setOnClickListener {
+        view.setOnClickListener {
             if (isDeletionState) {
                 onSelectEntryListener?.onSelectEntry(data.uuid, data.dataType, index)
                 checkBox.toggle()

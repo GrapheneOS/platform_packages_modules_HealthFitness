@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2025 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,14 +21,13 @@
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:clipToPadding="false"
+    android:clickable="true"
     android:paddingVertical="@dimen/spacing_normal">
 
     <RelativeLayout
         android:id="@+id/item_data_entry_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
         android:layout_weight="1">
 
         <TextView
@@ -40,7 +38,7 @@
             android:textColor="?android:attr/textColorSecondary"
             android:hyphenationFrequency="normalFast"
             android:lineBreakWordStyle="phrase"
-            android:maxLines="2"/>
+            android:maxLines="2" />
 
         <TextView
             android:id="@+id/item_data_entry_title"
@@ -52,7 +50,7 @@
             android:hyphenationFrequency="normalFast"
             android:lineBreakWordStyle="phrase"
             android:textAppearance="?android:attr/textAppearanceListItem"
-            android:ellipsize="marquee"/>
+            android:ellipsize="marquee" />
     </RelativeLayout>
 
     <CheckBox
@@ -63,6 +61,6 @@
         android:layout_gravity="center_vertical"
         android:background="?android:attr/selectableItemBackground"
         android:scaleType="center"
-        android:src="?attr/checkboxUncheckedIcon"/>
+        android:src="?attr/checkboxUncheckedIcon" />
 
 </LinearLayout>
