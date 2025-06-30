@@ -1361,6 +1361,46 @@ public class HealthDataCategoryPriorityHelperTest {
                 .isEmpty();
     }
 
+    @Test
+    @EnableFlags(FLAG_STEP_TRACKING_ENABLED)
+    public void ddpPackagePreviouslyAdded_setPriorityOrderWithoutDdpPackage_removesDdpPackage() {
+        mAppInfoHelper.updateAppInfoRecordTypesUsedOnInsert(
+                Set.of(
+                        RecordTypeIdentifier.RECORD_TYPE_STEPS,
+                        RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
+                APP_PACKAGE_NAME);
+        setupPackageInfoWithWritePermissionGranted();
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                DEVICE_DATA_PROVIDER_PACKAGE, HealthDataCategory.ACTIVITY, mContext.getUser());
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                APP_PACKAGE_NAME, HealthDataCategory.ACTIVITY, mContext.getUser());
+
+        mHealthDataCategoryPriorityHelper.reSyncHealthDataPriorityTable();
+
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .contains(mDeviceDataProviderId);
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .contains(mAppPackageId);
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .hasSize(2);
+
+        mHealthDataCategoryPriorityHelper.setPriorityOrder(
+                HealthDataCategory.ACTIVITY, List.of(APP_PACKAGE_NAME));
+
+        mHealthDataCategoryPriorityHelper.reSyncHealthDataPriorityTable();
+
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .containsExactly(mAppPackageId);
+    }
+
     private void assertAppIdPriorityOrderIsEqualTo(int type, List<Long> appIds) {
         assertThat(mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(type))
                 .containsExactlyElementsIn(appIds)

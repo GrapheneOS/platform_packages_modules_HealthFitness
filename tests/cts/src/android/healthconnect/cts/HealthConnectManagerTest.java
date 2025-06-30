@@ -40,6 +40,7 @@ import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.startMigrationWithShellPermissionIdentity;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
+import static com.android.compatibility.common.util.SystemUtil.eventually;
 
 import static com.google.common.truth.Correspondence.transforming;
 import static com.google.common.truth.Truth.assertThat;
@@ -940,15 +941,18 @@ public class HealthConnectManagerTest {
                         STAGE_HEALTH_CONNECT_REMOTE_DATA);
 
         // Staging remote data happens on a background thread, while fetching the state
-        // happens on the controller thread. We need to add a wait time before fetching the
-        // state to make sure it is the latest value.
-        Thread.sleep(500);
-        HealthConnectDataState healthConnectDataState =
-                callAndGetResponseWithShellPermissionIdentity(
-                        mManager::getHealthConnectDataState,
-                        HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
+        // happens on the controller thread. Therefore, use `eventually` to wait until
+        // the state is updated.
+        eventually(
+                () -> {
+                    HealthConnectDataState healthConnectDataState =
+                            callAndGetResponseWithShellPermissionIdentity(
+                                    mManager::getHealthConnectDataState,
+                                    HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
 
-        assertThat(healthConnectDataState.getDataRestoreState()).isEqualTo(RESTORE_STATE_IDLE);
+                    assertThat(healthConnectDataState.getDataRestoreState())
+                            .isEqualTo(RESTORE_STATE_IDLE);
+                });
     }
 
     @Test
