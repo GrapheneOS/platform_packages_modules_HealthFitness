@@ -40,6 +40,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 import android.healthconnect.testing.unittest.mocks.AndroidPackageMocker;
 import android.os.UserManager;
@@ -52,6 +53,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -88,8 +90,8 @@ public class TrackerManagerImplTest {
     private PackageManager mPackageManager;
     @Mock private HealthConnectPermissionHelper mPermissionHelper;
     @Mock private SensorManager mSensorManager;
+    private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     @Mock private UserManager mUserManager;
-
     private AppInfoHelper mAppInfoHelper;
     private HealthConnectInjector mHealthConnectInjector;
 
@@ -114,6 +116,8 @@ public class TrackerManagerImplTest {
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mAppInfoHelper = mHealthConnectInjector.getAppInfoHelper();
+        mHealthDataCategoryPriorityHelper =
+                mHealthConnectInjector.getHealthDataCategoryPriorityHelper();
     }
 
     @After
@@ -275,6 +279,24 @@ public class TrackerManagerImplTest {
         verify(mPackageManager)
                 .addOnPermissionsChangeListener(
                         any(PackageManager.OnPermissionsChangedListener.class));
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void onInitialize_appendsDevicePackageToPriorityList_onlyOnce() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        // The first initialize call should add the device package to the priority list.
+        manager.initializeOrRefresh();
+        // Then explicitly remove it.
+        mHealthDataCategoryPriorityHelper.setPriorityOrder(HealthDataCategory.ACTIVITY, List.of());
+        manager.initializeOrRefresh();
+
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .isEmpty();
     }
 
     @Test
