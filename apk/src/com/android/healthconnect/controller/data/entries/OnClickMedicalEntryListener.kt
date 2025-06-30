@@ -18,4 +18,6 @@ import android.health.connect.MedicalResourceId
 /** OnClickListener for medical entries. */
 interface OnClickMedicalEntryListener {
     fun onItemClicked(id: MedicalResourceId, index: Int)
+
+    fun onItemClicked(dataEntry: FormattedEntry.FormattedMedicalDataEntry, index: Int)
 }

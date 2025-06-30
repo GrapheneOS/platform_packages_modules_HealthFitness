@@ -46,6 +46,9 @@
             android:id="@+id/action_entriesAndAccessFragment_to_rawFhirFragment"
             app:destination="@id/rawFhirFragment" />
         <action
+            android:id="@+id/action_entriesAndAccessFragment_to_prettyFhirFragment"
+            app:destination="@id/prettyFhirFragment" />
+        <action
             android:id="@+id/action_entriesAndAccess_to_connectedApps"
             app:destination="@id/connected_apps_nav_graph" />
         <action

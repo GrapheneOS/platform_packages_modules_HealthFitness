@@ -44,6 +44,9 @@
             android:id="@+id/action_appEntriesFragment_to_rawFhirFragment"
             app:destination="@id/rawFhirFragment" />
         <action
+            android:id="@+id/action_appEntriesFragment_to_prettyFhirFragment"
+            app:destination="@id/prettyFhirFragment" />
+        <action
             android:id="@+id/action_appEntriesFragment_to_setUnitsFragment"
             app:destination="@id/setUnitsFragment" />
     </fragment>

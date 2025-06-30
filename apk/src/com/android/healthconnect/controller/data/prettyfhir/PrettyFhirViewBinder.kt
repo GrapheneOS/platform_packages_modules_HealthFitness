@@ -100,10 +100,11 @@ class PrettyFhirViewBinder : SimpleViewBinder<FormattedPrettyFhir, View> {
         return LayoutInflater.from(context).inflate(contentLevelView.layout, this, false).apply {
             val textView = findViewById<TextView>(contentLevelView.textViewId)
             textView.text =
-                if (contentLevelView.bulleted) {
-                    context.getString(R.string.bulleted_content, data.line)
-                } else {
+                // Blank lines treated as line breaks
+                if (data.line.isBlank() || !contentLevelView.bulleted) {
                     data.line
+                } else {
+                    context.getString(R.string.bulleted_content, data.line)
                 }
         }
     }
