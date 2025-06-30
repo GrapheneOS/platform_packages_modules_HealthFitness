@@ -18,7 +18,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.android.healthconnect.controller.R
@@ -55,7 +54,6 @@ class SleepSessionItemViewBinder(
         isDeletionState: Boolean,
         isChecked: Boolean,
     ) {
-        val container = view.findViewById<RelativeLayout>(R.id.item_data_entry_container)
         val divider = view.findViewById<LinearLayout>(R.id.item_data_entry_divider)
         val header = view.findViewById<TextView>(R.id.item_data_entry_header)
         val title = view.findViewById<TextView>(R.id.item_data_entry_title)
@@ -67,7 +65,7 @@ class SleepSessionItemViewBinder(
         notes.isVisible = !data.notes.isNullOrBlank()
         notes.text = data.notes
         divider.isVisible = false
-        container.setOnClickListener {
+        view.setOnClickListener {
             if (isDeletionState) {
                 onSelectEntryListener?.onSelectEntry(data.uuid, data.dataType, index)
                 checkBox.toggle()
