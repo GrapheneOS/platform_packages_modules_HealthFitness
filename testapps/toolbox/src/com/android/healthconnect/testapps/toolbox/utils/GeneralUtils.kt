@@ -37,10 +37,10 @@ import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.testapps.toolbox.R
-import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.Serializable
 import java.lang.reflect.Modifier
 import kotlin.reflect.KClass
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 class GeneralUtils {
 
@@ -143,12 +143,11 @@ class GeneralUtils {
         suspend fun <T> aggregate(
             manager: HealthConnectManager,
             timeRangeFilter: TimeInstantRangeFilter,
-            metrics: Set<AggregationType<T>>
+            metrics: Set<AggregationType<T>>,
         ): AggregateRecordsResponse<T> {
-            val request =
-                AggregateRecordsRequest.Builder<T>(timeRangeFilter)
+            val request = AggregateRecordsRequest.Builder<T>(timeRangeFilter)
 
-            for(metric in metrics){
+            for (metric in metrics) {
                 request.addAggregationType(metric)
             }
 
@@ -160,14 +159,24 @@ class GeneralUtils {
         suspend fun deleteRecords(
             manager: HealthConnectManager,
             recordType: Class<out Record>,
-            timeRangeFilter: TimeInstantRangeFilter
-        ){
+            timeRangeFilter: TimeInstantRangeFilter,
+        ) {
             suspendCancellableCoroutine<Void> { continuation ->
                 manager.deleteRecords(
                     recordType,
                     timeRangeFilter,
                     Runnable::run,
-                    continuation.asOutcomeReceiver()
+                    continuation.asOutcomeReceiver(),
+                )
+            }
+        }
+
+        suspend fun canConnectMatchingApps(manager: HealthConnectManager): Boolean {
+            return suspendCancellableCoroutine { continuation ->
+                manager.canConnectMatchingApps(
+                    setOf(),
+                    Runnable::run,
+                    continuation.asOutcomeReceiver(),
                 )
             }
         }
