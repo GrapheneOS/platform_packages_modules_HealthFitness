@@ -1738,6 +1738,32 @@ public class FhirPrimitiveTypeValidatorTest {
         validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
     }
 
+    public void testValidate_r4XhtmlLink_relativeUriDirectoryTraversal_throws()
+            throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <a href=\"../relative/path\"></a>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains("Found invalid xhtml link containing '../' in field: text.div");
+    }
+
     @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
     @Test
     public void testValidate_r4XHtmlLink_allowsHttpScheme() throws JSONException {
