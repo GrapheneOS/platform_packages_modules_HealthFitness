@@ -99,4 +99,8 @@ abstract class PermissionsFragment : HealthSetupFragment() {
             .getStringArrayExtra(PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES)
             .orEmpty()
     }
+
+    fun removeFragment() {
+        requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
+    }
 }

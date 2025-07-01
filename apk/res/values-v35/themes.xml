@@ -24,6 +24,14 @@
 
     </style>
 
+    <style name="Theme.HealthConnect.PermissionsActivity.Expressive" parent="Theme.HealthConnect.Expressive">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="Theme.HealthConnect.PermissionsActivity.Overlay.Expressive" parent="Theme.HealthConnect.PermissionsActivity.Expressive">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
     <style name="Theme.HealthConnect.Expressive.Test" parent="Theme.HealthConnect.Expressive">
         <!-- REGION CLIPPING -->
         <item name="android:clipToPadding">true</item>

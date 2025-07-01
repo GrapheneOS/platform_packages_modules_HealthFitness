@@ -65,6 +65,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -267,6 +268,14 @@ public class TestAppProxy {
     public void deleteMedicalDataSourceWithData(String id) throws Exception {
         Bundle requestBundle = BundleHelper.fromMedicalDataSourceId(id);
         getFromTestApp(requestBundle);
+    }
+
+    /** Calls canConnectMatchingApps on behalf of the app. */
+    public boolean canConnectMatchingApps(Set<Class<? extends Record>> recordTypes)
+            throws Exception {
+        Bundle requestBundle = BundleHelper.fromCanConnectMatchingAppsQuery(recordTypes);
+        Bundle responseBundle = getFromTestApp(requestBundle);
+        return BundleHelper.toCanConnectMatchingAppsResponse(responseBundle);
     }
 
     /** Instructs the app to self-revokes the specified permission. */

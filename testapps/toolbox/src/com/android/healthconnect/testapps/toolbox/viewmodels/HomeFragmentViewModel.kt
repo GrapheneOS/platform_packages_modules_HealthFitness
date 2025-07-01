@@ -16,28 +16,33 @@
 package com.android.healthconnect.testapps.toolbox.viewmodels
 
 import android.content.Context
+import android.content.Intent
 import android.health.connect.HealthConnectManager
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.testapps.toolbox.seed.SeedData
+import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.canConnectMatchingApps
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeFragmentViewModel : ViewModel(){
+class HomeFragmentViewModel : ViewModel() {
 
     private val _seedAllDataState = MutableLiveData<SeedAllDataState>()
     val seedAllDataState: LiveData<SeedAllDataState>
         get() = _seedAllDataState
 
+    private val _canConnectMatchingApps = MutableLiveData<Boolean>(false)
+    val canConnectMatchingApps: LiveData<Boolean>
+        get() = _canConnectMatchingApps
+
     fun seedAllDataViewModel(context: Context, manager: HealthConnectManager) {
         viewModelScope.launch {
             try {
-                withContext(Dispatchers.IO) {
-                    SeedData(context, manager).seedAllData()
-                }
+                withContext(Dispatchers.IO) { SeedData(context, manager).seedAllData() }
                 _seedAllDataState.postValue(SeedAllDataState.Success)
             } catch (ex: Exception) {
                 _seedAllDataState.postValue(SeedAllDataState.Error(ex.localizedMessage!!))
@@ -45,8 +50,25 @@ class HomeFragmentViewModel : ViewModel(){
         }
     }
 
-    sealed class SeedAllDataState{
+    fun loadMatchmakingStatus(manager: HealthConnectManager) {
+        viewModelScope.launch {
+            try {
+                val canConnect = canConnectMatchingApps(manager)
+                _canConnectMatchingApps.postValue(canConnect)
+            } catch (ex: Exception) {
+                _canConnectMatchingApps.postValue(false)
+                Log.e("MATCHMAKING", "canConnectMatchingApps failed with $ex")
+            }
+        }
+    }
+
+    fun createMatchmakingIntent(manager: HealthConnectManager): Intent {
+        return manager.createConnectMatchingAppsIntent(setOf())
+    }
+
+    sealed class SeedAllDataState {
         data class Error(val errorMessage: String) : SeedAllDataState()
+
         object Success : SeedAllDataState()
     }
 }

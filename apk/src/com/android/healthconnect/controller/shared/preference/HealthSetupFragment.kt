@@ -23,10 +23,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.android.healthconnect.controller.R
+import com.android.healthfitness.flags.Flags.permissionRequestBottomSheet
 import com.android.settingslib.widget.SettingsThemeHelper
 
 /** Base fragment class for AOB-like screens that need a bottom button bar. */
@@ -45,6 +47,14 @@ abstract class HealthSetupFragment : HealthPreferenceFragment() {
         savedInstanceState: Bundle?,
     ): View {
         val rootView = inflater.inflate(R.layout.fragment_setup, container, false)
+
+        if (permissionRequestBottomSheet()) {
+            rootView.background =
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.rounded_background_transparent,
+                )
+        }
 
         val buttonLayoutId =
             if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {

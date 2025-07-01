@@ -257,7 +257,43 @@ constructor(
         initialRequestedPermissions = permissions
         this.packageName = packageName
         loadAppInfo(packageName)
+
+        populateRequestedPermissionsForAll(packageName, permissions)
+
+        // First check if we are already in a permission request flow.
+        // Without this check, if any permissions from the previous screen
+        // were USER_FIXED, we would terminate the request without showing
+        // the subsequent screens.
+        if (isAnyPermissionUserFixed(packageName, permissions)) {
+            if (!isFitnessPermissionRequestConcluded() && !isMedicalPermissionRequestConcluded()) {
+                Log.e(TAG, "App has at least one USER_FIXED permission, finishing!")
+                updatePermissionGrants()
+                _permissionsActivityState.value = PermissionsActivityState.FinishRequest
+                return
+            }
+        }
+
         loadPermissions(packageName, permissions)
+    }
+
+    /** Populates the [requestedPermissions] map for all initially requested permissions. */
+    private fun populateRequestedPermissionsForAll(
+        packageName: String,
+        permissions: Array<out String>,
+    ) {
+        val grantedPermissions = getGrantedHealthPermissionsUseCase.invoke(packageName)
+        permissions.forEach { permissionString ->
+            try {
+                val healthPermission = HealthPermission.fromPermissionString(permissionString)
+                addToRequestedPermissions(grantedPermissions, healthPermission)
+            } catch (exception: IllegalArgumentException) {
+                Log.e(
+                    TAG,
+                    "Unrecognized health permission string during initial population: $permissionString",
+                    exception,
+                )
+            }
+        }
     }
 
     /** Whether the user has enabled this permission in the Permission Request screen. */
@@ -437,9 +473,11 @@ constructor(
                 Flags.replaceBodySensorPermissionEnabled()
         ) {
             var allowedPermissionsToRequest =
-                healthPermissionReader.getSystemHealthPermissions().toMutableList().also {
-                    it.add(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND)
-                }.toSet()
+                healthPermissionReader
+                    .getSystemHealthPermissions()
+                    .toMutableList()
+                    .also { it.add(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND) }
+                    .toSet()
 
             validPermissions =
                 validPermissions.filter { permission ->
@@ -720,6 +758,8 @@ sealed class PermissionsActivityState {
     data class ShowAdditional(val singlePermission: Boolean) : PermissionsActivityState()
 
     data object NoPermissions : PermissionsActivityState()
+
+    data object FinishRequest : PermissionsActivityState()
 }
 
 /**

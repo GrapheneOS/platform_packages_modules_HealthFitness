@@ -142,6 +142,7 @@
 
         <activity
             android:name=".permissions.request.PermissionsActivity"
+            android:theme="@style/Theme.HealthConnect.PermissionsActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:permission="android.permission.GRANT_RUNTIME_PERMISSIONS">
