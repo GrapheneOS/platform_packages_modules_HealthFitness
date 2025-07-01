@@ -46,6 +46,7 @@ import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -364,7 +365,21 @@ public class FhirPrimitiveTypeValidator {
                             "Found invalid xhtml link due to disallowed data scheme in field: "
                                     + fullFieldName);
                 }
-                // TODO(b/402780942) Reject non-image and “image/svg+xml” types.
+                // Reject non-image and “image/svg+xml” types
+                String mediaType =
+                        extractLowerCaseMediaTypeFromDataUrlData(parsedUri.getSchemeSpecificPart());
+                if (mediaType == null || !mediaType.startsWith("image/")) {
+                    throw new IllegalArgumentException(
+                            "Found invalid xhtml link due to missing or non-image media type in"
+                                    + " data url in field: "
+                                    + fullFieldName);
+                }
+                if (mediaType.equals("image/svg+xml")) {
+                    throw new IllegalArgumentException(
+                            "Found invalid xhtml link due to disallowed media type `image/svg+xml`"
+                                    + " in data url in field: "
+                                    + fullFieldName);
+                }
                 break;
             default:
                 throw new IllegalArgumentException(
@@ -373,6 +388,26 @@ public class FhirPrimitiveTypeValidator {
                                 + " scheme in field: "
                                 + fullFieldName);
         }
+    }
+
+    @Nullable
+    private static String extractLowerCaseMediaTypeFromDataUrlData(String data) {
+        // See https://datatracker.ietf.org/doc/html/rfc2397#section-3 for the data url format.
+        String[] typeParts = data.split(",");
+        if (typeParts.length == 0) {
+            return null;
+        }
+        String mediaType = typeParts[0];
+
+        String[] parameterParts = mediaType.split(";");
+        if (parameterParts.length == 0) {
+            return null;
+        }
+        String mediaTypeWithoutParameters = parameterParts[0];
+
+        return mediaTypeWithoutParameters.isEmpty()
+                ? null
+                : mediaTypeWithoutParameters.toLowerCase(Locale.ROOT);
     }
 
     private static int getNextTokenAndHandleException(XmlPullParser parser, String fullFieldName) {

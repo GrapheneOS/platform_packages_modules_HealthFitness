@@ -1923,17 +1923,178 @@ public class FhirPrimitiveTypeValidatorTest {
     @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
     @Test
     public void testValidate_r4XHtmlLinkImgSrc_allowsDataScheme() throws JSONException {
-        JSONObject jsonObjectNarrative =
-                new JSONObject()
-                        .put("status", "generated")
-                        .put(
-                                "div",
-                                """
-                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
-                                        <img src=\"data://image/png;base64;ABCD\"></img>
-                                    </div>
-                                """);
+        JSONObject jsonObjectNarrative = buildNarrativeWithImgSrc("data:image/png,ABCD");
 
         validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLinkImgSrc_dataUrlMediaTypeNotCaseSensitive()
+            throws JSONException {
+        JSONObject jsonObjectNarrative = buildNarrativeWithImgSrc("data:IMAGE/Png,ABCD");
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlImgSrcDataUrl_nonImageMediaType_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                buildNarrativeWithImgSrc("data:text/plain;base64,SGVsbG8sIFdvcmxkIQ==");
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml link due to missing or non-image media type in data"
+                                + " url in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlImgSrcDataUrl_svgMediaType_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                buildNarrativeWithImgSrc("data:image/svg+xml;base64,PHN2Zy8+");
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml link due to disallowed media type `image/svg+xml` in"
+                                + " data url in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlImgSrcDataUrl_svgMediaTypeWithParams_throws()
+            throws JSONException {
+        JSONObject jsonObjectNarrative =
+                buildNarrativeWithImgSrc("data:image/svg+xml;charset=UTF-8;base64,PHN2Zy8+");
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml link due to disallowed media type `image/svg+xml` in"
+                                + " data url in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlImgSrcDataUrl_invalidUriFormat_throws() throws JSONException {
+        JSONObject jsonObjectNarrative = buildNarrativeWithImgSrc("data://image/png;base64,ABCD");
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        // This fails because `//image/png` is not a valid media type start.
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml link due to missing or non-image media type in data"
+                                + " url in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlImgSrcDataUrl_emptyMediaType_throws() throws JSONException {
+        JSONObject jsonObjectNarrative = buildNarrativeWithImgSrc("data:,ABCD");
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml link due to missing or non-image media type in data"
+                                + " url in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlImgSrcDataUrl_emptyMediaTypeNoContent_throws()
+            throws JSONException {
+        JSONObject jsonObjectNarrative = buildNarrativeWithImgSrc("data:,");
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml link due to missing or non-image media type in data"
+                                + " url in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlImgSrcDataUrl_emptyMediaTypeNoParameters_throws()
+            throws JSONException {
+        JSONObject jsonObjectNarrative = buildNarrativeWithImgSrc("data:;,");
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml link due to missing or non-image media type in data"
+                                + " url in field: text.div");
+    }
+
+    private static JSONObject buildNarrativeWithImgSrc(String imgSrc) throws JSONException {
+        return new JSONObject()
+                .put("status", "generated")
+                .put(
+                        "div",
+                        String.format(
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <img src=\"%s\"></img>
+                                    </div>
+                                """,
+                                imgSrc));
     }
 }
