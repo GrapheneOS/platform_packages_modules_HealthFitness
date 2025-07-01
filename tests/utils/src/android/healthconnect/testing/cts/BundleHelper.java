@@ -58,6 +58,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /** Converters from/to bundles for HC request, response, and record types. */
@@ -123,6 +124,12 @@ public final class BundleHelper {
 
     public static final String SELF_REVOKE_PERMISSION_REQUEST =
             PREFIX + "SELF_REVOKE_PERMISSION_REQUEST";
+
+    public static final String CAN_CONNECT_MATCHING_APPS_QUERY =
+            PREFIX + "CAN_CONNECT_MATCHING_APPS_QUERY";
+
+    public static final String CAN_CONNECT_MATCHING_APPS_RESPONSE =
+            PREFIX + "CAN_CONNECT_MATCHING_APPS_RESPONSE";
 
     public static final String KILL_SELF_REQUEST = PREFIX + "KILL_SELF_REQUEST";
 
@@ -728,6 +735,39 @@ public final class BundleHelper {
         Bundle bundle = new Bundle();
         bundle.putString(QUERY_TYPE, DELETE_MEDICAL_RESOURCES_BY_REQUEST_QUERY);
         bundle.putParcelable(DELETE_MEDICAL_RESOURCES_REQUEST, request);
+        return bundle;
+    }
+
+    /**
+     * Converts a set of {@link Record} classes into a bundle with QUERY_TYPE set to
+     * CAN_CONNECT_MATCHING_APPS_QUERY
+     */
+    public static Bundle fromCanConnectMatchingAppsQuery(Set<Class<? extends Record>> recordTypes) {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, CAN_CONNECT_MATCHING_APPS_QUERY);
+        List<String> recordClassNames = recordTypes.stream().map(Class::getName).toList();
+        bundle.putStringArrayList(RECORD_CLASS_NAME, new ArrayList<>(recordClassNames));
+        return bundle;
+    }
+
+    /** Converts a bundle to a set of {@link Record} classes. */
+    public static Set<Class<? extends Record>> toCanConnectMatchingAppsQuery(Bundle bundle) {
+        List<String> recordClassNames = bundle.getStringArrayList(RECORD_CLASS_NAME);
+
+        return recordClassNames.stream()
+                .map(BundleHelper::recordClassForName)
+                .collect(Collectors.toSet());
+    }
+
+    /** Converts a boolean from a bundle. */
+    public static boolean toCanConnectMatchingAppsResponse(Bundle bundle) {
+        return bundle.getBoolean(CAN_CONNECT_MATCHING_APPS_RESPONSE);
+    }
+
+    /** Converts a boolean to a bundle for sending to another app. */
+    public static Bundle fromCanConnectMatchingAppsResponse(boolean response) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(CAN_CONNECT_MATCHING_APPS_RESPONSE, response);
         return bundle;
     }
 
