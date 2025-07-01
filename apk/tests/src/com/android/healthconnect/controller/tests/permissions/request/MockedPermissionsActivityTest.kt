@@ -532,7 +532,7 @@ class MockedPermissionsActivityTest {
         whenever(viewModel.isFitnessPermissionRequestConcluded()).thenReturn(false)
         whenever(viewModel.isMedicalPermissionRequestConcluded()).thenReturn(false)
         whenever(viewModel.permissionsActivityState).then {
-            MutableLiveData(PermissionsActivityState.ShowFitness)
+            MutableLiveData(PermissionsActivityState.FinishRequest)
         }
         whenever(viewModel.getPermissionGrants())
             .thenReturn(
@@ -591,7 +591,7 @@ class MockedPermissionsActivityTest {
     fun whenPermissionUserFixed_sendsResultOk() {
         whenever(viewModel.isAnyPermissionUserFixed(anyString(), anyArray())).thenReturn(true)
         whenever(viewModel.permissionsActivityState).then {
-            MutableLiveData(PermissionsActivityState.ShowFitness)
+            MutableLiveData(PermissionsActivityState.FinishRequest)
         }
         whenever(viewModel.getPermissionGrants())
             .thenReturn(

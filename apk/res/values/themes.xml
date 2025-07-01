@@ -199,4 +199,12 @@
     </style>
 
     <style name="Theme.HealthConnect" parent="Base.Theme.HealthConnect" />
+
+    <style name="Theme.HealthConnect.PermissionsActivity" parent="Base.Theme.HealthConnect">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="Theme.HealthConnect.PermissionsActivity.Overlay" parent="Theme.HealthConnect.PermissionsActivity">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>

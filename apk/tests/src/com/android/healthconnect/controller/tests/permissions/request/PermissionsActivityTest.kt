@@ -31,6 +31,7 @@ import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES
 import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS
 import android.content.pm.PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED
 import android.content.pm.PackageManager.FLAG_PERMISSION_USER_FIXED
+import android.content.pm.PackageManager.FLAG_PERMISSION_USER_SET
 import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.health.connect.HealthPermissions.READ_EXERCISE
@@ -182,6 +183,7 @@ class PermissionsActivityTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
     fun intentSkipsUnrecognisedPermission_excludesItFromResponse() {
         val permissions = arrayOf(READ_EXERCISE, WRITE_SLEEP, "permission")
         val startActivityIntent = getPermissionScreenIntent(permissions)
@@ -210,6 +212,33 @@ class PermissionsActivityTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    fun permissionsBottomSheetDialog_intentSkipsUnrecognisedPermission_excludesItFromResponse() {
+        val permissions = arrayOf(READ_EXERCISE, WRITE_SLEEP, "permission")
+        val startActivityIntent = getPermissionScreenIntent(permissions)
+
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
+            Thread.sleep(2000)
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+
+            onView(withText("Exercise")).check(matches(isDisplayed()))
+            onView(withText("Sleep")).check(matches(isDisplayed()))
+            onView(withText("Don't allow")).check(matches(isDisplayed())).perform(click())
+
+            assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
+            val returnedIntent = scenario.result.resultData
+
+            assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
+                .isEqualTo(arrayOf(READ_EXERCISE, WRITE_SLEEP))
+            val expectedResults = intArrayOf(PERMISSION_DENIED, PERMISSION_DENIED)
+            assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
+                .isEqualTo(expectedResults)
+        }
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
     fun intentSkipsGrantedPermissions_includesItInResponse() {
         val startActivityIntent = getPermissionScreenIntent(fitnessPermissions)
         (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
@@ -234,6 +263,43 @@ class PermissionsActivityTest {
             assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
             val returnedIntent = scenario.result.resultData
 
+            assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
+                .isEqualTo(fitnessPermissions)
+            val expectedResults =
+                intArrayOf(
+                    PERMISSION_GRANTED,
+                    PERMISSION_DENIED,
+                    PERMISSION_DENIED,
+                    PERMISSION_DENIED,
+                )
+            assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
+                .isEqualTo(expectedResults)
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    fun permissionsBottomSheetDialog_intentSkipsGrantedPermissions_includesItInResponse() {
+        val startActivityIntent = getPermissionScreenIntent(fitnessPermissions)
+        (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
+            TEST_APP_PACKAGE_NAME,
+            listOf(READ_EXERCISE),
+        )
+
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
+            Thread.sleep(2000)
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+            onIdle()
+
+            onView(withText("Exercise")).check(doesNotExist())
+            onView(withText("Sleep")).check(matches(isDisplayed()))
+            onView(withText("Active calories burned")).check(matches(isDisplayed()))
+            onView(withText("Skin temperature")).check(matches(isDisplayed()))
+            onView(withText("Don't allow")).check(matches(isDisplayed())).perform(click())
+
+            assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
+            val returnedIntent = scenario.result.resultData
             assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
                 .isEqualTo(fitnessPermissions)
             val expectedResults =
@@ -278,7 +344,42 @@ class PermissionsActivityTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
     fun requestOnlyWriteMedicalPermission_clickOnAllow_sendsResultOk() {
+        val permissions = arrayOf(READ_MEDICAL_DATA_VACCINES, WRITE_MEDICAL_DATA)
+        val startActivityIntent = getPermissionScreenIntent(permissions)
+        (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
+            TEST_APP_PACKAGE_NAME,
+            listOf(READ_MEDICAL_DATA_VACCINES),
+        )
+
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
+            // Only medical write needs granting
+            onView(
+                    withText(
+                        "If you allow, $TEST_APP_NAME can share your health records with Health Connect."
+                    )
+                )
+                .check(matches(isDisplayed()))
+            onView(withText("Allow")).perform(click())
+
+            assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
+            val returnedIntent = scenario.result.resultData
+
+            assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
+                .isEqualTo(permissions)
+            val expectedResults = intArrayOf(PERMISSION_GRANTED, PERMISSION_GRANTED)
+            assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
+                .isEqualTo(expectedResults)
+
+            assertThat(permissionManager.getGrantedHealthPermissions(TEST_APP_PACKAGE_NAME))
+                .containsExactlyElementsIn(listOf(READ_MEDICAL_DATA_VACCINES, WRITE_MEDICAL_DATA))
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    fun permissionsBottomSheetDialog_requestOnlyWriteMedicalPermission_clickOnAllow_sendsResultOk() {
         val permissions = arrayOf(READ_MEDICAL_DATA_VACCINES, WRITE_MEDICAL_DATA)
         val startActivityIntent = getPermissionScreenIntent(permissions)
         (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
@@ -344,7 +445,42 @@ class PermissionsActivityTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
     fun requestMedicalPermissions_someGrantedSomeDenied_clickOnAllow_includesAllInResponse() {
+        val permissions =
+            arrayOf(READ_MEDICAL_DATA_CONDITIONS, READ_MEDICAL_DATA_VACCINES, WRITE_MEDICAL_DATA)
+        val startActivityIntent = getPermissionScreenIntent(permissions)
+        (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
+            TEST_APP_PACKAGE_NAME,
+            listOf(READ_MEDICAL_DATA_VACCINES),
+        )
+
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+            onView(withText("Conditions")).perform(click())
+            onView(withText("Allow")).perform(click())
+
+            assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
+            val returnedIntent = scenario.result.resultData
+
+            assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
+                .isEqualTo(permissions)
+            val expectedResults =
+                intArrayOf(PERMISSION_GRANTED, PERMISSION_GRANTED, PERMISSION_DENIED)
+            assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
+                .isEqualTo(expectedResults)
+
+            assertThat(permissionManager.getGrantedHealthPermissions(TEST_APP_PACKAGE_NAME))
+                .containsExactlyElementsIn(
+                    listOf(READ_MEDICAL_DATA_VACCINES, READ_MEDICAL_DATA_CONDITIONS)
+                )
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    fun permissionsBottomSheetDialog_requestMedicalPermissions_someGrantedSomeDenied_clickOnAllow_includesAllInResponse() {
         val permissions =
             arrayOf(READ_MEDICAL_DATA_CONDITIONS, READ_MEDICAL_DATA_VACCINES, WRITE_MEDICAL_DATA)
         val startActivityIntent = getPermissionScreenIntent(permissions)
@@ -409,7 +545,46 @@ class PermissionsActivityTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
     fun requestMedicalAndFitness_clickOnAllow_grantsMedical_showsFitness() {
+        val permissions =
+            arrayOf(
+                READ_MEDICAL_DATA_CONDITIONS,
+                READ_MEDICAL_DATA_VACCINES,
+                READ_SLEEP,
+                WRITE_EXERCISE,
+                WRITE_MEDICAL_DATA,
+            )
+        val startActivityIntent = getPermissionScreenIntent(permissions)
+        (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
+            TEST_APP_PACKAGE_NAME,
+            listOf(READ_MEDICAL_DATA_VACCINES),
+        )
+
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+            onView(withText("Conditions")).perform(click())
+            onView(withText("Allow")).perform(click())
+
+            onIdle()
+
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+            onView(withText("Sleep")).check(matches(isDisplayed()))
+
+            assertThat(permissionManager.revokeHealthPermissionInvocations).isEqualTo(1)
+            assertThat(permissionManager.grantHealthPermissionInvocations).isEqualTo(2)
+            assertThat(permissionManager.getGrantedHealthPermissions(TEST_APP_PACKAGE_NAME))
+                .containsExactlyElementsIn(
+                    listOf(READ_MEDICAL_DATA_VACCINES, READ_MEDICAL_DATA_CONDITIONS)
+                )
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    fun permissionsBottomSheetDialog_requestMedicalAndFitness_clickOnAllow_grantsMedical_showsFitness() {
         val permissions =
             arrayOf(
                 READ_MEDICAL_DATA_CONDITIONS,
@@ -650,26 +825,23 @@ class PermissionsActivityTest {
             ),
         )
 
-        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-            onView(withText("Heart rate")).perform(click())
-            onView(withText("Allow")).perform(click())
+        val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+        onView(withText("Heart rate")).perform(click())
+        onView(withText("Allow")).perform(click())
 
-            assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
-            val returnedIntent = scenario.result.resultData
-            assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
-                .isEqualTo(permissions)
-            val expectedResults = intArrayOf(PERMISSION_GRANTED)
-            assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
-                .isEqualTo(expectedResults)
-            assertThat(
-                    permissionManager.getGrantedHealthPermissions(
-                        BODY_SENSORS_TEST_APP_PACKAGE_NAME
-                    )
-                )
-                .containsExactlyElementsIn(listOf(READ_HEART_RATE))
-        }
+        assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
+        val returnedIntent = scenario.result.resultData
+        assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
+            .isEqualTo(permissions)
+        val expectedResults = intArrayOf(PERMISSION_GRANTED)
+        assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
+            .isEqualTo(expectedResults)
+        assertThat(
+                permissionManager.getGrantedHealthPermissions(BODY_SENSORS_TEST_APP_PACKAGE_NAME)
+            )
+            .containsExactlyElementsIn(listOf(READ_HEART_RATE))
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
@@ -717,7 +889,45 @@ class PermissionsActivityTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
     fun requestFitnessPermissions_someGrantedSomeDenied_clickOnAllow_includesAllInResponse() {
+        val permissions =
+            arrayOf(READ_EXERCISE, READ_SLEEP, WRITE_ACTIVE_CALORIES_BURNED, WRITE_SLEEP)
+        val startActivityIntent = getPermissionScreenIntent(permissions)
+        (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
+            TEST_APP_PACKAGE_NAME,
+            listOf(READ_SLEEP),
+        )
+
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+            onView(withText("Exercise")).perform(click())
+            onView(withText("Allow")).perform(click())
+
+            assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
+            val returnedIntent = scenario.result.resultData
+
+            assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
+                .isEqualTo(permissions)
+            val expectedResults =
+                intArrayOf(
+                    PERMISSION_GRANTED,
+                    PERMISSION_GRANTED,
+                    PERMISSION_DENIED,
+                    PERMISSION_DENIED,
+                )
+            assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
+                .isEqualTo(expectedResults)
+
+            assertThat(permissionManager.getGrantedHealthPermissions(TEST_APP_PACKAGE_NAME))
+                .containsExactlyElementsIn(listOf(READ_EXERCISE, READ_SLEEP))
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    fun permissionsBottomSheetDialog_requestFitnessPermissions_someGrantedSomeDenied_clickOnAllow_includesAllInResponse() {
         val permissions =
             arrayOf(READ_EXERCISE, READ_SLEEP, WRITE_ACTIVE_CALORIES_BURNED, WRITE_SLEEP)
         val startActivityIntent = getPermissionScreenIntent(permissions)
@@ -821,7 +1031,41 @@ class PermissionsActivityTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
     fun requestFitnessAndAdditional_someReadGranted_clickOnDontAllow_showsAdditional() {
+        val permissions =
+            arrayOf(
+                READ_EXERCISE,
+                READ_SLEEP,
+                READ_HEALTH_DATA_HISTORY,
+                WRITE_ACTIVE_CALORIES_BURNED,
+                WRITE_SLEEP,
+            )
+        val startActivityIntent = getPermissionScreenIntent(permissions)
+        (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
+            TEST_APP_PACKAGE_NAME,
+            listOf(READ_SLEEP),
+        )
+
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
+            // This should not be granted even if it's toggled on
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+            onView(withText("Exercise")).perform(click())
+            onView(withText("Don't allow")).perform(click())
+
+            onIdle()
+
+            onView(withText("Allow $TEST_APP_NAME to access past data?"))
+                .check(matches(isDisplayed()))
+            assertThat(permissionManager.getGrantedHealthPermissions(TEST_APP_PACKAGE_NAME))
+                .containsExactlyElementsIn(listOf(READ_SLEEP))
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    fun permissionsBottomSheetDialog_requestFitnessAndAdditional_someReadGranted_clickOnDontAllow_showsAdditional() {
         val permissions =
             arrayOf(
                 READ_EXERCISE,
@@ -1177,6 +1421,56 @@ class PermissionsActivityTest {
             assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
                 .isEqualTo(expectedResults)
         }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    fun requestPermissions_permissionsRequestBottomSheetFlagIsOn_bottomSheetDialogDisplayed() {
+        val permissions = arrayOf(READ_EXERCISE)
+        val startActivityIntent = getPermissionScreenIntent(permissions)
+
+        launchActivityForResult<PermissionsActivity>(startActivityIntent)
+
+        onView(withId(R.id.bottom_sheet_fragment_container)).check(matches(isDisplayed()))
+        onView(withText("Allow $TEST_APP_NAME to access fitness and wellness data?"))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    fun requestPermissions_permissionsRequestBottomSheetFlagIsOff_bottomSheetDialogDoesNotExist() {
+        val permissions = arrayOf(READ_EXERCISE)
+        val startActivityIntent = getPermissionScreenIntent(permissions)
+
+        launchActivityForResult<PermissionsActivity>(startActivityIntent)
+
+        onView(withId(R.id.bottom_sheet_fragment_container)).check(doesNotExist())
+        onView(withText("Allow $TEST_APP_NAME to access fitness and wellness data?"))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun requestPermissions_userFixedSomeFitness_activityFinishesEarly() {
+        val permissionFlags =
+            mapOf(
+                READ_EXERCISE to FLAG_PERMISSION_USER_SET,
+                READ_SLEEP to FLAG_PERMISSION_USER_FIXED,
+            )
+        (permissionManager as FakeHealthPermissionManager).setHealthPermissionFlags(
+            TEST_APP_PACKAGE_NAME,
+            permissionFlags,
+        )
+        val permissions = arrayOf(READ_EXERCISE, READ_SLEEP)
+        val startActivityIntent = getPermissionScreenIntent(permissions)
+
+        val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
+
+        assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
+        val returnedIntent = scenario.result.resultData
+        assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
+            .isEqualTo(arrayOf(READ_EXERCISE, READ_SLEEP))
+        assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
+            .isEqualTo(intArrayOf(PERMISSION_DENIED, PERMISSION_DENIED))
     }
 
     private fun getPermissionScreenIntent(
