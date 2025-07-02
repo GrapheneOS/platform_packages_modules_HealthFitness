@@ -240,6 +240,17 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void appHasPermission_deviceHasSensor_flushesSensorManager() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mSensorManager).flush(any(StepSensorEventListener.class));
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void afterSensorManagerSubscription_appLosesPermission_unsubscribeFromSensorManager()
             throws Exception {
         grantAppStepsPermission(TEST_PACKAGE_NAME);
