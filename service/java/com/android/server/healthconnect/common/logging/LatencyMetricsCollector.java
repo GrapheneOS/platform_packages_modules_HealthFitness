@@ -117,7 +117,7 @@ public final class LatencyMetricsCollector {
 
     public record LatencyMetricsData(
             @RecordTypeIdentifier.RecordType int recordType,
-            List<LatencyMetricsPerRecord> latencyMetricsPerRecords) {}
+            List<LatencyMetricsPerRecord> latencyMetricsForEachRecord) {}
 
     /**
      * Data class to hold latency i.e. time between session end and time when the session was

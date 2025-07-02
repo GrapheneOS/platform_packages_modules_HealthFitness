@@ -85,7 +85,10 @@ public final class AppOpLogsHelper {
      *
      * @return a list of {@link AccessLog} converted from AppOps historical usages.
      */
-    public List<AccessLog> getAccessLogsFromAppOps(UserHandle callingUserHandle) {
+    public List<AccessLog> getAccessLogsFromAppOps(UserHandle callingUserHandle, int limit) {
+        if (limit <= 0) {
+            return new ArrayList<>();
+        }
         if (mGranularHealthAppOps.isEmpty()) {
             return new ArrayList<>();
         }
@@ -138,9 +141,9 @@ public final class AppOpLogsHelper {
             return new ArrayList<>();
         }
 
-        List<AccessLog> logs = new ArrayList<>();
+        List<AccessLog> logs = new ArrayList<>(limit);
         // Generate HealthConnect access logs from AppOps.
-        for (int uidIdx = 0; uidIdx < histOps.getUidCount(); uidIdx++) {
+        for (int uidIdx = 0; uidIdx < histOps.getUidCount() && logs.size() < limit; uidIdx++) {
             HistoricalUidOps uidOps = histOps.getUidOpsAt(uidIdx);
 
             // Filter out any app ops from a different user.
@@ -149,10 +152,15 @@ public final class AppOpLogsHelper {
                 continue;
             }
 
-            for (int pkgIdx = 0; pkgIdx < uidOps.getPackageCount(); pkgIdx++) {
+            for (int pkgIdx = 0;
+                    pkgIdx < uidOps.getPackageCount() && logs.size() < limit;
+                    pkgIdx++) {
                 final HistoricalPackageOps packageOps = uidOps.getPackageOpsAt(pkgIdx);
                 String packageName = packageOps.getPackageName();
                 for (String opName : mGranularHealthAppOps) {
+                    if (logs.size() >= limit) {
+                        break;
+                    }
                     HistoricalOp historicalOp = packageOps.getOp(opName);
                     if (historicalOp == null) {
                         continue;
@@ -163,7 +171,9 @@ public final class AppOpLogsHelper {
                     }
                     @RecordTypeIdentifier.RecordType
                     List<Integer> recordTypes = Arrays.asList(recordType);
-                    for (int i = 0; i < historicalOp.getDiscreteAccessCount(); i++) {
+                    for (int i = 0;
+                            i < historicalOp.getDiscreteAccessCount() && logs.size() < limit;
+                            i++) {
                         AttributedOpEntry attributedOpEntry = historicalOp.getDiscreteAccessAt(i);
                         logs.add(
                                 new AccessLog(

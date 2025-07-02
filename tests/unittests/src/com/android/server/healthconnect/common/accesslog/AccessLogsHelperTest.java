@@ -31,6 +31,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_PACKAGE_NAME;
 
+import static com.android.server.healthconnect.common.accesslog.AccessLogsHelper.MAX_ACCESS_LOG_COUNT;
 import static com.android.server.healthconnect.common.accesslog.AccessLogsHelper.MEDICAL_DATA_SOURCE_ACCESSED_COLUMN_NAME;
 import static com.android.server.healthconnect.common.accesslog.AccessLogsHelper.MEDICAL_RESOURCE_TYPE_COLUMN_NAME;
 import static com.android.server.healthconnect.common.accesslog.AccessLogsHelper.getAlterTableRequestForPhrAccessLogs;
@@ -300,7 +301,7 @@ public class AccessLogsHelperTest {
 
     @Test
     public void queryAccessLogs_readsFromAppOpsHelper_success() {
-        when(mAppOpLogsHelper.getAccessLogsFromAppOps(mUserHandle))
+        when(mAppOpLogsHelper.getAccessLogsFromAppOps(eq(mUserHandle), anyInt()))
                 .thenReturn(
                         List.of(
                                 new AccessLog(
@@ -325,7 +326,7 @@ public class AccessLogsHelperTest {
                     mAccessLogsHelper.recordReadAccessLog(
                             db, DATA_SOURCE_PACKAGE_NAME, recordTypeIds);
                 });
-        when(mAppOpLogsHelper.getAccessLogsFromAppOps(mUserHandle))
+        when(mAppOpLogsHelper.getAccessLogsFromAppOps(eq(mUserHandle), anyInt()))
                 .thenReturn(
                         List.of(
                                 new AccessLog(
@@ -554,5 +555,20 @@ public class AccessLogsHelperTest {
         long result = mAccessLogsHelper.getLatestUpsertOrReadOperationAccessLogTimeStamp();
 
         assertThat(result).isNotEqualTo(Long.MIN_VALUE);
+    }
+
+    @Test
+    public void testQueryAccessLogs_largeTable_returnsMaxAccessLogs() {
+        Set<Integer> recordTypeIds = Set.of(RECORD_TYPE_DISTANCE, RECORD_TYPE_SKIN_TEMPERATURE);
+        mTransactionManager.runAsTransaction(
+                db -> {
+                    for (int i = 0; i < MAX_ACCESS_LOG_COUNT * 5; i++) {
+                        mAccessLogsHelper.recordUpsertAccessLog(
+                                db, DATA_SOURCE_PACKAGE_NAME, recordTypeIds);
+                    }
+                });
+
+        List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
+        assertThat(result).hasSize(MAX_ACCESS_LOG_COUNT);
     }
 }
