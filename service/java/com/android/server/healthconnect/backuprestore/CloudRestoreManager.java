@@ -28,12 +28,10 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.Slog;
 
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
-import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
-import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BackupData;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Record;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
@@ -61,13 +59,11 @@ public class CloudRestoreManager {
     private final TransactionManager mTransactionManager;
     private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
     private final FitnessRecordReadHelper mFitnessRecordReadHelper;
-    private final InternalHealthConnectMappings mInternalHealthConnectMappings;
-    private final DeviceInfoHelper mDeviceInfoHelper;
     private final AppInfoHelper mAppInfoHelper;
     private final RecordProtoConverter mRecordProtoConverter = new RecordProtoConverter();
     private final HealthDataCategoryPriorityHelper mPriorityHelper;
     private final PreferenceHelper mPreferenceHelper;
-    private final CloudBackupSettingsHelper mSettingsHelper;
+    private final CloudBackupSettingsHelper mCloudBackupSettingsHelper;
     private final Clock mClock;
     private final BackupRestoreLogger mBackupRestoreLogger;
 
@@ -75,8 +71,6 @@ public class CloudRestoreManager {
             TransactionManager transactionManager,
             FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             FitnessRecordReadHelper fitnessRecordReadHelper,
-            InternalHealthConnectMappings internalHealthConnectMappings,
-            DeviceInfoHelper deviceInfoHelper,
             AppInfoHelper appInfoHelper,
             HealthDataCategoryPriorityHelper priorityHelper,
             PreferenceHelper preferenceHelper,
@@ -85,12 +79,10 @@ public class CloudRestoreManager {
         mTransactionManager = transactionManager;
         mFitnessRecordUpsertHelper = fitnessRecordUpsertHelper;
         mFitnessRecordReadHelper = fitnessRecordReadHelper;
-        mInternalHealthConnectMappings = internalHealthConnectMappings;
-        mDeviceInfoHelper = deviceInfoHelper;
         mAppInfoHelper = appInfoHelper;
         mPriorityHelper = priorityHelper;
         mPreferenceHelper = preferenceHelper;
-        mSettingsHelper =
+        mCloudBackupSettingsHelper =
                 new CloudBackupSettingsHelper(priorityHelper, preferenceHelper, appInfoHelper);
         mClock = clock;
         mBackupRestoreLogger = backupRestoreLogger;
@@ -99,9 +91,6 @@ public class CloudRestoreManager {
     /** Takes the serialized user settings and overwrites existing settings. */
     public void restoreSettings(BackupMetadata newSettings) {
         Slog.i(TAG, "Restoring user settings.");
-        CloudBackupSettingsHelper cloudBackupSettingsHelper =
-                new CloudBackupSettingsHelper(mPriorityHelper, mPreferenceHelper, mAppInfoHelper);
-
         byte[] data = newSettings.getData();
         Settings settings;
         try {
@@ -112,7 +101,7 @@ public class CloudRestoreManager {
                             + "Settings Record. Details: ",
                     e.getCause());
         }
-        cloudBackupSettingsHelper.restoreUserSettings(settings);
+        mCloudBackupSettingsHelper.restoreUserSettings(settings);
     }
 
     /** Checks whether data with a certain version could be restored. */
