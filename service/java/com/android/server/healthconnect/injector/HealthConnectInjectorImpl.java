@@ -46,6 +46,7 @@ import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper
 import com.android.server.healthconnect.common.jobs.DailyCleanupJob;
 import com.android.server.healthconnect.common.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.common.logging.LatencyMetricsCollector;
+import com.android.server.healthconnect.common.logging.LatencyMetricsLogger;
 import com.android.server.healthconnect.common.logging.UsageStatsCollector;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
@@ -169,6 +170,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Nullable private final CloudBackupManager mCloudBackupManager;
     @Nullable private final CloudRestoreManager mCloudRestoreManager;
     private final LatencyMetricsCollector mLatencyMetricsCollector;
+    private final LatencyMetricsLogger mLatencyMetricsLogger;
     @Nullable private final MatchingAppsManager mMatchingAppsManager;
 
     public HealthConnectInjectorImpl(Context context) {
@@ -552,7 +554,15 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mBackupRestoreLogger)
                         : null;
 
-        mLatencyMetricsCollector = new LatencyMetricsCollector(mTransactionManager, mAppInfoHelper);
+        mLatencyMetricsCollector =
+                builder.mLatencyMetricsCollector == null
+                        ? new LatencyMetricsCollector(mTransactionManager, mAppInfoHelper)
+                        : builder.mLatencyMetricsCollector;
+        mLatencyMetricsLogger =
+                builder.mLatencyMetricsLogger == null
+                        ? new LatencyMetricsLogger(
+                                mHealthFitnesssStatsLog, mLatencyMetricsCollector)
+                        : builder.mLatencyMetricsLogger;
 
         mMatchingAppsManager =
                 builder.mMatchingAppsManager == null && Flags.matchmaking()
@@ -789,6 +799,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     }
 
     @Override
+    public LatencyMetricsLogger getLatencyMetricsLogger() {
+        return mLatencyMetricsLogger;
+    }
+
+    @Override
     public UsageStatsCollector getUsageStatsCollector(HealthConnectContext hcContext) {
         return mBuilder.mUsageStatsCollector == null
                 ? new UsageStatsCollector(
@@ -954,6 +969,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private UserManager mUserManager;
         @Nullable private CloudBackupManager mCloudBackupManager;
         @Nullable private CloudRestoreManager mCloudRestoreManager;
+        @Nullable private LatencyMetricsCollector mLatencyMetricsCollector;
+        @Nullable private LatencyMetricsLogger mLatencyMetricsLogger;
         @Nullable private MatchingAppsManager mMatchingAppsManager;
 
         private Builder(Context context) {
@@ -1311,6 +1328,18 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         /** Set fake or custom {@link MatchingAppsManager}. */
         public Builder setMatchingAppsManager(MatchingAppsManager matchingAppsManager) {
             mMatchingAppsManager = Objects.requireNonNull(matchingAppsManager);
+            return this;
+        }
+
+        /** Set fake or custom {@link LatencyMetricsCollector}. */
+        public Builder setLatencyMetricsCollector(LatencyMetricsCollector latencyMetricsCollector) {
+            mLatencyMetricsCollector = Objects.requireNonNull(latencyMetricsCollector);
+            return this;
+        }
+
+        /** Set fake or custom {@link LatencyMetricsLogger}. */
+        public Builder setLatencyMetricsLogger(LatencyMetricsLogger latencyMetricsLogger) {
+            mLatencyMetricsLogger = Objects.requireNonNull(latencyMetricsLogger);
             return this;
         }
 
