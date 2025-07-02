@@ -2084,6 +2084,64 @@ public class FhirPrimitiveTypeValidatorTest {
                                 + " url in field: text.div");
     }
 
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlNotStartingWithDiv_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <p>
+                                        <div xmlns=\"http://www.w3.org/1999/xhtml\"></div>
+                                    </p>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml in field: text.div. Expected div as the root"
+                                + " element");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlWithTwoRootElements_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <p>paragraph</p>
+                                    <br />
+                                </div>
+                                <div>root element 2</div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains("Found invalid xhtml with more than one root element in field: text.div");
+    }
+
     private static JSONObject buildNarrativeWithImgSrc(String imgSrc) throws JSONException {
         return new JSONObject()
                 .put("status", "generated")

@@ -241,6 +241,7 @@ public class FhirPrimitiveTypeValidator {
         populateXhtmlElementToAttributesAllowlistMap();
         XmlPullParser parser = createXmlPullParserAndSetInput(xhtml);
 
+        boolean alreadyProcessedRootElement = false;
         while (getNextTokenAndHandleException(parser, fullFieldName)
                 != XmlPullParser.END_DOCUMENT) {
             int eventType;
@@ -265,6 +266,21 @@ public class FhirPrimitiveTypeValidator {
                                     + fullFieldName);
                 case XmlPullParser.START_TAG:
                     String elementName = parser.getName();
+                    // The first START_TAG is the root element, which should be a div according to
+                    // the FHIR spec.
+                    if (!alreadyProcessedRootElement) {
+                        if (!elementName.equals("div")) {
+                            throw new IllegalArgumentException(
+                                    "Found invalid xhtml in field: "
+                                            + fullFieldName
+                                            + ". Expected div as the root element");
+                        }
+                        alreadyProcessedRootElement = true;
+                    } else if (parser.getDepth() == 1) {
+                        throw new IllegalArgumentException(
+                                "Found invalid xhtml with more than one root element in field: "
+                                        + fullFieldName);
+                    }
                     Set<String> allowedAttributes =
                             sXhtmlElementToAttributesAllowlistMap.get(elementName);
                     if (allowedAttributes == null) {
