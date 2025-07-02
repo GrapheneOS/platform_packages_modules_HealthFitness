@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.data.prettyfhir
+package com.android.healthconnect.controller.data.fhir.pretty
 
 import android.health.connect.MedicalResourceId
 import android.os.Bundle
@@ -35,8 +35,7 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedMedicalDataEntry
 import com.android.healthconnect.controller.data.entries.MarginItemDecoration
 import com.android.healthconnect.controller.data.entrydetails.ItemDataEntrySeparatorViewBinder
-import com.android.healthconnect.controller.data.rawfhir.RawFhirFragment
-import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel
+import com.android.healthconnect.controller.data.fhir.raw.RawFhirFragment
 import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewAdapter
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -47,7 +46,7 @@ import javax.inject.Inject
 class PrettyFhirFragment : Hilt_PrettyFhirFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
-    private val viewModel: RawFhirViewModel by viewModels()
+    private val viewModel: PrettyFhirViewModel by viewModels()
     private lateinit var recyclerView: RecyclerView
     private lateinit var header: String
     private lateinit var headerA11y: String
@@ -102,16 +101,16 @@ class PrettyFhirFragment : Hilt_PrettyFhirFragment() {
                 ?: throw IllegalArgumentException("MEDICAL_RESOURCE_ID_KEY is missing!")
         header =
             requireArguments().getString(HEADER_KEY)
-                ?: throw IllegalArgumentException("HEADER_KEY can't be null!")
+                ?: throw IllegalArgumentException("HEADER_KEY is missing!")
         headerA11y =
             requireArguments().getString(HEADER_A11Y_KEY)
-                ?: throw IllegalArgumentException("HEADER_A11Y_KEY can't be null!")
+                ?: throw IllegalArgumentException("HEADER_A11Y_KEY is missing!")
         title =
             requireArguments().getString(TITLE_KEY)
-                ?: throw IllegalArgumentException("TITLE_KEY can't be null!")
+                ?: throw IllegalArgumentException("TITLE_KEY is missing!")
         titleA11y =
             requireArguments().getString(TITLE_A11Y_KEY)
-                ?: throw IllegalArgumentException("TITLE_A11Y_KEY can't be null!")
+                ?: throw IllegalArgumentException("TITLE_A11Y_KEY is missing!")
         errorView = view.findViewById(R.id.error_view)
         loadingView = view.findViewById(R.id.loading)
 
@@ -190,19 +189,19 @@ class PrettyFhirFragment : Hilt_PrettyFhirFragment() {
             )
     }
 
-    private fun updateUI(state: RawFhirViewModel.PrettyFhirState) {
+    private fun updateUI(state: PrettyFhirViewModel.PrettyFhirState) {
         when (state) {
-            is RawFhirViewModel.PrettyFhirState.Loading -> {
+            is PrettyFhirViewModel.PrettyFhirState.Loading -> {
                 loadingView.isVisible = true
                 errorView.isVisible = false
                 recyclerView.isVisible = false
             }
-            is RawFhirViewModel.PrettyFhirState.Error -> {
+            is PrettyFhirViewModel.PrettyFhirState.Error -> {
                 errorView.isVisible = true
                 loadingView.isVisible = false
                 recyclerView.isVisible = false
             }
-            is RawFhirViewModel.PrettyFhirState.WithData -> {
+            is PrettyFhirViewModel.PrettyFhirState.WithData -> {
                 recyclerView.isVisible = true
                 detailsAdapter.updateData(state.prettyFhirResources)
                 errorView.isVisible = false

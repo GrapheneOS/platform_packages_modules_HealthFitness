@@ -63,12 +63,12 @@
 
     <fragment
         android:id="@+id/rawFhirFragment"
-        android:name="com.android.healthconnect.controller.data.rawfhir.RawFhirFragment"
+        android:name="com.android.healthconnect.controller.data.fhir.raw.RawFhirFragment"
         android:label="@string/raw_fhir_title" />
 
     <fragment
         android:id="@+id/prettyFhirFragment"
-        android:name="com.android.healthconnect.controller.data.prettyfhir.PrettyFhirFragment"
+        android:name="com.android.healthconnect.controller.data.fhir.pretty.PrettyFhirFragment"
         android:label="@string/entry_details_title">
 
         <action

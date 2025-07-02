@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.data.prettyfhir
+package com.android.healthconnect.controller.data.fhir.pretty
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,9 +27,6 @@ import androidx.annotation.LayoutRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedPrettyFhir
 import com.android.healthconnect.controller.data.formatters.medical.PrettyJsonLine
-import com.android.healthconnect.controller.data.prettyfhir.PrettyFhirViewBinder.ContentLevelView.Level1View
-import com.android.healthconnect.controller.data.prettyfhir.PrettyFhirViewBinder.ContentLevelView.Level2View
-import com.android.healthconnect.controller.data.prettyfhir.PrettyFhirViewBinder.ContentLevelView.Level3View
 import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
@@ -83,9 +80,9 @@ class PrettyFhirViewBinder : SimpleViewBinder<FormattedPrettyFhir, View> {
                 )
                 null
             }
-            1 -> Level1View
-            2 -> Level2View
-            3 -> Level3View
+            1 -> ContentLevelView.Level1View
+            2 -> ContentLevelView.Level2View
+            3 -> ContentLevelView.Level3View
             else -> {
                 Log.w(TAG, "Depth $depth exceeds maximum threshold. Content omitted.")
                 null

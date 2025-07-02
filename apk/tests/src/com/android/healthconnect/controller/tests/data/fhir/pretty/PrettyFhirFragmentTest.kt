@@ -1,24 +1,23 @@
 /*
  * Copyright (C) 2025 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
+ * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
+ * ```
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
-
-package com.android.healthconnect.controller.tests.data.prettyfhir
+package com.android.healthconnect.controller.tests.data.fhir.pretty
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.Navigation.setViewNavController
+import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -31,20 +30,20 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry
-import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedPrettyFhir
-import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedPrettyFhirDetailsHeader
+import com.android.healthconnect.controller.data.fhir.pretty.PrettyFhirFragment
+import com.android.healthconnect.controller.data.fhir.pretty.PrettyFhirViewModel
+import com.android.healthconnect.controller.data.fhir.raw.RawFhirViewModel
 import com.android.healthconnect.controller.data.formatters.medical.PrettyJsonGroup
 import com.android.healthconnect.controller.data.formatters.medical.PrettyJsonLine
-import com.android.healthconnect.controller.data.prettyfhir.PrettyFhirFragment
-import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.util.Locale
+import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Rule
@@ -58,7 +57,8 @@ import org.mockito.kotlin.whenever
 class PrettyFhirFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @BindValue val viewModel: RawFhirViewModel = mock<RawFhirViewModel>()
+    @BindValue val prettyFhirViewModel: PrettyFhirViewModel = mock<PrettyFhirViewModel>()
+    @BindValue val rawFhirViewModel: RawFhirViewModel = mock<RawFhirViewModel>()
     private lateinit var navHostController: TestNavHostController
     private lateinit var context: Context
 
@@ -72,12 +72,12 @@ class PrettyFhirFragmentTest {
 
     @Test
     fun error_errorMessageDisplayed() {
-        whenever(viewModel.prettyFhir).then {
-            MutableLiveData(RawFhirViewModel.PrettyFhirState.Error)
+        whenever(prettyFhirViewModel.prettyFhir).then {
+            MutableLiveData(PrettyFhirViewModel.PrettyFhirState.Error)
         }
 
         launchFragment<PrettyFhirFragment>(
-            PrettyFhirFragment.createBundle(
+            PrettyFhirFragment.Companion.createBundle(
                 header = "header",
                 headerA11y = "header a11y",
                 title = "title",
@@ -93,12 +93,12 @@ class PrettyFhirFragmentTest {
 
     @Test
     fun loading_loadingDisplayed() {
-        whenever(viewModel.prettyFhir).then {
-            MutableLiveData(RawFhirViewModel.PrettyFhirState.Loading)
+        whenever(prettyFhirViewModel.prettyFhir).then {
+            MutableLiveData(PrettyFhirViewModel.PrettyFhirState.Loading)
         }
 
         launchFragment<PrettyFhirFragment>(
-            PrettyFhirFragment.createBundle(
+            PrettyFhirFragment.Companion.createBundle(
                 header = "header",
                 headerA11y = "header a11y",
                 title = "title",
@@ -110,19 +110,21 @@ class PrettyFhirFragmentTest {
         onView(withId(R.id.loading)).check(matches(isDisplayed()))
         onView(withId(R.id.item_pretty_fhir_entry_header)).check(doesNotExist())
         onView(withText("Something went wrong. Please try again."))
-            .check(matches(not(isDisplayed())))
+            .check(matches(CoreMatchers.not(isDisplayed())))
     }
 
     @Test
     fun medicalEntry_headerCorrectlyDisplayed() {
         val formattedPrettyFhirDetailsHeader =
-            FormattedPrettyFhirDetailsHeader(header = "header", title = "title")
-        whenever(viewModel.prettyFhir).then {
+            FormattedEntry.FormattedPrettyFhirDetailsHeader(header = "header", title = "title")
+        whenever(prettyFhirViewModel.prettyFhir).then {
             MutableLiveData(
-                RawFhirViewModel.PrettyFhirState.WithData(listOf(formattedPrettyFhirDetailsHeader))
+                PrettyFhirViewModel.PrettyFhirState.WithData(
+                    listOf(formattedPrettyFhirDetailsHeader)
+                )
             )
         }
-        whenever(viewModel.rawFhir).then {
+        whenever(rawFhirViewModel.rawFhir).then {
             MutableLiveData(
                 RawFhirViewModel.RawFhirState.WithData(
                     listOf(
@@ -136,7 +138,7 @@ class PrettyFhirFragmentTest {
         }
 
         launchFragment<PrettyFhirFragment>(
-            PrettyFhirFragment.createBundle(
+            PrettyFhirFragment.Companion.createBundle(
                 header = "header",
                 headerA11y = "header a11y",
                 title = "title",
@@ -147,7 +149,7 @@ class PrettyFhirFragmentTest {
 
         onView(withId(R.id.item_pretty_fhir_entry_header)).check(matches(isDisplayed()))
         onView(withText("Something went wrong. Please try again."))
-            .check(matches(not(isDisplayed())))
+            .check(matches(CoreMatchers.not(isDisplayed())))
     }
 
     @Test
@@ -157,13 +159,22 @@ class PrettyFhirFragmentTest {
         val itemPrettyFhirContentLevel2Id = R.id.item_pretty_fhir_content_level2
         val itemPrettyFhirContentLevel3Id = R.id.item_pretty_fhir_content_level3
         val formattedPrettyFhirDetailsHeader =
-            FormattedPrettyFhirDetailsHeader(header = "header", title = "title")
+            FormattedEntry.FormattedPrettyFhirDetailsHeader(header = "header", title = "title")
         val formattedPrettyFhirEntriesList =
             listOf(
-                FormattedPrettyFhir("Resource Type: Immunization", PrettyJsonGroup(emptyList())),
-                FormattedPrettyFhir("Id: immunization_1", PrettyJsonGroup(emptyList())),
-                FormattedPrettyFhir("Status: completed", PrettyJsonGroup(emptyList())),
-                FormattedPrettyFhir(
+                FormattedEntry.FormattedPrettyFhir(
+                    "Resource Type: Immunization",
+                    PrettyJsonGroup(emptyList()),
+                ),
+                FormattedEntry.FormattedPrettyFhir(
+                    "Id: immunization_1",
+                    PrettyJsonGroup(emptyList()),
+                ),
+                FormattedEntry.FormattedPrettyFhir(
+                    "Status: completed",
+                    PrettyJsonGroup(emptyList()),
+                ),
+                FormattedEntry.FormattedPrettyFhir(
                     "Vaccine Code:",
                     PrettyJsonGroup(
                         nestedLines =
@@ -182,10 +193,10 @@ class PrettyFhirFragmentTest {
         val formattedEntries: List<FormattedEntry> =
             listOf(formattedPrettyFhirDetailsHeader, FormattedEntry.ItemDataEntrySeparator()) +
                 formattedPrettyFhirEntriesList
-        whenever(viewModel.prettyFhir).then {
-            MutableLiveData(RawFhirViewModel.PrettyFhirState.WithData(formattedEntries))
+        whenever(prettyFhirViewModel.prettyFhir).then {
+            MutableLiveData(PrettyFhirViewModel.PrettyFhirState.WithData(formattedEntries))
         }
-        whenever(viewModel.rawFhir).then {
+        whenever(rawFhirViewModel.rawFhir).then {
             MutableLiveData(
                 RawFhirViewModel.RawFhirState.WithData(
                     listOf(
@@ -199,7 +210,7 @@ class PrettyFhirFragmentTest {
         }
 
         launchFragment<PrettyFhirFragment>(
-            PrettyFhirFragment.createBundle(
+            PrettyFhirFragment.Companion.createBundle(
                 header = "header",
                 headerA11y = "header a11y",
                 title = "title",
@@ -232,23 +243,25 @@ class PrettyFhirFragmentTest {
         onView(withText("Text: Tdap"))
             .check(matches(isDisplayed()))
             .check(matches(withId(itemPrettyFhirContentLevel1Id)))
-        onView(withId(R.id.loading)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.loading)).check(matches(CoreMatchers.not(isDisplayed())))
         onView(withText("Something went wrong. Please try again."))
-            .check(matches(not(isDisplayed())))
+            .check(matches(CoreMatchers.not(isDisplayed())))
     }
 
     @Test
     fun clickingOnViewSourceData_navigatesToRawFhirFragment() {
         val formattedPrettyFhirDetailsHeader =
-            FormattedPrettyFhirDetailsHeader(header = "header", title = "title")
-        whenever(viewModel.prettyFhir).then {
+            FormattedEntry.FormattedPrettyFhirDetailsHeader(header = "header", title = "title")
+        whenever(prettyFhirViewModel.prettyFhir).then {
             MutableLiveData(
-                RawFhirViewModel.PrettyFhirState.WithData(listOf(formattedPrettyFhirDetailsHeader))
+                PrettyFhirViewModel.PrettyFhirState.WithData(
+                    listOf(formattedPrettyFhirDetailsHeader)
+                )
             )
         }
 
         val bundle =
-            PrettyFhirFragment.createBundle(
+            PrettyFhirFragment.Companion.createBundle(
                 header = "header",
                 headerA11y = "header a11y",
                 title = "title",
@@ -260,12 +273,12 @@ class PrettyFhirFragmentTest {
             navHostController.setGraph(R.navigation.entries_and_access_nav_graph)
             navHostController.setCurrentDestination(R.id.prettyFhirFragment)
 
-            setViewNavController(this.requireView(), navHostController)
+            Navigation.setViewNavController(this.requireView(), navHostController)
         }
 
         onView(withText("View source data")).perform(click())
 
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.rawFhirFragment)
+        Truth.assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.rawFhirFragment)
     }
 
     private val fhirResource =

@@ -1,19 +1,19 @@
 /*
- * Copyright (C) 2024 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
- * ```
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-package com.android.healthconnect.controller.tests.data.rawfhir
+package com.android.healthconnect.controller.tests.data.fhir.raw
 
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
@@ -28,11 +28,11 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedRawFhir
-import com.android.healthconnect.controller.data.rawfhir.RawFhirFragment
-import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel
-import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel.RawFhirState.Error
-import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel.RawFhirState.Loading
-import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel.RawFhirState.WithData
+import com.android.healthconnect.controller.data.fhir.raw.RawFhirFragment
+import com.android.healthconnect.controller.data.fhir.raw.RawFhirViewModel
+import com.android.healthconnect.controller.data.fhir.raw.RawFhirViewModel.RawFhirState.Error
+import com.android.healthconnect.controller.data.fhir.raw.RawFhirViewModel.RawFhirState.Loading
+import com.android.healthconnect.controller.data.fhir.raw.RawFhirViewModel.RawFhirState.WithData
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger

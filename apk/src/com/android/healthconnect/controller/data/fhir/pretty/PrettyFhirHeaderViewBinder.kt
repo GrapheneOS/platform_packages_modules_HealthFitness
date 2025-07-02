@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.data.prettyfhir
+package com.android.healthconnect.controller.data.fhir.pretty
 
 import android.view.LayoutInflater
 import android.view.View

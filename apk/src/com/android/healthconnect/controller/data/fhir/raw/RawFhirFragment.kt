@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller.data.rawfhir
+package com.android.healthconnect.controller.data.fhir.raw
 
 import android.health.connect.MedicalResourceId
 import android.os.Bundle
@@ -28,9 +28,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedRawFhir
-import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel.RawFhirState.Error
-import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel.RawFhirState.Loading
-import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel.RawFhirState.WithData
+import com.android.healthconnect.controller.data.fhir.raw.RawFhirViewModel.RawFhirState.Error
+import com.android.healthconnect.controller.data.fhir.raw.RawFhirViewModel.RawFhirState.Loading
+import com.android.healthconnect.controller.data.fhir.raw.RawFhirViewModel.RawFhirState.WithData
 import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewAdapter
 import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
