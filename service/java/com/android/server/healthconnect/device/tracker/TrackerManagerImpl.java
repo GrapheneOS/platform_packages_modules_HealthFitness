@@ -99,6 +99,13 @@ public class TrackerManagerImpl implements TrackerManager {
             return;
         }
 
+        // Check up front if a step sensor is available. If not, there's no point listening for
+        // permission changes.
+        if (!isStepSensorAvailable()) {
+            Slog.w(TAG, "No step sensor found. Aborting initialization.");
+            return;
+        }
+
         mPackageManager.addOnPermissionsChangeListener(
                 uid -> {
                     try {
@@ -267,12 +274,21 @@ public class TrackerManagerImpl implements TrackerManager {
 
         Sensor stepCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         if (stepCounterSensor == null) {
-            Slog.e(TAG, "No step sensor found.");
+            Slog.d(TAG, "No step sensor found.");
             return;
         }
 
         // TODO(b/397420313): Check that this subscription is successful
         sensorManager.registerListener(
                 mListener, stepCounterSensor, SAMPLING_PERIOD_US, MAX_REPORT_LATENCY_US);
+    }
+
+    private boolean isStepSensorAvailable() {
+        SensorManager sensorManager = mContext.getSystemService(SensorManager.class);
+        if (sensorManager == null) {
+            return false;
+        }
+        Sensor stepCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        return stepCounterSensor != null;
     }
 }
