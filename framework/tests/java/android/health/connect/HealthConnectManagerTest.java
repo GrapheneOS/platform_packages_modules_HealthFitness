@@ -16,6 +16,8 @@
 
 package android.health.connect;
 
+import static android.health.connect.HealthPermissions.WRITE_SLEEP;
+import static android.health.connect.HealthPermissions.WRITE_STEPS;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_ID;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedicalResourceId;
 
@@ -29,18 +31,26 @@ import static org.mockito.Mockito.when;
 import android.content.Context;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
 import android.health.connect.aidl.IEmptyResponseCallback;
+import android.health.connect.aidl.IGetMatchingAppsCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.datatypes.MedicalDataSource;
+import android.health.connect.datatypes.SleepSessionRecord;
+import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
 import android.os.OutcomeReceiver;
 import android.os.RemoteException;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.Flags;
+
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -52,6 +62,8 @@ import org.mockito.stubbing.Answer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -61,6 +73,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class HealthConnectManagerTest {
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Mock IHealthConnectService mService;
 
@@ -337,6 +350,162 @@ public class HealthConnectManagerTest {
         assertThat(receiver.getResponse()).isNull();
     }
 
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    public void testCanConnectMatchingApps_usesExceptionFromService() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<Boolean> receiver = new TestOutcomeReceiver<>();
+        doAnswer(
+                        (Answer<Void>)
+                                invocation -> {
+                                    IGetMatchingAppsCallback callback = invocation.getArgument(2);
+                                    callback.onError(
+                                            new HealthConnectExceptionParcel(
+                                                    new HealthConnectException(
+                                                            HealthConnectException
+                                                                    .ERROR_UNSUPPORTED_OPERATION)));
+                                    return null;
+                                })
+                .when(mService)
+                .getMatchingApps(any(), any(), any());
+
+        healthConnectManager.canConnectMatchingApps(
+                ImmutableSet.of(), Executors.newSingleThreadExecutor(), receiver);
+
+        assertThat(receiver.assertAndGetException().getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    public void testCanConnectMatchingApps_matchingApps_true() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<Boolean> receiver = new TestOutcomeReceiver<>();
+        doAnswer(
+                        (Answer<Void>)
+                                invocation -> {
+                                    IGetMatchingAppsCallback callback = invocation.getArgument(2);
+                                    callback.onResult(getMatchingAppsResponse());
+                                    return null;
+                                })
+                .when(mService)
+                .getMatchingApps(any(), any(), any());
+
+        healthConnectManager.canConnectMatchingApps(
+                ImmutableSet.of(StepsRecord.class, SleepSessionRecord.class),
+                Executors.newSingleThreadExecutor(),
+                receiver);
+
+        assertThat(receiver.getResponse()).isTrue();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    public void testCanConnectMatchingApps_noMatchingApps_false() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<Boolean> receiver = new TestOutcomeReceiver<>();
+        doAnswer(
+                        (Answer<Void>)
+                                invocation -> {
+                                    IGetMatchingAppsCallback callback = invocation.getArgument(2);
+                                    callback.onResult(emptyResponse());
+                                    return null;
+                                })
+                .when(mService)
+                .getMatchingApps(any(), any(), any());
+
+        healthConnectManager.canConnectMatchingApps(
+                ImmutableSet.of(StepsRecord.class, SleepSessionRecord.class),
+                Executors.newSingleThreadExecutor(),
+                receiver);
+
+        assertThat(receiver.getResponse()).isFalse();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    public void testGetMatchingApps_usesExceptionFromService() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<Map<String, Set<String>>> receiver = new TestOutcomeReceiver<>();
+        doAnswer(
+                        (Answer<Void>)
+                                invocation -> {
+                                    IGetMatchingAppsCallback callback = invocation.getArgument(2);
+                                    callback.onError(
+                                            new HealthConnectExceptionParcel(
+                                                    new HealthConnectException(
+                                                            HealthConnectException
+                                                                    .ERROR_UNSUPPORTED_OPERATION)));
+                                    return null;
+                                })
+                .when(mService)
+                .getMatchingApps(any(), any(), any());
+
+        healthConnectManager.getMatchingApps(
+                ImmutableSet.of(),
+                "package.to.match",
+                Executors.newSingleThreadExecutor(),
+                receiver);
+
+        assertThat(receiver.assertAndGetException().getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    public void testGetMatchingAppsInternal_noMatchingApps_emptyMap() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<Map<String, Set<String>>> receiver = new TestOutcomeReceiver<>();
+        doAnswer(
+                        (Answer<Void>)
+                                invocation -> {
+                                    IGetMatchingAppsCallback callback = invocation.getArgument(2);
+                                    callback.onResult(emptyResponse());
+                                    return null;
+                                })
+                .when(mService)
+                .getMatchingApps(any(), any(), any());
+
+        healthConnectManager.getMatchingApps(
+                ImmutableSet.of(StepsRecord.class, SleepSessionRecord.class),
+                "package.to.match",
+                Executors.newSingleThreadExecutor(),
+                receiver);
+
+        assertThat(receiver.getResponse()).isEmpty();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    public void testGetMatchingAppsInternal_matchingApps_usesResultFromService() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<Map<String, Set<String>>> receiver = new TestOutcomeReceiver<>();
+        doAnswer(
+                        (Answer<Void>)
+                                invocation -> {
+                                    IGetMatchingAppsCallback callback = invocation.getArgument(2);
+                                    callback.onResult(getMatchingAppsResponse());
+                                    return null;
+                                })
+                .when(mService)
+                .getMatchingApps(any(), any(), any());
+
+        healthConnectManager.getMatchingApps(
+                ImmutableSet.of(StepsRecord.class, SleepSessionRecord.class),
+                "package.to.match",
+                Executors.newSingleThreadExecutor(),
+                receiver);
+
+        assertThat(receiver.getResponse())
+                .containsExactlyEntriesIn(getMatchingAppsResponse().getMatchingApps());
+    }
+
     /**
      * Constructs a {@link HealthConnectManager} using reflection to access the constructor.
      *
@@ -355,6 +524,15 @@ public class HealthConnectManagerTest {
         return HealthConnectManager.class
                 .getDeclaredConstructor(Context.class, IHealthConnectService.class)
                 .newInstance(context, service);
+    }
+
+    private GetMatchingAppsResponse getMatchingAppsResponse() {
+        return new GetMatchingAppsResponse(
+                Map.of("package.name", Set.of(WRITE_STEPS, WRITE_SLEEP)));
+    }
+
+    private GetMatchingAppsResponse emptyResponse() {
+        return new GetMatchingAppsResponse(Map.of());
     }
 
     private static class TestOutcomeReceiver<T>

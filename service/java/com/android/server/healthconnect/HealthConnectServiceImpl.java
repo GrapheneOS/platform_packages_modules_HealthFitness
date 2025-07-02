@@ -37,6 +37,7 @@ import static android.health.connect.datatypes.MedicalDataSource.validateMedical
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isPhrChangeLogsEnabled;
+import static com.android.internal.util.Preconditions.checkArgument;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.API_METHOD_UNKNOWN;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.CREATE_MEDICAL_DATA_SOURCE;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.DELETE_DATA;
@@ -70,11 +71,12 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteException;
 import android.health.HealthFitnessStatsLog;
-import android.health.connect.CanConnectMatchingAppsRequest;
 import android.health.connect.Constants;
 import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
+import android.health.connect.GetMatchingAppsRequest;
+import android.health.connect.GetMatchingAppsResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
@@ -100,7 +102,6 @@ import android.health.connect.aidl.IAccessLogsResponseCallback;
 import android.health.connect.aidl.IActivityDatesResponseCallback;
 import android.health.connect.aidl.IAggregateRecordsResponseCallback;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
-import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
@@ -111,6 +112,7 @@ import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
 import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
+import android.health.connect.aidl.IGetMatchingAppsCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
@@ -3317,41 +3319,52 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      * @see HealthConnectManager#canConnectMatchingApps
      */
     @Override
-    public void canConnectMatchingApps(
+    public void getMatchingApps(
             AttributionSource attributionSource,
-            CanConnectMatchingAppsRequest request,
-            ICanConnectMatchingAppsCallback callback) {
+            GetMatchingAppsRequest request,
+            IGetMatchingAppsCallback callback) {
         checkParamsNonNull(attributionSource, request, callback);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
         // TODO(b/425634323): Update logger
+        String attributionPackageName = attributionSource.getPackageName();
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, API_METHOD_UNKNOWN)
                         .setHealthFitnessStatsLog(mStatsLog)
-                        .setPackageName(attributionSource.getPackageName());
+                        .setPackageName(attributionPackageName);
         ErrorCallback errorCallback = callback::onError;
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
                     if (mMatchingAppsManager == null || !Flags.matchmaking()) {
-                        throw new UnsupportedOperationException(
-                                "canConnectMatchingApps is not supported");
+                        throw new UnsupportedOperationException("getMatchingApps is not supported");
                     }
                     enforceIsForegroundUser(userHandle);
-                    verifyPackageNameFromUid(uid, attributionSource);
                     throwExceptionIfDataSyncInProgress();
-                    boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
-                    if (!holdsDataManagementPermission) {
+                    String requestPackageName = request.getPackageName();
+                    if (holdsDataManagementPermission) {
+                        checkArgument(requestPackageName != null, "package name must be provided");
+                    } else {
+                        checkArgument(
+                                requestPackageName == null
+                                        || requestPackageName.equals(attributionPackageName),
+                                "invalid package name provided");
+                        verifyPackageNameFromUid(uid, attributionSource);
+                        boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
                         tryAcquireApiCallQuota(
                                 uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, logger);
                     }
+                    String packageName =
+                            holdsDataManagementPermission
+                                    ? requestPackageName
+                                    : attributionPackageName;
                     Set<Class<? extends Record>> recordTypes = request.getRecordTypes();
-                    callback.onResult(
-                            mMatchingAppsManager.canConnectMatchingApps(
-                                    recordTypes, attributionSource.getPackageName()));
+                    Map<String, Set<String>> matchingApps =
+                            mMatchingAppsManager.fetchMatchingApps(recordTypes, packageName);
+                    callback.onResult(new GetMatchingAppsResponse(matchingApps));
                     // TODO(b/425634323): Add logging.
                 },
                 logger,

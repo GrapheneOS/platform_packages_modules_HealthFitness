@@ -65,6 +65,7 @@ import org.mockito.junit.MockitoRule;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /** Test class for the MatchingAppsManager class. */
@@ -110,34 +111,17 @@ public class MatchingAppsManagerTest {
     }
 
     @Test
-    public void noReadPermissionsRequested_returnsFalse() {
+    public void fetchMatchingApps_noReadPermissionsRequested_returnsEmpty() {
         mockReadingApp(PACKAGE_NAME, Collections.emptyList());
 
-        boolean result =
-                mMatchingAppsManager.canConnectMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+        Map<String, Set<String>> result =
+                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
-        assertThat(result).isFalse();
+        assertThat(result).isEmpty();
     }
 
     @Test
-    public void noReadPermissionForRequestedRecordType_returnFalse() {
-        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
-
-        PackageInfo compatibleApp = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
-        mockCompatibleHealthConnectApps(ImmutableList.of(compatibleApp));
-        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
-        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
-        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
-
-        boolean result =
-                mMatchingAppsManager.canConnectMatchingApps(
-                        ImmutableSet.of(DistanceRecord.class), PACKAGE_NAME);
-
-        assertThat(result).isFalse();
-    }
-
-    @Test
-    public void noMatchingWritePermission_returnsFalse() {
+    public void fetchMatchingApps_noMatchingWritePermission_returnsEmpty() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
 
         PackageInfo nonMatchingApp =
@@ -147,14 +131,14 @@ public class MatchingAppsManagerTest {
         mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_HEART_RATE, PERMISSION_DENIED);
         mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_HEART_RATE, 0);
 
-        boolean result =
-                mMatchingAppsManager.canConnectMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+        Map<String, Set<String>> result =
+                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
-        assertThat(result).isFalse();
+        assertThat(result).isEmpty();
     }
 
     @Test
-    public void matchExists_returnsTrue() {
+    public void fetchMatchingApps_matchExists_returnsMatchingApp() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
 
         PackageInfo matchingApp = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
@@ -163,14 +147,14 @@ public class MatchingAppsManagerTest {
         mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
         mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
 
-        boolean result =
-                mMatchingAppsManager.canConnectMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+        Map<String, Set<String>> result =
+                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
-        assertThat(result).isTrue();
+        assertThat(result).containsExactly(PACKAGE_NAME_2, ImmutableSet.of(WRITE_STEPS));
     }
 
     @Test
-    public void systemAppWouldMatch_returnsFalse() {
+    public void fetchMatchingApps_systemAppWouldMatch_returnsEmpty() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
 
         PackageInfo matchingApp = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
@@ -179,14 +163,14 @@ public class MatchingAppsManagerTest {
         mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
         mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
 
-        boolean result =
-                mMatchingAppsManager.canConnectMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+        Map<String, Set<String>> result =
+                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
-        assertThat(result).isFalse();
+        assertThat(result).isEmpty();
     }
 
     @Test
-    public void matchingWritePermissionAlreadyGranted_returnsFalse() {
+    public void fetchMatchingApps_matchingWritePermissionAlreadyGranted_returnsEmpty() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
 
         PackageInfo matchingApp = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
@@ -195,14 +179,14 @@ public class MatchingAppsManagerTest {
         mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_GRANTED);
         mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
 
-        boolean result =
-                mMatchingAppsManager.canConnectMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+        Map<String, Set<String>> result =
+                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
-        assertThat(result).isFalse();
+        assertThat(result).isEmpty();
     }
 
     @Test
-    public void matchingWritePermissionUserFixed_returnsFalse() {
+    public void fetchMatchingApps_matchingWritePermissionUserFixed_returnsEmpty() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
 
         PackageInfo matchingApp = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
@@ -211,14 +195,14 @@ public class MatchingAppsManagerTest {
         mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
         mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, FLAG_PERMISSION_USER_FIXED);
 
-        boolean result =
-                mMatchingAppsManager.canConnectMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+        Map<String, Set<String>> result =
+                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
-        assertThat(result).isFalse();
+        assertThat(result).isEmpty();
     }
 
     @Test
-    public void matchingWritePermissionUserSet_returnsTrue() {
+    public void fetchMatchingApps_matchingWritePermissionUserSet_returnsMatchingApp() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
 
         PackageInfo matchingApp = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
@@ -227,35 +211,14 @@ public class MatchingAppsManagerTest {
         mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
         mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, FLAG_PERMISSION_USER_SET);
 
-        boolean result =
-                mMatchingAppsManager.canConnectMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+        Map<String, Set<String>> result =
+                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
-        assertThat(result).isTrue();
+        assertThat(result).containsExactly(PACKAGE_NAME_2, ImmutableSet.of(WRITE_STEPS));
     }
 
     @Test
-    public void callingAppCannotReadSomeRecordTypes_returnTrue() {
-        // Calling app can read HEART_RATE.
-        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_HEART_RATE, WRITE_STEPS));
-
-        // Writing app could write STEPS and HEART_RATE.
-        PackageInfo matchingApp =
-                createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS, WRITE_HEART_RATE});
-        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp));
-        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
-        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
-        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
-        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_HEART_RATE, PERMISSION_DENIED);
-        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_HEART_RATE, 0);
-
-        boolean result =
-                mMatchingAppsManager.canConnectMatchingApps(Collections.emptySet(), PACKAGE_NAME);
-
-        assertThat(result).isTrue();
-    }
-
-    @Test
-    public void queryOneRecordType_matchExists_returnTrue() {
+    public void fetchMatchingApps_queryOneRecordType_matchExists_returnMatchingApp() {
         // Calling app can read HEART_RATE, DISTANCE and STEPS.
         mockReadingApp(
                 PACKAGE_NAME,
@@ -277,15 +240,14 @@ public class MatchingAppsManagerTest {
         mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_HEART_RATE, 0);
 
         // STEPS requested.
-        boolean result =
-                mMatchingAppsManager.canConnectMatchingApps(
-                        Set.of(StepsRecord.class), PACKAGE_NAME);
+        Map<String, Set<String>> result =
+                mMatchingAppsManager.fetchMatchingApps(Set.of(StepsRecord.class), PACKAGE_NAME);
 
-        assertThat(result).isTrue();
+        assertThat(result).containsExactly(PACKAGE_NAME_2, ImmutableSet.of(WRITE_STEPS));
     }
 
     @Test
-    public void queryTooMantRecordTypes_matchExistsForOne_returnTrue() {
+    public void fetchMatchingApps_queryMultipleRecordTypes_matchExists_returnMatchingApp() {
         // Calling app can read HEART_RATE, DISTANCE and STEPS.
         mockReadingApp(
                 PACKAGE_NAME,
@@ -307,44 +269,23 @@ public class MatchingAppsManagerTest {
         mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_HEART_RATE, 0);
 
         Set<Class<? extends Record>> queriedRecordTypes =
-                Set.of(StepsRecord.class, ExerciseSessionRecord.class, SkinTemperatureRecord.class);
-        boolean result =
-                mMatchingAppsManager.canConnectMatchingApps(queriedRecordTypes, PACKAGE_NAME);
+                Set.of(
+                        StepsRecord.class,
+                        ExerciseSessionRecord.class,
+                        SkinTemperatureRecord.class,
+                        HeartRateRecord.class,
+                        DistanceRecord.class);
+        Map<String, Set<String>> result =
+                mMatchingAppsManager.fetchMatchingApps(queriedRecordTypes, PACKAGE_NAME);
 
-        assertThat(result).isTrue();
-    }
-
-    @Test
-    public void queryNonEmptySet_oneUserFixedTwoMatchingWritePermissions_returnTrue() {
-        // Calling app can read HEART_RATE, DISTANCE and STEPS.
-        mockReadingApp(
-                PACKAGE_NAME,
-                ImmutableList.of(
-                        READ_HEART_RATE, READ_DISTANCE, READ_STEPS, WRITE_STEPS, WRITE_DISTANCE));
-
-        // Writing app could write HEART_RATE, DISTANCE and STEPS.
-        PackageInfo matchingApp =
-                createPackageInfo(
+        assertThat(result)
+                .containsExactly(
                         PACKAGE_NAME_2,
-                        new String[] {WRITE_STEPS, READ_STEPS, WRITE_DISTANCE, WRITE_HEART_RATE});
-        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp));
-        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
-        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
-        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
-        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_DISTANCE, PERMISSION_DENIED);
-        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_DISTANCE, FLAG_PERMISSION_USER_FIXED);
-        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_HEART_RATE, PERMISSION_DENIED);
-        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_HEART_RATE, FLAG_PERMISSION_USER_FIXED);
-
-        boolean result =
-                mMatchingAppsManager.canConnectMatchingApps(
-                        Set.of(StepsRecord.class, DistanceRecord.class, HeartRateRecord.class),
-                        PACKAGE_NAME);
-        assertThat(result).isTrue();
+                        ImmutableSet.of(WRITE_STEPS, WRITE_DISTANCE, WRITE_HEART_RATE));
     }
 
     @Test
-    public void multipleWritingApps_oneMatching_returnTrue() {
+    public void fetchMatchingApps_multipleWritingApps_oneMatching_returnMatchingApp() {
         // Calling app can read HEART_RATE and DISTANCE.
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_HEART_RATE, READ_DISTANCE));
 
@@ -364,13 +305,83 @@ public class MatchingAppsManagerTest {
         mockHealthPermissionFlags(PACKAGE_NAME_3, WRITE_STEPS, 0);
 
         // Querying STEPS, DISTANCE, HEART_RATE.
-        boolean result =
-                mMatchingAppsManager.canConnectMatchingApps(
+        Map<String, Set<String>> result =
+                mMatchingAppsManager.fetchMatchingApps(
                         Set.of(StepsRecord.class, DistanceRecord.class, HeartRateRecord.class),
                         PACKAGE_NAME);
 
         // Match exists for HEART_RATE.
-        assertThat(result).isTrue();
+        assertThat(result).containsExactly(PACKAGE_NAME_2, ImmutableSet.of(WRITE_HEART_RATE));
+    }
+
+    @Test
+    public void fetchMatchingApps_multipleWritingApps_multipleMatching_returnMatchingApps() {
+        // Calling app can read HEART_RATE and DISTANCE.
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_HEART_RATE, READ_DISTANCE, READ_STEPS));
+
+        PackageInfo matchingApp =
+                createPackageInfo(
+                        PACKAGE_NAME_2,
+                        new String[] {WRITE_HEART_RATE, WRITE_STEPS, READ_DISTANCE});
+        PackageInfo matchingApp2 = createPackageInfo(PACKAGE_NAME_3, new String[] {WRITE_DISTANCE});
+        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp, matchingApp2));
+
+        // Matching app could write HEART_RATE.
+        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_HEART_RATE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_HEART_RATE, 0);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
+
+        // Matching app 2 could write DISTANCE.
+        mockAppSystemStatus(PACKAGE_NAME_3, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_3, WRITE_DISTANCE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_3, WRITE_DISTANCE, 0);
+
+        // Querying STEPS, DISTANCE, HEART_RATE.
+        Map<String, Set<String>> result =
+                mMatchingAppsManager.fetchMatchingApps(
+                        Set.of(StepsRecord.class, DistanceRecord.class, HeartRateRecord.class),
+                        PACKAGE_NAME);
+
+        // Match exists for HEART_RATE.
+        assertThat(result)
+                .containsExactly(
+                        PACKAGE_NAME_2,
+                        ImmutableSet.of(WRITE_HEART_RATE, WRITE_STEPS),
+                        PACKAGE_NAME_3,
+                        ImmutableSet.of(WRITE_DISTANCE));
+    }
+
+    @Test
+    public void fetchMatchingApps_oneAppMorePermissions_oneUserFixed_returnsFilteredPermissions() {
+        // Calling app can read HEART_RATE and DISTANCE.
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_HEART_RATE, READ_DISTANCE));
+
+        PackageInfo matchingApp =
+                createPackageInfo(
+                        PACKAGE_NAME_2,
+                        new String[] {WRITE_HEART_RATE, WRITE_STEPS, WRITE_DISTANCE});
+        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp));
+
+        // Matching app could write HEART_RATE and DISTANCE.
+        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_HEART_RATE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_HEART_RATE, 0);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_DISTANCE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_DISTANCE, FLAG_PERMISSION_USER_FIXED);
+
+        // Querying DISTANCE, HEART_RATE, and STEPS.
+        Map<String, Set<String>> result =
+                mMatchingAppsManager.fetchMatchingApps(
+                        Set.of(DistanceRecord.class, HeartRateRecord.class, StepsRecord.class),
+                        PACKAGE_NAME);
+
+        // Match exists for HEART_RATE.
+        assertThat(result)
+                .containsExactly(PACKAGE_NAME_2, ImmutableSet.of(WRITE_HEART_RATE, WRITE_STEPS));
     }
 
     private void mockReadingApp(String packageName, List<String> permissions) {

@@ -67,7 +67,6 @@ import android.health.connect.aidl.IAccessLogsResponseCallback;
 import android.health.connect.aidl.IActivityDatesResponseCallback;
 import android.health.connect.aidl.IAggregateRecordsResponseCallback;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
-import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
@@ -78,6 +77,7 @@ import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
 import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
+import android.health.connect.aidl.IGetMatchingAppsCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
@@ -3185,7 +3185,7 @@ public class HealthConnectManager {
      *       android.app.Activity#RESULT_CANCELED} because there are no relevant apps to show.
      * </ul>
      *
-     * @param recordTypes A non-null list of {@link Record} classes. See description at {@link
+     * @param recordTypes A non-null set of {@link Record} classes. See description at {@link
      *     #createConnectMatchingAppsIntent(Set)}.
      * @param executor A non-null {@link Executor} on which the {@code callback} will be invoked.
      * @param callback A non-null {@link OutcomeReceiver} to receive the result. The {@code
@@ -3202,31 +3202,26 @@ public class HealthConnectManager {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
-            mService.canConnectMatchingApps(
+            mService.getMatchingApps(
                     mContext.getAttributionSource(),
-                    new CanConnectMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build(),
-                    canConnectMatchingAppsCallback(executor, callback));
+                    new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build(),
+                    new IGetMatchingAppsCallback.Stub() {
+                        @Override
+                        public void onResult(GetMatchingAppsResponse response) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(response.hasMatchingApps()));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(
+                                    () -> callback.onError(exception.getHealthConnectException()));
+                        }
+                    });
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
-    }
-
-    private static ICanConnectMatchingAppsCallback.Stub canConnectMatchingAppsCallback(
-            @NonNull Executor executor,
-            @NonNull OutcomeReceiver<Boolean, HealthConnectException> callback) {
-        return new ICanConnectMatchingAppsCallback.Stub() {
-            @Override
-            public void onResult(boolean canConnect) {
-                Binder.clearCallingIdentity();
-                executor.execute(() -> callback.onResult(canConnect));
-            }
-
-            @Override
-            public void onError(HealthConnectExceptionParcel exception) {
-                Binder.clearCallingIdentity();
-                executor.execute(() -> callback.onError(exception.getHealthConnectException()));
-            }
-        };
     }
 
     /**
@@ -3297,5 +3292,58 @@ public class HealthConnectManager {
                 recordTypes.stream().map(Class::getCanonicalName).distinct().toArray(String[]::new);
         intent.putExtra(EXTRA_RECORD_TYPES, recordTypeNames);
         return intent;
+    }
+
+    /**
+     * Returns a map of package names to their associated permissions that should be displayed on
+     * the screen launched by the intent from {@link #createConnectMatchingAppsIntent(Set)}. The
+     * apps and their mapped permissions returned here are identical to what {@link
+     * #canConnectMatchingApps(Set, Executor, OutcomeReceiver)} identifies as matches.
+     *
+     * <p>The returned map will be empty if {@link #canConnectMatchingApps(Set, Executor,
+     * OutcomeReceiver)} would return {@code false} for the same parameters, and non-empty if it
+     * would return {@code true}.
+     *
+     * @param recordTypes A non-null set of {@link Record} classes.
+     * @param packageName The package name of the app requesting the matching apps.
+     * @param executor The {@link Executor} on which to invoke the callback.
+     * @param callback The callback which will receive the current {@link
+     *     HealthConnectOnboardingState} or the {@link HealthConnectException}.
+     * @hide
+     */
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
+    public void getMatchingApps(
+            @NonNull Set<Class<? extends Record>> recordTypes,
+            @NonNull String packageName,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<Map<String, Set<String>>, HealthConnectException> callback) {
+        Objects.requireNonNull(recordTypes);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            mService.getMatchingApps(
+                    mContext.getAttributionSource(),
+                    new GetMatchingAppsRequest.Builder()
+                            .setPackageName(packageName)
+                            .addRecordTypes(recordTypes)
+                            .build(),
+                    new IGetMatchingAppsCallback.Stub() {
+                        @Override
+                        public void onResult(GetMatchingAppsResponse response) {
+                            Binder.clearCallingIdentity();
+                            Map<String, Set<String>> matchingApps = response.getMatchingApps();
+                            executor.execute(() -> callback.onResult(matchingApps));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(
+                                    () -> callback.onError(exception.getHealthConnectException()));
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
     }
 }
