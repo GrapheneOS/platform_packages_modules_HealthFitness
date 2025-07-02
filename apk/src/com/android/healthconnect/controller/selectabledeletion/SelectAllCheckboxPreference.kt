@@ -45,7 +45,6 @@ constructor(context: Context, attrs: AttributeSet? = null) : HealthPreference(co
         super.onBindViewHolder(holder)
         widgetFrame = holder.findViewById(android.R.id.widget_frame) as ViewGroup?
         widgetFrame?.tag = "checkbox"
-        widgetFrame?.contentDescription = getUpdatedContentDescription(isChecked)
 
         checkBox = holder.findViewById(R.id.checkbox_button) as CheckBox
 
@@ -66,14 +65,12 @@ constructor(context: Context, attrs: AttributeSet? = null) : HealthPreference(co
         val clickListener = OnPreferenceClickListener {
             checkBox?.toggle()
             setIsChecked(checkBox?.isChecked ?: false)
-            widgetFrame?.contentDescription = getUpdatedContentDescription(isChecked)
             method()
             true
         }
 
         checkboxButtonListener = OnClickListener {
             setIsChecked(checkBox?.isChecked ?: false)
-            widgetFrame?.contentDescription = getUpdatedContentDescription(isChecked)
             method()
         }
 
@@ -101,13 +98,5 @@ constructor(context: Context, attrs: AttributeSet? = null) : HealthPreference(co
 
     fun getIsChecked(): Boolean {
         return isChecked
-    }
-
-    private fun getUpdatedContentDescription(isChecked: Boolean): String {
-        return if (isChecked) {
-            context.getString(R.string.a11y_checked)
-        } else {
-            context.getString(R.string.a11y_unchecked)
-        }
     }
 }

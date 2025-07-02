@@ -57,13 +57,7 @@ class SelectAllViewBinder(private val onClickSelectAllListener: OnClickSelectAll
             logger.logInteraction(logName)
             checkBox.toggle()
             onClickSelectAllListener.onClicked(checkBox.isChecked)
-            container.contentDescription =
-                getUpdatedContentDescription(
-                    container.resources,
-                    selectAllText.text.toString(),
-                    isDeletionState,
-                    checkBox.isChecked,
-                )
+            container.contentDescription = selectAllText.text.toString()
         }
 
         checkBox.isChecked = isChecked
@@ -71,13 +65,7 @@ class SelectAllViewBinder(private val onClickSelectAllListener: OnClickSelectAll
             logger.logInteraction(logName)
             // check all entries
             onClickSelectAllListener.onClicked(checkBox.isChecked)
-            container.contentDescription =
-                getUpdatedContentDescription(
-                    container.resources,
-                    selectAllText.text.toString(),
-                    isDeletionState,
-                    checkBox.isChecked,
-                )
+            container.contentDescription = selectAllText.text.toString()
         }
         checkBox.tag = if (isDeletionState) "checkbox" else ""
     }
