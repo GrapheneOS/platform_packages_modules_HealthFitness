@@ -110,7 +110,7 @@ public class LatencyMetricsCollectorTest {
 
         assertThat(result.recordType())
                 .isEqualTo(RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION);
-        assertThat(result.latencyMetricsPerRecords())
+        assertThat(result.latencyMetricsForEachRecord())
                 .containsExactly(
                         new LatencyMetricsPerRecord(
                                 "com.example.app1", /* latency= */ Duration.ofMillis(1000)),
@@ -141,7 +141,7 @@ public class LatencyMetricsCollectorTest {
         LatencyMetricsData result = mLatencyMetricsCollector.readLastWeekSleepSessions();
 
         assertThat(result.recordType()).isEqualTo(RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION);
-        assertThat(result.latencyMetricsPerRecords())
+        assertThat(result.latencyMetricsForEachRecord())
                 .containsExactly(
                         new LatencyMetricsPerRecord(
                                 "com.example.app1", /* latency= */ Duration.ofMillis(1000)),
@@ -173,7 +173,7 @@ public class LatencyMetricsCollectorTest {
 
         LatencyMetricsData result = mLatencyMetricsCollector.readLastWeekExerciseSessions();
 
-        assertThat(result.latencyMetricsPerRecords())
+        assertThat(result.latencyMetricsForEachRecord())
                 .containsExactly(
                         new LatencyMetricsPerRecord(
                                 "com.example.app1", /* latency= */ Duration.ofMillis(1000)));
@@ -198,7 +198,7 @@ public class LatencyMetricsCollectorTest {
 
         LatencyMetricsData result = mLatencyMetricsCollector.readLastWeekExerciseSessions();
 
-        assertThat(result.latencyMetricsPerRecords()).isEmpty();
+        assertThat(result.latencyMetricsForEachRecord()).isEmpty();
     }
 
     private ArgumentMatcher<ReadTableRequest> readTableRequestMatcher(String tableName) {
