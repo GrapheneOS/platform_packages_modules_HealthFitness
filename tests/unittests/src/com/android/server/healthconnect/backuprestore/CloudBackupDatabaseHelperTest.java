@@ -50,7 +50,6 @@ import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.PlannedExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
-import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.platform.test.annotations.EnableFlags;
@@ -60,13 +59,9 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.backuprestore.BackupChangeTokenHelper.BackupChangeToken;
-import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
-import com.android.server.healthconnect.common.metadata.AppInfoHelper;
-import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
-import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -115,8 +110,6 @@ public class CloudBackupDatabaseHelperTest {
     private FitnessTestUtils mFitnessTestUtils;
     private TransactionManager mTransactionManager;
     private FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
-    private AccessLogsHelper mAccessLogsHelper;
-    private AppInfoHelper mAppInfoHelper;
     private final RecordProtoConverter mRecordProtoConverter = new RecordProtoConverter();
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
@@ -132,30 +125,19 @@ public class CloudBackupDatabaseHelperTest {
                         .build();
         mTransactionManager = healthConnectInjector.getTransactionManager();
         mFitnessRecordDeleteHelper = healthConnectInjector.getFitnessRecordDeleteHelper();
-        mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
-        mAccessLogsHelper = healthConnectInjector.getAccessLogsHelper();
 
         mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
-
-        DeviceInfoHelper deviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
-        HealthConnectMappings healthConnectMappings =
-                healthConnectInjector.getHealthConnectMappings();
-        InternalHealthConnectMappings internalHealthConnectMappings =
-                healthConnectInjector.getInternalHealthConnectMappings();
-        ChangeLogsHelper changeLogsHelper = healthConnectInjector.getChangeLogsHelper();
-        ChangeLogsRequestHelper changeLogsRequestHelper =
-                healthConnectInjector.getChangeLogsRequestHelper();
 
         mCloudBackupDatabaseHelper =
                 new CloudBackupDatabaseHelper(
                         mTransactionManager,
                         healthConnectInjector.getFitnessRecordReadHelper(),
-                        mAppInfoHelper,
-                        healthConnectMappings,
-                        internalHealthConnectMappings,
-                        changeLogsHelper,
-                        changeLogsRequestHelper,
+                        healthConnectInjector.getAppInfoHelper(),
+                        healthConnectInjector.getHealthConnectMappings(),
+                        healthConnectInjector.getInternalHealthConnectMappings(),
+                        healthConnectInjector.getChangeLogsHelper(),
+                        healthConnectInjector.getChangeLogsRequestHelper(),
                         healthConnectInjector.getHealthDataCategoryPriorityHelper(),
                         healthConnectInjector.getPreferenceHelper());
     }

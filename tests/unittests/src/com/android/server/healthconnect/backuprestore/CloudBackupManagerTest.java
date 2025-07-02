@@ -37,7 +37,6 @@ import android.health.connect.backuprestore.GetChangesForBackupResponse;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
-import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -46,12 +45,6 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
-import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
-import com.android.server.healthconnect.common.metadata.AppInfoHelper;
-import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
-import com.android.server.healthconnect.common.preferences.PreferenceHelper;
-import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
-import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -104,7 +97,6 @@ public class CloudBackupManagerTest {
     private FitnessTestUtils mFitnessTestUtils;
     private CloudBackupManager mCloudBackupManager;
     private RecordProtoConverter mRecordProtoConverter;
-    private Instant mTimeStamp;
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
@@ -121,34 +113,21 @@ public class CloudBackupManagerTest {
         mTransactionManager = healthConnectInjector.getTransactionManager();
         mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
-        AppInfoHelper appInfoHelper = healthConnectInjector.getAppInfoHelper();
-        DeviceInfoHelper deviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
-        HealthDataCategoryPriorityHelper priorityHelper =
-                healthConnectInjector.getHealthDataCategoryPriorityHelper();
-        PreferenceHelper preferenceHelper = healthConnectInjector.getPreferenceHelper();
-        HealthConnectMappings healthConnectMappings =
-                healthConnectInjector.getHealthConnectMappings();
-        InternalHealthConnectMappings internalHealthConnectMappings =
-                healthConnectInjector.getInternalHealthConnectMappings();
-        ChangeLogsHelper changeLogsHelper = healthConnectInjector.getChangeLogsHelper();
-        ChangeLogsRequestHelper changeLogsRequestHelper =
-                healthConnectInjector.getChangeLogsRequestHelper();
 
-        mTimeStamp = Instant.parse("2024-06-04T16:39:12Z");
-        Clock fakeClock = Clock.fixed(mTimeStamp, ZoneId.of("UTC"));
+        Instant timeStamp = Instant.parse("2024-06-04T16:39:12Z");
+        Clock fakeClock = Clock.fixed(timeStamp, ZoneId.of("UTC"));
 
         mCloudBackupManager =
                 new CloudBackupManager(
                         mTransactionManager,
                         healthConnectInjector.getFitnessRecordReadHelper(),
-                        appInfoHelper,
-                        deviceInfoHelper,
-                        healthConnectMappings,
-                        internalHealthConnectMappings,
-                        changeLogsHelper,
-                        changeLogsRequestHelper,
-                        priorityHelper,
-                        preferenceHelper,
+                        healthConnectInjector.getAppInfoHelper(),
+                        healthConnectInjector.getHealthConnectMappings(),
+                        healthConnectInjector.getInternalHealthConnectMappings(),
+                        healthConnectInjector.getChangeLogsHelper(),
+                        healthConnectInjector.getChangeLogsRequestHelper(),
+                        healthConnectInjector.getHealthDataCategoryPriorityHelper(),
+                        healthConnectInjector.getPreferenceHelper(),
                         fakeClock,
                         healthConnectInjector.getBackupRestoreLogger());
 

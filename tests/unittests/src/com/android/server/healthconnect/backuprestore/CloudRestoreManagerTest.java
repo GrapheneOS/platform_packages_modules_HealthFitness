@@ -41,11 +41,9 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
-import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
-import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -88,7 +86,6 @@ public class CloudRestoreManagerTest {
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
 
     private AppInfoHelper mAppInfoHelper;
-    private DeviceInfoHelper mDeviceInfoHelper;
     private TransactionManager mTransactionManager;
     private FitnessRecordReadHelper mFitnessRecordReadHelper;
     private FitnessTestUtils mFitnessTestUtils;
@@ -96,9 +93,7 @@ public class CloudRestoreManagerTest {
     private RecordProtoConverter mRecordProtoConverter;
     private HealthDataCategoryPriorityHelper mPriorityHelper;
     private PreferenceHelper mPreferenceHelper;
-    private InternalHealthConnectMappings mMappings;
     private DatabaseHelpers mDatabaseHelpers;
-    private Instant mTimeStamp;
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
@@ -115,14 +110,12 @@ public class CloudRestoreManagerTest {
         mTransactionManager = healthConnectInjector.getTransactionManager();
         mFitnessRecordReadHelper = healthConnectInjector.getFitnessRecordReadHelper();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
-        mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
         mPriorityHelper = healthConnectInjector.getHealthDataCategoryPriorityHelper();
         mPreferenceHelper = healthConnectInjector.getPreferenceHelper();
-        mMappings = healthConnectInjector.getInternalHealthConnectMappings();
         mDatabaseHelpers = healthConnectInjector.getDatabaseHelpers();
 
-        mTimeStamp = Instant.parse("2024-06-04T16:39:12Z");
-        Clock fakeClock = Clock.fixed(mTimeStamp, ZoneId.of("UTC"));
+        Instant timeStamp = Instant.parse("2024-06-04T16:39:12Z");
+        Clock fakeClock = Clock.fixed(timeStamp, ZoneId.of("UTC"));
 
         mRecordProtoConverter = new RecordProtoConverter();
         mCloudRestoreManager =
@@ -130,8 +123,6 @@ public class CloudRestoreManagerTest {
                         mTransactionManager,
                         healthConnectInjector.getFitnessRecordUpsertHelper(),
                         mFitnessRecordReadHelper,
-                        mMappings,
-                        mDeviceInfoHelper,
                         mAppInfoHelper,
                         mPriorityHelper,
                         mPreferenceHelper,
