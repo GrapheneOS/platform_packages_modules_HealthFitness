@@ -32,6 +32,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -57,7 +58,6 @@ import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriori
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 
 import org.junit.After;
@@ -88,7 +88,6 @@ public class TrackerManagerImplTest {
 
     private Context mContext;
     private PackageManager mPackageManager;
-    @Mock private HealthConnectPermissionHelper mPermissionHelper;
     @Mock private SensorManager mSensorManager;
     private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     @Mock private UserManager mUserManager;
@@ -111,7 +110,6 @@ public class TrackerManagerImplTest {
                         .setHealthPermissionIntentAppsTracker(
                                 mock(HealthPermissionIntentAppsTracker.class))
                         .setAppOpLogsHelper(mock(AppOpLogsHelper.class))
-                        .setHealthConnectPermissionHelper(mPermissionHelper)
                         .setUserManager(mUserManager)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
@@ -159,7 +157,7 @@ public class TrackerManagerImplTest {
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void noAppsGrantedReadSteps_noPackagesReturned() {
         List<String> packages =
-                TrackerManagerImpl.packagesEligibleForStepTracking(mContext, mPermissionHelper);
+                TrackerManagerImpl.packagesEligibleForStepTracking(mContext, mPackageManager);
 
         assertThat(packages).isEmpty();
     }
@@ -170,7 +168,7 @@ public class TrackerManagerImplTest {
         grantAppStepsPermission(TEST_PACKAGE_NAME);
 
         List<String> packages =
-                TrackerManagerImpl.packagesEligibleForStepTracking(mContext, mPermissionHelper);
+                TrackerManagerImpl.packagesEligibleForStepTracking(mContext, mPackageManager);
 
         assertThat(packages).containsExactly(TEST_PACKAGE_NAME);
     }
@@ -182,7 +180,7 @@ public class TrackerManagerImplTest {
         setAsPregrantedApp(TEST_PACKAGE_NAME);
 
         List<String> packages =
-                TrackerManagerImpl.packagesEligibleForStepTracking(mContext, mPermissionHelper);
+                TrackerManagerImpl.packagesEligibleForStepTracking(mContext, mPackageManager);
 
         assertThat(packages).isEmpty();
     }
@@ -354,6 +352,25 @@ public class TrackerManagerImplTest {
         verify(listenerMock).reset();
     }
 
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void exceptionThrownWithinPermissionListener_exceptionCaught() throws Exception {
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
+                ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        manager.initializeOrRefresh();
+        verify(mPackageManager).addOnPermissionsChangeListener(permissionsListenerCaptor.capture());
+
+        when(mPackageManager.getPermissionFlags(any(), any(), any()))
+                .thenThrow(new RuntimeException("Something went wrong"));
+        permissionsListenerCaptor.getValue().onPermissionsChanged(/* uid= */ 0);
+
+        // Verify that the method which we forced to throw was actually called.
+        verify(mPackageManager, times(2)).getPermissionFlags(any(), any(), any());
+    }
+
     private void grantAppStepsPermission(String packageName) {
         PackageInfo packageInfo = new PackageInfo();
         packageInfo.packageName = packageName;
@@ -372,8 +389,8 @@ public class TrackerManagerImplTest {
     }
 
     private void setAsPregrantedApp(String packageName) {
-        when(mPermissionHelper.getHealthPermissionFlags(
-                        eq(packageName), any(), eq(HealthPermissions.READ_STEPS)))
+        when(mPackageManager.getPermissionFlags(
+                        eq(HealthPermissions.READ_STEPS), eq(packageName), any()))
                 .thenReturn(PackageManager.FLAG_PERMISSION_GRANTED_BY_DEFAULT);
     }
 

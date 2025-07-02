@@ -34,7 +34,6 @@ import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
-import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,7 +54,6 @@ public class TrackerManagerImpl implements TrackerManager {
             "has_device_package_been_appended_to_priority_list_key";
 
     private final Context mContext;
-    private final HealthConnectPermissionHelper mPermissionHelper;
     private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     private final UserManager mUserManager;
     private final PackageManager mPackageManager;
@@ -65,7 +63,6 @@ public class TrackerManagerImpl implements TrackerManager {
 
     public TrackerManagerImpl(
             Context context,
-            HealthConnectPermissionHelper permissionHelper,
             HealthConnectThreadScheduler threadScheduler,
             DeviceRecordHelper deviceRecordHelper,
             DeviceDataSourcesHelper deviceDataSourcesHelper,
@@ -73,7 +70,6 @@ public class TrackerManagerImpl implements TrackerManager {
             UserManager userManager,
             PreferenceHelper preferenceHelper) {
         mContext = context;
-        mPermissionHelper = permissionHelper;
         mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
         mListener =
                 new StepSensorEventListener(
@@ -105,13 +101,17 @@ public class TrackerManagerImpl implements TrackerManager {
 
         mPackageManager.addOnPermissionsChangeListener(
                 uid -> {
-                    if (android.health.connect.Constants.DEBUG) {
-                        Slog.d(TAG, "Permissions changed, refreshing tracker status");
+                    try {
+                        if (android.health.connect.Constants.DEBUG) {
+                            Slog.d(TAG, "Permissions changed, refreshing tracker status");
+                        }
+                        // If tracking wasn't enabled and an app gets the READ_STEPS permission,
+                        // we'll start tracking. If tracking was enabled and READ_STEPS was revoked
+                        // for all apps, we'll disable tracking.
+                        refreshTrackerStatus();
+                    } catch (RuntimeException e) {
+                        Slog.e(TAG, "Unhandled failure in permissions change listener", e);
                     }
-                    // If tracking wasn't enabled and an app gets the READ_STEPS permission, we'll
-                    // start tracking. If tracking was enabled and READ_STEPS was revoked for all
-                    // apps, we'll disable tracking.
-                    refreshTrackerStatus();
                 });
 
         refreshTrackerStatus();
@@ -143,7 +143,7 @@ public class TrackerManagerImpl implements TrackerManager {
     /** Updates the Sensor Manager subscription in case app permissions have changed. */
     // TODO(b/397419957): Call this when an app is uninstalled in case we want to disable tracking
     private void refreshTrackerStatus() {
-        if (packagesEligibleForStepTracking(mContext, mPermissionHelper).isEmpty()) {
+        if (packagesEligibleForStepTracking(mContext, mPackageManager).isEmpty()) {
             Slog.d(TAG, "No packages eligible for step tracking. Aborting initialization.");
             unsubscribeFromSensorManager();
             return;
@@ -177,16 +177,15 @@ public class TrackerManagerImpl implements TrackerManager {
      */
     @VisibleForTesting
     static List<String> packagesEligibleForStepTracking(
-            Context context, HealthConnectPermissionHelper mPermissionHelper) {
+            Context context, PackageManager packageManager) {
         if (android.health.connect.Constants.DEBUG) {
             Slog.d(TAG, "Calling packagesEligibleForStepTracking()");
         }
 
         String[] permissions = new String[] {HealthPermissions.READ_STEPS};
         List<PackageInfo> packageInfos =
-                context.getPackageManager()
-                        .getPackagesHoldingPermissions(
-                                permissions, PackageManager.PackageInfoFlags.of(0));
+                packageManager.getPackagesHoldingPermissions(
+                        permissions, PackageManager.PackageInfoFlags.of(0));
 
         // Get app package names and filter out any system apps pre-granted READ_STEPS as step
         // tracking is initialized for them separately.
@@ -196,7 +195,7 @@ public class TrackerManagerImpl implements TrackerManager {
                         .filter(
                                 packageName ->
                                         hasUserGrantedStepsPermission(
-                                                context, mPermissionHelper, packageName))
+                                                context, packageName, packageManager))
                         .collect(Collectors.toList());
 
         if (android.health.connect.Constants.DEBUG) {
@@ -215,18 +214,28 @@ public class TrackerManagerImpl implements TrackerManager {
      * return false.
      */
     private static boolean hasUserGrantedStepsPermission(
-            Context context, HealthConnectPermissionHelper mPermissionHelper, String packageName) {
-        int flag =
-                mPermissionHelper.getHealthPermissionFlags(
-                        packageName, context.getUser(), HealthPermissions.READ_STEPS);
-        boolean isPregrantedPermission =
-                (flag & PackageManager.FLAG_PERMISSION_GRANTED_BY_DEFAULT) != 0;
+            Context context, String packageName, PackageManager packageManager) {
+        try {
+            @SuppressLint("MissingPermission")
+            int flag =
+                    packageManager.getPermissionFlags(
+                            HealthPermissions.READ_STEPS, packageName, context.getUser());
+            boolean isPregrantedPermission =
+                    (flag & PackageManager.FLAG_PERMISSION_GRANTED_BY_DEFAULT) != 0;
 
-        if (android.health.connect.Constants.DEBUG && isPregrantedPermission) {
-            Slog.d(TAG, "Filtering out pre-granted package : " + packageName);
+            if (android.health.connect.Constants.DEBUG && isPregrantedPermission) {
+                Slog.d(TAG, "Filtering out pre-granted package : " + packageName);
+            }
+
+            return !isPregrantedPermission;
+        } catch (IllegalArgumentException e) {
+            Slog.e(
+                    TAG,
+                    "Failed to obtain permission flags. Package likely uninstalled immediately"
+                            + " after permission change.",
+                    e);
         }
-
-        return !isPregrantedPermission;
+        return false;
     }
 
     private void unsubscribeFromSensorManager() {
