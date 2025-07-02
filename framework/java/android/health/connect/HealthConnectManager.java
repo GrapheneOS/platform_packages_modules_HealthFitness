@@ -396,6 +396,41 @@ public class HealthConnectManager {
             "android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS";
 
     /**
+     * Activity action: Triggers the Health Connect restore flow from settings.
+     *
+     * <p>Health Connect invokes this intent to indicate that the receiver should initiate a restore
+     * from a cloud backup after showing UI to get any missing settings from the user (e.g. account
+     * information, a choice between available backups etc)
+     *
+     * <p class="note">Applications exporting an activity that is launched by this intent must guard
+     * it with {@link HealthPermissions#START_BACKUP_RESTORE_SETTINGS_PERMISSION} so that only the
+     * system can launch it. Applications need to hold the {@link
+     * android.Manifest.permission#BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS} or {@link
+     * android.Manifest.permission#BACKUP} for the intent to be sent.
+     *
+     * <p class="note">Health Connect does not send the intent if:
+     *
+     * <ul>
+     *   <li>There is no component available to handle the intent action
+     *   <li>The component that can handle the action does not hold either of the required
+     *       permissions
+     *   <li>The handler activity is not guarded with the {@link
+     *       HealthPermissions#START_BACKUP_RESTORE_SETTINGS_PERMISSION}
+     * </ul>
+     *
+     * If more than one component can handle the intent, package manager default resolution rules
+     * will be used to resolve the intent.
+     *
+     * @hide
+     */
+    @SystemApi
+    @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API)
+    @RequiresPermission(START_BACKUP_RESTORE_SETTINGS_PERMISSION)
+    @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    public static final String ACTION_SHOW_RESTORE_SETTINGS_AND_TRIGGER_RESTORE =
+            "android.health.connect.action.SHOW_RESTORE_SETTINGS_AND_TRIGGER_RESTORE";
+
+    /**
      * Activity action: Launch UI to prompt user to connect more apps with Health Connect. Internal
      * use for Health Connect.
      *
