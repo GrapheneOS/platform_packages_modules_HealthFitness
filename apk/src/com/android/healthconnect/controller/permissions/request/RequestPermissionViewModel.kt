@@ -25,6 +25,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.permissions.additionalaccess.LoadDeclaredHealthPermissionUseCase
@@ -62,6 +63,7 @@ class RequestPermissionViewModel
 @Inject
 constructor(
     @ApplicationContext private val context: Context,
+    savedStateHandle: SavedStateHandle,
     private val appInfoReader: AppInfoReader,
     private val healthPermissionReader: HealthPermissionReader,
     private val grantHealthPermissionUseCase: GrantHealthPermissionUseCase,
@@ -74,6 +76,7 @@ constructor(
 
     companion object {
         private const val TAG = "RequestPermissionViewMo"
+        private const val GRANTED_PERMISSIONS_KEY = "granted_permissions"
     }
 
     private val _appMetaData = MutableLiveData<AppMetadata>()
@@ -153,12 +156,14 @@ constructor(
 
     /** Permission grants */
     /** [MedicalPermission]s that have been granted locally via a toggle, but not yet requested */
-    private val _grantedMedicalPermissions = MutableLiveData<Set<MedicalPermission>>(emptySet())
+    private val _grantedMedicalPermissions =
+        savedStateHandle.getLiveData<Set<MedicalPermission>>(GRANTED_PERMISSIONS_KEY, emptySet())
     val grantedMedicalPermissions: LiveData<Set<MedicalPermission>>
         get() = _grantedMedicalPermissions
 
     /** [FitnessPermission]s that have been granted locally via a toggle, but not yet requested */
-    private val _grantedFitnessPermissions = MutableLiveData<Set<FitnessPermission>>(emptySet())
+    private val _grantedFitnessPermissions =
+        savedStateHandle.getLiveData<Set<FitnessPermission>>(GRANTED_PERMISSIONS_KEY, emptySet())
     val grantedFitnessPermissions: LiveData<Set<FitnessPermission>>
         get() = _grantedFitnessPermissions
 
@@ -166,7 +171,7 @@ constructor(
      * [AdditionalPermission]s that have been granted locally via a toggle, but not yet requested
      */
     private val _grantedAdditionalPermissions =
-        MutableLiveData<Set<AdditionalPermission>>(emptySet())
+        savedStateHandle.getLiveData<Set<AdditionalPermission>>(GRANTED_PERMISSIONS_KEY, emptySet())
     val grantedAdditionalPermissions: LiveData<Set<AdditionalPermission>>
         get() = _grantedAdditionalPermissions
 

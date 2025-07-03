@@ -35,6 +35,7 @@ import android.health.connect.HealthPermissions.WRITE_PLANNED_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_SKIN_TEMPERATURE
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
+import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.additionalaccess.LoadDeclaredHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
@@ -123,6 +124,7 @@ class RequestPermissionViewModelTest {
         viewModel =
             RequestPermissionViewModel(
                 context,
+                SavedStateHandle(),
                 appInfoReader,
                 healthPermissionReader,
                 grantHealthPermissionUseCase,

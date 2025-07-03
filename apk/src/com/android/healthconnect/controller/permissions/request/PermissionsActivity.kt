@@ -59,6 +59,7 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
 
     companion object {
         private const val TAG = "PermissionsActivity"
+        private const val IS_BOTTOM_SHEET_SHOWN = "is_bottom_sheet_shown"
     }
 
     @Inject lateinit var logger: HealthConnectLogger
@@ -80,6 +81,7 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         if (permissionRequestBottomSheet()) {
             if (SettingsThemeHelper.isExpressiveTheme(this)) {
                 setTheme(R.style.Theme_HealthConnect_PermissionsActivity_Overlay_Expressive)
@@ -150,7 +152,8 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         requestPermissionsViewModel.init(getPackageNameExtra(), getPermissionStrings())
 
         if (permissionRequestBottomSheet()) {
-            if (!isFinishing) {
+            val isBottomSheetShown = savedInstanceState?.getBoolean(IS_BOTTOM_SHEET_SHOWN) == true
+            if (!isBottomSheetShown && !isFinishing) {
                 PermissionsBottomSheetDialogFragment.newInstance()
                     .show(supportFragmentManager, PermissionsBottomSheetDialogFragment.TAG)
             }
@@ -196,6 +199,13 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
                 }
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val bottomSheet =
+            supportFragmentManager.findFragmentByTag(PermissionsBottomSheetDialogFragment.TAG)
+        outState.putBoolean(IS_BOTTOM_SHEET_SHOWN, bottomSheet != null && bottomSheet.isAdded)
     }
 
     private fun maybeShowMigrationDialog(migrationRestoreState: MigrationRestoreState) {
