@@ -156,6 +156,9 @@ class HomeFragment : Fragment() {
         view.requireViewById<Button>(R.id.backup_restore_button).setOnClickListener {
             goToBackupRestorePage()
         }
+        view.requireViewById<Button>(R.id.access_log_button).setOnClickListener {
+            accessLogButtonPressed()
+        }
         mNavigationController = findNavController()
 
         homeFragmentViewModel.seedAllDataState.observe(viewLifecycleOwner) { state ->
@@ -207,6 +210,21 @@ class HomeFragment : Fragment() {
         val intent = Intent("android.health.connect.action.HEALTH_HOME_SETTINGS")
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
+    }
+
+    private fun accessLogButtonPressed() {
+        try {
+            // Foreground 15-minute write quota = 1000
+            SeedData(requireContext(), manager).seedRandomDataToGenerateAccessLog(1_000)
+            Toast.makeText(
+                    this.requireContext(),
+                    R.string.toast_seed_data_success,
+                    Toast.LENGTH_SHORT,
+                )
+                .show()
+        } catch (ex: Exception) {
+            Toast.makeText(requireContext(), ex.localizedMessage, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun seedDataButtonPressed() {

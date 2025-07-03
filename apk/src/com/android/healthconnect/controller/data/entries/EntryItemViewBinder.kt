@@ -62,13 +62,7 @@ class EntryItemViewBinder(private val onSelectEntryListener: OnSelectEntryListen
             container.setOnClickListener {
                 onSelectEntryListener?.onSelectEntry(data.uuid, data.dataType, index)
                 checkBox.toggle()
-                title.contentDescription =
-                    getUpdatedContentDescription(
-                        title.resources,
-                        data.titleA11y,
-                        isDeletionState,
-                        checkBox.isChecked,
-                    )
+                title.contentDescription = data.titleA11y
                 logger.logInteraction(logNameWithCheckbox)
             }
         } else {
@@ -84,26 +78,13 @@ class EntryItemViewBinder(private val onSelectEntryListener: OnSelectEntryListen
         checkBox.isChecked = isChecked
         checkBox.setOnClickListener {
             onSelectEntryListener?.onSelectEntry(data.uuid, data.dataType, index)
-            title.contentDescription =
-                getUpdatedContentDescription(
-                    title.resources,
-                    data.titleA11y,
-                    isDeletionState,
-                    checkBox.isChecked,
-                )
+            title.contentDescription = data.titleA11y
             logger.logInteraction(logNameWithCheckbox)
         }
         checkBox.tag = if (isDeletionState) "checkbox" else ""
 
         title.text = data.title
-        title.contentDescription =
-            getUpdatedContentDescription(
-                title.resources,
-                data.titleA11y,
-                isDeletionState,
-                isChecked,
-            )
-
+        title.contentDescription = data.titleA11y
         header.text = data.header
         header.contentDescription = data.headerA11y
     }

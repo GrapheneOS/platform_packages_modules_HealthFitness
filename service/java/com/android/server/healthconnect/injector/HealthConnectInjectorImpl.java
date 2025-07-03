@@ -499,7 +499,6 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mTrackerManager == null
                         ? new TrackerManagerImpl(
                                 context,
-                                mHealthConnectPermissionHelper,
                                 mThreadScheduler,
                                 mDeviceRecordHelper,
                                 mDeviceDataSourcesHelper,
