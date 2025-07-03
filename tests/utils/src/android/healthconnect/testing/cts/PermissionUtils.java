@@ -269,12 +269,13 @@ public final class PermissionUtils {
         ActivityManager activityManager =
                 requireNonNull(context.getSystemService(ActivityManager.class));
 
-        int uid = getPackageUidUnchecked(context.getPackageManager(), packageName);
         runWithShellPermissionIdentity(
                 () ->
                         eventually(
                                 () ->
-                                        assertThat(activityManager.getUidImportance(uid))
+                                        assertThat(
+                                                        activityManager.getPackageImportance(
+                                                                packageName))
                                                 .isEqualTo(IMPORTANCE_GONE)),
                 PACKAGE_USAGE_STATS);
     }
