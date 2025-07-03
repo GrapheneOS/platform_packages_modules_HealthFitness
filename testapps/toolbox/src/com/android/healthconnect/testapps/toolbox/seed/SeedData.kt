@@ -48,6 +48,16 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
                 SkinTemperatureRecord.MEASUREMENT_LOCATION_UNKNOWN)
     }
 
+    fun seedRandomDataToGenerateAccessLog(numOfLogs: Int) {
+        runBlocking {
+            try {
+                (1..numOfLogs).map { seedHeartRateData(1) }
+            } catch (ex: Exception) {
+                throw ex
+            }
+        }
+    }
+
     fun seedData() {
         runBlocking {
             try {
