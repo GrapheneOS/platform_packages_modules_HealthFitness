@@ -82,13 +82,7 @@ class ExerciseSessionItemViewBinder(
             container.setOnClickListener {
                 onSelectEntryListener?.onSelectEntry(data.uuid, data.dataType, index)
                 checkBox.toggle()
-                title.contentDescription =
-                    getUpdatedContentDescription(
-                        title.resources,
-                        data.titleA11y,
-                        isDeletionState,
-                        checkBox.isChecked,
-                    )
+                title.contentDescription = data.titleA11y
                 logger.logInteraction(logNameWithCheckbox)
             }
         } else {
@@ -111,23 +105,11 @@ class ExerciseSessionItemViewBinder(
         checkBox.isChecked = isChecked
         checkBox.setOnClickListener {
             onSelectEntryListener?.onSelectEntry(data.uuid, data.dataType, index)
-            title.contentDescription =
-                getUpdatedContentDescription(
-                    title.resources,
-                    data.titleA11y,
-                    isDeletionState,
-                    checkBox.isChecked,
-                )
+            title.contentDescription = data.titleA11y
             logger.logInteraction(logNameWithCheckbox)
         }
 
         title.text = data.title
-        title.contentDescription =
-            getUpdatedContentDescription(
-                title.resources,
-                data.titleA11y,
-                isDeletionState,
-                isChecked,
-            )
+        title.contentDescription = data.titleA11y
     }
 }

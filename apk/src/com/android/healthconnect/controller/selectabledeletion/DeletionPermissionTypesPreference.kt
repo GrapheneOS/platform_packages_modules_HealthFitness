@@ -62,7 +62,6 @@ class DeletionPermissionTypesPreference(
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
         val widgetFrame = holder.findViewById(android.R.id.widget_frame) as ViewGroup
-        widgetFrame.contentDescription = getUpdatedContentDescription(isChecked)
 
         val checkBox = holder.findViewById(R.id.checkbox_button) as CheckBox
         showOrHideCheckbox(showCheckbox, widgetFrame)
@@ -71,7 +70,7 @@ class DeletionPermissionTypesPreference(
 
         checkBox.contentDescription = context.getString(mHealthPermissionType.upperCaseLabel())
 
-        checkBox.setOnClickListener(getCheckboxClickListenerWrapper(widgetFrame))
+        checkBox.setOnClickListener(getCheckboxClickListenerWrapper())
         setOnPreferenceClickListener(checkBox, widgetFrame)
 
         val widgetFrameParent: ViewGroup? = widgetFrame.parent as ViewGroup?
@@ -83,9 +82,8 @@ class DeletionPermissionTypesPreference(
         )
     }
 
-    private fun getCheckboxClickListenerWrapper(widgetFrame: ViewGroup) = OnClickListener {
+    private fun getCheckboxClickListenerWrapper() = OnClickListener {
         isChecked = !isChecked
-        widgetFrame.contentDescription = getUpdatedContentDescription(isChecked)
         onDeletionMethod()
         logger.logInteraction(logNameCheckbox)
     }
@@ -105,7 +103,6 @@ class DeletionPermissionTypesPreference(
                 // If we are in deletion mode, clicking on the preference should check the checkbox
                 checkBox.toggle()
                 isChecked = checkBox.isChecked
-                widgetFrame.contentDescription = getUpdatedContentDescription(isChecked)
                 onDeletionMethod()
                 logger.logInteraction(logNameCheckbox)
             } else {
@@ -157,14 +154,6 @@ class DeletionPermissionTypesPreference(
             logger.logImpression(logNameCheckbox)
         } else {
             logger.logImpression(logNameNoCheckbox)
-        }
-    }
-
-    private fun getUpdatedContentDescription(isChecked: Boolean): String {
-        return if (isChecked) {
-            context.getString(R.string.a11y_checked)
-        } else {
-            context.getString(R.string.a11y_unchecked)
         }
     }
 
