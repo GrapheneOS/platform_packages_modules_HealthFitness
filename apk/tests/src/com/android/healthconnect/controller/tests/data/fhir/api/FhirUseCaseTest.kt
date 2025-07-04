@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller.tests.data.rawfhir
+
+package com.android.healthconnect.controller.tests.data.fhir.api
 
 import android.content.Context
 import android.health.connect.HealthConnectException
@@ -22,8 +23,8 @@ import android.health.connect.MedicalResourceId
 import android.health.connect.datatypes.MedicalResource
 import android.os.OutcomeReceiver
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.data.rawfhir.RawFhirUseCase
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import com.android.healthconnect.controller.data.fhir.api.FhirUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_DATASOURCE_ID
@@ -47,15 +48,15 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
-import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
-import org.mockito.MockitoAnnotations
+import org.mockito.MockitoAnnotations.initMocks
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.doAnswer
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class RawFhirUseCaseTest {
+class FhirUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
@@ -64,17 +65,17 @@ class RawFhirUseCaseTest {
 
     var manager: HealthConnectManager = mock(HealthConnectManager::class.java)
 
-    private lateinit var rawFhirUseCase: RawFhirUseCase
+    private lateinit var mFhirUseCase: FhirUseCase
     private lateinit var context: Context
 
     @Before
     fun setup() {
-        MockitoAnnotations.initMocks(this)
-        context = InstrumentationRegistry.getInstrumentation().context
+        initMocks(this)
+        context = getInstrumentation().context
         context.setLocale(Locale.US)
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
-        rawFhirUseCase = RawFhirUseCase(manager, Dispatchers.Main)
+        mFhirUseCase = FhirUseCase(manager, Dispatchers.Main)
     }
 
     @After
@@ -92,12 +93,12 @@ class RawFhirUseCaseTest {
                 ArgumentMatchers.any(),
             )
 
-        val result = rawFhirUseCase.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
+        val result = mFhirUseCase.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
 
         assertThat((result as UseCaseResults.Failed).exception is IllegalStateException).isTrue()
         assertThat((result.exception as IllegalStateException).message)
             .isEqualTo(
-                "No FHIR resource found for given MedicalResourceId{dataSourceId=$TEST_DATASOURCE_ID,fhirResourceType=1,fhirResourceId=Immunization1}"
+                "No FHIR resource found for given MedicalResourceId{dataSourceId=${TEST_DATASOURCE_ID},fhirResourceType=1,fhirResourceId=Immunization1}"
             )
     }
 
@@ -111,7 +112,7 @@ class RawFhirUseCaseTest {
                 ArgumentMatchers.any(),
             )
 
-        val result = rawFhirUseCase.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
+        val result = mFhirUseCase.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
 
         assertThat((result as UseCaseResults.Failed).exception is HealthConnectException).isTrue()
         assertThat((result.exception as HealthConnectException).errorCode)
@@ -129,7 +130,7 @@ class RawFhirUseCaseTest {
                 ArgumentMatchers.any(),
             )
 
-        val result = rawFhirUseCase.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
+        val result = mFhirUseCase.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
 
         assertThat(result is UseCaseResults.Success).isTrue()
         assertThat((result as UseCaseResults.Success).data.id)

@@ -22,6 +22,9 @@ import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.PlannedExerciseSessionRecord
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsRecord
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
@@ -69,6 +72,7 @@ import com.android.healthconnect.controller.utils.logging.DataEntriesElement
 import com.android.healthconnect.controller.utils.logging.EntriesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthfitness.flags.Flags
 import com.android.settingslib.widget.SettingsThemeHelper
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
@@ -100,6 +104,7 @@ import org.mockito.kotlin.whenever
 class AppEntriesFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val setFlagsRule = SetFlagsRule()
 
     @BindValue val viewModel: EntriesViewModel = Mockito.mock(EntriesViewModel::class.java)
     @BindValue
@@ -176,7 +181,7 @@ class AppEntriesFragmentTest {
             )
         )
 
-        if(SettingsThemeHelper.isExpressiveTheme(context)) {
+        if (SettingsThemeHelper.isExpressiveTheme(context)) {
             onView(withId(R.id.zerostate_view)).check(matches(isDisplayed()))
         } else {
             onView(withId(R.id.no_data_view)).check(matches(isDisplayed()))
@@ -578,6 +583,7 @@ class AppEntriesFragmentTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_ENTRIES_SCREEN)
     fun clickOnMedicalPermission_navigateToRawFhir() {
         whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_IMMUNIZATION_LIST)))
         whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_IMMUNIZATION_LIST.toMutableList())
@@ -596,6 +602,28 @@ class AppEntriesFragmentTest {
         onView(withText("Covid vaccine 2")).perform(click())
 
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.rawFhirFragment)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_ENTRIES_SCREEN)
+    fun clickOnMedicalPermission_navigateToPrettyFhir() {
+        whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_IMMUNIZATION_LIST)))
+        whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_IMMUNIZATION_LIST.toMutableList())
+
+        launchFragment<AppEntriesFragment>(
+            bundleOf(
+                PERMISSION_TYPE_NAME_KEY to MedicalPermissionType.VACCINES.name,
+                EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                Constants.EXTRA_APP_NAME to TEST_APP_NAME,
+            )
+        ) {
+            navHostController.setGraph(R.navigation.app_data_nav_graph)
+            navHostController.setCurrentDestination(R.id.appEntriesFragment)
+            Navigation.setViewNavController(this.requireView(), navHostController)
+        }
+        onView(withText("Covid vaccine 2")).perform(click())
+
+        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.prettyFhirFragment)
     }
 }
 

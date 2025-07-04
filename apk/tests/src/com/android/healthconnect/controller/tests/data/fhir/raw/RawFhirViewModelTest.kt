@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller.tests.data.rawfhir
+package com.android.healthconnect.controller.tests.data.fhir.raw
 
 import android.content.Context
 import android.health.connect.HealthConnectException
@@ -23,14 +23,16 @@ import android.health.connect.datatypes.MedicalResource
 import android.os.OutcomeReceiver
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.data.rawfhir.RawFhirFormatter
-import com.android.healthconnect.controller.data.rawfhir.RawFhirUseCase
-import com.android.healthconnect.controller.data.rawfhir.RawFhirViewModel
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedRawFhir
+import com.android.healthconnect.controller.data.fhir.api.FhirUseCase
+import com.android.healthconnect.controller.data.fhir.raw.RawFhirViewModel
+import com.android.healthconnect.controller.data.formatters.medical.RawFhirFormatter
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION_LONG
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_INVALID_JSON
 import com.android.healthconnect.controller.tests.utils.TestObserver
+import com.android.healthconnect.controller.tests.utils.prepareAnswer
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -50,7 +52,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
@@ -68,8 +70,8 @@ class RawFhirViewModelTest {
 
     var manager: HealthConnectManager = mock(HealthConnectManager::class.java)
 
-    @Inject lateinit var formatter: RawFhirFormatter
-    private lateinit var viewModel: RawFhirViewModel
+    @Inject lateinit var rawFhirFormatter: RawFhirFormatter
+    private lateinit var rawFhirViewModel: RawFhirViewModel
     private lateinit var context: Context
 
     @Before
@@ -79,7 +81,8 @@ class RawFhirViewModelTest {
         context.setLocale(Locale.US)
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
-        viewModel = RawFhirViewModel(RawFhirUseCase(manager, Dispatchers.Main), formatter)
+        rawFhirViewModel =
+            RawFhirViewModel(FhirUseCase(manager, Dispatchers.Main), rawFhirFormatter)
     }
 
     @After
@@ -91,15 +94,11 @@ class RawFhirViewModelTest {
     fun errorInApiCall_returnsErrorState() = runTest {
         doAnswer(prepareFailureAnswer())
             .`when`(manager)
-            .readMedicalResources(
-                ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .readMedicalResources(any<MutableList<MedicalResourceId>>(), any(), any())
 
         val testObserver = TestObserver<RawFhirViewModel.RawFhirState>()
-        viewModel.rawFhir.observeForever(testObserver)
-        viewModel.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
+        rawFhirViewModel.rawFhir.observeForever(testObserver)
+        rawFhirViewModel.loadRawFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
         advanceUntilIdle()
 
         assertThat(testObserver.getLastValue()).isEqualTo(RawFhirViewModel.RawFhirState.Error)
@@ -110,22 +109,18 @@ class RawFhirViewModelTest {
         val medicalResources: List<MedicalResource> = listOf(TEST_MEDICAL_RESOURCE_IMMUNIZATION)
         doAnswer(prepareAnswer(medicalResources))
             .`when`(manager)
-            .readMedicalResources(
-                ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .readMedicalResources(any<MutableList<MedicalResourceId>>(), any(), any())
 
         val testObserver = TestObserver<RawFhirViewModel.RawFhirState>()
-        viewModel.rawFhir.observeForever(testObserver)
-        viewModel.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
+        rawFhirViewModel.rawFhir.observeForever(testObserver)
+        rawFhirViewModel.loadRawFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
         advanceUntilIdle()
 
         val expected =
             listOf(
-                RawFhirViewModel.FormattedFhir(
+                FormattedRawFhir(
                     fhir =
-                    "{\n" +
+                        "{\n" +
                             "    \"resourceType\": \"Immunization\",\n" +
                             "    \"id\": \"immunization-1\",\n" +
                             "    \"status\": \"completed\",\n" +
@@ -162,20 +157,16 @@ class RawFhirViewModelTest {
             listOf(TEST_MEDICAL_RESOURCE_IMMUNIZATION_LONG)
         doAnswer(prepareAnswer(medicalResources))
             .`when`(manager)
-            .readMedicalResources(
-                ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .readMedicalResources(any<MutableList<MedicalResourceId>>(), any(), any())
 
         val testObserver = TestObserver<RawFhirViewModel.RawFhirState>()
-        viewModel.rawFhir.observeForever(testObserver)
-        viewModel.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION_LONG.id)
+        rawFhirViewModel.rawFhir.observeForever(testObserver)
+        rawFhirViewModel.loadRawFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION_LONG.id)
         advanceUntilIdle()
 
         val expected =
             listOf(
-                RawFhirViewModel.FormattedFhir(
+                FormattedRawFhir(
                     fhir =
                         "{\n" +
                             "    \"resourceType\": \"Immunization\",\n" +
@@ -265,37 +256,22 @@ class RawFhirViewModelTest {
         val medicalResources: List<MedicalResource> = listOf(TEST_MEDICAL_RESOURCE_INVALID_JSON)
         doAnswer(prepareAnswer(medicalResources))
             .`when`(manager)
-            .readMedicalResources(
-                ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .readMedicalResources(any<MutableList<MedicalResourceId>>(), any(), any())
 
         val testObserver = TestObserver<RawFhirViewModel.RawFhirState>()
-        viewModel.rawFhir.observeForever(testObserver)
-        viewModel.loadFhirResource(TEST_MEDICAL_RESOURCE_INVALID_JSON.id)
+        rawFhirViewModel.rawFhir.observeForever(testObserver)
+        rawFhirViewModel.loadRawFhirResource(TEST_MEDICAL_RESOURCE_INVALID_JSON.id)
         advanceUntilIdle()
 
         val expected =
             listOf(
-                RawFhirViewModel.FormattedFhir(
+                FormattedRawFhir(
                     TEST_MEDICAL_RESOURCE_INVALID_JSON.fhirResource.data,
                     TEST_MEDICAL_RESOURCE_INVALID_JSON.fhirResource.data,
                 )
             )
         assertThat(testObserver.getLastValue())
             .isEqualTo(RawFhirViewModel.RawFhirState.WithData(expected))
-    }
-
-    private fun prepareAnswer(
-        medicalResources: List<MedicalResource>
-    ): (InvocationOnMock) -> List<MedicalResource> {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[2] as OutcomeReceiver<Any?, *>
-            receiver.onResult(medicalResources)
-            medicalResources
-        }
-        return answer
     }
 
     private fun prepareFailureAnswer(): (InvocationOnMock) -> Nothing? {

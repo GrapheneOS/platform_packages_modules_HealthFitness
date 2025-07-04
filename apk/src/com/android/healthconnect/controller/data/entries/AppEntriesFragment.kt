@@ -44,7 +44,8 @@ import com.android.healthconnect.controller.data.entries.EntriesViewModel.Entrie
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationView
 import com.android.healthconnect.controller.data.entrydetails.DataEntryDetailsFragment
-import com.android.healthconnect.controller.data.rawfhir.RawFhirFragment
+import com.android.healthconnect.controller.data.fhir.pretty.PrettyFhirFragment
+import com.android.healthconnect.controller.data.fhir.raw.RawFhirFragment
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
@@ -115,6 +116,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
     // VIEW state click listener
     private val onClickMedicalEntryListener by lazy {
         object : OnClickMedicalEntryListener {
+
             override fun onItemClicked(id: MedicalResourceId, index: Int) {
                 findNavController()
                     .navigate(
@@ -122,9 +124,26 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                         bundleOf(RawFhirFragment.MEDICAL_RESOURCE_ID_KEY to id),
                     )
             }
+
+            override fun onItemClicked(
+                dataEntry: FormattedEntry.FormattedMedicalDataEntry,
+                index: Int,
+            ) {
+
+                findNavController()
+                    .navigate(
+                        R.id.action_appEntriesFragment_to_prettyFhirFragment,
+                        PrettyFhirFragment.createBundle(
+                            header = dataEntry.header,
+                            headerA11y = dataEntry.headerA11y,
+                            title = dataEntry.title,
+                            titleA11y = dataEntry.titleA11y,
+                            medicalResourceId = dataEntry.medicalResourceId,
+                        ),
+                    )
+            }
         }
     }
-
     // DELETE state click listener
     private val onSelectEntryListener by lazy {
         object : OnSelectEntryListener {
