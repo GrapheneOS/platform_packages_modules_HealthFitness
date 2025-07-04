@@ -28,6 +28,7 @@ import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.SystemService;
 import com.android.server.healthconnect.common.jobs.HealthConnectDailyJobs;
+import com.android.server.healthconnect.common.jobs.HealthConnectWeeklyJobs;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -229,6 +230,15 @@ public class HealthConnectManagerService extends SystemService {
                         HealthConnectDailyJobs.schedule(mContext, mCurrentForegroundUser);
                     } catch (Exception e) {
                         Slog.e(TAG, "Failed to schedule Health Connect daily service.", e);
+                    }
+                });
+
+        threadScheduler.scheduleInternalTask(
+                () -> {
+                    try {
+                        HealthConnectWeeklyJobs.schedule(mContext, mCurrentForegroundUser);
+                    } catch (Exception e) {
+                        Slog.e(TAG, "Failed to schedule Health Connect weekly service.", e);
                     }
                 });
 

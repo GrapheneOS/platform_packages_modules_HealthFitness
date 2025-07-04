@@ -40,7 +40,7 @@ public final class LatencyMetricsLogger {
     }
 
     /** Write Health Connect latency stats to statsd. */
-    void log() {
+    public void log() {
         if (!Flags.latencyMetricsFlag()) {
             return;
         }
