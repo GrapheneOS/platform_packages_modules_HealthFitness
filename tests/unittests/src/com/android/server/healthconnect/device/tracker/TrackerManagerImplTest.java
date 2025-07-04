@@ -95,12 +95,13 @@ public class TrackerManagerImplTest {
     private HealthConnectInjector mHealthConnectInjector;
 
     @Before
-    public void setup() throws PackageManager.NameNotFoundException {
+    public void setup() throws Exception {
         mContext = spy(InstrumentationRegistry.getInstrumentation().getContext());
         AndroidPackageMocker.addToContext(mContext);
         mPackageManager = mContext.getPackageManager();
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
         doReturn(mSensorManager).when(mContext).getSystemService(SensorManager.class);
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
         doReturn(TEST_USER).when(mContext).getUser();
         doReturn(true).when(mUserManager).isUserUnlocked();
         doReturn(true).when(mUserManager).isUserUnlocked(TEST_USER);
@@ -188,6 +189,7 @@ public class TrackerManagerImplTest {
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void appHasPermission_deviceHasNoSensor_doesNotSubscribeToSensorManager() {
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(null);
         grantAppStepsPermission(TEST_PACKAGE_NAME);
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
 
@@ -200,9 +202,33 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
-    public void appHasPermission_deviceHasSensor_subscribesToSensorManager() throws Exception {
+    public void appHasPermission_deviceHasNoSensor_doesNotRegisterPermissionChangeListener() {
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(null);
         grantAppStepsPermission(TEST_PACKAGE_NAME);
-        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mPackageManager, never()).addOnPermissionsChangeListener(any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void
+            appHasPermission_sensorManagerUnavailable_doesNotRegisterPermissionChangeListener() {
+        doReturn(null).when(mContext).getSystemService(SensorManager.class);
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mPackageManager, never()).addOnPermissionsChangeListener(any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void appHasPermission_deviceHasSensor_subscribesToSensorManager() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
 
         manager.initializeOrRefresh();
@@ -217,7 +243,6 @@ public class TrackerManagerImplTest {
     public void afterSensorManagerSubscription_appLosesPermission_unsubscribeFromSensorManager()
             throws Exception {
         grantAppStepsPermission(TEST_PACKAGE_NAME);
-        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
         manager.initializeOrRefresh();
         verify(mSensorManager)
@@ -235,7 +260,6 @@ public class TrackerManagerImplTest {
     public void deviceIsWearOs_stepTrackingNotStarted() throws Exception {
         when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)).thenReturn(true);
         grantAppStepsPermission(TEST_PACKAGE_NAME);
-        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
 
         manager.initializeOrRefresh();
@@ -301,7 +325,6 @@ public class TrackerManagerImplTest {
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void onAppPermissionGranted_listenerTriggered_refreshesTrackerStatusAndSubscribes()
             throws Exception {
-        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
         ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
                 ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
@@ -321,7 +344,6 @@ public class TrackerManagerImplTest {
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void onAppPermissionRevoked_listenerTriggered_refreshesTrackerStatusAndUnsubscribes()
             throws Exception {
-        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
         grantAppStepsPermission(TEST_PACKAGE_NAME);
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
         ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
@@ -355,7 +377,6 @@ public class TrackerManagerImplTest {
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void exceptionThrownWithinPermissionListener_exceptionCaught() throws Exception {
-        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
         ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
                 ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
