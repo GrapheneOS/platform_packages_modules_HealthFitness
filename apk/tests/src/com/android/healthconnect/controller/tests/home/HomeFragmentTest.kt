@@ -1612,6 +1612,20 @@ class HomeFragmentTest {
             }
     }
 
+    @Test
+    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    fun devices_whenFlagEnabled_isDisplayed() {
+        setupFragmentForNavigation()
+        onView(withText("Devices")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    fun devices_whenFlagDisabled_isNotDisplayed() {
+        setupFragmentForNavigation()
+        onView(withText("Devices")).check(doesNotExist())
+    }
+
     // endregion
 
     private fun setupFragmentForNavigation() {

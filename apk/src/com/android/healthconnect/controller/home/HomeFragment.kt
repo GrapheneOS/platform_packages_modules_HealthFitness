@@ -72,6 +72,7 @@ import com.android.healthconnect.controller.utils.logging.RecentAccessElement
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
 import com.android.healthfitness.flags.Flags.onboarding
+import com.android.healthfitness.flags.Flags.stepTrackingEnabled
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.SettingsThemeHelper
 import com.android.settingslib.widget.ZeroStatePreference
@@ -90,6 +91,7 @@ class HomeFragment : Hilt_HomeFragment() {
         private const val DATA_AND_ACCESS_PREFERENCE_KEY = "data_and_access"
         private const val RECENT_ACCESS_PREFERENCE_KEY = "recent_access"
         private const val CONNECTED_APPS_PREFERENCE_KEY = "connected_apps"
+        private const val DEVICES_PREFERENCE_KEY = "devices"
         private const val MIGRATION_BANNER_PREFERENCE_KEY = "migration_banner"
         private const val DATA_RESTORE_BANNER_PREFERENCE_KEY = "data_restore_banner"
         private const val MANAGE_DATA_PREFERENCE_KEY = "manage_data"
@@ -126,6 +128,7 @@ class HomeFragment : Hilt_HomeFragment() {
         pref(PERMISSIONS_AND_DATA_CATEGORY_KEY)
 
     private val appPermissionsPreference: HealthPreference by pref(CONNECTED_APPS_PREFERENCE_KEY)
+    private val devicesPreference: HealthPreference by pref(DEVICES_PREFERENCE_KEY)
 
     private val dataAndAccessPreference: HealthPreference by pref(DATA_AND_ACCESS_PREFERENCE_KEY)
 
@@ -156,6 +159,13 @@ class HomeFragment : Hilt_HomeFragment() {
             findNavController().navigate(R.id.action_homeFragment_to_connectedAppsFragment)
             true
         }
+
+        // TODO(b/429618933): add logging for devices section
+        devicesPreference.setOnPreferenceClickListener {
+            Toast.makeText(requireContext(), "Coming soon!", Toast.LENGTH_SHORT).show()
+            true
+        }
+        devicesPreference.summary = getString(R.string.devices_summary)
 
         manageDataPreference.logName = HomePageElement.MANAGE_DATA_BUTTON
         manageDataPreference.setOnPreferenceClickListener {
@@ -250,6 +260,8 @@ class HomeFragment : Hilt_HomeFragment() {
                 maybeShowOnboardingBanner(state)
             }
         }
+
+        devicesPreference.isVisible = stepTrackingEnabled()
     }
 
     private fun maybeShowOnboardingBanner(state: OnboardingViewModel.OnboardingBannerState) {
