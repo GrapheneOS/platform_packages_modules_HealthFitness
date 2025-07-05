@@ -28,13 +28,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.health.HealthFitnessStatsLog;
-import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import com.android.server.healthconnect.common.logging.LatencyMetricsCollector.LatencyMetricsData;
-import com.android.server.healthconnect.common.logging.LatencyMetricsCollector.LatencyMetricsPerRecord;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -57,13 +55,13 @@ public class LatencyMetricsLoggerTest {
 
     @Before
     public void setUp() {
-        mLatencyMetricsLogger = new LatencyMetricsLogger(mStatsLog);
+        mLatencyMetricsLogger = new LatencyMetricsLogger(mStatsLog, mLatencyMetricsCollector);
     }
 
     @Test
     @DisableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void testLog_flagOff_doesNothing() {
-        mLatencyMetricsLogger.log(mLatencyMetricsCollector);
+        mLatencyMetricsLogger.log();
         verify(mStatsLog, never())
                 .write(
                         eq(HealthFitnessStatsLog.HEALTH_CONNECT_LATENCY_STATS),
@@ -77,22 +75,13 @@ public class LatencyMetricsLoggerTest {
     public void testLog_flagOn_logsLatencyMetrics() {
         when(mLatencyMetricsCollector.readLastWeekExerciseSessions())
                 .thenReturn(
-                        new LatencyMetricsData(
-                                RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION,
-                                List.of(
-                                        new LatencyMetricsPerRecord(
-                                                "package.a", Duration.ofMillis(10)),
-                                        new LatencyMetricsPerRecord(
-                                                "package.b", Duration.ofMillis(20)))));
+                        List.of(
+                                new LatencyMetricsData("package.a", Duration.ofMillis(10)),
+                                new LatencyMetricsData("package.b", Duration.ofMillis(20))));
         when(mLatencyMetricsCollector.readLastWeekSleepSessions())
-                .thenReturn(
-                        new LatencyMetricsData(
-                                RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION,
-                                List.of(
-                                        new LatencyMetricsPerRecord(
-                                                "package.c", Duration.ofMillis(30)))));
+                .thenReturn(List.of(new LatencyMetricsData("package.c", Duration.ofMillis(30))));
 
-        mLatencyMetricsLogger.log(mLatencyMetricsCollector);
+        mLatencyMetricsLogger.log();
 
         verify(mStatsLog, times(1))
                 .write(
@@ -125,16 +114,10 @@ public class LatencyMetricsLoggerTest {
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void testLog_noLatencyMetrics_doesNothing() {
-        when(mLatencyMetricsCollector.readLastWeekExerciseSessions())
-                .thenReturn(
-                        new LatencyMetricsData(
-                                RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION, List.of()));
-        when(mLatencyMetricsCollector.readLastWeekSleepSessions())
-                .thenReturn(
-                        new LatencyMetricsData(
-                                RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION, List.of()));
+        when(mLatencyMetricsCollector.readLastWeekExerciseSessions()).thenReturn(List.of());
+        when(mLatencyMetricsCollector.readLastWeekSleepSessions()).thenReturn(List.of());
 
-        mLatencyMetricsLogger.log(mLatencyMetricsCollector);
+        mLatencyMetricsLogger.log();
 
         verify(mStatsLog, never())
                 .write(

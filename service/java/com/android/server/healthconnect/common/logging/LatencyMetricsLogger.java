@@ -16,13 +16,10 @@
 
 package com.android.server.healthconnect.common.logging;
 
-import android.annotation.SuppressLint;
 import android.health.HealthFitnessStatsLog;
-import android.health.connect.datatypes.RecordTypeIdentifier;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.logging.LatencyMetricsCollector.LatencyMetricsData;
-import com.android.server.healthconnect.common.logging.LatencyMetricsCollector.LatencyMetricsPerRecord;
 
 import java.util.List;
 
@@ -31,54 +28,44 @@ import java.util.List;
  *
  * @hide
  */
-final class LatencyMetricsLogger {
+public final class LatencyMetricsLogger {
 
     private final HealthFitnessStatsLog mStatsLog;
+    private final LatencyMetricsCollector mLatencyMetricsCollector;
 
-    LatencyMetricsLogger(HealthFitnessStatsLog statsLog) {
+    public LatencyMetricsLogger(
+            HealthFitnessStatsLog statsLog, LatencyMetricsCollector latencyMetricsCollector) {
         mStatsLog = statsLog;
+        mLatencyMetricsCollector = latencyMetricsCollector;
     }
 
     /** Write Health Connect latency stats to statsd. */
-    void log(LatencyMetricsCollector latencyMetricsCollector) {
+    void log() {
         if (!Flags.latencyMetricsFlag()) {
             return;
         }
-        LatencyMetricsData exerciseSessionLatencyMetrics =
-                latencyMetricsCollector.readLastWeekExerciseSessions();
-        LatencyMetricsData sleepSessionLatencyMetrics =
-                latencyMetricsCollector.readLastWeekSleepSessions();
+        List<LatencyMetricsData> exerciseSessionLatencyMetrics =
+                mLatencyMetricsCollector.readLastWeekExerciseSessions();
+        List<LatencyMetricsData> sleepSessionLatencyMetrics =
+                mLatencyMetricsCollector.readLastWeekSleepSessions();
         logLatency(
-                getProtoRecordType(exerciseSessionLatencyMetrics.recordType()),
-                exerciseSessionLatencyMetrics.latencyMetricsForEachRecord());
+                HealthFitnessStatsLog
+                        .HEALTH_CONNECT_LATENCY_STATS__SESSION_DATA_TYPE__SESSION_DATA_TYPE_EXERCISE,
+                exerciseSessionLatencyMetrics);
         logLatency(
-                getProtoRecordType(sleepSessionLatencyMetrics.recordType()),
-                sleepSessionLatencyMetrics.latencyMetricsForEachRecord());
+                HealthFitnessStatsLog
+                        .HEALTH_CONNECT_LATENCY_STATS__SESSION_DATA_TYPE__SESSION_DATA_TYPE_SLEEP,
+                sleepSessionLatencyMetrics);
     }
 
     private void logLatency(
-            int recordTypeForLogging, List<LatencyMetricsPerRecord> latencyMetricsForEachRecord) {
-        for (LatencyMetricsPerRecord latencyMetricsPerRecord : latencyMetricsForEachRecord) {
+            int recordTypeForLogging, List<LatencyMetricsData> latencyMetricsDataList) {
+        for (LatencyMetricsData latencyMetricsData : latencyMetricsDataList) {
             mStatsLog.write(
                     HealthFitnessStatsLog.HEALTH_CONNECT_LATENCY_STATS,
-                    latencyMetricsPerRecord.packageName(),
+                    latencyMetricsData.packageName(),
                     recordTypeForLogging,
-                    latencyMetricsPerRecord.latency().toMillis());
+                    latencyMetricsData.latency().toMillis());
         }
-    }
-
-    @SuppressLint("SwitchIntDef")
-    private int getProtoRecordType(@RecordTypeIdentifier.RecordType int recordType) {
-        return switch (recordType) {
-            case RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION ->
-                    HealthFitnessStatsLog
-                            .HEALTH_CONNECT_LATENCY_STATS__SESSION_DATA_TYPE__SESSION_DATA_TYPE_EXERCISE;
-            case RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION ->
-                    HealthFitnessStatsLog
-                            .HEALTH_CONNECT_LATENCY_STATS__SESSION_DATA_TYPE__SESSION_DATA_TYPE_SLEEP;
-            default ->
-                    HealthFitnessStatsLog
-                            .HEALTH_CONNECT_LATENCY_STATS__SESSION_DATA_TYPE__SESSION_DATA_TYPE_UNKNOWN;
-        };
     }
 }

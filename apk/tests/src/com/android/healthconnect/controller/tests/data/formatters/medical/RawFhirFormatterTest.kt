@@ -1,25 +1,26 @@
 /*
- * Copyright (C) 2024 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
- * ```
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-package com.android.healthconnect.controller.tests.data.rawfhir
+
+package com.android.healthconnect.controller.tests.data.formatters.medical
 
 import android.content.Context
 import android.health.connect.datatypes.FhirResource
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.data.rawfhir.RawFhirFormatter
+import com.android.healthconnect.controller.data.formatters.medical.RawFhirFormatter
 import com.android.healthconnect.controller.tests.utils.TEST_FHIR_RESOURCE_IMMUNIZATION
 import com.android.healthconnect.controller.tests.utils.TEST_FHIR_RESOURCE_IMMUNIZATION_LONG
 import com.android.healthconnect.controller.tests.utils.TEST_FHIR_RESOURCE_INVALID_JSON
@@ -127,28 +128,28 @@ class RawFhirFormatterTest {
         assertThat(rawFhirFormatter.format(TEST_FHIR_RESOURCE_IMMUNIZATION))
             .isEqualTo(
                 "{\n" +
-                        "    \"resourceType\": \"Immunization\",\n" +
-                        "    \"id\": \"immunization-1\",\n" +
-                        "    \"status\": \"completed\",\n" +
-                        "    \"vaccineCode\": {\n" +
-                        "        \"coding\": [\n" +
-                        "            {\n" +
-                        "                \"system\": \"http://hl7.org/fhir/sid/cvx\",\n" +
-                        "                \"code\": \"115\"\n" +
-                        "            },\n" +
-                        "            {\n" +
-                        "                \"system\": \"http://hl7.org/fhir/sid/ndc\",\n" +
-                        "                \"code\": \"58160-842-11\"\n" +
-                        "            }\n" +
-                        "        ],\n" +
-                        "        \"text\": \"Tdap\"\n" +
-                        "    },\n" +
-                        "    \"patient\": {\n" +
-                        "        \"reference\": \"Patient/patient_1\",\n" +
-                        "        \"display\": \"Example, Anne\"\n" +
-                        "    },\n" +
-                        "    \"occurrenceDateTime\": \"2018-05-21\"\n" +
-                        "}"
+                    "    \"resourceType\": \"Immunization\",\n" +
+                    "    \"id\": \"immunization-1\",\n" +
+                    "    \"status\": \"completed\",\n" +
+                    "    \"vaccineCode\": {\n" +
+                    "        \"coding\": [\n" +
+                    "            {\n" +
+                    "                \"system\": \"http://hl7.org/fhir/sid/cvx\",\n" +
+                    "                \"code\": \"115\"\n" +
+                    "            },\n" +
+                    "            {\n" +
+                    "                \"system\": \"http://hl7.org/fhir/sid/ndc\",\n" +
+                    "                \"code\": \"58160-842-11\"\n" +
+                    "            }\n" +
+                    "        ],\n" +
+                    "        \"text\": \"Tdap\"\n" +
+                    "    },\n" +
+                    "    \"patient\": {\n" +
+                    "        \"reference\": \"Patient/patient_1\",\n" +
+                    "        \"display\": \"Example, Anne\"\n" +
+                    "    },\n" +
+                    "    \"occurrenceDateTime\": \"2018-05-21\"\n" +
+                    "}"
             )
     }
 

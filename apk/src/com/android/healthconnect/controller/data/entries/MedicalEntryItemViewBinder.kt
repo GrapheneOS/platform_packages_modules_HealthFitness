@@ -23,6 +23,7 @@ import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
 import com.android.healthconnect.controller.utils.logging.EntriesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import com.android.healthfitness.flags.Flags
 import dagger.hilt.android.EntryPointAccessors
 
 /** ViewBinder for FormattedMedicalDataEntry. */
@@ -59,9 +60,16 @@ class MedicalEntryItemViewBinder(
         header.text = data.header
         header.contentDescription = data.headerA11y
 
-        view.setOnClickListener {
-            logger.logInteraction(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
-            onClickMedicalEntryListener?.onItemClicked(data.medicalResourceId, index)
+        if (Flags.personalHealthRecordEntriesScreen()) {
+            view.setOnClickListener {
+                logger.logInteraction(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
+                onClickMedicalEntryListener?.onItemClicked(data, index)
+            }
+        } else {
+            view.setOnClickListener {
+                logger.logInteraction(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
+                onClickMedicalEntryListener?.onItemClicked(data.medicalResourceId, index)
+            }
         }
     }
 }

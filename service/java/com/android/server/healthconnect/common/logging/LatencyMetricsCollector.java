@@ -22,7 +22,6 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.health.connect.datatypes.RecordTypeIdentifier;
 
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
@@ -56,24 +55,17 @@ public final class LatencyMetricsCollector {
     }
 
     /** Collects latency for past 7 days' exercise sessions. */
-    public LatencyMetricsData readLastWeekExerciseSessions() {
-        List<LatencyMetricsPerRecord> latencyMetricsPerRecordList =
-                readLastWeekSessions(
-                        ExerciseSessionRecordHelper.EXERCISE_SESSION_RECORD_TABLE_NAME);
-        return new LatencyMetricsData(
-                RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION, latencyMetricsPerRecordList);
+    public List<LatencyMetricsData> readLastWeekExerciseSessions() {
+        return readLastWeekSessions(ExerciseSessionRecordHelper.EXERCISE_SESSION_RECORD_TABLE_NAME);
     }
 
     /** Collects latency for past 7 days' sleep sessions. */
-    public LatencyMetricsData readLastWeekSleepSessions() {
-        List<LatencyMetricsPerRecord> latencyMetricsPerRecordList =
-                readLastWeekSessions(SleepSessionRecordHelper.SLEEP_SESSION_RECORD_TABLE_NAME);
-        return new LatencyMetricsData(
-                RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION, latencyMetricsPerRecordList);
+    public List<LatencyMetricsData> readLastWeekSleepSessions() {
+        return readLastWeekSessions(SleepSessionRecordHelper.SLEEP_SESSION_RECORD_TABLE_NAME);
     }
 
-    private List<LatencyMetricsPerRecord> readLastWeekSessions(String tableName) {
-        List<LatencyMetricsPerRecord> latencyMetricsPerRecordList = new ArrayList<>();
+    private List<LatencyMetricsData> readLastWeekSessions(String tableName) {
+        List<LatencyMetricsData> latencyMetricsPerRecordList = new ArrayList<>();
         try (Cursor cursor = mTransactionManager.read(getReadLastWeekSessionsRequest(tableName))) {
             while (cursor.moveToNext()) {
                 long endTime = getCursorLong(cursor, IntervalRecordHelper.END_TIME_COLUMN_NAME);
@@ -87,7 +79,7 @@ public final class LatencyMetricsCollector {
                     continue;
                 }
                 latencyMetricsPerRecordList.add(
-                        new LatencyMetricsPerRecord(
+                        new LatencyMetricsData(
                                 packageName,
                                 /* latency= */ Duration.ofMillis(lastModifiedTime - endTime)));
             }
@@ -115,10 +107,6 @@ public final class LatencyMetricsCollector {
                 .setWhereClause(whereClause);
     }
 
-    public record LatencyMetricsData(
-            @RecordTypeIdentifier.RecordType int recordType,
-            List<LatencyMetricsPerRecord> latencyMetricsForEachRecord) {}
-
     /**
      * Data class to hold latency i.e. time between session end and time when the session was
      * inserted for every record.
@@ -126,5 +114,5 @@ public final class LatencyMetricsCollector {
      * @param packageName The package name of the app that inserted the record.
      * @param latency The duration between the end time of the record and the last modified time.
      */
-    public record LatencyMetricsPerRecord(String packageName, Duration latency) {}
+    public record LatencyMetricsData(String packageName, Duration latency) {}
 }

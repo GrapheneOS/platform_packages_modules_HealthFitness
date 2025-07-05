@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,17 +12,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- *
  */
-package com.android.healthconnect.controller.data.rawfhir
+package com.android.healthconnect.controller.data.fhir.raw
 
 import android.health.connect.MedicalResourceId
-import android.health.connect.datatypes.FhirResource
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.data.entries.FormattedEntry
+import com.android.healthconnect.controller.data.fhir.api.FhirUseCase
+import com.android.healthconnect.controller.data.formatters.medical.RawFhirFormatter
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class RawFhirViewModel
 @Inject
-constructor(private val rawFhirUseCase: RawFhirUseCase, private val formatter: RawFhirFormatter) :
+constructor(private val fhirUseCase: FhirUseCase, private val formatter: RawFhirFormatter) :
     ViewModel() {
 
     companion object {
@@ -41,21 +41,24 @@ constructor(private val rawFhirUseCase: RawFhirUseCase, private val formatter: R
 
     private val _rawFhir = MutableLiveData<RawFhirState>()
 
-    /** Provides a [FhirResource]s to be displayed in [RawFhirFragment]. */
+    /**
+     * Provides a [android.health.connect.datatypes.FhirResource]s to be displayed in
+     * [RawFhirFragment].
+     */
     val rawFhir: LiveData<RawFhirState>
         get() = _rawFhir
 
-    fun loadFhirResource(medicalResourceId: MedicalResourceId) {
+    fun loadRawFhirResource(medicalResourceId: MedicalResourceId) {
         _rawFhir.postValue(RawFhirState.Loading)
         viewModelScope.launch {
-            when (val result = rawFhirUseCase.loadFhirResource(medicalResourceId)) {
+            when (val result = fhirUseCase.loadFhirResource(medicalResourceId)) {
                 is UseCaseResults.Success -> {
-                    val formattedFhir =
-                        FormattedFhir(
+                    val formattedRawFhir =
+                        FormattedEntry.FormattedRawFhir(
                             formatter.format(result.data),
                             formatter.fhirContentDescription(result.data),
                         )
-                    _rawFhir.postValue(RawFhirState.WithData(listOf(formattedFhir)))
+                    _rawFhir.postValue(RawFhirState.WithData(listOf(formattedRawFhir)))
                 }
                 is UseCaseResults.Failed -> {
                     _rawFhir.postValue(RawFhirState.Error)
@@ -69,8 +72,6 @@ constructor(private val rawFhirUseCase: RawFhirUseCase, private val formatter: R
 
         data object Error : RawFhirState()
 
-        data class WithData(val fhirResource: List<FormattedFhir>) : RawFhirState()
+        data class WithData(val fhirResource: List<FormattedEntry>) : RawFhirState()
     }
-
-    data class FormattedFhir(val fhir: String, val fhirContentDescription: String)
 }

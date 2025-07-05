@@ -22,8 +22,13 @@ import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.PlannedExerciseSessionRecord
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsRecord
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
+import androidx.navigation.testing.TestNavHostController
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -46,6 +51,7 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedDataEntry
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
+import com.android.healthconnect.controller.data.entriesandaccess.EntriesAndAccessFragment
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.EXERCISE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.HEART_RATE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.PLANNED_EXERCISE
@@ -61,6 +67,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION_2
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION_3
+import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.launchNestedFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.tests.utils.withIndex
@@ -68,7 +75,9 @@ import com.android.healthconnect.controller.utils.logging.DataEntriesElement
 import com.android.healthconnect.controller.utils.logging.EntriesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthfitness.flags.Flags
 import com.android.settingslib.widget.SettingsThemeHelper
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -95,10 +104,12 @@ import org.mockito.kotlin.whenever
 class AllEntriesFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val setFlagsRule = SetFlagsRule()
 
     @BindValue val viewModel: EntriesViewModel = mock()
     @BindValue val manager: HealthConnectManager = mock()
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
+    private lateinit var navHostController: TestNavHostController
 
     private lateinit var context: Context
 
@@ -108,6 +119,7 @@ class AllEntriesFragmentTest {
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.UK)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
+        navHostController = TestNavHostController(context)
 
         whenever(viewModel.currentSelectedDate).thenReturn(MutableLiveData())
         whenever(viewModel.period).thenReturn(MutableLiveData(DateNavigationPeriod.PERIOD_DAY))
@@ -349,6 +361,42 @@ class AllEntriesFragmentTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_ENTRIES_SCREEN)
+    fun clickOnMedicalPermission_navigateToRawFhir() {
+        whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_IMMUNIZATION_LIST)))
+        whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_IMMUNIZATION_LIST.toMutableList())
+
+        launchFragment<EntriesAndAccessFragment>(
+            bundleOf(PERMISSION_TYPE_NAME_KEY to MedicalPermissionType.VACCINES.name)
+        ) {
+            navHostController.setGraph(R.navigation.entries_and_access_nav_graph)
+            navHostController.setCurrentDestination(R.id.entriesAndAccessFragment)
+            Navigation.setViewNavController(this.requireView(), navHostController)
+        }
+        onView(withText("Covid vaccine 2")).perform(click())
+
+        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.rawFhirFragment)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_ENTRIES_SCREEN)
+    fun clickOnMedicalPermission_navigateToPrettyFhir() {
+        whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_IMMUNIZATION_LIST)))
+        whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_IMMUNIZATION_LIST.toMutableList())
+
+        launchFragment<EntriesAndAccessFragment>(
+            bundleOf(PERMISSION_TYPE_NAME_KEY to MedicalPermissionType.VACCINES.name)
+        ) {
+            navHostController.setGraph(R.navigation.entries_and_access_nav_graph)
+            navHostController.setCurrentDestination(R.id.entriesAndAccessFragment)
+            Navigation.setViewNavController(this.requireView(), navHostController)
+        }
+        onView(withText("Covid vaccine 2")).perform(click())
+
+        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.prettyFhirFragment)
+    }
+
+    @Test
     fun triggerDeletion_showsCheckboxes() {
         whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_STEPS_LIST)))
         whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_STEPS_LIST.toMutableList())
@@ -564,21 +612,21 @@ private val FORMATTED_IMMUNIZATION_LIST =
         FormattedEntry.FormattedMedicalDataEntry(
             header = "02 May 2023 • Health Connect Toolbox",
             headerA11y = "02 May 2023 • Health Connect Toolbox",
-            title = "Covid vaccine",
+            title = "Covid vaccine 1",
             titleA11y = "important vaccination",
             medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
         ),
         FormattedEntry.FormattedMedicalDataEntry(
             header = "12 Aug 2022 • Health Connect Toolbox",
             headerA11y = "12 Aug 2022 • Health Connect Toolbox",
-            title = "Covid vaccine",
+            title = "Covid vaccine 2",
             titleA11y = "important vaccination",
             medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION_2.id,
         ),
         FormattedEntry.FormattedMedicalDataEntry(
             header = "25 Sep 2021 • Health Connect Toolbox",
             headerA11y = "25 Sep 2021 • Health Connect Toolbox",
-            title = "Covid vaccine",
+            title = "Covid vaccine 3",
             titleA11y = "important vaccination",
             medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION_3.id,
         ),

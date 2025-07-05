@@ -54,6 +54,7 @@ import android.health.connect.datatypes.units.Temperature
 import android.health.connect.datatypes.units.Velocity
 import android.health.connect.datatypes.units.Volume
 import android.net.Uri
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedMedicalDataEntry
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.shared.app.AppMetadata
@@ -632,4 +633,24 @@ val TEST_MEDICAL_DATA_SOURCE_DIFFERENT_APP: MedicalDataSource =
             /* fhirVersion= */ TEST_FHIR_VERSION,
         )
         .build()
+
+val TEST_FORMATTED_MEDICAL_DATA_ENTRY_IMMUNIZATION: FormattedMedicalDataEntry =
+    FormattedMedicalDataEntry(
+        "Test app • Test hospital",
+        "Test app • Test hospital",
+        "Test immunization",
+        "Test immunization",
+        INSTANT_DAY,
+        TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
+    )
+
+val TEST_FORMATTED_MEDICAL_DATA_ENTRY_IMMUNIZATION_LONG: FormattedMedicalDataEntry =
+    FormattedMedicalDataEntry(
+        "Test app • Test hospital",
+        "Test app • Test hospital",
+        "Test immunization long",
+        "Test immunization long",
+        INSTANT_DAY,
+        TEST_MEDICAL_RESOURCE_IMMUNIZATION_LONG.id,
+    )
 // endregion
