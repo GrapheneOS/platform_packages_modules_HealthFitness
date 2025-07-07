@@ -240,6 +240,17 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void appHasPermission_deviceHasSensor_flushesSensorManager() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mSensorManager).flush(any(StepSensorEventListener.class));
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void afterSensorManagerSubscription_appLosesPermission_unsubscribeFromSensorManager()
             throws Exception {
         grantAppStepsPermission(TEST_PACKAGE_NAME);
@@ -358,6 +369,29 @@ public class TrackerManagerImplTest {
         permissionsListenerCaptor.getValue().onPermissionsChanged(/* uid= */ 0);
 
         verify(mSensorManager).unregisterListener(any(StepSensorEventListener.class));
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void onAppPermissionRevoked_refreshesTrackerStatusAndResetsSensorListener()
+            throws Exception {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        StepSensorEventListener listenerMock = mock(StepSensorEventListener.class);
+        TrackerManagerImpl manager =
+                (TrackerManagerImpl) mHealthConnectInjector.getTrackerManager();
+        manager.mListener = listenerMock;
+        ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
+                ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
+        manager.initializeOrRefresh();
+        verify(mPackageManager).addOnPermissionsChangeListener(permissionsListenerCaptor.capture());
+        verify(mSensorManager)
+                .registerListener(
+                        any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+
+        revokeStepsPermissionForAllApps();
+        permissionsListenerCaptor.getValue().onPermissionsChanged(/* uid= */ 0);
+
+        verify(listenerMock).reset();
     }
 
     @Test

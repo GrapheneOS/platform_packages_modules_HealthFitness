@@ -136,6 +136,7 @@ public class StepSensorEventListenerTest {
         long endTimestampNanos = MINUTES.toNanos(2);
         long expectedStartTimestampNanos = 0;
 
+        setBaselineStepCount(0);
         triggerStepEvent(stepCount, endTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
@@ -153,6 +154,7 @@ public class StepSensorEventListenerTest {
         long endTimestampNanos = MINUTES.toNanos(10);
         long expectedStartTimestampNanos = endTimestampNanos - getDurationNanosForSteps(stepCount);
 
+        setBaselineStepCount(0);
         triggerStepEvent(stepCount, endTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
@@ -160,6 +162,54 @@ public class StepSensorEventListenerTest {
 
         assertThat(records).hasSize(1);
         assertRecord(records.get(0), stepCount, expectedStartTimestampNanos, endTimestampNanos);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void onSensorChanged_initialDeltaOfZero_setsBaseline() throws Exception {
+        int stepCount = 0;
+        long endTimestampNanos = MINUTES.toNanos(2);
+
+        triggerStepEvent(stepCount, endTimestampNanos);
+        awaitPassiveSensorTasksComplete();
+        List<RecordInternal<?>> records =
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+
+        assertThat(records).hasSize(0);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void afterBaselineEvent_savesBaselineData() throws Exception {
+        setBaselineStepCount(5);
+
+        awaitPassiveSensorTasksComplete();
+
+        assertThat(mStepSensorEventListener.mLastSavedData.sensorValue()).isEqualTo(5);
+        assertThat(mStepSensorEventListener.mLastSavedData.sensorTimestampNanos()).isEqualTo(0);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void onSensorChanged_hasInitialDelta_setsBaselineAndCalculatesDelta() throws Exception {
+        int baselineStepCount = 100;
+        long baselineStepCountTimestampNanos = MINUTES.toNanos(1);
+        int firstStepCount = 150;
+        int expectedStepCountDelta = firstStepCount - baselineStepCount;
+        long firstStepCountEndTimestampNanos = baselineStepCountTimestampNanos + MINUTES.toNanos(1);
+
+        triggerStepEvent(baselineStepCount, baselineStepCountTimestampNanos);
+        triggerStepEvent(firstStepCount, firstStepCountEndTimestampNanos);
+        awaitPassiveSensorTasksComplete();
+        List<RecordInternal<?>> records =
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+
+        assertThat(records).hasSize(1);
+        assertRecord(
+                records.get(0),
+                expectedStepCountDelta,
+                baselineStepCountTimestampNanos,
+                firstStepCountEndTimestampNanos);
     }
 
     @Test
@@ -176,6 +226,7 @@ public class StepSensorEventListenerTest {
         long secondEndTimestampNanos = firstEndTimestampNanos + secondTimestampDelayNanos;
         long expectedSecondStartTimestampNanos = firstEndTimestampNanos;
 
+        setBaselineStepCount(0);
         triggerStepEvent(firstStepCount, firstEndTimestampNanos);
         sleep(secondTimestampDelayNanos);
         triggerStepEvent(secondStepCount, secondEndTimestampNanos);
@@ -214,6 +265,7 @@ public class StepSensorEventListenerTest {
         long thirdEndTimestampNanos = secondEndTimestampNanos + thirdTimestampDelayNanos;
         long expectedThirdStartTimestampNanos = firstEndTimestampNanos;
 
+        setBaselineStepCount(0);
         triggerStepEvent(firstStepCount, firstEndTimestampNanos);
         sleep(secondTimestampDelayNanos);
         triggerStepEvent(secondStepCount, secondEndTimestampNanos);
@@ -247,6 +299,7 @@ public class StepSensorEventListenerTest {
         long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
         long secondEndTimestampNanos = firstEndTimestampNanos + secondTimestampDelayNanos;
 
+        setBaselineStepCount(0);
         triggerStepEvent(firstStepCount, firstEndTimestampNanos);
         sleep(secondTimestampDelayNanos);
         triggerStepEvent(firstStepCount, secondEndTimestampNanos);
@@ -273,6 +326,7 @@ public class StepSensorEventListenerTest {
         long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
         long secondEndTimestampNanos = firstEndTimestampNanos + secondTimestampDelayNanos;
 
+        setBaselineStepCount(0);
         triggerStepEvent(firstStepCount, firstEndTimestampNanos);
         sleep(secondTimestampDelayNanos);
         triggerStepEvent(secondStepCount, secondEndTimestampNanos);
@@ -299,6 +353,7 @@ public class StepSensorEventListenerTest {
         int secondStepCount = firstStepCount + 5;
         long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
 
+        setBaselineStepCount(0);
         triggerStepEvent(firstStepCount, firstEndTimestampNanos);
         sleep(secondTimestampDelayNanos);
         triggerStepEvent(secondStepCount, firstEndTimestampNanos);
@@ -325,6 +380,7 @@ public class StepSensorEventListenerTest {
         long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
         long secondEndTimestampNanos = firstEndTimestampNanos - secondTimestampDelayNanos;
 
+        setBaselineStepCount(0);
         triggerStepEvent(firstStepCount, firstEndTimestampNanos);
         sleep(secondTimestampDelayNanos);
         triggerStepEvent(secondStepCount, secondEndTimestampNanos);
@@ -347,6 +403,7 @@ public class StepSensorEventListenerTest {
         long endTimestampNanos = SECONDS.toNanos(10);
         long expectedStartTimestampNanos = 0;
 
+        setBaselineStepCount(0);
         triggerStepEvent(stepCount, endTimestampNanos);
         awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
@@ -362,6 +419,7 @@ public class StepSensorEventListenerTest {
         int stepDelta = 10;
         long endTimestampNanos = MINUTES.toNanos(10);
 
+        setBaselineStepCount(0);
         triggerStepEvent(stepDelta, endTimestampNanos);
         // Wait for the scheduled task to instantly process the event and schedule the next write
         mThreadScheduler
@@ -374,6 +432,9 @@ public class StepSensorEventListenerTest {
                 .get();
 
         assertThat(mStepSensorEventListener.mPendingBatchWriteFuture).isPresent();
+        assertThat(mStepSensorEventListener.mPendingData.sensorValue()).isEqualTo(stepDelta);
+        assertThat(mStepSensorEventListener.mPendingData.sensorTimestampNanos())
+                .isEqualTo(endTimestampNanos);
     }
 
     @Test
@@ -382,6 +443,7 @@ public class StepSensorEventListenerTest {
         int timeoutBuffer = 100;
         int stepDelta = 10;
         long endTimestampNanos = MINUTES.toNanos(10);
+        setBaselineStepCount(0);
         triggerStepEvent(stepDelta, endTimestampNanos);
         // Wait for the future task to be scheduled
         mThreadScheduler.mPassiveTrackerExecutor.submit(() -> {}).get();
@@ -488,14 +550,8 @@ public class StepSensorEventListenerTest {
 
     @Test
     @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
-    public void onAccuracyChanged_doesNotThrow() throws Exception {
-        mStepSensorEventListener.onAccuracyChanged(
-                createSensor(), SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
-    }
-
-    @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
-    public void reset_clearsPendingDataAndCancelsFuture() throws Exception {
+    public void reset_clearsDataAndCancelsFuture() throws Exception {
+        setBaselineStepCount(0);
         triggerStepEvent(10, MINUTES.toNanos(1));
         // Wait for the initial processing to complete and schedule the next write
         mThreadScheduler.mPassiveTrackerExecutor.submit(() -> {}).get();
@@ -503,9 +559,20 @@ public class StepSensorEventListenerTest {
 
         mStepSensorEventListener.reset();
 
-        assertThat(mStepSensorEventListener.mPendingData.sensorValue()).isEqualTo(0);
-        assertThat(mStepSensorEventListener.mPendingData.sensorTimestampNanos()).isEqualTo(0);
+        assertThat(mStepSensorEventListener.mLastSavedData).isEqualTo(null);
+        assertThat(mStepSensorEventListener.mPendingData).isEqualTo(null);
         assertThat(mStepSensorEventListener.mPendingBatchWriteFuture).isEmpty();
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void onAccuracyChanged_doesNotThrow() throws Exception {
+        mStepSensorEventListener.onAccuracyChanged(
+                createSensor(), SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
+    }
+
+    private void setBaselineStepCount(int stepCount) throws Exception {
+        triggerStepEvent(stepCount, 0);
     }
 
     private void triggerStepEvent(int stepCount, long timestampNanos) throws Exception {

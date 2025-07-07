@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_AUTOMAT
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+import android.annotation.Nullable;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -65,12 +66,9 @@ class StepSensorEventListener implements SensorEventListener {
 
     // Sensor manager step count resets on device boot, which is also when the Health Connect
     // process starts.
-    // TODO(b/397400522): Check if we need to handle user switching.
-    private SensorData mLastSavedData =
-            new SensorData(/* sensorValue= */ 0, /* sensorTimestampNanos= */ 0);
+    @VisibleForTesting @Nullable SensorData mLastSavedData = null;
 
-    @VisibleForTesting
-    SensorData mPendingData = new SensorData(/* sensorValue= */ 0, /* sensorTimestampNanos= */ 0);
+    @VisibleForTesting @Nullable SensorData mPendingData = null;
 
     @VisibleForTesting Optional<ScheduledFuture<?>> mPendingBatchWriteFuture = Optional.empty();
 
@@ -100,12 +98,13 @@ class StepSensorEventListener implements SensorEventListener {
     }
 
     /**
-     * Clears pending data and cancels any scheduled tasks.
+     * Clears internal state, pending data and cancels any scheduled tasks.
      *
      * <p>This should only be called after {@code SensorManager#unregisterListener}.
      */
     public void reset() {
-        mPendingData = new SensorData(/* sensorValue= */ 0, /* sensorTimestampNanos= */ 0);
+        mLastSavedData = null;
+        mPendingData = null;
         if (mPendingBatchWriteFuture.isPresent()) {
             mPendingBatchWriteFuture.get().cancel(/* mayInterruptIfRunning= */ false);
             mPendingBatchWriteFuture = Optional.empty();
@@ -127,6 +126,18 @@ class StepSensorEventListener implements SensorEventListener {
                     if (isOldOrInvalidValue(sensorValueCumulative, sensorEventTimestampNanos)) {
                         return;
                     }
+                    if (mLastSavedData == null) {
+                        // Set baseline cumulative step count after initial tracking start or after
+                        // a #reset due to a user switch or unsubscribe.
+                        if (android.health.connect.Constants.DEBUG) {
+                            Slog.d(TAG, "First event since tracking enabled, setting baseline.");
+                        }
+
+                        mLastSavedData =
+                                new SensorData(sensorValueCumulative, sensorEventTimestampNanos);
+
+                        return;
+                    }
 
                     mPendingData = new SensorData(sensorValueCumulative, sensorEventTimestampNanos);
 
@@ -141,14 +152,22 @@ class StepSensorEventListener implements SensorEventListener {
     }
 
     private boolean isOldOrInvalidValue(int sensorValueCumulative, long sensorEventTimestampNanos) {
-        if (sensorValueCumulative <= mPendingData.sensorValue) {
+        if (sensorValueCumulative < 0 || sensorEventTimestampNanos < 0) {
+            if (android.health.connect.Constants.DEBUG) {
+                Slog.d(TAG, "Ignoring event as value or timestamp is negative");
+            }
+            return true;
+        }
+
+        if (mPendingData != null && sensorValueCumulative <= mPendingData.sensorValue) {
             if (android.health.connect.Constants.DEBUG) {
                 Slog.d(TAG, "Ignoring event as value is same or lower than pending value");
             }
             return true;
         }
 
-        if (sensorEventTimestampNanos <= mPendingData.sensorTimestampNanos) {
+        if (mPendingData != null
+                && sensorEventTimestampNanos <= mPendingData.sensorTimestampNanos) {
             if (android.health.connect.Constants.DEBUG) {
                 Slog.d(
                         TAG,
@@ -157,14 +176,15 @@ class StepSensorEventListener implements SensorEventListener {
             return true;
         }
 
-        if (sensorValueCumulative <= mLastSavedData.sensorValue) {
+        if (mLastSavedData != null && sensorValueCumulative <= mLastSavedData.sensorValue) {
             if (android.health.connect.Constants.DEBUG) {
                 Slog.d(TAG, "Ignoring event as value is same or lower than saved value");
             }
             return true;
         }
 
-        if (sensorEventTimestampNanos <= mLastSavedData.sensorTimestampNanos) {
+        if (mLastSavedData != null
+                && sensorEventTimestampNanos <= mLastSavedData.sensorTimestampNanos) {
             if (android.health.connect.Constants.DEBUG) {
                 Slog.d(TAG, "Ignoring event as sensor timestamp is same or lower than saved value");
             }
@@ -175,6 +195,11 @@ class StepSensorEventListener implements SensorEventListener {
     }
 
     private void writeBatchAndScheduleNextWrite(boolean isDelayedTask) {
+        if (mLastSavedData == null || mPendingData == null) {
+            Slog.w(TAG, "Last saved or pending data is null, aborting");
+            return;
+        }
+
         int stepDelta =
                 mPendingData.sensorValue
                         - mLastSavedData
