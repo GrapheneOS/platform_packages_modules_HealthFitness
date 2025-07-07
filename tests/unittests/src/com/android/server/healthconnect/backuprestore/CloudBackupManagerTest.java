@@ -114,8 +114,7 @@ public class CloudBackupManagerTest {
         mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
-        Instant timeStamp = Instant.parse("2024-06-04T16:39:12Z");
-        Clock fakeClock = Clock.fixed(timeStamp, ZoneId.of("UTC"));
+        Clock fakeClock = Clock.fixed(Instant.parse("2024-06-04T16:39:12Z"), ZoneId.of("UTC"));
 
         mCloudBackupManager =
                 new CloudBackupManager(

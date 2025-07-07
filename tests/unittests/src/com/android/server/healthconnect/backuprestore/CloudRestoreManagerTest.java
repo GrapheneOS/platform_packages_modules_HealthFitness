@@ -114,8 +114,7 @@ public class CloudRestoreManagerTest {
         mPreferenceHelper = healthConnectInjector.getPreferenceHelper();
         mDatabaseHelpers = healthConnectInjector.getDatabaseHelpers();
 
-        Instant timeStamp = Instant.parse("2024-06-04T16:39:12Z");
-        Clock fakeClock = Clock.fixed(timeStamp, ZoneId.of("UTC"));
+        Clock fakeClock = Clock.fixed(Instant.parse("2024-06-04T16:39:12Z"), ZoneId.of("UTC"));
 
         mRecordProtoConverter = new RecordProtoConverter();
         mCloudRestoreManager =

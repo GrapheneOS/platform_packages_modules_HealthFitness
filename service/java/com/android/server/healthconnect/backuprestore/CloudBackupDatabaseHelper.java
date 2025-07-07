@@ -43,9 +43,7 @@ import android.util.Slog;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
-import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
-import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BackupData;
@@ -74,7 +72,6 @@ public class CloudBackupDatabaseHelper {
     private final ChangeLogsHelper mChangeLogsHelper;
     private final ChangeLogsRequestHelper mChangeLogsRequestHelper;
     private final RecordProtoConverter mRecordProtoConverter = new RecordProtoConverter();
-    private final CloudBackupSettingsHelper mSettingsHelper;
     private final List<Integer> mRecordTypes;
 
     private static final String TAG = "CloudBackupRestoreDatabaseHelper";
@@ -86,9 +83,7 @@ public class CloudBackupDatabaseHelper {
             HealthConnectMappings healthConnectMappings,
             InternalHealthConnectMappings internalHealthConnectMappings,
             ChangeLogsHelper changeLogsHelper,
-            ChangeLogsRequestHelper changeLogsRequestHelper,
-            HealthDataCategoryPriorityHelper priorityHelper,
-            PreferenceHelper preferenceHelper) {
+            ChangeLogsRequestHelper changeLogsRequestHelper) {
         mTransactionManager = transactionManager;
         mFitnessRecordReadHelper = fitnessRecordReadHelper;
         mAppInfoHelper = appInfoHelper;
@@ -96,8 +91,6 @@ public class CloudBackupDatabaseHelper {
         mInternalHealthConnectMappings = internalHealthConnectMappings;
         mChangeLogsHelper = changeLogsHelper;
         mChangeLogsRequestHelper = changeLogsRequestHelper;
-        mSettingsHelper =
-                new CloudBackupSettingsHelper(priorityHelper, preferenceHelper, appInfoHelper);
         mRecordTypes =
                 Stream.concat(
                                 RECORD_TYPE_MIGRATION_ORDERING_OVERRIDES.stream()
