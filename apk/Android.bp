@@ -209,6 +209,9 @@ android_library {
         "framework-configinfrastructure.stubs.system",
         "framework-permission-s.stubs.module_lib",
     ],
+    flags_packages: [
+        "healthfitness-aconfig-flags",
+    ],
     static_libs: [
         "com.google.android.material_material",
         "healthfitness-aconfig-flags-lib",
