@@ -59,6 +59,8 @@ public class TrackerManagerImpl implements TrackerManager {
     private final PackageManager mPackageManager;
     private final PreferenceHelper mPreferenceHelper;
 
+    private boolean mSubscribed = false;
+
     @VisibleForTesting StepSensorEventListener mListener;
 
     public TrackerManagerImpl(
@@ -249,6 +251,10 @@ public class TrackerManagerImpl implements TrackerManager {
             Slog.d(TAG, "Calling unsubscribeFromSensorManager()");
         }
 
+        if (!mSubscribed) {
+            return;
+        }
+
         // TODO(b/413703946): Check that the sensor service is always initialised before this call.
         SensorManager sensorManager = mContext.getSystemService(SensorManager.class);
         if (sensorManager == null) {
@@ -258,13 +264,16 @@ public class TrackerManagerImpl implements TrackerManager {
 
         sensorManager.unregisterListener(mListener);
         mListener.reset();
+        mSubscribed = false;
     }
 
-    // TODO(b/427451398): Only call this method if not already subscribed so that the sensor isn't
-    //  flushed every time a permission changes.
     private void subscribeToSensorManager() {
         if (android.health.connect.Constants.DEBUG) {
             Slog.d(TAG, "Calling subscribeToSensorManager()");
+        }
+
+        if (mSubscribed) {
+            return;
         }
 
         // TODO(b/413703946): Check that the sensor service is always initialised before this call.
@@ -280,11 +289,16 @@ public class TrackerManagerImpl implements TrackerManager {
             return;
         }
 
-        // TODO(b/397420313): Check that this subscription is successful
-        sensorManager.registerListener(
-                mListener, stepCounterSensor, SAMPLING_PERIOD_US, MAX_REPORT_LATENCY_US);
+        boolean subscribeSuccessful =
+                sensorManager.registerListener(
+                        mListener, stepCounterSensor, SAMPLING_PERIOD_US, MAX_REPORT_LATENCY_US);
         // Flush immediately so that a baseline step count can be set ASAP.
         sensorManager.flush(mListener);
+
+        if (!subscribeSuccessful) {
+            Slog.e(TAG, "Failed to subscribe to step sensor");
+        }
+        mSubscribed = subscribeSuccessful;
     }
 
     private boolean isStepSensorAvailable() {
