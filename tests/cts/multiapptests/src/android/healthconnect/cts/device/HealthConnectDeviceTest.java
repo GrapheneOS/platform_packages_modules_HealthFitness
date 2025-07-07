@@ -102,6 +102,8 @@ import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import android.util.Pair;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -173,10 +175,13 @@ public class HealthConnectDeviceTest {
     private Context mContext;
 
     @Rule
-    public AssumptionCheckerRule mSupportedHardwareRule =
+    public final AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
+
+    @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
     @Before
     public void setUp() {
