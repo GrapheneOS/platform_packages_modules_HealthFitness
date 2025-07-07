@@ -1450,6 +1450,22 @@ class PermissionsActivityTest {
     }
 
     @Test
+    fun permissionRequestFragment_reappearsAfterConfigurationChange() {
+        val permissions = arrayOf(READ_EXERCISE)
+        val startActivityIntent = getPermissionScreenIntent(permissions)
+
+        val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
+
+        onView(withId(R.id.setup_container)).check(matches(isDisplayed()))
+        scenario.recreate()
+        onIdle()
+
+        onView(withId(R.id.setup_container)).check(matches(isDisplayed()))
+        onView(withText("Don't allow")).check(matches(isDisplayed())).perform(click())
+        assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
+    }
+
+    @Test
     fun requestPermissions_userFixedSomeFitness_activityFinishesEarly() {
         val permissionFlags =
             mapOf(

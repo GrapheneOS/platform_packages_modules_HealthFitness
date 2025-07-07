@@ -50,9 +50,7 @@ public final class CloudBackupManager {
 
     private final TransactionManager mTransactionManager;
     private final CloudBackupDatabaseHelper mDatabaseHelper;
-    private final HealthDataCategoryPriorityHelper mPriorityHelper;
-    private final PreferenceHelper mPreferenceHelper;
-    private final AppInfoHelper mAppInfoHelper;
+    private final CloudBackupSettingsHelper mCloudBackupSettingsHelper;
     private final Clock mClock;
     private final BackupRestoreLogger mBackupRestoreLogger;
 
@@ -69,9 +67,8 @@ public final class CloudBackupManager {
             Clock clock,
             BackupRestoreLogger backupRestoreLogger) {
         mTransactionManager = transactionManager;
-        mPriorityHelper = priorityHelper;
-        mPreferenceHelper = preferenceHelper;
-        mAppInfoHelper = appInfoHelper;
+        mCloudBackupSettingsHelper =
+                new CloudBackupSettingsHelper(priorityHelper, preferenceHelper, appInfoHelper);
         mDatabaseHelper =
                 new CloudBackupDatabaseHelper(
                         transactionManager,
@@ -80,9 +77,7 @@ public final class CloudBackupManager {
                         healthConnectMappings,
                         internalHealthConnectMappings,
                         changeLogsHelper,
-                        changeLogsRequestHelper,
-                        priorityHelper,
-                        preferenceHelper);
+                        changeLogsRequestHelper);
         mClock = clock;
         mBackupRestoreLogger = backupRestoreLogger;
     }
@@ -135,10 +130,8 @@ public final class CloudBackupManager {
     @NonNull
     public GetLatestMetadataForBackupResponse getSettingsForBackup() {
         Slog.i(TAG, "Formatting user settings for export.");
-        CloudBackupSettingsHelper cloudBackupSettingsHelper =
-                new CloudBackupSettingsHelper(mPriorityHelper, mPreferenceHelper, mAppInfoHelper);
 
-        byte[] data = cloudBackupSettingsHelper.collectUserSettings().toByteArray();
+        byte[] data = mCloudBackupSettingsHelper.collectUserSettings().toByteArray();
 
         return new GetLatestMetadataForBackupResponse(PROTO_VERSION, new BackupMetadata(data));
     }

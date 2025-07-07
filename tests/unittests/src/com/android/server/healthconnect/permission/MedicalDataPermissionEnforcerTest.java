@@ -228,10 +228,7 @@ public class MedicalDataPermissionEnforcerTest {
 
         // Check the exception message
         assertThat(exception.getMessage())
-                .isEqualTo(
-                        "Caller doesn't have "
-                                + READ_MEDICAL_DATA_VACCINES
-                                + " to read MedicalResource");
+                .isEqualTo("Calling uid 123 does not have " + READ_MEDICAL_DATA_VACCINES);
         // Verify check was made
         verify(mPermissionManager)
                 .checkPermissionForDataDelivery(
@@ -299,10 +296,7 @@ public class MedicalDataPermissionEnforcerTest {
 
         // Check the exception message for the denied permission
         assertThat(exception.getMessage())
-                .isEqualTo(
-                        "Caller doesn't have "
-                                + READ_MEDICAL_DATA_CONDITIONS
-                                + " to read MedicalResource");
+                .isEqualTo("Calling uid 123 does not have " + READ_MEDICAL_DATA_CONDITIONS);
 
         // Verify checks were made up to the point of failure
         verify(mPermissionManager)

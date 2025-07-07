@@ -49,7 +49,10 @@ public class MedicalDataPermissionEnforcer {
     public void enforceWriteMedicalDataPermission(AttributionSource attributionSource) {
         if (!isPermissionGranted(WRITE_MEDICAL_DATA, attributionSource)) {
             throw new SecurityException(
-                    "Caller doesn't have " + WRITE_MEDICAL_DATA + " to write MedicalResource");
+                    "Calling uid "
+                            + attributionSource.getUid()
+                            + " does not have "
+                            + WRITE_MEDICAL_DATA);
         }
     }
 
@@ -75,7 +78,10 @@ public class MedicalDataPermissionEnforcer {
             return true;
         }
         throw new SecurityException(
-                "Caller doesn't have " + readPermissionName + " to read MedicalResource");
+                "Calling uid "
+                        + attributionSource.getUid()
+                        + " does not have "
+                        + readPermissionName);
     }
 
     /**
@@ -111,7 +117,10 @@ public class MedicalDataPermissionEnforcer {
 
         if (!isPermissionGranted(readPermissionName, attributionSource)) {
             throw new SecurityException(
-                    "Caller doesn't have " + readPermissionName + " to read MedicalResource");
+                    "Calling uid "
+                            + attributionSource.getUid()
+                            + " does not have "
+                            + readPermissionName);
         }
     }
 

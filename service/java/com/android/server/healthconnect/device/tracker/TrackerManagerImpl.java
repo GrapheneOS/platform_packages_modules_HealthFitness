@@ -144,7 +144,6 @@ public class TrackerManagerImpl implements TrackerManager {
         }
 
         unsubscribeFromSensorManager();
-        mListener.reset();
     }
 
     /** Updates the Sensor Manager subscription in case app permissions have changed. */
@@ -258,8 +257,11 @@ public class TrackerManagerImpl implements TrackerManager {
         }
 
         sensorManager.unregisterListener(mListener);
+        mListener.reset();
     }
 
+    // TODO(b/427451398): Only call this method if not already subscribed so that the sensor isn't
+    //  flushed every time a permission changes.
     private void subscribeToSensorManager() {
         if (android.health.connect.Constants.DEBUG) {
             Slog.d(TAG, "Calling subscribeToSensorManager()");
@@ -281,6 +283,8 @@ public class TrackerManagerImpl implements TrackerManager {
         // TODO(b/397420313): Check that this subscription is successful
         sensorManager.registerListener(
                 mListener, stepCounterSensor, SAMPLING_PERIOD_US, MAX_REPORT_LATENCY_US);
+        // Flush immediately so that a baseline step count can be set ASAP.
+        sensorManager.flush(mListener);
     }
 
     private boolean isStepSensorAvailable() {
