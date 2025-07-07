@@ -19,6 +19,7 @@ package com.android.server.healthconnect;
 import static android.health.connect.Constants.DEFAULT_INT;
 
 import static com.android.server.healthconnect.common.jobs.HealthConnectDailyJobs.HC_DAILY_JOB;
+import static com.android.server.healthconnect.common.jobs.HealthConnectWeeklyJobs.JOB_NAME;
 import static com.android.server.healthconnect.exportimport.ExportImportJobs.PERIODIC_EXPORT_JOB_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_COMPLETE_JOB_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_PAUSE_JOB_NAME;
@@ -40,6 +41,7 @@ import android.util.Slog;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.jobs.DailyCleanupJob;
 import com.android.server.healthconnect.common.jobs.HealthConnectDailyJobs;
+import com.android.server.healthconnect.common.jobs.HealthConnectWeeklyJobs;
 import com.android.server.healthconnect.common.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.common.logging.EcosystemStatsCollector;
 import com.android.server.healthconnect.common.logging.UsageStatsCollector;
@@ -119,6 +121,14 @@ public class HealthConnectDailyService extends JobService {
                                     dailyCleanupJob,
                                     ecosystemStatsCollector,
                                     healthConnectInjector.getHealthFitnessStatsLog());
+                            jobFinished(params, false);
+                        });
+                return true;
+            case JOB_NAME:
+                threadScheduler.scheduleInternalTask(
+                        () -> {
+                            HealthConnectWeeklyJobs.execute(
+                                    healthConnectInjector.getLatencyMetricsLogger());
                             jobFinished(params, false);
                         });
                 return true;
