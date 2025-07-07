@@ -28,6 +28,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
@@ -67,6 +68,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -102,6 +104,7 @@ public class TrackerManagerImplTest {
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
         doReturn(mSensorManager).when(mContext).getSystemService(SensorManager.class);
         when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(createSensor());
+        when(mSensorManager.registerListener(any(), any(), anyInt(), anyInt())).thenReturn(true);
         doReturn(TEST_USER).when(mContext).getUser();
         doReturn(true).when(mUserManager).isUserUnlocked();
         doReturn(true).when(mUserManager).isUserUnlocked(TEST_USER);
@@ -240,6 +243,35 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void afterInitialSubscribes_doesNotCallSubscribeAgain() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        manager.initializeOrRefresh();
+        InOrder inOrderMock = inOrder(mSensorManager);
+        inOrderMock
+                .verify(mSensorManager)
+                .registerListener(
+                        any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+
+        manager.initializeOrRefresh();
+
+        inOrderMock
+                .verify(mSensorManager, never())
+                .registerListener(any(), any(), anyInt(), anyInt());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void ifNotTracking_doesNotCallUnsubscribe() {
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mSensorManager, never()).unregisterListener(any(StepSensorEventListener.class));
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void appHasPermission_deviceHasSensor_flushesSensorManager() {
         grantAppStepsPermission(TEST_PACKAGE_NAME);
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
@@ -341,7 +373,6 @@ public class TrackerManagerImplTest {
                 ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
         manager.initializeOrRefresh();
         verify(mPackageManager).addOnPermissionsChangeListener(permissionsListenerCaptor.capture());
-        verify(mSensorManager).unregisterListener(any(StepSensorEventListener.class));
 
         grantAppStepsPermission(TEST_PACKAGE_NAME);
         permissionsListenerCaptor.getValue().onPermissionsChanged(/* uid= */ 0);
@@ -396,11 +427,14 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
-    public void clearTracker_unsubscribesAndResetsListener() {
+    public void withValidSubscription_clearTracker_unsubscribesAndResetsListener() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
         StepSensorEventListener listenerMock = mock(StepSensorEventListener.class);
         TrackerManagerImpl manager =
                 (TrackerManagerImpl) mHealthConnectInjector.getTrackerManager();
         manager.mListener = listenerMock;
+        manager.initializeOrRefresh();
+        verify(mSensorManager).registerListener(any(), any(), anyInt(), anyInt());
 
         manager.clearTracker();
 
