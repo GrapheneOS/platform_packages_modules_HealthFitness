@@ -17,6 +17,7 @@ package android.healthconnect.cts.phr.apis;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
+import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES;
 import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_CONDITIONS;
 import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VACCINES;
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
@@ -672,12 +673,7 @@ public class ReadMedicalResourcesByRequestCtsTest {
                         HealthConnectException.class,
                         () -> PHR_FOREGROUND_APP.readMedicalResources(request));
         assertThat(exception.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
-        assertThat(exception)
-                .hasMessageThat()
-                .contains(
-                        "Caller doesn't have"
-                                + " android.permission.health.READ_MEDICAL_DATA_VACCINES to read"
-                                + " MedicalResource");
+        assertThat(exception).hasMessageThat().contains(READ_MEDICAL_DATA_VACCINES);
     }
 
     @Test
@@ -727,12 +723,7 @@ public class ReadMedicalResourcesByRequestCtsTest {
                         HealthConnectException.class,
                         () -> PHR_FOREGROUND_APP.readMedicalResources(request));
         assertThat(exception.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
-        assertThat(exception)
-                .hasMessageThat()
-                .contains(
-                        "Caller doesn't have"
-                            + " android.permission.health.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES"
-                            + " to read MedicalResource");
+        assertThat(exception).hasMessageThat().contains(READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES);
     }
 
     @Test
@@ -824,12 +815,7 @@ public class ReadMedicalResourcesByRequestCtsTest {
                         HealthConnectException.class,
                         () -> PHR_BACKGROUND_APP.readMedicalResources(request));
         assertThat(exception.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
-        assertThat(exception)
-                .hasMessageThat()
-                .contains(
-                        "Caller doesn't have"
-                                + " android.permission.health.READ_MEDICAL_DATA_VACCINES to read"
-                                + " MedicalResource");
+        assertThat(exception).hasMessageThat().contains(READ_MEDICAL_DATA_VACCINES);
     }
 
     @Test
@@ -885,12 +871,7 @@ public class ReadMedicalResourcesByRequestCtsTest {
                         HealthConnectException.class,
                         () -> PHR_BACKGROUND_APP.readMedicalResources(request));
         assertThat(exception.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
-        assertThat(exception)
-                .hasMessageThat()
-                .contains(
-                        "Caller doesn't have"
-                            + " android.permission.health.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES"
-                            + " to read MedicalResource");
+        assertThat(exception).hasMessageThat().contains(READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES);
     }
 
     @Test
@@ -987,12 +968,7 @@ public class ReadMedicalResourcesByRequestCtsTest {
                         HealthConnectException.class,
                         () -> PHR_BACKGROUND_APP.readMedicalResources(request));
         assertThat(exception.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
-        assertThat(exception)
-                .hasMessageThat()
-                .contains(
-                        "Caller doesn't have"
-                                + " android.permission.health.READ_MEDICAL_DATA_VACCINES to read"
-                                + " MedicalResource");
+        assertThat(exception).hasMessageThat().contains(READ_MEDICAL_DATA_VACCINES);
     }
 
     @Test
@@ -1068,12 +1044,7 @@ public class ReadMedicalResourcesByRequestCtsTest {
                         HealthConnectException.class,
                         () -> PHR_BACKGROUND_APP.readMedicalResources(request));
         assertThat(exception.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
-        assertThat(exception)
-                .hasMessageThat()
-                .contains(
-                        "Caller doesn't have"
-                            + " android.permission.health.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES"
-                            + " to read MedicalResource");
+        assertThat(exception).hasMessageThat().contains(READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES);
     }
 
     @Test
@@ -1116,12 +1087,7 @@ public class ReadMedicalResourcesByRequestCtsTest {
                         HealthConnectException.class,
                         () -> PHR_FOREGROUND_APP.readMedicalResources(pageRequest));
         assertThat(exception.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
-        assertThat(exception)
-                .hasMessageThat()
-                .contains(
-                        "Caller doesn't have"
-                                + " android.permission.health.READ_MEDICAL_DATA_VACCINES"
-                                + " to read MedicalResource");
+        assertThat(exception).hasMessageThat().contains(READ_MEDICAL_DATA_VACCINES);
     }
 
     // We are only testing permission mapping for one type here, because testing all permissions
