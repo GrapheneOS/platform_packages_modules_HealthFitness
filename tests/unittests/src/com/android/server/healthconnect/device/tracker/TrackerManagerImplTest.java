@@ -373,6 +373,29 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void onAppPermissionRevoked_refreshesTrackerStatusAndResetsSensorListener()
+            throws Exception {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        StepSensorEventListener listenerMock = mock(StepSensorEventListener.class);
+        TrackerManagerImpl manager =
+                (TrackerManagerImpl) mHealthConnectInjector.getTrackerManager();
+        manager.mListener = listenerMock;
+        ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
+                ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
+        manager.initializeOrRefresh();
+        verify(mPackageManager).addOnPermissionsChangeListener(permissionsListenerCaptor.capture());
+        verify(mSensorManager)
+                .registerListener(
+                        any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+
+        revokeStepsPermissionForAllApps();
+        permissionsListenerCaptor.getValue().onPermissionsChanged(/* uid= */ 0);
+
+        verify(listenerMock).reset();
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void clearTracker_unsubscribesAndResetsListener() {
         StepSensorEventListener listenerMock = mock(StepSensorEventListener.class);
         TrackerManagerImpl manager =

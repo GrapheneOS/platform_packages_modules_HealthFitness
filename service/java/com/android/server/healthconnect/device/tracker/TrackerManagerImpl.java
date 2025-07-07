@@ -144,8 +144,6 @@ public class TrackerManagerImpl implements TrackerManager {
         }
 
         unsubscribeFromSensorManager();
-        // TODO(b/427451398): Always call #reset when unsubscribing.
-        mListener.reset();
     }
 
     /** Updates the Sensor Manager subscription in case app permissions have changed. */
@@ -259,6 +257,7 @@ public class TrackerManagerImpl implements TrackerManager {
         }
 
         sensorManager.unregisterListener(mListener);
+        mListener.reset();
     }
 
     // TODO(b/427451398): Only call this method if not already subscribed so that the sensor isn't
