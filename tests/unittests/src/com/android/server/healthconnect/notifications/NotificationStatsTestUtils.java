@@ -44,14 +44,6 @@ public final class NotificationStatsTestUtils {
         verify(logger).logAction(eq(onboardingState), eq(action));
     }
 
-    /**
-     * Verifies the notification channel blocked event is logged through {@link
-     * NotificationStatsLogger}.
-     */
-    public static void verifyChannelBlockedLogged(NotificationStatsLogger logger) {
-        verify(logger).logChannelBlocked();
-    }
-
     /** Verifies nothing is logged through {@link NotificationStatsLogger}. */
     public static void verifyNothingLogged(NotificationStatsLogger logger) {
         verifyNoMoreInteractions(logger);
