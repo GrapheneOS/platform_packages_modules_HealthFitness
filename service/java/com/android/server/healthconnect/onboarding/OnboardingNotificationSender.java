@@ -24,6 +24,7 @@ import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
 
+import static com.android.server.healthconnect.notifications.NotificationStatsLogger.ACTION_NOTIFICATION_CHANNEL_BLOCKED;
 import static com.android.server.healthconnect.notifications.NotificationStatsLogger.ACTION_NOTIFICATION_SENT;
 import static com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver.ACTION_ONBOARDING_NOTIFICATION_CLICKED;
 import static com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver.ACTION_ONBOARDING_NOTIFICATION_DISMISSED;
@@ -148,6 +149,9 @@ public final class OnboardingNotificationSender {
         if (mHealthConnectNotificationSender.sendNotificationAsUser(notification, userHandle)) {
             mNotificationStateManager.unsetFlags(flag);
             mNotificationStatsLogger.logAction(onboardingState, ACTION_NOTIFICATION_SENT);
+        } else {
+            mNotificationStatsLogger.logAction(
+                    onboardingState, ACTION_NOTIFICATION_CHANNEL_BLOCKED);
         }
     }
 
