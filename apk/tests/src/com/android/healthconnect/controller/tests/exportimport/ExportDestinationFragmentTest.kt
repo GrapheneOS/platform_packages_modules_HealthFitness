@@ -1136,7 +1136,6 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW)
     @DisableFlags(Flags.FLAG_EXPORT_IMPORT_NICE_TO_HAVE)
     // TODO(b/393617190) Remove test when export_import_nice_to_have is enabled and removed
     fun nextExportSequentialNumberPresent_showsDefaultNameWithNumber() {
@@ -1167,7 +1166,7 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW, Flags.FLAG_EXPORT_IMPORT_NICE_TO_HAVE)
+    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_NICE_TO_HAVE)
     fun showsFileNameWithManufacturerAndModel() {
         val documentProviders =
             listOf(

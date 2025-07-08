@@ -44,7 +44,6 @@ import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.logging.ExportDestinationElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
-import com.android.healthfitness.flags.Flags.exportImportFastFollow
 import com.android.healthfitness.flags.Flags.exportImportNiceToHave
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -179,7 +178,7 @@ class ExportDestinationFragment : Hilt_ExportDestinationFragment() {
     private fun getDefaultFileName(): String {
         val sequentialNumber = exportStatusViewModel.storedNextExportSequentialNumber.value
         var fileName: String = getString(R.string.export_default_file_name)
-        if (exportImportFastFollow() && sequentialNumber !== null && sequentialNumber != 0) {
+        if (sequentialNumber !== null && sequentialNumber != 0) {
             fileName =
                 getString(
                     R.string.export_default_file_name_with_sequence,

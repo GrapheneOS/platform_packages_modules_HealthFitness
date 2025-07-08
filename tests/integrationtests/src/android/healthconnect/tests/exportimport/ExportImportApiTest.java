@@ -45,7 +45,6 @@ import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.healthconnect.testing.shared.recordfactory.RecordFactory;
 import android.net.Uri;
 import android.os.Environment;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
@@ -272,7 +271,6 @@ public class ExportImportApiTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW})
     public void exportOn_thenExportOff_noJobScheduled() throws Exception {
         SystemUtil.runWithShellPermissionIdentity(
                 () ->

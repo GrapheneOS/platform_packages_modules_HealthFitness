@@ -23,7 +23,6 @@ import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXP
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_LOST_FILE_ACCESS;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_STARTED;
 
-import static com.android.healthfitness.flags.Flags.exportImportFastFollow;
 import static com.android.healthfitness.flags.Flags.extendExportImportTelemetry;
 import static com.android.server.healthconnect.exportimport.ExportImportLogger.NO_VALUE_RECORDED;
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_EXPORT_UNSUCCESSFUL_GENERIC_ERROR;
@@ -404,10 +403,8 @@ public class ExportManager {
 
     /** Sends export status notification if export_import_fast_follow flag enabled. */
     private void sendNotificationIfEnabled(UserHandle userHandle, int notificationType) {
-        if (exportImportFastFollow()) {
-            mNotificationSender.sendNotificationAsUser(
-                    mNotificationFactory.createNotification(notificationType), userHandle);
-        }
+        mNotificationSender.sendNotificationAsUser(
+                mNotificationFactory.createNotification(notificationType), userHandle);
     }
 
     /** Helper class to report errors with exporting. */

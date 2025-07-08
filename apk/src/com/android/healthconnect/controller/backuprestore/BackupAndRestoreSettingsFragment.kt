@@ -69,7 +69,6 @@ import com.android.healthconnect.controller.utils.withinOneHourAfter
 import com.android.healthconnect.controller.utils.withinOneMinuteAfter
 import com.android.healthconnect.controller.utils.withinOneYearAfter
 import com.android.healthfitness.flags.Flags.cloudBackupAndRestoreHcUi
-import com.android.healthfitness.flags.Flags.exportImportFastFollow
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -249,8 +248,7 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
                 getExportStatusPreference(lastExportTime, exportLocation)
             )
         } else if (
-            exportImportFastFollow() &&
-                scheduledExportUiState.lastFailedExportTime == null &&
+            scheduledExportUiState.lastFailedExportTime == null &&
                 scheduledExportUiState.periodInDays !=
                     ExportFrequency.EXPORT_FREQUENCY_NEVER.periodInDays
         ) {
@@ -384,12 +382,6 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
     }
 
     private fun getLastExportTime(lastSuccessfulExportTime: Instant): String {
-        if (!exportImportFastFollow()) {
-            return getString(
-                R.string.last_export_time,
-                dateFormatter.formatDateAndTime(lastSuccessfulExportTime),
-            )
-        }
         // Format for the last export string:
         // - Now (when <1min)
         // - X minutes ago (when >=1min & <1h)
@@ -477,7 +469,7 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
     }
 
     private fun onSetUpExport(result: ActivityResult) {
-        if (result.resultCode == Activity.RESULT_OK && exportImportFastFollow()) {
+        if (result.resultCode == Activity.RESULT_OK) {
             toastManager.showToast(requireActivity(), R.string.scheduled_export_on_toast_text)
         }
     }
