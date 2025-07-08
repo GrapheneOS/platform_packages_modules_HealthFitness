@@ -162,7 +162,7 @@ class HomeFragment : Hilt_HomeFragment() {
 
         // TODO(b/429618933): add logging for devices section
         devicesPreference.setOnPreferenceClickListener {
-            Toast.makeText(requireContext(), "Coming soon!", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_homeFragment_to_connectedDevicesFragment)
             true
         }
         devicesPreference.summary = getString(R.string.devices_summary)

@@ -87,7 +87,15 @@
         <action
             android:id="@+id/action_homeFragment_to_onboardingActivity"
             app:destination="@id/onboardingActivity"/>
+        <action
+            android:id="@+id/action_homeFragment_to_connectedDevicesFragment"
+            app:destination="@id/connectedDevicesFragment"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/connectedDevicesFragment"
+        android:name="com.android.healthconnect.controller.devices.ConnectedDevicesFragment"
+        android:label="@string/devices_title" />
 
     <activity
         android:id="@+id/onboardingActivity"

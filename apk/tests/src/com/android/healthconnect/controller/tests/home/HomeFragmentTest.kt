@@ -220,6 +220,16 @@ class HomeFragmentTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    fun devices_navigatesToDevices() {
+        setupFragmentForNavigation()
+        onView(withText("Devices")).check(matches(isDisplayed()))
+        onView(withText("Devices")).perform(click())
+        assertThat(navHostController.currentDestination?.id)
+            .isEqualTo(R.id.connectedDevicesFragment)
+    }
+
+    @Test
     @DisableFlags(Flags.FLAG_ONBOARDING)
     fun dataAndAccess_navigatesToDataAndAccess() {
         setupFragmentForNavigation()
