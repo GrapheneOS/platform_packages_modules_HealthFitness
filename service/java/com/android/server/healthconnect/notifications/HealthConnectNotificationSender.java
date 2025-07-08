@@ -23,14 +23,12 @@ import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.health.HealthFitnessStatsLog;
 import android.os.Binder;
 import android.os.UserHandle;
 import android.util.Slog;
 
 import androidx.annotation.Nullable;
 
-import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 
 import java.util.Objects;
@@ -53,7 +51,6 @@ public final class HealthConnectNotificationSender {
     private final String mChannelNameResource;
     private final String mChannelGroupNameResource;
     private final boolean mIsEnabled;
-    private final NotificationStatsLogger mNotificationStatsLogger;
 
     private HealthConnectNotificationSender(Builder builder) {
         if (builder.mContext == null
@@ -74,11 +71,6 @@ public final class HealthConnectNotificationSender {
         this.mChannelNameResource = builder.mChannelNameResource;
         this.mChannelGroupNameResource = builder.mChannelGroupNameResource;
         this.mIsEnabled = builder.mIsEnabled;
-        // TODO(b/414949807): Use injector
-        mNotificationStatsLogger =
-                builder.mNotificationStatsLogger == null
-                        ? new NotificationStatsLogger(new HealthFitnessStatsLog())
-                        : builder.mNotificationStatsLogger;
     }
 
     public static final class Builder {
@@ -90,7 +82,6 @@ public final class HealthConnectNotificationSender {
         @Nullable private String mChannelGroupId;
         @Nullable private String mChannelNameResource;
         @Nullable private String mChannelGroupNameResource;
-        @Nullable private NotificationStatsLogger mNotificationStatsLogger;
         private boolean mIsEnabled = false;
 
         /** provide notification sender with context */
@@ -147,13 +138,6 @@ public final class HealthConnectNotificationSender {
         /** set the name of the notification channel group */
         public Builder setChannelGroupNameResource(String channelGroupNameResource) {
             this.mChannelGroupNameResource = channelGroupNameResource;
-            return this;
-        }
-
-        /** set notification state logger for testing */
-        @VisibleForTesting
-        public Builder setLoggerForTesting(NotificationStatsLogger logger) {
-            this.mNotificationStatsLogger = logger;
             return this;
         }
 
@@ -214,7 +198,6 @@ public final class HealthConnectNotificationSender {
 
             try {
                 if (isChannelBlocked(notificationManager, notification.getChannelId())) {
-                    mNotificationStatsLogger.logChannelBlocked();
                     return false;
                 }
             } catch (Throwable e) {

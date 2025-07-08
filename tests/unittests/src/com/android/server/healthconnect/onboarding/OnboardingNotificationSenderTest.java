@@ -23,6 +23,7 @@ import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BAN
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING_NOTIFICATION;
+import static com.android.server.healthconnect.notifications.NotificationStatsLogger.ACTION_NOTIFICATION_CHANNEL_BLOCKED;
 import static com.android.server.healthconnect.notifications.NotificationStatsLogger.ACTION_NOTIFICATION_SENT;
 import static com.android.server.healthconnect.notifications.NotificationStatsTestUtils.verifyEventLogged;
 import static com.android.server.healthconnect.notifications.NotificationStatsTestUtils.verifyNothingLogged;
@@ -191,6 +192,21 @@ public class OnboardingNotificationSenderTest {
 
     @Test
     @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
+    public void sendNoAppConnectedNotification_channelBlocked_logged() {
+        when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
+                .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
+        when(mNotificationSender.sendNotificationAsUser(any(), eq(mUserHandle))).thenReturn(false);
+
+        mOnboardingNotificationSender.sendNoAppConnectedNotification(mUserHandle);
+
+        verifyEventLogged(
+                mNotificationStatsLogger,
+                ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED,
+                ACTION_NOTIFICATION_CHANNEL_BLOCKED);
+    }
+
+    @Test
+    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
     public void sendOneAppConnectedNotification_success() {
         mOnboardingNotificationSender.sendOneAppConnectedNotification(mUserHandle);
         verify(mNotificationSender)
@@ -265,5 +281,20 @@ public class OnboardingNotificationSenderTest {
         mOnboardingNotificationSender.sendOneAppConnectedNotification(mUserHandle);
 
         verify(mPreferenceHelper, never()).insertOrReplacePreference(any(), any());
+    }
+
+    @Test
+    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
+    public void sendOneAppConnectedNotification_channelBlocked_logged() {
+        when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
+                .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
+        when(mNotificationSender.sendNotificationAsUser(any(), eq(mUserHandle))).thenReturn(false);
+
+        mOnboardingNotificationSender.sendOneAppConnectedNotification(mUserHandle);
+
+        verifyEventLogged(
+                mNotificationStatsLogger,
+                ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED,
+                ACTION_NOTIFICATION_CHANNEL_BLOCKED);
     }
 }

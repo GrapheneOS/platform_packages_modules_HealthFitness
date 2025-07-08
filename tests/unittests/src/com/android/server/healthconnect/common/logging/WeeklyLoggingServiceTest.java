@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.common.logging;
 
+import static com.android.healthfitness.flags.Flags.FLAG_LATENCY_METRICS_FLAG;
+
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -23,6 +25,8 @@ import static org.mockito.Mockito.verify;
 
 import android.content.Context;
 import android.health.HealthFitnessStatsLog;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -43,6 +47,7 @@ import org.mockito.junit.MockitoRule;
 @RunWith(AndroidJUnit4.class)
 public class WeeklyLoggingServiceTest {
 
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final TemporaryFolder mTemporaryFolder = new TemporaryFolder();
 
@@ -65,6 +70,7 @@ public class WeeklyLoggingServiceTest {
     }
 
     @Test
+    @EnableFlags({FLAG_LATENCY_METRICS_FLAG})
     public void testWeeklyLoggingService_logsLatencyMetrics() {
         WeeklyLoggingService.logWeeklyMetrics(mHealthConnectInjector.getLatencyMetricsLogger());
 
@@ -73,6 +79,7 @@ public class WeeklyLoggingServiceTest {
     }
 
     @Test
+    @EnableFlags({FLAG_LATENCY_METRICS_FLAG})
     public void testWeeklyLoggingService_exceptionCaught() {
         doThrow(new RuntimeException("Test exception"))
                 .when(mLatencyMetricsCollector)
