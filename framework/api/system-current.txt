@@ -234,7 +234,7 @@ package android.health.connect.backuprestore {
   @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") public final class RestoreChange implements android.os.Parcelable {
     ctor public RestoreChange(@NonNull byte[]);
     method public int describeContents();
-    method @NonNull public byte[] getData();
+    method @Nullable public byte[] getData();
     method public void writeToParcel(@NonNull android.os.Parcel, int);
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.backuprestore.RestoreChange> CREATOR;
   }
