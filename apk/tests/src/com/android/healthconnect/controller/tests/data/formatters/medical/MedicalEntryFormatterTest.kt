@@ -21,12 +21,10 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.medical.DisplayNameExtractor
 import com.android.healthconnect.controller.data.formatters.medical.MedicalEntryFormatter
+import com.android.healthconnect.controller.data.formatters.medical.TimeFieldExtractor
 import com.android.healthconnect.controller.shared.app.AppInfoReader
-import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
 import com.android.healthconnect.controller.tests.utils.CoroutineTestRule
-import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
-import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION_LONG
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
@@ -43,8 +41,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
-import org.mockito.kotlin.any
-import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
@@ -55,6 +51,7 @@ class MedicalEntryFormatterTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @Inject lateinit var displayNameExtractor: DisplayNameExtractor
+    @Inject lateinit var timeFieldExtractor: TimeFieldExtractor
     private lateinit var formatter: MedicalEntryFormatter
 
     private val medicalDataSourceReader: MedicalDataSourceReader =
@@ -76,6 +73,7 @@ class MedicalEntryFormatterTest {
                 medicalDataSourceReader,
                 appInfoReader,
                 displayNameExtractor,
+                timeFieldExtractor,
                 context,
             )
     }
@@ -93,8 +91,8 @@ class MedicalEntryFormatterTest {
         assertThat(result)
             .isEqualTo(
                 FormattedEntry.FormattedMedicalDataEntry(
-                    header = "Health Connect test app • App A Data Source",
-                    headerA11y = "Health Connect test app • App A Data Source",
+                    header = "May 21, 2018 • Health Connect test app • App A Data Source",
+                    headerA11y = "May 21, 2018 • Health Connect test app • App A Data Source",
                     title = "Tdap",
                     titleA11y = "Tdap",
                     medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION_LONG.id,
@@ -115,8 +113,8 @@ class MedicalEntryFormatterTest {
             )
             .isEqualTo(
                 FormattedEntry.FormattedMedicalDataEntry(
-                    header = "App A Data Source",
-                    headerA11y = "App A Data Source",
+                    header = "May 21, 2018 • App A Data Source",
+                    headerA11y = "May 21, 2018 • App A Data Source",
                     title = "Tdap",
                     titleA11y = "Tdap",
                     medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION_LONG.id,
