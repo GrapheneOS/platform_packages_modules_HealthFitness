@@ -758,7 +758,7 @@ class HomeFragmentTest {
 
         setupFragmentForNavigation()
 
-        onView(withText("Browse health records")).check(matches(isDisplayed()))
+        onView(withText("Browse health records")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("View your health records and which apps can access them"))
             .perform(scrollTo())
             .check(matches(isDisplayed()))
