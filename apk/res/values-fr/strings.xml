@@ -106,26 +106,26 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Lire les calories brûlées"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Autorise l\'appli à répondre à lire les calories brûlées"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder aux données en arrière-plan ?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"Si vous l\'y autorisez, cette appli peut accéder à vos données de fitness et bien-être, ainsi qu\'à votre dossier médical, lorsque vous ne l\'utilisez pas."</string>
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"Si vous l\'y autorisez, cette appli peut accéder à vos données de forme et de bien-être, ainsi qu\'à votre dossier médical, lorsque vous ne l\'utilisez pas."</string>
     <string name="background_read_medical_single_request_description_medical_granted" msgid="5162456401369633859">"Si vous l\'y autorisez, cette appli peut accéder à votre dossier médical lorsque vous ne l\'utilisez pas."</string>
-    <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Si vous l\'y autorisez, cette appli peut accéder à vos données de fitness et de bien-être lorsque vous ne l\'utilisez pas."</string>
+    <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Si vous l\'y autorisez, cette appli peut accéder à vos données de forme et de bien-être lorsque vous ne l\'utilisez pas."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Si vous l\'y autorisez, cette appli peut accéder aux données de Santé Connect lorsque vous ne l\'utilisez pas."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder aux données précédentes ?"</string>
-    <string name="history_read_medical_single_request_description" msgid="6408051015819625330">"Si vous l\'y autorisez, cette appli peut accéder aux données de fitness et de bien-être ajoutées avant le <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>."</string>
-    <string name="history_read_medical_single_request_description_fallback" msgid="6685832866184737207">"Si vous l\'y autorisez, cette appli peut accéder à toutes les anciennes données de fitness et de bien-être."</string>
+    <string name="history_read_medical_single_request_description" msgid="6408051015819625330">"Si vous l\'y autorisez, cette appli peut accéder aux données de forme et de bien-être ajoutées avant le <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>."</string>
+    <string name="history_read_medical_single_request_description_fallback" msgid="6685832866184737207">"Si vous l\'y autorisez, cette appli peut accéder à toutes les anciennes données de forme et de bien-être."</string>
     <string name="history_read_single_request_description" msgid="9140843675330318112">"Si vous l\'y autorisez, cette appli peut accéder aux données de Santé Connect ajoutées avant le <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>."</string>
     <string name="history_read_single_request_description_fallback" msgid="7685531357676523654">"Si vous l\'y autorisez, cette appli peut accéder à toutes les données précédentes de Santé Connect."</string>
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"Autoriser les accès supplémentaires pour <xliff:g id="APP_NAME">%1$s</xliff:g> ?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g> souhaite également accéder à ces paramètres de Santé Connect"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Accéder à toutes les données en arrière-plan"</string>
     <string name="background_read_medical_combined_request_title_medical_granted" msgid="7245376864667067106">"Accéder au dossier médical en arrière-plan"</string>
-    <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Accéder aux données de fitness et de bien-être en arrière-plan"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"Autoriser cette appli à accéder à vos données de fitness et de bien-être, ainsi qu\'à votre dossier médical, lorsque vous ne l\'utilisez pas"</string>
+    <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Accéder aux données de forme et de bien-être en arrière-plan"</string>
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"Autoriser cette appli à accéder à vos données de forme et de bien-être, ainsi qu\'à votre dossier médical, lorsque vous ne l\'utilisez pas"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Autoriser cette appli à accéder à ces données lorsque vous ne l\'utilisez pas"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Autoriser cette appli à accéder à ces données lorsque vous ne l\'utilisez pas"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Accéder aux données en arrière-plan"</string>
     <string name="background_read_combined_request_description" msgid="2423480522986545286">"Autoriser cette appli à accéder aux données de Santé Connect lorsque vous ne l\'utilisez pas"</string>
-    <string name="history_read_medical_combined_request_title" msgid="1262267962861942478">"Accéder à vos anciennes données de fitness et de bien-être"</string>
+    <string name="history_read_medical_combined_request_title" msgid="1262267962861942478">"Accéder à vos anciennes données de forme et de bien-être"</string>
     <string name="history_read_medical_combined_request_description" msgid="7550922315652791771">"Autoriser cette appli à accéder aux données ajoutées avant le <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_medical_combined_request_description_fallback" msgid="3567968660826834911">"Autoriser cette appli à accéder à toutes les anciennes données"</string>
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Accéder aux anciennes données"</string>
@@ -135,13 +135,13 @@
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"En savoir plus sur les autorisations"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Accéder à toutes les données en arrière-plan"</string>
     <string name="background_read_medical_access_title_medical_granted" msgid="7852915238347056139">"Accéder au dossier médical en arrière-plan"</string>
-    <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Accéder aux données de fitness et de bien-être en arrière-plan"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"Autoriser cette appli à accéder à vos données de fitness et de bien-être, ainsi qu\'à votre dossier médical, lorsque vous ne l\'utilisez pas"</string>
+    <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Accéder aux données de forme et de bien-être en arrière-plan"</string>
+    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"Autoriser cette appli à accéder à vos données de forme et de bien-être, ainsi qu\'à votre dossier médical, lorsque vous ne l\'utilisez pas"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Autoriser cette appli à accéder à ces données lorsque vous ne l\'utilisez pas"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Autoriser cette appli à accéder à ces données lorsque vous ne l\'utilisez pas"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Accéder aux données en arrière-plan"</string>
     <string name="background_read_access_description" msgid="2360433029368320323">"Autoriser cette appli à accéder aux données de Santé Connect lorsque vous ne l\'utilisez pas"</string>
-    <string name="history_read_medical_access_title" msgid="1375462150672418692">"Accéder à vos anciennes données de fitness et de bien-être"</string>
+    <string name="history_read_medical_access_title" msgid="1375462150672418692">"Accéder à vos anciennes données de forme et de bien-être"</string>
     <string name="history_read_medical_access_description" msgid="5615959269427106141">"Autoriser cette appli à accéder aux données ajoutées avant le <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_medical_access_description_fallback" msgid="3888547064992673535">"Autoriser cette appli à accéder à toutes les anciennes données"</string>
     <string name="history_read_access_title" msgid="870048398702887144">"Accéder aux anciennes données"</string>
@@ -385,7 +385,7 @@
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Si vous lui donnez accès en lecture, l\'appli pourra lire les nouvelles données et celles des 30 derniers jours"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Si vous lui donnez accès en lecture, l\'appli pourra lire les anciennes et les nouvelles données"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à Santé Connect ?"</string>
-    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à vos données de fitness et de bien-être ?"</string>
+    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à vos données de forme et de bien-être ?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Découvrez comment <xliff:g id="APP_NAME">%1$s</xliff:g> traite vos données en consultant les <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"règles de confidentialité"</string>
     <string name="medical_request_header" msgid="2300521519021510027">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à votre dossier médical ?"</string>
@@ -402,7 +402,7 @@
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"<xliff:g id="APP_NAME">%1$s</xliff:g> ne pourra plus consulter ni modifier les données dans Santé Connect, y compris les données déjà enregistrées.\n\nCela n\'affecte pas les autres autorisations de cette appli, comme l\'accès à la position, à l\'appareil photo ou au micro."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"<xliff:g id="APP_NAME">%1$s</xliff:g> ne pourra plus consulter ni modifier les données dans Santé Connect, y compris les données en arrière-plan et les données déjà enregistrées.\n\nCela n\'affectera pas les autres autorisations de cette appli, comme l\'accès à la position, à l\'appareil photo ou au micro."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Supprimer également les données <xliff:g id="APP_NAME">%1$s</xliff:g> de Santé Connect"</string>
-    <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Supprimer toutes les autorisations liées à la remise en forme et au bien-être ?"</string>
+    <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Supprimer toutes les autorisations \"forme et au bien-être\" ?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Supprimer également de Santé Connect les données de fitness issues de l\'appli <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Supprimer toutes les autorisations d\'accès au dossier médical ?"</string>
     <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"Supprimer également de Santé Connect les dossiers médicaux issus de l\'appli <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -461,7 +461,7 @@
     <string name="additional_access_summary" msgid="1076197455435130191">"Anciennes données, données en arrière-plan"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"D\'autres autorisations ont été révoquées pour cette appli"</string>
     <string name="permissions_header" msgid="6519976063360071569">"Autorisations"</string>
-    <string name="fitness_permissions" msgid="586264186537460254">"Fitness et bien-être"</string>
+    <string name="fitness_permissions" msgid="586264186537460254">"Forme et bien-être"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Exercice, sommeil, nutrition et autres"</string>
     <string name="medical_permissions" msgid="1224097151249321566">"Dossiers médicaux"</string>
     <string name="medical_permissions_lowercase" msgid="3969792205103436491">"dossiers médicaux"</string>
@@ -558,7 +558,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Accéder au Play Store"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Premiers pas avec Santé Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Santé Connect stocke vos données de santé et de remise en forme, et vous permet de synchroniser facilement les différentes applis de votre appareil"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Santé Connect stocke et synchronise vos données de santé et de remise en forme issues de différentes applications.\n\n"<b>"Les données de fitness et bien-être"</b>" incluent les séances d\'exercice, le nombre de pas, les informations sur la nutrition et le sommeil, etc.\n\n"<b>"Les dossiers médicaux"</b>"incluent les vaccins, les résultats d\'analyses et plus encore."</string>
+    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Santé Connect stocke et synchronise vos données de forme et de santé issues de différentes applications.\n\n"<b>"Les données de forme et de bien-être"</b>" incluent les séances d\'exercice, le nombre de pas, les informations sur la nutrition et le sommeil, etc.\n\n"<b>"Les dossiers médicaux"</b>"incluent les vaccins, les résultats d\'analyses et plus encore."</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Avec Santé Connect, vous pouvez :"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Partager des données avec vos applis"</b>\n"Choisissez les données que chaque appli peut consulter ou consigner dans Santé Connect"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Gérer vos paramètres et votre confidentialité"</b>\n"Modifiez les autorisations de l\'application et gérez vos données à tout moment"</string>
@@ -1194,14 +1194,14 @@
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Autoriser la sélection"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"En utilisant l\'application"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Tout refuser"</string>
-    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à vos données de fitness et de bien-être ?"</string>
+    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à vos données de forme et de bien-être ?"</string>
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"<xliff:g id="APP_NAME">%1$s</xliff:g> demande à accéder aux données suivantes : <xliff:g id="DATA_TYPES">%2$s</xliff:g>.\n\nVous pouvez autoriser toutes les données ou les contrôler individuellement."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à <xliff:g id="DATA_TYPE">%2$s</xliff:g> ?"</string>
-    <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitness et bien-être"</string>
+    <string name="fitness_and_wellness" msgid="2002316898861559748">"Forme et bien-être"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Tout le temps"</string>
     <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"Lorsque vous utilisez l\'appli"</string>
-    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder à l\'ensemble de vos données de fitness et de bien-être à tout moment"</string>
-    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder à l\'ensemble de vos données de fitness et de bien-être lorsqu\'elle est en cours d\'utilisation"</string>
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder à l\'ensemble de vos données de forme et de bien-être à tout moment"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder à l\'ensemble de vos données de forme et de bien-être lorsqu\'elle est en cours d\'utilisation"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Accès autorisé"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Lecture autorisée"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Grâce à ces autorisations, <xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder aux données provenant des capteurs de votre appareil."</string>
@@ -1216,11 +1216,11 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"Supprimer l\'accès aux données de <xliff:g id="DATA_TYPE">%s</xliff:g> pour toutes les applis sur votre montre ?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"Coche"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Croix"</string>
-    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Actuellement, <xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder à vos données de fitness et de bien-être à tout moment"</string>
-    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"Actuellement, <xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder à vos données de fitness et de bien-être lorsqu\'elle est en cours d\'utilisation"</string>
-    <string name="allow_all_the_time_prompt" msgid="3749806575200677882">"Choisissez quand <xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder à vos données de remise en forme et de bien-être"</string>
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Actuellement, <xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder à vos données de forme et de bien-être à tout moment"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"Actuellement, <xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder à vos données de forme et de bien-être lorsqu\'elle est en cours d\'utilisation"</string>
+    <string name="allow_all_the_time_prompt" msgid="3749806575200677882">"Choisissez quand <xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder à vos données de forme et de bien-être"</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder aux données suivantes : <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
-    <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Gérer les autorisations fitness et bien-être"</string>
+    <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Gérer les autorisations \"forme et bien-être\""</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Utilisée par 1 appli}one{Utilisée par # appli}other{Utilisée par # applis}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Aucune utilisation au cours des dernières 24 heures"</string>
     <string name="accessed" msgid="4424701457530587176">"Dernière consultation : <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
@@ -1239,13 +1239,13 @@
     <string name="almost_done_connected_apps" msgid="7278779868120518202">"Applis associées"</string>
     <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Applis disponibles à associer"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Consultez vos données de santé dans plusieurs applis"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Commencez à partager des données de remise en forme et de bien-être entre vos applis"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Commencez à partager des données de forme et de bien-être entre vos applis"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Configurer"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Associer une deuxième application"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Configurez une autre appli pour qu\'elle commence à partager des données de remise en forme et de bien-être"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Configurez une autre appli pour qu\'elle commence à partager des données de forme et de bien-être"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Continuer"</string>
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Consultez vos données de santé dans plusieurs applis"</string>
-    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Santé Connect vous permet de partager des données de remise en forme et de bien-être entre vos applis. Découvrez les applis que vous pouvez associer dès maintenant."</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Santé Connect vous permet de partager des données de forme et de bien-être entre vos applis. Découvrez les applis que vous pouvez associer dès maintenant."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Associer une deuxième application"</string>
-    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configurez une autre appli avec Santé Connect pour qu\'elle commence à partager des données de remise en forme et de bien-être"</string>
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configurez une autre appli avec Santé Connect pour qu\'elle commence à partager des données de forme et de bien-être"</string>
 </resources>

@@ -1240,7 +1240,7 @@
     <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Bağlayabileceğiniz uygulamalar"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Uygulamalardaki sağlık verilerinizi görün"</string>
     <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Fitness ve sağlıklı yaşam verilerini uygulamalarınız arasında paylaşmaya başlayın"</string>
-    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Kur"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Ayarla"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"İkinci bir uygulamayı bağlayın"</string>
     <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Fitness ve sağlıklı yaşam verilerini paylaşmaya başlaması için başka bir uygulama kurun"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Devam"</string>

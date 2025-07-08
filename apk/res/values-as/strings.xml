@@ -565,9 +565,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"উভতি যাওক"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"আৰম্ভ কৰক"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"ডেটা মচক"</string>
-    <!-- String.format failed for translation -->
-    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
-    <skip />
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"%1$s বুটামৰ বাবে ডেটা মচক"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"মচা অৱস্থাটোত সোমাওক"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"মচা অৱস্থাটোৰ পৰা বাহিৰ হওক"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Health Connectৰ মচিবলৈ ডেটা বাছনি কৰক"</string>
