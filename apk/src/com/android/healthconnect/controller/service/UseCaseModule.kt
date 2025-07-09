@@ -52,6 +52,8 @@ import com.android.healthconnect.controller.datasources.api.LoadPriorityEntriesU
 import com.android.healthconnect.controller.datasources.api.LoadPriorityListUseCase
 import com.android.healthconnect.controller.datasources.api.SleepSessionHelper
 import com.android.healthconnect.controller.datasources.api.UpdatePriorityListUseCase
+import com.android.healthconnect.controller.devices.ILoadDeviceDataSources
+import com.android.healthconnect.controller.devices.LoadDeviceDataSources
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
 import com.android.healthconnect.controller.exportimport.api.HealthDataImportManager
 import com.android.healthconnect.controller.exportimport.api.ILoadExportSettingsUseCase
@@ -415,5 +417,12 @@ class UseCaseModule {
         @IoDispatcher dispatcher: CoroutineDispatcher,
     ): ILoadOnboardingStateUseCase {
         return LoadOnboardingStateUseCase(healthOnboardingManager, dispatcher)
+    }
+
+    @Provides
+    fun provideLocalDeviceDataSources(
+        loadDeviceDataSources: LoadDeviceDataSources
+    ): ILoadDeviceDataSources {
+        return loadDeviceDataSources
     }
 }

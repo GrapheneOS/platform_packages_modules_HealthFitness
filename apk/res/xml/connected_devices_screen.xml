@@ -3,4 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/devices_title">
 
+    <PreferenceCategory
+        android:key="connected_devices_category">
+    </PreferenceCategory>
+
 </PreferenceScreen>

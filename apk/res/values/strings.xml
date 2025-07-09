@@ -1771,6 +1771,11 @@
     <string name="one_app_onboarding_notification_title" description="Title of notification to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Connect a second app</string>
     <string name="one_app_onboarding_notification_summary" description="Summary of notification to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Set up another app with Health&#160;Connect so it can start sharing fitness and wellness data</string>
 
+    <!-- region Connected devices -->
+    <string name="devices_current_device" description="Preference summary text that indicates that the specified device is the current device (phone) rather than a peripheral device such as a watch. [CHAR_LIMIT=40]">Current device</string>
+    <string name="devices_unknown_device" description="Fallback string for a device that isn't recognised or has no name. [CHAR_LIMIT=40">Unknown device</string>
+    <!-- endregion -->
+
     <!-- endregion -->
     <!-- endregion -->
 </resources>

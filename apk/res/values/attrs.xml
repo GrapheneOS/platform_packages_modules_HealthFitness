@@ -84,6 +84,7 @@
     <attr name="settingsAlertIcon" format="reference"/>
 
     <!-- Data sources & priority -->
+    <attr name="devicePhoneIcon" format="reference"/>
     <attr name="addIcon" format="reference"/>
     <attr name="editIcon" format="reference"/>
     <attr name="closeIcon" format="reference"/>
