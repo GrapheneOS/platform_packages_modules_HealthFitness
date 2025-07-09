@@ -34,13 +34,10 @@ import android.health.connect.exportimport.ScheduledExportStatus;
 import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.net.Uri;
 import android.os.RemoteException;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 
 import org.junit.Before;
@@ -146,20 +143,6 @@ public final class ExportImportSettingsStorageTest {
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW})
-    public void testConfigure_uri_flagDisabled_setsSequentialNumberToZero() {
-        mExportImportSettingsStorage.configure(
-                new ScheduledExportSettings.Builder().setUri(Uri.parse(TEST_URI)).build());
-
-        assertThat(
-                        mExportImportSettingsStorage
-                                .getScheduledExportStatus(mContext)
-                                .getNextExportSequentialNumber())
-                .isEqualTo(0);
-    }
-
-    @Test
-    @EnableFlags({Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW})
     public void testConfigure_uri_noExportSequentialNumberExists_setsSequentialNumberToOne() {
         mExportImportSettingsStorage.configure(
                 new ScheduledExportSettings.Builder().setUri(Uri.parse(TEST_URI)).build());
@@ -171,7 +154,6 @@ public final class ExportImportSettingsStorageTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW})
     public void testConfigure_uri_sequentialNumberExists_plusOne() {
         mFakePreferenceHelper.insertOrReplacePreference(
                 NEXT_EXPORT_SEQUENTIAL_NUMBER_PREFERENCE_KEY, String.valueOf(23));

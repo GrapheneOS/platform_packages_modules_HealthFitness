@@ -16,7 +16,6 @@
 
 package com.android.server.healthconnect.exportimport;
 
-import static com.android.healthfitness.flags.Flags.exportImportFastFollow;
 import static com.android.healthfitness.flags.Flags.extendExportImportTelemetry;
 
 import android.app.job.JobInfo;
@@ -59,11 +58,10 @@ public class ExportImportJobs {
             Context context,
             ExportImportSettingsStorage exportImportSettingsStorage,
             ExportManager exportManager) {
-        if (!exportImportFastFollow()
-                || Objects.requireNonNull(context.getSystemService(JobScheduler.class))
-                        .forNamespace(NAMESPACE)
-                        .getAllPendingJobs()
-                        .isEmpty()) {
+        if (Objects.requireNonNull(context.getSystemService(JobScheduler.class))
+                .forNamespace(NAMESPACE)
+                .getAllPendingJobs()
+                .isEmpty()) {
             schedulePeriodicExportJob(
                     userHandle, context, exportImportSettingsStorage, exportManager);
         }
@@ -82,18 +80,16 @@ public class ExportImportJobs {
             exportImportSettingsStorage.resetExportRepeatErrorOnRetryCount();
         }
 
-        if (exportImportFastFollow()) {
-            // We should always cancel the job as we are persisting the job now.
-            Objects.requireNonNull(context.getSystemService(JobScheduler.class))
-                    .forNamespace(NAMESPACE)
-                    .cancelAll();
+        // We should always cancel the job as we are persisting the job now.
+        Objects.requireNonNull(context.getSystemService(JobScheduler.class))
+                .forNamespace(NAMESPACE)
+                .cancelAll();
 
-            // TODO(b/364855153): Move to next condition once fast follow flag is enabled.
-            // If export is off we try to delete the local files, just in case it happened the
-            // rare case where those files weren't deleted after the last export.
-            if (periodInDays <= 0) {
-                exportManager.deleteLocalExportFiles(userHandle);
-            }
+        // TODO(b/364855153): Move to next condition once fast follow flag is enabled.
+        // If export is off we try to delete the local files, just in case it happened the
+        // rare case where those files weren't deleted after the last export.
+        if (periodInDays <= 0) {
+            exportManager.deleteLocalExportFiles(userHandle);
         }
         // If period is 0 the user has turned export off, we should no longer schedule a new job
         if (periodInDays <= 0) {
@@ -141,11 +137,9 @@ public class ExportImportJobs {
                                 // Flex is the max of the specified time, or 5% of periodInMillis.
                                 flexInMillis)
                         .setExtras(extras);
-        if (exportImportFastFollow()) {
-            // Persist the job to avoid rescheduling when restarting the device.
-            // Otherwise if the user repeatedly restarts their phone, an export may never happen.
-            builder = builder.setPersisted(true);
-        }
+        // Persist the job to avoid rescheduling when restarting the device.
+        // Otherwise if the user repeatedly restarts their phone, an export may never happen.
+        builder = builder.setPersisted(true);
 
         HealthConnectDailyService.schedule(
                 Objects.requireNonNull(context.getSystemService(JobScheduler.class))

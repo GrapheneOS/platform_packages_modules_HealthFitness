@@ -40,7 +40,6 @@ import android.os.UserHandle;
 import android.provider.OpenableColumns;
 import android.util.Slog;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
@@ -266,27 +265,24 @@ public class ImportManager {
     }
 
     private int getZipFileSize(Context userContext, Uri uri) {
-        if (Flags.exportImportFastFollow()) {
-            try {
-                return getFileSizeInKb(userContext.getContentResolver(), uri);
-            } catch (IllegalArgumentException e) {
-                Slog.d(
-                        TAG,
-                        "Unable to get the file size of the zip file due to a null-value"
-                                + " cursor being found. File may be corrupted. Setting to -1 as"
-                                + " currently only used for logging. Details: ",
-                        e);
-                return -1;
-            } catch (Exception e) {
-                Slog.d(
-                        TAG,
-                        "Unable to get the file size of the zip file due to an unknown"
-                                + " error. Setting to -1 as currently only used for logging."
-                                + " Details: ",
-                        e);
-                return -1;
-            }
-        } else {
+
+        try {
+            return getFileSizeInKb(userContext.getContentResolver(), uri);
+        } catch (IllegalArgumentException e) {
+            Slog.d(
+                    TAG,
+                    "Unable to get the file size of the zip file due to a null-value"
+                            + " cursor being found. File may be corrupted. Setting to -1 as"
+                            + " currently only used for logging. Details: ",
+                    e);
+            return -1;
+        } catch (Exception e) {
+            Slog.d(
+                    TAG,
+                    "Unable to get the file size of the zip file due to an unknown"
+                            + " error. Setting to -1 as currently only used for logging."
+                            + " Details: ",
+                    e);
             return -1;
         }
     }
@@ -356,7 +352,6 @@ public class ImportManager {
             int originalDataSizeKb,
             int compressedDataSizeKb) {
         mExportImportSettingsStorage.setImportState(importStatus);
-        if (!Flags.exportImportFastFollow()) return;
         // Convert to int to save on logs storage, int can hold about 68 years
         int timeToErrorMillis = mClock != null ? (int) (mClock.millis() - startTimeMillis) : -1;
         mExportImportLogger.logImportStatus(
@@ -366,7 +361,6 @@ public class ImportManager {
     private void recordSuccess(
             long startTimeMillis, int originalDataSizeKb, int compressedDataSizeKb) {
         mExportImportSettingsStorage.setImportState(DATA_IMPORT_ERROR_NONE);
-        if (!Flags.exportImportFastFollow()) return;
         // Convert to int to save on logs storage, int can hold about 68 years
         int timeToErrorMillis = mClock != null ? (int) (mClock.millis() - startTimeMillis) : -1;
         mExportImportLogger.logImportStatus(

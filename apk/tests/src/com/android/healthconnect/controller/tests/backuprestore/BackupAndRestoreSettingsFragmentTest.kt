@@ -221,7 +221,6 @@ class BackupAndRestoreSettingsFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW)
     fun backupAndRestoreSettingsFragmentInit_showsFragmentCorrectly() {
         whenever(exportStatusViewModel.storedScheduledExportStatus).then {
             MutableLiveData(
@@ -246,7 +245,6 @@ class BackupAndRestoreSettingsFragmentTest {
         onView(withText("Import data")).check(matches(isDisplayed()))
         onView(withText("Restore data from a previously exported file"))
             .check(matches(isDisplayed()))
-        onView(withText("Last export: Oct 20, 7:06 AM")).check(matches(isDisplayed()))
         onView(withText("Export lets you save your data so you can transfer it to a new phone"))
             .check(matches(isDisplayed()))
         onView(withText("About backup and restore")).check(matches(isDisplayed()))
@@ -289,7 +287,6 @@ class BackupAndRestoreSettingsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW)
     fun backupAndRestoreSettingsFragment_withNoLastExport_showsCorrectMessage() {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY))
@@ -313,7 +310,6 @@ class BackupAndRestoreSettingsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW)
     fun backupAndRestoreSettingsFragment_lastExportWithin1Minute_showsLastExportAsNow() {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY))
@@ -337,7 +333,6 @@ class BackupAndRestoreSettingsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW)
     fun backupAndRestoreSettingsFragment_lastExportBetween1MinAnd1Hour_showsLastExportAsXMinutesAgo() {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY))
@@ -361,7 +356,6 @@ class BackupAndRestoreSettingsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW)
     fun backupAndRestoreSettingsFragment_lastExportAt1MinAgo_showsLastExportAs1MinuteAgo() {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY))
@@ -385,7 +379,6 @@ class BackupAndRestoreSettingsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW)
     fun backupAndRestoreSettingsFragment_lastExportBetween1HourAnd1Day_showsLastExportAsXHoursAgo() {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY))
@@ -409,7 +402,6 @@ class BackupAndRestoreSettingsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW)
     fun backupAndRestoreSettingsFragment_lastExportAt1HourAgo_showsLastExportAs1HourAgo() {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY))
@@ -433,7 +425,6 @@ class BackupAndRestoreSettingsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW)
     fun backupAndRestoreSettingsFragment_lastExportBetween1DayAnd1Year_showsCorrectDate() {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY))
@@ -457,7 +448,6 @@ class BackupAndRestoreSettingsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW)
     fun backupAndRestoreSettingsFragment_lastExportAfter1Year_showsCorrectDate() {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY))
@@ -649,7 +639,6 @@ class BackupAndRestoreSettingsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW)
     fun backupAndRestoreSettingsFragment_whenExportSetupCompletes_toastShown() {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_NEVER))
