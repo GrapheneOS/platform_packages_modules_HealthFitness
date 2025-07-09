@@ -38,13 +38,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 import android.health.connect.HealthConnectManager;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 
 import org.junit.Before;
@@ -201,7 +199,6 @@ public class ExportImportNotificationFactoryTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW)
     public void exportCompletesUnsuccessfully_unknownError_notificationDisplayedCorrectly() {
         Notification result =
                 mFactory.createNotification(NOTIFICATION_TYPE_EXPORT_UNSUCCESSFUL_GENERIC_ERROR);
@@ -228,7 +225,6 @@ public class ExportImportNotificationFactoryTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW)
     public void exportCompletesUnsuccessfully_moreSpaceNeeded_notificationDisplayedCorrectly() {
         Notification result =
                 mFactory.createNotification(NOTIFICATION_TYPE_EXPORT_UNSUCCESSFUL_NOT_ENOUGH_SPACE);

@@ -434,7 +434,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         mFitnessRecordReadHelper,
                         mDeviceInfoHelper,
                         mHealthDataCategoryPriorityHelper,
-                        Flags.exportImportFastFollow() ? clockForLogging : null,
+                        clockForLogging,
                         exportImportNotificationSender,
                         environmentDataDirectory,
                         exportImportLogger,

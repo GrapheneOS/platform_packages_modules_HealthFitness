@@ -33,7 +33,6 @@ import android.healthconnect.testing.unittest.fakes.FakePreferenceHelper;
 import android.net.Uri;
 import android.os.PersistableBundle;
 import android.os.UserHandle;
-import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -94,7 +93,6 @@ public class ExportImportJobsTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW})
     public void schedulePeriodicExportJob_cancelsPreviousJob() {
         mExportImportSettingsStorage.configure(
                 new ScheduledExportSettings.Builder().setPeriodInDays(0).build());
@@ -120,7 +118,6 @@ public class ExportImportJobsTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW})
     public void schedulePeriodicExportJob_withPeriodGreaterThanZero_cancelsPreviousJob() {
         mExportImportSettingsStorage.configure(
                 new ScheduledExportSettings.Builder().setPeriodInDays(1).build());
@@ -150,7 +147,6 @@ public class ExportImportJobsTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW})
     public void schedulePeriodicExportJob_withPeriodGreaterThanZero_persistsExportJob() {
         mExportImportSettingsStorage.configure(
                 new ScheduledExportSettings.Builder().setPeriodInDays(1).build());
@@ -306,19 +302,6 @@ public class ExportImportJobsTest {
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW})
-    public void schedulePeriodicJobIfNotScheduled_fastFollowFlagNotEnabled_reschedules() {
-        mExportImportSettingsStorage.configure(
-                new ScheduledExportSettings.Builder().setPeriodInDays(1).build());
-
-        ExportImportJobs.schedulePeriodicJobIfNotScheduled(
-                UserHandle.CURRENT, mContext, mExportImportSettingsStorage, mExportManager);
-
-        verify(mJobScheduler, times(1)).schedule(any());
-    }
-
-    @Test
-    @EnableFlags({Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW})
     public void
             schedulePeriodicJobIfNotScheduled_whenPeriodIsNonZeroAndNoPendingJobs_reschedules() {
         mExportImportSettingsStorage.configure(
@@ -331,7 +314,6 @@ public class ExportImportJobsTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW})
     public void schedulePeriodicJobIfNotScheduled_whenPendingJobsExist_shouldNotReschedule() {
         mExportImportSettingsStorage.configure(
                 new ScheduledExportSettings.Builder().setPeriodInDays(1).build());
@@ -348,7 +330,6 @@ public class ExportImportJobsTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW})
     public void schedulePeriodicJobIfNotScheduled_whenPeriodIsZero_shouldNotReschedule() {
         mExportImportSettingsStorage.configure(
                 new ScheduledExportSettings.Builder().setPeriodInDays(0).build());
