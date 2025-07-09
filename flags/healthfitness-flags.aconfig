@@ -239,6 +239,14 @@ flag {
 }
 
 flag {
+    name: "cloud_backup_and_restore_count_api"
+    namespace: "health_fitness_aconfig"
+    description: "Enables the API for counting cloud B&R changes in Health Connect."
+    bug: "400640806"
+    is_fixed_read_only: true
+}
+
+flag {
     name: "ecosystem_metrics_db_changes"
     namespace: "health_fitness_aconfig"
     description: "Enables DB modification to allow collection of ecosystem metrics."
