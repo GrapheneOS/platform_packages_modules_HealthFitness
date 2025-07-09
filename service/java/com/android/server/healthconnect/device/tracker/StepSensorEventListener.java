@@ -51,8 +51,6 @@ class StepSensorEventListener implements SensorEventListener {
     private static final long BATCHING_DURATION_MILLIS = SECONDS.toMillis(60);
     @VisibleForTesting static final double MIN_STEPS_PER_MINUTE = 30;
 
-    @VisibleForTesting static final Instant BOOT_TIME = computeBootTime();
-
     private final Context mContext;
     private final HealthConnectThreadScheduler mThreadScheduler;
     private final DeviceRecordHelper mDeviceRecordHelper;
@@ -211,14 +209,17 @@ class StepSensorEventListener implements SensorEventListener {
             return;
         }
 
+        Instant bootTime = computeBootTime();
         Instant realStartTimestamp =
                 calculateRealEventTimestamp(
+                        bootTime,
                         estimateStartTime(
                                 stepDelta,
                                 mLastSavedData.sensorTimestampNanos,
                                 mPendingData.sensorTimestampNanos,
                                 isDelayedTask));
-        Instant realEndTimestamp = calculateRealEventTimestamp(mPendingData.sensorTimestampNanos);
+        Instant realEndTimestamp =
+                calculateRealEventTimestamp(bootTime, mPendingData.sensorTimestampNanos);
         writeSteps(getStepsRecordInternal(stepDelta, realStartTimestamp, realEndTimestamp));
         mLastSavedData = mPendingData;
 
@@ -330,12 +331,14 @@ class StepSensorEventListener implements SensorEventListener {
                 mDeviceDataSourcesHelper.getCurrentDevice(mContext), List.of(stepsRecordInternal));
     }
 
-    private static Instant calculateRealEventTimestamp(long eventTimestampNanosSinceBoot) {
-        // TODO(b/397400522): Add validation to ensure this is a valid timestamp.
-        return BOOT_TIME.plusNanos(eventTimestampNanosSinceBoot);
+    @VisibleForTesting
+    Instant computeBootTime() {
+        return Instant.ofEpochMilli(System.currentTimeMillis() - SystemClock.elapsedRealtime());
     }
 
-    private static Instant computeBootTime() {
-        return Instant.ofEpochMilli(System.currentTimeMillis() - SystemClock.elapsedRealtime());
+    private Instant calculateRealEventTimestamp(
+            Instant bootTime, long eventTimestampNanosSinceBoot) {
+        // TODO(b/397400522): Add validation to ensure this is a valid timestamp.
+        return bootTime.plusNanos(eventTimestampNanosSinceBoot);
     }
 }

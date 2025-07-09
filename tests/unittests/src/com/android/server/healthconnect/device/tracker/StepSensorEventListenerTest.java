@@ -66,6 +66,8 @@ import org.mockito.junit.MockitoRule;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ScheduledFuture;
@@ -87,6 +89,8 @@ public class StepSensorEventListenerTest {
     @Mock private AppOpLogsHelper mAppOpLogsHelper;
 
     private static final String TEST_PACKAGE_NAME = "package.name";
+
+    private static final Instant TEST_BOOT_TIME = Instant.ofEpochSecond(1234567890);
 
     private HealthConnectThreadScheduler mThreadScheduler;
     private FitnessTestUtils mFitnessTestUtils;
@@ -120,6 +124,7 @@ public class StepSensorEventListenerTest {
 
         // Reduce the batching delay to speed up the tests
         when(mStepSensorEventListener.getBatchingDurationMillis()).thenReturn(500L);
+        when(mStepSensorEventListener.computeBootTime()).thenReturn(TEST_BOOT_TIME);
     }
 
     @Test
@@ -550,6 +555,67 @@ public class StepSensorEventListenerTest {
 
     @Test
     @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void onSensorChanged_timeTravelsForwards_writesStepsWithNewTime() throws Exception {
+        int firstStepCount = 10;
+        long firstEndTimestampNanos = MINUTES.toNanos(10);
+        int secondStepCount = firstStepCount + 5;
+        long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
+        long secondEndTimestampNanos = firstEndTimestampNanos + secondTimestampDelayNanos;
+        setBaselineStepCount(0);
+        triggerStepEvent(firstStepCount, firstEndTimestampNanos);
+        sleep(secondTimestampDelayNanos);
+        Instant futureBootTime = TEST_BOOT_TIME.plus(10, ChronoUnit.HOURS);
+
+        when(mStepSensorEventListener.computeBootTime()).thenReturn(futureBootTime);
+        triggerStepEvent(secondStepCount, secondEndTimestampNanos);
+        awaitPassiveSensorTasksComplete();
+        List<RecordInternal<?>> records =
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+
+        assertThat(records).hasSize(2);
+
+        StepsRecordInternal firstStepsRecord = (StepsRecordInternal) records.get(0);
+        assertThat(firstStepsRecord.getCount()).isEqualTo(10);
+        assertThat(firstStepsRecord.getStartTimeInMillis()).isEqualTo(1234568470000L);
+        assertThat(firstStepsRecord.getEndTimeInMillis()).isEqualTo(1234568490000L);
+        StepsRecordInternal secondStepsRecord = (StepsRecordInternal) records.get(1);
+        assertThat(secondStepsRecord.getCount()).isEqualTo(5);
+        assertThat(secondStepsRecord.getStartTimeInMillis()).isEqualTo(1234604490000L);
+        assertThat(secondStepsRecord.getEndTimeInMillis()).isEqualTo(1234604490100L);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    public void onSensorChanged_timeTravelsBackwards_writesStepsWithNewTime() throws Exception {
+        int firstStepCount = 10;
+        long firstEndTimestampNanos = MINUTES.toNanos(10);
+        int secondStepCount = firstStepCount + 5;
+        long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
+        long secondEndTimestampNanos = firstEndTimestampNanos + secondTimestampDelayNanos;
+        setBaselineStepCount(0);
+        triggerStepEvent(firstStepCount, firstEndTimestampNanos);
+        sleep(secondTimestampDelayNanos);
+        Instant pastBootTime = TEST_BOOT_TIME.minus(10, ChronoUnit.HOURS);
+
+        when(mStepSensorEventListener.computeBootTime()).thenReturn(pastBootTime);
+        triggerStepEvent(secondStepCount, secondEndTimestampNanos);
+        awaitPassiveSensorTasksComplete();
+        List<RecordInternal<?>> records =
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+
+        assertThat(records).hasSize(2);
+        StepsRecordInternal earlierStepsRecord = (StepsRecordInternal) records.get(0);
+        assertThat(earlierStepsRecord.getCount()).isEqualTo(5);
+        assertThat(earlierStepsRecord.getStartTimeInMillis()).isEqualTo(1234532490000L);
+        assertThat(earlierStepsRecord.getEndTimeInMillis()).isEqualTo(1234532490100L);
+        StepsRecordInternal laterStepsRecord = (StepsRecordInternal) records.get(1);
+        assertThat(laterStepsRecord.getCount()).isEqualTo(firstStepCount);
+        assertThat(laterStepsRecord.getStartTimeInMillis()).isEqualTo(1234568470000L);
+        assertThat(laterStepsRecord.getEndTimeInMillis()).isEqualTo(1234568490000L);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
     public void reset_clearsDataAndCancelsFuture() throws Exception {
         setBaselineStepCount(0);
         triggerStepEvent(10, MINUTES.toNanos(1));
@@ -634,7 +700,7 @@ public class StepSensorEventListenerTest {
         Thread.sleep(NANOSECONDS.toMillis(nanos));
     }
 
-    private static void assertRecord(
+    private void assertRecord(
             RecordInternal<?> record,
             int stepCount,
             long startTimestampNanos,
@@ -642,13 +708,9 @@ public class StepSensorEventListenerTest {
         StepsRecordInternal stepsRecord = (StepsRecordInternal) record;
         assertThat(stepsRecord.getCount()).isEqualTo(stepCount);
         assertThat(stepsRecord.getStartTimeInMillis())
-                .isEqualTo(getTimestampAfterBoot(startTimestampNanos));
+                .isEqualTo(TEST_BOOT_TIME.plusNanos(startTimestampNanos).toEpochMilli());
         assertThat(stepsRecord.getEndTimeInMillis())
-                .isEqualTo(getTimestampAfterBoot(endTimestampNanos));
-    }
-
-    private static long getTimestampAfterBoot(long timestampSinceBootNanos) {
-        return StepSensorEventListener.BOOT_TIME.plusNanos(timestampSinceBootNanos).toEpochMilli();
+                .isEqualTo(TEST_BOOT_TIME.plusNanos(endTimestampNanos).toEpochMilli());
     }
 
     /**
