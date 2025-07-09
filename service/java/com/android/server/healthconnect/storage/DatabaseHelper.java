@@ -18,8 +18,8 @@ package com.android.server.healthconnect.storage;
 
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Parent class for the database helper classes containing common methods
@@ -45,7 +45,7 @@ public abstract class DatabaseHelper {
     /** A collection of {@link DatabaseHelper}. */
     public static final class DatabaseHelpers {
 
-        private final Set<DatabaseHelper> mDatabaseHelpers = new HashSet<>();
+        private final List<DatabaseHelper> mDatabaseHelpers = new ArrayList<>();
 
         /**
          * Deletes all entries from the database and clears the cache for all the helper class.
