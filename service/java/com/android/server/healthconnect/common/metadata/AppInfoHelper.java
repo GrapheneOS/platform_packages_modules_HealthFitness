@@ -136,6 +136,12 @@ public final class AppInfoHelper extends DatabaseHelper {
     }
 
     @Override
+    public synchronized void clearData(TransactionManager transactionManager) {
+        super.clearData(transactionManager);
+        Slog.i(TAG, "Data cleared");
+    }
+
+    @Override
     public synchronized void clearCache() {
         mAppInfoMap = null;
         mIdPackageNameMap = null;
