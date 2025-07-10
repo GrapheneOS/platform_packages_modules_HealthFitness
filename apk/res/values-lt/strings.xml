@@ -28,6 +28,8 @@
     <string name="all_categories_title" msgid="1446410643217937926">"Visos kategorijos"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Žr. visas kategorijas"</string>
     <string name="no_data" msgid="1906986019249068659">"Nėra jokių duomenų"</string>
+    <string name="devices_summary" msgid="8653563324512654292">"Prijungtų įrenginių tvarkymas"</string>
+    <string name="devices_title" msgid="7548105261104504301">"Įrenginiai"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"Programos leidimai"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Tvarkykite programas ir leidimus"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"Programų, kurioms suteikta prieiga: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> iš <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>"</string>

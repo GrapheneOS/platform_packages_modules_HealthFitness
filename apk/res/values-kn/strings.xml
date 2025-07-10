@@ -28,6 +28,8 @@
     <string name="all_categories_title" msgid="1446410643217937926">"ಎಲ್ಲಾ ವರ್ಗಗಳು"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"ಎಲ್ಲಾ ವರ್ಗಗಳನ್ನು ನೋಡಿ"</string>
     <string name="no_data" msgid="1906986019249068659">"ಡೇಟಾ ಇಲ್ಲ"</string>
+    <string name="devices_summary" msgid="8653563324512654292">"ನಿಮ್ಮ ಕನೆಕ್ಟ್ ಮಾಡಿರುವ ಸಾಧನಗಳನ್ನು ನಿರ್ವಹಿಸಿ"</string>
+    <string name="devices_title" msgid="7548105261104504301">"ಸಾಧನಗಳು"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"ಆ್ಯಪ್ ಅನುಮತಿಗಳು"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"ನಿಮ್ಮ ಆ್ಯಪ್‌ಗಳು ಮತ್ತು ಅನುಮತಿಗಳನ್ನು ನಿರ್ವಹಿಸಿ"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> ಆ್ಯಪ್‌ಗಳಲ್ಲಿನ <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ಗೆ ಆ್ಯಕ್ಸೆಸ್ ಇದೆ"</string>
