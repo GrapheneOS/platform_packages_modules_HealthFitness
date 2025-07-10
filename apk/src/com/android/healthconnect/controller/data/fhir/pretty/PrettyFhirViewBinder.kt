@@ -30,6 +30,7 @@ import com.android.healthconnect.controller.data.formatters.medical.PrettyJsonLi
 import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import com.android.healthconnect.controller.utils.logging.PrettyFhirPageElement
 import dagger.hilt.android.EntryPointAccessors
 
 class PrettyFhirViewBinder : SimpleViewBinder<FormattedPrettyFhir, View> {
@@ -38,7 +39,6 @@ class PrettyFhirViewBinder : SimpleViewBinder<FormattedPrettyFhir, View> {
         private const val TAG = "PrettyFhirViewBinder"
     }
 
-    // TODO(b/424459745) Add telemetry
     private lateinit var logger: HealthConnectLogger
 
     override fun newView(parent: ViewGroup): View {
@@ -47,6 +47,8 @@ class PrettyFhirViewBinder : SimpleViewBinder<FormattedPrettyFhir, View> {
                 parent.context.applicationContext,
                 HealthConnectLoggerEntryPoint::class.java,
             )
+        logger = hiltEntryPoint.logger()
+
         return LayoutInflater.from(parent.context)
             .inflate(R.layout.item_pretty_fhir_entry, parent, false)
     }
@@ -68,6 +70,8 @@ class PrettyFhirViewBinder : SimpleViewBinder<FormattedPrettyFhir, View> {
             val contentView = contentContainer.createContentView(jsonLine, contentLevelView)
             contentContainer.addView(contentView)
         }
+
+        logger.logImpression(PrettyFhirPageElement.PRETTY_FHIR_GROUP_CONTAINER)
     }
 
     private fun PrettyJsonLine.getViewLevel(): ContentLevelView? {

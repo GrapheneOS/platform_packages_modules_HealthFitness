@@ -23,19 +23,23 @@ import android.widget.TextView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import com.android.healthconnect.controller.utils.logging.PrettyFhirPageElement
 import dagger.hilt.android.EntryPointAccessors
 
 class PrettyFhirHeaderViewBinder(private val onClickedViewSourceDataListener: () -> Unit) :
     SimpleViewBinder<FormattedEntry.FormattedPrettyFhirDetailsHeader, View> {
 
-    // TODO(b/424459745) Add telemetry
+    private lateinit var logger: HealthConnectLogger
+
     override fun newView(parent: ViewGroup): View {
         val hiltEntryPoint =
             EntryPointAccessors.fromApplication(
                 parent.context.applicationContext,
                 HealthConnectLoggerEntryPoint::class.java,
             )
+        logger = hiltEntryPoint.logger()
         return LayoutInflater.from(parent.context)
             .inflate(R.layout.item_pretty_fhir_header, parent, false)
     }
@@ -48,8 +52,12 @@ class PrettyFhirHeaderViewBinder(private val onClickedViewSourceDataListener: ()
         val headerText = view.findViewById<TextView>(R.id.item_pretty_fhir_entry_header)
         val titleText = view.findViewById<TextView>(R.id.item_pretty_fhir_title)
 
-        view.setOnClickListener { onClickedViewSourceDataListener() }
+        view.setOnClickListener {
+            onClickedViewSourceDataListener()
+            logger.logInteraction(PrettyFhirPageElement.PRETTY_FHIR_VIEW_SOURCE_DATA_BUTTON)
+        }
         headerText.text = data.header
         titleText.text = data.title
+        logger.logImpression(PrettyFhirPageElement.PRETTY_FHIR_HEADER_CONTAINER)
     }
 }

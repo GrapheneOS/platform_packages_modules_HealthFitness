@@ -38,6 +38,7 @@ import com.android.healthconnect.controller.data.entrydetails.ItemDataEntrySepar
 import com.android.healthconnect.controller.data.fhir.raw.RawFhirFragment
 import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewAdapter
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -89,7 +90,21 @@ class PrettyFhirFragment : Hilt_PrettyFhirFragment() {
         }
     }
 
-    // TODO: Add telemetry b/424459745
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setPageId()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setPageId()
+        logger.logPageImpression()
+    }
+
+    private fun setPageId() {
+        logger.setPageId(PageName.PRETTY_FHIR_PAGE)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
