@@ -372,7 +372,7 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"consumo de nicotina"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Leer consumo de nicotina"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Ingresar consumo de nicotina"</string>
-    <string name="read_permission_category" msgid="6002099618259628632">"Permite que \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tenga permiso de lectura"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"Otorgar a \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" permiso de lectura"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Permitir que \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tenga acceso de escritura"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Permitir"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Permitir todo"</string>

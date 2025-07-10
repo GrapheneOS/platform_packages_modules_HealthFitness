@@ -31,7 +31,7 @@
     <string name="connected_apps_title" msgid="279942692804743223">"應用程式權限"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"管理你的應用程式和權限"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 個應用程式有存取權 (共 <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> 個)"</string>
-    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"有 <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 個應用程式可存取 (共 <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> 個應用程式)"</string>
+    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 個應用程式有存取權 (共 <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> 個應用程式)"</string>
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"有 <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 個應用程式可存取"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"有 <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 個應用程式可存取"</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{有 1 個應用程式可存取}other{有 # 個應用程式可存取}}"</string>

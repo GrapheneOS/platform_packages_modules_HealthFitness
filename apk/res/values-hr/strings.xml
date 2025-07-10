@@ -1240,7 +1240,7 @@
     <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Dostupne aplikacije za povezivanje"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Pogledajte svoje podatke o zdravlju u aplikacijama"</string>
     <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Započnite s dijeljenjem podataka o kondiciji i općem stanju između aplikacija"</string>
-    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Postavi"</string>
+    <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Postavite"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Povežite drugu aplikaciju"</string>
     <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Postavite drugu aplikaciju da bi mogla početi dijeliti podatke o kondiciji i općem stanju"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Nastavi"</string>
