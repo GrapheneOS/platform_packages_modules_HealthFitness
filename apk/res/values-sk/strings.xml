@@ -28,6 +28,8 @@
     <string name="all_categories_title" msgid="1446410643217937926">"Všetky kategórie"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Zobraziť všetky kategórie"</string>
     <string name="no_data" msgid="1906986019249068659">"Žiadne údaje"</string>
+    <string name="devices_summary" msgid="8653563324512654292">"Spravovať pripojené zariadenia"</string>
+    <string name="devices_title" msgid="7548105261104504301">"Zariadenia"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"Povolenia aplikácií"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Spravovať aplikácie a povolenia"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"Prístup má <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> z <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> aplikácií"</string>

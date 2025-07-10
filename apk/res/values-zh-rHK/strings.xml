@@ -28,6 +28,10 @@
     <string name="all_categories_title" msgid="1446410643217937926">"所有類別"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"顯示所有類別"</string>
     <string name="no_data" msgid="1906986019249068659">"沒有資料"</string>
+    <!-- no translation found for devices_summary (8653563324512654292) -->
+    <skip />
+    <!-- no translation found for devices_title (7548105261104504301) -->
+    <skip />
     <string name="connected_apps_title" msgid="279942692804743223">"應用程式權限"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"管理你的應用程式和權限"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 個應用程式有存取權 (共 <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> 個)"</string>

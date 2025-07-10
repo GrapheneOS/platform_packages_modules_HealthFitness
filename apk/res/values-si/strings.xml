@@ -28,6 +28,8 @@
     <string name="all_categories_title" msgid="1446410643217937926">"ප්‍රවර්ග සියල්ල"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"සියලු ප්‍රවර්ග බලන්න"</string>
     <string name="no_data" msgid="1906986019249068659">"දත්ත නැත"</string>
+    <string name="devices_summary" msgid="8653563324512654292">"ඔබේ සම්බන්ධිත උපාංග කළමනාකරණය කරන්න"</string>
+    <string name="devices_title" msgid="7548105261104504301">"උපාංග"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"යෙදුම් අවසර"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"ඔබගේ යෙදුම් සහ අවසර කළමනා කරන්න"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"යෙදුම් <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>කින් <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>කට ප්‍රවේශය ඇත"</string>
