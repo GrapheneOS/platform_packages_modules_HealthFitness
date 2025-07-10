@@ -1863,6 +1863,35 @@ public class FhirPrimitiveTypeValidatorTest {
 
     @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
     @Test
+    public void testValidate_r4XHtmlLinkJavascriptScheme_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <a href=\"javascript:scheme\"></a>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml link due to disallowed javascript scheme in field:"
+                                + " text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
     public void testValidate_r4XHtmlLinkInvalidUriChar_throws() throws JSONException {
         JSONObject jsonObjectNarrative =
                 new JSONObject()
@@ -2166,6 +2195,207 @@ public class FhirPrimitiveTypeValidatorTest {
         assertThat(exception)
                 .hasMessageThat()
                 .contains("Found invalid xhtml with more than one root element in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLinkWithUnterminatedEntityRefInPath_throws()
+            throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <a href=\"example.com/pathWith&unterminated\">Link</a>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        // The `&` will fail xml parsing as it is an unterminated entity reference
+        assertThat(exception).hasMessageThat().contains("Failed to parse xhtml in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLinkWithHtmlEntityRefInPath_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <a href=\"example.com/pathWithHtml&nbsp;entities\">Link</a>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        // &nbsp; is not an xml entity or numeric character reference that will be resolved by the
+        // parser, so it remains in the href string and will be rejected by our validation logic
+        assertThat(exception)
+                .hasMessageThat()
+                .contains("Found invalid xhtml link due to `&` in the path in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlRelativeLinkWithAndInQueryParams_succeeds()
+            throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <a href=\"products?category=results&amp;sort=value_asc\"></a>
+                                    </div>
+                                """);
+
+        // The &amp; entity reference (resolved to & by the XML parser) appears in the query part
+        // of the link, so is allowed.
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLinkWithHtmlEntityColon_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <a href=\"javascript&colon;abcd\"></a>
+
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        // &colon; is not an xml entity or numeric character reference that will be resolved by the
+        // parser, so it remains in the href string and will be rejected by our validation logic.
+        assertThat(exception)
+                .hasMessageThat()
+                .contains("Found invalid xhtml link due to `&` in the path in field: text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLinkWithUnicodeNumericCharRefColon_detectsDisallowedScheme()
+            throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <a href=\"javascript&#58;ab\"></a>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        // &#58; is numeric character reference using the unicode value that will be resolved to `:`
+        // by the XML parsing, so the javascript scheme will be identified and rejected.
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml link due to disallowed javascript scheme in field:"
+                                + " text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLinkWithHexaDecNumericCharRefColon_detectsDisallowedScheme()
+            throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <a href=\"javascript&#x3A;abc\"></a>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        // &#x3A; is numeric character reference using the hexadecimal value that will be resolved
+        // to `:` by the XML parsing, so the javascript scheme will be identified and rejected.
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml link due to disallowed javascript scheme in field:"
+                                + " text.div");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlLinkWithUrlEncodedColon_throws() throws JSONException {
+        JSONObject jsonObjectNarrative =
+                new JSONObject()
+                        .put("status", "generated")
+                        .put(
+                                "div",
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                    <a href=\"javascript%3Aabcd\"></a>
+                                    </div>
+                                """);
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        // %3A is a URL encoded `:`, which will be decoded by the URI parsing, and rejected by our
+        // validation logic.
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml link due to encoded `:` in the path in field:"
+                                + " text.div");
     }
 
     private static JSONObject buildNarrativeWithImgSrc(String imgSrc) throws JSONException {
