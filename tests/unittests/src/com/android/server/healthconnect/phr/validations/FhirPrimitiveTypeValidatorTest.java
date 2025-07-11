@@ -35,6 +35,7 @@ import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_UNS
 import static com.android.server.healthconnect.proto.R4FhirType.R4_FHIR_TYPE_XHTML;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import static org.junit.Assert.assertThrows;
 
@@ -55,6 +56,8 @@ import org.json.JSONObject;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class FhirPrimitiveTypeValidatorTest {
@@ -2398,6 +2401,155 @@ public class FhirPrimitiveTypeValidatorTest {
                                 + " text.div");
     }
 
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlWithUnresolvedHtmlEntityInStyleAttr_throws()
+            throws JSONException {
+        JSONObject jsonObjectNarrative = buildNarrativeWithParagraphStyle("this is css &colon;");
+
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                validate(
+                                        jsonObjectNarrative.get("div"),
+                                        "text.div",
+                                        R4_FHIR_TYPE_XHTML));
+        assertThat(exception)
+                .hasMessageThat()
+                .contains(
+                        "Found invalid xhtml due to disallowed `&` in style attribute in field: ");
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlWithResolvedAmpersand_throws() throws JSONException {
+        for (String styleString :
+                List.of("&amp;", "cssString&amp;", "&amp;cssString", "&amp; cssString&amp;")) {
+            JSONObject jsonObjectNarrative = buildNarrativeWithParagraphStyle(styleString);
+
+            IllegalArgumentException exception =
+                    assertThrows(
+                            "Testing string: " + styleString,
+                            IllegalArgumentException.class,
+                            () ->
+                                    validate(
+                                            jsonObjectNarrative.get("div"),
+                                            "text.div",
+                                            R4_FHIR_TYPE_XHTML));
+            assertWithMessage("Testing string: " + styleString)
+                    .that(exception)
+                    .hasMessageThat()
+                    .contains(
+                            "Found invalid xhtml due to disallowed `&` in style attribute in field:"
+                                    + " ");
+        }
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlWithResolvedAmpersandAndSpace_succeeds() throws JSONException {
+        for (String styleString : List.of("&amp; ", "cssString&amp; ", "&amp; cssString&amp; ")) {
+            JSONObject jsonObjectNarrative = buildNarrativeWithParagraphStyle(styleString);
+
+            validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+        }
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlStyleAttributeWithEmptyString_succeeds() throws JSONException {
+        JSONObject jsonObjectNarrative = buildNarrativeWithParagraphStyle("");
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlStyleAttributeWithDisallowedFunction_throws()
+            throws JSONException {
+        for (String styleString :
+                List.of("css rgb() content url(content)", "content;url();css content")) {
+            JSONObject jsonObjectNarrative = buildNarrativeWithParagraphStyle(styleString);
+
+            IllegalArgumentException exception =
+                    assertThrows(
+                            "Testing string: " + styleString,
+                            IllegalArgumentException.class,
+                            () ->
+                                    validate(
+                                            jsonObjectNarrative.get("div"),
+                                            "text.div",
+                                            R4_FHIR_TYPE_XHTML));
+            assertWithMessage("Testing string: " + styleString)
+                    .that(exception)
+                    .hasMessageThat()
+                    .contains(
+                            "Found invalid xhtml due to disallowed css function `url` in style"
+                                    + " attribute in field: text.div");
+        }
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlStyleAttributeWithOpenParenAfterSymbol_throws()
+            throws JSONException {
+        for (String styleString : List.of("css content ;(")) {
+            JSONObject jsonObjectNarrative = buildNarrativeWithParagraphStyle(styleString);
+
+            IllegalArgumentException exception =
+                    assertThrows(
+                            "Testing string: " + styleString,
+                            IllegalArgumentException.class,
+                            () ->
+                                    validate(
+                                            jsonObjectNarrative.get("div"),
+                                            "text.div",
+                                            R4_FHIR_TYPE_XHTML));
+            assertWithMessage("Testing string: " + styleString)
+                    .that(exception)
+                    .hasMessageThat()
+                    .contains(
+                            "Found invalid xhtml due to disallowed `(` in style attribute in field:"
+                                    + " text.div");
+        }
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlStyleAttributeWithAllowedFunction_succeeds()
+            throws JSONException {
+        JSONObject jsonObjectNarrative = buildNarrativeWithParagraphStyle("css string rgb()");
+
+        validate(jsonObjectNarrative.get("div"), "text.div", R4_FHIR_TYPE_XHTML);
+    }
+
+    @EnableFlags({FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION, FLAG_PHR_XHTML_VALIDATION})
+    @Test
+    public void testValidate_r4XHtmlStyleAttributeWithCssEncodedParentheses_throws()
+            throws JSONException {
+        for (String styleString :
+                List.of("content url\\028", "url\\0028", "url\\28;OtherContent")) {
+            JSONObject jsonObjectNarrative = buildNarrativeWithParagraphStyle(styleString);
+
+            IllegalArgumentException exception =
+                    assertThrows(
+                            "Testing string: " + styleString,
+                            IllegalArgumentException.class,
+                            () ->
+                                    validate(
+                                            jsonObjectNarrative.get("div"),
+                                            "text.div",
+                                            R4_FHIR_TYPE_XHTML));
+            assertWithMessage("Testing string: " + styleString)
+                    .that(exception)
+                    .hasMessageThat()
+                    .contains(
+                            "Found invalid xhtml due to disallowed css escape sequence matching `(`"
+                                    + " in style attribute in field: text.div");
+        }
+    }
+
     private static JSONObject buildNarrativeWithImgSrc(String imgSrc) throws JSONException {
         return new JSONObject()
                 .put("status", "generated")
@@ -2407,6 +2559,20 @@ public class FhirPrimitiveTypeValidatorTest {
                                 """
                                     <div xmlns=\"http://www.w3.org/1999/xhtml\">
                                         <img src=\"%s\"></img>
+                                    </div>
+                                """,
+                                imgSrc));
+    }
+
+    private static JSONObject buildNarrativeWithParagraphStyle(String imgSrc) throws JSONException {
+        return new JSONObject()
+                .put("status", "generated")
+                .put(
+                        "div",
+                        String.format(
+                                """
+                                    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+                                        <p style=\"%s\"></p>
                                     </div>
                                 """,
                                 imgSrc));

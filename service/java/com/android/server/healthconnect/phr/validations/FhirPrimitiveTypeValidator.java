@@ -46,6 +46,7 @@ import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -114,6 +115,16 @@ public class FhirPrimitiveTypeValidator {
                     .collect(Collectors.toUnmodifiableSet());
     private static final Map<String, Set<String>> XHTML_ELEMENT_TO_ATTRIBUTES_FOR_LINK_VALIDATION =
             Map.of("a", Set.of("href"), "img", Set.of("longdesc", "src"));
+    private static final List<String> XHTML_ALLOWED_CSS_FUNCTIONS =
+            List.of("rgb", "rgba", "hsl", "hsla", "hwb", "lab", "lch", "oklab", "oklch");
+    // Matches any opening parentheses, and the first matcher group will return the function name
+    // if present.
+    private static final Pattern CSS_LPAREN_CAPTURE_FUNCTION_NAME =
+            Pattern.compile("([a-zA-Z]*)\\(");
+    // Matches the css escape sequences for `(` such as \28, \028, \000028 that are not followed by
+    // another character used to represent hexadecimal values.
+    private static final Pattern CSS_LPAREN_ESCAPE_SEQUENCE =
+            Pattern.compile("\\\\0{0,5}28(?: |(?![0-9a-fA-F]))");
 
     static void validate(Object fieldObject, String fullFieldName, R4FhirType type) {
         if (!Flags.phrFhirPrimitiveTypeValidation()) {
@@ -303,6 +314,9 @@ public class FhirPrimitiveTypeValidator {
                                             + " in field: "
                                             + fullFieldName);
                         }
+                        if (attributeName.equals("style")) {
+                            validateStyleAttributeCss(parser.getAttributeValue(i), fullFieldName);
+                        }
                         if (requiresXhtmlLinkValidation(elementName, attributeName)) {
                             validateXhtmlLink(
                                     parser.getAttributeValue(i),
@@ -340,6 +354,58 @@ public class FhirPrimitiveTypeValidator {
             throw new IllegalStateException("Failed to set xml parsing input");
         }
         return parser;
+    }
+
+    private static void validateStyleAttributeCss(String attributeValue, String fullFieldName) {
+        // Reject any unresolved html entity references. The xml parser resolves only xml references
+        // and numeric character references, but the FHIR spec states that html entity references
+        // are not supported. This will prevent obfuscation by for example disallowing
+        // url&lpar;&rpar; which would be interpreted as url(). The style attribute css shouldn't
+        // usually contain an & (resolved `&amp;` entity reference) except for potentially
+        // custom css strings and font-family such as 'Times New Roman & Bold'. Therefore we allow
+        // it if followed by a space.
+        for (int i = 0; i < attributeValue.length(); i++) {
+            if (attributeValue.charAt(i) == '&') {
+                boolean followedBySpace =
+                        attributeValue.length() > i + 1 && attributeValue.charAt(i + 1) == ' ';
+                if (followedBySpace) {
+                    // This is allowed. See if there are other occurrences
+                    i++;
+                } else {
+                    throw new IllegalArgumentException(
+                            "Found invalid xhtml due to disallowed `&` in style attribute in field:"
+                                    + " "
+                                    + fullFieldName);
+                }
+            }
+        }
+
+        // Reject any ( character to reject functions, except for functions on the allowlist. It's
+        // unlikely any valid css string will contain them outside of those cases, except for custom
+        // css or uncommon font names, which the basic FHIR css probably doesn't need to allow. We
+        // also reject any css escape sequences that would be resolved to that character.
+        Matcher matcher = CSS_LPAREN_CAPTURE_FUNCTION_NAME.matcher(attributeValue);
+        while (matcher.find()) {
+            String functionName = matcher.group(1);
+            if (functionName == null || functionName.isEmpty()) {
+                throw new IllegalArgumentException(
+                        "Found invalid xhtml due to disallowed `(` in style attribute"
+                                + " in field: "
+                                + fullFieldName);
+            } else if (!XHTML_ALLOWED_CSS_FUNCTIONS.contains(functionName)) {
+                throw new IllegalArgumentException(
+                        "Found invalid xhtml due to disallowed css function `"
+                                + functionName
+                                + "` in style attribute in field: "
+                                + fullFieldName);
+            }
+        }
+        if (CSS_LPAREN_ESCAPE_SEQUENCE.matcher(attributeValue).find()) {
+            throw new IllegalArgumentException(
+                    "Found invalid xhtml due to disallowed css escape sequence matching `(` in"
+                            + " style attribute in field: "
+                            + fullFieldName);
+        }
     }
 
     private static boolean requiresXhtmlLinkValidation(String element, String attribute) {
