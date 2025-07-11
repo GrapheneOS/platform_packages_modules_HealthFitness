@@ -45,6 +45,7 @@ import java.time.Duration
 import java.time.Instant
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -96,6 +97,7 @@ class AllDataFragmentTest : HealthConnectBaseTest() {
     }
 
     @Test
+    @Ignore("b/422936207 - Test fails on samsung devices.")
     fun allDataFragment_clickOnDataSourcesIcon_navigatesToDataSources() {
         context.launchDataActivity {
             clickOnDescAndWaitForNewWindow("Data sources and priority")
