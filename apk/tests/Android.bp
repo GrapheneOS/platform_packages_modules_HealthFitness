@@ -49,6 +49,9 @@ java_defaults {
     defaults: ["modules-utils-testable-device-config-defaults"],
     sdk_version: "module_current",
     min_sdk_version: "34",
+    lint: {
+        extra_check_modules: ["HealthFitnessLintChecker"],
+    },
     static_libs: [
         "androidx.test.core",
         "androidx.test.rules",
