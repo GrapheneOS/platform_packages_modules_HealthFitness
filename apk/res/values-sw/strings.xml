@@ -28,6 +28,10 @@
     <string name="all_categories_title" msgid="1446410643217937926">"Aina zote"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Angalia aina zote"</string>
     <string name="no_data" msgid="1906986019249068659">"Hakuna data"</string>
+    <!-- no translation found for devices_summary (8653563324512654292) -->
+    <skip />
+    <!-- no translation found for devices_title (7548105261104504301) -->
+    <skip />
     <string name="connected_apps_title" msgid="279942692804743223">"Ruhusa za programu"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Dhibiti programu na ruhusa zako"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"Programu <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> kati ya <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> inaweza kufikia"</string>
@@ -566,9 +570,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Rudi nyuma"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Anza"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Futa data"</string>
-    <!-- String.format failed for translation -->
-    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
-    <skip />
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Kitufe cha kufuta data ya %1$s"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Anza kufuta"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Acha kufuta"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Chagua data ya kufuta kwenye Health Connect"</string>
@@ -1202,7 +1204,7 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Ungependa kuruhusu <xliff:g id="APP_NAME">%1$s</xliff:g> ifikie <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Siha na afya"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Kila wakati"</string>
-    <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"Ninapotumia programu"</string>
+    <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"Unapotumia programu"</string>
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> inaweza kufikia data yako yote ya siha na afya kila wakati"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> inaweza kufikia data yako yote ya siha na afya wakati unaitumia"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Inaruhusiwa kufikia"</string>

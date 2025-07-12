@@ -28,6 +28,10 @@
     <string name="all_categories_title" msgid="1446410643217937926">"Todas las categorías"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Ver todas las categorías"</string>
     <string name="no_data" msgid="1906986019249068659">"Sin datos"</string>
+    <!-- no translation found for devices_summary (8653563324512654292) -->
+    <skip />
+    <!-- no translation found for devices_title (7548105261104504301) -->
+    <skip />
     <string name="connected_apps_title" msgid="279942692804743223">"Permisos de apps"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Administra tus apps y permisos"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> de <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> apps tiene acceso"</string>
@@ -372,7 +376,7 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"consumo de nicotina"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Leer consumo de nicotina"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Ingresar consumo de nicotina"</string>
-    <string name="read_permission_category" msgid="6002099618259628632">"Permite que \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tenga permiso de lectura"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"Otorgar a \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" permiso de lectura"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Permitir que \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tenga acceso de escritura"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Permitir"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Permitir todo"</string>

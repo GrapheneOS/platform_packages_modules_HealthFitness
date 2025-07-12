@@ -28,6 +28,8 @@
     <string name="all_categories_title" msgid="1446410643217937926">"আটাইবোৰ শিতান"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"আটাইবোৰ শিতান চাওক"</string>
     <string name="no_data" msgid="1906986019249068659">"কোনো ডেটা নাই"</string>
+    <string name="devices_summary" msgid="8653563324512654292">"আপোনাৰ সংযুক্ত ডিভাইচ পৰিচালনা কৰক"</string>
+    <string name="devices_title" msgid="7548105261104504301">"ডিভাইচ"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"এপৰ অনুমতি"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"আপোনাৰ এপ্‌ আৰু অনুমতিসমূহ পৰিচালনা কৰক"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> টা এপৰ <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> টাৰ এক্সেছ আছে"</string>
@@ -566,9 +568,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"উভতি যাওক"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"আৰম্ভ কৰক"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"ডেটা মচক"</string>
-    <!-- String.format failed for translation -->
-    <!-- no translation found for delete_inactive_app_data_button_content_description (5348498235281456144) -->
-    <skip />
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"%1$s বুটামৰ বাবে ডেটা মচক"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"মচা অৱস্থাটোত সোমাওক"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"মচা অৱস্থাটোৰ পৰা বাহিৰ হওক"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Health Connectৰ মচিবলৈ ডেটা বাছনি কৰক"</string>
