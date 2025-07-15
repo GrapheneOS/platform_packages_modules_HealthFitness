@@ -75,7 +75,8 @@ enum class FitnessPermissionType(val category: Int) : HealthPermissionType {
     SKIN_TEMPERATURE(HealthPermissionCategory.SKIN_TEMPERATURE),
 
     // WELLNESS
-    MINDFULNESS(HealthPermissionCategory.MINDFULNESS);
+    MINDFULNESS(HealthPermissionCategory.MINDFULNESS),
+    NICOTINE_INTAKE(HealthPermissionCategory.NICOTINE_INTAKE);
 
     override fun lowerCaseLabel(): Int =
         FitnessPermissionStrings.fromPermissionType(this).lowercaseLabel
@@ -148,7 +149,10 @@ fun fromHealthPermissionCategory(healthPermissionCategory: Int): HealthPermissio
         HealthPermissionCategory.RESPIRATORY_RATE -> FitnessPermissionType.RESPIRATORY_RATE
         HealthPermissionCategory.RESTING_HEART_RATE -> FitnessPermissionType.RESTING_HEART_RATE
         HealthPermissionCategory.SKIN_TEMPERATURE -> FitnessPermissionType.SKIN_TEMPERATURE
+
+        // WELLNESS
         HealthPermissionCategory.MINDFULNESS -> FitnessPermissionType.MINDFULNESS
+        HealthPermissionCategory.NICOTINE_INTAKE -> FitnessPermissionType.NICOTINE_INTAKE
         else -> throw IllegalArgumentException("PermissionType is not supported.")
     }
 }
