@@ -49,6 +49,9 @@ java_defaults {
     defaults: ["modules-utils-testable-device-config-defaults"],
     sdk_version: "module_current",
     min_sdk_version: "34",
+    lint: {
+        extra_check_modules: ["HealthFitnessLintChecker"],
+    },
     static_libs: [
         "androidx.test.core",
         "androidx.test.rules",
@@ -454,6 +457,9 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/permissions/request/MedicalPermissionsFragmentTest.kt",
         "src/com/android/healthconnect/controller/tests/permissions/request/PermissionsActivityTest.kt",
         "src/com/android/healthconnect/controller/tests/permissions/request/RequestPermissionViewModelTest.kt",
+        // At the moment robolectrci doesn't transition activity to state DESTROYED after finish()
+        // in some circumstances
+        "src/com/android/healthconnect/controller/tests/permissions/request/PermissionsBottomSheetDialogFragmentTest.kt",
         // Needs more investigation. Just faking the appInfoReader causes the on device test to
         // fail, and isn't enough to get the robo test working.
         "src/com/android/healthconnect/controller/tests/recentaccess/RecentAccessViewModelTest.kt",

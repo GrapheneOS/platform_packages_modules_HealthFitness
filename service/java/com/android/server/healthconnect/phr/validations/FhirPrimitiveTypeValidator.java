@@ -367,6 +367,21 @@ public class FhirPrimitiveTypeValidator {
                     throw new IllegalArgumentException(
                             "Found invalid xhtml link containing '../' in field: " + fullFieldName);
                 }
+                // getPath will return the first part of the URI (before any query parameters) with
+                // decoded percent-encodings. Reject any encoded colons and any `&` symbols
+                // indicating unresolved html character references, as they could be used to "hide"
+                // a scheme, such as "javascript&colon;alert". Any XML entity references and numeric
+                // character references will have already been resolved by the XML parser.
+                if (parsedUri.getPath().contains(":")) {
+                    throw new IllegalArgumentException(
+                            "Found invalid xhtml link due to encoded `:` in the path in field: "
+                                    + fullFieldName);
+                }
+                if (parsedUri.getPath().contains("&")) {
+                    throw new IllegalArgumentException(
+                            "Found invalid xhtml link due to `&` in the path in field: "
+                                    + fullFieldName);
+                }
                 break;
             case "http":
             case "https":
