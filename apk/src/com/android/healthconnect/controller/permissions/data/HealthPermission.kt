@@ -16,8 +16,9 @@
 package com.android.healthconnect.controller.permissions.data
 
 import android.health.connect.HealthPermissions
+import java.io.Serializable
 
-sealed class HealthPermission {
+sealed class HealthPermission : Serializable {
 
     companion object {
         /** Special health permissions that don't represent health data types. */
