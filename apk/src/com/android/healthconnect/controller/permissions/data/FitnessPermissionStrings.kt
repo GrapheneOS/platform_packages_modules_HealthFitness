@@ -399,4 +399,13 @@ private val PERMISSION_TYPE_STRINGS: ImmutableMap<FitnessPermissionType, Fitness
                 R.string.mindfulness_write_content_description,
             ),
         )
+        .put(
+            FitnessPermissionType.NICOTINE_INTAKE,
+            FitnessPermissionStrings(
+                R.string.nicotine_intake_uppercase_label,
+                R.string.nicotine_intake_lowercase_label,
+                R.string.nicotine_intake_read_content_description,
+                R.string.nicotine_intake_write_content_description,
+            ),
+        )
         .buildOrThrow()

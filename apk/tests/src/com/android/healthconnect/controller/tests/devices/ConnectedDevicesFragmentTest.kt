@@ -19,44 +19,145 @@ package com.android.healthconnect.controller.tests.devices
 import android.content.Context
 import android.os.Bundle
 import android.platform.test.annotations.EnableFlags
-import androidx.navigation.Navigation
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.testing.TestNavHostController
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.devices.ConnectedDevicesFragment
+import com.android.healthconnect.controller.devices.ConnectedDevicesViewModel
+import com.android.healthconnect.controller.devices.ConnectedDevicesViewModel.ConnectedDevicesState
+import com.android.healthconnect.controller.devices.DeviceDataSource
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthfitness.flags.Flags
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
+@EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
 class ConnectedDevicesFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @BindValue val viewModel: ConnectedDevicesViewModel = mock()
 
     private lateinit var navHostController: TestNavHostController
     private lateinit var context: Context
+    private val connectedDevicesState = MutableLiveData<ConnectedDevicesState>()
 
     @Before
     fun setup() {
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().context
         navHostController = TestNavHostController(context)
+        whenever(viewModel.connectedDevicesState).then { connectedDevicesState }
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     fun connectedDevicesFragment_launchable() {
-        launchFragment<ConnectedDevicesFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.connectedDevicesFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
+        connectedDevicesState.postValue(
+            ConnectedDevicesState.Success(
+                listOf(DeviceDataSource("Pixel 8", isCurrentDevice = true))
+            )
+        )
+
+        launchFragment<ConnectedDevicesFragment>(Bundle())
+    }
+
+    @Test
+    fun loadingState_showsLoading() {
+        connectedDevicesState.postValue(ConnectedDevicesState.Loading)
+
+        launchFragment<ConnectedDevicesFragment>(Bundle())
+
+        onView(withId(R.id.progress_indicator)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun errorState_showsError() {
+        connectedDevicesState.postValue(ConnectedDevicesState.Error)
+
+        launchFragment<ConnectedDevicesFragment>(Bundle())
+
+        onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun emptyState_displaysNothingWhenDataSourcesIsEmpty() {
+        connectedDevicesState.postValue(ConnectedDevicesState.Success(emptyList()))
+
+        launchFragment<ConnectedDevicesFragment>(Bundle())
+
+        onView(withText("Pixel 8")).check(doesNotExist())
+        onView(withText("Pixel 7 Pro")).check(doesNotExist())
+    }
+
+    @Test
+    fun withDevice_showsDevice() {
+        connectedDevicesState.postValue(
+            ConnectedDevicesState.Success(
+                listOf(DeviceDataSource("Pixel 8", isCurrentDevice = true))
+            )
+        )
+
+        launchFragment<ConnectedDevicesFragment>(Bundle())
+
+        onView(withText("Pixel 8")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun multipleDevices_showsAllDevices() {
+        connectedDevicesState.postValue(
+            ConnectedDevicesState.Success(
+                listOf(
+                    DeviceDataSource("Pixel 8", isCurrentDevice = true),
+                    DeviceDataSource("Pixel 7 Pro", isCurrentDevice = false),
+                )
+            )
+        )
+
+        launchFragment<ConnectedDevicesFragment>(Bundle())
+
+        onView(withText("Pixel 8")).check(matches(isDisplayed()))
+        onView(withText("Pixel 7 Pro")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun currentDevice_includesSummaryText() {
+        connectedDevicesState.postValue(
+            ConnectedDevicesState.Success(
+                listOf(DeviceDataSource("Pixel 7 Pro", isCurrentDevice = true))
+            )
+        )
+
+        launchFragment<ConnectedDevicesFragment>(Bundle())
+
+        onView(withText("Current device")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun notCurrentDevice_excludesSummaryText() {
+        connectedDevicesState.postValue(
+            ConnectedDevicesState.Success(
+                listOf(DeviceDataSource("Pixel 7 Pro", isCurrentDevice = false))
+            )
+        )
+
+        launchFragment<ConnectedDevicesFragment>(Bundle())
+
+        onView(withText("Current device")).check(doesNotExist())
     }
 }

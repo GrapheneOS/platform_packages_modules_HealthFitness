@@ -17,15 +17,70 @@
 package com.android.healthconnect.controller.devices
 
 import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.viewModels
+import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.devices.ConnectedDevicesViewModel.ConnectedDevicesState
+import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.utils.AttributeResolver
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.pref
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /** Fragment for connected devices screen. */
 @AndroidEntryPoint(HealthPreferenceFragment::class)
 class ConnectedDevicesFragment : Hilt_ConnectedDevicesFragment() {
 
+    companion object {
+        private const val CONNECTED_DEVICES_CATEGORY = "connected_devices_category"
+    }
+
+    @Inject lateinit var logger: HealthConnectLogger
+
+    private val viewModel: ConnectedDevicesViewModel by viewModels()
+    private val devicesCategory: PreferenceGroup by pref(CONNECTED_DEVICES_CATEGORY)
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.connected_devices_screen, rootKey)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // TODO(b/429618933): add logging
+        viewModel.connectedDevicesState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is ConnectedDevicesState.Loading -> {
+                    setLoading(true)
+                }
+                is ConnectedDevicesState.Error -> {
+                    setError(true)
+                }
+                is ConnectedDevicesState.Success -> {
+                    setLoading(false)
+                    devicesCategory.removeAll()
+                    for (device in state.deviceDataSources) {
+                        devicesCategory.addPreference(
+                            HealthPreference(requireContext()).apply {
+                                icon =
+                                    AttributeResolver.getDrawable(
+                                        requireContext(),
+                                        R.attr.devicePhoneIcon,
+                                    )
+                                title = device.deviceName
+                                if (device.isCurrentDevice) {
+                                    summary = getString(R.string.devices_current_device)
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        }
+        viewModel.loadDeviceDataSources()
     }
 }

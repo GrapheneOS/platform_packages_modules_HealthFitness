@@ -120,6 +120,8 @@
         <!-- Lock screen banner -->
         <item name="lockIcon">@drawable/ic_lock</item>
 
+        <!-- Connected devices -->
+        <item name="devicePhoneIcon">@drawable/ic_device_phone</item>
 
         <!-- END REGION -->
 

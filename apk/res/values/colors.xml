@@ -21,4 +21,6 @@
     <color name="filter_chip_outline_color">?android:attr/textColorPrimary</color>
     <color name="filter_chip_selected_text_color">@color/filter_chip_text_color</color>
     <color name="filter_chip_selected_icon_color">?android:attr/textColorPrimary</color>
+    <color name="devices_icon_background">@color/m3_ref_palette_blue_variant90</color>
+    <color name="devices_icon_foreground">@color/m3_ref_palette_blue_variant30</color>
 </resources>

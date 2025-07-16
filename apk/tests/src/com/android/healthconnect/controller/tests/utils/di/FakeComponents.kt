@@ -42,6 +42,8 @@ import com.android.healthconnect.controller.datasources.api.ILoadPriorityEntries
 import com.android.healthconnect.controller.datasources.api.ILoadPriorityListUseCase
 import com.android.healthconnect.controller.datasources.api.ISleepSessionHelper
 import com.android.healthconnect.controller.datasources.api.IUpdatePriorityListUseCase
+import com.android.healthconnect.controller.devices.DeviceDataSource
+import com.android.healthconnect.controller.devices.ILoadDeviceDataSources
 import com.android.healthconnect.controller.exportimport.api.DocumentProvider
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency.EXPORT_FREQUENCY_NEVER
@@ -110,6 +112,31 @@ class FakeHealthPermissionAppsUseCase : ILoadHealthPermissionApps {
 
     override suspend fun invoke(): List<ConnectedAppMetadata> {
         return list
+    }
+}
+
+class FakeLoadDeviceDataSourcesUseCase : ILoadDeviceDataSources {
+    private var list: List<DeviceDataSource> = emptyList()
+    private var forceFail: Boolean = false
+
+    fun updateList(list: List<DeviceDataSource>) {
+        this.list = list
+    }
+
+    override suspend fun invoke(input: Unit): UseCaseResults<List<DeviceDataSource>> {
+        return if (forceFail) {
+            UseCaseResults.Failed(IllegalStateException("Failed to load device data sources"))
+        } else {
+            UseCaseResults.Success(list)
+        }
+    }
+
+    override suspend fun execute(input: Unit): List<DeviceDataSource> {
+        return list
+    }
+
+    fun setForceFail(forceFail: Boolean) {
+        this.forceFail = forceFail
     }
 }
 

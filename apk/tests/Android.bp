@@ -252,6 +252,7 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/onboarding/**/*.kt",
         "src/com/android/healthconnect/controller/tests/recentaccess/**/*.java",
         "src/com/android/healthconnect/controller/tests/recentaccess/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/devices/**/*.kt",
     ],
     visibility: ["//visibility:private"],
 }
