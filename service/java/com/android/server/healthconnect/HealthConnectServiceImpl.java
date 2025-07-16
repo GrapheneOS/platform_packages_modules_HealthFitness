@@ -3445,6 +3445,71 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
+     * @see HealthConnectManager#setTrackingEnabled
+     */
+    @Override
+    public void setTrackingEnabled(
+            String dataTypePrefKey, boolean enabled, IEmptyResponseCallback callback) {
+        checkParamsNonNull(dataTypePrefKey, callback);
+        ErrorCallback errorCallback = callback::onError;
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+
+        mThreadScheduler.scheduleControllerTask(
+                () -> {
+                    try {
+                        enforceIsForegroundUser(userHandle);
+                        mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
+                        mPreferenceHelper.insertOrReplacePreference(
+                                dataTypePrefKey, String.valueOf(enabled));
+                        callback.onResult();
+                    } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SQLiteException: ", sqLiteException);
+                        tryAndThrowException(errorCallback, sqLiteException, ERROR_IO);
+                    } catch (SecurityException securityException) {
+                        Slog.e(TAG, "SecurityException: ", securityException);
+                        tryAndThrowException(errorCallback, securityException, ERROR_SECURITY);
+                    } catch (HealthConnectException healthConnectException) {
+                        Slog.e(TAG, "HealthConnectException: ", healthConnectException);
+                        tryAndThrowException(
+                                errorCallback,
+                                healthConnectException,
+                                healthConnectException.getErrorCode());
+                    } catch (Exception exception) {
+                        Slog.e(TAG, "Exception: ", exception);
+                        tryAndThrowException(errorCallback, exception, ERROR_INTERNAL);
+                    }
+                });
+    }
+
+    /**
+     * @see HealthConnectManager#isTrackingEnabled
+     */
+    @Override
+    public Map<String, Boolean> isTrackingEnabled(List<String> dataTypePrefKeys) {
+        checkParamsNonNull(dataTypePrefKeys);
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        enforceIsForegroundUser(userHandle);
+        mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
+
+        Map<String, Boolean> result = new ArrayMap<>();
+        for (String key : dataTypePrefKeys) {
+            String enabled = mPreferenceHelper.getPreference(key);
+            if (enabled == null) {
+                // User has never toggled the tracking preference, default tracking to on.
+                result.put(key, true);
+            } else {
+                result.put(key, Boolean.parseBoolean(enabled));
+            }
+        }
+
+        return result;
+    }
+
+    /**
      * "dumpsys" infrastructure. This should get included in bug reports.
      *
      * <p>Note: To print, run "adb shell dumpsys healthconnect".

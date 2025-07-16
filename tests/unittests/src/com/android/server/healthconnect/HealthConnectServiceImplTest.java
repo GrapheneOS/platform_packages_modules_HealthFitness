@@ -338,6 +338,8 @@ public class HealthConnectServiceImplTest {
                     "insertMinDataMigrationSdkExtensionVersion",
                     "asBinder",
                     "queryDocumentProviders",
+                    "setTrackingEnabled",
+                    "isTrackingEnabled",
                     "getHealthConnectOnboardingState",
                     "updateHealthConnectBackupAndRestoreSettings",
                     "updateHealthConnectRestoreStatus",
@@ -3526,6 +3528,86 @@ public class HealthConnectServiceImplTest {
                 mAttributionSource, request, mCanConnectMatchingAppsCallback);
 
         verify(mCanConnectMatchingAppsCallback, timeout(TIMEOUT_MILLIS)).onResult(true);
+    }
+
+    @Test
+    public void setTrackingEnabled_noPermissions_throwsSecurityException() throws Exception {
+        doThrow(SecurityException.class)
+                .when(mServiceContext)
+                .enforcePermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt(), any());
+
+        mHealthConnectService.setTrackingEnabled("TRACKING_PREF_1", true, mEmptyResponseCallback);
+        awaitAllExecutorsIdle();
+
+        verify(mEmptyResponseCallback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_SECURITY);
+    }
+
+    @Test
+    public void setTrackingEnabled_sqliteException_throwsIOException() throws Exception {
+        doThrow(new SQLiteException())
+                .when(mPreferenceHelper)
+                .insertOrReplacePreference(anyString(), anyString());
+
+        mHealthConnectService.setTrackingEnabled("TRACKING_PREF_1", true, mEmptyResponseCallback);
+        awaitAllExecutorsIdle();
+
+        verify(mEmptyResponseCallback).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_IO);
+    }
+
+    @Test
+    public void setTrackingEnabled_true_setsPreference() throws Exception {
+        mHealthConnectService.setTrackingEnabled("TRACKING_PREF_1", true, mEmptyResponseCallback);
+        awaitAllExecutorsIdle();
+
+        verify(mPreferenceHelper).insertOrReplacePreference("TRACKING_PREF_1", "true");
+        verify(mEmptyResponseCallback).onResult();
+    }
+
+    @Test
+    public void setTrackingEnabled_false_setsPreference() throws Exception {
+        mHealthConnectService.setTrackingEnabled("TRACKING_PREF_1", false, mEmptyResponseCallback);
+        awaitAllExecutorsIdle();
+
+        verify(mPreferenceHelper).insertOrReplacePreference("TRACKING_PREF_1", "false");
+        verify(mEmptyResponseCallback).onResult();
+    }
+
+    @Test
+    public void isTrackingEnabled_noPermissions_throwsSecurityException() {
+        doThrow(SecurityException.class)
+                .when(mServiceContext)
+                .enforcePermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt(), any());
+
+        assertThrows(
+                SecurityException.class,
+                () -> mHealthConnectService.isTrackingEnabled(List.of("TRACKING_PREF_1")));
+    }
+
+    @Test
+    public void isTrackingEnabled_returnsPreferences() {
+        when(mPreferenceHelper.getPreference("TRACKING_PREF_1")).thenReturn("true");
+        when(mPreferenceHelper.getPreference("TRACKING_PREF_2")).thenReturn("false");
+
+        Map<String, Boolean> result =
+                mHealthConnectService.isTrackingEnabled(
+                        List.of("TRACKING_PREF_1", "TRACKING_PREF_2"));
+
+        assertThat(result.get("TRACKING_PREF_1")).isTrue();
+        assertThat(result.get("TRACKING_PREF_2")).isFalse();
+    }
+
+    @Test
+    public void isTrackingEnabled_noPreferenceSet_defaultsToTrue() {
+        when(mPreferenceHelper.getPreference("TRACKING_PREF_1")).thenReturn(null);
+
+        Map<String, Boolean> result =
+                mHealthConnectService.isTrackingEnabled(List.of("TRACKING_PREF_1"));
+
+        assertThat(result.get("TRACKING_PREF_1")).isTrue();
     }
 
     @Test

@@ -622,4 +622,24 @@ interface IHealthConnectService {
             in AttributionSource attributionSource,
             in GetMatchingAppsRequest request,
             in IGetMatchingAppsCallback callback);
+
+    /**
+     * Enables or disables system/native tracking for the corresponding data type.
+     *
+     * @param dataTypePrefKey key for the data type to enable/disable tracking for.
+     * @param enabled whether to enable or disable tracking.
+     * @param callback Callback to receive result of performing this operation
+     *
+     * @hide
+     */
+    void setTrackingEnabled(String dataTypePrefKey, boolean enabled, in IEmptyResponseCallback callback);
+
+    /**
+     * Returns a Map<String, Boolean> with the data types and if system/native tracking is enabled.
+     *
+     * @param dataTypePrefKeys list of keys of data type to check tracking for.
+     *
+     * @hide
+     */
+    Map isTrackingEnabled(in List<String> dataTypePrefKeys);
 }

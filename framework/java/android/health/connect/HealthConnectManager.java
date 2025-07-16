@@ -114,6 +114,7 @@ import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.FhirResource;
 import android.health.connect.datatypes.FhirVersion;
+import android.health.connect.datatypes.Identifier;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
@@ -471,6 +472,15 @@ public class HealthConnectManager {
 
     private static final String TAG = "HealthConnectManager";
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
+
+    /**
+     * Prefix that gets appended with a data type identifier integer to be used as a key for a
+     * persisted state.
+     *
+     * @see #getDataTypePrefKey
+     * @hide
+     */
+    private static final String TRACKING_PREFERENCE_PREFIX = "TRACKING_PREF_";
 
     @Nullable private static volatile Set<String> sHealthPermissions;
 
@@ -3457,5 +3467,64 @@ public class HealthConnectManager {
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
+    }
+
+    /**
+     * Enables or disables system/native tracking for the corresponding data type.
+     *
+     * <p>This allows the controller app to enable or disable native tracking.
+     *
+     * @throws RuntimeException for internal errors
+     * @hide
+     */
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
+    public void setTrackingEnabled(
+            @NonNull Class<? extends Record> dataType,
+            boolean enabled,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(dataType);
+        try {
+            mService.setTrackingEnabled(
+                    getDataTypePrefKey(dataType),
+                    enabled,
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Returns whether system/native tracking for the corresponding data type is enabled.
+     *
+     * @throws RuntimeException for internal errors
+     * @hide
+     */
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
+    public Map<String, Boolean> isTrackingEnabled(
+            @NonNull List<Class<? extends Record>> dataTypes) {
+        Objects.requireNonNull(dataTypes);
+        try {
+            List<String> dataTypeKeys = dataTypes.stream().map(this::getDataTypePrefKey).toList();
+            return mService.isTrackingEnabled(dataTypeKeys);
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private String getDataTypePrefKey(@NonNull Class<? extends Record> dataType) {
+        return TRACKING_PREFERENCE_PREFIX
+                + dataType.getAnnotation(Identifier.class).recordIdentifier();
     }
 }

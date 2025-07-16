@@ -25,7 +25,10 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
@@ -35,6 +38,7 @@ import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetMatchingAppsCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
+import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
@@ -508,6 +512,100 @@ public class HealthConnectManagerTest {
 
         assertThat(receiver.getResponse())
                 .containsExactlyEntriesIn(getMatchingAppsResponse().getMatchingApps());
+    }
+
+    @Test
+    public void setTrackingEnabledFails_usesExceptionFromService() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<Void> receiver = new TestOutcomeReceiver<>();
+        doAnswer(
+                        (Answer<Void>)
+                                invocation -> {
+                                    IEmptyResponseCallback callback = invocation.getArgument(2);
+                                    callback.onError(
+                                            new HealthConnectExceptionParcel(
+                                                    new HealthConnectException(
+                                                            HealthConnectException
+                                                                    .ERROR_UNSUPPORTED_OPERATION)));
+                                    return null;
+                                })
+                .when(mService)
+                .setTrackingEnabled(any(), anyBoolean(), any());
+
+        healthConnectManager.setTrackingEnabled(
+                StepsRecord.class, true, Executors.newSingleThreadExecutor(), receiver);
+
+        assertThat(receiver.assertAndGetException().getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    public void setTrackingEnabled_generatesDataTypeKeys() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<Void> receiver = new TestOutcomeReceiver<>();
+
+        healthConnectManager.setTrackingEnabled(
+                StepsRecord.class, false, Executors.newSingleThreadExecutor(), receiver);
+
+        verify(mService).setTrackingEnabled(eq("TRACKING_PREF_1"), eq(false), any());
+    }
+
+    @Test
+    public void setTrackingEnabled_success() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<Void> receiver = new TestOutcomeReceiver<>();
+        doAnswer(
+                        (Answer<Void>)
+                                invocation -> {
+                                    IEmptyResponseCallback callback = invocation.getArgument(2);
+                                    callback.onResult();
+                                    return null;
+                                })
+                .when(mService)
+                .setTrackingEnabled(any(), anyBoolean(), any());
+
+        healthConnectManager.setTrackingEnabled(
+                StepsRecord.class, true, Executors.newSingleThreadExecutor(), receiver);
+
+        assertThat(receiver.getResponse()).isNull();
+    }
+
+    @Test
+    public void isTrackingEnabledFails_usesExceptionFromService() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        when(mService.isTrackingEnabled(any())).thenThrow(new RemoteException("message"));
+
+        assertThrows(
+                RuntimeException.class,
+                () -> healthConnectManager.isTrackingEnabled(List.of(StepsRecord.class)));
+    }
+
+    @Test
+    public void isTrackingEnabled_generatesDataTypeKeys() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+
+        healthConnectManager.isTrackingEnabled(List.of(StepsRecord.class, DistanceRecord.class));
+
+        verify(mService).isTrackingEnabled(List.of("TRACKING_PREF_1", "TRACKING_PREF_7"));
+    }
+
+    @Test
+    public void isTrackingEnabled_success() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        when(mService.isTrackingEnabled(any()))
+                .thenReturn(Map.of("TRACKING_PREF_1", true, "TRACKING_PREF_7", false));
+
+        Map<String, Boolean> result =
+                healthConnectManager.isTrackingEnabled(
+                        List.of(StepsRecord.class, DistanceRecord.class));
+
+        assertThat(result).containsExactly("TRACKING_PREF_1", true, "TRACKING_PREF_7", false);
     }
 
     /**
