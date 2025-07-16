@@ -29,8 +29,10 @@ import com.android.server.healthconnect.storage.HealthConnectContext;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -70,20 +72,8 @@ public final class MatchingAppsManager {
     }
 
     /**
-     * Determines whether matching applications should be shown for a given package based on its
-     * granted read permissions and a set of specified record types.
-     *
-     * <p>This method first retrieves all read permissions granted to the {@code packageName}. If
-     * {@code recordTypes} is not empty, it further filters these read permissions to only include
-     * those that correspond to the provided record types. This is achieved by mapping each record
-     * type to its corresponding health permission category.
-     *
-     * <p>If, after this filtering, there are no remaining read permissions, the method returns
-     * {@code false}.
-     *
-     * <p>Otherwise, it converts the remaining read permissions into their corresponding write
-     * permissions and then checks if any applications are available that can write these record
-     * types.
+     * Returns all matching applications and their matching permissions for a given package name
+     * based on its granted read permissions and a set of specified record types.
      *
      * @param recordTypes A {@link Set} of {@link Class} objects extending {@link
      *     android.health.connect.datatypes.Record}, representing the specific types of health
@@ -91,26 +81,33 @@ public final class MatchingAppsManager {
      *     are considered.
      * @param packageName The name of the package for which to check if matching applications should
      *     be shown.
-     * @return {@code true} if there are granted read permissions (potentially filtered by {@code
-     *     recordTypes}) that correspond to available writing applications; {@code false} otherwise.
      */
-    public boolean canConnectMatchingApps(
+    public Map<String, Set<String>> fetchMatchingApps(
             Set<Class<? extends Record>> recordTypes, String packageName) {
         synchronized (this) {
-            Set<String> readPermissionsFilter =
-                    recordTypes.stream()
-                            .map(mHealthConnectMappings::getRecordType)
-                            .map(mHealthConnectMappings::getHealthPermissionCategoryForRecordType)
-                            .map(mHealthConnectMappings::getHealthReadPermission)
-                            .collect(Collectors.toSet());
-            Set<String> readPermissions = getReadPermissions(readPermissionsFilter, packageName);
-            if (readPermissions.isEmpty()) {
-                return false;
+            Set<String> writePermissions = getWritePermissionsToMatch(recordTypes, packageName);
+            if (writePermissions.isEmpty()) {
+                return Map.of();
             }
-
-            Set<String> writePermissions = mapToWritePermissions(readPermissions);
-            return anyAvailableWritingApps(writePermissions);
+            return getAllAvailableWritingApps(writePermissions);
         }
+    }
+
+    private Set<String> getWritePermissionsToMatch(
+            Set<Class<? extends Record>> recordTypes, String packageName) {
+        Set<String> readPermissions = getReadPermissionsToMatch(recordTypes, packageName);
+        return mapToWritePermissions(readPermissions);
+    }
+
+    private Set<String> getReadPermissionsToMatch(
+            Set<Class<? extends Record>> recordTypes, String packageName) {
+        Set<String> readPermissionsFilter =
+                recordTypes.stream()
+                        .map(mHealthConnectMappings::getRecordType)
+                        .map(mHealthConnectMappings::getHealthPermissionCategoryForRecordType)
+                        .map(mHealthConnectMappings::getHealthReadPermission)
+                        .collect(Collectors.toSet());
+        return getReadPermissions(readPermissionsFilter, packageName);
     }
 
     private synchronized Set<String> getReadPermissions(
@@ -132,24 +129,37 @@ public final class MatchingAppsManager {
                 .collect(Collectors.toSet());
     }
 
-    private synchronized boolean anyAvailableWritingApps(Set<String> writePermissions) {
+    private synchronized Map<String, Set<String>> getAllAvailableWritingApps(
+            Set<String> writePermissions) {
         if (writePermissions.isEmpty()) {
-            return false;
+            return Map.of();
         }
+
         return getCompatibleApps().stream()
                 .filter(packageInfo -> packageInfo.requestedPermissions != null)
-                .anyMatch(
-                        packageInfo -> hasGrantableWritePermission(writePermissions, packageInfo));
+                .map(
+                        packageInfo -> {
+                            Set<String> grantablePermissions =
+                                    allGrantableWritePermission(writePermissions, packageInfo);
+                            return Map.entry(packageInfo.packageName, grantablePermissions);
+                        })
+                .filter(entry -> !entry.getValue().isEmpty())
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    private boolean hasGrantableWritePermission(
+    private Set<String> allGrantableWritePermission(
             Set<String> writePermissions, PackageInfo packageInfo) {
         return Arrays.stream(packageInfo.requestedPermissions)
-                .anyMatch(
-                        permission ->
-                                writePermissions.contains(permission)
-                                        && isDenied(packageInfo, permission)
-                                        && isNotUserFixed(packageInfo, permission));
+                .filter(writePermissionFilter(writePermissions, packageInfo))
+                .collect(Collectors.toSet());
+    }
+
+    private Predicate<String> writePermissionFilter(
+            Set<String> writePermissions, PackageInfo packageInfo) {
+        return permission ->
+                writePermissions.contains(permission)
+                        && isDenied(packageInfo, permission)
+                        && isNotUserFixed(packageInfo, permission);
     }
 
     private boolean isDenied(PackageInfo packageInfo, String permission) {

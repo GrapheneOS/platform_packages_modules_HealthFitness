@@ -5,7 +5,7 @@ import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.MedicalResourceId;
-import android.health.connect.CanConnectMatchingAppsRequest;
+import android.health.connect.GetMatchingAppsRequest;
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.aidl.ActivityDatesRequestParcel;
 import android.health.connect.aidl.AggregateDataRequestParcel;
@@ -36,7 +36,7 @@ import android.health.connect.aidl.IMigrationCallback;
 import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
 import android.health.connect.aidl.IReadRecordsResponseCallback;
 import android.health.connect.aidl.IRecordTypeInfoResponseCallback;
-import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
+import android.health.connect.aidl.IGetMatchingAppsCallback;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.RecordsParcel;
@@ -558,7 +558,6 @@ interface IHealthConnectService {
      */
      void restoreChanges(in List<RestoreChange> changes, in IEmptyResponseCallback callback);
 
-
     /**
      * Asynchronously returns the current onboarding state of the Health Connect user.
      *
@@ -578,8 +577,8 @@ interface IHealthConnectService {
      * @param request request containing the {@link Record} types to check for.
      * @param callback Callback to receive result of performing this operation.
      */
-    void canConnectMatchingApps(
+    void getMatchingApps(
             in AttributionSource attributionSource,
-            in CanConnectMatchingAppsRequest request,
-            in ICanConnectMatchingAppsCallback callback);
+            in GetMatchingAppsRequest request,
+            in IGetMatchingAppsCallback callback);
 }
