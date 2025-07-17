@@ -16,6 +16,7 @@
 
 package android.health.connect;
 
+import static android.Manifest.permission.BACKUP;
 import static android.Manifest.permission.BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS;
 import static android.Manifest.permission.RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS;
 import static android.health.connect.Constants.DEFAULT_LONG;
@@ -101,6 +102,8 @@ import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.GetChangesForBackupResponse;
 import android.health.connect.backuprestore.GetLatestMetadataForBackupResponse;
 import android.health.connect.backuprestore.RestoreChange;
+import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsRequest;
+import android.health.connect.backuprestore.UpdateHealthConnectRestoreStatusRequest;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
@@ -1626,6 +1629,32 @@ public class HealthConnectManager {
     }
 
     /**
+     * Updates the data to be displayed in the Health Connect Backup and restore settings.
+     *
+     * <p>This API allows passing through various settings related to Health Connect backup and
+     * restore. Values provided are persistent until explicitly overridden by a subsequent call to
+     * this method. If a parameter is not set in the request, it indicates that the corresponding
+     * existing value in the settings should not be overridden and will retain its current state.
+     *
+     * @param request The request object containing the settings to be updated.
+     * @throws SecurityException If the caller does not have the required permissions.
+     * @hide
+     */
+    // TODO: b/430529896 remove suppression when the linter is fixed
+    @SuppressWarnings("MissingPermission")
+    @UserHandleAware
+    @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API)
+    @RequiresPermission(anyOf = {BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS, BACKUP})
+    public void updateHealthConnectBackupAndRestoreSettings(
+            @NonNull UpdateBackupAndRestoreSettingsRequest request) {
+        try {
+            mService.updateHealthConnectBackupAndRestoreSettings(request);
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
      * Asynchronously returns the current UI state of Health Connect as it goes through the
      * Data-Migration process. In case there was an error reading the data on the disk the error
      * will be returned in the callback.
@@ -2910,6 +2939,29 @@ public class HealthConnectManager {
                             returnError(executor, exception, callback);
                         }
                     });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Updates the restore status in Health Connect for the last restore attempt. This is used to
+     * communicate statuses to the user, including the status of the current rstore and when some
+     * statuses last happened (e.g. last successful restore).
+     *
+     * @param request The request object containing the new status of a restore.
+     * @throws SecurityException If the caller does not have the required permissions.
+     * @hide
+     */
+    // TODO: b/430529896 remove suppression when the linter is fixed
+    @SuppressWarnings("MissingPermission")
+    @UserHandleAware
+    @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API)
+    @RequiresPermission(anyOf = {BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS, BACKUP})
+    public void updateHealthConnectRestoreStatus(
+            @NonNull UpdateHealthConnectRestoreStatusRequest request) {
+        try {
+            mService.updateHealthConnectRestoreStatus(request);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

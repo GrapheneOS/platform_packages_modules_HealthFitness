@@ -17,6 +17,7 @@ import android.health.connect.aidl.IAggregateRecordsResponseCallback;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
+import android.health.connect.backuprestore.UpdateHealthConnectRestoreStatusRequest;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
@@ -57,6 +58,7 @@ import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.restore.BackupFileNamesSet;
 import android.health.connect.restore.StageRemoteDataRequest;
 import android.health.connect.backuprestore.BackupChange;
+import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsRequest;
 import android.health.connect.backuprestore.RestoreChange;
 import android.net.Uri;
 import android.os.UserHandle;
@@ -559,6 +561,14 @@ interface IHealthConnectService {
      void restoreChanges(in List<RestoreChange> changes, in IEmptyResponseCallback callback);
 
     /**
+     * Updates settings for Health Connect backup and restore.
+     *
+     * @param request The request containing the changes to Backup and restore UI settings.
+     */
+    void updateHealthConnectBackupAndRestoreSettings(
+            in UpdateBackupAndRestoreSettingsRequest request);
+
+    /**
      * Asynchronously returns the current onboarding state of the Health Connect user.
      *
      * <p>See also {@link HealthConnectOnboardingState} object describing the HealthConnect state.
@@ -581,4 +591,12 @@ interface IHealthConnectService {
             in AttributionSource attributionSource,
             in GetMatchingAppsRequest request,
             in IGetMatchingAppsCallback callback);
+
+    /**
+     * Updates the restore status in Health Connect.
+     *
+     * @param request The UpdateHealthConnectRestoreStatusRequest
+     */
+    void updateHealthConnectRestoreStatus(
+            in UpdateHealthConnectRestoreStatusRequest request);
 }
