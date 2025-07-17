@@ -45,6 +45,7 @@ import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.UpdatePriorityRequestParcel;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
 import android.health.connect.backuprestore.BackupMetadata;
+import android.health.connect.backuprestore.UpdateHealthConnectBackupStatusRequest;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.MedicalDataSource;
@@ -569,6 +570,22 @@ interface IHealthConnectService {
             in UpdateBackupAndRestoreSettingsRequest request);
 
     /**
+     * Updates the restore status in Health Connect.
+     *
+     * @param request The UpdateHealthConnectRestoreStatusRequest
+     */
+    void updateHealthConnectRestoreStatus(
+            in UpdateHealthConnectRestoreStatusRequest request);
+
+    /**
+     * Updates the backup status in Health Connect.
+     *
+     * @param request The UpdateHealthConnectBackupStatusRequest
+     */
+    void updateHealthConnectBackupStatus(
+            in UpdateHealthConnectBackupStatusRequest request);
+
+    /**
      * Asynchronously returns the current onboarding state of the Health Connect user.
      *
      * <p>See also {@link HealthConnectOnboardingState} object describing the HealthConnect state.
@@ -591,12 +608,4 @@ interface IHealthConnectService {
             in AttributionSource attributionSource,
             in GetMatchingAppsRequest request,
             in IGetMatchingAppsCallback callback);
-
-    /**
-     * Updates the restore status in Health Connect.
-     *
-     * @param request The UpdateHealthConnectRestoreStatusRequest
-     */
-    void updateHealthConnectRestoreStatus(
-            in UpdateHealthConnectRestoreStatusRequest request);
 }

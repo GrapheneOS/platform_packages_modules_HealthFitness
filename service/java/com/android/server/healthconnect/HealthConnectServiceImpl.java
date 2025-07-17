@@ -138,6 +138,7 @@ import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
 import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsRequest;
+import android.health.connect.backuprestore.UpdateHealthConnectBackupStatusRequest;
 import android.health.connect.backuprestore.UpdateHealthConnectRestoreStatusRequest;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
@@ -1869,7 +1870,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         enforceIsForegroundUser(Binder.getCallingUserHandle());
 
         mDataPermissionEnforcer.enforceAnyOfPermissions(
-                BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS, BACKUP);
+                RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS, BACKUP);
 
         // TODO(b/427455608): Add implementation, write data into settings etc.
     }
@@ -3111,6 +3112,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         tryAndThrowException(errorCallback, exception, ERROR_INTERNAL);
                     }
                 });
+    }
+
+    @Override
+    @RequiresApi(Build.VERSION_CODES.BAKLAVA)
+    public void updateHealthConnectBackupStatus(
+            @NonNull UpdateHealthConnectBackupStatusRequest request) {
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        enforceIsForegroundUser(userHandle);
+
+        mDataPermissionEnforcer.enforceAnyOfPermissions(
+                BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS, BACKUP);
+
+        // TODO(b/427454680): Add implementation, write the provided data into settings storage
     }
 
     @Override
