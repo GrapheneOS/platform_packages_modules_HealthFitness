@@ -76,7 +76,9 @@ constructor(
 
     companion object {
         private const val TAG = "RequestPermissionViewMo"
-        private const val GRANTED_PERMISSIONS_KEY = "granted_permissions"
+        private const val GRANTED_MEDICAL_PERMISSIONS_KEY = "granted_medical_permissions"
+        private const val GRANTED_FITNESS_PERMISSIONS_KEY = "granted_fitness_permissions"
+        private const val GRANTED_ADDITIONAL_PERMISSIONS_KEY = "granted_additional_permissions"
     }
 
     private val _appMetaData = MutableLiveData<AppMetadata>()
@@ -157,13 +159,19 @@ constructor(
     /** Permission grants */
     /** [MedicalPermission]s that have been granted locally via a toggle, but not yet requested */
     private val _grantedMedicalPermissions =
-        savedStateHandle.getLiveData<Set<MedicalPermission>>(GRANTED_PERMISSIONS_KEY, emptySet())
+        savedStateHandle.getLiveData<Set<MedicalPermission>>(
+            GRANTED_MEDICAL_PERMISSIONS_KEY,
+            emptySet(),
+        )
     val grantedMedicalPermissions: LiveData<Set<MedicalPermission>>
         get() = _grantedMedicalPermissions
 
     /** [FitnessPermission]s that have been granted locally via a toggle, but not yet requested */
     private val _grantedFitnessPermissions =
-        savedStateHandle.getLiveData<Set<FitnessPermission>>(GRANTED_PERMISSIONS_KEY, emptySet())
+        savedStateHandle.getLiveData<Set<FitnessPermission>>(
+            GRANTED_FITNESS_PERMISSIONS_KEY,
+            emptySet(),
+        )
     val grantedFitnessPermissions: LiveData<Set<FitnessPermission>>
         get() = _grantedFitnessPermissions
 
@@ -171,7 +179,10 @@ constructor(
      * [AdditionalPermission]s that have been granted locally via a toggle, but not yet requested
      */
     private val _grantedAdditionalPermissions =
-        savedStateHandle.getLiveData<Set<AdditionalPermission>>(GRANTED_PERMISSIONS_KEY, emptySet())
+        savedStateHandle.getLiveData<Set<AdditionalPermission>>(
+            GRANTED_ADDITIONAL_PERMISSIONS_KEY,
+            emptySet(),
+        )
     val grantedAdditionalPermissions: LiveData<Set<AdditionalPermission>>
         get() = _grantedAdditionalPermissions
 
