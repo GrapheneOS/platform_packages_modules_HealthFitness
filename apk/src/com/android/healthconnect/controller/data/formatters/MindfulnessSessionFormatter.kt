@@ -80,7 +80,10 @@ constructor(
     }
 
     override fun formatA11yUnit(durationMillis: Long): String {
-        return formatDurationLong(context, Duration.ofMillis(durationMillis))
+        return context.getString(
+            R.string.mindfulness_a11y_text,
+            formatDurationLong(context, Duration.ofMillis(durationMillis)),
+        )
     }
 
     private fun formatSession(
