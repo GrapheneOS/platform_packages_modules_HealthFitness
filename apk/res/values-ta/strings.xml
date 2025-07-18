@@ -39,7 +39,7 @@
     <string name="entry_details_title" msgid="590184849040247850">"உள்ளீட்டு விவரங்கள்"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"தரவை உலாவுக"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"தரவையும் அதை எந்தெந்த ஆப்ஸ் அணுகலாம் என்பதையும் பார்க்கலாம்"</string>
-    <string name="manage_data_summary" msgid="8537870912521944449">"தானாக நீக்குதல், தரவு மூலங்கள், காப்புப் பிரதி மற்றும் மீட்டெடுத்தல்"</string>
+    <string name="manage_data_summary" msgid="8537870912521944449">"தானாக நீக்குதல், தரவு ஆதாரங்கள், காப்புப் பிரதி மற்றும் மீட்டெடுத்தல்"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"மேலும்"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"சுருக்கு"</string>
     <string name="settings_manage_permission" msgid="3805037674102124581">"Health Connect"</string>
