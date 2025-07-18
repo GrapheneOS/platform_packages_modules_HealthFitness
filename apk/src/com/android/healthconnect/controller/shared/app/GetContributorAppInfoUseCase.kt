@@ -25,7 +25,10 @@ import android.health.connect.ApplicationInfoResponse
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.AppInfo
 import android.util.Log
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.asOutcomeReceiver
+import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -70,8 +73,19 @@ constructor(
             appName =
                 appInfo.name
                     ?: appInfo.packageName, // default to package name if appInfo name is null
-            icon = getIcon(appInfo.icon),
+            icon =
+                if (appInfo.packageName == Constants.DEVICE_DATA_PROVIDER_PACKAGE) {
+                    getDeviceIcon()
+                } else {
+                    getIcon(appInfo.icon)
+                },
         )
+    }
+
+    private fun getDeviceIcon(): Drawable? {
+        // TODO b/433184152 resolve via attribute or remove once devices don't use
+        // DEVICE_DATA_PROVIDER_PACKAGE anymore
+        return AppCompatResources.getDrawable(context, R.drawable.ic_device_phone)
     }
 
     private fun getIcon(bitmap: Bitmap?): Drawable? {

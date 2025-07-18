@@ -57,6 +57,7 @@ import android.net.Uri
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedMedicalDataEntry
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
+import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.units.PowerConverter
 import com.android.healthconnect.controller.utils.TimeSource
@@ -160,16 +161,19 @@ fun getRandomRecord(fitnessPermissionType: FitnessPermissionType, date: LocalDat
     return when (fitnessPermissionType) {
         FitnessPermissionType.STEPS ->
             getStepsRecord(Random.nextLong(0, 5000), date.randomInstant())
+
         FitnessPermissionType.DISTANCE ->
             getDistanceRecord(
                 Length.fromMeters(Random.nextDouble(0.0, 5000.0)),
                 date.randomInstant(),
             )
+
         FitnessPermissionType.TOTAL_CALORIES_BURNED ->
             getTotalCaloriesBurnedRecord(
                 Energy.fromCalories(Random.nextDouble(1500.0, 5000.0)),
                 date.randomInstant(),
             )
+
         FitnessPermissionType.SLEEP -> getSleepSessionRecord(date.randomInstant())
         else ->
             throw IllegalArgumentException(
@@ -499,6 +503,7 @@ fun Array<String>.toPermissionsList(): List<HealthPermission> {
 const val TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app"
 const val TEST_APP_PACKAGE_NAME_2 = "android.healthconnect.controller.test.app2"
 const val TEST_APP_PACKAGE_NAME_3 = "package.name.3"
+const val DEVICE_DATA_PROVIDER_PACKAGE_NAME = Constants.DEVICE_DATA_PROVIDER_PACKAGE
 const val UNSUPPORTED_TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app3"
 const val OLD_PERMISSIONS_TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app4"
 const val MEDICAL_PERMISSIONS_TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app5"

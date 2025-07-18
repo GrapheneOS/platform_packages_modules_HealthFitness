@@ -23,10 +23,10 @@ import android.content.pm.PackageManager
 import android.content.pm.PackageManager.ApplicationInfoFlags
 import android.content.pm.PackageManager.NameNotFoundException
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.IGetContributorAppInfoUseCase
+import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PACKAGE_NAME
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -43,7 +43,6 @@ import org.mockito.kotlin.verify
 private const val PACKAGE_NAME = "com.example.test"
 private const val STORED_LABEL = "Stored label"
 private const val PACKAGE_MANAGER_LABEL = "PackageManager label"
-private const val DEVICE_DATA_PROVIDER_PACKAGE_NAME = Constants.DEVICE_DATA_PROVIDER_PACKAGE
 private const val DEVICE_DATA_PROVIDER_LABEL = "Device data provider label"
 
 @RunWith(AndroidJUnit4::class)
