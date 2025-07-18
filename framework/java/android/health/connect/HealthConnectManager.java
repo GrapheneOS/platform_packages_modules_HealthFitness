@@ -68,6 +68,7 @@ import android.health.connect.aidl.IAccessLogsResponseCallback;
 import android.health.connect.aidl.IActivityDatesResponseCallback;
 import android.health.connect.aidl.IAggregateRecordsResponseCallback;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
+import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
@@ -3313,14 +3314,14 @@ public class HealthConnectManager {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
-            mService.getMatchingApps(
+            mService.canConnectMatchingApps(
                     mContext.getAttributionSource(),
                     new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build(),
-                    new IGetMatchingAppsCallback.Stub() {
+                    new ICanConnectMatchingAppsCallback.Stub() {
                         @Override
-                        public void onResult(GetMatchingAppsResponse response) {
+                        public void onResult(boolean hasMatchingApps) {
                             Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(response.hasMatchingApps()));
+                            executor.execute(() -> callback.onResult(hasMatchingApps));
                         }
 
                         @Override

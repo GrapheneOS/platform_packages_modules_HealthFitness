@@ -104,6 +104,7 @@ import android.health.connect.aidl.IAccessLogsResponseCallback;
 import android.health.connect.aidl.IActivityDatesResponseCallback;
 import android.health.connect.aidl.IAggregateRecordsResponseCallback;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
+import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
@@ -3360,7 +3361,33 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
-     * @see HealthConnectManager#canConnectMatchingApps
+     * @see HealthConnectManager#canConnectMatchingApps(Set, Executor, OutcomeReceiver)
+     */
+    @Override
+    public void canConnectMatchingApps(
+            AttributionSource attributionSource,
+            GetMatchingAppsRequest request,
+            ICanConnectMatchingAppsCallback callback) {
+        checkParamsNonNull(attributionSource, request, callback);
+        getMatchingApps(
+                attributionSource,
+                request,
+                new IGetMatchingAppsCallback.Stub() {
+                    @Override
+                    public void onResult(GetMatchingAppsResponse response) throws RemoteException {
+                        callback.onResult(response.hasMatchingApps());
+                    }
+
+                    @Override
+                    public void onError(HealthConnectExceptionParcel exception)
+                            throws RemoteException {
+                        callback.onError(exception);
+                    }
+                });
+    }
+
+    /**
+     * @see HealthConnectManager#getMatchingApps(Set, String, Executor, OutcomeReceiver)
      */
     @Override
     public void getMatchingApps(

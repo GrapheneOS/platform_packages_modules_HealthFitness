@@ -30,6 +30,7 @@ import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
+import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetMatchingAppsCallback;
 import android.health.connect.aidl.IHealthConnectService;
@@ -359,7 +360,8 @@ public class HealthConnectManagerTest {
         doAnswer(
                         (Answer<Void>)
                                 invocation -> {
-                                    IGetMatchingAppsCallback callback = invocation.getArgument(2);
+                                    ICanConnectMatchingAppsCallback callback =
+                                            invocation.getArgument(2);
                                     callback.onError(
                                             new HealthConnectExceptionParcel(
                                                     new HealthConnectException(
@@ -368,7 +370,7 @@ public class HealthConnectManagerTest {
                                     return null;
                                 })
                 .when(mService)
-                .getMatchingApps(any(), any(), any());
+                .canConnectMatchingApps(any(), any(), any());
 
         healthConnectManager.canConnectMatchingApps(
                 ImmutableSet.of(), Executors.newSingleThreadExecutor(), receiver);
@@ -386,12 +388,13 @@ public class HealthConnectManagerTest {
         doAnswer(
                         (Answer<Void>)
                                 invocation -> {
-                                    IGetMatchingAppsCallback callback = invocation.getArgument(2);
-                                    callback.onResult(getMatchingAppsResponse());
+                                    ICanConnectMatchingAppsCallback callback =
+                                            invocation.getArgument(2);
+                                    callback.onResult(true);
                                     return null;
                                 })
                 .when(mService)
-                .getMatchingApps(any(), any(), any());
+                .canConnectMatchingApps(any(), any(), any());
 
         healthConnectManager.canConnectMatchingApps(
                 ImmutableSet.of(StepsRecord.class, SleepSessionRecord.class),
@@ -410,12 +413,13 @@ public class HealthConnectManagerTest {
         doAnswer(
                         (Answer<Void>)
                                 invocation -> {
-                                    IGetMatchingAppsCallback callback = invocation.getArgument(2);
-                                    callback.onResult(emptyResponse());
+                                    ICanConnectMatchingAppsCallback callback =
+                                            invocation.getArgument(2);
+                                    callback.onResult(false);
                                     return null;
                                 })
                 .when(mService)
-                .getMatchingApps(any(), any(), any());
+                .canConnectMatchingApps(any(), any(), any());
 
         healthConnectManager.canConnectMatchingApps(
                 ImmutableSet.of(StepsRecord.class, SleepSessionRecord.class),
@@ -457,7 +461,7 @@ public class HealthConnectManagerTest {
 
     @Test
     @EnableFlags(Flags.FLAG_MATCHMAKING)
-    public void testGetMatchingAppsInternal_noMatchingApps_emptyMap() throws Exception {
+    public void testGetMatchingApps_noMatchingApps_emptyMap() throws Exception {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
         TestOutcomeReceiver<Map<String, Set<String>>> receiver = new TestOutcomeReceiver<>();
@@ -482,7 +486,7 @@ public class HealthConnectManagerTest {
 
     @Test
     @EnableFlags(Flags.FLAG_MATCHMAKING)
-    public void testGetMatchingAppsInternal_matchingApps_usesResultFromService() throws Exception {
+    public void testGetMatchingApps_matchingApps_usesResultFromService() throws Exception {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
         TestOutcomeReceiver<Map<String, Set<String>>> receiver = new TestOutcomeReceiver<>();
