@@ -148,4 +148,9 @@ public final class AconfigFlagHelper {
     public static boolean isPhrChangeLogsEnabled() {
         return Flags.phrChangeLogs() && isDbFlagEnabled(DB_VERSION_PHR_CHANGE_LOGS);
     }
+
+    /** Returns a boolean indicating whether Alcohol Consumption data type is enabled. */
+    public static boolean isAlcoholConsumptionEnabled() {
+        return Flags.alcoholConsumption() && Flags.alcoholConsumptionDb();
+    }
 }

@@ -37,6 +37,7 @@ import android.health.connect.aidl.IMigrationCallback;
 import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
 import android.health.connect.aidl.IReadRecordsResponseCallback;
 import android.health.connect.aidl.IRecordTypeInfoResponseCallback;
+import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.IGetMatchingAppsCallback;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.aidl.RecordsParcel;
@@ -45,6 +46,7 @@ import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.UpdatePriorityRequestParcel;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
 import android.health.connect.backuprestore.BackupMetadata;
+import android.health.connect.backuprestore.UpdateHealthConnectBackupStatusRequest;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.MedicalDataSource;
@@ -569,6 +571,22 @@ interface IHealthConnectService {
             in UpdateBackupAndRestoreSettingsRequest request);
 
     /**
+     * Updates the restore status in Health Connect.
+     *
+     * @param request The UpdateHealthConnectRestoreStatusRequest
+     */
+    void updateHealthConnectRestoreStatus(
+            in UpdateHealthConnectRestoreStatusRequest request);
+
+    /**
+     * Updates the backup status in Health Connect.
+     *
+     * @param request The UpdateHealthConnectBackupStatusRequest
+     */
+    void updateHealthConnectBackupStatus(
+            in UpdateHealthConnectBackupStatusRequest request);
+
+    /**
      * Asynchronously returns the current onboarding state of the Health Connect user.
      *
      * <p>See also {@link HealthConnectOnboardingState} object describing the HealthConnect state.
@@ -587,16 +605,41 @@ interface IHealthConnectService {
      * @param request request containing the {@link Record} types to check for.
      * @param callback Callback to receive result of performing this operation.
      */
+    void canConnectMatchingApps(
+            in AttributionSource attributionSource,
+            in GetMatchingAppsRequest request,
+            in ICanConnectMatchingAppsCallback callback);
+
+    /**
+     * Returns all other applications available on the user's device that could
+     * potentially become new data sources for specific Record types.
+     *
+     * @param attributionSource attribution source for the data.
+     * @param request request containing the {@link Record} types to check for.
+     * @param callback Callback to receive result of performing this operation.
+     */
     void getMatchingApps(
             in AttributionSource attributionSource,
             in GetMatchingAppsRequest request,
             in IGetMatchingAppsCallback callback);
 
     /**
-     * Updates the restore status in Health Connect.
+     * Enables or disables system/native tracking for the corresponding data type.
      *
-     * @param request The UpdateHealthConnectRestoreStatusRequest
+     * @param dataTypePrefKey key for the data type to enable/disable tracking for.
+     * @param enabled whether to enable or disable tracking.
+     * @param callback Callback to receive result of performing this operation
+     *
+     * @hide
      */
-    void updateHealthConnectRestoreStatus(
-            in UpdateHealthConnectRestoreStatusRequest request);
+    void setTrackingEnabled(String dataTypePrefKey, boolean enabled, in IEmptyResponseCallback callback);
+
+    /**
+     * Returns a Map<String, Boolean> with the data types and if system/native tracking is enabled.
+     *
+     * @param dataTypePrefKeys list of keys of data type to check tracking for.
+     *
+     * @hide
+     */
+    Map isTrackingEnabled(in List<String> dataTypePrefKeys);
 }

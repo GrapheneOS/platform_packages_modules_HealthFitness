@@ -104,6 +104,7 @@ import android.health.connect.aidl.IAccessLogsResponseCallback;
 import android.health.connect.aidl.IActivityDatesResponseCallback;
 import android.health.connect.aidl.IAggregateRecordsResponseCallback;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
+import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
@@ -138,6 +139,7 @@ import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
 import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsRequest;
+import android.health.connect.backuprestore.UpdateHealthConnectBackupStatusRequest;
 import android.health.connect.backuprestore.UpdateHealthConnectRestoreStatusRequest;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
@@ -1869,7 +1871,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         enforceIsForegroundUser(Binder.getCallingUserHandle());
 
         mDataPermissionEnforcer.enforceAnyOfPermissions(
-                BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS, BACKUP);
+                RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS, BACKUP);
 
         // TODO(b/427455608): Add implementation, write data into settings etc.
     }
@@ -3115,6 +3117,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     @Override
     @RequiresApi(Build.VERSION_CODES.BAKLAVA)
+    public void updateHealthConnectBackupStatus(
+            @NonNull UpdateHealthConnectBackupStatusRequest request) {
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        enforceIsForegroundUser(userHandle);
+
+        mDataPermissionEnforcer.enforceAnyOfPermissions(
+                BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS, BACKUP);
+
+        // TODO(b/427454680): Add implementation, write the provided data into settings storage
+    }
+
+    @Override
+    @RequiresApi(Build.VERSION_CODES.BAKLAVA)
     public void getChangesForBackup(
             @Nullable String changeToken, IGetChangesForBackupResponseCallback callback) {
         final int uid = Binder.getCallingUid();
@@ -3346,7 +3361,33 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
-     * @see HealthConnectManager#canConnectMatchingApps
+     * @see HealthConnectManager#canConnectMatchingApps(Set, Executor, OutcomeReceiver)
+     */
+    @Override
+    public void canConnectMatchingApps(
+            AttributionSource attributionSource,
+            GetMatchingAppsRequest request,
+            ICanConnectMatchingAppsCallback callback) {
+        checkParamsNonNull(attributionSource, request, callback);
+        getMatchingApps(
+                attributionSource,
+                request,
+                new IGetMatchingAppsCallback.Stub() {
+                    @Override
+                    public void onResult(GetMatchingAppsResponse response) throws RemoteException {
+                        callback.onResult(response.hasMatchingApps());
+                    }
+
+                    @Override
+                    public void onError(HealthConnectExceptionParcel exception)
+                            throws RemoteException {
+                        callback.onError(exception);
+                    }
+                });
+    }
+
+    /**
+     * @see HealthConnectManager#getMatchingApps(Set, String, Executor, OutcomeReceiver)
      */
     @Override
     public void getMatchingApps(
@@ -3401,6 +3442,71 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 errorCallback,
                 uid,
                 holdsDataManagementPermission);
+    }
+
+    /**
+     * @see HealthConnectManager#setTrackingEnabled
+     */
+    @Override
+    public void setTrackingEnabled(
+            String dataTypePrefKey, boolean enabled, IEmptyResponseCallback callback) {
+        checkParamsNonNull(dataTypePrefKey, callback);
+        ErrorCallback errorCallback = callback::onError;
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+
+        mThreadScheduler.scheduleControllerTask(
+                () -> {
+                    try {
+                        enforceIsForegroundUser(userHandle);
+                        mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
+                        mPreferenceHelper.insertOrReplacePreference(
+                                dataTypePrefKey, String.valueOf(enabled));
+                        callback.onResult();
+                    } catch (SQLiteException sqLiteException) {
+                        Slog.e(TAG, "SQLiteException: ", sqLiteException);
+                        tryAndThrowException(errorCallback, sqLiteException, ERROR_IO);
+                    } catch (SecurityException securityException) {
+                        Slog.e(TAG, "SecurityException: ", securityException);
+                        tryAndThrowException(errorCallback, securityException, ERROR_SECURITY);
+                    } catch (HealthConnectException healthConnectException) {
+                        Slog.e(TAG, "HealthConnectException: ", healthConnectException);
+                        tryAndThrowException(
+                                errorCallback,
+                                healthConnectException,
+                                healthConnectException.getErrorCode());
+                    } catch (Exception exception) {
+                        Slog.e(TAG, "Exception: ", exception);
+                        tryAndThrowException(errorCallback, exception, ERROR_INTERNAL);
+                    }
+                });
+    }
+
+    /**
+     * @see HealthConnectManager#isTrackingEnabled
+     */
+    @Override
+    public Map<String, Boolean> isTrackingEnabled(List<String> dataTypePrefKeys) {
+        checkParamsNonNull(dataTypePrefKeys);
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        enforceIsForegroundUser(userHandle);
+        mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
+
+        Map<String, Boolean> result = new ArrayMap<>();
+        for (String key : dataTypePrefKeys) {
+            String enabled = mPreferenceHelper.getPreference(key);
+            if (enabled == null) {
+                // User has never toggled the tracking preference, default tracking to on.
+                result.put(key, true);
+            } else {
+                result.put(key, Boolean.parseBoolean(enabled));
+            }
+        }
+
+        return result;
     }
 
     /**

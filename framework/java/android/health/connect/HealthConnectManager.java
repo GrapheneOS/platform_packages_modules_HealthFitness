@@ -68,6 +68,7 @@ import android.health.connect.aidl.IAccessLogsResponseCallback;
 import android.health.connect.aidl.IActivityDatesResponseCallback;
 import android.health.connect.aidl.IAggregateRecordsResponseCallback;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
+import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
@@ -103,6 +104,7 @@ import android.health.connect.backuprestore.GetChangesForBackupResponse;
 import android.health.connect.backuprestore.GetLatestMetadataForBackupResponse;
 import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsRequest;
+import android.health.connect.backuprestore.UpdateHealthConnectBackupStatusRequest;
 import android.health.connect.backuprestore.UpdateHealthConnectRestoreStatusRequest;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
@@ -112,6 +114,7 @@ import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.FhirResource;
 import android.health.connect.datatypes.FhirVersion;
+import android.health.connect.datatypes.Identifier;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
@@ -469,6 +472,15 @@ public class HealthConnectManager {
 
     private static final String TAG = "HealthConnectManager";
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
+
+    /**
+     * Prefix that gets appended with a data type identifier integer to be used as a key for a
+     * persisted state.
+     *
+     * @see #getDataTypePrefKey
+     * @hide
+     */
+    private static final String TRACKING_PREFERENCE_PREFIX = "TRACKING_PREF_";
 
     @Nullable private static volatile Set<String> sHealthPermissions;
 
@@ -1738,6 +1750,29 @@ public class HealthConnectManager {
                                     () -> callback.onError(exception.getHealthConnectException()));
                         }
                     });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Updates the backup status in Health Connect for the last backup attempt. This is used to
+     * communicate statuses to the user, including the status of the current backup and when some
+     * statuses last happened (e.g. last successful backup).
+     *
+     * @param request The request object containing the new status of a backup.
+     * @throws SecurityException If the caller does not have the required permissions.
+     * @hide
+     */
+    // TODO: b/430529896 remove suppression when the linter is fixed
+    @SuppressWarnings("MissingPermission")
+    @UserHandleAware
+    @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API)
+    @RequiresPermission(anyOf = {BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS, BACKUP})
+    public void updateHealthConnectBackupStatus(
+            @NonNull UpdateHealthConnectBackupStatusRequest request) {
+        try {
+            mService.updateHealthConnectBackupStatus(request);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -3289,14 +3324,14 @@ public class HealthConnectManager {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
-            mService.getMatchingApps(
+            mService.canConnectMatchingApps(
                     mContext.getAttributionSource(),
                     new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build(),
-                    new IGetMatchingAppsCallback.Stub() {
+                    new ICanConnectMatchingAppsCallback.Stub() {
                         @Override
-                        public void onResult(GetMatchingAppsResponse response) {
+                        public void onResult(boolean hasMatchingApps) {
                             Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(response.hasMatchingApps()));
+                            executor.execute(() -> callback.onResult(hasMatchingApps));
                         }
 
                         @Override
@@ -3432,5 +3467,64 @@ public class HealthConnectManager {
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
+    }
+
+    /**
+     * Enables or disables system/native tracking for the corresponding data type.
+     *
+     * <p>This allows the controller app to enable or disable native tracking.
+     *
+     * @throws RuntimeException for internal errors
+     * @hide
+     */
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
+    public void setTrackingEnabled(
+            @NonNull Class<? extends Record> dataType,
+            boolean enabled,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(dataType);
+        try {
+            mService.setTrackingEnabled(
+                    getDataTypePrefKey(dataType),
+                    enabled,
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Returns whether system/native tracking for the corresponding data type is enabled.
+     *
+     * @throws RuntimeException for internal errors
+     * @hide
+     */
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
+    public Map<String, Boolean> isTrackingEnabled(
+            @NonNull List<Class<? extends Record>> dataTypes) {
+        Objects.requireNonNull(dataTypes);
+        try {
+            List<String> dataTypeKeys = dataTypes.stream().map(this::getDataTypePrefKey).toList();
+            return mService.isTrackingEnabled(dataTypeKeys);
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private String getDataTypePrefKey(@NonNull Class<? extends Record> dataType) {
+        return TRACKING_PREFERENCE_PREFIX
+                + dataType.getAnnotation(Identifier.class).recordIdentifier();
     }
 }

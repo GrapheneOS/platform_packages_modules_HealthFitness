@@ -606,3 +606,21 @@ flag {
     is_fixed_read_only: true
     is_exported: false
 }
+
+flag {
+    name: "alcohol_consumption"
+    namespace: "health_fitness_aconfig"
+    description: "Enables the alcohol consumption data type."
+    bug: "397369117"
+    is_fixed_read_only: true
+    is_exported: false
+}
+
+flag {
+    name: "alcohol_consumption_db"
+    namespace: "health_fitness_aconfig"
+    description: "Enables DB changes to support the alcohol consumption data type."
+    bug: "397369117"
+    is_fixed_read_only: true
+    is_exported: false
+}
