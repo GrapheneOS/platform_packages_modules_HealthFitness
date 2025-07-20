@@ -28,10 +28,8 @@
     <string name="all_categories_title" msgid="1446410643217937926">"すべてのカテゴリ"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"すべてのカテゴリを表示"</string>
     <string name="no_data" msgid="1906986019249068659">"データがありません"</string>
-    <!-- no translation found for devices_summary (8653563324512654292) -->
-    <skip />
-    <!-- no translation found for devices_title (7548105261104504301) -->
-    <skip />
+    <string name="devices_summary" msgid="8653563324512654292">"接続済みのデバイスを管理する"</string>
+    <string name="devices_title" msgid="7548105261104504301">"デバイス"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"アプリの権限"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"アプリと権限を管理します"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>/<xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> 個のアプリに権限が付与されています"</string>
@@ -820,6 +818,11 @@
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"ガイドなし"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"中"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"高"</string>
+    <string name="nicotine_intake_title" msgid="428157249131107976">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
+    <string name="nicotine_intake_title_long" msgid="3254332210697516844">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
+    <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{電子タバコ {quantity} 回}other{電子タバコ {quantity} 回}}"</string>
+    <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{タバコ {quantity} 本}other{タバコ {quantity} 本}}"</string>
+    <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"不明: {quantity, number}"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> 分"</string>
     <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> 時間 <xliff:g id="MIN">%2$s</xliff:g> 分"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> 時間"</string>
@@ -1253,4 +1256,6 @@
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"ヘルスコネクトを使用すると、フィットネスとウェルネスに関するデータをアプリ間で共有できます。接続できるアプリをご確認ください。"</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"2 つ目のアプリを接続"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"ヘルスコネクトに別のアプリを設定して、フィットネスとウェルネスに関するデータを共有できるようにしましょう"</string>
+    <string name="devices_current_device" msgid="6388308185566619743">"現在のデバイス"</string>
+    <string name="devices_unknown_device" msgid="8830092952740474454">"不明なデバイス"</string>
 </resources>

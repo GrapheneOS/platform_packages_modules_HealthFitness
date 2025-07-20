@@ -28,10 +28,8 @@
     <string name="all_categories_title" msgid="1446410643217937926">"គ្រប់ប្រភេទ"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"មើលប្រភេទទាំងអស់"</string>
     <string name="no_data" msgid="1906986019249068659">"គ្មាន​ទិន្នន័យទេ"</string>
-    <!-- no translation found for devices_summary (8653563324512654292) -->
-    <skip />
-    <!-- no translation found for devices_title (7548105261104504301) -->
-    <skip />
+    <string name="devices_summary" msgid="8653563324512654292">"គ្រប់គ្រងឧបករណ៍​ដែលបានភ្ជាប់របស់អ្នក"</string>
+    <string name="devices_title" msgid="7548105261104504301">"ឧបករណ៍"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"ការអនុញ្ញាតកម្មវិធី"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"គ្រប់គ្រងកម្មវិធី និងការអនុញ្ញាតរបស់អ្នក"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"កម្មវិធី <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> នៃ <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> មានសិទ្ធិចូលប្រើ"</string>
@@ -820,6 +818,16 @@
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"គ្មានការណែនាំ"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"មធ្យម"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"ខ្លាំងក្លា"</string>
+    <!-- no translation found for nicotine_intake_title (428157249131107976) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_title_long (3254332210697516844) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_vape (8910534364762591958) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_cigarette (306427848597435195) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_unknown (2096300681393598647) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>ន"</string>
     <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g>ម៉ <xliff:g id="MIN">%2$s</xliff:g>ន"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g>ម៉"</string>
@@ -1253,4 +1261,8 @@
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect អនុញ្ញាតឱ្យអ្នកចែករំលែកទិន្នន័យសម្បទា និងសុខុមាលភាពរវាងកម្មវិធីរបស់អ្នក។ មើល​ថាតើអ្នកអាចភ្ជាប់កម្មវិធីណាខ្លះបាននៅពេលនេះ។"</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"ភ្ជាប់កម្មវិធីទីពីរ"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"រៀបចំកម្មវិធីមួយទៀតជាមួយ Health Connect ដូច្នេះកម្មវិធីនោះអាចចាប់ផ្ដើមចែករំលែកទិន្នន័យសម្បទា និងសុខុមាលភាពបាន"</string>
+    <!-- no translation found for devices_current_device (6388308185566619743) -->
+    <skip />
+    <!-- no translation found for devices_unknown_device (8830092952740474454) -->
+    <skip />
 </resources>

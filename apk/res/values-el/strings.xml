@@ -28,10 +28,8 @@
     <string name="all_categories_title" msgid="1446410643217937926">"Όλες οι κατηγορίες"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Εμφάνιση όλων των κατηγοριών"</string>
     <string name="no_data" msgid="1906986019249068659">"Δεν υπάρχουν δεδομένα"</string>
-    <!-- no translation found for devices_summary (8653563324512654292) -->
-    <skip />
-    <!-- no translation found for devices_title (7548105261104504301) -->
-    <skip />
+    <string name="devices_summary" msgid="8653563324512654292">"Διαχείριση των συνδεδεμένων συσκευών σας"</string>
+    <string name="devices_title" msgid="7548105261104504301">"Συσκευές"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"Άδειες εφαρμογών"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Διαχειριστείτε τις εφαρμογές και τις άδειες"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"Πρόσβαση έχει <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> από τις <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> εφαρμογές"</string>
@@ -820,6 +818,16 @@
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"Χωρίς καθοδήγηση"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"Μέτρια"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"Έντονη"</string>
+    <!-- no translation found for nicotine_intake_title (428157249131107976) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_title_long (3254332210697516844) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_vape (8910534364762591958) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_cigarette (306427848597435195) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_unknown (2096300681393598647) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> λ."</string>
     <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> ώ. <xliff:g id="MIN">%2$s</xliff:g> λ."</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> ω."</string>
@@ -1253,4 +1261,8 @@
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Το Health Connect σας επιτρέπει να κοινοποιείτε δεδομένα φυσικής κατάστασης και ευεξίας μεταξύ των εφαρμογών σας. Δείτε ποιες εφαρμογές μπορείτε να συνδέσετε τώρα."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Σύνδεση δεύτερης εφαρμογής"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Ρυθμίστε μια άλλη εφαρμογή με το Health Connect, ώστε να μπορεί να ξεκινήσει την κοινοποίηση δεδομένων φυσικής κατάστασης και ευεξίας"</string>
+    <!-- no translation found for devices_current_device (6388308185566619743) -->
+    <skip />
+    <!-- no translation found for devices_unknown_device (8830092952740474454) -->
+    <skip />
 </resources>
