@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.devices
 
 import android.health.connect.HealthDataCategory
+import android.health.connect.datatypes.StepsRecord
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -49,9 +50,6 @@ class DeviceManagementFragment : Hilt_DeviceManagementFragment() {
         // TODO(b/429618933): add logging
         val stepTrackingSwitch: HealthSwitchPreference? = findPreference("step_tracking_switch")
         stepTrackingSwitch?.icon = HealthDataCategory.ACTIVITY.icon(requireContext())
-        stepTrackingSwitch?.setDefaultValue(true)
-        // TODO(b/432296063): wire up to native tracking state APIs so this can do something
-        stepTrackingSwitch?.isEnabled = false
 
         viewModel.selectedDevice.observe(viewLifecycleOwner) { device ->
             addIntroOrPermissionHeaderPreference(
@@ -61,6 +59,12 @@ class DeviceManagementFragment : Hilt_DeviceManagementFragment() {
                 AttributeResolver.getDrawable(requireContext(), R.attr.devicePhoneIcon),
                 "",
             )
+            stepTrackingSwitch?.isChecked =
+                device.trackerStatus.getOrDefault(StepsRecord::class.java, false)
+            stepTrackingSwitch?.setOnPreferenceChangeListener { _, newValue ->
+                viewModel.setTrackingEnabled(StepsRecord::class.java, newValue as Boolean)
+                true
+            }
         }
 
         setUpFooter()

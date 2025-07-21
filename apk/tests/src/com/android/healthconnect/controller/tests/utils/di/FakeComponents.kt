@@ -44,6 +44,8 @@ import com.android.healthconnect.controller.datasources.api.ISleepSessionHelper
 import com.android.healthconnect.controller.datasources.api.IUpdatePriorityListUseCase
 import com.android.healthconnect.controller.devices.DeviceDataSource
 import com.android.healthconnect.controller.devices.ILoadDeviceDataSources
+import com.android.healthconnect.controller.devices.ISetTrackingEnabled
+import com.android.healthconnect.controller.devices.SetTrackingEnabled
 import com.android.healthconnect.controller.exportimport.api.DocumentProvider
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency.EXPORT_FREQUENCY_NEVER
@@ -133,6 +135,28 @@ class FakeLoadDeviceDataSourcesUseCase : ILoadDeviceDataSources {
 
     override suspend fun execute(input: Unit): List<DeviceDataSource> {
         return list
+    }
+
+    fun setForceFail(forceFail: Boolean) {
+        this.forceFail = forceFail
+    }
+}
+
+class FakeSetTrackingEnabledUseCase : ISetTrackingEnabled {
+    private var forceFail: Boolean = false
+    var latestInput: SetTrackingEnabled.Input? = null
+
+    override suspend fun invoke(input: SetTrackingEnabled.Input): UseCaseResults<Unit> {
+        latestInput = input
+        return if (forceFail) {
+            UseCaseResults.Failed(IllegalStateException("Failed to set tracking enabled"))
+        } else {
+            UseCaseResults.Success(Unit)
+        }
+    }
+
+    override suspend fun execute(input: SetTrackingEnabled.Input) {
+        latestInput = input
     }
 
     fun setForceFail(forceFail: Boolean) {
