@@ -16,7 +16,6 @@
 package com.android.healthconnect.controller.tests.permissions
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.health.connect.ApplicationInfoResponse
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.AppInfo
@@ -26,6 +25,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.GetContributorAppInfoUseCase
 import com.android.healthconnect.controller.tests.utils.CoroutineTestRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
@@ -35,8 +35,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import java.io.ByteArrayOutputStream
-import java.io.IOException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -53,6 +51,7 @@ import org.mockito.invocation.InvocationOnMock
 @RunWith(AndroidJUnit4::class)
 class GetContributorAppInfoUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
+
     @get:Rule val coroutineTestRule = CoroutineTestRule()
 
     private var manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
@@ -95,6 +94,33 @@ class GetContributorAppInfoUseCaseTest {
         assertThat(result).containsKey(TEST_APP_PACKAGE_NAME_2)
     }
 
+    @Test
+    fun invoke_deviceDataProviderApp_returnsDeviceIcon() = runTest {
+        val managerDeviceBitmap =
+            AppCompatResources.getDrawable(
+                    context,
+                    com.android.settingslib.widget.preference.selector.R.drawable.ic_settings_accent,
+                )!!
+                .toBitmap()
+        val deviceIconBitmap =
+            AppCompatResources.getDrawable(context, R.drawable.ic_device_phone)!!.toBitmap()
+        val appInfo =
+            listOf(
+                AppInfo.Builder(DEVICE_DATA_PROVIDER_PACKAGE, "Pixel 9a", managerDeviceBitmap)
+                    .build()
+            )
+
+        Mockito.doAnswer(prepareAnswer(appInfo))
+            .`when`(manager)
+            .getContributorApplicationsInfo(any(), any())
+
+        val result = usecase.invoke()
+        assertThat(result.size).isEqualTo(1)
+        assertThat(result).containsKey(DEVICE_DATA_PROVIDER_PACKAGE)
+        assertThat(result[DEVICE_DATA_PROVIDER_PACKAGE]!!.appName).isEqualTo("Pixel 9a")
+        assert(result[DEVICE_DATA_PROVIDER_PACKAGE]!!.icon!!.toBitmap().sameAs(deviceIconBitmap))
+    }
+
     private fun prepareAnswer(apps: List<AppInfo>): (InvocationOnMock) -> Nothing? {
         val answer = { args: InvocationOnMock ->
             val receiver = args.arguments[1] as OutcomeReceiver<ApplicationInfoResponse, *>
@@ -102,18 +128,5 @@ class GetContributorAppInfoUseCaseTest {
             null
         }
         return answer
-    }
-
-    private fun getIconAsByteArray(): ByteArray {
-        return try {
-            val bitmap =
-                AppCompatResources.getDrawable(context, R.drawable.health_connect_logo)!!.toBitmap()
-            ByteArrayOutputStream().use { stream ->
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-                stream.toByteArray()
-            }
-        } catch (exception: IOException) {
-            throw IllegalArgumentException(exception)
-        }
     }
 }
