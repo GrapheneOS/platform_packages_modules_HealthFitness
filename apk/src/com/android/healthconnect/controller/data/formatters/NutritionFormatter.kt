@@ -116,6 +116,7 @@ constructor(
             formatMass,
         )
         record.potassium?.addAggregation(R.string.potassium, stringJoiner, formatMass)
+        record.protein?.addAggregation(R.string.protein, stringJoiner, formatMass)
         record.riboflavin?.addAggregation(R.string.riboflavin, stringJoiner, formatMass)
         record.saturatedFat?.addAggregation(R.string.saturated_fat, stringJoiner, formatMass)
         record.selenium?.addAggregation(R.string.selenium, stringJoiner, formatMass)
