@@ -38,10 +38,6 @@
     <uses-permission android:name="android.permission.HIDE_OVERLAY_WINDOWS" />
     <!-- Used to adopt gaui -->
     <uses-permission android:name="android.permission.READ_SYSTEM_GRAMMATICAL_GENDER" />
-    <!-- Health Connect accesses the pedometer for step tracking in system_server -->
-    <uses-permission
-        android:name="android.permission.ACTIVITY_RECOGNITION"
-        android:featureFlag="com.android.healthfitness.flags.step_tracking_enabled"/>
 
     <application
         android:name=".HealthConnectApplication"
