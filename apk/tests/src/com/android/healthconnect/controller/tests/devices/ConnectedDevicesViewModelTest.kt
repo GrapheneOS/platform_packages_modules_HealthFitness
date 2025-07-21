@@ -24,7 +24,7 @@ import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadDeviceDataSourcesUseCase
 import com.android.healthfitness.flags.Flags
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
@@ -67,6 +67,16 @@ class ConnectedDevicesViewModelTest {
     }
 
     @Test
+    fun setSelectedDevice_setsSelectedDevice() {
+        val testObserver = TestObserver<DeviceDataSource>()
+        viewModel.selectedDevice.observeForever(testObserver)
+        viewModel.setSelectedDevice(DeviceDataSource("Pixel 8", isCurrentDevice = true))
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual).isEqualTo(DeviceDataSource("Pixel 8", isCurrentDevice = true))
+    }
+
+    @Test
     fun loadDeviceDataSources_success_loadsDeviceDataSources() = runTest {
         val testObserver = TestObserver<ConnectedDevicesState>()
         loadDeviceDataSourcesUseCase.updateList(
@@ -77,7 +87,7 @@ class ConnectedDevicesViewModelTest {
         advanceUntilIdle()
 
         val actual = testObserver.getLastValue()
-        Truth.assertThat(actual)
+        assertThat(actual)
             .isEqualTo(
                 ConnectedDevicesState.Success(
                     listOf(DeviceDataSource("Pixel 8", isCurrentDevice = true))
@@ -94,6 +104,6 @@ class ConnectedDevicesViewModelTest {
         advanceUntilIdle()
 
         val actual = testObserver.getLastValue()
-        Truth.assertThat(actual).isEqualTo(ConnectedDevicesState.Error)
+        assertThat(actual).isEqualTo(ConnectedDevicesState.Error)
     }
 }

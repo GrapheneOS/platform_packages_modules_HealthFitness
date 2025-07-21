@@ -24,6 +24,7 @@
     <include app:graph="@navigation/data_sources_nav_graph"/>
     <include app:graph="@navigation/medical_data_nav_graph"/>
     <include app:graph="@navigation/connected_apps_nav_graph"/>
+    <include app:graph="@navigation/device_management_nav_graph"/>
 
     <fragment
         android:id="@+id/recentAccessFragment"
@@ -89,13 +90,8 @@
             app:destination="@id/onboardingActivity"/>
         <action
             android:id="@+id/action_homeFragment_to_connectedDevicesFragment"
-            app:destination="@id/connectedDevicesFragment"/>
+            app:destination="@id/device_management_nav_graph"/>
     </fragment>
-
-    <fragment
-        android:id="@+id/connectedDevicesFragment"
-        android:name="com.android.healthconnect.controller.devices.ConnectedDevicesFragment"
-        android:label="@string/devices_title" />
 
     <activity
         android:id="@+id/onboardingActivity"

@@ -20,8 +20,10 @@ import android.content.Context
 import android.os.Bundle
 import android.platform.test.annotations.EnableFlags
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -36,6 +38,7 @@ import com.android.healthconnect.controller.devices.ConnectedDevicesViewModel.Co
 import com.android.healthconnect.controller.devices.DeviceDataSource
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthfitness.flags.Flags
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -159,5 +162,27 @@ class ConnectedDevicesFragmentTest {
         launchFragment<ConnectedDevicesFragment>(Bundle())
 
         onView(withText("Current device")).check(doesNotExist())
+    }
+
+    @Test
+    fun clickDevice_navigatesToDeviceManagementFragment() {
+        connectedDevicesState.postValue(
+            ConnectedDevicesState.Success(
+                listOf(DeviceDataSource("Pixel 8", isCurrentDevice = true))
+            )
+        )
+        val scenario =
+            launchFragment<ConnectedDevicesFragment>(Bundle()) {
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.connectedDevicesFragment)
+                Navigation.setViewNavController(requireView(), navHostController)
+            }
+
+        onView(withText("Pixel 8")).perform(click())
+
+        scenario.onActivity {
+            assertThat(navHostController.currentDestination?.id)
+                .isEqualTo(R.id.deviceManagementFragment)
+        }
     }
 }
