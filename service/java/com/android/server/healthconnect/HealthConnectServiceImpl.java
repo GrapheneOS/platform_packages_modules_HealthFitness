@@ -200,6 +200,7 @@ import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.exportimport.DocumentProvidersManager;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
 import com.android.server.healthconnect.exportimport.ExportImportLogger;
@@ -324,6 +325,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final TimeSource mTimeSource;
     private final DatabaseHelpers mDatabaseHelpers;
     private final PreferencesManager mPreferencesManager;
+    private final TrackerManager mTrackerManager;
     private final RateLimiter mRateLimiter;
     // Used if PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE is false.
     @Nullable private FhirResourceValidator mFhirResourceValidator;
@@ -377,6 +379,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             HealthFitnessStatsLog statsLog,
             BackupRestoreLogger backupRestoreLogger,
             ExportImportNotificationFactory exportImportNotificationFactory,
+            TrackerManager trackerManager,
             @Nullable CloudBackupManager cloudBackupManager,
             @Nullable CloudRestoreManager cloudRestoreManager,
             @Nullable MatchingAppsManager matchingAppsManager) {
@@ -448,6 +451,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         exportImportLogger,
                         exportImportNotificationFactory);
 
+        mTrackerManager = trackerManager;
         mCloudBackupManager = cloudBackupManager;
         mCloudRestoreManager = cloudRestoreManager;
         mStatsLog = statsLog;
@@ -3463,6 +3467,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                         mPreferenceHelper.insertOrReplacePreference(
                                 dataTypePrefKey, String.valueOf(enabled));
+                        mTrackerManager.initializeOrRefresh();
                         callback.onResult();
                     } catch (SQLiteException sqLiteException) {
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);

@@ -460,6 +460,50 @@ public class TrackerManagerImplTest {
         verify(mPackageManager, times(2)).getPermissionFlags(any(), any(), any());
     }
 
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void stepTrackingDisabledViaPreference_unsubscribesFromSensorManager() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        mHealthConnectInjector
+                .getPreferenceHelper()
+                .insertOrReplacePreference("TRACKING_PREF_1", String.valueOf(false));
+        TrackerManagerImpl manager =
+                spy((TrackerManagerImpl) mHealthConnectInjector.getTrackerManager());
+
+        manager.initializeOrRefresh();
+
+        verify(manager).unsubscribeFromSensorManager();
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void stepTrackingEnabledViaPreference_subscribesToSensorManager() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        mHealthConnectInjector
+                .getPreferenceHelper()
+                .insertOrReplacePreference("TRACKING_PREF_1", String.valueOf(true));
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mSensorManager)
+                .registerListener(
+                        any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void stepTrackingEnabled_preferenceAbsent_subscribesToSensorManager() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mSensorManager)
+                .registerListener(
+                        any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+    }
+
     private void grantAppStepsPermission(String packageName) {
         PackageInfo packageInfo = new PackageInfo();
         packageInfo.packageName = packageName;
