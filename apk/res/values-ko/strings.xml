@@ -28,10 +28,8 @@
     <string name="all_categories_title" msgid="1446410643217937926">"모든 카테고리"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"모든 카테고리 보기"</string>
     <string name="no_data" msgid="1906986019249068659">"데이터 없음"</string>
-    <!-- no translation found for devices_summary (8653563324512654292) -->
-    <skip />
-    <!-- no translation found for devices_title (7548105261104504301) -->
-    <skip />
+    <string name="devices_summary" msgid="8653563324512654292">"연결된 기기 관리"</string>
+    <string name="devices_title" msgid="7548105261104504301">"기기"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"앱 권한"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"앱 및 권한 관리"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"앱 <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>개 중 <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>개에 액세스 권한이 있음"</string>
@@ -820,6 +818,16 @@
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"자유"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"중간"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"격렬"</string>
+    <!-- no translation found for nicotine_intake_title (428157249131107976) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_title_long (3254332210697516844) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_vape (8910534364762591958) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_cigarette (306427848597435195) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_unknown (2096300681393598647) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>분"</string>
     <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g>시간 <xliff:g id="MIN">%2$s</xliff:g>분"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g>시간"</string>
@@ -1253,4 +1261,8 @@
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"헬스 커넥트를 사용하면 앱 간에 피트니스 및 웰니스 데이터를 공유할 수 있습니다. 지금 연결할 수 있는 앱을 확인하세요."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"두 번째 앱 연결"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"헬스 커넥트에서 피트니스 및 웰니스 데이터를 공유할 수 있도록 헬스 커넥트로 다른 앱을 설정하세요."</string>
+    <!-- no translation found for devices_current_device (6388308185566619743) -->
+    <skip />
+    <!-- no translation found for devices_unknown_device (8830092952740474454) -->
+    <skip />
 </resources>

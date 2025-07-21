@@ -65,7 +65,7 @@
     <string name="separator" msgid="5521285473288943819">", "</string>
     <string name="manage_permissions" msgid="8394221950712608160">"അനുമതികൾ മാനേജ് ചെയ്യുക"</string>
     <string name="recent_access_time_content_descritption" msgid="1137471676075811472">"സമയം: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="recent_access_empty_state_title" msgid="4767157641389217682">"അടുത്തിടെ ആക്സസ് ഇല്ല"</string>
+    <string name="recent_access_empty_state_title" msgid="4767157641389217682">"അടുത്തിടെ ആക്സസ് ചെയ്തിട്ടില്ല"</string>
     <string name="recent_access_empty_state_description" msgid="6334951450158128989">"അടുത്തിടെ നിങ്ങളുടെ ഡാറ്റ ആക്‌സസ് ചെയ്‌ത ആപ്പുകൾ സ്വയമേവ ഇവിടെ കാണിക്കും"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"എല്ലാം കാണുക"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"അടുത്തിടെയുള്ള ആക്‌സസ് ലോഡ് ചെയ്യാനായില്ല"</string>
@@ -818,6 +818,11 @@
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"ഗൈഡ് ചെയ്യാത്തവ"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"മിതമായത്"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"ശക്തമായത്"</string>
+    <string name="nicotine_intake_title" msgid="428157249131107976">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
+    <string name="nicotine_intake_title_long" msgid="3254332210697516844">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
+    <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} വേപ് പഫ്}other{{quantity} വേപ് പഫുകൾ}}"</string>
+    <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} സിഗരറ്റ്}other{{quantity} സിഗരറ്റുകൾ}}"</string>
+    <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} അജ്ഞാതം"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>മി"</string>
     <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g>മ <xliff:g id="MIN">%2$s</xliff:g>മി"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g>മ"</string>
@@ -1251,4 +1256,6 @@
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect വഴി നിങ്ങളുടെ ആപ്പുകൾക്കിടയിൽ ഫിറ്റ്‌നസ്, വെൽനസ് ഡാറ്റ പങ്കിടാനാകും. നിങ്ങൾക്ക് ഇപ്പോൾ കണക്‌റ്റ് ചെയ്യാനാകുന്ന ആപ്പുകൾ ഏതൊക്കെയെന്ന് കാണുക."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"രണ്ടാമതൊരു ആപ്പ് കണക്റ്റ് ചെയ്യുക"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Health Connect-നൊപ്പം മറ്റൊരു ആപ്പ് സജ്ജീകരിക്കുക, അതുവഴി അതിന് ഫിറ്റ്‌നസ്, വെൽനസ് ഡാറ്റ പങ്കിടാൻ ആരംഭിക്കാം"</string>
+    <string name="devices_current_device" msgid="6388308185566619743">"നിലവിലെ ഉപകരണം"</string>
+    <string name="devices_unknown_device" msgid="8830092952740474454">"അജ്ഞാത ഉപകരണം"</string>
 </resources>
