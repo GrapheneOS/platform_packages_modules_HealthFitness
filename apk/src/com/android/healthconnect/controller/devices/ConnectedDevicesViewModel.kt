@@ -38,6 +38,14 @@ constructor(
     val connectedDevicesState: LiveData<ConnectedDevicesState>
         get() = _connectedDevicesState
 
+    private val _selectedDevice = MutableLiveData<DeviceDataSource>()
+    val selectedDevice: LiveData<DeviceDataSource>
+        get() = _selectedDevice
+
+    fun setSelectedDevice(device: DeviceDataSource) {
+        _selectedDevice.postValue(device)
+    }
+
     fun loadDeviceDataSources() {
         _connectedDevicesState.postValue(ConnectedDevicesState.Loading)
         viewModelScope.launch(ioDispatcher) {

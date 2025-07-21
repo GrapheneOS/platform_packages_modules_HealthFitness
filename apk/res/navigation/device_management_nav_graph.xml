@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/device_management_nav_graph"
+    app:startDestination="@id/connectedDevicesFragment">
+
+    <fragment
+        android:id="@+id/connectedDevicesFragment"
+        android:name="com.android.healthconnect.controller.devices.ConnectedDevicesFragment"
+        android:label="@string/devices_title">
+        <action
+            android:id="@+id/action_connectedDevicesFragment_to_deviceManagementFragment"
+            app:destination="@id/deviceManagementFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/deviceManagementFragment"
+        android:name="com.android.healthconnect.controller.devices.DeviceManagementFragment"
+        android:label="@string/device_management_screen_title" />
+
+</navigation>

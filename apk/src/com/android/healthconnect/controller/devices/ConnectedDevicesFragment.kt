@@ -18,7 +18,8 @@ package com.android.healthconnect.controller.devices
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.devices.ConnectedDevicesViewModel.ConnectedDevicesState
@@ -40,7 +41,7 @@ class ConnectedDevicesFragment : Hilt_ConnectedDevicesFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
 
-    private val viewModel: ConnectedDevicesViewModel by viewModels()
+    private val viewModel: ConnectedDevicesViewModel by activityViewModels()
     private val devicesCategory: PreferenceGroup by pref(CONNECTED_DEVICES_CATEGORY)
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -74,6 +75,15 @@ class ConnectedDevicesFragment : Hilt_ConnectedDevicesFragment() {
                                 title = device.deviceName
                                 if (device.isCurrentDevice) {
                                     summary = getString(R.string.devices_current_device)
+                                }
+                                setOnPreferenceClickListener {
+                                    viewModel.setSelectedDevice(device)
+                                    findNavController()
+                                        .navigate(
+                                            R.id
+                                                .action_connectedDevicesFragment_to_deviceManagementFragment
+                                        )
+                                    true
                                 }
                             }
                         )

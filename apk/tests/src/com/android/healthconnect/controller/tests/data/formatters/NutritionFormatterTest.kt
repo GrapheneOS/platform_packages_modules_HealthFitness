@@ -186,6 +186,7 @@ class NutritionFormatterTest {
                     "Phosphorus: 67 g\n" +
                     "Polyunsaturated fat: 67 g\n" +
                     "Potassium: 23 g\n" +
+                    "Protein: 89 g\n" +
                     "Riboflavin: 22 g\n" +
                     "Saturated fat: 45 g\n" +
                     "Selenium: 43 g\n" +
