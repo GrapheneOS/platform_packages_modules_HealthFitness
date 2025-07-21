@@ -40,6 +40,7 @@ import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.MedicalDataSource;
+import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
@@ -60,6 +61,7 @@ import com.google.common.collect.ImmutableSet;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -588,10 +590,12 @@ public class HealthConnectManagerTest {
     public void isTrackingEnabled_generatesDataTypeKeys() throws Exception {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        ArgumentCaptor<List> captor = ArgumentCaptor.forClass(List.class);
 
         healthConnectManager.isTrackingEnabled(List.of(StepsRecord.class, DistanceRecord.class));
 
-        verify(mService).isTrackingEnabled(List.of("TRACKING_PREF_1", "TRACKING_PREF_7"));
+        verify(mService).isTrackingEnabled(captor.capture());
+        assertThat(captor.getValue()).containsExactly("TRACKING_PREF_1", "TRACKING_PREF_7");
     }
 
     @Test
@@ -601,11 +605,14 @@ public class HealthConnectManagerTest {
         when(mService.isTrackingEnabled(any()))
                 .thenReturn(Map.of("TRACKING_PREF_1", true, "TRACKING_PREF_7", false));
 
-        Map<String, Boolean> result =
+        Map<Class<? extends Record>, Boolean> result =
                 healthConnectManager.isTrackingEnabled(
                         List.of(StepsRecord.class, DistanceRecord.class));
 
-        assertThat(result).containsExactly("TRACKING_PREF_1", true, "TRACKING_PREF_7", false);
+        assertThat(result)
+                .containsExactly(
+                        StepsRecord.class, true,
+                        DistanceRecord.class, false);
     }
 
     /**
