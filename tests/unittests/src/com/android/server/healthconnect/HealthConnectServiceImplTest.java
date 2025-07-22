@@ -204,6 +204,7 @@ import com.android.server.healthconnect.common.logging.HealthConnectServiceLogge
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -382,6 +383,7 @@ public class HealthConnectServiceImplTest {
     @Mock private MedicalResourceHelper mMedicalResourceHelper;
     @Mock private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
+    @Mock private TrackerManager mTrackerManager;
     @Mock IMigrationCallback mMigrationCallback;
     @Mock IMedicalDataSourceResponseCallback mMedicalDataSourceCallback;
     @Mock IMedicalDataSourcesResponseCallback mMedicalDataSourcesResponseCallback;
@@ -505,6 +507,7 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getHealthFitnessStatsLog(),
                         healthConnectInjector.getBackupRestoreLogger(),
                         healthConnectInjector.getExportImportNotificationFactory(),
+                        mTrackerManager,
                         healthConnectInjector.getCloudBackupManager(),
                         healthConnectInjector.getCloudRestoreManager(),
                         healthConnectInjector.getMatchingAppsManager());
@@ -3574,6 +3577,14 @@ public class HealthConnectServiceImplTest {
 
         verify(mPreferenceHelper).insertOrReplacePreference("TRACKING_PREF_1", "false");
         verify(mEmptyResponseCallback).onResult();
+    }
+
+    @Test
+    public void setTrackingEnabled_refreshesTrackerManager() throws Exception {
+        mHealthConnectService.setTrackingEnabled("TRACKING_PREF_1", true, mEmptyResponseCallback);
+        awaitAllExecutorsIdle();
+
+        verify(mTrackerManager).initializeOrRefresh();
     }
 
     @Test
