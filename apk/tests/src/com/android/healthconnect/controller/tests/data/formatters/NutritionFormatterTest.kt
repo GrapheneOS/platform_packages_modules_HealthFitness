@@ -66,6 +66,31 @@ class NutritionFormatterTest {
     }
 
     @Test
+    fun formatValue_hidesUnsetData() = runBlocking {
+        val record =
+            getBuilder()
+                .setDietaryFiber(fromGrams(34.0))
+                .setFolate(fromGrams(0.0))
+                .setFolicAcid(fromGrams(90.0))
+                .setIodine(fromGrams(0.0))
+                .setIron(fromGrams(30.0))
+                .build()
+        assertThat(formatter.formatValue(record))
+            .isEqualTo("Dietary fiber: 34 g\n" + "Folic acid: 90 g\n" + "Iron: 30 g")
+    }
+
+    @Test
+    fun formatValue_hidesUnsetDataWithinTolerance() = runBlocking {
+        val record =
+            getBuilder()
+                .setDietaryFiber(fromGrams(1e-6))
+                .setFolicAcid(fromGrams(1e-5))
+                .setIron(fromGrams(1e-4))
+                .build()
+        assertThat(formatter.formatValue(record)).isEqualTo("Folic acid: 0 g\n" + "Iron: 0 g")
+    }
+
+    @Test
     fun formatValue_formatsMass() = runBlocking {
         val record = getBuilder().setCaffeine(fromGrams(32.0)).build()
 

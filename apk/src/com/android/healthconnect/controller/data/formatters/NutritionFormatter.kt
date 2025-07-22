@@ -29,6 +29,7 @@ import com.android.healthconnect.controller.data.formatters.MealFormatter.format
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.units.UnitPreferences
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
+import com.android.healthconnect.controller.utils.doubleEquals
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.StringJoiner
 import javax.inject.Inject
@@ -81,64 +82,76 @@ constructor(
                 formatMealType(context, record.mealType),
             )
         }
-        record.biotin?.addAggregation(R.string.biotin, stringJoiner, formatMass)
-        record.caffeine?.addAggregation(R.string.caffeine, stringJoiner, formatMass)
-        record.calcium?.addAggregation(R.string.calcium, stringJoiner, formatMass)
-        record.chloride?.addAggregation(R.string.chloride, stringJoiner, formatMass)
-        record.cholesterol?.addAggregation(R.string.cholesterol, stringJoiner, formatMass)
-        record.chromium?.addAggregation(R.string.chromium, stringJoiner, formatMass)
-        record.copper?.addAggregation(R.string.copper, stringJoiner, formatMass)
-        record.dietaryFiber?.addAggregation(R.string.dietary_fiber, stringJoiner, formatMass)
-        record.energy?.addAggregation(R.string.energy_consumed_total, stringJoiner, formatEnergy)
-        record.energyFromFat?.addAggregation(
+        record.biotin?.addAggregationIfSet(R.string.biotin, stringJoiner, formatMass)
+        record.caffeine?.addAggregationIfSet(R.string.caffeine, stringJoiner, formatMass)
+        record.calcium?.addAggregationIfSet(R.string.calcium, stringJoiner, formatMass)
+        record.chloride?.addAggregationIfSet(R.string.chloride, stringJoiner, formatMass)
+        record.cholesterol?.addAggregationIfSet(R.string.cholesterol, stringJoiner, formatMass)
+        record.chromium?.addAggregationIfSet(R.string.chromium, stringJoiner, formatMass)
+        record.copper?.addAggregationIfSet(R.string.copper, stringJoiner, formatMass)
+        record.dietaryFiber?.addAggregationIfSet(R.string.dietary_fiber, stringJoiner, formatMass)
+        record.energy?.addAggregationIfSet(
+            R.string.energy_consumed_total,
+            stringJoiner,
+            formatEnergy,
+        )
+        record.energyFromFat?.addAggregationIfSet(
             R.string.energy_consumed_from_fat,
             stringJoiner,
             formatEnergy,
         )
-        record.folate?.addAggregation(R.string.folate, stringJoiner, formatMass)
-        record.folicAcid?.addAggregation(R.string.folic_acid, stringJoiner, formatMass)
-        record.iodine?.addAggregation(R.string.iodine, stringJoiner, formatMass)
-        record.iron?.addAggregation(R.string.iron, stringJoiner, formatMass)
-        record.magnesium?.addAggregation(R.string.magnesium, stringJoiner, formatMass)
-        record.manganese?.addAggregation(R.string.manganese, stringJoiner, formatMass)
-        record.molybdenum?.addAggregation(R.string.molybdenum, stringJoiner, formatMass)
-        record.monounsaturatedFat?.addAggregation(
+        record.folate?.addAggregationIfSet(R.string.folate, stringJoiner, formatMass)
+        record.folicAcid?.addAggregationIfSet(R.string.folic_acid, stringJoiner, formatMass)
+        record.iodine?.addAggregationIfSet(R.string.iodine, stringJoiner, formatMass)
+        record.iron?.addAggregationIfSet(R.string.iron, stringJoiner, formatMass)
+        record.magnesium?.addAggregationIfSet(R.string.magnesium, stringJoiner, formatMass)
+        record.manganese?.addAggregationIfSet(R.string.manganese, stringJoiner, formatMass)
+        record.molybdenum?.addAggregationIfSet(R.string.molybdenum, stringJoiner, formatMass)
+        record.monounsaturatedFat?.addAggregationIfSet(
             R.string.monounsaturated_fat,
             stringJoiner,
             formatMass,
         )
-        record.niacin?.addAggregation(R.string.niacin, stringJoiner, formatMass)
-        record.pantothenicAcid?.addAggregation(R.string.pantothenic_acid, stringJoiner, formatMass)
-        record.phosphorus?.addAggregation(R.string.phosphorus, stringJoiner, formatMass)
-        record.polyunsaturatedFat?.addAggregation(
+        record.niacin?.addAggregationIfSet(R.string.niacin, stringJoiner, formatMass)
+        record.pantothenicAcid?.addAggregationIfSet(
+            R.string.pantothenic_acid,
+            stringJoiner,
+            formatMass,
+        )
+        record.phosphorus?.addAggregationIfSet(R.string.phosphorus, stringJoiner, formatMass)
+        record.polyunsaturatedFat?.addAggregationIfSet(
             R.string.polyunsaturated_fat,
             stringJoiner,
             formatMass,
         )
-        record.potassium?.addAggregation(R.string.potassium, stringJoiner, formatMass)
-        record.protein?.addAggregation(R.string.protein, stringJoiner, formatMass)
-        record.riboflavin?.addAggregation(R.string.riboflavin, stringJoiner, formatMass)
-        record.saturatedFat?.addAggregation(R.string.saturated_fat, stringJoiner, formatMass)
-        record.selenium?.addAggregation(R.string.selenium, stringJoiner, formatMass)
-        record.sodium?.addAggregation(R.string.sodium, stringJoiner, formatMass)
-        record.sugar?.addAggregation(R.string.sugar, stringJoiner, formatMass)
-        record.thiamin?.addAggregation(R.string.thiamin, stringJoiner, formatMass)
-        record.totalCarbohydrate?.addAggregation(
+        record.potassium?.addAggregationIfSet(R.string.potassium, stringJoiner, formatMass)
+        record.protein?.addAggregationIfSet(R.string.protein, stringJoiner, formatMass)
+        record.riboflavin?.addAggregationIfSet(R.string.riboflavin, stringJoiner, formatMass)
+        record.saturatedFat?.addAggregationIfSet(R.string.saturated_fat, stringJoiner, formatMass)
+        record.selenium?.addAggregationIfSet(R.string.selenium, stringJoiner, formatMass)
+        record.sodium?.addAggregationIfSet(R.string.sodium, stringJoiner, formatMass)
+        record.sugar?.addAggregationIfSet(R.string.sugar, stringJoiner, formatMass)
+        record.thiamin?.addAggregationIfSet(R.string.thiamin, stringJoiner, formatMass)
+        record.totalCarbohydrate?.addAggregationIfSet(
             R.string.total_carbohydrate,
             stringJoiner,
             formatMass,
         )
-        record.totalFat?.addAggregation(R.string.total_fat, stringJoiner, formatMass)
-        record.transFat?.addAggregation(R.string.trans_fat, stringJoiner, formatMass)
-        record.unsaturatedFat?.addAggregation(R.string.unsaturated_fat, stringJoiner, formatMass)
-        record.vitaminA?.addAggregation(R.string.vitamin_a, stringJoiner, formatMass)
-        record.vitaminB12?.addAggregation(R.string.vitamin_b12, stringJoiner, formatMass)
-        record.vitaminB6?.addAggregation(R.string.vitamin_b6, stringJoiner, formatMass)
-        record.vitaminC?.addAggregation(R.string.vitamin_c, stringJoiner, formatMass)
-        record.vitaminD?.addAggregation(R.string.vitamin_d, stringJoiner, formatMass)
-        record.vitaminE?.addAggregation(R.string.vitamin_e, stringJoiner, formatMass)
-        record.vitaminK?.addAggregation(R.string.vitamin_k, stringJoiner, formatMass)
-        record.zinc?.addAggregation(R.string.zinc, stringJoiner, formatMass)
+        record.totalFat?.addAggregationIfSet(R.string.total_fat, stringJoiner, formatMass)
+        record.transFat?.addAggregationIfSet(R.string.trans_fat, stringJoiner, formatMass)
+        record.unsaturatedFat?.addAggregationIfSet(
+            R.string.unsaturated_fat,
+            stringJoiner,
+            formatMass,
+        )
+        record.vitaminA?.addAggregationIfSet(R.string.vitamin_a, stringJoiner, formatMass)
+        record.vitaminB12?.addAggregationIfSet(R.string.vitamin_b12, stringJoiner, formatMass)
+        record.vitaminB6?.addAggregationIfSet(R.string.vitamin_b6, stringJoiner, formatMass)
+        record.vitaminC?.addAggregationIfSet(R.string.vitamin_c, stringJoiner, formatMass)
+        record.vitaminD?.addAggregationIfSet(R.string.vitamin_d, stringJoiner, formatMass)
+        record.vitaminE?.addAggregationIfSet(R.string.vitamin_e, stringJoiner, formatMass)
+        record.vitaminK?.addAggregationIfSet(R.string.vitamin_k, stringJoiner, formatMass)
+        record.zinc?.addAggregationIfSet(R.string.zinc, stringJoiner, formatMass)
 
         return stringJoiner.toString()
     }
@@ -148,19 +161,21 @@ constructor(
         add(context.getString(R.string.nutrient_with_value, label, value))
     }
 
-    private fun Mass.addAggregation(
+    private fun Mass.addAggregationIfSet(
         @StringRes labelRes: Int,
         stringJoiner: StringJoiner,
         formatMass: (mass: Mass) -> String,
     ) {
+        if (doubleEquals(this.inGrams, 0.0)) return
         stringJoiner.addAggregation(labelRes, formatMass(this))
     }
 
-    private fun Energy.addAggregation(
+    private fun Energy.addAggregationIfSet(
         @StringRes labelRes: Int,
         stringJoiner: StringJoiner,
         formatEnergy: (energy: Energy) -> String,
     ) {
+        if (doubleEquals(this.inCalories, 0.0)) return
         stringJoiner.addAggregation(labelRes, formatEnergy(this))
     }
 }
