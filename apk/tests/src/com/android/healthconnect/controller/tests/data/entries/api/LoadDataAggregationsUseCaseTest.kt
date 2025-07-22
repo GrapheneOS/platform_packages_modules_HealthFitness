@@ -224,7 +224,11 @@ class LoadDataAggregationsUseCaseTest {
             val result = loadDataAggregationsUseCase.invoke(input)
 
             val expected =
-                FormattedEntry.FormattedAggregation("6h 15m", "6 hours 15 minutes", TEST_APP_NAME)
+                FormattedEntry.FormattedAggregation(
+                    "6h 15m",
+                    "Total mindfulness time of 6 hours 15 minutes",
+                    TEST_APP_NAME,
+                )
             assertThat(result is UseCaseResults.Success).isTrue()
             assertThat((result as UseCaseResults.Success).data).isEqualTo(expected)
         }
