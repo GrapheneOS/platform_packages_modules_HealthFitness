@@ -123,6 +123,32 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     private val settingsAndHelpCategory: PreferenceGroup by pref(SETTINGS_AND_HELP)
     private val bannerGroup: BannerMessagePreferenceGroup by pref(BANNER_GROUP)
 
+    private val onEmptyState: (MenuItem) -> Boolean = { menuItem ->
+        when (menuItem.itemId) {
+            R.id.menu_show_hide_system -> {
+                setShowHideSystem(menuItem)
+                true
+            }
+            else -> false
+        }
+    }
+
+    private val onExistingAppsState: (MenuItem) -> Boolean = { menuItem ->
+        when (menuItem.itemId) {
+            R.id.menu_search -> {
+                searchMenuItem = menuItem
+                logger.logInteraction(AppPermissionsElement.SEARCH_BUTTON)
+                findNavController().navigate(R.id.action_connectedApps_to_searchApps)
+                true
+            }
+            R.id.menu_show_hide_system -> {
+                setShowHideSystem(menuItem)
+                true
+            }
+            else -> false
+        }
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.connected_apps_screen, rootKey)
@@ -169,31 +195,13 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     }
 
     private fun observeConnectedApps() {
-        setupMenu(R.menu.connected_apps, viewLifecycleOwner, logger) { menuItem ->
-            when (menuItem.itemId) {
-                R.id.menu_search -> {
-                    searchMenuItem = menuItem
-                    logger.logInteraction(AppPermissionsElement.SEARCH_BUTTON)
-                    findNavController().navigate(R.id.action_connectedApps_to_searchApps)
-                    true
-                }
-                R.id.menu_show_hide_system -> {
-                    val isShowingSystem = viewModel.showSystemApps.value ?: false
-                    menuItem.setTitle(
-                        if (isShowingSystem) R.string.menu_show_system
-                        else R.string.menu_hide_system
-                    )
-                    viewModel.setShowSystemApps(!isShowingSystem)
-                    true
-                }
-                else -> false
-            }
-        }
         viewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
             clearAllCategories()
             if (connectedApps.isEmpty()) {
+                setupMenu(R.menu.connected_apps, viewLifecycleOwner, logger, onEmptyState)
                 setUpEmptyState()
             } else {
+                setupMenu(R.menu.connected_apps, viewLifecycleOwner, logger, onExistingAppsState)
                 logger.logImpression(AppPermissionsElement.SEARCH_BUTTON)
 
                 topIntroPreference.title = getString(R.string.connected_apps_text)
@@ -616,5 +624,13 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                         }
                     }
                 }
+    }
+
+    private fun setShowHideSystem(menuItem: MenuItem) {
+        val isShowingSystem = viewModel.showSystemApps.value ?: false
+        menuItem.setTitle(
+            if (isShowingSystem) R.string.menu_show_system else R.string.menu_hide_system
+        )
+        viewModel.setShowSystemApps(!isShowingSystem)
     }
 }
