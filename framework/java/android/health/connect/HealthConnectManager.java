@@ -3512,18 +3512,29 @@ public class HealthConnectManager {
      * @hide
      */
     @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
-    public Map<String, Boolean> isTrackingEnabled(
+    public Map<Class<? extends Record>, Boolean> isTrackingEnabled(
             @NonNull List<Class<? extends Record>> dataTypes) {
         Objects.requireNonNull(dataTypes);
         try {
-            List<String> dataTypeKeys = dataTypes.stream().map(this::getDataTypePrefKey).toList();
-            return mService.isTrackingEnabled(dataTypeKeys);
+            Map<String, Class<? extends Record>> keyToDataTypeMap =
+                    dataTypes.stream()
+                            .collect(
+                                    Collectors.toMap(
+                                            HealthConnectManager::getDataTypePrefKey,
+                                            dataType -> dataType));
+            Map<String, Boolean> dataTypeTrackingStatusMap =
+                    mService.isTrackingEnabled(new ArrayList<>(keyToDataTypeMap.keySet()));
+            return dataTypeTrackingStatusMap.entrySet().stream()
+                    .collect(
+                            Collectors.toMap(
+                                    entry -> keyToDataTypeMap.get(entry.getKey()),
+                                    Map.Entry::getValue));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
     }
 
-    private String getDataTypePrefKey(@NonNull Class<? extends Record> dataType) {
+    private static String getDataTypePrefKey(@NonNull Class<? extends Record> dataType) {
         return TRACKING_PREFERENCE_PREFIX
                 + dataType.getAnnotation(Identifier.class).recordIdentifier();
     }
