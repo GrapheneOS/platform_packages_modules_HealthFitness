@@ -79,6 +79,13 @@ public final class ValidationUtils {
         }
     }
 
+    /** Requires double value to be positive. */
+    public static void requirePositive(double value, String name) {
+        if (value <= 0) {
+            throw new IllegalArgumentException(name + " must be positive.");
+        }
+    }
+
     /** Requires an integer value to be among the set of allowed values. */
     public static void validateIntDefValue(int value, Set<Integer> allowedValues, String name) {
         if (!allowedValues.contains(value)) {

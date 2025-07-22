@@ -100,6 +100,7 @@ package android.health.connect {
   public class HealthPermissionCategory {
     field public static final int ACTIVE_CALORIES_BURNED = 1; // 0x1
     field @FlaggedApi("com.android.healthfitness.flags.activity_intensity") public static final int ACTIVITY_INTENSITY = 42; // 0x2a
+    field @FlaggedApi("com.android.healthfitness.flags.alcohol_consumption") public static final int ALCOHOL_CONSUMPTION = 44; // 0x2c
     field public static final int BASAL_BODY_TEMPERATURE = 33; // 0x21
     field public static final int BASAL_METABOLIC_RATE = 9; // 0x9
     field public static final int BLOOD_GLUCOSE = 26; // 0x1a
@@ -252,6 +253,7 @@ package android.health.connect.datatypes {
   public final class RecordTypeIdentifier {
     field public static final int RECORD_TYPE_ACTIVE_CALORIES_BURNED = 2; // 0x2
     field @FlaggedApi("com.android.healthfitness.flags.activity_intensity") public static final int RECORD_TYPE_ACTIVITY_INTENSITY = 42; // 0x2a
+    field @FlaggedApi("com.android.healthfitness.flags.alcohol_consumption") public static final int RECORD_TYPE_ALCOHOL_CONSUMPTION = 45; // 0x2d
     field public static final int RECORD_TYPE_BASAL_BODY_TEMPERATURE = 20; // 0x14
     field public static final int RECORD_TYPE_BASAL_METABOLIC_RATE = 16; // 0x10
     field public static final int RECORD_TYPE_BLOOD_GLUCOSE = 25; // 0x19

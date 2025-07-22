@@ -185,12 +185,7 @@ public class HealthPermissionCategory {
     @FlaggedApi(FLAG_SMOKING)
     public static final int NICOTINE_INTAKE = 43;
 
-    /**
-     * Permission category for {AlcoholConsumptionRecord}
-     *
-     * @hide
-     */
-    // TODO: Unhide once AlcoholConsumptionRecord is implemented
+    /** Permission category for {AlcoholConsumptionRecord} */
     @FlaggedApi(FLAG_ALCOHOL_CONSUMPTION)
     public static final int ALCOHOL_CONSUMPTION = 44;
 

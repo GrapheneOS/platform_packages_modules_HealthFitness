@@ -18,6 +18,7 @@ package android.health.connect.internal.datatypes.utils;
 
 import static android.health.connect.HealthPermissions.READ_ACTIVE_CALORIES_BURNED;
 import static android.health.connect.HealthPermissions.READ_ACTIVITY_INTENSITY;
+import static android.health.connect.HealthPermissions.READ_ALCOHOL_CONSUMPTION;
 import static android.health.connect.HealthPermissions.READ_BASAL_BODY_TEMPERATURE;
 import static android.health.connect.HealthPermissions.READ_BASAL_METABOLIC_RATE;
 import static android.health.connect.HealthPermissions.READ_BLOOD_GLUCOSE;
@@ -59,6 +60,7 @@ import static android.health.connect.HealthPermissions.READ_WEIGHT;
 import static android.health.connect.HealthPermissions.READ_WHEELCHAIR_PUSHES;
 import static android.health.connect.HealthPermissions.WRITE_ACTIVE_CALORIES_BURNED;
 import static android.health.connect.HealthPermissions.WRITE_ACTIVITY_INTENSITY;
+import static android.health.connect.HealthPermissions.WRITE_ALCOHOL_CONSUMPTION;
 import static android.health.connect.HealthPermissions.WRITE_BASAL_BODY_TEMPERATURE;
 import static android.health.connect.HealthPermissions.WRITE_BASAL_METABOLIC_RATE;
 import static android.health.connect.HealthPermissions.WRITE_BLOOD_GLUCOSE;
@@ -100,6 +102,7 @@ import static android.health.connect.HealthPermissions.WRITE_WEIGHT;
 import static android.health.connect.HealthPermissions.WRITE_WHEELCHAIR_PUSHES;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVITY_INTENSITY;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ALCOHOL_CONSUMPTION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_BODY_TEMPERATURE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BLOOD_GLUCOSE;
@@ -149,6 +152,7 @@ import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissionCategory;
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.ActivityIntensityRecord;
+import android.health.connect.datatypes.AlcoholConsumptionRecord;
 import android.health.connect.datatypes.BasalBodyTemperatureRecord;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.BloodGlucoseRecord;
@@ -193,6 +197,7 @@ import android.health.connect.datatypes.WeightRecord;
 import android.health.connect.datatypes.WheelchairPushesRecord;
 import android.health.connect.internal.datatypes.ActiveCaloriesBurnedRecordInternal;
 import android.health.connect.internal.datatypes.ActivityIntensityRecordInternal;
+import android.health.connect.internal.datatypes.AlcoholConsumptionRecordInternal;
 import android.health.connect.internal.datatypes.BasalBodyTemperatureRecordInternal;
 import android.health.connect.internal.datatypes.BasalMetabolicRateRecordInternal;
 import android.health.connect.internal.datatypes.BloodGlucoseRecordInternal;
@@ -274,6 +279,20 @@ public class DataTypeDescriptors {
                                                 HealthPermissionCategory.ACTIVITY_INTENSITY,
                                                 READ_ACTIVITY_INTENSITY,
                                                 WRITE_ACTIVITY_INTENSITY)
+                                        .build()
+                                : null,
+                        Flags.alcoholConsumption()
+                                        && AconfigFlagHelper.isAlcoholConsumptionEnabled()
+                                ? DataTypeDescriptor.builder()
+                                        .setRecordTypeIdentifier(RECORD_TYPE_ALCOHOL_CONSUMPTION)
+                                        .setDataCategory(HealthDataCategory.WELLNESS)
+                                        .setRecordClass(AlcoholConsumptionRecord.class)
+                                        .setRecordInternalClass(
+                                                AlcoholConsumptionRecordInternal.class)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.ALCOHOL_CONSUMPTION,
+                                                READ_ALCOHOL_CONSUMPTION,
+                                                WRITE_ALCOHOL_CONSUMPTION)
                                         .build()
                                 : null,
                         DataTypeDescriptor.builder()

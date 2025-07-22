@@ -474,10 +474,7 @@ public final class HealthPermissions {
      * Allows an application to write user's alcohol consumption data.
      *
      * <p>Protection level: dangerous.
-     *
-     * @hide
      */
-    // TODO: Unhide once AlcoholConsumptionRecord is implemented
     @FlaggedApi(FLAG_ALCOHOL_CONSUMPTION)
     public static final String READ_ALCOHOL_CONSUMPTION =
             "android.permission.health.READ_ALCOHOL_CONSUMPTION";
@@ -811,10 +808,7 @@ public final class HealthPermissions {
      * Allows an application to write user's alcohol consumption data.
      *
      * <p>Protection level: dangerous.
-     *
-     * @hide
      */
-    // TODO: Unhide once AlcoholConsumptionRecord is implemented
     @FlaggedApi(FLAG_ALCOHOL_CONSUMPTION)
     public static final String WRITE_ALCOHOL_CONSUMPTION =
             "android.permission.health.WRITE_ALCOHOL_CONSUMPTION";

@@ -17,6 +17,7 @@
 package android.health.connect.datatypes;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
+import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION;
 import static com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
@@ -394,6 +395,16 @@ public final class RecordTypeIdentifier {
     @FlaggedApi(FLAG_SYMPTOMS)
     public static final int RECORD_TYPE_SYMPTOM = 44;
 
+    /**
+     * Record type to capture an instance of alcohol consumption. Each record represents a timestamp
+     * for an instance where the user has consumed alcohol along with details about the serving
+     * size.
+     *
+     * @see AlcoholConsumptionRecord
+     */
+    @FlaggedApi(FLAG_ALCOHOL_CONSUMPTION)
+    public static final int RECORD_TYPE_ALCOHOL_CONSUMPTION = 45;
+
     private RecordTypeIdentifier() {}
 
     /** @hide */
@@ -443,7 +454,8 @@ public final class RecordTypeIdentifier {
         RECORD_TYPE_MINDFULNESS_SESSION,
         RECORD_TYPE_ACTIVITY_INTENSITY,
         RECORD_TYPE_NICOTINE_INTAKE,
-        RECORD_TYPE_SYMPTOM
+        RECORD_TYPE_SYMPTOM,
+        RECORD_TYPE_ALCOHOL_CONSUMPTION
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface RecordType {}
