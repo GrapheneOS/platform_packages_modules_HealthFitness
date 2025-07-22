@@ -1102,6 +1102,9 @@
     <string name="mindfulness_type_music" description="Mindfulness session type: Music. [CHAR LIMIT=20]">Music</string>
     <string name="mindfulness_type_other" description="Mindfulness session type: Other. [CHAR LIMIT=20]">Other</string>
     <string name="mindfulness_type_unguided" description="Mindfulness session type: Unguided. [CHAR LIMIT=20]">Unguided</string>
+    <string name="mindfulness_a11y_text" description="Mindfulness text for the aggregation A11y value [CHAR LIMIT=NONE]">
+        Total mindfulness time of <xliff:g example="12 hours 3 minutes" id="duration">%1$s</xliff:g>
+    </string>
     <!--endregion-->
 
     <!-- region Activity Intensity -->

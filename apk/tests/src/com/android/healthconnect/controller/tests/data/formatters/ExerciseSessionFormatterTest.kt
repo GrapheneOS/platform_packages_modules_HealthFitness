@@ -51,7 +51,6 @@ import java.util.TimeZone
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -214,7 +213,6 @@ class ExerciseSessionFormatterTest {
         Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
         Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     )
-    @Ignore("b/417271616") // Ignore failing test.
     fun formatRecordDetails_segmentImprovementsEnabledWithNewFields() = runBlocking {
         unitPreferences.distanceUnit = KILOMETERS
         unitPreferences.weightUnit = KILOGRAM
@@ -287,7 +285,6 @@ class ExerciseSessionFormatterTest {
         Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
         Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     )
-    @Ignore("b/417271616") // Ignore failing test.
     fun formatRecordDetails_segmentImprovementsEnabledWithoutNewFields() = runBlocking {
         unitPreferences.distanceUnit = KILOMETERS
         unitPreferences.weightUnit = KILOGRAM

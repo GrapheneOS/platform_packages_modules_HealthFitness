@@ -818,6 +818,11 @@
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"Unguided"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"Moderate"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"Vigorous"</string>
+    <string name="nicotine_intake_title" msgid="428157249131107976">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
+    <string name="nicotine_intake_title_long" msgid="3254332210697516844">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
+    <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} vape puff}other{{quantity} vape puffs}}"</string>
+    <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} cigarette}other{{quantity} cigarettes}}"</string>
+    <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} unknown"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>m"</string>
     <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g>h <xliff:g id="MIN">%2$s</xliff:g>m"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g>h"</string>
@@ -1251,4 +1256,6 @@
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect lets you share fitness and wellness data between your apps. See which apps you can connect now."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Connect a second app"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Set up another app with Health Connect so it can start sharing fitness and wellness data"</string>
+    <string name="devices_current_device" msgid="6388308185566619743">"Current device"</string>
+    <string name="devices_unknown_device" msgid="8830092952740474454">"Unknown device"</string>
 </resources>

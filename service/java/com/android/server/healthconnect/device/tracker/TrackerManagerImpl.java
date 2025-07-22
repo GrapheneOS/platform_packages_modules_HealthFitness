@@ -36,6 +36,7 @@ import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -50,6 +51,16 @@ public class TrackerManagerImpl implements TrackerManager {
     private static final int SAMPLING_PERIOD_US = 60_000_000; // 60 seconds in microseconds
     private static final int MAX_REPORT_LATENCY_US = 60_000_000; // 60 seconds in microseconds
 
+    /**
+     * Key that stores if the user has enabled or disabled native tracking for steps.
+     *
+     * <p>This constant is from the prefix {@code HealthConnectManager#TRACKING_PREFERENCE_PREFIX}
+     * and suffix from the {@code RecordTypeIdentifier} for {@code StepsRecord.class}
+     *
+     * @hide
+     */
+    private static final String STEP_TRACKING_PREFERENCE_KEY = "TRACKING_PREF_1";
+
     static final String HAS_DEVICE_PACKAGE_BEEN_APPENDED_TO_PRIORITY_LIST_KEY =
             "has_device_package_been_appended_to_priority_list_key";
 
@@ -60,6 +71,8 @@ public class TrackerManagerImpl implements TrackerManager {
     private final PreferenceHelper mPreferenceHelper;
 
     private boolean mSubscribed = false;
+    private Optional<PackageManager.OnPermissionsChangedListener> mPermissionListenerOptional =
+            Optional.empty();
 
     @VisibleForTesting StepSensorEventListener mListener;
 
@@ -108,21 +121,6 @@ public class TrackerManagerImpl implements TrackerManager {
             return;
         }
 
-        mPackageManager.addOnPermissionsChangeListener(
-                uid -> {
-                    try {
-                        if (android.health.connect.Constants.DEBUG) {
-                            Slog.d(TAG, "Permissions changed, refreshing tracker status");
-                        }
-                        // If tracking wasn't enabled and an app gets the READ_STEPS permission,
-                        // we'll start tracking. If tracking was enabled and READ_STEPS was revoked
-                        // for all apps, we'll disable tracking.
-                        refreshTrackerStatus();
-                    } catch (RuntimeException e) {
-                        Slog.e(TAG, "Unhandled failure in permissions change listener", e);
-                    }
-                });
-
         refreshTrackerStatus();
     }
 
@@ -145,12 +143,29 @@ public class TrackerManagerImpl implements TrackerManager {
             return;
         }
 
+        unregisterPermissionListener();
         unsubscribeFromSensorManager();
     }
 
     /** Updates the Sensor Manager subscription in case app permissions have changed. */
     // TODO(b/397419957): Call this when an app is uninstalled in case we want to disable tracking
     private void refreshTrackerStatus() {
+        // If a preference has been set and step tracking has been disabled, don't start tracking.
+        String stepTrackingPreferenceEnabled =
+                mPreferenceHelper.getPreference(STEP_TRACKING_PREFERENCE_KEY);
+        if (stepTrackingPreferenceEnabled != null
+                && !Boolean.parseBoolean(stepTrackingPreferenceEnabled)) {
+            Slog.d(TAG, "Tracking disabled, aborting initialization.");
+            unregisterPermissionListener();
+            unsubscribeFromSensorManager();
+            return;
+        }
+
+        if (mPermissionListenerOptional.isEmpty()) {
+            mPermissionListenerOptional = Optional.of(this::onPermissionsChanged);
+            mPackageManager.addOnPermissionsChangeListener(mPermissionListenerOptional.get());
+        }
+
         if (packagesEligibleForStepTracking(mContext, mPackageManager).isEmpty()) {
             Slog.d(TAG, "No packages eligible for step tracking. Aborting initialization.");
             unsubscribeFromSensorManager();
@@ -246,7 +261,8 @@ public class TrackerManagerImpl implements TrackerManager {
         return false;
     }
 
-    private void unsubscribeFromSensorManager() {
+    @VisibleForTesting
+    void unsubscribeFromSensorManager() {
         if (android.health.connect.Constants.DEBUG) {
             Slog.d(TAG, "Calling unsubscribeFromSensorManager()");
         }
@@ -308,5 +324,24 @@ public class TrackerManagerImpl implements TrackerManager {
         }
         Sensor stepCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         return stepCounterSensor != null;
+    }
+
+    private void onPermissionsChanged(int uid) {
+        try {
+            if (android.health.connect.Constants.DEBUG) {
+                Slog.d(TAG, "Permissions changed, refreshing tracker status");
+            }
+            // If tracking wasn't enabled and an app gets the READ_STEPS permission,
+            // we'll start tracking. If tracking was enabled and READ_STEPS was revoked
+            // for all apps, we'll disable tracking.
+            refreshTrackerStatus();
+        } catch (RuntimeException e) {
+            Slog.e(TAG, "Unhandled failure in permissions change listener", e);
+        }
+    }
+
+    private void unregisterPermissionListener() {
+        mPermissionListenerOptional.ifPresent(mPackageManager::removeOnPermissionsChangeListener);
+        mPermissionListenerOptional = Optional.empty();
     }
 }

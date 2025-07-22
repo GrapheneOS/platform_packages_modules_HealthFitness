@@ -348,6 +348,22 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void initializeOrRefresh_multipleCalls_onlyAddsPermissionListenerOnce() {
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        manager.initializeOrRefresh();
+        verify(mPackageManager)
+                .addOnPermissionsChangeListener(
+                        any(PackageManager.OnPermissionsChangedListener.class));
+
+        manager.initializeOrRefresh();
+
+        verify(mPackageManager)
+                .addOnPermissionsChangeListener(
+                        any(PackageManager.OnPermissionsChangedListener.class));
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void onInitialize_appendsDevicePackageToPriorityList_onlyOnce() {
         grantAppStepsPermission(TEST_PACKAGE_NAME);
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
@@ -404,6 +420,28 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void onAppPermissionRevoked_listenerTriggered_doesNotRemovePermissionsListener()
+            throws Exception {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
+                ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
+        manager.initializeOrRefresh();
+        verify(mPackageManager).addOnPermissionsChangeListener(permissionsListenerCaptor.capture());
+        verify(mSensorManager)
+                .registerListener(
+                        any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+
+        revokeStepsPermissionForAllApps();
+        permissionsListenerCaptor.getValue().onPermissionsChanged(/* uid= */ 0);
+
+        verify(mPackageManager, never())
+                .removeOnPermissionsChangeListener(
+                        any(PackageManager.OnPermissionsChangedListener.class));
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void onAppPermissionRevoked_refreshesTrackerStatusAndResetsSensorListener()
             throws Exception {
         grantAppStepsPermission(TEST_PACKAGE_NAME);
@@ -444,6 +482,21 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void withValidSubscription_clearTracker_unregisterPermissionListener() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        manager.initializeOrRefresh();
+        verify(mSensorManager).registerListener(any(), any(), anyInt(), anyInt());
+
+        manager.clearTracker();
+
+        verify(mPackageManager)
+                .removeOnPermissionsChangeListener(
+                        any(PackageManager.OnPermissionsChangedListener.class));
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void exceptionThrownWithinPermissionListener_exceptionCaught() throws Exception {
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
         ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
@@ -458,6 +511,68 @@ public class TrackerManagerImplTest {
 
         // Verify that the method which we forced to throw was actually called.
         verify(mPackageManager, times(2)).getPermissionFlags(any(), any(), any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void stepTrackingDisabledViaPreference_unsubscribesFromSensorManager() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        mHealthConnectInjector
+                .getPreferenceHelper()
+                .insertOrReplacePreference("TRACKING_PREF_1", String.valueOf(false));
+        TrackerManagerImpl manager =
+                spy((TrackerManagerImpl) mHealthConnectInjector.getTrackerManager());
+
+        manager.initializeOrRefresh();
+
+        verify(manager).unsubscribeFromSensorManager();
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void stepTrackingEnabledViaPreference_subscribesToSensorManager() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        mHealthConnectInjector
+                .getPreferenceHelper()
+                .insertOrReplacePreference("TRACKING_PREF_1", String.valueOf(true));
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mSensorManager)
+                .registerListener(
+                        any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void stepTrackingEnabled_preferenceAbsent_subscribesToSensorManager() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mSensorManager)
+                .registerListener(
+                        any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void withValidSubscription_stepTrackingDisabledViaPref_unregistersPermissionListener() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        manager.initializeOrRefresh();
+        verify(mSensorManager).registerListener(any(), any(), anyInt(), anyInt());
+
+        mHealthConnectInjector
+                .getPreferenceHelper()
+                .insertOrReplacePreference("TRACKING_PREF_1", String.valueOf(false));
+        manager.initializeOrRefresh();
+
+        verify(mPackageManager)
+                .removeOnPermissionsChangeListener(
+                        any(PackageManager.OnPermissionsChangedListener.class));
     }
 
     private void grantAppStepsPermission(String packageName) {

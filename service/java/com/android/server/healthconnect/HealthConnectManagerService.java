@@ -110,6 +110,7 @@ public class HealthConnectManagerService extends SystemService {
                         mHealthConnectInjector.getHealthFitnessStatsLog(),
                         mHealthConnectInjector.getBackupRestoreLogger(),
                         mHealthConnectInjector.getExportImportNotificationFactory(),
+                        mHealthConnectInjector.getTrackerManager(),
                         mHealthConnectInjector.getCloudBackupManager(),
                         mHealthConnectInjector.getCloudRestoreManager(),
                         mHealthConnectInjector.getMatchingAppsManager());

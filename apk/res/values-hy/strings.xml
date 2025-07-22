@@ -28,10 +28,8 @@
     <string name="all_categories_title" msgid="1446410643217937926">"Բոլոր կատեգորիաները"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Տեսնել բոլոր կատեգորիաները"</string>
     <string name="no_data" msgid="1906986019249068659">"Տվյալներ չկան"</string>
-    <!-- no translation found for devices_summary (8653563324512654292) -->
-    <skip />
-    <!-- no translation found for devices_title (7548105261104504301) -->
-    <skip />
+    <string name="devices_summary" msgid="8653563324512654292">"Միացված սարքերի կառավարում"</string>
+    <string name="devices_title" msgid="7548105261104504301">"Սարքեր"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"Հավելվածների թույլտվություններ"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Կառավարեք ձեր հավելվածները և թույլտվությունները"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"Հասանելի է <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> հավելվածից <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>-ին"</string>
@@ -820,6 +818,16 @@
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"Առանց ուղղորդման"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"Չափավոր"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"Բարձր"</string>
+    <!-- no translation found for nicotine_intake_title (428157249131107976) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_title_long (3254332210697516844) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_vape (8910534364762591958) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_cigarette (306427848597435195) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_unknown (2096300681393598647) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> ր"</string>
     <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> ժ <xliff:g id="MIN">%2$s</xliff:g> ր"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> ժ"</string>
@@ -1253,4 +1261,8 @@
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect-ի օգնությամբ դուք կարող եք սկսել ձեր հավելվածների միջև ֆիզիկական ակտիվության և բարեկեցության մասին տվյալների փոխանակումը։ Տեսեք, թե որ հավելվածները կարող եք կապել հիմա։"</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Կապեք երկրորդ հավելվածը"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Կապեք ևս մի հավելված Health Connect-ի հետ՝ ձեր ֆիզիկական ակտիվության և բարեկեցության մասին տվյալներով կիսվելու համար"</string>
+    <!-- no translation found for devices_current_device (6388308185566619743) -->
+    <skip />
+    <!-- no translation found for devices_unknown_device (8830092952740474454) -->
+    <skip />
 </resources>

@@ -28,10 +28,8 @@
     <string name="all_categories_title" msgid="1446410643217937926">"सभी कैटगरी"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"सभी कैटगरी देखें"</string>
     <string name="no_data" msgid="1906986019249068659">"कोई डेटा उपलब्ध नहीं है"</string>
-    <!-- no translation found for devices_summary (8653563324512654292) -->
-    <skip />
-    <!-- no translation found for devices_title (7548105261104504301) -->
-    <skip />
+    <string name="devices_summary" msgid="8653563324512654292">"कनेक्ट किए गए सभी डिवाइस मैनेज करें"</string>
+    <string name="devices_title" msgid="7548105261104504301">"डिवाइस"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"ऐप्लिकेशन अनुमतियां"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"डिवाइस पर मौजूद ऐप्लिकेशन और उन्हें दी गई अनुमतियां मैनेज करें"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> में से <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ऐप्लिकेशन के पास ऐक्सेस है"</string>
@@ -820,6 +818,11 @@
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"बिना गाइड के"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"काफ़ी हद तक ठीक है"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"बहुत तेज़"</string>
+    <string name="nicotine_intake_title" msgid="428157249131107976">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
+    <string name="nicotine_intake_title_long" msgid="3254332210697516844">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
+    <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} वेप पफ़}one{{quantity} वेप पफ़}other{{quantity} वेप पफ़}}"</string>
+    <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} सिगरेट}one{{quantity} सिगरेट}other{{quantity} सिगरेट}}"</string>
+    <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} की जानकारी नहीं है"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> मिनट"</string>
     <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> घंटे <xliff:g id="MIN">%2$s</xliff:g> मिनट"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> घंटा"</string>
@@ -1253,4 +1256,6 @@
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect, ऐप्लिकेशन के बीच सेहत और फ़िटनेस से जुड़ा डेटा शेयर करने की सुविधा देता है. देखें कि फ़िलहाल कौनसे ऐप्लिकेशन कनेक्ट किए जा सकते हैं."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"कोई दूसरा ऐप्लिकेशन कनेक्ट करें"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Health Connect के साथ कोई दूसरा ऐप्लिकेशन सेट अप करें, ताकि वह फ़िटनेस और सेहत से जुड़ा डेटा शेयर कर पाए"</string>
+    <string name="devices_current_device" msgid="6388308185566619743">"मौजूदा डिवाइस"</string>
+    <string name="devices_unknown_device" msgid="8830092952740474454">"डिवाइस की जानकारी नहीं है"</string>
 </resources>

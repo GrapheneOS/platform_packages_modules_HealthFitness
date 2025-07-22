@@ -28,10 +28,8 @@
     <string name="all_categories_title" msgid="1446410643217937926">"Усі категорії"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Переглянути всі категорії"</string>
     <string name="no_data" msgid="1906986019249068659">"Немає даних"</string>
-    <!-- no translation found for devices_summary (8653563324512654292) -->
-    <skip />
-    <!-- no translation found for devices_title (7548105261104504301) -->
-    <skip />
+    <string name="devices_summary" msgid="8653563324512654292">"Керуйте підключеними пристроями"</string>
+    <string name="devices_title" msgid="7548105261104504301">"Пристрої"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"Дозволи для додатків"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Керуйте своїми додатками та дозволами"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> додаток із <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> має доступ"</string>
@@ -44,8 +42,8 @@
     <string name="browse_data_title" msgid="5232691805953326097">"Переглянути дані"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Переглядайте дані й додатки, які мають доступ до них"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Автоматичне видалення, джерела даних, резервне копіювання й відновлення"</string>
-    <string name="banner_group_more_items" msgid="1071243933488973950">"Більше об’єктів"</string>
-    <string name="banner_group_fewer_items" msgid="3792478123282046349">"Менше об’єктів"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"Більше"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"Менше"</string>
     <string name="settings_manage_permission" msgid="3805037674102124581">"Health Connect"</string>
     <string name="settings_combined_permissions" msgid="3660209476196545539">"Health Connect"</string>
     <string name="settings_fitness_permissions" msgid="8133228907519227359">"Health Connect"</string>
@@ -820,6 +818,16 @@
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"Самостійна медитація"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"Помірна"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"Енергійна"</string>
+    <!-- no translation found for nicotine_intake_title (428157249131107976) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_title_long (3254332210697516844) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_vape (8910534364762591958) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_cigarette (306427848597435195) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_unknown (2096300681393598647) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> хв"</string>
     <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> год <xliff:g id="MIN">%2$s</xliff:g> хв"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> год"</string>
@@ -1253,4 +1261,8 @@
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"За допомогою сервісу Health Connect ви можете обмінюватися даними про фізичну активність і самопочуття між додатками. Дізнайтеся, які додатки можна підключити."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Підключіть другий додаток"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Підключіть ще один додаток до Health Connect, щоб він міг передавати дані про фізичну активність і самопочуття"</string>
+    <!-- no translation found for devices_current_device (6388308185566619743) -->
+    <skip />
+    <!-- no translation found for devices_unknown_device (8830092952740474454) -->
+    <skip />
 </resources>

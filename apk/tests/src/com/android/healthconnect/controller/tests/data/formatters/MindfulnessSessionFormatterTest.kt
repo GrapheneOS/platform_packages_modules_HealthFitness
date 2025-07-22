@@ -142,7 +142,7 @@ class MindfulnessSessionFormatterTest {
 
             val formattedValue = formatter.formatA11yUnit(duration)
 
-            assertThat(formattedValue).isEqualTo("10 hours 54 minutes")
+            assertThat(formattedValue).isEqualTo("Total mindfulness time of 10 hours 54 minutes")
         }
     }
 
@@ -164,7 +164,7 @@ class MindfulnessSessionFormatterTest {
 
             val formattedValue = formatter.formatA11yUnit(duration)
 
-            assertThat(formattedValue).isEqualTo("200 hours 59 minutes")
+            assertThat(formattedValue).isEqualTo("Total mindfulness time of 200 hours 59 minutes")
         }
     }
 
@@ -186,7 +186,7 @@ class MindfulnessSessionFormatterTest {
 
             val formattedValue = formatter.formatA11yUnit(duration)
 
-            assertThat(formattedValue).isEqualTo("14 minutes")
+            assertThat(formattedValue).isEqualTo("Total mindfulness time of 14 minutes")
         }
     }
 
@@ -208,7 +208,7 @@ class MindfulnessSessionFormatterTest {
 
             val formattedValue = formatter.formatA11yUnit(duration)
 
-            assertThat(formattedValue).isEqualTo("0 minutes")
+            assertThat(formattedValue).isEqualTo("Total mindfulness time of 0 minutes")
         }
     }
 
@@ -230,7 +230,7 @@ class MindfulnessSessionFormatterTest {
 
             val formattedValue = formatter.formatA11yUnit(duration)
 
-            assertThat(formattedValue).isEqualTo("14 hours")
+            assertThat(formattedValue).isEqualTo("Total mindfulness time of 14 hours")
         }
     }
 }

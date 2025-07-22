@@ -28,10 +28,8 @@
     <string name="all_categories_title" msgid="1446410643217937926">"Visas kategorijas"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Skatīt visas kategorijas"</string>
     <string name="no_data" msgid="1906986019249068659">"Nav datu"</string>
-    <!-- no translation found for devices_summary (8653563324512654292) -->
-    <skip />
-    <!-- no translation found for devices_title (7548105261104504301) -->
-    <skip />
+    <string name="devices_summary" msgid="8653563324512654292">"Pievienoto ierīču pārvaldība"</string>
+    <string name="devices_title" msgid="7548105261104504301">"Ierīces"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"Lietotnes atļaujas"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Pārvaldīt lietotnes un atļaujas"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> lietotnei no <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> ir piekļuve."</string>
@@ -820,6 +818,16 @@
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"Bez vadības"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"Vidēji intensīvas"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"Enerģiskas"</string>
+    <!-- no translation found for nicotine_intake_title (428157249131107976) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_title_long (3254332210697516844) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_vape (8910534364762591958) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_cigarette (306427848597435195) -->
+    <skip />
+    <!-- no translation found for nicotine_intake_type_unknown (2096300681393598647) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
     <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> min"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> h"</string>
@@ -1253,4 +1261,8 @@
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Platformā Health Connect varat kopīgot fitnesa un labsajūtas datus starp savām lietotnēm. Skatiet, kuras lietotnes tagad varat saistīt."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Saistiet otru lietotni"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Iestatiet citu lietotni ar platformu Health Connect, lai sāktu kopīgot fitnesa un labsajūtas datus"</string>
+    <!-- no translation found for devices_current_device (6388308185566619743) -->
+    <skip />
+    <!-- no translation found for devices_unknown_device (8830092952740474454) -->
+    <skip />
 </resources>
