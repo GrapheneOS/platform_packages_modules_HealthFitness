@@ -859,6 +859,7 @@
     <string name="data_entry_header_without_source_app" translatable="false"><xliff:g example="14:41" id="time">%1$s</xliff:g></string>
     <string name="data_entry_header_date_range_with_source_app" translatable="false"><xliff:g example="Nov 11 - Nov 17" id="date_range">%1$s</xliff:g> • <xliff:g example="Run tracker" id="app_data">%2$s</xliff:g></string>
     <string name="data_entry_header_date_range_without_source_app" translatable="false"><xliff:g example="Nov 11 - Nov 17" id="date_range">%1$s</xliff:g></string>
+    <string name="data_entry_header_with_source_app_and_data_source" translatable="false"><xliff:g example="14:41" id="time">%1$s</xliff:g> • <xliff:g example="Run tracker" id="app_data">%2$s</xliff:g> • <xliff:g example="Medical Centre" id="data_source">%3$s</xliff:g></string>
 
     <string name="data_point_action_content_description" description="Content description for the menu button of an individual data entry [CHAR LIMIT=NONE]">Delete data entry <xliff:g example="1000 steps" id="entry_to_delete">%s</xliff:g></string>
     <string name="delete_data_point" description="Menu option for deleting an individual data entry [CHAR LIMIT=50]">Delete entry <xliff:g example="1000 steps" id="entry_to_delete">%s</xliff:g></string>

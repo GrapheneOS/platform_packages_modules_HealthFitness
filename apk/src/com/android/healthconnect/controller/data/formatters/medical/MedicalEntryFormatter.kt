@@ -34,6 +34,7 @@ constructor(
     private val medicalDataSourceReader: MedicalDataSourceReader,
     private val appInfoReader: AppInfoReader,
     private val displayNameExtractor: DisplayNameExtractor,
+    private val timeFieldExtractor: TimeFieldExtractor,
     @ApplicationContext private val context: Context,
 ) {
     suspend fun formatResource(
@@ -46,7 +47,7 @@ constructor(
         val dataSourceName = dataSource?.displayName ?: ""
         val appName: String = if (showDataOrigin) getAppName(dataSource) else ""
 
-        val header = getHeader(dataSourceName, appName)
+        val header = getHeader(dataSourceName, appName, resource)
         return FormattedEntry.FormattedMedicalDataEntry(
             header = header,
             headerA11y = header,
@@ -56,22 +57,33 @@ constructor(
         )
     }
 
-    private fun getHeader(dataSourceName: String, appName: String): String {
-        if (dataSourceName == "" && appName == "") {
-            return ""
-        }
-        if (dataSourceName == "") {
-            return appName
-        }
-        if (appName == "") {
-            return dataSourceName
-        }
+    private fun getHeader(
+        dataSourceName: String,
+        appName: String,
+        resource: MedicalResource,
+    ): String {
 
-        return context.getString(
-            R.string.data_entry_header_with_source_app,
-            appName,
-            dataSourceName,
-        )
+        val timeField = timeFieldExtractor.getTimeField(resource.fhirResource.data)
+        val headers = listOf(timeField, appName, dataSourceName)
+        val populatedHeaders = headers.filter { it.isNotEmpty() }
+
+        return when (populatedHeaders.size) {
+            1 -> populatedHeaders[0]
+            2 ->
+                context.getString(
+                    R.string.data_entry_header_with_source_app,
+                    populatedHeaders[0],
+                    populatedHeaders[1],
+                )
+            3 ->
+                context.getString(
+                    R.string.data_entry_header_with_source_app_and_data_source,
+                    populatedHeaders[0],
+                    populatedHeaders[1],
+                    populatedHeaders[2],
+                )
+            else -> ""
+        }
     }
 
     private suspend fun getAppName(dataSource: MedicalDataSource?): String {

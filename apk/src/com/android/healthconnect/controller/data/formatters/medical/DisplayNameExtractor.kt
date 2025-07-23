@@ -17,6 +17,20 @@ package com.android.healthconnect.controller.data.formatters.medical
 
 import android.content.Context
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.data.formatters.medical.ExtractorUtils.Companion.ALLERGY_INTOLERANCE
+import com.android.healthconnect.controller.data.formatters.medical.ExtractorUtils.Companion.CONDITION
+import com.android.healthconnect.controller.data.formatters.medical.ExtractorUtils.Companion.ENCOUNTER
+import com.android.healthconnect.controller.data.formatters.medical.ExtractorUtils.Companion.IMMUNIZATION
+import com.android.healthconnect.controller.data.formatters.medical.ExtractorUtils.Companion.LOCATION
+import com.android.healthconnect.controller.data.formatters.medical.ExtractorUtils.Companion.MEDICATION_REQUEST
+import com.android.healthconnect.controller.data.formatters.medical.ExtractorUtils.Companion.MEDICATION_RESOURCE
+import com.android.healthconnect.controller.data.formatters.medical.ExtractorUtils.Companion.MEDICATION_STATEMENT
+import com.android.healthconnect.controller.data.formatters.medical.ExtractorUtils.Companion.OBSERVATION
+import com.android.healthconnect.controller.data.formatters.medical.ExtractorUtils.Companion.ORGANIZATION
+import com.android.healthconnect.controller.data.formatters.medical.ExtractorUtils.Companion.PATIENT
+import com.android.healthconnect.controller.data.formatters.medical.ExtractorUtils.Companion.PRACTITIONER
+import com.android.healthconnect.controller.data.formatters.medical.ExtractorUtils.Companion.PRACTITIONER_ROLE
+import com.android.healthconnect.controller.data.formatters.medical.ExtractorUtils.Companion.PROCEDURE
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,13 +38,17 @@ import org.json.JSONObject
 
 /** Extracts the most relevant display name from the FHIR resource. */
 @Singleton
-class DisplayNameExtractor @Inject constructor(@ApplicationContext private val context: Context) {
+class DisplayNameExtractor
+@Inject
+constructor(
+    @ApplicationContext private val context: Context,
+    private val extractorUtils: ExtractorUtils,
+) {
 
     private lateinit var unknownResource: String
     private lateinit var fhirData: JSONObject
 
     companion object {
-        private const val RESOURCE_TYPE = "resourceType"
         private const val NAME = "name"
         private const val USUAL = "usual"
         private const val OFFICIAL = "official"
@@ -54,27 +72,12 @@ class DisplayNameExtractor @Inject constructor(@ApplicationContext private val c
         private const val ALIAS = "alias"
         private const val PREFIX = "prefix"
         private const val SPECIALTY = "specialty"
-
-        private const val PATIENT = "Patient"
-        private const val ENCOUNTER = "Encounter"
-        private const val CONDITION = "Condition"
-        private const val PROCEDURE = "Procedure"
-        private const val OBSERVATION = "Observation"
-        private const val ALLERGY_INTOLERANCE = "AllergyIntolerance"
-        private const val IMMUNIZATION = "Immunization"
-        private const val MEDICATION_REQUEST = "MedicationRequest"
-        private const val MEDICATION_STATEMENT = "MedicationStatement"
-        private const val MEDICATION_RESOURCE = "Medication"
-        private const val LOCATION = "Location"
-        private const val ORGANIZATION = "Organization"
-        private const val PRACTITIONER_ROLE = "PractitionerRole"
-        private const val PRACTITIONER = "Practitioner"
     }
 
     fun getDisplayName(fhirResourceJson: String): String {
         unknownResource = context.getString(R.string.unkwown_resource)
         fhirData = JSONObject(fhirResourceJson)
-        val resourceType = fhirData.optString(RESOURCE_TYPE)
+        val resourceType = extractorUtils.getResourceType(fhirResourceJson)
 
         return when (resourceType) {
             ALLERGY_INTOLERANCE,
