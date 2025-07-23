@@ -17,11 +17,13 @@
 package com.android.healthconnect.controller.tests.devices
 
 import android.content.Context
+import android.health.connect.datatypes.StepsRecord
 import android.os.Bundle
 import android.platform.test.annotations.EnableFlags
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -41,6 +43,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
@@ -63,12 +66,14 @@ class DeviceManagementFragmentTest {
         navHostController = TestNavHostController(context)
         whenever(viewModel.connectedDevicesState).then { connectedDevicesState }
         whenever(viewModel.selectedDevice).then { selectedDevice }
-        selectedDevice.postValue(DeviceDataSource("Pixel 8", isCurrentDevice = true))
-        connectedDevicesState.postValue(
-            ConnectedDevicesState.Success(
-                listOf(DeviceDataSource("Pixel 8", isCurrentDevice = true))
+        val currentDevice =
+            DeviceDataSource(
+                deviceName = "Pixel 8",
+                isCurrentDevice = true,
+                trackerStatus = mapOf(StepsRecord::class.java to true),
             )
-        )
+        selectedDevice.postValue(currentDevice)
+        connectedDevicesState.postValue(ConnectedDevicesState.Success(listOf(currentDevice)))
     }
 
     @Test
@@ -83,6 +88,17 @@ class DeviceManagementFragmentTest {
         launchFragment<DeviceManagementFragment>(Bundle())
 
         onView(withText("Steps")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun stepTrackingSwitch_whenClicked_callsViewModel() {
+        launchFragment<DeviceManagementFragment>(Bundle())
+
+        // Disable, then re-enable steps tracking.
+        onView(withText("Steps")).perform(click())
+        verify(viewModel).setTrackingEnabled(StepsRecord::class.java, false)
+        onView(withText("Steps")).perform(click())
+        verify(viewModel).setTrackingEnabled(StepsRecord::class.java, true)
     }
 
     @Test

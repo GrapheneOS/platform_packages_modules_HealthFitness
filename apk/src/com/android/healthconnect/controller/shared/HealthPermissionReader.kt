@@ -26,6 +26,7 @@ import android.content.pm.PackageManager.ResolveInfoFlags
 import android.health.connect.HealthConnectManager
 import android.health.connect.HealthConnectManager.ACTION_SHOW_ONBOARDING
 import android.health.connect.HealthPermissions
+import android.health.connect.HealthPermissions.isPermissionEnabled
 import android.os.Process
 import androidx.annotation.VisibleForTesting
 import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
@@ -524,7 +525,7 @@ constructor(
                 !AconfigFlagHelper.isActivityIntensityEnabled()
             HealthPermissions.READ_NICOTINE_INTAKE,
             HealthPermissions.WRITE_NICOTINE_INTAKE -> !AconfigFlagHelper.isNicotineIntakeEnabled()
-            else -> false
+            else -> !isPermissionEnabled(permission)
         }
     }
 

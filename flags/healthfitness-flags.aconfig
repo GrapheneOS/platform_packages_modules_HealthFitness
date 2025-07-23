@@ -624,3 +624,12 @@ flag {
     is_fixed_read_only: true
     is_exported: false
 }
+
+flag {
+    name: "data_completeness"
+    namespace: "health_fitness_aconfig"
+    description: "Collecting and logging completeness metric for data quality telemetry"
+    bug: "432241024"
+    is_fixed_read_only: true
+    is_exported: false
+}

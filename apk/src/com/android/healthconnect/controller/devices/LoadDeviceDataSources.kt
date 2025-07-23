@@ -16,6 +16,9 @@
 package com.android.healthconnect.controller.devices
 
 import android.content.Context
+import android.health.connect.HealthConnectManager
+import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.StepsRecord
 import android.provider.Settings
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
@@ -31,6 +34,7 @@ class LoadDeviceDataSources
 @Inject
 constructor(
     @ApplicationContext private val context: Context,
+    private val healthConnectManager: HealthConnectManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadDeviceDataSources, BaseUseCase<Unit, List<DeviceDataSource>>(dispatcher) {
     override suspend fun execute(input: Unit): List<DeviceDataSource> {
@@ -38,7 +42,16 @@ constructor(
         val currentDeviceName =
             Settings.Global.getString(context.contentResolver, Settings.Global.DEVICE_NAME)
                 ?: context.getString(R.string.devices_unknown_device)
-        return listOf(DeviceDataSource(deviceName = currentDeviceName, isCurrentDevice = true))
+        val recordTypes: List<Class<out Record>> = listOf(StepsRecord::class.java)
+        val trackingEnabledMap = healthConnectManager.isTrackingEnabled(recordTypes)
+        val trackerStatus = recordTypes.associateWith { trackingEnabledMap.getOrDefault(it, false) }
+        return listOf(
+            DeviceDataSource(
+                deviceName = currentDeviceName,
+                isCurrentDevice = true,
+                trackerStatus = trackerStatus,
+            )
+        )
     }
 }
 

@@ -15,10 +15,12 @@
  */
 package com.android.healthconnect.controller.devices
 
+import android.health.connect.datatypes.Record
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.devices.SetTrackingEnabled.Input
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,6 +33,7 @@ class ConnectedDevicesViewModel
 @Inject
 constructor(
     private val loadDeviceDataSourcesUseCase: ILoadDeviceDataSources,
+    private val setTrackingEnabled: ISetTrackingEnabled,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -44,6 +47,25 @@ constructor(
 
     fun setSelectedDevice(device: DeviceDataSource) {
         _selectedDevice.postValue(device)
+    }
+
+    fun setTrackingEnabled(recordType: Class<out Record>, isEnabled: Boolean) {
+        viewModelScope.launch(ioDispatcher) {
+            when (setTrackingEnabled.invoke(Input(recordType, isEnabled))) {
+                is UseCaseResults.Success -> {
+                    val currentDevice = _selectedDevice.value
+                    currentDevice?.let {
+                        val newTrackerStatus = it.trackerStatus.toMutableMap()
+                        newTrackerStatus[recordType] = isEnabled
+                        _selectedDevice.postValue(it.copy(trackerStatus = newTrackerStatus))
+                    }
+                }
+                is UseCaseResults.Failed -> {
+                    _connectedDevicesState.postValue(ConnectedDevicesState.Error)
+                }
+            }
+        }
+        loadDeviceDataSources()
     }
 
     fun loadDeviceDataSources() {

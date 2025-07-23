@@ -73,7 +73,7 @@ class ConnectedDevicesFragmentTest {
     fun connectedDevicesFragment_launchable() {
         connectedDevicesState.postValue(
             ConnectedDevicesState.Success(
-                listOf(DeviceDataSource("Pixel 8", isCurrentDevice = true))
+                listOf(DeviceDataSource("Pixel 8", isCurrentDevice = true, trackerStatus = mapOf()))
             )
         )
 
@@ -112,7 +112,7 @@ class ConnectedDevicesFragmentTest {
     fun withDevice_showsDevice() {
         connectedDevicesState.postValue(
             ConnectedDevicesState.Success(
-                listOf(DeviceDataSource("Pixel 8", isCurrentDevice = true))
+                listOf(DeviceDataSource("Pixel 8", isCurrentDevice = true, trackerStatus = mapOf()))
             )
         )
 
@@ -126,8 +126,12 @@ class ConnectedDevicesFragmentTest {
         connectedDevicesState.postValue(
             ConnectedDevicesState.Success(
                 listOf(
-                    DeviceDataSource("Pixel 8", isCurrentDevice = true),
-                    DeviceDataSource("Pixel 7 Pro", isCurrentDevice = false),
+                    DeviceDataSource("Pixel 8", isCurrentDevice = true, trackerStatus = mapOf()),
+                    DeviceDataSource(
+                        "Pixel 7 Pro",
+                        isCurrentDevice = false,
+                        trackerStatus = mapOf(),
+                    ),
                 )
             )
         )
@@ -142,7 +146,9 @@ class ConnectedDevicesFragmentTest {
     fun currentDevice_includesSummaryText() {
         connectedDevicesState.postValue(
             ConnectedDevicesState.Success(
-                listOf(DeviceDataSource("Pixel 7 Pro", isCurrentDevice = true))
+                listOf(
+                    DeviceDataSource("Pixel 7 Pro", isCurrentDevice = true, trackerStatus = mapOf())
+                )
             )
         )
 
@@ -155,7 +161,13 @@ class ConnectedDevicesFragmentTest {
     fun notCurrentDevice_excludesSummaryText() {
         connectedDevicesState.postValue(
             ConnectedDevicesState.Success(
-                listOf(DeviceDataSource("Pixel 7 Pro", isCurrentDevice = false))
+                listOf(
+                    DeviceDataSource(
+                        "Pixel 7 Pro",
+                        isCurrentDevice = false,
+                        trackerStatus = mapOf(),
+                    )
+                )
             )
         )
 
@@ -168,7 +180,7 @@ class ConnectedDevicesFragmentTest {
     fun clickDevice_navigatesToDeviceManagementFragment() {
         connectedDevicesState.postValue(
             ConnectedDevicesState.Success(
-                listOf(DeviceDataSource("Pixel 8", isCurrentDevice = true))
+                listOf(DeviceDataSource("Pixel 8", isCurrentDevice = true, trackerStatus = mapOf()))
             )
         )
         val scenario =

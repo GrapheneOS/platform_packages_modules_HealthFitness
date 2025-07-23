@@ -17,6 +17,7 @@
 package android.health.connect;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
+import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION;
 import static com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
 
@@ -181,6 +182,15 @@ public class HealthPermissionCategory {
     @FlaggedApi(FLAG_SMOKING)
     public static final int NICOTINE_INTAKE = 43;
 
+    /**
+     * Permission category for {AlcoholConsumptionRecord}
+     *
+     * @hide
+     */
+    // TODO: Unhide once AlcoholConsumptionRecord is implemented
+    @FlaggedApi(FLAG_ALCOHOL_CONSUMPTION)
+    public static final int ALCOHOL_CONSUMPTION = 44;
+
     private HealthPermissionCategory() {}
 
     /** @hide */
@@ -226,6 +236,7 @@ public class HealthPermissionCategory {
         PLANNED_EXERCISE,
         MINDFULNESS,
         NICOTINE_INTAKE,
+        ALCOHOL_CONSUMPTION,
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface Type {}

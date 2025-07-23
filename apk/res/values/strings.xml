@@ -509,6 +509,11 @@
     <string name="nicotine_intake_read_content_description" description="Content description for switch that enables permissions for reading user's nicotine intake data [CHAR_LIMIT=NONE]">Read nicotine intake</string>
     <string name="nicotine_intake_write_content_description" description="Content description for switch that enables permissions for writing user's nicotine intake data [CHAR_LIMIT=NONE]">Write nicotine intake</string>
 
+    <string name="alcohol_consumption_uppercase_label" description="Uppercase label used to show user's alcohol consumption data [CHAR_LIMIT=50]">Alcohol consumption</string>
+    <string name="alcohol_consumption_lowercase_label" description="Lowercase label used to show user's alcohol consumption data [CHAR_LIMIT=50]">alcohol consumption</string>
+    <string name="alcohol_consumption_read_content_description" description="Content description for switch that enables permissions for reading user's alcohol consumption data [CHAR_LIMIT=NONE]">Read alcohol consumption</string>
+    <string name="alcohol_consumption_write_content_description" description="Content description for switch that enables permissions for writing user's alcohol consumption data [CHAR_LIMIT=NONE]">Write alcohol consumption</string>
+
     <!--endregion-->
 
     <!-- region Permissions -->
@@ -859,6 +864,7 @@
     <string name="data_entry_header_without_source_app" translatable="false"><xliff:g example="14:41" id="time">%1$s</xliff:g></string>
     <string name="data_entry_header_date_range_with_source_app" translatable="false"><xliff:g example="Nov 11 - Nov 17" id="date_range">%1$s</xliff:g> • <xliff:g example="Run tracker" id="app_data">%2$s</xliff:g></string>
     <string name="data_entry_header_date_range_without_source_app" translatable="false"><xliff:g example="Nov 11 - Nov 17" id="date_range">%1$s</xliff:g></string>
+    <string name="data_entry_header_with_source_app_and_data_source" translatable="false"><xliff:g example="14:41" id="time">%1$s</xliff:g> • <xliff:g example="Run tracker" id="app_data">%2$s</xliff:g> • <xliff:g example="Medical Centre" id="data_source">%3$s</xliff:g></string>
 
     <string name="data_point_action_content_description" description="Content description for the menu button of an individual data entry [CHAR LIMIT=NONE]">Delete data entry <xliff:g example="1000 steps" id="entry_to_delete">%s</xliff:g></string>
     <string name="delete_data_point" description="Menu option for deleting an individual data entry [CHAR LIMIT=50]">Delete entry <xliff:g example="1000 steps" id="entry_to_delete">%s</xliff:g></string>

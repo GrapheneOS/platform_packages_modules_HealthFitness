@@ -15,5 +15,11 @@
  */
 package com.android.healthconnect.controller.devices
 
+import android.health.connect.datatypes.Record
+
 /** Represents a device which can act as a data source for e.g. steps or other data types. */
-data class DeviceDataSource(val deviceName: String, val isCurrentDevice: Boolean)
+data class DeviceDataSource(
+    val deviceName: String,
+    val isCurrentDevice: Boolean,
+    val trackerStatus: Map<Class<out Record>, Boolean>,
+)

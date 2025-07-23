@@ -45,8 +45,10 @@ import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
+import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_3
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_3
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -65,9 +67,11 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -86,7 +90,27 @@ class WearConnectedAppsViewModelTest {
     private val revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase = mock()
     private val healthPermissionReader: HealthPermissionReader = mock()
     private val loadRecentAccessUseCase: LoadRecentAccessUseCase = mock()
-
+    private val nonSystemApp1Metadata =
+        AppMetadata(
+            packageName = TEST_APP_PACKAGE_NAME,
+            appName = TEST_APP_NAME,
+            icon = null,
+            isSystem = false,
+        )
+    private val nonSystemApp2Metadata =
+        AppMetadata(
+            packageName = TEST_APP_PACKAGE_NAME_2,
+            appName = TEST_APP_NAME_2,
+            icon = null,
+            isSystem = false,
+        )
+    private val systemAppMetadata =
+        AppMetadata(
+            packageName = TEST_APP_PACKAGE_NAME_3,
+            appName = TEST_APP_NAME_3,
+            icon = null,
+            isSystem = true,
+        )
     private lateinit var viewModel: WearConnectedAppsViewModel
 
     @Before
@@ -101,22 +125,9 @@ class WearConnectedAppsViewModelTest {
             whenever(loadHealthPermissionApps.invoke())
                 .thenReturn(
                     listOf(
-                        ConnectedAppMetadata(
-                            AppMetadata(
-                                packageName = TEST_APP_PACKAGE_NAME,
-                                appName = TEST_APP_NAME,
-                                icon = null,
-                            ),
-                            ConnectedAppStatus.ALLOWED,
-                        ),
-                        ConnectedAppMetadata(
-                            AppMetadata(
-                                packageName = TEST_APP_PACKAGE_NAME_2,
-                                appName = TEST_APP_NAME_2,
-                                icon = null,
-                            ),
-                            ConnectedAppStatus.DENIED,
-                        ),
+                        ConnectedAppMetadata(nonSystemApp1Metadata, ConnectedAppStatus.ALLOWED),
+                        ConnectedAppMetadata(nonSystemApp2Metadata, ConnectedAppStatus.DENIED),
+                        ConnectedAppMetadata(systemAppMetadata, ConnectedAppStatus.ALLOWED),
                     )
                 )
             whenever(loadAppPermissionsStatusUseCase.invoke(TEST_APP_PACKAGE_NAME))
@@ -142,6 +153,15 @@ class WearConnectedAppsViewModelTest {
                         HealthPermissionStatus(
                             fromPermissionString(HealthPermissions.READ_HEART_RATE),
                             isGranted = false,
+                        )
+                    )
+                )
+            whenever(loadAppPermissionsStatusUseCase.invoke(TEST_APP_PACKAGE_NAME_3))
+                .thenReturn(
+                    listOf(
+                        HealthPermissionStatus(
+                            fromPermissionString(HealthPermissions.READ_HEART_RATE),
+                            isGranted = true,
                         )
                     )
                 )
@@ -175,15 +195,7 @@ class WearConnectedAppsViewModelTest {
                 .sortedByDescending { it.accessTime }
         whenever(loadRecentAccessUseCase.invoke(any()))
             .thenReturn(UseCaseResults.Success(accessLogs))
-        viewModel =
-            WearConnectedAppsViewModel(
-                loadHealthPermissionApps,
-                loadAppPermissionsStatusUseCase,
-                grantPermissionsStatusUseCase,
-                revokeHealthPermissionUseCase,
-                loadRecentAccessUseCase,
-                healthPermissionReader,
-            )
+        viewModel = createViewModel()
 
         val actualPermissionAccessRecords = mutableListOf<List<PermissionAccess>>()
         val collectJob = launch {
@@ -198,16 +210,7 @@ class WearConnectedAppsViewModelTest {
             .containsExactly(
                 PermissionAccess(
                     fromPermissionString(HealthPermissions.READ_HEART_RATE),
-                    listOf(
-                        AppAccess(
-                            AppMetadata(
-                                packageName = TEST_APP_PACKAGE_NAME,
-                                appName = TEST_APP_NAME,
-                                icon = null,
-                            ),
-                            lastAccessTime = newTime,
-                        )
-                    ),
+                    listOf(AppAccess(nonSystemApp1Metadata, lastAccessTime = newTime)),
                 )
             )
     }
@@ -234,15 +237,7 @@ class WearConnectedAppsViewModelTest {
                 .sortedByDescending { it.accessTime }
         whenever(loadRecentAccessUseCase.invoke(any()))
             .thenReturn(UseCaseResults.Success(accessLogs))
-        viewModel =
-            WearConnectedAppsViewModel(
-                loadHealthPermissionApps,
-                loadAppPermissionsStatusUseCase,
-                grantPermissionsStatusUseCase,
-                revokeHealthPermissionUseCase,
-                loadRecentAccessUseCase,
-                healthPermissionReader,
-            )
+        viewModel = createViewModel()
 
         val actualPermissionAccessRecords = mutableListOf<List<PermissionAccess>>()
         val collectJob = launch {
@@ -257,16 +252,7 @@ class WearConnectedAppsViewModelTest {
             .containsExactly(
                 PermissionAccess(
                     fromPermissionString(HealthPermissions.READ_HEART_RATE),
-                    listOf(
-                        AppAccess(
-                            AppMetadata(
-                                packageName = TEST_APP_PACKAGE_NAME,
-                                appName = TEST_APP_NAME,
-                                icon = null,
-                            ),
-                            lastAccessTime = readOldTime,
-                        )
-                    ),
+                    listOf(AppAccess(nonSystemApp1Metadata, lastAccessTime = readOldTime)),
                 )
             )
     }
@@ -300,15 +286,7 @@ class WearConnectedAppsViewModelTest {
                 .sortedByDescending { it.accessTime }
         whenever(loadRecentAccessUseCase.invoke(any()))
             .thenReturn(UseCaseResults.Success(accessLogs))
-        viewModel =
-            WearConnectedAppsViewModel(
-                loadHealthPermissionApps,
-                loadAppPermissionsStatusUseCase,
-                grantPermissionsStatusUseCase,
-                revokeHealthPermissionUseCase,
-                loadRecentAccessUseCase,
-                healthPermissionReader,
-            )
+        viewModel = createViewModel()
 
         val actualPermissionAccessRecords = mutableListOf<List<PermissionAccess>>()
         val collectJob = launch {
@@ -323,42 +301,15 @@ class WearConnectedAppsViewModelTest {
             .containsExactly(
                 PermissionAccess(
                     fromPermissionString(HealthPermissions.READ_HEART_RATE),
-                    listOf(
-                        AppAccess(
-                            AppMetadata(
-                                packageName = TEST_APP_PACKAGE_NAME,
-                                appName = TEST_APP_NAME,
-                                icon = null,
-                            ),
-                            lastAccessTime = heartRateTime,
-                        )
-                    ),
+                    listOf(AppAccess(nonSystemApp1Metadata, lastAccessTime = heartRateTime)),
                 ),
                 PermissionAccess(
                     fromPermissionString(HealthPermissions.READ_SKIN_TEMPERATURE),
-                    listOf(
-                        AppAccess(
-                            AppMetadata(
-                                packageName = TEST_APP_PACKAGE_NAME,
-                                appName = TEST_APP_NAME,
-                                icon = null,
-                            ),
-                            lastAccessTime = skinTempTime,
-                        )
-                    ),
+                    listOf(AppAccess(nonSystemApp1Metadata, lastAccessTime = skinTempTime)),
                 ),
                 PermissionAccess(
                     fromPermissionString(HealthPermissions.READ_OXYGEN_SATURATION),
-                    listOf(
-                        AppAccess(
-                            AppMetadata(
-                                packageName = TEST_APP_PACKAGE_NAME,
-                                appName = TEST_APP_NAME,
-                                icon = null,
-                            ),
-                            lastAccessTime = spO2Time,
-                        )
-                    ),
+                    listOf(AppAccess(nonSystemApp1Metadata, lastAccessTime = spO2Time)),
                 ),
             )
     }
@@ -367,15 +318,7 @@ class WearConnectedAppsViewModelTest {
     fun testRecentAccessMapping_useCaseResultsFailed_skipProcessing() = runTest {
         whenever(loadRecentAccessUseCase.invoke(any()))
             .thenReturn(UseCaseResults.Failed(Exception()))
-        viewModel =
-            WearConnectedAppsViewModel(
-                loadHealthPermissionApps,
-                loadAppPermissionsStatusUseCase,
-                grantPermissionsStatusUseCase,
-                revokeHealthPermissionUseCase,
-                loadRecentAccessUseCase,
-                healthPermissionReader,
-            )
+        viewModel = createViewModel()
 
         val actualPermissionAccessRecords = mutableListOf<List<PermissionAccess>>()
         val collectJob = launch {
@@ -405,15 +348,7 @@ class WearConnectedAppsViewModelTest {
                 .sortedByDescending { it.accessTime }
         whenever(loadRecentAccessUseCase.invoke(any()))
             .thenReturn(UseCaseResults.Success(accessLogs))
-        viewModel =
-            WearConnectedAppsViewModel(
-                loadHealthPermissionApps,
-                loadAppPermissionsStatusUseCase,
-                grantPermissionsStatusUseCase,
-                revokeHealthPermissionUseCase,
-                loadRecentAccessUseCase,
-                healthPermissionReader,
-            )
+        viewModel = createViewModel()
 
         val actualPermissionAccessRecords = mutableListOf<List<PermissionAccess>>()
         val collectJob = launch {
@@ -443,15 +378,7 @@ class WearConnectedAppsViewModelTest {
                 .sortedByDescending { it.accessTime }
         whenever(loadRecentAccessUseCase.invoke(any()))
             .thenReturn(UseCaseResults.Success(accessLogs))
-        viewModel =
-            WearConnectedAppsViewModel(
-                loadHealthPermissionApps,
-                loadAppPermissionsStatusUseCase,
-                grantPermissionsStatusUseCase,
-                revokeHealthPermissionUseCase,
-                loadRecentAccessUseCase,
-                healthPermissionReader,
-            )
+        viewModel = createViewModel()
 
         val actualPermissionAccessRecords = mutableListOf<List<PermissionAccess>>()
         val collectJob = launch {
@@ -484,15 +411,7 @@ class WearConnectedAppsViewModelTest {
                 .sortedByDescending { it.accessTime }
         whenever(loadRecentAccessUseCase.invoke(any()))
             .thenReturn(UseCaseResults.Success(accessLogs))
-        viewModel =
-            WearConnectedAppsViewModel(
-                loadHealthPermissionApps,
-                loadAppPermissionsStatusUseCase,
-                grantPermissionsStatusUseCase,
-                revokeHealthPermissionUseCase,
-                loadRecentAccessUseCase,
-                healthPermissionReader,
-            )
+        viewModel = createViewModel()
 
         val actualPermissionAccessRecords = mutableListOf<List<PermissionAccess>>()
         val collectJob = launch {
@@ -520,15 +439,7 @@ class WearConnectedAppsViewModelTest {
             )
         whenever(loadRecentAccessUseCase.invoke(any()))
             .thenReturn(UseCaseResults.Success(accessLogs))
-        viewModel =
-            WearConnectedAppsViewModel(
-                loadHealthPermissionApps,
-                loadAppPermissionsStatusUseCase,
-                grantPermissionsStatusUseCase,
-                revokeHealthPermissionUseCase,
-                loadRecentAccessUseCase,
-                healthPermissionReader,
-            )
+        viewModel = createViewModel()
 
         val actualPermissionAccessRecords = mutableListOf<List<PermissionAccess>>()
         val collectJob = launch {
@@ -543,17 +454,59 @@ class WearConnectedAppsViewModelTest {
             .containsExactly(
                 PermissionAccess(
                     fromPermissionString(HealthPermissions.READ_HEART_RATE),
-                    listOf(
-                        AppAccess(
-                            AppMetadata(
-                                packageName = TEST_APP_PACKAGE_NAME_2,
-                                appName = TEST_APP_NAME_2,
-                                icon = null,
-                            ),
-                            accessTime,
-                        )
-                    ),
+                    listOf(AppAccess(nonSystemApp2Metadata, accessTime)),
                 )
             )
+    }
+
+    @Test
+    fun testRemoveFitnessPermissionForAllApps_removesNonSystemAppsOnly() = runTest {
+        val heartRatePermission = fromPermissionString(HealthPermissions.READ_HEART_RATE)
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.removeFitnessPermissionForAllApps(heartRatePermission)
+        advanceUntilIdle()
+
+        verify(revokeHealthPermissionUseCase, times(1))
+            .invoke(eq(nonSystemApp1Metadata.packageName), eq(HealthPermissions.READ_HEART_RATE))
+        verify(revokeHealthPermissionUseCase, times(0))
+            .invoke(
+                eq(systemAppMetadata.packageName),
+                eq(HealthPermissions.READ_HEART_RATE),
+            ) // System app permission should not be revoked
+        verify(revokeHealthPermissionUseCase, times(0))
+            .invoke(
+                eq(nonSystemApp2Metadata.packageName),
+                eq(HealthPermissions.READ_HEART_RATE),
+            ) // Non-system app 2 is originally denied, so it should not be revoked.
+        with(viewModel) {
+            assertThat(dataTypeToAllowedApps.value[heartRatePermission])
+                .containsExactly(systemAppMetadata)
+            assertThat(dataTypeToDeniedApps.value[heartRatePermission])
+                .containsExactlyElementsIn(listOf(nonSystemApp2Metadata, nonSystemApp1Metadata))
+
+            val appPermissions = appToAllowedDataTypes.value
+            assertThat(appPermissions[systemAppMetadata]).containsExactly(heartRatePermission)
+            assertThat(appPermissions[nonSystemApp1Metadata])
+                .containsExactlyElementsIn(
+                    listOf(
+                        fromPermissionString(HealthPermissions.READ_SKIN_TEMPERATURE),
+                        fromPermissionString(HealthPermissions.READ_OXYGEN_SATURATION),
+                    )
+                )
+            assertThat(appPermissions).doesNotContainKey(nonSystemApp2Metadata)
+        }
+    }
+
+    private fun createViewModel(): WearConnectedAppsViewModel {
+        return WearConnectedAppsViewModel(
+            loadHealthPermissionApps,
+            loadAppPermissionsStatusUseCase,
+            grantPermissionsStatusUseCase,
+            revokeHealthPermissionUseCase,
+            loadRecentAccessUseCase,
+            healthPermissionReader,
+        )
     }
 }

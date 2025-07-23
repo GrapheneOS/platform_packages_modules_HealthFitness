@@ -360,6 +360,12 @@
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 
+    <permission
+        android:name="android.permission.health.READ_ALCOHOL_CONSUMPTION"
+        android:label="@string/alcohol_consumption_read_content_description"
+        android:protectionLevel="dangerous"
+        android:permissionGroup="android.permission-group.HEALTH" />
+
     <!-- Write permissions -->
     <!-- Write permissions for activities -->
     <permission
@@ -619,6 +625,12 @@
     <permission
         android:name="android.permission.health.WRITE_NICOTINE_INTAKE"
         android:label="@string/nicotine_intake_write_content_description"
+        android:protectionLevel="dangerous"
+        android:permissionGroup="android.permission-group.HEALTH" />
+
+    <permission
+        android:name="android.permission.health.WRITE_ALCOHOL_CONSUMPTION"
+        android:label="@string/alcohol_consumption_write_content_description"
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 </manifest>

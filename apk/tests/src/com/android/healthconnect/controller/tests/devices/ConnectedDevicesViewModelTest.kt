@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.devices
 
+import android.health.connect.datatypes.StepsRecord
 import android.platform.test.annotations.EnableFlags
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.devices.ConnectedDevicesViewModel
@@ -23,6 +24,7 @@ import com.android.healthconnect.controller.devices.DeviceDataSource
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadDeviceDataSourcesUseCase
+import com.android.healthconnect.controller.tests.utils.di.FakeSetTrackingEnabledUseCase
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -51,6 +53,7 @@ class ConnectedDevicesViewModelTest {
 
     private val testDispatcher = UnconfinedTestDispatcher()
     private val loadDeviceDataSourcesUseCase = FakeLoadDeviceDataSourcesUseCase()
+    private val setTrackingEnabledUseCase = FakeSetTrackingEnabledUseCase()
 
     private lateinit var viewModel: ConnectedDevicesViewModel
 
@@ -58,7 +61,12 @@ class ConnectedDevicesViewModelTest {
     fun setup() {
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
-        viewModel = ConnectedDevicesViewModel(loadDeviceDataSourcesUseCase, testDispatcher)
+        viewModel =
+            ConnectedDevicesViewModel(
+                loadDeviceDataSourcesUseCase,
+                setTrackingEnabledUseCase,
+                testDispatcher,
+            )
     }
 
     @After
@@ -70,17 +78,70 @@ class ConnectedDevicesViewModelTest {
     fun setSelectedDevice_setsSelectedDevice() {
         val testObserver = TestObserver<DeviceDataSource>()
         viewModel.selectedDevice.observeForever(testObserver)
-        viewModel.setSelectedDevice(DeviceDataSource("Pixel 8", isCurrentDevice = true))
+        viewModel.setSelectedDevice(
+            DeviceDataSource(
+                deviceName = "Pixel 8",
+                isCurrentDevice = true,
+                trackerStatus = mapOf(StepsRecord::class.java to true),
+            )
+        )
 
         val actual = testObserver.getLastValue()
-        assertThat(actual).isEqualTo(DeviceDataSource("Pixel 8", isCurrentDevice = true))
+        assertThat(actual)
+            .isEqualTo(
+                DeviceDataSource(
+                    deviceName = "Pixel 8",
+                    isCurrentDevice = true,
+                    trackerStatus = mapOf(StepsRecord::class.java to true),
+                )
+            )
+    }
+
+    @Test
+    fun setTrackingEnabled_callsUseCase() {
+        viewModel.setTrackingEnabled(StepsRecord::class.java, true)
+
+        val latestInput = setTrackingEnabledUseCase.latestInput
+        assertThat(latestInput?.recordType).isEqualTo(StepsRecord::class.java)
+        assertThat(latestInput?.isEnabled).isEqualTo(true)
+    }
+
+    @Test
+    fun setTrackingEnabled_updatesSelectedDevice() {
+        val testObserver = TestObserver<DeviceDataSource>()
+        val initialDevice =
+            DeviceDataSource(
+                deviceName = "Pixel 8",
+                isCurrentDevice = true,
+                trackerStatus = mapOf(StepsRecord::class.java to false),
+            )
+        viewModel.setSelectedDevice(initialDevice)
+        viewModel.selectedDevice.observeForever(testObserver)
+
+        viewModel.setTrackingEnabled(StepsRecord::class.java, true)
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual)
+            .isEqualTo(
+                DeviceDataSource(
+                    deviceName = "Pixel 8",
+                    isCurrentDevice = true,
+                    trackerStatus = mapOf(StepsRecord::class.java to true),
+                )
+            )
     }
 
     @Test
     fun loadDeviceDataSources_success_loadsDeviceDataSources() = runTest {
         val testObserver = TestObserver<ConnectedDevicesState>()
         loadDeviceDataSourcesUseCase.updateList(
-            listOf(DeviceDataSource("Pixel 8", isCurrentDevice = true))
+            listOf(
+                DeviceDataSource(
+                    deviceName = "Pixel 8",
+                    isCurrentDevice = true,
+                    trackerStatus = mapOf(StepsRecord::class.java to true),
+                )
+            )
         )
         viewModel.connectedDevicesState.observeForever(testObserver)
         viewModel.loadDeviceDataSources()
@@ -90,7 +151,13 @@ class ConnectedDevicesViewModelTest {
         assertThat(actual)
             .isEqualTo(
                 ConnectedDevicesState.Success(
-                    listOf(DeviceDataSource("Pixel 8", isCurrentDevice = true))
+                    listOf(
+                        DeviceDataSource(
+                            deviceName = "Pixel 8",
+                            isCurrentDevice = true,
+                            trackerStatus = mapOf(StepsRecord::class.java to true),
+                        )
+                    )
                 )
             )
     }
