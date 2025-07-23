@@ -19,6 +19,7 @@ package android.health.connect;
 import static android.health.connect.Constants.DEFAULT_INT;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
+import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API;
 import static com.android.healthfitness.flags.Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY;
 import static com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS;
@@ -469,6 +470,18 @@ public final class HealthPermissions {
             "android.permission.health.READ_NICOTINE_INTAKE";
 
     /**
+     * Allows an application to write user's alcohol consumption data.
+     *
+     * <p>Protection level: dangerous.
+     *
+     * @hide
+     */
+    // TODO: Unhide once AlcoholConsumptionRecord is implemented
+    @FlaggedApi(FLAG_ALCOHOL_CONSUMPTION)
+    public static final String READ_ALCOHOL_CONSUMPTION =
+            "android.permission.health.READ_ALCOHOL_CONSUMPTION";
+
+    /**
      * Allows an application to write the user's calories burned data.
      *
      * <p>Protection level: dangerous.
@@ -785,6 +798,18 @@ public final class HealthPermissions {
     public static final String WRITE_NICOTINE_INTAKE =
             "android.permission.health.WRITE_NICOTINE_INTAKE";
 
+    /**
+     * Allows an application to write user's alcohol consumption data.
+     *
+     * <p>Protection level: dangerous.
+     *
+     * @hide
+     */
+    // TODO: Unhide once AlcoholConsumptionRecord is implemented
+    @FlaggedApi(FLAG_ALCOHOL_CONSUMPTION)
+    public static final String WRITE_ALCOHOL_CONSUMPTION =
+            "android.permission.health.WRITE_ALCOHOL_CONSUMPTION";
+
     /* Personal Health Record permissions */
 
     /**
@@ -1074,9 +1099,10 @@ public final class HealthPermissions {
 
     /** @hide */
     // TODO(b/377285620): flag the permissions in the Manifest when fully supported.
-    static boolean isPermissionEnabled(@NonNull String permission) {
+    public static boolean isPermissionEnabled(@NonNull String permission) {
         return switch (permission) {
             case READ_ACTIVITY_INTENSITY, WRITE_ACTIVITY_INTENSITY -> Flags.activityIntensity();
+            case READ_ALCOHOL_CONSUMPTION, WRITE_ALCOHOL_CONSUMPTION -> Flags.alcoholConsumption();
             case READ_NICOTINE_INTAKE, WRITE_NICOTINE_INTAKE -> Flags.smoking();
             case READ_MEDICAL_DATA_DEVICES -> Flags.deviceResource();
             default -> true;

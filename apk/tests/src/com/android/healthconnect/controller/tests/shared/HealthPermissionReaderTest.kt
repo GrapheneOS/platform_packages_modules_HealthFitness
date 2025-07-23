@@ -167,6 +167,38 @@ class HealthPermissionReaderTest {
             )
     }
 
+    @RequiresFlagsEnabled(Flags.FLAG_ALCOHOL_CONSUMPTION, Flags.FLAG_ALCOHOL_CONSUMPTION_DB)
+    @Test
+    fun getHealthPermissions_alcoholConsumptionFlagsEnabled_returnsPermissions() {
+        assertThat(permissionReader.getHealthPermissions())
+            .containsAtLeast(
+                HealthPermissions.READ_ALCOHOL_CONSUMPTION,
+                HealthPermissions.WRITE_ALCOHOL_CONSUMPTION,
+            )
+    }
+
+    @RequiresFlagsEnabled(Flags.FLAG_ALCOHOL_CONSUMPTION_DB)
+    @RequiresFlagsDisabled(Flags.FLAG_ALCOHOL_CONSUMPTION)
+    @Test
+    fun getHealthPermissions_alcoholConsumptionFlagDisabled_doesNotReturnPermissions() {
+        assertThat(permissionReader.getHealthPermissions())
+            .containsNoneOf(
+                HealthPermissions.READ_ALCOHOL_CONSUMPTION,
+                HealthPermissions.WRITE_ALCOHOL_CONSUMPTION,
+            )
+    }
+
+    @RequiresFlagsEnabled(Flags.FLAG_ALCOHOL_CONSUMPTION)
+    @RequiresFlagsDisabled(Flags.FLAG_ALCOHOL_CONSUMPTION_DB)
+    @Test
+    fun getHealthPermissions_alcoholConsumptionDbFlagDisabled_doesNotReturnPermissions() {
+        assertThat(permissionReader.getHealthPermissions())
+            .containsNoneOf(
+                HealthPermissions.READ_ALCOHOL_CONSUMPTION,
+                HealthPermissions.WRITE_ALCOHOL_CONSUMPTION,
+            )
+    }
+
     @Test
     fun isRationalIntentDeclared_withIntent_returnsTrue() {
         assertThat(permissionReader.isRationaleIntentDeclared(TEST_APP_PACKAGE_NAME)).isTrue()
