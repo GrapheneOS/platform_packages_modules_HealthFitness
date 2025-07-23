@@ -131,7 +131,7 @@ class MindfulnessSessionFormatterTest {
 
             val formattedValue = formatter.formatUnit(duration)
 
-            assertThat(formattedValue).isEqualTo("10h 54m")
+            assertThat(formattedValue).isEqualTo("10h${NBSP}54m")
         }
     }
 
@@ -153,7 +153,7 @@ class MindfulnessSessionFormatterTest {
 
             val formattedValue = formatter.formatUnit(duration)
 
-            assertThat(formattedValue).isEqualTo("200h 59m")
+            assertThat(formattedValue).isEqualTo("200h${NBSP}59m")
         }
     }
 
@@ -232,5 +232,9 @@ class MindfulnessSessionFormatterTest {
 
             assertThat(formattedValue).isEqualTo("Total mindfulness time of 14 hours")
         }
+    }
+
+    private companion object {
+        const val NBSP = "\u00A0" // no break space
     }
 }

@@ -200,7 +200,11 @@ class LoadDataAggregationsUseCaseTest {
 
             val result = loadDataAggregationsUseCase.invoke(input)
             val expected =
-                FormattedEntry.FormattedAggregation("11h 5m", "11 hours 5 minutes", TEST_APP_NAME)
+                FormattedEntry.FormattedAggregation(
+                    "11h${NBSP}5m",
+                    "11 hours 5 minutes",
+                    TEST_APP_NAME,
+                )
             assertThat(result is UseCaseResults.Success).isTrue()
             assertThat((result as UseCaseResults.Success).data).isEqualTo(expected)
         }
@@ -225,7 +229,7 @@ class LoadDataAggregationsUseCaseTest {
 
             val expected =
                 FormattedEntry.FormattedAggregation(
-                    "6h 15m",
+                    "6h${NBSP}15m",
                     "Total mindfulness time of 6 hours 15 minutes",
                     TEST_APP_NAME,
                 )
@@ -350,5 +354,9 @@ class LoadDataAggregationsUseCaseTest {
                     aggregationResult
             )
         )
+    }
+
+    private companion object {
+        const val NBSP = "\u00A0" // no break space
     }
 }
