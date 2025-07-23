@@ -28,10 +28,12 @@ import com.android.healthconnect.controller.data.access.ILoadMedicalTypeContribu
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.api.ILoadDataAggregationsUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadDataEntriesUseCase
+import com.android.healthconnect.controller.data.entries.api.ILoadLatestEntryDateUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadMedicalEntriesUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadMenstruationDataUseCase
 import com.android.healthconnect.controller.data.entries.api.LoadAggregationInput
 import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesInput
+import com.android.healthconnect.controller.data.entries.api.LoadLatestEntryDateInput
 import com.android.healthconnect.controller.data.entries.api.LoadMedicalEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataInput
 import com.android.healthconnect.controller.datasources.AggregationCardInfo
@@ -77,6 +79,7 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.IGetContributorAppInfoUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.utils.toInstant
 import java.time.Instant
 import java.time.LocalDate
 
@@ -286,6 +289,38 @@ class FakeLoadMedicalEntriesUseCase : ILoadMedicalEntriesUseCase {
 
     override suspend fun execute(input: LoadMedicalEntriesInput): List<FormattedEntry> {
         return formattedList
+    }
+}
+
+class FakeLoadLatestEntryDateUseCase : ILoadLatestEntryDateUseCase {
+    private var instant = System.currentTimeMillis().toInstant()
+
+    fun updateInstant(instant: Instant) {
+        this.instant = instant
+    }
+
+    override suspend fun invoke(input: LoadLatestEntryDateInput): UseCaseResults<Instant> {
+        return UseCaseResults.Success(instant)
+    }
+
+    override suspend fun execute(input: LoadLatestEntryDateInput): Instant {
+        return instant
+    }
+}
+
+class FakeFailureLoadLatestEntryDateUseCase : ILoadLatestEntryDateUseCase {
+    private var instant = System.currentTimeMillis().toInstant()
+
+    fun updateInstant(instant: Instant) {
+        this.instant = instant
+    }
+
+    override suspend fun invoke(input: LoadLatestEntryDateInput): UseCaseResults<Instant> {
+        return UseCaseResults.Failed(Exception())
+    }
+
+    override suspend fun execute(input: LoadLatestEntryDateInput): Instant {
+        return instant
     }
 }
 

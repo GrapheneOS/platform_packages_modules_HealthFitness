@@ -31,6 +31,8 @@ import android.health.connect.datatypes.HydrationRecord
 import android.health.connect.datatypes.IntermenstrualBleedingRecord
 import android.health.connect.datatypes.MedicalDataSource
 import android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES
+import android.health.connect.datatypes.MenstruationFlowRecord
+import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.OxygenSaturationRecord
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SleepSessionRecord
@@ -45,6 +47,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
+import com.android.healthconnect.controller.data.entries.api.LoadLatestEntryDateInput
 import com.android.healthconnect.controller.data.entries.api.LoadMedicalEntriesInput
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.data.formatters.MenstruationPeriodFormatter
@@ -64,6 +67,7 @@ import com.android.healthconnect.controller.tests.utils.INSTANT_DAY
 import com.android.healthconnect.controller.tests.utils.INSTANT_MONTH3
 import com.android.healthconnect.controller.tests.utils.INSTANT_WEEK
 import com.android.healthconnect.controller.tests.utils.INTERMENSTRUAL_BLEEDING_DAY
+import com.android.healthconnect.controller.tests.utils.MENSTRUATION_PERIOD_5D
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.OXYGENSATURATION_DAY
 import com.android.healthconnect.controller.tests.utils.OXYGENSATURATION_DAY2
@@ -148,6 +152,9 @@ class LoadEntriesHelperUseCaseTest {
 
     @Captor
     lateinit var menstruationRequestCaptor:
+        ArgumentCaptor<ReadRecordsRequestUsingFilters<MenstruationPeriodRecord>>
+    @Captor
+    lateinit var intermenstrualRequestCaptor:
         ArgumentCaptor<ReadRecordsRequestUsingFilters<IntermenstrualBleedingRecord>>
     @Captor
     lateinit var sleepSessionRequestCaptor:
@@ -258,6 +265,30 @@ class LoadEntriesHelperUseCaseTest {
             )
             verifySleepSessionListsEqual(actual, expected)
         }
+
+    @Test
+    fun loadSleepData_withinDay_returnsStartTime_skipsNoDataDays() = runTest {
+        val input =
+            LoadLatestEntryDateInput(
+                displayedStartTime = defaultStartTime.atStartOfDay(),
+                permissionType = FitnessPermissionType.SLEEP,
+            )
+
+        val timeRangeFilter =
+            TimeInstantRangeFilter.Builder().setEndTime(defaultStartTime.atStartOfDay()).build()
+
+        setupReadRecordTest(DateNavigationPeriod.PERIOD_MONTH, FitnessPermissionType.SLEEP)
+
+        val actual = loadEntriesHelper.readLatestRecordDate(input)
+        val expected = SLEEP_MONTH_81H15.startTime
+
+        assertArgumentRequestCaptorValidity(
+            sleepSessionRequestCaptor,
+            timeRangeFilter,
+            SleepSessionRecord::class.java,
+        )
+        assertThat(actual).isEqualTo(expected)
+    }
 
     @Test
     fun loadStepsDataUseCase_withinDay_returnsListOfStepsAndCadenceRecords_sortedByDescendingStartTime() =
@@ -448,14 +479,39 @@ class LoadEntriesHelperUseCaseTest {
         val expected = listOf(INTERMENSTRUAL_BLEEDING_DAY)
 
         assertArgumentRequestCaptorValidity(
-            menstruationRequestCaptor,
+            intermenstrualRequestCaptor,
             timeRangeFilter,
             IntermenstrualBleedingRecord::class.java,
         )
         assertThat(actual.size).isEqualTo(expected.size)
         assertThat((actual[0] as IntermenstrualBleedingRecord).time).isEqualTo(INSTANT_DAY)
-        assertThat(menstruationRequestCaptor.value.pageSize).isEqualTo(1)
-        assertThat(menstruationRequestCaptor.value.isAscending).isFalse()
+        assertThat(intermenstrualRequestCaptor.value.pageSize).isEqualTo(1)
+        assertThat(intermenstrualRequestCaptor.value.isAscending).isFalse()
+    }
+
+    @Test
+    fun loadMenstruationData_returnsEndTime_skipsNoDataDays() = runTest {
+        val input =
+            LoadLatestEntryDateInput(
+                displayedStartTime = defaultStartTime.atStartOfDay(),
+                permissionType = FitnessPermissionType.MENSTRUATION,
+            )
+
+        val timeRangeFilter =
+            TimeInstantRangeFilter.Builder().setEndTime(defaultStartTime.atStartOfDay()).build()
+
+        setupReadRecordTest(DateNavigationPeriod.PERIOD_DAY, FitnessPermissionType.MENSTRUATION)
+
+        val actual = loadEntriesHelper.readLatestRecordDate(input)
+        val expected = MENSTRUATION_PERIOD_5D.endTime
+
+        assertArgumentRequestCaptorValidity(
+            menstruationRequestCaptor,
+            timeRangeFilter,
+            MenstruationFlowRecord::class.java,
+            2,
+        )
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
@@ -639,12 +695,23 @@ class LoadEntriesHelperUseCaseTest {
         }
     }
 
-    private fun prepareMenstruationPeriodAnswer():
+    private fun prepareIntermenstrualPeriodAnswer():
         (InvocationOnMock) -> ReadRecordsResponse<IntermenstrualBleedingRecord> {
         return { args: InvocationOnMock ->
             val receiver =
                 args.arguments[2]
                     as OutcomeReceiver<ReadRecordsResponse<IntermenstrualBleedingRecord>, *>
+            receiver.onResult(getIntermenstrualPeriodRecords())
+            getIntermenstrualPeriodRecords()
+        }
+    }
+
+    private fun prepareMenstruationPeriodAnswer():
+        (InvocationOnMock) -> ReadRecordsResponse<MenstruationPeriodRecord> {
+        return { args: InvocationOnMock ->
+            val receiver =
+                args.arguments[2]
+                    as OutcomeReceiver<ReadRecordsResponse<MenstruationPeriodRecord>, *>
             receiver.onResult(getMenstruationPeriodRecords())
             getMenstruationPeriodRecords()
         }
@@ -832,7 +899,12 @@ class LoadEntriesHelperUseCaseTest {
         )
     }
 
-    private fun getMenstruationPeriodRecords(): ReadRecordsResponse<IntermenstrualBleedingRecord> {
+    private fun getMenstruationPeriodRecords(): ReadRecordsResponse<MenstruationPeriodRecord> {
+        return ReadRecordsResponse<MenstruationPeriodRecord>(listOf(MENSTRUATION_PERIOD_5D), -1)
+    }
+
+    private fun getIntermenstrualPeriodRecords():
+        ReadRecordsResponse<IntermenstrualBleedingRecord> {
         return ReadRecordsResponse<IntermenstrualBleedingRecord>(
             listOf(INTERMENSTRUAL_BLEEDING_DAY),
             -1,
@@ -908,8 +980,10 @@ class LoadEntriesHelperUseCaseTest {
                 FitnessPermissionType.SLEEP -> Mockito.doAnswer(prepareSleepAnswer(timePeriod))
                 FitnessPermissionType.WEIGHT -> Mockito.doAnswer(prepareWeightAnswer(timePeriod))
                 FitnessPermissionType.DISTANCE -> Mockito.doAnswer(prepareDistanceAnswer())
-                FitnessPermissionType.INTERMENSTRUAL_BLEEDING ->
+                FitnessPermissionType.MENSTRUATION ->
                     Mockito.doAnswer(prepareMenstruationPeriodAnswer())
+                FitnessPermissionType.INTERMENSTRUAL_BLEEDING ->
+                    Mockito.doAnswer(prepareIntermenstrualPeriodAnswer())
                 FitnessPermissionType.BODY_TEMPERATURE ->
                     Mockito.doAnswer(prepareBodyTemperatureAnswer())
                 FitnessPermissionType.OXYGEN_SATURATION ->
