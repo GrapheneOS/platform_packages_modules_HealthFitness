@@ -515,6 +515,7 @@ const val BODY_SENSORS_AND_HEALTH_TEST_APP_PACKAGE_NAME =
 const val TEST_APP_NAME = "Health Connect test app"
 const val TEST_APP_NAME_2 = "Health Connect test app 2"
 const val TEST_APP_NAME_3 = "Health Connect test app 3"
+const val DEVICE_DATA_PROVIDER_APP_NAME = "Pixel 9a"
 const val OLD_APP_NAME = "Old permissions test app"
 const val MEDICAL_APP_NAME = "Medical permissions HC app"
 const val BODY_SENSORS_TEST_APP_NAME = "Body Sensors Test App"
@@ -525,6 +526,12 @@ val TEST_APP_2 =
     AppMetadata(packageName = TEST_APP_PACKAGE_NAME_2, appName = TEST_APP_NAME_2, icon = null)
 val TEST_APP_3 =
     AppMetadata(packageName = TEST_APP_PACKAGE_NAME_3, appName = TEST_APP_NAME_3, icon = null)
+val DEVICE_DATA_PROVIDER_APP =
+    AppMetadata(
+        packageName = DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+        appName = DEVICE_DATA_PROVIDER_APP_NAME,
+        icon = null,
+    )
 val OLD_TEST_APP =
     AppMetadata(
         packageName = OLD_PERMISSIONS_TEST_APP_PACKAGE_NAME,
