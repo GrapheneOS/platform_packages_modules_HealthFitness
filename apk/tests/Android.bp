@@ -42,6 +42,16 @@ filegroup {
     ],
 }
 
+filegroup {
+    name: "wear-ui-tests-srcs",
+    srcs: [
+        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/wear/WearAllDataTypesScreenTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/wear/WearConnectedAppsViewModelTest.kt",
+    ],
+    path: "src",
+    visibility: ["//visibility:private"],
+}
+
 java_defaults {
     name: "health-connect-controller-tests-default",
     srcs: [":healthconnect-test-srcs"],
@@ -340,12 +350,18 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/shared/**/*.java",
         "src/com/android/healthconnect/controller/tests/shared/**/*.kt",
     ],
+    exclude_srcs: [
+        ":wear-ui-tests-srcs",
+    ],
     visibility: ["//visibility:private"],
 }
 
 android_test {
     name: "HealthConnectControllerPermissionTests",
     srcs: [":permission-tests-srcs"],
+    exclude_srcs: [
+        ":wear-ui-tests-srcs",
+    ],
     defaults: ["health-connect-controller-tests-default"],
     manifest_values: {
         applicationId: "com.android.healthconnect.controller.tests.permissions",
@@ -370,6 +386,7 @@ filegroup {
         ":migration-tests-srcs",
         ":navigation-tests-srcs",
         ":permission-tests-srcs",
+        ":wear-ui-tests-srcs",
         "src/**/safetycenter/*.kt",
     ],
     visibility: ["//visibility:private"],
@@ -394,6 +411,7 @@ android_test {
     ],
     exclude_srcs: [
         "src/**/safetycenter/*.kt",
+        ":wear-ui-tests-srcs",
     ],
     defaults: ["health-connect-controller-tests-default"],
     static_libs: [
@@ -541,6 +559,76 @@ android_robolectric_test {
         "androidx.test.rules",
         "flag-junit",
         "android.permission.flags-aconfig-java-export",
+        "androidx.compose.runtime_runtime",
+        "androidx.compose.ui_ui-test-junit4",
+        "androidx.compose.ui_ui-test-manifest",
+    ],
+    java_resource_dirs: ["config"],
+    instrumentation_for: "RoboTestApp",
+}
+
+// Robolectric test target for testing Health Connect Controller APK UI
+// This target is currently under development to allow bivalent tests
+// go/deviceless-tests
+android_robolectric_test {
+    name: "HealthConnectControllerWearRoboUITests",
+    sdk_version: "module_current",
+    srcs: [
+        "src/com/android/healthconnect/controller/tests/utils/TestComposeActivity.kt",
+        ":wear-ui-tests-srcs",
+        ":healthconnect-test-srcs",
+    ],
+    // Enable robolectric changes we need for tests, that were contributed back and aren't default
+    // yet.
+    test_options: {
+        test_runner_options: [
+            {
+                name: "java-flags",
+                value: "-Drobolectric.allowPlatformPermissions=true",
+            },
+            {
+                name: "java-flags",
+                value: "-Drobolectric.looperMode=INSTRUMENTATION_TEST",
+            },
+            {
+                name: "java-flags",
+                // TODO: b/427121240 - fix JIT failures for this class.
+                value: "-XX:CompileCommand=exclude,android/app/ContextImpl*.*",
+            },
+        ],
+    },
+    static_libs: [
+        // This is required to get mocking of final classes
+        "inline-mockito5-robolectric-prebuilt",
+        "mockito-kotlin-nodeps",
+        "androidx.test.core",
+        "androidx.test.ext.junit",
+        "framework-healthfitness.impl",
+        "HealthConnectPermissionsApis",
+        "HealthConnectOnboardingApis",
+        "HealthConnectMigrationApis",
+        "HealthConnectExportApis",
+        "HealthConnectLibrary",
+        "hilt_android_testing",
+        "kotlinx_coroutines_test",
+        // test dependencies
+        "androidx.navigation_navigation-testing",
+        "androidx.test.espresso.contrib",
+        "androidx.test.espresso.intents",
+        "androidx.test.espresso.core",
+        "androidx.test.ext.junit",
+        "androidx.test.ext.truth",
+        "androidx.test.rules",
+        "flag-junit",
+        "android.permission.flags-aconfig-java-export",
+        "androidx.compose.runtime_runtime",
+        "androidx.compose.ui_ui-test-junit4",
+        "androidx.compose.ui_ui-test-manifest",
+        "androidx.compose.runtime_runtime",
+        "androidx.arch.core_core-testing",
+        "androidx.compose.runtime_runtime",
+        "androidx.compose.ui_ui-test-junit4",
+        "androidx.compose.ui_ui-test-manifest",
     ],
     java_resource_dirs: ["config"],
     instrumentation_for: "RoboTestApp",
@@ -582,6 +670,7 @@ android_test {
     exclude_srcs: [
         "src/**/safetycenter/*.kt",
         ":robo-ui-tests-sources-exclude",
+        ":wear-ui-tests-srcs",
     ],
     defaults: ["health-connect-controller-tests-default"],
     static_libs: [

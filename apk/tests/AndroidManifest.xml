@@ -35,6 +35,16 @@
       </intent-filter>
     </activity>
 
+    <activity
+        android:name=".utils.TestComposeActivity"
+        android:exported="true"
+        android:theme="@style/Theme.HealthConnect">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+
     <!--
     Disable the receiver in tests.
 

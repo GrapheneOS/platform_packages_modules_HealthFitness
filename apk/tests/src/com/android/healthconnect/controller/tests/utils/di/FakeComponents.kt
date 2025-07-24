@@ -66,6 +66,8 @@ import com.android.healthconnect.controller.permissions.additionalaccess.Exercis
 import com.android.healthconnect.controller.permissions.additionalaccess.ILoadExerciseRoutePermissionUseCase
 import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState
 import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
+import com.android.healthconnect.controller.permissions.app.HealthPermissionStatus
+import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
@@ -88,6 +90,10 @@ class FakeRecentAccessUseCase : ILoadRecentAccessUseCase {
         this.list = list
     }
 
+    fun addToList(newLogs: List<AccessLog>) {
+        this.list = list + newLogs
+    }
+
     override suspend fun execute(input: Unit): List<AccessLog> {
         return list
     }
@@ -103,6 +109,10 @@ class FakeRecentAccessUseCase : ILoadRecentAccessUseCase {
     fun setForceFail(forceFail: Boolean) {
         this.forceFail = forceFail
     }
+
+    fun reset() {
+        this.list = emptyList()
+    }
 }
 
 class FakeHealthPermissionAppsUseCase : ILoadHealthPermissionApps {
@@ -112,8 +122,32 @@ class FakeHealthPermissionAppsUseCase : ILoadHealthPermissionApps {
         this.list = list
     }
 
+    fun addToList(connectedAppMetadata: ConnectedAppMetadata) {
+        this.list = list + connectedAppMetadata
+    }
+
     override suspend fun invoke(): List<ConnectedAppMetadata> {
         return list
+    }
+
+    fun reset() {
+        this.list = emptyList()
+    }
+}
+
+class FakeLoadAppPermissionsStatusUseCase : ILoadAppPermissionsStatusUseCase {
+    private var internalMap = mutableMapOf<String, List<HealthPermissionStatus>>()
+
+    fun updatePackageName(packageName: String, permissions: List<HealthPermissionStatus>) {
+        internalMap[packageName] = permissions
+    }
+
+    override suspend fun invoke(packageName: String): List<HealthPermissionStatus> {
+        return internalMap[packageName] ?: emptyList()
+    }
+
+    fun reset() {
+        internalMap.clear()
     }
 }
 

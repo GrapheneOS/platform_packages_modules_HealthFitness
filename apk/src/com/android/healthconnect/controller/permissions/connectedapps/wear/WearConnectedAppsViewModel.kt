@@ -21,14 +21,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
-import com.android.healthconnect.controller.permissions.app.LoadAppPermissionsStatusUseCase
+import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.AdditionalPermission.Companion.READ_HEALTH_DATA_IN_BACKGROUND
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission.Companion.fromPermissionString
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
-import com.android.healthconnect.controller.recentaccess.LoadRecentAccessUseCase
+import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
 import com.android.healthconnect.controller.shared.app.AppMetadata
@@ -37,7 +37,6 @@ import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Instant
 import javax.inject.Inject
-import kotlin.collections.MutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -46,10 +45,10 @@ class WearConnectedAppsViewModel
 @Inject
 constructor(
     private val loadHealthPermissionApps: ILoadHealthPermissionApps,
-    private val loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase,
+    private val loadAppPermissionsStatusUseCase: ILoadAppPermissionsStatusUseCase,
     private val grantPermissionsStatusUseCase: GrantHealthPermissionUseCase,
     private val revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase,
-    private val loadRecentAccessUseCase: LoadRecentAccessUseCase,
+    private val loadRecentAccessUseCase: ILoadRecentAccessUseCase,
     private val healthPermissionReader: HealthPermissionReader,
 ) : ViewModel() {
 

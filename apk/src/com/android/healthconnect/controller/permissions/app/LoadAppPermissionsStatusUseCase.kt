@@ -33,8 +33,8 @@ constructor(
     private val loadGrantedHealthPermissionsUseCase: IGetGrantedHealthPermissionsUseCase,
     private val healthPermissionReader: HealthPermissionReader,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
-) {
-    suspend operator fun invoke(packageName: String): List<HealthPermissionStatus> =
+) : ILoadAppPermissionsStatusUseCase {
+    override suspend operator fun invoke(packageName: String): List<HealthPermissionStatus> =
         withContext(dispatcher) {
             val permissions = healthPermissionReader.getValidHealthPermissions(packageName)
             val grantedPermissions = loadGrantedHealthPermissionsUseCase(packageName)
@@ -45,6 +45,10 @@ constructor(
                 )
             }
         }
+}
+
+interface ILoadAppPermissionsStatusUseCase {
+    suspend operator fun invoke(packageName: String): List<HealthPermissionStatus>
 }
 
 data class HealthPermissionStatus(val healthPermission: HealthPermission, val isGranted: Boolean)
