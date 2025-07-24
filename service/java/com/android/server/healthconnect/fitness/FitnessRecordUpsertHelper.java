@@ -33,6 +33,7 @@ import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Slog;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper.ChangeLogsTableRequests;
@@ -260,16 +261,19 @@ public class FitnessRecordUpsertHelper {
                 db -> {
                     for (RecordUpsertTableRequest upsertRequest : upsertRequests) {
                         if (shouldGenerateChangeLog) {
-                            upsertionChangeLogs.addRecordInfo(
-                                    upsertRequest.getRecordInternal().getRecordType(),
-                                    upsertRequest.getRecordInternal().getAppInfoId(),
-                                    upsertRequest.getRecordInternal().getUuid());
+                            if (!Flags.fixChangeLogWhenInsertWithSameTimestamps()) {
+                                upsertionChangeLogs.addRecordInfo(
+                                        upsertRequest.getRecordInternal().getRecordType(),
+                                        upsertRequest.getRecordInternal().getAppInfoId(),
+                                        upsertRequest.getRecordInternal().getUuid());
+                            }
                             addChangeLogsForOtherModifiedRecords(
                                     mAppInfoHelper.getAppInfoId(
                                             upsertRequest.getRecordInternal().getPackageName()),
                                     upsertRequest,
                                     otherModifiedRecordsChangeLogs);
                         }
+
                         if (isInsertRequest) {
                             if (shouldPreferNewRecord) {
                                 mTransactionManager.insertOrReplaceOnConflict(
@@ -280,6 +284,18 @@ public class FitnessRecordUpsertHelper {
                             }
                         } else {
                             mTransactionManager.update(db, upsertRequest.getUpsertTableRequest());
+                        }
+
+                        // RecordUpsertTableRequest objects are mutable and can be modified by
+                        // mTransactionManager.insertOrReplaceOnConflict, therefore upsert change
+                        // logs must be generated AFTER the upserts have taken places.
+                        // See b/430891167
+                        if (shouldGenerateChangeLog
+                                && Flags.fixChangeLogWhenInsertWithSameTimestamps()) {
+                            upsertionChangeLogs.addRecordInfo(
+                                    upsertRequest.getRecordInternal().getRecordType(),
+                                    upsertRequest.getRecordInternal().getAppInfoId(),
+                                    upsertRequest.getRecordInternal().getUuid());
                         }
                     }
                     if (shouldGenerateChangeLog) {

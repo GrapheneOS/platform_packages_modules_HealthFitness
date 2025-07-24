@@ -633,3 +633,15 @@ flag {
     is_fixed_read_only: true
     is_exported: false
 }
+
+flag {
+    name: "fix_change_log_when_insert_with_same_timestamps"
+    namespace: "health_fitness_aconfig"
+    description: "Both the issue and the fix are quite subtle, for more context, see b/430891167. This flag is only for fixing the major part of the issue, but not fixing it completely."
+    bug: "369507783"
+    is_fixed_read_only: true
+    is_exported: false
+    metadata {
+        purpose: PURPOSE_BUGFIX
+    }
+}
