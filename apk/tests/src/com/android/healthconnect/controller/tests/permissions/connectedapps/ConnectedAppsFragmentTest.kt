@@ -78,6 +78,7 @@ import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.logging.ToolbarElement
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
@@ -97,6 +98,7 @@ import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -124,6 +126,7 @@ class ConnectedAppsFragmentTest {
         whenever(viewModel.disconnectAllState).then { MutableLiveData(NotStarted) }
         whenever(viewModel.alertDialogActive).then { MutableLiveData(false) }
         whenever(viewModel.alertDialogCheckBoxChecked).then { MutableLiveData(false) }
+        whenever(viewModel.showSystemApps).then { MutableLiveData(false) }
         context = InstrumentationRegistry.getInstrumentation().context
         navHostController = TestNavHostController(context)
         Intents.init()
@@ -455,6 +458,95 @@ class ConnectedAppsFragmentTest {
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
         verify(healthConnectLogger).logInteraction(AppPermissionsElement.INACTIVE_APP_DELETE_BUTTON)
+    }
+
+    @Test
+    fun testWithSomeApps_hideSystemApps_isExistingStateWithShowText() {
+        val connectApp =
+            listOf<ConnectedAppMetadata>(
+                ConnectedAppMetadata(
+                    AppMetadata(packageName = "package3", appName = "thirdApp", icon = null),
+                    status = ALLOWED,
+                ),
+                ConnectedAppMetadata(
+                    AppMetadata(packageName = "package1", appName = "firstApp", icon = null),
+                    status = ALLOWED,
+                ),
+            )
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+
+        launchFragment<ConnectedAppsFragment>(Bundle())
+
+        verify(healthConnectLogger, times(0))
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_HIDE_SYSTEM_MENU)
+        verify(healthConnectLogger, times(0))
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_HIDE_SYSTEM_MENU)
+        verify(healthConnectLogger, times(0))
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_SHOW_SYSTEM_MENU)
+        verify(healthConnectLogger)
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_SHOW_SYSTEM_MENU)
+    }
+
+    @Test
+    fun testWithSomeApps_showSystemApps_isExistingStateWithHideText() {
+        val connectApp =
+            listOf<ConnectedAppMetadata>(
+                ConnectedAppMetadata(
+                    AppMetadata(packageName = "package3", appName = "thirdApp", icon = null),
+                    status = ALLOWED,
+                ),
+                ConnectedAppMetadata(
+                    AppMetadata(packageName = "package1", appName = "firstApp", icon = null),
+                    status = ALLOWED,
+                ),
+            )
+        whenever(viewModel.showSystemApps).then { MutableLiveData(true) }
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+
+        launchFragment<ConnectedAppsFragment>(Bundle())
+
+        verify(healthConnectLogger, times(0))
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_SHOW_SYSTEM_MENU)
+        verify(healthConnectLogger, times(0))
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_HIDE_SYSTEM_MENU)
+        verify(healthConnectLogger, times(0))
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_SHOW_SYSTEM_MENU)
+        verify(healthConnectLogger)
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_HIDE_SYSTEM_MENU)
+    }
+
+    @Test
+    fun testWithNoApps_hideSystemApps_isEmptyStateWithShowText() {
+        val connectApp = listOf<ConnectedAppMetadata>()
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+
+        launchFragment<ConnectedAppsFragment>(Bundle())
+
+        verify(healthConnectLogger, times(0))
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_HIDE_SYSTEM_MENU)
+        verify(healthConnectLogger, times(0))
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_SHOW_SYSTEM_MENU)
+        verify(healthConnectLogger, times(0))
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_HIDE_SYSTEM_MENU)
+        verify(healthConnectLogger)
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_SHOW_SYSTEM_MENU)
+    }
+
+    @Test
+    fun testWithNoApps_showSystemApps_isEmptyStateWithHideText() {
+        val connectApp = listOf<ConnectedAppMetadata>()
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+        whenever(viewModel.showSystemApps).then { MutableLiveData(true) }
+        launchFragment<ConnectedAppsFragment>(Bundle())
+
+        verify(healthConnectLogger, times(0))
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_HIDE_SYSTEM_MENU)
+        verify(healthConnectLogger, times(0))
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_SHOW_SYSTEM_MENU)
+        verify(healthConnectLogger, times(0))
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_SHOW_SYSTEM_MENU)
+        verify(healthConnectLogger)
+            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_HIDE_SYSTEM_MENU)
     }
 
     @Test

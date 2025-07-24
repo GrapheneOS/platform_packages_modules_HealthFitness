@@ -68,6 +68,7 @@ import com.android.healthconnect.controller.utils.logging.DisconnectAllAppsDialo
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.logging.ToolbarElement
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.showLoadingDialog
@@ -126,7 +127,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     private val onEmptyState: (MenuItem) -> Boolean = { menuItem ->
         when (menuItem.itemId) {
             R.id.menu_show_hide_system -> {
-                setShowHideSystem(menuItem)
+                updateShowSystem()
                 true
             }
             else -> false
@@ -142,7 +143,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                 true
             }
             R.id.menu_show_hide_system -> {
-                setShowHideSystem(menuItem)
+                updateShowSystem()
                 true
             }
             else -> false
@@ -197,11 +198,13 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     private fun observeConnectedApps() {
         viewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
             clearAllCategories()
+            rebuildMenu(
+                hasApps = connectedApps.isNotEmpty(),
+                isShowingSystem = viewModel.showSystemApps.value ?: true,
+            )
             if (connectedApps.isEmpty()) {
-                setupMenu(R.menu.connected_apps, viewLifecycleOwner, logger, onEmptyState)
                 setUpEmptyState()
             } else {
-                setupMenu(R.menu.connected_apps, viewLifecycleOwner, logger, onExistingAppsState)
                 logger.logImpression(AppPermissionsElement.SEARCH_BUTTON)
 
                 topIntroPreference.title = getString(R.string.connected_apps_text)
@@ -626,11 +629,45 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                 }
     }
 
-    private fun setShowHideSystem(menuItem: MenuItem) {
+    private fun updateShowSystem() {
         val isShowingSystem = viewModel.showSystemApps.value ?: false
-        menuItem.setTitle(
-            if (isShowingSystem) R.string.menu_show_system else R.string.menu_hide_system
-        )
+        rebuildMenu(viewModel.connectedApps.value?.isNotEmpty() ?: false, isShowingSystem)
         viewModel.setShowSystemApps(!isShowingSystem)
+    }
+
+    private fun rebuildMenu(hasApps: Boolean, isShowingSystem: Boolean) {
+        if (hasApps && !isShowingSystem) {
+            logger.logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_SHOW_SYSTEM_MENU)
+            setupMenu(
+                R.menu.connected_apps_show_system,
+                viewLifecycleOwner,
+                logger,
+                onExistingAppsState,
+            )
+        } else if (hasApps && isShowingSystem) {
+            logger.logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_HIDE_SYSTEM_MENU)
+            setupMenu(
+                R.menu.connected_apps_hide_system,
+                viewLifecycleOwner,
+                logger,
+                onExistingAppsState,
+            )
+        } else if (!hasApps && !isShowingSystem) {
+            logger.logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_SHOW_SYSTEM_MENU)
+            setupMenu(
+                R.menu.connected_apps_show_system_empty_state,
+                viewLifecycleOwner,
+                logger,
+                onEmptyState,
+            )
+        } else {
+            logger.logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_HIDE_SYSTEM_MENU)
+            setupMenu(
+                R.menu.connected_apps_hide_system_empty_state,
+                viewLifecycleOwner,
+                logger,
+                onEmptyState,
+            )
+        }
     }
 }
