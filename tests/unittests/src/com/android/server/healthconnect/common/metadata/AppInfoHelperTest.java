@@ -136,7 +136,7 @@ public class AppInfoHelperTest {
 
     @Test
     @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
-    public void getAppInfoMap_deviceProviderNameUpdated_whenFlagEnabled()
+    public void deviceDataProvider_addedToAppInfo_cacheRepopulated_deviceDisplayNameUsed()
             throws PackageManager.NameNotFoundException {
         setAppAsNotInstalled(DEVICE_PROVIDER_PACKAGE_NAME);
         setAppAsNotInstalled(TEST_PACKAGE_NAME);
@@ -164,6 +164,46 @@ public class AppInfoHelperTest {
                                 200)));
 
         mAppInfoHelper.clearCache();
+        Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
+
+        assertThat(appInfoInternalMap).containsKey(DEVICE_PROVIDER_PACKAGE_NAME);
+        AppInfo deviceAppInfo = appInfoInternalMap.get(DEVICE_PROVIDER_PACKAGE_NAME).toExternal();
+        assertThat(deviceAppInfo.getName()).isEqualTo(EXPECTED_DEVICE_APP_NAME);
+
+        assertThat(appInfoInternalMap).containsKey(TEST_PACKAGE_NAME);
+        AppInfo testAppInfo = appInfoInternalMap.get(TEST_PACKAGE_NAME).toExternal();
+        assertThat(testAppInfo.getName()).isEqualTo(TEST_APP_NAME);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    public void deviceDataProvider_addedToAppInfo_cacheAlreadyPopulated_deviceDisplayNameUsed()
+            throws PackageManager.NameNotFoundException {
+        setAppAsNotInstalled(DEVICE_PROVIDER_PACKAGE_NAME);
+        setAppAsNotInstalled(TEST_PACKAGE_NAME);
+        mFitnessTestUtils.insertApp(DEVICE_PROVIDER_PACKAGE_NAME);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(
+                DEVICE_PROVIDER_PACKAGE_NAME, ORIGINAL_DEVICE_APP_NAME, null);
+        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
+        Instant now = Instant.now();
+        mFitnessTestUtils.insertRecords(
+                DEVICE_PROVIDER_PACKAGE_NAME,
+                List.of(
+                        RecordInternalFactory.buildStepsRecord(
+                                UUID.randomUUID().toString(),
+                                now.toEpochMilli(),
+                                now.plusSeconds(1).toEpochMilli(),
+                                100)));
+        mFitnessTestUtils.insertRecords(
+                TEST_PACKAGE_NAME,
+                List.of(
+                        RecordInternalFactory.buildStepsRecord(
+                                UUID.randomUUID().toString(),
+                                now.plusSeconds(10).toEpochMilli(),
+                                now.plusSeconds(11).toEpochMilli(),
+                                200)));
+
         Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
 
         assertThat(appInfoInternalMap).containsKey(DEVICE_PROVIDER_PACKAGE_NAME);
