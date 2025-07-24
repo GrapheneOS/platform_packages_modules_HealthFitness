@@ -62,6 +62,7 @@ import com.google.common.collect.Iterables;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -819,6 +820,7 @@ public class PlannedExerciseSessionRecordTest {
                                 sessionEndTime(mNow),
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
                         .setPlannedExerciseSessionId(insertedTrainingPlan.getMetadata().getId());
+
         ExerciseSessionRecord inserted =
                 (ExerciseSessionRecord)
                         insertRecords(Collections.singletonList(exerciseSession.build())).get(0);
@@ -829,7 +831,6 @@ public class PlannedExerciseSessionRecordTest {
                         .addDataOriginFilter(
                                 new DataOrigin.Builder().setPackageName(PKG_TEST_APP).build())
                         .addRecordType(PlannedExerciseSessionRecord.class)
-                        .addRecordType(ExerciseSessionRecord.class)
                         .build();
         String changeToken = TestUtils.getChangeLogToken(tokenRequest).getToken();
         // Now update the exercise session to nullify the reference to the training plan.
@@ -838,6 +839,60 @@ public class PlannedExerciseSessionRecordTest {
                         exerciseSessionRecordToBuilder(inserted)
                                 .setPlannedExerciseSessionId(null)
                                 .build()));
+        // Verify that the changelog for the affected training plan belongs to the test app.
+        PlannedExerciseSessionRecord updatedTrainingPlan =
+                Iterables.getOnlyElement(readAllRecords(PlannedExerciseSessionRecord.class));
+        assertThat(updatedTrainingPlan.getCompletedExerciseSessionId()).isNull();
+        verifyChangelogCreatedForUpsert(updatedTrainingPlan, changeToken);
+    }
+
+    @Ignore("Ignore until the fix for training plan mentioned in b/430891167#comment7 is done.")
+    @Test
+    public void
+            referenceToTrainingPlanNullifiedByInsert_changelogsBelongToOwnersOfRespectiveRecords()
+                    throws Exception {
+        // Create and insert training plan using a package (test app) that is different to the CTS
+        // tests.
+        PlannedExerciseSessionRecord plannedExerciseSession =
+                new PlannedExerciseSessionRecord.Builder(
+                                new Metadata.Builder().build(),
+                                ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING,
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow))
+                        .build();
+        mTestApp.insertRecord(plannedExerciseSession);
+        PlannedExerciseSessionRecord insertedTrainingPlan =
+                Iterables.getOnlyElement(readAllRecords(PlannedExerciseSessionRecord.class));
+
+        // Create and insert exercise session completing the training plan.
+        ExerciseSessionRecord.Builder exerciseSession =
+                new ExerciseSessionRecord.Builder(
+                                buildMetadata(null),
+                                sessionStartTime(mNow),
+                                sessionEndTime(mNow),
+                                ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
+                        .setPlannedExerciseSessionId(insertedTrainingPlan.getMetadata().getId());
+        insertRecords(Collections.singletonList(exerciseSession.build())).get(0);
+
+        // Filter for changelogs belonging to the testapp.
+        ChangeLogTokenRequest tokenRequest =
+                new ChangeLogTokenRequest.Builder()
+                        .addDataOriginFilter(
+                                new DataOrigin.Builder().setPackageName(PKG_TEST_APP).build())
+                        .addRecordType(PlannedExerciseSessionRecord.class)
+                        .build();
+        String changeToken = TestUtils.getChangeLogToken(tokenRequest).getToken();
+        // Now update the exercise session to nullify the reference to the training plan.
+        // This "update" is performed by inserting the same record with the same timestamps as the
+        // one was used to insert above, the only difference is it doesn't have a linked
+        // PlannedExerciseSessionId. See b/430891167#comment7 for more context.
+        TestUtils.insertRecord(exerciseSession.setPlannedExerciseSessionId(null).build());
+
+        // Verify that the call to `insertRecord()` indeed updated the ex session instead of
+        // inserting a new one.
+        List<ExerciseSessionRecord> allExSessions = readAllRecords(ExerciseSessionRecord.class);
+        assertThat(allExSessions).hasSize(1);
+        assertThat(allExSessions.get(0).getPlannedExerciseSessionId()).isNull();
         // Verify that the changelog for the affected training plan belongs to the test app.
         PlannedExerciseSessionRecord updatedTrainingPlan =
                 Iterables.getOnlyElement(readAllRecords(PlannedExerciseSessionRecord.class));

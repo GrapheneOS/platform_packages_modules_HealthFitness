@@ -47,6 +47,7 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVacc
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_FIX_CHANGE_LOG_WHEN_INSERT_WITH_SAME_TIMESTAMPS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 import static com.android.healthfitness.flags.Flags.phrChangeLogs;
@@ -856,17 +857,63 @@ public class HealthConnectChangeLogsTests {
                 getChangeLogToken(getChangeLogTokenRequestForTestRecordTypes().build());
         ChangeLogsRequest changeLogsRequest =
                 new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
-
         Metadata insertedRecordMetadata =
                 insertRecords(ImmutableList.of(getStepsRecord(/* steps= */ 10, "stepsId")))
                         .get(0)
                         .getMetadata();
-        updateRecords(ImmutableList.of(getStepsRecord(/* steps= */ 123, "stepsId")));
+
         ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
+        assertThat(response.getUpsertedRecords())
+                .comparingElementsUsing(STEPS_RECORD_CORRESPONDENCE)
+                .containsExactly(getStepsRecord(/* steps= */ 10, insertedRecordMetadata));
+
+        updateRecords(ImmutableList.of(getStepsRecord(/* steps= */ 123, "stepsId")));
+        response = getChangeLogs(changeLogsRequest);
 
         assertThat(response.getUpsertedRecords())
                 .comparingElementsUsing(STEPS_RECORD_CORRESPONDENCE)
                 .containsExactly(getStepsRecord(/* steps= */ 123, insertedRecordMetadata));
+        assertThat(response.getDeletedLogs()).isEmpty();
+        if (phrChangeLogs()) {
+            assertThat(response.getUpsertedMedicalResources()).isEmpty();
+            assertThat(response.getDeletedMedicalResources()).isEmpty();
+        }
+    }
+
+    @Test
+    @RequiresFlagsEnabled({
+        FLAG_FIX_CHANGE_LOG_WHEN_INSERT_WITH_SAME_TIMESTAMPS,
+    })
+    public void testChangeLogs_updateByInsertingWithSameTimestamps_expectCorrectChangeLogs()
+            throws InterruptedException {
+        ChangeLogTokenResponse tokenResponse =
+                getChangeLogToken(getChangeLogTokenRequestForTestRecordTypes().build());
+        ChangeLogsRequest changeLogsRequest =
+                new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
+        Instant startTime = Instant.now();
+        Instant endTime = startTime.plusSeconds(1_000);
+        // Insert a StepsRecord with startTime and endTime.
+        Metadata insertedRecordMetadata =
+                insertRecords(ImmutableList.of(getStepsRecord(/* steps= */ 10, startTime, endTime)))
+                        .get(0)
+                        .getMetadata();
+
+        ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
+
+        assertThat(response.getUpsertedRecords())
+                .comparingElementsUsing(STEPS_RECORD_CORRESPONDENCE)
+                .containsExactly(getStepsRecord(/* steps= */ 10, insertedRecordMetadata));
+
+        // Insert another StepsRecord with the same startTime and endTime but different step count.
+        // This insert is supposed to update the previous insert due to having the same dedupe hash,
+        // see StorageUtils#getDedupeByteBuffer().
+        insertRecords(ImmutableList.of(getStepsRecord(/* steps= */ 11, startTime, endTime)));
+
+        response = getChangeLogs(changeLogsRequest);
+
+        assertThat(response.getUpsertedRecords())
+                .comparingElementsUsing(STEPS_RECORD_CORRESPONDENCE)
+                .containsExactly(getStepsRecord(/* steps= */ 11, insertedRecordMetadata));
         assertThat(response.getDeletedLogs()).isEmpty();
         if (phrChangeLogs()) {
             assertThat(response.getUpsertedMedicalResources()).isEmpty();

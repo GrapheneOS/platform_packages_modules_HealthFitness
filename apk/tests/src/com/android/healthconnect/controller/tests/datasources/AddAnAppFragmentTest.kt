@@ -32,6 +32,8 @@ import com.android.healthconnect.controller.datasources.DataSourcesViewModel.Dat
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PotentialAppSourcesState
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PriorityListState
 import com.android.healthconnect.controller.navigation.CATEGORY_KEY
+import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_APP
+import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_3
@@ -159,5 +161,28 @@ class AddAnAppFragmentTest {
         onView(withText(TEST_APP_NAME_2)).perform(click())
         verify(navigationUtils, times(1)).popBackStack(any<AddAnAppFragment>())
         verify(healthConnectLogger).logInteraction(AddAnAppElement.POTENTIAL_PRIORITY_APP_BUTTON)
+    }
+
+    @Test
+    fun showsCurrentDevice_whenDisplayingDDPPackage() {
+        whenever(dataSourcesViewModel.dataSourcesInfo).then {
+            MutableLiveData(
+                DataSourcesInfo(
+                    priorityListState = PriorityListState.WithData(true, listOf()),
+                    potentialAppSourcesState =
+                        PotentialAppSourcesState.WithData(
+                            true,
+                            listOf(TEST_APP, TEST_APP_2, DEVICE_DATA_PROVIDER_APP),
+                        ),
+                )
+            )
+        }
+
+        launchFragment<AddAnAppFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+
+        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+        onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
+        onView(withText(DEVICE_DATA_PROVIDER_APP_NAME)).check(matches(isDisplayed()))
+        onView(withText(R.string.devices_current_device)).check(matches(isDisplayed()))
     }
 }
