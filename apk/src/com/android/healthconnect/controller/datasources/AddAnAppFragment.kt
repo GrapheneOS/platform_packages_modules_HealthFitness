@@ -23,6 +23,7 @@ import com.android.healthconnect.controller.datasources.DataSourcesViewModel.Pot
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PriorityListState
 import com.android.healthconnect.controller.navigation.CATEGORY_KEY
 import com.android.healthconnect.controller.permissions.connectedapps.HealthAppPreference
+import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
@@ -99,6 +100,10 @@ class AddAnAppFragment : Hilt_AddAnAppFragment() {
                             )
                             navigationUtils.popBackStack(this)
                             true
+                        }
+                        // TODO(b/433942442) Replace with actual device data source
+                        if (appMetadata.packageName == Constants.DEVICE_DATA_PROVIDER_PACKAGE) {
+                            preference.summary = getString(R.string.devices_current_device)
                         }
                     }
                 )
