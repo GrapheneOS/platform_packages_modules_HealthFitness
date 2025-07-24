@@ -374,6 +374,14 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"యూజర్ నికోటిన్ తీసుకునే మోతాదు"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"నికోటిన్ తీసుకునే మోతాదు గురించి చదవండి"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"నికోటిన్ తీసుకునే మోతాదు గురించి రాయండి"</string>
+    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
+    <skip />
     <string name="read_permission_category" msgid="6002099618259628632">"చదవడానికి \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" యాప్‌ను అనుమతించండి"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"రాయడానికి \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" యాప్‌ను అనుమతించండి"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"అనుమతించండి"</string>
@@ -816,18 +824,15 @@
     <string name="mindfulness_type_music" msgid="7041364137895485917">"మ్యూజిక్"</string>
     <string name="mindfulness_type_other" msgid="793524328911038908">"వేరేవి"</string>
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"మీరే చేసుకొనేవి"</string>
+    <!-- no translation found for mindfulness_a11y_text (1569084462477858789) -->
+    <skip />
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"మధ్యస్థం"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"మధ్యస్థ స్థాయి"</string>
-    <!-- no translation found for nicotine_intake_title (428157249131107976) -->
-    <skip />
-    <!-- no translation found for nicotine_intake_title_long (3254332210697516844) -->
-    <skip />
-    <!-- no translation found for nicotine_intake_type_vape (8910534364762591958) -->
-    <skip />
-    <!-- no translation found for nicotine_intake_type_cigarette (306427848597435195) -->
-    <skip />
-    <!-- no translation found for nicotine_intake_type_unknown (2096300681393598647) -->
-    <skip />
+    <string name="nicotine_intake_title" msgid="428157249131107976">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
+    <string name="nicotine_intake_title_long" msgid="3254332210697516844">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
+    <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} వేప్ పఫ్}other{{quantity} వేప్ పఫ్‌లు}}"</string>
+    <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} సిగరెట్}other{{quantity} సిగరెట్‌లు}}"</string>
+    <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} తెలియనివి"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>ని"</string>
     <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g>గం <xliff:g id="MIN">%2$s</xliff:g>ని"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g>గం"</string>
@@ -1261,8 +1266,12 @@
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"మీ యాప్‌ల మధ్య ఫిట్‌నెస్, వెల్‌నెస్ డేటాను షేర్ చేసే వీలును Health Connect మీకు కల్పిస్తుంది. మీరు ఇప్పుడు ఏ యాప్‌లను కనెక్ట్ చేయవచ్చో చూడండి."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"రెండవ యాప్‌ను కనెక్ట్ చేయండి"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Health Connectను ఉపయోగించి వేరొక యాప్‌ను సెటప్ చేయండి, తద్వారా అది ఫిట్‌నెస్, వెల్‌నెస్ డేటాను షేర్ చేయడాన్ని ప్రారంభిస్తుంది"</string>
-    <!-- no translation found for devices_current_device (6388308185566619743) -->
+    <string name="devices_current_device" msgid="6388308185566619743">"ప్రస్తుత డివైజ్"</string>
+    <string name="devices_unknown_device" msgid="8830092952740474454">"తెలియని డివైజ్"</string>
+    <!-- no translation found for device_management_screen_title (504259497211017622) -->
     <skip />
-    <!-- no translation found for devices_unknown_device (8830092952740474454) -->
+    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
+    <skip />
+    <!-- no translation found for device_settings_label (9053791237491247819) -->
     <skip />
 </resources>
