@@ -55,6 +55,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.FakeSerialDeviceDataSourcesHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -108,6 +110,7 @@ public class TrackerManagerImplTest {
         doReturn(TEST_USER).when(mContext).getUser();
         doReturn(true).when(mUserManager).isUserUnlocked();
         doReturn(true).when(mUserManager).isUserUnlocked(TEST_USER);
+        DeviceDataSourcesHelper deviceDataSourcesHelper = new FakeSerialDeviceDataSourcesHelper();
         mHealthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
@@ -115,6 +118,7 @@ public class TrackerManagerImplTest {
                                 mock(HealthPermissionIntentAppsTracker.class))
                         .setAppOpLogsHelper(mock(AppOpLogsHelper.class))
                         .setUserManager(mUserManager)
+                        .setDeviceDataSourcesHelper(deviceDataSourcesHelper)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mAppInfoHelper = mHealthConnectInjector.getAppInfoHelper();
