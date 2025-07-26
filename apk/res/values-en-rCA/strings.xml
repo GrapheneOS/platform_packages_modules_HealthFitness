@@ -374,6 +374,10 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"nicotine intake"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Read nicotine intake"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Write nicotine intake"</string>
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"Alcohol consumption"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"alcohol consumption"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Read alcohol consumption"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Write alcohol consumption"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Allow “<xliff:g id="APP_NAME">%1$s</xliff:g>” to read"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Allow “<xliff:g id="APP_NAME">%1$s</xliff:g>” to write"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Allow"</string>
@@ -816,6 +820,7 @@
     <string name="mindfulness_type_music" msgid="7041364137895485917">"Music"</string>
     <string name="mindfulness_type_other" msgid="793524328911038908">"Other"</string>
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"Unguided"</string>
+    <string name="mindfulness_a11y_text" msgid="1569084462477858789">"Total mindfulness time of <xliff:g id="DURATION">%1$s</xliff:g>"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"Moderate"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"Vigorous"</string>
     <string name="nicotine_intake_title" msgid="428157249131107976">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
@@ -1258,4 +1263,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Set up another app with Health Connect so it can start sharing fitness and wellness data"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"Current device"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Unknown device"</string>
+    <string name="device_management_screen_title" msgid="504259497211017622">"Device info"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"Data collected by this device will be stored in Health Connect, where connected apps will access it"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"Allowed to write"</string>
 </resources>

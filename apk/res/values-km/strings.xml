@@ -374,6 +374,14 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"ការទទួលទានជាតិ​នីកូទីន"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"អានទិន្នន័យនៃការទទួលទានជាតិ​នីកូទីន"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"សរសេរទិន្នន័យនៃការទទួលទានជាតិ​នីកូទីន"</string>
+    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
+    <skip />
     <string name="read_permission_category" msgid="6002099618259628632">"អនុញ្ញាតឱ្យ “<xliff:g id="APP_NAME">%1$s</xliff:g>” អាន"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"អនុញ្ញាតឱ្យ “<xliff:g id="APP_NAME">%1$s</xliff:g>” សរសេរ"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"អនុញ្ញាត"</string>
@@ -816,18 +824,15 @@
     <string name="mindfulness_type_music" msgid="7041364137895485917">"តន្ត្រី"</string>
     <string name="mindfulness_type_other" msgid="793524328911038908">"ផ្សេងៗ"</string>
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"គ្មានការណែនាំ"</string>
+    <!-- no translation found for mindfulness_a11y_text (1569084462477858789) -->
+    <skip />
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"មធ្យម"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"ខ្លាំងក្លា"</string>
-    <!-- no translation found for nicotine_intake_title (428157249131107976) -->
-    <skip />
-    <!-- no translation found for nicotine_intake_title_long (3254332210697516844) -->
-    <skip />
-    <!-- no translation found for nicotine_intake_type_vape (8910534364762591958) -->
-    <skip />
-    <!-- no translation found for nicotine_intake_type_cigarette (306427848597435195) -->
-    <skip />
-    <!-- no translation found for nicotine_intake_type_unknown (2096300681393598647) -->
-    <skip />
+    <string name="nicotine_intake_title" msgid="428157249131107976">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
+    <string name="nicotine_intake_title_long" msgid="3254332210697516844">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
+    <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{ឧបករណ៍ជក់បារីអេឡិចត្រូនិក {quantity}}other{ឧបករណ៍ជក់បារីអេឡិចត្រូនិក {quantity}}}"</string>
+    <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{បារី {quantity}}other{បារី {quantity}}}"</string>
+    <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} មិនស្គាល់"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>ន"</string>
     <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g>ម៉ <xliff:g id="MIN">%2$s</xliff:g>ន"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g>ម៉"</string>
@@ -1261,8 +1266,12 @@
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect អនុញ្ញាតឱ្យអ្នកចែករំលែកទិន្នន័យសម្បទា និងសុខុមាលភាពរវាងកម្មវិធីរបស់អ្នក។ មើល​ថាតើអ្នកអាចភ្ជាប់កម្មវិធីណាខ្លះបាននៅពេលនេះ។"</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"ភ្ជាប់កម្មវិធីទីពីរ"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"រៀបចំកម្មវិធីមួយទៀតជាមួយ Health Connect ដូច្នេះកម្មវិធីនោះអាចចាប់ផ្ដើមចែករំលែកទិន្នន័យសម្បទា និងសុខុមាលភាពបាន"</string>
-    <!-- no translation found for devices_current_device (6388308185566619743) -->
+    <string name="devices_current_device" msgid="6388308185566619743">"ឧបករណ៍បច្ចុប្បន្ន"</string>
+    <string name="devices_unknown_device" msgid="8830092952740474454">"ឧបករណ៍​ដែលមិន​ស្គាល់"</string>
+    <!-- no translation found for device_management_screen_title (504259497211017622) -->
     <skip />
-    <!-- no translation found for devices_unknown_device (8830092952740474454) -->
+    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
+    <skip />
+    <!-- no translation found for device_settings_label (9053791237491247819) -->
     <skip />
 </resources>
