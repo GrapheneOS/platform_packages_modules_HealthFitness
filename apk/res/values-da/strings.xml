@@ -374,6 +374,14 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"nikotinindtag"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Læse nikotinindtag"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Skrive nikotinindtag"</string>
+    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
+    <skip />
     <string name="read_permission_category" msgid="6002099618259628632">"Giv \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tilladelse til at læse"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Giv \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tilladelse til at skrive"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Tillad"</string>
@@ -759,7 +767,7 @@
     <string name="strength_training" msgid="56772956237540768">"Styrketræning"</string>
     <string name="stretching" msgid="8667864173383423787">"Udstrækning"</string>
     <string name="surfing" msgid="7612503593241904984">"Surfing"</string>
-    <string name="swimming_open_water" msgid="1030388267758027037">"Havsvømning"</string>
+    <string name="swimming_open_water" msgid="1030388267758027037">"Svømning i åbent vand"</string>
     <string name="swimming_pool" msgid="1584809250142187550">"Banesvømning"</string>
     <string name="swimming_freestyle" msgid="5969535751316106638">"Fri svømning"</string>
     <string name="swimming_backstroke" msgid="7293002996518694035">"Rygsvømning"</string>
@@ -816,18 +824,15 @@
     <string name="mindfulness_type_music" msgid="7041364137895485917">"Musik"</string>
     <string name="mindfulness_type_other" msgid="793524328911038908">"Andet"</string>
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"Uden vejledning"</string>
+    <!-- no translation found for mindfulness_a11y_text (1569084462477858789) -->
+    <skip />
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"Moderat"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"Højintensiv"</string>
-    <!-- no translation found for nicotine_intake_title (428157249131107976) -->
-    <skip />
-    <!-- no translation found for nicotine_intake_title_long (3254332210697516844) -->
-    <skip />
-    <!-- no translation found for nicotine_intake_type_vape (8910534364762591958) -->
-    <skip />
-    <!-- no translation found for nicotine_intake_type_cigarette (306427848597435195) -->
-    <skip />
-    <!-- no translation found for nicotine_intake_type_unknown (2096300681393598647) -->
-    <skip />
+    <string name="nicotine_intake_title" msgid="428157249131107976">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
+    <string name="nicotine_intake_title_long" msgid="3254332210697516844">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
+    <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} sug fra e-cigaret}one{{quantity} sug fra e-cigaret}other{{quantity} sug fra e-cigaret}}"</string>
+    <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} cigaret}one{{quantity} cigaret}other{{quantity} cigaretter}}"</string>
+    <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} ukendt"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min."</string>
     <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> t. og <xliff:g id="MIN">%2$s</xliff:g> min."</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> t."</string>
@@ -1261,8 +1266,12 @@
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Med Health Connect kan du dele trænings- og velværedata mellem dine apps. Se, hvilke apps du kan tilknytte nu."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Tilknyt en anden app"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Knyt en anden app til Health Connect, så den kan begynde at dele trænings- og velværedata"</string>
-    <!-- no translation found for devices_current_device (6388308185566619743) -->
+    <string name="devices_current_device" msgid="6388308185566619743">"Aktuel enhed"</string>
+    <string name="devices_unknown_device" msgid="8830092952740474454">"Ukendt enhed"</string>
+    <!-- no translation found for device_management_screen_title (504259497211017622) -->
     <skip />
-    <!-- no translation found for devices_unknown_device (8830092952740474454) -->
+    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
+    <skip />
+    <!-- no translation found for device_settings_label (9053791237491247819) -->
     <skip />
 </resources>

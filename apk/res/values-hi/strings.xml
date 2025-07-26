@@ -374,6 +374,14 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"निकोटीन का सेवन करने से जुड़ा डेटा"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"निकोटीन के सेवन से जुड़ा डेटा ऐक्सेस करने की अनुमति दें"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"निकोटीन का सेवन करने से जुड़े डेटा को सेव करने की अनुमति दें"</string>
+    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
+    <skip />
     <string name="read_permission_category" msgid="6002099618259628632">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” को डेटा देखने की अनुमति दें"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” को डेटा में बदलाव करने की अनुमति दें"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"अनुमति दें"</string>
@@ -816,6 +824,8 @@
     <string name="mindfulness_type_music" msgid="7041364137895485917">"संगीत"</string>
     <string name="mindfulness_type_other" msgid="793524328911038908">"अन्य"</string>
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"बिना गाइड के"</string>
+    <!-- no translation found for mindfulness_a11y_text (1569084462477858789) -->
+    <skip />
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"काफ़ी हद तक ठीक है"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"बहुत तेज़"</string>
     <string name="nicotine_intake_title" msgid="428157249131107976">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
@@ -1258,4 +1268,10 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Health Connect के साथ कोई दूसरा ऐप्लिकेशन सेट अप करें, ताकि वह फ़िटनेस और सेहत से जुड़ा डेटा शेयर कर पाए"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"मौजूदा डिवाइस"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"डिवाइस की जानकारी नहीं है"</string>
+    <!-- no translation found for device_management_screen_title (504259497211017622) -->
+    <skip />
+    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
+    <skip />
+    <!-- no translation found for device_settings_label (9053791237491247819) -->
+    <skip />
 </resources>
