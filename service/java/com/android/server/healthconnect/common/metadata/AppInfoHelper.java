@@ -755,7 +755,14 @@ public final class AppInfoHelper extends DatabaseHelper {
         ApplicationInfo info =
                 packageManager.getApplicationInfo(
                         packageName, PackageManager.ApplicationInfoFlags.of(0));
-        String appName = packageManager.getApplicationLabel(info).toString();
+        String appName;
+        if (Flags.stepTrackingEnabled()
+                && Objects.equals(packageName, DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE)) {
+            // TODO(b/422986550): don't cache this as it may change at runtime.
+            appName = mDeviceDataSourcesHelper.getCurrentDevice(mUserContext).getDisplayName();
+        } else {
+            appName = packageManager.getApplicationLabel(info).toString();
+        }
         Drawable icon = packageManager.getApplicationIcon(info);
         Bitmap bitmap = getBitmapFromDrawable(icon);
         return new AppInfoInternal(DEFAULT_LONG, packageName, appName, bitmap, null);
