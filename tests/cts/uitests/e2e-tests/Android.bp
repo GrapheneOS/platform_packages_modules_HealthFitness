@@ -18,9 +18,8 @@ package {
 }
 
 android_test {
-    name: "CtsHealthConnectControllerTestCases",
+    name: "HealthConnectUIE2ETests",
     team: "trendy_team_android_health",
-    defaults: ["cts_defaults"],
     libs: [
         "android.test.runner.stubs.test",
         "android.test.base.stubs.test",
@@ -32,10 +31,7 @@ android_test {
     ],
     // Tag this module as a cts test artifact
     test_suites: [
-        "cts",
         "general-tests",
-        "mts-healthfitness",
-        "mcts-healthfitness",
     ],
     static_libs: [
         "androidx.test.rules",
