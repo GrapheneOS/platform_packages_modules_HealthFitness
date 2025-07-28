@@ -1268,10 +1268,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"යෝග්‍යතා සහ සුවතා දත්ත බෙදා ගැනීම ආරම්භ කළ හැකි වන පරිදි Health Connect සමග තවත් යෙදුමක් පිහිටුවන්න"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"වත්මන් උපාංගය"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"නොදන්නා උපාංගය"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"උපාංග තතු"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"මෙම උපාංගය මගින් රැස් කරන ලද දත්ත Health Connect හි ගබඩා කරනු ලබන අතර, එහි දී සම්බන්ධිත යෙදුම් එයට ප්‍රවේශ වනු ඇත"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"ලිවීමට ඉඩ දුන්නා"</string>
 </resources>

@@ -1268,10 +1268,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Postavite drugu aplikaciju s Health Connectom da bi mogla početi dijeliti podatke o kondiciji i općem stanju"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"Trenutačni uređaj"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Nepoznati uređaj"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"Informacije o uređaju"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"Podaci koje prikupi ovaj uređaj pohranjivat će se u Health Connectu, gdje će im pristupati povezane aplikacije"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"Ima dopuštenje za bilježenje"</string>
 </resources>

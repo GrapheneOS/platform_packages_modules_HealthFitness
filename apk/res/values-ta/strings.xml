@@ -1268,10 +1268,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"ஃபிட்னஸ் மற்றும் ஆரோக்கியம் குறித்த தரவைப் பகிரும் வகையில் மற்றொரு ஆப்ஸை Health Connect ஆப்ஸுடன் அமைக்கலாம்"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"இந்தச் சாதனம்"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"ஏதோ ஒரு சாதனம்"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"சாதனத் தகவல்கள்"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"இந்தச் சாதனத்தால் சேகரிக்கப்பட்ட தரவு Health Connectடில் சேமிக்கப்படும், அங்கு இணைக்கப்பட்ட ஆப்ஸ் அதை அணுகும்"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"எழுத அனுமதிக்கப்பட்டவை"</string>
 </resources>

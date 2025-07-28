@@ -1268,10 +1268,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"將另一個應用程式與「健康資料同步」連結，就能開始共用健身和保健資料"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"目前使用的裝置"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"不明裝置"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"裝置資訊"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"這部裝置收集的資料會儲存在「健康資料同步」，連結的應用程式將可存取這些資料"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"允許寫入"</string>
 </resources>

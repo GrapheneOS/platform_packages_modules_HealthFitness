@@ -1268,10 +1268,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Health Connect के साथ कोई दूसरा ऐप्लिकेशन सेट अप करें, ताकि वह फ़िटनेस और सेहत से जुड़ा डेटा शेयर कर पाए"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"मौजूदा डिवाइस"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"डिवाइस की जानकारी नहीं है"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"डिवाइस की जानकारी"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"इस डिवाइस से इकट्ठा किया गया डेटा, Health Connect में सेव किया जाएगा. Health Connect से कनेक्ट किए गए ऐप्लिकेशन इस डेटा को ऐक्सेस कर पाएंगे"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"बदलाव करने की अनुमति है"</string>
 </resources>

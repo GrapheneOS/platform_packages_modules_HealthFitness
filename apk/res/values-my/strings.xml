@@ -1268,10 +1268,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"ကြံ့ခိုင်ရေးနှင့် အထွေထွေသုခ ဒေတာကို စတင်မျှဝေနိုင်ရန် အက်ပ်နောက်တစ်ခုကို Health Connect နှင့် စနစ်ထည့်သွင်းပါ"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"လက်ရှိစက်ပစ္စည်း"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"အမျိုးအမည်မသိ စက်ပစ္စည်း"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"စက်အချက်အလက်"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"ဤစက်က စုဆောင်းသောဒေတာကို Health Connect ၌ သိမ်းမည်ဖြစ်ပြီး ထိုနေရာတွင် ချိတ်ဆက်အက်ပ်များက ယင်းဒေတာကို သုံးမည်"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"ရေးခွင့်ပေးထားသည်များ"</string>
 </resources>

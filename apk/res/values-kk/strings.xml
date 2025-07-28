@@ -1268,10 +1268,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Тағы бір қолданба фитнес пен денсаулық деректерін бөлісуді бастауы үшін, Health Connect-пен оның параметрлерін реттеңіз"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"Осы құрылғы"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Белгісіз құрылғы"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"Құрылғы туралы ақпарат"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"Бұл құрылғы жинайтын деректер Health Connect-те сақталады және ол жерде деректерді байланысқан қолданбалар пайдаланады"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"Жазуға рұқсаты бар"</string>
 </resources>

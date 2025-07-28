@@ -1268,10 +1268,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configurez une autre appli avec Santé Connect pour qu\'elle commence à partager des données de forme et de bien-être"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"Appareil actuel"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Appareil inconnu"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"Informations sur l\'appareil"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"Les données collectées par cet appareil seront stockées dans Santé Connect, d\'où elles seront accessibles aux applications connectées"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"Modification autorisée"</string>
 </resources>
