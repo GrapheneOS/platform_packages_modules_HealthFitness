@@ -3429,8 +3429,8 @@ public class HealthConnectManager {
      * @param recordTypes A non-null set of {@link Record} classes.
      * @param packageName The package name of the app requesting the matching apps.
      * @param executor The {@link Executor} on which to invoke the callback.
-     * @param callback The callback which will receive the map of matching apps to their matching
-     *     permissions or the {@link HealthConnectException}.
+     * @param callback The callback which will receive the current {@link
+     *     HealthConnectOnboardingState} or the {@link HealthConnectException}.
      * @hide
      */
     @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
@@ -3462,44 +3462,6 @@ public class HealthConnectManager {
                             Binder.clearCallingIdentity();
                             executor.execute(
                                     () -> callback.onError(exception.getHealthConnectException()));
-                        }
-                    });
-        } catch (RemoteException e) {
-            throw e.rethrowFromSystemServer();
-        }
-    }
-
-    /**
-     * Records that a user has denied matchmaking for a given package.
-     *
-     * @param packageName package name of the app that was denied.
-     * @param executor The {@link Executor} on which to invoke the callback.
-     * @param callback Callback to receive result of performing this operation.
-     * @hide
-     */
-    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
-    public void recordMatchmakingDenial(
-            @NonNull String packageName,
-            @NonNull @CallbackExecutor Executor executor,
-            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
-        Objects.requireNonNull(packageName);
-        Objects.requireNonNull(executor);
-        Objects.requireNonNull(callback);
-
-        try {
-            mService.recordMatchmakingDenial(
-                    mContext.getAttributionSource(),
-                    packageName,
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(null));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
                         }
                     });
         } catch (RemoteException e) {

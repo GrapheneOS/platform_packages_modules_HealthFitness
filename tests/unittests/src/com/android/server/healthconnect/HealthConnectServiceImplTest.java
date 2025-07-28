@@ -319,9 +319,8 @@ public class HealthConnectServiceImplTest {
                     "restoreLatestMetadata",
                     "canRestore",
                     "restoreChanges",
-                    "canConnectMatchingApps",
                     "getMatchingApps",
-                    "recordMatchmakingDenial");
+                    "canConnectMatchingApps");
 
     /** Health connect service APIs that do not block calls when data sync is in progress. */
     public static final Set<String> DO_NOT_BLOCK_CALLS_DURING_DATA_SYNC_LIST =
@@ -3532,33 +3531,6 @@ public class HealthConnectServiceImplTest {
                 mAttributionSource, request, mCanConnectMatchingAppsCallback);
 
         verify(mCanConnectMatchingAppsCallback, timeout(TIMEOUT_MILLIS)).onResult(true);
-    }
-
-    @Test
-    @EnableFlags(FLAG_MATCHMAKING)
-    public void recordMatchmakingDenial_noPermission_throws() throws Exception {
-        doThrow(SecurityException.class)
-                .when(mServiceContext)
-                .enforcePermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt(), any());
-
-        mHealthConnectService.recordMatchmakingDenial(
-                mAttributionSource, THIS_TEST_PACKAGE_NAME, mEmptyResponseCallback);
-        awaitAllExecutorsIdle();
-
-        verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
-        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
-                .isEqualTo(ERROR_SECURITY);
-    }
-
-    @Test
-    @EnableFlags(FLAG_MATCHMAKING)
-    public void recordMatchmakingDenial_withPermission_callsManager() throws RemoteException {
-        setDataManagementPermission(PERMISSION_GRANTED);
-
-        mHealthConnectService.recordMatchmakingDenial(
-                mAttributionSource, "package.name", mEmptyResponseCallback);
-
-        verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
     }
 
     @Test

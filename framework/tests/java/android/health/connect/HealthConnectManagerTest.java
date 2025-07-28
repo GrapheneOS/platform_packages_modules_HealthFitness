@@ -79,7 +79,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectManagerTest {
 
-    public static final String PACKAGE_TO_MATCH = "package.to.match";
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
@@ -457,7 +456,10 @@ public class HealthConnectManagerTest {
                 .getMatchingApps(any(), any(), any());
 
         healthConnectManager.getMatchingApps(
-                ImmutableSet.of(), PACKAGE_TO_MATCH, Executors.newSingleThreadExecutor(), receiver);
+                ImmutableSet.of(),
+                "package.to.match",
+                Executors.newSingleThreadExecutor(),
+                receiver);
 
         assertThat(receiver.assertAndGetException().getErrorCode())
                 .isEqualTo(HealthConnectException.ERROR_UNSUPPORTED_OPERATION);
@@ -481,7 +483,7 @@ public class HealthConnectManagerTest {
 
         healthConnectManager.getMatchingApps(
                 ImmutableSet.of(StepsRecord.class, SleepSessionRecord.class),
-                PACKAGE_TO_MATCH,
+                "package.to.match",
                 Executors.newSingleThreadExecutor(),
                 receiver);
 
@@ -506,61 +508,12 @@ public class HealthConnectManagerTest {
 
         healthConnectManager.getMatchingApps(
                 ImmutableSet.of(StepsRecord.class, SleepSessionRecord.class),
-                PACKAGE_TO_MATCH,
+                "package.to.match",
                 Executors.newSingleThreadExecutor(),
                 receiver);
 
         assertThat(receiver.getResponse())
                 .containsExactlyEntriesIn(getMatchingAppsResponse().getMatchingApps());
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_MATCHMAKING)
-    public void testRecordMatchmakingDenial_usesResultFromService() throws Exception {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
-        TestOutcomeReceiver<Void> receiver = new TestOutcomeReceiver<>();
-        doAnswer(
-                        (Answer<Void>)
-                                invocation -> {
-                                    IEmptyResponseCallback callback = invocation.getArgument(2);
-                                    callback.onResult();
-                                    return null;
-                                })
-                .when(mService)
-                .recordMatchmakingDenial(any(), any(), any());
-
-        healthConnectManager.recordMatchmakingDenial(
-                PACKAGE_TO_MATCH, Executors.newSingleThreadExecutor(), receiver);
-
-        assertThat(receiver.getResponse()).isNull();
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_MATCHMAKING)
-    public void testRecordMatchmakingDenial_usesExceptionFromService() throws Exception {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
-        TestOutcomeReceiver<Void> receiver = new TestOutcomeReceiver<>();
-        doAnswer(
-                        (Answer<Void>)
-                                invocation -> {
-                                    IEmptyResponseCallback callback = invocation.getArgument(2);
-                                    callback.onError(
-                                            new HealthConnectExceptionParcel(
-                                                    new HealthConnectException(
-                                                            HealthConnectException
-                                                                    .ERROR_UNSUPPORTED_OPERATION)));
-                                    return null;
-                                })
-                .when(mService)
-                .recordMatchmakingDenial(any(), any(), any());
-
-        healthConnectManager.recordMatchmakingDenial(
-                PACKAGE_TO_MATCH, Executors.newSingleThreadExecutor(), receiver);
-
-        assertThat(receiver.assertAndGetException().getErrorCode())
-                .isEqualTo(HealthConnectException.ERROR_UNSUPPORTED_OPERATION);
     }
 
     @Test

@@ -624,17 +624,6 @@ interface IHealthConnectService {
             in IGetMatchingAppsCallback callback);
 
     /**
-     * Records that a user has denied matchmaking for a given package.
-     *
-     * @param packageName package name of the app that was denied.
-     * @param callback Callback to receive result of performing this operation.
-     */
-    void recordMatchmakingDenial(
-            in AttributionSource attributionSource,
-            String packageName,
-            in IEmptyResponseCallback callback);
-
-    /**
      * Enables or disables system/native tracking for the corresponding data type.
      *
      * @param dataTypePrefKey key for the data type to enable/disable tracking for.
