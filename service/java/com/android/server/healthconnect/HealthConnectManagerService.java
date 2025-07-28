@@ -216,6 +216,9 @@ public class HealthConnectManagerService extends SystemService {
         if (mHealthConnectInjector.getMatchingAppsManager() != null) {
             mHealthConnectInjector.getMatchingAppsManager().setupForUser(hcContext);
         }
+        if (mHealthConnectInjector.getMatchmakingDenialStateManager() != null) {
+            mHealthConnectInjector.getMatchmakingDenialStateManager().setupForUser(hcContext);
+        }
 
         if (Flags.clearCachesAfterSwitchingUser()) {
             // Clear preferences cache again after the user switching is done as there's a race
