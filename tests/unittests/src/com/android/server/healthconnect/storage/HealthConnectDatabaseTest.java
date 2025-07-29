@@ -42,7 +42,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -86,7 +85,6 @@ public class HealthConnectDatabaseTest {
     @DisableFlags({
         FLAG_DEVELOPMENT_DATABASE,
         FLAG_ACTIVITY_INTENSITY_DB,
-        Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
         FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
         FLAG_SMOKING_DB
     })

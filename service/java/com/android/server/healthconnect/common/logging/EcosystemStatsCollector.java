@@ -16,7 +16,6 @@
 
 package com.android.server.healthconnect.common.logging;
 
-import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper.ReadAccessLog;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper.ReadAccessLogsResponse;
@@ -61,10 +60,6 @@ public class EcosystemStatsCollector {
     }
 
     public void processReadAccessLogs() {
-        if (!AconfigFlagHelper.isEcosystemMetricsEnabled()) {
-            return;
-        }
-
         long collectionWindowStart =
                 Instant.now().minus(COLLECTION_WINDOW_DAYS, ChronoUnit.DAYS).toEpochMilli();
         Set<Integer> dataTypesWrittenInPast30Days =
