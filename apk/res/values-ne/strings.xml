@@ -1268,10 +1268,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"कुनै अर्को एपसँग तन्दुरुस्ती तथा आरोग्यसम्बन्धी जानकारी सेयर गर्न उक्त एप Health Connect मा कनेक्ट गर्नुहोस्"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"हालको डिभाइस"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"अज्ञात डिभाइस"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"डिभाइससम्बन्धी जानकारी"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"यो डिभाइसले सङ्कलन गरेको डेटा Health Connect मा भण्डारण गरिने छ। Health Connect मा कनेक्ट भएका एपहरूले यो डेटा एक्सेस गर्ने छन्"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"एपलाई राइट गर्ने अनुमति दिइएको छ"</string>
 </resources>

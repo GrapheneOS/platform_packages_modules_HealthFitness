@@ -1268,10 +1268,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Health Connectৰ সৈতে অন্য এটা এপ্‌ ছেট আপ কৰক যাতে এইটোৱে ফিটনেছ আৰু সুস্থতা সম্পৰ্কীয় ডেটা শ্বেয়াৰ কৰা আৰম্ভ কৰিব পাৰে"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"বৰ্তমানৰ ডিভাইচ"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"অজ্ঞাত ডিভাইচ"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"ডিভাইচ সম্পৰ্কীয় তথ্য"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"এই ডিভাইচে সংগ্ৰহ কৰা ডেটা Health Connect ষ্ট’ৰ কৰা হ’ব, য’ত সংযোজিত এপ্‌সমূহে সেয়া এক্সেছ কৰিব"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"লিখিবলৈ অনুমতি দিছে"</string>
 </resources>

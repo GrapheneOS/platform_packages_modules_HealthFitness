@@ -1268,10 +1268,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Thiết lập một ứng dụng khác bằng Health Connect để ứng dụng đó có thể bắt đầu chia sẻ dữ liệu về sức khoẻ và thể dục"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"Thiết bị hiện tại"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Thiết bị không xác định"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"Thông tin thiết bị"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"Dữ liệu mà thiết bị này thu thập sẽ được lưu trữ trong Health Connect, đây là nơi các ứng dụng đã kết nối sẽ truy cập vào dữ liệu đó"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"Được phép ghi"</string>
 </resources>

@@ -1268,10 +1268,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Mag-set up ng ibang app gamit ang Health Connect para makapagsimula itong mag-share ng data ng fitness at wellness"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"Kasalukuyang device"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Hindi kilalang device"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"Impormasyon ng device"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"Iso-store ang data na nakolekta ng device na ito sa Health Connect, kung saan ia-access ito ng mga nakakonektang app"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"Pinapayagang i-write"</string>
 </resources>

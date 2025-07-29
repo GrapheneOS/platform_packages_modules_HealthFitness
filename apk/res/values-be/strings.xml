@@ -1268,10 +1268,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Наладзьце яшчэ адну праграму для работы з праграмай \"Здароўе і спорт\", каб яна магла абагульваць даныя пра фізічную актыўнасць і фізічны стан"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"Гэта прылада"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Невядомая прылада"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"Інфармацыя пра прыладу"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"Даныя, якія сабрала гэта прылада, будуць захоўвацца ў праграме \"Здароўе і спорт\", праз якую звязаныя праграмы будуць атрымліваць да іх доступ"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"Дазволена запісваць"</string>
 </resources>
