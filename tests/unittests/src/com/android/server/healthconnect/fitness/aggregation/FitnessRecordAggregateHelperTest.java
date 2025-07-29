@@ -42,7 +42,6 @@ import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.os.UserHandle;
-import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -144,11 +143,7 @@ public class FitnessRecordAggregateHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_ECOSYSTEM_METRICS,
-        Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        Flags.FLAG_ACTIVITY_INTENSITY_DB
-    })
+    @EnableFlags({Flags.FLAG_ACTIVITY_INTENSITY_DB})
     public void populateWithAggregation_flagsEnabled_readAccessLogRecorded() {
         Instant testStartTime = Instant.now();
 
@@ -191,11 +186,7 @@ public class FitnessRecordAggregateHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_ECOSYSTEM_METRICS,
-        Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        Flags.FLAG_ACTIVITY_INTENSITY_DB
-    })
+    @EnableFlags({Flags.FLAG_ACTIVITY_INTENSITY_DB})
     public void populateWithAggregation_accessLogDisabled_readAccessLogNotRecorded() {
         String readerPackage = "reader.package";
         mFitnessTestUtils.insertApp(readerPackage);
@@ -218,37 +209,6 @@ public class FitnessRecordAggregateHelperTest {
                 new AggregateDataRequestParcel(aggregateRecordsRequest),
                 /* startDateAccess= */ 0,
                 /* shouldRecordAccessLog= */ false);
-
-        verify(mReadAccessLogsHelper, times(0))
-                .recordAccessLogForNonAggregationReads(any(), any(), anyLong(), any());
-        verify(mReadAccessLogsHelper, times(0))
-                .recordAccessLogForAggregationReads(
-                        any(), any(), anyLong(), anyInt(), anyLong(), any());
-    }
-
-    @Test
-    @DisableFlags({Flags.FLAG_ECOSYSTEM_METRICS, Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES})
-    public void populateWithAggregation_flagsDisabled_readAccessLogNotRecorded() {
-        String readerPackage = "reader.package";
-        mFitnessTestUtils.insertApp(readerPackage);
-        mFitnessTestUtils.insertRecords(
-                TEST_PACKAGE_NAME,
-                buildStepsRecord(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME), 123, 345, 100));
-
-        TimeRangeFilter timeRangeFilter =
-                new LocalTimeRangeFilter.Builder()
-                        .setStartTime(TimeRangeFilterHelper.getLocalTimeFromMillis(123L))
-                        .setEndTime(TimeRangeFilterHelper.getLocalTimeFromMillis(456L))
-                        .build();
-        AggregateRecordsRequest<Long> aggregateRecordsRequest =
-                new AggregateRecordsRequest.Builder<Long>(timeRangeFilter)
-                        .addAggregationType(StepsRecord.STEPS_COUNT_TOTAL)
-                        .build();
-        mFitnessRecordAggregateHelper.aggregateRecords(
-                readerPackage,
-                new AggregateDataRequestParcel(aggregateRecordsRequest),
-                /* startDateAccess= */ 0,
-                /* shouldRecordAccessLog= */ true);
 
         verify(mReadAccessLogsHelper, times(0))
                 .recordAccessLogForNonAggregationReads(any(), any(), anyLong(), any());

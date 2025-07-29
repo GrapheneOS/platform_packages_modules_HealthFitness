@@ -18,7 +18,6 @@ package com.android.server.healthconnect.common.logging;
 
 import android.health.HealthFitnessStatsLog;
 
-import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 
 import java.util.Map;
@@ -39,9 +38,6 @@ class EcosystemStatsLogger {
 
     /** Write Health Connect Ecosystem stats to statsd. */
     void log(EcosystemStatsCollector ecosystemStatsCollector) {
-        if (!AconfigFlagHelper.isEcosystemMetricsEnabled()) {
-            return;
-        }
         ecosystemStatsCollector.processReadAccessLogs();
 
         logDirectionalAppPairings(ecosystemStatsCollector);

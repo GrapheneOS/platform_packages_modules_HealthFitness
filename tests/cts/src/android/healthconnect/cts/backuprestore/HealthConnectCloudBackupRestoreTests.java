@@ -27,7 +27,6 @@ import static android.permission.flags.Flags.FLAG_HEALTH_CONNECT_BACKUP_RESTORE_
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
-import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -64,7 +63,6 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
 @RequiresFlagsEnabled({
-    FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
     FLAG_CLOUD_BACKUP_AND_RESTORE,
     FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
     FLAG_HEALTH_CONNECT_BACKUP_RESTORE_PERMISSION_ENABLED

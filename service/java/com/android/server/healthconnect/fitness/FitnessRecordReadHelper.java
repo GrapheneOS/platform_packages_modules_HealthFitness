@@ -311,16 +311,14 @@ public class FitnessRecordReadHelper {
         if (!shouldRecordAccessLog) {
             return;
         }
-        if (Flags.ecosystemMetrics()) {
-            transactionManager.runWithoutTransaction(
-                    db -> {
-                        mReadAccessLogsHelper.recordAccessLogForNonAggregationReads(
-                                db,
-                                callingPackageName,
-                                /* readTimeStamp= */ Instant.now().toEpochMilli(),
-                                recordInternals);
-                    });
-        }
+        transactionManager.runWithoutTransaction(
+                db -> {
+                    mReadAccessLogsHelper.recordAccessLogForNonAggregationReads(
+                            db,
+                            callingPackageName,
+                            /* readTimeStamp= */ Instant.now().toEpochMilli(),
+                            recordInternals);
+                });
         if (Flags.addMissingAccessLogs()) {
             transactionManager.runWithoutTransaction(
                     db -> {

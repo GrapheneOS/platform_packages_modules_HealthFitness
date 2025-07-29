@@ -20,7 +20,6 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
-import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -51,7 +50,6 @@ import org.mockito.junit.MockitoRule;
 @EnableFlags({
     FLAG_CLOUD_BACKUP_AND_RESTORE,
     FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
-    FLAG_ECOSYSTEM_METRICS_DB_CHANGES
 })
 public class BackupChangeTokenHelperTest {
 

@@ -39,13 +39,9 @@ import static android.health.connect.HealthPermissions.READ_DISTANCE;
 import static android.health.connect.HealthPermissions.READ_EXERCISE;
 import static android.health.connect.HealthPermissions.READ_STEPS;
 
-import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS;
-import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.never;
@@ -55,8 +51,6 @@ import static org.mockito.Mockito.when;
 
 import android.health.HealthFitnessStatsLog;
 import android.health.connect.datatypes.RecordTypeIdentifier;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -300,10 +294,6 @@ public class DailyLoggingServiceTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-    })
     public void flagsEnabled_testEcosystemMetrics_regularLogging() {
         when(mEcosystemStatsCollector.getDataTypesReadOrWritten())
                 .thenReturn(
@@ -364,10 +354,6 @@ public class DailyLoggingServiceTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-    })
     public void flagsEnabled_testEcosystemMetrics_privateLogging() {
         when(mEcosystemStatsCollector.getDirectionalAppPairings())
                 .thenReturn(
@@ -426,69 +412,6 @@ public class DailyLoggingServiceTest {
                         eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__DATA_TYPE__HEART_RATE),
                         eq(
                                 HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__METRIC_TYPE__METRIC_TYPE_DIRECTIONAL_PAIRING_PER_DATA_TYPE));
-    }
-
-    @Test
-    @DisableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-    })
-    public void flagsDisabled_doNotLogEcosystemMetrics() {
-        when(mEcosystemStatsCollector.getDataTypesReadOrWritten())
-                .thenReturn(
-                        Set.of(
-                                RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE,
-                                RecordTypeIdentifier.RECORD_TYPE_HEIGHT));
-        when(mEcosystemStatsCollector.getDataTypesRead())
-                .thenReturn(
-                        Set.of(
-                                RecordTypeIdentifier.RECORD_TYPE_BLOOD_GLUCOSE,
-                                RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE));
-        when(mEcosystemStatsCollector.getDataTypesWritten())
-                .thenReturn(
-                        Set.of(
-                                RecordTypeIdentifier.RECORD_TYPE_HEART_RATE,
-                                RecordTypeIdentifier.RECORD_TYPE_HEIGHT));
-        when(mEcosystemStatsCollector.getDataTypeShared())
-                .thenReturn(
-                        Set.of(
-                                RecordTypeIdentifier.RECORD_TYPE_STEPS,
-                                RecordTypeIdentifier.RECORD_TYPE_DISTANCE));
-        when(mEcosystemStatsCollector.getNumberOfAppPairings()).thenReturn(5);
-        when(mEcosystemStatsCollector.getDirectionalAppPairings())
-                .thenReturn(
-                        Map.of(
-                                CONNECTED_APP_PACKAGE_NAME,
-                                Set.of(CONNECTED_APP_TWO_PACKAGE_NAME),
-                                CONNECTED_APP_TWO_PACKAGE_NAME,
-                                Set.of(CONNECTED_APP_PACKAGE_NAME)));
-        when(mEcosystemStatsCollector.getDirectionalAppPairingsPerDataType())
-                .thenReturn(
-                        Map.of(
-                                CONNECTED_APP_PACKAGE_NAME,
-                                Map.of(
-                                        RecordTypeIdentifier.RECORD_TYPE_DISTANCE,
-                                        Set.of(CONNECTED_APP_TWO_PACKAGE_NAME)),
-                                CONNECTED_APP_TWO_PACKAGE_NAME,
-                                Map.of(
-                                        RecordTypeIdentifier.RECORD_TYPE_HEART_RATE,
-                                        Set.of(CONNECTED_APP_PACKAGE_NAME))));
-
-        DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector,
-                mDatabaseStatsCollector,
-                mEcosystemStatsCollector,
-                mHealthFitnessStatsLog);
-
-        verify(mHealthFitnessStatsLog, never())
-                .write(eq(HEALTH_CONNECT_ECOSYSTEM_STATS), any(), any(), any(), any(), anyInt());
-        verify(mHealthFitnessStatsLog, never())
-                .write(
-                        eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS),
-                        anyString(),
-                        anyString(),
-                        anyInt(),
-                        anyInt());
     }
 
     public static class ArrayMatcher implements ArgumentMatcher<int[]> {
