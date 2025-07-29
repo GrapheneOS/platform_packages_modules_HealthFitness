@@ -30,10 +30,11 @@ import kotlinx.serialization.Serializable
  */
 sealed class Screen {
 
-    @Serializable data object DataTypeList : Screen()
+    @Serializable @Suppress("PROVIDED_RUNTIME_TOO_LOW") data object DataTypeList : Screen()
 
     @Serializable
+    @Suppress("PROVIDED_RUNTIME_TOO_LOW")
     data class DataTypeDetails(val dataType: HealthPermissionType) : Screen()
 
-    @Serializable data object HomeMenu : Screen()
+    @Serializable @Suppress("PROVIDED_RUNTIME_TOO_LOW") data object HomeMenu : Screen()
 }
