@@ -374,14 +374,10 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"kiwango cha nikotini uliyotumia"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Soma data ya kiwango cha nikotini uliyotumia"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Andika data ya kiwango cha nikotini uliyotumia"</string>
-    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
-    <skip />
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"Data ya matumizi ya pombe"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"data ya matumizi ya pombe"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Kusoma data ya matumizi ya pombe"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Kuandika data ya matumizi ya pombe"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Ruhusu “<xliff:g id="APP_NAME">%1$s</xliff:g>” isome"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Ruhusu “<xliff:g id="APP_NAME">%1$s</xliff:g>” ili uandike"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Ruhusu"</string>

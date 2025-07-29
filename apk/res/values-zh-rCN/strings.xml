@@ -374,14 +374,10 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"尼古丁摄入数据"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"读取尼古丁摄入数据"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"写入尼古丁摄入数据"</string>
-    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
-    <skip />
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"饮酒情况"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"饮酒情况"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"读取饮酒情况"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"写入饮酒情况"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"允许 <xliff:g id="APP_NAME">%1$s</xliff:g> 读取"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”写入"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"允许"</string>
