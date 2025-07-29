@@ -83,8 +83,8 @@ import com.android.server.healthconnect.notifications.NotificationStatsLogger;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationSender;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager;
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
-import com.android.server.healthconnect.onboarding.matchingapps.MatchingAppsManager;
-import com.android.server.healthconnect.onboarding.matchingapps.MatchmakingDenialStateManager;
+import com.android.server.healthconnect.onboarding.matchmaking.MatchmakingDenialStateManager;
+import com.android.server.healthconnect.onboarding.matchmaking.MatchmakingManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastoreXmlPersistence;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -174,7 +174,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final LatencyMetricsCollector mLatencyMetricsCollector;
     private final LatencyMetricsLogger mLatencyMetricsLogger;
     private final CompletenessStatsLogger mCompletenessStatsLogger;
-    @Nullable private final MatchingAppsManager mMatchingAppsManager;
+    @Nullable private final MatchmakingManager mMatchmakingManager;
     @Nullable private final MatchmakingDenialStateManager mMatchmakingDenialStateManager;
 
     public HealthConnectInjectorImpl(Context context) {
@@ -574,16 +574,16 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         ? new MatchmakingDenialStateManager(hcContext, mPreferenceHelper)
                         : builder.mMatchmakingDenialStateManager;
 
-        mMatchingAppsManager =
-                builder.mMatchingAppsManager == null && Flags.matchmaking()
-                        ? new MatchingAppsManager(
+        mMatchmakingManager =
+                builder.mMatchmakingManager == null && Flags.matchmaking()
+                        ? new MatchmakingManager(
                                 hcContext,
                                 mHealthConnectPermissionHelper,
                                 mPackageInfoUtils,
                                 mHealthConnectMappings,
                                 context.getPackageManager(),
                                 Objects.requireNonNull(mMatchmakingDenialStateManager))
-                        : builder.mMatchingAppsManager;
+                        : builder.mMatchmakingManager;
     }
 
     @Override
@@ -907,8 +907,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
 
     @Nullable
     @Override
-    public MatchingAppsManager getMatchingAppsManager() {
-        return mMatchingAppsManager;
+    public MatchmakingManager getMatchingAppsManager() {
+        return mMatchmakingManager;
     }
 
     @Nullable
@@ -993,7 +993,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private CloudRestoreManager mCloudRestoreManager;
         @Nullable private LatencyMetricsCollector mLatencyMetricsCollector;
         @Nullable private LatencyMetricsLogger mLatencyMetricsLogger;
-        @Nullable private MatchingAppsManager mMatchingAppsManager;
+        @Nullable private MatchmakingManager mMatchmakingManager;
         @Nullable private MatchmakingDenialStateManager mMatchmakingDenialStateManager;
 
         private Builder(Context context) {
@@ -1348,9 +1348,9 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
             return this;
         }
 
-        /** Set fake or custom {@link MatchingAppsManager}. */
-        public Builder setMatchingAppsManager(MatchingAppsManager matchingAppsManager) {
-            mMatchingAppsManager = Objects.requireNonNull(matchingAppsManager);
+        /** Set fake or custom {@link MatchmakingManager}. */
+        public Builder setMatchingAppsManager(MatchmakingManager matchmakingManager) {
+            mMatchmakingManager = Objects.requireNonNull(matchmakingManager);
             return this;
         }
 

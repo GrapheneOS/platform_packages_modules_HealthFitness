@@ -67,8 +67,8 @@ import com.android.server.healthconnect.notifications.NotificationStatsLogger;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationSender;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager;
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
-import com.android.server.healthconnect.onboarding.matchingapps.MatchingAppsManager;
-import com.android.server.healthconnect.onboarding.matchingapps.MatchmakingDenialStateManager;
+import com.android.server.healthconnect.onboarding.matchmaking.MatchmakingDenialStateManager;
+import com.android.server.healthconnect.onboarding.matchmaking.MatchmakingManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
@@ -398,10 +398,10 @@ public abstract class HealthConnectInjector {
     public abstract CloudRestoreManager getCloudRestoreManager();
 
     /**
-     * Getter for {@link MatchingAppsManager} instance initialised by the Health Connect Injector.
+     * Getter for {@link MatchmakingManager} instance initialised by the Health Connect Injector.
      */
     @Nullable
-    public abstract MatchingAppsManager getMatchingAppsManager();
+    public abstract MatchmakingManager getMatchingAppsManager();
 
     /**
      * Getter for {@link MatchmakingDenialStateManager} instance initialised by the Health Connect

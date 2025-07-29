@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.server.healthconnect.onboarding.matchingapps;
+package com.android.server.healthconnect.onboarding.matchmaking;
 
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 
@@ -40,8 +40,8 @@ import java.util.stream.Collectors;
  *
  * @hide
  */
-public final class MatchingAppsManager {
-    private static final String TAG = MatchingAppsManager.class.getSimpleName();
+public final class MatchmakingManager {
+    private static final String TAG = MatchmakingManager.class.getSimpleName();
 
     private final HealthConnectPermissionHelper mHealthConnectPermissionHelper;
     private final PackageInfoUtils mPackageInfoUtils;
@@ -55,7 +55,7 @@ public final class MatchingAppsManager {
 
     private final MatchmakingDenialStateManager mMatchmakingDenialStateManager;
 
-    public MatchingAppsManager(
+    public MatchmakingManager(
             HealthConnectContext userContext,
             HealthConnectPermissionHelper healthConnectPermissionHelper,
             PackageInfoUtils packageInfoUtils,

@@ -213,7 +213,7 @@ import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.MigrationTestUtils;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
-import com.android.server.healthconnect.onboarding.matchingapps.MatchingAppsManager;
+import com.android.server.healthconnect.onboarding.matchmaking.MatchmakingManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
@@ -401,7 +401,7 @@ public class HealthConnectServiceImplTest {
     @Mock private IGetChangeLogTokenCallback mGetChangeLogTokenCallback;
     @Mock private IChangeLogsResponseCallback mChangeLogsResponseCallback;
     @Mock private OnboardingStateManager mOnboardingStateManager;
-    @Mock private MatchingAppsManager mMatchingAppsManager;
+    @Mock private MatchmakingManager mMatchmakingManager;
     @Captor ArgumentCaptor<HealthConnectExceptionParcel> mErrorCaptor;
     @Captor private ArgumentCaptor<HealthConnectOnboardingState> mOnboardingStateCaptor;
     private FakeTimeSource mFakeTimeSource;
@@ -461,7 +461,7 @@ public class HealthConnectServiceImplTest {
                         .setChangeLogsHelper(mChangeLogsHelper)
                         .setChangeLogsRequestHelper(mChangeLogsRequestHelper)
                         .setOnboardingStateManager(mOnboardingStateManager)
-                        .setMatchingAppsManager(mMatchingAppsManager)
+                        .setMatchingAppsManager(mMatchmakingManager)
                         .build();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
         mInternalTaskScheduler = mThreadScheduler.mInternalBackgroundExecutor;
@@ -3094,7 +3094,7 @@ public class HealthConnectServiceImplTest {
         Set<Class<? extends Record>> recordTypes = Set.of();
         GetMatchingAppsRequest request =
                 new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(Map.of());
 
         mHealthConnectService.getMatchingApps(
@@ -3115,7 +3115,7 @@ public class HealthConnectServiceImplTest {
                 new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
         mHealthConnectService.getMatchingApps(
                 mAttributionSource, request, mGetMatchingAppsCallback);
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(Map.of());
 
         verify(mGetMatchingAppsCallback, timeout(5000).times(1))
@@ -3135,7 +3135,7 @@ public class HealthConnectServiceImplTest {
                 mAttributionSource, request, mGetMatchingAppsCallback);
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
 
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
         verify(mGetMatchingAppsCallback, timeout(5000).times(1))
@@ -3152,7 +3152,7 @@ public class HealthConnectServiceImplTest {
         GetMatchingAppsRequest request =
                 new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
         mHealthConnectService.getMatchingApps(
@@ -3175,7 +3175,7 @@ public class HealthConnectServiceImplTest {
                         .addRecordTypes(recordTypes)
                         .build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
         mHealthConnectService.getMatchingApps(
@@ -3199,7 +3199,7 @@ public class HealthConnectServiceImplTest {
                         .setPackageName(mTestPackageName)
                         .build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
         mHealthConnectService.getMatchingApps(
@@ -3218,7 +3218,7 @@ public class HealthConnectServiceImplTest {
         GetMatchingAppsRequest request =
                 new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, THIS_TEST_PACKAGE_NAME))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, THIS_TEST_PACKAGE_NAME))
                 .thenReturn(matchingApps);
 
         mHealthConnectService.getMatchingApps(
@@ -3243,7 +3243,7 @@ public class HealthConnectServiceImplTest {
                         .setPackageName(THIS_TEST_PACKAGE_NAME)
                         .addRecordTypes(recordTypes)
                         .build();
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, THIS_TEST_PACKAGE_NAME))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, THIS_TEST_PACKAGE_NAME))
                 .thenReturn(Map.of());
 
         mHealthConnectService.getMatchingApps(
@@ -3263,7 +3263,7 @@ public class HealthConnectServiceImplTest {
                         .setPackageName(mTestPackageName)
                         .addRecordTypes(recordTypes)
                         .build();
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(Map.of());
 
         mHealthConnectService.getMatchingApps(
@@ -3295,7 +3295,7 @@ public class HealthConnectServiceImplTest {
                         Set.of(WRITE_STEPS, WRITE_NUTRITION),
                         "package.name.b",
                         Set.of(WRITE_SLEEP));
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
         mHealthConnectService.getMatchingApps(
@@ -3332,7 +3332,7 @@ public class HealthConnectServiceImplTest {
         Set<Class<? extends Record>> recordTypes = Set.of();
         GetMatchingAppsRequest request =
                 new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(Map.of());
 
         mHealthConnectService.canConnectMatchingApps(
@@ -3352,7 +3352,7 @@ public class HealthConnectServiceImplTest {
                 new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
         mHealthConnectService.canConnectMatchingApps(
                 mAttributionSource, request, mCanConnectMatchingAppsCallback);
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(Map.of());
 
         verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1)).onResult(false);
@@ -3371,7 +3371,7 @@ public class HealthConnectServiceImplTest {
                 mAttributionSource, request, mCanConnectMatchingAppsCallback);
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
 
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
         verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1)).onResult(true);
@@ -3387,7 +3387,7 @@ public class HealthConnectServiceImplTest {
         GetMatchingAppsRequest request =
                 new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
         mHealthConnectService.canConnectMatchingApps(
@@ -3409,7 +3409,7 @@ public class HealthConnectServiceImplTest {
                         .addRecordTypes(recordTypes)
                         .build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
         mHealthConnectService.canConnectMatchingApps(
@@ -3435,7 +3435,7 @@ public class HealthConnectServiceImplTest {
                         .setPackageName(mTestPackageName)
                         .build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
         mHealthConnectService.canConnectMatchingApps(
@@ -3454,7 +3454,7 @@ public class HealthConnectServiceImplTest {
         GetMatchingAppsRequest request =
                 new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, THIS_TEST_PACKAGE_NAME))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, THIS_TEST_PACKAGE_NAME))
                 .thenReturn(matchingApps);
 
         mHealthConnectService.canConnectMatchingApps(
@@ -3480,7 +3480,7 @@ public class HealthConnectServiceImplTest {
                         .setPackageName(THIS_TEST_PACKAGE_NAME)
                         .addRecordTypes(recordTypes)
                         .build();
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, THIS_TEST_PACKAGE_NAME))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, THIS_TEST_PACKAGE_NAME))
                 .thenReturn(Map.of());
 
         mHealthConnectService.canConnectMatchingApps(
@@ -3499,7 +3499,7 @@ public class HealthConnectServiceImplTest {
                         .setPackageName(mTestPackageName)
                         .addRecordTypes(recordTypes)
                         .build();
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(Map.of());
 
         mHealthConnectService.canConnectMatchingApps(
@@ -3525,7 +3525,7 @@ public class HealthConnectServiceImplTest {
                         Set.of(WRITE_STEPS, WRITE_NUTRITION),
                         "package.name.b",
                         Set.of(WRITE_SLEEP));
-        when(mMatchingAppsManager.fetchMatchingApps(recordTypes, mTestPackageName))
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
         mHealthConnectService.canConnectMatchingApps(
