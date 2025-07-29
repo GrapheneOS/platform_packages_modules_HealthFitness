@@ -35,8 +35,6 @@ import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper
 import com.android.server.healthconnect.common.jobs.DailyCleanupJob;
 import com.android.server.healthconnect.common.logging.CompletenessStatsLogger;
 import com.android.server.healthconnect.common.logging.DatabaseStatsCollector;
-import com.android.server.healthconnect.common.logging.LatencyMetricsCollector;
-import com.android.server.healthconnect.common.logging.LatencyMetricsLogger;
 import com.android.server.healthconnect.common.logging.UsageStatsCollector;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
@@ -81,6 +79,8 @@ import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsCollector;
+import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsLogger;
 import com.android.server.healthconnect.utils.TimeSource;
 
 import java.io.File;

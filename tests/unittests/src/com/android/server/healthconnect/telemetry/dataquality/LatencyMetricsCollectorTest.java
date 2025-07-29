@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.common.logging;
+package com.android.server.healthconnect.telemetry.dataquality;
 
-import static com.android.server.healthconnect.common.logging.LatencyMetricsCollector.LatencyMetricsData;
+import static com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsCollector.LatencyMetricsData;
 
 import static com.google.common.truth.Truth.assertThat;
 
