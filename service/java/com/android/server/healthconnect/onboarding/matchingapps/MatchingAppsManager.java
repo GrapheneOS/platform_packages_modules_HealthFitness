@@ -53,21 +53,17 @@ public final class MatchingAppsManager {
 
     private final PackageManager mPackageManager;
 
-    private final MatchmakingDenialStateManager mMatchmakingDenialStateManager;
-
     public MatchingAppsManager(
             HealthConnectContext userContext,
             HealthConnectPermissionHelper healthConnectPermissionHelper,
             PackageInfoUtils packageInfoUtils,
             HealthConnectMappings healthConnectMappings,
-            PackageManager packageManager,
-            MatchmakingDenialStateManager matchmakingDenialStateManager) {
+            PackageManager packageManager) {
         mUserContext = userContext;
         mHealthConnectPermissionHelper = healthConnectPermissionHelper;
         mPackageInfoUtils = packageInfoUtils;
         mHealthConnectMappings = healthConnectMappings;
         mPackageManager = packageManager;
-        mMatchmakingDenialStateManager = matchmakingDenialStateManager;
     }
 
     /** Setup MatchingAppsManager for the given user. */
@@ -79,8 +75,6 @@ public final class MatchingAppsManager {
      * Returns all matching applications and their matching permissions for a given package name
      * based on its granted read permissions and a set of specified record types.
      *
-     * <p>Returns an empty map if matchmaking is paused for the package.
-     *
      * @param recordTypes A {@link Set} of {@link Class} objects extending {@link
      *     android.health.connect.datatypes.Record}, representing the specific types of health
      *     records to consider. If this set is empty, all granted read permissions for the package
@@ -91,20 +85,12 @@ public final class MatchingAppsManager {
     public Map<String, Set<String>> fetchMatchingApps(
             Set<Class<? extends Record>> recordTypes, String packageName) {
         synchronized (this) {
-            if (mMatchmakingDenialStateManager.isMatchmakingPaused(packageName)) {
-                return Map.of();
-            }
             Set<String> writePermissions = getWritePermissionsToMatch(recordTypes, packageName);
             if (writePermissions.isEmpty()) {
                 return Map.of();
             }
             return getAllAvailableWritingApps(writePermissions);
         }
-    }
-
-    /** Increments the denial counter for the given package. */
-    public void recordMatchmakingDenial(String packageName) {
-        mMatchmakingDenialStateManager.recordMatchmakingDenial(packageName);
     }
 
     private Set<String> getWritePermissionsToMatch(

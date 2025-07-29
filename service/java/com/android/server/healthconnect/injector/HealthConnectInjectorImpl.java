@@ -83,7 +83,6 @@ import com.android.server.healthconnect.onboarding.OnboardingNotificationSender;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager;
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
 import com.android.server.healthconnect.onboarding.matchingapps.MatchingAppsManager;
-import com.android.server.healthconnect.onboarding.matchingapps.MatchmakingDenialStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastoreXmlPersistence;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -173,7 +172,6 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final LatencyMetricsCollector mLatencyMetricsCollector;
     private final LatencyMetricsLogger mLatencyMetricsLogger;
     @Nullable private final MatchingAppsManager mMatchingAppsManager;
-    @Nullable private final MatchmakingDenialStateManager mMatchmakingDenialStateManager;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -566,11 +564,6 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthFitnesssStatsLog, mLatencyMetricsCollector)
                         : builder.mLatencyMetricsLogger;
 
-        mMatchmakingDenialStateManager =
-                builder.mMatchmakingDenialStateManager == null && Flags.matchmaking()
-                        ? new MatchmakingDenialStateManager(hcContext, mPreferenceHelper)
-                        : builder.mMatchmakingDenialStateManager;
-
         mMatchingAppsManager =
                 builder.mMatchingAppsManager == null && Flags.matchmaking()
                         ? new MatchingAppsManager(
@@ -578,8 +571,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthConnectPermissionHelper,
                                 mPackageInfoUtils,
                                 mHealthConnectMappings,
-                                context.getPackageManager(),
-                                Objects.requireNonNull(mMatchmakingDenialStateManager))
+                                context.getPackageManager())
                         : builder.mMatchingAppsManager;
     }
 
@@ -903,12 +895,6 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         return mMatchingAppsManager;
     }
 
-    @Nullable
-    @Override
-    public MatchmakingDenialStateManager getMatchmakingDenialStateManager() {
-        return mMatchmakingDenialStateManager;
-    }
-
     /**
      * Returns a new Builder of Health Connect Injector
      *
@@ -986,7 +972,6 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private LatencyMetricsCollector mLatencyMetricsCollector;
         @Nullable private LatencyMetricsLogger mLatencyMetricsLogger;
         @Nullable private MatchingAppsManager mMatchingAppsManager;
-        @Nullable private MatchmakingDenialStateManager mMatchmakingDenialStateManager;
 
         private Builder(Context context) {
             mContext = context;
@@ -1355,13 +1340,6 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         /** Set fake or custom {@link LatencyMetricsLogger}. */
         public Builder setLatencyMetricsLogger(LatencyMetricsLogger latencyMetricsLogger) {
             mLatencyMetricsLogger = Objects.requireNonNull(latencyMetricsLogger);
-            return this;
-        }
-
-        /** Set fake or custom {@link MatchmakingDenialStateManager}. */
-        public Builder setMatchmakingDenialStateManager(
-                MatchmakingDenialStateManager matchmakingDenialStateManager) {
-            mMatchmakingDenialStateManager = Objects.requireNonNull(matchmakingDenialStateManager);
             return this;
         }
 

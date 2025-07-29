@@ -31,7 +31,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.clearInvocations;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
@@ -78,7 +77,6 @@ public class MatchingAppsManagerTest {
     @Mock private HealthConnectPermissionHelper mHealthConnectPermissionHelper;
     @Mock private PackageInfoUtils mPackageInfoUtils;
     @Mock private PackageManager mPackageManager;
-    @Mock private MatchmakingDenialStateManager mMatchmakingDenialStateManager;
 
     private final HealthConnectMappings mHealthConnectMappings = new HealthConnectMappings();
 
@@ -99,9 +97,7 @@ public class MatchingAppsManagerTest {
                         mHealthConnectPermissionHelper,
                         mPackageInfoUtils,
                         mHealthConnectMappings,
-                        mPackageManager,
-                        mMatchmakingDenialStateManager);
-        when(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME)).thenReturn(false);
+                        mPackageManager);
     }
 
     @After
@@ -144,6 +140,7 @@ public class MatchingAppsManagerTest {
     @Test
     public void fetchMatchingApps_matchExists_returnsMatchingApp() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
+
         PackageInfo matchingApp = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
         mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp));
         mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
@@ -157,24 +154,9 @@ public class MatchingAppsManagerTest {
     }
 
     @Test
-    public void fetchMatchingApps__matchExists_denialLimitExceeded_returnsEmpty() {
-        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
-        when(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME)).thenReturn(true);
-        PackageInfo matchingApp = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
-        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp));
-        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
-        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
-        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
-
-        Map<String, Set<String>> result =
-                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
-
-        assertThat(result).isEmpty();
-    }
-
-    @Test
     public void fetchMatchingApps_systemAppWouldMatch_returnsEmpty() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
+
         PackageInfo matchingApp = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
         mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp));
         mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ true);
@@ -190,6 +172,7 @@ public class MatchingAppsManagerTest {
     @Test
     public void fetchMatchingApps_matchingWritePermissionAlreadyGranted_returnsEmpty() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
+
         PackageInfo matchingApp = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
         mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp));
         mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
@@ -205,6 +188,7 @@ public class MatchingAppsManagerTest {
     @Test
     public void fetchMatchingApps_matchingWritePermissionUserFixed_returnsEmpty() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
+
         PackageInfo matchingApp = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
         mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp));
         mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
@@ -220,6 +204,7 @@ public class MatchingAppsManagerTest {
     @Test
     public void fetchMatchingApps_matchingWritePermissionUserSet_returnsMatchingApp() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
+
         PackageInfo matchingApp = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
         mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp));
         mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
@@ -239,6 +224,7 @@ public class MatchingAppsManagerTest {
                 PACKAGE_NAME,
                 ImmutableList.of(
                         READ_HEART_RATE, READ_DISTANCE, READ_STEPS, WRITE_STEPS, WRITE_DISTANCE));
+
         // Writing app could write HEART_RATE, DISTANCE and STEPS.
         PackageInfo matchingApp =
                 createPackageInfo(
@@ -267,6 +253,7 @@ public class MatchingAppsManagerTest {
                 PACKAGE_NAME,
                 ImmutableList.of(
                         READ_HEART_RATE, READ_DISTANCE, READ_STEPS, WRITE_STEPS, WRITE_DISTANCE));
+
         // Writing app could write HEART_RATE, DISTANCE and STEPS.
         PackageInfo matchingApp =
                 createPackageInfo(
@@ -433,11 +420,5 @@ public class MatchingAppsManagerTest {
         pkgInfo.firstInstallTime = 0;
         pkgInfo.requestedPermissions = requestedPermissions;
         return pkgInfo;
-    }
-
-    @Test
-    public void incrementDenialCounter_callsDenialManager() {
-        mMatchingAppsManager.recordMatchmakingDenial(PACKAGE_NAME);
-        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME);
     }
 }
