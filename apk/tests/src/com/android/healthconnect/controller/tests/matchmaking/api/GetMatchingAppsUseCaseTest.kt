@@ -22,6 +22,7 @@ import android.health.connect.HealthPermissions.WRITE_STEPS
 import android.health.connect.datatypes.StepsRecord
 import android.os.OutcomeReceiver
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.android.healthconnect.controller.matchmaking.MatchmakingAppData
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingAppsUseCase
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingAppsUseCase.GetMatchMakingAppsInput
 import com.android.healthconnect.controller.permissions.data.HealthPermission
@@ -70,7 +71,15 @@ class GetMatchingAppsUseCaseTest {
         val matchingAppsResponse = mapOf(TEST_APP_PACKAGE_NAME_2 to setOf(WRITE_STEPS))
         val appMetadata = AppMetadata(TEST_APP_NAME_2, TEST_APP_PACKAGE_NAME_2, null)
         val expected =
-            mapOf(appMetadata to setOf(HealthPermission.fromPermissionString(WRITE_STEPS)))
+            setOf(
+                MatchmakingAppData(
+                    appMetadata,
+                    setOf(
+                        HealthPermission.fromPermissionString(WRITE_STEPS)
+                            as HealthPermission.FitnessPermission
+                    ),
+                )
+            )
 
         doAnswer {
                 val receiver =

@@ -202,8 +202,16 @@
 
     <style name="Theme.HealthConnect" parent="Base.Theme.HealthConnect" />
 
+    <style name="Theme.HealthConnect.MatchMakingActivity" parent="Base.Theme.HealthConnect">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
     <style name="Theme.HealthConnect.PermissionsActivity" parent="Base.Theme.HealthConnect">
         <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="Theme.HealthConnect.MatchMakingActivity.Overlay" parent="Theme.HealthConnect.MatchMakingActivity">
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
     <style name="Theme.HealthConnect.PermissionsActivity.Overlay" parent="Theme.HealthConnect.PermissionsActivity">

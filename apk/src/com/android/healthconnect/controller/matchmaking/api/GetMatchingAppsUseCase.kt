@@ -19,10 +19,10 @@ package com.android.healthconnect.controller.matchmaking.api
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
+import com.android.healthconnect.controller.matchmaking.MatchmakingAppData
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingAppsUseCase.GetMatchMakingAppsInput
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.shared.app.AppInfoReader
-import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import javax.inject.Inject
@@ -35,11 +35,9 @@ constructor(
     private val healthConnectManager: HealthConnectManager,
     private val appInfoReader: AppInfoReader,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-) : BaseUseCase<GetMatchMakingAppsInput, Map<AppMetadata, Set<HealthPermission>>>(ioDispatcher) {
+) : BaseUseCase<GetMatchMakingAppsInput, Set<MatchmakingAppData>>(ioDispatcher) {
 
-    override suspend fun execute(
-        input: GetMatchMakingAppsInput
-    ): Map<AppMetadata, Set<HealthPermission>> {
+    override suspend fun execute(input: GetMatchMakingAppsInput): Set<MatchmakingAppData> {
         val result =
             suspendCancellableCoroutine<Map<String, Set<String>>> { continuation ->
                 healthConnectManager.getMatchingApps(
@@ -50,10 +48,18 @@ constructor(
                 )
             }
         return result
-            .mapKeys { (packageName, _) -> appInfoReader.getAppMetadata(packageName) }
-            .mapValues { (_, permissions) ->
-                permissions.map { HealthPermission.fromPermissionString(it) }.toSet()
+            .map { (packageName, permissions) ->
+                MatchmakingAppData(
+                    appInfoReader.getAppMetadata(packageName),
+                    permissions
+                        .map {
+                            HealthPermission.fromPermissionString(it)
+                                as HealthPermission.FitnessPermission
+                        }
+                        .toSet(),
+                )
             }
+            .toSet()
     }
 
     data class GetMatchMakingAppsInput(

@@ -531,6 +531,15 @@
     <string name="request_medical_permissions_data_access_type_read" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose data you want this app to read from Health&#160;Connect</string>
     <!--endregion-->
 
+    <!-- region Matchmaking request strings -->
+    <string name="matchmaking_screen_title" description = "Title for match making screen to add missing data">Share data between apps</string>
+    <string name="matchmaking_screen_data_from_app" description= "Title for category that holds list of matching apps">Data from <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g></string>
+    <string name="matchmaking_screen_summary" description = "Summary on match making screen to allow the given app to read data from other apps using Health Connect">Allow the <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> app to read data from other apps on this device using Health&#160;Connect</string>
+    <string name="matchmaking_screen_apps_category_title" description= "Title for category that holds list of matching apps">Apps that can sync this data</string>
+    <string name="app_privacy_policy_footer" description="Footer with a link to the app's privacy policy.">Learn how <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> uses your data in their <a href="%2$s">privacy policy</a>.</string>
+    <string name="matchmaking_screen_footer" descriptio= "Summary on match making screen explaining how Health Connect share health and fitness data between multiple apps">Health Connect lets you share your health and fitness data between multiple apps. This helps you unlock insights and experiences while keeping your data secure.</string>
+    <string name="more_about_health_connect" description= "Title for link to learn more about Health Connect">More about Health&#160;Connect</string>
+    <!--endregion-->
 
     <!-- region Fitness permission request -->
     <string name="request_permissions_header_time_frame_desc" description="Text describing the time frame of data which an app will be able to access. [CHAR_LIMIT=NONE]">If you give read access, the app can read new data and data from the past 30 days</string>

@@ -141,6 +141,18 @@
         </activity>
 
         <activity
+            android:name=".matchmaking.MatchmakingActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.HealthConnect.MatchMakingActivity">
+            <intent-filter>
+                <action android:name="android.health.connect.action.CONNECT_MATCHING_APPS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".permissions.request.PermissionsActivity"
             android:theme="@style/Theme.HealthConnect.PermissionsActivity"
             android:excludeFromRecents="true"
