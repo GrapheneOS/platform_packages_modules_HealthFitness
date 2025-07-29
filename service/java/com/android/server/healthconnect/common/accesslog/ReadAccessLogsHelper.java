@@ -95,9 +95,6 @@ public class ReadAccessLogsHelper extends DatabaseHelper {
 
     @Override
     public synchronized void clearData(TransactionManager transactionManager) {
-        if (!AconfigFlagHelper.isEcosystemMetricsEnabled()) {
-            return;
-        }
         super.clearData(transactionManager);
     }
 

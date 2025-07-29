@@ -1355,8 +1355,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                     throwExceptionIfDataSyncInProgress();
                     // Get AppInfo IDs which has PHR data.
-                    Set<Long> appIdsWithPhrData = Set.of();
-                    appIdsWithPhrData = mMedicalDataSourceHelper.getAllContributorAppInfoIds();
+                    Set<Long> appIdsWithPhrData =
+                            mMedicalDataSourceHelper.getAllContributorAppInfoIds();
                     // Get all AppInfos which has either Fitness data or PHR data.
                     List<AppInfo> applicationInfosWithData =
                             mAppInfoHelper.getApplicationInfosWithRecordTypesOrInIdsList(
@@ -3261,47 +3261,23 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mThreadScheduler.schedule(
                 mContext,
                 () -> {
-                    int errorCode = ERROR_UNKNOWN;
-                    Exception exception = null;
                     try {
                         task.execute();
-                    } catch (JSONException | SQLiteException jsonException) {
-                        errorCode = ERROR_IO;
-                        exception = jsonException;
-                    } catch (SecurityException securityException) {
-                        errorCode = ERROR_SECURITY;
-                        exception = securityException;
-                    } catch (IllegalArgumentException illegalArgumentException) {
-                        errorCode = ERROR_INVALID_ARGUMENT;
-                        exception = illegalArgumentException;
-                    } catch (HealthConnectException healthConnectException) {
-                        errorCode = healthConnectException.getErrorCode();
-                        exception = healthConnectException;
-                    } catch (UnsupportedOperationException unsupportedOperationException) {
-                        errorCode = ERROR_UNSUPPORTED_OPERATION;
-                        exception = unsupportedOperationException;
-                    } catch (Exception e) { // including IllegalStateException
-                        errorCode = ERROR_INTERNAL;
-                        exception = e;
-                    } finally {
-                        try {
-                            if (exception != null) {
-                                String msg = exception.getClass().getSimpleName() + ": ";
-                                if (exception instanceof IllegalArgumentException
-                                        && Flags.logcatCensorIae()) {
-                                    Slog.e(TAG, getStackTraceOnlyString(exception));
-                                } else {
-                                    Slog.e(TAG, msg, exception);
-                                }
-                                if (errorCode == ERROR_UNKNOWN) {
-                                    Slog.e(TAG, "errorCode should not be ERROR_UNKNOWN!");
-                                }
-                                logger.setHealthDataServiceApiStatusError(errorCode);
-                                tryAndThrowException(errorCallback, exception, errorCode);
-                            }
-                        } finally {
-                            logger.build().log();
+                    } catch (Exception exception) {
+                        int errorCode = getErrorCode(exception);
+                        if (exception instanceof IllegalArgumentException
+                                && Flags.logcatCensorIae()) {
+                            Slog.e(TAG, getStackTraceOnlyString(exception));
+                        } else {
+                            Slog.e(TAG, exception.getClass().getSimpleName() + ": ", exception);
                         }
+                        if (errorCode == ERROR_UNKNOWN) {
+                            Slog.e(TAG, "errorCode should not be ERROR_UNKNOWN!");
+                        }
+                        logger.setHealthDataServiceApiStatusError(errorCode);
+                        tryAndThrowException(errorCallback, exception, errorCode);
+                    } finally {
+                        logger.build().log();
                     }
                 },
                 uid,
@@ -3314,23 +3290,24 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 () -> {
                     try {
                         task.execute();
-                    } catch (SQLiteException e) {
-                        Slog.e(TAG, "SQLiteException: ", e);
-                        tryAndThrowException(errorCallback, e, ERROR_IO);
-                    } catch (SecurityException e) {
-                        Slog.e(TAG, "SecurityException: ", e);
-                        tryAndThrowException(errorCallback, e, ERROR_SECURITY);
-                    } catch (UnsupportedOperationException e) {
-                        Slog.e(TAG, "UnsupportedOperationException: ", e);
-                        tryAndThrowException(errorCallback, e, ERROR_UNSUPPORTED_OPERATION);
-                    } catch (HealthConnectException e) {
-                        Slog.e(TAG, "HealthConnectException: ", e);
-                        tryAndThrowException(errorCallback, e, e.getErrorCode());
                     } catch (Exception e) {
-                        Slog.e(TAG, "Exception: ", e);
-                        tryAndThrowException(errorCallback, e, ERROR_INTERNAL);
+                        Slog.e(TAG, e.getClass().getSimpleName() + ": ", e);
+                        @HealthConnectException.ErrorCode final int errorCode = getErrorCode(e);
+                        tryAndThrowException(errorCallback, e, errorCode);
                     }
                 });
+    }
+
+    private static int getErrorCode(Exception exception) {
+        return switch (exception) {
+            case JSONException ignored -> ERROR_IO;
+            case SQLiteException ignored -> ERROR_IO;
+            case SecurityException ignored -> ERROR_SECURITY;
+            case IllegalArgumentException ignored -> ERROR_INVALID_ARGUMENT;
+            case HealthConnectException hce -> hce.getErrorCode();
+            case UnsupportedOperationException ignored -> ERROR_UNSUPPORTED_OPERATION;
+            default -> ERROR_INTERNAL;
+        };
     }
 
     /**

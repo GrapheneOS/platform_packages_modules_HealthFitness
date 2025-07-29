@@ -61,7 +61,6 @@ import static android.health.connect.datatypes.AggregationType.AggregationTypeId
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 
@@ -76,12 +75,14 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 /**
  * Helper class for NutritionRecord.
@@ -89,51 +90,51 @@ import java.util.Set;
  * @hide
  */
 public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionRecordInternal> {
-    private static final String NUTRITION_RECORD_TABLE_NAME = "nutrition_record_table";
-    private static final String UNSATURATED_FAT_COLUMN_NAME = "unsaturated_fat";
-    private static final String POTASSIUM_COLUMN_NAME = "potassium";
-    private static final String THIAMIN_COLUMN_NAME = "thiamin";
-    private static final String MEAL_TYPE_COLUMN_NAME = "meal_type";
-    private static final String TRANS_FAT_COLUMN_NAME = "trans_fat";
-    private static final String MANGANESE_COLUMN_NAME = "manganese";
-    private static final String ENERGY_FROM_FAT_COLUMN_NAME = "energy_from_fat";
-    private static final String CAFFEINE_COLUMN_NAME = "caffeine";
-    private static final String DIETARY_FIBER_COLUMN_NAME = "dietary_fiber";
-    private static final String SELENIUM_COLUMN_NAME = "selenium";
-    private static final String VITAMIN_B6_COLUMN_NAME = "vitamin_b6";
-    private static final String PROTEIN_COLUMN_NAME = "protein";
-    private static final String CHLORIDE_COLUMN_NAME = "chloride";
-    private static final String CHOLESTEROL_COLUMN_NAME = "cholesterol";
-    private static final String COPPER_COLUMN_NAME = "copper";
-    private static final String IODINE_COLUMN_NAME = "iodine";
-    private static final String VITAMIN_B12_COLUMN_NAME = "vitamin_b12";
-    private static final String ZINC_COLUMN_NAME = "zinc";
-    private static final String RIBOFLAVIN_COLUMN_NAME = "riboflavin";
-    private static final String ENERGY_COLUMN_NAME = "energy";
-    private static final String MOLYBDENUM_COLUMN_NAME = "molybdenum";
-    private static final String PHOSPHORUS_COLUMN_NAME = "phosphorus";
-    private static final String CHROMIUM_COLUMN_NAME = "chromium";
-    private static final String TOTAL_FAT_COLUMN_NAME = "total_fat";
-    private static final String CALCIUM_COLUMN_NAME = "calcium";
-    private static final String VITAMIN_C_COLUMN_NAME = "vitamin_c";
-    private static final String VITAMIN_E_COLUMN_NAME = "vitamin_e";
-    private static final String BIOTIN_COLUMN_NAME = "biotin";
-    private static final String VITAMIN_D_COLUMN_NAME = "vitamin_d";
-    private static final String NIACIN_COLUMN_NAME = "niacin";
-    private static final String MAGNESIUM_COLUMN_NAME = "magnesium";
-    private static final String TOTAL_CARBOHYDRATE_COLUMN_NAME = "total_carbohydrate";
-    private static final String VITAMIN_K_COLUMN_NAME = "vitamin_k";
-    private static final String POLYUNSATURATED_FAT_COLUMN_NAME = "polyunsaturated_fat";
-    private static final String SATURATED_FAT_COLUMN_NAME = "saturated_fat";
-    private static final String SODIUM_COLUMN_NAME = "sodium";
-    private static final String FOLATE_COLUMN_NAME = "folate";
-    private static final String MONOUNSATURATED_FAT_COLUMN_NAME = "monounsaturated_fat";
-    private static final String PANTOTHENIC_ACID_COLUMN_NAME = "pantothenic_acid";
+    @VisibleForTesting static final String NUTRITION_RECORD_TABLE_NAME = "nutrition_record_table";
+    @VisibleForTesting static final String UNSATURATED_FAT_COLUMN_NAME = "unsaturated_fat";
+    @VisibleForTesting static final String POTASSIUM_COLUMN_NAME = "potassium";
+    @VisibleForTesting static final String THIAMIN_COLUMN_NAME = "thiamin";
+    @VisibleForTesting static final String MEAL_TYPE_COLUMN_NAME = "meal_type";
+    @VisibleForTesting static final String TRANS_FAT_COLUMN_NAME = "trans_fat";
+    @VisibleForTesting static final String MANGANESE_COLUMN_NAME = "manganese";
+    @VisibleForTesting static final String ENERGY_FROM_FAT_COLUMN_NAME = "energy_from_fat";
+    @VisibleForTesting static final String CAFFEINE_COLUMN_NAME = "caffeine";
+    @VisibleForTesting static final String DIETARY_FIBER_COLUMN_NAME = "dietary_fiber";
+    @VisibleForTesting static final String SELENIUM_COLUMN_NAME = "selenium";
+    @VisibleForTesting static final String VITAMIN_B6_COLUMN_NAME = "vitamin_b6";
+    @VisibleForTesting static final String PROTEIN_COLUMN_NAME = "protein";
+    @VisibleForTesting static final String CHLORIDE_COLUMN_NAME = "chloride";
+    @VisibleForTesting static final String CHOLESTEROL_COLUMN_NAME = "cholesterol";
+    @VisibleForTesting static final String COPPER_COLUMN_NAME = "copper";
+    @VisibleForTesting static final String IODINE_COLUMN_NAME = "iodine";
+    @VisibleForTesting static final String VITAMIN_B12_COLUMN_NAME = "vitamin_b12";
+    @VisibleForTesting static final String ZINC_COLUMN_NAME = "zinc";
+    @VisibleForTesting static final String RIBOFLAVIN_COLUMN_NAME = "riboflavin";
+    @VisibleForTesting static final String ENERGY_COLUMN_NAME = "energy";
+    @VisibleForTesting static final String MOLYBDENUM_COLUMN_NAME = "molybdenum";
+    @VisibleForTesting static final String PHOSPHORUS_COLUMN_NAME = "phosphorus";
+    @VisibleForTesting static final String CHROMIUM_COLUMN_NAME = "chromium";
+    @VisibleForTesting static final String TOTAL_FAT_COLUMN_NAME = "total_fat";
+    @VisibleForTesting static final String CALCIUM_COLUMN_NAME = "calcium";
+    @VisibleForTesting static final String VITAMIN_C_COLUMN_NAME = "vitamin_c";
+    @VisibleForTesting static final String VITAMIN_E_COLUMN_NAME = "vitamin_e";
+    @VisibleForTesting static final String BIOTIN_COLUMN_NAME = "biotin";
+    @VisibleForTesting static final String VITAMIN_D_COLUMN_NAME = "vitamin_d";
+    @VisibleForTesting static final String NIACIN_COLUMN_NAME = "niacin";
+    @VisibleForTesting static final String MAGNESIUM_COLUMN_NAME = "magnesium";
+    @VisibleForTesting static final String TOTAL_CARBOHYDRATE_COLUMN_NAME = "total_carbohydrate";
+    @VisibleForTesting static final String VITAMIN_K_COLUMN_NAME = "vitamin_k";
+    @VisibleForTesting static final String POLYUNSATURATED_FAT_COLUMN_NAME = "polyunsaturated_fat";
+    @VisibleForTesting static final String SATURATED_FAT_COLUMN_NAME = "saturated_fat";
+    @VisibleForTesting static final String SODIUM_COLUMN_NAME = "sodium";
+    @VisibleForTesting static final String FOLATE_COLUMN_NAME = "folate";
+    @VisibleForTesting static final String MONOUNSATURATED_FAT_COLUMN_NAME = "monounsaturated_fat";
+    @VisibleForTesting static final String PANTOTHENIC_ACID_COLUMN_NAME = "pantothenic_acid";
     private static final String MEAL_NAME_COLUMN_NAME = "meal_name";
-    private static final String IRON_COLUMN_NAME = "iron";
-    private static final String VITAMIN_A_COLUMN_NAME = "vitamin_a";
-    private static final String FOLIC_ACID_COLUMN_NAME = "folic_acid";
-    private static final String SUGAR_COLUMN_NAME = "sugar";
+    @VisibleForTesting static final String IRON_COLUMN_NAME = "iron";
+    @VisibleForTesting static final String VITAMIN_A_COLUMN_NAME = "vitamin_a";
+    @VisibleForTesting static final String FOLIC_ACID_COLUMN_NAME = "folic_acid";
+    @VisibleForTesting static final String SUGAR_COLUMN_NAME = "sugar";
 
     public NutritionRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_NUTRITION);
@@ -430,54 +431,188 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
     @Override
     NutritionRecordInternal populateSpecificRecordValue(Cursor cursor) {
         NutritionRecordInternal nutritionRecord = new NutritionRecordInternal();
-        nutritionRecord.setUnsaturatedFat(getCursorDouble(cursor, UNSATURATED_FAT_COLUMN_NAME));
-        nutritionRecord.setPotassium(getCursorDouble(cursor, POTASSIUM_COLUMN_NAME));
-        nutritionRecord.setThiamin(getCursorDouble(cursor, THIAMIN_COLUMN_NAME));
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                UNSATURATED_FAT_COLUMN_NAME,
+                NutritionRecordInternal::setUnsaturatedFat);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                POTASSIUM_COLUMN_NAME,
+                NutritionRecordInternal::setPotassium);
+        setIfNonNull(
+                nutritionRecord, cursor, THIAMIN_COLUMN_NAME, NutritionRecordInternal::setThiamin);
         nutritionRecord.setMealType(getCursorInt(cursor, MEAL_TYPE_COLUMN_NAME));
-        nutritionRecord.setTransFat(getCursorDouble(cursor, TRANS_FAT_COLUMN_NAME));
-        nutritionRecord.setManganese(getCursorDouble(cursor, MANGANESE_COLUMN_NAME));
-        nutritionRecord.setEnergyFromFat(getCursorDouble(cursor, ENERGY_FROM_FAT_COLUMN_NAME));
-        nutritionRecord.setCaffeine(getCursorDouble(cursor, CAFFEINE_COLUMN_NAME));
-        nutritionRecord.setDietaryFiber(getCursorDouble(cursor, DIETARY_FIBER_COLUMN_NAME));
-        nutritionRecord.setSelenium(getCursorDouble(cursor, SELENIUM_COLUMN_NAME));
-        nutritionRecord.setVitaminB6(getCursorDouble(cursor, VITAMIN_B6_COLUMN_NAME));
-        nutritionRecord.setProtein(getCursorDouble(cursor, PROTEIN_COLUMN_NAME));
-        nutritionRecord.setChloride(getCursorDouble(cursor, CHLORIDE_COLUMN_NAME));
-        nutritionRecord.setCholesterol(getCursorDouble(cursor, CHOLESTEROL_COLUMN_NAME));
-        nutritionRecord.setCopper(getCursorDouble(cursor, COPPER_COLUMN_NAME));
-        nutritionRecord.setIodine(getCursorDouble(cursor, IODINE_COLUMN_NAME));
-        nutritionRecord.setVitaminB12(getCursorDouble(cursor, VITAMIN_B12_COLUMN_NAME));
-        nutritionRecord.setZinc(getCursorDouble(cursor, ZINC_COLUMN_NAME));
-        nutritionRecord.setRiboflavin(getCursorDouble(cursor, RIBOFLAVIN_COLUMN_NAME));
-        nutritionRecord.setEnergy(getCursorDouble(cursor, ENERGY_COLUMN_NAME));
-        nutritionRecord.setMolybdenum(getCursorDouble(cursor, MOLYBDENUM_COLUMN_NAME));
-        nutritionRecord.setPhosphorus(getCursorDouble(cursor, PHOSPHORUS_COLUMN_NAME));
-        nutritionRecord.setChromium(getCursorDouble(cursor, CHROMIUM_COLUMN_NAME));
-        nutritionRecord.setTotalFat(getCursorDouble(cursor, TOTAL_FAT_COLUMN_NAME));
-        nutritionRecord.setCalcium(getCursorDouble(cursor, CALCIUM_COLUMN_NAME));
-        nutritionRecord.setVitaminC(getCursorDouble(cursor, VITAMIN_C_COLUMN_NAME));
-        nutritionRecord.setVitaminE(getCursorDouble(cursor, VITAMIN_E_COLUMN_NAME));
-        nutritionRecord.setBiotin(getCursorDouble(cursor, BIOTIN_COLUMN_NAME));
-        nutritionRecord.setVitaminD(getCursorDouble(cursor, VITAMIN_D_COLUMN_NAME));
-        nutritionRecord.setNiacin(getCursorDouble(cursor, NIACIN_COLUMN_NAME));
-        nutritionRecord.setMagnesium(getCursorDouble(cursor, MAGNESIUM_COLUMN_NAME));
-        nutritionRecord.setTotalCarbohydrate(
-                getCursorDouble(cursor, TOTAL_CARBOHYDRATE_COLUMN_NAME));
-        nutritionRecord.setVitaminK(getCursorDouble(cursor, VITAMIN_K_COLUMN_NAME));
-        nutritionRecord.setPolyunsaturatedFat(
-                getCursorDouble(cursor, POLYUNSATURATED_FAT_COLUMN_NAME));
-        nutritionRecord.setSaturatedFat(getCursorDouble(cursor, SATURATED_FAT_COLUMN_NAME));
-        nutritionRecord.setSodium(getCursorDouble(cursor, SODIUM_COLUMN_NAME));
-        nutritionRecord.setFolate(getCursorDouble(cursor, FOLATE_COLUMN_NAME));
-        nutritionRecord.setMonounsaturatedFat(
-                getCursorDouble(cursor, MONOUNSATURATED_FAT_COLUMN_NAME));
-        nutritionRecord.setPantothenicAcid(getCursorDouble(cursor, PANTOTHENIC_ACID_COLUMN_NAME));
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                TRANS_FAT_COLUMN_NAME,
+                NutritionRecordInternal::setTransFat);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                MANGANESE_COLUMN_NAME,
+                NutritionRecordInternal::setManganese);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                ENERGY_FROM_FAT_COLUMN_NAME,
+                NutritionRecordInternal::setEnergyFromFat);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                CAFFEINE_COLUMN_NAME,
+                NutritionRecordInternal::setCaffeine);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                DIETARY_FIBER_COLUMN_NAME,
+                NutritionRecordInternal::setDietaryFiber);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                SELENIUM_COLUMN_NAME,
+                NutritionRecordInternal::setSelenium);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                VITAMIN_B6_COLUMN_NAME,
+                NutritionRecordInternal::setVitaminB6);
+        setIfNonNull(
+                nutritionRecord, cursor, PROTEIN_COLUMN_NAME, NutritionRecordInternal::setProtein);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                CHLORIDE_COLUMN_NAME,
+                NutritionRecordInternal::setChloride);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                CHOLESTEROL_COLUMN_NAME,
+                NutritionRecordInternal::setCholesterol);
+        setIfNonNull(
+                nutritionRecord, cursor, COPPER_COLUMN_NAME, NutritionRecordInternal::setCopper);
+        setIfNonNull(
+                nutritionRecord, cursor, IODINE_COLUMN_NAME, NutritionRecordInternal::setIodine);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                VITAMIN_B12_COLUMN_NAME,
+                NutritionRecordInternal::setVitaminB12);
+        setIfNonNull(nutritionRecord, cursor, ZINC_COLUMN_NAME, NutritionRecordInternal::setZinc);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                RIBOFLAVIN_COLUMN_NAME,
+                NutritionRecordInternal::setRiboflavin);
+        setIfNonNull(
+                nutritionRecord, cursor, ENERGY_COLUMN_NAME, NutritionRecordInternal::setEnergy);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                MOLYBDENUM_COLUMN_NAME,
+                NutritionRecordInternal::setMolybdenum);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                PHOSPHORUS_COLUMN_NAME,
+                NutritionRecordInternal::setPhosphorus);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                CHROMIUM_COLUMN_NAME,
+                NutritionRecordInternal::setChromium);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                TOTAL_FAT_COLUMN_NAME,
+                NutritionRecordInternal::setTotalFat);
+        setIfNonNull(
+                nutritionRecord, cursor, CALCIUM_COLUMN_NAME, NutritionRecordInternal::setCalcium);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                VITAMIN_C_COLUMN_NAME,
+                NutritionRecordInternal::setVitaminC);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                VITAMIN_E_COLUMN_NAME,
+                NutritionRecordInternal::setVitaminE);
+        setIfNonNull(
+                nutritionRecord, cursor, BIOTIN_COLUMN_NAME, NutritionRecordInternal::setBiotin);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                VITAMIN_D_COLUMN_NAME,
+                NutritionRecordInternal::setVitaminD);
+        setIfNonNull(
+                nutritionRecord, cursor, NIACIN_COLUMN_NAME, NutritionRecordInternal::setNiacin);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                MAGNESIUM_COLUMN_NAME,
+                NutritionRecordInternal::setMagnesium);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                TOTAL_CARBOHYDRATE_COLUMN_NAME,
+                NutritionRecordInternal::setTotalCarbohydrate);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                VITAMIN_K_COLUMN_NAME,
+                NutritionRecordInternal::setVitaminK);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                POLYUNSATURATED_FAT_COLUMN_NAME,
+                NutritionRecordInternal::setPolyunsaturatedFat);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                SATURATED_FAT_COLUMN_NAME,
+                NutritionRecordInternal::setSaturatedFat);
+        setIfNonNull(
+                nutritionRecord, cursor, SODIUM_COLUMN_NAME, NutritionRecordInternal::setSodium);
+        setIfNonNull(
+                nutritionRecord, cursor, FOLATE_COLUMN_NAME, NutritionRecordInternal::setFolate);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                MONOUNSATURATED_FAT_COLUMN_NAME,
+                NutritionRecordInternal::setMonounsaturatedFat);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                PANTOTHENIC_ACID_COLUMN_NAME,
+                NutritionRecordInternal::setPantothenicAcid);
         nutritionRecord.setMealName(getCursorString(cursor, MEAL_NAME_COLUMN_NAME));
-        nutritionRecord.setIron(getCursorDouble(cursor, IRON_COLUMN_NAME));
-        nutritionRecord.setVitaminA(getCursorDouble(cursor, VITAMIN_A_COLUMN_NAME));
-        nutritionRecord.setFolicAcid(getCursorDouble(cursor, FOLIC_ACID_COLUMN_NAME));
-        nutritionRecord.setSugar(getCursorDouble(cursor, SUGAR_COLUMN_NAME));
+        setIfNonNull(nutritionRecord, cursor, IRON_COLUMN_NAME, NutritionRecordInternal::setIron);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                VITAMIN_A_COLUMN_NAME,
+                NutritionRecordInternal::setVitaminA);
+        setIfNonNull(
+                nutritionRecord,
+                cursor,
+                FOLIC_ACID_COLUMN_NAME,
+                NutritionRecordInternal::setFolicAcid);
+        setIfNonNull(nutritionRecord, cursor, SUGAR_COLUMN_NAME, NutritionRecordInternal::setSugar);
         return nutritionRecord;
+    }
+
+    private void setIfNonNull(
+            NutritionRecordInternal nutritionRecord,
+            Cursor cursor,
+            String columnName,
+            BiConsumer<NutritionRecordInternal, Double> setter) {
+        int columnId = cursor.getColumnIndexOrThrow(columnName);
+        if (!cursor.isNull(columnId)) {
+            setter.accept(nutritionRecord, cursor.getDouble(columnId));
+        }
     }
 
     @Override

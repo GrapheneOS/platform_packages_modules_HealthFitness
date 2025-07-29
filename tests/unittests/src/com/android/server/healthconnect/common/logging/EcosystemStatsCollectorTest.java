@@ -16,22 +16,14 @@
 
 package com.android.server.healthconnect.common.logging;
 
-import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS;
-import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
-
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -104,18 +96,6 @@ public class EcosystemStatsCollectorTest {
     }
 
     @Test
-    @DisableFlags({FLAG_ECOSYSTEM_METRICS, FLAG_ECOSYSTEM_METRICS_DB_CHANGES})
-    public void flagsDisabled_doNotQueryAccessLogs() {
-        mEcosystemStatsCollector.processReadAccessLogs();
-
-        verify(mReadAccessLogsHelper, times(0)).queryReadAccessLogs(anyInt());
-    }
-
-    @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-    })
     public void testDataTypesReadOrWritten() {
         List<ReadAccessLog> readAccessLogList =
                 List.of(
@@ -163,10 +143,6 @@ public class EcosystemStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-    })
     public void testDataTypesWritten() {
         when(mChangeLogsHelper.getRecordTypesWrittenInPast30Days())
                 .thenReturn(
@@ -191,10 +167,6 @@ public class EcosystemStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-    })
     public void testDataTypesRead_onlyReturnsDataTypesReadWithin30Days() {
         List<ReadAccessLog> readAccessLogList =
                 List.of(
@@ -234,10 +206,6 @@ public class EcosystemStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-    })
     public void testDataTypesShared_onlyReturnsDataTypesReadAndWrittenWithin30Days() {
         List<ReadAccessLog> readAccessLogList =
                 List.of(
@@ -277,10 +245,6 @@ public class EcosystemStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-    })
     public void testGetDirectionalAppPairings_doNotCountIfDataNotWrittenWithin30Days() {
         List<ReadAccessLog> readAccessLogList =
                 List.of(
@@ -340,10 +304,6 @@ public class EcosystemStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-    })
     public void testGetDirectionalAppPairingsPerDataType_doNotCountIfDataNotWrittenWithin30Days() {
         List<ReadAccessLog> readAccessLogList =
                 List.of(
@@ -417,10 +377,6 @@ public class EcosystemStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-    })
     public void testGetNumberOfAppPairings_doNotCountPairingIfDataNotWrittenWithin30Days() {
         List<ReadAccessLog> readAccessLogList =
                 List.of(
@@ -491,10 +447,6 @@ public class EcosystemStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-    })
     public void testEcosystemMetrics_moreThanOnePageOfReadAccessLogs() {
         ReadAccessLog readAccessLogOne =
                 new ReadAccessLog(

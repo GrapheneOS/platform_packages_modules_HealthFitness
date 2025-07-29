@@ -18,7 +18,6 @@ package com.android.healthfitness.flags;
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.getDbVersionToDbFlagMap;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
-import static com.android.healthfitness.flags.AconfigFlagHelper.isEcosystemMetricsEnabled;
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -88,33 +87,9 @@ public class AconfigFlagHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES)
-    @DisableFlags(Flags.FLAG_ECOSYSTEM_METRICS)
-    public void isEcosystemMetricsEnabled_featureFlagOff_expectFalse() {
-        assertThat(isEcosystemMetricsEnabled()).isFalse();
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_ECOSYSTEM_METRICS)
-    @DisableFlags(Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES)
-    public void isEcosystemMetricsEnabled_dbFlagOff_expectFalse() {
-        assertThat(isEcosystemMetricsEnabled()).isFalse();
-    }
-
-    @Test
-    @EnableFlags({
-        Flags.FLAG_ECOSYSTEM_METRICS,
-        Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-    })
-    public void isEcosystemMetricsEnabled_bothFlagsOn_expectTrue() {
-        assertThat(isEcosystemMetricsEnabled()).isTrue();
-    }
-
-    @Test
     @EnableFlags({
         Flags.FLAG_CLOUD_BACKUP_AND_RESTORE,
         Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
-        Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES
     })
     public void cloudBackupAndRestore_featureFlagTrueAndDbFlagTrue_expectTrue() {
         assertThat(isCloudBackupRestoreEnabled()).isTrue();

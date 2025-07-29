@@ -27,7 +27,6 @@ import android.health.connect.datatypes.AggregationType;
 import android.health.connect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.util.ArrayMap;
 
-import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
@@ -192,8 +191,7 @@ public final class FitnessRecordAggregateHelper {
                                 aggregateRecordRequest.getDataOriginPackageNames(metaDataCursor);
                         aggregateResults =
                                 aggregateRecordRequest.processResults(cursor, contributingPackages);
-                        if (AconfigFlagHelper.isEcosystemMetricsEnabled()
-                                && shouldRecordAccessLog) {
+                        if (shouldRecordAccessLog) {
                             mReadAccessLogsHelper.recordAccessLogForAggregationReads(
                                     db,
                                     callingPackageName,

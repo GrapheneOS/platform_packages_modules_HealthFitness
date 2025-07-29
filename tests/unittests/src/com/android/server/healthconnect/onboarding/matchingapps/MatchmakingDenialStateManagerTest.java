@@ -43,6 +43,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
@@ -167,7 +168,7 @@ public class MatchmakingDenialStateManagerTest {
 
     @Test
     public void recordMatchmakingDenial_denialsAboveLimit_doesNotUpdateTimestamp() {
-        Instant initialPauseTime = Instant.parse("2025-07-20T10:00:00Z");
+        Instant initialPauseTime = Instant.now().minus(Duration.ofDays(7));
         String preferenceValue = new DenialState(5, initialPauseTime).toPreferenceString();
         when(mPreferenceHelper.getPreference(anyString())).thenReturn(preferenceValue);
 
@@ -177,7 +178,8 @@ public class MatchmakingDenialStateManagerTest {
         verify(mPreferenceHelper).insertOrReplacePreference(eq(PREFERENCE_KEY), captor.capture());
         DenialState captured = DenialState.fromPreferenceString(captor.getValue());
         assertThat(captured.denialCount()).isEqualTo(6);
-        assertThat(captured.pauseStartedTimestamp()).isEqualTo(initialPauseTime);
+        assertThat(captured.pauseStartedTimestamp())
+                .isEqualTo(initialPauseTime.truncatedTo(ChronoUnit.MILLIS));
     }
 
     @Test

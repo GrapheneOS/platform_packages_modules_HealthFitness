@@ -33,7 +33,6 @@ import static android.healthconnect.testing.unittest.RecordInternalFactory.build
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
-import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
@@ -350,7 +349,6 @@ public class ChangeLogsHelperTest {
     @EnableFlags({
         FLAG_CLOUD_BACKUP_AND_RESTORE,
         FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES
     })
     public void getDeleteRequestForAutoDelete_doesNotRemoveChangeLogsLessThan90DaysOld() {
         insertRecordChangeLog(
@@ -368,7 +366,6 @@ public class ChangeLogsHelperTest {
     @EnableFlags({
         FLAG_CLOUD_BACKUP_AND_RESTORE,
         FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES
     })
     public void getDeleteRequestForAutoDelete_removeChangeLogsMoreThan90DaysOld() {
         insertRecordChangeLog(

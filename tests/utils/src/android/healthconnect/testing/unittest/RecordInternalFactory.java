@@ -35,6 +35,7 @@ import android.health.connect.internal.datatypes.ExercisePerformanceGoalInternal
 import android.health.connect.internal.datatypes.ExerciseRouteInternal;
 import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
+import android.health.connect.internal.datatypes.NutritionRecordInternal;
 import android.health.connect.internal.datatypes.PlannedExerciseBlockInternal;
 import android.health.connect.internal.datatypes.PlannedExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.PlannedExerciseStepInternal;
@@ -298,6 +299,14 @@ public class RecordInternalFactory {
                                                 100, startTime.plus(ofMinutes(1)).toEpochMilli())))
                         .setStartTime(startTime.toEpochMilli())
                         .setEndTime(startTime.plus(ofMinutes(10)).toEpochMilli());
+    }
+
+    public static NutritionRecordInternal buildNutritionRecordInternal(
+            long startTimeMillis, long endTimeMillis) {
+        return (NutritionRecordInternal)
+                new NutritionRecordInternal()
+                        .setStartTime(startTimeMillis)
+                        .setEndTime(endTimeMillis);
     }
 
     private static ExerciseRouteInternal buildExerciseRoute(Instant startTime) {

@@ -18,7 +18,6 @@ package com.android.healthfitness.flags;
 
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ACTIVITY_INTENSITY;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
-import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ECOSYSTEM_METRICS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PHR_CHANGE_LOGS;
@@ -108,7 +107,6 @@ public final class AconfigFlagHelper {
     public static SortedMap<Integer, BooleanSupplier> getDbVersionToDbFlagMap() {
         TreeMap<Integer, BooleanSupplier> map = new TreeMap<>();
         map.put(DB_VERSION_ACTIVITY_INTENSITY, Flags::activityIntensityDb);
-        map.put(DB_VERSION_ECOSYSTEM_METRICS, Flags::ecosystemMetricsDbChanges);
         map.put(DB_VERSION_CLOUD_BACKUP_AND_RESTORE, Flags::cloudBackupAndRestoreDb);
         map.put(DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS, Flags::exerciseSegmentImprovementsDb);
         map.put(DB_VERSION_PHR_CHANGE_LOGS, Flags::phrChangeLogsDb);
@@ -120,11 +118,6 @@ public final class AconfigFlagHelper {
     /** Returns a boolean indicating whether Activity Intensity data type is enabled. */
     public static boolean isActivityIntensityEnabled() {
         return Flags.activityIntensity() && isDbFlagEnabled(DB_VERSION_ACTIVITY_INTENSITY);
-    }
-
-    /** Returns a boolean indicating whether Ecosystem Metrics is enabled. */
-    public static boolean isEcosystemMetricsEnabled() {
-        return Flags.ecosystemMetrics() && isDbFlagEnabled(DB_VERSION_ECOSYSTEM_METRICS);
     }
 
     /** Returns a boolean indicating whether cloud backup & restore is enabled. */

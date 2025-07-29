@@ -25,7 +25,6 @@ import static android.healthconnect.testing.unittest.RecordInternalFactory.build
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
-import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
 import static com.android.server.healthconnect.backuprestore.RecordProtoConverter.PROTO_VERSION;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -90,7 +89,6 @@ import java.util.UUID;
 @EnableFlags({
     FLAG_CLOUD_BACKUP_AND_RESTORE,
     FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
-    FLAG_ECOSYSTEM_METRICS_DB_CHANGES
 })
 public class CloudBackupDatabaseHelperTest {
 

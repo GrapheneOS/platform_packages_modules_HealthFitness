@@ -27,8 +27,6 @@ import static android.healthconnect.testing.unittest.RecordInternalFactory.build
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
-import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS;
-import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -55,7 +53,6 @@ import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.os.UserHandle;
-import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.Pair;
@@ -423,11 +420,7 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_ACTIVITY_INTENSITY_DB
-    })
+    @EnableFlags({FLAG_ACTIVITY_INTENSITY_DB})
     public void flagsEnabled_readRecordsById_addReadAccessLog() {
         String readerPackage = "reader.package";
         mFitnessTestUtils.insertApp(readerPackage);
@@ -462,12 +455,7 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_ACTIVITY_INTENSITY_DB,
-        FLAG_CLOUD_BACKUP_AND_RESTORE_DB
-    })
+    @EnableFlags({FLAG_ACTIVITY_INTENSITY_DB, FLAG_CLOUD_BACKUP_AND_RESTORE_DB})
     // TODO(b/366149374): Fix this test to start recording read access log.
     public void flagsEnabled_readRecordsByIdRequest_shouldRecordAccessLogs_doNotAddReadAccessLog() {
         String readerPackage = "reader.package";
@@ -502,11 +490,7 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_ACTIVITY_INTENSITY_DB
-    })
+    @EnableFlags({FLAG_ACTIVITY_INTENSITY_DB})
     public void flagsEnabled_readRecordsById_shouldNotRecordAccessLogs_doNotAddReadAccessLog() {
         String readerPackage = "reader.package";
         mFitnessTestUtils.insertApp(readerPackage);
@@ -538,47 +522,7 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    @DisableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_ACTIVITY_INTENSITY_DB
-    })
-    public void flagsDisabled_readRecordsById_doNotAddReadAccessLog() {
-        String readerPackage = "reader.package";
-        mFitnessTestUtils.insertApp(readerPackage);
-        String uuid =
-                mFitnessTestUtils
-                        .insertRecords(
-                                TEST_PACKAGE_NAME,
-                                buildStepsRecord(
-                                        mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
-                                        Instant.now().toEpochMilli(),
-                                        Instant.now().toEpochMilli(),
-                                        100))
-                        .get(0);
-
-        mFitnessRecordReadHelper.readRecords(
-                mTransactionManager,
-                readerPackage,
-                ImmutableMap.of(RECORD_TYPE_STEPS, ImmutableList.of(UUID.fromString(uuid))),
-                /* grantedExtraReadPermissions= */ Set.of(),
-                /* startDateAccessMillis= */ 0,
-                /* isInForeground= */ true,
-                /* shouldRecordAccessLogs */ true);
-
-        verify(mReadAccessLogsHelper, times(0))
-                .recordAccessLogForNonAggregationReads(any(), any(), anyLong(), any());
-        verify(mReadAccessLogsHelper, times(0))
-                .recordAccessLogForAggregationReads(
-                        any(), any(), anyLong(), anyInt(), anyLong(), any());
-    }
-
-    @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_ACTIVITY_INTENSITY_DB
-    })
+    @EnableFlags({FLAG_ACTIVITY_INTENSITY_DB})
     public void flagsEnabled_readRecordsAndPageToken_addReadAccessLog() {
         String readerPackage = "reader.package";
         mFitnessTestUtils.insertApp(readerPackage);
@@ -620,11 +564,7 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_ACTIVITY_INTENSITY_DB
-    })
+    @EnableFlags({FLAG_ACTIVITY_INTENSITY_DB})
     public void flagsEnabled_doNotRecordAccessLogs_readRecordsAndPageToken_doNotReadAccessLog() {
         String readerPackage = "reader.package";
         mFitnessTestUtils.insertApp(readerPackage);
@@ -663,54 +603,7 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    @DisableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_ACTIVITY_INTENSITY_DB
-    })
-    public void flagsDisabled_readRecordsAndPageToken_doNotReadAccessLog() {
-        String readerPackage = "reader.package";
-        mFitnessTestUtils.insertApp(readerPackage);
-        mFitnessTestUtils.insertRecords(
-                TEST_PACKAGE_NAME,
-                buildStepsRecord(
-                        mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME),
-                        Instant.now().minusMillis(1000).toEpochMilli(),
-                        Instant.now().minusMillis(500).toEpochMilli(),
-                        100));
-        ReadRecordsRequestUsingFilters<StepsRecord> request =
-                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
-                        .setTimeRangeFilter(
-                                new TimeInstantRangeFilter.Builder()
-                                        .setStartTime(Instant.EPOCH)
-                                        .setEndTime(Instant.now())
-                                        .build())
-                        .setPageSize(1)
-                        .build();
-        mFitnessRecordReadHelper.readRecords(
-                mTransactionManager,
-                readerPackage,
-                request.toReadRecordsRequestParcel(),
-                /* grantedExtraReadPermissions= */ Set.of(),
-                /* startDateAccessMillis= */ 0,
-                /* isInForeground= */ true,
-                /* shouldRecordAccessLogs */ true,
-                /* enforceSelfRead= */ false,
-                /* packageNamesByAppIds= */ null);
-
-        verify(mReadAccessLogsHelper, times(0))
-                .recordAccessLogForNonAggregationReads(any(), any(), anyLong(), any());
-        verify(mReadAccessLogsHelper, times(0))
-                .recordAccessLogForAggregationReads(
-                        any(), any(), anyLong(), anyInt(), anyLong(), any());
-    }
-
-    @Test
-    @EnableFlags({
-        FLAG_ECOSYSTEM_METRICS,
-        FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_ACTIVITY_INTENSITY_DB
-    })
+    @EnableFlags({FLAG_ACTIVITY_INTENSITY_DB})
     public void flagsEnabled_readSelfData_readRecordsAndPageToken_doNotAddReadAccessLog() {
         mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
