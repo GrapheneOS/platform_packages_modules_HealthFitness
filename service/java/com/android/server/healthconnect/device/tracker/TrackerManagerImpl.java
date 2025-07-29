@@ -24,6 +24,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
+import android.os.UserHandle;
 import android.os.UserManager;
 import android.util.Slog;
 
@@ -33,6 +34,8 @@ import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
+import com.android.server.healthconnect.device.notification.NativeStepsNotificationSender;
+import com.android.server.healthconnect.device.notification.NativeStepsNotificationStateManager;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 
 import java.util.List;
@@ -74,6 +77,12 @@ public class TrackerManagerImpl implements TrackerManager {
     private Optional<PackageManager.OnPermissionsChangedListener> mPermissionListenerOptional =
             Optional.empty();
 
+    private NativeStepsNotificationSender mNativeStepsNotificationSender;
+
+    private NativeStepsNotificationStateManager mNativeStepsNotificationStateManager;
+
+    private UserHandle mUserHandle;
+
     @VisibleForTesting StepSensorEventListener mListener;
 
     public TrackerManagerImpl(
@@ -83,7 +92,10 @@ public class TrackerManagerImpl implements TrackerManager {
             DeviceDataSourcesHelper deviceDataSourcesHelper,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             UserManager userManager,
-            PreferenceHelper preferenceHelper) {
+            PreferenceHelper preferenceHelper,
+            UserHandle userHandle,
+            NativeStepsNotificationStateManager nativeStepsNotificationStateManager,
+            NativeStepsNotificationSender nativeStepsNotificationSender) {
         mContext = context;
         mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
         mListener =
@@ -92,6 +104,9 @@ public class TrackerManagerImpl implements TrackerManager {
         mUserManager = userManager;
         mPackageManager = context.getPackageManager();
         mPreferenceHelper = preferenceHelper;
+        mNativeStepsNotificationSender = nativeStepsNotificationSender;
+        mNativeStepsNotificationStateManager = nativeStepsNotificationStateManager;
+        mUserHandle = userHandle;
     }
 
     @SuppressLint("MissingPermission")
@@ -149,6 +164,7 @@ public class TrackerManagerImpl implements TrackerManager {
 
     /** Updates the Sensor Manager subscription in case app permissions have changed. */
     // TODO(b/397419957): Call this when an app is uninstalled in case we want to disable tracking
+    @SuppressLint("MissingPermission")
     private void refreshTrackerStatus() {
         // If a preference has been set and step tracking has been disabled, don't start tracking.
         String stepTrackingPreferenceEnabled =
@@ -169,9 +185,13 @@ public class TrackerManagerImpl implements TrackerManager {
         if (packagesEligibleForStepTracking(mContext, mPackageManager).isEmpty()) {
             Slog.d(TAG, "No packages eligible for step tracking. Aborting initialization.");
             unsubscribeFromSensorManager();
+
+            // This notification only needs to be shown for users who have apps that were granted
+            // READ_STEPS permission before this feature existed
+            mNativeStepsNotificationStateManager.disable();
+
             return;
         }
-
         if (!Boolean.parseBoolean(
                 mPreferenceHelper.getPreference(
                         HAS_DEVICE_PACKAGE_BEEN_APPENDED_TO_PRIORITY_LIST_KEY))) {
@@ -186,6 +206,10 @@ public class TrackerManagerImpl implements TrackerManager {
                     mContext.getUser());
             mPreferenceHelper.insertOrReplacePreference(
                     HAS_DEVICE_PACKAGE_BEEN_APPENDED_TO_PRIORITY_LIST_KEY, Boolean.toString(true));
+        }
+
+        if (mUserHandle != null && mNativeStepsNotificationStateManager.isEnabled()) {
+            mNativeStepsNotificationSender.sendNotification(mUserHandle);
         }
 
         subscribeToSensorManager();

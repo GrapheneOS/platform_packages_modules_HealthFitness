@@ -52,6 +52,8 @@ import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
+import com.android.server.healthconnect.device.notification.NativeStepsNotificationSender;
+import com.android.server.healthconnect.device.notification.NativeStepsNotificationStateManager;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.device.tracker.TrackerManagerImpl;
 import com.android.server.healthconnect.exportimport.ExportImportLogger;
@@ -128,6 +130,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final OnboardingStateManager mOnboardingStateManager;
     private final OnboardingNotificationStateManager mOnboardingNotificationStateManager;
     private final OnboardingNotificationSender mOnboardingNotificationSender;
+    private final NativeStepsNotificationStateManager mNativeStepsNotificationStateManager;
+    private final NativeStepsNotificationSender mNativeStepsNotificationSender;
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final AppInfoHelper mAppInfoHelper;
     private final AppOpLogsHelper mAppOpLogsHelper;
@@ -503,6 +507,15 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mOnboardingNotificationStateManager,
                                 mNotificationStatsLogger)
                         : builder.mOnboardingNotificationSender;
+        mNativeStepsNotificationStateManager =
+                builder.mNativeStepsNotificationStateManager == null
+                        ? new NativeStepsNotificationStateManager(getPreferenceHelper(), userHandle)
+                        : builder.mNativeStepsNotificationStateManager;
+        mNativeStepsNotificationSender =
+                builder.mNativeStepsNotificationSender == null
+                        ? new NativeStepsNotificationSender(
+                                context, resourcesContext, mNativeStepsNotificationStateManager)
+                        : builder.mNativeStepsNotificationSender;
         mDeviceRecordHelper = new DeviceRecordHelper(mFitnessRecordUpsertHelper);
         mTrackerManager =
                 builder.mTrackerManager == null
@@ -513,7 +526,10 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mDeviceDataSourcesHelper,
                                 mHealthDataCategoryPriorityHelper,
                                 mUserManager,
-                                mPreferenceHelper)
+                                mPreferenceHelper,
+                                userHandle,
+                                mNativeStepsNotificationStateManager,
+                                mNativeStepsNotificationSender)
                         : builder.mTrackerManager;
         mPermissionPackageChangesOrchestrator =
                 builder.mPermissionPackageChangesOrchestrator == null
@@ -641,6 +657,16 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Override
     public OnboardingNotificationStateManager getOnboardingNotificationStateManager() {
         return mOnboardingNotificationStateManager;
+    }
+
+    @Override
+    public NativeStepsNotificationStateManager getNativeStepsNotificationStateManager() {
+        return mNativeStepsNotificationStateManager;
+    }
+
+    @Override
+    public NativeStepsNotificationSender getNativeStepsNotificationSender() {
+        return mNativeStepsNotificationSender;
     }
 
     @Override
@@ -992,6 +1018,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private OnboardingStateManager mOnboardingStateManager;
         @Nullable private OnboardingNotificationStateManager mOnboardingNotificationStateManager;
         @Nullable private OnboardingNotificationSender mOnboardingNotificationSender;
+        @Nullable private NativeStepsNotificationStateManager mNativeStepsNotificationStateManager;
+        @Nullable private NativeStepsNotificationSender mNativeStepsNotificationSender;
         @Nullable private PreferencesManager mPreferencesManager;
         @Nullable private DatabaseStatsCollector mDatabaseStatsCollector;
         @Nullable private UsageStatsCollector mUsageStatsCollector;
@@ -1278,6 +1306,22 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 OnboardingNotificationSender onboardingNotificationSender) {
             Objects.requireNonNull(onboardingNotificationSender);
             mOnboardingNotificationSender = onboardingNotificationSender;
+            return this;
+        }
+
+        /** Set fake or custom {@link NativeStepsNotificationStateManager} */
+        public Builder setNativeStepsNotificationStateManager(
+                NativeStepsNotificationStateManager nativeStepsNotificationStateManager) {
+            Objects.requireNonNull(nativeStepsNotificationStateManager);
+            mNativeStepsNotificationStateManager = nativeStepsNotificationStateManager;
+            return this;
+        }
+
+        /** Set fake or custom {@link NativeStepsNotificationSender} */
+        public Builder setNativeStepsNotificationSender(
+                NativeStepsNotificationSender nativeStepsNotificationSender) {
+            Objects.requireNonNull(nativeStepsNotificationSender);
+            mNativeStepsNotificationSender = nativeStepsNotificationSender;
             return this;
         }
 
