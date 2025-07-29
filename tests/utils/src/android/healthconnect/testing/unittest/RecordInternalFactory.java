@@ -16,6 +16,8 @@
 
 package android.healthconnect.testing.unittest;
 
+import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
+import static android.health.connect.datatypes.AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_INTERVAL;
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING;
 
 import static java.time.Duration.ofMinutes;
@@ -28,6 +30,7 @@ import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Power;
+import android.health.connect.internal.datatypes.AlcoholConsumptionRecordInternal;
 import android.health.connect.internal.datatypes.BloodPressureRecordInternal;
 import android.health.connect.internal.datatypes.ExerciseCompletionGoalInternal;
 import android.health.connect.internal.datatypes.ExerciseLapInternal;
@@ -305,6 +308,45 @@ public class RecordInternalFactory {
             long startTimeMillis, long endTimeMillis) {
         return (NutritionRecordInternal)
                 new NutritionRecordInternal()
+                        .setStartTime(startTimeMillis)
+                        .setEndTime(endTimeMillis);
+    }
+
+    /** Returns an internal alcohol consumption record instance. */
+    public static AlcoholConsumptionRecordInternal buildAlcoholConsumptionRecordInternal(
+            long startTimeMillis, long endTimeMillis) {
+        return buildAlcoholConsumptionRecordInternal(
+                startTimeMillis,
+                endTimeMillis,
+                RECORD_TEMPORAL_TYPE_INTERVAL,
+                2,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER,
+                1,
+                0.5,
+                5.0,
+                "note");
+    }
+
+    /** Returns an internal alcohol consumption record instance. */
+    public static AlcoholConsumptionRecordInternal buildAlcoholConsumptionRecordInternal(
+            long startTimeMillis,
+            long endTimeMillis,
+            int temporalType,
+            int servingCount,
+            int beverageType,
+            int servingSize,
+            double servingVolume,
+            double alcoholByVolume,
+            String note) {
+        return (AlcoholConsumptionRecordInternal)
+                new AlcoholConsumptionRecordInternal()
+                        .setServingCount(servingCount)
+                        .setBeverageType(beverageType)
+                        .setServingSize(servingSize)
+                        .setServingVolumeLiters(servingVolume)
+                        .setAlcoholByVolume(alcoholByVolume)
+                        .setNote(note)
+                        .setTemporalType(temporalType)
                         .setStartTime(startTimeMillis)
                         .setEndTime(endTimeMillis);
     }

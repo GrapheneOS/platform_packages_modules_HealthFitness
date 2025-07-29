@@ -21,6 +21,9 @@ import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_HALF_PINT;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
+import static android.health.connect.datatypes.AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_INSTANT;
+import static android.health.connect.datatypes.AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_INTERVAL;
+import static android.health.connect.datatypes.AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_LOCAL_DATE;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_MANUAL_ENTRY;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ALCOHOL_CONSUMPTION;
@@ -52,6 +55,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
@@ -68,17 +72,7 @@ public class AlcoholConsumptionRecordTest {
                     "Tests should run on supported hardware only.");
 
     @Test
-    public void alcoholConsumptionRecordBuilder_allFieldsSet() {
-        Instant startTime = Instant.now().minusSeconds(60);
-        Instant endTime = Instant.now();
-        ZoneOffset startZoneOffset = ZoneOffset.ofHours(2);
-        ZoneOffset endZoneOffset = ZoneOffset.ofHours(2);
-        int servingCount = 2;
-        int beverageType = ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
-        int servingSize = ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
-        Volume servingVolume = Volume.fromLiters(568.0 / 1000);
-        Percentage alcoholByVolume = Percentage.fromValue(7);
-        CharSequence note = "Pub Crawl";
+    public void builder_allFieldsSet() {
         Metadata metadata =
                 new Metadata.Builder()
                         .setClientRecordId("clientRecordId")
@@ -93,36 +87,23 @@ public class AlcoholConsumptionRecordTest {
                                         .setManufacturer("manufacturer")
                                         .setModel("model")
                                         .build())
-                        .setLastModifiedTime(startTime.plusSeconds(10))
+                        .setLastModifiedTime(Instant.now())
                         .build();
-
-        AlcoholConsumptionRecord record =
-                new AlcoholConsumptionRecord.Builder(
-                                metadata, startTime, endTime, servingCount, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(startZoneOffset)
-                        .setEndZoneOffset(endZoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
-                        .build();
+        AlcoholConsumptionRecord record = getFullRecordBuilder(metadata).build();
 
         assertThat(record.getRecordType()).isEqualTo(RECORD_TYPE_ALCOHOL_CONSUMPTION);
         assertThat(record.getMetadata()).isEqualTo(metadata);
-        assertThat(record.getStartTime()).isEqualTo(startTime);
-        assertThat(record.getEndTime()).isEqualTo(endTime);
-        assertThat(record.getStartZoneOffset()).isEqualTo(startZoneOffset);
-        assertThat(record.getEndZoneOffset()).isEqualTo(endZoneOffset);
-        assertThat(record.getServingCount()).isEqualTo(servingCount);
-        assertThat(record.getBeverageType()).isEqualTo(beverageType);
-        assertThat(record.getServingSize()).isEqualTo(servingSize);
-        assertThat(record.getServingVolume()).isEqualTo(servingVolume);
-        assertThat(record.getAlcoholByVolume()).isEqualTo(alcoholByVolume);
-        assertThat(record.getNote()).isEqualTo(note);
+        assertThat(record.getServingCount()).isEqualTo(2);
+        assertThat(record.getBeverageType()).isEqualTo(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER);
+        assertThat(record.getServingSize()).isEqualTo(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT);
+        assertThat(record.getServingVolume()).isEqualTo(Volume.fromLiters(0.568));
+        assertThat(record.getAlcoholByVolume()).isEqualTo(Percentage.fromValue(7));
+        assertThat(record.getNote()).isEqualTo("Pub Crawl");
+        assertThat(record.getTemporalType()).isEqualTo(RECORD_TEMPORAL_TYPE_INTERVAL);
     }
 
     @Test
-    public void alcoholConsumptionRecordBuilder_optionalFieldsNotSet() {
+    public void builder_optionalFieldsNotSet() {
         Instant startTime = Instant.now().minusSeconds(60);
         Instant endTime = Instant.now();
         int servingCount = 2;
@@ -161,10 +142,11 @@ public class AlcoholConsumptionRecordTest {
         assertThat(record.getServingVolume()).isEqualTo(null);
         assertThat(record.getAlcoholByVolume()).isEqualTo(null);
         assertThat(record.getNote()).isEqualTo(null);
+        assertThat(record.getTemporalType()).isEqualTo(RECORD_TEMPORAL_TYPE_INTERVAL);
     }
 
     @Test
-    public void alcoholConsumptionRecordBuilder_invalidType() {
+    public void builder_invalidType() {
         Metadata metadata = new Metadata.Builder().build();
         Instant time = Instant.now();
 
@@ -174,7 +156,7 @@ public class AlcoholConsumptionRecordTest {
     }
 
     @Test
-    public void alcoholConsumptionRecordBuilder_invalidServingSize() {
+    public void builder_invalidServingSize() {
         Metadata metadata = new Metadata.Builder().build();
         Instant time = Instant.now();
 
@@ -192,39 +174,8 @@ public class AlcoholConsumptionRecordTest {
 
     @Test
     public void equals_hashCode_allFieldsEqual_recordsEqual() {
-        Instant startTime = Instant.now().minusSeconds(60);
-        Instant endTime = Instant.now();
-        ZoneOffset startZoneOffset = ZoneOffset.ofHours(2);
-        ZoneOffset endZoneOffset = ZoneOffset.ofHours(2);
-        int servingCount = 2;
-        int beverageType = ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
-        int servingSize = ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
-        Volume servingVolume = Volume.fromLiters(568.0 / 1000);
-        Percentage alcoholByVolume = Percentage.fromValue(7);
-        CharSequence note = "Pub Crawl";
-        Metadata metadata = new Metadata.Builder().build();
-
-        AlcoholConsumptionRecord recordA =
-                new AlcoholConsumptionRecord.Builder(
-                                metadata, startTime, endTime, servingCount, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(startZoneOffset)
-                        .setEndZoneOffset(endZoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
-                        .build();
-
-        AlcoholConsumptionRecord recordB =
-                new AlcoholConsumptionRecord.Builder(
-                                metadata, startTime, endTime, servingCount, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(startZoneOffset)
-                        .setEndZoneOffset(endZoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
-                        .build();
+        AlcoholConsumptionRecord recordA = getFullRecordBuilder().build();
+        AlcoholConsumptionRecord recordB = getFullRecordBuilder().build();
 
         assertThat(recordA).isEqualTo(recordB);
         assertThat(recordA.hashCode()).isEqualTo(recordB.hashCode());
@@ -232,110 +183,10 @@ public class AlcoholConsumptionRecordTest {
 
     @Test
     public void equals_hashCode_metadataNotEqual_recordsNotEqual() {
-        Instant time = Instant.now().minusSeconds(60);
-        ZoneOffset zoneOffset = ZoneOffset.ofHours(2);
-        int servingCount = 2;
-        int beverageType = ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
-        int servingSize = ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
-        Volume servingVolume = Volume.fromLiters(568.0 / 1000);
-        Percentage alcoholByVolume = Percentage.fromValue(7);
-        CharSequence note = "Pub Crawl";
         Metadata metadataA = new Metadata.Builder().setId("id-a").build();
         Metadata metadataB = new Metadata.Builder().setId("id-b").build();
-
-        AlcoholConsumptionRecord recordA =
-                new AlcoholConsumptionRecord.Builder(metadataA, time, servingCount, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
-                        .build();
-
-        AlcoholConsumptionRecord recordB =
-                new AlcoholConsumptionRecord.Builder(metadataB, time, servingCount, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
-                        .build();
-
-        assertThat(recordA).isNotEqualTo(recordB);
-        assertThat(recordA.hashCode()).isNotEqualTo(recordB.hashCode());
-    }
-
-    @Test
-    public void equals_hashCode_timeNotEqual_recordsNotEqual() {
-        Instant timeA = Instant.now().minusSeconds(60);
-        Instant timeB = Instant.now().minusSeconds(180);
-        ZoneOffset zoneOffset = ZoneOffset.ofHours(2);
-        int servingCount = 2;
-        int beverageType = ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
-        int servingSize = ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
-        Volume servingVolume = Volume.fromLiters(568.0 / 1000);
-        Percentage alcoholByVolume = Percentage.fromValue(7);
-        CharSequence note = "Pub Crawl";
-        Metadata metadata = new Metadata.Builder().build();
-
-        AlcoholConsumptionRecord recordA =
-                new AlcoholConsumptionRecord.Builder(metadata, timeA, servingCount, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
-                        .build();
-
-        AlcoholConsumptionRecord recordB =
-                new AlcoholConsumptionRecord.Builder(metadata, timeB, servingCount, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
-                        .build();
-
-        assertThat(recordA).isNotEqualTo(recordB);
-        assertThat(recordA.hashCode()).isNotEqualTo(recordB.hashCode());
-    }
-
-    @Test
-    public void equals_hashCode_zoneOffsetNotEqual_recordsNotEqual() {
-        Instant time = Instant.now().minusSeconds(60);
-        ZoneOffset zoneOffsetA = ZoneOffset.ofHours(2);
-        ZoneOffset zoneOffsetB = ZoneOffset.ofHours(5);
-        int servingCount = 2;
-        int beverageType = ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
-        int servingSize = ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
-        Volume servingVolume = Volume.fromLiters(568.0 / 1000);
-        Percentage alcoholByVolume = Percentage.fromValue(7);
-        CharSequence note = "Pub crawl";
-        Metadata metadata = new Metadata.Builder().build();
-
-        AlcoholConsumptionRecord recordA =
-                new AlcoholConsumptionRecord.Builder(metadata, time, servingCount, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffsetA)
-                        .setEndZoneOffset(zoneOffsetA)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
-                        .build();
-
-        AlcoholConsumptionRecord recordB =
-                new AlcoholConsumptionRecord.Builder(metadata, time, servingCount, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffsetB)
-                        .setEndZoneOffset(zoneOffsetB)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
-                        .build();
+        AlcoholConsumptionRecord recordA = getFullRecordBuilder(metadataA).build();
+        AlcoholConsumptionRecord recordB = getFullRecordBuilder(metadataB).build();
 
         assertThat(recordA).isNotEqualTo(recordB);
         assertThat(recordA.hashCode()).isNotEqualTo(recordB.hashCode());
@@ -343,36 +194,8 @@ public class AlcoholConsumptionRecordTest {
 
     @Test
     public void equals_hashCode_servingCountNotEqual_recordsNotEqual() {
-        Instant time = Instant.now().minusSeconds(60);
-        ZoneOffset zoneOffset = ZoneOffset.ofHours(2);
-        int servingCountA = 2;
-        int servingCountB = 20;
-        int beverageType = ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
-        int servingSize = ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
-        Volume servingVolume = Volume.fromLiters(568.0 / 1000);
-        Percentage alcoholByVolume = Percentage.fromValue(7);
-        CharSequence note = "Pub Crawl";
-        Metadata metadata = new Metadata.Builder().build();
-
-        AlcoholConsumptionRecord recordA =
-                new AlcoholConsumptionRecord.Builder(metadata, time, servingCountA, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
-                        .build();
-
-        AlcoholConsumptionRecord recordB =
-                new AlcoholConsumptionRecord.Builder(metadata, time, servingCountB, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
-                        .build();
+        AlcoholConsumptionRecord recordA = getFullRecordBuilder().setServingCount(2).build();
+        AlcoholConsumptionRecord recordB = getFullRecordBuilder().setServingCount(20).build();
 
         assertThat(recordA).isNotEqualTo(recordB);
         assertThat(recordA.hashCode()).isNotEqualTo(recordB.hashCode());
@@ -380,41 +203,13 @@ public class AlcoholConsumptionRecordTest {
 
     @Test
     public void equals_hashCode_alcoholTypeNotEqual_recordsNotEqual() {
-        Instant time = Instant.now().minusSeconds(60);
-        ZoneOffset zoneOffset = ZoneOffset.ofHours(2);
-        int servingCount = 2;
-        int servingSize = ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
-        Volume servingVolume = Volume.fromLiters(568.0 / 1000);
-        Percentage alcoholByVolume = Percentage.fromValue(7);
-        CharSequence note = "Pub Crawl";
-        Metadata metadata = new Metadata.Builder().build();
-
         AlcoholConsumptionRecord recordA =
-                new AlcoholConsumptionRecord.Builder(
-                                metadata,
-                                time,
-                                servingCount,
-                                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
+                getFullRecordBuilder()
+                        .setBeverageType(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
                         .build();
-
         AlcoholConsumptionRecord recordB =
-                new AlcoholConsumptionRecord.Builder(
-                                metadata,
-                                time,
-                                servingCount,
-                                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
+                getFullRecordBuilder()
+                        .setBeverageType(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE)
                         .build();
 
         assertThat(recordA).isNotEqualTo(recordB);
@@ -423,33 +218,13 @@ public class AlcoholConsumptionRecordTest {
 
     @Test
     public void equals_hashCode_servingSizeNotEqual_recordsNotEqual() {
-        Instant time = Instant.now().minusSeconds(60);
-        ZoneOffset zoneOffset = ZoneOffset.ofHours(2);
-        int servingCount = 2;
-        int beverageType = ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
-        Volume servingVolume = Volume.fromLiters(568.0 / 1000);
-        Percentage alcoholByVolume = Percentage.fromValue(7);
-        CharSequence note = "Pub Crawl";
-        Metadata metadata = new Metadata.Builder().build();
-
         AlcoholConsumptionRecord recordA =
-                new AlcoholConsumptionRecord.Builder(metadata, time, servingCount, beverageType)
+                getFullRecordBuilder()
                         .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
                         .build();
-
         AlcoholConsumptionRecord recordB =
-                new AlcoholConsumptionRecord.Builder(metadata, time, servingCount, beverageType)
+                getFullRecordBuilder()
                         .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_HALF_PINT)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
                         .build();
 
         assertThat(recordA).isNotEqualTo(recordB);
@@ -458,36 +233,10 @@ public class AlcoholConsumptionRecordTest {
 
     @Test
     public void equals_hashCode_servingVolumeNotEqual_recordsNotEqual() {
-        Instant time = Instant.now().minusSeconds(60);
-        ZoneOffset zoneOffset = ZoneOffset.ofHours(2);
-        int servingCount = 2;
-        int beverageType = ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
-        int servingSize = ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
-        Volume servingVolumeA = Volume.fromLiters(568.0 / 1000);
-        Volume servingVolumeB = Volume.fromLiters(252.0 / 1000);
-        Percentage alcoholByVolume = Percentage.fromValue(7);
-        CharSequence note = "Pub Crawl";
-        Metadata metadata = new Metadata.Builder().build();
-
         AlcoholConsumptionRecord recordA =
-                new AlcoholConsumptionRecord.Builder(metadata, time, servingCount, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolumeA)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
-                        .build();
-
+                getFullRecordBuilder().setServingVolume(Volume.fromLiters(0.568)).build();
         AlcoholConsumptionRecord recordB =
-                new AlcoholConsumptionRecord.Builder(metadata, time, servingCount, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolumeB)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
-                        .build();
+                getFullRecordBuilder().setServingVolume(Volume.fromLiters(0.252)).build();
 
         assertThat(recordA).isNotEqualTo(recordB);
         assertThat(recordA.hashCode()).isNotEqualTo(recordB.hashCode());
@@ -495,36 +244,10 @@ public class AlcoholConsumptionRecordTest {
 
     @Test
     public void equals_hashCode_alcoholByVolumeNotEqual_recordsNotEqual() {
-        Instant time = Instant.now().minusSeconds(60);
-        ZoneOffset zoneOffset = ZoneOffset.ofHours(2);
-        int servingCount = 2;
-        int beverageType = ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
-        int servingSize = ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
-        Volume servingVolume = Volume.fromLiters(568.0 / 1000);
-        Percentage alcoholByVolumeA = Percentage.fromValue(7);
-        Percentage alcoholByVolumeB = Percentage.fromValue(12);
-        CharSequence note = "Pub Crawl";
-        Metadata metadata = new Metadata.Builder().build();
-
         AlcoholConsumptionRecord recordA =
-                new AlcoholConsumptionRecord.Builder(metadata, time, servingCount, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolumeA)
-                        .setNote(note)
-                        .build();
-
+                getFullRecordBuilder().setAlcoholByVolume(Percentage.fromValue(7)).build();
         AlcoholConsumptionRecord recordB =
-                new AlcoholConsumptionRecord.Builder(metadata, time, servingCount, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolumeB)
-                        .setNote(note)
-                        .build();
+                getFullRecordBuilder().setAlcoholByVolume(Percentage.fromValue(12)).build();
 
         assertThat(recordA).isNotEqualTo(recordB);
         assertThat(recordA.hashCode()).isNotEqualTo(recordB.hashCode());
@@ -532,43 +255,37 @@ public class AlcoholConsumptionRecordTest {
 
     @Test
     public void equals_hashCode_noteNotEqual_recordsNotEqual() {
-        Instant time = Instant.now().minusSeconds(60);
-        ZoneOffset zoneOffset = ZoneOffset.ofHours(2);
-        int servingCount = 2;
-        int beverageType = ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
-        int servingSize = ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
-        Volume servingVolume = Volume.fromLiters(568.0 / 1000);
-        Percentage alcoholByVolume = Percentage.fromValue(7);
-        CharSequence noteA = "Pub Crawl";
-        CharSequence noteB = "Otley Run";
-        Metadata metadata = new Metadata.Builder().build();
-
-        AlcoholConsumptionRecord recordA =
-                new AlcoholConsumptionRecord.Builder(metadata, time, servingCount, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(noteA)
-                        .build();
-
-        AlcoholConsumptionRecord recordB =
-                new AlcoholConsumptionRecord.Builder(metadata, time, servingCount, beverageType)
-                        .setServingSize(servingSize)
-                        .setStartZoneOffset(zoneOffset)
-                        .setEndZoneOffset(zoneOffset)
-                        .setServingVolume(servingVolume)
-                        .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(noteB)
-                        .build();
+        AlcoholConsumptionRecord recordA = getFullRecordBuilder().setNote("Pub Crawl").build();
+        AlcoholConsumptionRecord recordB = getFullRecordBuilder().setNote("Otley Run").build();
 
         assertThat(recordA).isNotEqualTo(recordB);
         assertThat(recordA.hashCode()).isNotEqualTo(recordB.hashCode());
     }
 
     @Test
-    public void alcoholConsumptionRecordBuilder_interval() {
+    public void builder_instantaneousRecord() {
+        Instant time = Instant.now();
+        int servingCount = 2;
+        int beverageType = ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
+        Metadata metadata = new Metadata.Builder().build();
+
+        AlcoholConsumptionRecord record =
+                new AlcoholConsumptionRecord.Builder(metadata, time, servingCount, beverageType)
+                        .build();
+
+        assertThat(record.getRecordType()).isEqualTo(RECORD_TYPE_ALCOHOL_CONSUMPTION);
+        assertThat(record.getMetadata()).isEqualTo(metadata);
+        assertThat(record.getStartTime()).isEqualTo(time);
+        assertThat(record.getEndTime()).isEqualTo(time);
+        assertThat(record.getStartZoneOffset()).isEqualTo(getDefaultZoneOffset(time));
+        assertThat(record.getEndZoneOffset()).isEqualTo(getDefaultZoneOffset(time));
+        assertThat(record.getServingCount()).isEqualTo(servingCount);
+        assertThat(record.getBeverageType()).isEqualTo(beverageType);
+        assertThat(record.getTemporalType()).isEqualTo(RECORD_TEMPORAL_TYPE_INSTANT);
+    }
+
+    @Test
+    public void builder_intervalRecord() {
         Instant startTime = Instant.now().minusSeconds(60);
         Instant endTime = Instant.now();
         int servingCount = 2;
@@ -588,11 +305,12 @@ public class AlcoholConsumptionRecordTest {
         assertThat(record.getEndZoneOffset()).isEqualTo(getDefaultZoneOffset(endTime));
         assertThat(record.getServingCount()).isEqualTo(servingCount);
         assertThat(record.getBeverageType()).isEqualTo(beverageType);
+        assertThat(record.getTemporalType()).isEqualTo(RECORD_TEMPORAL_TYPE_INTERVAL);
     }
 
     @Test
-    public void alcoholConsumptionRecordBuilder_localDate() {
-        java.time.LocalDate date = java.time.LocalDate.of(2023, 1, 1);
+    public void builder_localDateRecord() {
+        LocalDate date = LocalDate.of(2023, 1, 1);
         int servingCount = 2;
         int beverageType = ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
         Metadata metadata = new Metadata.Builder().build();
@@ -606,10 +324,11 @@ public class AlcoholConsumptionRecordTest {
         assertThat(record.getDate()).isEqualTo(date);
         assertThat(record.getServingCount()).isEqualTo(servingCount);
         assertThat(record.getBeverageType()).isEqualTo(beverageType);
+        assertThat(record.getTemporalType()).isEqualTo(RECORD_TEMPORAL_TYPE_LOCAL_DATE);
     }
 
     @Test
-    public void alcoholConsumptionRecordBuilder_invalidServingVolume() {
+    public void builder_invalidServingVolume() {
         Metadata metadata = new Metadata.Builder().build();
         Instant time = Instant.now();
 
@@ -627,5 +346,26 @@ public class AlcoholConsumptionRecordTest {
 
     private static ZoneOffset getDefaultZoneOffset(Instant instant) {
         return ZoneOffset.systemDefault().getRules().getOffset(instant);
+    }
+
+    private AlcoholConsumptionRecord.Builder getFullRecordBuilder() {
+        return getFullRecordBuilder(new Metadata.Builder().build());
+    }
+
+    private AlcoholConsumptionRecord.Builder getFullRecordBuilder(Metadata metadata) {
+        Instant startTime = Instant.now().minusSeconds(60);
+        Instant endTime = Instant.now();
+        return new AlcoholConsumptionRecord.Builder(
+                        metadata,
+                        startTime,
+                        endTime,
+                        /* servingCount= */ 2,
+                        ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
+                .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT)
+                .setStartZoneOffset(ZoneOffset.ofHours(2))
+                .setEndZoneOffset(ZoneOffset.ofHours(2))
+                .setServingVolume(Volume.fromLiters(0.568))
+                .setAlcoholByVolume(Percentage.fromValue(7.0))
+                .setNote("Pub Crawl");
     }
 }

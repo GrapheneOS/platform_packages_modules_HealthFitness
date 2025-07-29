@@ -91,6 +91,7 @@ message IntervalRecord {
   oneof Data {
     ActiveCaloriesBurned active_calories_burned = 101;
     ActivityIntensity activity_intensity = 102;
+    AlcoholConsumption alcohol_consumption = 123;
     CyclingPedalingCadence cycling_pedaling_cadence = 103;
     Distance distance = 104;
     ElevationGained elevation_gained = 105;
@@ -150,6 +151,16 @@ message ActiveCaloriesBurned {
 
 message ActivityIntensity {
   int32 activity_intensity_type = 1;
+}
+
+message AlcoholConsumption {
+  optional int32 temporal_type = 1;
+  int32 serving_count = 2;
+  int32 beverage_type = 3;
+  optional int32 serving_size = 4;
+  optional double serving_volume = 5;
+  optional double alcohol_by_volume = 6;
+  optional string note = 7;
 }
 
 message BasalBodyTemperature {

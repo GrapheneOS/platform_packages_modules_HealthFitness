@@ -17,6 +17,9 @@
 package com.android.server.healthconnect.backuprestore;
 
 import static android.health.connect.datatypes.ActivityIntensityRecord.ACTIVITY_INTENSITY_TYPE_VIGOROUS;
+import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
+import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
+import static android.health.connect.datatypes.AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_INSTANT;
 import static android.health.connect.datatypes.BloodGlucoseRecord.RelationToMealType.RELATION_TO_MEAL_AFTER_MEAL;
 import static android.health.connect.datatypes.BloodGlucoseRecord.SpecimenSource.SPECIMEN_SOURCE_TEARS;
 import static android.health.connect.datatypes.BloodPressureRecord.BloodPressureMeasurementLocation.BLOOD_PRESSURE_MEASUREMENT_LOCATION_RIGHT_WRIST;
@@ -45,6 +48,7 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ActiveCaloriesBurned;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ActivityIntensity;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.AlcoholConsumption;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BasalBodyTemperature;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BasalMetabolicRate;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BloodGlucose;
@@ -127,6 +131,12 @@ final class ProtoTestData {
                             .setIntervalRecord(
                                     generateIntervalRecord()
                                             .setActivityIntensity(generateActivityIntensity()))
+                            .build();
+            case RecordTypeIdentifier.RECORD_TYPE_ALCOHOL_CONSUMPTION ->
+                    generateCoreRecord()
+                            .setIntervalRecord(
+                                    generateIntervalRecord()
+                                            .setAlcoholConsumption(generateAlcoholConsumption()))
                             .build();
             case RecordTypeIdentifier.RECORD_TYPE_BASAL_BODY_TEMPERATURE ->
                     generateCoreRecord()
@@ -369,6 +379,18 @@ final class ProtoTestData {
 
     static ActiveCaloriesBurned generateActiveCaloriesBurned() {
         return ActiveCaloriesBurned.newBuilder().setEnergy(123).build();
+    }
+
+    static AlcoholConsumption generateAlcoholConsumption() {
+        return AlcoholConsumption.newBuilder()
+                .setTemporalType(RECORD_TEMPORAL_TYPE_INSTANT)
+                .setServingCount(2)
+                .setBeverageType(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
+                .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT)
+                .setServingVolume(0.568)
+                .setAlcoholByVolume(4.5)
+                .setNote("A pint of beer")
+                .build();
     }
 
     static ActivityIntensity generateActivityIntensity() {

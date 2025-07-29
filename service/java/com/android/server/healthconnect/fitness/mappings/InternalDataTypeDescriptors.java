@@ -18,6 +18,7 @@ package com.android.server.healthconnect.fitness.mappings;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ACTIVE_CALORIES_BURNED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ACTIVITY_INTENSITY;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ALCOHOL_CONSUMPTION;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BASAL_BODY_TEMPERATURE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BASAL_METABOLIC_RATE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BLOOD_GLUCOSE;
@@ -60,6 +61,7 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__D
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__WHEELCHAIR_PUSHES;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVITY_INTENSITY;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ALCOHOL_CONSUMPTION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_BODY_TEMPERATURE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BLOOD_GLUCOSE;
@@ -106,6 +108,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static com.android.internal.annotations.VisibleForTesting.Visibility.PACKAGE;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_ACTIVE_CALORIES_BURNED;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_ACTIVITY_INTENSITY;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_ALCOHOL_CONSUMPTION;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BASAL_BODY_TEMPERATURE;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BASAL_METABOLIC_RATE;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BLOOD_GLUCOSE;
@@ -156,6 +159,7 @@ import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.recordhelpers.ActiveCaloriesBurnedRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ActivityIntensityRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.AlcoholConsumptionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.BasalBodyTemperatureRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.BasalMetabolicRateRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.BloodGlucoseRecordHelper;
@@ -221,6 +225,9 @@ public class InternalDataTypeDescriptors {
     private static final int LOGGING_ENUM_NOT_ASSIGNED =
             HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DATA_TYPE_NOT_ASSIGNED;
 
+    private static final int LOGGING_ENUM_ALCOHOL_CONSUMPTION =
+            HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ALCOHOL_CONSUMPTION;
+
     @VisibleForTesting(visibility = PACKAGE)
     static List<InternalDataTypeDescriptor> getAllInternalDataTypeDescriptors() {
         return listOfNonNull(
@@ -238,6 +245,14 @@ public class InternalDataTypeDescriptors {
                                 .setRecordHelper(new ActivityIntensityRecordHelper())
                                 .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_ACTIVITY_INTENSITY)
                                 .setLoggingEnum(LOGGING_ENUM_ACTIVITY_INTENSITY)
+                                .build()
+                        : null,
+                AconfigFlagHelper.isAlcoholConsumptionEnabled()
+                        ? InternalDataTypeDescriptor.builder()
+                                .setRecordTypeIdentifier(RECORD_TYPE_ALCOHOL_CONSUMPTION)
+                                .setRecordHelper(new AlcoholConsumptionRecordHelper())
+                                .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_ALCOHOL_CONSUMPTION)
+                                .setLoggingEnum(LOGGING_ENUM_ALCOHOL_CONSUMPTION)
                                 .build()
                         : null,
                 InternalDataTypeDescriptor.builder()
