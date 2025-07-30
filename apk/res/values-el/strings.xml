@@ -374,14 +374,10 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"πρόσληψη νικοτίνης"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Ανάγνωση δεδομένων πρόσληψης νικοτίνης"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Εγγραφή δεδομένων πρόσληψης νικοτίνης"</string>
-    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
-    <skip />
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"Κατανάλωση αλκοόλ"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"κατανάλωση αλκοόλ"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Ανάγνωση δεδομένων κατανάλωσης αλκοόλ"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Εγγραφή δεδομένων κατανάλωσης αλκοόλ"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Παροχή στην εφαρμογή “<xliff:g id="APP_NAME">%1$s</xliff:g>” του δικαιώματος ανάγνωσης"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Να επιτρέπεται στην εφαρμογή “<xliff:g id="APP_NAME">%1$s</xliff:g>” να γράφει"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Αποδοχή"</string>
@@ -824,8 +820,7 @@
     <string name="mindfulness_type_music" msgid="7041364137895485917">"Mουσική"</string>
     <string name="mindfulness_type_other" msgid="793524328911038908">"Άλλo"</string>
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"Χωρίς καθοδήγηση"</string>
-    <!-- no translation found for mindfulness_a11y_text (1569084462477858789) -->
-    <skip />
+    <string name="mindfulness_a11y_text" msgid="1569084462477858789">"Συνολικός χρόνος ενσυνειδητότητας διάρκειας <xliff:g id="DURATION">%1$s</xliff:g>"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"Μέτρια"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"Έντονη"</string>
     <string name="nicotine_intake_title" msgid="428157249131107976">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>

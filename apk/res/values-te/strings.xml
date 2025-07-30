@@ -374,14 +374,10 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"యూజర్ నికోటిన్ తీసుకునే మోతాదు"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"నికోటిన్ తీసుకునే మోతాదు గురించి చదవండి"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"నికోటిన్ తీసుకునే మోతాదు గురించి రాయండి"</string>
-    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
-    <skip />
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"మద్యపానం"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"మద్యపానం"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"మద్యపాన డేటాను రీడ్ చేయండి"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"మద్యపాన డేటాను రైట్ చేయండి"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"చదవడానికి \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" యాప్‌ను అనుమతించండి"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"రాయడానికి \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" యాప్‌ను అనుమతించండి"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"అనుమతించండి"</string>

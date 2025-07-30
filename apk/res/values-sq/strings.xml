@@ -824,8 +824,7 @@
     <string name="mindfulness_type_music" msgid="7041364137895485917">"Muzikë"</string>
     <string name="mindfulness_type_other" msgid="793524328911038908">"Tjetër"</string>
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"Pa udhëzime"</string>
-    <!-- no translation found for mindfulness_a11y_text (1569084462477858789) -->
-    <skip />
+    <string name="mindfulness_a11y_text" msgid="1569084462477858789">"Koha totale e ndërgjegjësimit të plotë prej <xliff:g id="DURATION">%1$s</xliff:g>"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"Mesatar"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"I vrullshëm"</string>
     <string name="nicotine_intake_title" msgid="428157249131107976">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
