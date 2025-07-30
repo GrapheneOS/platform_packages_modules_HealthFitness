@@ -44,6 +44,7 @@ import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.jobs.DailyCleanupJob;
+import com.android.server.healthconnect.common.logging.CompletenessStatsLogger;
 import com.android.server.healthconnect.common.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.common.logging.LatencyMetricsCollector;
 import com.android.server.healthconnect.common.logging.LatencyMetricsLogger;
@@ -172,6 +173,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Nullable private final CloudRestoreManager mCloudRestoreManager;
     private final LatencyMetricsCollector mLatencyMetricsCollector;
     private final LatencyMetricsLogger mLatencyMetricsLogger;
+    private final CompletenessStatsLogger mCompletenessStatsLogger;
     @Nullable private final MatchingAppsManager mMatchingAppsManager;
     @Nullable private final MatchmakingDenialStateManager mMatchmakingDenialStateManager;
 
@@ -197,6 +199,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         mExportImportLogger = new ExportImportLogger(mHealthFitnesssStatsLog);
         mNotificationStatsLogger = new NotificationStatsLogger(mHealthFitnesssStatsLog);
         mBackupRestoreLogger = new BackupRestoreLogger(mHealthFitnesssStatsLog);
+        mCompletenessStatsLogger = new CompletenessStatsLogger(mHealthFitnesssStatsLog);
 
         HealthConnectContext hcContext =
                 HealthConnectContext.create(
@@ -868,6 +871,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Override
     public BackupRestoreLogger getBackupRestoreLogger() {
         return mBackupRestoreLogger;
+    }
+
+    @Override
+    public CompletenessStatsLogger getCompletenessStatsLogger() {
+        return mCompletenessStatsLogger;
     }
 
     @Override

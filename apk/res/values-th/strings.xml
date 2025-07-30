@@ -374,14 +374,10 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"การได้รับสารนิโคติน"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"อ่านข้อมูลการได้รับสารนิโคติน"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"เขียนข้อมูลการได้รับสารนิโคติน"</string>
-    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
-    <skip />
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"การบริโภคเครื่องดื่มแอลกอฮอล์"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"การบริโภคเครื่องดื่มแอลกอฮอล์"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"อ่านข้อมูลการบริโภคเครื่องดื่มแอลกอฮอล์"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"เขียนข้อมูลการบริโภคเครื่องดื่มแอลกอฮอล์"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"อนุญาตให้ \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" อ่าน"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"อนุญาตให้ \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" เขียน"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"อนุญาต"</string>
@@ -824,8 +820,7 @@
     <string name="mindfulness_type_music" msgid="7041364137895485917">"เพลง"</string>
     <string name="mindfulness_type_other" msgid="793524328911038908">"อื่นๆ"</string>
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"ไม่มีคำแนะนำ"</string>
-    <!-- no translation found for mindfulness_a11y_text (1569084462477858789) -->
-    <skip />
+    <string name="mindfulness_a11y_text" msgid="1569084462477858789">"เวลาในการฝึกสติทั้งหมด <xliff:g id="DURATION">%1$s</xliff:g>"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"ปานกลาง"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"หนัก"</string>
     <string name="nicotine_intake_title" msgid="428157249131107976">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
@@ -1268,10 +1263,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"ตั้งค่าแอปอื่นด้วย Health Connect เพื่อให้แอปดังกล่าวเริ่มแชร์ข้อมูลการออกกำลังกายและสุขภาวะได้"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"อุปกรณ์ปัจจุบัน"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"อุปกรณ์ที่ไม่รู้จัก"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"ข้อมูลอุปกรณ์"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"ระบบจะจัดเก็บข้อมูลที่อุปกรณ์นี้รวบรวมไว้ใน Health Connect ซึ่งแอปที่เชื่อมต่อจะเข้าถึงข้อมูลดังกล่าวได้"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"อนุญาตให้เขียน"</string>
 </resources>

@@ -374,14 +374,10 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"ನಿಕೋಟಿನ್ ಸೇವನೆ"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"ನಿಕೋಟಿನ್ ಸೇವನೆಯ ಕುರಿತು ಓದಿ"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"ನಿಕೋಟಿನ್ ಸೇವನೆಯ ಕುರಿತು ಬರೆಯಿರಿ"</string>
-    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
-    <skip />
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"ಆಲ್ಕೋಹಾಲ್ ಬಳಕೆ"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"ಆಲ್ಕೋಹಾಲ್ ಬಳಕೆ"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"ಆಲ್ಕೋಹಾಲ್ ಬಳಕೆ ಕುರಿತು ಓದಿರಿ"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"ಆಲ್ಕೋಹಾಲ್ ಬಳಕೆ ಕುರಿತು ಬರೆಯಿರಿ"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” ಗೆ ಓದಲು ಅನುಮತಿಸಿ"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” ಗೆ ಬರೆಯಲು ಅನುಮತಿಸಿ"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"ಅನುಮತಿಸಿ"</string>
@@ -824,8 +820,7 @@
     <string name="mindfulness_type_music" msgid="7041364137895485917">"ಸಂಗೀತ"</string>
     <string name="mindfulness_type_other" msgid="793524328911038908">"ಇತರೆ"</string>
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"ಮಾರ್ಗದರ್ಶನವಿಲ್ಲ"</string>
-    <!-- no translation found for mindfulness_a11y_text (1569084462477858789) -->
-    <skip />
+    <string name="mindfulness_a11y_text" msgid="1569084462477858789">"<xliff:g id="DURATION">%1$s</xliff:g> ಅವಧಿಯ ಒಟ್ಟಾರೆ ಮೈಂಡ್‌ಫುಲ್‌ನೆಸ್ ಸಮಯ"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"ಸಾಧಾರಣ"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"ಹುರುಪಿನ"</string>
     <string name="nicotine_intake_title" msgid="428157249131107976">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
@@ -1268,10 +1263,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ಯೋಗಕ್ಷೇಮದ ಡೇಟಾವನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ಪ್ರಾರಂಭಿಸುವುದಕ್ಕಾಗಿ Health Connect ಜೊತೆಗೆ ಮತ್ತೊಂದು ಆ್ಯಪ್ ಅನ್ನು ಸೆಟಪ್ ಮಾಡಿ"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"ಪ್ರಸ್ತುತ ಸಾಧನ"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"ಅಪರಿಚಿತ ಸಾಧನ"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"ಸಾಧನದ ಮಾಹಿತಿ"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"ಈ ಸಾಧನದಿಂದ ಸಂಗ್ರಹಿಸಲಾದ ಡೇಟಾವನ್ನು Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ, ಅಲ್ಲಿ ಕನೆಕ್ಟ್ ಮಾಡಲಾದ ಆ್ಯಪ್‌ಗಳು ಅದನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡುತ್ತವೆ"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"ಬರೆಯಲು ಅನುಮತಿಸಲಾಗಿದೆ"</string>
 </resources>

@@ -33,6 +33,7 @@ import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.jobs.DailyCleanupJob;
+import com.android.server.healthconnect.common.logging.CompletenessStatsLogger;
 import com.android.server.healthconnect.common.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.common.logging.LatencyMetricsCollector;
 import com.android.server.healthconnect.common.logging.LatencyMetricsLogger;
@@ -363,6 +364,12 @@ public abstract class HealthConnectInjector {
      * Getter for {@link BackupRestoreLogger} instance initialised by the Health Connect Injector.
      */
     public abstract BackupRestoreLogger getBackupRestoreLogger();
+
+    /**
+     * Getter for {@link CompletenessStatsLogger} instance initialised by the Health Connect
+     * Injector.
+     */
+    public abstract CompletenessStatsLogger getCompletenessStatsLogger();
 
     /** Getter for {@link TrackerManager} instance initialised by the Health Connect Injector. */
     public abstract TrackerManager getTrackerManager();

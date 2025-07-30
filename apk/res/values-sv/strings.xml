@@ -374,14 +374,10 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"nikotinintag"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Läsbehörighet för nikotinintag"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Skrivbehörighet för nikotinintag"</string>
-    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
-    <skip />
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"Alkoholkonsumtion"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"alkoholkonsumtion"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Läsbehörighet för alkoholkonsumtion"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Skrivbehörighet för alkoholkonsumtion"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Ge <xliff:g id="APP_NAME">%1$s</xliff:g> läsbehörighet"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Ge <xliff:g id="APP_NAME">%1$s</xliff:g> skrivbehörighet"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Tillåt"</string>
@@ -824,8 +820,7 @@
     <string name="mindfulness_type_music" msgid="7041364137895485917">"Musik"</string>
     <string name="mindfulness_type_other" msgid="793524328911038908">"Annat"</string>
     <string name="mindfulness_type_unguided" msgid="2367259868577157922">"Icke-guidad"</string>
-    <!-- no translation found for mindfulness_a11y_text (1569084462477858789) -->
-    <skip />
+    <string name="mindfulness_a11y_text" msgid="1569084462477858789">"Total tid med mindfulness på <xliff:g id="DURATION">%1$s</xliff:g>"</string>
     <string name="activity_intensity_type_moderate" msgid="7974792315871109564">"Måttlig"</string>
     <string name="activity_intensity_type_vigorous" msgid="5651020560923780330">"Ansträngande"</string>
     <string name="nicotine_intake_title" msgid="428157249131107976">"<xliff:g id="QUANTITY">%1$s</xliff:g> • <xliff:g id="INTAKE">%2$s</xliff:g>"</string>
@@ -1268,10 +1263,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Ställ in en annan app med Health Connect så att den kan börja dela tränings- och hälsodata"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"Nuvarande enhet"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Okänd enhet"</string>
-    <!-- no translation found for device_management_screen_title (504259497211017622) -->
-    <skip />
-    <!-- no translation found for device_management_screen_footer (1787611015335737167) -->
-    <skip />
-    <!-- no translation found for device_settings_label (9053791237491247819) -->
-    <skip />
+    <string name="device_management_screen_title" msgid="504259497211017622">"Enhetsinformation"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"Data som samlas in av den här enheten lagras i Health Connect, där anslutna appar får åtkomst till den"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"Tillåts att skriva"</string>
 </resources>
