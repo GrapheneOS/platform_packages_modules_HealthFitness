@@ -636,3 +636,12 @@ flag {
     is_fixed_read_only: true
     is_exported: false
 }
+
+flag {
+    name: "active_data_granularity"
+    namespace: "health_fitness_aconfig"
+    description: "Collecting and logging granularity data for active data."
+    bug: "435361004"
+    is_fixed_read_only: true
+    is_exported: false
+}
