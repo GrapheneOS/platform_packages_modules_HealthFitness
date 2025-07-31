@@ -512,6 +512,9 @@ fun Array<String>.toPermissionsList(): List<HealthPermission> {
 const val TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app"
 const val TEST_APP_PACKAGE_NAME_2 = "android.healthconnect.controller.test.app2"
 const val TEST_APP_PACKAGE_NAME_3 = "package.name.3"
+const val TEST_APP_PACKAGE_NAME_4 = "package.name.4"
+const val TEST_APP_PACKAGE_NAME_5 = "package.name.5"
+const val TEST_APP_PACKAGE_NAME_6 = "package.name.6"
 const val DEVICE_DATA_PROVIDER_PACKAGE_NAME = Constants.DEVICE_DATA_PROVIDER_PACKAGE
 const val UNSUPPORTED_TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app3"
 const val OLD_PERMISSIONS_TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app4"
@@ -524,6 +527,9 @@ const val BODY_SENSORS_AND_HEALTH_TEST_APP_PACKAGE_NAME =
 const val TEST_APP_NAME = "Health Connect test app"
 const val TEST_APP_NAME_2 = "Health Connect test app 2"
 const val TEST_APP_NAME_3 = "Health Connect test app 3"
+const val TEST_APP_NAME_4 = "Health Connect test app 4"
+const val TEST_APP_NAME_5 = "Health Connect test app 5"
+const val TEST_APP_NAME_6 = "Health Connect test app 6"
 const val DEVICE_DATA_PROVIDER_APP_NAME = "Pixel 9a"
 const val OLD_APP_NAME = "Old permissions test app"
 const val MEDICAL_APP_NAME = "Medical permissions HC app"
@@ -535,6 +541,12 @@ val TEST_APP_2 =
     AppMetadata(packageName = TEST_APP_PACKAGE_NAME_2, appName = TEST_APP_NAME_2, icon = null)
 val TEST_APP_3 =
     AppMetadata(packageName = TEST_APP_PACKAGE_NAME_3, appName = TEST_APP_NAME_3, icon = null)
+val TEST_APP_4 =
+    AppMetadata(packageName = TEST_APP_PACKAGE_NAME_4, appName = TEST_APP_NAME_4, icon = null)
+val TEST_APP_5 =
+    AppMetadata(packageName = TEST_APP_PACKAGE_NAME_5, appName = TEST_APP_NAME_5, icon = null)
+val TEST_APP_6 =
+    AppMetadata(packageName = TEST_APP_PACKAGE_NAME_6, appName = TEST_APP_NAME_6, icon = null)
 val DEVICE_DATA_PROVIDER_APP =
     AppMetadata(
         packageName = DEVICE_DATA_PROVIDER_PACKAGE_NAME,

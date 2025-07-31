@@ -257,6 +257,7 @@ filegroup {
     srcs: [
         "src/com/android/healthconnect/controller/tests/home/**/*.java",
         "src/com/android/healthconnect/controller/tests/home/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/newhome/**/*.kt",
         "src/com/android/healthconnect/controller/tests/onboarding/**/*.java",
         "src/com/android/healthconnect/controller/tests/onboarding/**/*.kt",
         "src/com/android/healthconnect/controller/tests/recentaccess/**/*.java",

@@ -1818,6 +1818,22 @@
     <string name="native_steps_notification_content" description="Description of notification for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps tracked by this device are now stored in Health Connect for connected apps to access</string>
     <!-- endregion -->
 
+    <!-- region New Home Screen -->
+    <string name="your_health_apps_category_title" description="Title of category on the home screen listing the health apps present on a user's phone [CHAR_LIMIT=NONE]">Your health apps</string>
+    <string name="your_health_data_category_title" description="Title of category on the home screen listing actions that a user can take to see their health data [CHAR_LIMIT=NONE]">Your health data</string>
+    <string name="preferences_category_title" description="Title of category on the home screen listing actions that a user can take to set preferences for their health data [CHAR_LIMIT=NONE]">Preferences</string>
+    <string name="home_screen_footer" description="Footer of home screen that explains the use of Health Connect. [CHAR_LIMIT=NONE]">Health&#160;Connect lets you share your health and fitness data between multiple apps. This helps you unlock insights and experiences while keeping your data secure.</string>
+    <string name="home_screen_footer_link" description="Link for footer of home screen that explains the use of Health Connect. [CHAR_LIMIT=NONE]">More about Health&#160;Connect</string>
+    <string name="data_and_access_summary" description="Summary text for preference button taking the user to see their data in Health Connect [CHAR_LIMIT=NONE]">Your data and which apps can access it</string>
+    <string name="recent_access_summary" description="Summary text for preference button taking the user to see which apps recently accessed their data in Health Connect [CHAR_LIMIT=NONE]">Apps that recently used your data</string>
+    <string name="home_devices_summary" description="Summary text for preference button taking the user to see which devices can access Health Connect [CHAR_LIMIT=NONE]">Review devices that can access health data</string>
+    <string name="empty_apps_section_title" description="Summary text shown when the user does not have any Health Connect compatible apps installed [CHAR_LIMIT=NONE]">Install apps that work with Health&#160;Connect to see them here</string>
+    <string name="empty_apps_section_link" description="Link text shown when the user does not have any Health Connect compatible apps installed to take them to a page showing compatible apps [CHAR_LIMIT=NONE]">See compatible apps</string>
+    <string name="see_all_connected_apps_button" description="Button taking user to the connected apps screen [CHAR_LIMIT=NONE]">See all</string>
+    <string name="app_not_connected_summary" description="Summary for preference indicating that an app is not connected to Health Connect [CHAR_LIMIT=NONE]">Not connected</string>
+
+    <!-- endregion -->
+
     <string name="banner_default_dismiss_button" description="Default button to dismiss a banner in Health Connect [CHAR_LIMIT=NONE]">Not now</string>
 
     <!-- endregion -->
