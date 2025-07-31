@@ -224,7 +224,7 @@ import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
-import com.android.server.healthconnect.onboarding.matchingapps.MatchingAppsManager;
+import com.android.server.healthconnect.onboarding.matchmaking.MatchmakingManager;
 import com.android.server.healthconnect.permission.DataPermissionEnforcer;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
@@ -334,7 +334,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             new WeakReference<>(null);
     private final HealthConnectThreadScheduler mThreadScheduler;
     private final HealthFitnessStatsLog mStatsLog;
-    @Nullable private final MatchingAppsManager mMatchingAppsManager;
+    @Nullable private final MatchmakingManager mMatchmakingManager;
 
     private volatile UserHandle mCurrentForegroundUser;
 
@@ -382,7 +382,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             TrackerManager trackerManager,
             @Nullable CloudBackupManager cloudBackupManager,
             @Nullable CloudRestoreManager cloudRestoreManager,
-            @Nullable MatchingAppsManager matchingAppsManager) {
+            @Nullable MatchmakingManager matchmakingManager) {
         mContext = context;
         mCurrentForegroundUser = context.getUser();
         mTimeSource = timeSource;
@@ -455,7 +455,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mCloudBackupManager = cloudBackupManager;
         mCloudRestoreManager = cloudRestoreManager;
         mStatsLog = statsLog;
-        mMatchingAppsManager = matchingAppsManager;
+        mMatchmakingManager = matchmakingManager;
     }
 
     public void setupForUser(UserHandle currentForegroundUser) {
@@ -3095,7 +3095,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (mMatchingAppsManager == null || !Flags.matchmaking()) {
+                    if (mMatchmakingManager == null || !Flags.matchmaking()) {
                         throw new UnsupportedOperationException("getMatchingApps is not supported");
                     }
                     enforceIsForegroundUser(userHandle);
@@ -3119,7 +3119,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     : attributionPackageName;
                     Set<Class<? extends Record>> recordTypes = request.getRecordTypes();
                     Map<String, Set<String>> matchingApps =
-                            mMatchingAppsManager.fetchMatchingApps(recordTypes, packageName);
+                            mMatchmakingManager.fetchMatchingApps(recordTypes, packageName);
                     callback.onResult(new GetMatchingAppsResponse(matchingApps));
                     // TODO(b/425634323): Add logging.
                 },
@@ -3145,7 +3145,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
-                    if (mMatchingAppsManager == null || !Flags.matchmaking()) {
+                    if (mMatchmakingManager == null || !Flags.matchmaking()) {
                         throw new UnsupportedOperationException("getMatchingApps is not supported");
                     }
                     enforceIsForegroundUser(userHandle);
@@ -3156,8 +3156,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 ERROR_INVALID_ARGUMENT, "Package name can't be empty.");
                     }
                     throwExceptionIfDataSyncInProgress();
-                    if (mMatchingAppsManager != null) {
-                        mMatchingAppsManager.recordMatchmakingDenial(deniedPackageName);
+                    if (mMatchmakingManager != null) {
+                        mMatchmakingManager.recordMatchmakingDenial(deniedPackageName);
                     }
                     callback.onResult();
                 },

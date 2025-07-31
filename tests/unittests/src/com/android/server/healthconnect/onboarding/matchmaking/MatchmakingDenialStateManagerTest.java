@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.server.healthconnect.onboarding.matchingapps;
+package com.android.server.healthconnect.onboarding.matchmaking;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -30,7 +30,7 @@ import androidx.test.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
-import com.android.server.healthconnect.onboarding.matchingapps.MatchmakingDenialStateManager.DenialState;
+import com.android.server.healthconnect.onboarding.matchmaking.MatchmakingDenialStateManager.DenialState;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 
 import org.junit.After;

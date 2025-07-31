@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.server.healthconnect.onboarding.matchingapps;
+package com.android.server.healthconnect.onboarding.matchmaking;
 
 import static android.content.pm.PackageManager.FLAG_PERMISSION_USER_FIXED;
 import static android.content.pm.PackageManager.FLAG_PERMISSION_USER_SET;
@@ -82,7 +82,7 @@ public class MatchingAppsManagerTest {
 
     private final HealthConnectMappings mHealthConnectMappings = new HealthConnectMappings();
 
-    private MatchingAppsManager mMatchingAppsManager;
+    private MatchmakingManager mMatchmakingManager;
 
     private static final String PACKAGE_NAME = "com.example.app";
     private static final String PACKAGE_NAME_2 = "com.example.app2";
@@ -93,8 +93,8 @@ public class MatchingAppsManagerTest {
         Context context = InstrumentationRegistry.getTargetContext();
         HealthConnectContext userContext =
                 HealthConnectContext.create(context, context.getUser(), null, null);
-        mMatchingAppsManager =
-                new MatchingAppsManager(
+        mMatchmakingManager =
+                new MatchmakingManager(
                         userContext,
                         mHealthConnectPermissionHelper,
                         mPackageInfoUtils,
@@ -111,7 +111,7 @@ public class MatchingAppsManagerTest {
 
     @Test
     public void constructor_initializesFields() {
-        assertThat(mMatchingAppsManager).isNotNull();
+        assertThat(mMatchmakingManager).isNotNull();
     }
 
     @Test
@@ -119,7 +119,7 @@ public class MatchingAppsManagerTest {
         mockReadingApp(PACKAGE_NAME, Collections.emptyList());
 
         Map<String, Set<String>> result =
-                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+                mMatchmakingManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
         assertThat(result).isEmpty();
     }
@@ -136,7 +136,7 @@ public class MatchingAppsManagerTest {
         mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_HEART_RATE, 0);
 
         Map<String, Set<String>> result =
-                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+                mMatchmakingManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
         assertThat(result).isEmpty();
     }
@@ -151,13 +151,13 @@ public class MatchingAppsManagerTest {
         mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
 
         Map<String, Set<String>> result =
-                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+                mMatchmakingManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
         assertThat(result).containsExactly(PACKAGE_NAME_2, ImmutableSet.of(WRITE_STEPS));
     }
 
     @Test
-    public void fetchMatchingApps__matchExists_denialLimitExceeded_returnsEmpty() {
+    public void fetchMatchingApps_matchExists_denialLimitExceeded_returnsEmpty() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
         when(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME)).thenReturn(true);
         PackageInfo matchingApp = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
@@ -167,7 +167,7 @@ public class MatchingAppsManagerTest {
         mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
 
         Map<String, Set<String>> result =
-                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+                mMatchmakingManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
         assertThat(result).isEmpty();
     }
@@ -182,7 +182,7 @@ public class MatchingAppsManagerTest {
         mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
 
         Map<String, Set<String>> result =
-                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+                mMatchmakingManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
         assertThat(result).isEmpty();
     }
@@ -197,7 +197,7 @@ public class MatchingAppsManagerTest {
         mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
 
         Map<String, Set<String>> result =
-                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+                mMatchmakingManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
         assertThat(result).isEmpty();
     }
@@ -212,7 +212,7 @@ public class MatchingAppsManagerTest {
         mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, FLAG_PERMISSION_USER_FIXED);
 
         Map<String, Set<String>> result =
-                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+                mMatchmakingManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
         assertThat(result).isEmpty();
     }
@@ -227,7 +227,7 @@ public class MatchingAppsManagerTest {
         mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, FLAG_PERMISSION_USER_SET);
 
         Map<String, Set<String>> result =
-                mMatchingAppsManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+                mMatchmakingManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
         assertThat(result).containsExactly(PACKAGE_NAME_2, ImmutableSet.of(WRITE_STEPS));
     }
@@ -255,7 +255,7 @@ public class MatchingAppsManagerTest {
 
         // STEPS requested.
         Map<String, Set<String>> result =
-                mMatchingAppsManager.fetchMatchingApps(Set.of(StepsRecord.class), PACKAGE_NAME);
+                mMatchmakingManager.fetchMatchingApps(Set.of(StepsRecord.class), PACKAGE_NAME);
 
         assertThat(result).containsExactly(PACKAGE_NAME_2, ImmutableSet.of(WRITE_STEPS));
     }
@@ -289,7 +289,7 @@ public class MatchingAppsManagerTest {
                         HeartRateRecord.class,
                         DistanceRecord.class);
         Map<String, Set<String>> result =
-                mMatchingAppsManager.fetchMatchingApps(queriedRecordTypes, PACKAGE_NAME);
+                mMatchmakingManager.fetchMatchingApps(queriedRecordTypes, PACKAGE_NAME);
 
         assertThat(result)
                 .containsExactly(
@@ -319,7 +319,7 @@ public class MatchingAppsManagerTest {
 
         // Querying STEPS, DISTANCE, HEART_RATE.
         Map<String, Set<String>> result =
-                mMatchingAppsManager.fetchMatchingApps(
+                mMatchmakingManager.fetchMatchingApps(
                         Set.of(StepsRecord.class, DistanceRecord.class, HeartRateRecord.class),
                         PACKAGE_NAME);
 
@@ -353,7 +353,7 @@ public class MatchingAppsManagerTest {
 
         // Querying STEPS, DISTANCE, HEART_RATE.
         Map<String, Set<String>> result =
-                mMatchingAppsManager.fetchMatchingApps(
+                mMatchmakingManager.fetchMatchingApps(
                         Set.of(StepsRecord.class, DistanceRecord.class, HeartRateRecord.class),
                         PACKAGE_NAME);
 
@@ -388,7 +388,7 @@ public class MatchingAppsManagerTest {
 
         // Querying DISTANCE, HEART_RATE, and STEPS.
         Map<String, Set<String>> result =
-                mMatchingAppsManager.fetchMatchingApps(
+                mMatchmakingManager.fetchMatchingApps(
                         Set.of(DistanceRecord.class, HeartRateRecord.class, StepsRecord.class),
                         PACKAGE_NAME);
 
@@ -437,7 +437,7 @@ public class MatchingAppsManagerTest {
 
     @Test
     public void incrementDenialCounter_callsDenialManager() {
-        mMatchingAppsManager.recordMatchmakingDenial(PACKAGE_NAME);
+        mMatchmakingManager.recordMatchmakingDenial(PACKAGE_NAME);
         verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME);
     }
 }
