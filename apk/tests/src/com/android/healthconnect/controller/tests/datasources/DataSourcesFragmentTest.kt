@@ -190,12 +190,12 @@ class DataSourcesFragmentTest {
 
         onView(withText("Activity")).check(matches(isDisplayed()))
         onView(withText("Data totals")).check(doesNotExist())
-        onView(withText("App sources")).check(matches(isDisplayed()))
-        onView(withText("Add an app")).check(doesNotExist())
+        onView(withText("Data sources")).check(matches(isDisplayed()))
+        onView(withText("Add a data source")).check(doesNotExist())
         onView(
                 withText(
-                    "Add app sources to the list to see how the data " +
-                        "totals can change. Removing an app from this list will stop it " +
+                    "Add data sources to the list to see how the data " +
+                        "totals can change. Removing a data source from this list will stop it " +
                         "from contributing to totals, but it will still have write permissions."
                 )
             )
@@ -258,12 +258,12 @@ class DataSourcesFragmentTest {
         onView(withText("Data totals")).check(matches(isDisplayed()))
         onView(withText("1234 steps")).check(matches(isDisplayed()))
         onView(withText("October 19")).check(matches(isDisplayed()))
-        onView(withText("App sources")).check(matches(isDisplayed()))
-        onView(withText("Add an app")).check(doesNotExist())
+        onView(withText("Data sources")).check(matches(isDisplayed()))
+        onView(withText("Add a data source")).check(doesNotExist())
         onView(
                 withText(
-                    "Add app sources to the list to see how the data " +
-                        "totals can change. Removing an app from this list will stop it " +
+                    "Add data sources to the list to see how the data " +
+                        "totals can change. Removing a data source from this list will stop it " +
                         "from contributing to totals, but it will still have write permissions."
                 )
             )
@@ -377,12 +377,12 @@ class DataSourcesFragmentTest {
         onView(withText("Data totals")).check(matches(isDisplayed()))
         onView(withText("11h 5m")).check(matches(isDisplayed()))
         onView(withText("Oct 18 – 19")).check(matches(isDisplayed()))
-        onView(withText("App sources")).check(matches(isDisplayed()))
-        onView(withText("Add an app")).check(doesNotExist())
+        onView(withText("Data sources")).check(matches(isDisplayed()))
+        onView(withText("Add a data source")).check(doesNotExist())
         onView(
                 withText(
-                    "Add app sources to the list to see how the data " +
-                        "totals can change. Removing an app from this list will stop it " +
+                    "Add data sources to the list to see how the data " +
+                        "totals can change. Removing a data source from this list will stop it " +
                         "from contributing to totals, but it will still have write permissions."
                 )
             )
@@ -443,12 +443,12 @@ class DataSourcesFragmentTest {
         onView(withText("Data totals")).check(matches(isDisplayed()))
         onView(withText("11h 5m")).check(matches(isDisplayed()))
         onView(withText("Oct 18 – 19, 2020")).check(matches(isDisplayed()))
-        onView(withText("App sources")).check(matches(isDisplayed()))
-        onView(withText("Add an app")).check(doesNotExist())
+        onView(withText("Data sources")).check(matches(isDisplayed()))
+        onView(withText("Add a data source")).check(doesNotExist())
         onView(
                 withText(
-                    "Add app sources to the list to see how the data " +
-                        "totals can change. Removing an app from this list will stop it " +
+                    "Add data sources to the list to see how the data " +
+                        "totals can change. Removing a data source from this list will stop it " +
                         "from contributing to totals, but it will still have write permissions."
                 )
             )
@@ -509,12 +509,12 @@ class DataSourcesFragmentTest {
         onView(withText("Data totals")).check(matches(isDisplayed()))
         onView(withText("11h 5m")).check(matches(isDisplayed()))
         onView(withText("Dec 31, 2020 – Jan 1, 2021")).check(matches(isDisplayed()))
-        onView(withText("App sources")).check(matches(isDisplayed()))
-        onView(withText("Add an app")).check(doesNotExist())
+        onView(withText("Data sources")).check(matches(isDisplayed()))
+        onView(withText("Add a data source")).check(doesNotExist())
         onView(
                 withText(
-                    "Add app sources to the list to see how the data " +
-                        "totals can change. Removing an app from this list will stop it " +
+                    "Add data sources to the list to see how the data " +
+                        "totals can change. Removing a data source from this list will stop it " +
                         "from contributing to totals, but it will still have write permissions."
                 )
             )
@@ -540,10 +540,10 @@ class DataSourcesFragmentTest {
         launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
 
         onView(withText("Activity")).check(matches(isDisplayed()))
-        onView(withText("No app sources")).check(matches(isDisplayed()))
+        onView(withText("No data sources")).check(matches(isDisplayed()))
         onView(
                 withText(
-                    "Once you give app permissions to write activity data, sources will show here."
+                    "Once you give a data source permission to write activity data, sources will show here."
                 )
             )
             .check(matches(isDisplayed()))
@@ -572,12 +572,12 @@ class DataSourcesFragmentTest {
 
         onView(withText("Activity")).check(matches(isDisplayed()))
         onView(withText("Data totals")).check(doesNotExist())
-        onView(withText("App sources")).check(matches(isDisplayed()))
-        onView(withText("Add an app")).check(matches(isDisplayed()))
+        onView(withText("Data sources")).check(matches(isDisplayed()))
+        onView(withText("Add a data source")).check(matches(isDisplayed()))
         onView(
                 withText(
-                    "Add app sources to the list to see how the data " +
-                        "totals can change. Removing an app from this list will stop it " +
+                    "Add data sources to the list to see how the data " +
+                        "totals can change. Removing a data source from this list will stop it " +
                         "from contributing to totals, but it will still have write permissions."
                 )
             )
@@ -595,12 +595,12 @@ class DataSourcesFragmentTest {
 
         onView(withText("Activity")).check(matches(isDisplayed()))
         onView(withText("Data totals")).check(matches(isDisplayed()))
-        onView(withText("App sources")).check(matches(isDisplayed()))
-        onView(withText("Add an app")).check(doesNotExist())
+        onView(withText("Data sources")).check(matches(isDisplayed()))
+        onView(withText("Add a data source")).check(doesNotExist())
         onView(
                 withText(
-                    "Add app sources to the list to see how the data " +
-                        "totals can change. Removing an app from this list will stop it " +
+                    "Add data sources to the list to see how the data " +
+                        "totals can change. Removing a data source from this list will stop it " +
                         "from contributing to totals, but it will still have write permissions."
                 )
             )

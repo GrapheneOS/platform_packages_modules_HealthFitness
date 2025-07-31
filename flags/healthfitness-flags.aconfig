@@ -627,3 +627,21 @@ flag {
         purpose: PURPOSE_BUGFIX
     }
 }
+
+flag {
+    name: "new_home_screen"
+    namespace: "health_fitness_aconfig"
+    description: "Enables the new home screen UI."
+    bug: "434918574"
+    is_fixed_read_only: true
+    is_exported: false
+}
+
+flag {
+    name: "active_data_granularity"
+    namespace: "health_fitness_aconfig"
+    description: "Collecting and logging granularity data for active data."
+    bug: "435361004"
+    is_fixed_read_only: true
+    is_exported: false
+}

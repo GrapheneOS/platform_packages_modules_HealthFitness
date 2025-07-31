@@ -35,8 +35,6 @@ import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper
 import com.android.server.healthconnect.common.jobs.DailyCleanupJob;
 import com.android.server.healthconnect.common.logging.CompletenessStatsLogger;
 import com.android.server.healthconnect.common.logging.DatabaseStatsCollector;
-import com.android.server.healthconnect.common.logging.LatencyMetricsCollector;
-import com.android.server.healthconnect.common.logging.LatencyMetricsLogger;
 import com.android.server.healthconnect.common.logging.UsageStatsCollector;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
@@ -67,8 +65,8 @@ import com.android.server.healthconnect.notifications.NotificationStatsLogger;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationSender;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationStateManager;
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
-import com.android.server.healthconnect.onboarding.matchingapps.MatchingAppsManager;
-import com.android.server.healthconnect.onboarding.matchingapps.MatchmakingDenialStateManager;
+import com.android.server.healthconnect.onboarding.matchmaking.MatchmakingDenialStateManager;
+import com.android.server.healthconnect.onboarding.matchmaking.MatchmakingManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
@@ -81,6 +79,8 @@ import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsCollector;
+import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsLogger;
 import com.android.server.healthconnect.utils.TimeSource;
 
 import java.io.File;
@@ -398,10 +398,10 @@ public abstract class HealthConnectInjector {
     public abstract CloudRestoreManager getCloudRestoreManager();
 
     /**
-     * Getter for {@link MatchingAppsManager} instance initialised by the Health Connect Injector.
+     * Getter for {@link MatchmakingManager} instance initialised by the Health Connect Injector.
      */
     @Nullable
-    public abstract MatchingAppsManager getMatchingAppsManager();
+    public abstract MatchmakingManager getMatchingAppsManager();
 
     /**
      * Getter for {@link MatchmakingDenialStateManager} instance initialised by the Health Connect

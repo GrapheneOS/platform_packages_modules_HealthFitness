@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.common.logging;
+package com.android.server.healthconnect.telemetry.dataquality;
 
 import static com.android.healthfitness.flags.Flags.FLAG_LATENCY_METRICS_FLAG;
 
