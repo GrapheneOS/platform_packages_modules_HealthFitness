@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.common.logging;
+package com.android.server.healthconnect.telemetry.dataquality;
 
 import android.util.Slog;
 

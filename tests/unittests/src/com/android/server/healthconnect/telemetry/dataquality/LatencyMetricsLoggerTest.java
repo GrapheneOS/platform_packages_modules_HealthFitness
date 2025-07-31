@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.common.logging;
+package com.android.server.healthconnect.telemetry.dataquality;
 
 import static com.android.healthfitness.flags.Flags.FLAG_LATENCY_METRICS_FLAG;
 
@@ -32,7 +32,7 @@ import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
-import com.android.server.healthconnect.common.logging.LatencyMetricsCollector.LatencyMetricsData;
+import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsCollector.LatencyMetricsData;
 
 import org.junit.Before;
 import org.junit.Rule;

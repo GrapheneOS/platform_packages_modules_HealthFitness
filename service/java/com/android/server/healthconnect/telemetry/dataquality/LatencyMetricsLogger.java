@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.common.logging;
+package com.android.server.healthconnect.telemetry.dataquality;
+
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_LATENCY_STATS__SESSION_DATA_TYPE__SESSION_DATA_TYPE_EXERCISE;
 
 import android.health.HealthFitnessStatsLog;
 
 import com.android.healthfitness.flags.Flags;
-import com.android.server.healthconnect.common.logging.LatencyMetricsCollector.LatencyMetricsData;
+import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsCollector.LatencyMetricsData;
 
 import java.util.List;
 
@@ -49,8 +51,7 @@ public final class LatencyMetricsLogger {
         List<LatencyMetricsData> sleepSessionLatencyMetrics =
                 mLatencyMetricsCollector.readLastWeekSleepSessions();
         logLatency(
-                HealthFitnessStatsLog
-                        .HEALTH_CONNECT_LATENCY_STATS__SESSION_DATA_TYPE__SESSION_DATA_TYPE_EXERCISE,
+                HEALTH_CONNECT_LATENCY_STATS__SESSION_DATA_TYPE__SESSION_DATA_TYPE_EXERCISE,
                 exerciseSessionLatencyMetrics);
         logLatency(
                 HealthFitnessStatsLog

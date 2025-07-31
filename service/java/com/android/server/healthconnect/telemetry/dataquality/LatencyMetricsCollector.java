@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.common.logging;
+package com.android.server.healthconnect.telemetry.dataquality;
 
 import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 
