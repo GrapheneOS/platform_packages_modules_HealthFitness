@@ -1129,13 +1129,19 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Նախքան տվյալների վերականգնման գործողությունը շարունակելը, թարմացրեք ձեր հեռախոսի համակարգը։"</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Թարմացնել"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Ամփոփիչ ցուցանիշներ"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"Հավելվածների աղբյուրներ"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"Հավելվածներ ավելացրեք ցանկում՝ տեսնելու, թե ինչպես կփոխվեն ամփոփիչ ցուցանիշները։ Որևէ հավելված ջնջելու դեպքում այդ հավելվածից ստացված տվյալներն ամփոփիչ ցուցանիշներում հաշվի չեն առնվի։ Ընդ որում՝ գրելու թույլտվությունները չեն չեղարկվի։"</string>
-    <string name="data_sources_empty_state" msgid="1899652759274805556">"Հավելվածների աղբյուրներ չկան"</string>
-    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Հենց որ հավելվածներին թույլատրեք տվյալներ գրանցել «<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>» կատեգորիայում, աղբյուրները կհայտնվեն այստեղ։"</string>
+    <!-- no translation found for app_sources_header (3776247928235433963) -->
+    <skip />
+    <!-- no translation found for data_sources_footer (2271085147058181039) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
+    <skip />
     <string name="data_sources_help_link" msgid="7740264923634947915">"Ինչպես են աղբյուրներն ու առաջնահերթությունն աշխատում"</string>
-    <string name="data_sources_add_app" msgid="319926596123692514">"Ավելացնել հավելված"</string>
-    <string name="edit_data_sources" msgid="79641360876849547">"Հավելվածների աղբյուրների փոփոխում"</string>
+    <!-- no translation found for data_sources_add_app (275066335106036460) -->
+    <skip />
+    <!-- no translation found for edit_data_sources (5389744157074260179) -->
+    <skip />
     <string name="default_app_summary" msgid="6183876151011837062">"Կանխադրված տարբերակ"</string>
     <string name="move_up" msgid="9136155291380319606">"Տեղափոխել վերև"</string>
     <string name="move_down" msgid="4404970288236170693">"Տեղափոխել ներքև"</string>

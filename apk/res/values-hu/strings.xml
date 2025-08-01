@@ -374,14 +374,10 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"nikotinbevitel"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Nikotinbevitelre vonatkozó adatok olvasása"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Nikotinbevitelre vonatkozó adatok írása"</string>
-    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
-    <skip />
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"Alkoholfogyasztás"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"alkoholfogyasztás"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Alkoholfogyasztási adatok olvasása"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Alkoholfogyasztási adatok írása"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Olvasási jogosultság a(z) „<xliff:g id="APP_NAME">%1$s</xliff:g>” alkalmazásnak"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Írási jogosultság a(z) „<xliff:g id="APP_NAME">%1$s</xliff:g>” alkalmazásnak"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Engedélyezés"</string>
@@ -1133,13 +1129,19 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Mielőtt folytatja az adatok visszaállítását, frissítse a telefon rendszerét."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Frissítés most"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Adatösszesítések"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"Alkalmazásforrások"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"Adjon alkalmazásforrásokat a listához annak megtekintéséhez, hogy miként változhatnak az adatösszesítések. Ha eltávolít egy alkalmazást erről a listáról, akkor a továbbiakban az app adatai már nem szerepelnek az összesítésben, de az app írási engedélye megmarad."</string>
-    <string name="data_sources_empty_state" msgid="1899652759274805556">"Nincsenek alkalmazásforrások"</string>
-    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Miután alkalmazásengedélyeket adott a(z) <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> kategóriájú adatok írására, itt jelennek meg a források."</string>
+    <!-- no translation found for app_sources_header (3776247928235433963) -->
+    <skip />
+    <!-- no translation found for data_sources_footer (2271085147058181039) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
+    <skip />
     <string name="data_sources_help_link" msgid="7740264923634947915">"Hogyan működnek a források és a priorizálás?"</string>
-    <string name="data_sources_add_app" msgid="319926596123692514">"Alkalmazás hozzáadása"</string>
-    <string name="edit_data_sources" msgid="79641360876849547">"Alkalmazásforrások szerkesztése"</string>
+    <!-- no translation found for data_sources_add_app (275066335106036460) -->
+    <skip />
+    <!-- no translation found for edit_data_sources (5389744157074260179) -->
+    <skip />
     <string name="default_app_summary" msgid="6183876151011837062">"Alapértelmezett"</string>
     <string name="move_up" msgid="9136155291380319606">"Mozgatás felfelé"</string>
     <string name="move_down" msgid="4404970288236170693">"Mozgatás lefelé"</string>
