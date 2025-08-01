@@ -377,7 +377,7 @@
     <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"צריכת אלכוהול"</string>
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"צריכת אלכוהול"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"קריאה של נתוני צריכת האלכוהול"</string>
-    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"כתיבת נתוני צריכת האלכוהול"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"כתיבה של נתוני צריכת האלכוהול"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"מתן הרשאה לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> לקרוא נתונים"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"מתן הרשאה לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> לכתוב נתונים"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"אישור"</string>
@@ -1129,13 +1129,19 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"לפני המשך שחזור הנתונים, עליך לעדכן את המערכת של הטלפון."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"לעדכון"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"סכומי נתונים"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"אפליקציות שמשמשות כמקור נתונים"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"אפשר להוסיף מקורות של אפליקציות לרשימה כדי לראות איך סכומי הנתונים משתנים. הסרת אפליקציה מהרשימה הזו תמנע ממנה לתרום לסכומים, אך עדיין יהיו לה הרשאות כתיבה."</string>
-    <string name="data_sources_empty_state" msgid="1899652759274805556">"אין מקורות של אפליקציות"</string>
-    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"אחרי שנותנים לאפליקציות הרשאה לכתוב נתונים של <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, המקורות מופיעים כאן."</string>
+    <!-- no translation found for app_sources_header (3776247928235433963) -->
+    <skip />
+    <!-- no translation found for data_sources_footer (2271085147058181039) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
+    <skip />
     <string name="data_sources_help_link" msgid="7740264923634947915">"איך מקורות הנתונים והעדיפות פועלים"</string>
-    <string name="data_sources_add_app" msgid="319926596123692514">"הוספת אפליקציה"</string>
-    <string name="edit_data_sources" msgid="79641360876849547">"עריכת המקורות של האפליקציות"</string>
+    <!-- no translation found for data_sources_add_app (275066335106036460) -->
+    <skip />
+    <!-- no translation found for edit_data_sources (5389744157074260179) -->
+    <skip />
     <string name="default_app_summary" msgid="6183876151011837062">"ברירת המחדל של המכשיר"</string>
     <string name="move_up" msgid="9136155291380319606">"העברה למעלה"</string>
     <string name="move_down" msgid="4404970288236170693">"העברה למטה"</string>

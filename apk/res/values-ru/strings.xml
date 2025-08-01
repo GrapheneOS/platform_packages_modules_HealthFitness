@@ -374,14 +374,10 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"потребление никотина"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Чтение данных о потреблении никотина"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Запись данных о потреблении никотина"</string>
-    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
-    <skip />
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"Потребление алкоголя"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"потребление алкоголя"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Читать данные о потреблении алкоголя"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Записывать данные о потреблении алкоголя"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"<xliff:g id="APP_NAME">%1$s</xliff:g>: разрешение на чтение"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"<xliff:g id="APP_NAME">%1$s</xliff:g>: разрешение на запись"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Разрешить"</string>
@@ -1133,13 +1129,19 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Прежде чем продолжить восстановление данных, обновите систему телефона."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Обновить"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Суммарные показатели"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"Приложения"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"Добавьте приложения в список, чтобы посмотреть, как изменятся суммарные показатели. Если вы удалите приложение, данные из него не будут учитываться. При этом разрешения на запись не отзываются."</string>
-    <string name="data_sources_empty_state" msgid="1899652759274805556">"Нет приложений"</string>
-    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Здесь появятся приложения, которым вы разрешите записывать данные в категории \"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>\"."</string>
+    <!-- no translation found for app_sources_header (3776247928235433963) -->
+    <skip />
+    <!-- no translation found for data_sources_footer (2271085147058181039) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
+    <skip />
     <string name="data_sources_help_link" msgid="7740264923634947915">"Сведения об источниках данных и приоритете"</string>
-    <string name="data_sources_add_app" msgid="319926596123692514">"Добавить приложение"</string>
-    <string name="edit_data_sources" msgid="79641360876849547">"Изменить список приложений"</string>
+    <!-- no translation found for data_sources_add_app (275066335106036460) -->
+    <skip />
+    <!-- no translation found for edit_data_sources (5389744157074260179) -->
+    <skip />
     <string name="default_app_summary" msgid="6183876151011837062">"Приложение по умолчанию"</string>
     <string name="move_up" msgid="9136155291380319606">"Переместить вверх"</string>
     <string name="move_down" msgid="4404970288236170693">"Переместить вниз"</string>

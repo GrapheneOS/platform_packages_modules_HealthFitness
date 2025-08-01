@@ -374,14 +374,10 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"නිකොටින් පරිභෝජනය"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"නිකොටින් පරිභෝජනය කියවන්න"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"නිකොටින් පරිභෝජනය ලියන්න"</string>
-    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
-    <skip />
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"මත්පැන් පරිභෝජනය"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"මත්පැන් පරිභෝජනය"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"මත්පැන් පරිභෝජනය කියවන්න"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"මත්පැන් පරිභෝජනය ලියන්න"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” හට කියවීමට ඉඩ දෙන්න"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” හට ලිවීමට ඉඩ දෙන්න"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"ඉඩ දෙන්න"</string>
@@ -1133,13 +1129,19 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"ඔබේ දත්ත ප්‍රතිසාධනය කරගෙන යාමට පෙර, ඔබේ දුරකථන පද්ධතිය යාවත්කාලීන කරන්න."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"දැන් යාවත්කාලීන කරන්න"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"දත්ත එකතු"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"යෙදුම් මූලාශ්‍ර"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"දත්ත එකතුව වෙනස් විය හැකි ආකාරය බැලීමට ලැයිස්තුවට යෙදුම් මූලාශ්‍ර එක් කරන්න. මෙම ලැයිස්තුවෙන් යෙදුමක් ඉවත් කිරීමෙන් එය එකතුවට දායක වීම නවත්වනු ඇති නමුත්, එයට තවමත් ලිවීමේ අවසර ඇත."</string>
-    <string name="data_sources_empty_state" msgid="1899652759274805556">"යෙදුම් මූලාශ්‍ර නැත"</string>
-    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> දත්ත ලිවීමට ඔබ යෙදුම් අවසර දුන් පසු මූලාශ්‍ර මෙහි පෙන්වනු ලැබේ."</string>
+    <!-- no translation found for app_sources_header (3776247928235433963) -->
+    <skip />
+    <!-- no translation found for data_sources_footer (2271085147058181039) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
+    <skip />
     <string name="data_sources_help_link" msgid="7740264923634947915">"මූලාශ්‍ර සහ ප්‍රමුඛතා දීම ක්‍රියා කරන ආකාරය"</string>
-    <string name="data_sources_add_app" msgid="319926596123692514">"යෙදුමක් එක් කරන්න"</string>
-    <string name="edit_data_sources" msgid="79641360876849547">"යෙදුම් මූලාශ්‍ර සංස්කරණය කරන්න"</string>
+    <!-- no translation found for data_sources_add_app (275066335106036460) -->
+    <skip />
+    <!-- no translation found for edit_data_sources (5389744157074260179) -->
+    <skip />
     <string name="default_app_summary" msgid="6183876151011837062">"උපාංගයේ පෙරනිමිය"</string>
     <string name="move_up" msgid="9136155291380319606">"ඉහළට ගෙන යන්න"</string>
     <string name="move_down" msgid="4404970288236170693">"පහළට ගෙන යන්න"</string>

@@ -374,14 +374,10 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"निकोटिन सेवन"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"निकोटिन सेवनसम्बन्धी डेटा रिड गर्नुहोस्"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"निकोटिन सेवनसम्बन्धी डेटा राइट गर्नुहोस्"</string>
-    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
-    <skip />
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"मदिरा सेवन"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"मदिरा सेवन"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"मदिरा सेवनसम्बन्धी डेटा रिड गर्नुहोस्"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"मदिरा सेवनसम्बन्धी डेटा राइट गर्नुहोस्"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” लाई रिड गर्ने अनुमति दिनुहोस्"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” लाई राइट गर्ने अनुमति दिनुहोस्"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"अनुमति दिनुहोस्"</string>
@@ -1133,13 +1129,19 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"तपाईंको डेटा रिस्टोर गर्ने प्रक्रिया जारी राख्नुभन्दा पहिले आफ्नो फोनको सिस्टम अपडेट गर्नुहोस्।"</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"अहिले नै अपडेट गर्नुहोस्"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"कुल डेटा"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"एपका स्रोतहरू"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"कुल डेटा कसरी परिवर्तन हुन्छ भनी हेर्न सूचीमा एपका स्रोतहरू हाल्नुहोस्। यो सूचीबाट एप हटाउनुभयो भने कुल डेटामा यसले गर्ने योगदान रोकिने छ तर यो एपसँग भने राइट गर्ने अनुमति रहिरहने छ।"</string>
-    <string name="data_sources_empty_state" msgid="1899652759274805556">"जानकारीको स्रोतका रूपमा कुनै पनि एप उपलब्ध छैन"</string>
-    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"तपाईंले एपलाई <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> सम्बन्धी डेटा राइट गर्ने अनुमति दिएपछि स्रोतहरू यहाँ देखिने छन्।"</string>
+    <!-- no translation found for app_sources_header (3776247928235433963) -->
+    <skip />
+    <!-- no translation found for data_sources_footer (2271085147058181039) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
+    <skip />
     <string name="data_sources_help_link" msgid="7740264923634947915">"स्रोत तथा प्राथमिकताले काम गर्ने तरिका"</string>
-    <string name="data_sources_add_app" msgid="319926596123692514">"कुनै एप हाल्नुहोस्"</string>
-    <string name="edit_data_sources" msgid="79641360876849547">"एपका स्रोत सम्पादन गर्नुहोस्"</string>
+    <!-- no translation found for data_sources_add_app (275066335106036460) -->
+    <skip />
+    <!-- no translation found for edit_data_sources (5389744157074260179) -->
+    <skip />
     <string name="default_app_summary" msgid="6183876151011837062">"डिफल्ट डिभाइस"</string>
     <string name="move_up" msgid="9136155291380319606">"माथि सार्नुहोस्"</string>
     <string name="move_down" msgid="4404970288236170693">"तल सार्नुहोस्"</string>

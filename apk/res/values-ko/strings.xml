@@ -1129,13 +1129,19 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"데이터 복원을 계속하기 전에 휴대전화 시스템을 업데이트하세요."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"지금 업데이트"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"데이터 총계"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"앱 소스"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"데이터 총계가 어떻게 변할 수 있는지 확인하려면 앱 소스를 목록에 추가합니다. 이 목록에서 앱을 삭제하면 더 이상 총계에 포함되지 않지만 쓰기 권한은 계속 유지됩니다."</string>
-    <string name="data_sources_empty_state" msgid="1899652759274805556">"앱 소스 없음"</string>
-    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> 데이터를 쓸 수 있는 권한을 앱에 부여하면 소스가 여기에 표시됩니다."</string>
+    <!-- no translation found for app_sources_header (3776247928235433963) -->
+    <skip />
+    <!-- no translation found for data_sources_footer (2271085147058181039) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
+    <skip />
     <string name="data_sources_help_link" msgid="7740264923634947915">"소스 및 우선순위 지정의 작동 방식"</string>
-    <string name="data_sources_add_app" msgid="319926596123692514">"앱 추가하기"</string>
-    <string name="edit_data_sources" msgid="79641360876849547">"앱 소스 수정"</string>
+    <!-- no translation found for data_sources_add_app (275066335106036460) -->
+    <skip />
+    <!-- no translation found for edit_data_sources (5389744157074260179) -->
+    <skip />
     <string name="default_app_summary" msgid="6183876151011837062">"기기 기본값"</string>
     <string name="move_up" msgid="9136155291380319606">"위로 이동"</string>
     <string name="move_down" msgid="4404970288236170693">"아래로 이동"</string>
