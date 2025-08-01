@@ -631,8 +631,9 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     private fun updateShowSystem() {
         val isShowingSystem = viewModel.showSystemApps.value ?: false
-        rebuildMenu(viewModel.connectedApps.value?.isNotEmpty() ?: false, isShowingSystem)
-        viewModel.setShowSystemApps(!isShowingSystem)
+        val willBeShowingSystem = !isShowingSystem
+        rebuildMenu(viewModel.connectedApps.value?.isNotEmpty() ?: false, willBeShowingSystem)
+        viewModel.setShowSystemApps(willBeShowingSystem)
     }
 
     private fun rebuildMenu(hasApps: Boolean, isShowingSystem: Boolean) {
