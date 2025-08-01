@@ -192,6 +192,9 @@
   "healthfitness-robo-presubmit": [
     {
       "name": "HealthFitnessRoboUnitTests"
+    },
+    {
+      "name": "HealthConnectControllerWearRoboUITests"
     }
   ],
   "healthfitness-screenshot-tests": [
