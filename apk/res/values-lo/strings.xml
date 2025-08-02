@@ -374,14 +374,10 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"ການໄດ້ຮັບນິກໂກຕິນ"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"ອ່ານການໄດ້ຮັບນິກໂກຕິນ"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"ຂຽນການໄດ້ຮັບນິກໂກຕິນ"</string>
-    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
-    <skip />
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"ການບໍລິໂພກເຄື່ອງດື່ມທາດເຫຼົ້າ"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"ການບໍລິໂພກເຄື່ອງດື່ມທາດເຫຼົ້າ"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"ອ່ານຂໍ້ມູນການບໍລິໂພກເຄື່ອງດື່ມທາດເຫຼົ້າ"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"ຂຽນຂໍ້ມູນການບໍລິໂພກເຄື່ອງດື່ມທາດເຫຼົ້າ"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"ອະນຸຍາດໃຫ້ “<xliff:g id="APP_NAME">%1$s</xliff:g>” ອ່ານ"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"ອະນຸຍາດໃຫ້ “<xliff:g id="APP_NAME">%1$s</xliff:g>” ຂຽນ"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"ອະນຸຍາດ"</string>
@@ -1133,13 +1129,19 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"ກ່ອນສືບຕໍ່ກູ້ຄືນຂໍ້ມູນຂອງທ່ານ, ໃຫ້ອັບເດດລະບົບໂທລະສັບຂອງທ່ານ."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"ອັບເດດຕອນນີ້"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ຜົນຮວມຂໍ້ມູນ"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"ແຫຼ່ງທີ່ມາແອັບ"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"ເພີ່ມແຫຼ່ງທີ່ມາແອັບໃສ່ລາຍຊື່ເພື່ອເບິ່ງວ່າຜົນຮວມຂອງຂໍ້ມູນສາມາດປ່ຽນແປງໄດ້ແນວໃດ. ການລຶບແອັບໃດໜຶ່ງອອກຈາກລາຍຊື່ນີ້ຈະເຮັດໃຫ້ມັນບໍ່ມີສ່ວນຮ່ວມກັບຜົນຮວມ, ແຕ່ມັນຈະຍັງຄົງມີການອະນຸຍາດຂຽນຢູ່."</string>
-    <string name="data_sources_empty_state" msgid="1899652759274805556">"ບໍ່ມີແຫຼ່ງທີ່ມາແອັບ"</string>
-    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"ເມື່ອທ່ານໃຫ້ສິດການອະນຸຍາດແອັບເພື່ອຂຽນຂໍ້ມູນ <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, ແຫຼ່ງທີ່ມາຈະສະແດງຢູ່ບ່ອນນີ້."</string>
+    <!-- no translation found for app_sources_header (3776247928235433963) -->
+    <skip />
+    <!-- no translation found for data_sources_footer (2271085147058181039) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
+    <skip />
     <string name="data_sources_help_link" msgid="7740264923634947915">"ແຫຼ່ງຂໍ້ມູນ ແລະ ການຈັດຄວາມສຳຄັນເຮັດວຽກແນວໃດ"</string>
-    <string name="data_sources_add_app" msgid="319926596123692514">"ເພີ່ມແອັບ"</string>
-    <string name="edit_data_sources" msgid="79641360876849547">"ແກ້ໄຂແຫຼ່ງທີ່ມາຂອງແອັບ"</string>
+    <!-- no translation found for data_sources_add_app (275066335106036460) -->
+    <skip />
+    <!-- no translation found for edit_data_sources (5389744157074260179) -->
+    <skip />
     <string name="default_app_summary" msgid="6183876151011837062">"ຄ່າເລີ່ມຕົ້ນອຸປະກອນ"</string>
     <string name="move_up" msgid="9136155291380319606">"ຍ້າຍຂຶ້ນ"</string>
     <string name="move_down" msgid="4404970288236170693">"ຍ້າຍລົງ"</string>

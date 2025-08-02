@@ -1129,13 +1129,19 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"તમારો ડેટા રિસ્ટોર કરવાનું ચાલુ રાખતા પહેલાં, તમારા ફોનની સિસ્ટમ અપડેટ કરો."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"હમણાં અપડેટ કરો"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ડેટાની કુલ સંખ્યા"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"ઍપ સૉર્સ"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"ડેટાની કુલ સંખ્યામાં કેવી રીતે ફેરફાર થઈ શકે છે તે જોવા માટે સૂચિમાં ઍપ સૉર્સ ઉમેરો. આ સૂચિમાંથી કોઈ ઍપ કાઢી નાખવાથી, તે ઍપ કુલ સંખ્યામાં યોગદાન આપતી અટકી જશે, પરંતુ તે હજી પણ રાઇટ પરવાનગી ધરાવશે."</string>
-    <string name="data_sources_empty_state" msgid="1899652759274805556">"કોઈ ઍપ સૉર્સ નથી"</string>
-    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"એકવાર તમે ઍપને <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>નો ડેટા લખવાની પરવાનગીઓ આપો, ત્યાર બાદ સૉર્સ અહીં દેખાશે."</string>
+    <!-- no translation found for app_sources_header (3776247928235433963) -->
+    <skip />
+    <!-- no translation found for data_sources_footer (2271085147058181039) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
+    <skip />
     <string name="data_sources_help_link" msgid="7740264923634947915">"સૉર્સના અને પ્રાધાન્યતા આપવાના સેટિંગની કાર્ય કરવાની રીત"</string>
-    <string name="data_sources_add_app" msgid="319926596123692514">"કોઈ ઍપ ઉમેરો"</string>
-    <string name="edit_data_sources" msgid="79641360876849547">"ઍપના સૉર્સમાં ફેરફાર કરો"</string>
+    <!-- no translation found for data_sources_add_app (275066335106036460) -->
+    <skip />
+    <!-- no translation found for edit_data_sources (5389744157074260179) -->
+    <skip />
     <string name="default_app_summary" msgid="6183876151011837062">"ડિવાઇસ પર ડિફૉલ્ટ"</string>
     <string name="move_up" msgid="9136155291380319606">"ઉપર ખસેડો"</string>
     <string name="move_down" msgid="4404970288236170693">"નીચે ખસેડો"</string>

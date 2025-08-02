@@ -374,14 +374,10 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"унос никотина"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Читање података о уносу никотина"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Уписивање података о уносу никотина"</string>
-    <!-- no translation found for alcohol_consumption_uppercase_label (5675026820650543741) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_lowercase_label (3956015726333214503) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_read_content_description (2130228931470781094) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_write_content_description (766171743899162838) -->
-    <skip />
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"Конзумирање алкохола"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"конзумирање алкохола"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Читање података о конзумирању алкохола"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Уписивање података о конзумирању алкохола"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Дозвола да <xliff:g id="APP_NAME">%1$s</xliff:g> очитава податке"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Дозвола да <xliff:g id="APP_NAME">%1$s</xliff:g> уписује податке"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Дозволи"</string>
@@ -1133,13 +1129,19 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Пре него што наставите да враћате податке, ажурирајте систем телефона."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Ажурирај"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Укупна количина података"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"Извори апликација"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"Додајте изворе апликација на листу да бисте видели како укупна количина података може да се промени. Ако уклоните апликацију са ове листе, она више неће моћи да се рачуна за укупну количину, али ће и даље имати дозволе за писање."</string>
-    <string name="data_sources_empty_state" msgid="1899652759274805556">"Нема извора апликација"</string>
-    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Када дате дозволе за апликације за уписивање података из категорије <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, извори ће се приказивати овде."</string>
+    <!-- no translation found for app_sources_header (3776247928235433963) -->
+    <skip />
+    <!-- no translation found for data_sources_footer (2271085147058181039) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
+    <skip />
     <string name="data_sources_help_link" msgid="7740264923634947915">"Како извори и одређивање приоритета раде"</string>
-    <string name="data_sources_add_app" msgid="319926596123692514">"Додај апликацију"</string>
-    <string name="edit_data_sources" msgid="79641360876849547">"Измени изворе апликација"</string>
+    <!-- no translation found for data_sources_add_app (275066335106036460) -->
+    <skip />
+    <!-- no translation found for edit_data_sources (5389744157074260179) -->
+    <skip />
     <string name="default_app_summary" msgid="6183876151011837062">"Подразумевано за уређај"</string>
     <string name="move_up" msgid="9136155291380319606">"Помери нагоре"</string>
     <string name="move_down" msgid="4404970288236170693">"Помери надоле"</string>

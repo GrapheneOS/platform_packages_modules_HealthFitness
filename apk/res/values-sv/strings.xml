@@ -1129,13 +1129,19 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Uppdatera telefonens system innan du fortsätter att återställa din data"</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Uppdatera nu"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Sammanställd data"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"Appkällor"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"Lägg till appkällor här för att se hur det kan påverka den sammanställda datan. Om du tar bort en app från den här listan slutar den att bidra till sammanställningen, men den har fortfarande skrivbehörigheter."</string>
-    <string name="data_sources_empty_state" msgid="1899652759274805556">"Inga appkällor"</string>
-    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"När du ger appar behörighet att skriva data för <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> visas källorna här."</string>
+    <!-- no translation found for app_sources_header (3776247928235433963) -->
+    <skip />
+    <!-- no translation found for data_sources_footer (2271085147058181039) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
+    <skip />
     <string name="data_sources_help_link" msgid="7740264923634947915">"Så fungerar källor och prioritering"</string>
-    <string name="data_sources_add_app" msgid="319926596123692514">"Lägg till en app"</string>
-    <string name="edit_data_sources" msgid="79641360876849547">"Redigera appkällor"</string>
+    <!-- no translation found for data_sources_add_app (275066335106036460) -->
+    <skip />
+    <!-- no translation found for edit_data_sources (5389744157074260179) -->
+    <skip />
     <string name="default_app_summary" msgid="6183876151011837062">"Enhetens standardinställning"</string>
     <string name="move_up" msgid="9136155291380319606">"Flytta uppåt"</string>
     <string name="move_down" msgid="4404970288236170693">"Flytta nedåt"</string>

@@ -82,6 +82,7 @@ import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPerm
 import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
+import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.app.LoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.connectedapps.LoadHealthPermissionApps
@@ -129,6 +130,19 @@ class UseCaseModule {
             getContributorAppInfoUseCase,
             queryRecentAccessUseCase,
             appInfoReader,
+            dispatcher,
+        )
+    }
+
+    @Provides
+    fun providesLoadAppPermissionsStatusUseCase(
+        loadGrantedHealthPermissionsUseCase: IGetGrantedHealthPermissionsUseCase,
+        healthPermissionReader: HealthPermissionReader,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
+    ): ILoadAppPermissionsStatusUseCase {
+        return LoadAppPermissionsStatusUseCase(
+            loadGrantedHealthPermissionsUseCase,
+            healthPermissionReader,
             dispatcher,
         )
     }
