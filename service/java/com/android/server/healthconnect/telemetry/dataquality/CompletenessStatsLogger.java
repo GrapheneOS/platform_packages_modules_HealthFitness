@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.common.logging;
+package com.android.server.healthconnect.telemetry.dataquality;
 
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DEVICE_INFO_STATS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_RECORDING_METHOD_STATS;
 
 import static com.android.healthfitness.flags.Flags.dataCompleteness;
@@ -45,5 +46,23 @@ public final class CompletenessStatsLogger {
         }
         mHealthFitnessStatsLog.write(
                 HEALTH_CONNECT_RECORDING_METHOD_STATS, packageName, recordingMethod, recordTypeId);
+    }
+
+    void logDeviceInfoStat(
+            String packageName,
+            @RecordTypeIdentifier.RecordType int recordTypeId,
+            boolean hasManufacturer,
+            boolean hasModel,
+            boolean hasType) {
+        if (!dataCompleteness()) {
+            return;
+        }
+        mHealthFitnessStatsLog.write(
+                HEALTH_CONNECT_DEVICE_INFO_STATS,
+                packageName,
+                recordTypeId,
+                hasManufacturer,
+                hasModel,
+                hasType);
     }
 }

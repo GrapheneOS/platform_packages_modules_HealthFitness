@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.common.logging;
+package com.android.server.healthconnect.telemetry.dataquality;
 
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DEVICE_INFO_STATS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_RECORDING_METHOD_STATS;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -36,18 +40,21 @@ import android.platform.test.flag.junit.SetFlagsRule;
 
 import com.android.healthfitness.flags.Flags;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 @RunWith(JUnit4.class)
 public class CompletenessStatsLoggerTest {
+    private static final String TEST_PACKAGE = "test.package";
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
@@ -60,6 +67,11 @@ public class CompletenessStatsLoggerTest {
         mCompletenessStatsLogger = new CompletenessStatsLogger(mHealthFitnessStatsLog);
     }
 
+    @After
+    public void tearDown() {
+        Mockito.clearInvocations(mHealthFitnessStatsLog);
+    }
+
     @Test
     @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
     public void logRecordingMethodStat_flagEnabled_logged() {
@@ -67,12 +79,12 @@ public class CompletenessStatsLoggerTest {
             @RecordTypeIdentifier.RecordType int recordType = descriptor.getRecordTypeIdentifier();
             for (int recordingMethod : Metadata.VALID_TYPES) {
                 mCompletenessStatsLogger.logRecordingMethodStat(
-                        "test.package", recordingMethod, recordType);
+                        TEST_PACKAGE, recordingMethod, recordType);
 
                 verify(mHealthFitnessStatsLog)
                         .write(
                                 HEALTH_CONNECT_RECORDING_METHOD_STATS,
-                                "test.package",
+                                TEST_PACKAGE,
                                 recordingMethod,
                                 recordType);
             }
@@ -84,7 +96,7 @@ public class CompletenessStatsLoggerTest {
     public void logRecordingMethodStat_flagDisabled_noOp() {
         for (int recordingMethod : Metadata.VALID_TYPES) {
             mCompletenessStatsLogger.logRecordingMethodStat(
-                    "test.package", recordingMethod, RECORD_TYPE_STEPS);
+                    TEST_PACKAGE, recordingMethod, RECORD_TYPE_STEPS);
 
             verify(mHealthFitnessStatsLog, never())
                     .write(
@@ -93,5 +105,58 @@ public class CompletenessStatsLoggerTest {
                             anyInt(),
                             anyInt());
         }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    public void logDeviceInfoStat_flagEnabled_logged() {
+        mCompletenessStatsLogger.logDeviceInfoStat(
+                TEST_PACKAGE, RECORD_TYPE_STEPS, true, true, false);
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        HEALTH_CONNECT_DEVICE_INFO_STATS,
+                        TEST_PACKAGE,
+                        RECORD_TYPE_STEPS,
+                        true,
+                        true,
+                        false);
+
+        mCompletenessStatsLogger.logDeviceInfoStat(
+                TEST_PACKAGE, RECORD_TYPE_DISTANCE, true, false, true);
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        HEALTH_CONNECT_DEVICE_INFO_STATS,
+                        TEST_PACKAGE,
+                        RECORD_TYPE_DISTANCE,
+                        true,
+                        false,
+                        true);
+
+        mCompletenessStatsLogger.logDeviceInfoStat(
+                TEST_PACKAGE, RECORD_TYPE_HEART_RATE, false, true, true);
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        HEALTH_CONNECT_DEVICE_INFO_STATS,
+                        TEST_PACKAGE,
+                        RECORD_TYPE_HEART_RATE,
+                        false,
+                        true,
+                        true);
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    public void logDeviceInfoStat_flagDisabled_noOp() {
+        mCompletenessStatsLogger.logDeviceInfoStat(
+                TEST_PACKAGE, RECORD_TYPE_STEPS, true, true, true);
+
+        verify(mHealthFitnessStatsLog, never())
+                .write(
+                        eq(HEALTH_CONNECT_DEVICE_INFO_STATS),
+                        anyString(),
+                        anyInt(),
+                        anyBoolean(),
+                        anyBoolean(),
+                        anyBoolean());
     }
 }
