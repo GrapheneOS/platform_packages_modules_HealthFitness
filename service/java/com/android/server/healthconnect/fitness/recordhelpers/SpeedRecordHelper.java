@@ -36,7 +36,6 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.SpeedRecordInternal;
 import android.util.Pair;
 
-import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 
@@ -55,11 +54,10 @@ import java.util.UUID;
 public class SpeedRecordHelper
         extends SeriesRecordHelper<SpeedRecordInternal, SpeedRecordInternal.SpeedRecordSample> {
 
-    @VisibleForTesting public static final String TABLE_NAME = "SpeedRecordTable";
+    public static final String TABLE_NAME = "SpeedRecordTable";
+    public static final String SERIES_TABLE_NAME = "speed_record_table";
     public static final int NUM_LOCAL_COLUMNS = 1;
-    private static final String SERIES_TABLE_NAME = "speed_record_table";
     private static final String SPEED_COLUMN_NAME = "speed";
-    private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
 
     public SpeedRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_SPEED);
@@ -81,11 +79,6 @@ public class SpeedRecordHelper
     @Override
     String getSeriesDataTableName() {
         return SERIES_TABLE_NAME;
-    }
-
-    @Override
-    public String getSampleTimestampsColumnName() {
-        return EPOCH_MILLIS_COLUMN_NAME;
     }
 
     /** Populates the {@code record} with values specific to datatype */

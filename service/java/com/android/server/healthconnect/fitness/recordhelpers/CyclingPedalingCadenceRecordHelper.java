@@ -56,11 +56,11 @@ public class CyclingPedalingCadenceRecordHelper
         extends SeriesRecordHelper<
                 CyclingPedalingCadenceRecordInternal,
                 CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample> {
+
+    public static final String TABLE_NAME = "CyclingPedalingCadenceRecordTable";
+    public static final String SERIES_TABLE_NAME = "cycling_pedaling_cadence_record_table";
     public static final int NUM_LOCAL_COLUMNS = 1;
-    private static final String TABLE_NAME = "CyclingPedalingCadenceRecordTable";
-    private static final String SERIES_TABLE_NAME = "cycling_pedaling_cadence_record_table";
     private static final String REVOLUTIONS_PER_MINUTE_COLUMN_NAME = "revolutions_per_minute";
-    private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
 
     public CyclingPedalingCadenceRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE);
@@ -69,11 +69,6 @@ public class CyclingPedalingCadenceRecordHelper
     @Override
     public String getMainTableName() {
         return TABLE_NAME;
-    }
-
-    @Override
-    public String getSampleTimestampsColumnName() {
-        return EPOCH_MILLIS_COLUMN_NAME;
     }
 
     @Override
