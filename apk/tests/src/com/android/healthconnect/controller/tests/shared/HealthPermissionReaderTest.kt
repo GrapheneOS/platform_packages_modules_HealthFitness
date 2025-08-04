@@ -213,8 +213,13 @@ class HealthPermissionReaderTest {
     @Test
     fun getAppsWithHealthPermissions_handHeldDevices_returnsSupportedApps() = runTest {
         assumeFalse(context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH))
-        assertThat(permissionReader.getAppsWithHealthPermissions().keys)
-            .containsAtLeast(TEST_APP_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
+        runWithShellPermissionIdentity(
+            {
+                assertThat(permissionReader.getAppsWithHealthPermissions().keys)
+                    .containsAtLeast(TEST_APP_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
+            },
+            MANAGE_HEALTH_PERMISSIONS,
+        )
     }
 
     // Still need the SDK version check here because @RequiresFlagsEnabled
@@ -286,8 +291,13 @@ class HealthPermissionReaderTest {
 
     @Test
     fun getAppsWithHealthPermissions_returnsDistinctApps() = runTest {
-        val apps = permissionReader.getAppsWithHealthPermissions().keys
-        assertThat(ArrayList(apps)).isEqualTo(apps.distinct())
+        runWithShellPermissionIdentity(
+            {
+                val apps = permissionReader.getAppsWithHealthPermissions().keys
+                assertThat(ArrayList(apps)).isEqualTo(apps.distinct())
+            },
+            MANAGE_HEALTH_PERMISSIONS,
+        )
     }
 
     @Test
@@ -315,8 +325,13 @@ class HealthPermissionReaderTest {
     )
     fun getAppsWithHealthPermissions_handHeldDevices_doesNotReturnUnsupportedApps() = runTest {
         assumeFalse(context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH))
-        assertThat(permissionReader.getAppsWithHealthPermissions().keys)
-            .doesNotContain(UNSUPPORTED_TEST_APP_PACKAGE_NAME)
+        runWithShellPermissionIdentity(
+            {
+                assertThat(permissionReader.getAppsWithHealthPermissions().keys)
+                    .doesNotContain(UNSUPPORTED_TEST_APP_PACKAGE_NAME)
+            },
+            MANAGE_HEALTH_PERMISSIONS,
+        )
     }
 
     @Test
@@ -328,18 +343,26 @@ class HealthPermissionReaderTest {
     fun getAppsWithHealthPermissions_returnAppsRequestingHealthPermissions_wearDevices() = runTest {
         assumeTrue(context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH))
 
-        val wearAppsWithHealthPermissions = permissionReader.getAppsWithHealthPermissions().keys
-        assertThat(wearAppsWithHealthPermissions)
-            .containsAtLeast(
-                TEST_APP_PACKAGE_NAME,
-                TEST_APP_PACKAGE_NAME_2,
-                BODY_SENSORS_TEST_APP_PACKAGE_NAME, // Test split permissiom from BODY_SENSORS
-                WEAR_TEST_APP_PACKAGE_NAME,
-            )
-        // An app is not considered a wear app with health permissions if not requesting a system
-        // health permission, regardless of declaring an intent filter
-        assertThat(wearAppsWithHealthPermissions)
-            .doesNotContain(MEDICAL_PERMISSIONS_TEST_APP_PACKAGE_NAME)
+        runWithShellPermissionIdentity(
+            {
+                val wearAppsWithHealthPermissions =
+                    permissionReader.getAppsWithHealthPermissions().keys
+                assertThat(wearAppsWithHealthPermissions)
+                    .containsAtLeast(
+                        TEST_APP_PACKAGE_NAME,
+                        TEST_APP_PACKAGE_NAME_2,
+                        BODY_SENSORS_TEST_APP_PACKAGE_NAME, // Test split permissiom from
+                        // BODY_SENSORS
+                        WEAR_TEST_APP_PACKAGE_NAME,
+                    )
+                // An app is not considered a wear app with health permissions if not requesting a
+                // system
+                // health permission, regardless of declaring an intent filter
+                assertThat(wearAppsWithHealthPermissions)
+                    .doesNotContain(MEDICAL_PERMISSIONS_TEST_APP_PACKAGE_NAME)
+            },
+            MANAGE_HEALTH_PERMISSIONS,
+        )
     }
 
     @Test
