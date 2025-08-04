@@ -39,6 +39,7 @@ import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 
 import org.junit.After;
 import org.junit.Before;
@@ -55,6 +56,7 @@ import org.mockito.junit.MockitoRule;
 @RunWith(JUnit4.class)
 public class CompletenessStatsLoggerTest {
     private static final String TEST_PACKAGE = "test.package";
+
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
@@ -79,14 +81,14 @@ public class CompletenessStatsLoggerTest {
             @RecordTypeIdentifier.RecordType int recordType = descriptor.getRecordTypeIdentifier();
             for (int recordingMethod : Metadata.VALID_TYPES) {
                 mCompletenessStatsLogger.logRecordingMethodStat(
-                        TEST_PACKAGE, recordingMethod, recordType);
+                        TEST_PACKAGE, recordType, recordingMethod);
 
                 verify(mHealthFitnessStatsLog)
                         .write(
                                 HEALTH_CONNECT_RECORDING_METHOD_STATS,
                                 TEST_PACKAGE,
-                                recordingMethod,
-                                recordType);
+                                getLoggedRecordTypeId(recordType),
+                                recordingMethod);
             }
         }
     }
@@ -96,7 +98,7 @@ public class CompletenessStatsLoggerTest {
     public void logRecordingMethodStat_flagDisabled_noOp() {
         for (int recordingMethod : Metadata.VALID_TYPES) {
             mCompletenessStatsLogger.logRecordingMethodStat(
-                    TEST_PACKAGE, recordingMethod, RECORD_TYPE_STEPS);
+                    TEST_PACKAGE, RECORD_TYPE_STEPS, recordingMethod);
 
             verify(mHealthFitnessStatsLog, never())
                     .write(
@@ -116,7 +118,7 @@ public class CompletenessStatsLoggerTest {
                 .write(
                         HEALTH_CONNECT_DEVICE_INFO_STATS,
                         TEST_PACKAGE,
-                        RECORD_TYPE_STEPS,
+                        getLoggedRecordTypeId(RECORD_TYPE_STEPS),
                         true,
                         true,
                         false);
@@ -127,7 +129,7 @@ public class CompletenessStatsLoggerTest {
                 .write(
                         HEALTH_CONNECT_DEVICE_INFO_STATS,
                         TEST_PACKAGE,
-                        RECORD_TYPE_DISTANCE,
+                        getLoggedRecordTypeId(RECORD_TYPE_DISTANCE),
                         true,
                         false,
                         true);
@@ -138,7 +140,7 @@ public class CompletenessStatsLoggerTest {
                 .write(
                         HEALTH_CONNECT_DEVICE_INFO_STATS,
                         TEST_PACKAGE,
-                        RECORD_TYPE_HEART_RATE,
+                        getLoggedRecordTypeId(RECORD_TYPE_HEART_RATE),
                         false,
                         true,
                         true);
@@ -158,5 +160,10 @@ public class CompletenessStatsLoggerTest {
                         anyBoolean(),
                         anyBoolean(),
                         anyBoolean());
+    }
+
+    private int getLoggedRecordTypeId(int recordTypeId) {
+        return InternalHealthConnectMappings.getInstance()
+                .getLoggingEnumForRecordTypeId(recordTypeId);
     }
 }

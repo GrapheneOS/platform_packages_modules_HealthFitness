@@ -25,12 +25,16 @@ import android.health.HealthFitnessStatsLog;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
+
 /**
  * Logs Health Connect data completeness stats. Including recording method and device info.
  *
  * @hide
  */
 public final class CompletenessStatsLogger {
+    private static final InternalHealthConnectMappings HEALTH_CONNECT_MAPPINGS =
+            InternalHealthConnectMappings.getInstance();
     private final HealthFitnessStatsLog mHealthFitnessStatsLog;
 
     public CompletenessStatsLogger(HealthFitnessStatsLog healthFitnessStatsLog) {
@@ -39,13 +43,16 @@ public final class CompletenessStatsLogger {
 
     void logRecordingMethodStat(
             String packageName,
-            @Metadata.RecordingMethod int recordingMethod,
-            @RecordTypeIdentifier.RecordType int recordTypeId) {
+            @RecordTypeIdentifier.RecordType int recordTypeId,
+            @Metadata.RecordingMethod int recordingMethod) {
         if (!dataCompleteness()) {
             return;
         }
         mHealthFitnessStatsLog.write(
-                HEALTH_CONNECT_RECORDING_METHOD_STATS, packageName, recordingMethod, recordTypeId);
+                HEALTH_CONNECT_RECORDING_METHOD_STATS,
+                packageName,
+                HEALTH_CONNECT_MAPPINGS.getLoggingEnumForRecordTypeId(recordTypeId),
+                recordingMethod);
     }
 
     void logDeviceInfoStat(
@@ -60,7 +67,7 @@ public final class CompletenessStatsLogger {
         mHealthFitnessStatsLog.write(
                 HEALTH_CONNECT_DEVICE_INFO_STATS,
                 packageName,
-                recordTypeId,
+                HEALTH_CONNECT_MAPPINGS.getLoggingEnumForRecordTypeId(recordTypeId),
                 hasManufacturer,
                 hasModel,
                 hasType);
