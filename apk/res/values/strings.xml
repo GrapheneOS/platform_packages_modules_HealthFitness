@@ -1786,6 +1786,9 @@
     <string name="device_management_screen_title" description="Title for the device management screen. [CHAR_LIMIT=40]">Device info</string>
     <string name="device_management_screen_footer" description="Footer text that explains the consequences of enabling tracking of device data. [CHAR_LIMIT=NONE]">Data collected by this device will be stored in Health Connect, where connected apps will access it</string>
     <string name="device_settings_label" description="Label for the device settings category. [CHAR_LIMIT=40]">Allowed to write</string>
+    <string name="device_data_screen_title" description="Title for the device data screen. [CHAR_LIMIT=100]">Device data</string>
+    <string name="device_data_label" description="Label for the device settings category. [CHAR_LIMIT=40]">Manage device</string>
+    <string name="device_data_button" description="Button for taking users to device data screen. [CHAR_LIMIT=100]">See device data</string>
     <!-- endregion -->
 
     <!-- endregion -->

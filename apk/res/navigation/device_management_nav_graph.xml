@@ -4,6 +4,8 @@
     android:id="@+id/device_management_nav_graph"
     app:startDestination="@id/connectedDevicesFragment">
 
+    <include app:graph="@navigation/app_data_nav_graph" />
+
     <fragment
         android:id="@+id/connectedDevicesFragment"
         android:name="com.android.healthconnect.controller.devices.ConnectedDevicesFragment"
@@ -16,6 +18,11 @@
     <fragment
         android:id="@+id/deviceManagementFragment"
         android:name="com.android.healthconnect.controller.devices.DeviceManagementFragment"
-        android:label="@string/device_management_screen_title" />
+        android:label="@string/device_management_screen_title">
+
+        <action
+            android:id="@+id/action_deviceManagementFragment_to_appData"
+            app:destination="@id/app_data_nav_graph" />
+    </fragment>
 
 </navigation>
