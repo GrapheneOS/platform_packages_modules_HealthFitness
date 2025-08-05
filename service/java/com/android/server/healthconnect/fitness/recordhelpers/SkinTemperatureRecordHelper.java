@@ -61,16 +61,15 @@ public final class SkinTemperatureRecordHelper
                 SkinTemperatureRecordInternal,
                 SkinTemperatureRecordInternal.SkinTemperatureDeltaSample> {
 
-    private static final String TABLE_NAME = "skin_temperature_record_table";
-
+    public static final String TABLE_NAME = "skin_temperature_record_table";
+    public static final String SERIES_TABLE_NAME = "skin_temperature_delta_table";
     private static final String SKIN_TEMPERATURE_BASELINE_COLUMN_NAME = "baseline";
 
     private static final String SKIN_TEMPERATURE_MEASUREMENT_LOCATION_COLUMN_NAME =
             "measurement_location";
-    private static final String SERIES_TABLE_NAME = "skin_temperature_delta_table";
+
 
     private static final String SKIN_TEMPERATURE_DELTA_COLUMN_NAME = "delta";
-    private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
 
     public SkinTemperatureRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE);
