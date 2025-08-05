@@ -45,8 +45,7 @@ filegroup {
 filegroup {
     name: "wear-ui-tests-srcs",
     srcs: [
-        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/wear/WearAllDataTypesScreenTest.kt",
-        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/wear/WearConnectedAppsViewModelTest.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/connectedapps/wear/**/*.kt",
     ],
     path: "src",
     visibility: ["//visibility:private"],

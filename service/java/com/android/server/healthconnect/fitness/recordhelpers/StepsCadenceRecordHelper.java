@@ -55,11 +55,11 @@ import java.util.UUID;
 public class StepsCadenceRecordHelper
         extends SeriesRecordHelper<
                 StepsCadenceRecordInternal, StepsCadenceRecordInternal.StepsCadenceRecordSample> {
+
+    public static final String TABLE_NAME = "StepsCadenceRecordTable";
+    public static final String SERIES_TABLE_NAME = "steps_cadence_record_table";
     public static final int NUM_LOCAL_COLUMNS = 2;
-    private static final String TABLE_NAME = "StepsCadenceRecordTable";
-    private static final String SERIES_TABLE_NAME = "steps_cadence_record_table";
     private static final String RATE_COLUMN_NAME = "rate";
-    private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
 
     public StepsCadenceRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE);
@@ -81,11 +81,6 @@ public class StepsCadenceRecordHelper
     @Override
     String getSeriesDataTableName() {
         return SERIES_TABLE_NAME;
-    }
-
-    @Override
-    public String getSampleTimestampsColumnName() {
-        return EPOCH_MILLIS_COLUMN_NAME;
     }
 
     /** Populates the {@code record} with values specific to datatype */

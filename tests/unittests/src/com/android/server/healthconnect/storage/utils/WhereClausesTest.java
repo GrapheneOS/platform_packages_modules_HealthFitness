@@ -83,4 +83,19 @@ public class WhereClausesTest {
         assertThat(clause.get(/* withWhereKeyword= */ true))
                 .isEqualTo(" WHERE bar >= 1 AND bar < 3");
     }
+
+    @Test
+    public void testAddWhereBeforeThanTimeClause() {
+        WhereClauses clause = new WhereClauses(AND);
+        clause.addWhereBeforeThanTimeClause("bar", 3);
+        assertThat(clause.get(/* withWhereKeyword= */ true)).isEqualTo(" WHERE bar < 3");
+
+        WhereClauses clauseWithNegativeTime = new WhereClauses(AND);
+        clauseWithNegativeTime.addWhereBeforeThanTimeClause("bar", -1);
+        assertThat(clauseWithNegativeTime.get(/* withWhereKeyword= */ true)).isEmpty();
+
+        WhereClauses clauseWithNullColumn = new WhereClauses(AND);
+        clauseWithNullColumn.addWhereBeforeThanTimeClause(null, 3);
+        assertThat(clauseWithNullColumn.get(/* withWhereKeyword= */ true)).isEmpty();
+    }
 }

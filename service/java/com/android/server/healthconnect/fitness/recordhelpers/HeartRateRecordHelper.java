@@ -37,7 +37,6 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
-import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 
@@ -57,11 +56,10 @@ public class HeartRateRecordHelper
         extends SeriesRecordHelper<
                 HeartRateRecordInternal, HeartRateRecordInternal.HeartRateSample> {
 
-    @VisibleForTesting public static final String TABLE_NAME = "heart_rate_record_table";
+    public static final String TABLE_NAME = "heart_rate_record_table";
+    public static final String SERIES_TABLE_NAME = "heart_rate_record_series_table";
     public static final int NUM_LOCAL_COLUMNS = 2;
-    private static final String SERIES_TABLE_NAME = "heart_rate_record_series_table";
     private static final String BEATS_PER_MINUTE_COLUMN_NAME = "beats_per_minute";
-    private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
 
     public HeartRateRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE);
@@ -88,11 +86,6 @@ public class HeartRateRecordHelper
     @Override
     public final String getMainTableName() {
         return TABLE_NAME;
-    }
-
-    @Override
-    public String getSampleTimestampsColumnName() {
-        return EPOCH_MILLIS_COLUMN_NAME;
     }
 
     @Override

@@ -1129,19 +1129,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"לפני המשך שחזור הנתונים, עליך לעדכן את המערכת של הטלפון."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"לעדכון"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"סכומי נתונים"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"מקורות נתונים"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"אפשר להוסיף מקורות נתונים לרשימה כדי לראות איך סכומי הנתונים משתנים. הסרת מקור נתונים מהרשימה הזו תמנע ממנו להוסיף לסכומים, אבל עדיין יהיו לו הרשאות כתיבה."</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"אין מקורות נתונים"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"אחרי שנותנים למקור נתונים הרשאה לכתוב נתונים של <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, המקורות יופיעו כאן."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"איך מקורות הנתונים והעדיפות פועלים"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"הוספת מקור נתונים"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"עריכת מקורות הנתונים"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"ברירת המחדל של המכשיר"</string>
     <string name="move_up" msgid="9136155291380319606">"העברה למעלה"</string>
     <string name="move_down" msgid="4404970288236170693">"העברה למטה"</string>

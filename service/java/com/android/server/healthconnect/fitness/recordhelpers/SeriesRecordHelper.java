@@ -38,10 +38,16 @@ import java.util.List;
 public abstract class SeriesRecordHelper<
                 T extends SeriesRecordInternal<?, ?>, U extends SeriesRecordInternal.Sample>
         extends IntervalRecordHelper<T> {
-    protected static final String PARENT_KEY_COLUMN_NAME = PARENT_KEY;
+
+    public static final String PARENT_KEY_COLUMN_NAME = PARENT_KEY;
+    public static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
 
     SeriesRecordHelper(@RecordTypeIdentifier.RecordType int recordIdentifier) {
         super(recordIdentifier);
+    }
+
+    public String getSampleTimestampsColumnName() {
+        return EPOCH_MILLIS_COLUMN_NAME;
     }
 
     @Override

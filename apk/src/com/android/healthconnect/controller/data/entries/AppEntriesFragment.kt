@@ -404,6 +404,10 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
             }
         }
 
+        entriesViewModel.latestDate.observe(viewLifecycleOwner) { latestDate ->
+            dateNavigationView.setDate(latestDate)
+        }
+
         entriesViewModel.allEntriesSelected.observe(viewLifecycleOwner) { allEntriesSelected ->
             adapter.checkSelectAll(allEntriesSelected)
         }
@@ -450,6 +454,11 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
             dateNavigationView.setPeriod(selectedPeriod)
             entriesViewModel.loadEntries(permissionType, packageName, date, selectedPeriod)
         } else {
+            entriesViewModel.loadLatestRecordDate(
+                permissionType,
+                timeSource.currentTimeMillis().toInstant(),
+            )
+
             entriesViewModel.loadEntries(
                 permissionType,
                 packageName,
@@ -534,6 +543,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                     noDataView.isVisible = false
                     errorView.isVisible = false
                     entriesRecyclerView.isVisible = false
+                    dateNavigationView.isVisible = false
                 }
 
                 is Empty -> {
@@ -541,6 +551,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                     loadingView.isVisible = false
                     errorView.isVisible = false
                     entriesRecyclerView.isVisible = false
+                    dateNavigationView.isVisible = getNavigationVisibility()
                     updateMenu(screenState = VIEW, hasData = false)
                     entriesViewModel.getDateNavigationText()?.let { dateSpinnerText ->
                         dateNavigationView.setActive(isEnabled = true)
@@ -565,6 +576,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                     errorView.isVisible = false
                     noDataView.isVisible = false
                     loadingView.isVisible = false
+                    dateNavigationView.isVisible = getNavigationVisibility()
                     entriesViewModel.screenState.value?.let {
                         triggerDeletionState(screenState = it)
                     }
@@ -575,6 +587,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                     loadingView.isVisible = false
                     noDataView.isVisible = false
                     entriesRecyclerView.isVisible = false
+                    dateNavigationView.isVisible = getNavigationVisibility()
                 }
             }
         }
@@ -586,5 +599,9 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
         } else {
             dateNavigationView.setMaxDate(timeSource.currentTimeMillis().toInstant())
         }
+    }
+
+    private fun getNavigationVisibility(): Boolean {
+        return permissionType is FitnessPermissionType
     }
 }

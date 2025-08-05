@@ -144,6 +144,22 @@ constructor(
             .flatten()
     }
 
+    /** Returns the date of the most recent record from the specified input if it exists. */
+    suspend fun readLatestRecordDate(input: LoadLatestEntryDateInput): Instant? {
+        val timeFilterRange =
+            TimeInstantRangeFilter.Builder().setEndTime(input.displayedStartTime).build()
+        val dataTypes = HealthPermissionToDatatypeMapper.getDataTypes(input.permissionType)
+
+        val records =
+            dataTypes
+                .map { dataType ->
+                    readDataType(dataType, timeFilterRange, null, ascending = false, pageSize = 1)
+                }
+                .flatten()
+
+        return if (records.isEmpty()) null else getRelevantDisplayTime(records.first())
+    }
+
     /** Returns a list of records from a MedicalPermissionType. */
     suspend fun readMedicalRecords(input: LoadMedicalEntriesInput): List<MedicalResource> {
         val medicalResourceType: Int
@@ -293,6 +309,28 @@ constructor(
         return when (record) {
             is InstantRecord -> {
                 record.time
+            }
+            is IntervalRecord -> {
+                record.startTime
+            }
+            else -> {
+                throw IllegalArgumentException("unsupported record type!")
+            }
+        }
+    }
+
+    /**
+     * Return the time of a record that will show up in the UI. For example, a sleep record ending
+     * at the next day will not display on that day but on the previous day. For menstruation
+     * periods however, the end time should be used.
+     */
+    private fun getRelevantDisplayTime(record: Record): Instant {
+        return when (record) {
+            is InstantRecord -> {
+                record.time
+            }
+            is MenstruationPeriodRecord -> {
+                record.endTime
             }
             is IntervalRecord -> {
                 record.startTime

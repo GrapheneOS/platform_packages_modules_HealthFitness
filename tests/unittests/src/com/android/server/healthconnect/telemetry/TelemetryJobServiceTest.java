@@ -36,14 +36,13 @@ import android.os.PersistableBundle;
 import android.os.UserHandle;
 import android.platform.test.flag.junit.SetFlagsRule;
 
-import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
-import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsLogger;
 
 import org.junit.Before;
@@ -60,6 +59,7 @@ import org.mockito.junit.MockitoRule;
 public class TelemetryJobServiceTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Mock private Context mContext;
     @Mock private JobParameters mJobParameters;
     @Mock private HealthConnectThreadScheduler mHealthConnectThreadScheduler;
     @Mock private LatencyMetricsLogger mLatencyMetricsLogger;
@@ -70,7 +70,6 @@ public class TelemetryJobServiceTest {
 
     @Before
     public void setUp() {
-        Context context = ApplicationProvider.getApplicationContext();
         MockitoAnnotations.initMocks(this);
 
         mTelemetryJobService = Mockito.spy(new TelemetryJobService());
@@ -78,12 +77,13 @@ public class TelemetryJobServiceTest {
         doCallRealMethod().when(mTelemetryJobService).onStopJob(any());
         doNothing().when(mTelemetryJobService).jobFinished(any(), anyBoolean());
 
+        when(mContext.getUser()).thenReturn(USER_HANDLE);
+
         HealthConnectInjector.resetInstanceForTest();
         HealthConnectInjector.setInstance(
-                HealthConnectInjectorImpl.newBuilderForTest(context)
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
-                        .setHealthPermissionIntentAppsTracker(
-                                mock(HealthPermissionIntentAppsTracker.class))
+                        .setAppOpLogsHelper(mock(AppOpLogsHelper.class))
                         .setThreadScheduler(mHealthConnectThreadScheduler)
                         .setLatencyMetricsLogger(mLatencyMetricsLogger)
                         .build());
@@ -95,6 +95,8 @@ public class TelemetryJobServiceTest {
                         })
                 .when(mHealthConnectThreadScheduler)
                 .scheduleInternalTask(any(Runnable.class));
+
+        TelemetryJobService.setupForUser(USER_HANDLE);
     }
 
     @Test
@@ -108,7 +110,7 @@ public class TelemetryJobServiceTest {
         PersistableBundle bundle = new PersistableBundle();
         bundle.putInt(EXTRA_USER_ID, USER_ID + 1);
         when(mJobParameters.getExtras()).thenReturn(bundle);
-        TelemetryJobService.setCurrentUser(USER_HANDLE);
+
         assertFalse(mTelemetryJobService.onStartJob(mJobParameters));
     }
 
@@ -118,7 +120,6 @@ public class TelemetryJobServiceTest {
         bundle.putInt(EXTRA_USER_ID, USER_ID);
         when(mJobParameters.getExtras()).thenReturn(bundle);
         doNothing().when(mTelemetryJobService).jobFinished(any(), anyBoolean());
-        TelemetryJobService.setCurrentUser(USER_HANDLE);
 
         assertTrue(mTelemetryJobService.onStartJob(mJobParameters));
         verify(mHealthConnectThreadScheduler).scheduleInternalTask(any(Runnable.class));

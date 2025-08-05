@@ -54,11 +54,11 @@ import java.util.UUID;
  */
 public class PowerRecordHelper
         extends SeriesRecordHelper<PowerRecordInternal, PowerRecordInternal.PowerRecordSample> {
+
+    public static final String TABLE_NAME = "PowerRecordTable";
+    public static final String SERIES_TABLE_NAME = "power_record_table";
     public static final int NUM_LOCAL_COLUMNS = 1;
-    private static final String TABLE_NAME = "PowerRecordTable";
-    private static final String SERIES_TABLE_NAME = "power_record_table";
     private static final String POWER_COLUMN_NAME = "power";
-    private static final String EPOCH_MILLIS_COLUMN_NAME = "epoch_millis";
 
     public PowerRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_POWER);
@@ -85,11 +85,6 @@ public class PowerRecordHelper
     @Override
     public String getMainTableName() {
         return TABLE_NAME;
-    }
-
-    @Override
-    public String getSampleTimestampsColumnName() {
-        return EPOCH_MILLIS_COLUMN_NAME;
     }
 
     @Override
