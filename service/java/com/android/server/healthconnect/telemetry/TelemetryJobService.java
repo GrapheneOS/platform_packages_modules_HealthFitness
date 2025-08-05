@@ -28,7 +28,6 @@ import android.util.Slog;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.telemetry.dataquality.DataQualityTelemetryJobScheduler;
-import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsLogger;
 
 /**
  * JobService for Health Connect telemetry around data quality.
@@ -40,7 +39,8 @@ public final class TelemetryJobService extends JobService {
     @Nullable private static volatile UserHandle sUserHandle;
     public static final String EXTRA_USER_ID = "user_id";
 
-    public static void setCurrentUser(UserHandle userHandle) {
+    /** Re-initialize this class instance with the new user */
+    public static void setupForUser(UserHandle userHandle) {
         sUserHandle = userHandle;
     }
 
@@ -58,11 +58,12 @@ public final class TelemetryJobService extends JobService {
 
         HealthConnectInjector healthConnectInjector = HealthConnectInjector.getInstance();
         HealthConnectThreadScheduler threadScheduler = healthConnectInjector.getThreadScheduler();
-        LatencyMetricsLogger latencyMetricsLogger = healthConnectInjector.getLatencyMetricsLogger();
+        DataQualityTelemetryJobScheduler dataQualityTelemetryJobScheduler =
+                healthConnectInjector.getDataQualityTelemetryJobScheduler();
 
         threadScheduler.scheduleInternalTask(
                 () -> {
-                    DataQualityTelemetryJobScheduler.execute(latencyMetricsLogger);
+                    dataQualityTelemetryJobScheduler.execute();
                     jobFinished(params, false);
                 });
         return true;

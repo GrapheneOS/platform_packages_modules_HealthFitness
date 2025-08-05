@@ -26,6 +26,9 @@ import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.Assert.assertTrue;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -39,6 +42,11 @@ import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.runner.AndroidJUnit4;
+
+import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
+import com.android.server.healthconnect.injector.HealthConnectInjector;
+import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
+import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -56,52 +64,66 @@ public class DataQualityTelemetryJobSchedulerTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
+    private static final UserHandle USER_HANDLE = UserHandle.of(1);
+
     @Mock private Context mContext;
     @Mock private JobScheduler mJobScheduler;
-    @Mock private LatencyMetricsLogger mLatencyMetricsLogger;
+    @Mock private LatencyMetricsCollector mLatencyMetricsCollector;
     @Captor private ArgumentCaptor<JobInfo> mJobInfoArgumentCaptor;
-
-    private static final UserHandle USER_HANDLE = UserHandle.of(1);
+    private DataQualityTelemetryJobScheduler mDataQualityTelemetryJobScheduler;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         when(mContext.getSystemService(JobScheduler.class)).thenReturn(mJobScheduler);
-        when(mJobScheduler.forNamespace(any())).thenReturn(mJobScheduler);
+        when(mContext.getUser()).thenReturn(USER_HANDLE);
+        when(mJobScheduler.forNamespace(anyString())).thenReturn(mJobScheduler);
+
+        HealthConnectInjector healthConnectInjector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
+                        .setAppOpLogsHelper(mock(AppOpLogsHelper.class))
+                        .setLatencyMetricsCollector(mLatencyMetricsCollector)
+                        .build();
+
+        mDataQualityTelemetryJobScheduler =
+                healthConnectInjector.getDataQualityTelemetryJobScheduler();
     }
 
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void testSchedule_flagOn_schedulesJob() {
-        DataQualityTelemetryJobScheduler.schedule(mContext, USER_HANDLE);
+        mDataQualityTelemetryJobScheduler.schedule();
         verify(mJobScheduler).schedule(any(JobInfo.class));
     }
 
     @Test
     @DisableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void testSchedule_flagOff_doesNotScheduleJob() {
-        DataQualityTelemetryJobScheduler.schedule(mContext, USER_HANDLE);
+        mDataQualityTelemetryJobScheduler.schedule();
         verify(mJobScheduler, never()).schedule(any(JobInfo.class));
     }
 
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void testCancelAllJobs_cancelsAllJobs() {
-        DataQualityTelemetryJobScheduler.cancelAllJobs(mContext);
+        mDataQualityTelemetryJobScheduler.cancelAllJobs();
         verify(mJobScheduler).cancelAll();
     }
 
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
-    public void execute_logsWeeklyMetrics() {
-        DataQualityTelemetryJobScheduler.execute(mLatencyMetricsLogger);
-        verify(mLatencyMetricsLogger).log();
+    public void execute_logsLatencyMetrics() {
+        mDataQualityTelemetryJobScheduler.execute();
+
+        verify(mLatencyMetricsCollector).readLastWeekExerciseSessions();
+        verify(mLatencyMetricsCollector).readLastWeekSleepSessions();
     }
 
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void schedule_jobInfoIsCorrect() {
-        DataQualityTelemetryJobScheduler.schedule(mContext, USER_HANDLE);
+        mDataQualityTelemetryJobScheduler.schedule();
         verify(mJobScheduler).schedule(mJobInfoArgumentCaptor.capture());
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
         assertThat(jobInfo.isRequireCharging()).isTrue();
@@ -111,5 +133,18 @@ public class DataQualityTelemetryJobSchedulerTest {
         assertTrue(jobInfo.isPeriodic());
         assertThat(jobInfo.getIntervalMillis()).isEqualTo(JOB_RUN_INTERVAL);
         assertThat(jobInfo.getFlexMillis()).isEqualTo(JOB_FLEX_INTERVAL);
+    }
+
+    @Test
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
+    public void execute_latencyMetricException_exceptionCaught() {
+        doThrow(new RuntimeException("Test exception"))
+                .when(mLatencyMetricsCollector)
+                .readLastWeekExerciseSessions();
+
+        mDataQualityTelemetryJobScheduler.execute();
+
+        verify(mLatencyMetricsCollector).readLastWeekExerciseSessions();
+        verify(mLatencyMetricsCollector, never()).readLastWeekSleepSessions();
     }
 }
