@@ -35,8 +35,10 @@ import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IM
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
+import com.android.healthconnect.controller.tests.utils.di.FakeFailureLoadLatestEntryDateUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadDataAggregationsUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadDataEntriesUseCase
+import com.android.healthconnect.controller.tests.utils.di.FakeLoadLatestEntryDateUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadMedicalEntriesUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadMenstruationDataUseCase
 import com.android.healthconnect.controller.utils.TimeSource
@@ -132,6 +134,7 @@ class EntriesViewModelTest {
     private val fakeLoadMenstruationDataUseCase = FakeLoadMenstruationDataUseCase()
     private val fakeLoadDataAggregationsUseCase = FakeLoadDataAggregationsUseCase()
     private val fakeLoadMedicalEntriesUseCase = FakeLoadMedicalEntriesUseCase()
+    private val fakeLoadLatestEntryDateUseCase = FakeLoadLatestEntryDateUseCase()
 
     private lateinit var viewModel: EntriesViewModel
     private lateinit var context: Context
@@ -149,6 +152,7 @@ class EntriesViewModelTest {
                 fakeLoadMenstruationDataUseCase,
                 fakeLoadDataAggregationsUseCase,
                 fakeLoadMedicalEntriesUseCase,
+                fakeLoadLatestEntryDateUseCase,
             )
     }
 
@@ -339,5 +343,53 @@ class EntriesViewModelTest {
         )
 
         assertThat(viewModel.getEntriesList()).containsExactly(FORMATTED_MINDFULNESS)
+    }
+
+    @Test
+    fun loadLatestRecordDate_doesNotUpdateForMedicalData() = runTest {
+        val now = Instant.now()
+        fakeLoadLatestEntryDateUseCase.updateInstant(now)
+
+        MedicalPermissionType.entries.forEachIndexed { i, type ->
+            val then = now.plusMillis(i.toLong())
+            fakeLoadLatestEntryDateUseCase.updateInstant(then)
+
+            viewModel.loadLatestRecordDate(type, then)
+            assertThat(viewModel.latestDate.value).isNull()
+        }
+    }
+
+    @Test
+    fun loadLatestRecordDate_updatesForFitnessType() = runTest {
+        val now = Instant.now()
+
+        FitnessPermissionType.entries.forEachIndexed { i, type ->
+            val then = now.plusMillis(i.toLong())
+            fakeLoadLatestEntryDateUseCase.updateInstant(then)
+
+            viewModel.loadLatestRecordDate(type, then)
+            assertThat(viewModel.latestDate.value).isEqualTo(then)
+        }
+    }
+
+    @Test
+    fun loadLatestRecordDate_fails_returnsInput() = runTest {
+        val fakeFailureLoadLatestEntryDateUseCase = FakeFailureLoadLatestEntryDateUseCase()
+        val failureViewModel =
+            EntriesViewModel(
+                appInfoReader,
+                fakeLoadDataEntriesUseCase,
+                fakeLoadMenstruationDataUseCase,
+                fakeLoadDataAggregationsUseCase,
+                fakeLoadMedicalEntriesUseCase,
+                fakeFailureLoadLatestEntryDateUseCase,
+            )
+
+        val now = Instant.now()
+        val then = now.plusMillis(100)
+        fakeFailureLoadLatestEntryDateUseCase.updateInstant(now)
+
+        failureViewModel.loadLatestRecordDate(FitnessPermissionType.STEPS, then)
+        assertThat(failureViewModel.latestDate.value).isEqualTo(then)
     }
 }

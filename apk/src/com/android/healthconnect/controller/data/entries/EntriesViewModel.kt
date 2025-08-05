@@ -22,10 +22,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.data.entries.api.ILoadDataAggregationsUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadDataEntriesUseCase
+import com.android.healthconnect.controller.data.entries.api.ILoadLatestEntryDateUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadMedicalEntriesUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadMenstruationDataUseCase
 import com.android.healthconnect.controller.data.entries.api.LoadAggregationInput
 import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesInput
+import com.android.healthconnect.controller.data.entries.api.LoadLatestEntryDateInput
 import com.android.healthconnect.controller.data.entries.api.LoadMedicalEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataInput
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
@@ -56,6 +58,7 @@ constructor(
     private val loadMenstruationDataUseCase: ILoadMenstruationDataUseCase,
     private val loadDataAggregationsUseCase: ILoadDataAggregationsUseCase,
     private val loadMedicalEntriesUseCase: ILoadMedicalEntriesUseCase,
+    private val loadLatestDateUseCase: ILoadLatestEntryDateUseCase,
 ) : ViewModel() {
 
     companion object {
@@ -97,6 +100,33 @@ constructor(
     private var numOfEntries: Int = 0
 
     private var entriesList: MutableList<FormattedEntry> = mutableListOf()
+
+    val latestDate = MutableLiveData<Instant>()
+
+    fun loadLatestRecordDate(permissionType: HealthPermissionType, selectedDate: Instant) {
+        // There is no browse by period for phr data
+        if (permissionType is MedicalPermissionType) {
+            return
+        }
+
+        viewModelScope.launch {
+            val latestDateResult =
+                loadLatestDateUseCase.invoke(
+                    LoadLatestEntryDateInput(permissionType as FitnessPermissionType, selectedDate)
+                )
+
+            val latestRecordDate =
+                when (latestDateResult) {
+                    is UseCaseResults.Success -> latestDateResult.data
+                    is UseCaseResults.Failed -> {
+                        Log.e(TAG, "Loading error ", latestDateResult.exception)
+                        selectedDate
+                    }
+                }
+
+            latestDate.postValue(latestRecordDate)
+        }
+    }
 
     fun loadEntries(
         permissionType: HealthPermissionType,

@@ -109,15 +109,13 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
     }
 
     @Test
-    fun dataAndAccess_showsEntries_deletesEntry() {
+    fun dataAndAccess_showsEntriesOfFirstAvailableDay_deletesEntry() {
         context.launchMainActivity {
             navigateToNewPage("Data and access")
 
             scrollDownToAndFindText(dataCategoryString)
             navigateToNewPage(dataTypeString)
 
-            findText("No data")
-            findDescAndClick("Previous day")
             waitForObjectNotFound(By.text("No data"), timeout = ofSeconds(3))
             scrollToEnd()
 

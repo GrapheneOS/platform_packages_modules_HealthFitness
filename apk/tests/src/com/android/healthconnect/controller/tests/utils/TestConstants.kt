@@ -34,6 +34,7 @@ import android.health.connect.datatypes.HydrationRecord
 import android.health.connect.datatypes.IntermenstrualBleedingRecord
 import android.health.connect.datatypes.MedicalDataSource
 import android.health.connect.datatypes.MedicalResource
+import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.Metadata
 import android.health.connect.datatypes.OxygenSaturationRecord
 import android.health.connect.datatypes.PlannedExerciseBlock
@@ -65,6 +66,7 @@ import com.android.healthconnect.controller.utils.randomInstant
 import com.android.healthconnect.controller.utils.toInstant
 import com.android.healthconnect.controller.utils.toLocalDateTime
 import com.google.common.truth.Truth.assertThat
+import java.time.Duration.ofDays
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -135,6 +137,10 @@ fun getWeightRecord(time: Instant = NOW, weight: Mass): WeightRecord {
 
 fun getIntermenstrualBleedingRecord(time: Instant): IntermenstrualBleedingRecord {
     return IntermenstrualBleedingRecord.Builder(getMetaData(), time).build()
+}
+
+fun getMenstruationPeriodRecord(startTime: Instant, endTime: Instant): MenstruationPeriodRecord {
+    return MenstruationPeriodRecord.Builder(getMetaData(), startTime, endTime).build()
 }
 
 fun getBodyTemperatureRecord(
@@ -454,6 +460,9 @@ val WEIGHT_STARTDATE_100: WeightRecord = getWeightRecord(START_TIME, Mass.fromGr
 
 val INTERMENSTRUAL_BLEEDING_DAY: IntermenstrualBleedingRecord =
     getIntermenstrualBleedingRecord(INSTANT_DAY)
+
+val MENSTRUATION_PERIOD_5D: MenstruationPeriodRecord =
+    getMenstruationPeriodRecord(START_TIME, START_TIME.plus(ofDays(5)))
 
 val BODYTEMPERATURE_MONTH: BodyTemperatureRecord =
     getBodyTemperatureRecord(

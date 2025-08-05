@@ -122,6 +122,7 @@ class AllEntriesFragmentTest {
         navHostController = TestNavHostController(context)
 
         whenever(viewModel.currentSelectedDate).thenReturn(MutableLiveData())
+        whenever(viewModel.latestDate).thenReturn(MutableLiveData())
         whenever(viewModel.period).thenReturn(MutableLiveData(DateNavigationPeriod.PERIOD_DAY))
         whenever(viewModel.appInfo)
             .thenReturn(
