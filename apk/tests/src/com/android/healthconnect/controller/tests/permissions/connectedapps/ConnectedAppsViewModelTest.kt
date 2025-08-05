@@ -284,4 +284,27 @@ class ConnectedAppsViewModelTest {
         val actual = testObserver.getLastValue()
         assertThat(actual).containsExactlyElementsIn(listOf(SYSTEM_APP, NORMAL_APP))
     }
+
+    @Test
+    fun searchConnectedApps_filtersOutDeviceDataProviderPackage() = runTest {
+        (loadHealthPermissionApps as FakeHealthPermissionAppsUseCase).updateList(
+            listOf(
+                NORMAL_APP,
+                ConnectedAppMetadata(
+                    NORMAL_APP_INFO.copy(packageName = "android"),
+                    status = ConnectedAppStatus.ALLOWED,
+                ),
+            )
+        )
+
+        val testObserver = TestObserver<List<ConnectedAppMetadata>>()
+        viewModel.connectedApps.observeForever(testObserver)
+        advanceUntilIdle()
+
+        viewModel.searchConnectedApps("a")
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual).containsExactly(NORMAL_APP)
+    }
 }
