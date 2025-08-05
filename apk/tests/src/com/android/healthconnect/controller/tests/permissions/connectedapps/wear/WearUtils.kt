@@ -118,6 +118,29 @@ val READ_SKIN_TEMPERATURE_PERMISSION =
         PermissionsAccessType.READ,
     )
 
+val GRANTED_READ_HEART_RATE_PERMISSION =
+    HealthPermissionStatus(healthPermission = READ_HEART_RATE_PERMISSION, isGranted = true)
+val GRANTED_READ_SKIN_TEMPERATURE_PERMISSION =
+    HealthPermissionStatus(healthPermission = READ_SKIN_TEMPERATURE_PERMISSION, isGranted = true)
+val GRANTED_READ_OXYGEN_SATURATION_PERMISSION =
+    HealthPermissionStatus(healthPermission = READ_OXYGEN_SATURATION_PERMISSION, isGranted = true)
+val GRANTED_READ_HEALTH_DATA_IN_BACKGROUND_PERMISSION =
+    HealthPermissionStatus(
+        healthPermission = HealthPermission.AdditionalPermission.READ_HEALTH_DATA_IN_BACKGROUND,
+        isGranted = true,
+    )
+val DENIED_READ_HEART_RATE_PERMISSION =
+    HealthPermissionStatus(healthPermission = READ_HEART_RATE_PERMISSION, isGranted = false)
+val DENIED_READ_SKIN_TEMPERATURE_PERMISSION =
+    HealthPermissionStatus(healthPermission = READ_SKIN_TEMPERATURE_PERMISSION, isGranted = false)
+val DENIED_READ_OXYGEN_SATURATION_PERMISSION =
+    HealthPermissionStatus(healthPermission = READ_OXYGEN_SATURATION_PERMISSION, isGranted = false)
+val DENIED_READ_HEALTH_DATA_IN_BACKGROUND_PERMISSION =
+    HealthPermissionStatus(
+        healthPermission = HealthPermission.AdditionalPermission.READ_HEALTH_DATA_IN_BACKGROUND,
+        isGranted = false,
+    )
+
 data class AppConnectionsAndRecentAccess(
     val appMetadata: AppMetadata,
     val permissionStatus: List<HealthPermissionStatus>,

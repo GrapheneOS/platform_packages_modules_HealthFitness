@@ -44,49 +44,8 @@ fun AllDataTypesScreen(
     onClick: (String, String) -> Unit,
 ) {
     val res = LocalContext.current.resources
-    val connectedApps by viewModel.connectedApps.collectAsState()
-    val dataTypeToAllowedApps by viewModel.dataTypeToAllowedApps.collectAsState()
-    val dataTypeToDeniedApps by viewModel.dataTypeToDeniedApps.collectAsState()
-    val dataTypeToAppToLastAccessTime by viewModel.dataTypeToAppToLastAccessTime.collectAsState()
-    val systemHealthPermissionsUnsorted by viewModel.systemHealthPermissions.collectAsState()
-    val nTotalApps = connectedApps.size
-
-    val systemHealthPermissionToAllowedNonSystemApps =
-        systemHealthPermissionsUnsorted.associateWith {
-            dataTypeToAllowedApps[it]?.filter { !it.isSystem }
-        }
-    val systemHealthPermissionToDeniedNonSystemApps =
-        systemHealthPermissionsUnsorted.associateWith {
-            dataTypeToDeniedApps[it]?.filter { !it.isSystem }
-        }
-
-    // Sort system health order alphabetically, and defer no-usage data types to the last.
-    val systemHealthPermissions =
-        systemHealthPermissionsUnsorted.sortedWith(
-            compareBy<HealthPermission> { healthPermission ->
-                    val nAllowedApps =
-                        systemHealthPermissionToAllowedNonSystemApps[healthPermission]?.size ?: 0
-                    val nDeniedApps =
-                        systemHealthPermissionToDeniedNonSystemApps[healthPermission]?.size ?: 0
-                    // If a health permission is not requested by any apps, put to the end of list.
-                    if ((nAllowedApps + nDeniedApps) > 0) {
-                        0
-                    } else {
-                        1
-                    }
-                }
-                .thenBy { permission ->
-                    // For all health permissions that are requested by at least one app, sort by
-                    // user-visible strings alphabetically.
-                    res.getString(
-                        FitnessPermissionStrings.fromPermissionType(
-                                (permission as HealthPermission.FitnessPermission)
-                                    .fitnessPermissionType
-                            )
-                            .uppercaseLabel
-                    )
-                }
-        )
+    val wearHealthApps by viewModel.wearHealthApps.collectAsState()
+    val systemHealthPermissions by viewModel.systemHealthPermissions.collectAsState()
 
     ScrollableScreen(
         asScalingList = true,
@@ -105,54 +64,58 @@ fun AllDataTypesScreen(
         }
 
         // Granular data type and the number of apps allowed.
-        items(systemHealthPermissions.size) { index ->
-            val healthPermission = systemHealthPermissions[index]
-            val strDataType =
-                stringResource(
-                    FitnessPermissionStrings.fromPermissionType(
-                            (healthPermission as HealthPermission.FitnessPermission)
-                                .fitnessPermissionType
-                        )
-                        .uppercaseLabel
+        systemHealthPermissions.forEach { healthPermission ->
+            item {
+                val strDataType =
+                    stringResource(
+                        FitnessPermissionStrings.fromPermissionType(
+                                (healthPermission as HealthPermission.FitnessPermission)
+                                    .fitnessPermissionType
+                            )
+                            .uppercaseLabel
+                    )
+                val allowedAppCount =
+                    wearHealthApps.getNumberOfAllowedAppsForFitnessPermission(healthPermission)
+                val deniedAppCount =
+                    wearHealthApps.getNumberOfDeniedAppsForFitnessPermission(healthPermission)
+                val usedAppCount =
+                    wearHealthApps.getNumberOfUsedAppsForFitnessPermission(healthPermission)
+                val requestedAppCount = allowedAppCount + deniedAppCount
+                val enabled =
+                    if (showRecentAccess) {
+                        usedAppCount != 0
+                    } else {
+                        requestedAppCount != 0
+                    }
+                val message =
+                    when {
+                        enabled && showRecentAccess ->
+                            MessageFormat.format(
+                                res.getString(R.string.used_by_apps_count),
+                                mapOf("count" to usedAppCount),
+                            )
+
+                        enabled && !showRecentAccess ->
+                            stringResource(
+                                R.string.allowed_apps_count,
+                                allowedAppCount,
+                                requestedAppCount,
+                            )
+
+                        !enabled && showRecentAccess ->
+                            stringResource(R.string.not_used_in_past_24_hours)
+
+                        else -> stringResource(R.string.no_apps_requesting)
+                    }
+                WearPermissionButton(
+                    label = strDataType,
+                    labelMaxLines = 3,
+                    secondaryLabel = message,
+                    secondaryLabelMaxLines = 3,
+                    onClick = { onClick(healthPermission.toString(), strDataType) },
+                    enabled = enabled,
                 )
-            val nAllowedApps =
-                systemHealthPermissionToAllowedNonSystemApps[healthPermission]?.size ?: 0
-            val nDeniedApps =
-                systemHealthPermissionToDeniedNonSystemApps[healthPermission]?.size ?: 0
-            val nUsedApps =
-                dataTypeToAppToLastAccessTime
-                    .find { it.permission == healthPermission }
-                    ?.appAccesses
-                    ?.filter { !it.app.isSystem }
-                    ?.size ?: 0
-            val nRequestedApps = nAllowedApps + nDeniedApps
-            val enabled =
-                if (showRecentAccess) {
-                    nUsedApps != 0
-                } else {
-                    nRequestedApps != 0
-                }
-            val message =
-                when {
-                    enabled && showRecentAccess ->
-                        MessageFormat.format(
-                            res.getString(R.string.used_by_apps_count),
-                            mapOf("count" to nUsedApps),
-                        )
-                    enabled && !showRecentAccess ->
-                        stringResource(R.string.allowed_apps_count, nAllowedApps, nRequestedApps)
-                    !enabled && showRecentAccess ->
-                        stringResource(R.string.not_used_in_past_24_hours)
-                    else -> stringResource(R.string.no_apps_requesting)
-                }
-            WearPermissionButton(
-                label = strDataType,
-                labelMaxLines = 3,
-                secondaryLabel = message,
-                secondaryLabelMaxLines = 3,
-                onClick = { onClick(healthPermission.toString(), strDataType) },
-                enabled = enabled,
-            )
+            }
         }
     }
 }

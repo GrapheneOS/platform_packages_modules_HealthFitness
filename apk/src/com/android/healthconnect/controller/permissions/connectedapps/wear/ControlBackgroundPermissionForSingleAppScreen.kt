@@ -21,13 +21,9 @@ import android.icu.text.ListFormatter
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.permissions.data.FitnessPermissionStrings
-import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.AdditionalPermission.Companion.READ_HEALTH_DATA_IN_BACKGROUND
 import com.android.healthconnect.controller.shared.WearPermissionsPaddingValues
 import com.android.permissioncontroller.wear.permission.components.ScrollableScreen
@@ -41,28 +37,27 @@ fun ControlBackgroundReadForSingleAppScreen(
     onBackClick: () -> Unit,
     onAppInfoPermissionClick: () -> Unit,
 ) {
-    // Get app metadata. PackageName is passed from allowed/denied apps page and must be in the
-    // connectedApps list, thus it's safe to have nonnull!! assert.
-    val appMetadata by viewModel.getAppMetadataByPackageName(packageName).collectAsState()
-    val appName = appMetadata!!.appName
+    val healthAppDataList = viewModel.wearHealthApps.collectAsState()
+    val healthAppData = healthAppDataList.value.firstOrNull { it.packageName == packageName }
+    if (healthAppData == null) {
+        return
+    }
 
-    val allowedDataTypePermissions by viewModel.appToAllowedDataTypes.collectAsState()
-    val allowedDataTypesStrings =
-        allowedDataTypePermissions[appMetadata!!]?.map { permission ->
-            stringResource(
-                FitnessPermissionStrings.fromPermissionType(
-                        (permission as HealthPermission.FitnessPermission).fitnessPermissionType
-                    )
-                    .lowercaseLabel
-            )
-        }
-    val anyDataTypesAllowed = !allowedDataTypesStrings.isNullOrEmpty()
+    val appMetadata = healthAppData.appMetadata
+    val appName = healthAppData.appMetadata.appName
+
+    val anyDataTypesAllowed = healthAppData.anyFitnessPermissionsAllowed()
     val subtitle =
         if (anyDataTypesAllowed) {
             stringResource(
                 R.string.current_access,
                 appName,
-                ListFormatter.getInstance().format(allowedDataTypesStrings),
+                ListFormatter.getInstance()
+                    .format(
+                        healthAppData.getAllowedFitnessPermissionsStringResources().map {
+                            stringResource(it)
+                        }
+                    ),
             )
         } else {
             stringResource(R.string.additional_access_background_footer)
@@ -82,7 +77,7 @@ fun ControlBackgroundReadForSingleAppScreen(
                 onClick = {
                     viewModel.updatePermission(
                         READ_HEALTH_DATA_IN_BACKGROUND,
-                        appMetadata!!,
+                        appMetadata,
                         grant = true,
                     )
                     onBackClick()
@@ -99,7 +94,7 @@ fun ControlBackgroundReadForSingleAppScreen(
                 onClick = {
                     viewModel.updatePermission(
                         READ_HEALTH_DATA_IN_BACKGROUND,
-                        appMetadata!!,
+                        appMetadata,
                         grant = false,
                     )
                     onBackClick()
