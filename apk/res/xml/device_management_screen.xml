@@ -35,6 +35,18 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="device_data_category"
+        android:title="@string/device_data_label"
+        app:iconSpaceReserved="false">
+
+        <com.android.healthconnect.controller.shared.preference.HealthPreference
+            android:key="device_data_button"
+            android:title="@string/device_data_button"
+            app:persistent="false" />
+
+    </PreferenceCategory>
+
     <com.android.settingslib.widget.FooterPreference
         android:key="connected_app_footer"
     />

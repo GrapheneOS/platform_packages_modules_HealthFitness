@@ -20,6 +20,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
@@ -52,6 +53,7 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.ToolbarElement
 import com.android.healthconnect.controller.utils.pref
+import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.FooterPreference
@@ -67,6 +69,7 @@ open class AppDataFragment : Hilt_AppDataFragment() {
     companion object {
         private const val TAG = "AppDataFragmentTag"
         const val PERMISSION_TYPE_NAME_KEY = "permission_type_name_key"
+        const val EXTRA_DATA_LABEL = "key_extra_data_label"
         private const val DELETION_TAG = "DeletionTag"
         private const val KEY_SELECT_ALL = "key_select_all"
         private const val KEY_PERMISSION_TYPES = "key_permission_types"
@@ -82,6 +85,7 @@ open class AppDataFragment : Hilt_AppDataFragment() {
     @Inject lateinit var logger: HealthConnectLogger
     private var packageName: String = ""
     private var appName: String = ""
+    @StringRes private var extraDataLabel: Int? = null
 
     private val viewModel: AppDataViewModel by viewModels()
     private val deletionViewModel: DeletionViewModel by activityViewModels()
@@ -138,15 +142,18 @@ open class AppDataFragment : Hilt_AppDataFragment() {
 
         if (
             requireArguments().containsKey(EXTRA_PACKAGE_NAME) &&
-            requireArguments().getString(EXTRA_PACKAGE_NAME) != null
+                requireArguments().getString(EXTRA_PACKAGE_NAME) != null
         ) {
             packageName = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
         }
         if (
             requireArguments().containsKey(Constants.EXTRA_APP_NAME) &&
-            requireArguments().getString(Constants.EXTRA_APP_NAME) != null
+                requireArguments().getString(Constants.EXTRA_APP_NAME) != null
         ) {
             appName = requireArguments().getString(Constants.EXTRA_APP_NAME)!!
+        }
+        if (requireArguments().containsKey(EXTRA_DATA_LABEL)) {
+            extraDataLabel = requireArguments().getInt(EXTRA_DATA_LABEL)
         }
 
         if (childFragmentManager.findFragmentByTag(DELETION_TAG) == null) {
@@ -189,13 +196,18 @@ open class AppDataFragment : Hilt_AppDataFragment() {
         }
 
         deletionViewModel.appPermissionTypesReloadNeeded.observe(viewLifecycleOwner) {
-                isReloadNeeded ->
+            isReloadNeeded ->
             if (isReloadNeeded) {
                 viewModel.setDeletionScreenStateValue(VIEW)
                 viewModel.loadAppData(packageName)
                 deletionViewModel.resetAppPermissionTypesReloadNeeded()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        extraDataLabel?.let { setTitle(it) }
     }
 
     private fun updatePreferenceScreen(
@@ -354,7 +366,7 @@ open class AppDataFragment : Hilt_AppDataFragment() {
         selectAllCheckboxPreference.isVisible = screenState == DELETE
         if (screenState == DELETE) {
             viewModel.allPermissionTypesSelected.observe(viewLifecycleOwner) {
-                    allPermissionTypesSelected ->
+                allPermissionTypesSelected ->
                 selectAllCheckboxPreference.removeOnPreferenceClickListener()
                 selectAllCheckboxPreference.setIsChecked(allPermissionTypesSelected)
                 selectAllCheckboxPreference.setOnPreferenceClickListenerWithCheckbox(

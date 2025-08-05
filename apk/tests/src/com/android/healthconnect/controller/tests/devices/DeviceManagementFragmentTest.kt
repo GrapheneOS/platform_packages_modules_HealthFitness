@@ -21,6 +21,7 @@ import android.health.connect.datatypes.StepsRecord
 import android.os.Bundle
 import android.platform.test.annotations.EnableFlags
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -29,12 +30,14 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.devices.ConnectedDevicesViewModel
 import com.android.healthconnect.controller.devices.ConnectedDevicesViewModel.ConnectedDevicesState
 import com.android.healthconnect.controller.devices.DeviceDataSource
 import com.android.healthconnect.controller.devices.DeviceManagementFragment
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthfitness.flags.Flags
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -99,6 +102,27 @@ class DeviceManagementFragmentTest {
         verify(viewModel).setTrackingEnabled(StepsRecord::class.java, false)
         onView(withText("Steps")).perform(click())
         verify(viewModel).setTrackingEnabled(StepsRecord::class.java, true)
+    }
+
+    @Test
+    fun seeDeviceData_isDisplayed() {
+        launchFragment<DeviceManagementFragment>(Bundle())
+
+        onView(withText("Manage device")).check(matches(isDisplayed()))
+        onView(withText("See device data")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun seeDeviceData_navigatesToAppData() {
+        launchFragment<DeviceManagementFragment>(Bundle()) {
+            navHostController.setGraph(R.navigation.device_management_nav_graph)
+            navHostController.setCurrentDestination(R.id.deviceManagementFragment)
+            Navigation.setViewNavController(this.requireView(), navHostController)
+        }
+
+        onView(withText("See device data")).perform(click())
+
+        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.appDataFragment)
     }
 
     @Test
