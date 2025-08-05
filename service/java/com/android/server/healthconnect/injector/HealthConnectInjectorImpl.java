@@ -96,6 +96,7 @@ import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.telemetry.dataquality.CompletenessStatsLogger;
+import com.android.server.healthconnect.telemetry.dataquality.DataQualityTelemetryJobScheduler;
 import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsCollector;
 import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsLogger;
 import com.android.server.healthconnect.utils.TimeSource;
@@ -915,6 +916,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Override
     public MatchmakingDenialStateManager getMatchmakingDenialStateManager() {
         return mMatchmakingDenialStateManager;
+    }
+
+    @Override
+    public DataQualityTelemetryJobScheduler getDataQualityTelemetryJobScheduler() {
+        return new DataQualityTelemetryJobScheduler(mBuilder.mContext, mLatencyMetricsLogger);
     }
 
     /**

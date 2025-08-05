@@ -25,7 +25,6 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.PersistableBundle;
-import android.os.UserHandle;
 import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
@@ -47,43 +46,60 @@ public final class DataQualityTelemetryJobScheduler {
     @VisibleForTesting static final long JOB_RUN_INTERVAL = TimeUnit.DAYS.toMillis(7);
     @VisibleForTesting static final long JOB_FLEX_INTERVAL = TimeUnit.DAYS.toMillis(1);
 
+    private final Context mContext;
+    private final LatencyMetricsLogger mLatencyMetricsLogger;
+
+    public DataQualityTelemetryJobScheduler(
+            Context context, LatencyMetricsLogger latencyMetricsLogger) {
+        mContext = context;
+        mLatencyMetricsLogger = latencyMetricsLogger;
+    }
+
     /** Schedule the weekly job */
-    public static void schedule(Context context, UserHandle userHandle) {
+    public void schedule() {
         if (!Flags.latencyMetricsFlag()) {
             return;
         }
-        TelemetryJobService.setCurrentUser(userHandle);
         JobScheduler jobScheduler =
-                requireNonNull(context.getSystemService(JobScheduler.class))
+                requireNonNull(mContext.getSystemService(JobScheduler.class))
                         .forNamespace(HC_DATA_QUALITY_TELEMETRY_JOBS_NAMESPACE);
 
-        int result = jobScheduler.schedule(getJobInfo(context, userHandle));
+        int userId = mContext.getUser().getIdentifier();
+        int result = jobScheduler.schedule(getJobInfo(userId));
         if (result != JobScheduler.RESULT_SUCCESS) {
             Slog.e(TAG, "Failed to schedule the DataQualityTelemetryJob");
         }
     }
 
     /** Cancel the weekly job */
-    public static void cancelAllJobs(Context context) {
-        requireNonNull(context.getSystemService(JobScheduler.class))
+    public void cancelAllJobs() {
+        requireNonNull(mContext.getSystemService(JobScheduler.class))
                 .forNamespace(HC_DATA_QUALITY_TELEMETRY_JOBS_NAMESPACE)
                 .cancelAll();
     }
 
     /** Uploads critical weekly metrics. */
-    public static void execute(LatencyMetricsLogger latencyMetricsLogger) {
-        WeeklyLoggingService.logWeeklyMetrics(latencyMetricsLogger);
+    public void execute() {
+        logLatencyMetrics();
     }
 
-    private static JobInfo getJobInfo(Context context, UserHandle userHandle) {
-        ComponentName componentName = new ComponentName(context, TelemetryJobService.class);
+    private JobInfo getJobInfo(int userId) {
+        ComponentName componentName = new ComponentName(mContext, TelemetryJobService.class);
         final PersistableBundle extras = new PersistableBundle();
-        extras.putInt(EXTRA_USER_ID, userHandle.getIdentifier());
-        return new JobInfo.Builder(MIN_JOB_ID + userHandle.getIdentifier(), componentName)
+        extras.putInt(EXTRA_USER_ID, userId);
+        return new JobInfo.Builder(MIN_JOB_ID + userId, componentName)
                 .setExtras(extras)
                 .setRequiresCharging(true)
                 .setRequiresDeviceIdle(true)
                 .setPeriodic(JOB_RUN_INTERVAL, JOB_FLEX_INTERVAL)
                 .build();
+    }
+
+    private void logLatencyMetrics() {
+        try {
+            mLatencyMetricsLogger.log();
+        } catch (Exception exception) {
+            Slog.e(TAG, "Failed to log latency metrics", exception);
+        }
     }
 }

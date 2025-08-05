@@ -35,7 +35,7 @@ import com.android.server.healthconnect.migration.MigratorPackageChangesReceiver
 import com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationJob;
 import com.android.server.healthconnect.storage.HealthConnectContext;
-import com.android.server.healthconnect.telemetry.dataquality.DataQualityTelemetryJobScheduler;
+import com.android.server.healthconnect.telemetry.TelemetryJobService;
 
 import java.util.Objects;
 
@@ -213,6 +213,8 @@ public class HealthConnectManagerService extends SystemService {
         mHealthConnectInjector.getBackupRestore().setupForUser(mCurrentForegroundUser);
         mHealthConnectInjector.getAppInfoHelper().setupForUser(hcContext);
         mHealthConnectInjector.getHealthDataCategoryPriorityHelper().setupForUser(hcContext);
+        TelemetryJobService.setupForUser(mCurrentForegroundUser);
+
         if (mHealthConnectInjector.getMatchingAppsManager() != null) {
             mHealthConnectInjector.getMatchingAppsManager().setupForUser(hcContext);
         }
@@ -240,7 +242,7 @@ public class HealthConnectManagerService extends SystemService {
         threadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        DataQualityTelemetryJobScheduler.schedule(mContext, mCurrentForegroundUser);
+                        mHealthConnectInjector.getDataQualityTelemetryJobScheduler().schedule();
                     } catch (Exception e) {
                         Slog.e(TAG, "Failed to schedule Health Connect weekly service.", e);
                     }
