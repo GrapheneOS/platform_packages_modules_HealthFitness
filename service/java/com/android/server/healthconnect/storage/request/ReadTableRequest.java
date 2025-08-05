@@ -62,6 +62,7 @@ public class ReadTableRequest {
     @Nullable private List<String> mColumnNames;
     @Nullable private SqlJoin mJoinClause;
     private WhereClauses mWhereClauses = new WhereClauses(AND);
+    private WhereClauses mPostJoinWhereClauses = new WhereClauses(AND);
     private boolean mDistinct = false;
     private OrderByClause mOrderByClause = new OrderByClause();
     private OrderByClause mFinalOrderByClause = new OrderByClause();
@@ -86,6 +87,12 @@ public class ReadTableRequest {
     /** Sets the WHERE clause to use in this SELECT. */
     public ReadTableRequest setWhereClause(WhereClauses whereClauses) {
         mWhereClauses = whereClauses;
+        return this;
+    }
+
+    /** Sets the final WHERE clause to use in this SELECT i.e. after join. */
+    public ReadTableRequest setPostJoinWhereClause(WhereClauses whereClauses) {
+        mPostJoinWhereClauses = whereClauses;
         return this;
     }
 
@@ -186,6 +193,7 @@ public class ReadTableRequest {
         if (mJoinClause != null) {
             String innerQuery = buildReadQuery(SELECT_ALL);
             readQuery = mJoinClause.getJoinWithQueryCommand(selectStatement, innerQuery);
+            readQuery = addPostJoinWhereClauses(readQuery);
         } else {
             if (!mOrderByClause.getOrderBy().isEmpty()
                     && !mFinalOrderByClause.getOrderBy().isEmpty()) {
@@ -243,6 +251,10 @@ public class ReadTableRequest {
                 + mWhereClauses.get(/* withWhereKeyword */ true)
                 + mOrderByClause.getOrderBy()
                 + (mLimit == null ? "" : LIMIT_SIZE + mLimit);
+    }
+
+    private String addPostJoinWhereClauses(String query) {
+        return query + mPostJoinWhereClauses.get(/* withWhereKeyword */ true);
     }
 
     private String appendFinalOrderByAndLimit(String query) {

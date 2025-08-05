@@ -93,6 +93,17 @@ public final class WhereClauses {
         return this;
     }
 
+    /** Adds a clause for a time column before a given time. */
+    public WhereClauses addWhereBeforeThanTimeClause(@Nullable String columnName, long endTime) {
+        if (endTime < 0 || columnName == null) {
+            return this;
+        }
+
+        mClauses.add(columnName + " < " + endTime);
+
+        return this;
+    }
+
     public WhereClauses addWhereInClause(String columnName, List<String> values) {
         if (values == null || values.isEmpty()) return this;
 

@@ -24,6 +24,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.storage.utils.OrderByClause;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
+import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -262,9 +263,10 @@ public class ReadTableRequestTest {
         assertThat(request.getReadCommand())
                 .isEqualTo(
                         "SELECT * FROM ( SELECT * FROM tableName ORDER BY columnName1 LIMIT 4 ) AS"
-                            + " inner_query_result  INNER JOIN otherTableName ON"
-                            + " inner_query_result.selfColumn = otherTableName.otherColumn ORDER BY"
-                            + " columnName2 LIMIT 5");
+                                + " inner_query_result  INNER JOIN otherTableName ON"
+                                + " inner_query_result.selfColumn = otherTableName.otherColumn "
+                                + "ORDER BY"
+                                + " columnName2 LIMIT 5");
     }
 
     @Test
@@ -305,5 +307,60 @@ public class ReadTableRequestTest {
                 .isEqualTo(
                         "SELECT COUNT(*) FROM (SELECT * FROM (SELECT col FROM otherTableName) UNION"
                                 + " ALL SELECT col FROM tableName)");
+    }
+
+    @Test
+    public void testGetReadCommand_joinClauseWithPostJoinWhereClause() {
+        WhereClauses finalWhereClause = new WhereClauses(WhereClauses.LogicalOperator.AND);
+        finalWhereClause.addWhereEqualsClause("someOtherColumn", "someValue");
+        ReadTableRequest request =
+                new ReadTableRequest("tableName")
+                        .setJoinClause(
+                                new SqlJoin(
+                                        "tableName", "otherTableName", "selfColumn", "otherColumn"))
+                        .setPostJoinWhereClause(finalWhereClause);
+
+        assertThat(request.getReadCommand())
+                .isEqualTo(
+                        "SELECT * FROM ( SELECT * FROM tableName ) AS inner_query_result  INNER "
+                                + "JOIN otherTableName ON inner_query_result.selfColumn = "
+                                + "otherTableName.otherColumn WHERE someOtherColumn = 'someValue'");
+    }
+
+    @Test
+    public void testGetReadCommand_joinClauseWithBothWhereClauses() {
+        WhereClauses whereClause = new WhereClauses(WhereClauses.LogicalOperator.AND);
+        whereClause.addWhereEqualsClause("someColumn", "someValue");
+        WhereClauses finalWhereClause = new WhereClauses(WhereClauses.LogicalOperator.AND);
+        finalWhereClause.addWhereEqualsClause("someOtherColumn", "otherValue");
+        ReadTableRequest request =
+                new ReadTableRequest("tableName")
+                        .setWhereClause(whereClause)
+                        .setJoinClause(
+                                new SqlJoin(
+                                        "tableName", "otherTableName", "selfColumn", "otherColumn"))
+                        .setPostJoinWhereClause(finalWhereClause);
+
+        assertThat(request.getReadCommand())
+                .isEqualTo(
+                        "SELECT * FROM ( SELECT * FROM tableName WHERE someColumn = 'someValue' )"
+                                + " AS inner_query_result  INNER JOIN otherTableName ON "
+                                + "inner_query_result.selfColumn = otherTableName.otherColumn "
+                                + "WHERE someOtherColumn = 'otherValue'");
+    }
+
+    @Test
+    public void testGetReadCommand_noJoinClauseWithBothWhereClauses() {
+        WhereClauses whereClause = new WhereClauses(WhereClauses.LogicalOperator.AND);
+        whereClause.addWhereEqualsClause("someColumn", "someValue");
+        WhereClauses finalWhereClause = new WhereClauses(WhereClauses.LogicalOperator.AND);
+        finalWhereClause.addWhereEqualsClause("someOtherColumn", "otherValue");
+        ReadTableRequest request =
+                new ReadTableRequest("tableName")
+                        .setWhereClause(whereClause)
+                        .setPostJoinWhereClause(finalWhereClause);
+
+        assertThat(request.getReadCommand())
+                .isEqualTo("SELECT * FROM tableName WHERE someColumn = 'someValue'");
     }
 }
