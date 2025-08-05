@@ -46,10 +46,6 @@ import com.android.healthconnect.controller.permissions.data.PermissionsAccessTy
 import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
-import com.android.healthconnect.controller.shared.app.AppPermissionsType
-import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
-import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
-import com.android.healthconnect.controller.tests.permissions.connectedapps.wear.WearAllDataTypesScreenTest.AppConnectionsAndRecentAccess
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TestComposeActivity
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionAppsUseCase
@@ -301,7 +297,12 @@ class WearPerDataTypeScreenTest {
                     ),
             )
 
-        setupConnectedApps(listOf(app1, app2, app3, app4, app5))
+        setupConnectedApps(
+            listOf(app1, app2, app3, app4, app5),
+            loadHealthPermissionApps,
+            loadAppPermissionsStatusUseCase,
+            loadRecentAccessUseCase,
+        )
 
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
@@ -470,7 +471,12 @@ class WearPerDataTypeScreenTest {
                     ),
             )
 
-        setupConnectedApps(listOf(app1, app2, app3, app4, app5))
+        setupConnectedApps(
+            listOf(app1, app2, app3, app4, app5),
+            loadHealthPermissionApps,
+            loadAppPermissionsStatusUseCase,
+            loadRecentAccessUseCase,
+        )
 
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
@@ -567,7 +573,12 @@ class WearPerDataTypeScreenTest {
                     ),
             )
 
-        setupConnectedApps(listOf(app1, app2))
+        setupConnectedApps(
+            listOf(app1, app2),
+            loadHealthPermissionApps,
+            loadAppPermissionsStatusUseCase,
+            loadRecentAccessUseCase,
+        )
 
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
@@ -637,7 +648,12 @@ class WearPerDataTypeScreenTest {
                 recentAccess = listOf(),
             )
 
-        setupConnectedApps(listOf(app1, app2))
+        setupConnectedApps(
+            listOf(app1, app2),
+            loadHealthPermissionApps,
+            loadAppPermissionsStatusUseCase,
+            loadRecentAccessUseCase,
+        )
 
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
@@ -687,7 +703,12 @@ class WearPerDataTypeScreenTest {
                 recentAccess = listOf(),
             )
 
-        setupConnectedApps(listOf(app1))
+        setupConnectedApps(
+            listOf(app1),
+            loadHealthPermissionApps,
+            loadAppPermissionsStatusUseCase,
+            loadRecentAccessUseCase,
+        )
 
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
@@ -744,7 +765,12 @@ class WearPerDataTypeScreenTest {
                 recentAccess = listOf(),
             )
 
-        setupConnectedApps(listOf(app1))
+        setupConnectedApps(
+            listOf(app1),
+            loadHealthPermissionApps,
+            loadAppPermissionsStatusUseCase,
+            loadRecentAccessUseCase,
+        )
 
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
@@ -780,27 +806,5 @@ class WearPerDataTypeScreenTest {
             )
         composeTestRule.onNodeWithText("Not allowed").assertDoesNotExist()
         listChildren[4].performScrollTo().assert(hasText("Show system"))
-    }
-
-    private fun setupConnectedApps(apps: List<AppConnectionsAndRecentAccess>) {
-        apps.forEach {
-            val connectedAppMetadata =
-                ConnectedAppMetadata(
-                    appMetadata = it.appMetadata,
-                    status =
-                        if (it.permissionStatus.any { permission -> permission.isGranted })
-                            ConnectedAppStatus.ALLOWED
-                        else ConnectedAppStatus.DENIED,
-                    permissionsType = AppPermissionsType.FITNESS_PERMISSIONS_ONLY,
-                    healthUsageLastAccess =
-                        it.recentAccess.maxOfOrNull { accessLog -> accessLog.accessTime },
-                )
-            (loadHealthPermissionApps as FakeHealthPermissionAppsUseCase).addToList(
-                connectedAppMetadata
-            )
-            (loadAppPermissionsStatusUseCase as FakeLoadAppPermissionsStatusUseCase)
-                .updatePackageName(it.appMetadata.packageName, permissions = it.permissionStatus)
-            (loadRecentAccessUseCase as FakeRecentAccessUseCase).addToList(it.recentAccess)
-        }
     }
 }
