@@ -148,6 +148,9 @@ public class HealthConnectManagerService extends SystemService {
         if (Flags.onboarding()) {
             OnboardingNotificationJob.cancelAllJobs(mContext);
         }
+        if (Flags.latencyMetricsFlag()) {
+            mHealthConnectInjector.getDataQualityTelemetryJobScheduler().cancelAllJobs();
+        }
         mHealthConnectInjector.getDatabaseHelpers().clearAllCache();
         mHealthConnectInjector.getTransactionManager().shutDownCurrentUser();
         mHealthConnectInjector.getMigrationStateManager().shutDownCurrentUser(mContext);

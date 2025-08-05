@@ -39,10 +39,12 @@ import java.util.concurrent.TimeUnit;
  * @hide
  */
 public final class DataQualityTelemetryJobScheduler {
+    @VisibleForTesting
+    public static final String HC_DATA_QUALITY_TELEMETRY_JOBS_NAMESPACE =
+            "HC_DATA_QUALITY_TELEMETRY_JOBS_NAMESPACE";
+
     private static final String TAG = "DataQualityTelemetryJobScheduler";
     private static final int MIN_JOB_ID = DataQualityTelemetryJobScheduler.class.hashCode();
-    private static final String HC_DATA_QUALITY_TELEMETRY_JOBS_NAMESPACE =
-            "HC_DATA_QUALITY_TELEMETRY_JOBS_NAMESPACE";
     @VisibleForTesting static final long JOB_RUN_INTERVAL = TimeUnit.DAYS.toMillis(7);
     @VisibleForTesting static final long JOB_FLEX_INTERVAL = TimeUnit.DAYS.toMillis(1);
 

@@ -16,9 +16,11 @@
 
 package com.android.server.healthconnect;
 
+import static com.android.healthfitness.flags.Flags.FLAG_LATENCY_METRICS_FLAG;
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.BackupRestoreJobService.BACKUP_RESTORE_JOBS_NAMESPACE;
 import static com.android.server.healthconnect.onboarding.OnboardingNotificationJob.ONBOARDING_NOTIFICATION_JOB_NAMESPACE;
+import static com.android.server.healthconnect.telemetry.dataquality.DataQualityTelemetryJobScheduler.HC_DATA_QUALITY_TELEMETRY_JOBS_NAMESPACE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -32,6 +34,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -83,6 +86,7 @@ public class HealthConnectManagerServiceTest {
     @Mock private JobScheduler mMigrationJobScheduler;
     @Mock private JobScheduler mBackupRestoreJobScheduler;
     @Mock private JobScheduler mOnboardingNotificationJobScheduler;
+    @Mock private JobScheduler mDataQualityTelemetryJobScheduler;
     @Mock private UserManager mUserManager;
     @Mock private PackageManager mPackageManager;
     @Mock private PermissionManager mPermissionManager;
@@ -100,6 +104,8 @@ public class HealthConnectManagerServiceTest {
                 .thenReturn(mBackupRestoreJobScheduler);
         when(mMainJobScheduler.forNamespace(ONBOARDING_NOTIFICATION_JOB_NAMESPACE))
                 .thenReturn(mOnboardingNotificationJobScheduler);
+        when(mMainJobScheduler.forNamespace(HC_DATA_QUALITY_TELEMETRY_JOBS_NAMESPACE))
+                .thenReturn(mDataQualityTelemetryJobScheduler);
         PermissionGroupInfo permissionGroupInfo = new PermissionGroupInfo();
         permissionGroupInfo.packageName = "test";
         PackageInfo mockPackageInfo = new PackageInfo();
@@ -148,28 +154,32 @@ public class HealthConnectManagerServiceTest {
     }
 
     @Test
-    public void testUserSwitch_userLocked() {
+    @EnableFlags({FLAG_ONBOARDING, FLAG_LATENCY_METRICS_FLAG})
+    public void testUserSwitch_jobsCancelled() {
         HealthConnectManagerService service = makeServiceWithTemporaryDir();
-        when(mUserManager.isUserUnlocked(any())).thenReturn(false);
+        when(mUserManager.isUserUnlocked(any(UserHandle.class))).thenReturn(false);
 
         service.onUserSwitching(mMockTargetUser, mMockTargetUser);
 
-        verify(mDailyJobScheduler, times(1)).cancelAll();
-        verify(mMigrationJobScheduler, times(1)).cancelAll();
+        verify(mDailyJobScheduler).cancelAll();
+        verify(mMigrationJobScheduler).cancelAll();
+        verify(mOnboardingNotificationJobScheduler).cancelAll();
+        verify(mDataQualityTelemetryJobScheduler).cancelAll();
     }
 
     @Test
-    @EnableFlags(FLAG_ONBOARDING)
+    @EnableFlags({FLAG_ONBOARDING, FLAG_LATENCY_METRICS_FLAG})
     public void testUserSwitch_userUnlocked() {
         HealthConnectManagerService service = makeServiceWithTemporaryDir();
-        when(mUserManager.isUserUnlocked(any())).thenReturn(true);
+        when(mUserManager.isUserUnlocked(any(UserHandle.class))).thenReturn(true);
 
         service.onUserSwitching(mMockTargetUser, mMockTargetUser);
 
-        verify(mDailyJobScheduler, times(1)).cancelAll();
-        verify(mDailyJobScheduler, timeout(5000).times(1)).schedule(any());
-        verify(mBackupRestoreJobScheduler, times(1)).cancelAll();
-        verify(mOnboardingNotificationJobScheduler, times(1)).cancelAll();
+        verify(mDailyJobScheduler).cancelAll();
+        verify(mDailyJobScheduler, timeout(5000)).schedule(any(JobInfo.class));
+        verify(mBackupRestoreJobScheduler).cancelAll();
+        verify(mOnboardingNotificationJobScheduler).cancelAll();
+        verify(mDataQualityTelemetryJobScheduler).cancelAll();
     }
 
     @Test
@@ -179,6 +189,15 @@ public class HealthConnectManagerServiceTest {
 
         service.onUserSwitching(mMockTargetUser, mMockTargetUser);
         verify(mOnboardingNotificationJobScheduler, never()).cancelAll();
+    }
+
+    @Test
+    @DisableFlags(FLAG_LATENCY_METRICS_FLAG)
+    public void testUserSwitch_latencyFlagDisabled_notCancelJob() {
+        HealthConnectManagerService service = makeServiceWithTemporaryDir();
+
+        service.onUserSwitching(mMockTargetUser, mMockTargetUser);
+        verify(mDataQualityTelemetryJobScheduler, never()).cancelAll();
     }
 
     @Test
