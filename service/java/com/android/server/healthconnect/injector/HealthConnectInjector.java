@@ -78,6 +78,7 @@ import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.telemetry.dataquality.CompletenessStatsCollector;
 import com.android.server.healthconnect.telemetry.dataquality.CompletenessStatsLogger;
 import com.android.server.healthconnect.telemetry.dataquality.DataQualityTelemetryJobScheduler;
 import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsCollector;
@@ -416,6 +417,12 @@ public abstract class HealthConnectInjector {
      * Connect Injector.
      */
     public abstract DataQualityTelemetryJobScheduler getDataQualityTelemetryJobScheduler();
+
+    /**
+     * Getter for {@link CompletenessStatsCollector} instance initialised by the Health Connect
+     * Injector.
+     */
+    public abstract CompletenessStatsCollector getCompletenessStatsCollector();
 
     /** Used to initialize the Injector. */
     public static void setInstance(HealthConnectInjector healthConnectInjector) {

@@ -50,16 +50,23 @@ public final class DataQualityTelemetryJobScheduler {
 
     private final Context mContext;
     private final LatencyMetricsLogger mLatencyMetricsLogger;
+    private final CompletenessStatsCollector mCompletenessStatsCollector;
+    private final CompletenessStatsLogger mCompletenessStatsLogger;
 
     public DataQualityTelemetryJobScheduler(
-            Context context, LatencyMetricsLogger latencyMetricsLogger) {
+            Context context,
+            LatencyMetricsLogger latencyMetricsLogger,
+            CompletenessStatsCollector completenessStatsCollector,
+            CompletenessStatsLogger completenessStatsLogger) {
         mContext = context;
         mLatencyMetricsLogger = latencyMetricsLogger;
+        mCompletenessStatsCollector = completenessStatsCollector;
+        mCompletenessStatsLogger = completenessStatsLogger;
     }
 
     /** Schedule the weekly job */
     public void schedule() {
-        if (!Flags.latencyMetricsFlag()) {
+        if (!Flags.latencyMetricsFlag() && !Flags.dataCompleteness()) {
             return;
         }
         JobScheduler jobScheduler =
@@ -82,7 +89,12 @@ public final class DataQualityTelemetryJobScheduler {
 
     /** Uploads critical weekly metrics. */
     public void execute() {
-        logLatencyMetrics();
+        if (Flags.latencyMetricsFlag()) {
+            logLatencyMetrics();
+        }
+        if (Flags.dataCompleteness()) {
+            logCompletenessStats();
+        }
     }
 
     private JobInfo getJobInfo(int userId) {
@@ -102,6 +114,15 @@ public final class DataQualityTelemetryJobScheduler {
             mLatencyMetricsLogger.log();
         } catch (Exception exception) {
             Slog.e(TAG, "Failed to log latency metrics", exception);
+        }
+    }
+
+    private void logCompletenessStats() {
+        try {
+            mCompletenessStatsLogger.logRecordingMethodStats(
+                    mCompletenessStatsCollector.readRecordingMethodStats());
+        } catch (Exception exception) {
+            Slog.e(TAG, "Failed to log recording method stats", exception);
         }
     }
 }
