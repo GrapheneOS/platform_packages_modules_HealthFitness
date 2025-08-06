@@ -53,6 +53,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RunWith(JUnit4.class)
 public class CompletenessStatsLoggerTest {
     private static final String TEST_PACKAGE = "test.package";
@@ -76,37 +79,43 @@ public class CompletenessStatsLoggerTest {
 
     @Test
     @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
-    public void logRecordingMethodStat_flagEnabled_logged() {
+    public void logRecordingMethodStats_flagEnabled_logged() {
+        List<CompletenessStatsCollector.RecordingMethodStat> stats = new ArrayList<>();
         for (DataTypeDescriptor descriptor : DataTypeDescriptors.getAllDataTypeDescriptors()) {
             @RecordTypeIdentifier.RecordType int recordType = descriptor.getRecordTypeIdentifier();
             for (int recordingMethod : Metadata.VALID_TYPES) {
-                mCompletenessStatsLogger.logRecordingMethodStat(
-                        TEST_PACKAGE, recordType, recordingMethod);
-
-                verify(mHealthFitnessStatsLog)
-                        .write(
-                                HEALTH_CONNECT_RECORDING_METHOD_STATS,
-                                TEST_PACKAGE,
-                                getLoggedRecordTypeId(recordType),
-                                recordingMethod);
+                stats.add(
+                        new CompletenessStatsCollector.RecordingMethodStat(
+                                TEST_PACKAGE, recordType, recordingMethod));
             }
+        }
+
+        mCompletenessStatsLogger.logRecordingMethodStats(stats);
+
+        for (CompletenessStatsCollector.RecordingMethodStat stat : stats) {
+            verify(mHealthFitnessStatsLog)
+                    .write(
+                            HEALTH_CONNECT_RECORDING_METHOD_STATS,
+                            TEST_PACKAGE,
+                            getLoggedRecordTypeId(stat.recordTypeId()),
+                            stat.recordingMethod());
         }
     }
 
     @Test
     @DisableFlags(Flags.FLAG_DATA_COMPLETENESS)
-    public void logRecordingMethodStat_flagDisabled_noOp() {
+    public void logRecordingMethodStats_flagDisabled_noOp() {
+        List<CompletenessStatsCollector.RecordingMethodStat> stats = new ArrayList<>();
         for (int recordingMethod : Metadata.VALID_TYPES) {
-            mCompletenessStatsLogger.logRecordingMethodStat(
-                    TEST_PACKAGE, RECORD_TYPE_STEPS, recordingMethod);
-
-            verify(mHealthFitnessStatsLog, never())
-                    .write(
-                            eq(HEALTH_CONNECT_RECORDING_METHOD_STATS),
-                            anyString(),
-                            anyInt(),
-                            anyInt());
+            stats.add(
+                    new CompletenessStatsCollector.RecordingMethodStat(
+                            TEST_PACKAGE, RECORD_TYPE_STEPS, recordingMethod));
         }
+
+        mCompletenessStatsLogger.logRecordingMethodStats(stats);
+
+        verify(mHealthFitnessStatsLog, never())
+                .write(eq(HEALTH_CONNECT_RECORDING_METHOD_STATS), anyString(), anyInt(), anyInt());
     }
 
     @Test

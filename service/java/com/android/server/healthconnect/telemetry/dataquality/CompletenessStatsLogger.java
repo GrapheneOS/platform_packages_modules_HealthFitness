@@ -27,6 +27,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 
+import java.util.List;
+
 /**
  * Logs Health Connect data completeness stats. Including recording method and device info.
  *
@@ -41,13 +43,19 @@ public final class CompletenessStatsLogger {
         mHealthFitnessStatsLog = healthFitnessStatsLog;
     }
 
-    void logRecordingMethodStat(
-            String packageName,
-            @RecordTypeIdentifier.RecordType int recordTypeId,
-            @Metadata.RecordingMethod int recordingMethod) {
+    void logRecordingMethodStats(List<CompletenessStatsCollector.RecordingMethodStat> stats) {
         if (!dataCompleteness()) {
             return;
         }
+        for (CompletenessStatsCollector.RecordingMethodStat stat : stats) {
+            logRecordingMethodStat(stat.packageName(), stat.recordTypeId(), stat.recordingMethod());
+        }
+    }
+
+    private void logRecordingMethodStat(
+            String packageName,
+            @RecordTypeIdentifier.RecordType int recordTypeId,
+            @Metadata.RecordingMethod int recordingMethod) {
         mHealthFitnessStatsLog.write(
                 HEALTH_CONNECT_RECORDING_METHOD_STATS,
                 packageName,

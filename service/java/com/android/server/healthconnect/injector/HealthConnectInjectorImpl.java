@@ -95,6 +95,7 @@ import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.telemetry.dataquality.CompletenessStatsCollector;
 import com.android.server.healthconnect.telemetry.dataquality.CompletenessStatsLogger;
 import com.android.server.healthconnect.telemetry.dataquality.DataQualityTelemetryJobScheduler;
 import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsCollector;
@@ -920,7 +921,16 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
 
     @Override
     public DataQualityTelemetryJobScheduler getDataQualityTelemetryJobScheduler() {
-        return new DataQualityTelemetryJobScheduler(mBuilder.mContext, mLatencyMetricsLogger);
+        return new DataQualityTelemetryJobScheduler(
+                mBuilder.mContext,
+                mLatencyMetricsLogger,
+                getCompletenessStatsCollector(),
+                mCompletenessStatsLogger);
+    }
+
+    @Override
+    public CompletenessStatsCollector getCompletenessStatsCollector() {
+        return new CompletenessStatsCollector();
     }
 
     /**
