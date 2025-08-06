@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Zgjidh të dhënat që dëshiron që ky aplikacion të shkruajë te Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Zgjidh të dhënat që dëshiron që ky aplikacion të lexojë ose të shkruajë te Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Zgjidh të dhënat që dëshiron që ky aplikacion të lexojë nga Health Connect"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Nëse i jep qasje për të lexuar, aplikacioni mund të lexojë të dhëna të reja dhe të dhëna nga 30 ditët e fundit"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Nëse i jep qasje për të lexuar, aplikacioni mund të lexojë të dhënat e reja dhe të kaluara"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Të lejohet <xliff:g id="APP_NAME">%1$s</xliff:g> që të ketë qasje në Health Connect?"</string>
@@ -488,7 +502,7 @@
     <string name="next_export_time" msgid="3138247220014510213">"Eksportimi i radhës: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Eksportimi i radhës do të fillojë së shpejti"</string>
     <string name="cloud_backup_option" msgid="2602990573804189525">"Rezervo"</string>
-    <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Rezervo dhe restauro"</string>
+    <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Rezervimi dhe restaurimi"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Eksportimi i fundit: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Eksportimi i fundit: tani"</string>
     <string name="last_export_time_minutes_ago" msgid="5279296486877765961">"{count,plural, =1{Eksportimi i fundit: 1 minutë më parë}other{Eksportimi i fundit: # minuta më parë}}"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Përpara se të vazhdosh me restaurimin e të dhënave, përditëso sistemin e telefonit."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Përditëso tani"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Totalet e të dhënave"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"Burimet e të dhënave"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"Shto burimet e të dhënave në listë për të parë se si mund të ndryshojnë totalet e të dhënave. Heqja e një burimi të dhënash nga kjo listë do të ndalojë kontribuimin e tij në totale, por ai do të ketë ende leje për të shkruar."</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"Nuk ka asnjë burim të dhënash"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Pasi t\'i japësh një burimi të dhënash leje për të shkruar të dhëna në kategorinë \"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>\", burimet do të shfaqen këtu."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Si funksionojnë burimet dhe dhënia e përparësisë"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"Shto një burim të dhënash"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"Modifiko burimet e të dhënave"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Parazgjedhja e pajisjes"</string>
     <string name="move_up" msgid="9136155291380319606">"Zhvendos lart"</string>
     <string name="move_down" msgid="4404970288236170693">"Zhvendos poshtë"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"Informacionet e pajisjes"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Të dhënat e mbledhura nga kjo pajisje do të ruhen në Health Connect, ku aplikacionet e lidhura do të kenë qasje në to"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"I lejohet të shkruajë"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>

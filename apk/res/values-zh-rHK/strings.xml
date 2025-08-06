@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"選擇你希望此應用程式寫入「健康資料同步」的資料"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"選擇你希望此應用程式讀取或寫入「健康資料同步」的資料"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"選擇你希望此應用程式讀取的「健康資料同步」資料"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"如果授予讀取權限，應用程式可讀取新資料和過去 30 天內的資料"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"如果授予讀取權限，應用程式可讀取新資料和過去的資料"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取「健康資料同步」嗎？"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"需要先更新手機系統，才能繼續還原資料。"</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"立即更新"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"資料總數"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"資料來源"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"在清單中新增資料來源，即可查看資料總數的變化。從此清單中移除某個資料來源後，相關資料就不會計入總數，但該來源仍有寫入權限。"</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"沒有資料來源"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"當你向資料來源授予寫入<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>資料的權限後，來源就會在這裡顯示。"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"來源和優先次序的運作方式"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"新增資料來源"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"編輯資料來源"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"裝置預設設定"</string>
     <string name="move_up" msgid="9136155291380319606">"向上移"</string>
     <string name="move_down" msgid="4404970288236170693">"向下移"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"裝置資訊"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"此裝置收集的資料會儲存於「健康資料同步」，然後連結的應用程式會在「健康資料同步」中存取有關資料"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"允許寫入"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>

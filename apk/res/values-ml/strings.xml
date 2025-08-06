@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connect-ൽ ഈ ആപ്പ് റൈറ്റ് ചെയ്യാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Health Connect-ൽ നിന്ന് ഈ ആപ്പ് റീഡ് ചെയ്യണമെന്നോ റൈറ്റ് ചെയ്യണമെന്നോ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect-ൽ നിന്ന് ഈ ആപ്പ് റീഡ് ചെയ്യാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"നിങ്ങൾ റീഡ് ചെയ്യാനുള്ള ആക്‌സസ് നൽകിയാൽ, പുതിയ ഡാറ്റയും കഴിഞ്ഞ 30 ദിവസത്തെ ഡാറ്റയും ആപ്പിന് റീഡ് ചെയ്യാനാകും"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"നിങ്ങൾ റീഡ് ആക്‌സസ് നൽകിയാൽ, പുതിയ ഡാറ്റയും മുമ്പത്തെ ഡാറ്റയും ആപ്പിന് റീഡ് ചെയ്യാനാകും"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Health Connect ആക്‌സസ് ചെയ്യാൻ <xliff:g id="APP_NAME">%1$s</xliff:g> ആപ്പിനെ അനുവദിക്കണോ?"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"നിങ്ങളുടെ ഡാറ്റ പുനഃസ്ഥാപിക്കുന്നത് തുടരുന്നതിന് മുമ്പ്, നിങ്ങളുടെ ഫോൺ സിസ്റ്റം അപ്ഡേറ്റ് ചെയ്യുക."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"ഇപ്പോൾ അപ്ഡേറ്റ് ചെയ്യുക"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ഡാറ്റയുടെ ആകെത്തുക"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"ഡാറ്റാ ഉറവിടങ്ങൾ"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"ഡാറ്റാ ടോട്ടലുകൾ എങ്ങനെ മാറുമെന്ന് കാണാൻ ലിസ്റ്റിലേക്ക് ഡാറ്റാ ഉറവിടങ്ങൾ ചേർക്കുക. ഈ ലിസ്റ്റിൽ നിന്ന് ഒരു ഡാറ്റാ ഉറവിടം നീക്കം ചെയ്യുന്നത്, ഡാറ്റാ ടോട്ടലിലേക്ക് സംഭാവന ചെയ്യുന്നതിൽ നിന്ന് അതിനെ തടയും, എന്നാൽ അതിന് തുടർന്നും റൈറ്റ് അനുമതികൾ ഉണ്ടായിരിക്കും."</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"ഡാറ്റാ ഉറവിടങ്ങളൊന്നുമില്ല"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"ഒരു ഡാറ്റാ ഉറവിടത്തിന് <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ഡാറ്റ റൈറ്റ് ചെയ്യാൻ അനുമതി നൽകിക്കഴിഞ്ഞാൽ, ഉറവിടങ്ങൾ ഇവിടെ കാണിക്കും."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ഉറവിടങ്ങളും മുൻഗണനകളും എങ്ങനെ പ്രവർത്തിക്കുന്നു"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"ഒരു ഡാറ്റാ ഉറവിടം ചേർക്കുക"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"ഡാറ്റാ ഉറവിടങ്ങൾ എഡിറ്റ് ചെയ്യുക"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"ഉപകരണത്തിൽ ഡിഫോൾട്ടായുള്ളത്"</string>
     <string name="move_up" msgid="9136155291380319606">"മുകളിലേക്ക് നീക്കുക"</string>
     <string name="move_down" msgid="4404970288236170693">"താഴേക്ക് നീക്കുക"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"ഉപകരണ വിവരങ്ങൾ"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"ഈ ഉപകരണം ശേഖരിക്കുന്ന ഡാറ്റ Health Connect-ൽ സംഭരിക്കും, അവിടെ കണക്റ്റ് ചെയ്ത ആപ്പുകൾ അത് ആക്സസ് ചെയ്യും"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"റൈറ്റ് ചെയ്യാൻ അനുവാദമുള്ളവ"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>

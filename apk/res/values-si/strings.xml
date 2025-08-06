@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"ඔබට මෙම යෙදුම Health Connect වෙත ලිවීමට අවශ්‍ය දත්ත තෝරා ගන්න"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"ඔබට මෙම යෙදුම Health Connect වෙත කියවීමට හෝ ලිවීමට අවශ්‍ය දත්ත තෝරන්න"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect වෙතින් ඔබට මෙම යෙදුම කියවීමට අවශ්‍ය දත්ත තෝරා ගන්න"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"ඔබ කියවීම් ප්‍රවේශය ලබා දෙන්නේ නම්, යෙදුමට පසුගිය දින 30 සිට නව දත්ත සහ දත්ත කියවිය හැක"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"ඔබ කියවීමට ප්‍රවේශය ලබා දෙන්නේ නම්, යෙදුමට නව සහ අතීත දත්ත කියවිය හැක"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> හට Health Connect වෙත ප්‍රවේශ වීමට ඉඩ දෙන්නද?"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"ඔබේ දත්ත ප්‍රතිසාධනය කරගෙන යාමට පෙර, ඔබේ දුරකථන පද්ධතිය යාවත්කාලීන කරන්න."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"දැන් යාවත්කාලීන කරන්න"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"දත්ත එකතු"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"දත්ත මූලාශ්‍ර"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"දත්ත එකතුව වෙනස් විය හැකි ආකාරය බැලීමට ලැයිස්තුවට දත්ත මූලාශ්‍ර එක් කරන්න. මෙම ලැයිස්තුවෙන් දත්ත මූලාශ්‍රයක් ඉවත් කිරීමෙන් එය එකතුවට දායක වීම නවත්වනු ඇත, නමුත් එයට තවමත් ලිවීමේ අවසර ඇත."</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"දත්ත මූලාශ්‍ර නොමැත"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"ඔබ දත්ත මූලාශ්‍රයකට දත්ත ලිවීමට <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> අවසර දුන් පසු, මූලාශ්‍ර මෙහි පෙන්වනු ඇත."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"මූලාශ්‍ර සහ ප්‍රමුඛතා දීම ක්‍රියා කරන ආකාරය"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"දත්ත මූලාශ්‍රයක් එක් කරන්න"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"දත්ත මූලාශ්‍ර සංස්කරණය කරන්න"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"උපාංගයේ පෙරනිමිය"</string>
     <string name="move_up" msgid="9136155291380319606">"ඉහළට ගෙන යන්න"</string>
     <string name="move_down" msgid="4404970288236170693">"පහළට ගෙන යන්න"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"උපාංග තතු"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"මෙම උපාංගය මගින් රැස් කරන ලද දත්ත Health Connect හි ගබඩා කරනු ලබන අතර, එහි දී සම්බන්ධිත යෙදුම් එයට ප්‍රවේශ වනු ඇත"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"ලිවීමට ඉඩ දුන්නා"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>

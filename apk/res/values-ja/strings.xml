@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"このアプリにヘルスコネクトへの書き込みを許可するデータを選択できます"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"このアプリにヘルスコネクトでの読み取りまたは書き込みを許可するデータを選択します"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"このアプリにヘルスコネクトからの読み取りを許可するデータを選択できます"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"読み取りアクセス権を付与すると、このアプリは新規データと過去 30 日間のデータを読み取れるようになります"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"読み取りアクセス権を付与すると、このアプリは新規データと過去のデータを読み取れるようになります"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> にヘルスコネクトへのアクセスを許可しますか？"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"データの復元を続行する前に、スマートフォンのシステムを更新してください。"</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"今すぐ更新"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"データの合計"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"データソース"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"データソースをリストに追加すると、データの合計がどのように変わるかを確認できます。このリストからデータソースを削除すると、合計には加算されなくなりますが、書き込み権限は付与されたままになります。"</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"データソースなし"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>のデータを書き込む権限をデータソースに付与すると、ソースがここに表示されます。"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ソースと優先度の仕組み"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"データソースを追加する"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"データソースを編集"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"デバイスのデフォルト"</string>
     <string name="move_up" msgid="9136155291380319606">"上に移動"</string>
     <string name="move_down" msgid="4404970288236170693">"下に移動"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"デバイス情報"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"このデバイスで収集されたデータはヘルスコネクトに保存され、接続されているアプリがアクセスできるようになります"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"書き込みの許可"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>

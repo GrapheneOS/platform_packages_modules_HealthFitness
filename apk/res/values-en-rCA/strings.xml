@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Choose data you want this app to write to Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Choose data you want this app to read or write to Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Choose data you want this app to read from Health Connect"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"If you give read access, the app can read new data and data from the past 30 days"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"If you give read access, the app can read new and past data"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Allow <xliff:g id="APP_NAME">%1$s</xliff:g> to access Health Connect?"</string>
@@ -1266,4 +1280,7 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"Device info"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Data collected by this device will be stored in Health Connect, where connected apps will access it"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Allowed to write"</string>
+    <string name="device_data_screen_title" msgid="2443821236974714385">"Device data"</string>
+    <string name="device_data_label" msgid="2056618513138892435">"Manage device"</string>
+    <string name="device_data_button" msgid="8002406105399136401">"See device data"</string>
 </resources>

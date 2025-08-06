@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Vyberte data, která má tahle aplikace zapisovat do služby Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Vyberte data, která má tahle aplikace číst nebo zapisovat do služby Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Vyberte data, která má tahle aplikace číst ze služby Health Connect"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Pokud aplikaci udělíte přístup pro čtení, bude moct číst nová data a data z posledních 30 dnů"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Pokud aplikaci udělíte přístup pro čtení, bude moct číst nová i dřívější data"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup ke službě Health Connect?"</string>
@@ -1272,4 +1286,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"Informace o zařízení"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Data shromážděná tímto zařízením budou uložena v aplikaci Health Connect, kde k nim budou mít přístup připojené aplikace."</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Smí zapisovat"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>
