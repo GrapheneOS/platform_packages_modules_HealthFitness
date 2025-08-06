@@ -22,13 +22,16 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.ApplicationInfoFlags
 import android.content.pm.PackageManager.NameNotFoundException
+import android.provider.Settings
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.IGetContributorAppInfoUseCase
 import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PACKAGE_NAME
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
@@ -39,6 +42,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.stub
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
 private const val PACKAGE_NAME = "com.example.test"
 private const val STORED_LABEL = "Stored label"
@@ -53,6 +57,12 @@ class AppInfoReaderTest {
         mock<Context>() { on { getPackageManager() } doReturn mockPackageManager }
     private val getContributorAppInfoUseCase = FakeGetContributorAppInfoUseCase()
     private val appInfoReader = AppInfoReader(mockContext, getContributorAppInfoUseCase)
+
+    @Before
+    fun setup() {
+        whenever(mockContext.contentResolver)
+            .doReturn(InstrumentationRegistry.getInstrumentation().targetContext.contentResolver)
+    }
 
     @Test
     fun uninstalledApp_returnsMetadataFromStorage() = runBlocking {
@@ -131,6 +141,23 @@ class AppInfoReaderTest {
             verify(mockPackageManager, never()).getApplicationLabel(any())
             verify(mockPackageManager, never())
                 .getApplicationIcon(DEVICE_DATA_PROVIDER_PACKAGE_NAME)
+        }
+    }
+
+    @Test
+    fun deviceDataProviderPackage_returnsUpdatedDeviceName() {
+        runBlocking {
+            val oldMetaData = appInfoReader.getAppMetadata(DEVICE_DATA_PROVIDER_PACKAGE_NAME)
+            assertThat(oldMetaData.appName).isEqualTo(DEVICE_DATA_PROVIDER_LABEL)
+
+            Settings.Global.putString(
+                mockContext.contentResolver,
+                Settings.Global.DEVICE_NAME,
+                "A New Phone",
+            )
+
+            val newMetaData = appInfoReader.getAppMetadata(DEVICE_DATA_PROVIDER_PACKAGE_NAME)
+            assertThat(newMetaData.appName).isEqualTo("A New Phone")
         }
     }
 
