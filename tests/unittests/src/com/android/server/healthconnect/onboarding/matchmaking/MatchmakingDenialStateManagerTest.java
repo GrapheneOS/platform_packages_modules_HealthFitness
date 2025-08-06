@@ -15,6 +15,11 @@
  */
 package com.android.server.healthconnect.onboarding.matchmaking;
 
+import static android.health.connect.HealthDataCategory.ACTIVITY;
+import static android.health.connect.HealthDataCategory.SLEEP;
+
+import static com.android.server.healthconnect.onboarding.matchmaking.MatchmakingDenialStateManager.MAX_DENIALS_BEFORE_PAUSE;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -58,9 +63,26 @@ public class MatchmakingDenialStateManagerTest {
     private static final String PACKAGE_NAME = "com.example.app";
     private static final String PACKAGE_NAME_2 = "com.example.app2";
     private static final String PREFERENCE_KEY =
-            MatchmakingDenialStateManager.DENIAL_PREFERENCE_PREFIX + PACKAGE_NAME + "0";
+            String.join(
+                    "_",
+                    MatchmakingDenialStateManager.DENIAL_PREFERENCE_PREFIX,
+                    PACKAGE_NAME,
+                    String.valueOf(ACTIVITY),
+                    "0");
     private static final String PREFERENCE_KEY_2 =
-            MatchmakingDenialStateManager.DENIAL_PREFERENCE_PREFIX + PACKAGE_NAME_2 + "0";
+            String.join(
+                    "_",
+                    MatchmakingDenialStateManager.DENIAL_PREFERENCE_PREFIX,
+                    PACKAGE_NAME_2,
+                    String.valueOf(ACTIVITY),
+                    "0");
+    private static final String PREFERENCE_KEY_3 =
+            String.join(
+                    "_",
+                    MatchmakingDenialStateManager.DENIAL_PREFERENCE_PREFIX,
+                    PACKAGE_NAME,
+                    String.valueOf(SLEEP),
+                    "0");
 
     @Before
     public void setUp() {
@@ -80,24 +102,29 @@ public class MatchmakingDenialStateManagerTest {
     public void isMatchmakingPaused_noPreviousDenials_returnsFalse() {
         when(mPreferenceHelper.getPreference(anyString())).thenReturn(null);
 
-        assertThat(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME)).isFalse();
+        assertThat(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME, ACTIVITY))
+                .isFalse();
         verify(mPreferenceHelper, never()).insertOrReplacePreference(anyString(), anyString());
     }
 
     @Test
     public void isMatchmakingPaused_denialsBelowLimit_returnsFalse() {
-        String preferenceValue = new DenialState(4, Instant.now()).toPreferenceString();
+        String preferenceValue =
+                new DenialState(MAX_DENIALS_BEFORE_PAUSE - 1, Instant.now()).toPreferenceString();
         when(mPreferenceHelper.getPreference(anyString())).thenReturn(preferenceValue);
 
-        assertThat(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME)).isFalse();
+        assertThat(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME, ACTIVITY))
+                .isFalse();
     }
 
     @Test
     public void isMatchmakingPaused_denialsAtLimit_returnsTrue() {
-        String preferenceValue = new DenialState(5, Instant.now()).toPreferenceString();
+        String preferenceValue =
+                new DenialState(MAX_DENIALS_BEFORE_PAUSE, Instant.now()).toPreferenceString();
         when(mPreferenceHelper.getPreference(anyString())).thenReturn(preferenceValue);
 
-        assertThat(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME)).isTrue();
+        assertThat(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME, ACTIVITY))
+                .isTrue();
     }
 
     @Test
@@ -105,7 +132,8 @@ public class MatchmakingDenialStateManagerTest {
         String preferenceValue = new DenialState(0, Instant.EPOCH).toPreferenceString();
         when(mPreferenceHelper.getPreference(anyString())).thenReturn(preferenceValue);
 
-        assertThat(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME)).isFalse();
+        assertThat(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME, ACTIVITY))
+                .isFalse();
 
         verify(mPreferenceHelper, never()).insertOrReplacePreference(anyString(), anyString());
     }
@@ -113,10 +141,13 @@ public class MatchmakingDenialStateManagerTest {
     @Test
     public void isMatchmakingPaused_pauseExpired_resetsCounterAndReturnsFalse() {
         Instant expiredTimestamp = Instant.now().minus(40, ChronoUnit.DAYS);
-        String preferenceValue = new DenialState(10, expiredTimestamp).toPreferenceString();
+        String preferenceValue =
+                new DenialState(MAX_DENIALS_BEFORE_PAUSE + 5, expiredTimestamp)
+                        .toPreferenceString();
         when(mPreferenceHelper.getPreference(anyString())).thenReturn(preferenceValue);
 
-        assertThat(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME)).isFalse();
+        assertThat(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME, ACTIVITY))
+                .isFalse();
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(mPreferenceHelper).insertOrReplacePreference(eq(PREFERENCE_KEY), captor.capture());
@@ -126,10 +157,34 @@ public class MatchmakingDenialStateManagerTest {
     }
 
     @Test
+    public void isMatchmakingPaused_oneStateExpired_onlyResetsExpiredState() {
+        Instant expiredTimestamp = Instant.now().minus(40, ChronoUnit.DAYS);
+        String expiredStateValue =
+                new DenialState(MAX_DENIALS_BEFORE_PAUSE, expiredTimestamp).toPreferenceString();
+        when(mPreferenceHelper.getPreference(PREFERENCE_KEY)).thenReturn(expiredStateValue);
+        Instant activeTimestamp = Instant.now().minus(1, ChronoUnit.DAYS);
+        String activeStateValue =
+                new DenialState(MAX_DENIALS_BEFORE_PAUSE, activeTimestamp).toPreferenceString();
+        when(mPreferenceHelper.getPreference(PREFERENCE_KEY_3)).thenReturn(activeStateValue);
+
+        boolean isPaused =
+                mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME, ACTIVITY);
+
+        assertThat(isPaused).isFalse();
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        verify(mPreferenceHelper).insertOrReplacePreference(eq(PREFERENCE_KEY), captor.capture());
+        DenialState captured = DenialState.fromPreferenceString(captor.getValue());
+        assertThat(captured.denialCount()).isEqualTo(0);
+        assertThat(captured.pauseStartedTimestamp()).isEqualTo(Instant.EPOCH);
+        verify(mPreferenceHelper, never())
+                .insertOrReplacePreference(eq(PREFERENCE_KEY_3), anyString());
+    }
+
+    @Test
     public void recordMatchmakingDenial_noPreviousDenials_setsCounterToOne() {
         when(mPreferenceHelper.getPreference(anyString())).thenReturn(null);
 
-        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME);
+        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(mPreferenceHelper).insertOrReplacePreference(eq(PREFERENCE_KEY), captor.capture());
@@ -140,44 +195,47 @@ public class MatchmakingDenialStateManagerTest {
 
     @Test
     public void recordMatchmakingDenial_previousDenials_incrementsCounter() {
-        String preferenceValue = new DenialState(2, Instant.EPOCH).toPreferenceString();
-        when(mPreferenceHelper.getPreference(anyString())).thenReturn(preferenceValue);
+        String preferenceValue = new DenialState(0, Instant.EPOCH).toPreferenceString();
+        when(mPreferenceHelper.getPreference(PREFERENCE_KEY)).thenReturn(preferenceValue);
 
-        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME);
+        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(mPreferenceHelper).insertOrReplacePreference(eq(PREFERENCE_KEY), captor.capture());
         DenialState captured = DenialState.fromPreferenceString(captor.getValue());
-        assertThat(captured.denialCount()).isEqualTo(3);
+        assertThat(captured.denialCount()).isEqualTo(1);
         assertThat(captured.pauseStartedTimestamp()).isEqualTo(Instant.EPOCH);
     }
 
     @Test
     public void recordMatchmakingDenial_reachesLimit_updatesTimestamp() {
-        String preferenceValue = new DenialState(4, Instant.EPOCH).toPreferenceString();
-        when(mPreferenceHelper.getPreference(anyString())).thenReturn(preferenceValue);
+        String preferenceValue =
+                new DenialState(MAX_DENIALS_BEFORE_PAUSE - 1, Instant.EPOCH).toPreferenceString();
+        when(mPreferenceHelper.getPreference(PREFERENCE_KEY)).thenReturn(preferenceValue);
 
-        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME);
+        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(mPreferenceHelper).insertOrReplacePreference(eq(PREFERENCE_KEY), captor.capture());
         DenialState captured = DenialState.fromPreferenceString(captor.getValue());
-        assertThat(captured.denialCount()).isEqualTo(5);
+        assertThat(captured.denialCount()).isEqualTo(MAX_DENIALS_BEFORE_PAUSE);
         assertThat(captured.pauseStartedTimestamp()).isNotEqualTo(Instant.EPOCH);
     }
 
     @Test
     public void recordMatchmakingDenial_denialsAboveLimit_doesNotUpdateTimestamp() {
         Instant initialPauseTime = Instant.now().minus(Duration.ofDays(7));
-        String preferenceValue = new DenialState(5, initialPauseTime).toPreferenceString();
+        String preferenceValue =
+                new DenialState(MAX_DENIALS_BEFORE_PAUSE + 1, initialPauseTime)
+                        .toPreferenceString();
         when(mPreferenceHelper.getPreference(anyString())).thenReturn(preferenceValue);
 
-        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME);
+        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(mPreferenceHelper).insertOrReplacePreference(eq(PREFERENCE_KEY), captor.capture());
         DenialState captured = DenialState.fromPreferenceString(captor.getValue());
-        assertThat(captured.denialCount()).isEqualTo(6);
+        assertThat(captured.denialCount()).isEqualTo(MAX_DENIALS_BEFORE_PAUSE + 2);
         assertThat(captured.pauseStartedTimestamp())
                 .isEqualTo(initialPauseTime.truncatedTo(ChronoUnit.MILLIS));
     }
@@ -226,7 +284,7 @@ public class MatchmakingDenialStateManagerTest {
 
     @Test
     public void preferenceKey_isCreatedCorrectly() {
-        mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME);
+        mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME, ACTIVITY);
 
         verify(mPreferenceHelper).getPreference(eq(PREFERENCE_KEY));
     }
@@ -235,7 +293,7 @@ public class MatchmakingDenialStateManagerTest {
     public void recordMatchmakingDenial_forOnePackage_doesNotAffectOtherPackage() {
         when(mPreferenceHelper.getPreference(anyString())).thenReturn(null);
 
-        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME);
+        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
 
         verify(mPreferenceHelper).insertOrReplacePreference(eq(PREFERENCE_KEY), anyString());
         verify(mPreferenceHelper, never())
@@ -244,29 +302,31 @@ public class MatchmakingDenialStateManagerTest {
 
     @Test
     public void recordMatchmakingDenial_denialsAtLimitAndTimestampNotSet_setsTimestamp() {
-        String preferenceValue = new DenialState(4, Instant.EPOCH).toPreferenceString();
+        String preferenceValue =
+                new DenialState(MAX_DENIALS_BEFORE_PAUSE - 1, Instant.EPOCH).toPreferenceString();
         when(mPreferenceHelper.getPreference(anyString())).thenReturn(preferenceValue);
 
-        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME);
+        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(mPreferenceHelper).insertOrReplacePreference(eq(PREFERENCE_KEY), captor.capture());
         DenialState captured = DenialState.fromPreferenceString(captor.getValue());
-        assertThat(captured.denialCount()).isEqualTo(5);
+        assertThat(captured.denialCount()).isEqualTo(MAX_DENIALS_BEFORE_PAUSE);
         assertThat(captured.pauseStartedTimestamp()).isNotEqualTo(Instant.EPOCH);
     }
 
     @Test
     public void recordMatchmakingDenial_denialsAboveLimitAndTimestampNotSet_setsTimestamp() {
-        String preferenceValue = new DenialState(10, Instant.EPOCH).toPreferenceString();
+        String preferenceValue =
+                new DenialState(MAX_DENIALS_BEFORE_PAUSE + 5, Instant.EPOCH).toPreferenceString();
         when(mPreferenceHelper.getPreference(anyString())).thenReturn(preferenceValue);
 
-        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME);
+        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(mPreferenceHelper).insertOrReplacePreference(eq(PREFERENCE_KEY), captor.capture());
         DenialState captured = DenialState.fromPreferenceString(captor.getValue());
-        assertThat(captured.denialCount()).isEqualTo(11);
+        assertThat(captured.denialCount()).isEqualTo(MAX_DENIALS_BEFORE_PAUSE + 6);
         assertThat(captured.pauseStartedTimestamp()).isNotEqualTo(Instant.EPOCH);
     }
 
@@ -274,10 +334,38 @@ public class MatchmakingDenialStateManagerTest {
     public void recordMatchmakingDenial_forSecondPackage_doesNotAffectFirstPackage() {
         when(mPreferenceHelper.getPreference(anyString())).thenReturn(null);
 
-        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME_2);
+        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME_2, ACTIVITY);
 
         verify(mPreferenceHelper).insertOrReplacePreference(eq(PREFERENCE_KEY_2), anyString());
         verify(mPreferenceHelper, never())
                 .insertOrReplacePreference(eq(PREFERENCE_KEY), anyString());
+    }
+
+    @Test
+    public void recordMatchmakingDenial_forOneCategory_doesNotAffectOtherCategory() {
+        when(mPreferenceHelper.getPreference(anyString())).thenReturn(null);
+
+        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME, SLEEP);
+
+        verify(mPreferenceHelper).insertOrReplacePreference(eq(PREFERENCE_KEY_3), anyString());
+        verify(mPreferenceHelper, never())
+                .insertOrReplacePreference(eq(PREFERENCE_KEY), anyString());
+        verify(mPreferenceHelper, never())
+                .insertOrReplacePreference(eq(PREFERENCE_KEY_2), anyString());
+    }
+
+    @Test
+    public void recordMatchmakingDenial_twoDenials_triggersPauseAtCorrectLimit() {
+        when(mPreferenceHelper.getPreference(anyString())).thenReturn(null);
+        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
+
+        String preferenceValue = new DenialState(1, Instant.EPOCH).toPreferenceString();
+        when(mPreferenceHelper.getPreference(PREFERENCE_KEY)).thenReturn(preferenceValue);
+        mMatchmakingDenialStateManager.recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
+
+        preferenceValue = new DenialState(2, Instant.now()).toPreferenceString();
+        when(mPreferenceHelper.getPreference(PREFERENCE_KEY)).thenReturn(preferenceValue);
+        assertThat(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME, ACTIVITY))
+                .isTrue();
     }
 }
