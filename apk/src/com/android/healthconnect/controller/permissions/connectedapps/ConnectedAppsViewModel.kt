@@ -23,7 +23,7 @@ import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.searchapps.SearchHealthPermissionApps
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteAllDataUseCase
-import com.android.healthconnect.controller.shared.Constants
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.utils.postValueIfUpdated
@@ -88,12 +88,7 @@ constructor(
     fun loadConnectedApps() {
         viewModelScope.launch {
             _connectedApps.postValueIfUpdated(
-                loadHealthPermissionApps
-                    .invoke()
-                    .filterNot {
-                        it.appMetadata.packageName == Constants.DEVICE_DATA_PROVIDER_PACKAGE
-                    }
-                    .filterSystemApps()
+                loadHealthPermissionApps.invoke().filterUnwantedApps()
             )
         }
     }
@@ -102,7 +97,7 @@ constructor(
         viewModelScope.launch {
             _connectedApps.postValueIfUpdated(
                 searchHealthPermissionApps.search(
-                    loadHealthPermissionApps.invoke().filterSystemApps(),
+                    loadHealthPermissionApps.invoke().filterUnwantedApps(),
                     searchValue,
                 )
             )
@@ -132,6 +127,10 @@ constructor(
         viewModelScope.launch { deleteAllDataUseCase.invoke() }
     }
 
+    private fun List<ConnectedAppMetadata>.filterUnwantedApps(): List<ConnectedAppMetadata> {
+        return this.filterSystemApps().filterDevices()
+    }
+
     private fun List<ConnectedAppMetadata>.filterSystemApps(): List<ConnectedAppMetadata> {
         val showSystemAppsValue = _showSystemApps.value ?: false
         return if (showSystemAppsValue) {
@@ -139,6 +138,10 @@ constructor(
         } else {
             this.filter { !it.appMetadata.isSystem }
         }
+    }
+
+    private fun List<ConnectedAppMetadata>.filterDevices(): List<ConnectedAppMetadata> {
+        return this.filterNot { it.appMetadata.packageName == DEVICE_DATA_PROVIDER_PACKAGE }
     }
 
     sealed class DisconnectAllState {
