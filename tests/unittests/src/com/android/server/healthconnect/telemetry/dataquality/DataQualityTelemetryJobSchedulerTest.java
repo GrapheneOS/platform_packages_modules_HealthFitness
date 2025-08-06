@@ -118,6 +118,7 @@ public class DataQualityTelemetryJobSchedulerTest {
         mDataQualityTelemetryJobScheduler.execute();
         verify(mLatencyMetricsLogger).log();
         verify(mCompletenessStatsLogger, never()).logRecordingMethodStats(anyList());
+        verify(mCompletenessStatsLogger, never()).logDeviceInfoStats(anyList());
     }
 
     @Test
@@ -126,11 +127,13 @@ public class DataQualityTelemetryJobSchedulerTest {
     public void execute_dataCompletenessEnabled_logsCompletenessStats() {
         when(mCompletenessStatsCollector.readRecordingMethodStats())
                 .thenReturn(Collections.emptyList());
+        when(mCompletenessStatsCollector.readDeviceInfoStats()).thenReturn(Collections.emptyList());
 
         mDataQualityTelemetryJobScheduler.execute();
 
         verify(mLatencyMetricsLogger, never()).log();
         verify(mCompletenessStatsLogger).logRecordingMethodStats(Collections.emptyList());
+        verify(mCompletenessStatsLogger).logDeviceInfoStats(Collections.emptyList());
     }
 
     @Test
@@ -138,11 +141,13 @@ public class DataQualityTelemetryJobSchedulerTest {
     public void execute_bothFlagsEnabled_logsBoth() {
         when(mCompletenessStatsCollector.readRecordingMethodStats())
                 .thenReturn(Collections.emptyList());
+        when(mCompletenessStatsCollector.readDeviceInfoStats()).thenReturn(Collections.emptyList());
 
         mDataQualityTelemetryJobScheduler.execute();
 
         verify(mLatencyMetricsLogger).log();
         verify(mCompletenessStatsLogger).logRecordingMethodStats(Collections.emptyList());
+        verify(mCompletenessStatsLogger).logDeviceInfoStats(Collections.emptyList());
     }
 
     @Test
@@ -152,6 +157,7 @@ public class DataQualityTelemetryJobSchedulerTest {
 
         verify(mLatencyMetricsLogger, never()).log();
         verify(mCompletenessStatsLogger, never()).logRecordingMethodStats(anyList());
+        verify(mCompletenessStatsLogger, never()).logDeviceInfoStats(anyList());
     }
 
     @Test
@@ -169,14 +175,30 @@ public class DataQualityTelemetryJobSchedulerTest {
     @Test
     @EnableFlags(FLAG_DATA_COMPLETENESS)
     @DisableFlags(FLAG_LATENCY_METRICS_FLAG)
-    public void execute_completenessCollectorException_exceptionCaught() {
+    public void execute_completenessRecordingMethodCollectorException_exceptionCaught() {
         when(mCompletenessStatsCollector.readRecordingMethodStats())
+                .thenThrow(new RuntimeException("Test exception"));
+        when(mCompletenessStatsCollector.readDeviceInfoStats()).thenReturn(Collections.emptyList());
+
+        mDataQualityTelemetryJobScheduler.execute();
+
+        verify(mCompletenessStatsLogger, never()).logRecordingMethodStats(anyList());
+        verify(mCompletenessStatsLogger).logDeviceInfoStats(Collections.emptyList());
+    }
+
+    @Test
+    @EnableFlags(FLAG_DATA_COMPLETENESS)
+    @DisableFlags(FLAG_LATENCY_METRICS_FLAG)
+    public void execute_completenessDeviceInfoCollectorException_exceptionCaught() {
+        when(mCompletenessStatsCollector.readRecordingMethodStats())
+                .thenReturn(Collections.emptyList());
+        when(mCompletenessStatsCollector.readDeviceInfoStats())
                 .thenThrow(new RuntimeException("Test exception"));
 
         mDataQualityTelemetryJobScheduler.execute();
 
-        // Verify the logger was never called because the collector threw an exception.
-        verify(mCompletenessStatsLogger, never()).logRecordingMethodStats(anyList());
+        verify(mCompletenessStatsLogger).logRecordingMethodStats(Collections.emptyList());
+        verify(mCompletenessStatsLogger, never()).logDeviceInfoStats(anyList());
     }
 
     private void assertJobInfoIsCorrect(JobInfo jobInfo) {

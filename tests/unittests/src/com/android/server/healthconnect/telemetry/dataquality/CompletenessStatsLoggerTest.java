@@ -120,9 +120,20 @@ public class CompletenessStatsLoggerTest {
 
     @Test
     @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
-    public void logDeviceInfoStat_flagEnabled_logged() {
-        mCompletenessStatsLogger.logDeviceInfoStat(
-                TEST_PACKAGE, RECORD_TYPE_STEPS, true, true, false);
+    public void logDeviceInfoStats_flagEnabled_logged() {
+        List<CompletenessStatsCollector.DeviceInfoStat> stats = new ArrayList<>();
+        stats.add(
+                new CompletenessStatsCollector.DeviceInfoStat(
+                        TEST_PACKAGE, RECORD_TYPE_STEPS, true, true, false));
+        stats.add(
+                new CompletenessStatsCollector.DeviceInfoStat(
+                        TEST_PACKAGE, RECORD_TYPE_DISTANCE, true, false, true));
+        stats.add(
+                new CompletenessStatsCollector.DeviceInfoStat(
+                        TEST_PACKAGE, RECORD_TYPE_HEART_RATE, false, true, true));
+
+        mCompletenessStatsLogger.logDeviceInfoStats(stats);
+
         verify(mHealthFitnessStatsLog)
                 .write(
                         HEALTH_CONNECT_DEVICE_INFO_STATS,
@@ -131,9 +142,6 @@ public class CompletenessStatsLoggerTest {
                         true,
                         true,
                         false);
-
-        mCompletenessStatsLogger.logDeviceInfoStat(
-                TEST_PACKAGE, RECORD_TYPE_DISTANCE, true, false, true);
         verify(mHealthFitnessStatsLog)
                 .write(
                         HEALTH_CONNECT_DEVICE_INFO_STATS,
@@ -142,9 +150,6 @@ public class CompletenessStatsLoggerTest {
                         true,
                         false,
                         true);
-
-        mCompletenessStatsLogger.logDeviceInfoStat(
-                TEST_PACKAGE, RECORD_TYPE_HEART_RATE, false, true, true);
         verify(mHealthFitnessStatsLog)
                 .write(
                         HEALTH_CONNECT_DEVICE_INFO_STATS,
@@ -157,9 +162,13 @@ public class CompletenessStatsLoggerTest {
 
     @Test
     @DisableFlags(Flags.FLAG_DATA_COMPLETENESS)
-    public void logDeviceInfoStat_flagDisabled_noOp() {
-        mCompletenessStatsLogger.logDeviceInfoStat(
-                TEST_PACKAGE, RECORD_TYPE_STEPS, true, true, true);
+    public void logDeviceInfoStats_flagDisabled_noOp() {
+        List<CompletenessStatsCollector.DeviceInfoStat> stats = new ArrayList<>();
+        stats.add(
+                new CompletenessStatsCollector.DeviceInfoStat(
+                        TEST_PACKAGE, RECORD_TYPE_STEPS, true, true, true));
+
+        mCompletenessStatsLogger.logDeviceInfoStats(stats);
 
         verify(mHealthFitnessStatsLog, never())
                 .write(
