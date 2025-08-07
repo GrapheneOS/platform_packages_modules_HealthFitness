@@ -182,6 +182,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final CompletenessStatsLogger mCompletenessStatsLogger;
     @Nullable private final MatchmakingManager mMatchmakingManager;
     @Nullable private final MatchmakingDenialStateManager mMatchmakingDenialStateManager;
+    private final Clock mClock;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -196,6 +197,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         // Any class that is using this user below are responsible for making sure that they
         // update any reference to user when it changes.
         UserHandle userHandle = builder.mUserHandle;
+        mClock = builder.mClock == null ? Clock.systemUTC() : builder.mClock;
         mEnvironmentDataDirectory =
                 builder.mEnvironmentDataDirectory == null
                         ? Environment.getDataDirectory()
@@ -956,7 +958,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
 
     @Override
     public CompletenessStatsCollector getCompletenessStatsCollector() {
-        return new CompletenessStatsCollector();
+        return new CompletenessStatsCollector(mTransactionManager, mAppInfoHelper, mClock);
     }
 
     /**
@@ -1039,6 +1041,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private LatencyMetricsLogger mLatencyMetricsLogger;
         @Nullable private MatchmakingManager mMatchmakingManager;
         @Nullable private MatchmakingDenialStateManager mMatchmakingDenialStateManager;
+        @Nullable private Clock mClock;
 
         private Builder(Context context) {
             mContext = context;
@@ -1430,6 +1433,12 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         public Builder setMatchmakingDenialStateManager(
                 MatchmakingDenialStateManager matchmakingDenialStateManager) {
             mMatchmakingDenialStateManager = Objects.requireNonNull(matchmakingDenialStateManager);
+            return this;
+        }
+
+        /** Set fake or custom {@link Clock}. */
+        public Builder setClock(Clock clock) {
+            mClock = Objects.requireNonNull(clock);
             return this;
         }
 

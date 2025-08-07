@@ -28,6 +28,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 import android.health.HealthFitnessStatsLog;
 import android.health.connect.datatypes.Metadata;
@@ -38,6 +39,8 @@ import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
+import androidx.test.runner.AndroidJUnit4;
+
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 
@@ -46,17 +49,15 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RunWith(JUnit4.class)
+@RunWith(AndroidJUnit4.class)
 public class CompletenessStatsLoggerTest {
     private static final String TEST_PACKAGE = "test.package";
 
@@ -64,11 +65,12 @@ public class CompletenessStatsLoggerTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
+
     private CompletenessStatsLogger mCompletenessStatsLogger;
 
     @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
+    public void setUp() throws Exception {
+        openMocks(this).close();
         mCompletenessStatsLogger = new CompletenessStatsLogger(mHealthFitnessStatsLog);
     }
 

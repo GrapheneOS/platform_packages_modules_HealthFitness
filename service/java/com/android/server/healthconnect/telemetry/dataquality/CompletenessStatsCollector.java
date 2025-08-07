@@ -13,12 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.android.server.healthconnect.telemetry.dataquality;
 
+import static com.android.healthfitness.flags.Flags.dataCompleteness;
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.RECORDING_METHOD_COLUMN_NAME;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
+
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
+import android.util.Slog;
 
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
+import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.request.ReadTableRequest;
+import com.android.server.healthconnect.storage.utils.WhereClauses;
+
+import java.time.Clock;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A class to collect Health Connect data completeness stats. Including recording method and device
@@ -27,14 +48,100 @@ import java.util.List;
  * @hide
  */
 public final class CompletenessStatsCollector {
-    public CompletenessStatsCollector() {}
+    private static final String TAG = "CompletenessStatsCollector";
+    private static final HealthConnectMappings HEALTH_CONNECT_MAPPINGS =
+            HealthConnectMappings.getInstance();
+    private static final InternalHealthConnectMappings INTERNAL_HEALTH_CONNECT_MAPPINGS =
+            InternalHealthConnectMappings.getInstance();
+    private static final String RECORD_TYPE_ID_COLUMN_NAME = "record_type_id";
+
+    private final TransactionManager mTransactionManager;
+    private final AppInfoHelper mAppInfoHelper;
+    private final Clock mClock;
+
+    public CompletenessStatsCollector(
+            TransactionManager transactionManager, AppInfoHelper appInfoHelper, Clock clock) {
+        mTransactionManager = transactionManager;
+        mAppInfoHelper = appInfoHelper;
+        mClock = clock;
+    }
 
     List<RecordingMethodStat> readRecordingMethodStats() {
-        return List.of();
+        if (!dataCompleteness()) {
+            return List.of();
+        }
+
+        List<ReadTableRequest> allRequests =
+                HEALTH_CONNECT_MAPPINGS.getAllRecordTypeIdentifiers().stream()
+                        .map(this::getReadRecordingMethodStatsRequest)
+                        .toList();
+        if (allRequests.isEmpty()) {
+            return List.of();
+        }
+
+        ReadTableRequest readRequest = allRequests.get(0);
+        if (allRequests.size() > 1) {
+            readRequest.setUnionReadRequests(allRequests.subList(1, allRequests.size()));
+        }
+
+        List<RecordingMethodStat> recordingMethodStats = new ArrayList<>();
+        try (Cursor cursor = mTransactionManager.read(readRequest)) {
+            while (cursor.moveToNext()) {
+                createRecordingMethodStat(cursor).ifPresent(recordingMethodStats::add);
+            }
+        } catch (Exception exception) {
+            Slog.e(TAG, "Failed to log recording method stats", exception);
+        }
+        return recordingMethodStats;
     }
 
     List<DeviceInfoStat> readDeviceInfoStats() {
         return List.of();
+    }
+
+    private Optional<RecordingMethodStat> createRecordingMethodStat(Cursor cursor) {
+        // Skip logging if package name not found in App info table
+        return getPackageName(getCursorInt(cursor, APP_INFO_ID_COLUMN_NAME))
+                .map(
+                        packageName -> {
+                            int recordTypeId = getCursorInt(cursor, RECORD_TYPE_ID_COLUMN_NAME);
+                            int recordingMethod =
+                                    getCursorInt(cursor, RECORDING_METHOD_COLUMN_NAME);
+                            return new RecordingMethodStat(
+                                    packageName, recordTypeId, recordingMethod);
+                        });
+    }
+
+    private ReadTableRequest getReadRecordingMethodStatsRequest(int recordTypeId) {
+        String tableName =
+                INTERNAL_HEALTH_CONNECT_MAPPINGS.getRecordHelper(recordTypeId).getMainTableName();
+        String recordIdColumn = recordTypeId + " AS " + RECORD_TYPE_ID_COLUMN_NAME;
+
+        return new ReadTableRequest(tableName)
+                .setDistinctClause(true)
+                .setColumnNames(
+                        List.of(
+                                APP_INFO_ID_COLUMN_NAME,
+                                RECORDING_METHOD_COLUMN_NAME,
+                                recordIdColumn))
+                .setWhereClause(getWhereClauseForRecentRecords());
+    }
+
+    private WhereClauses getWhereClauseForRecentRecords() {
+        long aWeekAgoMillis = mClock.instant().minus(7, ChronoUnit.DAYS).toEpochMilli();
+        return new WhereClauses(WhereClauses.LogicalOperator.AND)
+                .addWhereLaterThanTimeClause(LAST_MODIFIED_TIME_COLUMN_NAME, aWeekAgoMillis);
+    }
+
+    private Optional<String> getPackageName(int appId) {
+        String packageName;
+        try {
+            packageName = mAppInfoHelper.getPackageName(appId);
+        } catch (PackageManager.NameNotFoundException ex) {
+            Slog.w(TAG, "Invalid app id " + appId);
+            return Optional.empty();
+        }
+        return Optional.of(packageName);
     }
 
     /**
@@ -42,8 +149,8 @@ public final class CompletenessStatsCollector {
      * inserted for every record.
      *
      * @param packageName The package name of the app that inserted the records.
-     * @param recordingMethod The {@link android.healthfitness.api.RecordingMethod} used.
      * @param recordTypeId The {@link android.healthfitness.api.DataType} of the records.
+     * @param recordingMethod The {@link android.healthfitness.api.RecordingMethod} used.
      */
     record RecordingMethodStat(
             String packageName,
