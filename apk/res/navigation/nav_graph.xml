@@ -18,13 +18,13 @@
     android:id="@+id/home_nav_graph"
     app:startDestination="@id/homeFragment">
 
-    <include app:graph="@navigation/fitness_app_nav_graph"/>
-    <include app:graph="@navigation/medical_app_nav_graph"/>
-    <include app:graph="@navigation/combined_permissions_nav_graph"/>
-    <include app:graph="@navigation/data_sources_nav_graph"/>
-    <include app:graph="@navigation/medical_data_nav_graph"/>
-    <include app:graph="@navigation/connected_apps_nav_graph"/>
-    <include app:graph="@navigation/device_management_nav_graph"/>
+    <include app:graph="@navigation/fitness_app_nav_graph" />
+    <include app:graph="@navigation/medical_app_nav_graph" />
+    <include app:graph="@navigation/combined_permissions_nav_graph" />
+    <include app:graph="@navigation/data_sources_nav_graph" />
+    <include app:graph="@navigation/medical_data_nav_graph" />
+    <include app:graph="@navigation/connected_apps_nav_graph" />
+    <include app:graph="@navigation/device_management_nav_graph" />
 
     <fragment
         android:id="@+id/recentAccessFragment"
@@ -75,31 +75,31 @@
             app:destination="@id/migrationActivity" />
         <action
             android:id="@+id/action_homeFragment_to_manageDataFragment"
-            app:destination="@+id/manageDataFragment"/>
+            app:destination="@+id/manageDataFragment" />
         <action
             android:id="@+id/action_homeFragment_to_systemUpdateActivity"
-            app:destination="@id/systemUpdateActivity"/>
+            app:destination="@id/systemUpdateActivity" />
         <action
             android:id="@+id/action_homeFragment_to_exportSetupActivity"
-            app:destination="@id/exportSetupActivity"/>
+            app:destination="@id/exportSetupActivity" />
         <action
             android:id="@+id/action_homeFragment_to_playstoreActivity"
-            app:destination="@id/playstore_activity"/>
+            app:destination="@id/playstore_activity" />
         <action
             android:id="@+id/action_homeFragment_to_onboardingActivity"
-            app:destination="@id/onboardingActivity"/>
+            app:destination="@id/onboardingActivity" />
         <action
             android:id="@+id/action_homeFragment_to_connectedDevicesFragment"
-            app:destination="@id/device_management_nav_graph"/>
+            app:destination="@id/device_management_nav_graph" />
     </fragment>
 
     <activity
         android:id="@+id/onboardingActivity"
-        android:name="com.android.healthconnect.controller.onboarding.ConnectAppsOnboardingActivity"/>
+        android:name="com.android.healthconnect.controller.onboarding.ConnectAppsOnboardingActivity" />
 
     <activity
         android:id="@+id/migrationActivity"
-        android:name="com.android.healthconnect.controller.migration.MigrationActivity"/>
+        android:name="com.android.healthconnect.controller.migration.MigrationActivity" />
 
     <activity
         android:id="@+id/data_activity"
@@ -118,7 +118,7 @@
     <activity
         android:id="@+id/systemUpdateActivity"
         app:action="android.settings.SYSTEM_UPDATE_SETTINGS"
-        android:label="systemUpdateActivity"/>
+        android:label="systemUpdateActivity" />
 
     <fragment
         android:id="@+id/backupAndRestoreSettingsFragment"
@@ -138,13 +138,13 @@
         android:label="@string/manage_data_section">
         <action
             android:id="@+id/action_manageData_to_autoDelete"
-            app:destination="@+id/autoDeleteFragment"/>
+            app:destination="@+id/autoDeleteFragment" />
         <action
             android:id="@+id/action_manageData_to_dataSources"
-            app:destination="@+id/data_sources_nav_graph"/>
+            app:destination="@+id/data_sources_nav_graph" />
         <action
             android:id="@+id/action_manageData_to_setUnits"
-            app:destination="@+id/setUnitsFragment"/>
+            app:destination="@+id/setUnitsFragment" />
         <action
             android:id="@+id/action_manageData_to_backupAndRestore"
             app:destination="@+id/backupAndRestoreSettingsFragment" />
@@ -159,12 +159,12 @@
     <fragment
         android:id="@+id/setUnitsFragment"
         android:name="com.android.healthconnect.controller.units.UnitsFragment"
-        android:label="@string/units_title"/>
+        android:label="@string/units_title" />
 
     <fragment
         android:id="@+id/autoDeleteFragment"
         android:name="com.android.healthconnect.controller.autodelete.AutoDeleteFragment"
-        android:label="@string/auto_delete_title"/>
+        android:label="@string/auto_delete_title" />
 
     <activity
         android:id="@+id/playstore_activity"

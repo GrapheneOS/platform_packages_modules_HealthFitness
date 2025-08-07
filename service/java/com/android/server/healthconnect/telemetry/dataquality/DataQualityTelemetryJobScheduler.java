@@ -124,5 +124,11 @@ public final class DataQualityTelemetryJobScheduler {
         } catch (Exception exception) {
             Slog.e(TAG, "Failed to log recording method stats", exception);
         }
+        try {
+            mCompletenessStatsLogger.logDeviceInfoStats(
+                    mCompletenessStatsCollector.readDeviceInfoStats());
+        } catch (Exception exception) {
+            Slog.e(TAG, "Failed to log device info stats", exception);
+        }
     }
 }

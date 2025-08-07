@@ -32,6 +32,7 @@ import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
+import com.android.healthconnect.controller.tests.utils.showNativeSteps
 import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -141,6 +142,7 @@ class MainActivityTest {
     @Test
     fun homeSettingsIntent_migrationInProgress_redirectsToMigrationInProgress() = runTest {
         showOnboarding(context, false)
+        showNativeSteps(context, false)
         whenever(viewModel.getCurrentMigrationUiState()).then {
             MigrationRestoreState(
                 migrationUiState = MigrationUiState.IN_PROGRESS,
@@ -172,6 +174,7 @@ class MainActivityTest {
     @Test
     fun homeSettingsIntent_dataRestoreInProgress_redirectsToRestoreInProgress() = runTest {
         showOnboarding(context, false)
+        showNativeSteps(context, false)
         whenever(viewModel.getCurrentMigrationUiState()).then {
             MigrationRestoreState(
                 migrationUiState = MigrationUiState.IDLE,
@@ -203,6 +206,7 @@ class MainActivityTest {
     @Test
     fun homeSettingsIntent_migrationPending_moduleUpdateSeen_launchesMainActivity() = runTest {
         showOnboarding(context, false)
+        showNativeSteps(context, false)
         setPreferenceSeen(context, Constants.MODULE_UPDATE_NEEDED_SEEN, true)
         whenever(viewModel.getCurrentMigrationUiState()).then {
             MigrationRestoreState(
@@ -243,6 +247,7 @@ class MainActivityTest {
     @Test
     fun homeSettingsIntent_migrationPending_appUpgradeSeen_launchesMainActivity() = runTest {
         showOnboarding(context, false)
+        showNativeSteps(context, false)
         setPreferenceSeen(context, Constants.APP_UPDATE_NEEDED_SEEN, true)
         whenever(viewModel.getCurrentMigrationUiState()).then {
             MigrationRestoreState(
@@ -283,6 +288,7 @@ class MainActivityTest {
     @Test
     fun homeSettingsIntent_migrationPending_IntegrationPausedSeen_launchesMainActivity() = runTest {
         showOnboarding(context, false)
+        showNativeSteps(context, false)
         setPreferenceSeen(context, Constants.INTEGRATION_PAUSED_SEEN_KEY, true)
         whenever(viewModel.getCurrentMigrationUiState()).then {
             MigrationRestoreState(
@@ -323,6 +329,7 @@ class MainActivityTest {
     @After
     fun tearDown() {
         showOnboarding(context, false)
+        showNativeSteps(context, false)
         setPreferenceSeen(context, Constants.APP_UPDATE_NEEDED_SEEN, false)
         setPreferenceSeen(context, Constants.MODULE_UPDATE_NEEDED_SEEN, false)
         setPreferenceSeen(context, Constants.INTEGRATION_PAUSED_SEEN_KEY, false)

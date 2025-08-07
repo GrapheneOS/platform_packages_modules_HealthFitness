@@ -33,6 +33,10 @@ public final class CompletenessStatsCollector {
         return List.of();
     }
 
+    List<DeviceInfoStat> readDeviceInfoStats() {
+        return List.of();
+    }
+
     /**
      * Data class to hold latency i.e. time between session end and time when the session was
      * inserted for every record.
@@ -45,4 +49,20 @@ public final class CompletenessStatsCollector {
             String packageName,
             @RecordTypeIdentifier.RecordType int recordTypeId,
             @Metadata.RecordingMethod int recordingMethod) {}
+
+    /**
+     * Data class to hold device info stats.
+     *
+     * @param packageName The package name of the app that inserted the records.
+     * @param recordTypeId The {@link android.healthfitness.api.DataType} of the records.
+     * @param hasManufacturer whether the device has manufacturer info.
+     * @param hasModel whether the device has model info.
+     * @param hasType whether the device has type info.
+     */
+    record DeviceInfoStat(
+            String packageName,
+            @RecordTypeIdentifier.RecordType int recordTypeId,
+            boolean hasManufacturer,
+            boolean hasModel,
+            boolean hasType) {}
 }

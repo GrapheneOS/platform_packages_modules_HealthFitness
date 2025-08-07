@@ -52,6 +52,20 @@ public final class CompletenessStatsLogger {
         }
     }
 
+    void logDeviceInfoStats(List<CompletenessStatsCollector.DeviceInfoStat> stats) {
+        if (!dataCompleteness()) {
+            return;
+        }
+        for (CompletenessStatsCollector.DeviceInfoStat stat : stats) {
+            logDeviceInfoStat(
+                    stat.packageName(),
+                    stat.recordTypeId(),
+                    stat.hasManufacturer(),
+                    stat.hasModel(),
+                    stat.hasType());
+        }
+    }
+
     private void logRecordingMethodStat(
             String packageName,
             @RecordTypeIdentifier.RecordType int recordTypeId,
@@ -63,15 +77,12 @@ public final class CompletenessStatsLogger {
                 recordingMethod);
     }
 
-    void logDeviceInfoStat(
+    private void logDeviceInfoStat(
             String packageName,
             @RecordTypeIdentifier.RecordType int recordTypeId,
             boolean hasManufacturer,
             boolean hasModel,
             boolean hasType) {
-        if (!dataCompleteness()) {
-            return;
-        }
         mHealthFitnessStatsLog.write(
                 HEALTH_CONNECT_DEVICE_INFO_STATS,
                 packageName,

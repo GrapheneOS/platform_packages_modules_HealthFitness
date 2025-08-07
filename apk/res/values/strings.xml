@@ -1788,6 +1788,7 @@
 
     <string name="one_app_onboarding_notification_title" description="Title of notification to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Connect a second app</string>
     <string name="one_app_onboarding_notification_summary" description="Summary of notification to take users to a page where they can connect a second app to Health Connect [CHAR_LIMIT=NONE]">Set up another app with Health&#160;Connect so it can start sharing fitness and wellness data</string>
+    <!-- endregion -->
 
     <!-- region Connected devices -->
     <string name="devices_current_device" description="Preference summary text that indicates that the specified device is the current device (phone) rather than a peripheral device such as a watch. [CHAR_LIMIT=40]">Current device</string>
@@ -1800,6 +1801,15 @@
     <string name="device_data_button" description="Button for taking users to device data screen. [CHAR_LIMIT=100]">See device data</string>
     <!-- endregion -->
 
+    <!-- region Native Steps -->
+    <string name="native_steps_banner_title" description="Title of banner for native step tracking in Health Connect. [CHAR_LIMIT=40]">Steps tracked on your phone will appear in Health Connect</string>
+    <string name="native_steps_banner_summary" description="Description of banner for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps tracked by this device are now stored in Health Connect for connected apps to access</string>
+    <string name="native_steps_banner_dismiss" description="Dismiss notification for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Dismiss</string>
+    <string name="native_steps_banner_review_button" description="Button of banner to take users to a page where they can review device access to Health Connect. [CHAR_LIMIT=NONE]">Review</string>
+
+    <string name="native_steps_notification_title" description="Title of notification for native step tracking in Health Connect. [CHAR_LIMIT=40]">Steps are now in Health Connect</string>
+    <string name="native_steps_notification_content" description="Description of notification for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps tracked by this device are now stored in Health Connect for connected apps to access</string>
     <!-- endregion -->
+
     <!-- endregion -->
 </resources>

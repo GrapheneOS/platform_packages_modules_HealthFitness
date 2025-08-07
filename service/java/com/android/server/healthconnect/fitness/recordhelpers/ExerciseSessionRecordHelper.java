@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.fitness.recordhelpers;
 
+import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.PARENT_KEY;
 import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTE;
 import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTES;
@@ -319,7 +320,7 @@ public final class ExerciseSessionRecordHelper
     @Override
     List<ReadTableRequest> getExtraDataReadRequests(
             ReadRecordsRequestParcel request,
-            String packageName,
+            String callingPackageName,
             long startDateAccessMillis,
             Set<String> grantedExtraReadPermissions,
             boolean isInForeground,
@@ -332,11 +333,15 @@ public final class ExerciseSessionRecordHelper
         }
 
         boolean enforceSelfRead = routeAccessType == ROUTE_READ_ACCESS_TYPE_OWN;
+        if (enforceSelfRead && appInfoHelper.getAppInfoId(callingPackageName) == DEFAULT_LONG) {
+            // Calling app hasn't written anything, so no need for additional queries.
+            return Collections.emptyList();
+        }
 
         WhereClauses sessionsWithAccessibleRouteClause =
                 getReadTableWhereClause(
                         request,
-                        packageName,
+                        callingPackageName,
                         enforceSelfRead,
                         startDateAccessMillis,
                         appInfoHelper);
@@ -375,7 +380,7 @@ public final class ExerciseSessionRecordHelper
 
     @Override
     List<ReadTableRequest> getExtraDataReadRequests(
-            String packageName,
+            String callingPackageName,
             List<UUID> uuids,
             long startDateAccess,
             Set<String> grantedExtraReadPermissions,
@@ -395,9 +400,13 @@ public final class ExerciseSessionRecordHelper
                         .addWhereLaterThanTimeClause(getStartTimeColumnName(), startDateAccess);
 
         if (routeAccessType == ROUTE_READ_ACCESS_TYPE_OWN) {
-            long appId = appInfoHelper.getAppInfoId(packageName);
+            long callingAppInfoId = appInfoHelper.getAppInfoId(callingPackageName);
+            if (callingAppInfoId == DEFAULT_LONG) {
+                // Calling app hasn't written anything, so no need for additional queries.
+                return Collections.emptyList();
+            }
             sessionsWithAccessibleRouteClause.addWhereInLongsClause(
-                    APP_INFO_ID_COLUMN_NAME, List.of(appId));
+                    APP_INFO_ID_COLUMN_NAME, List.of(callingAppInfoId));
         }
 
         return List.of(

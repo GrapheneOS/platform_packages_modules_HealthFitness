@@ -21,7 +21,8 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.ApplicationInfoFlags
-import com.android.healthconnect.controller.shared.Constants
+import android.provider.Settings
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -39,6 +40,11 @@ constructor(
 
     suspend fun getAppMetadata(packageName: String, isSystem: Boolean = false): AppMetadata {
         cache[packageName]?.let {
+            // TODO(b/422986550): Remove special casing when DDP name updates in service
+            if (packageName == DEVICE_DATA_PROVIDER_PACKAGE) {
+                return getWithCurrentDeviceName(it)
+            }
+
             return if (it.isSystem == isSystem) {
                 it
             } else {
@@ -47,7 +53,7 @@ constructor(
         }
         // Always read the DDP package directly from the service - package manager will return
         // something like "Android System" which we don't want to display.
-        if (packageName != Constants.DEVICE_DATA_PROVIDER_PACKAGE) {
+        if (packageName != DEVICE_DATA_PROVIDER_PACKAGE) {
             try {
                 val app =
                     AppMetadata(
@@ -66,6 +72,7 @@ constructor(
             }
         }
         val contributorApps = applicationsInfoUseCase.invoke()
+        // TODO(b/422986550): Do not cache DDP packages
         cache.putAll(contributorApps)
         return if (contributorApps.containsKey(packageName)) {
             contributorApps[packageName]!!
@@ -85,4 +92,13 @@ constructor(
     private fun getPackageInfo(packageName: String): ApplicationInfo {
         return packageManager.getApplicationInfo(packageName, ApplicationInfoFlags.of(0))
     }
+
+    private fun getWithCurrentDeviceName(dataDeviceProviderPackage: AppMetadata): AppMetadata =
+        AppMetadata(
+            dataDeviceProviderPackage.packageName,
+            Settings.Global.getString(context.contentResolver, Settings.Global.DEVICE_NAME)
+                ?: dataDeviceProviderPackage.appName,
+            dataDeviceProviderPackage.icon,
+            dataDeviceProviderPackage.isSystem,
+        )
 }

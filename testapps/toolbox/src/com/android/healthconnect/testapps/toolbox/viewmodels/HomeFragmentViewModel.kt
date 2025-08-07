@@ -63,7 +63,7 @@ class HomeFragmentViewModel : ViewModel() {
     }
 
     fun createMatchmakingIntent(manager: HealthConnectManager): Intent {
-        return manager.createConnectMatchingAppsIntent(setOf())
+        return manager.createConnectMatchingAppsIntent(emptySet())
     }
 
     sealed class SeedAllDataState {
