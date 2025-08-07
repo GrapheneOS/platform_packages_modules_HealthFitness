@@ -16,12 +16,14 @@
 
 package com.android.healthconnect.controller.tests.matchmaking
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.health.connect.HealthConnectManager
 import android.health.connect.HealthPermissions.WRITE_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_STEPS
 import android.health.connect.datatypes.StepsRecord
+import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import android.platform.test.flag.junit.SetFlagsRule
@@ -38,7 +40,7 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.matchmaking.MatchmakingActivity
 import com.android.healthconnect.controller.matchmaking.MatchmakingAppData
 import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel
-import com.android.healthconnect.controller.permissions.data.HealthPermission
+import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
@@ -46,6 +48,7 @@ import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthfitness.flags.Flags
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -71,6 +74,10 @@ class MatchmakingActivityTest {
 
     private val matchmakingState = MutableLiveData<MatchmakingViewModel.MatchmakingState>()
     private val expandedKeys = MutableLiveData<Set<String>>(emptySet())
+    private val atLeastOnePermissionGranted = MutableLiveData(false)
+    private val allPermissionsGranted = MutableLiveData(false)
+    private val grantedPermissions =
+        MutableLiveData<Map<String, List<FitnessPermission>>>(emptyMap())
     private lateinit var context: Context
 
     @Before
@@ -79,6 +86,19 @@ class MatchmakingActivityTest {
         context = InstrumentationRegistry.getInstrumentation().targetContext
         whenever(viewModel.matchmakingState).thenReturn(matchmakingState)
         whenever(viewModel.expandedPreferenceKeys).thenReturn(expandedKeys)
+        whenever(viewModel.atLeastOnePermissionGranted).thenReturn(atLeastOnePermissionGranted)
+        whenever(viewModel.allPermissionsGranted).thenReturn(allPermissionsGranted)
+        whenever(viewModel.grantedPermissions).thenReturn(grantedPermissions)
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingActivity_whenFlagIsOff_finishesWithCancelledResult() {
+        val intent = Intent(context, MatchmakingActivity::class.java)
+
+        launchActivityForResult<MatchmakingActivity>(intent).use { scenario ->
+            assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_CANCELED)
+        }
     }
 
     @Test
@@ -93,12 +113,12 @@ class MatchmakingActivityTest {
                 )
             }
         val apps =
-            setOf(
+            listOf(
                 MatchmakingAppData(
                     AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
-                    setOf(
-                        HealthPermission.FitnessPermission.fromPermissionString(WRITE_EXERCISE),
-                        HealthPermission.FitnessPermission.fromPermissionString(WRITE_STEPS),
+                    listOf(
+                        FitnessPermission.fromPermissionString(WRITE_EXERCISE),
+                        FitnessPermission.fromPermissionString(WRITE_STEPS),
                     ),
                 )
             )

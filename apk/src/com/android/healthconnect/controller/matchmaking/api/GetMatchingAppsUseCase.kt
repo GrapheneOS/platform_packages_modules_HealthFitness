@@ -35,9 +35,9 @@ constructor(
     private val healthConnectManager: HealthConnectManager,
     private val appInfoReader: AppInfoReader,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-) : BaseUseCase<GetMatchMakingAppsInput, Set<MatchmakingAppData>>(ioDispatcher) {
+) : BaseUseCase<GetMatchMakingAppsInput, List<MatchmakingAppData>>(ioDispatcher) {
 
-    override suspend fun execute(input: GetMatchMakingAppsInput): Set<MatchmakingAppData> {
+    override suspend fun execute(input: GetMatchMakingAppsInput): List<MatchmakingAppData> {
         val result =
             suspendCancellableCoroutine<Map<String, Set<String>>> { continuation ->
                 healthConnectManager.getMatchingApps(
@@ -56,10 +56,10 @@ constructor(
                             HealthPermission.fromPermissionString(it)
                                 as HealthPermission.FitnessPermission
                         }
-                        .toSet(),
+                        .toList(),
                 )
             }
-            .toSet()
+            .toList()
     }
 
     data class GetMatchMakingAppsInput(

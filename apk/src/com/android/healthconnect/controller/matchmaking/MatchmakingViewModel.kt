@@ -24,6 +24,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingAppsUseCase
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingAppsUseCase.GetMatchMakingAppsInput
+import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
+import com.android.healthconnect.controller.permissions.data.FitnessPermissionStrings
+import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,6 +40,7 @@ constructor(
     private val getMatchingAppsUseCase: GetMatchingAppsUseCase,
     private val appInfoReader: AppInfoReader,
     private val savedStateHandle: SavedStateHandle,
+    private val healthPermissionManager: HealthPermissionManager,
 ) : ViewModel() {
 
     companion object {
@@ -46,6 +50,14 @@ constructor(
     private val _matchmakingState = MutableLiveData<MatchmakingState>()
     val matchmakingState: LiveData<MatchmakingState>
         get() = _matchmakingState
+
+    private val _grantedPermissions =
+        MutableLiveData<Map<String, List<FitnessPermission>>>(emptyMap())
+    val grantedPermissions: LiveData<Map<String, List<FitnessPermission>>>
+        get() = _grantedPermissions
+
+    val atLeastOnePermissionGranted = MutableLiveData(false)
+    val allPermissionsGranted = MutableLiveData(false)
 
     val expandedPreferenceKeys: MutableLiveData<Set<String>> =
         savedStateHandle.getLiveData(EXPANDED_PREFERENCE_KEYS, emptySet())
@@ -69,8 +81,22 @@ constructor(
             ) {
                 is UseCaseResults.Success -> {
                     val appMetadata = appInfoReader.getAppMetadata(packageName)
+                    val sortedApps =
+                        result.data
+                            .map { appData ->
+                                appData.copy(
+                                    permissions =
+                                        appData.permissions.sortedBy {
+                                            FitnessPermissionStrings.fromPermissionType(
+                                                    it.fitnessPermissionType
+                                                )
+                                                .uppercaseLabel
+                                        }
+                                )
+                            }
+                            .sortedBy { it.metadata.appName }
                     _matchmakingState.postValue(
-                        MatchmakingState.WithData(appMetadata.appName, result.data)
+                        MatchmakingState.WithData(appMetadata.appName, sortedApps)
                     )
                 }
                 is UseCaseResults.Failed -> {
@@ -80,12 +106,76 @@ constructor(
         }
     }
 
+    fun addPermissionToGrantedList(packageName: String, permission: FitnessPermission) {
+        val currentPermissions = _grantedPermissions.value?.toMutableMap() ?: mutableMapOf()
+        val appPermissions = currentPermissions[packageName]?.toMutableList() ?: mutableListOf()
+        appPermissions.add(permission)
+        currentPermissions[packageName] = appPermissions
+        _grantedPermissions.value = currentPermissions
+        atLeastOnePermissionGranted.value = true
+        updateAllPermissionsGrantedStatus()
+    }
+
+    fun removePermissionFromGrantedList(packageName: String, permission: FitnessPermission) {
+        val currentPermissions = _grantedPermissions.value?.toMutableMap() ?: mutableMapOf()
+        val appPermissions = currentPermissions[packageName]?.toMutableList() ?: mutableListOf()
+        appPermissions.remove(permission)
+        if (appPermissions.isEmpty()) {
+            currentPermissions.remove(packageName)
+        } else {
+            currentPermissions[packageName] = appPermissions
+        }
+        _grantedPermissions.value = currentPermissions
+        atLeastOnePermissionGranted.value =
+            _grantedPermissions.value?.values?.any { it.isNotEmpty() }
+        updateAllPermissionsGrantedStatus()
+    }
+
+    fun addAllPermissionsToGrantedList() {
+        val allPermissions =
+            (matchmakingState.value as? MatchmakingState.WithData)?.apps?.associate {
+                it.metadata.packageName to it.permissions
+            }
+        _grantedPermissions.value = allPermissions ?: emptyMap()
+        atLeastOnePermissionGranted.value = allPermissions?.isNotEmpty()
+        updateAllPermissionsGrantedStatus()
+    }
+
+    fun removeAllPermissionsFromGrantedList() {
+        _grantedPermissions.value = emptyMap()
+        atLeastOnePermissionGranted.value = false
+        updateAllPermissionsGrantedStatus()
+    }
+
+    private fun updateAllPermissionsGrantedStatus() {
+        val granted = _grantedPermissions.value
+        val allApps = (matchmakingState.value as? MatchmakingState.WithData)?.apps
+        val allPermissions = allApps?.associate { it.metadata.packageName to it.permissions }
+        allPermissionsGranted.value =
+            granted == allPermissions && allPermissions?.isNotEmpty() ?: false
+    }
+
+    fun grantPermissions() {
+        viewModelScope.launch {
+            _grantedPermissions.value?.forEach { (packageName, permissions) ->
+                permissions.forEach { permission ->
+                    healthPermissionManager.grantHealthPermission(
+                        packageName,
+                        permission.toString(),
+                    )
+                }
+            }
+            _grantedPermissions.postValue(emptyMap())
+            atLeastOnePermissionGranted.postValue(false)
+        }
+    }
+
     sealed class MatchmakingState {
         object Loading : MatchmakingState()
 
         object LoadingFailed : MatchmakingState()
 
-        data class WithData(val appName: String, val apps: Set<MatchmakingAppData>) :
+        data class WithData(val appName: String, val apps: List<MatchmakingAppData>) :
             MatchmakingState()
     }
 }

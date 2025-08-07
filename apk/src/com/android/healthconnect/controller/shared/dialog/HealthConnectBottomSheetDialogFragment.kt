@@ -44,6 +44,7 @@ class HealthConnectBottomSheetDialogFragment : Hilt_HealthConnectBottomSheetDial
 
     private lateinit var contentFragment: Fragment
     private var callback: BottomSheetCallback? = null
+    private var primaryButton: Button? = null
 
     interface BottomSheetCallback {
         fun onPrimaryButtonClicked()
@@ -103,18 +104,20 @@ class HealthConnectBottomSheetDialogFragment : Hilt_HealthConnectBottomSheetDial
         val buttons = inflater.inflate(buttonLayoutId, buttonArea, false)
         buttonArea.addView(buttons)
 
-        val primaryButton = buttonArea.findViewById<Button>(R.id.primary_button_full)
+        primaryButton = buttonArea.findViewById<Button>(R.id.primary_button_full)
         val secondaryButton = buttonArea.findViewById<Button>(R.id.secondary_button)
-        primaryButton.text = getString(R.string.request_permissions_allow)
+        primaryButton?.text = getString(R.string.request_permissions_allow)
         secondaryButton.text = getString(R.string.request_permissions_dont_allow)
 
-        val allowParentView = primaryButton.parent.parent as View
-        increaseViewTouchTargetSize(requireContext(), primaryButton, allowParentView)
+        val allowParentView = primaryButton?.parent?.parent as View
+        primaryButton?.let { increaseViewTouchTargetSize(requireContext(), it, allowParentView) }
 
         val dontAllowParentView = secondaryButton.parent as View
-        increaseViewTouchTargetSize(requireContext(), secondaryButton, dontAllowParentView)
+        secondaryButton?.let {
+            increaseViewTouchTargetSize(requireContext(), it, dontAllowParentView)
+        }
 
-        primaryButton.setOnClickListener {
+        primaryButton?.setOnClickListener {
             callback?.onPrimaryButtonClicked()
             dismiss()
         }
@@ -149,6 +152,10 @@ class HealthConnectBottomSheetDialogFragment : Hilt_HealthConnectBottomSheetDial
             }
         }
         return dialog
+    }
+
+    fun setPrimaryButtonEnabled(isEnabled: Boolean) {
+        primaryButton?.isEnabled = isEnabled
     }
 
     override fun onCancel(dialog: DialogInterface) {
