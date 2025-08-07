@@ -53,8 +53,10 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements IBuildReceiver {
 
@@ -360,8 +362,8 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
             return;
         }
 
-        List<String> testAppPermissions =
-                List.of(
+        Set<String> testAppPermissions =
+                Set.of(
                         "WRITE_BLOOD_PRESSURE",
                         "WRITE_HEART_RATE",
                         "WRITE_STEPS",
@@ -390,14 +392,14 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         assertThat(data.size()).isAtLeast(1);
 
         // This is needed as test device might have multiple apps connected to HC.
-        Map<String, List<String>> appNameToPermissions = new HashMap<>();
+        Map<String, Set<String>> appNameToPermissions = new HashMap<>();
         for (StatsLog.EventMetricData metricData : data) {
             HealthConnectPermissionStats atom =
                     metricData
                             .getAtom()
                             .getExtension(ApiExtensionAtoms.healthConnectPermissionStats);
             appNameToPermissions.put(
-                    atom.getPackageName(), atom.getPermissionNameList().stream().toList());
+                    atom.getPackageName(), new HashSet<>(atom.getPermissionNameList()));
         }
 
         assertThat(appNameToPermissions).containsEntry(TEST_APP_PKG_NAME, testAppPermissions);

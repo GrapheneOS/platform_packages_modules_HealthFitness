@@ -20,4 +20,6 @@
     <item type="id" name="action_drag_move_down" />
     <item type="id" name="action_drag_move_top" />
     <item type="id" name="action_drag_move_bottom" />
+    <!-- Used for test fragment view in tests. -->
+    <item type="id" name="test_fragment_view" />
 </resources>

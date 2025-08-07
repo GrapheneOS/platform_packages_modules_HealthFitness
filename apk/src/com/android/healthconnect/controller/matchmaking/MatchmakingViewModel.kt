@@ -16,53 +16,76 @@
 
 package com.android.healthconnect.controller.matchmaking
 
-import android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION
 import android.health.connect.datatypes.Record
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingAppsUseCase
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingAppsUseCase.GetMatchMakingAppsInput
-import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class MatchMakingViewModel
+class MatchmakingViewModel
 @Inject
-constructor(private val getMatchingAppsUseCase: GetMatchingAppsUseCase) : ViewModel() {
+constructor(
+    private val getMatchingAppsUseCase: GetMatchingAppsUseCase,
+    private val appInfoReader: AppInfoReader,
+    private val savedStateHandle: SavedStateHandle,
+) : ViewModel() {
 
-    private val _matchmakingState = MutableLiveData<MatchMakingState>()
-    val matchmakingState: LiveData<MatchMakingState>
+    companion object {
+        private const val EXPANDED_PREFERENCE_KEYS = "expanded_preference_keys"
+    }
+
+    private val _matchmakingState = MutableLiveData<MatchmakingState>()
+    val matchmakingState: LiveData<MatchmakingState>
         get() = _matchmakingState
 
-    @androidx.annotation.RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
+    val expandedPreferenceKeys: MutableLiveData<Set<String>> =
+        savedStateHandle.getLiveData(EXPANDED_PREFERENCE_KEYS, emptySet())
+
+    fun updateExpandedPreferenceKey(key: String, isExpanded: Boolean) {
+        val currentKeys = expandedPreferenceKeys.value.orEmpty().toMutableSet()
+        if (isExpanded) {
+            currentKeys.add(key)
+        } else {
+            currentKeys.remove(key)
+        }
+        savedStateHandle[EXPANDED_PREFERENCE_KEYS] = currentKeys
+    }
+
     fun loadMatchmakingApps(packageName: String, recordTypes: Set<Class<out Record>>) {
-        _matchmakingState.postValue(MatchMakingState.Loading)
+        _matchmakingState.postValue(MatchmakingState.Loading)
         viewModelScope.launch {
             when (
                 val result =
                     getMatchingAppsUseCase.invoke(GetMatchMakingAppsInput(packageName, recordTypes))
             ) {
                 is UseCaseResults.Success -> {
-                    _matchmakingState.postValue(MatchMakingState.WithData(result.data))
+                    val appMetadata = appInfoReader.getAppMetadata(packageName)
+                    _matchmakingState.postValue(
+                        MatchmakingState.WithData(appMetadata.appName, result.data)
+                    )
                 }
                 is UseCaseResults.Failed -> {
-                    _matchmakingState.postValue(MatchMakingState.LoadingFailed)
+                    _matchmakingState.postValue(MatchmakingState.LoadingFailed)
                 }
             }
         }
     }
 
-    sealed class MatchMakingState {
-        object Loading : MatchMakingState()
+    sealed class MatchmakingState {
+        object Loading : MatchmakingState()
 
-        object LoadingFailed : MatchMakingState()
+        object LoadingFailed : MatchmakingState()
 
-        data class WithData(val apps: Map<AppMetadata, Set<HealthPermission>>) : MatchMakingState()
+        data class WithData(val appName: String, val apps: Set<MatchmakingAppData>) :
+            MatchmakingState()
     }
 }

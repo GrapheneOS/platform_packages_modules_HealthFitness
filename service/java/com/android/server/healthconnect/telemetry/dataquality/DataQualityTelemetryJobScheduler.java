@@ -39,25 +39,34 @@ import java.util.concurrent.TimeUnit;
  * @hide
  */
 public final class DataQualityTelemetryJobScheduler {
+    @VisibleForTesting
+    public static final String HC_DATA_QUALITY_TELEMETRY_JOBS_NAMESPACE =
+            "HC_DATA_QUALITY_TELEMETRY_JOBS_NAMESPACE";
+
     private static final String TAG = "DataQualityTelemetryJobScheduler";
     private static final int MIN_JOB_ID = DataQualityTelemetryJobScheduler.class.hashCode();
-    private static final String HC_DATA_QUALITY_TELEMETRY_JOBS_NAMESPACE =
-            "HC_DATA_QUALITY_TELEMETRY_JOBS_NAMESPACE";
     @VisibleForTesting static final long JOB_RUN_INTERVAL = TimeUnit.DAYS.toMillis(7);
     @VisibleForTesting static final long JOB_FLEX_INTERVAL = TimeUnit.DAYS.toMillis(1);
 
     private final Context mContext;
     private final LatencyMetricsLogger mLatencyMetricsLogger;
+    private final CompletenessStatsCollector mCompletenessStatsCollector;
+    private final CompletenessStatsLogger mCompletenessStatsLogger;
 
     public DataQualityTelemetryJobScheduler(
-            Context context, LatencyMetricsLogger latencyMetricsLogger) {
+            Context context,
+            LatencyMetricsLogger latencyMetricsLogger,
+            CompletenessStatsCollector completenessStatsCollector,
+            CompletenessStatsLogger completenessStatsLogger) {
         mContext = context;
         mLatencyMetricsLogger = latencyMetricsLogger;
+        mCompletenessStatsCollector = completenessStatsCollector;
+        mCompletenessStatsLogger = completenessStatsLogger;
     }
 
     /** Schedule the weekly job */
     public void schedule() {
-        if (!Flags.latencyMetricsFlag()) {
+        if (!Flags.latencyMetricsFlag() && !Flags.dataCompleteness()) {
             return;
         }
         JobScheduler jobScheduler =
@@ -80,7 +89,12 @@ public final class DataQualityTelemetryJobScheduler {
 
     /** Uploads critical weekly metrics. */
     public void execute() {
-        logLatencyMetrics();
+        if (Flags.latencyMetricsFlag()) {
+            logLatencyMetrics();
+        }
+        if (Flags.dataCompleteness()) {
+            logCompletenessStats();
+        }
     }
 
     private JobInfo getJobInfo(int userId) {
@@ -100,6 +114,15 @@ public final class DataQualityTelemetryJobScheduler {
             mLatencyMetricsLogger.log();
         } catch (Exception exception) {
             Slog.e(TAG, "Failed to log latency metrics", exception);
+        }
+    }
+
+    private void logCompletenessStats() {
+        try {
+            mCompletenessStatsLogger.logRecordingMethodStats(
+                    mCompletenessStatsCollector.readRecordingMethodStats());
+        } catch (Exception exception) {
+            Slog.e(TAG, "Failed to log recording method stats", exception);
         }
     }
 }

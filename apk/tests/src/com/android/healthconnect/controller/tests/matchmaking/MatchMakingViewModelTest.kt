@@ -18,18 +18,25 @@ package com.android.healthconnect.controller.tests.matchmaking
 
 import android.health.connect.HealthPermissions.WRITE_STEPS
 import android.health.connect.datatypes.StepsRecord
-import com.android.healthconnect.controller.matchmaking.MatchMakingViewModel
-import com.android.healthconnect.controller.matchmaking.MatchMakingViewModel.MatchMakingState.LoadingFailed
-import com.android.healthconnect.controller.matchmaking.MatchMakingViewModel.MatchMakingState.WithData
+import androidx.lifecycle.SavedStateHandle
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.android.healthconnect.controller.matchmaking.MatchmakingAppData
+import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel
+import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel.MatchmakingState.LoadingFailed
+import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel.MatchmakingState.WithData
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingAppsUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
+import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
+import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.BindValue
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -37,24 +44,29 @@ import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
+@HiltAndroidTest
 @OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(AndroidJUnit4::class)
 class MatchMakingViewModelTest {
 
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @BindValue lateinit var appInfoReader: AppInfoReader
 
     private val getMatchingAppsUseCase: GetMatchingAppsUseCase = mock()
 
-    private lateinit var viewModel: MatchMakingViewModel
+    private lateinit var viewModel: MatchmakingViewModel
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
         Dispatchers.setMain(Dispatchers.Unconfined)
-        viewModel = MatchMakingViewModel(getMatchingAppsUseCase)
+        appInfoReader = createFakeAppInfoReader()
+        viewModel = MatchmakingViewModel(getMatchingAppsUseCase, appInfoReader, SavedStateHandle())
     }
 
     @Test
@@ -63,7 +75,15 @@ class MatchMakingViewModelTest {
         val recordTypes = setOf(StepsRecord::class.java)
         val appMetadata = AppMetadata(TEST_APP_NAME_2, TEST_APP_PACKAGE_NAME_2, null)
         val expected =
-            mapOf(appMetadata to setOf(HealthPermission.fromPermissionString(WRITE_STEPS)))
+            setOf(
+                MatchmakingAppData(
+                    appMetadata,
+                    setOf(
+                        HealthPermission.fromPermissionString(WRITE_STEPS)
+                            as HealthPermission.FitnessPermission
+                    ),
+                )
+            )
         val useCaseResult = UseCaseResults.Success(expected)
         whenever(getMatchingAppsUseCase.invoke(any())).doReturn(useCaseResult)
 
@@ -80,7 +100,6 @@ class MatchMakingViewModelTest {
         val recordTypes = setOf(StepsRecord::class.java)
         val exception = IllegalStateException("Error")
         val useCaseResult = UseCaseResults.Failed(exception)
-
         whenever(getMatchingAppsUseCase.invoke(any())).doReturn(useCaseResult)
 
         viewModel.loadMatchmakingApps(packageName, recordTypes)

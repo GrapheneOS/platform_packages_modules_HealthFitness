@@ -16,12 +16,14 @@ package com.android.healthconnect.controller.tests
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.shared.dialog.HealthConnectBottomSheetDialogFragment
 import com.android.settingslib.collapsingtoolbar.EdgeToEdgeUtils
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint(FragmentActivity::class)
-class TestActivity : Hilt_TestActivity() {
+class TestActivity :
+    Hilt_TestActivity(), HealthConnectBottomSheetDialogFragment.BottomSheetCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         EdgeToEdgeUtils.enable(this)
         if (SettingsThemeHelper.isExpressiveTheme(this)) {
@@ -30,5 +32,17 @@ class TestActivity : Hilt_TestActivity() {
             setTheme(R.style.Theme_HealthConnect)
         }
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onPrimaryButtonClicked() {
+        // Not needed for this test
+    }
+
+    override fun onSecondaryButtonClicked() {
+        // Not needed for this test
+    }
+
+    override fun onDialogCancel() {
+        // Not needed for this test
     }
 }
