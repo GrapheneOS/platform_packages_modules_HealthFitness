@@ -57,6 +57,8 @@ import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.device.FakeSerialDeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.notification.NativeStepsNotificationSender;
+import com.android.server.healthconnect.device.notification.NativeStepsNotificationStateManager;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -97,6 +99,8 @@ public class TrackerManagerImplTest {
     @Mock private UserManager mUserManager;
     private AppInfoHelper mAppInfoHelper;
     private HealthConnectInjector mHealthConnectInjector;
+    private NativeStepsNotificationStateManager mNativeStepsNotificationStateManager;
+    @Mock private NativeStepsNotificationSender mNativeStepsNotificationSender;
 
     @Before
     public void setup() throws Exception {
@@ -118,12 +122,15 @@ public class TrackerManagerImplTest {
                                 mock(HealthPermissionIntentAppsTracker.class))
                         .setAppOpLogsHelper(mock(AppOpLogsHelper.class))
                         .setUserManager(mUserManager)
+                        .setNativeStepsNotificationSender(mNativeStepsNotificationSender)
                         .setDeviceDataSourcesHelper(deviceDataSourcesHelper)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mAppInfoHelper = mHealthConnectInjector.getAppInfoHelper();
         mHealthDataCategoryPriorityHelper =
                 mHealthConnectInjector.getHealthDataCategoryPriorityHelper();
+        mNativeStepsNotificationStateManager =
+                mHealthConnectInjector.getNativeStepsNotificationStateManager();
     }
 
     @After
@@ -163,6 +170,28 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void stepTrackingEnabled_initialize_initializeNotificationPreferenceOnDisable() {
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        assertThat(mNativeStepsNotificationStateManager.preferenceKeyExists()).isEqualTo(true);
+        assertThat(mNativeStepsNotificationStateManager.getWasSeen()).isEqualTo(true);
+    }
+
+    @Test
+    @DisableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void stepTrackingDisabled_initialize_doesNotInitializeNotificationPreference() {
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        assertThat(mNativeStepsNotificationStateManager.preferenceKeyExists()).isEqualTo(false);
+        assertThat(mNativeStepsNotificationStateManager.getWasSeen()).isEqualTo(false);
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void noAppsGrantedReadSteps_noPackagesReturned() {
         List<String> packages =
                 TrackerManagerImpl.packagesEligibleForStepTracking(mContext, mPackageManager);
@@ -183,7 +212,7 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
-    public void appPregrantedReadStepsPermission_notReturnedInList() {
+    public void appPregrantedReadStepsPermission_notReturnedInEligibleList() {
         grantAppStepsPermission(TEST_PACKAGE_NAME);
         setAsPregrantedApp(TEST_PACKAGE_NAME);
 
@@ -243,6 +272,80 @@ public class TrackerManagerImplTest {
         verify(mSensorManager)
                 .registerListener(
                         any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void
+            appHasPermission_stepsPreferenceEnabled_deviceHasNoSensor_doesNotSendNotification() {
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(null);
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mNativeStepsNotificationSender, never()).sendNotification(any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void
+            appHasPermission_hasSensor_stepsPreferenceEnabled_wasSeenPrefUnset_sendsNotification() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        mHealthConnectInjector
+                .getPreferenceHelper()
+                .removeKey(
+                        mNativeStepsNotificationStateManager.getWasSeenNotificationPreferenceKey());
+
+        manager.initializeOrRefresh();
+
+        verify(mNativeStepsNotificationSender).sendNotification(any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void
+            appHasPermission_hasSensor_stepsPreferenceEnabled_wasSeenPrefFalse_sendsNotification() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        mHealthConnectInjector
+                .getPreferenceHelper()
+                .insertOrReplacePreference(
+                        mNativeStepsNotificationStateManager.getWasSeenNotificationPreferenceKey(),
+                        String.valueOf(false));
+
+        manager.initializeOrRefresh();
+
+        verify(mNativeStepsNotificationSender).sendNotification(any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void appHasPermission_hasSensor_stepsPreferenceEnabled_wasSeenPrefTrue_noNotification() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        mHealthConnectInjector
+                .getPreferenceHelper()
+                .insertOrReplacePreference(
+                        mNativeStepsNotificationStateManager.getWasSeenNotificationPreferenceKey(),
+                        String.valueOf(true));
+
+        manager.initializeOrRefresh();
+
+        verify(mNativeStepsNotificationSender, never()).sendNotification(any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void appHasPermission_deviceHasSensor_stepsPreferenceEnabled_sendsNotification() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mNativeStepsNotificationSender).sendNotification(any());
     }
 
     @Test
@@ -368,6 +471,22 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void initializeOrRefresh_multipleCalls_sendsNotificationOnce() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        manager.initializeOrRefresh();
+
+        verify(mNativeStepsNotificationSender).sendNotification(any());
+        mNativeStepsNotificationStateManager.updateNotificationWasSeen(true);
+
+        manager.initializeOrRefresh();
+
+        verify(mNativeStepsNotificationSender).sendNotification(any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void onInitialize_appendsDevicePackageToPriorityList_onlyOnce() {
         grantAppStepsPermission(TEST_PACKAGE_NAME);
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
@@ -400,6 +519,30 @@ public class TrackerManagerImplTest {
         verify(mSensorManager)
                 .registerListener(
                         any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void noApps_doesNotSendNotification_disablesFutureNotifications() {
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mNativeStepsNotificationSender, never()).sendNotification(any());
+        assertThat(mNativeStepsNotificationStateManager.getWasSeen()).isEqualTo(true);
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void onAppPermissionGranted_doesNotSendNotification() {
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        manager.initializeOrRefresh();
+
+        verify(mNativeStepsNotificationSender, never()).sendNotification(any());
     }
 
     @Test
@@ -519,7 +662,7 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
-    public void stepTrackingDisabledViaPreference_unsubscribesFromSensorManager() {
+    public void stepTrackingExplicitlyDisabledViaPreference_unsubscribesFromSensorManager() {
         grantAppStepsPermission(TEST_PACKAGE_NAME);
         mHealthConnectInjector
                 .getPreferenceHelper()
@@ -530,6 +673,77 @@ public class TrackerManagerImplTest {
         manager.initializeOrRefresh();
 
         verify(manager).unsubscribeFromSensorManager();
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void stepTrackingExplicitlyEnabledViaPreference_doesNotUnsubscribeFromSensorManager() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        mHealthConnectInjector
+                .getPreferenceHelper()
+                .insertOrReplacePreference("TRACKING_PREF_1", String.valueOf(true));
+        TrackerManagerImpl manager =
+                spy((TrackerManagerImpl) mHealthConnectInjector.getTrackerManager());
+
+        manager.initializeOrRefresh();
+
+        verify(manager, never()).unsubscribeFromSensorManager();
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void stepTrackingUnsetInPreference_doesNotUnsubscribeFromSensorManager() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        mHealthConnectInjector.getPreferenceHelper().removeKey("TRACKING_PREF_1");
+        TrackerManagerImpl manager =
+                spy((TrackerManagerImpl) mHealthConnectInjector.getTrackerManager());
+
+        manager.initializeOrRefresh();
+
+        verify(manager, never()).unsubscribeFromSensorManager();
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void stepTrackingExplicitlyDisabledViaPreference_doesNotSendNotification() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        mHealthConnectInjector
+                .getPreferenceHelper()
+                .insertOrReplacePreference("TRACKING_PREF_1", String.valueOf(false));
+
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mNativeStepsNotificationSender, never()).sendNotification(any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void stepTrackingExplicitlyEnabledViaPreference_sendsNotification() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        mHealthConnectInjector
+                .getPreferenceHelper()
+                .insertOrReplacePreference("TRACKING_PREF_1", String.valueOf(true));
+
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mNativeStepsNotificationSender).sendNotification(any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void stepTrackingUnsetInPreference_sendsNotification() {
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        mHealthConnectInjector.getPreferenceHelper().removeKey("TRACKING_PREF_1");
+
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+
+        manager.initializeOrRefresh();
+
+        verify(mNativeStepsNotificationSender).sendNotification(any());
     }
 
     @Test

@@ -47,4 +47,7 @@ object Constants {
 
     // Device data
     const val DEVICE_DATA_PROVIDER_PACKAGE = "android"
+
+    // Native steps
+    const val NATIVE_STEPS_BANNER_SEEN = "native_steps_banner_seen"
 }

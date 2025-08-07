@@ -41,6 +41,8 @@ import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
+import com.android.server.healthconnect.device.notification.NativeStepsNotificationSender;
+import com.android.server.healthconnect.device.notification.NativeStepsNotificationStateManager;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.exportimport.ExportImportLogger;
 import com.android.server.healthconnect.exportimport.ExportImportNotificationFactory;
@@ -144,6 +146,18 @@ public abstract class HealthConnectInjector {
      * Connect Injector.
      */
     public abstract OnboardingNotificationStateManager getOnboardingNotificationStateManager();
+
+    /**
+     * Getter for {@link NativeStepsNotificationStateManager} instance initialised by the Health
+     * Connect Injector.
+     */
+    public abstract NativeStepsNotificationStateManager getNativeStepsNotificationStateManager();
+
+    /**
+     * Getter for {@link NativeStepsNotificationSender} instance initialised by the Health Connect
+     * Injector.
+     */
+    public abstract NativeStepsNotificationSender getNativeStepsNotificationSender();
 
     /**
      * Getter for {@link OnboardingNotificationSender} instance initialised by the Health Connect

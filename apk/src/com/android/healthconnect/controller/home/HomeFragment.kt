@@ -30,6 +30,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.alldata.AllDataFragment.Companion.IS_BROWSE_MEDICAL_DATA_SCREEN
+import com.android.healthconnect.controller.devices.NativeStepsNotificationViewModel
 import com.android.healthconnect.controller.exportimport.api.ExportStatusViewModel
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiStatus
@@ -100,6 +101,7 @@ class HomeFragment : Hilt_HomeFragment() {
         private const val LOCK_SCREEN_BANNER_KEY = "lock_screen_banner"
         private const val ONBOARDING_ZERO_APPS_BANNER_KEY = "onboarding_zero_apps_banner_key"
         private const val ONBOARDING_ONE_APP_BANNER_KEY = "onboarding_one_app_banner_key"
+        private const val NATIVE_STEPS_BANNER_KEY = "native_steps_banner_key"
         private val securitySettingsIntent = Intent(ACTION_SECURITY_SETTINGS)
 
         @JvmStatic fun newInstance() = HomeFragment()
@@ -119,6 +121,8 @@ class HomeFragment : Hilt_HomeFragment() {
     private val migrationViewModel: MigrationViewModel by activityViewModels()
     private val exportStatusViewModel: ExportStatusViewModel by activityViewModels()
     private val onboardingViewModel: OnboardingViewModel by activityViewModels()
+    private val nativeStepsNotificationViewModel: NativeStepsNotificationViewModel by
+        activityViewModels()
 
     private val noRecentAccessPreference: ZeroStatePreference by pref(NO_RECENT_ACCESS)
 
@@ -187,6 +191,9 @@ class HomeFragment : Hilt_HomeFragment() {
             onboardingViewModel.loadConnectedApps()
             onboardingViewModel.loadOnboardingBannerState()
         }
+        if (stepTrackingEnabled()) {
+            nativeStepsNotificationViewModel.loadWasSeen()
+        }
         if (isLockScreenBannerAvailable) {
             homeViewModel.loadShouldShowLockScreenBanner(getSharedPreference(), requireContext())
         }
@@ -201,9 +208,11 @@ class HomeFragment : Hilt_HomeFragment() {
                 is RecentAccessState.WithData -> {
                     updateRecentApps(recentAppsState.recentAccessEntries)
                 }
+
                 is RecentAccessState.Error -> {
                     updateRecentAppsWithError()
                 }
+
                 else -> {
                     updateRecentApps(emptyList())
                 }
@@ -218,6 +227,7 @@ class HomeFragment : Hilt_HomeFragment() {
                 is MigrationViewModel.MigrationFragmentState.WithData -> {
                     showMigrationState(migrationState.migrationRestoreState)
                 }
+
                 else -> {
                     // do nothing
                 }
@@ -229,6 +239,7 @@ class HomeFragment : Hilt_HomeFragment() {
                 is ScheduledExportUiStatus.WithData -> {
                     maybeShowExportErrorBanner(scheduledExportUiStatus.scheduledExportUiState)
                 }
+
                 else -> {
                     // do nothing
                 }
@@ -261,7 +272,60 @@ class HomeFragment : Hilt_HomeFragment() {
             }
         }
 
+        if (stepTrackingEnabled()) {
+            nativeStepsNotificationViewModel.wasSeen.observe(viewLifecycleOwner) { wasSeen ->
+                maybeShowNativeStepsBanner(wasSeen)
+            }
+        }
+
         devicesPreference.isVisible = stepTrackingEnabled()
+    }
+
+    private fun maybeShowNativeStepsBanner(wasSeen: Boolean) {
+        if (!stepTrackingEnabled()) {
+            return
+        }
+
+        if (wasSeen) {
+            hideBanners(listOf(NATIVE_STEPS_BANNER_KEY))
+        } else {
+            showNativeStepsBanner()
+        }
+    }
+
+    private fun showNativeStepsBanner() {
+        if (bannerGroup.findPreference<HealthBannerPreference>(NATIVE_STEPS_BANNER_KEY) == null) {
+            bannerGroup.addPreference(getNativeStepsBanner())
+        }
+    }
+
+    private fun getNativeStepsBanner(): HealthBannerPreference {
+        return HealthBannerPreference(requireContext(), HomePageElement.NATIVE_STEPS_BANNER).also {
+            banner ->
+            banner.setPositiveButton(
+                text = getString(R.string.native_steps_banner_review_button),
+                logName = HomePageElement.NATIVE_STEPS_BANNER_REVIEW_BUTTON,
+            ) {
+                // TODO(b/435354542): Navigate directly to device management
+                findNavController().navigate(R.id.action_homeFragment_to_connectedDevicesFragment)
+                dismissBanner(Constants.NATIVE_STEPS_BANNER_SEEN, NATIVE_STEPS_BANNER_KEY)
+                nativeStepsNotificationViewModel.loadWasSeen()
+            }
+
+            banner.setNegativeButton(
+                text = getString(R.string.native_steps_banner_dismiss),
+                logName = HomePageElement.NATIVE_STEPS_BANNER_DISMISS_BUTTON,
+            ) {
+                dismissBanner(Constants.NATIVE_STEPS_BANNER_SEEN, NATIVE_STEPS_BANNER_KEY)
+                nativeStepsNotificationViewModel.loadWasSeen()
+            }
+
+            banner.title = getString(R.string.native_steps_banner_title)
+            banner.summary = getString(R.string.native_steps_banner_summary)
+            banner.icon =
+                AttributeResolver.getNullableDrawable(requireContext(), R.attr.healthConnectIcon)
+            banner.key = NATIVE_STEPS_BANNER_KEY
+        }
     }
 
     private fun maybeShowOnboardingBanner(state: OnboardingViewModel.OnboardingBannerState) {
@@ -271,9 +335,12 @@ class HomeFragment : Hilt_HomeFragment() {
         when (state) {
             is OnboardingViewModel.OnboardingBannerState.ZeroAppsOnboardingBanner ->
                 showZeroAppsConnectedBanner()
+
             is OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner ->
                 showOneAppConnectedBanner()
-            else -> hideOnboardingBanners()
+
+            else ->
+                hideBanners(listOf(ONBOARDING_ZERO_APPS_BANNER_KEY, ONBOARDING_ONE_APP_BANNER_KEY))
         }
     }
 
@@ -295,14 +362,6 @@ class HomeFragment : Hilt_HomeFragment() {
         }
     }
 
-    private fun hideOnboardingBanners() {
-        for (key in listOf(ONBOARDING_ZERO_APPS_BANNER_KEY, ONBOARDING_ONE_APP_BANNER_KEY)) {
-            if (bannerGroup.findPreference<HealthBannerPreference>(key) != null) {
-                bannerGroup.removePreferenceRecursively(key)
-            }
-        }
-    }
-
     private fun getZeroAppsOnboardingBanner(): HealthBannerPreference {
         return HealthBannerPreference(requireContext(), HomePageElement.ZERO_APPS_CONNECTED_BANNER)
             .also { banner ->
@@ -317,8 +376,10 @@ class HomeFragment : Hilt_HomeFragment() {
                 banner.setDismissButton(
                     logName = HomePageElement.ZERO_APPS_CONNECTED_BANNER_DISMISS_BUTTON
                 ) {
-                    setBannerSeen(Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN)
-                    bannerGroup.removePreferenceRecursively(ONBOARDING_ZERO_APPS_BANNER_KEY)
+                    dismissBanner(
+                        Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN,
+                        ONBOARDING_ZERO_APPS_BANNER_KEY,
+                    )
                 }
                 banner.title = getString(R.string.zero_apps_onboarding_banner_title)
                 banner.summary = getString(R.string.zero_apps_onboarding_banner_summary)
@@ -717,8 +778,10 @@ class HomeFragment : Hilt_HomeFragment() {
             when (appPermissionsType) {
                 AppPermissionsType.FITNESS_PERMISSIONS_ONLY ->
                     R.id.action_homeFragment_to_fitnessAppFragment
+
                 AppPermissionsType.MEDICAL_PERMISSIONS_ONLY ->
                     R.id.action_homeFragment_to_medicalAppFragment
+
                 AppPermissionsType.COMBINED_PERMISSIONS ->
                     R.id.action_homeFragment_to_combinedPermissionsFragment
             }
@@ -742,6 +805,11 @@ class HomeFragment : Hilt_HomeFragment() {
             )
     }
 
+    private fun dismissBanner(seenKey: String, bannerKey: String) {
+        setBannerSeen(seenKey)
+        hideBanners(listOf(bannerKey))
+    }
+
     private fun getSharedPreference() =
         requireActivity().getSharedPreferences(USER_ACTIVITY_TRACKER, Context.MODE_PRIVATE)
 
@@ -750,6 +818,14 @@ class HomeFragment : Hilt_HomeFragment() {
         sharedPreference.edit().apply {
             putBoolean(sharedPrefKey, seen)
             apply()
+        }
+    }
+
+    private fun hideBanners(banners: List<String>) {
+        for (banner in banners) {
+            if (bannerGroup.findPreference<HealthBannerPreference>(banner) != null) {
+                bannerGroup.removePreferenceRecursively(banner)
+            }
         }
     }
 }

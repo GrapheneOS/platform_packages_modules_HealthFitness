@@ -50,6 +50,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.devices.NativeStepsNotificationViewModel
 import com.android.healthconnect.controller.exportimport.api.ExportStatusViewModel
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiStatus
@@ -135,6 +136,7 @@ class HomeFragmentTest {
 
     @BindValue val exportStatusViewModel: ExportStatusViewModel = mock()
     @BindValue val onboardingViewModel: OnboardingViewModel = mock()
+    @BindValue val nativeStepsNotificationViewModel: NativeStepsNotificationViewModel = mock()
 
     @BindValue val deviceInfoUtils: DeviceInfoUtils = FakeDeviceInfoUtils()
 
@@ -195,6 +197,7 @@ class HomeFragmentTest {
         whenever(onboardingViewModel.onboardingBannerState).then {
             MediatorLiveData(OnboardingViewModel.OnboardingBannerState.NoOnboardingBanner)
         }
+        whenever(nativeStepsNotificationViewModel.wasSeen).then { MutableLiveData<Boolean>(false) }
         (deviceInfoUtils as FakeDeviceInfoUtils).setIntentHandlerAvailability(true)
 
         Intents.init()
@@ -211,7 +214,7 @@ class HomeFragmentTest {
 
     // region Navigation tests
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun appPermissions_navigatesToConnectedApps() {
         setupFragmentForNavigation()
         onView(withText("App permissions")).check(matches(isDisplayed()))
@@ -221,16 +224,17 @@ class HomeFragmentTest {
 
     @Test
     @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    @DisableFlags(Flags.FLAG_ONBOARDING)
     fun devices_navigatesToDevices() {
         setupFragmentForNavigation()
-        onView(withText("Devices")).check(matches(isDisplayed()))
-        onView(withText("Devices")).perform(click())
+        onView(withText("Devices")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Devices")).perform(scrollTo()).perform(click())
         assertThat(navHostController.currentDestination?.id)
             .isEqualTo(R.id.connectedDevicesFragment)
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun dataAndAccess_navigatesToDataAndAccess() {
         setupFragmentForNavigation()
         onView(withText("Data and access")).check(matches(isDisplayed()))
@@ -239,7 +243,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun browseMedicalData_navigatesToBrowseMedicalData() {
         whenever(homeViewModel.hasAnyMedicalData).then { MutableLiveData(true) }
         setupFragmentForNavigation()
@@ -251,7 +255,11 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING, SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
+    @DisableFlags(
+        Flags.FLAG_ONBOARDING,
+        Flags.FLAG_STEP_TRACKING_ENABLED,
+        SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED,
+    )
     fun legacySeeAllRecentAccess_navigatesToRecentAccess() {
         setupFragmentForNavigation()
         onView(withText("See all recent access")).check(matches(isDisplayed()))
@@ -260,7 +268,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun recentAccessApp_navigatesToFitnessAppFragment() {
         val recentApp =
             RecentAccessEntry(
@@ -299,7 +307,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun recentAccessApp_navigatesToMedicalAppFragment() {
         val recentApp =
             RecentAccessEntry(
@@ -339,7 +347,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun recentAccessApp_navigatesToCombinedPermissionsFragment() {
         val recentApp =
             RecentAccessEntry(
@@ -380,7 +388,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun manageData_navigatesToManageData() {
         setupFragmentForNavigation()
         onView(withText("Manage data")).check(matches(isDisplayed()))
@@ -392,7 +400,11 @@ class HomeFragmentTest {
 
     // region Display tests
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING, SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
+    @DisableFlags(
+        Flags.FLAG_ONBOARDING,
+        Flags.FLAG_STEP_TRACKING_ENABLED,
+        SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED,
+    )
     fun legacyWhenRecentAccessApps_in12HourFormat_showsCorrectTime() {
         val recentApp =
             RecentAccessEntry(
@@ -431,7 +443,11 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING, SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
+    @DisableFlags(
+        Flags.FLAG_ONBOARDING,
+        Flags.FLAG_STEP_TRACKING_ENABLED,
+        SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED,
+    )
     fun legacyWhenRecentAccessAppsError_showsError() {
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.Error)
@@ -448,7 +464,11 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING, SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
+    @DisableFlags(
+        Flags.FLAG_ONBOARDING,
+        Flags.FLAG_STEP_TRACKING_ENABLED,
+        SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED,
+    )
     fun withNoRecentAccessApps() {
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
@@ -478,7 +498,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun whenOneAppConnected_showsOneAppHasPermissions() {
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
@@ -506,7 +526,7 @@ class HomeFragmentTest {
 
     // region Migration tests
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun whenMigrationStatePending_showsMigrationBanner() {
         Mockito.doNothing().whenever(navigationUtils).navigate(any(), any())
         whenever(migrationViewModel.migrationState).then {
@@ -551,7 +571,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun whenDataRestoreStatePending_andErrorVersionDiff_showsRestoreBanner() {
         Mockito.doNothing().whenever(navigationUtils).navigate(any(), any())
         whenever(migrationViewModel.migrationState).then {
@@ -597,7 +617,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun whenDataRestoreStatePending_noError_doesNotShowRestoreBanner() {
         Mockito.doNothing().whenever(navigationUtils).navigate(any(), any())
         whenever(migrationViewModel.migrationState).then {
@@ -634,7 +654,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun whenMigrationStateComplete_showsDialog() {
         val sharedPreference =
             context.getSharedPreferences(Constants.USER_ACTIVITY_TRACKER, Context.MODE_PRIVATE)
@@ -689,7 +709,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun whenMigrationStateNotComplete_showsDialog() {
         val sharedPreference =
             context.getSharedPreferences(Constants.USER_ACTIVITY_TRACKER, Context.MODE_PRIVATE)
@@ -748,7 +768,7 @@ class HomeFragmentTest {
 
     // region Medical data tests
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun browseMedicalData_errorFetchingMedicalDataOrEmptyMedicalData_notDisplayed() {
         whenever(homeViewModel.hasAnyMedicalData).then { MutableLiveData(false) }
 
@@ -762,7 +782,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun browseMedicalData_medicalDataExists_isDisplayed() {
         whenever(homeViewModel.hasAnyMedicalData).then { MutableLiveData(true) }
 
@@ -779,7 +799,7 @@ class HomeFragmentTest {
 
     // region Import/Export tests
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun lastExportWithoutError_exportFileAccessErrorBannerIsNotShown() {
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
@@ -813,7 +833,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun lastFailedExportTimeIsNull_exportFileAccessErrorBannerIsNotShown() {
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
@@ -847,7 +867,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun lastExportWithUnknownErrorAndDate_showsExportErrorBanner() {
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
@@ -888,7 +908,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun showsManageDataSummary() {
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
@@ -924,7 +944,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun lastExportWithLostFileAccessErrorAndDate_showsExportErrorBanner() {
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
@@ -967,7 +987,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun lastExportWithValidErrorTypeAndDate_showsExportErrorBanner_clicksSetupAndNavigatesToExportFlow() {
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
@@ -1006,7 +1026,7 @@ class HomeFragmentTest {
     // region Logging
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun homeFragmentLogging_impressionsLogged() {
         val recentApp =
             RecentAccessEntry(
@@ -1095,6 +1115,7 @@ class HomeFragmentTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun lockScreenBanner_whenMedicalAndFitnessData_bannerShown() {
         whenever(homeViewModel.showLockScreenBanner).then {
             MediatorLiveData(
@@ -1112,7 +1133,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun lockScreenBanner_startsNewPasswordIntent() {
         whenever(homeViewModel.showLockScreenBanner).then {
             MediatorLiveData(HomeViewModel.LockScreenBannerState.ShowBanner())
@@ -1126,7 +1147,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun lockScreenBanner_dismissBanner_bannerDisappears() {
         whenever(homeViewModel.showLockScreenBanner).then {
             MediatorLiveData(HomeViewModel.LockScreenBannerState.ShowBanner())
@@ -1148,6 +1169,7 @@ class HomeFragmentTest {
 
     // region BannerGroup
     @Test
+    @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     fun multipleBanners_canExpand_andCollapseGroup() {
         // Export and Lock Screen banners
         whenever(homeViewModel.showLockScreenBanner).then {
@@ -1255,7 +1277,7 @@ class HomeFragmentTest {
     // region Expressive display tests
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     @EnableFlags(SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
     fun expressiveViewAllRecentAccess_navigatesToRecentAccess() {
         setupFragmentForNavigation()
@@ -1267,7 +1289,7 @@ class HomeFragmentTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     @EnableFlags(SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
     fun expressiveWhenRecentAccessApps_in12HourFormat_showsCorrectTime() {
         val recentApp =
@@ -1309,7 +1331,7 @@ class HomeFragmentTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     @EnableFlags(SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
     fun expressive_withNoRecentAccessApps() {
         whenever(recentAccessViewModel.recentAccessApps).then {
@@ -1336,7 +1358,7 @@ class HomeFragmentTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     @EnableFlags(SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
     fun expressive_withErrorInRecentAccessApps() {
         whenever(recentAccessViewModel.recentAccessApps).then {
@@ -1461,6 +1483,7 @@ class HomeFragmentTest {
 
     @Test
     @EnableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     fun onboardingBannerStateHide_noOnboardingBanner() {
         launchFragment<HomeFragment>(Bundle())
         onView(withText("See your health data across apps")).check(doesNotExist())
@@ -1469,6 +1492,7 @@ class HomeFragmentTest {
 
     @Test
     @EnableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     fun onboardingBannerStateZeroApps_showsZeroAppsBanner() {
         whenever(onboardingViewModel.onboardingBannerState).then {
             MediatorLiveData(OnboardingViewModel.OnboardingBannerState.ZeroAppsOnboardingBanner)
@@ -1506,6 +1530,7 @@ class HomeFragmentTest {
 
     @Test
     @EnableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     fun onboardingBannerStateZeroApps_clickOnSetup_navigatesToOnboardingActivity() {
         whenever(onboardingViewModel.onboardingBannerState).then {
             MediatorLiveData(OnboardingViewModel.OnboardingBannerState.ZeroAppsOnboardingBanner)
@@ -1539,6 +1564,7 @@ class HomeFragmentTest {
 
     @Test
     @EnableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     fun onboardingBannerStateOneApp_showsOneAppBanner() {
         whenever(onboardingViewModel.onboardingBannerState).then {
             MediatorLiveData(OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner)
@@ -1573,7 +1599,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
     fun whenOnboardingFlagDisabled_onboardingViewModelNotCalled() {
         whenever(onboardingViewModel.onboardingBannerState).then {
             MediatorLiveData(OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner)
@@ -1587,6 +1613,7 @@ class HomeFragmentTest {
 
     @Test
     @EnableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     fun onboardingBannerStateOneApp_clickOnContinue_navigatesToOnboardingActivity() {
         whenever(onboardingViewModel.onboardingBannerState).then {
             MediatorLiveData(OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner)
@@ -1622,21 +1649,130 @@ class HomeFragmentTest {
             }
     }
 
+    // endregion onboarding
+
     @Test
     @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    @DisableFlags(Flags.FLAG_ONBOARDING)
     fun devices_whenFlagEnabled_isDisplayed() {
         setupFragmentForNavigation()
-        onView(withText("Devices")).check(matches(isDisplayed()))
+        onView(withText("Devices")).perform(scrollTo()).check(matches(isDisplayed()))
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_ONBOARDING)
     fun devices_whenFlagDisabled_isNotDisplayed() {
         setupFragmentForNavigation()
         onView(withText("Devices")).check(doesNotExist())
     }
 
-    // endregion
+    @Test
+    @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_ONBOARDING)
+    fun nativeStepsBanner_whenFlagDisabled_isNotDisplayed() {
+        launchFragment<HomeFragment>(Bundle())
+        onView(withText(R.string.native_steps_banner_title)).check(doesNotExist())
+        onView(withText(R.string.native_steps_banner_summary)).check(doesNotExist())
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    @DisableFlags(Flags.FLAG_ONBOARDING)
+    fun nativeStepsBannerWasSeen_noNativeStepsBanner() {
+        whenever(nativeStepsNotificationViewModel.wasSeen).then { MutableLiveData<Boolean>(true) }
+        launchFragment<HomeFragment>(Bundle())
+        onView(withText(R.string.native_steps_banner_title)).check(doesNotExist())
+        onView(withText(R.string.native_steps_banner_summary)).check(doesNotExist())
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    @DisableFlags(Flags.FLAG_ONBOARDING)
+    fun nativeStepsBannerWasNotSeen_showsNativeStepsBanner() {
+        launchFragment<HomeFragment>(Bundle()).use { scenario ->
+            onView(withText(R.string.native_steps_banner_title)).check(matches(isDisplayed()))
+            onView(withText(R.string.native_steps_banner_summary)).check(matches(isDisplayed()))
+            onView(withText(R.string.native_steps_banner_dismiss)).check(matches(isDisplayed()))
+            onView(withText(R.string.native_steps_banner_review_button))
+                .check(matches(isDisplayed()))
+
+            verify(healthConnectLogger).logImpression(HomePageElement.NATIVE_STEPS_BANNER)
+            verify(healthConnectLogger)
+                .logImpression(HomePageElement.NATIVE_STEPS_BANNER_REVIEW_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(HomePageElement.NATIVE_STEPS_BANNER_DISMISS_BUTTON)
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    @DisableFlags(Flags.FLAG_ONBOARDING)
+    fun nativeStepsBannerWasNotSeen_dismissesNativeStepsBanner() {
+        launchFragment<HomeFragment>(Bundle()) {
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.homeFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use { scenario ->
+                onView(
+                        withId(
+                            com.android.settingslib.widget.preference.banner.R.id
+                                .banner_negative_btn
+                        )
+                    )
+                    .perform(scrollTo())
+                    .perform(click())
+                scenario.onActivity { activity ->
+                    val preferences =
+                        activity.getSharedPreferences(
+                            Constants.USER_ACTIVITY_TRACKER,
+                            Context.MODE_PRIVATE,
+                        )
+                    assertThat(preferences.getBoolean(Constants.NATIVE_STEPS_BANNER_SEEN, false))
+                        .isTrue()
+                }
+
+                onView(withText(R.string.native_steps_banner_title)).check(doesNotExist())
+                onView(withText(R.string.native_steps_banner_summary)).check(doesNotExist())
+                verify(healthConnectLogger)
+                    .logInteraction(HomePageElement.NATIVE_STEPS_BANNER_DISMISS_BUTTON)
+                assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.homeFragment)
+            }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    @DisableFlags(Flags.FLAG_ONBOARDING)
+    fun nativeStepsBannerWasNotSeen_navigatesToManageDevices() {
+        launchFragment<HomeFragment>(Bundle()) {
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.homeFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use { scenario ->
+                onView(
+                        withId(
+                            com.android.settingslib.widget.preference.banner.R.id
+                                .banner_positive_btn
+                        )
+                    )
+                    .perform(scrollTo())
+                    .perform(click())
+                scenario.onActivity { activity ->
+                    val preferences =
+                        activity.getSharedPreferences(
+                            Constants.USER_ACTIVITY_TRACKER,
+                            Context.MODE_PRIVATE,
+                        )
+                    assertThat(preferences.getBoolean(Constants.NATIVE_STEPS_BANNER_SEEN, false))
+                        .isTrue()
+                }
+
+                verify(healthConnectLogger)
+                    .logInteraction(HomePageElement.NATIVE_STEPS_BANNER_REVIEW_BUTTON)
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.connectedDevicesFragment)
+            }
+    }
 
     private fun setupFragmentForNavigation() {
         val recentApp =

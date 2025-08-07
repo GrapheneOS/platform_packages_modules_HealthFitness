@@ -125,6 +125,7 @@ public class HealthConnectManagerService extends SystemService {
                 .registerBroadcastReceiver(mContext);
         new HealthConnectOnboardingReceiver(mHealthConnectInjector.getNotificationStatsLogger())
                 .registerBroadcastReceiver(mContext);
+
         publishBinderService(Context.HEALTHCONNECT_SERVICE, mHealthConnectService);
     }
 
