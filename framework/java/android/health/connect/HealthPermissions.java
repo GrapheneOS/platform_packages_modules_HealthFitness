@@ -25,6 +25,7 @@ import static com.android.healthfitness.flags.Flags.FLAG_LAUNCH_ONBOARDING_ACTIV
 import static com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
+import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
 
 import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
@@ -482,6 +483,14 @@ public final class HealthPermissions {
             "android.permission.health.READ_ALCOHOL_CONSUMPTION";
 
     /**
+     * Allows an application to read the user's cough symptom data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_COUGH = "android.permission.health.READ_SYMPTOM_COUGH";
+
+    /**
      * Allows an application to write the user's calories burned data.
      *
      * <p>Protection level: dangerous.
@@ -810,6 +819,15 @@ public final class HealthPermissions {
     public static final String WRITE_ALCOHOL_CONSUMPTION =
             "android.permission.health.WRITE_ALCOHOL_CONSUMPTION";
 
+    /**
+     * Allows an application to write the user's cough symptom data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_COUGH =
+            "android.permission.health.WRITE_SYMPTOM_COUGH";
+
     /* Personal Health Record permissions */
 
     /**
@@ -1104,6 +1122,7 @@ public final class HealthPermissions {
             case READ_ACTIVITY_INTENSITY, WRITE_ACTIVITY_INTENSITY -> Flags.activityIntensity();
             case READ_ALCOHOL_CONSUMPTION, WRITE_ALCOHOL_CONSUMPTION -> Flags.alcoholConsumption();
             case READ_NICOTINE_INTAKE, WRITE_NICOTINE_INTAKE -> Flags.smoking();
+            case READ_SYMPTOM_COUGH, WRITE_SYMPTOM_COUGH -> Flags.symptoms();
             case READ_MEDICAL_DATA_DEVICES -> Flags.deviceResource();
             default -> true;
         };
@@ -1196,6 +1215,9 @@ public final class HealthPermissions {
 
         sWriteHealthPermissionToHealthDataCategoryMap.put(
                 WRITE_MINDFULNESS, HealthDataCategory.WELLNESS);
+
+        // TODO(b/438675118): Add WRITE_SYMPTOMS to the SYMPTOMS category as part of controller / UI
+        // changes.
 
         sDataCategoryToWritePermissionsMap.put(
                 HealthDataCategory.ACTIVITY,

@@ -28,6 +28,7 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__D
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BONE_MASS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CERVICAL_MUCUS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CYCLING_PEDALING_CADENCE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DATA_TYPE_NOT_ASSIGNED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DISTANCE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ELEVATION_GAINED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__EXERCISE_SESSION;
@@ -96,6 +97,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SPEED;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SYMPTOM;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_VO2_MAX;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_WEIGHT;
@@ -141,6 +143,7 @@ import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForU
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_SPEED;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_STEPS;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_STEPS_CADENCE;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_SYMPTOMS;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_TOTAL_CALORIES_BURNED;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_VO2_MAX;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_WEIGHT;
@@ -190,6 +193,7 @@ import com.android.server.healthconnect.fitness.recordhelpers.SleepSessionRecord
 import com.android.server.healthconnect.fitness.recordhelpers.SpeedRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.StepsCadenceRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.StepsRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.SymptomRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.TotalCaloriesBurnedRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.Vo2MaxRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.WeightRecordHelper;
@@ -212,6 +216,10 @@ public class InternalDataTypeDescriptors {
 
     private static final int LOGGING_ENUM_NICOTINE_INTAKE =
             HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__NICOTINE_INTAKE;
+
+    // TODO(b/425404543): Remove once the correct logging enum for Symptoms is available.
+    private static final int LOGGING_ENUM_NOT_ASSIGNED =
+            HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DATA_TYPE_NOT_ASSIGNED;
 
     @VisibleForTesting(visibility = PACKAGE)
     static List<InternalDataTypeDescriptor> getAllInternalDataTypeDescriptors() {
@@ -497,7 +505,17 @@ public class InternalDataTypeDescriptors {
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_WHEELCHAIR_PUSHES)
                         .setLoggingEnum(
                                 HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__WHEELCHAIR_PUSHES)
-                        .build());
+                        .build(),
+                AconfigFlagHelper.isSymptomsEnabled()
+                        ? InternalDataTypeDescriptor.builder()
+                                .setRecordTypeIdentifier(RECORD_TYPE_SYMPTOM)
+                                .setRecordHelper(new SymptomRecordHelper())
+                                .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_SYMPTOMS)
+                                // TODO(b/425404543): Use the correct logging enum for Symptoms once
+                                // it is available.
+                                .setLoggingEnum(LOGGING_ENUM_NOT_ASSIGNED)
+                                .build()
+                        : null);
     }
 
     @SafeVarargs

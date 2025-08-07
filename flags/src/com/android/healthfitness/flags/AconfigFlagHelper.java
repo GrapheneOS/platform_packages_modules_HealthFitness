@@ -151,4 +151,10 @@ public final class AconfigFlagHelper {
     public static boolean isDeviceDataProvidersEnabled() {
         return Flags.deviceDataProvidersDb() && Flags.developmentDatabase();
     }
+
+    /** Returns a boolean indicating whether Symptoms data type is enabled. */
+    public static boolean isSymptomsEnabled() {
+        // TODO(b/439781167): Use isDbFlagEnabled once the database changes are finalized.
+        return Flags.symptoms() && Flags.symptomsDb();
+    }
 }

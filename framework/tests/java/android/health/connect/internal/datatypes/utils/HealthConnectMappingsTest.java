@@ -22,6 +22,7 @@ import static android.health.connect.HealthPermissions.WRITE_NICOTINE_INTAKE;
 import static android.health.connect.HealthPermissions.WRITE_STEPS;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVITY_INTENSITY;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NICOTINE_INTAKE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SYMPTOM;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 import static android.health.connect.internal.datatypes.utils.DataTypeDescriptors.getAllDataTypeDescriptors;
 
@@ -344,7 +345,7 @@ public class HealthConnectMappingsTest {
         }
     }
 
-    @DisableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING})
+    @DisableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING, Flags.FLAG_SYMPTOMS})
     @Test
     public void getRecordCategoryForRecordType_equalsToLegacy() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -474,5 +475,34 @@ public class HealthConnectMappingsTest {
         for (String permission : HealthPermissions.getAllMedicalPermissions()) {
             assertThat(healthConnectMappings.isFitnessPermission(permission)).isFalse();
         }
+    }
+
+    @EnableFlags({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB})
+    @Test
+    public void symptomsFlagEnabled_containsSymptoms() {
+        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
+
+        assertThat(healthConnectMappings.getAllRecordTypeIdentifiers())
+                .contains(RECORD_TYPE_SYMPTOM);
+    }
+
+    @EnableFlags(Flags.FLAG_SYMPTOMS_DB)
+    @DisableFlags(Flags.FLAG_SYMPTOMS)
+    @Test
+    public void symptomsFlagDisabled_doesNotContainSymptoms() {
+        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
+
+        assertThat(healthConnectMappings.getAllRecordTypeIdentifiers())
+                .doesNotContain(RECORD_TYPE_SYMPTOM);
+    }
+
+    @EnableFlags(Flags.FLAG_SYMPTOMS)
+    @DisableFlags(Flags.FLAG_SYMPTOMS_DB)
+    @Test
+    public void symptomsDbFlagDisabled_doesNotContainSymptoms() {
+        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
+
+        assertThat(healthConnectMappings.getAllRecordTypeIdentifiers())
+                .doesNotContain(RECORD_TYPE_SYMPTOM);
     }
 }

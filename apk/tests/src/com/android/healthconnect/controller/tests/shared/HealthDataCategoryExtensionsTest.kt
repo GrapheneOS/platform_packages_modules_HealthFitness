@@ -66,7 +66,7 @@ class HealthDataCategoryExtensionsTest {
 
     @Test
     fun fitnessDataCategories() {
-        assertThat(FITNESS_DATA_CATEGORIES).hasSize(7)
+        assertThat(FITNESS_DATA_CATEGORIES).hasSize(8)
         assertThat(FITNESS_DATA_CATEGORIES).containsNoDuplicates()
         assertThat(FITNESS_DATA_CATEGORIES).doesNotContain(HealthDataCategory.UNKNOWN)
     }

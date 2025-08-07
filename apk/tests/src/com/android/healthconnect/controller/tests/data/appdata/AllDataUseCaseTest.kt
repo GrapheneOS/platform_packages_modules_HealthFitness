@@ -125,6 +125,7 @@ class AllDataUseCaseTest {
                         listOf(FitnessPermissionType.HEART_RATE),
                     ),
                     PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
                 )
             )
         assertThat(allDataUseCase.loadFitnessAppData(TEST_APP_PACKAGE_NAME)).isEqualTo(expected)
@@ -179,6 +180,7 @@ class AllDataUseCaseTest {
                         listOf(FitnessPermissionType.HEART_RATE),
                     ),
                     PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
                 )
             )
         assertThat(allDataUseCase.loadAllFitnessData()).isEqualTo(expected)

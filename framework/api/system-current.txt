@@ -288,6 +288,7 @@ package android.health.connect.datatypes {
     field public static final int RECORD_TYPE_SPEED = 14; // 0xe
     field public static final int RECORD_TYPE_STEPS = 1; // 0x1
     field public static final int RECORD_TYPE_STEPS_CADENCE = 15; // 0xf
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int RECORD_TYPE_SYMPTOM = 44; // 0x2c
     field public static final int RECORD_TYPE_TOTAL_CALORIES_BURNED = 9; // 0x9
     field public static final int RECORD_TYPE_UNKNOWN = 0; // 0x0
     field public static final int RECORD_TYPE_VO2_MAX = 18; // 0x12
