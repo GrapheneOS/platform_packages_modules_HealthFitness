@@ -54,9 +54,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DeviceInfoHelper extends DatabaseHelper {
     public static final String TABLE_NAME = "device_info_table";
-    private static final String MANUFACTURER_COLUMN_NAME = "manufacturer";
-    private static final String MODEL_COLUMN_NAME = "model";
-    private static final String DEVICE_TYPE_COLUMN_NAME = "device_type";
+    public static final String MANUFACTURER_COLUMN_NAME = "manufacturer";
+    public static final String MODEL_COLUMN_NAME = "model";
+    public static final String DEVICE_TYPE_COLUMN_NAME = "device_type";
 
     record DeviceInfoCache(
             // Map to store deviceInfoId -> DeviceInfo mapping for populating record for read.

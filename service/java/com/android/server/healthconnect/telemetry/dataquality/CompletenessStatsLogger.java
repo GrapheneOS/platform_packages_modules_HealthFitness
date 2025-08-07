@@ -28,6 +28,7 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Logs Health Connect data completeness stats. Including recording method and device info.
@@ -53,7 +54,7 @@ public final class CompletenessStatsLogger {
         }
     }
 
-    void logDeviceInfoStats(List<CompletenessStatsCollector.DeviceInfoStat> stats) {
+    void logDeviceInfoStats(Set<CompletenessStatsCollector.DeviceInfoStat> stats) {
         if (!dataCompleteness()) {
             return;
         }

@@ -17,29 +17,40 @@
 package com.android.server.healthconnect.telemetry.dataquality;
 
 import static com.android.healthfitness.flags.Flags.dataCompleteness;
+import static com.android.server.healthconnect.common.metadata.DeviceInfoHelper.DEVICE_TYPE_COLUMN_NAME;
+import static com.android.server.healthconnect.common.metadata.DeviceInfoHelper.MANUFACTURER_COLUMN_NAME;
+import static com.android.server.healthconnect.common.metadata.DeviceInfoHelper.MODEL_COLUMN_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.DEVICE_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.RECORDING_METHOD_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.Slog;
 
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
+import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.time.Clock;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * A class to collect Health Connect data completeness stats. Including recording method and device
@@ -95,10 +106,6 @@ public final class CompletenessStatsCollector {
         return recordingMethodStats;
     }
 
-    List<DeviceInfoStat> readDeviceInfoStats() {
-        return List.of();
-    }
-
     private Optional<RecordingMethodStat> createRecordingMethodStat(Cursor cursor) {
         // Skip logging if package name not found in App info table
         return getPackageName(getCursorInt(cursor, APP_INFO_ID_COLUMN_NAME))
@@ -125,6 +132,78 @@ public final class CompletenessStatsCollector {
                                 RECORDING_METHOD_COLUMN_NAME,
                                 recordIdColumn))
                 .setWhereClause(getWhereClauseForRecentRecords());
+    }
+
+    Set<DeviceInfoStat> readDeviceInfoStats() {
+        if (!dataCompleteness()) {
+            return Set.of();
+        }
+
+        List<ReadTableRequest> allRequests =
+                HEALTH_CONNECT_MAPPINGS.getAllRecordTypeIdentifiers().stream()
+                        .map(this::getReadDeviceInfoStatsRequest)
+                        .toList();
+        if (allRequests.isEmpty()) {
+            return Set.of();
+        }
+
+        ReadTableRequest readRequest = allRequests.getFirst();
+        if (allRequests.size() > 1) {
+            readRequest.setUnionReadRequests(allRequests.subList(1, allRequests.size()));
+        }
+
+        Set<DeviceInfoStat> deviceInfoStats = new HashSet<>();
+        try (Cursor cursor = mTransactionManager.read(readRequest)) {
+            while (cursor.moveToNext()) {
+                createDeviceInfoStat(cursor).ifPresent(deviceInfoStats::add);
+            }
+        } catch (Exception exception) {
+            Slog.e(TAG, "Failed to log device info stats.", exception);
+        }
+        return deviceInfoStats;
+    }
+
+    private ReadTableRequest getReadDeviceInfoStatsRequest(int recordTypeId) {
+        String tableName =
+                INTERNAL_HEALTH_CONNECT_MAPPINGS.getRecordHelper(recordTypeId).getMainTableName();
+        String recordIdColumn = recordTypeId + " AS " + RECORD_TYPE_ID_COLUMN_NAME;
+
+        return new ReadTableRequest(tableName)
+                .setDistinctClause(true)
+                .setColumnNames(
+                        List.of(
+                                APP_INFO_ID_COLUMN_NAME,
+                                recordIdColumn,
+                                MANUFACTURER_COLUMN_NAME,
+                                MODEL_COLUMN_NAME,
+                                DEVICE_TYPE_COLUMN_NAME))
+                .setJoinClause(
+                        new SqlJoin(
+                                tableName,
+                                DeviceInfoHelper.TABLE_NAME,
+                                DEVICE_INFO_ID_COLUMN_NAME,
+                                RecordHelper.PRIMARY_COLUMN_NAME))
+                .setWhereClause(getWhereClauseForRecentRecords());
+    }
+
+    private Optional<DeviceInfoStat> createDeviceInfoStat(Cursor cursor) {
+        // Skip logging if package name not found in App info table
+        return getPackageName(getCursorInt(cursor, APP_INFO_ID_COLUMN_NAME))
+                .map(
+                        app -> {
+                            int recordTypeId = getCursorInt(cursor, RECORD_TYPE_ID_COLUMN_NAME);
+                            String manufacturer = getCursorString(cursor, MANUFACTURER_COLUMN_NAME);
+                            String model = getCursorString(cursor, MODEL_COLUMN_NAME);
+                            int deviceType = getCursorInt(cursor, DEVICE_TYPE_COLUMN_NAME);
+
+                            boolean hasManufacturer =
+                                    manufacturer != null && !manufacturer.isEmpty();
+                            boolean hasModel = model != null && !model.isEmpty();
+                            boolean hasType = deviceType != Device.DEVICE_TYPE_UNKNOWN;
+
+                            return new DeviceInfoStat(
+                                    app, recordTypeId, hasManufacturer, hasModel, hasType);
+                        });
     }
 
     private WhereClauses getWhereClauseForRecentRecords() {

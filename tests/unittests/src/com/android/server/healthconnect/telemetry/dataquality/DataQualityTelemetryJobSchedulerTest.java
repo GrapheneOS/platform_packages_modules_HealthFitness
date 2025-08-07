@@ -27,6 +27,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
@@ -118,7 +119,7 @@ public class DataQualityTelemetryJobSchedulerTest {
         mDataQualityTelemetryJobScheduler.execute();
         verify(mLatencyMetricsLogger).log();
         verify(mCompletenessStatsLogger, never()).logRecordingMethodStats(anyList());
-        verify(mCompletenessStatsLogger, never()).logDeviceInfoStats(anyList());
+        verify(mCompletenessStatsLogger, never()).logDeviceInfoStats(anySet());
     }
 
     @Test
@@ -127,13 +128,13 @@ public class DataQualityTelemetryJobSchedulerTest {
     public void execute_dataCompletenessEnabled_logsCompletenessStats() {
         when(mCompletenessStatsCollector.readRecordingMethodStats())
                 .thenReturn(Collections.emptyList());
-        when(mCompletenessStatsCollector.readDeviceInfoStats()).thenReturn(Collections.emptyList());
+        when(mCompletenessStatsCollector.readDeviceInfoStats()).thenReturn(Collections.emptySet());
 
         mDataQualityTelemetryJobScheduler.execute();
 
         verify(mLatencyMetricsLogger, never()).log();
         verify(mCompletenessStatsLogger).logRecordingMethodStats(Collections.emptyList());
-        verify(mCompletenessStatsLogger).logDeviceInfoStats(Collections.emptyList());
+        verify(mCompletenessStatsLogger).logDeviceInfoStats(Collections.emptySet());
     }
 
     @Test
@@ -141,13 +142,13 @@ public class DataQualityTelemetryJobSchedulerTest {
     public void execute_bothFlagsEnabled_logsBoth() {
         when(mCompletenessStatsCollector.readRecordingMethodStats())
                 .thenReturn(Collections.emptyList());
-        when(mCompletenessStatsCollector.readDeviceInfoStats()).thenReturn(Collections.emptyList());
+        when(mCompletenessStatsCollector.readDeviceInfoStats()).thenReturn(Collections.emptySet());
 
         mDataQualityTelemetryJobScheduler.execute();
 
         verify(mLatencyMetricsLogger).log();
         verify(mCompletenessStatsLogger).logRecordingMethodStats(Collections.emptyList());
-        verify(mCompletenessStatsLogger).logDeviceInfoStats(Collections.emptyList());
+        verify(mCompletenessStatsLogger).logDeviceInfoStats(Collections.emptySet());
     }
 
     @Test
@@ -157,7 +158,7 @@ public class DataQualityTelemetryJobSchedulerTest {
 
         verify(mLatencyMetricsLogger, never()).log();
         verify(mCompletenessStatsLogger, never()).logRecordingMethodStats(anyList());
-        verify(mCompletenessStatsLogger, never()).logDeviceInfoStats(anyList());
+        verify(mCompletenessStatsLogger, never()).logDeviceInfoStats(anySet());
     }
 
     @Test
@@ -178,12 +179,12 @@ public class DataQualityTelemetryJobSchedulerTest {
     public void execute_completenessRecordingMethodCollectorException_exceptionCaught() {
         when(mCompletenessStatsCollector.readRecordingMethodStats())
                 .thenThrow(new RuntimeException("Test exception"));
-        when(mCompletenessStatsCollector.readDeviceInfoStats()).thenReturn(Collections.emptyList());
+        when(mCompletenessStatsCollector.readDeviceInfoStats()).thenReturn(Collections.emptySet());
 
         mDataQualityTelemetryJobScheduler.execute();
 
         verify(mCompletenessStatsLogger, never()).logRecordingMethodStats(anyList());
-        verify(mCompletenessStatsLogger).logDeviceInfoStats(Collections.emptyList());
+        verify(mCompletenessStatsLogger).logDeviceInfoStats(Collections.emptySet());
     }
 
     @Test
@@ -198,7 +199,7 @@ public class DataQualityTelemetryJobSchedulerTest {
         mDataQualityTelemetryJobScheduler.execute();
 
         verify(mCompletenessStatsLogger).logRecordingMethodStats(Collections.emptyList());
-        verify(mCompletenessStatsLogger, never()).logDeviceInfoStats(anyList());
+        verify(mCompletenessStatsLogger, never()).logDeviceInfoStats(anySet());
     }
 
     private void assertJobInfoIsCorrect(JobInfo jobInfo) {

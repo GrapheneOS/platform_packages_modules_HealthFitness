@@ -55,7 +55,9 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
 public class CompletenessStatsLoggerTest {
@@ -123,7 +125,7 @@ public class CompletenessStatsLoggerTest {
     @Test
     @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
     public void logDeviceInfoStats_flagEnabled_logged() {
-        List<CompletenessStatsCollector.DeviceInfoStat> stats = new ArrayList<>();
+        Set<CompletenessStatsCollector.DeviceInfoStat> stats = new HashSet<>();
         stats.add(
                 new CompletenessStatsCollector.DeviceInfoStat(
                         TEST_PACKAGE, RECORD_TYPE_STEPS, true, true, false));
@@ -165,7 +167,7 @@ public class CompletenessStatsLoggerTest {
     @Test
     @DisableFlags(Flags.FLAG_DATA_COMPLETENESS)
     public void logDeviceInfoStats_flagDisabled_noOp() {
-        List<CompletenessStatsCollector.DeviceInfoStat> stats = new ArrayList<>();
+        Set<CompletenessStatsCollector.DeviceInfoStat> stats = new HashSet<>();
         stats.add(
                 new CompletenessStatsCollector.DeviceInfoStat(
                         TEST_PACKAGE, RECORD_TYPE_STEPS, true, true, true));
