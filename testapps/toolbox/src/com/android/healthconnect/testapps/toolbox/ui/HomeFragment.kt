@@ -181,14 +181,7 @@ class HomeFragment : Fragment() {
 
         val matchingAppsIntent = homeFragmentViewModel.createMatchmakingIntent(manager)
         matchmakingButton.setOnClickListener {
-            // TODO(b/427409014): Uncomment once HC Activity to handle intent is in place.
-            // matchmakingActivityResultLauncher.launch(matchingAppsIntent)
-            Toast.makeText(
-                    requireContext(),
-                    "Matchmaking intent can be launched",
-                    Toast.LENGTH_SHORT,
-                )
-                .show()
+            matchmakingActivityResultLauncher.launch(matchingAppsIntent)
         }
     }
 
