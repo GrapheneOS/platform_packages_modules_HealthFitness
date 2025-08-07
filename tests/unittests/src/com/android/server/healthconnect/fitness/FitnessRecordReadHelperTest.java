@@ -815,8 +815,6 @@ public class FitnessRecordReadHelperTest {
                                 /* isInForeground= */ true,
                                 /* shouldRecordAccessLogs */ false,
                                 /* enforceSelfRead= */ false,
-                                /* isInForeground= */
-                                /* shouldRecordAccessLogs */
                                 /* packageNamesByAppIds= */ null)
                         .first;
 
@@ -825,5 +823,40 @@ public class FitnessRecordReadHelperTest {
                 (ExerciseSessionRecordInternal) returnedRecords.get(0);
         assertThat(returnedRecord.hasRoute()).isTrue();
         assertThat(returnedRecord.getRoute()).isEqualTo(session.getRoute());
+    }
+
+    @Test
+    public void readRecordsAndPageToken_byFilters_unknownApp_inBackground_doesntReturnRoute() {
+        ExerciseSessionRecordInternal session =
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, session);
+
+        ReadRecordsRequestParcel request =
+                new ReadRecordsRequestUsingFilters.Builder<>(ExerciseSessionRecord.class)
+                        .setTimeRangeFilter(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(Instant.EPOCH)
+                                        .setEndTime(Instant.ofEpochSecond(100000))
+                                        .build())
+                        .build()
+                        .toReadRecordsRequestParcel();
+        List<RecordInternal<?>> returnedRecords =
+                mFitnessRecordReadHelper.readRecords(
+                                mTransactionManager,
+                                UNKNOWN_PACKAGE_NAME,
+                                request,
+                                WRITE_EXERCISE_ROUTE_EXTRA_PERM,
+                                /* startDateAccessMillis= */ 0,
+                                /* isInForeground= */ false,
+                                /* shouldRecordAccessLogs */ false,
+                                /* enforceSelfRead= */ false,
+                                /* packageNamesByAppIds= */ null)
+                        .first;
+
+        assertThat(returnedRecords).hasSize(1);
+        ExerciseSessionRecordInternal returnedRecord =
+                (ExerciseSessionRecordInternal) returnedRecords.get(0);
+        assertThat(returnedRecord.hasRoute()).isTrue();
+        assertThat(returnedRecord.getRoute()).isNull();
     }
 }
