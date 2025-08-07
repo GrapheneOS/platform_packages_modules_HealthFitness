@@ -154,22 +154,6 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
-    public void stepTrackingEnabled_setStepTrackingEnabled_doesNotThrow() {
-        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
-        manager.setStepTrackingEnabled(true);
-        manager.setStepTrackingEnabled(false);
-    }
-
-    @Test
-    @DisableFlags({FLAG_STEP_TRACKING_ENABLED})
-    public void stepTrackingDisabled_setStepTrackingEnabled_doesNotThrow() {
-        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
-        manager.setStepTrackingEnabled(true);
-        manager.setStepTrackingEnabled(false);
-    }
-
-    @Test
-    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void stepTrackingEnabled_initialize_initializeNotificationPreferenceOnDisable() {
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
 

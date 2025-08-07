@@ -19,6 +19,8 @@ package com.android.server.healthconnect.common.logging;
 import android.health.HealthFitnessStatsLog;
 import android.util.Slog;
 
+import com.android.healthfitness.flags.Flags;
+
 /**
  * Class to log Health Connect metrics logged every 24hrs.
  *
@@ -34,13 +36,17 @@ public class DailyLoggingService {
             UsageStatsCollector usageStatsCollector,
             DatabaseStatsCollector databaseStatsCollector,
             EcosystemStatsCollector ecosystemStatsCollector,
+            NativeTrackingStatsCollector nativeTrackingStatsCollector,
             HealthFitnessStatsLog statsLog) {
         UsageStatsLogger usageStatsLogger = new UsageStatsLogger(statsLog);
         DatabaseStatsLogger databaseStatsLogger = new DatabaseStatsLogger(statsLog);
         EcosystemStatsLogger ecosystemStatsLogger = new EcosystemStatsLogger(statsLog);
+        NativeTrackingStatsLogger nativeTrackingStatsLogger =
+                new NativeTrackingStatsLogger(statsLog, nativeTrackingStatsCollector);
         logDatabaseStats(databaseStatsCollector, usageStatsCollector, databaseStatsLogger);
         logUsageStats(usageStatsCollector, usageStatsLogger);
         logEcosystemStats(ecosystemStatsCollector, ecosystemStatsLogger);
+        logNativeTrackingStats(nativeTrackingStatsCollector, nativeTrackingStatsLogger);
     }
 
     private static void logDatabaseStats(
@@ -60,6 +66,23 @@ public class DailyLoggingService {
             usageStatsLogger.log(usageStatsCollector);
         } catch (Exception exception) {
             Slog.e(HEALTH_CONNECT_DAILY_LOGGING_SERVICE, "Failed to log usage stats", exception);
+        }
+    }
+
+    private static void logNativeTrackingStats(
+            NativeTrackingStatsCollector nativeTrackingStatsCollector,
+            NativeTrackingStatsLogger nativeTrackingStatsLogger) {
+        if (!Flags.stepTrackingEnabled()) {
+            return;
+        }
+        try {
+            nativeTrackingStatsCollector.processStats();
+            nativeTrackingStatsLogger.log();
+        } catch (Exception exception) {
+            Slog.e(
+                    HEALTH_CONNECT_DAILY_LOGGING_SERVICE,
+                    "Failed to log native tracking stats",
+                    exception);
         }
     }
 

@@ -42,6 +42,7 @@ import com.android.server.healthconnect.common.jobs.DailyCleanupJob;
 import com.android.server.healthconnect.common.jobs.HealthConnectDailyJobs;
 import com.android.server.healthconnect.common.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.common.logging.EcosystemStatsCollector;
+import com.android.server.healthconnect.common.logging.NativeTrackingStatsCollector;
 import com.android.server.healthconnect.common.logging.UsageStatsCollector;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
@@ -111,6 +112,15 @@ public final class HealthConnectDailyService extends JobService {
                         new EcosystemStatsCollector(
                                 healthConnectInjector.getReadAccessLogsHelper(),
                                 healthConnectInjector.getChangeLogsHelper());
+                NativeTrackingStatsCollector nativeTrackingStatsCollector =
+                        new NativeTrackingStatsCollector(
+                                healthConnectInjector.getPackageInfoUtils(),
+                                context,
+                                getUser(),
+                                healthConnectInjector.getTransactionManager(),
+                                healthConnectInjector.getAppInfoHelper(),
+                                healthConnectInjector.getTrackerManager(),
+                                healthConnectInjector.getHealthConnectPermissionHelper());
                 threadScheduler.scheduleInternalTask(
                         () -> {
                             HealthConnectDailyJobs.execute(
@@ -118,6 +128,7 @@ public final class HealthConnectDailyService extends JobService {
                                     databaseStatsCollector,
                                     dailyCleanupJob,
                                     ecosystemStatsCollector,
+                                    nativeTrackingStatsCollector,
                                     healthConnectInjector.getHealthFitnessStatsLog());
                             jobFinished(params, false);
                         });
