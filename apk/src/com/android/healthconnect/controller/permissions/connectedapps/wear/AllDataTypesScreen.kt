@@ -28,11 +28,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionStrings
 import com.android.healthconnect.controller.permissions.data.HealthPermission
+import com.android.healthconnect.controller.shared.WearPermissionsPaddingValues
 import com.android.permissioncontroller.wear.permission.components.ScrollableScreen
 import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionButton
 
@@ -95,7 +95,9 @@ fun AllDataTypesScreen(
     ) {
         item {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(start = 12.dp, bottom = 8.dp),
+                modifier =
+                    Modifier.fillMaxWidth()
+                        .padding(WearPermissionsPaddingValues.dataTypeCategoryHeaderPaddingValues),
                 horizontalArrangement = Arrangement.Start,
             ) {
                 Text(stringResource(R.string.vitals_category_uppercase))

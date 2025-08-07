@@ -25,11 +25,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionStrings
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.AdditionalPermission.Companion.READ_HEALTH_DATA_IN_BACKGROUND
+import com.android.healthconnect.controller.shared.WearPermissionsPaddingValues
 import com.android.permissioncontroller.wear.permission.components.ScrollableScreen
 import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionButton
 
@@ -114,7 +114,7 @@ fun ControlBackgroundReadForSingleAppScreen(
                 label = stringResource(R.string.manage_fitness_and_wellness_permissions),
                 labelMaxLines = 3,
                 onClick = { onAppInfoPermissionClick() },
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier.padding(WearPermissionsPaddingValues.defaultButtonPaddingValues),
             )
         }
     }
