@@ -3542,7 +3542,10 @@ public class HealthConnectServiceImplTest {
                 .enforcePermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt(), any());
 
         mHealthConnectService.recordMatchmakingDenial(
-                mAttributionSource, THIS_TEST_PACKAGE_NAME, mEmptyResponseCallback);
+                mAttributionSource,
+                THIS_TEST_PACKAGE_NAME,
+                List.of(WRITE_STEPS),
+                mEmptyResponseCallback);
         awaitAllExecutorsIdle();
 
         verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
@@ -3556,7 +3559,19 @@ public class HealthConnectServiceImplTest {
         setDataManagementPermission(PERMISSION_GRANTED);
 
         mHealthConnectService.recordMatchmakingDenial(
-                mAttributionSource, "package.name", mEmptyResponseCallback);
+                mAttributionSource, "package.name", List.of(WRITE_STEPS), mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
+    }
+
+    @Test
+    @EnableFlags(FLAG_MATCHMAKING)
+    public void recordMatchmakingDenial_emptyRecordedPermissionList_callsManager()
+            throws RemoteException {
+        setDataManagementPermission(PERMISSION_GRANTED);
+
+        mHealthConnectService.recordMatchmakingDenial(
+                mAttributionSource, "package.name", List.of(), mEmptyResponseCallback);
 
         verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
     }

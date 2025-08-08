@@ -632,6 +632,7 @@ interface IHealthConnectService {
     void recordMatchmakingDenial(
             in AttributionSource attributionSource,
             String packageName,
+            in List<String> permissions,
             in IEmptyResponseCallback callback);
 
     /**

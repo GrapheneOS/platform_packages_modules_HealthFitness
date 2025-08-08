@@ -15,6 +15,7 @@
  */
 package com.android.server.healthconnect.onboarding.matchmaking;
 
+import android.health.connect.HealthDataCategory;
 import android.util.Slog;
 
 import com.android.internal.annotations.GuardedBy;
@@ -28,21 +29,17 @@ import java.time.Instant;
 import java.util.Base64;
 
 /**
- * Manages the state of matchmaking denials to enforce a pause on the feature.
- *
- * <p>This class tracks the number of times a user denies the matchmaking flow for a specific
- * package. After a certain number of denials, the matchmaking feature is temporarily paused for
- * that package.
+ * Manages the state of matchmaking denials for apps.
  *
  * @hide
  */
 public final class MatchmakingDenialStateManager {
     private static final String TAG = MatchmakingDenialStateManager.class.getSimpleName();
 
-    private static final int MAX_DENIALS_BEFORE_PAUSE = 5;
+    @VisibleForTesting static final int MAX_DENIALS_BEFORE_PAUSE = 2;
     private static final Duration PAUSE_DURATION = Duration.ofDays(30);
 
-    @VisibleForTesting static final String DENIAL_PREFERENCE_PREFIX = "matchmaking_denial_state_";
+    @VisibleForTesting static final String DENIAL_PREFERENCE_PREFIX = "matchmaking_denial_state";
 
     @GuardedBy("this")
     private HealthConnectContext mUserContext;
@@ -66,8 +63,9 @@ public final class MatchmakingDenialStateManager {
      * <p>This increments the internal denial counter. If the number of denials reaches the defined
      * limit, a pause period is initiated.
      */
-    synchronized void recordMatchmakingDenial(String packageName) {
-        DenialState storedValues = getDenialState(packageName);
+    synchronized void recordMatchmakingDenial(
+            String packageName, @HealthDataCategory.Type int dataCategory) {
+        DenialState storedValues = getDenialState(packageName, dataCategory);
         int denialCount = storedValues.denialCount();
         Instant pauseStartedTimestamp = storedValues.pauseStartedTimestamp();
 
@@ -83,7 +81,7 @@ public final class MatchmakingDenialStateManager {
         }
 
         DenialState newDenialState = new DenialState(denialCount, pauseStartedTimestamp);
-        updateDenialState(packageName, newDenialState);
+        updateDenialState(packageName, dataCategory, newDenialState);
     }
 
     /**
@@ -95,17 +93,23 @@ public final class MatchmakingDenialStateManager {
      * @return {@code true} if the number of denials has reached the limit and the pause period has
      *     not yet expired, {@code false} otherwise.
      */
-    synchronized boolean isMatchmakingPaused(String packageName) {
-        DenialState storedValues = getDenialState(packageName);
+    synchronized boolean isMatchmakingPaused(
+            String packageName, @HealthDataCategory.Type int dataCategory) {
+        DenialState storedValues = getDenialState(packageName, dataCategory);
         if (shouldResetPauseStartedTimestamp(storedValues.pauseStartedTimestamp())) {
-            resetDenialState(packageName);
+            resetDenialState(packageName, dataCategory);
             return false;
         }
         return storedValues.denialCount() >= MAX_DENIALS_BEFORE_PAUSE;
     }
 
-    private String getPreferenceKey(String packageName) {
-        return DENIAL_PREFERENCE_PREFIX + packageName + mUserContext.getUser().getIdentifier();
+    private String getPreferenceKey(String packageName, @HealthDataCategory.Type int dataCategory) {
+        return String.join(
+                "_",
+                DENIAL_PREFERENCE_PREFIX,
+                packageName,
+                String.valueOf(dataCategory),
+                String.valueOf(mUserContext.getUser().getIdentifier()));
     }
 
     /**
@@ -123,24 +127,29 @@ public final class MatchmakingDenialStateManager {
         return storedTimestamp.plus(PAUSE_DURATION).isBefore(Instant.now());
     }
 
-    private DenialState getDenialState(String packageName) {
+    private DenialState getDenialState(
+            String packageName, @HealthDataCategory.Type int dataCategory) {
         String concatenatedValueAndTimestamp =
-                mPreferenceHelper.getPreference(getPreferenceKey(packageName));
+                mPreferenceHelper.getPreference(getPreferenceKey(packageName, dataCategory));
         if (concatenatedValueAndTimestamp == null) {
             return new DenialState();
         }
         return DenialState.fromPreferenceString(concatenatedValueAndTimestamp);
     }
 
-    private void resetDenialState(String packageName) {
-        updateDenialState(packageName, new DenialState(0, Instant.EPOCH));
+    private void resetDenialState(String packageName, @HealthDataCategory.Type int dataCategory) {
+        updateDenialState(packageName, dataCategory, new DenialState(0, Instant.EPOCH));
     }
 
-    private void updateDenialState(String packageName, DenialState denialState) {
+    private void updateDenialState(
+            String packageName,
+            @HealthDataCategory.Type int dataCategory,
+            DenialState denialState) {
         mPreferenceHelper.insertOrReplacePreference(
-                getPreferenceKey(packageName), denialState.toPreferenceString());
+                getPreferenceKey(packageName, dataCategory), denialState.toPreferenceString());
     }
 
+    /** Represents the state of a matchmaking denial. */
     @VisibleForTesting
     record DenialState(int denialCount, Instant pauseStartedTimestamp) {
         private static final int DENIAL_COUNT_BYTES = Integer.BYTES;

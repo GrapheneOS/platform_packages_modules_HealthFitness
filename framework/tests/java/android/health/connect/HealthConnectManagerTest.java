@@ -16,6 +16,7 @@
 
 package android.health.connect;
 
+import static android.health.connect.HealthPermissions.WRITE_EXERCISE;
 import static android.health.connect.HealthPermissions.WRITE_SLEEP;
 import static android.health.connect.HealthPermissions.WRITE_STEPS;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_ID;
@@ -68,6 +69,7 @@ import org.mockito.junit.MockitoRule;
 import org.mockito.stubbing.Answer;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -523,17 +525,59 @@ public class HealthConnectManagerTest {
         doAnswer(
                         (Answer<Void>)
                                 invocation -> {
-                                    IEmptyResponseCallback callback = invocation.getArgument(2);
+                                    IEmptyResponseCallback callback = invocation.getArgument(3);
                                     callback.onResult();
                                     return null;
                                 })
                 .when(mService)
-                .recordMatchmakingDenial(any(), any(), any());
+                .recordMatchmakingDenial(any(), any(), any(), any());
 
         healthConnectManager.recordMatchmakingDenial(
-                PACKAGE_TO_MATCH, Executors.newSingleThreadExecutor(), receiver);
+                PACKAGE_TO_MATCH,
+                List.of(WRITE_EXERCISE),
+                Executors.newSingleThreadExecutor(),
+                receiver);
 
         assertThat(receiver.getResponse()).isNull();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    public void testRecordMatchmakingDenial_emptyPermissionsList_callsService() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<Void> receiver = new TestOutcomeReceiver<>();
+        ArgumentCaptor<List<String>> permissionsCaptor = ArgumentCaptor.forClass(List.class);
+
+        healthConnectManager.recordMatchmakingDenial(
+                PACKAGE_TO_MATCH,
+                Collections.emptyList(),
+                Executors.newSingleThreadExecutor(),
+                receiver);
+
+        verify(mService)
+                .recordMatchmakingDenial(
+                        any(), eq(PACKAGE_TO_MATCH), permissionsCaptor.capture(), any());
+        assertThat(permissionsCaptor.getValue()).isEmpty();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    public void testRecordMatchmakingDenial_withPermissions_callsServiceWithPermissions()
+            throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<Void> receiver = new TestOutcomeReceiver<>();
+        ArgumentCaptor<List<String>> permissionsCaptor = ArgumentCaptor.forClass(List.class);
+        List<String> permissions = List.of(WRITE_STEPS, WRITE_SLEEP);
+
+        healthConnectManager.recordMatchmakingDenial(
+                PACKAGE_TO_MATCH, permissions, Executors.newSingleThreadExecutor(), receiver);
+
+        verify(mService)
+                .recordMatchmakingDenial(
+                        any(), eq(PACKAGE_TO_MATCH), permissionsCaptor.capture(), any());
+        assertThat(permissionsCaptor.getValue()).containsExactlyElementsIn(permissions);
     }
 
     @Test
@@ -545,7 +589,7 @@ public class HealthConnectManagerTest {
         doAnswer(
                         (Answer<Void>)
                                 invocation -> {
-                                    IEmptyResponseCallback callback = invocation.getArgument(2);
+                                    IEmptyResponseCallback callback = invocation.getArgument(3);
                                     callback.onError(
                                             new HealthConnectExceptionParcel(
                                                     new HealthConnectException(
@@ -554,10 +598,13 @@ public class HealthConnectManagerTest {
                                     return null;
                                 })
                 .when(mService)
-                .recordMatchmakingDenial(any(), any(), any());
+                .recordMatchmakingDenial(any(), any(), any(), any());
 
         healthConnectManager.recordMatchmakingDenial(
-                PACKAGE_TO_MATCH, Executors.newSingleThreadExecutor(), receiver);
+                PACKAGE_TO_MATCH,
+                List.of(WRITE_EXERCISE),
+                Executors.newSingleThreadExecutor(),
+                receiver);
 
         assertThat(receiver.assertAndGetException().getErrorCode())
                 .isEqualTo(HealthConnectException.ERROR_UNSUPPORTED_OPERATION);
