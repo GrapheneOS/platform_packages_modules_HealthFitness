@@ -35,13 +35,13 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
 import com.android.healthconnect.controller.shared.preference.HealthSetupFragment
 import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference
+import com.android.healthconnect.controller.shared.preference.addIntroOrAppHeaderPreference
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.LocaleSorter.sortByLocale
 import com.android.healthconnect.controller.utils.logging.FitnessAppOnboardingPageElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.pref
-import com.android.settingslib.widget.IntroPreference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -73,7 +73,6 @@ class FitnessAppOnboardingFragment : Hilt_FitnessAppOnboardingFragment() {
     private val allowAllPreference: HealthMainSwitchPreference by pref(ALLOW_ALL_PREFERENCE)
     private val readPermissionCategory: PreferenceGroup by pref(READ_CATEGORY)
     private val writePermissionCategory: PreferenceGroup by pref(WRITE_CATEGORY)
-    private val appHeaderPreference: IntroPreference by pref(APP_HEADER_PREFERENCE)
 
     init {
         this.setPageName(PageName.FITNESS_APP_ONBOARDING_PAGE)
@@ -156,8 +155,7 @@ class FitnessAppOnboardingFragment : Hilt_FitnessAppOnboardingFragment() {
         appMetadata: AppMetadata,
         screenState: FitnessAppOnboardingViewModel.FitnessAppOnboardingFragmentState,
     ) {
-        appHeaderPreference.icon = appMetadata.icon
-        appHeaderPreference.title = appMetadata.appName
+        addIntroOrAppHeaderPreference(preferenceScreen, requireContext(), appMetadata)
         logger.logImpression(
             FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_PRIVACY_POLICY_LINK
         )
