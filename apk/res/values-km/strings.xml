@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"ជ្រើសរើសទិន្នន័យដែលអ្នកចង់ឱ្យកម្មវិធីនេះសរសេរទៅ Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"ជ្រើសរើសទិន្នន័យដែលអ្នកចង់ឱ្យកម្មវិធីនេះអាន ឬសរសេរទៅ Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"ជ្រើសរើសទិន្នន័យដែលអ្នកចង់ឱ្យកម្មវិធីនេះអានពី Health Connect"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"ប្រសិនបើអ្នកផ្ដល់សិទ្ធិចូលអាន កម្មវិធីនេះអាចអានទិន្នន័យថ្មី និងទិន្នន័យពី 30 ថ្ងៃចុងក្រោយ"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"ប្រសិនបើអ្នកផ្ដល់សិទ្ធិចូលអាន កម្មវិធីនេះអាចអានទិន្នន័យថ្មី និងពីមុន"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"អនុញ្ញាតឱ្យ <xliff:g id="APP_NAME">%1$s</xliff:g> ចូលប្រើ Health Connect ឬ?"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"មុនពេលបន្តស្ដារទិន្នន័យរបស់អ្នក សូមធ្វើបច្ចុប្បន្នភាពប្រព័ន្ធទូរសព្ទរបស់អ្នក។"</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"ធ្វើ​បច្ចុប្បន្នភាព​ឥឡូវនេះ"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ចំនួនទិន្នន័យសរុប"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"ប្រភពទិន្នន័យ"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"បញ្ចូល​ប្រភពទិន្នន័យ​ទៅក្នុងបញ្ជី ដើម្បីមើលឃើញរបៀបដែលចំនួនទិន្នន័យសរុប​អាចផ្លាស់ប្ដូរ។ ការដក​ប្រភពទិន្នន័យចេញពី​បញ្ជីនេះនឹង​បញ្ឈប់កម្មវិធីនេះពី​ការចូលរួមចំណែក​ដល់ចំនួនសរុប ប៉ុន្តែកម្មវិធីនេះ​នឹងនៅតែមាន​ការអនុញ្ញាតឱ្យសរសេរដដែល។"</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"គ្មានប្រភពទិន្នន័យ"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"ពេលអ្នកផ្ដល់ការអនុញ្ញាតឱ្យសរសេរទិន្នន័យ<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>សម្រាប់ប្រភពទិន្នន័យ ប្រភពនឹងបង្ហាញនៅទីនេះ។"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"របៀបដែល​ប្រភព និងការកំណត់អាទិភាព​ដំណើរការ"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"បញ្ចូលប្រភពទិន្នន័យ"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"កែប្រភពទិន្នន័យ"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"លំនាំដើម​របស់ឧបករណ៍"</string>
     <string name="move_up" msgid="9136155291380319606">"ផ្លាស់ទី​ឡើង​លើ"</string>
     <string name="move_down" msgid="4404970288236170693">"ផ្លាស់ទី​ចុះ​ក្រោម"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"ព័ត៌មានឧបករណ៍"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"ទិន្នន័យដែលបានប្រមូលបានដោយឧបករណ៍នេះនឹងត្រូវបានរក្សាទុកនៅក្នុង Health Connect ដែលកម្មវិធី​តភ្ជាប់នឹងចូលប្រើទិន្នន័យនោះ"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"បានអនុញ្ញាតឱ្យសរសេរ"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>

@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"तपाईं यो एपलाई Health Connect मा कुन कुन जानकारी राइट गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"तपाईं यो एपलाई Health Connect मा कुन कुन डेटा रिड वा राइट गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"तपाईं यो एपलाई Health Connect मा कुन कुन जानकारी रिड गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"तपाईंले डेटा रिड गर्ने अनुमति दिनुभयो भने यो एपले नयाँ डेटाका साथै पछिल्ला ३० दिनका डेटा पनि रिड गर्न सक्छ"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"तपाईंले डेटा रिड गर्ने अनुमति दिनुभयो भने यो एपले नयाँ तथा पुराना डेटा रिड गर्न सक्छ"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> लाई Health Connect एक्सेस गर्ने अनुमति दिने हो?"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"तपाईंको डेटा रिस्टोर गर्ने प्रक्रिया जारी राख्नुभन्दा पहिले आफ्नो फोनको सिस्टम अपडेट गर्नुहोस्।"</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"अहिले नै अपडेट गर्नुहोस्"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"कुल डेटा"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"डेटाका स्रोतहरू"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"कुल डेटा कसरी परिवर्तन हुन सक्छ भन्ने कुरा हेर्न सूचीमा डेटाका स्रोतहरू हाल्नुहोस्। तपाईंले यो सूचीबाट डेटाको स्रोत हटाउनुभयो भने यसले कुल डेटामा योगदान गर्न छाड्ने छ तर यो एपसँग राइट गर्ने अनुमति भने अझै पनि रहिरहने छ।"</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"डेटाको कुनै पनि स्रोत छैन"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"तपाईंले डेटाको कुनै स्रोतलाई <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> सम्बन्धी डेटा राइट गर्ने अनुमति दिएपछि स्रोतहरू यहाँ देखिने छन्।"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"स्रोत तथा प्राथमिकताले काम गर्ने तरिका"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"डेटाको स्रोत हाल्नुहोस्"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"डेटाका स्रोतहरू सम्पादन गर्नुहोस्"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"डिफल्ट डिभाइस"</string>
     <string name="move_up" msgid="9136155291380319606">"माथि सार्नुहोस्"</string>
     <string name="move_down" msgid="4404970288236170693">"तल सार्नुहोस्"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"डिभाइससम्बन्धी जानकारी"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"यो डिभाइसले सङ्कलन गरेको डेटा Health Connect मा भण्डारण गरिने छ। Health Connect मा कनेक्ट भएका एपहरूले यो डेटा एक्सेस गर्ने छन्"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"एपलाई राइट गर्ने अनुमति दिइएको छ"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>

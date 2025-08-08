@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Bepaal welke gegevens deze app mag schrijven in Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Bepaal welke gegevens deze app mag lezen of schrijven in Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Bepaal welke gegevens deze app mag lezen in Health Connect"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Als je leestoegang geeft, kan de app nieuwe gegevens en gegevens van de afgelopen 30 dagen lezen"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Als je leestoegang geeft, kan de app nieuwe en eerdere gegevens lezen"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> toegang geven tot Health Connect?"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Update je telefoonsysteem voordat je doorgaat met je gegevens herstellen."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Nu updaten"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Gegevenstotalen"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"Gegevensbronnen"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"Voeg gegevensbronnen aan de lijst toe om te zien hoe de gegevenstotalen kunnen veranderen. Als je een gegevensbron uit deze lijst verwijdert, draagt die niet meer bij aan de totalen. De app heeft nog wel schrijfrechten."</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"Geen gegevensbronnen"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Zodra je een gegevensbron rechten geeft om <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>-gegevens te schrijven, komen de bronnen hier te staan."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Hoe bronnen en prioritering werken"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"Een gegevensbron toevoegen"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"Gegevensbronnen bewerken"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Apparaatstandaard"</string>
     <string name="move_up" msgid="9136155291380319606">"Omhoog verplaatsen"</string>
     <string name="move_down" msgid="4404970288236170693">"Omlaag verplaatsen"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"Apparaatgegevens"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Gegevens die door dit apparaat worden verzameld, worden opgeslagen in Health Connect, waar gekoppelde apps er toegang toe hebben"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Toestemming om te schrijven"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>
