@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.devices
 
+import android.hardware.Sensor
 import android.health.connect.datatypes.StepsRecord
 import android.platform.test.annotations.EnableFlags
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -24,6 +25,7 @@ import com.android.healthconnect.controller.devices.DeviceDataSource
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadDeviceDataSourcesUseCase
+import com.android.healthconnect.controller.tests.utils.di.FakeLoadSensorListUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeSetTrackingEnabledUseCase
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
@@ -41,6 +43,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -53,6 +57,7 @@ class ConnectedDevicesViewModelTest {
 
     private val testDispatcher = UnconfinedTestDispatcher()
     private val loadDeviceDataSourcesUseCase = FakeLoadDeviceDataSourcesUseCase()
+    private val loadSensorListUseCaseTest = FakeLoadSensorListUseCase()
     private val setTrackingEnabledUseCase = FakeSetTrackingEnabledUseCase()
 
     private lateinit var viewModel: ConnectedDevicesViewModel
@@ -64,6 +69,7 @@ class ConnectedDevicesViewModelTest {
         viewModel =
             ConnectedDevicesViewModel(
                 loadDeviceDataSourcesUseCase,
+                loadSensorListUseCaseTest,
                 setTrackingEnabledUseCase,
                 testDispatcher,
             )
@@ -168,6 +174,64 @@ class ConnectedDevicesViewModelTest {
         loadDeviceDataSourcesUseCase.setForceFail(true)
         viewModel.connectedDevicesState.observeForever(testObserver)
         viewModel.loadDeviceDataSources()
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual).isEqualTo(ConnectedDevicesState.Error)
+    }
+
+    @Test
+    fun loadHasStepsSensor_hasStepsSensor_returnsTrue() = runTest {
+        val mockStepCounterSensor: Sensor =
+            mock<Sensor> { on { type } doReturn Sensor.TYPE_STEP_COUNTER }
+        val sensorList = listOf(mockStepCounterSensor)
+        val testObserver = TestObserver<Boolean>()
+        loadSensorListUseCaseTest.updateSensors(sensorList)
+
+        viewModel.hasStepsSensor.observeForever(testObserver)
+        viewModel.loadHasStepsSensor()
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual).isTrue()
+    }
+
+    @Test
+    fun loadHasStepsSensor_hasNoStepsSensor_returnsFalse() = runTest {
+        val mockStepCounterSensor: Sensor = mock<Sensor> { on { type } doReturn Sensor.TYPE_LIGHT }
+        val sensorList = listOf(mockStepCounterSensor)
+        val testObserver = TestObserver<Boolean>()
+        loadSensorListUseCaseTest.updateSensors(sensorList)
+
+        viewModel.hasStepsSensor.observeForever(testObserver)
+        viewModel.loadHasStepsSensor()
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual).isFalse()
+    }
+
+    @Test
+    fun loadHasStepsSensor_hasNoSensors_returnsFalse() = runTest {
+        val sensorList = emptyList<Sensor>()
+        val testObserver = TestObserver<Boolean>()
+        loadSensorListUseCaseTest.updateSensors(sensorList)
+
+        viewModel.hasStepsSensor.observeForever(testObserver)
+        viewModel.loadHasStepsSensor()
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual).isFalse()
+    }
+
+    @Test
+    fun loadHasStepsSensor_error_returnsErrorState() = runTest {
+        val testObserver = TestObserver<ConnectedDevicesState>()
+        loadSensorListUseCaseTest.setForceFail(true)
+
+        viewModel.connectedDevicesState.observeForever(testObserver)
+        viewModel.loadHasStepsSensor()
         advanceUntilIdle()
 
         val actual = testObserver.getLastValue()

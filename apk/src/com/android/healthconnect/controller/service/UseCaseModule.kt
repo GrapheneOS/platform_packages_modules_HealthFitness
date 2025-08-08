@@ -55,8 +55,10 @@ import com.android.healthconnect.controller.datasources.api.LoadPriorityListUseC
 import com.android.healthconnect.controller.datasources.api.SleepSessionHelper
 import com.android.healthconnect.controller.datasources.api.UpdatePriorityListUseCase
 import com.android.healthconnect.controller.devices.ILoadDeviceDataSources
+import com.android.healthconnect.controller.devices.ILoadSensorListUseCase
 import com.android.healthconnect.controller.devices.ISetTrackingEnabled
 import com.android.healthconnect.controller.devices.LoadDeviceDataSources
+import com.android.healthconnect.controller.devices.LoadSensorListUseCase
 import com.android.healthconnect.controller.devices.SetTrackingEnabled
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
 import com.android.healthconnect.controller.exportimport.api.HealthDataImportManager
@@ -457,5 +459,13 @@ class UseCaseModule {
         setTrackingEnabled: SetTrackingEnabled
     ): ISetTrackingEnabled {
         return setTrackingEnabled
+    }
+
+    @Provides
+    fun provideLoadSensorListUseCase(
+        @ApplicationContext context: Context,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
+    ): ILoadSensorListUseCase {
+        return LoadSensorListUseCase(context, dispatcher)
     }
 }

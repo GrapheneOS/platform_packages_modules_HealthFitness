@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.utils.di
 
+import android.hardware.Sensor
 import android.health.connect.HealthDataCategory
 import android.health.connect.accesslog.AccessLog
 import android.health.connect.datatypes.Record
@@ -46,6 +47,7 @@ import com.android.healthconnect.controller.datasources.api.ISleepSessionHelper
 import com.android.healthconnect.controller.datasources.api.IUpdatePriorityListUseCase
 import com.android.healthconnect.controller.devices.DeviceDataSource
 import com.android.healthconnect.controller.devices.ILoadDeviceDataSources
+import com.android.healthconnect.controller.devices.ILoadSensorListUseCase
 import com.android.healthconnect.controller.devices.ISetTrackingEnabled
 import com.android.healthconnect.controller.devices.SetTrackingEnabled
 import com.android.healthconnect.controller.exportimport.api.DocumentProvider
@@ -176,6 +178,31 @@ class FakeLoadDeviceDataSourcesUseCase : ILoadDeviceDataSources {
 
     fun setForceFail(forceFail: Boolean) {
         this.forceFail = forceFail
+    }
+}
+
+class FakeLoadSensorListUseCase : ILoadSensorListUseCase {
+    private var sensors: List<Sensor> = emptyList()
+    private var forceFail: Boolean = false
+
+    override suspend fun invoke(input: Unit): UseCaseResults<List<Sensor>> {
+        return if (forceFail) {
+            UseCaseResults.Failed(IllegalStateException("Failed to load sensors"))
+        } else {
+            UseCaseResults.Success(sensors)
+        }
+    }
+
+    override suspend fun execute(input: Unit): List<Sensor> {
+        return sensors
+    }
+
+    fun setForceFail(forceFail: Boolean) {
+        this.forceFail = forceFail
+    }
+
+    fun updateSensors(sensors: List<Sensor>) {
+        this.sensors = sensors
     }
 }
 
