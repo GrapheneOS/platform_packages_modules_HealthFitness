@@ -30,11 +30,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Text
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission.Companion.fromPermissionString
+import com.android.healthconnect.controller.shared.WearPermissionsPaddingValues
 import com.android.permissioncontroller.wear.permission.components.ScrollableScreen
 import com.android.permissioncontroller.wear.permission.components.material2.ToggleChip
 import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionButton
@@ -68,7 +68,9 @@ fun ControlSingleDataTypeForSingleAppScreen(
         // Data type text.
         item {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                modifier =
+                    Modifier.fillMaxWidth()
+                        .padding(WearPermissionsPaddingValues.singleAppDataTypeHeaderPaddingValues),
                 horizontalArrangement = Arrangement.Start,
             ) {
                 Text(dataTypeStr)
@@ -116,7 +118,10 @@ fun ControlSingleDataTypeForSingleAppScreen(
                     label = stringResource(R.string.additional_access_label),
                     labelMaxLines = 3,
                     onClick = { onAdditionalPermissionClick(packageName) },
-                    modifier = Modifier.padding(top = 8.dp),
+                    modifier =
+                        Modifier.padding(
+                            WearPermissionsPaddingValues.additionalAccessButtonPaddingValues
+                        ),
                 )
             }
         }
@@ -131,7 +136,11 @@ fun ControlSingleDataTypeForSingleAppScreen(
                 }
             Row(
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier.fillMaxWidth().padding(start = 12.dp, top = 8.dp),
+                modifier =
+                    Modifier.fillMaxWidth()
+                        .padding(
+                            WearPermissionsPaddingValues.backgroundModeDescriptionPaddingValues
+                        ),
             ) {
                 Text(
                     text = stringResource(resourceId, appMetadata!!.appName),

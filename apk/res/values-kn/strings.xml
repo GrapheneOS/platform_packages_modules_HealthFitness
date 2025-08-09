@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connect ಗೆ ಈ ಆ್ಯಪ್ ಬರೆಯಬೇಕು ಎಂದು ನೀವು ಬಯಸುವ ಡೇಟಾವನ್ನು ಆಯ್ಕೆಮಾಡಿ"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Health Connect ಗೆ ಈ ಆ್ಯಪ್ ಓದಬೇಕು ಅಥವಾ ಬರೆಯಬೇಕು ಎಂದು ನೀವು ಬಯಸುವ ಡೇಟಾವನ್ನು ಆಯ್ಕೆಮಾಡಿ"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect ನಿಂದ ಈ ಆ್ಯಪ್ ಓದಬೇಕು ಎಂದು ನೀವು ಬಯಸುವ ಡೇಟಾವನ್ನು ಆಯ್ಕೆಮಾಡಿ"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"ನೀವು ಓದಲು ಆ್ಯಕ್ಸೆಸ್ ನೀಡಿದರೆ, ಹೊಸ ಡೇಟಾವನ್ನು ಹಾಗೂ ಕಳೆದ 30 ದಿನಗಳ ಡೇಟಾವನ್ನು ಈ ಆ್ಯಪ್ ಓದಬಹುದು"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"ನೀವು ಓದಲು ಆ್ಯಕ್ಸೆಸ್ ನೀಡಿದರೆ, ಆ್ಯಪ್ ಹೊಸ ಮತ್ತು ಹಿಂದಿನ ಡೇಟಾವನ್ನು ಓದಬಹುದು"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Health Connect ಅನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು <xliff:g id="APP_NAME">%1$s</xliff:g> ಅನ್ನು ಅನುಮತಿಸಬೇಕೆ?"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"ನಿಮ್ಮ ಡೇಟಾ ಮರುಸ್ಥಾಪನೆಯನ್ನು ಮುಂದುವರಿಸುವ ಮೊದಲು, ನಿಮ್ಮ ಫೋನ್ ಸಿಸ್ಟಮ್ ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಿ."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"ಈಗಲೇ ಅಪ್‌ಡೇಟ್ ಮಾಡಿ"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ಡೇಟಾ ಟೋಟಲ್‌ಗಳು"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"ಡೇಟಾ ಮೂಲಗಳು"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"ಡೇಟಾ ಟೋಟಲ್‌ಗಳು ಹೇಗೆ ಬದಲಾಗಬಲ್ಲವು ಎಂಬುದನ್ನು ನೋಡಲು ಡೇಟಾ ಮೂಲಗಳನ್ನು ಪಟ್ಟಿಗೆ ಸೇರಿಸಿ. ಡೇಟಾ ಮೂಲವನ್ನು ಈ ಪಟ್ಟಿಯಿಂದ ತೆಗೆದುಹಾಕುವುದರಿಂದ ಅದು ಟೋಟಲ್‌ಗಳಿಗೆ ಕೊಡುಗೆ ನೀಡುವುದು ನಿಂತುಹೋಗುತ್ತದೆ, ಆದರೆ ಅದು ಈಗಲೂ ರೈಟ್ ಅನುಮತಿಗಳನ್ನು ಹೊಂದಿರುತ್ತದೆ."</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"ಯಾವುದೇ ಡೇಟಾ ಮೂಲಗಳಿಲ್ಲ"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"ನೀವು ಡೇಟಾ ಮೂಲಕ್ಕೆ <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ಡೇಟಾವನ್ನು ಬರೆಯಲು ಅನುಮತಿ ನೀಡಿದ ನಂತರ, ಮೂಲಗಳು ಇಲ್ಲಿ ಗೋಚರಿಸುತ್ತವೆ."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ಮೂಲಗಳು ಮತ್ತು ಆದ್ಯತೆ ನೀಡುವಿಕೆ ಹೇಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತವೆ"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"ಡೇಟಾ ಮೂಲಗಳನ್ನು ಸೇರಿಸಿ"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"ಡೇಟಾ ಮೂಲಗಳನ್ನು ಎಡಿಟ್ ಮಾಡಿ"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"ಸಾಧನದ ಡೀಫಾಲ್ಟ್"</string>
     <string name="move_up" msgid="9136155291380319606">"ಮೇಲಕ್ಕೆ ಮೂವ್ ಮಾಡಿ"</string>
     <string name="move_down" msgid="4404970288236170693">"ಕೆಳಗೆ ಮೂವ್ ಮಾಡಿ"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"ಸಾಧನದ ಮಾಹಿತಿ"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"ಈ ಸಾಧನದಿಂದ ಸಂಗ್ರಹಿಸಲಾದ ಡೇಟಾವನ್ನು Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ, ಅಲ್ಲಿ ಕನೆಕ್ಟ್ ಮಾಡಲಾದ ಆ್ಯಪ್‌ಗಳು ಅದನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡುತ್ತವೆ"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"ಬರೆಯಲು ಅನುಮತಿಸಲಾಗಿದೆ"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>

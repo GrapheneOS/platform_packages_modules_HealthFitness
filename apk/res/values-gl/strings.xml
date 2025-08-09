@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Escolle os datos que queres que escriba esta aplicación en Saúde conectada"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Escolle os datos que queres que lea ou escriba esta aplicación en Saúde conectada"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Escolle os datos que queres que lea esta aplicación en Saúde conectada"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Se lle dás acceso de lectura a esta aplicación, poderá ler os datos novos e os correspondentes aos últimos 30 días"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Se lle dás acceso de lectura a esta aplicación, poderá ler os datos novos e os anteriores"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Queres permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda a Saúde conectada?"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Antes de seguir restaurando os datos, actualiza o sistema do teléfono."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Actualizar agora"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Totais dos datos"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"Fontes de datos"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"Engade fontes de datos á lista para ver como poden cambiar os totais dos datos. Se quitas algunha da lista, deixará de contribuír aos totais, pero seguirá tendo permisos de escritura."</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"Non hai ningunha fonte de datos"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Aquí aparecerán as fontes de datos ás que lles concedas permisos para escribir o seguinte tipo de datos: <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Funcionamento das fontes e da priorización"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"Engadir unha fonte de datos"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"Editar fontes de datos"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Predeterminada do dispositivo"</string>
     <string name="move_up" msgid="9136155291380319606">"Mover cara arriba"</string>
     <string name="move_down" msgid="4404970288236170693">"Mover cara abaixo"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"Información do dispositivo"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Os datos recompilados por este dispositivo almacenaranse en Saúde conectada, onde as aplicacións conectadas poderán acceder a eles"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Permisos de escritura"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>

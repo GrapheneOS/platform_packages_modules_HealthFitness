@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connectடில் இந்த ஆப்ஸ் எந்தத் தரவை எழுத வேண்டும் என்பதைத் தேர்வுசெய்யுங்கள்"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Health Connectடில் இந்த ஆப்ஸ் எந்தத் தரவை வாசிக்க/எழுத வேண்டும் என்பதை நீங்கள் தேர்வுசெய்யுங்கள்"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connectடில் இந்த ஆப்ஸ் எந்தத் தரவை வாசிக்க வேண்டும் என்பதைத் தேர்வுசெய்யுங்கள்"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"வாசிப்பதற்கான அணுகலை வழங்கினால், புதிய தரவையும் கடந்த 30 நாட்களில் பெறப்பட்ட தரவையும் ஆப்ஸ் வாசிக்க முடியும்"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"வாசிப்பதற்கான அணுகலை வழங்கினால், புதிய தரவையும் முந்தைய தரவையும் ஆப்ஸ் வாசிக்க முடியும்"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Health Connectடை அணுக <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸை அனுமதிக்கவா?"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"தரவை மீட்டெடுப்பதைத் தொடருவதற்கு முன்பு, உங்கள் மொபைல் சிஸ்டத்தைப் புதுப்பியுங்கள்."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"இப்போதே புதுப்பி"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"மொத்தத் தரவு"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"தரவு மூலங்கள்"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"தரவின் மொத்த மதிப்புகள் எப்படி மாறலாம் என்பதைப் பார்க்க பட்டியலில் தரவு மூலங்களைச் சேருங்கள். இந்தப் பட்டியலிலிருந்து ஒரு தரவு மூலத்தை அகற்றினால் மொத்த மதிப்புகளுக்கான அதன் பங்களிப்பு நிறுத்தப்படும், ஆனால் எழுதுவதற்கான அனுமதிகள் அதனிடம் தொடர்ந்து இருக்கும்."</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"தரவு மூலங்கள் இல்லை"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> தரவை எழுத ஒரு தரவு மூலத்திற்கு நீங்கள் அனுமதியளித்த பிறகு மூலங்கள் இங்கே காட்டப்படும்."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"மூலங்களும் முன்னுரிமையும் செயல்படும் விதம்"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"தரவு மூலத்தைச் சேர்"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"தரவு மூலங்களை மாற்றுதல்"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"சாதனத்தின் இயல்புநிலை"</string>
     <string name="move_up" msgid="9136155291380319606">"மேலே நகர்த்து"</string>
     <string name="move_down" msgid="4404970288236170693">"கீழே நகர்த்து"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"சாதனத் தகவல்கள்"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"இந்தச் சாதனத்தால் சேகரிக்கப்பட்ட தரவு Health Connectடில் சேமிக்கப்படும், அங்கு இணைக்கப்பட்ட ஆப்ஸ் அதை அணுகும்"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"எழுத அனுமதிக்கப்பட்டவை"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>

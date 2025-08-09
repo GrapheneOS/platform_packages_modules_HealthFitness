@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connectରେ ଏହି ଆପ ଯେଉଁ ଡାଟାକୁ ଲେଖୁ ବୋଲି ଆପଣ ଚାହୁଁଛନ୍ତି ତାହା ବାଛନ୍ତୁ"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Health Connectରେ ଏହି ଆପ ଯେଉଁ ଡାଟାକୁ ପଢ଼ୁ କିମ୍ବା ଲେଖୁ ବୋଲି ଆପଣ ଚାହୁଁଛନ୍ତି ତାହା ବାଛନ୍ତୁ"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connectରେ ଏହି ଆପ ଯେଉଁ ଡାଟାକୁ ପଢ଼ୁ ବୋଲି ଆପଣ ଚାହୁଁଛନ୍ତି ତାହା ବାଛନ୍ତୁ"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"ଯଦି ଆପଣ ପଢ଼ିବା ଆକ୍ସେସ ଦିଅନ୍ତି, ତେବେ ଆପ ନୂଆ ଡାଟା ଏବଂ ଗତ 30 ଦିନର ଡାଟାକୁ ପଢ଼ିପାରିବ"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"ଯଦି ଆପଣ ପଢ଼ିବା ଆକ୍ସେସ ଦିଅନ୍ତି, ତେବେ ଆପ ନୂଆ ଏବଂ ଅତୀତର ଡାଟାକୁ ପଢ଼ିପାରିବ"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Health Connectକୁ ଆକ୍ସେସ କରିବା ପାଇଁ <xliff:g id="APP_NAME">%1$s</xliff:g>କୁ ଅନୁମତି ଦେବେ?"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"ଆପଣଙ୍କ ଡାଟା ରିଷ୍ଟୋର କରିବା ଜାରି ରଖିବା ପୂର୍ବରୁ, ଆପଣଙ୍କ ଫୋନ ସିଷ୍ଟମକୁ ଅପଡେଟ କରନ୍ତୁ।"</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"ଏବେ ଅପଡେଟ କରନ୍ତୁ"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ଡାଟା ଟୋଟାଲ୍ସ"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"ଡାଟା ସୋର୍ସ"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"ଡାଟା ଟୋଟାଲ୍ସ କିପରି ପରିବର୍ତ୍ତନ ହୋଇପାରିବ ତାହା ଦେଖିବାକୁ ତାଲିକାରେ ଡାଟା ସୋର୍ସଗୁଡ଼ିକୁ ଯୋଗ କରନ୍ତୁ। ଏହି ତାଲିକାରୁ ଏକ ଡାଟା ସୋର୍ସକୁ କାଢ଼ି ଦେବା ଫଳରେ ଏହା ଟୋଟାଲ୍ସରେ କଣ୍ଟ୍ରିବ୍ୟୁଟ କରିବାରୁ ଏହାକୁ ବନ୍ଦ କରିବ, କିନ୍ତୁ ଏହାର ଏବେ ବି ଲେଖିବା ଅନୁମତି ରହିବ।"</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"କୌଣସି ଡାଟା ସୋର୍ସ ନାହିଁ"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"ଆପଣ <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ଡାଟା ଲେଖିବା ପାଇଁ ଡାଟା ସୋର୍ସକୁ ଅନୁମତି ଦେବା ପରେ, ସୋର୍ସଗୁଡ଼ିକ ଏଠାରେ ଦେଖାଯିବ।"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ସୋର୍ସ ଏବଂ ପ୍ରାଥମିକତା କିପରି କାର୍ଯ୍ୟ କରେ"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"ଏକ ଡାଟା ସୋର୍ସ ଯୋଗ କରନ୍ତୁ"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"ଡାଟା ସୋର୍ସଗୁଡ଼ିକୁ ଏଡିଟ କରନ୍ତୁ"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"ଡିଭାଇସ୍ ଡିଫଲ୍ଟ"</string>
     <string name="move_up" msgid="9136155291380319606">"ଉପରକୁ ମୁଭ କରନ୍ତୁ"</string>
     <string name="move_down" msgid="4404970288236170693">"ତଳକୁ ମୁଭ କରନ୍ତୁ"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"ଡିଭାଇସ ସୂଚନା"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"ଏହି ଡିଭାଇସ ଦ୍ୱାରା ସଂଗ୍ରହ କରାଯାଇଥିବା ଡାଟା Health Connectରେ ଷ୍ଟୋର କରାଯିବ, ଯେଉଁଠି କନେକ୍ଟ ହୋଇଥିବା ଆପ୍ସ ଏହାକୁ ଆକ୍ସେସ କରିପାରିବ"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"ଲେଖିବାକୁ ଅନୁମତି ଦିଆଯାଇଛି"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>

@@ -36,13 +36,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Text
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionStrings
 import com.android.healthconnect.controller.permissions.data.HealthPermission.AdditionalPermission
+import com.android.healthconnect.controller.shared.WearPermissionsPaddingValues
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.permissioncontroller.wear.permission.components.ScrollableScreen
 import com.android.permissioncontroller.wear.permission.components.material2.ToggleChip
@@ -139,7 +139,8 @@ fun WearViewAppPermissionsScreen(viewModel: AppPermissionViewModel) {
         item {
             Row(
                 modifier =
-                    Modifier.fillMaxWidth().padding(start = 12.dp, top = 8.dp, bottom = 8.dp),
+                    Modifier.fillMaxWidth()
+                        .padding(WearPermissionsPaddingValues.allowedToReadHeaderPaddingValues),
                 horizontalArrangement = Arrangement.Start,
             ) {
                 Text(res.getString(R.string.allowed_to_read))
@@ -167,7 +168,8 @@ fun WearViewAppPermissionsScreen(viewModel: AppPermissionViewModel) {
         item {
             Row(
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier.padding(start = 12.dp, top = 8.dp, bottom = 16.dp),
+                modifier =
+                    Modifier.padding(WearPermissionsPaddingValues.givePermissionPromptPaddingValues),
             ) {
                 Text(
                     text = res.getString(R.string.give_permission_prompt, appName),
@@ -182,7 +184,11 @@ fun WearViewAppPermissionsScreen(viewModel: AppPermissionViewModel) {
             // Allow all the time.
             item {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(start = 12.dp),
+                    modifier =
+                        Modifier.fillMaxWidth()
+                            .padding(
+                                WearPermissionsPaddingValues.allowedToAccessHeaderPaddingValues
+                            ),
                     horizontalArrangement = Arrangement.Start,
                 ) {
                     Text(res.getString(R.string.allowed_to_access))
@@ -228,7 +234,11 @@ fun WearViewAppPermissionsScreen(viewModel: AppPermissionViewModel) {
 
             item {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(start = 12.dp, top = 8.dp),
+                    modifier =
+                        Modifier.fillMaxWidth()
+                            .padding(
+                                WearPermissionsPaddingValues.backgroundModeDescriptionPaddingValues
+                            ),
                     horizontalArrangement = Arrangement.Start,
                 ) {
                     val resourceId =

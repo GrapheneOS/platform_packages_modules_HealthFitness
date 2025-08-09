@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Kies data wat jy wil hê hierdie app in Health Connect moet skryf"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Kies data wat jy wil hê hierdie app in Health Connect moet lees of skryf"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Kies data wat jy wil hê hierdie app in Health Connect moet lees"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"As jy leestoegang gee, kan die app nuwe data en data van die afgelope 30 dae lees"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"As jy leestoegang gee, kan die app nuwe en vorige data lees"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Gee <xliff:g id="APP_NAME">%1$s</xliff:g> toegang tot Health Connect?"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Dateer jou foonstelsel op voor jy voortgaan om jou data terug te stel."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Dateer nou op"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Datatotale"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"Databronne"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"Voeg databronne by die lys om te sien hoe die datatotale kan verander. ’n Databron sal ophou om tot die totale by te dra wanneer dit van hierdie lys af verwyder word, maar dit sal steeds skryftoestemmings hê."</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"Geen databronne nie"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Bronne sal hier wys sodra jy vir ’n databron toestemming gee om <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>-data te skryf."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Hoe bronne en prioritisering werk"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"Voeg ’n databron by"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"Wysig databronne"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Toestelverstek"</string>
     <string name="move_up" msgid="9136155291380319606">"Skuif op"</string>
     <string name="move_down" msgid="4404970288236170693">"Skuif af"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"Toestelinligting"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Data wat deur hierdie toestel ingesamel is, sal in Health Connect geberg word, waar gekoppelde apps toegang daartoe sal kry"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Toegelaat om te skryf"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>

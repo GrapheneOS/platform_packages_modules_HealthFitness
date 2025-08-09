@@ -19,18 +19,31 @@ import static android.content.pm.PackageManager.FLAG_PERMISSION_USER_FIXED;
 import static android.content.pm.PackageManager.FLAG_PERMISSION_USER_SET;
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static android.health.connect.HealthDataCategory.ACTIVITY;
+import static android.health.connect.HealthDataCategory.CYCLE_TRACKING;
+import static android.health.connect.HealthDataCategory.NUTRITION;
+import static android.health.connect.HealthDataCategory.SLEEP;
+import static android.health.connect.HealthDataCategory.VITALS;
 import static android.health.connect.HealthPermissions.READ_DISTANCE;
 import static android.health.connect.HealthPermissions.READ_HEART_RATE;
+import static android.health.connect.HealthPermissions.READ_SLEEP;
 import static android.health.connect.HealthPermissions.READ_STEPS;
 import static android.health.connect.HealthPermissions.WRITE_DISTANCE;
+import static android.health.connect.HealthPermissions.WRITE_EXERCISE;
 import static android.health.connect.HealthPermissions.WRITE_HEART_RATE;
+import static android.health.connect.HealthPermissions.WRITE_MENSTRUATION;
+import static android.health.connect.HealthPermissions.WRITE_NUTRITION;
+import static android.health.connect.HealthPermissions.WRITE_SLEEP;
 import static android.health.connect.HealthPermissions.WRITE_STEPS;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.clearInvocations;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -101,7 +114,8 @@ public class MatchingAppsManagerTest {
                         mHealthConnectMappings,
                         mPackageManager,
                         mMatchmakingDenialStateManager);
-        when(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME)).thenReturn(false);
+        when(mMatchmakingDenialStateManager.isMatchmakingPaused(anyString(), anyInt()))
+                .thenReturn(false);
     }
 
     @After
@@ -157,9 +171,10 @@ public class MatchingAppsManagerTest {
     }
 
     @Test
-    public void fetchMatchingApps_matchExists_denialLimitExceeded_returnsEmpty() {
+    public void fetchMatchingApps_matchExists_paused_returnsEmpty() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
-        when(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME)).thenReturn(true);
+        when(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME, ACTIVITY))
+                .thenReturn(true);
         PackageInfo matchingApp = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
         mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp));
         mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
@@ -397,6 +412,99 @@ public class MatchingAppsManagerTest {
                 .containsExactly(PACKAGE_NAME_2, ImmutableSet.of(WRITE_HEART_RATE, WRITE_STEPS));
     }
 
+    @Test
+    public void fetchMatchingApps_oneCategoryPaused_returnsSuggestionsForOtherCategories() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_SLEEP));
+        // Matchmaking is paused for ACTIVITY category.
+        when(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME, ACTIVITY))
+                .thenReturn(true);
+        PackageInfo matchingApp =
+                createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS, WRITE_SLEEP});
+        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp));
+        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_SLEEP, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_SLEEP, 0);
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+
+        // STEPS is filtered out as ACTIVITY category is paused.
+        assertThat(result).containsExactly(PACKAGE_NAME_2, ImmutableSet.of(WRITE_SLEEP));
+    }
+
+    @Test
+    public void fetchMatchingApps_allCategoriesPaused_returnsEmpty() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_SLEEP));
+        when(mMatchmakingDenialStateManager.isMatchmakingPaused(eq(PACKAGE_NAME), anyInt()))
+                .thenReturn(true);
+        PackageInfo matchingApp =
+                createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS, WRITE_SLEEP});
+        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp));
+        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_SLEEP, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_SLEEP, 0);
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void recordMatchmakingDenial_callsDenialManager() {
+        mMatchmakingManager.recordMatchmakingDenial(PACKAGE_NAME, List.of(WRITE_EXERCISE));
+
+        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
+    }
+
+    @Test
+    public void recordMatchmakingDenial_sleepCategory_callsDenialManager() {
+        mMatchmakingManager.recordMatchmakingDenial(PACKAGE_NAME, List.of(WRITE_SLEEP));
+
+        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, SLEEP);
+    }
+
+    @Test
+    public void recordMatchmakingDenial_multiplePermissionsSameCategory_callsDenialManagerTwice() {
+        mMatchmakingManager.recordMatchmakingDenial(
+                PACKAGE_NAME, List.of(WRITE_EXERCISE, WRITE_STEPS));
+
+        verify(mMatchmakingDenialStateManager, times(2))
+                .recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
+    }
+
+    @Test
+    public void recordMatchmakingDenial_multipleCategories_callsForEachCategory() {
+        mMatchmakingManager.recordMatchmakingDenial(
+                PACKAGE_NAME,
+                List.of(
+                        WRITE_EXERCISE,
+                        WRITE_SLEEP,
+                        WRITE_MENSTRUATION,
+                        WRITE_HEART_RATE,
+                        WRITE_NUTRITION));
+
+        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
+        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, SLEEP);
+        verify(mMatchmakingDenialStateManager)
+                .recordMatchmakingDenial(PACKAGE_NAME, CYCLE_TRACKING);
+        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, VITALS);
+        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, NUTRITION);
+    }
+
+    @Test
+    public void recordMatchmakingDenial_filtersNonWritePermissions() {
+        mMatchmakingManager.recordMatchmakingDenial(
+                PACKAGE_NAME, List.of(WRITE_EXERCISE, READ_STEPS, WRITE_SLEEP, READ_SLEEP));
+
+        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
+        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, SLEEP);
+    }
+
     private void mockReadingApp(String packageName, List<String> permissions) {
         when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(eq(packageName), any()))
                 .thenReturn(permissions);
@@ -433,11 +541,5 @@ public class MatchingAppsManagerTest {
         pkgInfo.firstInstallTime = 0;
         pkgInfo.requestedPermissions = requestedPermissions;
         return pkgInfo;
-    }
-
-    @Test
-    public void incrementDenialCounter_callsDenialManager() {
-        mMatchmakingManager.recordMatchmakingDenial(PACKAGE_NAME);
-        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME);
     }
 }

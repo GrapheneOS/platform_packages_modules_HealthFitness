@@ -34,7 +34,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material3.LocalTextStyle
 import androidx.wear.compose.material3.SwitchButton
 import androidx.wear.compose.material3.Text
@@ -43,6 +42,7 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionSt
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.permissions.request.RequestPermissionViewModel
+import com.android.healthconnect.controller.shared.WearPermissionsPaddingValues
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.permissioncontroller.wear.permission.components.ScrollableScreen
 import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionButton
@@ -159,7 +159,9 @@ fun GrantMultipleFitnessPermissions(
                     }
                     onButtonClicked()
                 },
-                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                modifier =
+                    Modifier.fillMaxWidth()
+                        .padding(WearPermissionsPaddingValues.defaultButtonPaddingValues),
                 labelMaxLines = Integer.MAX_VALUE,
                 materialUIVersion = materialUIVersion,
             )

@@ -3486,6 +3486,7 @@ public class HealthConnectManager {
     @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
     public void recordMatchmakingDenial(
             @NonNull String packageName,
+            @NonNull List<String> permissions,
             @NonNull @CallbackExecutor Executor executor,
             @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
         Objects.requireNonNull(packageName);
@@ -3496,6 +3497,7 @@ public class HealthConnectManager {
             mService.recordMatchmakingDenial(
                     mContext.getAttributionSource(),
                     packageName,
+                    permissions,
                     new IEmptyResponseCallback.Stub() {
                         @Override
                         public void onResult() {

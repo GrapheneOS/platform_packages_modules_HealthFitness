@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Choisissez les données que vous voulez que cette appli puisse écrire dans Connexion santé"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Choisissez les données que vous voulez que cette appli puisse lire ou écrire dans Connexion santé"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Choisissez les données que vous voulez que l\'appli puisse lire dans Connexion santé"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Lorsque vous accordez l\'accès à la lecture des données, l\'appli peut lire les nouvelles données et celles des 30 derniers jours"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Lorsque vous accordez l\'accès à la lecture des données, l\'appli peut lire les nouvelles données et les données antérieures"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à Connexion santé?"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Avant de poursuivre la restauration de vos données, mettez à jour le système d\'exploitation de votre téléphone."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Mettre à jour maintenant"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Totaux de données"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"Sources de données"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"Ajouter des sources de données à la liste pour voir comment les totaux de données peuvent changer. Le retrait d\'une source de données de cette liste l\'empêchera de contribuer aux totaux, mais elle disposera toujours des autorisations d\'écriture."</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"Aucune source de données"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Une fois que vous aurez autorisé une source de données à écrire les données de catégorie « <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> », les sources s\'afficheront ici."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Fonctionnement des sources et de la hiérarchisation"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"Ajouter une source de données"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"Modifier les sources de données"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Valeur par défaut de l\'appareil"</string>
     <string name="move_up" msgid="9136155291380319606">"Déplacer vers le haut"</string>
     <string name="move_down" msgid="4404970288236170693">"Déplacer vers le bas"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"Renseignements sur l\'appareil"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Les données collectées par cet appareil seront stockées dans Connexion santé, où les applis connectées y accéderont"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Autorisation d\'écriture accordée"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>

@@ -30,13 +30,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Text
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionStrings
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission.Companion.fromPermissionString
+import com.android.healthconnect.controller.shared.WearPermissionsPaddingValues
 import com.android.permissioncontroller.wear.permission.components.ScrollableScreen
 import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionButton
 import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionButtonStyle
@@ -81,7 +81,9 @@ fun PerDataTypeScreen(
             item {
                 // Allowed text.
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(start = 12.dp, bottom = 6.dp),
+                    modifier =
+                        Modifier.fillMaxWidth()
+                            .padding(WearPermissionsPaddingValues.allowedAppsHeaderPaddingValues),
                     horizontalArrangement = Arrangement.Start,
                 ) {
                     Text(stringResource(R.string.allowed))
@@ -132,7 +134,9 @@ fun PerDataTypeScreen(
                                 )
                                 .tint(Color(0xFFEC928E)),
                         modifier =
-                            Modifier.padding(start = 2.dp, end = 2.dp, top = 2.dp, bottom = 8.dp),
+                            Modifier.padding(
+                                WearPermissionsPaddingValues.removeAllAppsButtonPaddingValues
+                            ),
                         style = WearPermissionButtonStyle.Warning,
                     )
                 }
@@ -151,7 +155,10 @@ fun PerDataTypeScreen(
                 )
             Row(
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier.padding(start = 12.dp, bottom = 8.dp),
+                modifier =
+                    Modifier.padding(
+                        WearPermissionsPaddingValues.permissionSensorAccessNotePaddingValues
+                    ),
             ) {
                 Text(
                     text = stringResource(R.string.access_sensor_note, lowercaseDataTypeStr),
@@ -171,7 +178,9 @@ fun PerDataTypeScreen(
             item {
                 // Not allowed text.
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(start = 12.dp, bottom = 6.dp),
+                    modifier =
+                        Modifier.fillMaxWidth()
+                            .padding(WearPermissionsPaddingValues.allowedAppsHeaderPaddingValues),
                     horizontalArrangement = Arrangement.Start,
                 ) {
                     Text(stringResource(R.string.not_allowed))
@@ -212,7 +221,8 @@ fun PerDataTypeScreen(
                     },
                 labelMaxLines = Int.MAX_VALUE,
                 onClick = { onShowSystemClick(!showSystem) },
-                modifier = Modifier.padding(start = 2.dp, end = 2.dp),
+                modifier =
+                    Modifier.padding(WearPermissionsPaddingValues.showSystemAppsButtonPaddingValues),
             )
         }
     }

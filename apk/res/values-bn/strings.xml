@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connect-এর কোন কোন ডেটা এই অ্যাপকে রাইট করতে দিতে চান তা বেছে নিন"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Health Connect-এর কোন কোন ডেটা এই অ্যাপকে রিড বা রাইট করতে দিতে চান তা বেছে নিন"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect থেকে কোন কোন ডেটা এই অ্যাপকে রিড করতে দিতে চান তা বেছে নিন"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"আপনি এই অ্যাপকে পড়ার অ্যাক্সেস দিলে অ্যাপটি নতুন ডেটা সহ গত ৩০ দিনের ডেটাও পড়তে পারবে"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"আপনি এই অ্যাপকে পড়ার অ্যাক্সেস দিলে অ্যাপটি নতুন ও পুরনো ডেটা পড়তে পারবে"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g>-কে Health Connect অ্যাক্সেস করার অনুমতি দেবেন?"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"আপনার ডেটা ফিরিয়ে আনা চালিয়ে যাওয়ার আগে, ফোনের সিস্টেম আপডেট করুন।"</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"এখনই আপডেট করুন"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ডেটা টোটাল"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"ডেটা সোর্স"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"সামগ্রিক ডেটা কীভাবে পরিবর্তন হয় তা দেখতে তালিকায় ডেটা সোর্স যোগ করুন। তালিকা থেকে কোনও ডেটা সোর্স সরিয়ে দিলে সামগ্রিক ডেটা সেটে কোনও ডেটা যোগ হয় না, তবে এটির রাইট পার্মিশন থাকবে।"</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"কোনও ডেটা সোর্স নেই"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ডেটা লেখার জন্য আপনি ডেটা সোর্সে অনুমতি দিলে, এখানে সোর্স দেখা যাবে।"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"সোর্স এবং প্রায়োরিটি কীভাবে কাজ করে"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"ডেটা সোর্স যোগ করুন"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"ডেটা সোর্স এডিট করুন"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"ডিভাইসের ডিফল্ট অ্যাপ"</string>
     <string name="move_up" msgid="9136155291380319606">"উপরে তুলুন"</string>
     <string name="move_down" msgid="4404970288236170693">"নিচে নামান"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"ডিভাইসের তথ্য"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"এই ডিভাইসের মাধ্যমে সংগ্রহ করা ডেটা Health Connect-এ সেভ করা হবে, Health Connect-এ কানেক্ট করা অ্যাপ এটি অ্যাক্সেস করতে পারবে"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"এডিট করার অনুমতি দেওয়া হয়েছে"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>

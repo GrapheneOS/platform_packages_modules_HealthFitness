@@ -388,6 +388,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Odaberite podatke za koje želite da ih ova aplikacija bilježi u Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Odaberite podatke za koje želite da ih ova aplikacija čita iz Health Connecta ili bilježi u Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Odaberite podatke za koje želite da ih ova aplikacija čita iz Health Connecta"</string>
+    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
+    <skip />
+    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
+    <skip />
+    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
+    <skip />
+    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Ako date pristup za čitanje, aplikacija može čitati nove podatke i podatke iz proteklih 30 dana"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ako date pristup za čitanje, aplikacija može čitati nove i prijašnje podatke"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Želite li dopustiti aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupa Health Connectu?"</string>
@@ -622,7 +636,7 @@
     <string name="delete_progress_indicator" msgid="5799502879065833417">"Brisanje podataka"</string>
     <string name="delete_dialog_failure_title" msgid="1959020721355789496">"Podaci nisu izbrisani"</string>
     <string name="delete_dialog_failure_message" msgid="7473241488471319963">"Došlo je do pogreške i Health Connect nije mogao izbrisati vaše podatke"</string>
-    <string name="delete_dialog_failure_try_again_button" msgid="4323865124609424838">"Pokušajte ponovo"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="4323865124609424838">"Pokušajte ponovno"</string>
     <string name="delete_data_notification_title" msgid="7740230240986343347">"Brisanje podataka Health Connecta"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"Brisanje podataka Health Connecta"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Brisanje podataka"</string>
@@ -1129,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Prije nego što nastavite s vraćanjem podataka, ažurirajte sustav telefona."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Ažuriraj sada"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Ukupne vrijednosti podataka"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"Izvori podataka"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"Dodajte izvore podataka na popis da biste vidjeli kako se ukupne vrijednosti podataka mogu promijeniti. Ako s tog popisa uklonite izvor podataka, on više neće doprinositi ukupnim vrijednostima, no i dalje će imati dopuštenja za pisanje."</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"Nema izvora podataka"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Nakon što izvoru podataka date dopuštenje da zapisuje podatke iz kategorije <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, izvori će se prikazati ovdje."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Kako funkcioniraju izvori i određivanje prioriteta"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"Dodajte izvor podataka"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"Uređivanje izvora podataka"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Zadana postavka uređaja"</string>
     <string name="move_up" msgid="9136155291380319606">"Pomicanje prema gore"</string>
     <string name="move_down" msgid="4404970288236170693">"Pomicanje prema dolje"</string>
@@ -1272,4 +1280,10 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"Informacije o uređaju"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Podaci koje prikupi ovaj uređaj pohranjivat će se u Health Connectu, gdje će im pristupati povezane aplikacije"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Ima dopuštenje za bilježenje"</string>
+    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <skip />
+    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <skip />
+    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
 </resources>
