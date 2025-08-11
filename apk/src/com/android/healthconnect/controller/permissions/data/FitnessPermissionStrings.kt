@@ -58,6 +58,15 @@ private val PERMISSION_TYPE_STRINGS: ImmutableMap<FitnessPermissionType, Fitness
             ),
         )
         .put(
+            FitnessPermissionType.ALCOHOL_CONSUMPTION,
+            FitnessPermissionStrings(
+                R.string.alcohol_consumption_uppercase_label,
+                R.string.alcohol_consumption_lowercase_label,
+                R.string.alcohol_consumption_read_content_description,
+                R.string.alcohol_consumption_write_content_description,
+            ),
+        )
+        .put(
             FitnessPermissionType.DISTANCE,
             FitnessPermissionStrings(
                 R.string.distance_uppercase_label,

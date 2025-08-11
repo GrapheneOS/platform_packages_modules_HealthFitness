@@ -75,6 +75,7 @@ enum class FitnessPermissionType(val category: Int) : HealthPermissionType {
     SKIN_TEMPERATURE(HealthPermissionCategory.SKIN_TEMPERATURE),
 
     // WELLNESS
+    ALCOHOL_CONSUMPTION(HealthPermissionCategory.ALCOHOL_CONSUMPTION),
     MINDFULNESS(HealthPermissionCategory.MINDFULNESS),
     NICOTINE_INTAKE(HealthPermissionCategory.NICOTINE_INTAKE),
 
@@ -156,6 +157,7 @@ fun fromHealthPermissionCategory(healthPermissionCategory: Int): HealthPermissio
         // WELLNESS
         HealthPermissionCategory.MINDFULNESS -> FitnessPermissionType.MINDFULNESS
         HealthPermissionCategory.NICOTINE_INTAKE -> FitnessPermissionType.NICOTINE_INTAKE
+        HealthPermissionCategory.ALCOHOL_CONSUMPTION -> FitnessPermissionType.ALCOHOL_CONSUMPTION
 
         // SYMPTOMS
         HealthPermissionCategory.SYMPTOM_COUGH -> FitnessPermissionType.SYMPTOM_COUGH
