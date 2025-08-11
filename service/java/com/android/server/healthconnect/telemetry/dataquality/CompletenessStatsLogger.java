@@ -37,6 +37,7 @@ import java.util.List;
 public final class CompletenessStatsLogger {
     private static final InternalHealthConnectMappings HEALTH_CONNECT_MAPPINGS =
             InternalHealthConnectMappings.getInstance();
+
     private final HealthFitnessStatsLog mHealthFitnessStatsLog;
 
     public CompletenessStatsLogger(HealthFitnessStatsLog healthFitnessStatsLog) {
