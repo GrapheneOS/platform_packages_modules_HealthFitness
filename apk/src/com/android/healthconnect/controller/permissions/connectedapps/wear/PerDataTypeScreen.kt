@@ -28,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
@@ -95,6 +96,7 @@ fun PerDataTypeScreen(
                 val app = allowedApps[index]
                 WearPermissionButton(
                     label = app.appName,
+                    modifier = Modifier.testTag(app.appName),
                     labelMaxLines = 3,
                     secondaryLabel =
                         if (showRecentAccess) {
@@ -192,6 +194,7 @@ fun PerDataTypeScreen(
                 val app = deniedApps[index]
                 WearPermissionButton(
                     label = app.appName,
+                    modifier = Modifier.testTag(app.appName),
                     labelMaxLines = 3,
                     secondaryLabel =
                         if (showRecentAccess) {
@@ -222,7 +225,14 @@ fun PerDataTypeScreen(
                 labelMaxLines = Int.MAX_VALUE,
                 onClick = { onShowSystemClick(!showSystem) },
                 modifier =
-                    Modifier.padding(WearPermissionsPaddingValues.showSystemAppsButtonPaddingValues),
+                    Modifier.padding(WearPermissionsPaddingValues.showSystemAppsButtonPaddingValues)
+                        .testTag(
+                            if (showSystem) {
+                                "HideSystemButton"
+                            } else {
+                                "ShowSystemButton"
+                            }
+                        ),
             )
         }
     }
