@@ -91,7 +91,7 @@ class FitnessAppOnboardingFragment : Hilt_FitnessAppOnboardingFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val doneButton = primaryButtonFull
+        val doneButton = getPrimaryButtonFull()
         doneButton.text = getString(R.string.delete_dialog_done_button)
         logger.logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_DONE_BUTTON)
         doneButton.setOnClickListener {
@@ -102,7 +102,7 @@ class FitnessAppOnboardingFragment : Hilt_FitnessAppOnboardingFragment() {
             viewModel.done()
         }
 
-        val backButton = secondaryButton
+        val backButton = getSecondaryButton()
         backButton.text = getString(R.string.back_button)
         logger.logImpression(FitnessAppOnboardingPageElement.FITNESS_APP_ONBOARDING_BACK_BUTTON)
         backButton.setOnClickListener {
