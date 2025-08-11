@@ -16,9 +16,8 @@
 
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.android.settingslib.widget.IntroPreference
-        android:key="app_header_preference"
-        android:order="0"/>
+    <com.android.settingslib.widget.AppHeaderPreference
+        android:key="app_header_preference" />
     <com.android.healthconnect.controller.onboarding.PermissionDetailsPreference
         android:key="details_preference"
         android:order="1"/>
