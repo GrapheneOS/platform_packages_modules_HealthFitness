@@ -27,15 +27,19 @@ import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.selectabledeletion.DeletionConstants.START_DELETION_KEY
 import com.android.healthconnect.controller.selectabledeletion.DeletionFragment
 import com.android.healthconnect.controller.selectabledeletion.DeletionType
 import com.android.healthconnect.controller.selectabledeletion.DeletionViewModel
+import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_APP_NAME
+import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
@@ -286,6 +290,41 @@ class DeletionFragmentTest {
             .check(matches(isDisplayed()))
         onView(withText("Also remove all $TEST_APP_NAME permissions from Health Connect"))
             .check(matches(isDisplayed()))
+        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun deletePermissionTypesFromDDP_allSelected_confirmationDialog_showsCorrectTextNoCheckbox() {
+        whenever(viewModel.deletionProgress).then {
+            MutableLiveData(DeletionViewModel.DeletionProgress.NOT_STARTED)
+        }
+        whenever(viewModel.getDeletionType()).then {
+            DeletionType.DeleteHealthPermissionTypesFromApp(
+                setOf(FitnessPermissionType.STEPS),
+                totalPermissionTypes = 1,
+                appName = DEVICE_DATA_PROVIDER_APP_NAME,
+                packageName = DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+            )
+        }
+
+        launchFragment<DeletionFragment>(Bundle()) {
+            (this as DeletionFragment)
+                .parentFragmentManager
+                .setFragmentResult(START_DELETION_KEY, bundleOf())
+        }
+
+        onView(withText("Permanently delete all $DEVICE_DATA_PROVIDER_APP_NAME data?"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                )
+            )
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+        onView(withId(R.id.dialog_checkbox)).inRoot(isDialog()).check(matches(not(isDisplayed())))
         onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
     }
