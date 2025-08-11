@@ -27,8 +27,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
-import com.android.healthconnect.controller.shared.app.IGetContributorAppInfoUseCase
 import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.di.FakeGetContributorAppInfoUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -57,11 +57,25 @@ class AppInfoReaderTest {
         mock<Context>() { on { getPackageManager() } doReturn mockPackageManager }
     private val getContributorAppInfoUseCase = FakeGetContributorAppInfoUseCase()
     private val appInfoReader = AppInfoReader(mockContext, getContributorAppInfoUseCase)
+    private val emptyGetContributorAppInfoUseCase = FakeGetContributorAppInfoUseCase()
+    private val emptyInfoReader = AppInfoReader(mockContext, emptyGetContributorAppInfoUseCase)
 
     @Before
     fun setup() {
         whenever(mockContext.contentResolver)
             .doReturn(InstrumentationRegistry.getInstrumentation().targetContext.contentResolver)
+        getContributorAppInfoUseCase.setAppInfo(
+            mapOf(
+                PACKAGE_NAME to
+                    AppMetadata(packageName = PACKAGE_NAME, appName = STORED_LABEL, icon = null),
+                DEVICE_DATA_PROVIDER_PACKAGE_NAME to
+                    AppMetadata(
+                        packageName = DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        appName = DEVICE_DATA_PROVIDER_LABEL,
+                        icon = null,
+                    ),
+            )
+        )
     }
 
     @Test
@@ -162,6 +176,38 @@ class AppInfoReaderTest {
     }
 
     @Test
+    fun deviceDataProviderPackage_fallbackData_containsDeviceName() {
+        runBlocking {
+            Settings.Global.putString(
+                mockContext.contentResolver,
+                Settings.Global.DEVICE_NAME,
+                "Pixel 9a",
+            )
+
+            val appMetadata = emptyInfoReader.getAppMetadata(DEVICE_DATA_PROVIDER_PACKAGE_NAME)
+            assertThat(appMetadata.packageName).isEqualTo(DEVICE_DATA_PROVIDER_PACKAGE_NAME)
+            assertThat(appMetadata.appName).isEqualTo("Pixel 9a")
+            assertThat(appMetadata.icon).isEqualTo(null)
+        }
+    }
+
+    @Test
+    fun regularPackage_fallbackData_containsEmptyName() {
+        runBlocking {
+            mockPackageManager.stub {
+                on { getApplicationInfo(eq(PACKAGE_NAME), any<ApplicationInfoFlags>()) } doThrow
+                    NameNotFoundException()
+                on { getApplicationIcon(PACKAGE_NAME) } doThrow NameNotFoundException()
+            }
+
+            val appMetadata = emptyInfoReader.getAppMetadata(PACKAGE_NAME)
+            assertThat(appMetadata.packageName).isEqualTo(PACKAGE_NAME)
+            assertThat(appMetadata.appName).isEqualTo("")
+            assertThat(appMetadata.icon).isEqualTo(null)
+        }
+    }
+
+    @Test
     fun regularPackage_usesPackageManagerFirst() {
         runBlocking {
             val applicationInfo =
@@ -180,20 +226,5 @@ class AppInfoReaderTest {
             // Verifies it's not STORED_LABEL
             assertThat(appMetadata.appName).isEqualTo(PACKAGE_MANAGER_LABEL)
         }
-    }
-}
-
-private class FakeGetContributorAppInfoUseCase : IGetContributorAppInfoUseCase {
-    override suspend fun invoke(): Map<String, AppMetadata> {
-        return mapOf(
-            PACKAGE_NAME to
-                AppMetadata(packageName = PACKAGE_NAME, appName = STORED_LABEL, icon = null),
-            DEVICE_DATA_PROVIDER_PACKAGE_NAME to
-                AppMetadata(
-                    packageName = DEVICE_DATA_PROVIDER_PACKAGE_NAME,
-                    appName = DEVICE_DATA_PROVIDER_LABEL,
-                    icon = null,
-                ),
-        )
     }
 }
