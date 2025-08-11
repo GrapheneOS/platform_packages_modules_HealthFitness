@@ -87,6 +87,7 @@ class MatchmakingActivity : Hilt_MatchmakingActivity(), BottomSheetCallback {
     }
 
     override fun onSecondaryButtonClicked() {
+        viewModel.recordMatchmakingDenial()
         viewModel.removeAllPermissionsFromGrantedList()
         finishWithCancelResult()
     }
@@ -94,6 +95,11 @@ class MatchmakingActivity : Hilt_MatchmakingActivity(), BottomSheetCallback {
     override fun onDialogCancel() {
         viewModel.removeAllPermissionsFromGrantedList()
         finishWithCancelResult()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.reset()
     }
 
     private fun finishWithCancelResult() {
