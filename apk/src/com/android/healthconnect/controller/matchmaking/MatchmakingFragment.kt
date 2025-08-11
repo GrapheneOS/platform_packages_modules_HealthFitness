@@ -30,6 +30,7 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionSt
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.shared.children
 import com.android.healthconnect.controller.shared.preference.HealthExpandablePreference
 import com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
 import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference
@@ -66,6 +67,27 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadingIndicator = activity?.findViewById(R.id.loading)
+
+        viewModel.allPermissionsGranted.observe(viewLifecycleOwner) { allGranted ->
+            allowAllPreference.isChecked = allGranted
+        }
+
+        viewModel.grantedPermissions.observe(viewLifecycleOwner) { grantedPermissionsMap ->
+            matchmakingAppsCategory.children.forEach { preference ->
+                if (preference is HealthExpandablePreference) {
+                    val packageName = preference.key
+                    val grantedPermissions = grantedPermissionsMap[packageName] ?: emptySet()
+                    preference.children.forEach { child ->
+                        if (child is HealthSwitchPreference) {
+                            child.isChecked =
+                                grantedPermissions.any {
+                                    getPermissionKey(packageName, it.toString()) == child.key
+                                }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -90,6 +112,15 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
 
         if (packageName != null) {
             viewModel.loadMatchmakingApps(packageName, recordTypes)
+        }
+
+        allowAllPreference.setOnPreferenceChangeListener { _, newValue ->
+            if (newValue as Boolean) {
+                viewModel.addAllPermissionsToGrantedList()
+            } else {
+                viewModel.removeAllPermissionsFromGrantedList()
+            }
+            true
         }
 
         viewModel.matchmakingState.observe(this) { state ->
@@ -121,9 +152,9 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
         header.headerSummary = getString(R.string.matchmaking_screen_summary, appName)
     }
 
-    private fun buildAppList(apps: Set<MatchmakingAppData>) {
+    private fun buildAppList(apps: List<MatchmakingAppData>) {
         matchmakingAppsCategory.removeAll()
-        apps.sortedBy { it.metadata.appName }.forEach { appData -> addAppPreference(appData) }
+        apps.forEach { appData -> addAppPreference(appData) }
     }
 
     private fun addAppPreference(appData: MatchmakingAppData) {
@@ -161,30 +192,41 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
         appData: MatchmakingAppData,
         healthExpandablePreference: HealthExpandablePreference,
     ) {
-        appData.permissions
-            .sortedBy {
-                FitnessPermissionStrings.fromPermissionType(it.fitnessPermissionType).uppercaseLabel
-            }
-            .forEach { permission ->
-                val switch =
-                    HealthSwitchPreference(requireContext()).also {
-                        val healthCategory =
-                            HealthDataCategoryExtensions.fromFitnessPermissionType(
+        appData.permissions.forEach { permission ->
+            val switch =
+                HealthSwitchPreference(requireContext()).also {
+                    val healthCategory =
+                        HealthDataCategoryExtensions.fromFitnessPermissionType(
+                            permission.fitnessPermissionType
+                        )
+                    it.icon = healthCategory.icon(requireContext())
+                    it.setTitle(
+                        FitnessPermissionStrings.fromPermissionType(
                                 permission.fitnessPermissionType
                             )
-                        it.icon = healthCategory.icon(requireContext())
-                        it.setTitle(
-                            FitnessPermissionStrings.fromPermissionType(
-                                    permission.fitnessPermissionType
-                                )
-                                .uppercaseLabel
-                        )
-                        it.logNameActive = PermissionsElement.PERMISSION_SWITCH
-                        it.logNameInactive = PermissionsElement.PERMISSION_SWITCH
-                        it.permission = permission
+                            .uppercaseLabel
+                    )
+                    it.key = getPermissionKey(appData.metadata.packageName, permission.toString())
+                    it.logNameActive = PermissionsElement.PERMISSION_SWITCH
+                    it.logNameInactive = PermissionsElement.PERMISSION_SWITCH
+                    it.permission = permission
+                    it.setOnPreferenceChangeListener { _, newValue ->
+                        if (newValue as? Boolean == true) {
+                            viewModel.addPermissionToGrantedList(
+                                appData.metadata.packageName,
+                                permission,
+                            )
+                        } else {
+                            viewModel.removePermissionFromGrantedList(
+                                appData.metadata.packageName,
+                                permission,
+                            )
+                        }
+                        true
                     }
-                healthExpandablePreference.addPreference(switch)
-            }
+                }
+            healthExpandablePreference.addPreference(switch)
+        }
     }
 
     private fun addPrivacyPolicyFooter(
@@ -212,4 +254,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
             deviceInfoUtils.openHealthFitnessPermissionsLearnMoreLink(requireActivity())
         }
     }
+
+    private fun getPermissionKey(packageName: String, permission: String) =
+        "${packageName}-${permission}"
 }

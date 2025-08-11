@@ -19,6 +19,7 @@ package com.android.healthconnect.controller.matchmaking
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager.LayoutParams.SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS
+import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.dialog.HealthConnectBottomSheetDialogFragment
@@ -34,8 +35,12 @@ import javax.inject.Inject
 class MatchmakingActivity : Hilt_MatchmakingActivity(), BottomSheetCallback {
     @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
 
+    private val viewModel: MatchmakingViewModel by viewModels()
+    private var bottomSheet: HealthConnectBottomSheetDialogFragment? = null
+
     companion object {
         private const val TAG = "MatchmakingActivity"
+        private const val BOTTOM_SHEET_TAG = "MatchmakingBottomSheet"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,28 +70,39 @@ class MatchmakingActivity : Hilt_MatchmakingActivity(), BottomSheetCallback {
 
         setContentView(R.layout.activity_matchmaking)
 
+        viewModel.atLeastOnePermissionGranted.observe(this) { isEnabled ->
+            bottomSheet?.setPrimaryButtonEnabled(isEnabled)
+        }
+
         if (savedInstanceState == null) {
-            HealthConnectBottomSheetDialogFragment.newInstance(MatchmakingFragment::class.java)
-                .show(supportFragmentManager, "MatchmakingBottomSheet")
+            bottomSheet =
+                HealthConnectBottomSheetDialogFragment.newInstance(MatchmakingFragment::class.java)
+            bottomSheet?.show(supportFragmentManager, BOTTOM_SHEET_TAG)
         }
     }
 
     override fun onPrimaryButtonClicked() {
-        // TODO: Grant permissions
-        finish()
+        viewModel.grantPermissions()
+        finishWithOkResult()
     }
 
     override fun onSecondaryButtonClicked() {
-        // TODO: Revoke permissions
-        finish()
+        viewModel.removeAllPermissionsFromGrantedList()
+        finishWithCancelResult()
     }
 
     override fun onDialogCancel() {
+        viewModel.removeAllPermissionsFromGrantedList()
         finishWithCancelResult()
     }
 
     private fun finishWithCancelResult() {
         setResult(RESULT_CANCELED)
+        finish()
+    }
+
+    private fun finishWithOkResult() {
+        setResult(RESULT_OK)
         finish()
     }
 }

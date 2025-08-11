@@ -71,10 +71,10 @@ class GetMatchingAppsUseCaseTest {
         val matchingAppsResponse = mapOf(TEST_APP_PACKAGE_NAME_2 to setOf(WRITE_STEPS))
         val appMetadata = AppMetadata(TEST_APP_NAME_2, TEST_APP_PACKAGE_NAME_2, null)
         val expected =
-            setOf(
+            listOf(
                 MatchmakingAppData(
                     appMetadata,
-                    setOf(
+                    listOf(
                         HealthPermission.fromPermissionString(WRITE_STEPS)
                             as HealthPermission.FitnessPermission
                     ),

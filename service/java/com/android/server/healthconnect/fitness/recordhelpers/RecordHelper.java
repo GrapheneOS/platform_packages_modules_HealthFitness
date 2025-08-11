@@ -101,9 +101,9 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     public static final String CLIENT_RECORD_ID_COLUMN_NAME = "client_record_id";
     public static final String APP_INFO_ID_COLUMN_NAME = "app_info_id";
     public static final String LAST_MODIFIED_TIME_COLUMN_NAME = "last_modified_time";
+    public static final String RECORDING_METHOD_COLUMN_NAME = "recording_method";
     private static final String CLIENT_RECORD_VERSION_COLUMN_NAME = "client_record_version";
     private static final String DEVICE_INFO_ID_COLUMN_NAME = "device_info_id";
-    private static final String RECORDING_METHOD_COLUMN_NAME = "recording_method";
     private static final String DEDUPE_HASH_COLUMN_NAME = "dedupe_hash";
     private static final List<Pair<String, Integer>> UNIQUE_COLUMNS_INFO =
             List.of(

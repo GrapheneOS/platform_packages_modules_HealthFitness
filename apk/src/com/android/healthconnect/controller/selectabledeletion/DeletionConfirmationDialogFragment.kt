@@ -27,6 +27,7 @@ import androidx.fragment.app.setFragmentResult
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.selectabledeletion.DeletionConstants.CONFIRMATION_KEY
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
@@ -91,7 +92,10 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
     private fun setupCheckbox(checkBox: CheckBox) {
         val deletionType = viewModel.getDeletionType()
         if (deletionType is DeletionType.DeleteHealthPermissionTypesFromApp) {
-            if (deletionType.healthPermissionTypes.size == deletionType.totalPermissionTypes) {
+            if (
+                deletionType.healthPermissionTypes.size == deletionType.totalPermissionTypes &&
+                    deletionType.packageName != DEVICE_DATA_PROVIDER_PACKAGE
+            ) {
                 checkBox.visibility = View.VISIBLE
             } else {
                 checkBox.visibility = View.GONE

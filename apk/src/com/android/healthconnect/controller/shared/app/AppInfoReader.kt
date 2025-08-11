@@ -77,7 +77,7 @@ constructor(
         return if (contributorApps.containsKey(packageName)) {
             contributorApps[packageName]!!
         } else {
-            AppMetadata(packageName = packageName, appName = "", icon = null)
+            getFallBackAppMetadata(packageName)
         }
     }
 
@@ -91,6 +91,15 @@ constructor(
 
     private fun getPackageInfo(packageName: String): ApplicationInfo {
         return packageManager.getApplicationInfo(packageName, ApplicationInfoFlags.of(0))
+    }
+
+    private fun getFallBackAppMetadata(packageName: String): AppMetadata {
+        val base = AppMetadata(packageName = packageName, appName = "", icon = null)
+        return if (packageName == DEVICE_DATA_PROVIDER_PACKAGE) {
+            getWithCurrentDeviceName(base)
+        } else {
+            base
+        }
     }
 
     private fun getWithCurrentDeviceName(dataDeviceProviderPackage: AppMetadata): AppMetadata =

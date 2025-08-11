@@ -24,7 +24,8 @@
 
     <com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
         android:key="allow_all_preference"
-        android:title="@string/request_permissions_allow_all"/>
+        android:title="@string/request_permissions_allow_all"
+        android:defaultValue="false"/>
 
     <PreferenceCategory
         android:key="matchmaking_apps_category"

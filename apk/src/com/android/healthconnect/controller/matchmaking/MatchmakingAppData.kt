@@ -19,5 +19,5 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 /** Data class to hold matchmaking app data. */
 data class MatchmakingAppData(
     val metadata: AppMetadata,
-    val permissions: Set<HealthPermission.FitnessPermission>,
+    val permissions: List<HealthPermission.FitnessPermission>,
 )

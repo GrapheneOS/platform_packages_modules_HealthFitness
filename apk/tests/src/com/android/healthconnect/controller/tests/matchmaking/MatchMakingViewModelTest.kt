@@ -16,6 +16,7 @@
 
 package com.android.healthconnect.controller.tests.matchmaking
 
+import android.health.connect.HealthPermissions.WRITE_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_STEPS
 import android.health.connect.datatypes.StepsRecord
 import androidx.lifecycle.SavedStateHandle
@@ -25,14 +26,19 @@ import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel
 import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel.MatchmakingState.LoadingFailed
 import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel.MatchmakingState.WithData
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingAppsUseCase
+import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
+import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
+import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
+import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_3
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
@@ -48,6 +54,8 @@ import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
@@ -59,6 +67,7 @@ class MatchMakingViewModelTest {
     @BindValue lateinit var appInfoReader: AppInfoReader
 
     private val getMatchingAppsUseCase: GetMatchingAppsUseCase = mock()
+    private val healthPermissionManager: HealthPermissionManager = mock()
 
     private lateinit var viewModel: MatchmakingViewModel
 
@@ -66,7 +75,13 @@ class MatchMakingViewModelTest {
     fun setup() = runTest {
         Dispatchers.setMain(Dispatchers.Unconfined)
         appInfoReader = createFakeAppInfoReader()
-        viewModel = MatchmakingViewModel(getMatchingAppsUseCase, appInfoReader, SavedStateHandle())
+        viewModel =
+            MatchmakingViewModel(
+                getMatchingAppsUseCase,
+                appInfoReader,
+                SavedStateHandle(),
+                healthPermissionManager,
+            )
     }
 
     @Test
@@ -75,10 +90,10 @@ class MatchMakingViewModelTest {
         val recordTypes = setOf(StepsRecord::class.java)
         val appMetadata = AppMetadata(TEST_APP_NAME_2, TEST_APP_PACKAGE_NAME_2, null)
         val expected =
-            setOf(
+            listOf(
                 MatchmakingAppData(
                     appMetadata,
-                    setOf(
+                    listOf(
                         HealthPermission.fromPermissionString(WRITE_STEPS)
                             as HealthPermission.FitnessPermission
                     ),
@@ -105,5 +120,132 @@ class MatchMakingViewModelTest {
         viewModel.loadMatchmakingApps(packageName, recordTypes)
 
         assertThat(viewModel.matchmakingState.value).isInstanceOf(LoadingFailed::class.java)
+    }
+
+    @Test
+    fun loadMatchmakingApps_returnsSortedAppsAndPermissions() = runTest {
+        val appA =
+            MatchmakingAppData(
+                AppMetadata("a.package", "A App", null),
+                listOf(
+                    HealthPermission.FitnessPermission(
+                        FitnessPermissionType.STEPS,
+                        PermissionsAccessType.READ,
+                    ),
+                    HealthPermission.FitnessPermission(
+                        FitnessPermissionType.EXERCISE,
+                        PermissionsAccessType.READ,
+                    ),
+                ),
+            )
+        val appB = MatchmakingAppData(AppMetadata("b.package", "B App", null), emptyList())
+        whenever(getMatchingAppsUseCase.invoke(any()))
+            .thenReturn(UseCaseResults.Success(listOf(appB, appA)))
+        whenever(appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME))
+            .thenReturn(AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null))
+
+        viewModel.loadMatchmakingApps(TEST_APP_PACKAGE_NAME, setOf(StepsRecord::class.java))
+
+        val state = viewModel.matchmakingState.value
+
+        val data = (state as WithData).apps
+        assertThat(data.size).isEqualTo(2)
+        assertThat(data[0].metadata.appName).isEqualTo("A App")
+        assertThat(data[1].metadata.appName).isEqualTo("B App")
+        assertThat(data[0].permissions[0].fitnessPermissionType)
+            .isEqualTo(FitnessPermissionType.EXERCISE)
+        assertThat(data[0].permissions[1].fitnessPermissionType)
+            .isEqualTo(FitnessPermissionType.STEPS)
+    }
+
+    @Test
+    fun addPermissionToGrantedList_addsPermissionToGrantedPermissions() {
+        val permission =
+            HealthPermission.fromPermissionString(WRITE_STEPS) as HealthPermission.FitnessPermission
+
+        viewModel.addPermissionToGrantedList(TEST_APP_PACKAGE_NAME, permission)
+
+        assertThat(viewModel.grantedPermissions.value?.get(TEST_APP_PACKAGE_NAME))
+            .contains(permission)
+        assertThat(viewModel.atLeastOnePermissionGranted.value).isTrue()
+    }
+
+    @Test
+    fun removePermissionFromGrantedList_removesPermissionFromGrantedPermissions() {
+        val permission =
+            HealthPermission.fromPermissionString(WRITE_STEPS) as HealthPermission.FitnessPermission
+        viewModel.addPermissionToGrantedList(TEST_APP_PACKAGE_NAME, permission)
+
+        viewModel.removePermissionFromGrantedList(TEST_APP_PACKAGE_NAME, permission)
+
+        assertThat(viewModel.grantedPermissions.value?.get(TEST_APP_PACKAGE_NAME)).isNull()
+        assertThat(viewModel.atLeastOnePermissionGranted.value).isFalse()
+    }
+
+    @Test
+    fun addAllPermissionsToGrantedList_addsAllPermissionsToGrantedPermissions() = runTest {
+        setupWithData()
+
+        viewModel.addAllPermissionsToGrantedList()
+
+        val state = viewModel.matchmakingState.value as WithData
+        val gran = viewModel.grantedPermissions
+        assertThat(gran.value?.get(TEST_APP_PACKAGE_NAME))
+            .isEqualTo(
+                state.apps.first { it.metadata.packageName == TEST_APP_PACKAGE_NAME }.permissions
+            )
+        assertThat(viewModel.grantedPermissions.value?.get(TEST_APP_PACKAGE_NAME_2))
+            .isEqualTo(
+                state.apps.first { it.metadata.packageName == TEST_APP_PACKAGE_NAME_2 }.permissions
+            )
+        assertThat(viewModel.atLeastOnePermissionGranted.value).isTrue()
+        assertThat(viewModel.allPermissionsGranted.value).isTrue()
+    }
+
+    @Test
+    fun removeAllPermissionsFromGrantedList_clearsGrantedPermissions() = runTest {
+        setupWithData()
+        viewModel.addAllPermissionsToGrantedList()
+
+        viewModel.removeAllPermissionsFromGrantedList()
+
+        assertThat(viewModel.grantedPermissions.value).isEmpty()
+        assertThat(viewModel.atLeastOnePermissionGranted.value).isFalse()
+        assertThat(viewModel.allPermissionsGranted.value).isFalse()
+    }
+
+    @Test
+    fun grantPermissions_grantsAllPermissions() = runTest {
+        setupWithData()
+
+        viewModel.addAllPermissionsToGrantedList()
+        viewModel.grantPermissions()
+
+        verify(healthPermissionManager, times(2)).grantHealthPermission(any(), any())
+    }
+
+    private suspend fun setupWithData() {
+        val packageName = TEST_APP_PACKAGE_NAME_3
+        val recordTypes = setOf(StepsRecord::class.java)
+        val appMetadata = AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null)
+        val appMetadata2 = AppMetadata(TEST_APP_PACKAGE_NAME_2, TEST_APP_NAME_2, null)
+        val permissions =
+            listOf(
+                HealthPermission.fromPermissionString(WRITE_STEPS)
+                    as HealthPermission.FitnessPermission
+            )
+        val permissions2 =
+            listOf(
+                HealthPermission.fromPermissionString(WRITE_EXERCISE)
+                    as HealthPermission.FitnessPermission
+            )
+        val expected =
+            listOf(
+                MatchmakingAppData(appMetadata, permissions),
+                MatchmakingAppData(appMetadata2, permissions2),
+            )
+        val useCaseResult = UseCaseResults.Success(expected)
+        whenever(getMatchingAppsUseCase.invoke(any())).doReturn(useCaseResult)
+        viewModel.loadMatchmakingApps(packageName, recordTypes)
     }
 }

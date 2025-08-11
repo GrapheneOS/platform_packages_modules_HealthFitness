@@ -99,6 +99,7 @@ import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.telemetry.dataquality.CompletenessStatsCollector;
 import com.android.server.healthconnect.telemetry.dataquality.CompletenessStatsLogger;
+import com.android.server.healthconnect.telemetry.dataquality.DataGranularityStatsCollector;
 import com.android.server.healthconnect.telemetry.dataquality.DataQualityTelemetryJobScheduler;
 import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsCollector;
 import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsLogger;
@@ -180,8 +181,10 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final LatencyMetricsCollector mLatencyMetricsCollector;
     private final LatencyMetricsLogger mLatencyMetricsLogger;
     private final CompletenessStatsLogger mCompletenessStatsLogger;
+    private final DataGranularityStatsCollector mDataGranularityStatsCollector;
     @Nullable private final MatchmakingManager mMatchmakingManager;
     @Nullable private final MatchmakingDenialStateManager mMatchmakingDenialStateManager;
+    private final Clock mClock;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -196,6 +199,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         // Any class that is using this user below are responsible for making sure that they
         // update any reference to user when it changes.
         UserHandle userHandle = builder.mUserHandle;
+        mClock = builder.mClock == null ? Clock.systemUTC() : builder.mClock;
         mEnvironmentDataDirectory =
                 builder.mEnvironmentDataDirectory == null
                         ? Environment.getDataDirectory()
@@ -587,6 +591,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthFitnesssStatsLog, mLatencyMetricsCollector)
                         : builder.mLatencyMetricsLogger;
 
+        mDataGranularityStatsCollector =
+                builder.mDataGranularityStatsCollector == null
+                        ? new DataGranularityStatsCollector(mTransactionManager, mAppInfoHelper)
+                        : builder.mDataGranularityStatsCollector;
+
         mMatchmakingDenialStateManager =
                 builder.mMatchmakingDenialStateManager == null && Flags.matchmaking()
                         ? new MatchmakingDenialStateManager(hcContext, mPreferenceHelper)
@@ -833,6 +842,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     }
 
     @Override
+    public DataGranularityStatsCollector getDataGranularityStatsCollector() {
+        return mDataGranularityStatsCollector;
+    }
+
+    @Override
     public LatencyMetricsCollector getLatencyMetricsCollector() {
         return mLatencyMetricsCollector;
     }
@@ -956,7 +970,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
 
     @Override
     public CompletenessStatsCollector getCompletenessStatsCollector() {
-        return new CompletenessStatsCollector();
+        return new CompletenessStatsCollector(mTransactionManager, mAppInfoHelper, mClock);
     }
 
     /**
@@ -1037,8 +1051,10 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private CloudRestoreManager mCloudRestoreManager;
         @Nullable private LatencyMetricsCollector mLatencyMetricsCollector;
         @Nullable private LatencyMetricsLogger mLatencyMetricsLogger;
+        @Nullable private DataGranularityStatsCollector mDataGranularityStatsCollector;
         @Nullable private MatchmakingManager mMatchmakingManager;
         @Nullable private MatchmakingDenialStateManager mMatchmakingDenialStateManager;
+        @Nullable private Clock mClock;
 
         private Builder(Context context) {
             mContext = context;
@@ -1426,10 +1442,23 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
             return this;
         }
 
+        /** Set fake or custom {@link DataGranularityStatsCollector}. */
+        public Builder setDataGranularityStatsCollector(
+                DataGranularityStatsCollector dataGranularityStatsCollector) {
+            mDataGranularityStatsCollector = Objects.requireNonNull(dataGranularityStatsCollector);
+            return this;
+        }
+
         /** Set fake or custom {@link MatchmakingDenialStateManager}. */
         public Builder setMatchmakingDenialStateManager(
                 MatchmakingDenialStateManager matchmakingDenialStateManager) {
             mMatchmakingDenialStateManager = Objects.requireNonNull(matchmakingDenialStateManager);
+            return this;
+        }
+
+        /** Set fake or custom {@link Clock}. */
+        public Builder setClock(Clock clock) {
+            mClock = Objects.requireNonNull(clock);
             return this;
         }
 
