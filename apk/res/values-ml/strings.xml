@@ -388,20 +388,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connect-ൽ ഈ ആപ്പ് റൈറ്റ് ചെയ്യാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Health Connect-ൽ നിന്ന് ഈ ആപ്പ് റീഡ് ചെയ്യണമെന്നോ റൈറ്റ് ചെയ്യണമെന്നോ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect-ൽ നിന്ന് ഈ ആപ്പ് റീഡ് ചെയ്യാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
-    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
-    <skip />
-    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
-    <skip />
-    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"ആപ്പുകൾ തമ്മിൽ ഡാറ്റ പങ്കിടുക"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> എന്ന ആപ്പിൽ നിന്നുള്ള ഡാറ്റ"</string>
+    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Health Connect ഉപയോഗിച്ച് ഈ ഉപകരണത്തിലെ മറ്റ് ആപ്പുകളിൽ നിന്ന് ഡാറ്റ വായിക്കാൻ <xliff:g id="APP_NAME">%1$s</xliff:g> ആപ്പിനെ അനുവദിക്കുക"</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ഈ ഡാറ്റ സമന്വയിപ്പിക്കാനാകുന്ന ആപ്പുകൾ"</string>
+    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> നിങ്ങളുടെ ഡാറ്റ ഉപയോഗിക്കുന്ന രീതി അവരുടെ "<a href="%2$s">"സ്വകാര്യതാ നയത്തിൽ"</a>" അറിയൂ."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"ഒന്നിലധികം ആപ്പുകൾ തമ്മിൽ നിങ്ങളുടെ ആരോഗ്യവും ഫിറ്റ്‍നസും സംബന്ധിച്ച ഡാറ്റ പങ്കിടാൻ Health Connect അനുവദിക്കുന്നു. ഡാറ്റ സുരക്ഷിതമാക്കിക്കൊണ്ട് സ്ഥിതിവിവരക്കണക്കുകളും അനുഭവങ്ങളും അൺലോക്ക് ചെയ്യാൻ ഇത് നിങ്ങളെ സഹായിക്കുന്നു."</string>
+    <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect-നെ കുറിച്ച് കൂടുതൽ"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"നിങ്ങൾ റീഡ് ചെയ്യാനുള്ള ആക്‌സസ് നൽകിയാൽ, പുതിയ ഡാറ്റയും കഴിഞ്ഞ 30 ദിവസത്തെ ഡാറ്റയും ആപ്പിന് റീഡ് ചെയ്യാനാകും"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"നിങ്ങൾ റീഡ് ആക്‌സസ് നൽകിയാൽ, പുതിയ ഡാറ്റയും മുമ്പത്തെ ഡാറ്റയും ആപ്പിന് റീഡ് ചെയ്യാനാകും"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Health Connect ആക്‌സസ് ചെയ്യാൻ <xliff:g id="APP_NAME">%1$s</xliff:g> ആപ്പിനെ അനുവദിക്കണോ?"</string>
@@ -1285,5 +1278,17 @@
     <!-- no translation found for device_data_label (2056618513138892435) -->
     <skip />
     <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
     <skip />
 </resources>

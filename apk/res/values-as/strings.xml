@@ -1286,4 +1286,10 @@
     <skip />
     <!-- no translation found for device_data_button (8002406105399136401) -->
     <skip />
+    <string name="native_steps_banner_title" msgid="7668164332675458871">"আপোনাৰ ফ’নত ট্ৰেক কৰা খোজসমূহ Health Connectত প্ৰদৰ্শিত হ’ব"</string>
+    <string name="native_steps_banner_summary" msgid="7109953051996114646">"এই ডিভাইচে ট্ৰেক কৰা খোজসমূহ এতিয়া সংযোজিত এপ্‌সমূহে এক্সেছ কৰিবলৈ Health Connectত ষ্ট’ৰ কৰা হৈছে"</string>
+    <string name="native_steps_banner_dismiss" msgid="4241497788886121214">"অগ্ৰাহ্য কৰক"</string>
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"পৰ্যালোচনা কৰক"</string>
+    <string name="native_steps_notification_title" msgid="4059138095111818516">"খোজৰ তথ্য এতিয়া Health Connectত উপলব্ধ"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"এই ডিভাইচে ট্ৰেক কৰা খোজসমূহ এতিয়া সংযোজিত এপ্‌সমূহে এক্সেছ কৰিবলৈ Health Connectত ষ্ট’ৰ কৰা হৈছে"</string>
 </resources>

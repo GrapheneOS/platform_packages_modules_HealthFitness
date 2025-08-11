@@ -388,20 +388,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Scegli i dati da far scrivere a questa app in Connessione Salute"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Scegli i dati da far leggere o scrivere a questa app in Connessione Salute"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Scegli i dati da far leggere a questa app in Connessione Salute"</string>
-    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
-    <skip />
-    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
-    <skip />
-    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Condividi dati tra le app"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dati da <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Consenti all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di leggere i dati da altre app su questo dispositivo utilizzando Connessione Salute"</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"App che possono sincronizzare questi dati"</string>
+    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Leggi le "<a href="%2$s">"norme sulla privacy"</a>" di <xliff:g id="APP_NAME">%1$s</xliff:g> per scoprire in che modo vengono utilizzati i tuoi dati."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Connessione Salute ti consente di condividere i tuoi dati relativi alla salute e all\'attività fisica tra più app. In questo modo, potrai accedere ad approfondimenti ed esperienze senza compromettere la sicurezza dei dati."</string>
+    <string name="more_about_health_connect" msgid="8105996800108743876">"Scopri di più su Connessione Salute"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Se concedi l\'accesso in lettura, l\'app può leggere i nuovi dati e quelli degli ultimi 30 giorni"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Se concedi l\'accesso in lettura, l\'app può leggere i dati nuovi e precedenti"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere a Connessione Salute?"</string>
@@ -1280,10 +1273,19 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"Informazioni sul dispositivo"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"I dati raccolti da questo dispositivo verranno archiviati in Connessione Salute, dove saranno accessibili alle app collegate"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Autorizzata a scrivere"</string>
-    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <string name="device_data_screen_title" msgid="2443821236974714385">"Dati sul dispositivo"</string>
+    <string name="device_data_label" msgid="2056618513138892435">"Gestisci dispositivo"</string>
+    <string name="device_data_button" msgid="8002406105399136401">"Visualizza i dati sul dispositivo"</string>
+    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
     <skip />
-    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
     <skip />
-    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
     <skip />
 </resources>

@@ -1143,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Նախքան տվյալների վերականգնման գործողությունը շարունակելը, թարմացրեք ձեր հեռախոսի համակարգը։"</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Թարմացնել"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Ամփոփիչ ցուցանիշներ"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"Տվյալների աղբյուրներ"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"Տվյալների աղբյուրներ ավելացրեք ցանկում՝ տեսնելու, թե ինչպես կփոխվեն ամփոփիչ ցուցանիշները։ Տվյալների որևէ աղբյուր ջնջելու դեպքում այդ աղբյուրից ստացված տվյալներն ամփոփիչ ցուցանիշներում հաշվի չեն առնվի։ Ընդ որում՝ գրելու թույլտվությունները չեն չեղարկվի։"</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"Տվյալների աղբյուրներ չկան"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Երբ տվյալների աղբյուրին «<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>» կատեգորիայի տվյալներ գրելու թույլտվություն տաք, աղբյուրները կցուցադրվեն այստեղ։"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Ինչպես են աղբյուրներն ու առաջնահերթությունն աշխատում"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"Ավելացրեք տվյալների աղբյուր"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"Փոփոխել տվյալների աղբյուրները"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Կանխադրված տարբերակ"</string>
     <string name="move_up" msgid="9136155291380319606">"Տեղափոխել վերև"</string>
     <string name="move_down" msgid="4404970288236170693">"Տեղափոխել ներքև"</string>
@@ -1291,5 +1285,17 @@
     <!-- no translation found for device_data_label (2056618513138892435) -->
     <skip />
     <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
     <skip />
 </resources>
