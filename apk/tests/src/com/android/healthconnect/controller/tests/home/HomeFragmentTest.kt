@@ -1109,6 +1109,7 @@ class HomeFragmentTest {
             .perform(scrollTo())
             .check(matches(isDisplayed()))
         onView(withText("Set screen lock")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Not now")).perform(scrollTo()).check(matches(isDisplayed()))
         verify(healthConnectLogger).logImpression(HomePageElement.LOCK_SCREEN_BANNER)
         verify(healthConnectLogger).logImpression(HomePageElement.LOCK_SCREEN_BANNER_BUTTON)
         verify(healthConnectLogger).logImpression(HomePageElement.LOCK_SCREEN_BANNER_DISMISS_BUTTON)
@@ -1156,7 +1157,7 @@ class HomeFragmentTest {
         launchFragment<HomeFragment>(Bundle())
 
         onView(withText("Set screen lock")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withId(com.android.settingslib.widget.preference.banner.R.id.banner_dismiss_btn))
+        onView(withId(com.android.settingslib.widget.preference.banner.R.id.banner_negative_btn))
             .perform(scrollTo())
             .perform(click())
         verify(healthConnectLogger)
@@ -1502,6 +1503,7 @@ class HomeFragmentTest {
             onView(withText("Start sharing fitness and wellness data between your apps"))
                 .check(matches(isDisplayed()))
             onView(withText("Set up")).check(matches(isDisplayed()))
+            onView(withText("Not now")).check(matches(isDisplayed()))
             onView(withText("Connect a second app")).check(doesNotExist())
 
             verify(healthConnectLogger).logImpression(HomePageElement.ZERO_APPS_CONNECTED_BANNER)
@@ -1510,7 +1512,11 @@ class HomeFragmentTest {
             verify(healthConnectLogger)
                 .logImpression(HomePageElement.ZERO_APPS_CONNECTED_BANNER_DISMISS_BUTTON)
 
-            onView(withId(com.android.settingslib.widget.preference.banner.R.id.banner_dismiss_btn))
+            onView(
+                    withId(
+                        com.android.settingslib.widget.preference.banner.R.id.banner_negative_btn
+                    )
+                )
                 .perform(scrollTo())
                 .perform(click())
             scenario.onActivity { activity ->
@@ -1545,6 +1551,7 @@ class HomeFragmentTest {
                 onView(withText("Start sharing fitness and wellness data between your apps"))
                     .check(matches(isDisplayed()))
                 onView(withText("Set up")).check(matches(isDisplayed()))
+                onView(withText("Not now")).check(matches(isDisplayed()))
                 onView(withText("Connect a second app")).check(doesNotExist())
 
                 verify(healthConnectLogger)
@@ -1574,6 +1581,7 @@ class HomeFragmentTest {
             onView(withText("Set up another app so it can start sharing fitness and wellness data"))
                 .check(matches(isDisplayed()))
             onView(withText("Continue")).check(matches(isDisplayed()))
+            onView(withText("Not now")).check(matches(isDisplayed()))
             onView(withText("See your health data across apps")).check(doesNotExist())
 
             verify(healthConnectLogger).logImpression(HomePageElement.ONE_APP_CONNECTED_BANNER)
@@ -1582,7 +1590,11 @@ class HomeFragmentTest {
             verify(healthConnectLogger)
                 .logImpression(HomePageElement.ONE_APP_CONNECTED_BANNER_DISMISS_BUTTON)
 
-            onView(withId(com.android.settingslib.widget.preference.banner.R.id.banner_dismiss_btn))
+            onView(
+                    withId(
+                        com.android.settingslib.widget.preference.banner.R.id.banner_negative_btn
+                    )
+                )
                 .perform(scrollTo())
                 .perform(click())
             scenario.onActivity { activity ->
@@ -1632,6 +1644,7 @@ class HomeFragmentTest {
                     )
                     .check(matches(isDisplayed()))
                 onView(withText("Continue")).check(matches(isDisplayed()))
+                onView(withText("Not now")).check(matches(isDisplayed()))
                 onView(withText("See your health data across apps")).check(doesNotExist())
 
                 verify(healthConnectLogger).logImpression(HomePageElement.ONE_APP_CONNECTED_BANNER)
@@ -1691,7 +1704,8 @@ class HomeFragmentTest {
         launchFragment<HomeFragment>(Bundle()).use { scenario ->
             onView(withText(R.string.native_steps_banner_title)).check(matches(isDisplayed()))
             onView(withText(R.string.native_steps_banner_summary)).check(matches(isDisplayed()))
-            onView(withText(R.string.native_steps_banner_dismiss)).check(matches(isDisplayed()))
+            onView(withText(R.string.native_steps_banner_dismiss_button))
+                .check(matches(isDisplayed()))
             onView(withText(R.string.native_steps_banner_review_button))
                 .check(matches(isDisplayed()))
 

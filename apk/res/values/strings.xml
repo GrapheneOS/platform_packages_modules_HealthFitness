@@ -532,13 +532,13 @@
     <!--endregion-->
 
     <!-- region Matchmaking request strings -->
-    <string name="matchmaking_screen_title" description = "Title for match making screen to add missing data">Share data between apps</string>
-    <string name="matchmaking_screen_data_from_app" description= "Title for category that holds list of matching apps">Data from <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g></string>
-    <string name="matchmaking_screen_summary" description = "Summary on match making screen to allow the given app to read data from other apps using Health Connect">Allow the <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> app to read data from other apps on this device using Health&#160;Connect</string>
-    <string name="matchmaking_screen_apps_category_title" description= "Title for category that holds list of matching apps">Apps that can sync this data</string>
+    <string name="matchmaking_screen_title" description="Title for match making screen to add missing data">Share data between apps</string>
+    <string name="matchmaking_screen_data_from_app" description="Title for category that holds list of matching apps">Data from <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g></string>
+    <string name="matchmaking_screen_summary" description="Summary on match making screen to allow the given app to read data from other apps using Health Connect">Allow the <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> app to read data from other apps on this device using Health&#160;Connect</string>
+    <string name="matchmaking_screen_apps_category_title" description="Title for category that holds list of matching apps">Apps that can sync this data</string>
     <string name="app_privacy_policy_footer" description="Footer with a link to the app's privacy policy.">Learn how <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> uses your data in their <a href="%2$s">privacy policy</a>.</string>
-    <string name="matchmaking_screen_footer" descriptio= "Summary on match making screen explaining how Health Connect share health and fitness data between multiple apps">Health Connect lets you share your health and fitness data between multiple apps. This helps you unlock insights and experiences while keeping your data secure.</string>
-    <string name="more_about_health_connect" description= "Title for link to learn more about Health Connect">More about Health&#160;Connect</string>
+    <string name="matchmaking_screen_footer" descriptio="Summary on match making screen explaining how Health Connect share health and fitness data between multiple apps">Health Connect lets you share your health and fitness data between multiple apps. This helps you unlock insights and experiences while keeping your data secure.</string>
+    <string name="more_about_health_connect" description="Title for link to learn more about Health Connect">More about Health&#160;Connect</string>
     <!--endregion-->
 
     <!-- region Fitness permission request -->
@@ -1804,12 +1804,14 @@
     <!-- region Native Steps -->
     <string name="native_steps_banner_title" description="Title of banner for native step tracking in Health Connect. [CHAR_LIMIT=40]">Steps tracked on your phone will appear in Health Connect</string>
     <string name="native_steps_banner_summary" description="Description of banner for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps tracked by this device are now stored in Health Connect for connected apps to access</string>
-    <string name="native_steps_banner_dismiss" description="Dismiss notification for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Dismiss</string>
+    <string name="native_steps_banner_dismiss_button" description="Button to dismiss the banner for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Dismiss</string>
     <string name="native_steps_banner_review_button" description="Button of banner to take users to a page where they can review device access to Health Connect. [CHAR_LIMIT=NONE]">Review</string>
 
     <string name="native_steps_notification_title" description="Title of notification for native step tracking in Health Connect. [CHAR_LIMIT=40]">Steps are now in Health Connect</string>
     <string name="native_steps_notification_content" description="Description of notification for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps tracked by this device are now stored in Health Connect for connected apps to access</string>
     <!-- endregion -->
+
+    <string name="banner_default_dismiss_button" description="Default button to dismiss a banner in Health Connect [CHAR_LIMIT=NONE]">Not now</string>
 
     <!-- endregion -->
 </resources>
