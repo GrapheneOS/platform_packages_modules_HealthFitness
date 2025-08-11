@@ -1143,19 +1143,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Trước khi tiếp tục khôi phục dữ liệu, hãy cập hệ hệ thống điện thoại của bạn."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Cập nhật ngay"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Dữ liệu tổng"</string>
-    <!-- no translation found for app_sources_header (3776247928235433963) -->
-    <skip />
-    <!-- no translation found for data_sources_footer (2271085147058181039) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state (478270183887252279) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (5622400014797683992) -->
-    <skip />
+    <string name="app_sources_header" msgid="3776247928235433963">"Nguồn dữ liệu"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"Thêm các nguồn dữ liệu vào danh sách để theo dõi sự thay đổi của dữ liệu tổng. Nếu bạn xoá một nguồn dữ liệu khỏi danh sách này, nguồn dữ liệu đó tuy không còn ảnh hưởng đến dữ liệu tổng nữa nhưng vẫn còn quyền ghi."</string>
+    <string name="data_sources_empty_state" msgid="478270183887252279">"Không có nguồn dữ liệu"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Sau khi bạn cấp cho một nguồn dữ liệu quyền ghi dữ liệu <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, các nguồn sẽ xuất hiện ở đây."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Cách hoạt động của nguồn dữ liệu và mức độ ưu tiên"</string>
-    <!-- no translation found for data_sources_add_app (275066335106036460) -->
-    <skip />
-    <!-- no translation found for edit_data_sources (5389744157074260179) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="275066335106036460">"Thêm một nguồn dữ liệu"</string>
+    <string name="edit_data_sources" msgid="5389744157074260179">"Chỉnh sửa nguồn dữ liệu"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Theo chế độ cài đặt mặc định của thiết bị"</string>
     <string name="move_up" msgid="9136155291380319606">"Di chuyển lên"</string>
     <string name="move_down" msgid="4404970288236170693">"Di chuyển xuống"</string>
@@ -1291,5 +1285,17 @@
     <!-- no translation found for device_data_label (2056618513138892435) -->
     <skip />
     <!-- no translation found for device_data_button (8002406105399136401) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
     <skip />
 </resources>

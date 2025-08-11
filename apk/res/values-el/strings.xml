@@ -1280,10 +1280,19 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"Πληροφορίες συσκευής"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Τα δεδομένα που συλλέγονται από αυτή τη συσκευή θα αποθηκεύονται στο Health Connect, όπου θα έχουν πρόσβαση οι συνδεδεμένες εφαρμογές"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Επιτρέπεται η εγγραφή"</string>
-    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <string name="device_data_screen_title" msgid="2443821236974714385">"Δεδομένα συσκευής"</string>
+    <string name="device_data_label" msgid="2056618513138892435">"Διαχείριση συσκευής"</string>
+    <string name="device_data_button" msgid="8002406105399136401">"Εμφάνιση δεδομένων συσκευής"</string>
+    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
     <skip />
-    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
     <skip />
-    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
     <skip />
 </resources>
