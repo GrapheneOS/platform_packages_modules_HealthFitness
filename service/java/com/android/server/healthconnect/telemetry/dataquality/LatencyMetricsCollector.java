@@ -16,9 +16,8 @@
 
 package com.android.server.healthconnect.telemetry.dataquality;
 
-import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
-
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
+import static com.android.server.healthconnect.telemetry.dataquality.DataQualityUtils.getReadLastWeekSessionsRequest;
 
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -29,12 +28,8 @@ import com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelp
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.SleepSessionRecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.request.ReadTableRequest;
-import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,26 +80,6 @@ public final class LatencyMetricsCollector {
             }
         }
         return latencyMetricsPerRecordList;
-    }
-
-    private ReadTableRequest getReadLastWeekSessionsRequest(String tableName) {
-        final Instant now = Instant.now();
-        final Instant weekAgo = now.minus(7, ChronoUnit.DAYS);
-
-        WhereClauses whereClause = new WhereClauses(WhereClauses.LogicalOperator.AND);
-        whereClause.addWhereLaterThanTimeClause(
-                IntervalRecordHelper.END_TIME_COLUMN_NAME, weekAgo.toEpochMilli());
-
-        return new ReadTableRequest(tableName)
-                .setColumnNames(
-                        List.of(
-                                RecordHelper.APP_INFO_ID_COLUMN_NAME,
-                                IntervalRecordHelper.END_TIME_COLUMN_NAME,
-                                RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME))
-                // We do not expect more than MAXIMUM_PAGE_SIZE records for Exercise or Sleep in
-                // one week.
-                .setLimit(MAXIMUM_PAGE_SIZE)
-                .setWhereClause(whereClause);
     }
 
     /**

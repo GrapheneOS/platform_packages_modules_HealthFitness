@@ -99,6 +99,7 @@ import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.telemetry.dataquality.CompletenessStatsCollector;
 import com.android.server.healthconnect.telemetry.dataquality.CompletenessStatsLogger;
+import com.android.server.healthconnect.telemetry.dataquality.DataGranularityStatsCollector;
 import com.android.server.healthconnect.telemetry.dataquality.DataQualityTelemetryJobScheduler;
 import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsCollector;
 import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsLogger;
@@ -180,6 +181,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final LatencyMetricsCollector mLatencyMetricsCollector;
     private final LatencyMetricsLogger mLatencyMetricsLogger;
     private final CompletenessStatsLogger mCompletenessStatsLogger;
+    private final DataGranularityStatsCollector mDataGranularityStatsCollector;
     @Nullable private final MatchmakingManager mMatchmakingManager;
     @Nullable private final MatchmakingDenialStateManager mMatchmakingDenialStateManager;
     private final Clock mClock;
@@ -589,6 +591,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthFitnesssStatsLog, mLatencyMetricsCollector)
                         : builder.mLatencyMetricsLogger;
 
+        mDataGranularityStatsCollector =
+                builder.mDataGranularityStatsCollector == null
+                        ? new DataGranularityStatsCollector(mTransactionManager, mAppInfoHelper)
+                        : builder.mDataGranularityStatsCollector;
+
         mMatchmakingDenialStateManager =
                 builder.mMatchmakingDenialStateManager == null && Flags.matchmaking()
                         ? new MatchmakingDenialStateManager(hcContext, mPreferenceHelper)
@@ -835,6 +842,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     }
 
     @Override
+    public DataGranularityStatsCollector getDataGranularityStatsCollector() {
+        return mDataGranularityStatsCollector;
+    }
+
+    @Override
     public LatencyMetricsCollector getLatencyMetricsCollector() {
         return mLatencyMetricsCollector;
     }
@@ -1039,6 +1051,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private CloudRestoreManager mCloudRestoreManager;
         @Nullable private LatencyMetricsCollector mLatencyMetricsCollector;
         @Nullable private LatencyMetricsLogger mLatencyMetricsLogger;
+        @Nullable private DataGranularityStatsCollector mDataGranularityStatsCollector;
         @Nullable private MatchmakingManager mMatchmakingManager;
         @Nullable private MatchmakingDenialStateManager mMatchmakingDenialStateManager;
         @Nullable private Clock mClock;
@@ -1426,6 +1439,13 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         /** Set fake or custom {@link LatencyMetricsLogger}. */
         public Builder setLatencyMetricsLogger(LatencyMetricsLogger latencyMetricsLogger) {
             mLatencyMetricsLogger = Objects.requireNonNull(latencyMetricsLogger);
+            return this;
+        }
+
+        /** Set fake or custom {@link DataGranularityStatsCollector}. */
+        public Builder setDataGranularityStatsCollector(
+                DataGranularityStatsCollector dataGranularityStatsCollector) {
+            mDataGranularityStatsCollector = Objects.requireNonNull(dataGranularityStatsCollector);
             return this;
         }
 
