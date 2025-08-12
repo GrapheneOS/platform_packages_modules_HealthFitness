@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.devices
 
+import android.hardware.Sensor
 import android.health.connect.datatypes.Record
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -33,6 +34,7 @@ class ConnectedDevicesViewModel
 @Inject
 constructor(
     private val loadDeviceDataSourcesUseCase: ILoadDeviceDataSources,
+    private val loadSensorListUseCase: ILoadSensorListUseCase,
     private val setTrackingEnabled: ISetTrackingEnabled,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
@@ -44,6 +46,10 @@ constructor(
     private val _selectedDevice = MutableLiveData<DeviceDataSource>()
     val selectedDevice: LiveData<DeviceDataSource>
         get() = _selectedDevice
+
+    private val _hasStepsSensor = MutableLiveData<Boolean>(true)
+    val hasStepsSensor: LiveData<Boolean>
+        get() = _hasStepsSensor
 
     fun setSelectedDevice(device: DeviceDataSource) {
         _selectedDevice.postValue(device)
@@ -68,6 +74,20 @@ constructor(
         loadDeviceDataSources()
     }
 
+    // TODO(b/421131223): Fetch sensors depending on a device
+    fun loadHasStepsSensor() {
+        viewModelScope.launch(ioDispatcher) {
+            when (val result = loadSensorListUseCase.invoke(Unit)) {
+                is UseCaseResults.Success -> {
+                    _hasStepsSensor.postValue(result.data.hasStepsSensor())
+                }
+                is UseCaseResults.Failed -> {
+                    _connectedDevicesState.postValue(ConnectedDevicesState.Error)
+                }
+            }
+        }
+    }
+
     fun loadDeviceDataSources() {
         _connectedDevicesState.postValue(ConnectedDevicesState.Loading)
         viewModelScope.launch(ioDispatcher) {
@@ -80,6 +100,10 @@ constructor(
                 }
             }
         }
+    }
+
+    private fun List<Sensor>.hasStepsSensor(): Boolean {
+        return this.any { it.type == Sensor.TYPE_STEP_COUNTER }
     }
 
     sealed class ConnectedDevicesState {

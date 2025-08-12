@@ -1795,6 +1795,8 @@
     <string name="devices_unknown_device" description="Fallback string for a device that isn't recognised or has no name. [CHAR_LIMIT=40">Unknown device</string>
     <string name="device_management_screen_title" description="Title for the device management screen. [CHAR_LIMIT=40]">Device info</string>
     <string name="device_management_screen_footer" description="Footer text that explains the consequences of enabling tracking of device data. [CHAR_LIMIT=NONE]">Data collected by this device will be stored in Health Connect, where connected apps will access it</string>
+    <string name="device_management_screen_no_step_sensor_footer" description="Footer text that explains that this device does not have a steps sensor but still has data stored. [CHAR_LIMIT=NONE]">This device doesn\'t support step tracking, but still has data stored in Health Connect</string>
+    <string name="device_management_screen_no_step_sensor_header" description="Header to display when the device does not have a steps sensor. [CHAR_LIMIT=100]">This device doesn\'t track steps</string>
     <string name="device_settings_label" description="Label for the device settings category. [CHAR_LIMIT=40]">Allowed to write</string>
     <string name="device_data_screen_title" description="Title for the device data screen. [CHAR_LIMIT=100]">Device data</string>
     <string name="device_data_label" description="Label for the device settings category. [CHAR_LIMIT=40]">Manage device</string>
