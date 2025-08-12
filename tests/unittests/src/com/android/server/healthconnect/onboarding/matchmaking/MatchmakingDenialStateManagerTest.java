@@ -67,22 +67,19 @@ public class MatchmakingDenialStateManagerTest {
                     "_",
                     MatchmakingDenialStateManager.DENIAL_PREFERENCE_PREFIX,
                     PACKAGE_NAME,
-                    String.valueOf(ACTIVITY),
-                    "0");
+                    String.valueOf(ACTIVITY));
     private static final String PREFERENCE_KEY_2 =
             String.join(
                     "_",
                     MatchmakingDenialStateManager.DENIAL_PREFERENCE_PREFIX,
                     PACKAGE_NAME_2,
-                    String.valueOf(ACTIVITY),
-                    "0");
+                    String.valueOf(ACTIVITY));
     private static final String PREFERENCE_KEY_3 =
             String.join(
                     "_",
                     MatchmakingDenialStateManager.DENIAL_PREFERENCE_PREFIX,
                     PACKAGE_NAME,
-                    String.valueOf(SLEEP),
-                    "0");
+                    String.valueOf(SLEEP));
 
     @Before
     public void setUp() {
