@@ -42,12 +42,9 @@ import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsS
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.connectedapps.wear.ControlSingleDataTypeForSingleAppScreen
 import com.android.healthconnect.controller.permissions.connectedapps.wear.WearConnectedAppsViewModel
-import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
-import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TestComposeActivity
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionAppsUseCase
@@ -85,25 +82,6 @@ class ControlSingleDataTypeForSingleAppScreenTest {
     private val loadRecentAccessUseCase: ILoadRecentAccessUseCase = FakeRecentAccessUseCase()
     @BindValue val healthPermissionReader: HealthPermissionReader = mock()
 
-    val appMetadata =
-        AppMetadata(
-            packageName = "packageName2",
-            appName = "AppName2",
-            isSystem = false,
-            icon = null,
-        )
-
-    val READ_HEART_RATE_PERMISSION =
-        HealthPermission.FitnessPermission(
-            FitnessPermissionType.HEART_RATE,
-            PermissionsAccessType.READ,
-        )
-    val READ_SKIN_TEMPERATURE_PERMISSION =
-        HealthPermission.FitnessPermission(
-            FitnessPermissionType.SKIN_TEMPERATURE,
-            PermissionsAccessType.READ,
-        )
-
     lateinit var context: Context
 
     @Before
@@ -138,7 +116,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
     fun displaysCorrectly_whenPermissionAllowedAndBgGranted() {
         val app =
             AppConnectionsAndRecentAccess(
-                appMetadata = appMetadata,
+                appMetadata = appMetadataOne,
                 permissionStatus =
                     listOf(
                         HealthPermissionStatus(
@@ -159,7 +137,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                 recentAccess =
                     listOf(
                         AccessLog(
-                            appMetadata.packageName,
+                            appMetadataOne.packageName,
                             listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
                             NOW.toEpochMilli(),
                             Constants.READ,
@@ -183,7 +161,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                     viewModel = wearConnectedAppsViewModel,
                     permissionStr = "android.permission.health.READ_HEART_RATE",
                     dataTypeStr = "Heart rate",
-                    packageName = appMetadata.packageName,
+                    packageName = appMetadataOne.packageName,
                     onAdditionalPermissionClick = { _ -> },
                 )
             }
@@ -193,7 +171,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
 
         composeTestRule.onRoot().printToLog("ControlSingleDataTypeForSingleAppScreenTest")
         val listChildren = composeTestRule.onNodeWithText("Heart rate").onParent().onChildren()
-        listChildren[0].assert(hasText(appMetadata.appName))
+        listChildren[0].assert(hasText(appMetadataOne.appName))
         listChildren[1].assert(hasText("Heart rate"))
         listChildren[2].performScrollTo().assert(hasText("Allow"))
         listChildren[2].assertIsOn()
@@ -204,7 +182,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
             .performScrollTo()
             .assert(
                 hasText(
-                    "Currently, ${appMetadata.appName} can access fitness and wellness data all the time"
+                    "Currently, ${appMetadataOne.appName} can access fitness and wellness data all the time"
                 )
             )
     }
@@ -213,7 +191,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
     fun displaysCorrectly_whenPermissionNotAllowedAndBgNotGranted() {
         val app =
             AppConnectionsAndRecentAccess(
-                appMetadata = appMetadata,
+                appMetadata = appMetadataOne,
                 permissionStatus =
                     listOf(
                         HealthPermissionStatus(
@@ -234,7 +212,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                 recentAccess =
                     listOf(
                         AccessLog(
-                            appMetadata.packageName,
+                            appMetadataOne.packageName,
                             listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
                             NOW.toEpochMilli(),
                             Constants.READ,
@@ -258,7 +236,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                     viewModel = wearConnectedAppsViewModel,
                     permissionStr = "android.permission.health.READ_HEART_RATE",
                     dataTypeStr = "Heart rate",
-                    packageName = appMetadata.packageName,
+                    packageName = appMetadataOne.packageName,
                     onAdditionalPermissionClick = { _ -> },
                 )
             }
@@ -268,7 +246,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
 
         composeTestRule.onRoot().printToLog("ControlSingleDataTypeForSingleAppScreenTest")
         val listChildren = composeTestRule.onNodeWithText("Heart rate").onParent().onChildren()
-        listChildren[0].assert(hasText(appMetadata.appName))
+        listChildren[0].assert(hasText(appMetadataOne.appName))
         listChildren[1].assert(hasText("Heart rate"))
         listChildren[2].performScrollTo().assert(hasText("Allow"))
         listChildren[2].assertIsOff()
@@ -279,7 +257,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
             .performScrollTo()
             .assert(
                 hasText(
-                    "Currently, ${appMetadata.appName} can access fitness and wellness data while in use"
+                    "Currently, ${appMetadataOne.appName} can access fitness and wellness data while in use"
                 )
             )
     }
@@ -288,7 +266,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
     fun displaysCorrectly_whenPermissionNotAllowedAndBgNotRequested() {
         val app =
             AppConnectionsAndRecentAccess(
-                appMetadata = appMetadata,
+                appMetadata = appMetadataOne,
                 permissionStatus =
                     listOf(
                         HealthPermissionStatus(
@@ -303,7 +281,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                 recentAccess =
                     listOf(
                         AccessLog(
-                            appMetadata.packageName,
+                            appMetadataOne.packageName,
                             listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
                             NOW.toEpochMilli(),
                             Constants.READ,
@@ -327,7 +305,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                     viewModel = wearConnectedAppsViewModel,
                     permissionStr = "android.permission.health.READ_HEART_RATE",
                     dataTypeStr = "Heart rate",
-                    packageName = appMetadata.packageName,
+                    packageName = appMetadataOne.packageName,
                     onAdditionalPermissionClick = { _ -> },
                 )
             }
@@ -337,7 +315,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
 
         composeTestRule.onRoot().printToLog("ControlSingleDataTypeForSingleAppScreenTest")
         val listChildren = composeTestRule.onNodeWithText("Heart rate").onParent().onChildren()
-        listChildren[0].assert(hasText(appMetadata.appName))
+        listChildren[0].assert(hasText(appMetadataOne.appName))
         listChildren[1].assert(hasText("Heart rate"))
         listChildren[2].performScrollTo().assert(hasText("Allow"))
         listChildren[2].assertIsOff()
@@ -348,7 +326,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
             .performScrollTo()
             .assert(
                 hasText(
-                    "Currently, ${appMetadata.appName} can access fitness and wellness data while in use"
+                    "Currently, ${appMetadataOne.appName} can access fitness and wellness data while in use"
                 )
             )
     }

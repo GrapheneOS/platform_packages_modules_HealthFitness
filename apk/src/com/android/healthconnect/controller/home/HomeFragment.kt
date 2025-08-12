@@ -313,7 +313,7 @@ class HomeFragment : Hilt_HomeFragment() {
             }
 
             banner.setNegativeButton(
-                text = getString(R.string.native_steps_banner_dismiss),
+                text = getString(R.string.native_steps_banner_dismiss_button),
                 logName = HomePageElement.NATIVE_STEPS_BANNER_DISMISS_BUTTON,
             ) {
                 dismissBanner(Constants.NATIVE_STEPS_BANNER_SEEN, NATIVE_STEPS_BANNER_KEY)
@@ -372,9 +372,9 @@ class HomeFragment : Hilt_HomeFragment() {
                     findNavController().navigate(R.id.action_homeFragment_to_onboardingActivity)
                 }
 
-                banner.setDismissButtonVisible(true)
-                banner.setDismissButton(
-                    logName = HomePageElement.ZERO_APPS_CONNECTED_BANNER_DISMISS_BUTTON
+                banner.setNegativeButton(
+                    text = getString(R.string.banner_default_dismiss_button),
+                    logName = HomePageElement.ZERO_APPS_CONNECTED_BANNER_DISMISS_BUTTON,
                 ) {
                     dismissBanner(
                         Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN,
@@ -402,9 +402,9 @@ class HomeFragment : Hilt_HomeFragment() {
                     findNavController().navigate(R.id.action_homeFragment_to_onboardingActivity)
                 }
 
-                banner.setDismissButtonVisible(true)
-                banner.setDismissButton(
-                    logName = HomePageElement.ONE_APP_CONNECTED_BANNER_DISMISS_BUTTON
+                banner.setNegativeButton(
+                    text = getString(R.string.banner_default_dismiss_button),
+                    logName = HomePageElement.ONE_APP_CONNECTED_BANNER_DISMISS_BUTTON,
                 ) {
                     setBannerSeen(Constants.ONBOARDING_ONE_APP_BANNER_SEEN)
                     bannerGroup.removePreferenceRecursively(ONBOARDING_ONE_APP_BANNER_KEY)
@@ -613,8 +613,10 @@ class HomeFragment : Hilt_HomeFragment() {
                 navigateToSecuritySettings()
             }
 
-            banner.setDismissButtonVisible(true)
-            banner.setDismissButton(logName = HomePageElement.LOCK_SCREEN_BANNER_DISMISS_BUTTON) {
+            banner.setNegativeButton(
+                text = getString(R.string.banner_default_dismiss_button),
+                logName = HomePageElement.LOCK_SCREEN_BANNER_DISMISS_BUTTON,
+            ) {
                 updateLockScreenBannerSeen(bannerState)
                 bannerGroup.removePreferenceRecursively(LOCK_SCREEN_BANNER_KEY)
             }

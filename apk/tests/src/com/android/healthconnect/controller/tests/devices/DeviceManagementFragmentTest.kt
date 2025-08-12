@@ -25,7 +25,9 @@ import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -69,6 +71,7 @@ class DeviceManagementFragmentTest {
         navHostController = TestNavHostController(context)
         whenever(viewModel.connectedDevicesState).then { connectedDevicesState }
         whenever(viewModel.selectedDevice).then { selectedDevice }
+        whenever(viewModel.hasStepsSensor).then { MutableLiveData(true) }
         val currentDevice =
             DeviceDataSource(
                 deviceName = "Pixel 8",
@@ -80,6 +83,21 @@ class DeviceManagementFragmentTest {
     }
 
     @Test
+    fun noStepsBanner_hasSensor_isNotDisplayed() {
+        launchFragment<DeviceManagementFragment>(Bundle())
+
+        onView(withText("This device doesn't track steps")).check(doesNotExist())
+    }
+
+    @Test
+    fun noStepsBanner_hasNoSensor_isDisplayed() {
+        whenever(viewModel.hasStepsSensor).then { MutableLiveData(false) }
+        launchFragment<DeviceManagementFragment>(Bundle())
+
+        onView(withText("This device doesn't track steps")).check(matches(isDisplayed()))
+    }
+
+    @Test
     fun header_isDisplayed() {
         launchFragment<DeviceManagementFragment>(Bundle())
 
@@ -87,10 +105,20 @@ class DeviceManagementFragmentTest {
     }
 
     @Test
-    fun stepTrackingSwitch_isDisplayed() {
+    fun stepTrackingSwitch_hasSensor_isDisplayed() {
         launchFragment<DeviceManagementFragment>(Bundle())
 
         onView(withText("Steps")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun stepTrackingSwitch_hasNoSensor_isDisplayedAndDisabled() {
+        whenever(viewModel.hasStepsSensor).then { MutableLiveData(false) }
+
+        launchFragment<DeviceManagementFragment>(Bundle())
+
+        onView(withText("Steps")).check(matches(isDisplayed()))
+        onView(withText("Steps")).check(matches(ViewMatchers.isNotEnabled()))
     }
 
     @Test
@@ -126,13 +154,26 @@ class DeviceManagementFragmentTest {
     }
 
     @Test
-    fun footer_isDisplayed() {
+    fun footer_hasSensor_displaysCorrectText() {
         launchFragment<DeviceManagementFragment>(Bundle())
 
         onView(
                 withText(
                     "Data collected by this device will be stored in Health Connect, where connected" +
                         " apps will access it"
+                )
+            )
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun footer_hasNoSensor_displaysCorrectText() {
+        whenever(viewModel.hasStepsSensor).then { MutableLiveData(false) }
+        launchFragment<DeviceManagementFragment>(Bundle())
+
+        onView(
+                withText(
+                    "This device doesn't support step tracking, but still has data stored in Health Connect"
                 )
             )
             .check(matches(isDisplayed()))

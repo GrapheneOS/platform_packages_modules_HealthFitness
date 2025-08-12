@@ -388,20 +388,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Pilih data yang anda mahu ditulis oleh apl ini pada Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Pilih data yang anda mahu dibaca atau ditulis oleh apl ini kepada Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Pilih data yang anda mahu dibaca oleh apl ini daripada Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
-    <skip />
-    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
-    <skip />
-    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Kongsi data antara apl"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data daripada <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Benarkan apl <xliff:g id="APP_NAME">%1$s</xliff:g> membaca data daripada apl lain pada peranti ini menggunakan Health Connect"</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apl yang boleh menyegerakkan data ini"</string>
+    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Ketahui cara <xliff:g id="APP_NAME">%1$s</xliff:g> menggunakan data anda dalam "<a href="%2$s">"dasar privasi"</a>" mereka."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect membolehkan anda berkongsi data kesihatan dan kecergasan anda antara berbilang apl. Ciri ini membantu anda membuka kunci cerapan dan pengalaman sambil memastikan data anda selamat."</string>
+    <string name="more_about_health_connect" msgid="8105996800108743876">"Maklumat lanjut tentang Health Connect"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Jika anda memberikan akses baca, apl tersebut boleh membaca data baharu dan data dari 30 hari yang lalu"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Jika anda memberikan akses baca, apl tersebut boleh membaca data baharu dan data yang lalu"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Benarkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses Health Connect?"</string>
@@ -1280,10 +1273,19 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"Maklumat peranti"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Data yang dikumpulkan oleh peranti ini akan disimpan dalam Health Connect, tempat apl disambungkan akan mengakses data tersebut"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Dibenarkan untuk menulis"</string>
-    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <string name="device_data_screen_title" msgid="2443821236974714385">"Data peranti"</string>
+    <string name="device_data_label" msgid="2056618513138892435">"Urus peranti"</string>
+    <string name="device_data_button" msgid="8002406105399136401">"Lihat data peranti"</string>
+    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
     <skip />
-    <!-- no translation found for device_data_label (2056618513138892435) -->
+    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
     <skip />
-    <!-- no translation found for device_data_button (8002406105399136401) -->
+    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
     <skip />
 </resources>

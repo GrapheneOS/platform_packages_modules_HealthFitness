@@ -388,20 +388,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Escolha os dados que quer que esta app escreva na Saúde Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Escolha os dados que quer que esta app leia ou escreva na Saúde Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Escolha os dados que quer que esta app leia da Saúde Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
-    <skip />
-    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
-    <skip />
-    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Partilhe dados entre apps"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dados da app <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Permita que a app <xliff:g id="APP_NAME">%1$s</xliff:g> leia dados de outras apps neste dispositivo através da Saúde Connect"</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps que podem sincronizar estes dados"</string>
+    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Saiba como a app <xliff:g id="APP_NAME">%1$s</xliff:g> usa os seus dados na respetiva "<a href="%2$s">"Política de Privacidade"</a>"."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"A Saúde Connect permite-lhe partilhar os seus dados de saúde e fitness entre várias apps. Isto ajuda a desbloquear estatísticas e experiências, mantendo os seus dados seguros."</string>
+    <string name="more_about_health_connect" msgid="8105996800108743876">"Mais sobre a Saúde Connect"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Se conceder acesso de leitura, a app pode ler dados novos e dados dos últimos 30 dias"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Se conceder acesso de leitura, a app pode ler dados novos e anteriores"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Permitir que a app <xliff:g id="APP_NAME">%1$s</xliff:g> aceda à Saúde Connect?"</string>
@@ -1280,10 +1273,13 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"Informações do dispositivo"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Os dados recolhidos por este dispositivo são armazenados na Saúde Connect, onde as apps associadas acedem a estes"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Com autorização para escrever"</string>
-    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
-    <skip />
-    <!-- no translation found for device_data_label (2056618513138892435) -->
-    <skip />
-    <!-- no translation found for device_data_button (8002406105399136401) -->
-    <skip />
+    <string name="device_data_screen_title" msgid="2443821236974714385">"Dados do dispositivo"</string>
+    <string name="device_data_label" msgid="2056618513138892435">"Gerir dispositivo"</string>
+    <string name="device_data_button" msgid="8002406105399136401">"Ver dados do dispositivo"</string>
+    <string name="native_steps_banner_title" msgid="7668164332675458871">"Os passos monitorizados no telemóvel aparecem na Saúde Connect"</string>
+    <string name="native_steps_banner_summary" msgid="7109953051996114646">"Agora, os passos monitorizados por este dispositivo são armazenados na Saúde Connect para acesso pelas apps associadas"</string>
+    <string name="native_steps_banner_dismiss" msgid="4241497788886121214">"Ignorar"</string>
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Rever"</string>
+    <string name="native_steps_notification_title" msgid="4059138095111818516">"Os passos estão agora na Saúde Connect"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"Agora, os passos monitorizados por este dispositivo são armazenados na Saúde Connect para acesso pelas apps associadas"</string>
 </resources>

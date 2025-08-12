@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright (C) 2025 The Android Open Source Project
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +17,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/device_management_screen_title">
 
-    <com.android.healthconnect.controller.permissions.connectedapps.PermissionHeaderPreference
-        android:key="permission_header_preference"
-    />
+    <PreferenceCategory
+        android:key="device_header_category"
+        app:iconSpaceReserved="false" />
 
     <PreferenceCategory
         android:key="device_settings_category"
@@ -47,8 +46,6 @@
 
     </PreferenceCategory>
 
-    <com.android.settingslib.widget.FooterPreference
-        android:key="connected_app_footer"
-    />
+    <com.android.settingslib.widget.FooterPreference android:key="connected_app_footer" />
 
 </PreferenceScreen>

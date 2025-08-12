@@ -105,11 +105,7 @@ public final class MatchmakingDenialStateManager {
 
     private String getPreferenceKey(String packageName, @HealthDataCategory.Type int dataCategory) {
         return String.join(
-                "_",
-                DENIAL_PREFERENCE_PREFIX,
-                packageName,
-                String.valueOf(dataCategory),
-                String.valueOf(mUserContext.getUser().getIdentifier()));
+                "_", DENIAL_PREFERENCE_PREFIX, packageName, String.valueOf(dataCategory));
     }
 
     /**

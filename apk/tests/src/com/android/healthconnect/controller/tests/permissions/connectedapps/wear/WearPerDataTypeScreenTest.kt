@@ -23,12 +23,15 @@ import android.health.connect.HealthPermissions.READ_SKIN_TEMPERATURE
 import android.health.connect.accesslog.AccessLog
 import android.health.connect.datatypes.RecordTypeIdentifier
 import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onChildren
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onParent
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.printToLog
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -40,12 +43,9 @@ import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsS
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.connectedapps.wear.PerDataTypeScreen
 import com.android.healthconnect.controller.permissions.connectedapps.wear.WearConnectedAppsViewModel
-import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
-import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TestComposeActivity
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionAppsUseCase
@@ -60,10 +60,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -79,62 +81,11 @@ class WearPerDataTypeScreenTest {
         FakeHealthPermissionAppsUseCase()
     private val loadAppPermissionsStatusUseCase: ILoadAppPermissionsStatusUseCase =
         FakeLoadAppPermissionsStatusUseCase()
+    private val loadRecentAccessUseCase: ILoadRecentAccessUseCase = FakeRecentAccessUseCase()
+
     @BindValue val grantPermissionsStatusUseCase: GrantHealthPermissionUseCase = mock()
     @BindValue val revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase = mock()
-    private val loadRecentAccessUseCase: ILoadRecentAccessUseCase = FakeRecentAccessUseCase()
     @BindValue val healthPermissionReader: HealthPermissionReader = mock()
-
-    val appMetadataOne =
-        AppMetadata(
-            packageName = "packageName1",
-            appName = "AppName1",
-            isSystem = false,
-            icon = null,
-        )
-    val appMetadataTwo =
-        AppMetadata(
-            packageName = "packageName2",
-            appName = "AppName2",
-            isSystem = false,
-            icon = null,
-        )
-    val appMetadataThree =
-        AppMetadata(
-            packageName = "packageName3",
-            appName = "AppName3",
-            isSystem = false,
-            icon = null,
-        )
-    val systemAppMetadataOne =
-        AppMetadata(
-            packageName = "packageName4",
-            appName = "SystemAppName1",
-            isSystem = true,
-            icon = null,
-        )
-    val systemAppMetadataTwo =
-        AppMetadata(
-            packageName = "packageName5",
-            appName = "SystemAppName2",
-            isSystem = true,
-            icon = null,
-        )
-
-    val READ_HEART_RATE_PERMISSION =
-        HealthPermission.FitnessPermission(
-            FitnessPermissionType.HEART_RATE,
-            PermissionsAccessType.READ,
-        )
-    val READ_OXYGEN_SATURATION_PERMISSION =
-        HealthPermission.FitnessPermission(
-            FitnessPermissionType.OXYGEN_SATURATION,
-            PermissionsAccessType.READ,
-        )
-    val READ_SKIN_TEMPERATURE_PERMISSION =
-        HealthPermission.FitnessPermission(
-            FitnessPermissionType.SKIN_TEMPERATURE,
-            PermissionsAccessType.READ,
-        )
 
     lateinit var context: Context
 
@@ -169,156 +120,21 @@ class WearPerDataTypeScreenTest {
     }
 
     @Test
-    fun hidesSystemApps() {
-        val app1 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = appMetadataOne,
-                permissionStatus =
-                    listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = false,
-                        ),
-                    ),
-                recentAccess =
-                    listOf(
-                        AccessLog(
-                            appMetadataOne.packageName,
-                            listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
-                            NOW.toEpochMilli(),
-                            Constants.READ,
-                        )
-                    ),
-            )
-
-        val app2 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = appMetadataTwo,
-                permissionStatus =
-                    listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission =
-                                HealthPermission.AdditionalPermission
-                                    .READ_HEALTH_DATA_IN_BACKGROUND,
-                            isGranted = true,
-                        ),
-                    ),
-                recentAccess =
-                    listOf(
-                        AccessLog(
-                            appMetadataTwo.packageName,
-                            listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
-                            NOW.toEpochMilli(),
-                            Constants.READ,
-                        )
-                    ),
-            )
-
-        val app3 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = appMetadataThree,
-                permissionStatus =
-                    listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = false,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = false,
-                        ),
-                    ),
-                recentAccess = listOf(),
-            )
-
-        val app4 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = systemAppMetadataOne,
-                permissionStatus =
-                    listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_OXYGEN_SATURATION_PERMISSION,
-                            isGranted = true,
-                        ),
-                    ),
-                recentAccess =
-                    listOf(
-                        AccessLog(
-                            systemAppMetadataOne.packageName,
-                            listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
-                            NOW.toEpochMilli(),
-                            Constants.READ,
-                        )
-                    ),
-            )
-
-        val app5 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = systemAppMetadataTwo,
-                permissionStatus =
-                    listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = false,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = false,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_OXYGEN_SATURATION_PERMISSION,
-                            isGranted = false,
-                        ),
-                    ),
-                recentAccess =
-                    listOf(
-                        AccessLog(
-                            systemAppMetadataOne.packageName,
-                            listOf(RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE),
-                            NOW.toEpochMilli(),
-                            Constants.READ,
-                        )
-                    ),
-            )
-
-        setupConnectedApps(
-            listOf(app1, app2, app3, app4, app5),
-            loadHealthPermissionApps,
-            loadAppPermissionsStatusUseCase,
-            loadRecentAccessUseCase,
-        )
-
+    fun hidesSystemApps_whenShowSystemButtonNotClicked() {
+        setupSystemAndNonSystemApps()
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
 
-        with(composeTestRule) {
-            setContent {
-                PerDataTypeScreen(
-                    viewModel = wearConnectedAppsViewModel,
-                    permissionStr = "android.permission.health.READ_HEART_RATE",
-                    dataTypeStr = "Heart rate",
-                    showRecentAccess = false,
-                    onAppChipClick = { _, _, _ -> },
-                    onRemoveAllAppAccessButtonClick = { _, _ -> },
-                    onShowSystemClick = { _ -> },
-                )
-            }
+        composeTestRule.setContent {
+            PerDataTypeScreen(
+                viewModel = wearConnectedAppsViewModel,
+                permissionStr = "android.permission.health.READ_HEART_RATE",
+                dataTypeStr = "Heart rate",
+                showRecentAccess = false,
+                onAppChipClick = { _, _, _ -> },
+                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onShowSystemClick = { _ -> },
+            )
         }
 
         composeTestRule.waitForIdle()
@@ -343,157 +159,22 @@ class WearPerDataTypeScreenTest {
     }
 
     @Test
-    fun showsSystemApps() {
-        val app1 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = appMetadataOne,
-                permissionStatus =
-                    listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = false,
-                        ),
-                    ),
-                recentAccess =
-                    listOf(
-                        AccessLog(
-                            appMetadataOne.packageName,
-                            listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
-                            NOW.toEpochMilli(),
-                            Constants.READ,
-                        )
-                    ),
-            )
-
-        val app2 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = appMetadataTwo,
-                permissionStatus =
-                    listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission =
-                                HealthPermission.AdditionalPermission
-                                    .READ_HEALTH_DATA_IN_BACKGROUND,
-                            isGranted = true,
-                        ),
-                    ),
-                recentAccess =
-                    listOf(
-                        AccessLog(
-                            appMetadataTwo.packageName,
-                            listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
-                            NOW.toEpochMilli(),
-                            Constants.READ,
-                        )
-                    ),
-            )
-
-        val app3 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = appMetadataThree,
-                permissionStatus =
-                    listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = false,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = false,
-                        ),
-                    ),
-                recentAccess = listOf(),
-            )
-
-        val app4 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = systemAppMetadataOne,
-                permissionStatus =
-                    listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_OXYGEN_SATURATION_PERMISSION,
-                            isGranted = true,
-                        ),
-                    ),
-                recentAccess =
-                    listOf(
-                        AccessLog(
-                            systemAppMetadataOne.packageName,
-                            listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
-                            NOW.toEpochMilli(),
-                            Constants.READ,
-                        )
-                    ),
-            )
-
-        val app5 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = systemAppMetadataTwo,
-                permissionStatus =
-                    listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = false,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = false,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_OXYGEN_SATURATION_PERMISSION,
-                            isGranted = false,
-                        ),
-                    ),
-                recentAccess =
-                    listOf(
-                        AccessLog(
-                            systemAppMetadataOne.packageName,
-                            listOf(RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE),
-                            NOW.toEpochMilli(),
-                            Constants.READ,
-                        )
-                    ),
-            )
-
-        setupConnectedApps(
-            listOf(app1, app2, app3, app4, app5),
-            loadHealthPermissionApps,
-            loadAppPermissionsStatusUseCase,
-            loadRecentAccessUseCase,
-        )
-
+    fun showsSystemApps_whenShowSystemButtonClicked() {
+        setupSystemAndNonSystemApps()
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
         wearConnectedAppsViewModel.updateShowSystem(true)
 
-        with(composeTestRule) {
-            setContent {
-                PerDataTypeScreen(
-                    viewModel = wearConnectedAppsViewModel,
-                    permissionStr = "android.permission.health.READ_HEART_RATE",
-                    dataTypeStr = "Heart rate",
-                    showRecentAccess = false,
-                    onAppChipClick = { _, _, _ -> },
-                    onRemoveAllAppAccessButtonClick = { _, _ -> },
-                    onShowSystemClick = { _ -> },
-                )
-            }
+        composeTestRule.setContent {
+            PerDataTypeScreen(
+                viewModel = wearConnectedAppsViewModel,
+                permissionStr = "android.permission.health.READ_HEART_RATE",
+                dataTypeStr = "Heart rate",
+                showRecentAccess = false,
+                onAppChipClick = { _, _, _ -> },
+                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onShowSystemClick = { _ -> },
+            )
         }
 
         composeTestRule.waitForIdle()
@@ -583,18 +264,16 @@ class WearPerDataTypeScreenTest {
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
 
-        with(composeTestRule) {
-            setContent {
-                PerDataTypeScreen(
-                    viewModel = wearConnectedAppsViewModel,
-                    permissionStr = "android.permission.health.READ_HEART_RATE",
-                    dataTypeStr = "Heart rate",
-                    showRecentAccess = true,
-                    onAppChipClick = { _, _, _ -> },
-                    onRemoveAllAppAccessButtonClick = { _, _ -> },
-                    onShowSystemClick = { _ -> },
-                )
-            }
+        composeTestRule.setContent {
+            PerDataTypeScreen(
+                viewModel = wearConnectedAppsViewModel,
+                permissionStr = "android.permission.health.READ_HEART_RATE",
+                dataTypeStr = "Heart rate",
+                showRecentAccess = true,
+                onAppChipClick = { _, _, _ -> },
+                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onShowSystemClick = { _ -> },
+            )
         }
 
         composeTestRule.waitForIdle()
@@ -658,18 +337,16 @@ class WearPerDataTypeScreenTest {
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
 
-        with(composeTestRule) {
-            setContent {
-                PerDataTypeScreen(
-                    viewModel = wearConnectedAppsViewModel,
-                    permissionStr = "android.permission.health.READ_HEART_RATE",
-                    dataTypeStr = "Heart rate",
-                    showRecentAccess = true,
-                    onAppChipClick = { _, _, _ -> },
-                    onRemoveAllAppAccessButtonClick = { _, _ -> },
-                    onShowSystemClick = { _ -> },
-                )
-            }
+        composeTestRule.setContent {
+            PerDataTypeScreen(
+                viewModel = wearConnectedAppsViewModel,
+                permissionStr = "android.permission.health.READ_HEART_RATE",
+                dataTypeStr = "Heart rate",
+                showRecentAccess = true,
+                onAppChipClick = { _, _, _ -> },
+                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onShowSystemClick = { _ -> },
+            )
         }
 
         composeTestRule.waitForIdle()
@@ -713,18 +390,16 @@ class WearPerDataTypeScreenTest {
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
 
-        with(composeTestRule) {
-            setContent {
-                PerDataTypeScreen(
-                    viewModel = wearConnectedAppsViewModel,
-                    permissionStr = "android.permission.health.READ_HEART_RATE",
-                    dataTypeStr = "Heart rate",
-                    showRecentAccess = false,
-                    onAppChipClick = { _, _, _ -> },
-                    onRemoveAllAppAccessButtonClick = { _, _ -> },
-                    onShowSystemClick = { _ -> },
-                )
-            }
+        composeTestRule.setContent {
+            PerDataTypeScreen(
+                viewModel = wearConnectedAppsViewModel,
+                permissionStr = "android.permission.health.READ_HEART_RATE",
+                dataTypeStr = "Heart rate",
+                showRecentAccess = false,
+                onAppChipClick = { _, _, _ -> },
+                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onShowSystemClick = { _ -> },
+            )
         }
 
         composeTestRule.waitForIdle()
@@ -775,18 +450,16 @@ class WearPerDataTypeScreenTest {
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
 
-        with(composeTestRule) {
-            setContent {
-                PerDataTypeScreen(
-                    viewModel = wearConnectedAppsViewModel,
-                    permissionStr = "android.permission.health.READ_HEART_RATE",
-                    dataTypeStr = "Heart rate",
-                    showRecentAccess = false,
-                    onAppChipClick = { _, _, _ -> },
-                    onRemoveAllAppAccessButtonClick = { _, _ -> },
-                    onShowSystemClick = { _ -> },
-                )
-            }
+        composeTestRule.setContent {
+            PerDataTypeScreen(
+                viewModel = wearConnectedAppsViewModel,
+                permissionStr = "android.permission.health.READ_HEART_RATE",
+                dataTypeStr = "Heart rate",
+                showRecentAccess = false,
+                onAppChipClick = { _, _, _ -> },
+                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onShowSystemClick = { _ -> },
+            )
         }
 
         composeTestRule.waitForIdle()
@@ -806,5 +479,221 @@ class WearPerDataTypeScreenTest {
             )
         composeTestRule.onNodeWithText("Not allowed").assertDoesNotExist()
         listChildren[4].performScrollTo().assert(hasText("Show system"))
+    }
+
+    @Test
+    fun onAppChipClick_invokesCallback() {
+        setupSystemAndNonSystemApps()
+        wearConnectedAppsViewModel.loadConnectedApps()
+        composeTestRule.waitForIdle()
+
+        val mockOnAppChipClick = mock<(String, String, String) -> Unit>()
+
+        composeTestRule.setContent {
+            PerDataTypeScreen(
+                viewModel = wearConnectedAppsViewModel,
+                permissionStr = "android.permission.health.READ_HEART_RATE",
+                dataTypeStr = "Heart rate",
+                showRecentAccess = true,
+                onAppChipClick = mockOnAppChipClick,
+                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onShowSystemClick = { _ -> },
+            )
+        }
+
+        composeTestRule.waitForIdle()
+
+        composeTestRule.onRoot().printToLog("PerDataTypeScreenTest")
+        val listChildren = composeTestRule.onNodeWithText("Heart rate").onParent().onChildren()
+        listChildren[0].assert(hasText("Heart rate"))
+        listChildren[1].performScrollTo().assert(hasText("Allowed"))
+        listChildren[2].performScrollTo().assert(hasText("AppName1"))
+        listChildren[3].performScrollTo().assert(hasText("AppName2"))
+        composeTestRule.onNodeWithTag("AppName1").performClick()
+        verify(mockOnAppChipClick)
+            .invoke("android.permission.health.READ_HEART_RATE", "Heart rate", "packageName1")
+
+        listChildren[5].performScrollTo().assert(hasText("Not allowed"))
+        listChildren[6].performScrollTo().assert(hasText("AppName3"))
+        composeTestRule.onNodeWithTag("AppName3").performClick()
+        verify(mockOnAppChipClick)
+            .invoke("android.permission.health.READ_HEART_RATE", "Heart rate", "packageName3")
+    }
+
+    @Test
+    @Ignore("b/404899205 - button not implemented")
+    fun onRemoveAllAppAccessButtonClick_invokesCallback() {
+        // TODO(b/404899205) - enable once button implemented
+    }
+
+    @Test
+    fun onShowSystemClick_invokesCallback() {
+        setupSystemAndNonSystemApps()
+        wearConnectedAppsViewModel.loadConnectedApps()
+        composeTestRule.waitForIdle()
+
+        val onShowSystemClick = mock<(Boolean) -> Unit>()
+
+        composeTestRule.setContent {
+            PerDataTypeScreen(
+                viewModel = wearConnectedAppsViewModel,
+                permissionStr = "android.permission.health.READ_HEART_RATE",
+                dataTypeStr = "Heart rate",
+                showRecentAccess = true,
+                onAppChipClick = { _, _, _ -> },
+                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onShowSystemClick = onShowSystemClick,
+            )
+        }
+
+        composeTestRule.waitForIdle()
+
+        composeTestRule.onRoot().printToLog("PerDataTypeScreenTest")
+        composeTestRule.onNodeWithText("Show system").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithTag("ShowSystemButton").performClick()
+        verify(onShowSystemClick).invoke(true)
+
+        wearConnectedAppsViewModel.updateShowSystem(true)
+        composeTestRule.waitForIdle()
+        composeTestRule.onRoot().printToLog("PerDataTypeScreenTest - after click")
+        composeTestRule.onNodeWithText("Hide system").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithTag("HideSystemButton").performClick()
+        verify(onShowSystemClick).invoke(false)
+    }
+
+    private fun setupSystemAndNonSystemApps() {
+        val app1 =
+            AppConnectionsAndRecentAccess(
+                appMetadata = appMetadataOne,
+                permissionStatus =
+                    listOf(
+                        HealthPermissionStatus(
+                            healthPermission = READ_HEART_RATE_PERMISSION,
+                            isGranted = true,
+                        ),
+                        HealthPermissionStatus(
+                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
+                            isGranted = false,
+                        ),
+                    ),
+                recentAccess =
+                    listOf(
+                        AccessLog(
+                            appMetadataOne.packageName,
+                            listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
+                            NOW.toEpochMilli(),
+                            Constants.READ,
+                        )
+                    ),
+            )
+
+        val app2 =
+            AppConnectionsAndRecentAccess(
+                appMetadata = appMetadataTwo,
+                permissionStatus =
+                    listOf(
+                        HealthPermissionStatus(
+                            healthPermission = READ_HEART_RATE_PERMISSION,
+                            isGranted = true,
+                        ),
+                        HealthPermissionStatus(
+                            healthPermission =
+                                HealthPermission.AdditionalPermission
+                                    .READ_HEALTH_DATA_IN_BACKGROUND,
+                            isGranted = true,
+                        ),
+                    ),
+                recentAccess =
+                    listOf(
+                        AccessLog(
+                            appMetadataTwo.packageName,
+                            listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
+                            NOW.toEpochMilli(),
+                            Constants.READ,
+                        )
+                    ),
+            )
+
+        val app3 =
+            AppConnectionsAndRecentAccess(
+                appMetadata = appMetadataThree,
+                permissionStatus =
+                    listOf(
+                        HealthPermissionStatus(
+                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
+                            isGranted = false,
+                        ),
+                        HealthPermissionStatus(
+                            healthPermission = READ_HEART_RATE_PERMISSION,
+                            isGranted = false,
+                        ),
+                    ),
+                recentAccess = listOf(),
+            )
+
+        val app4 =
+            AppConnectionsAndRecentAccess(
+                appMetadata = systemAppMetadataOne,
+                permissionStatus =
+                    listOf(
+                        HealthPermissionStatus(
+                            healthPermission = READ_HEART_RATE_PERMISSION,
+                            isGranted = true,
+                        ),
+                        HealthPermissionStatus(
+                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
+                            isGranted = true,
+                        ),
+                        HealthPermissionStatus(
+                            healthPermission = READ_OXYGEN_SATURATION_PERMISSION,
+                            isGranted = true,
+                        ),
+                    ),
+                recentAccess =
+                    listOf(
+                        AccessLog(
+                            systemAppMetadataOne.packageName,
+                            listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
+                            NOW.toEpochMilli(),
+                            Constants.READ,
+                        )
+                    ),
+            )
+
+        val app5 =
+            AppConnectionsAndRecentAccess(
+                appMetadata = systemAppMetadataTwo,
+                permissionStatus =
+                    listOf(
+                        HealthPermissionStatus(
+                            healthPermission = READ_HEART_RATE_PERMISSION,
+                            isGranted = false,
+                        ),
+                        HealthPermissionStatus(
+                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
+                            isGranted = false,
+                        ),
+                        HealthPermissionStatus(
+                            healthPermission = READ_OXYGEN_SATURATION_PERMISSION,
+                            isGranted = false,
+                        ),
+                    ),
+                recentAccess =
+                    listOf(
+                        AccessLog(
+                            systemAppMetadataOne.packageName,
+                            listOf(RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE),
+                            NOW.toEpochMilli(),
+                            Constants.READ,
+                        )
+                    ),
+            )
+
+        setupConnectedApps(
+            listOf(app1, app2, app3, app4, app5),
+            loadHealthPermissionApps,
+            loadAppPermissionsStatusUseCase,
+            loadRecentAccessUseCase,
+        )
     }
 }

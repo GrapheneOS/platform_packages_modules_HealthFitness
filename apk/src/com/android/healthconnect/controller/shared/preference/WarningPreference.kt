@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.shared.preference
 
 import android.content.Context
 import android.util.AttributeSet
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
@@ -26,6 +27,7 @@ class WarningPreference @JvmOverloads constructor(context: Context, attrs: Attri
     Preference(context, attrs) {
 
     private lateinit var title: String
+    private var gravity: Int? = null
 
     init {
         layoutResource = R.layout.widget_warning_preference_legacy
@@ -37,10 +39,19 @@ class WarningPreference @JvmOverloads constructor(context: Context, attrs: Attri
         this.title = title
     }
 
+    fun setGravity(gravity: Int?) {
+        this.gravity = gravity
+    }
+
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
 
         val preferenceText = holder.findViewById(R.id.title) as TextView
         preferenceText.text = title
+
+        gravity?.let {
+            val parentView = preferenceText.parent as LinearLayout
+            parentView.gravity = it
+        }
     }
 }
