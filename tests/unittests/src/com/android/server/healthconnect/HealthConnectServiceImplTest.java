@@ -3350,10 +3350,11 @@ public class HealthConnectServiceImplTest {
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
         GetMatchingAppsRequest request =
                 new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
-        mHealthConnectService.canConnectMatchingApps(
-                mAttributionSource, request, mCanConnectMatchingAppsCallback);
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(Map.of());
+
+        mHealthConnectService.canConnectMatchingApps(
+                mAttributionSource, request, mCanConnectMatchingAppsCallback);
 
         verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1)).onResult(false);
         verifyNoMoreInteractions(mCanConnectMatchingAppsCallback);
@@ -3367,12 +3368,12 @@ public class HealthConnectServiceImplTest {
         Set<Class<? extends Record>> recordTypes = Set.of();
         GetMatchingAppsRequest request =
                 new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
-        mHealthConnectService.canConnectMatchingApps(
-                mAttributionSource, request, mCanConnectMatchingAppsCallback);
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
+
+        mHealthConnectService.canConnectMatchingApps(
+                mAttributionSource, request, mCanConnectMatchingAppsCallback);
 
         verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1)).onResult(true);
         verifyNoMoreInteractions(mCanConnectMatchingAppsCallback);
