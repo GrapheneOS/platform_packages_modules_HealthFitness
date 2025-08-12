@@ -76,8 +76,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:ellipsize="end"
-            android:maxLines="1"
+            android:breakStrategy="simple"
+            android:hyphenationFrequency="normal"
             android:textAppearance="?attr/textAppearanceItem"
             android:textDirection="locale" />
 
