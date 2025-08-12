@@ -24,12 +24,13 @@ data class ConnectedAppMetadata(
     val appMetadata: AppMetadata,
     val status: ConnectedAppStatus,
     val permissionsType: AppPermissionsType = AppPermissionsType.FITNESS_PERMISSIONS_ONLY,
-    val healthUsageLastAccess: Instant? = null
+    val healthUsageLastAccess: Instant? = null,
+    val isSystem: Boolean = false,
 )
 
 enum class ConnectedAppStatus {
     ALLOWED,
     DENIED,
     INACTIVE,
-    NEEDS_UPDATE
+    NEEDS_UPDATE,
 }

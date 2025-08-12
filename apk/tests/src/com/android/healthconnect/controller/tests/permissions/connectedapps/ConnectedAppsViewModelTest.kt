@@ -48,10 +48,12 @@ import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
-private val SYSTEM_APP_INFO = AppMetadata("com.system.app", "System App", mock(), isSystem = true)
-private val NORMAL_APP_INFO = AppMetadata("com.normal.app", "Normal App", mock(), isSystem = false)
-private val SYSTEM_APP = ConnectedAppMetadata(SYSTEM_APP_INFO, status = ConnectedAppStatus.ALLOWED)
-private val NORMAL_APP = ConnectedAppMetadata(NORMAL_APP_INFO, status = ConnectedAppStatus.ALLOWED)
+private val SYSTEM_APP_INFO = AppMetadata("com.system.app", "System App", mock())
+private val NORMAL_APP_INFO = AppMetadata("com.normal.app", "Normal App", mock())
+private val SYSTEM_APP =
+    ConnectedAppMetadata(SYSTEM_APP_INFO, status = ConnectedAppStatus.ALLOWED, isSystem = true)
+private val NORMAL_APP =
+    ConnectedAppMetadata(NORMAL_APP_INFO, status = ConnectedAppStatus.ALLOWED, isSystem = false)
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest

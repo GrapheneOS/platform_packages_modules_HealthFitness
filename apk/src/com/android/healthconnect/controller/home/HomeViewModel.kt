@@ -76,7 +76,7 @@ constructor(
         viewModelScope.launch {
             try {
                 _connectedApps.postValueIfUpdated(
-                    loadHealthPermissionApps.invoke().filter { !it.appMetadata.isSystem }
+                    loadHealthPermissionApps.invoke().filter { !it.isSystem }
                 )
             } catch (exception: Exception) {
                 Log.e(TAG, "Error loading connected apps", exception)

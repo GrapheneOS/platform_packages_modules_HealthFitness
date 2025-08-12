@@ -17,7 +17,6 @@ package com.android.healthconnect.controller.tests.utils
 
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
-import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
@@ -34,15 +33,8 @@ suspend fun createFakeAppInfoReader(): AppInfoReader {
                 "dagger.hilt.android.testing.HiltTestApplication",
         )
     for ((packageName, appName) in packages) {
-        whenever(appInfoReader.getAppMetadata(eq(packageName), any()))
-            .thenReturn(
-                AppMetadata(
-                    packageName = packageName,
-                    appName = appName,
-                    icon = null,
-                    isSystem = false,
-                )
-            )
+        whenever(appInfoReader.getAppMetadata(eq(packageName)))
+            .thenReturn(AppMetadata(packageName = packageName, appName = appName, icon = null))
     }
     return appInfoReader
 }

@@ -41,6 +41,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -60,6 +61,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -79,6 +81,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -97,6 +100,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -115,6 +119,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -132,6 +137,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -149,6 +155,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -168,6 +175,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -187,6 +195,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus = emptyList(),
             )
 
@@ -199,6 +208,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -216,6 +226,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -233,6 +244,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -250,6 +262,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -267,6 +280,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -282,6 +296,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -298,6 +313,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -314,6 +330,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -332,6 +349,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -350,6 +368,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -375,6 +394,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -400,6 +420,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -418,6 +439,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -436,6 +458,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -454,6 +477,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -471,6 +495,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -489,6 +514,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -500,6 +526,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataTwo,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -510,6 +537,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataThree,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_OXYGEN_SATURATION_PERMISSION,
@@ -520,6 +548,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = systemAppMetadataOne,
+                isSystem = true,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -555,6 +584,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -566,6 +596,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataTwo,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -576,6 +607,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataThree,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_OXYGEN_SATURATION_PERMISSION,
@@ -586,6 +618,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = systemAppMetadataOne,
+                isSystem = true,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -621,6 +654,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -632,6 +666,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataTwo,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -642,6 +677,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataThree,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_OXYGEN_SATURATION_PERMISSION,
@@ -652,6 +688,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = systemAppMetadataOne,
+                isSystem = true,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -685,6 +722,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -696,6 +734,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataTwo,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -706,6 +745,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataThree,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_OXYGEN_SATURATION_PERMISSION,
@@ -716,6 +756,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = systemAppMetadataOne,
+                isSystem = true,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -751,6 +792,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -762,6 +804,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataTwo,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -772,6 +815,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataThree,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_OXYGEN_SATURATION_PERMISSION,
@@ -782,6 +826,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = systemAppMetadataOne,
+                isSystem = true,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
@@ -816,6 +861,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataOne,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -836,6 +882,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataTwo,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_HEART_RATE_PERMISSION,
@@ -854,6 +901,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = appMetadataThree,
+                isSystem = false,
                 healthPermissionStatus =
                     listOf(
                         DENIED_READ_OXYGEN_SATURATION_PERMISSION,
@@ -873,6 +921,7 @@ class WearHealthAppDataTest {
             WearHealthAppData(
                 packageName = "package.name",
                 appMetadata = systemAppMetadataOne,
+                isSystem = true,
                 healthPermissionStatus =
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,

@@ -57,8 +57,9 @@ constructor(
         connectedApps.addAll(
             appsWithHealthPermissions
                 .filterNot { it.value }
-                .mapNotNull { (packageName, isSystem) ->
-                    val metadata = appInfoReader.getAppMetadata(packageName, isSystem)
+                .keys
+                .mapNotNull { packageName ->
+                    val metadata = appInfoReader.getAppMetadata(packageName)
 
                     val healthPermissionsList = loadAppPermissionsStatusUseCase.invoke(packageName)
                     val fitnessPermissions =

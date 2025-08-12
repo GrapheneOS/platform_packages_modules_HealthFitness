@@ -31,6 +31,7 @@ import java.time.Instant
 data class WearHealthAppData(
     val packageName: String,
     val appMetadata: AppMetadata,
+    val isSystem: Boolean,
     val healthPermissionStatus: List<HealthPermissionStatus>,
     val lastAccessTime: Instant? = null,
     val accessLogs: List<PermissionsLastAccess> = emptyList(),
@@ -115,7 +116,7 @@ fun List<WearHealthAppData>.getAllowedApps(
     return if (includeSystem) {
         allowedApps
     } else {
-        allowedApps.filterNot { app -> app.appMetadata.isSystem }
+        allowedApps.filterNot { app -> app.isSystem }
     }
 }
 
@@ -130,7 +131,7 @@ fun List<WearHealthAppData>.getDeniedApps(
     return if (includeSystem) {
         deniedApps
     } else {
-        deniedApps.filterNot { app -> app.appMetadata.isSystem }
+        deniedApps.filterNot { app -> app.isSystem }
     }
 }
 
@@ -160,7 +161,7 @@ fun List<WearHealthAppData>.getNumberOfDeniedAppsForFitnessPermission(
 fun List<WearHealthAppData>.getNumberOfUsedAppsForFitnessPermission(
     fitnessPermission: HealthPermission.FitnessPermission
 ): Int {
-    return this.filterNot { app -> app.appMetadata.isSystem }
+    return this.filterNot { app -> app.isSystem }
         .filter { app -> app.isPermissionRequested(fitnessPermission) }
         .filter { app -> app.wasFitnessPermissionUsed(fitnessPermission) }
         .size

@@ -136,7 +136,7 @@ constructor(
         return if (showSystemAppsValue) {
             this
         } else {
-            this.filter { !it.appMetadata.isSystem }
+            this.filter { !it.isSystem }
         }
     }
 

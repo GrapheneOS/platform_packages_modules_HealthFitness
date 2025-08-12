@@ -128,25 +128,6 @@ class AppInfoReaderTest {
     }
 
     @Test
-    fun returnsIsSystem() = runBlocking {
-        val applicationInfo =
-            ApplicationInfo().apply() {
-                packageName = PACKAGE_NAME
-                enabled = true
-            }
-        mockPackageManager.stub {
-            on { getApplicationInfo(eq(PACKAGE_NAME), any<ApplicationInfoFlags>()) } doReturn
-                applicationInfo
-            on { getApplicationLabel(applicationInfo) } doReturn PACKAGE_MANAGER_LABEL
-        }
-
-        val appMetadata = appInfoReader.getAppMetadata(PACKAGE_NAME, isSystem = false)
-        assertThat(appMetadata.isSystem).isFalse()
-        val appMetadata2 = appInfoReader.getAppMetadata(PACKAGE_NAME, isSystem = true)
-        assertThat(appMetadata2.isSystem).isTrue()
-    }
-
-    @Test
     fun deviceDataProviderPackage_returnsMetadataFromStorage() {
         runBlocking {
             val appMetadata = appInfoReader.getAppMetadata(DEVICE_DATA_PROVIDER_PACKAGE_NAME)
