@@ -100,6 +100,7 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.telemetry.dataquality.CompletenessStatsCollector;
 import com.android.server.healthconnect.telemetry.dataquality.CompletenessStatsLogger;
 import com.android.server.healthconnect.telemetry.dataquality.DataGranularityStatsCollector;
+import com.android.server.healthconnect.telemetry.dataquality.DataGranularityStatsLogger;
 import com.android.server.healthconnect.telemetry.dataquality.DataQualityTelemetryJobScheduler;
 import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsCollector;
 import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsLogger;
@@ -182,6 +183,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final LatencyMetricsLogger mLatencyMetricsLogger;
     private final CompletenessStatsLogger mCompletenessStatsLogger;
     private final DataGranularityStatsCollector mDataGranularityStatsCollector;
+    private final DataGranularityStatsLogger mDataGranularityStatsLogger;
     @Nullable private final MatchmakingManager mMatchmakingManager;
     @Nullable private final MatchmakingDenialStateManager mMatchmakingDenialStateManager;
     private final Clock mClock;
@@ -596,6 +598,12 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         ? new DataGranularityStatsCollector(mTransactionManager, mAppInfoHelper)
                         : builder.mDataGranularityStatsCollector;
 
+        mDataGranularityStatsLogger =
+                builder.mDataGranularityStatsLogger == null
+                        ? new DataGranularityStatsLogger(
+                                mHealthFitnesssStatsLog, mDataGranularityStatsCollector)
+                        : builder.mDataGranularityStatsLogger;
+
         mMatchmakingDenialStateManager =
                 builder.mMatchmakingDenialStateManager == null && Flags.matchmaking()
                         ? new MatchmakingDenialStateManager(hcContext, mPreferenceHelper)
@@ -921,6 +929,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     }
 
     @Override
+    public DataGranularityStatsLogger getDataGranularityStatsLogger() {
+        return mDataGranularityStatsLogger;
+    }
+
+    @Override
     public TrackerManager getTrackerManager() {
         return mTrackerManager;
     }
@@ -965,7 +978,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 mBuilder.mContext,
                 mLatencyMetricsLogger,
                 getCompletenessStatsCollector(),
-                mCompletenessStatsLogger);
+                mCompletenessStatsLogger,
+                mDataGranularityStatsLogger);
     }
 
     @Override
@@ -1052,6 +1066,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private LatencyMetricsCollector mLatencyMetricsCollector;
         @Nullable private LatencyMetricsLogger mLatencyMetricsLogger;
         @Nullable private DataGranularityStatsCollector mDataGranularityStatsCollector;
+        @Nullable private DataGranularityStatsLogger mDataGranularityStatsLogger;
         @Nullable private MatchmakingManager mMatchmakingManager;
         @Nullable private MatchmakingDenialStateManager mMatchmakingDenialStateManager;
         @Nullable private Clock mClock;
@@ -1446,6 +1461,13 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         public Builder setDataGranularityStatsCollector(
                 DataGranularityStatsCollector dataGranularityStatsCollector) {
             mDataGranularityStatsCollector = Objects.requireNonNull(dataGranularityStatsCollector);
+            return this;
+        }
+
+        /** Set fake or custom {@link DataGranularityStatsLogger}. */
+        public Builder setDataGranularityStatsLogger(
+                DataGranularityStatsLogger dataGranularityStatsLogger) {
+            mDataGranularityStatsLogger = Objects.requireNonNull(dataGranularityStatsLogger);
             return this;
         }
 
