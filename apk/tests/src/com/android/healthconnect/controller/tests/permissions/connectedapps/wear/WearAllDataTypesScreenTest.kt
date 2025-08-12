@@ -39,12 +39,9 @@ import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsS
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.connectedapps.wear.AllDataTypesScreen
 import com.android.healthconnect.controller.permissions.connectedapps.wear.WearConnectedAppsViewModel
-import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
-import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TestComposeActivity
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionAppsUseCase
@@ -81,51 +78,6 @@ class WearAllDataTypesScreenTest {
     @BindValue val revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase = mock()
     private val loadRecentAccessUseCase: ILoadRecentAccessUseCase = FakeRecentAccessUseCase()
     @BindValue val healthPermissionReader: HealthPermissionReader = mock()
-
-    val appMetadataOne =
-        AppMetadata(
-            packageName = "packageName1",
-            appName = "AppName1",
-            isSystem = false,
-            icon = null,
-        )
-    val appMetadataTwo =
-        AppMetadata(
-            packageName = "packageName2",
-            appName = "AppName2",
-            isSystem = false,
-            icon = null,
-        )
-    val appMetadataThree =
-        AppMetadata(
-            packageName = "packageName3",
-            appName = "AppName3",
-            isSystem = false,
-            icon = null,
-        )
-    val systemAppMetadata =
-        AppMetadata(
-            packageName = "packageName4",
-            appName = "AppName4",
-            isSystem = true,
-            icon = null,
-        )
-
-    val READ_HEART_RATE_PERMISSION =
-        HealthPermission.FitnessPermission(
-            FitnessPermissionType.HEART_RATE,
-            PermissionsAccessType.READ,
-        )
-    val READ_OXYGEN_SATURATION_PERMISSION =
-        HealthPermission.FitnessPermission(
-            FitnessPermissionType.OXYGEN_SATURATION,
-            PermissionsAccessType.READ,
-        )
-    val READ_SKIN_TEMPERATURE_PERMISSION =
-        HealthPermission.FitnessPermission(
-            FitnessPermissionType.SKIN_TEMPERATURE,
-            PermissionsAccessType.READ,
-        )
 
     lateinit var context: Context
 
@@ -226,7 +178,7 @@ class WearAllDataTypesScreenTest {
 
         val app4 =
             AppConnectionsAndRecentAccess(
-                appMetadata = systemAppMetadata,
+                appMetadata = systemAppMetadataOne,
                 permissionStatus =
                     listOf(
                         HealthPermissionStatus(
@@ -245,7 +197,7 @@ class WearAllDataTypesScreenTest {
                 recentAccess =
                     listOf(
                         AccessLog(
-                            systemAppMetadata.packageName,
+                            systemAppMetadataOne.packageName,
                             listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
                             NOW.toEpochMilli(),
                             Constants.READ,
@@ -351,7 +303,7 @@ class WearAllDataTypesScreenTest {
 
         val app4 =
             AppConnectionsAndRecentAccess(
-                appMetadata = systemAppMetadata,
+                appMetadata = systemAppMetadataOne,
                 permissionStatus =
                     listOf(
                         HealthPermissionStatus(
@@ -370,7 +322,7 @@ class WearAllDataTypesScreenTest {
                 recentAccess =
                     listOf(
                         AccessLog(
-                            systemAppMetadata.packageName,
+                            systemAppMetadataOne.packageName,
                             listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
                             NOW.toEpochMilli(),
                             Constants.READ,
@@ -477,7 +429,7 @@ class WearAllDataTypesScreenTest {
 
         val app4 =
             AppConnectionsAndRecentAccess(
-                appMetadata = systemAppMetadata,
+                appMetadata = systemAppMetadataOne,
                 permissionStatus =
                     listOf(
                         HealthPermissionStatus(
@@ -496,7 +448,7 @@ class WearAllDataTypesScreenTest {
                 recentAccess =
                     listOf(
                         AccessLog(
-                            systemAppMetadata.packageName,
+                            systemAppMetadataOne.packageName,
                             listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
                             NOW.toEpochMilli(),
                             Constants.READ,
@@ -601,7 +553,7 @@ class WearAllDataTypesScreenTest {
 
         val app4 =
             AppConnectionsAndRecentAccess(
-                appMetadata = systemAppMetadata,
+                appMetadata = systemAppMetadataOne,
                 permissionStatus =
                     listOf(
                         HealthPermissionStatus(
@@ -620,7 +572,7 @@ class WearAllDataTypesScreenTest {
                 recentAccess =
                     listOf(
                         AccessLog(
-                            systemAppMetadata.packageName,
+                            systemAppMetadataOne.packageName,
                             listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
                             NOW.toEpochMilli(),
                             Constants.READ,
@@ -730,7 +682,7 @@ class WearAllDataTypesScreenTest {
 
         val app4 =
             AppConnectionsAndRecentAccess(
-                appMetadata = systemAppMetadata,
+                appMetadata = systemAppMetadataOne,
                 permissionStatus =
                     listOf(
                         HealthPermissionStatus(
@@ -749,7 +701,7 @@ class WearAllDataTypesScreenTest {
                 recentAccess =
                     listOf(
                         AccessLog(
-                            systemAppMetadata.packageName,
+                            systemAppMetadataOne.packageName,
                             listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
                             NOW.toEpochMilli(),
                             Constants.READ,
@@ -860,7 +812,7 @@ class WearAllDataTypesScreenTest {
 
         val app4 =
             AppConnectionsAndRecentAccess(
-                appMetadata = systemAppMetadata,
+                appMetadata = systemAppMetadataOne,
                 permissionStatus =
                     listOf(
                         HealthPermissionStatus(
@@ -879,7 +831,7 @@ class WearAllDataTypesScreenTest {
                 recentAccess =
                     listOf(
                         AccessLog(
-                            systemAppMetadata.packageName,
+                            systemAppMetadataOne.packageName,
                             listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
                             NOW.toEpochMilli(),
                             Constants.READ,

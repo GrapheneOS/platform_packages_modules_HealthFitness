@@ -37,12 +37,9 @@ import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsS
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.connectedapps.wear.ControlBackgroundReadForSingleAppScreen
 import com.android.healthconnect.controller.permissions.connectedapps.wear.WearConnectedAppsViewModel
-import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
-import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TestComposeActivity
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionAppsUseCase
@@ -79,25 +76,6 @@ class ControlBackgroundPermissionForSingleAppScreenTest {
     private val loadRecentAccessUseCase: ILoadRecentAccessUseCase = FakeRecentAccessUseCase()
     @BindValue val healthPermissionReader: HealthPermissionReader = mock()
 
-    val appMetadata =
-        AppMetadata(
-            packageName = "packageName2",
-            appName = "AppName2",
-            isSystem = false,
-            icon = null,
-        )
-
-    val READ_HEART_RATE_PERMISSION =
-        HealthPermission.FitnessPermission(
-            FitnessPermissionType.HEART_RATE,
-            PermissionsAccessType.READ,
-        )
-    val READ_SKIN_TEMPERATURE_PERMISSION =
-        HealthPermission.FitnessPermission(
-            FitnessPermissionType.SKIN_TEMPERATURE,
-            PermissionsAccessType.READ,
-        )
-
     lateinit var context: Context
 
     @Before
@@ -132,7 +110,7 @@ class ControlBackgroundPermissionForSingleAppScreenTest {
     fun displaysCorrectly() {
         val app =
             AppConnectionsAndRecentAccess(
-                appMetadata = appMetadata,
+                appMetadata = appMetadataOne,
                 permissionStatus =
                     listOf(
                         HealthPermissionStatus(
@@ -153,7 +131,7 @@ class ControlBackgroundPermissionForSingleAppScreenTest {
                 recentAccess =
                     listOf(
                         AccessLog(
-                            appMetadata.packageName,
+                            appMetadataOne.packageName,
                             listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
                             NOW.toEpochMilli(),
                             Constants.READ,
@@ -209,7 +187,7 @@ class ControlBackgroundPermissionForSingleAppScreenTest {
     fun whenNoReadPermissions_displaysCorrectMessage() {
         val app =
             AppConnectionsAndRecentAccess(
-                appMetadata = appMetadata,
+                appMetadata = appMetadataOne,
                 permissionStatus =
                     listOf(
                         HealthPermissionStatus(
