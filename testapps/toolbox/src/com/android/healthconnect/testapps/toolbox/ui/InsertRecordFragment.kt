@@ -17,6 +17,7 @@ package com.android.healthconnect.testapps.toolbox.ui
 
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.ActivityIntensityRecord
+import android.health.connect.datatypes.AlcoholConsumptionRecord
 import android.health.connect.datatypes.BasalBodyTemperatureRecord
 import android.health.connect.datatypes.BloodGlucoseRecord
 import android.health.connect.datatypes.BloodPressureRecord
@@ -306,6 +307,12 @@ class InsertRecordFragment : Fragment() {
 
                 NicotineIntakeRecord::class ->
                     mapOf("mNicotineIntakeType" to NicotineIntakeRecord::class)
+                AlcoholConsumptionRecord::class ->
+                    mapOf(
+                        "mBeverageType" to AlcoholConsumptionRecord::class,
+                        "mServingSize" to AlcoholConsumptionRecord::class,
+                        "mTemporalType" to AlcoholConsumptionRecord::class,
+                    )
                 else -> mapOf()
             }
         enumFieldNameToClass.forEach { fieldName, enumClass ->
@@ -361,6 +368,11 @@ class InsertRecordFragment : Fragment() {
 
             NicotineIntakeRecord::class -> {
                 fieldName = "mQuantity"
+                field = EditableTextView(this.requireContext(), fieldName, INPUT_TYPE_INT)
+            }
+
+            AlcoholConsumptionRecord::class -> {
+                fieldName = "mServingCount"
                 field = EditableTextView(this.requireContext(), fieldName, INPUT_TYPE_INT)
             }
         }
