@@ -20,7 +20,6 @@ import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_READ;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_UPSERT;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
-import static android.healthconnect.testing.cts.TestUtils.connectAppsWithGrantedPermissions;
 import static android.healthconnect.testing.cts.TestUtils.deleteRecordsByIdFilter;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseWithManagePermission;
@@ -114,8 +113,6 @@ public class HealthConnectAccessLogsTest {
     public void setup() throws InterruptedException {
         TestUtils.deleteAllDataFromHealthConnect();
         clearAppOpsHistory();
-        // TODO(b/421834796): Remove once AppInfo is created on demand on all tested branches.
-        connectAppsWithGrantedPermissions();
     }
 
     @After
