@@ -19,20 +19,23 @@ package com.android.server.healthconnect.telemetry.dataquality;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_ACTIVELY_RECORDED;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_AUTOMATICALLY_RECORDED;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_MANUAL_ENTRY;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.healthconnect.testing.unittest.RecordInternalFactory.buildNutritionRecordInternal;
-import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.mock;
 
 import android.content.Context;
+import android.health.connect.datatypes.BloodPressureRecord;
+import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.NutritionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
+import android.healthconnect.testing.unittest.RecordInternalFactory;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -95,19 +98,26 @@ public class CompletenessStatsCollectorTest {
     @DisableFlags(Flags.FLAG_DATA_COMPLETENESS)
     public void readRecordingMethodStats_flagDisabled_returnsEmpty() {
         RecordInternal<StepsRecord> stepsRecord =
-                buildStepsRecord(NOW.minusMillis(1000).toEpochMilli(), NOW.toEpochMilli(), 123)
-                        .setRecordingMethod(RECORDING_METHOD_AUTOMATICALLY_RECORDED);
+                buildStepsRecord().setRecordingMethod(RECORDING_METHOD_AUTOMATICALLY_RECORDED);
         mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME_1, stepsRecord);
 
         assertThat(mCompletenessStatsCollector.readRecordingMethodStats()).isEmpty();
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    public void readDeviceInfoStats_flagDisabled_returnsEmpty() {
+        RecordInternal<StepsRecord> stepsRecord = buildStepsRecord();
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME_1, stepsRecord);
+
+        assertThat(mCompletenessStatsCollector.readDeviceInfoStats()).isEmpty();
+    }
+
+    @Test
     @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
     public void readRecordingMethodStats_flagEnabled_returnsStats() {
         RecordInternal<StepsRecord> stepsRecord =
-                buildStepsRecord(NOW.minusMillis(1000).toEpochMilli(), NOW.toEpochMilli(), 123)
-                        .setRecordingMethod(RECORDING_METHOD_ACTIVELY_RECORDED);
+                buildStepsRecord().setRecordingMethod(RECORDING_METHOD_ACTIVELY_RECORDED);
         RecordInternal<NutritionRecord> nutritionRecord =
                 buildNutritionRecordInternal(
                                 NOW.minusMillis(1000).toEpochMilli(), NOW.toEpochMilli())
@@ -132,10 +142,10 @@ public class CompletenessStatsCollectorTest {
     @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
     public void readRecordingMethodStats_sameTypePackageMethod_returnsOneStat() {
         RecordInternal<StepsRecord> stepsRecord1 =
-                buildStepsRecord(NOW.minusMillis(1000).toEpochMilli(), NOW.toEpochMilli(), 123)
-                        .setRecordingMethod(RECORDING_METHOD_AUTOMATICALLY_RECORDED);
+                buildStepsRecord().setRecordingMethod(RECORDING_METHOD_AUTOMATICALLY_RECORDED);
         RecordInternal<StepsRecord> stepsRecord2 =
-                buildStepsRecord(NOW.minusMillis(2000).toEpochMilli(), NOW.toEpochMilli(), 456)
+                RecordInternalFactory.buildStepsRecord(
+                                NOW.minusMillis(2000).toEpochMilli(), NOW.toEpochMilli(), 456)
                         .setRecordingMethod(RECORDING_METHOD_AUTOMATICALLY_RECORDED);
         mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME_1, stepsRecord1, stepsRecord2);
 
@@ -151,7 +161,7 @@ public class CompletenessStatsCollectorTest {
     @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
     public void readRecordingMethodStats_recordTooOld_returnsEmpty() {
         RecordInternal<StepsRecord> stepsRecord =
-                buildStepsRecord(NOW.minusMillis(1000).toEpochMilli(), NOW.toEpochMilli(), 123)
+                buildStepsRecord()
                         .setUuid(UUID.randomUUID())
                         .setLastModifiedTime(NOW.minus(10, ChronoUnit.DAYS).toEpochMilli())
                         .setPackageName(TEST_PACKAGE_NAME_1)
@@ -159,5 +169,91 @@ public class CompletenessStatsCollectorTest {
         mFitnessTestUtils.insertRecordsUnrestricted(stepsRecord);
 
         assertThat(mCompletenessStatsCollector.readRecordingMethodStats()).isEmpty();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    public void readDeviceInfoStats_recordTooOld_returnsEmpty() {
+        RecordInternal<StepsRecord> stepsRecord =
+                buildStepsRecord()
+                        .setUuid(UUID.randomUUID())
+                        .setLastModifiedTime(NOW.minus(10, ChronoUnit.DAYS).toEpochMilli())
+                        .setPackageName(TEST_PACKAGE_NAME_1);
+        mFitnessTestUtils.insertRecordsUnrestricted(stepsRecord);
+
+        assertThat(mCompletenessStatsCollector.readDeviceInfoStats()).isEmpty();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    public void readDeviceInfoStats_variousRecords_returnsCorrectStats() {
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel Watch")
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .build();
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("Samsung")
+                        .setModel("Galaxy S25")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+        Device device3 = new Device.Builder().setType(Device.DEVICE_TYPE_PHONE).build();
+        Device incompleteDevice = new Device.Builder().setManufacturer(null).setModel("").build();
+
+        RecordInternal<StepsRecord> stepsRecord1 = buildStepsRecord(device1);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME_1, stepsRecord1);
+
+        RecordInternal<StepsRecord> stepsRecord2 = buildStepsRecord(device2);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME_1, stepsRecord2);
+
+        RecordInternal<StepsRecord> stepsRecord3 =
+                buildStepsRecord(device2).setDeviceType(Device.DEVICE_TYPE_UNKNOWN);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME_2, stepsRecord3);
+
+        RecordInternal<StepsRecord> stepsRecord4 = buildStepsRecord(incompleteDevice);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME_1, stepsRecord4);
+
+        RecordInternal<BloodPressureRecord> bloodPressureRecord = buildBloodPressureRecord(device3);
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME_1, bloodPressureRecord);
+
+        assertThat(mCompletenessStatsCollector.readDeviceInfoStats())
+                .containsExactly(
+                        // stepsRecord 1 & 2
+                        new CompletenessStatsCollector.DeviceInfoStat(
+                                TEST_PACKAGE_NAME_1, RECORD_TYPE_STEPS, true, true, true),
+                        // stepsRecord 3
+                        new CompletenessStatsCollector.DeviceInfoStat(
+                                TEST_PACKAGE_NAME_2, RECORD_TYPE_STEPS, true, true, false),
+                        // stepsRecord 4
+                        new CompletenessStatsCollector.DeviceInfoStat(
+                                TEST_PACKAGE_NAME_1, RECORD_TYPE_STEPS, false, false, false),
+                        new CompletenessStatsCollector.DeviceInfoStat(
+                                TEST_PACKAGE_NAME_1,
+                                RECORD_TYPE_BLOOD_PRESSURE,
+                                false,
+                                false,
+                                true));
+    }
+
+    private RecordInternal<StepsRecord> buildStepsRecord() {
+        return RecordInternalFactory.buildStepsRecord(
+                NOW.minusMillis(1000).toEpochMilli(), NOW.toEpochMilli(), 123);
+    }
+
+    private RecordInternal<StepsRecord> buildStepsRecord(Device device) {
+        return RecordInternalFactory.buildStepsRecord(
+                        NOW.minusMillis(1000).toEpochMilli(), NOW.toEpochMilli(), 123)
+                .setDeviceType(device.getType())
+                .setManufacturer(device.getManufacturer())
+                .setModel(device.getModel());
+    }
+
+    private RecordInternal<BloodPressureRecord> buildBloodPressureRecord(Device device) {
+        return RecordInternalFactory.buildBloodPressureRecord(NOW.toEpochMilli(), 80, 120)
+                .setDeviceType(device.getType())
+                .setManufacturer(device.getManufacturer())
+                .setModel(device.getModel());
     }
 }
