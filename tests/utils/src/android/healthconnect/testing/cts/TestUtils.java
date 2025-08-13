@@ -1028,24 +1028,6 @@ public final class TestUtils {
         return receiver.getResponse();
     }
 
-    /**
-     * Marks apps with any granted health permissions as connected to HC.
-     *
-     * <p>Test apps in CTS get their permissions auto granted without going through the HC
-     * connection flow which prevents the HC service from recording the app info in the database.
-     *
-     * <p>This method calls "getCurrentPriority" API behind the scenes which has a side effect of
-     * adding all the apps on the device with at least one health permission granted to the
-     * database.
-     */
-    public static void connectAppsWithGrantedPermissions() {
-        try {
-            getPriorityWithManageHealthDataPermission(1);
-        } catch (InterruptedException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
     /** Zips given id and records lists to create a list of {@link RecordIdFilter}. */
     public static List<RecordIdFilter> getRecordIdFilters(
             List<String> recordIds, List<Record> records) {
