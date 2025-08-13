@@ -24,10 +24,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingAppsUseCase
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingAppsUseCase.GetMatchMakingAppsInput
+import com.android.healthconnect.controller.matchmaking.api.RecordMatchmakingDenialUseCase
+import com.android.healthconnect.controller.matchmaking.api.RecordMatchmakingDenialUseCase.RecordMatchmakingDenialInput
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionStrings
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -38,6 +41,7 @@ class MatchmakingViewModel
 @Inject
 constructor(
     private val getMatchingAppsUseCase: GetMatchingAppsUseCase,
+    private val recordMatchmakingDenialUseCase: RecordMatchmakingDenialUseCase,
     private val appInfoReader: AppInfoReader,
     private val savedStateHandle: SavedStateHandle,
     private val healthPermissionManager: HealthPermissionManager,
@@ -95,9 +99,7 @@ constructor(
                                 )
                             }
                             .sortedBy { it.metadata.appName }
-                    _matchmakingState.postValue(
-                        MatchmakingState.WithData(appMetadata.appName, sortedApps)
-                    )
+                    _matchmakingState.postValue(MatchmakingState.WithData(appMetadata, sortedApps))
                 }
                 is UseCaseResults.Failed -> {
                     _matchmakingState.postValue(MatchmakingState.LoadingFailed)
@@ -133,7 +135,7 @@ constructor(
 
     fun addAllPermissionsToGrantedList() {
         val allPermissions =
-            (matchmakingState.value as? MatchmakingState.WithData)?.apps?.associate {
+            (matchmakingState.value as? MatchmakingState.WithData)?.matchingApps?.associate {
                 it.metadata.packageName to it.permissions
             }
         _grantedPermissions.value = allPermissions ?: emptyMap()
@@ -149,7 +151,7 @@ constructor(
 
     private fun updateAllPermissionsGrantedStatus() {
         val granted = _grantedPermissions.value
-        val allApps = (matchmakingState.value as? MatchmakingState.WithData)?.apps
+        val allApps = (matchmakingState.value as? MatchmakingState.WithData)?.matchingApps
         val allPermissions = allApps?.associate { it.metadata.packageName to it.permissions }
         allPermissionsGranted.value =
             granted == allPermissions && allPermissions?.isNotEmpty() ?: false
@@ -170,12 +172,35 @@ constructor(
         }
     }
 
+    fun recordMatchmakingDenial() {
+        val state = matchmakingState.value
+        if (state is MatchmakingState.WithData) {
+            val permissions =
+                state.matchingApps.flatMap { it.permissions }.map { it.toString() }.distinct()
+            recordMatchmakingDenial(state.callingAppMetaData.packageName, permissions)
+        }
+    }
+
+    private fun recordMatchmakingDenial(packageName: String, permissions: List<String>) {
+        viewModelScope.launch {
+            recordMatchmakingDenialUseCase.invoke(
+                RecordMatchmakingDenialInput(packageName, permissions)
+            )
+        }
+    }
+
+    fun reset() {
+        _matchmakingState.postValue(MatchmakingState.Loading)
+    }
+
     sealed class MatchmakingState {
         object Loading : MatchmakingState()
 
         object LoadingFailed : MatchmakingState()
 
-        data class WithData(val appName: String, val apps: List<MatchmakingAppData>) :
-            MatchmakingState()
+        data class WithData(
+            val callingAppMetaData: AppMetadata,
+            val matchingApps: List<MatchmakingAppData>,
+        ) : MatchmakingState()
     }
 }

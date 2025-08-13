@@ -1792,24 +1792,24 @@
 
     <!-- region Connected devices -->
     <string name="devices_current_device" description="Preference summary text that indicates that the specified device is the current device (phone) rather than a peripheral device such as a watch. [CHAR_LIMIT=40]">Current device</string>
-    <string name="devices_unknown_device" description="Fallback string for a device that isn't recognised or has no name. [CHAR_LIMIT=40">Unknown device</string>
+    <string name="devices_unknown_device" description="Fallback string for a device that isn't recognised or has no name. [CHAR_LIMIT=40]">Unknown device</string>
     <string name="device_management_screen_title" description="Title for the device management screen. [CHAR_LIMIT=40]">Device info</string>
     <string name="device_management_screen_footer" description="Footer text that explains the consequences of enabling tracking of device data. [CHAR_LIMIT=NONE]">Data collected by this device will be stored in Health Connect, where connected apps will access it</string>
     <string name="device_management_screen_no_step_sensor_footer" description="Footer text that explains that this device does not have a steps sensor but still has data stored. [CHAR_LIMIT=NONE]">This device doesn\'t support step tracking, but still has data stored in Health Connect</string>
     <string name="device_management_screen_no_step_sensor_header" description="Header to display when the device does not have a steps sensor. [CHAR_LIMIT=100]">This device doesn\'t track steps</string>
     <string name="device_settings_label" description="Label for the device settings category. [CHAR_LIMIT=40]">Allowed to write</string>
-    <string name="device_data_screen_title" description="Title for the device data screen. [CHAR_LIMIT=100]">Device data</string>
+    <string name="device_data_screen_title" description="Title for the device data screen. [CHAR_LIMIT=40]">Device data</string>
     <string name="device_data_label" description="Label for the device settings category. [CHAR_LIMIT=40]">Manage device</string>
-    <string name="device_data_button" description="Button for taking users to device data screen. [CHAR_LIMIT=100]">See device data</string>
+    <string name="device_data_button" description="Button for taking users to device data screen. [CHAR_LIMIT=40]">See device data</string>
     <!-- endregion -->
 
     <!-- region Native Steps -->
-    <string name="native_steps_banner_title" description="Title of banner for native step tracking in Health Connect. [CHAR_LIMIT=40]">Steps tracked on your phone will appear in Health Connect</string>
+    <string name="native_steps_banner_title" description="Title of banner for native step tracking in Health Connect. [CHAR_LIMIT=100]">Steps tracked on your phone will appear in Health Connect</string>
     <string name="native_steps_banner_summary" description="Description of banner for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps tracked by this device are now stored in Health Connect for connected apps to access</string>
     <string name="native_steps_banner_dismiss_button" description="Button to dismiss the banner for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Dismiss</string>
     <string name="native_steps_banner_review_button" description="Button of banner to take users to a page where they can review device access to Health Connect. [CHAR_LIMIT=NONE]">Review</string>
 
-    <string name="native_steps_notification_title" description="Title of notification for native step tracking in Health Connect. [CHAR_LIMIT=40]">Steps are now in Health Connect</string>
+    <string name="native_steps_notification_title" description="Title of notification for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps are now in Health Connect</string>
     <string name="native_steps_notification_content" description="Description of notification for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps tracked by this device are now stored in Health Connect for connected apps to access</string>
     <!-- endregion -->
 

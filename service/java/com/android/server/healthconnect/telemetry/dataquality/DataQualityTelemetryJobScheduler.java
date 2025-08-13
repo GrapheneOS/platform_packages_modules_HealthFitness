@@ -52,21 +52,26 @@ public final class DataQualityTelemetryJobScheduler {
     private final LatencyMetricsLogger mLatencyMetricsLogger;
     private final CompletenessStatsCollector mCompletenessStatsCollector;
     private final CompletenessStatsLogger mCompletenessStatsLogger;
+    private final DataGranularityStatsLogger mDataGranularityStatsLogger;
 
     public DataQualityTelemetryJobScheduler(
             Context context,
             LatencyMetricsLogger latencyMetricsLogger,
             CompletenessStatsCollector completenessStatsCollector,
-            CompletenessStatsLogger completenessStatsLogger) {
+            CompletenessStatsLogger completenessStatsLogger,
+            DataGranularityStatsLogger dataGranularityStatsLogger) {
         mContext = context;
         mLatencyMetricsLogger = latencyMetricsLogger;
         mCompletenessStatsCollector = completenessStatsCollector;
         mCompletenessStatsLogger = completenessStatsLogger;
+        mDataGranularityStatsLogger = dataGranularityStatsLogger;
     }
 
     /** Schedule the weekly job */
     public void schedule() {
-        if (!Flags.latencyMetricsFlag() && !Flags.dataCompleteness()) {
+        if (!Flags.latencyMetricsFlag()
+                && !Flags.dataCompleteness()
+                && !Flags.activeDataGranularity()) {
             return;
         }
         JobScheduler jobScheduler =
@@ -94,6 +99,9 @@ public final class DataQualityTelemetryJobScheduler {
         }
         if (Flags.dataCompleteness()) {
             logCompletenessStats();
+        }
+        if (Flags.activeDataGranularity()) {
+            logGranularityStats();
         }
     }
 
@@ -129,6 +137,14 @@ public final class DataQualityTelemetryJobScheduler {
                     mCompletenessStatsCollector.readDeviceInfoStats());
         } catch (Exception exception) {
             Slog.e(TAG, "Failed to log device info stats", exception);
+        }
+    }
+
+    private void logGranularityStats() {
+        try {
+            mDataGranularityStatsLogger.logGranularityStats();
+        } catch (Exception exception) {
+            Slog.e(TAG, "Failed to log active data granularity stats", exception);
         }
     }
 }

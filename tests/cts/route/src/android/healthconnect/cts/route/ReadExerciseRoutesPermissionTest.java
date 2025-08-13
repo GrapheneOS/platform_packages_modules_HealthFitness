@@ -20,7 +20,6 @@ import static android.healthconnect.cts.route.ExerciseRouteTestHelper.ROUTES_REA
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.ROUTE_WRITER_APP;
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.assertCorrectHealthPermissions;
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.getExerciseSessionWithRoute;
-import static android.healthconnect.testing.cts.TestUtils.connectAppsWithGrantedPermissions;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
 
@@ -56,7 +55,6 @@ public class ReadExerciseRoutesPermissionTest {
     @Before
     public void setUp() throws Exception {
         assertCorrectHealthPermissions();
-        connectAppsWithGrantedPermissions();
     }
 
     @After

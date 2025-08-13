@@ -147,7 +147,7 @@ public final class CompletenessStatsCollector {
             return Set.of();
         }
 
-        ReadTableRequest readRequest = allRequests.getFirst();
+        ReadTableRequest readRequest = allRequests.get(0);
         if (allRequests.size() > 1) {
             readRequest.setUnionReadRequests(allRequests.subList(1, allRequests.size()));
         }

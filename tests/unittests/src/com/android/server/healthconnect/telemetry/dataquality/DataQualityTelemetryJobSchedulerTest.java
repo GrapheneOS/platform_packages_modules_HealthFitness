@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.telemetry.dataquality;
 
+import static com.android.healthfitness.flags.Flags.FLAG_ACTIVE_DATA_GRANULARITY;
 import static com.android.healthfitness.flags.Flags.FLAG_DATA_COMPLETENESS;
 import static com.android.healthfitness.flags.Flags.FLAG_LATENCY_METRICS_FLAG;
 import static com.android.server.healthconnect.telemetry.TelemetryJobService.EXTRA_USER_ID;
@@ -42,7 +43,7 @@ import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -69,6 +70,7 @@ public class DataQualityTelemetryJobSchedulerTest {
     @Mock private LatencyMetricsLogger mLatencyMetricsLogger;
     @Mock private CompletenessStatsCollector mCompletenessStatsCollector;
     @Mock private CompletenessStatsLogger mCompletenessStatsLogger;
+    @Mock private DataGranularityStatsLogger mDataGranularityStatsLogger;
     @Captor private ArgumentCaptor<JobInfo> mJobInfoArgumentCaptor;
     private DataQualityTelemetryJobScheduler mDataQualityTelemetryJobScheduler;
 
@@ -84,12 +86,13 @@ public class DataQualityTelemetryJobSchedulerTest {
                         mContext,
                         mLatencyMetricsLogger,
                         mCompletenessStatsCollector,
-                        mCompletenessStatsLogger);
+                        mCompletenessStatsLogger,
+                        mDataGranularityStatsLogger);
     }
 
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
-    @DisableFlags(FLAG_DATA_COMPLETENESS)
+    @DisableFlags({FLAG_DATA_COMPLETENESS, FLAG_ACTIVE_DATA_GRANULARITY})
     public void schedule_latencyFlagOn_schedulesJobWithCorrectInfo() {
         mDataQualityTelemetryJobScheduler.schedule();
         verify(mJobScheduler).schedule(mJobInfoArgumentCaptor.capture());
@@ -98,7 +101,7 @@ public class DataQualityTelemetryJobSchedulerTest {
 
     @Test
     @EnableFlags(FLAG_DATA_COMPLETENESS)
-    @DisableFlags(FLAG_LATENCY_METRICS_FLAG)
+    @DisableFlags({FLAG_LATENCY_METRICS_FLAG, FLAG_ACTIVE_DATA_GRANULARITY})
     public void schedule_completenessFlagOn_schedulesJobWithCorrectInfo() {
         mDataQualityTelemetryJobScheduler.schedule();
         verify(mJobScheduler).schedule(mJobInfoArgumentCaptor.capture());
@@ -106,24 +109,34 @@ public class DataQualityTelemetryJobSchedulerTest {
     }
 
     @Test
+    @EnableFlags(FLAG_ACTIVE_DATA_GRANULARITY)
     @DisableFlags({FLAG_LATENCY_METRICS_FLAG, FLAG_DATA_COMPLETENESS})
-    public void schedule_bothFlagsOff_doesNotScheduleJob() {
+    public void schedule_granularityFlagOn_schedulesJobWithCorrectInfo() {
+        mDataQualityTelemetryJobScheduler.schedule();
+        verify(mJobScheduler).schedule(mJobInfoArgumentCaptor.capture());
+        assertJobInfoIsCorrect(mJobInfoArgumentCaptor.getValue());
+    }
+
+    @Test
+    @DisableFlags({FLAG_LATENCY_METRICS_FLAG, FLAG_DATA_COMPLETENESS, FLAG_ACTIVE_DATA_GRANULARITY})
+    public void schedule_allFlagsOff_doesNotScheduleJob() {
         mDataQualityTelemetryJobScheduler.schedule();
         verify(mJobScheduler, never()).schedule(any(JobInfo.class));
     }
 
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
-    @DisableFlags(FLAG_DATA_COMPLETENESS)
+    @DisableFlags({FLAG_DATA_COMPLETENESS, FLAG_ACTIVE_DATA_GRANULARITY})
     public void execute_latencyMetricsEnabled_logsLatencyMetrics() {
         mDataQualityTelemetryJobScheduler.execute();
         verify(mLatencyMetricsLogger).log();
         verify(mCompletenessStatsLogger, never()).logRecordingMethodStats(anyList());
         verify(mCompletenessStatsLogger, never()).logDeviceInfoStats(anySet());
+        verify(mDataGranularityStatsLogger, never()).logGranularityStats();
     }
 
     @Test
-    @DisableFlags(FLAG_LATENCY_METRICS_FLAG)
+    @DisableFlags({FLAG_LATENCY_METRICS_FLAG, FLAG_ACTIVE_DATA_GRANULARITY})
     @EnableFlags(FLAG_DATA_COMPLETENESS)
     public void execute_dataCompletenessEnabled_logsCompletenessStats() {
         when(mCompletenessStatsCollector.readRecordingMethodStats())
@@ -135,11 +148,24 @@ public class DataQualityTelemetryJobSchedulerTest {
         verify(mLatencyMetricsLogger, never()).log();
         verify(mCompletenessStatsLogger).logRecordingMethodStats(Collections.emptyList());
         verify(mCompletenessStatsLogger).logDeviceInfoStats(Collections.emptySet());
+        verify(mDataGranularityStatsLogger, never()).logGranularityStats();
     }
 
     @Test
-    @EnableFlags({FLAG_LATENCY_METRICS_FLAG, FLAG_DATA_COMPLETENESS})
-    public void execute_bothFlagsEnabled_logsBoth() {
+    @DisableFlags({FLAG_LATENCY_METRICS_FLAG, FLAG_DATA_COMPLETENESS})
+    @EnableFlags(FLAG_ACTIVE_DATA_GRANULARITY)
+    public void execute_dataGranularityEnabled_logsGranularityStats() {
+        mDataQualityTelemetryJobScheduler.execute();
+
+        verify(mLatencyMetricsLogger, never()).log();
+        verify(mCompletenessStatsLogger, never()).logRecordingMethodStats(anyList());
+        verify(mCompletenessStatsLogger, never()).logDeviceInfoStats(anySet());
+        verify(mDataGranularityStatsLogger).logGranularityStats();
+    }
+
+    @Test
+    @EnableFlags({FLAG_LATENCY_METRICS_FLAG, FLAG_DATA_COMPLETENESS, FLAG_ACTIVE_DATA_GRANULARITY})
+    public void execute_allFlagsEnabled_logsAll() {
         when(mCompletenessStatsCollector.readRecordingMethodStats())
                 .thenReturn(Collections.emptyList());
         when(mCompletenessStatsCollector.readDeviceInfoStats()).thenReturn(Collections.emptySet());
@@ -149,21 +175,23 @@ public class DataQualityTelemetryJobSchedulerTest {
         verify(mLatencyMetricsLogger).log();
         verify(mCompletenessStatsLogger).logRecordingMethodStats(Collections.emptyList());
         verify(mCompletenessStatsLogger).logDeviceInfoStats(Collections.emptySet());
+        verify(mDataGranularityStatsLogger).logGranularityStats();
     }
 
     @Test
-    @DisableFlags({FLAG_LATENCY_METRICS_FLAG, FLAG_DATA_COMPLETENESS})
-    public void execute_bothFlagsDisabled_logsNothing() {
+    @DisableFlags({FLAG_LATENCY_METRICS_FLAG, FLAG_DATA_COMPLETENESS, FLAG_ACTIVE_DATA_GRANULARITY})
+    public void execute_allFlagsDisabled_logsNothing() {
         mDataQualityTelemetryJobScheduler.execute();
 
         verify(mLatencyMetricsLogger, never()).log();
         verify(mCompletenessStatsLogger, never()).logRecordingMethodStats(anyList());
         verify(mCompletenessStatsLogger, never()).logDeviceInfoStats(anySet());
+        verify(mDataGranularityStatsLogger, never()).logGranularityStats();
     }
 
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
-    @DisableFlags(FLAG_DATA_COMPLETENESS)
+    @DisableFlags({FLAG_DATA_COMPLETENESS, FLAG_ACTIVE_DATA_GRANULARITY})
     public void execute_latencyMetricException_exceptionCaught() {
         doThrow(new RuntimeException("Test exception")).when(mLatencyMetricsLogger).log();
 
@@ -175,7 +203,7 @@ public class DataQualityTelemetryJobSchedulerTest {
 
     @Test
     @EnableFlags(FLAG_DATA_COMPLETENESS)
-    @DisableFlags(FLAG_LATENCY_METRICS_FLAG)
+    @DisableFlags({FLAG_LATENCY_METRICS_FLAG, FLAG_ACTIVE_DATA_GRANULARITY})
     public void execute_completenessRecordingMethodCollectorException_exceptionCaught() {
         when(mCompletenessStatsCollector.readRecordingMethodStats())
                 .thenThrow(new RuntimeException("Test exception"));
@@ -189,7 +217,7 @@ public class DataQualityTelemetryJobSchedulerTest {
 
     @Test
     @EnableFlags(FLAG_DATA_COMPLETENESS)
-    @DisableFlags(FLAG_LATENCY_METRICS_FLAG)
+    @DisableFlags({FLAG_LATENCY_METRICS_FLAG, FLAG_ACTIVE_DATA_GRANULARITY})
     public void execute_completenessDeviceInfoCollectorException_exceptionCaught() {
         when(mCompletenessStatsCollector.readRecordingMethodStats())
                 .thenReturn(Collections.emptyList());
@@ -200,6 +228,20 @@ public class DataQualityTelemetryJobSchedulerTest {
 
         verify(mCompletenessStatsLogger).logRecordingMethodStats(Collections.emptyList());
         verify(mCompletenessStatsLogger, never()).logDeviceInfoStats(anySet());
+    }
+
+    @Test
+    @EnableFlags(FLAG_ACTIVE_DATA_GRANULARITY)
+    @DisableFlags({FLAG_LATENCY_METRICS_FLAG, FLAG_DATA_COMPLETENESS})
+    public void execute_granularityStatsException_exceptionCaught() {
+        doThrow(new RuntimeException("Test exception"))
+                .when(mDataGranularityStatsLogger)
+                .logGranularityStats();
+
+        mDataQualityTelemetryJobScheduler.execute();
+
+        // Verify the method was still called, even though it threw an exception.
+        verify(mDataGranularityStatsLogger).logGranularityStats();
     }
 
     private void assertJobInfoIsCorrect(JobInfo jobInfo) {

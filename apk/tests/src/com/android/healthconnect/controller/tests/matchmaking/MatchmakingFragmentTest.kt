@@ -79,6 +79,9 @@ class MatchmakingFragmentTest {
 
     @BindValue val deviceInfoUtils: DeviceInfoUtils = mock<DeviceInfoUtils>()
 
+    private val callingPackageName = "com.example.calling.app"
+    private val callingAppName = "Calling App"
+
     private val matchmakingState = MutableLiveData<MatchmakingViewModel.MatchmakingState>()
     private val expandedKeys = MutableLiveData<Set<String>>(emptySet())
     private val context: Context = ApplicationProvider.getApplicationContext()
@@ -111,7 +114,10 @@ class MatchmakingFragmentTest {
                 )
             )
         matchmakingState.postValue(
-            MatchmakingViewModel.MatchmakingState.WithData(TEST_APP_NAME, apps)
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(callingPackageName, callingAppName, null),
+                apps,
+            )
         )
 
         val scenario =
@@ -132,9 +138,12 @@ class MatchmakingFragmentTest {
         onView(withId(androidx.preference.R.id.recycler_view))
             .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
 
-        onView(withText(context.getString(R.string.matchmaking_screen_title)))
-            .check(matches(isDisplayed()))
-        onView(withText(context.getString(R.string.matchmaking_screen_summary, TEST_APP_NAME)))
+        onView(withText("Share data between apps")).check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "Allow the Calling App app to read data from other apps on this device using Health\u00A0Connect"
+                )
+            )
             .check(matches(isDisplayed()))
         onView(withText("Data from $TEST_APP_NAME"))
             .perform(scrollTo())

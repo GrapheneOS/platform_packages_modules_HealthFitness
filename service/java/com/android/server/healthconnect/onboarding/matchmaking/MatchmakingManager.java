@@ -100,9 +100,11 @@ public final class MatchmakingManager {
     /** Increments the denial counter for the given package and permissions. */
     public void recordMatchmakingDenial(String packageName, List<String> permissions) {
         permissions.stream()
+                .distinct()
                 .filter(mHealthConnectMappings::isWritePermission)
                 .map(mHealthConnectMappings::getHealthDataCategoryForWritePermission)
                 .filter(category -> category != -1)
+                .distinct()
                 .forEach(
                         category ->
                                 mMatchmakingDenialStateManager.recordMatchmakingDenial(
