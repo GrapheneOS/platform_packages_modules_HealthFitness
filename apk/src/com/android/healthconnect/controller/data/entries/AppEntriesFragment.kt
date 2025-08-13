@@ -457,6 +457,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
             entriesViewModel.loadLatestRecordDate(
                 permissionType,
                 timeSource.currentTimeMillis().toInstant(),
+                packageName,
             )
 
             entriesViewModel.loadEntries(
