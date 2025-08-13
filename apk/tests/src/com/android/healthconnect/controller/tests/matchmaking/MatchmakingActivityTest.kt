@@ -27,6 +27,7 @@ import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import android.platform.test.flag.junit.SetFlagsRule
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso.onView
@@ -53,11 +54,14 @@ import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @UninstallModules(DeviceInfoUtilsModule::class)
@@ -89,6 +93,31 @@ class MatchmakingActivityTest {
         whenever(viewModel.atLeastOnePermissionGranted).thenReturn(atLeastOnePermissionGranted)
         whenever(viewModel.allPermissionsGranted).thenReturn(allPermissionsGranted)
         whenever(viewModel.grantedPermissions).thenReturn(grantedPermissions)
+        setUpMatchingApps()
+    }
+
+    private fun setUpMatchingApps() {
+        val apps =
+            listOf(
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                    listOf(
+                        FitnessPermission.fromPermissionString(WRITE_EXERCISE),
+                        FitnessPermission.fromPermissionString(WRITE_STEPS),
+                    ),
+                )
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                apps,
+            )
+        )
+    }
+
+    @After
+    fun tearDown() {
+        matchmakingState.postValue(MatchmakingViewModel.MatchmakingState.Loading)
     }
 
     @Test
@@ -106,25 +135,11 @@ class MatchmakingActivityTest {
     fun matchmakingActivity_launchesBottomSheet() {
         val intent =
             Intent(context, MatchmakingActivity::class.java).apply {
-                putExtra(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
                 putExtra(
                     HealthConnectManager.EXTRA_RECORD_TYPES,
                     arrayOf(StepsRecord::class.java.name),
                 )
             }
-        val apps =
-            listOf(
-                MatchmakingAppData(
-                    AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
-                    listOf(
-                        FitnessPermission.fromPermissionString(WRITE_EXERCISE),
-                        FitnessPermission.fromPermissionString(WRITE_STEPS),
-                    ),
-                )
-            )
-        matchmakingState.postValue(
-            MatchmakingViewModel.MatchmakingState.WithData(TEST_APP_NAME, apps)
-        )
 
         launchActivityForResult<MatchmakingActivity>(intent).use {
             onView(withText(context.getString(R.string.matchmaking_screen_title)))
@@ -140,6 +155,24 @@ class MatchmakingActivityTest {
                 )
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()))
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun onDestroy_callsViewModelReset() {
+        val intent =
+            Intent(context, MatchmakingActivity::class.java).apply {
+                putExtra(
+                    HealthConnectManager.EXTRA_RECORD_TYPES,
+                    arrayOf(StepsRecord::class.java.name),
+                )
+            }
+
+        launchActivityForResult<MatchmakingActivity>(intent).use {
+            it.moveToState(Lifecycle.State.DESTROYED)
+
+            verify(viewModel).reset()
         }
     }
 }

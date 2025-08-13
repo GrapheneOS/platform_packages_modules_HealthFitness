@@ -26,6 +26,7 @@ import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel
 import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel.MatchmakingState.LoadingFailed
 import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel.MatchmakingState.WithData
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingAppsUseCase
+import com.android.healthconnect.controller.matchmaking.api.RecordMatchmakingDenialUseCase
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
@@ -52,8 +53,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -67,6 +70,7 @@ class MatchMakingViewModelTest {
     @BindValue lateinit var appInfoReader: AppInfoReader
 
     private val getMatchingAppsUseCase: GetMatchingAppsUseCase = mock()
+    private val recordMatchmakingDenialUseCase: RecordMatchmakingDenialUseCase = mock()
     private val healthPermissionManager: HealthPermissionManager = mock()
 
     private lateinit var viewModel: MatchmakingViewModel
@@ -78,6 +82,7 @@ class MatchMakingViewModelTest {
         viewModel =
             MatchmakingViewModel(
                 getMatchingAppsUseCase,
+                recordMatchmakingDenialUseCase,
                 appInfoReader,
                 SavedStateHandle(),
                 healthPermissionManager,
@@ -106,7 +111,7 @@ class MatchMakingViewModelTest {
 
         val state = viewModel.matchmakingState.value
         assertThat(state).isInstanceOf(WithData::class.java)
-        assertThat((state as WithData).apps).isEqualTo(expected)
+        assertThat((state as WithData).matchingApps).isEqualTo(expected)
     }
 
     @Test
@@ -148,7 +153,7 @@ class MatchMakingViewModelTest {
 
         val state = viewModel.matchmakingState.value
 
-        val data = (state as WithData).apps
+        val data = (state as WithData).matchingApps
         assertThat(data.size).isEqualTo(2)
         assertThat(data[0].metadata.appName).isEqualTo("A App")
         assertThat(data[1].metadata.appName).isEqualTo("B App")
@@ -192,11 +197,15 @@ class MatchMakingViewModelTest {
         val gran = viewModel.grantedPermissions
         assertThat(gran.value?.get(TEST_APP_PACKAGE_NAME))
             .isEqualTo(
-                state.apps.first { it.metadata.packageName == TEST_APP_PACKAGE_NAME }.permissions
+                state.matchingApps
+                    .first { it.metadata.packageName == TEST_APP_PACKAGE_NAME }
+                    .permissions
             )
         assertThat(viewModel.grantedPermissions.value?.get(TEST_APP_PACKAGE_NAME_2))
             .isEqualTo(
-                state.apps.first { it.metadata.packageName == TEST_APP_PACKAGE_NAME_2 }.permissions
+                state.matchingApps
+                    .first { it.metadata.packageName == TEST_APP_PACKAGE_NAME_2 }
+                    .permissions
             )
         assertThat(viewModel.atLeastOnePermissionGranted.value).isTrue()
         assertThat(viewModel.allPermissionsGranted.value).isTrue()
@@ -222,6 +231,47 @@ class MatchMakingViewModelTest {
         viewModel.grantPermissions()
 
         verify(healthPermissionManager, times(2)).grantHealthPermission(any(), any())
+    }
+
+    @Test
+    fun grantPermissions_grantsPartialPermissions() = runTest {
+        setupWithData()
+        val writeStepsPermission =
+            HealthPermission.fromPermissionString(WRITE_STEPS) as HealthPermission.FitnessPermission
+        viewModel.addPermissionToGrantedList(TEST_APP_PACKAGE_NAME, writeStepsPermission)
+
+        viewModel.grantPermissions()
+
+        verify(healthPermissionManager).grantHealthPermission(TEST_APP_PACKAGE_NAME, WRITE_STEPS)
+        verify(healthPermissionManager, never())
+            .grantHealthPermission(TEST_APP_PACKAGE_NAME_2, WRITE_EXERCISE)
+    }
+
+    @Test
+    fun recordMatchmakingDenial_callsUseCaseWithCorrectParameters() = runTest {
+        setupWithData()
+        val captor = argumentCaptor<RecordMatchmakingDenialUseCase.RecordMatchmakingDenialInput>()
+
+        viewModel.recordMatchmakingDenial()
+
+        verify(recordMatchmakingDenialUseCase).invoke(captor.capture())
+        assertThat(captor.firstValue.packageName).isEqualTo(TEST_APP_PACKAGE_NAME_3)
+        assertThat(captor.firstValue.permissions).containsExactly(WRITE_STEPS, WRITE_EXERCISE)
+    }
+
+    @Test
+    fun recordMatchmakingDenial_grantedListNonEmpty_callsUseCaseForAllPermissions() = runTest {
+        setupWithData()
+        val permission =
+            HealthPermission.fromPermissionString(WRITE_STEPS) as HealthPermission.FitnessPermission
+        viewModel.addPermissionToGrantedList(TEST_APP_PACKAGE_NAME, permission)
+        val captor = argumentCaptor<RecordMatchmakingDenialUseCase.RecordMatchmakingDenialInput>()
+
+        viewModel.recordMatchmakingDenial()
+
+        verify(recordMatchmakingDenialUseCase).invoke(captor.capture())
+        assertThat(captor.firstValue.packageName).isEqualTo(TEST_APP_PACKAGE_NAME_3)
+        assertThat(captor.firstValue.permissions).containsExactly(WRITE_STEPS, WRITE_EXERCISE)
     }
 
     private suspend fun setupWithData() {

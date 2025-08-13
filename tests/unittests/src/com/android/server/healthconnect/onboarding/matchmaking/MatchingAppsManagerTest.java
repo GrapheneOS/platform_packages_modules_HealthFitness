@@ -43,7 +43,6 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.clearInvocations;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -469,12 +468,19 @@ public class MatchingAppsManagerTest {
     }
 
     @Test
-    public void recordMatchmakingDenial_multiplePermissionsSameCategory_callsDenialManagerTwice() {
+    public void recordMatchmakingDenial_multiplePermissionsSameCategory_callsDenialManagerOnce() {
         mMatchmakingManager.recordMatchmakingDenial(
                 PACKAGE_NAME, List.of(WRITE_EXERCISE, WRITE_STEPS));
 
-        verify(mMatchmakingDenialStateManager, times(2))
-                .recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
+        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
+    }
+
+    @Test
+    public void recordMatchmakingDenial_duplicatePermissionsSameCategory_callsDenialManagerOnce() {
+        mMatchmakingManager.recordMatchmakingDenial(
+                PACKAGE_NAME, List.of(WRITE_EXERCISE, WRITE_STEPS, WRITE_EXERCISE, WRITE_EXERCISE));
+
+        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
     }
 
     @Test

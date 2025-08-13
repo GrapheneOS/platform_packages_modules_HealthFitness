@@ -135,8 +135,8 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                 is MatchmakingViewModel.MatchmakingState.WithData -> {
                     setLoading(false)
                     preferenceScreen.isVisible = true
-                    bindHeader(state.appName)
-                    buildAppList(state.apps)
+                    bindHeader(state.callingAppMetaData.appName)
+                    buildAppList(state.matchingApps)
                     bindFooter()
                 }
             }
