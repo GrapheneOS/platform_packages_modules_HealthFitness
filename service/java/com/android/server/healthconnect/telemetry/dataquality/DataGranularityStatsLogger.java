@@ -25,7 +25,7 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARI
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_STEPS_CADENCE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_UNKNOWN;
 
-import static com.android.healthfitness.flags.Flags.activeDataGranularity;
+import static com.android.healthfitness.flags.Flags.latencyMetricsFlag;
 
 import android.health.HealthFitnessStatsLog;
 import android.health.connect.datatypes.RecordTypeIdentifier;
@@ -50,7 +50,7 @@ public final class DataGranularityStatsLogger {
     }
 
     void logGranularityStats() {
-        if (!activeDataGranularity()) {
+        if (!latencyMetricsFlag()) {
             return;
         }
         List<DataGranularityStatsCollector.GranularityStats> stats =

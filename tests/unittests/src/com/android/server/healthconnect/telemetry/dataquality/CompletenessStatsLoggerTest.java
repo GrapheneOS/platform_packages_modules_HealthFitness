@@ -82,7 +82,7 @@ public class CompletenessStatsLoggerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    @EnableFlags(Flags.FLAG_LATENCY_METRICS_FLAG)
     public void logRecordingMethodStats_flagEnabled_logged() {
         List<CompletenessStatsCollector.RecordingMethodStat> stats = new ArrayList<>();
         for (DataTypeDescriptor descriptor : DataTypeDescriptors.getAllDataTypeDescriptors()) {
@@ -107,7 +107,7 @@ public class CompletenessStatsLoggerTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    @DisableFlags(Flags.FLAG_LATENCY_METRICS_FLAG)
     public void logRecordingMethodStats_flagDisabled_noOp() {
         List<CompletenessStatsCollector.RecordingMethodStat> stats = new ArrayList<>();
         for (int recordingMethod : Metadata.VALID_TYPES) {
@@ -123,7 +123,7 @@ public class CompletenessStatsLoggerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    @EnableFlags(Flags.FLAG_LATENCY_METRICS_FLAG)
     public void logDeviceInfoStats_flagEnabled_logged() {
         Set<CompletenessStatsCollector.DeviceInfoStat> stats = new HashSet<>();
         stats.add(
@@ -165,7 +165,7 @@ public class CompletenessStatsLoggerTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    @DisableFlags(Flags.FLAG_LATENCY_METRICS_FLAG)
     public void logDeviceInfoStats_flagDisabled_noOp() {
         Set<CompletenessStatsCollector.DeviceInfoStat> stats = new HashSet<>();
         stats.add(

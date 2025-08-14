@@ -16,7 +16,7 @@
 
 package com.android.server.healthconnect.telemetry.dataquality;
 
-import static com.android.healthfitness.flags.Flags.dataCompleteness;
+import static com.android.healthfitness.flags.Flags.latencyMetricsFlag;
 import static com.android.server.healthconnect.common.metadata.DeviceInfoHelper.DEVICE_TYPE_COLUMN_NAME;
 import static com.android.server.healthconnect.common.metadata.DeviceInfoHelper.MANUFACTURER_COLUMN_NAME;
 import static com.android.server.healthconnect.common.metadata.DeviceInfoHelper.MODEL_COLUMN_NAME;
@@ -78,7 +78,7 @@ public final class CompletenessStatsCollector {
     }
 
     List<RecordingMethodStat> readRecordingMethodStats() {
-        if (!dataCompleteness()) {
+        if (!latencyMetricsFlag()) {
             return List.of();
         }
 
@@ -135,7 +135,7 @@ public final class CompletenessStatsCollector {
     }
 
     Set<DeviceInfoStat> readDeviceInfoStats() {
-        if (!dataCompleteness()) {
+        if (!latencyMetricsFlag()) {
             return Set.of();
         }
 

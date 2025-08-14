@@ -69,9 +69,7 @@ public final class DataQualityTelemetryJobScheduler {
 
     /** Schedule the weekly job */
     public void schedule() {
-        if (!Flags.latencyMetricsFlag()
-                && !Flags.dataCompleteness()
-                && !Flags.activeDataGranularity()) {
+        if (!Flags.latencyMetricsFlag()) {
             return;
         }
         JobScheduler jobScheduler =
@@ -96,11 +94,7 @@ public final class DataQualityTelemetryJobScheduler {
     public void execute() {
         if (Flags.latencyMetricsFlag()) {
             logLatencyMetrics();
-        }
-        if (Flags.dataCompleteness()) {
             logCompletenessStats();
-        }
-        if (Flags.activeDataGranularity()) {
             logGranularityStats();
         }
     }
