@@ -388,20 +388,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connectடில் இந்த ஆப்ஸ் எந்தத் தரவை எழுத வேண்டும் என்பதைத் தேர்வுசெய்யுங்கள்"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Health Connectடில் இந்த ஆப்ஸ் எந்தத் தரவை வாசிக்க/எழுத வேண்டும் என்பதை நீங்கள் தேர்வுசெய்யுங்கள்"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connectடில் இந்த ஆப்ஸ் எந்தத் தரவை வாசிக்க வேண்டும் என்பதைத் தேர்வுசெய்யுங்கள்"</string>
-    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
-    <skip />
-    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
-    <skip />
-    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"ஆப்ஸுக்கிடையே தரவைப் பகிர்தல்"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> வழங்கும் தரவு"</string>
+    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"இந்தச் சாதனத்திலுள்ள பிற ஆப்ஸின் தரவை Health Connect மூலம் படிக்க <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸை அனுமதியுங்கள்"</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"இந்தத் தரவை ஒத்திசைக்கக்கூடிய ஆப்ஸ்"</string>
+    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"உங்கள் தரவை <xliff:g id="APP_NAME">%1$s</xliff:g> எப்படிப் பயன்படுத்துகிறது என்பதை அதன் "<a href="%2$s">"தனியுரிமைக் கொள்கையில்"</a>" தெரிந்துகொள்ளுங்கள்."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"உங்கள் ஆரோக்கியம் மற்றும் ஃபிட்னஸ் தொடர்பான தரவை Health Connect மூலம் பல்வேறு ஆப்ஸுக்கிடையே பகிரலாம். இது உங்கள் தரவைப் பாதுகாப்பாக வைத்திருப்பதோடு, நீங்கள் புள்ளிவிவரங்களையும் அனுபவங்களையும் பெற உதவுகிறது."</string>
+    <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect பற்றிய கூடுதல் தகவல்கள்"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"வாசிப்பதற்கான அணுகலை வழங்கினால், புதிய தரவையும் கடந்த 30 நாட்களில் பெறப்பட்ட தரவையும் ஆப்ஸ் வாசிக்க முடியும்"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"வாசிப்பதற்கான அணுகலை வழங்கினால், புதிய தரவையும் முந்தைய தரவையும் ஆப்ஸ் வாசிக்க முடியும்"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Health Connectடை அணுக <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸை அனுமதிக்கவா?"</string>
@@ -1279,23 +1272,21 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"ஏதோ ஒரு சாதனம்"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"சாதனத் தகவல்கள்"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"இந்தச் சாதனத்தால் சேகரிக்கப்பட்ட தரவு Health Connectடில் சேமிக்கப்படும், அங்கு இணைக்கப்பட்ட ஆப்ஸ் அதை அணுகும்"</string>
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
+    <skip />
     <string name="device_settings_label" msgid="9053791237491247819">"எழுத அனுமதிக்கப்பட்டவை"</string>
-    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <string name="device_data_screen_title" msgid="2443821236974714385">"சாதனத் தரவு"</string>
+    <string name="device_data_label" msgid="2056618513138892435">"சாதனத்தை நிர்வகியுங்கள்"</string>
+    <string name="device_data_button" msgid="8002406105399136401">"சாதனத் தரவைக் காட்டு"</string>
+    <string name="native_steps_banner_title" msgid="7668164332675458871">"மொபைல் டிராக் காலடிகள் Health Connectடில் காட்டப்படும்"</string>
+    <string name="native_steps_banner_summary" msgid="7109953051996114646">"இந்தச் சாதனத்தால் டிராக் செய்யப்படும் காலடிகள் இப்போது Health Connectடில் சேமிக்கப்படுகின்றன, இணைக்கப்பட்ட ஆப்ஸ் அவற்றை அணுகலாம்"</string>
+    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
     <skip />
-    <!-- no translation found for device_data_label (2056618513138892435) -->
-    <skip />
-    <!-- no translation found for device_data_button (8002406105399136401) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"சரிபாருங்கள்"</string>
+    <string name="native_steps_notification_title" msgid="4059138095111818516">"Health Connectடில் தற்போது காலடிகளை டிராக் செய்யலாம்"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"இந்தச் சாதனத்தால் டிராக் செய்யப்படும் காலடிகள் இப்போது Health Connectடில் சேமிக்கப்படுகின்றன, இணைக்கப்பட்ட ஆப்ஸ் அவற்றை அணுகலாம்"</string>
+    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
     <skip />
 </resources>

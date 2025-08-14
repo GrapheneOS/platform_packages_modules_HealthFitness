@@ -388,20 +388,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Vælg, hvilke data denne app skal kunne skrive til Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Vælg, hvilke data denne app skal kunne læse eller skrive til Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Vælg, hvilke data denne app skal kunne læse fra Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
-    <skip />
-    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
-    <skip />
-    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Del data mellem apps"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data fra <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Giv appen <xliff:g id="APP_NAME">%1$s</xliff:g> tilladelse til at læse data fra andre apps på denne enhed ved hjælp af Health Connect"</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps, der kan synkronisere disse data"</string>
+    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Få flere oplysninger om, hvordan <xliff:g id="APP_NAME">%1$s</xliff:g> bruger dine data, i "<a href="%2$s">"privatlivspolitikken"</a>"."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect giver dig mulighed for at dele dine sundheds- og træningsdata mellem flere apps. Det hjælper dig med at få indsigt og oplevelser, samtidig med at dine data beskyttes."</string>
+    <string name="more_about_health_connect" msgid="8105996800108743876">"Mere om Health Connect"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Hvis du giver læseadgang, kan appen læse nye data og data fra de seneste 30 dage"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Hvis du giver læseadgang, kan appen læse nye og gamle data"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til Health Connect?"</string>
@@ -1279,23 +1272,21 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"Ukendt enhed"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Enhedsoplysninger"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"De data, der indsamles af denne enhed, gemmes i Health Connect, hvor tilknyttede apps kan tilgå dem"</string>
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
+    <skip />
     <string name="device_settings_label" msgid="9053791237491247819">"Har tilladelse til at redigere"</string>
-    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <string name="device_data_screen_title" msgid="2443821236974714385">"Enhedsdata"</string>
+    <string name="device_data_label" msgid="2056618513138892435">"Administrer enhed"</string>
+    <string name="device_data_button" msgid="8002406105399136401">"Se enhedsdata"</string>
+    <string name="native_steps_banner_title" msgid="7668164332675458871">"Skridt registreret på din telefon vises i Health Connect"</string>
+    <string name="native_steps_banner_summary" msgid="7109953051996114646">"Skridt, der registreres af denne enhed, gemmes nu i Health Connect, så tilknyttede apps kan tilgå dem"</string>
+    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
     <skip />
-    <!-- no translation found for device_data_label (2056618513138892435) -->
-    <skip />
-    <!-- no translation found for device_data_button (8002406105399136401) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Gennemgå"</string>
+    <string name="native_steps_notification_title" msgid="4059138095111818516">"Skridt kan nu ses i Health Connect"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"Skridt, der registreres af denne enhed, gemmes nu i Health Connect, så tilknyttede apps kan tilgå dem"</string>
+    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
     <skip />
 </resources>

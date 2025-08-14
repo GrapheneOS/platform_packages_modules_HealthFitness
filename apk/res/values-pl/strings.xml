@@ -388,20 +388,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Wybierz, jakie dane ta aplikacja może zapisywać w Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Wybierz, jakie dane ta aplikacja może odczytywać lub zapisywać w Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Wybierz, jakie dane ta aplikacja może odczytywać z Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
-    <skip />
-    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
-    <skip />
-    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Udostępniaj dane między aplikacjami"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dane z aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Zezwalaj aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g> na odczytywanie danych z innych aplikacji na tym urządzeniu za pomocą Health Connect"</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikacje, które mogą synchronizować te dane"</string>
+    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"O tym, jak aplikacja <xliff:g id="APP_NAME">%1$s</xliff:g> wykorzystuje Twoje dane, dowiesz się z jej "<a href="%2$s">"polityki prywatności"</a>"."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect pozwala udostępniać dane o zdrowiu i aktywności fizycznej między wieloma aplikacjami. Dzięki temu możesz przeglądać statystyki i odkrywać nowe funkcje, zachowując bezpieczeństwo danych."</string>
+    <string name="more_about_health_connect" msgid="8105996800108743876">"Więcej informacji o Health Connect"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Jeśli przyznasz uprawnienia do odczytu, aplikacja będzie mogła odczytywać nowe dane i dane z ostatnich 30 dni"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Jeśli przyznasz uprawnienia do odczytu, aplikacja będzie mogła odczytywać nowe i wcześniejsze dane"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Zezwolić aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g> na dostęp do Health Connect?"</string>
@@ -1279,20 +1272,21 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"Nieznane urządzenie"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Informacje o urządzeniu"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Dane zebrane przez to urządzenie będą przechowywane w Health Connect, gdzie będą do nich miały dostęp połączone aplikacje"</string>
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
+    <skip />
     <string name="device_settings_label" msgid="9053791237491247819">"Może zapisywać"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Dane na urządzeniu"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Zarządzaj urządzeniem"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Zobacz dane na urządzeniu"</string>
-    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
+    <string name="native_steps_banner_title" msgid="7668164332675458871">"Kroki będą widoczne w Health Connect"</string>
+    <string name="native_steps_banner_summary" msgid="7109953051996114646">"Dane o krokach śledzonych przez to urządzenie są teraz przechowywane w Health Connect, gdzie mają do nich dostęp połączone aplikacje"</string>
+    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
     <skip />
-    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Sprawdź"</string>
+    <string name="native_steps_notification_title" msgid="4059138095111818516">"Kroki są teraz w Health Connect"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"Dane o krokach śledzonych przez to urządzenie są teraz przechowywane w Health Connect, gdzie mają do nich dostęp połączone aplikacje"</string>
+    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
     <skip />
 </resources>

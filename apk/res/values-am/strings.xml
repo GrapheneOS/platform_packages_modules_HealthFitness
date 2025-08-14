@@ -388,20 +388,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"ይህ መተግበሪያ የጤና አገናኝ ላይ እንዲጽፍ የሚፈልጉትን ውሂብ ይምረጡ"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"ይህ መተግበሪያ እንዲያነብብ ወይም በጤና አገናኝ ላይ እንዲጽፍ የሚፈልጉትን ውሂብ ይምረጡ"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"ይህ መተግበሪያ ከጤና አገናኝ ላይ እንዲያነብብ የሚፈልጉትን ውሂብ ይምረጡ"</string>
-    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
-    <skip />
-    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
-    <skip />
-    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"በመተግበሪያዎች መካከል ውሂብ ያጋሩ"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"ውሂብ ከ<xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"የጤና አገናኝን በመጠቀም የ<xliff:g id="APP_NAME">%1$s</xliff:g> መተግበሪያ በዚህ መሣሪያ ላይ የሌሎች መተግበሪያዎችን ውሂብ እንዲያነብ ይፍቀዱለት"</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ይህን ውሂብ ማስመር የሚችሉ መተግበሪያዎች"</string>
+    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"እንዴት <xliff:g id="APP_NAME">%1$s</xliff:g> ውሂብዎን በእነሱ "<a href="%2$s">"የግላዊነት መመሪያ"</a>" ውስጥ እንደሚጠቀም ይወቁ።"</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"የጤና አገናኝ የጤና እና የአካል ብቃት ውሂብዎን በበርካታ መተግበሪያዎች መካከል እንዲያጋሩ ያስችልዎታል። ይህ የውሂብዎ ደህንነት ተጠብቆ ሳለ ግንዛቤዎችን እና ተሞክሮዎችን ለመክፈት ያግዝዎታል።"</string>
+    <string name="more_about_health_connect" msgid="8105996800108743876">"ስለ የጤና አገናኝ ተጨማሪ"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"የንባብ መዳረሻ ከሰጡ መተግበሪያው አዲስ ውሂብን እና የያለፉት 30 ቀናት ውሂብን ማንበብ ይችላል"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"የንባብ መዳረሻ ከሰጡ መተግበሪያው አዲስ እና ያለፈ ውሂብን ማንበብ ይችላል"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> የጤና አገናኝን እንዲደርስ ይፈቀድለት?"</string>
@@ -1279,23 +1272,21 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"ያልታወቀ መሣሪያ"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"የመሣሪያ መረጃ"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"የጤና አገናኝ ውስጥ በዚህ መሣሪያ የተሰበሰብ ውሂብ ይከማቻል፣ እዚህም የተገናኙ መተግበሪያዎች ይደርሱታል"</string>
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
+    <skip />
     <string name="device_settings_label" msgid="9053791237491247819">"ለመፃፍ የተፈቀደለት"</string>
-    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <string name="device_data_screen_title" msgid="2443821236974714385">"የመሣሪያ ውሂብ"</string>
+    <string name="device_data_label" msgid="2056618513138892435">"መሣሪያን አስተዳድር"</string>
+    <string name="device_data_button" msgid="8002406105399136401">"የመሣሪያ ውሂብ አሳይ"</string>
+    <string name="native_steps_banner_title" msgid="7668164332675458871">"በስልክዎ ላይ ክትትል የተደረገባቸው እርምጃዎች የጤና አገናኝ ውስጥ ይታያሉ"</string>
+    <string name="native_steps_banner_summary" msgid="7109953051996114646">"በዚህ መሣሪያ ክትትል የተደረገባቸው እርምጃዎች አሁን የተገናኙ መተግበሪያዎች እንዲደርሷቸው የጤና አገናኝ ውስጥ ይቀመጣሉ"</string>
+    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
     <skip />
-    <!-- no translation found for device_data_label (2056618513138892435) -->
-    <skip />
-    <!-- no translation found for device_data_button (8002406105399136401) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"ገምግም"</string>
+    <string name="native_steps_notification_title" msgid="4059138095111818516">"እርምጃዎች አሁን የጤና አገናኝ ውስጥ ናቸው"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"በዚህ መሣሪያ ክትትል የተደረገባቸው እርምጃዎች አሁን የተገናኙ መተግበሪያዎች እንዲደርሷቸው የጤና አገናኝ ውስጥ ይቀመጣሉ"</string>
+    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
     <skip />
 </resources>

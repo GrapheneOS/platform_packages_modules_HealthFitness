@@ -388,20 +388,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Valige andmed, mida soovite lubada sellel rakendusel Health Connecti kirjutada."</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Valige andmed, mida soovite lubada rakendusel Health Connectis lugeda või kirjutada"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Valige andmed, mida soovite lubada sellel rakendusel Health Connectist lugeda."</string>
-    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
-    <skip />
-    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
-    <skip />
-    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Andmete jagamine rakenduste vahel"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Andmed rakendusest <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Lubage rakendusel <xliff:g id="APP_NAME">%1$s</xliff:g> lugeda selles seadmes muudest rakendustest andmeid, kasutades Health Connecti."</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Rakendused, mis saavad neid andmeid sünkroonida"</string>
+    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Vaadake rakenduse <xliff:g id="APP_NAME">%1$s</xliff:g> "<a href="%2$s">"privaatsuseeskirjadest"</a>", kuidas teie andmeid kasutatakse."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect võimaldab teil oma tervise- ja treeninguandmeid jagada mitme rakenduse vahel. See aitab teil hankida statistikat ja avada kasutuskogemusi, tagades teie andmete turvalisuse."</string>
+    <string name="more_about_health_connect" msgid="8105996800108743876">"Lisateave Health Connecti kohta"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Kui annate lugemisõiguse, võib rakendus lugeda uusi andmeid ja viimase 30 päeva andmeid."</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Kui annate lugemisõiguse, võib rakendus lugeda uusi ja varasemaid andmeid."</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Kas lubate rakendusel <xliff:g id="APP_NAME">%1$s</xliff:g> Health Connectile juurde pääseda?"</string>
@@ -1279,23 +1272,21 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"Tundmatu seade"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Seadme teave"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Selle seadme kogutudandmeid talletatakse Health Connectis, kus ühendatud rakendused pääsevad neile juurde"</string>
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
+    <skip />
     <string name="device_settings_label" msgid="9053791237491247819">"Lubatud kirjutada"</string>
-    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <string name="device_data_screen_title" msgid="2443821236974714385">"Seadme andmed"</string>
+    <string name="device_data_label" msgid="2056618513138892435">"Seadme haldamine"</string>
+    <string name="device_data_button" msgid="8002406105399136401">"Kuva seadme andmed"</string>
+    <string name="native_steps_banner_title" msgid="7668164332675458871">"Telefonis jälgitud toimingud kuvatakse Health Connectis"</string>
+    <string name="native_steps_banner_summary" msgid="7109953051996114646">"Selle seadme jälgitud toimingud salvestatakse nüüd Health Connecti, et ühendatud rakendused saaksid neile juurde pääseda."</string>
+    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
     <skip />
-    <!-- no translation found for device_data_label (2056618513138892435) -->
-    <skip />
-    <!-- no translation found for device_data_button (8002406105399136401) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Ülevaatus"</string>
+    <string name="native_steps_notification_title" msgid="4059138095111818516">"Toimingud on nüüd Health Connectis"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"Selle seadme jälgitud toimingud salvestatakse nüüd Health Connecti, et ühendatud rakendused saaksid neile juurde pääseda."</string>
+    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
     <skip />
 </resources>
