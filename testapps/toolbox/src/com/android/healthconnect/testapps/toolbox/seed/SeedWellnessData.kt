@@ -17,9 +17,6 @@ package com.android.healthconnect.testapps.toolbox.seed
 
 import android.content.Context
 import android.health.connect.HealthConnectManager
-import android.health.connect.datatypes.DataOrigin
-import android.health.connect.datatypes.Device
-import android.health.connect.datatypes.Metadata
 import android.health.connect.datatypes.MindfulnessSessionRecord
 import android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_BREATHING
 import android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_MEDITATION
@@ -28,15 +25,18 @@ import android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SES
 import android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_OTHER
 import android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_UNGUIDED
 import android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_UNKNOWN
-import android.os.Build.MANUFACTURER
-import android.os.Build.MODEL
+import android.health.connect.datatypes.NicotineIntakeRecord
+import android.health.connect.datatypes.NicotineIntakeRecord.NICOTINE_INTAKE_TYPE_CIGARETTE
+import android.health.connect.datatypes.NicotineIntakeRecord.NICOTINE_INTAKE_TYPE_VAPE
+import android.health.connect.datatypes.units.Mass
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.getMetaData
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.insertRecords
-import kotlinx.coroutines.runBlocking
 import java.time.Duration.ofDays
 import java.time.Duration.ofMinutes
 import java.time.Instant
 import java.time.temporal.ChronoUnit
+import kotlin.random.Random
+import kotlinx.coroutines.runBlocking
 
 class SeedWellnessData(private val context: Context, private val manager: HealthConnectManager) {
     companion object {
@@ -48,8 +48,11 @@ class SeedWellnessData(private val context: Context, private val manager: Health
                 MINDFULNESS_SESSION_TYPE_MOVEMENT,
                 MINDFULNESS_SESSION_TYPE_MUSIC,
                 MINDFULNESS_SESSION_TYPE_UNGUIDED,
-                MINDFULNESS_SESSION_TYPE_UNKNOWN
+                MINDFULNESS_SESSION_TYPE_UNKNOWN,
             )
+
+        val VALID_NICOTINE_INTAKE_TYPE =
+            setOf(NICOTINE_INTAKE_TYPE_CIGARETTE, NICOTINE_INTAKE_TYPE_VAPE)
     }
 
     private val start = Instant.now().truncatedTo(ChronoUnit.DAYS)
@@ -57,35 +60,56 @@ class SeedWellnessData(private val context: Context, private val manager: Health
     private val lastWeek = start.minus(ofDays(7))
     private val lastMonth = start.minus(ofDays(31))
 
-    fun seedWellnessData(){
+    fun seedWellnessData() {
         runBlocking {
             try {
                 seedMindfulnessSessionRecord()
+                seedNicotineIntakeRecord()
             } catch (ex: Exception) {
                 throw ex
             }
         }
     }
 
-    private suspend fun seedMindfulnessSessionRecord(){
-        val records = (1L..3).map { timeOffSet ->
-            getMindfulnessSessionRecord(start.plus(ofMinutes(timeOffSet)))
-        }
-        val yesterdayRecords = (1L..3).map { timeOffSet ->
-            getMindfulnessSessionRecord(yesterday.plus(
-                ofMinutes(timeOffSet)
-            ))
-        }
-        val lastWeekRecords = (1L..3).map { timeOffSet ->
-            getMindfulnessSessionRecord(lastWeek.plus(
-                ofMinutes(timeOffSet)
-            ))
-        }
-        val lastMonthRecords = (1L..3).map { timeOffSet ->
-            getMindfulnessSessionRecord(lastMonth.plus(
-                ofMinutes(timeOffSet)
-            ))
-        }
+    private suspend fun seedMindfulnessSessionRecord() {
+        val records =
+            (1L..3).map { timeOffSet ->
+                getMindfulnessSessionRecord(start.plus(ofMinutes(timeOffSet)))
+            }
+        val yesterdayRecords =
+            (1L..3).map { timeOffSet ->
+                getMindfulnessSessionRecord(yesterday.plus(ofMinutes(timeOffSet)))
+            }
+        val lastWeekRecords =
+            (1L..3).map { timeOffSet ->
+                getMindfulnessSessionRecord(lastWeek.plus(ofMinutes(timeOffSet)))
+            }
+        val lastMonthRecords =
+            (1L..3).map { timeOffSet ->
+                getMindfulnessSessionRecord(lastMonth.plus(ofMinutes(timeOffSet)))
+            }
+
+        insertRecords(records, manager)
+        insertRecords(yesterdayRecords, manager)
+        insertRecords(lastWeekRecords, manager)
+        insertRecords(lastMonthRecords, manager)
+    }
+
+    private suspend fun seedNicotineIntakeRecord() {
+        val records =
+            (1L..3).map { timeOffSet -> getNicotineIntakeRecord(start.plus(ofMinutes(timeOffSet))) }
+        val yesterdayRecords =
+            (1L..3).map { timeOffSet ->
+                getNicotineIntakeRecord(yesterday.plus(ofMinutes(timeOffSet)))
+            }
+        val lastWeekRecords =
+            (1L..3).map { timeOffSet ->
+                getNicotineIntakeRecord(lastWeek.plus(ofMinutes(timeOffSet)))
+            }
+        val lastMonthRecords =
+            (1L..3).map { timeOffSet ->
+                getNicotineIntakeRecord(lastMonth.plus(ofMinutes(timeOffSet)))
+            }
 
         insertRecords(records, manager)
         insertRecords(yesterdayRecords, manager)
@@ -95,11 +119,23 @@ class SeedWellnessData(private val context: Context, private val manager: Health
 
     private fun getMindfulnessSessionRecord(time: Instant): MindfulnessSessionRecord {
         return MindfulnessSessionRecord.Builder(
-            getMetaData(context),
-            time,
-            time.plusSeconds(30),
-            VALID_MINDFULNESS_SESSION_TYPE.random()
-        ).build()
+                getMetaData(context),
+                time,
+                time.plusSeconds(30),
+                VALID_MINDFULNESS_SESSION_TYPE.random(),
+            )
+            .build()
     }
 
+    private fun getNicotineIntakeRecord(time: Instant): NicotineIntakeRecord {
+        return NicotineIntakeRecord.Builder(
+                getMetaData(context),
+                time,
+                time.plusSeconds(30),
+                Random.nextInt(100),
+                VALID_NICOTINE_INTAKE_TYPE.random(),
+            )
+            .setNicotineIntake(Mass.fromGrams(Random.nextDouble(0.0, 0.01)))
+            .build()
+    }
 }

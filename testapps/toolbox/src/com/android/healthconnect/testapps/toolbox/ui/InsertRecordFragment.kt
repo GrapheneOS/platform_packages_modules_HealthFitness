@@ -32,6 +32,7 @@ import android.health.connect.datatypes.IntervalRecord
 import android.health.connect.datatypes.MealType
 import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MindfulnessSessionRecord
+import android.health.connect.datatypes.NicotineIntakeRecord
 import android.health.connect.datatypes.OvulationTestRecord
 import android.health.connect.datatypes.PlannedExerciseSessionRecord
 import android.health.connect.datatypes.Record
@@ -302,6 +303,9 @@ class InsertRecordFragment : Fragment() {
                     mapOf("mMindfulnessSessionType" to MindfulnessSessionRecord::class)
                 ActivityIntensityRecord::class ->
                     mapOf("mActivityIntensityType" to ActivityIntensityRecord::class)
+
+                NicotineIntakeRecord::class ->
+                    mapOf("mNicotineIntakeType" to NicotineIntakeRecord::class)
                 else -> mapOf()
             }
         enumFieldNameToClass.forEach { fieldName, enumClass ->
@@ -353,6 +357,11 @@ class InsertRecordFragment : Fragment() {
                         fieldName,
                         EnumFieldsWithValues(routeDataMap as Map<String, Any>),
                     )
+            }
+
+            NicotineIntakeRecord::class -> {
+                fieldName = "mQuantity"
+                field = EditableTextView(this.requireContext(), fieldName, INPUT_TYPE_INT)
             }
         }
         if (field != null && fieldName != null) {
