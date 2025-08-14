@@ -126,6 +126,7 @@ constructor(
                 WearHealthAppData(
                     packageName = packageName,
                     appMetadata = connectedAppMetadata.appMetadata,
+                    isSystem = connectedAppMetadata.isSystem,
                     healthPermissionStatus = healthPermissionStatus,
                     accessLogs = healthPermissionTypesAccessLogs,
                     lastAccessTime =
@@ -138,7 +139,7 @@ constructor(
     }
 
     private fun sortSystemHealthPermissions() {
-        val nonSystemApps = wearHealthApps.value.filterNot { it.appMetadata.isSystem }
+        val nonSystemApps = wearHealthApps.value.filterNot { it.isSystem }
         systemHealthPermissions.value =
             systemHealthPermissions.value.sortedWith(
                 compareBy<HealthPermission> { healthPermission ->
@@ -190,7 +191,7 @@ constructor(
         val permissionStr = permission.toString()
 
         wearHealthApps.value
-            .filterNot { it.appMetadata.isSystem }
+            .filterNot { it.isSystem }
             .forEach { wearHealthApp ->
                 revokeHealthPermissionUseCase.invoke(
                     wearHealthApp.appMetadata.packageName,

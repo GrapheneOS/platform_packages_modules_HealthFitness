@@ -169,6 +169,7 @@ class WearConnectedAppsViewModelTest {
                 WearHealthAppData(
                     packageName = appMetadataOne.packageName,
                     appMetadata = appMetadataOne,
+                    isSystem = false,
                     healthPermissionStatus =
                         listOf(
                             GRANTED_READ_HEART_RATE_PERMISSION,
@@ -187,6 +188,7 @@ class WearConnectedAppsViewModelTest {
                 WearHealthAppData(
                     packageName = appMetadataTwo.packageName,
                     appMetadata = appMetadataTwo,
+                    isSystem = false,
                     healthPermissionStatus =
                         listOf(
                             GRANTED_READ_HEART_RATE_PERMISSION,
@@ -204,6 +206,7 @@ class WearConnectedAppsViewModelTest {
                 WearHealthAppData(
                     packageName = appMetadataThree.packageName,
                     appMetadata = appMetadataThree,
+                    isSystem = false,
                     healthPermissionStatus =
                         listOf(
                             GRANTED_READ_SKIN_TEMPERATURE_PERMISSION,
@@ -213,6 +216,7 @@ class WearConnectedAppsViewModelTest {
                 WearHealthAppData(
                     packageName = systemAppMetadataOne.packageName,
                     appMetadata = systemAppMetadataOne,
+                    isSystem = true,
                     healthPermissionStatus =
                         listOf(
                             GRANTED_READ_HEART_RATE_PERMISSION,
@@ -231,6 +235,7 @@ class WearConnectedAppsViewModelTest {
                 WearHealthAppData(
                     packageName = systemAppMetadataTwo.packageName,
                     appMetadata = systemAppMetadataTwo,
+                    isSystem = true,
                     healthPermissionStatus =
                         listOf(
                             DENIED_READ_HEART_RATE_PERMISSION,
@@ -339,6 +344,7 @@ class WearConnectedAppsViewModelTest {
                 WearHealthAppData(
                     packageName = appMetadataOne.packageName,
                     appMetadata = appMetadataOne,
+                    isSystem = false,
                     healthPermissionStatus =
                         listOf(
                             GRANTED_READ_HEART_RATE_PERMISSION,
@@ -357,6 +363,7 @@ class WearConnectedAppsViewModelTest {
                 WearHealthAppData(
                     packageName = systemAppMetadataOne.packageName,
                     appMetadata = systemAppMetadataOne,
+                    isSystem = true,
                     healthPermissionStatus =
                         listOf(
                             GRANTED_READ_HEART_RATE_PERMISSION,

@@ -116,8 +116,7 @@ class LoadHealthPermissionAppsTest {
 
         val connectedAppsList = loadHealthPermissionApps.invoke()
         val testAppMetadata = appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME)
-        val testApp2Metadata =
-            appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME_2, isSystem = true)
+        val testApp2Metadata = appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME_2)
         assertThat(connectedAppsList)
             .containsExactlyElementsIn(
                 listOf(
@@ -125,11 +124,13 @@ class LoadHealthPermissionAppsTest {
                         testAppMetadata,
                         status = ConnectedAppStatus.ALLOWED,
                         healthUsageLastAccess = null,
+                        isSystem = false,
                     ),
                     ConnectedAppMetadata(
                         testApp2Metadata,
                         status = ConnectedAppStatus.DENIED,
                         healthUsageLastAccess = null,
+                        isSystem = true,
                     ),
                 )
             )

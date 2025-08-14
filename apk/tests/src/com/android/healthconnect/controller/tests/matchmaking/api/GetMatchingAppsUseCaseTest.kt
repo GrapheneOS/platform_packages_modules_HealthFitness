@@ -90,7 +90,7 @@ class GetMatchingAppsUseCaseTest {
             }
             .whenever(healthConnectManager)
             .getMatchingApps(any(), any(), any(), any())
-        whenever(appInfoReader.getAppMetadata(any(), any())).thenReturn(appMetadata)
+        whenever(appInfoReader.getAppMetadata(any())).thenReturn(appMetadata)
 
         val result = useCase.invoke(GetMatchMakingAppsInput(packageName, recordTypes))
 
