@@ -51,20 +51,18 @@ fun ControlSingleDataTypeForSingleAppScreen(
 ) {
     val healthPermission = fromPermissionString(permissionStr)
 
-    // Get app metadata. PackageName is passed from allowed/denied apps page and must be in the
-    // connectedApps list, thus it's safe to have nonnull!! assert.
-    val appMetadata by viewModel.getAppMetadataByPackageName(packageName).collectAsState()
+    val healthAppDataList = viewModel.wearHealthApps.collectAsState()
+    val healthAppData = healthAppDataList.value.firstOrNull { it.packageName == packageName }
+    if (healthAppData == null) {
+        return
+    }
+    val appMetadata = healthAppData.appMetadata
 
-    val dataTypeToAllowedApps by viewModel.dataTypeToAllowedApps.collectAsState()
     // Whether this data type permission is allowed (foreground).
     var allowed by remember { mutableStateOf(true) }
-    allowed = dataTypeToAllowedApps[healthPermission]?.any { it.packageName == packageName } == true
+    allowed = healthAppData.isPermissionAllowed(healthPermission)
 
-    // Background permission status.
-    val backgroundReadStatus by viewModel.appToBackgroundReadStatus.collectAsState()
-    val isBackgroundPermissionRequested = appMetadata!! in backgroundReadStatus
-
-    ScrollableScreen(asScalingList = true, showTimeText = true, title = appMetadata!!.appName) {
+    ScrollableScreen(asScalingList = true, showTimeText = true, title = appMetadata.appName) {
         // Data type text.
         item {
             Row(
@@ -83,7 +81,7 @@ fun ControlSingleDataTypeForSingleAppScreen(
                 checked = allowed,
                 onCheckedChanged = { checked ->
                     if (checked) {
-                        viewModel.updatePermission(healthPermission, appMetadata!!, grant = true)
+                        viewModel.updatePermission(healthPermission, appMetadata, grant = true)
                         allowed = true
                     }
                 },
@@ -100,7 +98,7 @@ fun ControlSingleDataTypeForSingleAppScreen(
                 checked = !allowed,
                 onCheckedChanged = { checked ->
                     if (checked) {
-                        viewModel.updatePermission(healthPermission, appMetadata!!, grant = false)
+                        viewModel.updatePermission(healthPermission, appMetadata, grant = false)
                         allowed = false
                     }
                 },
@@ -112,7 +110,7 @@ fun ControlSingleDataTypeForSingleAppScreen(
         }
 
         // Button to allow/disallow background permission.
-        if (isBackgroundPermissionRequested) {
+        if (healthAppData.isBackgroundPermissionRequested()) {
             item {
                 WearPermissionButton(
                     label = stringResource(R.string.additional_access_label),
@@ -129,7 +127,7 @@ fun ControlSingleDataTypeForSingleAppScreen(
         // Allow mode text.
         item {
             val resourceId =
-                if (backgroundReadStatus[appMetadata!!] == true) {
+                if (healthAppData.isBackgroundPermissionGranted()) {
                     R.string.current_allow_mode_all_the_time
                 } else {
                     R.string.current_allow_mode_while_in_use

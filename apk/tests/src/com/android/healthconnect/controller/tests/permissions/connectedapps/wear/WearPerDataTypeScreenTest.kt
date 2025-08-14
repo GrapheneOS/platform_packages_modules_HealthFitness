@@ -38,12 +38,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
-import com.android.healthconnect.controller.permissions.app.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.connectedapps.wear.PerDataTypeScreen
 import com.android.healthconnect.controller.permissions.connectedapps.wear.WearConnectedAppsViewModel
-import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -102,6 +100,7 @@ class WearPerDataTypeScreenTest {
 
         wearConnectedAppsViewModel =
             WearConnectedAppsViewModel(
+                context,
                 loadHealthPermissionApps,
                 loadAppPermissionsStatusUseCase,
                 grantPermissionsStatusUseCase,
@@ -128,8 +127,8 @@ class WearPerDataTypeScreenTest {
         composeTestRule.setContent {
             PerDataTypeScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                permissionStr = "android.permission.health.READ_SKIN_TEMPERATURE",
+                dataTypeStr = "Skin temperature",
                 showRecentAccess = false,
                 onAppChipClick = { _, _, _ -> },
                 onRemoveAllAppAccessButtonClick = { _, _ -> },
@@ -141,21 +140,21 @@ class WearPerDataTypeScreenTest {
 
         composeTestRule.onRoot().printToLog("PerDataTypeScreenTest")
 
-        val listChildren = composeTestRule.onNodeWithText("Heart rate").onParent().onChildren()
-        listChildren[0].assert(hasText("Heart rate"))
+        val listChildren =
+            composeTestRule.onNodeWithText("Skin temperature").onParent().onChildren()
+        listChildren[0].assert(hasText("Skin temperature"))
         listChildren[1].performScrollTo().assert(hasText("Allowed"))
-        listChildren[2].performScrollTo().assert(hasText("AppName1"))
-        listChildren[3].performScrollTo().assert(hasText("AppName2"))
-        listChildren[4]
+        listChildren[2].performScrollTo().assert(hasText("AppName3"))
+        listChildren[3]
             .performScrollTo()
             .assert(
                 hasText(
-                    "Apps with this permission can access heart rate data from your device sensors."
+                    "Apps with this permission can access skin temperature data from your device sensors."
                 )
             )
-        listChildren[5].performScrollTo().assert(hasText("Not allowed"))
-        listChildren[6].performScrollTo().assert(hasText("AppName3"))
-        listChildren[7].performScrollTo().assert(hasText("Show system"))
+        listChildren[4].performScrollTo().assert(hasText("Not allowed"))
+        listChildren[5].performScrollTo().assert(hasText("AppName1"))
+        listChildren[6].performScrollTo().assert(hasText("Show system"))
     }
 
     @Test
@@ -168,8 +167,8 @@ class WearPerDataTypeScreenTest {
         composeTestRule.setContent {
             PerDataTypeScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                permissionStr = "android.permission.health.READ_OXYGEN_SATURATION",
+                dataTypeStr = "Oxygen saturation",
                 showRecentAccess = false,
                 onAppChipClick = { _, _, _ -> },
                 onRemoveAllAppAccessButtonClick = { _, _ -> },
@@ -181,23 +180,21 @@ class WearPerDataTypeScreenTest {
 
         composeTestRule.onRoot().printToLog("PerDataTypeScreenTest")
         val systemListChildren =
-            composeTestRule.onNodeWithText("Heart rate").onParent().onChildren()
-        systemListChildren[0].assert(hasText("Heart rate"))
+            composeTestRule.onNodeWithText("Oxygen saturation").onParent().onChildren()
+        systemListChildren[0].assert(hasText("Oxygen saturation"))
         systemListChildren[1].performScrollTo().assert(hasText("Allowed"))
-        systemListChildren[2].performScrollTo().assert(hasText("AppName1"))
-        systemListChildren[3].performScrollTo().assert(hasText("AppName2"))
-        systemListChildren[4].performScrollTo().assert(hasText("SystemAppName1"))
-        systemListChildren[5]
+        systemListChildren[2].performScrollTo().assert(hasText("SystemAppName1"))
+        systemListChildren[3]
             .performScrollTo()
             .assert(
                 hasText(
-                    "Apps with this permission can access heart rate data from your device sensors."
+                    "Apps with this permission can access oxygen saturation data from your device sensors."
                 )
             )
-        systemListChildren[6].performScrollTo().assert(hasText("Not allowed"))
-        systemListChildren[7].performScrollTo().assert(hasText("AppName3"))
-        systemListChildren[8].performScrollTo().assert(hasText("SystemAppName2"))
-        systemListChildren[9].performScrollTo().assert(hasText("Hide system"))
+        systemListChildren[4].performScrollTo().assert(hasText("Not allowed"))
+        systemListChildren[5].performScrollTo().assert(hasText("AppName1"))
+        systemListChildren[6].performScrollTo().assert(hasText("SystemAppName2"))
+        systemListChildren[7].performScrollTo().assert(hasText("Hide system"))
     }
 
     @Test
@@ -207,14 +204,8 @@ class WearPerDataTypeScreenTest {
                 appMetadata = appMetadataOne,
                 permissionStatus =
                     listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = false,
-                        ),
+                        GRANTED_READ_HEART_RATE_PERMISSION,
+                        DENIED_READ_SKIN_TEMPERATURE_PERMISSION,
                     ),
                 recentAccess =
                     listOf(
@@ -232,16 +223,8 @@ class WearPerDataTypeScreenTest {
                 appMetadata = appMetadataTwo,
                 permissionStatus =
                     listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission =
-                                HealthPermission.AdditionalPermission
-                                    .READ_HEALTH_DATA_IN_BACKGROUND,
-                            isGranted = true,
-                        ),
+                        GRANTED_READ_HEART_RATE_PERMISSION,
+                        GRANTED_READ_HEALTH_DATA_IN_BACKGROUND_PERMISSION,
                     ),
                 recentAccess =
                     listOf(
@@ -296,14 +279,8 @@ class WearPerDataTypeScreenTest {
                 appMetadata = appMetadataOne,
                 permissionStatus =
                     listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = false,
-                        ),
+                        GRANTED_READ_HEART_RATE_PERMISSION,
+                        DENIED_READ_SKIN_TEMPERATURE_PERMISSION,
                     ),
                 recentAccess = listOf(),
             )
@@ -313,16 +290,8 @@ class WearPerDataTypeScreenTest {
                 appMetadata = appMetadataTwo,
                 permissionStatus =
                     listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission =
-                                HealthPermission.AdditionalPermission
-                                    .READ_HEALTH_DATA_IN_BACKGROUND,
-                            isGranted = true,
-                        ),
+                        GRANTED_READ_HEART_RATE_PERMISSION,
+                        GRANTED_READ_HEALTH_DATA_IN_BACKGROUND_PERMISSION,
                     ),
                 recentAccess = listOf(),
             )
@@ -368,14 +337,8 @@ class WearPerDataTypeScreenTest {
                 appMetadata = appMetadataOne,
                 permissionStatus =
                     listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = false,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = false,
-                        ),
+                        DENIED_READ_HEART_RATE_PERMISSION,
+                        DENIED_READ_SKIN_TEMPERATURE_PERMISSION,
                     ),
                 recentAccess = listOf(),
             )
@@ -428,14 +391,8 @@ class WearPerDataTypeScreenTest {
                 appMetadata = appMetadataOne,
                 permissionStatus =
                     listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = true,
-                        ),
+                        GRANTED_READ_HEART_RATE_PERMISSION,
+                        GRANTED_READ_SKIN_TEMPERATURE_PERMISSION,
                     ),
                 recentAccess = listOf(),
             )
@@ -567,14 +524,9 @@ class WearPerDataTypeScreenTest {
                 appMetadata = appMetadataOne,
                 permissionStatus =
                     listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = false,
-                        ),
+                        GRANTED_READ_HEART_RATE_PERMISSION,
+                        DENIED_READ_SKIN_TEMPERATURE_PERMISSION,
+                        DENIED_READ_OXYGEN_SATURATION_PERMISSION,
                     ),
                 recentAccess =
                     listOf(
@@ -592,16 +544,8 @@ class WearPerDataTypeScreenTest {
                 appMetadata = appMetadataTwo,
                 permissionStatus =
                     listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission =
-                                HealthPermission.AdditionalPermission
-                                    .READ_HEALTH_DATA_IN_BACKGROUND,
-                            isGranted = true,
-                        ),
+                        GRANTED_READ_HEART_RATE_PERMISSION,
+                        GRANTED_READ_HEALTH_DATA_IN_BACKGROUND_PERMISSION,
                     ),
                 recentAccess =
                     listOf(
@@ -619,14 +563,8 @@ class WearPerDataTypeScreenTest {
                 appMetadata = appMetadataThree,
                 permissionStatus =
                     listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = false,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = false,
-                        ),
+                        GRANTED_READ_SKIN_TEMPERATURE_PERMISSION,
+                        DENIED_READ_HEART_RATE_PERMISSION,
                     ),
                 recentAccess = listOf(),
             )
@@ -636,18 +574,9 @@ class WearPerDataTypeScreenTest {
                 appMetadata = systemAppMetadataOne,
                 permissionStatus =
                     listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_OXYGEN_SATURATION_PERMISSION,
-                            isGranted = true,
-                        ),
+                        GRANTED_READ_HEART_RATE_PERMISSION,
+                        GRANTED_READ_SKIN_TEMPERATURE_PERMISSION,
+                        GRANTED_READ_OXYGEN_SATURATION_PERMISSION,
                     ),
                 recentAccess =
                     listOf(
@@ -665,23 +594,14 @@ class WearPerDataTypeScreenTest {
                 appMetadata = systemAppMetadataTwo,
                 permissionStatus =
                     listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = false,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = false,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_OXYGEN_SATURATION_PERMISSION,
-                            isGranted = false,
-                        ),
+                        DENIED_READ_HEART_RATE_PERMISSION,
+                        DENIED_READ_SKIN_TEMPERATURE_PERMISSION,
+                        DENIED_READ_OXYGEN_SATURATION_PERMISSION,
                     ),
                 recentAccess =
                     listOf(
                         AccessLog(
-                            systemAppMetadataOne.packageName,
+                            systemAppMetadataTwo.packageName,
                             listOf(RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE),
                             NOW.toEpochMilli(),
                             Constants.READ,

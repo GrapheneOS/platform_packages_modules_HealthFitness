@@ -31,6 +31,10 @@ object HealthPermissionToDatatypeMapper {
         return map
     }
 
+    fun getPermissionType(dataType: Class<out Record>): FitnessPermissionType? {
+        return map.entries.firstOrNull { it.value.contains(dataType) }?.key
+    }
+
     private fun createMap(): Map<FitnessPermissionType, List<Class<out Record>>> {
         val healthConnectMappings = HealthConnectMappings.getInstance()
 
