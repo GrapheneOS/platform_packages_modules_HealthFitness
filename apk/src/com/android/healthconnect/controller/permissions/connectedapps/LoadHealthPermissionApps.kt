@@ -59,7 +59,7 @@ constructor(
 
                 connectedApps.addAll(
                     appsWithHealthPermissions.map { (packageName, isSystem) ->
-                        val metadata = appInfoReader.getAppMetadata(packageName, isSystem)
+                        val metadata = appInfoReader.getAppMetadata(packageName)
                         val grantedPermissions = loadGrantedHealthPermissionsUseCase(packageName)
                         val isConnected =
                             if (grantedPermissions.isNotEmpty()) {
@@ -74,6 +74,7 @@ constructor(
                             isConnected,
                             appPermissionsType,
                             recentAccess[metadata.packageName],
+                            isSystem = isSystem,
                         )
                     }
                 )

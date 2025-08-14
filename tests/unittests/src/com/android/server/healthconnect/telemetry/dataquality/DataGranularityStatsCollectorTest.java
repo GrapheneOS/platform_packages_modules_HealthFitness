@@ -16,7 +16,7 @@
 
 package com.android.server.healthconnect.telemetry.dataquality;
 
-import static com.android.healthfitness.flags.Flags.FLAG_ACTIVE_DATA_GRANULARITY;
+import static com.android.healthfitness.flags.Flags.FLAG_LATENCY_METRICS_FLAG;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -90,7 +90,7 @@ public class DataGranularityStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags(FLAG_ACTIVE_DATA_GRANULARITY)
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void getLastWeekActiveDataSessionsGranularityStats_noSessions_returnsEmptyList() {
         List<DataGranularityStatsCollector.GranularityStats> stats =
                 mDataGranularityStatsCollector.getLastWeekActiveDataSessionsGranularityStats();
@@ -99,7 +99,7 @@ public class DataGranularityStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags(FLAG_ACTIVE_DATA_GRANULARITY)
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void getLastWeekActiveDataSessionsGranularityStats_noSeriesData_returnsEmptyList() {
         Instant sessionStartTime = Instant.now().minus(1, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(1, ChronoUnit.HOURS);
@@ -112,7 +112,7 @@ public class DataGranularityStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags(FLAG_ACTIVE_DATA_GRANULARITY)
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void
             getLastWeekActiveDataSessionsGranularityStats_oneSeriesSample_returnsSessionDurationAsGranularity() {
         Instant sessionStartTime = Instant.now().minus(1, ChronoUnit.DAYS);
@@ -136,7 +136,7 @@ public class DataGranularityStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags(FLAG_ACTIVE_DATA_GRANULARITY)
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void
             getLastWeekActiveDataSessionsGranularityStats_withSeriesData_calculatesGranularity() {
         Instant sessionStartTime = Instant.now().minus(2, ChronoUnit.DAYS);
@@ -192,7 +192,7 @@ public class DataGranularityStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags(FLAG_ACTIVE_DATA_GRANULARITY)
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void
             getLastWeekActiveDataSessionsGranularityStats_multipleSessions_calculatesGranularity() {
         Instant sessionOneStartTime = Instant.now().minus(3, ChronoUnit.DAYS);
@@ -244,7 +244,7 @@ public class DataGranularityStatsCollectorTest {
     }
 
     @Test
-    @DisableFlags(FLAG_ACTIVE_DATA_GRANULARITY)
+    @DisableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void flagDisabled_getLastWeekActiveDataSessionsGranularityStats_emptyListReturned() {
         Instant sessionStartTime = Instant.now().minus(1, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(8, ChronoUnit.HOURS);
@@ -262,7 +262,7 @@ public class DataGranularityStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags(FLAG_ACTIVE_DATA_GRANULARITY)
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void getLastWeekActiveDataSessionsGranularityStats_seriesOutsideSessionIsIgnored() {
         Instant sessionStartTime = Instant.now().minus(1, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(8, ChronoUnit.HOURS);
@@ -301,7 +301,7 @@ public class DataGranularityStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags(FLAG_ACTIVE_DATA_GRANULARITY)
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void getLastWeekActiveDataSessionsGranularityStats_seriesFromOtherPackagesIsIgnored() {
         Instant sessionStartTime = Instant.now().minus(1, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(8, ChronoUnit.HOURS);

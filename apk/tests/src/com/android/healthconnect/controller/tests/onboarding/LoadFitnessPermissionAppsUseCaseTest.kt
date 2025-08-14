@@ -20,7 +20,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.health.connect.HealthConnectManager.ACTION_SHOW_ONBOARDING
-import android.health.connect.HealthPermissions.READ_EXERCISE_ROUTES
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
@@ -96,7 +95,7 @@ class LoadFitnessPermissionAppsUseCaseTest {
     private val fitnessApp = AppMetadata(fitnessAppPackageName, "FitnessApp", null)
     private val fitnessApp2 = AppMetadata(fitnessAppPackageName2, "FitnessApp2", null)
     private val combinedApp = AppMetadata(combinedAppPackageName, "CombinedApp", null)
-    private val systemApp = AppMetadata(systemAppPackageName, "SystemApp", null, isSystem = true)
+    private val systemApp = AppMetadata(systemAppPackageName, "SystemApp", null)
 
     @Before
     fun setup() {
@@ -501,13 +500,10 @@ class LoadFitnessPermissionAppsUseCaseTest {
     }
 
     private suspend fun mockAppMetadata() {
-        whenever(appInfoReader.getAppMetadata(medicalAppPackageName, false)).thenReturn(medicalApp)
-        whenever(appInfoReader.getAppMetadata(fitnessAppPackageName, false)).thenReturn(fitnessApp)
-        whenever(appInfoReader.getAppMetadata(fitnessAppPackageName2, false))
-            .thenReturn(fitnessApp2)
-        whenever(appInfoReader.getAppMetadata(combinedAppPackageName, false))
-            .thenReturn(combinedApp)
-        whenever(appInfoReader.getAppMetadata(eq(systemAppPackageName), any()))
-            .thenReturn(systemApp)
+        whenever(appInfoReader.getAppMetadata(medicalAppPackageName)).thenReturn(medicalApp)
+        whenever(appInfoReader.getAppMetadata(fitnessAppPackageName)).thenReturn(fitnessApp)
+        whenever(appInfoReader.getAppMetadata(fitnessAppPackageName2)).thenReturn(fitnessApp2)
+        whenever(appInfoReader.getAppMetadata(combinedAppPackageName)).thenReturn(combinedApp)
+        whenever(appInfoReader.getAppMetadata(eq(systemAppPackageName))).thenReturn(systemApp)
     }
 }

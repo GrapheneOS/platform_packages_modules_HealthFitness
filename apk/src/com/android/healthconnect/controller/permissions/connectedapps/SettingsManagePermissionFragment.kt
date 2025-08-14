@@ -235,7 +235,7 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
                 bundleOf(
                     EXTRA_PACKAGE_NAME to app.appMetadata.packageName,
                     EXTRA_APP_NAME to app.appMetadata.appName,
-                    EXTRA_IS_SYSTEM_APP to app.appMetadata.isSystem,
+                    EXTRA_IS_SYSTEM_APP to app.isSystem,
                 ),
         )
     }

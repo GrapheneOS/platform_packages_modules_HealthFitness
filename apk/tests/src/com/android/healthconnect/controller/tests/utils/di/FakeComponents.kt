@@ -90,6 +90,7 @@ import java.time.LocalDate
 class FakeRecentAccessUseCase : ILoadRecentAccessUseCase {
     private var list: List<AccessLog> = emptyList()
     private var forceFail = false
+    var numberOfInvocations = 0
 
     fun updateList(list: List<AccessLog>) {
         this.list = list
@@ -104,6 +105,7 @@ class FakeRecentAccessUseCase : ILoadRecentAccessUseCase {
     }
 
     override suspend fun invoke(input: Unit): UseCaseResults<List<AccessLog>> {
+        numberOfInvocations += 1
         return if (forceFail) {
             UseCaseResults.Failed(IllegalStateException("Force fail recent access."))
         } else {
@@ -117,11 +119,14 @@ class FakeRecentAccessUseCase : ILoadRecentAccessUseCase {
 
     fun reset() {
         this.list = emptyList()
+        this.forceFail = false
+        this.numberOfInvocations = 0
     }
 }
 
 class FakeHealthPermissionAppsUseCase : ILoadHealthPermissionApps {
     private var list: List<ConnectedAppMetadata> = emptyList()
+    var numberOfInvocations = 0
 
     fun updateList(list: List<ConnectedAppMetadata>) {
         this.list = list
@@ -132,27 +137,32 @@ class FakeHealthPermissionAppsUseCase : ILoadHealthPermissionApps {
     }
 
     override suspend fun invoke(): List<ConnectedAppMetadata> {
+        numberOfInvocations += 1
         return list
     }
 
     fun reset() {
         this.list = emptyList()
+        this.numberOfInvocations = 0
     }
 }
 
 class FakeLoadAppPermissionsStatusUseCase : ILoadAppPermissionsStatusUseCase {
     private var internalMap = mutableMapOf<String, List<HealthPermissionStatus>>()
+    var numberOfInvocations = 0
 
     fun updatePackageName(packageName: String, permissions: List<HealthPermissionStatus>) {
         internalMap[packageName] = permissions
     }
 
     override suspend fun invoke(packageName: String): List<HealthPermissionStatus> {
+        numberOfInvocations += 1
         return internalMap[packageName] ?: emptyList()
     }
 
     fun reset() {
         internalMap.clear()
+        this.numberOfInvocations = 0
     }
 }
 

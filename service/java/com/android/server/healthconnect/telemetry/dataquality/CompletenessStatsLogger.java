@@ -19,7 +19,7 @@ package com.android.server.healthconnect.telemetry.dataquality;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DEVICE_INFO_STATS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_RECORDING_METHOD_STATS;
 
-import static com.android.healthfitness.flags.Flags.dataCompleteness;
+import static com.android.healthfitness.flags.Flags.latencyMetricsFlag;
 
 import android.health.HealthFitnessStatsLog;
 import android.health.connect.datatypes.Metadata;
@@ -46,7 +46,7 @@ public final class CompletenessStatsLogger {
     }
 
     void logRecordingMethodStats(List<CompletenessStatsCollector.RecordingMethodStat> stats) {
-        if (!dataCompleteness()) {
+        if (!latencyMetricsFlag()) {
             return;
         }
         for (CompletenessStatsCollector.RecordingMethodStat stat : stats) {
@@ -55,7 +55,7 @@ public final class CompletenessStatsLogger {
     }
 
     void logDeviceInfoStats(Set<CompletenessStatsCollector.DeviceInfoStat> stats) {
-        if (!dataCompleteness()) {
+        if (!latencyMetricsFlag()) {
             return;
         }
         for (CompletenessStatsCollector.DeviceInfoStat stat : stats) {

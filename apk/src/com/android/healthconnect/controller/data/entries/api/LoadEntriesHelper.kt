@@ -153,7 +153,13 @@ constructor(
         val records =
             dataTypes
                 .map { dataType ->
-                    readDataType(dataType, timeFilterRange, null, ascending = false, pageSize = 1)
+                    readDataType(
+                        dataType,
+                        timeFilterRange,
+                        input.packageName,
+                        ascending = false,
+                        pageSize = 1,
+                    )
                 }
                 .flatten()
 

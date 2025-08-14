@@ -37,12 +37,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
-import com.android.healthconnect.controller.permissions.app.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.connectedapps.wear.ControlSingleDataTypeForSingleAppScreen
 import com.android.healthconnect.controller.permissions.connectedapps.wear.WearConnectedAppsViewModel
-import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -96,6 +94,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
 
         wearConnectedAppsViewModel =
             WearConnectedAppsViewModel(
+                context,
                 loadHealthPermissionApps,
                 loadAppPermissionsStatusUseCase,
                 grantPermissionsStatusUseCase,
@@ -119,20 +118,9 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                 appMetadata = appMetadataOne,
                 permissionStatus =
                     listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission =
-                                HealthPermission.AdditionalPermission
-                                    .READ_HEALTH_DATA_IN_BACKGROUND,
-                            isGranted = true,
-                        ),
+                        GRANTED_READ_HEART_RATE_PERMISSION,
+                        GRANTED_READ_SKIN_TEMPERATURE_PERMISSION,
+                        GRANTED_READ_HEALTH_DATA_IN_BACKGROUND_PERMISSION,
                     ),
                 recentAccess =
                     listOf(
@@ -143,6 +131,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -155,16 +144,14 @@ class ControlSingleDataTypeForSingleAppScreenTest {
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
 
-        with(composeTestRule) {
-            setContent {
-                ControlSingleDataTypeForSingleAppScreen(
-                    viewModel = wearConnectedAppsViewModel,
-                    permissionStr = "android.permission.health.READ_HEART_RATE",
-                    dataTypeStr = "Heart rate",
-                    packageName = appMetadataOne.packageName,
-                    onAdditionalPermissionClick = { _ -> },
-                )
-            }
+        composeTestRule.setContent {
+            ControlSingleDataTypeForSingleAppScreen(
+                viewModel = wearConnectedAppsViewModel,
+                permissionStr = "android.permission.health.READ_HEART_RATE",
+                dataTypeStr = "Heart rate",
+                packageName = appMetadataOne.packageName,
+                onAdditionalPermissionClick = { _ -> },
+            )
         }
 
         composeTestRule.waitForIdle()
@@ -194,20 +181,9 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                 appMetadata = appMetadataOne,
                 permissionStatus =
                     listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = false,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission =
-                                HealthPermission.AdditionalPermission
-                                    .READ_HEALTH_DATA_IN_BACKGROUND,
-                            isGranted = false,
-                        ),
+                        DENIED_READ_HEART_RATE_PERMISSION,
+                        GRANTED_READ_SKIN_TEMPERATURE_PERMISSION,
+                        DENIED_READ_HEALTH_DATA_IN_BACKGROUND_PERMISSION,
                     ),
                 recentAccess =
                     listOf(
@@ -218,6 +194,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -230,16 +207,14 @@ class ControlSingleDataTypeForSingleAppScreenTest {
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
 
-        with(composeTestRule) {
-            setContent {
-                ControlSingleDataTypeForSingleAppScreen(
-                    viewModel = wearConnectedAppsViewModel,
-                    permissionStr = "android.permission.health.READ_HEART_RATE",
-                    dataTypeStr = "Heart rate",
-                    packageName = appMetadataOne.packageName,
-                    onAdditionalPermissionClick = { _ -> },
-                )
-            }
+        composeTestRule.setContent {
+            ControlSingleDataTypeForSingleAppScreen(
+                viewModel = wearConnectedAppsViewModel,
+                permissionStr = "android.permission.health.READ_HEART_RATE",
+                dataTypeStr = "Heart rate",
+                packageName = appMetadataOne.packageName,
+                onAdditionalPermissionClick = { _ -> },
+            )
         }
 
         composeTestRule.waitForIdle()
@@ -269,14 +244,8 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                 appMetadata = appMetadataOne,
                 permissionStatus =
                     listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = false,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = true,
-                        ),
+                        DENIED_READ_HEART_RATE_PERMISSION,
+                        GRANTED_READ_SKIN_TEMPERATURE_PERMISSION,
                     ),
                 recentAccess =
                     listOf(
@@ -287,6 +256,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -299,16 +269,14 @@ class ControlSingleDataTypeForSingleAppScreenTest {
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
 
-        with(composeTestRule) {
-            setContent {
-                ControlSingleDataTypeForSingleAppScreen(
-                    viewModel = wearConnectedAppsViewModel,
-                    permissionStr = "android.permission.health.READ_HEART_RATE",
-                    dataTypeStr = "Heart rate",
-                    packageName = appMetadataOne.packageName,
-                    onAdditionalPermissionClick = { _ -> },
-                )
-            }
+        composeTestRule.setContent {
+            ControlSingleDataTypeForSingleAppScreen(
+                viewModel = wearConnectedAppsViewModel,
+                permissionStr = "android.permission.health.READ_HEART_RATE",
+                dataTypeStr = "Heart rate",
+                packageName = appMetadataOne.packageName,
+                onAdditionalPermissionClick = { _ -> },
+            )
         }
 
         composeTestRule.waitForIdle()
@@ -329,5 +297,56 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                     "Currently, ${appMetadataOne.appName} can access fitness and wellness data while in use"
                 )
             )
+    }
+
+    @Test
+    fun doesNotDisplay_whenHealthAppDataDoesNotExist() {
+        val app =
+            AppConnectionsAndRecentAccess(
+                appMetadata = appMetadataOne,
+                permissionStatus =
+                    listOf(
+                        DENIED_READ_HEART_RATE_PERMISSION,
+                        GRANTED_READ_SKIN_TEMPERATURE_PERMISSION,
+                    ),
+                recentAccess =
+                    listOf(
+                        AccessLog(
+                            appMetadataOne.packageName,
+                            listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
+                            NOW.toEpochMilli(),
+                            Constants.READ,
+                        )
+                    ),
+                isSystem = false,
+            )
+
+        setupConnectedApps(
+            listOf(app),
+            loadHealthPermissionApps,
+            loadAppPermissionsStatusUseCase,
+            loadRecentAccessUseCase,
+        )
+
+        wearConnectedAppsViewModel.loadConnectedApps()
+        composeTestRule.waitForIdle()
+
+        composeTestRule.setContent {
+            ControlSingleDataTypeForSingleAppScreen(
+                viewModel = wearConnectedAppsViewModel,
+                permissionStr = "android.permission.health.READ_HEART_RATE",
+                dataTypeStr = "Heart rate",
+                packageName = appMetadataTwo.packageName,
+                onAdditionalPermissionClick = { _ -> },
+            )
+        }
+
+        composeTestRule.waitForIdle()
+
+        composeTestRule.onRoot().printToLog("ControlSingleDataTypeForSingleAppScreenTest")
+        composeTestRule.onNodeWithText("Heart rate").assertDoesNotExist()
+        composeTestRule.onNodeWithText("Allow").assertDoesNotExist()
+        composeTestRule.onNodeWithText("Don't allow").assertDoesNotExist()
+        composeTestRule.onNodeWithText("Additional access").assertDoesNotExist()
     }
 }

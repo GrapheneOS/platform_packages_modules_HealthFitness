@@ -32,12 +32,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
-import com.android.healthconnect.controller.permissions.app.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.connectedapps.wear.ControlBackgroundReadForSingleAppScreen
 import com.android.healthconnect.controller.permissions.connectedapps.wear.WearConnectedAppsViewModel
-import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -90,6 +88,7 @@ class ControlBackgroundPermissionForSingleAppScreenTest {
 
         wearConnectedAppsViewModel =
             WearConnectedAppsViewModel(
+                context,
                 loadHealthPermissionApps,
                 loadAppPermissionsStatusUseCase,
                 grantPermissionsStatusUseCase,
@@ -113,20 +112,9 @@ class ControlBackgroundPermissionForSingleAppScreenTest {
                 appMetadata = appMetadataOne,
                 permissionStatus =
                     listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_HEART_RATE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = true,
-                        ),
-                        HealthPermissionStatus(
-                            healthPermission =
-                                HealthPermission.AdditionalPermission
-                                    .READ_HEALTH_DATA_IN_BACKGROUND,
-                            isGranted = true,
-                        ),
+                        GRANTED_READ_HEART_RATE_PERMISSION,
+                        GRANTED_READ_SKIN_TEMPERATURE_PERMISSION,
+                        GRANTED_READ_HEALTH_DATA_IN_BACKGROUND_PERMISSION,
                     ),
                 recentAccess =
                     listOf(
@@ -137,6 +125,7 @@ class ControlBackgroundPermissionForSingleAppScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -188,16 +177,9 @@ class ControlBackgroundPermissionForSingleAppScreenTest {
         val app =
             AppConnectionsAndRecentAccess(
                 appMetadata = appMetadataOne,
-                permissionStatus =
-                    listOf(
-                        HealthPermissionStatus(
-                            healthPermission =
-                                HealthPermission.AdditionalPermission
-                                    .READ_HEALTH_DATA_IN_BACKGROUND,
-                            isGranted = true,
-                        )
-                    ),
+                permissionStatus = listOf(GRANTED_READ_HEALTH_DATA_IN_BACKGROUND_PERMISSION),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         setupConnectedApps(

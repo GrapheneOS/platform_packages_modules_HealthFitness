@@ -18,12 +18,7 @@ package com.android.healthconnect.controller.shared.app
 import android.graphics.drawable.Drawable
 
 /** Represents an app being displayed in Health Connect. */
-data class AppMetadata(
-    val packageName: String,
-    val appName: String,
-    val icon: Drawable?,
-    val isSystem: Boolean = false,
-) {
+data class AppMetadata(val packageName: String, val appName: String, val icon: Drawable?) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

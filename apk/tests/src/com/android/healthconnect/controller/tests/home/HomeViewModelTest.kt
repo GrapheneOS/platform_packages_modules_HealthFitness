@@ -462,9 +462,9 @@ class HomeViewModelTest {
                         packageName = "is.a.system.app",
                         appName = "IS_A_SYSTEM_APP",
                         icon = null,
-                        isSystem = true,
                     ),
                     ConnectedAppStatus.ALLOWED,
+                    isSystem = true,
                 ),
             )
         )

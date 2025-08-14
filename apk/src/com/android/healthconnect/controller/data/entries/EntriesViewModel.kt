@@ -103,7 +103,11 @@ constructor(
 
     val latestDate = MutableLiveData<Instant>()
 
-    fun loadLatestRecordDate(permissionType: HealthPermissionType, selectedDate: Instant) {
+    fun loadLatestRecordDate(
+        permissionType: HealthPermissionType,
+        selectedDate: Instant,
+        packageName: String? = null,
+    ) {
         // There is no browse by period for phr data
         if (permissionType is MedicalPermissionType) {
             return
@@ -112,7 +116,11 @@ constructor(
         viewModelScope.launch {
             val latestDateResult =
                 loadLatestDateUseCase.invoke(
-                    LoadLatestEntryDateInput(permissionType as FitnessPermissionType, selectedDate)
+                    LoadLatestEntryDateInput(
+                        permissionType as FitnessPermissionType,
+                        selectedDate,
+                        packageName,
+                    )
                 )
 
             val latestRecordDate =

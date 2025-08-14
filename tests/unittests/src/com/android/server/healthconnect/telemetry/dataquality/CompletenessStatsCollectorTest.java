@@ -95,7 +95,7 @@ public class CompletenessStatsCollectorTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    @DisableFlags(Flags.FLAG_LATENCY_METRICS_FLAG)
     public void readRecordingMethodStats_flagDisabled_returnsEmpty() {
         RecordInternal<StepsRecord> stepsRecord =
                 buildStepsRecord().setRecordingMethod(RECORDING_METHOD_AUTOMATICALLY_RECORDED);
@@ -105,7 +105,7 @@ public class CompletenessStatsCollectorTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    @DisableFlags(Flags.FLAG_LATENCY_METRICS_FLAG)
     public void readDeviceInfoStats_flagDisabled_returnsEmpty() {
         RecordInternal<StepsRecord> stepsRecord = buildStepsRecord();
         mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME_1, stepsRecord);
@@ -114,7 +114,7 @@ public class CompletenessStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    @EnableFlags(Flags.FLAG_LATENCY_METRICS_FLAG)
     public void readRecordingMethodStats_flagEnabled_returnsStats() {
         RecordInternal<StepsRecord> stepsRecord =
                 buildStepsRecord().setRecordingMethod(RECORDING_METHOD_ACTIVELY_RECORDED);
@@ -139,7 +139,7 @@ public class CompletenessStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    @EnableFlags(Flags.FLAG_LATENCY_METRICS_FLAG)
     public void readRecordingMethodStats_sameTypePackageMethod_returnsOneStat() {
         RecordInternal<StepsRecord> stepsRecord1 =
                 buildStepsRecord().setRecordingMethod(RECORDING_METHOD_AUTOMATICALLY_RECORDED);
@@ -158,7 +158,7 @@ public class CompletenessStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    @EnableFlags(Flags.FLAG_LATENCY_METRICS_FLAG)
     public void readRecordingMethodStats_recordTooOld_returnsEmpty() {
         RecordInternal<StepsRecord> stepsRecord =
                 buildStepsRecord()
@@ -172,7 +172,7 @@ public class CompletenessStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    @EnableFlags(Flags.FLAG_LATENCY_METRICS_FLAG)
     public void readDeviceInfoStats_recordTooOld_returnsEmpty() {
         RecordInternal<StepsRecord> stepsRecord =
                 buildStepsRecord()
@@ -185,7 +185,7 @@ public class CompletenessStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DATA_COMPLETENESS)
+    @EnableFlags(Flags.FLAG_LATENCY_METRICS_FLAG)
     public void readDeviceInfoStats_variousRecords_returnsCorrectStats() {
         Device device1 =
                 new Device.Builder()

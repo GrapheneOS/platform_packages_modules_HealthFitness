@@ -38,18 +38,14 @@ constructor(
     private var cache: HashMap<String, AppMetadata> = HashMap()
     private val packageManager = context.packageManager
 
-    suspend fun getAppMetadata(packageName: String, isSystem: Boolean = false): AppMetadata {
+    suspend fun getAppMetadata(packageName: String): AppMetadata {
         cache[packageName]?.let {
             // TODO(b/422986550): Remove special casing when DDP name updates in service
             if (packageName == DEVICE_DATA_PROVIDER_PACKAGE) {
                 return getWithCurrentDeviceName(it)
             }
 
-            return if (it.isSystem == isSystem) {
-                it
-            } else {
-                AppMetadata(it.packageName, it.appName, it.icon, isSystem)
-            }
+            return it
         }
         // Always read the DDP package directly from the service - package manager will return
         // something like "Android System" which we don't want to display.
@@ -63,7 +59,6 @@ constructor(
                                 .getApplicationLabel(getPackageInfo(packageName))
                                 .toString(),
                         icon = packageManager.getApplicationIcon(packageName),
-                        isSystem = isSystem,
                     )
                 cache[packageName] = app
                 return app
@@ -108,6 +103,5 @@ constructor(
             Settings.Global.getString(context.contentResolver, Settings.Global.DEVICE_NAME)
                 ?: dataDeviceProviderPackage.appName,
             dataDeviceProviderPackage.icon,
-            dataDeviceProviderPackage.isSystem,
         )
 }
