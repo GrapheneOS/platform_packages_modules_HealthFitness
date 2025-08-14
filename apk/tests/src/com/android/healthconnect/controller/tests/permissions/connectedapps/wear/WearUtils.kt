@@ -72,6 +72,7 @@ fun setupConnectedApps(
                 permissionsType = AppPermissionsType.FITNESS_PERMISSIONS_ONLY,
                 healthUsageLastAccess =
                     it.recentAccess.maxOfOrNull { accessLog -> accessLog.accessTime },
+                isSystem = it.isSystem,
             )
         (loadHealthPermissionApps as FakeHealthPermissionAppsUseCase).addToList(
             connectedAppMetadata
@@ -132,4 +133,5 @@ data class AppConnectionsAndRecentAccess(
     val appMetadata: AppMetadata,
     val permissionStatus: List<HealthPermissionStatus>,
     val recentAccess: List<AccessLog>,
+    val isSystem: Boolean,
 )

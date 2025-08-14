@@ -216,6 +216,7 @@ class WearPerDataTypeScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app2 =
@@ -235,6 +236,7 @@ class WearPerDataTypeScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -283,6 +285,7 @@ class WearPerDataTypeScreenTest {
                         DENIED_READ_SKIN_TEMPERATURE_PERMISSION,
                     ),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         val app2 =
@@ -294,6 +297,7 @@ class WearPerDataTypeScreenTest {
                         GRANTED_READ_HEALTH_DATA_IN_BACKGROUND_PERMISSION,
                     ),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -341,6 +345,7 @@ class WearPerDataTypeScreenTest {
                         DENIED_READ_SKIN_TEMPERATURE_PERMISSION,
                     ),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -395,6 +400,7 @@ class WearPerDataTypeScreenTest {
                         GRANTED_READ_SKIN_TEMPERATURE_PERMISSION,
                     ),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -537,6 +543,7 @@ class WearPerDataTypeScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app2 =
@@ -556,6 +563,7 @@ class WearPerDataTypeScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app3 =
@@ -567,6 +575,7 @@ class WearPerDataTypeScreenTest {
                         DENIED_READ_HEART_RATE_PERMISSION,
                     ),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         val app4 =
@@ -587,6 +596,7 @@ class WearPerDataTypeScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = true,
             )
 
         val app5 =
@@ -607,6 +617,7 @@ class WearPerDataTypeScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = true,
             )
 
         setupConnectedApps(

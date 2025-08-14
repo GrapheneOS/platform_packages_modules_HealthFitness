@@ -125,6 +125,7 @@ class ControlBackgroundPermissionForSingleAppScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -178,6 +179,7 @@ class ControlBackgroundPermissionForSingleAppScreenTest {
                 appMetadata = appMetadataOne,
                 permissionStatus = listOf(GRANTED_READ_HEALTH_DATA_IN_BACKGROUND_PERMISSION),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         setupConnectedApps(

@@ -290,6 +290,7 @@ class WearConnectedAppsViewModelTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app2 =
@@ -321,6 +322,7 @@ class WearConnectedAppsViewModelTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = true,
             )
         setupConnectedApps(
             listOf(app1, app2),
@@ -421,6 +423,7 @@ class WearConnectedAppsViewModelTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app2 =
@@ -428,6 +431,7 @@ class WearConnectedAppsViewModelTest {
                 appMetadata = systemAppMetadataOne,
                 permissionStatus = listOf(GRANTED_READ_SKIN_TEMPERATURE_PERMISSION),
                 recentAccess = listOf(),
+                isSystem = true,
             )
         setupConnectedApps(
             listOf(app1, app2),
@@ -492,6 +496,7 @@ class WearConnectedAppsViewModelTest {
                             Constants.READ,
                         ),
                     ),
+                isSystem = false,
             )
 
         val app2 =
@@ -519,6 +524,7 @@ class WearConnectedAppsViewModelTest {
                             Constants.READ,
                         ),
                     ),
+                isSystem = true,
             )
         setupConnectedApps(
             listOf(app1, app2),
@@ -576,6 +582,7 @@ class WearConnectedAppsViewModelTest {
                             Constants.READ,
                         ),
                     ),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -655,6 +662,7 @@ class WearConnectedAppsViewModelTest {
                             Constants.READ,
                         ),
                     ),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -736,6 +744,7 @@ class WearConnectedAppsViewModelTest {
                             Constants.READ,
                         ),
                     ),
+                isSystem = false,
             )
 
         val app2 =
@@ -757,6 +766,7 @@ class WearConnectedAppsViewModelTest {
                             Constants.READ,
                         ),
                     ),
+                isSystem = true,
             )
         setupConnectedApps(
             listOf(app1, app2),
@@ -802,6 +812,7 @@ class WearConnectedAppsViewModelTest {
                 appMetadata = appMetadataOne,
                 permissionStatus = listOf(GRANTED_READ_HEART_RATE_PERMISSION),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         val app2 =
@@ -809,6 +820,7 @@ class WearConnectedAppsViewModelTest {
                 appMetadata = systemAppMetadataOne,
                 permissionStatus = listOf(GRANTED_READ_HEART_RATE_PERMISSION),
                 recentAccess = listOf(),
+                isSystem = true,
             )
         setupConnectedApps(
             listOf(app1, app2),
@@ -858,6 +870,7 @@ class WearConnectedAppsViewModelTest {
                             Constants.READ,
                         ),
                     ),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -897,6 +910,7 @@ class WearConnectedAppsViewModelTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -949,6 +963,7 @@ class WearConnectedAppsViewModelTest {
                         DENIED_READ_SKIN_TEMPERATURE_PERMISSION,
                     ),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         val app2 =
@@ -956,6 +971,7 @@ class WearConnectedAppsViewModelTest {
                 appMetadata = systemAppMetadataOne,
                 permissionStatus = listOf(GRANTED_READ_HEART_RATE_PERMISSION),
                 recentAccess = listOf(),
+                isSystem = true,
             )
         setupConnectedApps(
             listOf(app1, app2),
@@ -1011,6 +1027,7 @@ class WearConnectedAppsViewModelTest {
                         DENIED_READ_SKIN_TEMPERATURE_PERMISSION,
                     ),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         val app2 =
@@ -1018,6 +1035,7 @@ class WearConnectedAppsViewModelTest {
                 appMetadata = systemAppMetadataOne,
                 permissionStatus = listOf(GRANTED_READ_HEART_RATE_PERMISSION),
                 recentAccess = listOf(),
+                isSystem = true,
             )
         setupConnectedApps(
             listOf(app1, app2),
@@ -1074,6 +1092,7 @@ class WearConnectedAppsViewModelTest {
                         GRANTED_READ_HEALTH_DATA_IN_BACKGROUND_PERMISSION,
                     ),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         val app2 =
@@ -1081,6 +1100,7 @@ class WearConnectedAppsViewModelTest {
                 appMetadata = systemAppMetadataOne,
                 permissionStatus = listOf(GRANTED_READ_HEART_RATE_PERMISSION),
                 recentAccess = listOf(),
+                isSystem = true,
             )
         setupConnectedApps(
             listOf(app1, app2),
@@ -1139,6 +1159,7 @@ class WearConnectedAppsViewModelTest {
                         GRANTED_READ_HEALTH_DATA_IN_BACKGROUND_PERMISSION,
                     ),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         val app2 =
@@ -1146,6 +1167,7 @@ class WearConnectedAppsViewModelTest {
                 appMetadata = systemAppMetadataOne,
                 permissionStatus = listOf(GRANTED_READ_HEART_RATE_PERMISSION),
                 recentAccess = listOf(),
+                isSystem = true,
             )
         setupConnectedApps(
             listOf(app1, app2),
@@ -1210,6 +1232,7 @@ class WearConnectedAppsViewModelTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app2 =
@@ -1229,6 +1252,7 @@ class WearConnectedAppsViewModelTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app3 =
@@ -1240,6 +1264,7 @@ class WearConnectedAppsViewModelTest {
                         DENIED_READ_HEART_RATE_PERMISSION,
                     ),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         val app4 =
@@ -1260,6 +1285,7 @@ class WearConnectedAppsViewModelTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = true,
             )
 
         val app5 =
@@ -1280,6 +1306,7 @@ class WearConnectedAppsViewModelTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = true,
             )
 
         setupConnectedApps(

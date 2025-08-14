@@ -131,6 +131,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -193,6 +194,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -254,6 +256,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         setupConnectedApps(
@@ -315,6 +318,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         setupConnectedApps(

@@ -130,6 +130,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app2 =
@@ -149,6 +150,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app3 =
@@ -156,6 +158,7 @@ class WearAllDataTypesScreenTest {
                 appMetadata = appMetadataThree,
                 permissionStatus = listOf(DENIED_READ_SKIN_TEMPERATURE_PERMISSION),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         val app4 =
@@ -176,6 +179,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = true,
             )
 
         setupConnectedApps(
@@ -226,6 +230,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app2 =
@@ -245,6 +250,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app3 =
@@ -258,6 +264,7 @@ class WearAllDataTypesScreenTest {
                         )
                     ),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         val app4 =
@@ -278,6 +285,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = true,
             )
 
         setupConnectedApps(
@@ -330,6 +338,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app2 =
@@ -349,6 +358,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app3 =
@@ -362,6 +372,7 @@ class WearAllDataTypesScreenTest {
                         )
                     ),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         val app4 =
@@ -382,6 +393,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = true,
             )
 
         setupConnectedApps(
@@ -432,6 +444,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app2 =
@@ -451,6 +464,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app3 =
@@ -458,6 +472,7 @@ class WearAllDataTypesScreenTest {
                 appMetadata = appMetadataThree,
                 permissionStatus = listOf(GRANTED_READ_SKIN_TEMPERATURE_PERMISSION),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         val app4 =
@@ -478,6 +493,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = true,
             )
 
         setupConnectedApps(
@@ -533,6 +549,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         ),
                     ),
+                isSystem = false,
             )
 
         val app2 =
@@ -552,6 +569,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app3 =
@@ -565,6 +583,7 @@ class WearAllDataTypesScreenTest {
                         )
                     ),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         val app4 =
@@ -585,6 +604,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = true,
             )
 
         setupConnectedApps(
@@ -641,6 +661,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         ),
                     ),
+                isSystem = false,
             )
 
         val app2 =
@@ -660,6 +681,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = false,
             )
 
         val app3 =
@@ -667,6 +689,7 @@ class WearAllDataTypesScreenTest {
                 appMetadata = appMetadataThree,
                 permissionStatus = listOf(DENIED_READ_SKIN_TEMPERATURE_PERMISSION),
                 recentAccess = listOf(),
+                isSystem = false,
             )
 
         val app4 =
@@ -687,6 +710,7 @@ class WearAllDataTypesScreenTest {
                             Constants.READ,
                         )
                     ),
+                isSystem = true,
             )
 
         setupConnectedApps(
