@@ -148,7 +148,7 @@ public class InternalHealthConnectMappingsTest {
                 .containsNoDuplicates();
     }
 
-    @DisableFlags(Flags.FLAG_ACTIVITY_INTENSITY)
+    @DisableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING})
     @Test
     public void getLoggingEnumForRecordTypeId_equalsToLegacy() {
         List<InternalDataTypeDescriptor> descriptors = getAllInternalDataTypeDescriptors();
