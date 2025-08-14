@@ -35,7 +35,12 @@ import com.android.healthconnect.controller.data.formatters.shared.HealthDataEnt
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.NOW
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.forDataType
+import com.android.healthconnect.controller.tests.utils.fromDataSource
+import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.getStepsRecord
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.toInstant
@@ -44,6 +49,7 @@ import com.android.healthconnect.controller.utils.toLocalDate
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.Instant
 import java.time.LocalDate
 import java.util.Locale
 import javax.inject.Inject
@@ -73,7 +79,7 @@ class LoadLatestEntryDateUseCaseTest {
 
     private lateinit var context: Context
     private lateinit var loadEntriesHelper: LoadEntriesHelper
-    private lateinit var mLoadLatestEntryDateUseCase: LoadLatestEntryDateUseCase
+    private lateinit var loadLatestEntryDateUseCase: LoadLatestEntryDateUseCase
 
     @Before
     fun setup() {
@@ -88,8 +94,7 @@ class LoadLatestEntryDateUseCaseTest {
                 healthConnectManager,
                 dataSourceReader,
             )
-        mLoadLatestEntryDateUseCase =
-            LoadLatestEntryDateUseCase(Dispatchers.Main, loadEntriesHelper)
+        loadLatestEntryDateUseCase = LoadLatestEntryDateUseCase(Dispatchers.Main, loadEntriesHelper)
     }
 
     @Test
@@ -124,10 +129,70 @@ class LoadLatestEntryDateUseCaseTest {
                 ArgumentMatchers.any(),
             )
 
-        val result = mLoadLatestEntryDateUseCase.invoke(input)
+        val result = loadLatestEntryDateUseCase.invoke(input)
         assertThat(result is UseCaseResults.Success).isTrue()
         assertThat((result as UseCaseResults.Success).data.toLocalDate().year).isEqualTo(2023)
         assertThat(result.data.toLocalDate().dayOfYear).isEqualTo(stepsDateNew.dayOfYear)
+    }
+
+    @Test
+    fun invoke_withPackageName_readsRecordsFilteringPackageName() = runTest {
+        val input =
+            LoadLatestEntryDateInput(
+                permissionType = FitnessPermissionType.STEPS,
+                displayedStartTime = currentTime.toInstant(),
+                packageName = DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+            )
+        val stepsDateA = LocalDate.of(2021, 9, 13)
+        val stepsRecordA =
+            getStepsRecordWithPackage(
+                steps = 100,
+                time = stepsDateA.toInstantAtStartOfDay(),
+                packageName = DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+            )
+        val stepsDateB = LocalDate.of(2023, 10, 14)
+        val stepsRecordB =
+            getStepsRecordWithPackage(
+                steps = 100,
+                time = stepsDateB.toInstantAtStartOfDay(),
+                packageName = TEST_APP_PACKAGE_NAME,
+            )
+
+        doAnswer(prepareRecordsAnswer(listOf(stepsRecordA)))
+            .`when`(healthConnectManager)
+            .readRecords(
+                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                    request.fromDataSource(DEVICE_DATA_PROVIDER_PACKAGE_NAME) &&
+                        request.forDataType(dataType = StepsRecord::class.java)
+                },
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+            )
+
+        doAnswer(prepareRecordsAnswer(listOf(stepsRecordA, stepsRecordB)))
+            .`when`(healthConnectManager)
+            .readRecords(
+                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                    request.dataOrigins?.size == 0 &&
+                        request.forDataType(dataType = StepsRecord::class.java)
+                },
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+            )
+
+        doAnswer(prepareRecordsAnswer(listOf()))
+            .`when`(healthConnectManager)
+            .readRecords(
+                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                    request.forDataType(dataType = StepsCadenceRecord::class.java)
+                },
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+            )
+
+        val result = loadLatestEntryDateUseCase.invoke(input)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data.toLocalDate()).isEqualTo(stepsDateA)
     }
 
     @Test
@@ -158,7 +223,7 @@ class LoadLatestEntryDateUseCaseTest {
                 ArgumentMatchers.any(),
             )
 
-        val result = mLoadLatestEntryDateUseCase.invoke(input)
+        val result = loadLatestEntryDateUseCase.invoke(input)
         assertThat(result is UseCaseResults.Success).isTrue()
         assertThat((result as UseCaseResults.Success).data).isEqualTo(currentTime.toInstant())
     }
@@ -181,7 +246,7 @@ class LoadLatestEntryDateUseCaseTest {
                 displayedStartTime = sleepDate.toInstantAtStartOfDay(),
             )
 
-        val result = mLoadLatestEntryDateUseCase.invoke(input)
+        val result = loadLatestEntryDateUseCase.invoke(input)
         assertThat(result is UseCaseResults.Failed).isTrue()
         assertThat((result as UseCaseResults.Failed).exception is HealthConnectException).isTrue()
         assertThat((result.exception as HealthConnectException).errorCode)
@@ -205,5 +270,14 @@ class LoadLatestEntryDateUseCaseTest {
             null
         }
         return answer
+    }
+
+    private fun getStepsRecordWithPackage(
+        steps: Long,
+        time: Instant = NOW,
+        packageName: String,
+    ): StepsRecord {
+        return StepsRecord.Builder(getMetaData(packageName), time, time.plusSeconds(2), steps)
+            .build()
     }
 }

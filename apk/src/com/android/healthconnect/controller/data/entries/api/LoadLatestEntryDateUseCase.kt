@@ -41,6 +41,7 @@ constructor(
 data class LoadLatestEntryDateInput(
     val permissionType: FitnessPermissionType,
     val displayedStartTime: Instant,
+    val packageName: String? = null,
 )
 
 interface ILoadLatestEntryDateUseCase {
