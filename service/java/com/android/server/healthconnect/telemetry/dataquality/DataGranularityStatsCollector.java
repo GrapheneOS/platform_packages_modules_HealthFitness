@@ -99,7 +99,7 @@ public final class DataGranularityStatsCollector {
     /** Returns {@link GranularityStats} for given session data type for past week. */
     List<GranularityStats> getLastWeekActiveDataSessionsGranularityStats() {
 
-        if (!Flags.activeDataGranularity()) {
+        if (!Flags.latencyMetricsFlag()) {
             return List.of();
         }
         List<GranularityStats> granularityStats = new ArrayList<>();
