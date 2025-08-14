@@ -43,8 +43,7 @@ import java.util.List;
  */
 public final class ElevationGainedRecordHelper
         extends IntervalRecordHelper<ElevationGainedRecordInternal> {
-    private static final String ELEVATION_GAINED_RECORD_TABLE_NAME =
-            "elevation_gained_record_table";
+    public static final String ELEVATION_GAINED_RECORD_TABLE_NAME = "elevation_gained_record_table";
     private static final String ELEVATION_COLUMN_NAME = "elevation";
 
     public ElevationGainedRecordHelper() {

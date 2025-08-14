@@ -21,7 +21,10 @@ import static com.android.healthfitness.flags.Flags.FLAG_LATENCY_METRICS_FLAG;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord;
+import android.health.connect.datatypes.DistanceRecord;
+import android.health.connect.datatypes.ElevationGainedRecord;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.HeartRateRecord;
@@ -31,9 +34,14 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.SkinTemperatureRecord;
 import android.health.connect.datatypes.SpeedRecord;
 import android.health.connect.datatypes.StepsCadenceRecord;
+import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
+import android.health.connect.datatypes.units.Energy;
+import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Power;
 import android.health.connect.datatypes.units.TemperatureDelta;
 import android.health.connect.datatypes.units.Velocity;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
@@ -93,7 +101,7 @@ public class DataGranularityStatsCollectorTest {
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void getLastWeekActiveDataSessionsGranularityStats_noSessions_returnsEmptyList() {
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekActiveDataSessionsGranularityStats();
+                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
 
         assertThat(stats).isEmpty();
     }
@@ -106,7 +114,7 @@ public class DataGranularityStatsCollectorTest {
         insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekActiveDataSessionsGranularityStats();
+                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
 
         assertThat(stats).hasSize(0);
     }
@@ -114,7 +122,7 @@ public class DataGranularityStatsCollectorTest {
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void
-            getLastWeekActiveDataSessionsGranularityStats_oneSeriesSample_returnsSessionDurationAsGranularity() {
+            getLastWeekExerciseSessionsGranularityStats_oneSeriesSample_returnsSessionDurationAsGranularity() {
         Instant sessionStartTime = Instant.now().minus(1, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(8, ChronoUnit.HOURS);
         long sessionDuration = sessionEndTime.toEpochMilli() - sessionStartTime.toEpochMilli();
@@ -126,7 +134,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfSamplesToInsert= */ 1);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekActiveDataSessionsGranularityStats();
+                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
 
         assertThat(stats).hasSize(6);
         for (DataGranularityStatsCollector.GranularityStats stat : stats) {
@@ -176,25 +184,42 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfSamplesToInsert= */ 2);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekActiveDataSessionsGranularityStats();
+                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
 
-        assertThat(stats).hasSize(6);
-        for (DataGranularityStatsCollector.GranularityStats stat : stats) {
-            assertThat(stat.packageName()).isEqualTo(TEST_PACKAGE_NAME);
-            switch (stat.seriesRecordIdentifier()) {
-                case RecordTypeIdentifier.RECORD_TYPE_HEART_RATE ->
-                        assertThat(stat.granularity()).isEqualTo(sessionDurationMillis / 180);
-                case RecordTypeIdentifier.RECORD_TYPE_SPEED ->
-                        assertThat(stat.granularity()).isEqualTo(sessionDurationMillis / 90);
-                default -> assertThat(stat.granularity()).isEqualTo(sessionDurationMillis / 2);
-            }
-        }
+        List<DataGranularityStatsCollector.GranularityStats> expectedStats =
+                List.of(
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_HEART_RATE,
+                                /* granularity= */ sessionDurationMillis / 180),
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_SPEED,
+                                /* granularity= */ sessionDurationMillis / 90),
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_POWER,
+                                /* granularity= */ sessionDurationMillis / 2),
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE,
+                                /* granularity= */ sessionDurationMillis / 2),
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE,
+                                /* granularity= */ sessionDurationMillis / 2),
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE,
+                                /* granularity= */ sessionDurationMillis / 2));
+
+        assertThat(stats).containsExactlyElementsIn(expectedStats);
     }
 
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void
-            getLastWeekActiveDataSessionsGranularityStats_multipleSessions_calculatesGranularity() {
+            getLastWeekExerciseSessionsGranularityStats_multipleSessions_calculatesGranularity() {
         Instant sessionOneStartTime = Instant.now().minus(3, ChronoUnit.DAYS);
         Instant sessionOneEndTime = sessionOneStartTime.plus(1, ChronoUnit.HOURS);
         long sessionOneDuration =
@@ -218,7 +243,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfSamplesToInsert= */ 50);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekActiveDataSessionsGranularityStats();
+                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
 
         // 2 sessions * 6 data types = 12 stats
         assertThat(stats).hasSize(12);
@@ -256,7 +281,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfSamplesToInsert= */ 1);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekActiveDataSessionsGranularityStats();
+                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
 
         assertThat(stats).hasSize(0);
     }
@@ -287,12 +312,12 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfSamplesToInsert= */ 2);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekActiveDataSessionsGranularityStats();
+                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
         long granularity = sessionDuration / 5; // number of series inserted during session
 
         assertThat(stats).hasSize(1); // Only Heart Rate is present
         for (DataGranularityStatsCollector.GranularityStats stat : stats) {
-            if (stat.seriesRecordIdentifier() != RecordTypeIdentifier.RECORD_TYPE_HEART_RATE) {
+            if (stat.recordIdentifier() != RecordTypeIdentifier.RECORD_TYPE_HEART_RATE) {
                 continue;
             }
             assertThat(stat.granularity()).isEqualTo(granularity);
@@ -319,7 +344,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfSamplesToInsert= */ 5);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekActiveDataSessionsGranularityStats();
+                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
         long granularity = sessionDuration / 5;
 
         assertThat(stats).hasSize(1); // Only HR data from valid package
@@ -327,6 +352,274 @@ public class DataGranularityStatsCollectorTest {
             assertThat(stat.granularity()).isEqualTo(granularity);
             assertThat(stat.packageName()).isEqualTo(TEST_PACKAGE_NAME_TWO);
         }
+    }
+
+    @Test
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
+    public void getLastWeekExercise_intervalData_calculatesGranularity() {
+        Instant sessionStartTime = Instant.now().minus(2, ChronoUnit.DAYS);
+        Instant sessionEndTime = sessionStartTime.plus(30, ChronoUnit.MINUTES);
+        insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
+        insertStepsRecord(
+                sessionStartTime,
+                TEST_PACKAGE_NAME,
+                /* durationOfEachRecordInMillis= */ 1000L,
+                /* numberOfRecordsToInsert= */ 9);
+        insertDistanceRecord(
+                sessionStartTime,
+                TEST_PACKAGE_NAME,
+                /* durationOfEachRecordInMillis= */ 2000L,
+                /* numberOfRecordsToInsert= */ 10);
+        insertActiveCaloriesBurnedRecord(
+                sessionStartTime,
+                TEST_PACKAGE_NAME,
+                /* durationOfEachRecordInMillis= */ 3000L,
+                /* numberOfRecordsToInsert= */ 5);
+        insertTotalCaloriesBurnedRecord(
+                sessionStartTime,
+                TEST_PACKAGE_NAME,
+                /* durationOfEachRecordInMillis= */ 4000L,
+                /* numberOfRecordsToInsert= */ 4);
+        insertElevationGainedRecord(
+                sessionStartTime,
+                TEST_PACKAGE_NAME,
+                /* durationOfEachRecordInMillis= */ 5000L,
+                /* numberOfRecordsToInsert= */ 3);
+
+        List<DataGranularityStatsCollector.GranularityStats> stats =
+                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+
+        List<DataGranularityStatsCollector.GranularityStats> expectedStats =
+                List.of(
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_STEPS,
+                                /* granularity= */ 1000L),
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_DISTANCE,
+                                /* granularity= */ 2000L),
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED,
+                                /* granularity= */ 3000L),
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED,
+                                /* granularity= */ 4000L),
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED,
+                                /* granularity= */ 5000L));
+
+        assertThat(stats).containsExactlyElementsIn(expectedStats);
+    }
+
+    @Test
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
+    public void getLastWeekExerciseSessionsGranularityStats_sessionOlderThanAWeek_isIgnored() {
+        Instant sessionStartTime = Instant.now().minus(8, ChronoUnit.DAYS);
+        Instant sessionEndTime = sessionStartTime.plus(1, ChronoUnit.HOURS);
+        insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
+        insertSeriesData(
+                sessionStartTime,
+                sessionEndTime,
+                TEST_PACKAGE_NAME,
+                /* numberOfSamplesToInsert= */ 10);
+
+        List<DataGranularityStatsCollector.GranularityStats> stats =
+                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+
+        assertThat(stats).isEmpty();
+    }
+
+    @Test
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
+    public void
+            getLastWeekExerciseSessionsGranularityStats_withSeriesAndIntervalData_calculatesGranularity() {
+        Instant sessionStartTime = Instant.now().minus(2, ChronoUnit.DAYS);
+        Instant sessionEndTime = sessionStartTime.plus(30, ChronoUnit.MINUTES);
+        long sessionDurationMillis =
+                sessionEndTime.toEpochMilli() - sessionStartTime.toEpochMilli();
+        insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
+
+        // Series data
+        insertHeartRateSeriesData(
+                sessionStartTime,
+                sessionEndTime,
+                TEST_PACKAGE_NAME,
+                /* numberOfSamplesToInsert= */ 180);
+
+        // Interval data
+        insertStepsRecord(
+                sessionStartTime,
+                TEST_PACKAGE_NAME,
+                /* durationOfEachRecordInMillis= */ 1000L,
+                /* numberOfRecordsToInsert= */ 9);
+        insertDistanceRecord(
+                sessionStartTime,
+                TEST_PACKAGE_NAME,
+                /* durationOfEachRecordInMillis= */ 2000L,
+                /* numberOfRecordsToInsert= */ 10);
+
+        List<DataGranularityStatsCollector.GranularityStats> stats =
+                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+
+        List<DataGranularityStatsCollector.GranularityStats> expectedStats =
+                List.of(
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_HEART_RATE,
+                                /* granularity= */ sessionDurationMillis / 180),
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_STEPS,
+                                /* granularity= */ 1000L),
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_DISTANCE,
+                                /* granularity= */ 2000L));
+
+        assertThat(stats).containsExactlyElementsIn(expectedStats);
+    }
+
+    @Test
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
+    public void getLastWeekExercise_intervalDataFromOtherPackage_isIgnored() {
+        Instant sessionStartTime = Instant.now().minus(2, ChronoUnit.DAYS);
+        Instant sessionEndTime = sessionStartTime.plus(30, ChronoUnit.MINUTES);
+        insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
+        insertStepsRecord(
+                sessionStartTime,
+                TEST_PACKAGE_NAME,
+                /* durationOfEachRecordInMillis= */ 1000L,
+                /* numberOfRecordsToInsert= */ 9);
+        insertDistanceRecord(
+                sessionStartTime,
+                TEST_PACKAGE_NAME_TWO, // Different package
+                /* durationOfEachRecordInMillis= */ 2000L,
+                /* numberOfRecordsToInsert= */ 10);
+
+        List<DataGranularityStatsCollector.GranularityStats> stats =
+                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+
+        assertThat(stats).hasSize(1);
+        DataGranularityStatsCollector.GranularityStats stat = stats.get(0);
+        assertThat(stat.packageName()).isEqualTo(TEST_PACKAGE_NAME);
+        assertThat(stat.recordIdentifier()).isEqualTo(RecordTypeIdentifier.RECORD_TYPE_STEPS);
+        assertThat(stat.granularity()).isEqualTo(1000L);
+    }
+
+    @Test
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
+    public void getLastWeekExercise_intervalDataOutsideSession_isIgnored() {
+        Instant sessionStartTime = Instant.now().minus(2, ChronoUnit.DAYS);
+        Instant sessionEndTime = sessionStartTime.plus(30, ChronoUnit.MINUTES);
+        insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
+
+        // This one is inside the session
+        insertStepsRecord(
+                sessionStartTime,
+                TEST_PACKAGE_NAME,
+                /* durationOfEachRecordInMillis= */ 1000L,
+                /* numberOfRecordsToInsert= */ 1);
+
+        // This one starts before the session
+        insertDistanceRecord(
+                sessionStartTime.minus(1, ChronoUnit.MINUTES),
+                TEST_PACKAGE_NAME,
+                /* durationOfEachRecordInMillis= */ 2000L,
+                /* numberOfRecordsToInsert= */ 1);
+
+        // This one starts during, but ends after
+        insertActiveCaloriesBurnedRecord(
+                sessionEndTime.minus(1, ChronoUnit.MINUTES),
+                TEST_PACKAGE_NAME,
+                /* durationOfEachRecordInMillis= */ 2 * 60 * 1000L,
+                // 2 minutes, so ends after session
+                /* numberOfRecordsToInsert= */ 1);
+
+        // This one starts after the session
+        insertTotalCaloriesBurnedRecord(
+                sessionEndTime.plus(1, ChronoUnit.MINUTES),
+                TEST_PACKAGE_NAME,
+                /* durationOfEachRecordInMillis= */ 1000L,
+                /* numberOfRecordsToInsert= */ 1);
+
+        List<DataGranularityStatsCollector.GranularityStats> stats =
+                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+
+        assertThat(stats).hasSize(1);
+        DataGranularityStatsCollector.GranularityStats stat = stats.get(0);
+        assertThat(stat.packageName()).isEqualTo(TEST_PACKAGE_NAME);
+        assertThat(stat.recordIdentifier()).isEqualTo(RecordTypeIdentifier.RECORD_TYPE_STEPS);
+        assertThat(stat.granularity()).isEqualTo(1000L);
+    }
+
+    @Test
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
+    public void
+            getLastWeekExerciseSessionsGranularityStats_multipleSessionsSamePackage_calculatesGranularity() {
+        // Session 1
+        Instant sessionOneStartTime = Instant.now().minus(3, ChronoUnit.DAYS);
+        Instant sessionOneEndTime = sessionOneStartTime.plus(1, ChronoUnit.HOURS);
+        long sessionOneDuration =
+                sessionOneEndTime.toEpochMilli() - sessionOneStartTime.toEpochMilli();
+        insertExerciseSession(sessionOneStartTime, sessionOneEndTime, TEST_PACKAGE_NAME);
+        insertHeartRateSeriesData(
+                sessionOneStartTime,
+                sessionOneEndTime,
+                TEST_PACKAGE_NAME,
+                /* numberOfSamplesToInsert= */ 20);
+        insertStepsRecord(
+                sessionOneStartTime,
+                TEST_PACKAGE_NAME,
+                /* durationOfEachRecordInMillis= */ 1000L,
+                /* numberOfRecordsToInsert= */ 10);
+
+        // Session 2
+        Instant sessionTwoStartTime = Instant.now().minus(4, ChronoUnit.DAYS);
+        Instant sessionTwoEndTime = sessionTwoStartTime.plus(2, ChronoUnit.HOURS);
+        long sessionTwoDuration =
+                sessionTwoEndTime.toEpochMilli() - sessionTwoStartTime.toEpochMilli();
+        insertExerciseSession(sessionTwoStartTime, sessionTwoEndTime, TEST_PACKAGE_NAME);
+        insertHeartRateSeriesData(
+                sessionTwoStartTime,
+                sessionTwoEndTime,
+                TEST_PACKAGE_NAME,
+                /* numberOfSamplesToInsert= */ 50);
+        insertStepsRecord(
+                sessionTwoStartTime,
+                TEST_PACKAGE_NAME,
+                /* durationOfEachRecordInMillis= */ 2000L,
+                /* numberOfRecordsToInsert= */ 5);
+
+        List<DataGranularityStatsCollector.GranularityStats> stats =
+                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+
+        long sessionOneHrGranularity = sessionOneDuration / 20;
+        long sessionTwoHrGranularity = sessionTwoDuration / 50;
+
+        List<DataGranularityStatsCollector.GranularityStats> expectedStats =
+                List.of(
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_HEART_RATE,
+                                /* granularity= */ sessionOneHrGranularity),
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_STEPS,
+                                /* granularity= */ 1000L),
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_HEART_RATE,
+                                sessionTwoHrGranularity),
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_STEPS,
+                                /* granularity= */ 2000L));
+
+        assertThat(stats).containsExactlyElementsIn(expectedStats);
     }
 
     private void insertExerciseSession(Instant startTime, Instant endTime, String packageName) {
@@ -452,5 +745,111 @@ public class DataGranularityStatsCollectorTest {
                         .setDeltas(skinTemperatureSamples)
                         .build();
         mFitnessTestUtils.insertRecords(packageName, skinTemperatureRecord.toRecordInternal());
+    }
+
+    private void insertStepsRecord(
+            Instant startTime,
+            String packageName,
+            long durationOfEachRecordInMillis,
+            int numberOfRecordsToInsert) {
+        List<RecordInternal<?>> stepsRecords = new ArrayList<>(numberOfRecordsToInsert);
+        for (int i = 0; i < numberOfRecordsToInsert; i++) {
+            Instant intervalStartTime = startTime.plusMillis(durationOfEachRecordInMillis * i);
+            Instant intervalEndTime = intervalStartTime.plusMillis(durationOfEachRecordInMillis);
+            stepsRecords.add(
+                    new StepsRecord.Builder(
+                                    new Metadata.Builder().build(),
+                                    intervalStartTime,
+                                    intervalEndTime,
+                                    /* count= */ 100)
+                            .build()
+                            .toRecordInternal());
+        }
+
+        mFitnessTestUtils.insertRecords(packageName, stepsRecords);
+    }
+
+    private void insertDistanceRecord(
+            Instant startTime,
+            String packageName,
+            long durationOfEachRecordInMillis,
+            int numberOfRecordsToInsert) {
+        List<RecordInternal<?>> records = new ArrayList<>(numberOfRecordsToInsert);
+        for (int i = 0; i < numberOfRecordsToInsert; i++) {
+            Instant intervalStartTime = startTime.plusMillis(durationOfEachRecordInMillis * i);
+            Instant intervalEndTime = intervalStartTime.plusMillis(durationOfEachRecordInMillis);
+            records.add(
+                    new DistanceRecord.Builder(
+                                    new Metadata.Builder().build(),
+                                    intervalStartTime,
+                                    intervalEndTime,
+                                    Length.fromMeters(100))
+                            .build()
+                            .toRecordInternal());
+        }
+        mFitnessTestUtils.insertRecords(packageName, records);
+    }
+
+    private void insertActiveCaloriesBurnedRecord(
+            Instant startTime,
+            String packageName,
+            long durationOfEachRecordInMillis,
+            int numberOfRecordsToInsert) {
+        List<RecordInternal<?>> records = new ArrayList<>(numberOfRecordsToInsert);
+        for (int i = 0; i < numberOfRecordsToInsert; i++) {
+            Instant intervalStartTime = startTime.plusMillis(durationOfEachRecordInMillis * i);
+            Instant intervalEndTime = intervalStartTime.plusMillis(durationOfEachRecordInMillis);
+            records.add(
+                    new ActiveCaloriesBurnedRecord.Builder(
+                                    new Metadata.Builder().build(),
+                                    intervalStartTime,
+                                    intervalEndTime,
+                                    Energy.fromCalories(100))
+                            .build()
+                            .toRecordInternal());
+        }
+        mFitnessTestUtils.insertRecords(packageName, records);
+    }
+
+    private void insertTotalCaloriesBurnedRecord(
+            Instant startTime,
+            String packageName,
+            long durationOfEachRecordInMillis,
+            int numberOfRecordsToInsert) {
+        List<RecordInternal<?>> records = new ArrayList<>(numberOfRecordsToInsert);
+        for (int i = 0; i < numberOfRecordsToInsert; i++) {
+            Instant intervalStartTime = startTime.plusMillis(durationOfEachRecordInMillis * i);
+            Instant intervalEndTime = intervalStartTime.plusMillis(durationOfEachRecordInMillis);
+            records.add(
+                    new TotalCaloriesBurnedRecord.Builder(
+                                    new Metadata.Builder().build(),
+                                    intervalStartTime,
+                                    intervalEndTime,
+                                    Energy.fromCalories(150))
+                            .build()
+                            .toRecordInternal());
+        }
+        mFitnessTestUtils.insertRecords(packageName, records);
+    }
+
+    private void insertElevationGainedRecord(
+            Instant startTime,
+            String packageName,
+            long durationOfEachRecordInMillis,
+            int numberOfRecordsToInsert) {
+        List<RecordInternal<?>> records = new ArrayList<>(numberOfRecordsToInsert);
+        for (int i = 0; i < numberOfRecordsToInsert; i++) {
+            Instant intervalStartTime = startTime.plusMillis(durationOfEachRecordInMillis * i);
+            Instant intervalEndTime = intervalStartTime.plusMillis(durationOfEachRecordInMillis);
+            records.add(
+                    new ElevationGainedRecord.Builder(
+                                    new Metadata.Builder().build(),
+                                    intervalStartTime,
+                                    intervalEndTime,
+                                    Length.fromMeters(20))
+                            .build()
+                            .toRecordInternal());
+        }
+        mFitnessTestUtils.insertRecords(packageName, records);
     }
 }
