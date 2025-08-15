@@ -46,6 +46,7 @@ import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.Metadata
 import android.health.connect.datatypes.MindfulnessSessionRecord
+import android.health.connect.datatypes.NicotineIntakeRecord
 import android.health.connect.datatypes.NutritionRecord
 import android.health.connect.datatypes.OvulationTestRecord
 import android.health.connect.datatypes.OxygenSaturationRecord
@@ -812,6 +813,26 @@ class InsertOrUpdateRecords {
                                 .toString()
                                 .toInt(),
                         )
+                        .build()
+
+                NicotineIntakeRecord::class ->
+                    NicotineIntakeRecord.Builder(
+                            metaData,
+                            getStartTime(mFieldNameToFieldInput),
+                            getEndTime(mFieldNameToFieldInput),
+                            getIntegerValue(mFieldNameToFieldInput, "mQuantity"),
+                            mFieldNameToFieldInput["mNicotineIntakeType"]
+                                ?.getFieldValue()
+                                .toString()
+                                .toInt(),
+                        )
+                        .apply {
+                            if (!mFieldNameToFieldInput["mNicotineIntake"]!!.isEmpty()) {
+                                setNicotineIntake(
+                                    getMass(mFieldNameToFieldInput, "mNicotineIntake")
+                                )
+                            }
+                        }
                         .build()
 
                 else -> throw NotImplementedError("Record type not implemented")
