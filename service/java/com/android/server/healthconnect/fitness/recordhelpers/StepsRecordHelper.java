@@ -29,7 +29,6 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
-import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ import java.util.List;
  */
 public final class StepsRecordHelper extends IntervalRecordHelper<StepsRecordInternal> {
 
-    @VisibleForTesting public static final String STEPS_TABLE_NAME = "steps_record_table";
+    public static final String STEPS_TABLE_NAME = "steps_record_table";
     private static final String COUNT_COLUMN_NAME = "count";
 
     public StepsRecordHelper() {

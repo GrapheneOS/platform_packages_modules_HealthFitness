@@ -32,7 +32,6 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
-import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
 import com.android.server.healthconnect.fitness.utils.DeriveTotalCaloriesBurnedUtil;
@@ -54,7 +53,6 @@ import java.util.Set;
 public final class TotalCaloriesBurnedRecordHelper
         extends IntervalRecordHelper<TotalCaloriesBurnedRecordInternal> {
 
-    @VisibleForTesting
     public static final String TOTAL_CALORIES_BURNED_RECORD_TABLE_NAME =
             "total_calories_burned_record_table";
 

@@ -92,7 +92,7 @@ public class DataGranularityStatsLoggerTest {
     @Test
     @EnableFlags(Flags.FLAG_LATENCY_METRICS_FLAG)
     public void logGranularityStats_flagEnabled_logged() {
-        when(mDataGranularityStatsCollector.getLastWeekActiveDataSessionsGranularityStats())
+        when(mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats())
                 .thenReturn(getGranularityStats());
 
         mDataGranularityStatsLogger.logGranularityStats();
@@ -144,7 +144,7 @@ public class DataGranularityStatsLoggerTest {
     @Test
     @DisableFlags(Flags.FLAG_LATENCY_METRICS_FLAG)
     public void logGranularityStats_flagDisabled_noOp() {
-        when(mDataGranularityStatsCollector.getLastWeekActiveDataSessionsGranularityStats())
+        when(mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats())
                 .thenReturn(getGranularityStats());
 
         mDataGranularityStatsLogger.logGranularityStats();

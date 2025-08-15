@@ -54,11 +54,10 @@ public final class DataGranularityStatsLogger {
             return;
         }
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekActiveDataSessionsGranularityStats();
+                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
 
         for (DataGranularityStatsCollector.GranularityStats stat : stats) {
-            logGranularityStat(
-                    stat.packageName(), stat.seriesRecordIdentifier(), stat.granularity());
+            logGranularityStat(stat.packageName(), stat.recordIdentifier(), stat.granularity());
         }
     }
 
