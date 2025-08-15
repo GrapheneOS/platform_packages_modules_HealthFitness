@@ -17,20 +17,30 @@
 package com.android.server.healthconnect.telemetry.dataquality;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_ACTIVE_CALORIES_BURNED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_CYCLING_CADENCE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_DISTANCE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_ELEVATION_GAINED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_HEART_RATE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_POWER;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_SKIN_TEMPERATURE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_SPEED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_STEPS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_STEPS_CADENCE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_TOTAL_CALORIES_BURNED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_UNKNOWN;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_POWER;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SPEED;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -137,8 +147,38 @@ public class DataGranularityStatsLoggerTest {
                 .write(
                         HEALTH_CONNECT_DATA_GRANULARITY_STATS,
                         TEST_PACKAGE,
-                        HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_UNKNOWN,
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_STEPS,
                         /* granularity= */ 7000L);
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS,
+                        TEST_PACKAGE,
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_DISTANCE,
+                        /* granularity= */ 8000L);
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS,
+                        TEST_PACKAGE,
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_ELEVATION_GAINED,
+                        /* granularity= */ 9000L);
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS,
+                        TEST_PACKAGE,
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_ACTIVE_CALORIES_BURNED,
+                        /* granularity= */ 10000L);
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS,
+                        TEST_PACKAGE,
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_TOTAL_CALORIES_BURNED,
+                        /* granularity= */ 11000L);
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS,
+                        TEST_PACKAGE,
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_UNKNOWN,
+                        /* granularity= */ 12000L);
     }
 
     @Test
@@ -178,9 +218,26 @@ public class DataGranularityStatsLoggerTest {
                         TEST_PACKAGE, RECORD_TYPE_SKIN_TEMPERATURE, /* granularity= */ 6000));
         stats.add(
                 new DataGranularityStatsCollector.GranularityStats(
+                        TEST_PACKAGE, RECORD_TYPE_STEPS, /* granularity= */ 7000));
+        stats.add(
+                new DataGranularityStatsCollector.GranularityStats(
+                        TEST_PACKAGE, RECORD_TYPE_DISTANCE, /* granularity= */ 8000));
+        stats.add(
+                new DataGranularityStatsCollector.GranularityStats(
+                        TEST_PACKAGE, RECORD_TYPE_ELEVATION_GAINED, /* granularity= */ 9000));
+        stats.add(
+                new DataGranularityStatsCollector.GranularityStats(
                         TEST_PACKAGE,
-                        RECORD_TYPE_STEPS,
-                        /* granularity= */ 7000)); // This should map to UNKNOWN
+                        RECORD_TYPE_ACTIVE_CALORIES_BURNED,
+                        /* granularity= */ 10000));
+        stats.add(
+                new DataGranularityStatsCollector.GranularityStats(
+                        TEST_PACKAGE, RECORD_TYPE_TOTAL_CALORIES_BURNED, /* granularity= */ 11000));
+        stats.add(
+                new DataGranularityStatsCollector.GranularityStats(
+                        TEST_PACKAGE,
+                        RECORD_TYPE_EXERCISE_SESSION, // This should map to UNKNOWN
+                        /* granularity= */ 12000));
         return stats;
     }
 }
