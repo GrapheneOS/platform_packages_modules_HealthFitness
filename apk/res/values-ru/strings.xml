@@ -388,20 +388,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Выберите, какие данные это приложение сможет записывать на платформе \"Здоровье и спорт\"."</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Выберите, какие данные это приложение сможет считывать и записывать на платформе \"Здоровье и спорт\"."</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Выберите, какие данные это приложение сможет считывать на платформе \"Здоровье и спорт\"."</string>
-    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
-    <skip />
-    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
-    <skip />
-    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Обмен данными между приложениями"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Данные от приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
+    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Предоставьте приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" право на чтение данных из других приложений на этом устройстве с помощью сервиса \"Здоровье и спорт\"."</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Приложения, которые могут синхронизировать эти данные"</string>
+    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Чтобы узнать о том, как приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" использует ваши данные, ознакомьтесь с его "<a href="%2$s">"политикой конфиденциальности"</a>"."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Платформа \"Здоровье и спорт\" позволяет обмениваться данными о здоровье и физической активности между приложениями. Благодаря этому вы получаете полезную информацию и новые возможности, не беспокоясь о безопасности."</string>
+    <string name="more_about_health_connect" msgid="8105996800108743876">"О платформе \"Здоровье и спорт\""</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Если вы предоставите приложению доступ для чтения, оно сможет получать как новые данные, так и информацию за последние 30 дней."</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Если вы предоставите приложению доступ для чтения, оно сможет получать как новые, так и старые данные."</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Открыть приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к платформе \"Здоровье и спорт\"?"</string>
@@ -1279,20 +1272,21 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"Неизвестное устройство"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Сведения об устройстве"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Собранные этим устройством данные будут храниться в приложении \"Здоровье и спорт\", где к ним получат доступ связанные приложения."</string>
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
+    <skip />
     <string name="device_settings_label" msgid="9053791237491247819">"Разрешена запись данных"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Данные на устройстве"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Настройка устройства"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Посмотреть данные на устройстве"</string>
-    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
+    <string name="native_steps_banner_title" msgid="7668164332675458871">"Шаги с телефона будут показываться в Здоровье и спорте"</string>
+    <string name="native_steps_banner_summary" msgid="7109953051996114646">"Информация о шагах, отслеживаемых этим устройством, теперь хранится в сервисе \"Здоровье и спорт\". К ней могут получать доступ связанные приложения."</string>
+    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
     <skip />
-    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Проверить"</string>
+    <string name="native_steps_notification_title" msgid="4059138095111818516">"Шаги стали доступны в Здоровье и спорте"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"Информация о шагах, отслеживаемых этим устройством, теперь хранится в сервисе \"Здоровье и спорт\". К ней могут получать доступ связанные приложения."</string>
+    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
     <skip />
 </resources>

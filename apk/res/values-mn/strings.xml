@@ -388,20 +388,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Энэ аппад Health Connect-д бичүүлмээр байгаа өгөгдлөө сонгоно уу"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Та энэ аппад Health Connect-с уншуулмаар эсвэл үүнд бичүүлмээр байгаа өгөгдлөө сонгоно уу"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Энэ аппад Health Connect-с уншуулмаар байгаа өгөгдлөө сонгоно уу"</string>
-    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
-    <skip />
-    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
-    <skip />
-    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Аппуудын хооронд өгөгдөл хуваалцах"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g>-н өгөгдөл"</string>
+    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"<xliff:g id="APP_NAME">%1$s</xliff:g> аппад Health Connect-г ашиглан энэ төхөөрөмж дээрх бусад аппаас өгөгдөл уншихыг зөвшөөрнө үү"</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Энэ өгөгдлийг синк хийх боломжтой аппууд"</string>
+    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> таны өгөгдлийг хэрхэн ашигладгийг "<a href="%2$s">"нууцлалын бодлогоос"</a>" нь мэдэж аваарай."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect танд олон аппын хооронд эрүүл мэнд, фитнесийн өгөгдлөө хуваалцах боломжийг олгодог. Энэ нь таны өгөгдлийг аюулгүй байлгахын зэрэгцээ статистик, хэрэглээний түгжээг тайлахад тусалдаг."</string>
+    <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect-н тухай нэмэлт мэдээлэл"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Хэрэв та унших эрх өгвөл апп шинэ өгөгдөл болон сүүлийн 30 хоногийн өгөгдлийг унших боломжтой"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Хэрэв та унших эрх өгвөл апп шинэ болон өмнөх өгөгдлийг унших боломжтой"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g>-д Health Connect-д хандахыг зөвшөөрөх үү?"</string>
@@ -1279,23 +1272,21 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"Үл мэдэгдэх төхөөрөмж"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Төхөөрөмжийн мэдээлэл"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Энэ төхөөрөмжийн цуглуулсан өгөгдлийг Health Connect-д хадгалах бөгөөд холбогдсон аппууд эндээс үүнд хандана"</string>
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
+    <skip />
     <string name="device_settings_label" msgid="9053791237491247819">"Бичихийг зөвшөөрсөн"</string>
-    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <string name="device_data_screen_title" msgid="2443821236974714385">"Төхөөрөмжийн өгөгдөл"</string>
+    <string name="device_data_label" msgid="2056618513138892435">"Төхөөрөмжийг удирдах"</string>
+    <string name="device_data_button" msgid="8002406105399136401">"Төхөөрөмжийн өгөгдлийг харах"</string>
+    <string name="native_steps_banner_title" msgid="7668164332675458871">"Таны утсан дээр хянасан алхмын тоо Health Connect-д гарч ирнэ"</string>
+    <string name="native_steps_banner_summary" msgid="7109953051996114646">"Энэ төхөөрөмжийн хянасан алхмын тоо одоо Health Connect-д хадгалагдаж байгаа тул холбогдсон аппууд үүнд хандах боломжтой"</string>
+    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
     <skip />
-    <!-- no translation found for device_data_label (2056618513138892435) -->
-    <skip />
-    <!-- no translation found for device_data_button (8002406105399136401) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Хянах"</string>
+    <string name="native_steps_notification_title" msgid="4059138095111818516">"Health Connect дээр одоо алхмын тоо бий"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"Энэ төхөөрөмжийн хянасан алхмын тоо одоо Health Connect-д хадгалагдаж байгаа тул холбогдсон аппууд үүнд хандах боломжтой"</string>
+    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
     <skip />
 </resources>

@@ -1272,23 +1272,21 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"അജ്ഞാത ഉപകരണം"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"ഉപകരണ വിവരങ്ങൾ"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"ഈ ഉപകരണം ശേഖരിക്കുന്ന ഡാറ്റ Health Connect-ൽ സംഭരിക്കും, അവിടെ കണക്റ്റ് ചെയ്ത ആപ്പുകൾ അത് ആക്സസ് ചെയ്യും"</string>
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
+    <skip />
     <string name="device_settings_label" msgid="9053791237491247819">"റൈറ്റ് ചെയ്യാൻ അനുവാദമുള്ളവ"</string>
-    <!-- no translation found for device_data_screen_title (2443821236974714385) -->
+    <string name="device_data_screen_title" msgid="2443821236974714385">"ഉപകരണ ഡാറ്റ"</string>
+    <string name="device_data_label" msgid="2056618513138892435">"ഉപകരണം മാനേജ് ചെയ്യുക"</string>
+    <string name="device_data_button" msgid="8002406105399136401">"ഉപകരണ ഡാറ്റ കാണുക"</string>
+    <string name="native_steps_banner_title" msgid="7668164332675458871">"ഫോണിൽ ട്രാക്ക് ചെയ്ത ചുവട് Health Connect-ൽ കാണാം"</string>
+    <string name="native_steps_banner_summary" msgid="7109953051996114646">"കണക്റ്റ് ചെയ്ത ആപ്പുകൾക്ക് ആക്സസ് ചെയ്യുന്നതിനായി, ഈ ഉപകരണം ട്രാക്ക് ചെയ്ത ചുവടുകൾ ഇപ്പോൾ Health Connect-ൽ സംഭരിച്ചിരിക്കുന്നു"</string>
+    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
     <skip />
-    <!-- no translation found for device_data_label (2056618513138892435) -->
-    <skip />
-    <!-- no translation found for device_data_button (8002406105399136401) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"റിവ്യൂ ചെയ്യുക"</string>
+    <string name="native_steps_notification_title" msgid="4059138095111818516">"ചുവടുകൾ ഇപ്പോൾ Health Connect-ൽ ഉണ്ട്"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"കണക്റ്റ് ചെയ്ത ആപ്പുകൾക്ക് ആക്സസ് ചെയ്യുന്നതിനായി, ഈ ഉപകരണം ട്രാക്ക് ചെയ്ത ചുവടുകൾ ഇപ്പോൾ Health Connect-ൽ സംഭരിച്ചിരിക്കുന്നു"</string>
+    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
     <skip />
 </resources>

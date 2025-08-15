@@ -388,20 +388,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"يُرجى اختيار البيانات المطلوب أن يكتبها هذا التطبيق في Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"يُرجى اختيار البيانات المطلوب أن يقرأها هذا التطبيق من Health Connect أو يكتبها فيه"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"يُرجى اختيار البيانات المطلوب أن يقرأها هذا التطبيق من Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
-    <skip />
-    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
-    <skip />
-    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"مشاركة البيانات بين التطبيقات"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"البيانات من \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
+    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"السماح لتطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" بقراءة البيانات من تطبيقات أخرى على هذا الجهاز باستخدام Health Connect"</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"التطبيقات التي يمكنها مزامنة هذه البيانات"</string>
+    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"يمكنك الاطّلاع على "<a href="%2$s">"سياسة الخصوصية"</a>" لمعرفة طريقة استخدام \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" لبياناتك"</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"يتيح لك تطبيق Health Connect مشاركة بيانات الصحة واللياقة البدنية بين تطبيقات متعددة، وبالتالي جمع الإحصاءات واكتشاف تجارب جديدة مع الحفاظ على أمان بياناتك."</string>
+    <string name="more_about_health_connect" msgid="8105996800108743876">"مزيد من المعلومات حول Health Connect"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"إذا منحت التطبيق إذنًا بالقراءة، فسيتمكّن من قراءة البيانات الجديدة والبيانات من آخر 30 يومًا"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"إذا منحت التطبيق إذنًا بالقراءة، سيتمكّن من قراءة البيانات الجديدة والسابقة"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"هل المطلوب منح تطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" الإذن بالوصول إلى Health Connect؟"</string>
@@ -1279,20 +1272,21 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"جهاز غير معروف"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"معلومات الجهاز"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"سيتم تخزين البيانات التي يجمعها هذا الجهاز في Health Connect، حيث ستتمكّن التطبيقات المرتبطة من الوصول إليها"</string>
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
+    <skip />
     <string name="device_settings_label" msgid="9053791237491247819">"مسموح له بكتابة بيانات"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"بيانات الجهاز"</string>
     <string name="device_data_label" msgid="2056618513138892435">"إدارة الجهاز"</string>
     <string name="device_data_button" msgid="8002406105399136401">"عرض بيانات الجهاز"</string>
-    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
+    <string name="native_steps_banner_title" msgid="7668164332675458871">"الخطوات التي يتتبَّعها هاتفك ستظهر في Health Connect"</string>
+    <string name="native_steps_banner_summary" msgid="7109953051996114646">"يتم الآن تخزين الخطوات التي يتتبّعها هذا الجهاز في Health Connect لتتمكّن التطبيقات المرتبطة من الوصول إليها"</string>
+    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
     <skip />
-    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"مراجعة"</string>
+    <string name="native_steps_notification_title" msgid="4059138095111818516">"يتم الآن تخزين الخطوات في Health Connect"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"يتم الآن تخزين الخطوات التي يتتبّعها هذا الجهاز في Health Connect لتتمكّن التطبيقات المرتبطة من الوصول إليها"</string>
+    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
     <skip />
 </resources>
