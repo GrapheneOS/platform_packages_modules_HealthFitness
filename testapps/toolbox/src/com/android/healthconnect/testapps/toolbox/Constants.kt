@@ -40,6 +40,7 @@ import android.health.connect.datatypes.LeanBodyMassRecord
 import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.MindfulnessSessionRecord
+import android.health.connect.datatypes.NicotineIntakeRecord
 import android.health.connect.datatypes.NutritionRecord
 import android.health.connect.datatypes.OvulationTestRecord
 import android.health.connect.datatypes.OxygenSaturationRecord
@@ -101,6 +102,7 @@ object Constants {
             "android.permission.health.READ_LEAN_BODY_MASS",
             "android.permission.health.READ_MENSTRUATION",
             "android.permission.health.READ_MINDFULNESS",
+            "android.permission.health.READ_NICOTINE_INTAKE",
             "android.permission.health.READ_NUTRITION",
             "android.permission.health.READ_OVULATION_TEST",
             "android.permission.health.READ_OXYGEN_SATURATION",
@@ -144,6 +146,7 @@ object Constants {
             "android.permission.health.WRITE_LEAN_BODY_MASS",
             "android.permission.health.WRITE_MENSTRUATION",
             "android.permission.health.WRITE_MINDFULNESS",
+            "android.permission.health.WRITE_NICOTINE_INTAKE",
             "android.permission.health.WRITE_NUTRITION",
             "android.permission.health.WRITE_OVULATION_TEST",
             "android.permission.health.WRITE_OXYGEN_SATURATION",
@@ -298,7 +301,8 @@ object Constants {
                 HealthPermissionType.SKIN_TEMPERATURE,
             )
 
-        val WELLNESS_PERMISSION_GROUPS = listOf(HealthPermissionType.MINDFULNESS)
+        val WELLNESS_PERMISSION_GROUPS =
+            listOf(HealthPermissionType.MINDFULNESS, HealthPermissionType.NICOTINE_INTAKE)
     }
 
     enum class HealthPermissionType(
@@ -378,5 +382,6 @@ object Constants {
 
         // WELLNESS
         MINDFULNESS(MindfulnessSessionRecord::class, R.string.mindfulness_label),
+        NICOTINE_INTAKE(NicotineIntakeRecord::class, R.string.nicotine_intake_label),
     }
 }

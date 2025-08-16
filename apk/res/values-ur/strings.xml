@@ -389,10 +389,10 @@
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"وہ ڈیٹا منتخب کریں جسے آپ چاہتے ہیں کہ یہ ایپ Health Connect پر پڑھے یا لکھے"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"وہ ڈیٹا منتخب کریں جسے آپ چاہتے ہیں کہ یہ ایپ Health Connect سے پڑھے"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"ایپس کے درمیان ڈیٹا کا اشتراک کریں"</string>
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"ڈیٹا از <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> کا ڈیٹا"</string>
     <string name="matchmaking_screen_summary" msgid="1721713270456993279">"‫Health Connect کا استعمال کر کے <xliff:g id="APP_NAME">%1$s</xliff:g> ایپ کو اس آلہ پر موجود دیگر ایپس کا ڈیٹا پڑھنے کی اجازت دیں"</string>
-    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"وہ ایپس جو اس ڈیٹا کو مطابقت پذیر بنانا سکتی ہیں"</string>
-    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"جانیں کہ <xliff:g id="APP_NAME">%1$s</xliff:g> آپ کا ڈیٹا اپنی "<a href="%2$s">"رازداری کی پالیسی"</a>" میں کیسے استعمال کرتا ہے۔"</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"وہ ایپس جو اس ڈیٹا کو مطابقت پذیر بنا سکتی ہیں"</string>
+    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> کی "<a href="%2$s">"رازداری کی پالیسی"</a>" میں جانیں کہ وہ آپ کا ڈیٹا کیسے استعمال کرتا ہے۔"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"‫Health Connect آپ کو اپنی صحت اور تندرستی کا ڈیٹا متعدد ایپس کے درمیان اشتراک کرنے دیتا ہے۔ یہ آپ کے ڈیٹا کو محفوظ رکھتے ہوئے بصیرتوں اور تجربات کو غیر مقفل کرنے میں مدد کرتا ہے۔"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"‫Health Connect سے متعلق مزید"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"اگر آپ پڑھنے کی رسائی دیتے ہیں تو ایپ نیا ڈیٹا اور گزشتہ 30 دن کا ڈیٹا پڑھ سکتی ہے"</string>
@@ -1272,20 +1272,21 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"نامعلوم آلہ"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"آلہ کی معلومات"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"اس آلے کے ذریعے جمع کردہ ڈیٹا کو Health Connect میں اسٹور کیا جائے گا، جہاں منسلک ایپس اس تک رسائی حاصل کریں گی"</string>
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
+    <skip />
     <string name="device_settings_label" msgid="9053791237491247819">"لکھنے کی اجازت دی گئی"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"آلہ پر موجود ڈیٹا"</string>
     <string name="device_data_label" msgid="2056618513138892435">"آلہ کا نظم کریں"</string>
     <string name="device_data_button" msgid="8002406105399136401">"آلہ پر موجود ڈیٹا دیکھیں"</string>
-    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
+    <string name="native_steps_banner_title" msgid="7668164332675458871">"آپ کے فون پر ٹریک کیے گئے اقدامات Health Connect میں ظاہر ہوں گے"</string>
+    <string name="native_steps_banner_summary" msgid="7109953051996114646">"اس آلے کے ذریعے ٹریک کیے گئے اقدامات اب Health Connect میں منسلک ایپس تک رسائی کے لیے اسٹور کیے جاتے ہیں"</string>
+    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
     <skip />
-    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"جائزہ لیں"</string>
+    <string name="native_steps_notification_title" msgid="4059138095111818516">"اقدامات اب Health Connect میں ہیں"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"اس آلے کے ذریعے ٹریک کیے گئے اقدامات اب Health Connect میں منسلک ایپس تک رسائی کے لیے اسٹور کیے جاتے ہیں"</string>
+    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
     <skip />
 </resources>

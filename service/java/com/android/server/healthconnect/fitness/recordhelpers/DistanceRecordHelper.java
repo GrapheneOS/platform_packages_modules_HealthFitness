@@ -42,7 +42,7 @@ import java.util.List;
  * @hide
  */
 public final class DistanceRecordHelper extends IntervalRecordHelper<DistanceRecordInternal> {
-    private static final String DISTANCE_RECORD_TABLE_NAME = "distance_record_table";
+    public static final String DISTANCE_RECORD_TABLE_NAME = "distance_record_table";
     private static final String DISTANCE_COLUMN_NAME = "distance";
 
     public DistanceRecordHelper() {

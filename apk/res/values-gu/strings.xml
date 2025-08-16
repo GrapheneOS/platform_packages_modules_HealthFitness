@@ -388,20 +388,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connect પર તમે આ ઍપ દ્વારા જે ડેટા લખાવવા માગતા હો, તે ડેટા પસંદ કરો"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Health Connect પર તમે આ ઍપ દ્વારા જે ડેટા વાંચવા કે લખવા માગતા હો, તે ડેટા પસંદ કરો"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect પર તમે આ ઍપ દ્વારા જે ડેટા વંચાવવા માગતા હો, તે ડેટા પસંદ કરો"</string>
-    <!-- no translation found for matchmaking_screen_title (7839701301617377279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_data_from_app (8220118846137120239) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_summary (1721713270456993279) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_apps_category_title (8512041649876090322) -->
-    <skip />
-    <!-- no translation found for app_privacy_policy_footer (5133438020093531052) -->
-    <skip />
-    <!-- no translation found for matchmaking_screen_footer (128363859074109442) -->
-    <skip />
-    <!-- no translation found for more_about_health_connect (8105996800108743876) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"ઍપ વચ્ચે ડેટા શેર કરો"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g>નો ડેટા"</string>
+    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Health Connectનો ઉપયોગ કરીને આ ડિવાઇસ પરની અન્ય ઍપમાંથી <xliff:g id="APP_NAME">%1$s</xliff:g> ઍપને ડેટા વાંચવાની મંજૂરી આપો"</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"આ ડેટા સિંક કરી શકે તેવી ઍપ"</string>
+    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> તમારા ડેટાનો ઉપયોગ કેવી રીતે કરે છે, તે તેમની "<a href="%2$s">"પ્રાઇવસી પૉલિસી"</a>"માં જાણો."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect તમને એકથી વધુ ઍપ વચ્ચે તમારા આરોગ્ય અને ફિટનેસ સંબંધિત ડેટા શેર કરવાની મંજૂરી આપે છે. આનાથી તમારા ડેટાને સુરક્ષિત રાખીને જાણકારીઓ અને અનુભવોને અનલૉક કરવામાં તમને મદદ મળે છે."</string>
+    <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect વિશે વધુ"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"જો તમે વાંચવાનો ઍક્સેસ આપશો, તો આ ઍપ નવો ડેટા ઉપરાંત છેલ્લા 30 દિવસનો ડેટા પણ વાંચી શકે છે"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"જો તમે વાંચવાનો ઍક્સેસ આપશો, તો આ ઍપ નવો અને અગાઉનો ડેટા વાંચી શકે છે"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g>ને Health Connect ઍક્સેસ કરવાની મંજૂરી આપીએ?"</string>
@@ -1279,20 +1272,21 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"અજાણ્યું ડિવાઇસ"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"ડિવાઇસની માહિતી"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"આ ડિવાઇસ દ્વારા એકત્રિત કરવામાં આવેલો ડેટા Health Connectમાં સ્ટોર કરવામાં આવશે, જ્યાં કનેક્ટ થયેલી ઍપ તેને ઍક્સેસ કરશે"</string>
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
+    <skip />
     <string name="device_settings_label" msgid="9053791237491247819">"લખવાની મંજૂરી છે"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"ડિવાઇસ ડેટા"</string>
     <string name="device_data_label" msgid="2056618513138892435">"ડિવાઇસ મેનેજ કરો"</string>
     <string name="device_data_button" msgid="8002406105399136401">"ડિવાઇસ ડેટા જુઓ"</string>
-    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
+    <string name="native_steps_banner_title" msgid="7668164332675458871">"તમારા ફોન પર ટ્રૅક કરેલા પગલાં Health Connectમાં દેખાશે"</string>
+    <string name="native_steps_banner_summary" msgid="7109953051996114646">"આ ડિવાઇસ દ્વારા ટ્રૅક કરવામાં આવેલા પગલાં હવે Health Connect પર સ્ટોર થાય છે કે જેથી કનેક્ટ થયેલી ઍપ તેને ઍક્સેસ કરી શકે"</string>
+    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
     <skip />
-    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"રિવ્યૂ કરો"</string>
+    <string name="native_steps_notification_title" msgid="4059138095111818516">"હવે Health Connectમાં પગલાં આવે છે"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"આ ડિવાઇસ દ્વારા ટ્રૅક કરવામાં આવેલા પગલાં હવે Health Connect પર સ્ટોર થાય છે કે જેથી કનેક્ટ થયેલી ઍપ તેને ઍક્સેસ કરી શકે"</string>
+    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
     <skip />
 </resources>

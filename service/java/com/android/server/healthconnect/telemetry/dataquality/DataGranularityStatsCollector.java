@@ -26,7 +26,10 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.ActiveCaloriesBurnedRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.CyclingPedalingCadenceRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.DistanceRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.ElevationGainedRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.HeartRateRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper;
@@ -36,6 +39,8 @@ import com.android.server.healthconnect.fitness.recordhelpers.SeriesRecordHelper
 import com.android.server.healthconnect.fitness.recordhelpers.SkinTemperatureRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.SpeedRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.StepsCadenceRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.StepsRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.TotalCaloriesBurnedRecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
@@ -62,33 +67,51 @@ public final class DataGranularityStatsCollector {
 
     record GranularityStats(
             String packageName,
-            @RecordTypeIdentifier.RecordType int seriesRecordIdentifier,
+            @RecordTypeIdentifier.RecordType int recordIdentifier,
             long granularity) {}
 
-    private static final Map<Integer, SeriesHelperData> SERIES_TYPE_ID_TO_TABLE_NAME_MAP =
-            Map.of(
-                    RecordTypeIdentifier.RECORD_TYPE_HEART_RATE,
-                    new SeriesHelperData(
-                            HeartRateRecordHelper.TABLE_NAME,
-                            HeartRateRecordHelper.SERIES_TABLE_NAME),
-                    RecordTypeIdentifier.RECORD_TYPE_SPEED,
-                    new SeriesHelperData(
-                            SpeedRecordHelper.TABLE_NAME, SpeedRecordHelper.SERIES_TABLE_NAME),
-                    RecordTypeIdentifier.RECORD_TYPE_POWER,
-                    new SeriesHelperData(
-                            PowerRecordHelper.TABLE_NAME, PowerRecordHelper.SERIES_TABLE_NAME),
-                    RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE,
-                    new SeriesHelperData(
-                            StepsCadenceRecordHelper.TABLE_NAME,
-                            StepsCadenceRecordHelper.SERIES_TABLE_NAME),
-                    RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE,
-                    new SeriesHelperData(
-                            CyclingPedalingCadenceRecordHelper.TABLE_NAME,
-                            CyclingPedalingCadenceRecordHelper.SERIES_TABLE_NAME),
-                    RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE,
-                    new SeriesHelperData(
-                            SkinTemperatureRecordHelper.TABLE_NAME,
-                            SkinTemperatureRecordHelper.SERIES_TABLE_NAME));
+    private static final Map<@RecordTypeIdentifier.RecordType Integer, SeriesHelperData>
+            SERIES_TYPE_ID_TO_TABLE_NAME_MAP =
+                    Map.of(
+                            RecordTypeIdentifier.RECORD_TYPE_HEART_RATE,
+                            new SeriesHelperData(
+                                    HeartRateRecordHelper.TABLE_NAME,
+                                    HeartRateRecordHelper.SERIES_TABLE_NAME),
+                            RecordTypeIdentifier.RECORD_TYPE_SPEED,
+                            new SeriesHelperData(
+                                    SpeedRecordHelper.TABLE_NAME,
+                                    SpeedRecordHelper.SERIES_TABLE_NAME),
+                            RecordTypeIdentifier.RECORD_TYPE_POWER,
+                            new SeriesHelperData(
+                                    PowerRecordHelper.TABLE_NAME,
+                                    PowerRecordHelper.SERIES_TABLE_NAME),
+                            RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE,
+                            new SeriesHelperData(
+                                    StepsCadenceRecordHelper.TABLE_NAME,
+                                    StepsCadenceRecordHelper.SERIES_TABLE_NAME),
+                            RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE,
+                            new SeriesHelperData(
+                                    CyclingPedalingCadenceRecordHelper.TABLE_NAME,
+                                    CyclingPedalingCadenceRecordHelper.SERIES_TABLE_NAME),
+                            RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE,
+                            new SeriesHelperData(
+                                    SkinTemperatureRecordHelper.TABLE_NAME,
+                                    SkinTemperatureRecordHelper.SERIES_TABLE_NAME));
+
+    private static final Map<@RecordTypeIdentifier.RecordType Integer, String>
+            INTERVAL_TYPE_ID_TO_TABLE_NAME_MAP =
+                    Map.of(
+                            RecordTypeIdentifier.RECORD_TYPE_STEPS,
+                            StepsRecordHelper.STEPS_TABLE_NAME,
+                            RecordTypeIdentifier.RECORD_TYPE_DISTANCE,
+                            DistanceRecordHelper.DISTANCE_RECORD_TABLE_NAME,
+                            RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED,
+                            ActiveCaloriesBurnedRecordHelper
+                                    .ACTIVE_CALORIES_BURNED_RECORD_TABLE_NAME,
+                            RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED,
+                            TotalCaloriesBurnedRecordHelper.TOTAL_CALORIES_BURNED_RECORD_TABLE_NAME,
+                            RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED,
+                            ElevationGainedRecordHelper.ELEVATION_GAINED_RECORD_TABLE_NAME);
 
     public DataGranularityStatsCollector(
             TransactionManager transactionManager, AppInfoHelper appInfoHelper) {
@@ -97,7 +120,7 @@ public final class DataGranularityStatsCollector {
     }
 
     /** Returns {@link GranularityStats} for given session data type for past week. */
-    List<GranularityStats> getLastWeekActiveDataSessionsGranularityStats() {
+    List<GranularityStats> getLastWeekExerciseSessionsGranularityStats() {
 
         if (!Flags.latencyMetricsFlag()) {
             return List.of();
@@ -125,10 +148,10 @@ public final class DataGranularityStatsCollector {
                     Slog.e(TAG, "Package name not found while query access logs", exception);
                     continue;
                 }
-                for (Map.Entry<Integer, SeriesHelperData> dataTypeInfo :
-                        SERIES_TYPE_ID_TO_TABLE_NAME_MAP.entrySet()) {
+                for (Map.Entry<@RecordTypeIdentifier.RecordType Integer, SeriesHelperData>
+                        dataTypeInfo : SERIES_TYPE_ID_TO_TABLE_NAME_MAP.entrySet()) {
                     long granularity =
-                            getGranularityDataForExerciseSessions(
+                            getSeriesGranularityDataForExerciseSessions(
                                     dataTypeInfo.getValue(),
                                     sessionStartTime,
                                     sessionEndTime,
@@ -139,7 +162,25 @@ public final class DataGranularityStatsCollector {
                     granularityStats.add(
                             new GranularityStats(
                                     packageName,
-                                    /* seriesRecordIdentifier= */ dataTypeInfo.getKey(),
+                                    /* recordIdentifier= */ dataTypeInfo.getKey(),
+                                    granularity));
+                }
+
+                for (Map.Entry<@RecordTypeIdentifier.RecordType Integer, String> dataTypeInfo :
+                        INTERVAL_TYPE_ID_TO_TABLE_NAME_MAP.entrySet()) {
+                    long granularity =
+                            getIntervalGranularityDataForExerciseSessions(
+                                    /* intervalDataTypeTableName= */ dataTypeInfo.getValue(),
+                                    sessionStartTime,
+                                    sessionEndTime,
+                                    appInfoId);
+                    if (granularity == -1L) {
+                        continue;
+                    }
+                    granularityStats.add(
+                            new GranularityStats(
+                                    packageName,
+                                    /* recordIdentifier= */ dataTypeInfo.getKey(),
                                     granularity));
                 }
             }
@@ -148,7 +189,49 @@ public final class DataGranularityStatsCollector {
         return Collections.unmodifiableList(granularityStats);
     }
 
-    private long getGranularityDataForExerciseSessions(
+    private long getIntervalGranularityDataForExerciseSessions(
+            String intervalDataTypeTableName,
+            long sessionStartTime,
+            long sessionEndTime,
+            long appInfoId) {
+        WhereClauses whereClause = new WhereClauses(WhereClauses.LogicalOperator.AND);
+        whereClause
+                .addWhereGreaterThanOrEqualClause(
+                        IntervalRecordHelper.START_TIME_COLUMN_NAME, sessionStartTime)
+                .addWhereLessThanOrEqualClause(
+                        IntervalRecordHelper.END_TIME_COLUMN_NAME, sessionEndTime)
+                .addWhereEqualsClause(
+                        RecordHelper.APP_INFO_ID_COLUMN_NAME, String.valueOf(appInfoId));
+
+        ReadTableRequest readTableRequest =
+                new ReadTableRequest(intervalDataTypeTableName)
+                        .setColumnNames(
+                                List.of(
+                                        IntervalRecordHelper.START_TIME_COLUMN_NAME,
+                                        IntervalRecordHelper.END_TIME_COLUMN_NAME))
+                        .setWhereClause(whereClause);
+
+        long numberOfRecords = 0L;
+        long totalDurationInMillis = 0L;
+        try (Cursor cursor = mTransactionManager.read(readTableRequest)) {
+            while (cursor.moveToNext()) {
+                long startTime = getCursorLong(cursor, IntervalRecordHelper.START_TIME_COLUMN_NAME);
+                long endTime = getCursorLong(cursor, IntervalRecordHelper.END_TIME_COLUMN_NAME);
+                totalDurationInMillis += (endTime - startTime);
+                numberOfRecords++;
+            }
+        }
+
+        if (numberOfRecords == 0) {
+            return -1L;
+        }
+
+        // We define granularity as total duration we have interval data for divided by number of
+        // records we have for that data type in the given duration.
+        return totalDurationInMillis / numberOfRecords;
+    }
+
+    private long getSeriesGranularityDataForExerciseSessions(
             SeriesHelperData seriesHelperData,
             long sessionStartTime,
             long sessionEndTime,
@@ -156,9 +239,9 @@ public final class DataGranularityStatsCollector {
 
         WhereClauses whereClause = new WhereClauses(WhereClauses.LogicalOperator.AND);
         whereClause
-                .addWhereLaterThanTimeClause(
+                .addWhereGreaterThanOrEqualClause(
                         SeriesRecordHelper.EPOCH_MILLIS_COLUMN_NAME, sessionStartTime)
-                .addWhereBeforeThanTimeClause(
+                .addWhereLessThanOrEqualClause(
                         SeriesRecordHelper.EPOCH_MILLIS_COLUMN_NAME, sessionEndTime);
 
         WhereClauses postJoinWhereClause = new WhereClauses(WhereClauses.LogicalOperator.AND);

@@ -1272,20 +1272,21 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"อุปกรณ์ที่ไม่รู้จัก"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"ข้อมูลอุปกรณ์"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"ระบบจะจัดเก็บข้อมูลที่อุปกรณ์นี้รวบรวมไว้ใน Health Connect ซึ่งแอปที่เชื่อมต่อจะเข้าถึงข้อมูลดังกล่าวได้"</string>
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
+    <skip />
     <string name="device_settings_label" msgid="9053791237491247819">"อนุญาตให้เขียน"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"ข้อมูลอุปกรณ์"</string>
     <string name="device_data_label" msgid="2056618513138892435">"จัดการอุปกรณ์"</string>
     <string name="device_data_button" msgid="8002406105399136401">"ดูข้อมูลอุปกรณ์"</string>
-    <!-- no translation found for native_steps_banner_title (7668164332675458871) -->
+    <string name="native_steps_banner_title" msgid="7668164332675458871">"จำนวนก้าวที่ติดตามในโทรศัพท์จะปรากฏใน Health Connect"</string>
+    <string name="native_steps_banner_summary" msgid="7109953051996114646">"ตอนนี้ระบบจะจัดเก็บจำนวนก้าวที่อุปกรณ์นี้ติดตามไว้ใน Health Connect เพื่อให้แอปที่เชื่อมต่อเข้าถึงได้"</string>
+    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
     <skip />
-    <!-- no translation found for native_steps_banner_summary (7109953051996114646) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_dismiss (4241497788886121214) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_review_button (2811510255869744799) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_title (4059138095111818516) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (6606582041727891093) -->
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"ตรวจสอบ"</string>
+    <string name="native_steps_notification_title" msgid="4059138095111818516">"จำนวนก้าวอยู่ใน Health Connect แล้ว"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"ตอนนี้ระบบจะจัดเก็บจำนวนก้าวที่อุปกรณ์นี้ติดตามไว้ใน Health Connect เพื่อให้แอปที่เชื่อมต่อเข้าถึงได้"</string>
+    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
     <skip />
 </resources>
