@@ -22,6 +22,7 @@ import androidx.core.os.bundleOf
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -163,7 +164,7 @@ class UnitsFragmentTest {
         launchFragment<UnitsFragment>(bundleOf())
 
         onView(withText(R.string.height_uppercase_label)).perform(click())
-        onView(withText(R.string.height_unit_centimeters_label)).perform(click())
+        onView(withText(R.string.height_unit_centimeters_label)).inRoot(isDialog()).perform(click())
 
         assertThat(unitPreferences.heightUnit).isEqualTo(HeightUnit.CENTIMETERS)
     }
@@ -173,7 +174,9 @@ class UnitsFragmentTest {
         launchFragment<UnitsFragment>(bundleOf())
 
         onView(withText(R.string.distance_uppercase_label)).perform(click())
-        onView(withText(R.string.distance_unit_kilometers_label)).perform(click())
+        onView(withText(R.string.distance_unit_kilometers_label))
+            .inRoot(isDialog())
+            .perform(click())
 
         assertThat(unitPreferences.distanceUnit).isEqualTo(DistanceUnit.KILOMETERS)
     }
@@ -183,7 +186,7 @@ class UnitsFragmentTest {
         launchFragment<UnitsFragment>(bundleOf())
 
         onView(withText(R.string.weight_uppercase_label)).perform(click())
-        onView(withText(R.string.weight_unit_kilogram_label)).perform(click())
+        onView(withText(R.string.weight_unit_kilogram_label)).inRoot(isDialog()).perform(click())
 
         assertThat(unitPreferences.weightUnit).isEqualTo(WeightUnit.KILOGRAM)
     }
@@ -193,7 +196,7 @@ class UnitsFragmentTest {
         launchFragment<UnitsFragment>(bundleOf())
 
         onView(withText(R.string.energy_unit_title)).perform(click())
-        onView(withText(R.string.energy_unit_kilojoule_label)).perform(click())
+        onView(withText(R.string.energy_unit_kilojoule_label)).inRoot(isDialog()).perform(click())
 
         assertThat(unitPreferences.energyUnit).isEqualTo(EnergyUnit.KILOJOULE)
     }
@@ -203,7 +206,7 @@ class UnitsFragmentTest {
         launchFragment<UnitsFragment>(bundleOf())
 
         onView(withText(R.string.temperature_unit_title)).perform(click())
-        onView(withText(R.string.temperature_unit_kelvin_label)).perform(click())
+        onView(withText(R.string.temperature_unit_kelvin_label)).inRoot(isDialog()).perform(click())
 
         assertThat(unitPreferences.temperatureUnit).isEqualTo(TemperatureUnit.KELVIN)
     }
