@@ -31,6 +31,7 @@ import com.android.server.healthconnect.HealthConnectDailyService;
 import com.android.server.healthconnect.common.logging.DailyLoggingService;
 import com.android.server.healthconnect.common.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.common.logging.EcosystemStatsCollector;
+import com.android.server.healthconnect.common.logging.NativeTrackingStatsCollector;
 import com.android.server.healthconnect.common.logging.UsageStatsCollector;
 
 import java.util.Objects;
@@ -85,10 +86,14 @@ public class HealthConnectDailyJobs {
             DatabaseStatsCollector databaseStatsCollector,
             DailyCleanupJob dailyCleanupJob,
             EcosystemStatsCollector ecosystemStatsCollector,
+            NativeTrackingStatsCollector nativeTrackingStatsCollector,
             HealthFitnessStatsLog statsLog) {
         dailyCleanupJob.startDailyCleanup();
         DailyLoggingService.logDailyMetrics(
-                usageStatsCollector, databaseStatsCollector,
-                ecosystemStatsCollector, statsLog);
+                usageStatsCollector,
+                databaseStatsCollector,
+                ecosystemStatsCollector,
+                nativeTrackingStatsCollector,
+                statsLog);
     }
 }
