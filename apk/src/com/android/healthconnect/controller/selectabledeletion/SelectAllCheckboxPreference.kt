@@ -52,6 +52,8 @@ constructor(context: Context, attrs: AttributeSet? = null) : HealthPreference(co
 
         checkBox?.setOnClickListener(checkboxButtonListener)
 
+        checkBox?.contentDescription = context.getString(R.string.select_all)
+
         val widgetFrameParent: ViewGroup? = widgetFrame?.parent as ViewGroup?
         widgetFrameParent?.setPaddingRelative(
             widgetFrameParent.paddingStart,
