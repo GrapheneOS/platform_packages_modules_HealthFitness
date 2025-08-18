@@ -87,6 +87,7 @@ public class DailyLoggingServiceTest {
     @Mock private UsageStatsCollector mUsageStatsCollector;
     @Mock private DatabaseStatsCollector mDatabaseStatsCollector;
     @Mock private EcosystemStatsCollector mEcosystemStatsCollector;
+    @Mock private NativeTrackingStatsCollector mNativeTrackingStatsCollector;
     @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
     @Captor private ArgumentCaptor<List<String>> mStringListCaptor;
 
@@ -105,6 +106,7 @@ public class DailyLoggingServiceTest {
                 mUsageStatsCollector,
                 mDatabaseStatsCollector,
                 mEcosystemStatsCollector,
+                mNativeTrackingStatsCollector,
                 mHealthFitnessStatsLog);
 
         verify(mHealthFitnessStatsLog, times(1))
@@ -147,6 +149,7 @@ public class DailyLoggingServiceTest {
                 mUsageStatsCollector,
                 mDatabaseStatsCollector,
                 mEcosystemStatsCollector,
+                mNativeTrackingStatsCollector,
                 mHealthFitnessStatsLog);
 
         verify(mHealthFitnessStatsLog, times(1))
@@ -169,6 +172,7 @@ public class DailyLoggingServiceTest {
                 mUsageStatsCollector,
                 mDatabaseStatsCollector,
                 mEcosystemStatsCollector,
+                mNativeTrackingStatsCollector,
                 mHealthFitnessStatsLog);
 
         verify(mHealthFitnessStatsLog, times(1))
@@ -193,6 +197,7 @@ public class DailyLoggingServiceTest {
                 mUsageStatsCollector,
                 mDatabaseStatsCollector,
                 mEcosystemStatsCollector,
+                mNativeTrackingStatsCollector,
                 mHealthFitnessStatsLog);
 
         verify(mHealthFitnessStatsLog, times(1))
@@ -222,6 +227,7 @@ public class DailyLoggingServiceTest {
                 mUsageStatsCollector,
                 mDatabaseStatsCollector,
                 mEcosystemStatsCollector,
+                mNativeTrackingStatsCollector,
                 mHealthFitnessStatsLog);
 
         verify(mHealthFitnessStatsLog, times(1))
@@ -245,6 +251,7 @@ public class DailyLoggingServiceTest {
                 mUsageStatsCollector,
                 mDatabaseStatsCollector,
                 mEcosystemStatsCollector,
+                mNativeTrackingStatsCollector,
                 mHealthFitnessStatsLog);
 
         verify(mHealthFitnessStatsLog, times(1))
@@ -270,6 +277,7 @@ public class DailyLoggingServiceTest {
                 mUsageStatsCollector,
                 mDatabaseStatsCollector,
                 mEcosystemStatsCollector,
+                mNativeTrackingStatsCollector,
                 mHealthFitnessStatsLog);
 
         verify(mHealthFitnessStatsLog, times(1))
@@ -286,6 +294,7 @@ public class DailyLoggingServiceTest {
                 mUsageStatsCollector,
                 mDatabaseStatsCollector,
                 mEcosystemStatsCollector,
+                mNativeTrackingStatsCollector,
                 mHealthFitnessStatsLog);
 
         Mockito.verify(mDatabaseStatsCollector, never()).getFileBytes(any());
@@ -321,6 +330,7 @@ public class DailyLoggingServiceTest {
                 mUsageStatsCollector,
                 mDatabaseStatsCollector,
                 mEcosystemStatsCollector,
+                mNativeTrackingStatsCollector,
                 mHealthFitnessStatsLog);
 
         verify(mHealthFitnessStatsLog, times(1))
@@ -378,6 +388,7 @@ public class DailyLoggingServiceTest {
                 mUsageStatsCollector,
                 mDatabaseStatsCollector,
                 mEcosystemStatsCollector,
+                mNativeTrackingStatsCollector,
                 mHealthFitnessStatsLog);
 
         verify(mHealthFitnessStatsLog, times(1))
@@ -412,6 +423,34 @@ public class DailyLoggingServiceTest {
                         eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__DATA_TYPE__HEART_RATE),
                         eq(
                                 HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__METRIC_TYPE__METRIC_TYPE_DIRECTIONAL_PAIRING_PER_DATA_TYPE));
+    }
+
+    @Test
+    public void testNativeTrackingLogsStats() {
+        when(mNativeTrackingStatsCollector.getNativeDataTypesActive()).thenReturn(new int[] {1});
+        when(mNativeTrackingStatsCollector.getNativeDataTypesDisabled()).thenReturn(new int[] {2});
+        when(mNativeTrackingStatsCollector.getNumberOfWrites()).thenReturn(3);
+        when(mNativeTrackingStatsCollector.getLastErrorCode()).thenReturn(4);
+        when(mNativeTrackingStatsCollector.getStepsReadersCount()).thenReturn(5);
+        when(mNativeTrackingStatsCollector.getStepsWritersCount()).thenReturn(6);
+
+        DailyLoggingService.logDailyMetrics(
+                mUsageStatsCollector,
+                mDatabaseStatsCollector,
+                mEcosystemStatsCollector,
+                mNativeTrackingStatsCollector,
+                mHealthFitnessStatsLog);
+
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HealthFitnessStatsLog.HEALTH_CONNECT_NATIVE_TRACKING_STATS_REPORTED),
+                        eq(new int[] {1}),
+                        eq(new int[] {2}),
+                        eq(3),
+                        anyInt(),
+                        eq(4),
+                        eq(5),
+                        eq(6));
     }
 
     public static class ArrayMatcher implements ArgumentMatcher<int[]> {

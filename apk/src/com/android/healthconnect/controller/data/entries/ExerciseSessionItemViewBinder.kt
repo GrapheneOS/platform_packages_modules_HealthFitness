@@ -111,5 +111,6 @@ class ExerciseSessionItemViewBinder(
 
         title.text = data.title
         title.contentDescription = data.titleA11y
+        checkBox.contentDescription = data.titleA11y
     }
 }

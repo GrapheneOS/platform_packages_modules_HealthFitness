@@ -140,13 +140,6 @@ public class TrackerManagerImpl implements TrackerManager {
     }
 
     @Override
-    public void setStepTrackingEnabled(boolean enabled) {
-        if (Flags.stepTrackingEnabled()) {
-            // Implementation goes here. Do nothing for now.
-        }
-    }
-
-    @Override
     public void clearTracker() {
         if (!Flags.stepTrackingEnabled()) {
             return;
@@ -160,6 +153,25 @@ public class TrackerManagerImpl implements TrackerManager {
 
         unregisterPermissionListener();
         unsubscribeFromSensorManager();
+    }
+
+    @Override
+    public boolean isStepTrackingActive() {
+        if (!Flags.stepTrackingEnabled()) {
+            return false;
+        }
+        return mSubscribed;
+    }
+
+    @Override
+    public boolean isStepTrackingExplicitlyDisabled() {
+        if (!Flags.stepTrackingEnabled()) {
+            return false;
+        }
+        String stepTrackingPreferenceEnabled =
+                mPreferenceHelper.getPreference(STEP_TRACKING_PREFERENCE_KEY);
+        return stepTrackingPreferenceEnabled != null
+                && !Boolean.parseBoolean(stepTrackingPreferenceEnabled);
     }
 
     /** Updates the Sensor Manager subscription in case app permissions have changed. */

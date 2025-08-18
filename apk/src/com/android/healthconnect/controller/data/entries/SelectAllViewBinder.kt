@@ -68,5 +68,6 @@ class SelectAllViewBinder(private val onClickSelectAllListener: OnClickSelectAll
             container.contentDescription = selectAllText.text.toString()
         }
         checkBox.tag = if (isDeletionState) "checkbox" else ""
+        checkBox.contentDescription = selectAllText.text.toString()
     }
 }

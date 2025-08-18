@@ -31,14 +31,14 @@ public interface TrackerManager {
     void initializeOrRefresh();
 
     /**
-     * Explicitly enable/disable step tracking. This should be done when a connected app has been
-     * granted {@code android.permission.health.READ_STEPS}.
-     */
-    void setStepTrackingEnabled(boolean enabled);
-
-    /**
      * Resets the state of the trackers, unsubscribing from new sensor events and clearing any
      * cached data or pending tasks.
      */
     void clearTracker();
+
+    /** Is the tracker currently running and subscribed to steps. */
+    boolean isStepTrackingActive();
+
+    /** Has the user explicitly turned off step tracking. */
+    boolean isStepTrackingExplicitlyDisabled();
 }
