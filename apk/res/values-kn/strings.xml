@@ -1272,21 +1272,17 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"ಅಪರಿಚಿತ ಸಾಧನ"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"ಸಾಧನದ ಮಾಹಿತಿ"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"ಈ ಸಾಧನದಿಂದ ಸಂಗ್ರಹಿಸಲಾದ ಡೇಟಾವನ್ನು Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ, ಅಲ್ಲಿ ಕನೆಕ್ಟ್ ಮಾಡಲಾದ ಆ್ಯಪ್‌ಗಳು ಅದನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡುತ್ತವೆ"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"ಈ ಸಾಧನವು ಹೆಜ್ಜೆಯ ಟ್ರ್ಯಾಕಿಂಗ್ ಅನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ, ಆದರೆ ಆಗಲೂ Health Connect ನಲ್ಲಿ ಡೇಟಾವನ್ನು ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"ಈ ಸಾಧನವು ಹೆಜ್ಜೆಗಳನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡುವುದಿಲ್ಲ"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"ಬರೆಯಲು ಅನುಮತಿಸಲಾಗಿದೆ"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"ಸಾಧನದ ಡೇಟಾ"</string>
     <string name="device_data_label" msgid="2056618513138892435">"ಸಾಧನವನ್ನು ನಿರ್ವಹಿಸಿ"</string>
     <string name="device_data_button" msgid="8002406105399136401">"ಸಾಧನದ ಡೇಟಾವನ್ನು ನೋಡಿ"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"ಫೋನ್‌ನಲ್ಲಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಿದ ಹೆಜ್ಜೆಗಳು Health Connect ನಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"ಈ ಸಾಧನವು ಟ್ರ್ಯಾಕ್ ಮಾಡಿದ ಹೆಜ್ಜೆಗಳನ್ನು ಈಗ Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗಿದೆ, ಇದರಿಂದ ಕನೆಕ್ಟ್ ಮಾಡಲಾದ ಆ್ಯಪ್‌ಗಳು ಅದನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"ವಜಾಗೊಳಿಸಿ"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"ಪರಿಶೀಲಿಸಿ"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"ಹೆಜ್ಜೆಗಳು ಈಗ Health Connect ನಲ್ಲಿ ಇವೆ"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"ಈ ಸಾಧನವು ಟ್ರ್ಯಾಕ್ ಮಾಡಿದ ಹೆಜ್ಜೆಗಳನ್ನು ಈಗ Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗಿದೆ, ಇದರಿಂದ ಕನೆಕ್ಟ್ ಮಾಡಲಾದ ಆ್ಯಪ್‌ಗಳು ಅದನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"ಈಗ ಬೇಡ"</string>
 </resources>
