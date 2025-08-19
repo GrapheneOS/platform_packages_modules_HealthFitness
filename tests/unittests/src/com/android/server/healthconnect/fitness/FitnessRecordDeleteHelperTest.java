@@ -47,7 +47,6 @@ import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMa
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
-import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 
 import com.google.common.collect.ImmutableList;
@@ -80,8 +79,6 @@ public class FitnessRecordDeleteHelperTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private AppOpLogsHelper mAppOpLogsHelper;
-    // TODO(b/373322447): Remove the mock FirstGrantTimeManager
-    @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
 
     @Before
     public void setup() {
@@ -89,7 +86,6 @@ public class FitnessRecordDeleteHelperTest {
         mUserHandle = context.getUser();
         HealthConnectInjector injector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
-                        .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setAppOpLogsHelper(mAppOpLogsHelper)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();

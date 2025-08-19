@@ -39,11 +39,6 @@ public class HealthConnectInjectorTest {
     @Mock private PackageInfoUtils mPackageInfoUtils;
     @Mock private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
 
-    // TODO(b/373322447): Remove the mock FirstGrantTimeManager
-    @Mock
-    private com.android.server.healthconnect.permission.FirstGrantTimeManager
-            mFirstGrantTimeManager;
-
     @Mock private OnboardingStateManager mOnboardingStateManager;
 
     private HealthConnectInjectorImpl.Builder mBuilder;
@@ -53,9 +48,7 @@ public class HealthConnectInjectorTest {
         MockitoAnnotations.initMocks(this);
 
         Context context = InstrumentationRegistry.getContext();
-        mBuilder =
-                HealthConnectInjectorImpl.newBuilderForTest(context)
-                        .setFirstGrantTimeManager(mFirstGrantTimeManager);
+        mBuilder = HealthConnectInjectorImpl.newBuilderForTest(context);
     }
 
     @Test
