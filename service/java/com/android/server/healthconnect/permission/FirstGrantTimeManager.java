@@ -20,6 +20,7 @@ import static com.android.server.healthconnect.permission.FirstGrantTimeDatastor
 import static com.android.server.healthconnect.permission.FirstGrantTimeDatastore.DATA_TYPE_STAGED;
 
 import android.annotation.Nullable;
+import android.annotation.SuppressLint;
 import android.annotation.WorkerThread;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -54,7 +55,6 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
     private static final String TAG = "HealthFirstGrantTimeMan";
     private static final int CURRENT_VERSION = 1;
 
-    private final PackageManager mPackageManager;
     private final UserManager mUserManager;
     private final HealthPermissionIntentAppsTracker mTracker;
 
@@ -93,9 +93,17 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
 
         mUidToGrantTimeCache = new UidToGrantTimeCache();
         mUserManager = context.getSystemService(UserManager.class);
-        mPackageManager = context.getPackageManager();
-        mPackageManager.addOnPermissionsChangeListener(this);
         mThreadScheduler = threadScheduler;
+    }
+
+    /**
+     * Registers a {@link PackageManager.OnPermissionsChangedListener} that updates first grant
+     * times based on permission changes.
+     */
+    @SuppressLint("MissingPermission")
+    public void registerPermissionsChangeListener() {
+        PackageManager packageManager = mContext.getPackageManager();
+        packageManager.addOnPermissionsChangeListener(this);
     }
 
     /**

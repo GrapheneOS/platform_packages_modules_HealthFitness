@@ -34,7 +34,6 @@ import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.StepsRecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
-import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 
@@ -43,7 +42,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -54,9 +52,6 @@ import java.util.UUID;
 public class NoMockDailyCleanupJobTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
-
-    // TODO(b/373322447): Remove the mock FirstGrantTimeManager
-    @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
 
     private static final String TEST_PACKAGE_NAME = "package.name";
 
@@ -71,7 +66,6 @@ public class NoMockDailyCleanupJobTest {
         Context context = ApplicationProvider.getApplicationContext();
         mHealthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
-                        .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mDailyCleanupJob = mHealthConnectInjector.getDailyCleanupJob();

@@ -85,9 +85,6 @@ public class DataPermissionEnforcerTest {
 
     @Mock private Context mContext;
 
-    // TODO(b/373322447): Remove the mock FirstGrantTimeManager
-    @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-
     private AttributionSource mAttributionSource;
 
     private DataPermissionEnforcer mDataPermissionEnforcer;
@@ -102,7 +99,6 @@ public class DataPermissionEnforcerTest {
         when(mContext.createContextAsUser(any(), anyInt())).thenReturn(mContext);
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(getInstrumentation().getContext())
-                        .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .build();
 
         mDataPermissionEnforcer =

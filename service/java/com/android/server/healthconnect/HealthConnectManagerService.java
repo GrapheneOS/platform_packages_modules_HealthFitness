@@ -118,6 +118,7 @@ public class HealthConnectManagerService extends SystemService {
 
     @Override
     public void onStart() {
+        mHealthConnectInjector.getFirstGrantTimeManager().registerPermissionsChangeListener();
         mHealthConnectInjector
                 .getPermissionPackageChangesOrchestrator()
                 .registerBroadcastReceiver(mContext);
