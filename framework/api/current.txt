@@ -103,7 +103,7 @@ package android.health.connect {
     field public static final int ERROR_UNSUPPORTED_OPERATION = 9; // 0x9
   }
 
-  @RestrictedForEnvironment(environments=android.annotation.RestrictedForEnvironment.ENVIRONMENT_SDK_RUNTIME, from=android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) public class HealthConnectManager {
+  public class HealthConnectManager {
     method public <T> void aggregate(@NonNull android.health.connect.AggregateRecordsRequest<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.AggregateRecordsResponse<T>,android.health.connect.HealthConnectException>);
     method public <T> void aggregateGroupByDuration(@NonNull android.health.connect.AggregateRecordsRequest<T>, @NonNull java.time.Duration, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.AggregateRecordsGroupedByDurationResponse<T>>,android.health.connect.HealthConnectException>);
     method public <T> void aggregateGroupByPeriod(@NonNull android.health.connect.AggregateRecordsRequest<T>, @NonNull java.time.Period, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.AggregateRecordsGroupedByPeriodResponse<T>>,android.health.connect.HealthConnectException>);
