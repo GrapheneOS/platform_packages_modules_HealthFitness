@@ -20,7 +20,6 @@ import android.cts.statsdatom.lib.AtomTestUtils
 import android.cts.statsdatom.lib.ConfigUtils
 import android.cts.statsdatom.lib.DeviceUtils
 import android.cts.statsdatom.lib.ReportUtils
-import android.healthconnect.cts.HostSideTestUtil
 import android.healthconnect.cts.HostSideTestUtil.TEST_APP_PKG_NAME
 import android.healthconnect.cts.HostSideTestUtil.UI_TESTS_HELPER
 import android.healthconnect.cts.HostSideTestUtil.isHardwareSupported
@@ -51,8 +50,6 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
         assertThat(mCtsBuild).isNotNull()
         ConfigUtils.removeConfig(device)
         ReportUtils.clearReports(device)
-        // TODO(b/313055175): Do not disable rate limiting once b/300238889 is resolved.
-        HostSideTestUtil.setupRateLimitingFeatureFlag(device)
         val pmResult =
             device.executeShellCommand(
                 "pm list packages com.google.android.healthconnect.controller"
@@ -82,8 +79,6 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
         }
         ConfigUtils.removeConfig(device)
         ReportUtils.clearReports(device)
-        // TODO(b/313055175): Do not disable rate limiting once b/300238889 is resolved.
-        HostSideTestUtil.restoreRateLimitingFeatureFlag(device)
         super.tearDown()
     }
 

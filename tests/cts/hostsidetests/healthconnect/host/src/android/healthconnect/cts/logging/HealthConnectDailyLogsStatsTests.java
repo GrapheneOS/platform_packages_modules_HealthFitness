@@ -30,7 +30,6 @@ import android.cts.statsdatom.lib.AtomTestUtils;
 import android.cts.statsdatom.lib.ConfigUtils;
 import android.cts.statsdatom.lib.DeviceUtils;
 import android.cts.statsdatom.lib.ReportUtils;
-import android.healthconnect.cts.HostSideTestUtil;
 
 import com.android.os.StatsLog;
 import com.android.os.healthfitness.api.ApiExtensionAtoms;
@@ -73,8 +72,6 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         }
         super.setUp();
         assertThat(mCtsBuild).isNotNull();
-        // TODO(b/313055175): Do not disable rate limiting once b/300238889 is resolved.
-        HostSideTestUtil.setupRateLimitingFeatureFlag(getDevice());
         mTestStartTime = Instant.now();
         mTestStartTimeOnDevice = Instant.ofEpochMilli(getDevice().getDeviceDate());
         ConfigUtils.removeConfig(getDevice());
@@ -91,8 +88,6 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         if (!isHardwareSupported(getDevice())) {
             return;
         }
-        // TODO(b/313055175): Do not disable rate limiting once b/300238889 is resolved.
-        HostSideTestUtil.restoreRateLimitingFeatureFlag(getDevice());
         resetTime();
         ConfigUtils.removeConfig(getDevice());
         ReportUtils.clearReports(getDevice());

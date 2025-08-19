@@ -72,7 +72,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
-import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
@@ -100,8 +99,6 @@ public class AccessLogsHelperTest {
     private AccessLogsHelper mAccessLogsHelper;
     private UserHandle mUserHandle;
 
-    // TODO(b/373322447): Remove the mock FirstGrantTimeManager
-    @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     @Mock private AppOpLogsHelper mAppOpLogsHelper;
     @Mock private PackageManager mPackageManager;
 
@@ -114,7 +111,6 @@ public class AccessLogsHelperTest {
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setPreferenceHelper(new FakePreferenceHelper())
-                        .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setAppOpLogsHelper(mAppOpLogsHelper)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();

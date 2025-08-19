@@ -2875,11 +2875,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final ErrorCallback errorCallback = callback::onError;
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
-                    // TODO(b/400105647): Remove duplicate flag check once excess code size is
                     // resolved.
-                    if (mCloudBackupManager == null
-                            || !Flags.cloudBackupAndRestore()
-                            || !isCloudBackupRestoreEnabled()) {
+                    if (mCloudBackupManager == null || !isCloudBackupRestoreEnabled()) {
                         throw new UnsupportedOperationException(
                                 "getChangesForBackup is not supported.");
                     }
@@ -2905,11 +2902,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final ErrorCallback errorCallback = callback::onError;
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
-                    // TODO(b/400105647): Remove duplicate flag check once excess code size is
-                    // resolved.
-                    if (mCloudBackupManager == null
-                            || !Flags.cloudBackupAndRestore()
-                            || !isCloudBackupRestoreEnabled()) {
+                    if (mCloudBackupManager == null || !isCloudBackupRestoreEnabled()) {
                         throw new UnsupportedOperationException(
                                 "getLatestMetadataForBackup is not supported.");
                     }
@@ -2937,11 +2930,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final ErrorCallback errorCallback = callback::onError;
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
-                    // TODO(b/400105647): Remove duplicate flag check once excess code size is
-                    // resolved.
-                    if (mCloudRestoreManager == null
-                            || !Flags.cloudBackupAndRestore()
-                            || !isCloudBackupRestoreEnabled()) {
+                    if (mCloudRestoreManager == null || !isCloudBackupRestoreEnabled()) {
                         throw new UnsupportedOperationException(
                                 "restoreSettings is not supported.");
                     }
@@ -2968,11 +2957,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final ErrorCallback errorCallback = callback::onError;
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
-                    // TODO(b/400105647): Remove duplicate flag check once excess code size is
-                    // resolved.
-                    if (mCloudRestoreManager == null
-                            || !Flags.cloudBackupAndRestore()
-                            || !isCloudBackupRestoreEnabled()) {
+                    if (mCloudRestoreManager == null || !isCloudBackupRestoreEnabled()) {
                         throw new UnsupportedOperationException("canRestore is not supported.");
                     }
                     enforceIsForegroundUser(userHandle);
@@ -2996,11 +2981,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final ErrorCallback errorCallback = callback::onError;
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
-                    // TODO(b/400105647): Remove duplicate flag check once excess code size is
-                    // resolved.
-                    if (mCloudRestoreManager == null
-                            || !Flags.cloudBackupAndRestore()
-                            || !isCloudBackupRestoreEnabled()) {
+                    if (mCloudRestoreManager == null || !isCloudBackupRestoreEnabled()) {
                         throw new UnsupportedOperationException("restoreChanges is not supported.");
                     }
                     enforceIsForegroundUser(userHandle);

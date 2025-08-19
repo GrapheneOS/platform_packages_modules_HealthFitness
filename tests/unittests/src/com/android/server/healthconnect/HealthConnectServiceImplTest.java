@@ -3111,12 +3111,13 @@ public class HealthConnectServiceImplTest {
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
+                .thenReturn(Map.of());
+
         GetMatchingAppsRequest request =
                 new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
         mHealthConnectService.getMatchingApps(
                 mAttributionSource, request, mGetMatchingAppsCallback);
-        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
-                .thenReturn(Map.of());
 
         verify(mGetMatchingAppsCallback, timeout(5000).times(1))
                 .onResult(new GetMatchingAppsResponse(Map.of()));
@@ -3129,14 +3130,14 @@ public class HealthConnectServiceImplTest {
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of();
+        Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
+                .thenReturn(matchingApps);
+
         GetMatchingAppsRequest request =
                 new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
         mHealthConnectService.getMatchingApps(
                 mAttributionSource, request, mGetMatchingAppsCallback);
-        Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-
-        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
-                .thenReturn(matchingApps);
 
         verify(mGetMatchingAppsCallback, timeout(5000).times(1))
                 .onResult(new GetMatchingAppsResponse(matchingApps));
