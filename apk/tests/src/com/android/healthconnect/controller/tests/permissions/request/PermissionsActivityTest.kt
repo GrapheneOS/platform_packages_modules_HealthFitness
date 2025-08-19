@@ -470,6 +470,7 @@ class PermissionsActivityTest {
 
         launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
             onView(withId(androidx.preference.R.id.recycler_view))
+                .inRoot(isDialog())
                 .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
             onView(withText("Conditions")).inRoot(isDialog()).perform(click())
             onView(withText("Allow")).inRoot(isDialog()).perform(click())
@@ -771,6 +772,9 @@ class PermissionsActivityTest {
 
             onIdle()
 
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .inRoot(isDialog())
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
             onView(withText("Allow $TEST_APP_NAME to access data in the background?"))
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()))
@@ -1072,6 +1076,7 @@ class PermissionsActivityTest {
 
         launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
             onView(withId(androidx.preference.R.id.recycler_view))
+                .inRoot(isDialog())
                 .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
             onView(withText("Exercise")).inRoot(isDialog()).perform(click())
             onView(withText("Allow")).inRoot(isDialog()).perform(click())
@@ -1231,6 +1236,9 @@ class PermissionsActivityTest {
 
             onIdle()
 
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .inRoot(isDialog())
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
             onView(withText("Allow $TEST_APP_NAME to access past data?"))
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()))
