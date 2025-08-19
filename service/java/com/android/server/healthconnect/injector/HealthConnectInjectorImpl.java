@@ -549,10 +549,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mThreadScheduler)
                         : builder.mPermissionPackageChangesOrchestrator;
         mCloudBackupManager =
-                // TODO(b/400105647): Remove duplicate flag check once excess code size is resolved.
-                builder.mCloudBackupManager == null
-                                && Flags.cloudBackupAndRestore()
-                                && isCloudBackupRestoreEnabled()
+                builder.mCloudBackupManager == null && isCloudBackupRestoreEnabled()
                         ? new CloudBackupManager(
                                 mTransactionManager,
                                 mFitnessRecordReadHelper,
@@ -568,10 +565,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         : null;
 
         mCloudRestoreManager =
-                // TODO(b/400105647): Remove duplicate flag check once excess code size is resolved.
-                builder.mCloudRestoreManager == null
-                                && Flags.cloudBackupAndRestore()
-                                && isCloudBackupRestoreEnabled()
+                builder.mCloudRestoreManager == null && isCloudBackupRestoreEnabled()
                         ? new CloudRestoreManager(
                                 mTransactionManager,
                                 mFitnessRecordUpsertHelper,
