@@ -87,6 +87,11 @@ class EntryItemViewBinder(private val onSelectEntryListener: OnSelectEntryListen
         title.contentDescription = data.titleA11y
         header.text = data.header
         header.contentDescription = data.headerA11y
-        checkBox.contentDescription = data.titleA11y
+        checkBox.contentDescription =
+            view.context.getString(
+                R.string.a11y_checkbox_description,
+                data.headerA11y,
+                data.titleA11y,
+            )
     }
 }

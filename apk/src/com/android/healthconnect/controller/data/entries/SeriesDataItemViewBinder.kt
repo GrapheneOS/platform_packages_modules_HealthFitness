@@ -86,6 +86,11 @@ class SeriesDataItemViewBinder(
 
         title.text = data.title
         title.contentDescription = data.titleA11y
-        checkBox.contentDescription = data.titleA11y
+        checkBox.contentDescription =
+            view.context.getString(
+                R.string.a11y_checkbox_description,
+                data.headerA11y,
+                data.titleA11y,
+            )
     }
 }
