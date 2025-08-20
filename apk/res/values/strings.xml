@@ -1636,6 +1636,7 @@
     <string name="deletion_confirmation_dialog_body" description="Text for dialog asking the user to confirm they want to delete all data">Connected apps will no longer be able to read this data from Health&#160;Connect</string>
     <string name="a11y_checked" description="A11y title for an entry that has a checkbox showing and the checkbox is checked">Checked</string>
     <string name="a11y_unchecked" description="A11y title for an entry that has a checkbox showing and the checkbox is not checked">Not checked</string>
+    <string name="a11y_checkbox_description" description="A11y title for an entry with a title and header that has a checkbox."><xliff:g example="from 11:00 AM to 12:00 AM • Run Tracker" id="header">%1$s</xliff:g>, <xliff:g example="123 Steps" id="title">%2$s</xliff:g></string>
     <string name="a11y_map_description" description="Generic description of map to indicate it is present in an exercise entry view">Exercise map route available</string>
     <string name="a11y_next_day" description="Content description for the next day button in the entries screen">Next day</string>
     <string name="a11y_next_week" description="Content description for the next week button in the entries screen">Next week</string>
