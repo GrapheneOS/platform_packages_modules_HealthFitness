@@ -1272,21 +1272,17 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"Peranti tidak diketahui"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Maklumat peranti"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Data yang dikumpulkan oleh peranti ini akan disimpan dalam Health Connect, tempat apl disambungkan akan mengakses data tersebut"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Peranti ini tidak menyokong penjejakan langkah tetapi masih mengandungi data yang disimpan dalam Health Connect"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Peranti ini tidak menjejaki langkah"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Dibenarkan untuk menulis"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Data peranti"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Urus peranti"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Lihat data peranti"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"Langkah dijejaki pada telefon akan dipaparkan dalam Health Connect"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"Kini langkah yang dijejaki oleh peranti ini disimpan dalam Health Connect untuk diakses oleh apl disambungkan"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Ketepikan"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Semak"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Kini langkah dalam Health Connect"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Kini langkah yang dijejaki oleh peranti ini disimpan dalam Health Connect untuk diakses oleh apl disambungkan"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Bukan sekarang"</string>
 </resources>
