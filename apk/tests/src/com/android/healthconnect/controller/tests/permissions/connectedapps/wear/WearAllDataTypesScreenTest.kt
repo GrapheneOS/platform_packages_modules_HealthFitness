@@ -197,7 +197,7 @@ class WearAllDataTypesScreenTest {
                 AllDataTypesScreen(
                     viewModel = wearConnectedAppsViewModel,
                     showRecentAccess = false,
-                    onClick = { _, _ -> },
+                    onClick = { _ -> },
                 )
             }
         }
@@ -303,7 +303,7 @@ class WearAllDataTypesScreenTest {
                 AllDataTypesScreen(
                     viewModel = wearConnectedAppsViewModel,
                     showRecentAccess = false,
-                    onClick = { _, _ -> },
+                    onClick = { _ -> },
                 )
             }
         }
@@ -411,7 +411,7 @@ class WearAllDataTypesScreenTest {
                 AllDataTypesScreen(
                     viewModel = wearConnectedAppsViewModel,
                     showRecentAccess = false,
-                    onClick = { _, _ -> },
+                    onClick = { _ -> },
                 )
             }
         }
@@ -511,7 +511,7 @@ class WearAllDataTypesScreenTest {
                 AllDataTypesScreen(
                     viewModel = wearConnectedAppsViewModel,
                     showRecentAccess = false,
-                    onClick = { _, _ -> },
+                    onClick = { _ -> },
                 )
             }
         }
@@ -622,7 +622,7 @@ class WearAllDataTypesScreenTest {
                 AllDataTypesScreen(
                     viewModel = wearConnectedAppsViewModel,
                     showRecentAccess = true,
-                    onClick = { _, _ -> },
+                    onClick = { _ -> },
                 )
             }
         }
@@ -728,7 +728,7 @@ class WearAllDataTypesScreenTest {
                 AllDataTypesScreen(
                     viewModel = wearConnectedAppsViewModel,
                     showRecentAccess = true,
-                    onClick = { _, _ -> },
+                    onClick = { _ -> },
                 )
             }
         }

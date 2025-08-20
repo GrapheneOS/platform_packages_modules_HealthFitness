@@ -127,11 +127,10 @@ class WearPerDataTypeScreenTest {
         composeTestRule.setContent {
             PerDataTypeScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_SKIN_TEMPERATURE",
-                dataTypeStr = "Skin temperature",
+                fitnessPermission = READ_SKIN_TEMPERATURE_PERMISSION,
                 showRecentAccess = false,
-                onAppChipClick = { _, _, _ -> },
-                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onAppChipClick = { _, _ -> },
+                onRemoveAllAppAccessButtonClick = { _ -> },
                 onShowSystemClick = { _ -> },
             )
         }
@@ -167,11 +166,10 @@ class WearPerDataTypeScreenTest {
         composeTestRule.setContent {
             PerDataTypeScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_OXYGEN_SATURATION",
-                dataTypeStr = "Oxygen saturation",
+                fitnessPermission = READ_OXYGEN_SATURATION_PERMISSION,
                 showRecentAccess = false,
-                onAppChipClick = { _, _, _ -> },
-                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onAppChipClick = { _, _ -> },
+                onRemoveAllAppAccessButtonClick = { _ -> },
                 onShowSystemClick = { _ -> },
             )
         }
@@ -252,11 +250,10 @@ class WearPerDataTypeScreenTest {
         composeTestRule.setContent {
             PerDataTypeScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                fitnessPermission = READ_HEART_RATE_PERMISSION,
                 showRecentAccess = true,
-                onAppChipClick = { _, _, _ -> },
-                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onAppChipClick = { _, _ -> },
+                onRemoveAllAppAccessButtonClick = { _ -> },
                 onShowSystemClick = { _ -> },
             )
         }
@@ -313,11 +310,10 @@ class WearPerDataTypeScreenTest {
         composeTestRule.setContent {
             PerDataTypeScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                fitnessPermission = READ_HEART_RATE_PERMISSION,
                 showRecentAccess = true,
-                onAppChipClick = { _, _, _ -> },
-                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onAppChipClick = { _, _ -> },
+                onRemoveAllAppAccessButtonClick = { _ -> },
                 onShowSystemClick = { _ -> },
             )
         }
@@ -361,11 +357,10 @@ class WearPerDataTypeScreenTest {
         composeTestRule.setContent {
             PerDataTypeScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                fitnessPermission = READ_HEART_RATE_PERMISSION,
                 showRecentAccess = false,
-                onAppChipClick = { _, _, _ -> },
-                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onAppChipClick = { _, _ -> },
+                onRemoveAllAppAccessButtonClick = { _ -> },
                 onShowSystemClick = { _ -> },
             )
         }
@@ -416,11 +411,10 @@ class WearPerDataTypeScreenTest {
         composeTestRule.setContent {
             PerDataTypeScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                fitnessPermission = READ_HEART_RATE_PERMISSION,
                 showRecentAccess = false,
-                onAppChipClick = { _, _, _ -> },
-                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onAppChipClick = { _, _ -> },
+                onRemoveAllAppAccessButtonClick = { _ -> },
                 onShowSystemClick = { _ -> },
             )
         }
@@ -450,16 +444,15 @@ class WearPerDataTypeScreenTest {
         wearConnectedAppsViewModel.loadConnectedApps()
         composeTestRule.waitForIdle()
 
-        val mockOnAppChipClick = mock<(String, String, String) -> Unit>()
+        val mockOnAppChipClick = mock<(String, String) -> Unit>()
 
         composeTestRule.setContent {
             PerDataTypeScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                fitnessPermission = READ_HEART_RATE_PERMISSION,
                 showRecentAccess = true,
                 onAppChipClick = mockOnAppChipClick,
-                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onRemoveAllAppAccessButtonClick = { _ -> },
                 onShowSystemClick = { _ -> },
             )
         }
@@ -474,13 +467,13 @@ class WearPerDataTypeScreenTest {
         listChildren[3].performScrollTo().assert(hasText("AppName2"))
         composeTestRule.onNodeWithTag("AppName1").performClick()
         verify(mockOnAppChipClick)
-            .invoke("android.permission.health.READ_HEART_RATE", "Heart rate", "packageName1")
+            .invoke("android.permission.health.READ_HEART_RATE", "packageName1")
 
         listChildren[5].performScrollTo().assert(hasText("Not allowed"))
         listChildren[6].performScrollTo().assert(hasText("AppName3"))
         composeTestRule.onNodeWithTag("AppName3").performClick()
         verify(mockOnAppChipClick)
-            .invoke("android.permission.health.READ_HEART_RATE", "Heart rate", "packageName3")
+            .invoke("android.permission.health.READ_HEART_RATE", "packageName3")
     }
 
     @Test
@@ -500,11 +493,10 @@ class WearPerDataTypeScreenTest {
         composeTestRule.setContent {
             PerDataTypeScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                fitnessPermission = READ_HEART_RATE_PERMISSION,
                 showRecentAccess = true,
-                onAppChipClick = { _, _, _ -> },
-                onRemoveAllAppAccessButtonClick = { _, _ -> },
+                onAppChipClick = { _, _ -> },
+                onRemoveAllAppAccessButtonClick = { _ -> },
                 onShowSystemClick = onShowSystemClick,
             )
         }

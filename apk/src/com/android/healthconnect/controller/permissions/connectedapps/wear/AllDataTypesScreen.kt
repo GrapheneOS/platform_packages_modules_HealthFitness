@@ -41,7 +41,7 @@ import com.android.permissioncontroller.wear.permission.components.material3.Wea
 fun AllDataTypesScreen(
     viewModel: WearConnectedAppsViewModel,
     showRecentAccess: Boolean,
-    onClick: (String, String) -> Unit,
+    onClick: (String) -> Unit,
 ) {
     val res = LocalContext.current.resources
     val wearHealthApps by viewModel.wearHealthApps.collectAsState()
@@ -112,7 +112,7 @@ fun AllDataTypesScreen(
                     labelMaxLines = 3,
                     secondaryLabel = message,
                     secondaryLabelMaxLines = 3,
-                    onClick = { onClick(healthPermission.toString(), strDataType) },
+                    onClick = { onClick(healthPermission.toString()) },
                     enabled = enabled,
                 )
             }
