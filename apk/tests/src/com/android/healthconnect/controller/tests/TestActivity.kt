@@ -22,7 +22,8 @@ import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint(FragmentActivity::class)
-class TestActivity : Hilt_TestActivity(), HealthConnectBottomSheetDialogFragment.OnCancelListener {
+class TestActivity :
+    Hilt_TestActivity(), HealthConnectBottomSheetDialogFragment.BottomSheetCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         EdgeToEdgeUtils.enable(this)
         if (SettingsThemeHelper.isExpressiveTheme(this)) {
@@ -33,7 +34,15 @@ class TestActivity : Hilt_TestActivity(), HealthConnectBottomSheetDialogFragment
         super.onCreate(savedInstanceState)
     }
 
-    override fun onDialogCanceled() {
-        finish()
+    override fun onPrimaryButtonClicked() {
+        // Not needed for this test
+    }
+
+    override fun onSecondaryButtonClicked() {
+        // Not needed for this test
+    }
+
+    override fun onDialogCancel() {
+        // Not needed for this test
     }
 }
