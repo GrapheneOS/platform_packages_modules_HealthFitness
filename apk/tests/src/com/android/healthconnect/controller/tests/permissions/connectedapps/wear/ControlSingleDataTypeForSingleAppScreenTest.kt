@@ -147,8 +147,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
         composeTestRule.setContent {
             ControlSingleDataTypeForSingleAppScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                fitnessPermission = READ_HEART_RATE_PERMISSION,
                 packageName = appMetadataOne.packageName,
                 onAdditionalPermissionClick = { _ -> },
             )
@@ -210,8 +209,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
         composeTestRule.setContent {
             ControlSingleDataTypeForSingleAppScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                fitnessPermission = READ_HEART_RATE_PERMISSION,
                 packageName = appMetadataOne.packageName,
                 onAdditionalPermissionClick = { _ -> },
             )
@@ -272,8 +270,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
         composeTestRule.setContent {
             ControlSingleDataTypeForSingleAppScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                fitnessPermission = READ_HEART_RATE_PERMISSION,
                 packageName = appMetadataOne.packageName,
                 onAdditionalPermissionClick = { _ -> },
             )
@@ -334,8 +331,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
         composeTestRule.setContent {
             ControlSingleDataTypeForSingleAppScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                fitnessPermission = READ_HEART_RATE_PERMISSION,
                 packageName = appMetadataTwo.packageName,
                 onAdditionalPermissionClick = { _ -> },
             )

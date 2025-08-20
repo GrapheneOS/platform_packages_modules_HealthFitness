@@ -1143,7 +1143,7 @@
     <string name="data_sources_help_link" msgid="7740264923634947915">"स्रोत तथा प्राथमिकताले काम गर्ने तरिका"</string>
     <string name="data_sources_add_app" msgid="275066335106036460">"डेटाको स्रोत हाल्नुहोस्"</string>
     <string name="edit_data_sources" msgid="5389744157074260179">"डेटाका स्रोतहरू सम्पादन गर्नुहोस्"</string>
-    <string name="default_app_summary" msgid="6183876151011837062">"डिफल्ट डिभाइस"</string>
+    <string name="default_app_summary" msgid="6183876151011837062">"डिभाइसको डिफल्ट"</string>
     <string name="move_up" msgid="9136155291380319606">"माथि सार्नुहोस्"</string>
     <string name="move_down" msgid="4404970288236170693">"तल सार्नुहोस्"</string>
     <string name="remove" msgid="1340423400489007362">"हटाउनुहोस्"</string>

@@ -1272,21 +1272,17 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"不明なデバイス"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"デバイス情報"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"このデバイスで収集されたデータはヘルスコネクトに保存され、接続されているアプリがアクセスできるようになります"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"このデバイスは歩数の記録に対応していませんが、ヘルスコネクトにデータがまだ保存されています"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"このデバイスでは歩数は記録されません"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"書き込みの許可"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"デバイスデータ"</string>
     <string name="device_data_label" msgid="2056618513138892435">"デバイスの管理"</string>
     <string name="device_data_button" msgid="8002406105399136401">"デバイスデータを表示"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"スマートフォンで記録された歩数がヘルスコネクトに表示されます"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"このデバイスで記録された歩数がヘルスコネクトに保存され、接続されているアプリがアクセスできるようになりました"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"閉じる"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"確認"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"歩数がヘルスコネクトに保存されます"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"このデバイスで記録された歩数がヘルスコネクトに保存され、接続されているアプリがアクセスできるようになりました"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"後で"</string>
 </resources>

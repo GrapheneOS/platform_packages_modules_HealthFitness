@@ -23,8 +23,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.permissions.data.FitnessPermissionStrings
 import com.android.healthconnect.controller.permissions.data.HealthPermission
-import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission.Companion.fromPermissionString
 import com.android.permissioncontroller.wear.permission.components.material3.DialogButtonContent
 import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionConfirmationDialog
 
@@ -32,11 +32,14 @@ import com.android.permissioncontroller.wear.permission.components.material3.Wea
 @Composable
 fun RemoveAllAppsOnePermissionScreen(
     viewModel: WearConnectedAppsViewModel,
-    permissionStr: String,
-    dataTypeStr: String,
+    fitnessPermission: HealthPermission.FitnessPermission,
     onBackClick: () -> Unit,
 ) {
-    val healthPermission = fromPermissionString(permissionStr)
+    val dataTypeStr =
+        stringResource(
+            FitnessPermissionStrings.fromPermissionType(fitnessPermission.fitnessPermissionType)
+                .uppercaseLabel
+        )
 
     WearPermissionConfirmationDialog(
         show = true,
@@ -44,9 +47,7 @@ fun RemoveAllAppsOnePermissionScreen(
         positiveButtonContent =
             DialogButtonContent(
                 onClick = {
-                    viewModel.removeFitnessPermissionForAllApps(
-                        healthPermission as HealthPermission.FitnessPermission
-                    )
+                    viewModel.removeFitnessPermissionForAllApps(fitnessPermission)
                     onBackClick()
                 }
             ),
