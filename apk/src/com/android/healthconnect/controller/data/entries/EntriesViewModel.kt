@@ -103,6 +103,12 @@ constructor(
 
     val latestDate = MutableLiveData<Instant>()
 
+    private val _isLoadingDateNavigation = MutableLiveData<Boolean>()
+    val isLoadingDateNavigation: LiveData<Boolean>
+        get() = _isLoadingDateNavigation
+
+    var shouldReloadEntries = true
+
     fun loadLatestRecordDate(
         permissionType: HealthPermissionType,
         selectedDate: Instant,
@@ -176,6 +182,7 @@ constructor(
         period: DateNavigationPeriod,
         showDataOrigin: Boolean,
     ) {
+        _isLoadingDateNavigation.postValue(true)
         _entries.postValue(EntriesFragmentState.Loading)
         currentSelectedDate.postValue(selectedDate)
         this.period.postValue(period)
@@ -223,6 +230,7 @@ constructor(
                     _entries.postValue(EntriesFragmentState.LoadingFailed)
                 }
             }
+            _isLoadingDateNavigation.postValue(false)
         }
     }
 
