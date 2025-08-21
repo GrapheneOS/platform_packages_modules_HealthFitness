@@ -1175,6 +1175,8 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"కనెక్ట్ అయి ఉన్న యాప్‌లు ఇకపై Health Connectలో ఈ డేటాను రీడ్ చేయలేవు"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"ఎంచుకోబడింది"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"ఎంచుకోలేదు"</string>
+    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
+    <skip />
     <string name="a11y_map_description" msgid="4992907698581164434">"వ్యాయామం మ్యాప్ మార్గం అందుబాటులో ఉంది"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"తర్వాతి రోజు"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"తర్వాతి వారం"</string>
@@ -1272,21 +1274,17 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"తెలియని డివైజ్"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"డివైజ్ సమాచారం"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"ఈ డివైజ్ ద్వారా కలెక్ట్ అయిన డేటా Health Connectలో స్టోర్ అవుతుంది, అక్కడ కనెక్ట్ చేయబడిన యాప్‌లు దానిని యాక్సెస్ చేస్తాయి"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"ఈ డివైజ్, స్టెప్ ట్రాకింగ్‌కు సపోర్ట్ చేయదు, కానీ ఇప్పటికీ Health Connectలో డేటా స్టోర్ చేసి ఉంటుంది"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"ఈ డివైజ్ స్టెప్స్‌ను ట్రాక్ చేయదు"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"రైట్ అనుమతి ఉంది"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"డివైజ్ డేటా"</string>
     <string name="device_data_label" msgid="2056618513138892435">"డివైజ్‌ను మేనేజ్ చేయండి"</string>
     <string name="device_data_button" msgid="8002406105399136401">"డివైజ్ డేటాను చూడండి"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"మీ ఫోన్‌లో ట్రాక్ అయిన అడుగులు Health Connectలో కనిపిస్తాయి"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"కనెక్ట్ చేయబడిన యాప్స్‌ను యాక్సెస్ చేయడానికి ఈ డివైజ్ ద్వారా ట్రాక్ చేయబడిన అడుగులు ఇప్పుడు Health Connectలో స్టోర్ చేయబడ్డాయి."</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"విస్మరించండి"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"రివ్యూ చేయండి"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Health Connectలో ఇప్పుడు అడుగులు ఉన్నాయి"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"కనెక్ట్ చేయబడిన యాప్స్‌ను యాక్సెస్ చేయడానికి ఈ డివైజ్ ద్వారా ట్రాక్ చేయబడిన అడుగులు ఇప్పుడు Health Connectలో స్టోర్ చేయబడ్డాయి."</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"ఇప్పుడు కాదు"</string>
 </resources>

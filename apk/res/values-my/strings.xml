@@ -1175,6 +1175,8 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"ချိတ်ဆက်ထားသည့် အက်ပ်များက Health Connect ထံမှ ဤဒေတာကို ဖတ်နိုင်တော့မည်မဟုတ်ပါ"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"အမှန်ခြစ်ထားသည်"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"အမှန်ခြစ်မထားပါ"</string>
+    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
+    <skip />
     <string name="a11y_map_description" msgid="4992907698581164434">"လေ့ကျင့်ခန်းမြေပုံ လမ်းကြောင်း ရနိုင်သည်"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"နောက်ရက်"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"နောက်အပတ်"</string>
@@ -1272,21 +1274,17 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"အမျိုးအမည်မသိ စက်ပစ္စည်း"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"စက်အချက်အလက်"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"ဤစက်က စုဆောင်းသောဒေတာကို Health Connect ၌ သိမ်းမည်ဖြစ်ပြီး ထိုနေရာတွင် ချိတ်ဆက်အက်ပ်များက ယင်းဒေတာကို သုံးမည်"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"ဤစက်ပစ္စည်းသည် ခြေလှမ်းခြေရာခံခြင်းကို မပံ့ပိုးသော်လည်း Health Connect တွင် ဒေတာသိမ်းထားသေးသည်"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"ဤစက်ပစ္စည်းသည် ခြေလှမ်းများကို ခြေရာမခံပါ"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"ရေးခွင့်ပေးထားသည်များ"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"ကိရိယာ ဒေတာ"</string>
     <string name="device_data_label" msgid="2056618513138892435">"စက်ပစ္စည်း စီမံရန်"</string>
     <string name="device_data_button" msgid="8002406105399136401">"စက်တွင်း ဒေတာ ကြည့်ရန်"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"Health Connect ၌ ဖုန်းရှိခြေရာခံထားသော အဆင့်များကိုမြင်ရမည်"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"ဤစက်က ခြေရာခံထားသောအဆင့်များကို သုံးရန် ချိတ်ဆက်အက်ပ်များအတွက် Health Connect တွင် သိမ်းလိုက်ပါပြီ"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"ပယ်ရန်"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"သုံးသပ်ချက်"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"အဆင့်များသည် Health Connect ၌ ရှိနေပြီ"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"ဤစက်က ခြေရာခံထားသောအဆင့်များကို သုံးရန် ချိတ်ဆက်အက်ပ်များအတွက် Health Connect တွင် သိမ်းလိုက်ပါပြီ"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"ယခုမလုပ်ပါ"</string>
 </resources>

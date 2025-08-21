@@ -1175,6 +1175,8 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"હવે કનેક્ટેડ ઍપ Health Connectમાંથી આ ડેટા વાંચી શકશે નહીં"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"ચેક કર્યું છે"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"ચેક કર્યું નથી"</string>
+    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
+    <skip />
     <string name="a11y_map_description" msgid="4992907698581164434">"વ્યાયામના નકશાનો રસ્તો ઉપલબ્ધ છે"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"આગલો દિવસ"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"આગલું અઠવાડિયું"</string>
@@ -1272,21 +1274,17 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"અજાણ્યું ડિવાઇસ"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"ડિવાઇસની માહિતી"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"આ ડિવાઇસ દ્વારા એકત્રિત કરવામાં આવેલો ડેટા Health Connectમાં સ્ટોર કરવામાં આવશે, જ્યાં કનેક્ટ થયેલી ઍપ તેને ઍક્સેસ કરશે"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"આ ડિવાઇસ પગલાં ટ્રૅક કરવાની સુવિધાને સપોર્ટ કરતું નથી, તેમ છતાં Health Connectમાં ડેટા સ્ટોર થયેલો છે"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"આ ડિવાઇસ પગલાં ટ્રૅક કરતું નથી"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"લખવાની મંજૂરી છે"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"ડિવાઇસ ડેટા"</string>
     <string name="device_data_label" msgid="2056618513138892435">"ડિવાઇસ મેનેજ કરો"</string>
     <string name="device_data_button" msgid="8002406105399136401">"ડિવાઇસ ડેટા જુઓ"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"તમારા ફોન પર ટ્રૅક કરેલા પગલાં Health Connectમાં દેખાશે"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"આ ડિવાઇસ દ્વારા ટ્રૅક કરવામાં આવેલા પગલાં હવે Health Connect પર સ્ટોર થાય છે કે જેથી કનેક્ટ થયેલી ઍપ તેને ઍક્સેસ કરી શકે"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"છોડી દો"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"રિવ્યૂ કરો"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"હવે Health Connectમાં પગલાં આવે છે"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"આ ડિવાઇસ દ્વારા ટ્રૅક કરવામાં આવેલા પગલાં હવે Health Connect પર સ્ટોર થાય છે કે જેથી કનેક્ટ થયેલી ઍપ તેને ઍક્સેસ કરી શકે"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"હમણાં નહીં"</string>
 </resources>

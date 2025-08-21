@@ -1175,6 +1175,8 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"සම්බන්ධිත යෙදුම්වලට තවදුරටත් Health Connect වෙතින් මෙම දත්ත කියවීමට නොහැකි වනු ඇත"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"සලකුණු කරන ලදි"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"සලකුණු නොකළ"</string>
+    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
+    <skip />
     <string name="a11y_map_description" msgid="4992907698581164434">"අභ්‍යාස සිතියම් මාර්ගය තිබේ"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"ඊළඟ දිනය"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"ඊළඟ සතිය"</string>
@@ -1272,21 +1274,17 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"නොදන්නා උපාංගය"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"උපාංග තතු"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"මෙම උපාංගය මගින් රැස් කරන ලද දත්ත Health Connect හි ගබඩා කරනු ලබන අතර, එහි දී සම්බන්ධිත යෙදුම් එයට ප්‍රවේශ වනු ඇත"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"මෙම උපාංගය පියවර ලුහුබැඳීමට සහාය නොදක්වයි, නමුත් තවමත් Health Connect හි දත්ත ගබඩා කර ඇත"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"මෙම උපාංගය පියවර ලුහුබැඳීම සිදු නොකරයි."</string>
     <string name="device_settings_label" msgid="9053791237491247819">"ලිවීමට ඉඩ දුන්නා"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"උපාංග දත්ත"</string>
     <string name="device_data_label" msgid="2056618513138892435">"උපාංගය කළමනාකරණය කරන්න"</string>
     <string name="device_data_button" msgid="8002406105399136401">"උපාංග දත්ත බලන්න"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"ඔබේ දුරකථනයේ නිරීක්ෂණය කරන ලද පියවර Health Connect හි දිස්වනු ඇත"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"සම්බන්ධිත යෙදුම් වෙත ප්‍රවේශ වීම සඳහා මෙම උපාංගය මඟින් නිරීක්ෂණය කරන ලද පියවර දැන් Health Connect හි ගබඩා කර ඇත"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"අස් කරන්න"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"සමාලෝචන කරන්න"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"පියවර දැන් Health Connect හි ඇත"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"සම්බන්ධිත යෙදුම් වෙත ප්‍රවේශ වීම සඳහා මෙම උපාංගය මඟින් නිරීක්ෂණය කරන ලද පියවර දැන් Health Connect හි ගබඩා කර ඇත"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"දැන් නොවේ"</string>
 </resources>

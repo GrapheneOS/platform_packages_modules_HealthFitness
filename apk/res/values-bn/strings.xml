@@ -1175,6 +1175,8 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"কানেক্ট করা অ্যাপ Health Connect থেকে এই ডেটা আর পড়তে পারবে না"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"টিক চিহ্ন দিয়েছেন"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"টিক চিহ্ন দেওয়া নেই"</string>
+    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
+    <skip />
     <string name="a11y_map_description" msgid="4992907698581164434">"ব্যায়াম সংক্রান্ত ম্যাপ রুট উপলভ্য আছে"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"পরের দিন"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"পরের সপ্তাহে"</string>
@@ -1272,21 +1274,17 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"অজানা ডিভাইস"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"ডিভাইসের তথ্য"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"এই ডিভাইসের মাধ্যমে সংগ্রহ করা ডেটা Health Connect-এ সেভ করা হবে, Health Connect-এ কানেক্ট করা অ্যাপ এটি অ্যাক্সেস করতে পারবে"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"এই ডিভাইসে হাঁটার স্টেপ ট্র্যাক করার সুবিধা কাজ করে না, তবে এখনও Health Connect-এ ডেটা সেভ করা আছে"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"এই ডিভাইসটি হাঁটার স্টেপ ট্র্যাক করে না"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"এডিট করার অনুমতি দেওয়া হয়েছে"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"ডিভাইস ডেটা"</string>
     <string name="device_data_label" msgid="2056618513138892435">"ডিভাইস ম্যানেজ করুন"</string>
     <string name="device_data_button" msgid="8002406105399136401">"ডিভাইস ডেটা দেখুন"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"আপনার ফোনে ট্র্যাক করা স্টেপ Health Connect-এ দেখা যাবে"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"এই ডিভাইসের মাধ্যমে ট্র্যাক করা স্টেপ এখন Health Connect-এ সেভ করা হয় যাতে কানেক্ট করা অ্যাপ অ্যাক্সেস করা যায়"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"বাতিল করুন"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"পর্যালোচনা করুন"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"স্টেপের তথ্য এখন Health Connect-এ আছে"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"এই ডিভাইসের মাধ্যমে ট্র্যাক করা স্টেপ এখন Health Connect-এ সেভ করা হয় যাতে কানেক্ট করা অ্যাপ অ্যাক্সেস করা যায়"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"এখন নয়"</string>
 </resources>

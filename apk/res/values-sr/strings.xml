@@ -1175,6 +1175,8 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Повезане апликације више неће моћи да читају ове податке из Повезивања здравља"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Означено"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Није означено"</string>
+    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
+    <skip />
     <string name="a11y_map_description" msgid="4992907698581164434">"Доступна је мапа руте вежбања"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Следећи дан"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Следећа недеља"</string>
@@ -1273,7 +1275,7 @@
     <string name="device_management_screen_title" msgid="504259497211017622">"Информације о уређају"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Подаци које прикупи овај уређај чувају се у Повезивању здравља и ту им приступају повезане апликације"</string>
     <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Овај уређај не подржава праћење корака, али и даље садржи податке сачуване у Повезивању здравља"</string>
-    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Овај уређај не прати корак"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Овај уређај не прати коракe"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Дозвољено за писање"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Подаци о уређају"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Управљање уређајем"</string>
