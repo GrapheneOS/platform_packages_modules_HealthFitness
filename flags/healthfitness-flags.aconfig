@@ -654,3 +654,12 @@ flag {
     is_fixed_read_only: true
     is_exported: false
 }
+
+flag {
+    name: "device_data_providers_db"
+    namespace: "health_fitness_aconfig"
+    description: "Enables device data providers database changes."
+    bug: "416236349"
+    is_fixed_read_only: false
+    is_exported: false
+}
