@@ -1175,6 +1175,8 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"កម្មវិធីដែលបានភ្ជាប់នឹងមិនអាចអានទិន្នន័យនេះពី Health Connect បានទៀតទេ"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"បាន​ធីក"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"មិន​បាន​ធីក"</string>
+    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
+    <skip />
     <string name="a11y_map_description" msgid="4992907698581164434">"មានផ្លូវលើផែនទីសម្រាប់ហាត់ប្រាណ"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"ថ្ងៃ​បន្ទាប់"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"សប្ដាហ៍​ក្រោយ"</string>
@@ -1272,21 +1274,17 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"ឧបករណ៍​ដែលមិន​ស្គាល់"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"ព័ត៌មានឧបករណ៍"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"ទិន្នន័យដែលបានប្រមូលបានដោយឧបករណ៍នេះនឹងត្រូវបានរក្សាទុកនៅក្នុង Health Connect ដែលកម្មវិធី​តភ្ជាប់នឹងចូលប្រើទិន្នន័យនោះ"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"ឧបករណ៍នេះមិនអាចប្រើមុខងារតាមដានជំហានបានទេ ប៉ុន្តែនៅតែរក្សាទុកទិន្នន័យនៅក្នុង Health Connect ដដែល"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"ឧបករណ៍នេះមិនតាមដានជំហានទេ"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"បានអនុញ្ញាតឱ្យសរសេរ"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"ទិន្នន័យឧបករណ៍"</string>
     <string name="device_data_label" msgid="2056618513138892435">"គ្រប់គ្រង​ឧបករណ៍"</string>
     <string name="device_data_button" msgid="8002406105399136401">"មើលទិន្នន័យឧបករណ៍"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"ចំនួនជំហានដែលបានតាមដានលើទូរសព្ទអ្នកនឹងបង្ហាញក្នុង Health Connect"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"ឥឡូវនេះ ចំនួនជំហានដែលតាមដានដោយឧបករណ៍នេះត្រូវបានរក្សាទុកនៅក្នុង Health Connect សម្រាប់ឱ្យកម្មវិធីតភ្ជាប់ចូលប្រើ"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"ច្រានចោល"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"ពិនិត្យមើល"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"ឥឡូវ ចំនួនជំហានមានក្នុង Health Connect"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"ឥឡូវនេះ ចំនួនជំហានដែលតាមដានដោយឧបករណ៍នេះត្រូវបានរក្សាទុកនៅក្នុង Health Connect សម្រាប់ឱ្យកម្មវិធីតភ្ជាប់ចូលប្រើ"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"កុំទាន់"</string>
 </resources>

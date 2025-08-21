@@ -1175,6 +1175,8 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"କନେକ୍ଟ ହୋଇଥିବା ଆପ୍ସ Health Connectରୁ ଏହି ଡାଟାକୁ ପଢ଼ିବା ପାଇଁ ଆଉ ସକ୍ଷମ ହେବ ନାହିଁ"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"ଚେକ କରାଯାଇଛି"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"ଯାଞ୍ଚ ହୋଇନାହିଁ"</string>
+    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
+    <skip />
     <string name="a11y_map_description" msgid="4992907698581164434">"କସରତ କରିବା ସ୍ଥାନକୁ ଯିବାର ମେପ ରୁଟ ଉପଲବ୍ଧ ଅଛି"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"ପରବର୍ତ୍ତୀ ଦିନ"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"ପରବର୍ତ୍ତୀ ସପ୍ତାହ"</string>
@@ -1272,21 +1274,17 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"ଅଜଣା ଡିଭାଇସ"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"ଡିଭାଇସ ସୂଚନା"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"ଏହି ଡିଭାଇସ ଦ୍ୱାରା ସଂଗ୍ରହ କରାଯାଇଥିବା ଡାଟା Health Connectରେ ଷ୍ଟୋର କରାଯିବ, ଯେଉଁଠି କନେକ୍ଟ ହୋଇଥିବା ଆପ୍ସ ଏହାକୁ ଆକ୍ସେସ କରିପାରିବ"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"ଏହି ଡିଭାଇସଟି ଷ୍ଟେପ ଟ୍ରାକିଂକୁ ସପୋର୍ଟ କରେ ନାହିଁ, କିନ୍ତୁ ଏବେ ବି Health Connectରେ ଡାଟା ଷ୍ଟୋର ହୋଇଛି"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"ଏହି ଡିଭାଇସ ଷ୍ଟେପଗୁଡ଼ିକୁ ଟ୍ରାକ କରେ ନାହିଁ"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"ଲେଖିବାକୁ ଅନୁମତି ଦିଆଯାଇଛି"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"ଡିଭାଇସ ଡାଟା"</string>
     <string name="device_data_label" msgid="2056618513138892435">"ଡିଭାଇସକୁ ପରିଚାଳନା କରନ୍ତୁ"</string>
     <string name="device_data_button" msgid="8002406105399136401">"ଡିଭାଇସ ଡାଟା ଦେଖନ୍ତୁ"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"ଫୋନରେ ଟ୍ରାକ ହୋଇଥିବା ଷ୍ଟେପ Health Connectରେ ଦେଖାଯିବ"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"କନେକ୍ଟ ହୋଇଥିବା ଆପ୍ସକୁ ଆକ୍ସେସ କରିବା ପାଇଁ ଏହି ଡିଭାଇସ ଦ୍ୱାରା ଟ୍ରାକ କରାଯାଇଥିବା ଷ୍ଟେପଗୁଡ଼ିକୁ ବର୍ତ୍ତମାନ Health Connectରେ ଷ୍ଟୋର କରାଯାଇଛି"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"ଖାରଜ କରନ୍ତୁ"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"ରିଭ୍ୟୁ କରନ୍ତୁ"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"ଷ୍ଟେପଗୁଡ଼ିକ ଏବେ Health Connectରେ ଅଛି"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"କନେକ୍ଟ ହୋଇଥିବା ଆପ୍ସକୁ ଆକ୍ସେସ କରିବା ପାଇଁ ଏହି ଡିଭାଇସ ଦ୍ୱାରା ଟ୍ରାକ କରାଯାଇଥିବା ଷ୍ଟେପଗୁଡ଼ିକୁ ବର୍ତ୍ତମାନ Health Connectରେ ଷ୍ଟୋର କରାଯାଇଛି"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"ବର୍ତ୍ତମାନ ନୁହେଁ"</string>
 </resources>

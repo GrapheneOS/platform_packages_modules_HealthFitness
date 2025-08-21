@@ -1175,6 +1175,8 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"האפליקציות המקושרות לא יוכלו יותר לקרוא את הנתונים האלה מ-Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"מסומנת"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"לא מסומנת"</string>
+    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
+    <skip />
     <string name="a11y_map_description" msgid="4992907698581164434">"יש מסלול של האימון במפה"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"ליום הבא"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"לשבוע הבא"</string>

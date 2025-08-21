@@ -388,12 +388,12 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"داده‌هایی را که می‌خواهید این برنامه در Health Connect بنویسد انتخاب کنید"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"داده‌هایی را که می‌خواهید این برنامه بخواند یا در Health Connect بنویسد انتخاب کنید"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"داده‌هایی را که می‌خواهید این برنامه از Health Connect بخواند انتخاب کنید"</string>
-    <string name="matchmaking_screen_title" msgid="7839701301617377279">"داده ها را بین برنامه ها به اشتراک بگذارید"</string>
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"دریافت داده از: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"به برنامه <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه دهید تا داده‌ها را از برنامه‌های دیگر در این دستگاه بااستفاده از Health Connect بخواند"</string>
-    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"برنامه هایی که می توانند این داده ها را همگام کنند"</string>
-    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"یاد بگیرید که چگونه <xliff:g id="APP_NAME">%1$s</xliff:g> معلومات شما را در آن‌ها استفاده می کند "<a href="%2$s">"پالیسی حریم خصوصی"</a>"."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect به شما امکان می‌دهد داده‌های سلامتی و تناسب اندام خود را بین چند برنامه به اشتراک بگذارید. این به شما کمک می‌کند تا اطلاعات و تجربیات خود را باز کنید و درعین‌حال داده‌هایتان را ایمن نگه دارید."</string>
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"هم‌رسانی کردن داده‌ها بین برنامه‌ها"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"داده‌ها از: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"به برنامه <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه دهید تا داده‌ها را بااستفاده از Health Connect از برنامه‌های دیگر در این دستگاه بخواند"</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"برنامه‌هایی که می‌توانند این داده‌ها را همگام‌سازی کنند"</string>
+    <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ببینید که <xliff:g id="APP_NAME">%1$s</xliff:g> چگونه از داده‌هایتان در "<a href="%2$s">"خط‌مشی رازداری"</a>" خود استفاده می‌کند."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"‫Health Connect به شما امکان می‌دهد داده‌های سلامتی و تناسب اندام خود را بین چند برنامه هم‌رسانی کنید. این به شما کمک می‌کند تا اطلاعات و تجربیات خود را باز کنید و درعین‌حال داده‌هایتان را ایمن نگه دارید."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"اطلاعات بیشتر درباره Health Connect"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"اگر دسترسی خواندن را اعطا کنید، این برنامه می‌تواند داده‌های جدید و داده‌های ۳۰ روز گذشته را بخواند"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"اگر دسترسی خواندن را اعطا کنید، این برنامه می‌تواند داده‌های جدید و قبلی را بخواند"</string>
@@ -1072,12 +1072,12 @@
     <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"در تنظیمات Health Connect می‌توانید دسترسی برنامه‌ها به مسیرهای تمرین را مدیریت کنید"</string>
     <string name="request_route_allow" msgid="4427372851821847274">"اجازه دادن به این مسیر"</string>
     <string name="request_route_allow_all" msgid="314830698958736916">"اجازه دادن به همه مسیرها"</string>
-    <string name="request_route_dont_allow" msgid="1186236234664957228">"اجازه داده نشود"</string>
+    <string name="request_route_dont_allow" msgid="1186236234664957228">"اجازه ندادن"</string>
     <string name="route_permissions_always_allow" msgid="1383816362804293137">"همیشه مجاز"</string>
     <string name="route_permissions_label" msgid="6293377940884373190">"دسترسی به مسیرهای تمرین"</string>
     <string name="route_permissions_summary" msgid="704859311037374130">"اجازه دادن به <xliff:g id="APP_NAME">%1$s</xliff:g> برای دسترسی به مسیرها"</string>
     <string name="route_permissions_ask" msgid="3927020960754781917">"هربار پرسیده شود"</string>
-    <string name="route_permissions_deny" msgid="4955644777239169593">"اجازه داده نشود"</string>
+    <string name="route_permissions_deny" msgid="4955644777239169593">"اجازه ندادن"</string>
     <string name="exercise_permission_dialog_enable_title" msgid="4310997044811843391">"هر دو نوع داده فعال شود؟"</string>
     <string name="exercise_permission_dialog_disable_title" msgid="1011777519918396883">"هر دو نوع داده غیرفعال شود؟"</string>
     <string name="exercise_permission_dialog_enabled_summary" msgid="3404390796688813585">"برای فعال شدن مسیرهای تمرین، <xliff:g id="APP_NAME">%1$s</xliff:g> باید دسترسی خواندن به تمرین داشته باشد"</string>
@@ -1175,6 +1175,8 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"برنامه‌های متصل دیگر نمی‌توانند این داده‌ها را از Health Connect بخوانند"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"دارای علامت"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"بدون علامت"</string>
+    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
+    <skip />
     <string name="a11y_map_description" msgid="4992907698581164434">"مسیر نقشه تمرین دردسترس است"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"روز بعدی"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"هفته بعدی"</string>
@@ -1213,7 +1215,7 @@
     <string name="request_permissions_allow_all_the_time" msgid="559097424823775606">"همیشه"</string>
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"مجاز کردن انتخاب‌ها"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"هنگام استفاده از برنامه"</string>
-    <string name="request_permissions_deny_all" msgid="4123735770293545320">"رد کردن همه"</string>
+    <string name="request_permissions_deny_all" msgid="4123735770293545320">"نپذیرفتن همه"</string>
     <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"به <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه می‌دهید به داده‌های تناسب اندام و تندرستی دسترسی داشته باشد؟"</string>
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"<xliff:g id="APP_NAME">%1$s</xliff:g> درخواست دسترسی به «<xliff:g id="DATA_TYPES">%2$s</xliff:g>» را دارد.\n\nمجاز کردن همه را انتخاب کنید یا آن‌ها را به‌صورت مجزا کنترل کنید."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"به <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه دسترسی به <xliff:g id="DATA_TYPE">%2$s</xliff:g> داده شود؟"</string>
@@ -1272,21 +1274,17 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"دستگاه نامشخص"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"اطلاعات دستگاه"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"داده‌هایی که این دستگاه جمع‌آوری می‌کند در Health Connect ذخیره خواهد شد، جایی که برنامه‌های متصل‌شده به آن دسترسی خواهند داشت"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"این دستگاه از ردیابی مرحله‌ای حمایت نمی‌کند، اما همچنان داده‌هایی در Health Connect ذخیره می‌کند"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"این دستگاه مراحل را دنبال نمی‌کند"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"مجاز به نوشتن"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"داده‌های دستگاه"</string>
     <string name="device_data_label" msgid="2056618513138892435">"مدیریت دستگاه"</string>
     <string name="device_data_button" msgid="8002406105399136401">"دیدن داده‌های دستگاه"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"تعداد قدم‌های ثبت‌شده در تلفن شما در Health Connect نمایش داده خواهند شد"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"تعداد قدم‌های ثبت‌شده توسط این دستگاه اکنون در Health Connect ذخیره می‌شوند تا برنامه‌های متصل بتوانند به آن‌ها دسترسی داشته باشند"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"رد کردن"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"مرور"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"تعداد قدم‌ها اکنون در ‎Health Connect‎ هستند"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"تعداد قدم‌های ثبت‌شده توسط این دستگاه اکنون در Health Connect ذخیره می‌شوند تا برنامه‌های متصل بتوانند به آن‌ها دسترسی داشته باشند"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"اکنون نه"</string>
 </resources>
