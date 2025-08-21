@@ -23,6 +23,7 @@ import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.dialog.HealthConnectBottomSheetDialogFragment
+import com.android.healthconnect.controller.shared.dialog.HealthConnectBottomSheetDialogFragment.BottomSheetCallback
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
 import com.android.healthfitness.flags.Flags.matchmaking
@@ -31,8 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint(FragmentActivity::class)
-class MatchmakingActivity :
-    Hilt_MatchmakingActivity(), HealthConnectBottomSheetDialogFragment.OnCancelListener {
+class MatchmakingActivity : Hilt_MatchmakingActivity(), BottomSheetCallback {
     @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
 
     private val viewModel: MatchmakingViewModel by viewModels()
@@ -70,6 +70,10 @@ class MatchmakingActivity :
 
         setContentView(R.layout.activity_matchmaking)
 
+        viewModel.atLeastOnePermissionGranted.observe(this) { isEnabled ->
+            bottomSheet?.setPrimaryButtonEnabled(isEnabled)
+        }
+
         if (savedInstanceState == null) {
             bottomSheet =
                 HealthConnectBottomSheetDialogFragment.newInstance(MatchmakingFragment::class.java)
@@ -77,13 +81,34 @@ class MatchmakingActivity :
         }
     }
 
-    override fun onDialogCanceled() {
+    override fun onPrimaryButtonClicked() {
+        viewModel.grantPermissions()
+        finishWithOkResult()
+    }
+
+    override fun onSecondaryButtonClicked() {
+        viewModel.recordMatchmakingDenial()
         viewModel.removeAllPermissionsFromGrantedList()
         finishWithCancelResult()
     }
 
+    override fun onDialogCancel() {
+        viewModel.removeAllPermissionsFromGrantedList()
+        finishWithCancelResult()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.reset()
+    }
+
     private fun finishWithCancelResult() {
         setResult(RESULT_CANCELED)
+        finish()
+    }
+
+    private fun finishWithOkResult() {
+        setResult(RESULT_OK)
         finish()
     }
 }
