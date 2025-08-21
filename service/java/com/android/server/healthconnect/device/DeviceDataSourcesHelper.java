@@ -51,7 +51,12 @@ public class DeviceDataSourcesHelper {
      */
     public DeviceDataSource getCurrentDevice(Context context) {
         return new DeviceDataSource(
-                new DeviceInfoHelper.DeviceInfo(Build.MANUFACTURER, Build.MODEL, DEVICE_TYPE_PHONE),
+                new DeviceInfoHelper.DeviceInfo(
+                        Build.MANUFACTURER,
+                        Build.MODEL,
+                        DEVICE_TYPE_PHONE,
+                        /* deviceId= */ null,
+                        /* displayName= */ null),
                 // This is a sensitive value and should not be shared outside of this module.
                 getSerial(),
                 getDisplayName(context));

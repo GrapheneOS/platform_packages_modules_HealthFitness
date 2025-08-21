@@ -27,6 +27,7 @@ import android.util.Slog;
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 
 /**
@@ -46,7 +47,7 @@ public final class DevelopmentDatabaseHelper {
      * The current version number for the development database features. Increment this whenever you
      * make a breaking schema change to a development feature.
      */
-    @VisibleForTesting static final int CURRENT_VERSION = 12;
+    @VisibleForTesting static final int CURRENT_VERSION = 13;
 
     /** The name of the table to store development specific key value pairs. */
     private static final String SETTINGS_TABLE_NAME = "development_database_settings";
@@ -95,6 +96,7 @@ public final class DevelopmentDatabaseHelper {
 
         // Code for under development schema changes goes in this method but below this comment
         applyDdpAppInfoDatabaseUpgrade(db);
+        applyDeviceInfoEnhancementsDatabaseUpgrade(db);
     }
 
     private static void applyDdpAppInfoDatabaseUpgrade(SQLiteDatabase db) {
@@ -105,6 +107,15 @@ public final class DevelopmentDatabaseHelper {
 
         AlterTableRequest alterAppInfoRequest = AppInfoHelper.getAlterTableRequestForDdpInfo();
         executeSqlStatements(db, alterAppInfoRequest.getAddColumnsCommands());
+    }
+
+    private static void applyDeviceInfoEnhancementsDatabaseUpgrade(SQLiteDatabase db) {
+        if (checkColumnExists(
+                db, DeviceInfoHelper.TABLE_NAME, DeviceInfoHelper.DEVICE_ID_COLUMN_NAME)) {
+            // Upgrade has already been applied. Return early.
+            return;
+        }
+        executeSqlStatements(db, DeviceInfoHelper.getAlterTableRequest().getAddColumnsCommands());
     }
 
     @VisibleForTesting

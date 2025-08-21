@@ -32,9 +32,11 @@ import android.health.connect.datatypes.Device.DeviceType;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
@@ -57,6 +59,8 @@ public class DeviceInfoHelper extends DatabaseHelper {
     public static final String MANUFACTURER_COLUMN_NAME = "manufacturer";
     public static final String MODEL_COLUMN_NAME = "model";
     public static final String DEVICE_TYPE_COLUMN_NAME = "device_type";
+    public static final String DEVICE_ID_COLUMN_NAME = "device_id";
+    public static final String DISPLAY_NAME_COLUMN_NAME = "display_name";
 
     record DeviceInfoCache(
             // Map to store deviceInfoId -> DeviceInfo mapping for populating record for read.
@@ -87,7 +91,15 @@ public class DeviceInfoHelper extends DatabaseHelper {
         String manufacturer = recordInternal.getManufacturer();
         String model = recordInternal.getModel();
         int deviceType = recordInternal.getDeviceType();
-        DeviceInfo deviceInfo = new DeviceInfo(manufacturer, model, deviceType);
+
+        String deviceId = null; // TODO(b/441949008): Set synthetic package name.
+        String displayName = null;
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            displayName = recordInternal.getDisplayName();
+        }
+
+        DeviceInfo deviceInfo =
+                new DeviceInfo(manufacturer, model, deviceType, deviceId, displayName);
         long rowId = getDeviceInfoMap().getOrDefault(deviceInfo, DEFAULT_LONG);
         if (rowId == DEFAULT_LONG) {
             rowId = insertIfNotPresent(deviceInfo);
@@ -96,7 +108,7 @@ public class DeviceInfoHelper extends DatabaseHelper {
     }
 
     /**
-     * Populates record with manufacturer, model and deviceType values
+     * Populates record with manufacturer, model, deviceType, deviceId and displayName values
      *
      * @param deviceInfoId rowId from {@code device_info_table }
      * @param record The record to be populated with values
@@ -107,6 +119,9 @@ public class DeviceInfoHelper extends DatabaseHelper {
             record.setDeviceType(deviceInfo.mDeviceType);
             record.setManufacturer(deviceInfo.mManufacturer);
             record.setModel(deviceInfo.mModel);
+            if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                record.setDisplayName(deviceInfo.mDisplayName);
+            }
         }
     }
 
@@ -118,6 +133,24 @@ public class DeviceInfoHelper extends DatabaseHelper {
     @Override
     protected String getMainTableName() {
         return TABLE_NAME;
+    }
+
+    /**
+     * Creates an {@link AlterTableRequest} for adding enhanced device info specific columns, {@link
+     * #DEVICE_ID_COLUMN_NAME} and {@link #DISPLAY_NAME_COLUMN_NAME} to the device_info_table.
+     */
+    public static AlterTableRequest getAlterTableRequest() {
+        return new AlterTableRequest(TABLE_NAME, getEnhancedDeviceInfoColumnInfo());
+    }
+
+    /**
+     * Gets the columns to add for an {@link AlterTableRequest} for adding enhanced device info
+     * specific columns.
+     */
+    private static List<Pair<String, String>> getEnhancedDeviceInfoColumnInfo() {
+        return List.of(
+                Pair.create(DEVICE_ID_COLUMN_NAME, TEXT_NULL),
+                Pair.create(DISPLAY_NAME_COLUMN_NAME, TEXT_NULL));
     }
 
     private synchronized DeviceInfoCache populateDeviceInfoCache() {
@@ -134,7 +167,16 @@ public class DeviceInfoHelper extends DatabaseHelper {
                 String manufacturer = getCursorString(cursor, MANUFACTURER_COLUMN_NAME);
                 String model = getCursorString(cursor, MODEL_COLUMN_NAME);
                 int deviceType = getCursorInt(cursor, DEVICE_TYPE_COLUMN_NAME);
-                DeviceInfo deviceInfo = new DeviceInfo(manufacturer, model, deviceType);
+
+                String deviceId = null;
+                String displayName = null;
+                if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                    deviceId = getCursorString(cursor, DEVICE_ID_COLUMN_NAME);
+                    displayName = getCursorString(cursor, DISPLAY_NAME_COLUMN_NAME);
+                }
+
+                DeviceInfo deviceInfo =
+                        new DeviceInfo(manufacturer, model, deviceType, deviceId, displayName);
                 deviceInfoMap.put(deviceInfo, rowId);
                 idDeviceInfoMap.put(rowId, deviceInfo);
             }
@@ -176,18 +218,30 @@ public class DeviceInfoHelper extends DatabaseHelper {
                                 getContentValues(
                                         deviceInfo.mManufacturer,
                                         deviceInfo.mModel,
-                                        deviceInfo.mDeviceType)));
+                                        deviceInfo.mDeviceType,
+                                        deviceInfo.mDeviceId,
+                                        deviceInfo.mDisplayName)));
         getDeviceInfoMap().put(deviceInfo, rowId);
         getIdDeviceInfoMap().put(rowId, deviceInfo);
         return rowId;
     }
 
-    private ContentValues getContentValues(String manufacturer, String model, int deviceType) {
+    private ContentValues getContentValues(
+            String manufacturer,
+            String model,
+            int deviceType,
+            @Nullable String deviceId,
+            @Nullable String displayName) {
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(MANUFACTURER_COLUMN_NAME, manufacturer);
         contentValues.put(MODEL_COLUMN_NAME, model);
         contentValues.put(DEVICE_TYPE_COLUMN_NAME, deviceType);
+
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            contentValues.put(DEVICE_ID_COLUMN_NAME, deviceId);
+            contentValues.put(DISPLAY_NAME_COLUMN_NAME, displayName);
+        }
 
         return contentValues;
     }
@@ -214,11 +268,20 @@ public class DeviceInfoHelper extends DatabaseHelper {
         private final String mManufacturer;
         private final String mModel;
         @DeviceType private final int mDeviceType;
+        @Nullable private final String mDeviceId;
+        @Nullable private final String mDisplayName;
 
-        public DeviceInfo(String manufacturer, String model, @DeviceType int deviceType) {
+        public DeviceInfo(
+                String manufacturer,
+                String model,
+                @DeviceType int deviceType,
+                @Nullable String deviceId,
+                @Nullable String displayName) {
             mManufacturer = manufacturer;
             mModel = model;
             mDeviceType = deviceType;
+            mDeviceId = deviceId;
+            mDisplayName = displayName;
         }
 
         public String getManufacturer() {
@@ -237,6 +300,8 @@ public class DeviceInfoHelper extends DatabaseHelper {
         public int hashCode() {
             int result = mManufacturer != null ? mManufacturer.hashCode() : 0;
             result = 31 * result + (mModel != null ? mModel.hashCode() : 0) + mDeviceType;
+            result = 31 * result + (mDeviceId != null ? mDeviceId.hashCode() : 0);
+            result = 31 * result + (mDisplayName != null ? mDisplayName.hashCode() : 0);
             return result;
         }
 
@@ -257,6 +322,12 @@ public class DeviceInfoHelper extends DatabaseHelper {
                 return false;
             }
             if (!Objects.equals(mModel, deviceInfo.mModel)) {
+                return false;
+            }
+            if (!Objects.equals(mDeviceId, deviceInfo.mDeviceId)) {
+                return false;
+            }
+            if (!Objects.equals(mDisplayName, deviceInfo.mDisplayName)) {
                 return false;
             }
 

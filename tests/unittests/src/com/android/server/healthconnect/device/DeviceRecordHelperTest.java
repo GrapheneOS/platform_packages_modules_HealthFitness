@@ -95,7 +95,9 @@ public class DeviceRecordHelperTest {
                     new DeviceInfoHelper.DeviceInfo(
                             /* manufacturer= */ "Acme Corp.",
                             /* model= */ "FabPhone",
-                            /* type= */ DEVICE_TYPE_PHONE),
+                            /* type= */ DEVICE_TYPE_PHONE,
+                            /* id= */ null,
+                            /* name= */ null),
                     /* deviceId= */ "a25341c4-c39a-4605-acc6-d4a6bc903413",
                     /* displayName= */ "My mobile phone");
 

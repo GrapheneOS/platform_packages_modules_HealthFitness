@@ -18,6 +18,7 @@ package com.android.healthfitness.flags;
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.getDbVersionToDbFlagMap;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
+import static com.android.healthfitness.flags.AconfigFlagHelper.isDeviceDataProvidersEnabled;
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -113,5 +114,17 @@ public class AconfigFlagHelperTest {
     @DisableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB)
     public void cloudBackupAndRestore_featureFlagTrueAndDbFalse_expectFalse() {
         assertThat(isCloudBackupRestoreEnabled()).isFalse();
+    }
+
+    @Test
+    @DisableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void isDeviceDataProvidersEnabled_flagOff_expectFalse() {
+        assertThat(isDeviceDataProvidersEnabled()).isFalse();
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void isDeviceDataProvidersEnabled_flagOn_expectTrue() {
+        assertThat(isDeviceDataProvidersEnabled()).isTrue();
     }
 }
