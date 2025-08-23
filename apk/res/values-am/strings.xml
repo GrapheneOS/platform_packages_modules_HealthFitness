@@ -1175,6 +1175,8 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"የተገናኙ መተግበሪያዎች ከእንግዲህ ይህን ውሂብ ከጤና አገናኝ መድረስ አይችሉም"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"ምልክት ተደርጎበታል"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"ምልክት አልተደረገበትም"</string>
+    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
+    <skip />
     <string name="a11y_map_description" msgid="4992907698581164434">"የልምምድ ካርታ መስመር ይገኛል"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"ቀጣይ ቀን"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"ቀጣይ ሳምንት"</string>
@@ -1272,21 +1274,17 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"ያልታወቀ መሣሪያ"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"የመሣሪያ መረጃ"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"የጤና አገናኝ ውስጥ በዚህ መሣሪያ የተሰበሰብ ውሂብ ይከማቻል፣ እዚህም የተገናኙ መተግበሪያዎች ይደርሱታል"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"ይህ መሣሪያ የእርምጃ መከታተል አይደግፍም፣ ነገር ግን አሁንም የጤና አገናኝ ውስጥ የተከማቸ ውሂብ አለው"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"ይህ መሣሪያ እርምጃዎችን አይከታተልም"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"ለመፃፍ የተፈቀደለት"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"የመሣሪያ ውሂብ"</string>
     <string name="device_data_label" msgid="2056618513138892435">"መሣሪያን አስተዳድር"</string>
     <string name="device_data_button" msgid="8002406105399136401">"የመሣሪያ ውሂብ አሳይ"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"በስልክዎ ላይ ክትትል የተደረገባቸው እርምጃዎች የጤና አገናኝ ውስጥ ይታያሉ"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"በዚህ መሣሪያ ክትትል የተደረገባቸው እርምጃዎች አሁን የተገናኙ መተግበሪያዎች እንዲደርሷቸው የጤና አገናኝ ውስጥ ይቀመጣሉ"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"አሰናብት"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"ገምግም"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"እርምጃዎች አሁን የጤና አገናኝ ውስጥ ናቸው"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"በዚህ መሣሪያ ክትትል የተደረገባቸው እርምጃዎች አሁን የተገናኙ መተግበሪያዎች እንዲደርሷቸው የጤና አገናኝ ውስጥ ይቀመጣሉ"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"አሁን አይደለም"</string>
 </resources>

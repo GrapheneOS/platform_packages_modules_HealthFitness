@@ -1175,6 +1175,8 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"关联的应用将无法再通过“健康数据共享”读取相应数据"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"已选中"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"未选中"</string>
+    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
+    <skip />
     <string name="a11y_map_description" msgid="4992907698581164434">"有锻炼路线地图可供使用"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"次日"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"下周"</string>

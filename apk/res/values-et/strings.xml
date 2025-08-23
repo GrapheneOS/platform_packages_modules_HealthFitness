@@ -1175,6 +1175,8 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Ühendatud rakendused ei saa enam neid andmeid rakendusest Health Connect lugeda."</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Märgitud"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Märkimata"</string>
+    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
+    <skip />
     <string name="a11y_map_description" msgid="4992907698581164434">"Treeningu kaardimarsruut on saadaval"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Järgmine päev"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Järgmine nädal"</string>
@@ -1272,21 +1274,17 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"Tundmatu seade"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Seadme teave"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Selle seadme kogutudandmeid talletatakse Health Connectis, kus ühendatud rakendused pääsevad neile juurde"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"See seade ei toeta sammude jälgimist, kuid selle andmed on siiski Health Connecti talletatud."</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"See seade ei toeta sammude jälgimist."</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Lubatud kirjutada"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Seadme andmed"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Seadme haldamine"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Kuva seadme andmed"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"Telefonis jälgitud toimingud kuvatakse Health Connectis"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"Selle seadme jälgitud toimingud salvestatakse nüüd Health Connecti, et ühendatud rakendused saaksid neile juurde pääseda."</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Loobu"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Ülevaatus"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Toimingud on nüüd Health Connectis"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Selle seadme jälgitud toimingud salvestatakse nüüd Health Connecti, et ühendatud rakendused saaksid neile juurde pääseda."</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Mitte praegu"</string>
 </resources>

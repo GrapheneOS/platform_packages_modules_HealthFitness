@@ -1175,6 +1175,8 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Hindi na mare-read ng mga nakakonektang app ang data na ito mula sa Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"May check"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Walang check"</string>
+    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
+    <skip />
     <string name="a11y_map_description" msgid="4992907698581164434">"Available ang ruta ng mapa ng pag-ehersisyo"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Kinabukasan"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Susunod na linggo"</string>
@@ -1272,21 +1274,17 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"Hindi kilalang device"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Impormasyon ng device"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Iso-store ang data na nakolekta ng device na ito sa Health Connect, kung saan ia-access ito ng mga nakakonektang app"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Hindi sinusuportahan ng device na ito ang pag-track ng hakbang, pero may data pa rin na naka-store sa Health Connect"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Hindi nagta-track ang device na ito ng mga hakbang."</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Pinapayagang i-write"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Data ng device"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Pamahalaan ang device"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Tingnan ang data ng device"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"Lalabas sa Health Connect ang mga hakbang na tina-track sa telepono mo"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"Naka-store na sa Health Connect ang mga hakbang na tina-track ng device na ito para ma-access ng mga nakakonektang app"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"I-dismiss"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Suriin"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Nasa Health Connect na ang mga hakbang"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Naka-store na sa Health Connect ang mga hakbang na tina-track ng device na ito para ma-access ng mga nakakonektang app"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Hindi ngayon"</string>
 </resources>

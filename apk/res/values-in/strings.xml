@@ -1175,6 +1175,8 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Aplikasi yang terhubung tidak dapat lagi membaca data ini dari Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Dicentang"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Tidak dicentang"</string>
+    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
+    <skip />
     <string name="a11y_map_description" msgid="4992907698581164434">"Rute peta olahraga tersedia"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Hari berikutnya"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Minggu berikutnya"</string>
@@ -1272,21 +1274,17 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"Perangkat tidak dikenal"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Info perangkat"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Data yang dikumpulkan oleh perangkat ini akan disimpan di Health Connect, tempat aplikasi yang terhubung akan mengaksesnya"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Perangkat ini tidak mendukung pelacakan langkah, tetapi masih memiliki data yang disimpan di Health Connect"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Perangkat ini tidak melacak langkah"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Diizinkan menulis"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Data perangkat"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Kelola perangkat"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Lihat data perangkat"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"Langkah yang dilacak di ponsel Anda akan muncul di Health Connect"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"Langkah yang dilacak perangkat ini kini disimpan di Health Connect agar dapat diakses oleh aplikasi yang terhubung"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Tutup"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Tinjau"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Langkah kini tersedia di Health Connect"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Langkah yang dilacak perangkat ini kini disimpan di Health Connect agar dapat diakses oleh aplikasi yang terhubung"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Lain kali"</string>
 </resources>
