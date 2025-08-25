@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.wear.compose.material3.LocalContentColor
 import androidx.wear.compose.material3.LocalTextStyle
 import androidx.wear.compose.material3.SwitchButton
 import androidx.wear.compose.material3.Text
@@ -84,6 +85,7 @@ fun GrantMultipleFitnessPermissions(
 ) {
     val res = LocalContext.current.resources
     val materialUIVersion = ResourceHelper.materialUIVersionInApp
+    val iconTintColor = LocalContentColor.current
     // Represents whether user has toggled-on a granular data type permission, by default toggled.
     val checkedStates =
         remember(fitnessPermissions) { // Recalculate when fitness permissions change.
@@ -100,7 +102,8 @@ fun GrantMultipleFitnessPermissions(
         materialUIVersion = materialUIVersion,
         asScalingList = true,
         showTimeText = false,
-        imageBuilder = WearPermissionIconBuilder.builder(R.drawable.ic_health_connect),
+        imageBuilder =
+            WearPermissionIconBuilder.builder(R.drawable.ic_health_connect).tint(iconTintColor),
         title = res.getString(R.string.wear_allow_app_access_fitness_and_wellness_data, appName),
         subtitle =
             res.getString(
@@ -192,6 +195,7 @@ fun GrantSingleFitnessPermission(
 ) {
     val res = LocalContext.current.resources
     val materialUIVersion = ResourceHelper.materialUIVersionInApp
+    val iconTintColor = LocalContentColor.current
     val permissionLabel =
         stringResource(
             FitnessPermissionStrings.fromPermissionType(permission.fitnessPermissionType)
@@ -201,7 +205,8 @@ fun GrantSingleFitnessPermission(
         materialUIVersion = materialUIVersion,
         showTimeText = false,
         asScalingList = true,
-        imageBuilder = WearPermissionIconBuilder.builder(R.drawable.ic_health_connect),
+        imageBuilder =
+            WearPermissionIconBuilder.builder(R.drawable.ic_health_connect).tint(iconTintColor),
         title =
             res.getString(
                 R.string.wear_request_single_data_type_permission,
@@ -246,6 +251,7 @@ fun GrantReadBackgroundHealthPermission(
 ) {
     val materialUIVersion = ResourceHelper.materialUIVersionInApp
     val res = LocalContext.current.resources
+    val iconTintColor = LocalContentColor.current
     val grantedAdditionalPermissions =
         viewModel.grantedAdditionalPermissions.observeAsState(emptySet())
     // Wait until the grantedAdditionalPermission value has been posted then return to Activity and
@@ -263,7 +269,8 @@ fun GrantReadBackgroundHealthPermission(
         materialUIVersion = materialUIVersion,
         showTimeText = false,
         asScalingList = true,
-        imageBuilder = WearPermissionIconBuilder.builder(R.drawable.ic_health_connect),
+        imageBuilder =
+            WearPermissionIconBuilder.builder(R.drawable.ic_health_connect).tint(iconTintColor),
         title = res.getString(R.string.allow_all_the_time_prompt, appName),
     ) {
         // Allow all the time button.
