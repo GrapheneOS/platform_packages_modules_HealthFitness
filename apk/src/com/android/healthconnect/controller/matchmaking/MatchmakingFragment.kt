@@ -20,7 +20,12 @@ import android.app.Activity.RESULT_CANCELED
 import android.health.connect.HealthConnectManager.EXTRA_RECORD_TYPES
 import android.health.connect.datatypes.Record
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.preference.PreferenceCategory
@@ -35,13 +40,19 @@ import com.android.healthconnect.controller.shared.preference.HealthExpandablePr
 import com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
 import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
+import com.android.healthconnect.controller.utils.increaseViewTouchTargetSize
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import com.android.healthconnect.controller.utils.pref
 import com.android.settingslib.widget.FooterPreference
+import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+/**
+ * A fragment shown to the user to allow them to grant permissions to multiple apps at once, based
+ * on a specific record type.
+ */
 @AndroidEntryPoint(PreferenceFragmentCompat::class)
 class MatchmakingFragment : Hilt_MatchmakingFragment() {
 
@@ -64,9 +75,67 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
     @Inject lateinit var logger: HealthConnectLogger
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        val rootView = inflater.inflate(R.layout.fragment_setup, container, false)
+        rootView.background =
+            ContextCompat.getDrawable(requireContext(), R.drawable.rounded_background_transparent)
+        val buttonLayoutId =
+            if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+                R.layout.widget_setup_bottom_button_bar_expressive
+            } else {
+                R.layout.widget_setup_bottom_button_bar_legacy
+            }
+
+        val buttonArea = rootView.findViewById<FrameLayout>(R.id.action_container)
+        val buttons = inflater.inflate(buttonLayoutId, buttonArea, false)
+        buttonArea.addView(buttons)
+
+        val preferenceArea = rootView.findViewById<ViewGroup>(R.id.preference_container)
+        val preferenceView = super.onCreateView(inflater, container, savedInstanceState)
+        preferenceArea.addView(preferenceView)
+
+        return rootView
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadingIndicator = activity?.findViewById(R.id.loading)
+
+        val allowButton = view.findViewById<Button>(R.id.primary_button_outline)
+        val allowButtonFull = view.findViewById<Button>(R.id.primary_button_full)
+        val dontAllowButton = view.findViewById<Button>(R.id.secondary_button)
+
+        allowButtonFull.visibility = View.GONE
+        allowButton.visibility = View.VISIBLE
+
+        allowButton.setText(R.string.request_permissions_allow)
+        dontAllowButton.setText(R.string.request_permissions_dont_allow)
+
+        val allowParentView = allowButton.parent.parent as View
+        increaseViewTouchTargetSize(requireContext(), allowButton, allowParentView)
+
+        val dontAllowParentView = dontAllowButton.parent as View
+        increaseViewTouchTargetSize(requireContext(), dontAllowButton, dontAllowParentView)
+
+        allowButton.setOnClickListener {
+            viewModel.grantPermissions()
+            activity?.finish()
+        }
+
+        dontAllowButton.setOnClickListener {
+            viewModel.recordMatchmakingDenial()
+            viewModel.removeAllPermissionsFromGrantedList()
+            activity?.setResult(RESULT_CANCELED)
+            activity?.finish()
+        }
+
+        viewModel.atLeastOnePermissionGranted.observe(viewLifecycleOwner) { isEnabled ->
+            allowButton.isEnabled = isEnabled
+        }
 
         viewModel.allPermissionsGranted.observe(viewLifecycleOwner) { allGranted ->
             allowAllPreference.isChecked = allGranted
@@ -92,7 +161,6 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.matchmaking_fragment, rootKey)
-        preferenceScreen.isVisible = false
 
         val packageName = activity?.callingPackage
         val recordTypeNames = activity?.intent?.getStringArrayExtra(EXTRA_RECORD_TYPES)
@@ -134,7 +202,6 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                 }
                 is MatchmakingViewModel.MatchmakingState.WithData -> {
                     setLoading(false)
-                    preferenceScreen.isVisible = true
                     bindHeader(state.callingAppMetaData.appName)
                     buildAppList(state.matchingApps)
                     bindFooter()

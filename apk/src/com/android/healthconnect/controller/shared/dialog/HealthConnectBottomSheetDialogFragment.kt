@@ -23,41 +23,49 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.utils.increaseViewTouchTargetSize
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
-import com.android.settingslib.widget.SettingsThemeHelper
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+/**
+ * A [BottomSheetDialogFragment] that displays a fragment as a bottom sheet.
+ *
+ * This fragment is responsible for:
+ * - Hosting a content fragment provided via [newInstance].
+ * - Notifying an [OnCancelListener] when the dialog is canceled.
+ */
 @AndroidEntryPoint(BottomSheetDialogFragment::class)
 class HealthConnectBottomSheetDialogFragment : Hilt_HealthConnectBottomSheetDialogFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
 
-    private lateinit var contentFragment: Fragment
-    private var callback: BottomSheetCallback? = null
-    private var primaryButton: Button? = null
+    private var contentFragment: Fragment? = null
+    private var cancelListener: OnCancelListener? = null
 
-    interface BottomSheetCallback {
-        fun onPrimaryButtonClicked()
-
-        fun onSecondaryButtonClicked()
-
-        fun onDialogCancel()
+    /**
+     * Listener interface for when the dialog is canceled. Activities or fragments hosting this
+     * dialog should implement this interface.
+     */
+    interface OnCancelListener {
+        fun onDialogCanceled()
     }
 
     companion object {
-        private const val FRAGMENT_CLASS_KEY = "fragment_class"
-        const val HALF_EXPANDED_RATIO = 0.8
+        private const val FRAGMENT_CLASS_KEY = "bottom_sheet_fragment_class"
 
+        /**
+         * Creates a new instance of [HealthConnectBottomSheetDialogFragment].
+         *
+         * @param fragmentClass The class of the [Fragment] to be displayed inside the bottom sheet.
+         */
         fun newInstance(
             fragmentClass: Class<out Fragment>
         ): HealthConnectBottomSheetDialogFragment {
@@ -69,11 +77,11 @@ class HealthConnectBottomSheetDialogFragment : Hilt_HealthConnectBottomSheetDial
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        callback =
+        cancelListener =
             try {
-                context as BottomSheetCallback
-            } catch (exception: ClassCastException) {
-                throw ClassCastException("$context must implement BottomSheetCallback")
+                context as OnCancelListener
+            } catch (e: ClassCastException) {
+                throw ClassCastException("$context must implement OnCancelListener")
             }
     }
 
@@ -93,43 +101,27 @@ class HealthConnectBottomSheetDialogFragment : Hilt_HealthConnectBottomSheetDial
         savedInstanceState: Bundle?,
     ): View? {
         val view = inflater.inflate(R.layout.health_connect_bottom_sheet, container, false)
-        val buttonLayoutId =
-            if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
-                R.layout.widget_setup_bottom_button_bar_expressive
-            } else {
-                R.layout.widget_setup_bottom_button_bar_legacy
-            }
-
-        val buttonArea = view.findViewById<FrameLayout>(R.id.bottom_sheet_button_container)
-        val buttons = inflater.inflate(buttonLayoutId, buttonArea, false)
-        buttonArea.addView(buttons)
-
-        primaryButton = buttonArea.findViewById<Button>(R.id.primary_button_full)
-        val secondaryButton = buttonArea.findViewById<Button>(R.id.secondary_button)
-        primaryButton?.text = getString(R.string.request_permissions_allow)
-        secondaryButton.text = getString(R.string.request_permissions_dont_allow)
-
-        val allowParentView = primaryButton?.parent?.parent as View
-        primaryButton?.let { increaseViewTouchTargetSize(requireContext(), it, allowParentView) }
-
-        val dontAllowParentView = secondaryButton.parent as View
-        secondaryButton?.let {
-            increaseViewTouchTargetSize(requireContext(), it, dontAllowParentView)
-        }
-
-        primaryButton?.setOnClickListener {
-            callback?.onPrimaryButtonClicked()
-            dismiss()
-        }
-        secondaryButton.setOnClickListener {
-            callback?.onSecondaryButtonClicked()
-            dismiss()
-        }
         childFragmentManager
             .beginTransaction()
-            .replace(R.id.bottom_sheet_fragment_container, contentFragment)
+            .replace(R.id.bottom_sheet_fragment_container, contentFragment ?: Fragment())
             .commit()
         return view
+    }
+
+    /**
+     * Replaces the currently displayed content fragment with a new one.
+     *
+     * @param fragment The new [Fragment] to display.
+     */
+    fun replaceFragment(fragment: Fragment) {
+        if (contentFragment?.javaClass == fragment.javaClass) {
+            return
+        }
+        contentFragment = fragment
+        childFragmentManager
+            .beginTransaction()
+            .replace(R.id.bottom_sheet_fragment_container, fragment)
+            .commit()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -145,8 +137,7 @@ class HealthConnectBottomSheetDialogFragment : Hilt_HealthConnectBottomSheetDial
                     ContextCompat.getDrawable(requireContext(), R.drawable.rounded_background)
 
                 val behavior = BottomSheetBehavior.from(frameLayout)
-                behavior.peekHeight =
-                    (resources.displayMetrics.heightPixels * HALF_EXPANDED_RATIO).toInt()
+                behavior.state = STATE_EXPANDED
                 behavior.isFitToContents = false
                 behavior.expandedOffset = 0
             }
@@ -154,12 +145,8 @@ class HealthConnectBottomSheetDialogFragment : Hilt_HealthConnectBottomSheetDial
         return dialog
     }
 
-    fun setPrimaryButtonEnabled(isEnabled: Boolean) {
-        primaryButton?.isEnabled = isEnabled
-    }
-
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
-        callback?.onDialogCancel()
+        cancelListener?.onDialogCanceled()
     }
 }
