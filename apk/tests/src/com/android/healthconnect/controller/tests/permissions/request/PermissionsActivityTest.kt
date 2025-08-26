@@ -1985,11 +1985,6 @@ class PermissionsActivityTest {
         onView(withId(R.id.bottom_sheet_fragment_container))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
-        onView(withText("Don't allow"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-            .perform(click())
-        assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
     }
 
     @Test

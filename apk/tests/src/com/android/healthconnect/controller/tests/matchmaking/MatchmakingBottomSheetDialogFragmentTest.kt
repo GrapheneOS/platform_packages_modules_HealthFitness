@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.tests.shared.dialog
+package com.android.healthconnect.controller.tests.matchmaking
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.RootMatchers.isDialog
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.core.app.ActivityScenario.launchActivityForResult
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.RootMatchers
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.shared.dialog.HealthConnectBottomSheetDialogFragment
+import com.android.healthconnect.controller.matchmaking.MatchmakingBottomSheetDialogFragment
 import com.android.healthconnect.controller.tests.TestActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -35,29 +38,31 @@ import org.junit.runner.RunWith
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class HealthConnectBottomSheetDialogFragmentTest {
+class MatchmakingBottomSheetDialogFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @Test
     fun bottomSheet_displaysContentFragment() {
-        val scenario = ActivityScenario.launch(TestActivity::class.java)
+        val scenario = launchActivityForResult(TestActivity::class.java)
         scenario.onActivity { activity ->
             val bottomSheet =
-                HealthConnectBottomSheetDialogFragment.newInstance(TestFragment::class.java)
+                MatchmakingBottomSheetDialogFragment.Companion.newInstance(TestFragment::class.java)
             bottomSheet.show(activity.supportFragmentManager, "TestBottomSheet")
         }
-        Thread.sleep(1000)
-        onView(withId(R.id.test_fragment_view)).inRoot(isDialog()).check(matches(isDisplayed()))
+
+        Espresso.onView(ViewMatchers.withId(R.id.test_fragment_view))
+            .inRoot(RootMatchers.isDialog())
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     class TestFragment : Fragment() {
         override fun onCreateView(
-            inflater: android.view.LayoutInflater,
-            container: android.view.ViewGroup?,
-            savedInstanceState: android.os.Bundle?,
-        ): android.view.View? {
-            val view = android.view.View(requireContext())
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?,
+        ): View? {
+            val view = View(requireContext())
             view.id = R.id.test_fragment_view
             return view
         }

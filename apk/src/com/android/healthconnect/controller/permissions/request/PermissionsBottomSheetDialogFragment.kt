@@ -33,6 +33,7 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -77,76 +78,12 @@ class PermissionsBottomSheetDialogFragment : Hilt_PermissionsBottomSheetDialogFr
                 val behavior = BottomSheetBehavior.from(frameLayout)
                 behavior.peekHeight =
                     (resources.displayMetrics.heightPixels * HALF_EXPANDED_RATIO).toInt()
+                behavior.state = STATE_EXPANDED
                 behavior.isFitToContents = false
                 behavior.expandedOffset = 0
-                behavior.addBottomSheetCallback(
-                    object : BottomSheetBehavior.BottomSheetCallback() {
-                        override fun onStateChanged(bottomSheet: View, newState: Int) {
-                            updateBottomSheetHeightBasedOnState(
-                                bottomSheet,
-                                newState,
-                                behavior,
-                                frameLayout,
-                            )
-                        }
-
-                        override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-                    }
-                )
-                val initialState = BottomSheetBehavior.STATE_COLLAPSED
-                behavior.state = initialState
-
-                frameLayout.post {
-                    updateBottomSheetHeightBasedOnState(
-                        frameLayout,
-                        initialState,
-                        behavior,
-                        frameLayout,
-                    )
-                }
             }
         }
         return dialog
-    }
-
-    private fun updateBottomSheetHeightBasedOnState(
-        bottomSheetView: View,
-        newState: Int,
-        behavior: BottomSheetBehavior<FrameLayout>,
-        frameLayout: FrameLayout,
-    ) {
-        frameLayout.let { wrapper ->
-            val screenHeight = resources.displayMetrics.heightPixels
-            val newHeight: Int =
-                when (newState) {
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                        (bottomSheetView.parent as? View)?.height
-                            ?: (screenHeight - behavior.expandedOffset)
-                    }
-
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                        behavior.peekHeight
-                    }
-
-                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-                        (screenHeight * HALF_EXPANDED_RATIO).toInt()
-                    }
-
-                    BottomSheetBehavior.STATE_HIDDEN -> {
-                        0
-                    }
-
-                    else -> {
-                        return
-                    }
-                }
-
-            val params = wrapper.layoutParams
-            if (params.height != newHeight) {
-                params.height = newHeight
-                wrapper.layoutParams = params
-            }
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

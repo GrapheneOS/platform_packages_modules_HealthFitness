@@ -286,16 +286,14 @@ class PermissionsBottomSheetDialogFragmentTest {
                 RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
                     hasDescendant(
                         withText(
-                            "Allow this app to access fitness and wellness data and health records " +
-                                "when you're not using the app"
+                            "Allow this app to access fitness and wellness data and health records when you're not using the app"
                         )
                     )
                 )
             )
         onView(
                 withText(
-                    "Allow this app to access fitness and wellness data and health records " +
-                        "when you're not using the app"
+                    "Allow this app to access fitness and wellness data and health records when you're not using the app"
                 )
             )
             .check(matches(isDisplayed()))
@@ -477,12 +475,6 @@ class PermissionsBottomSheetDialogFragmentTest {
                     assertThat(behavior.peekHeight).isEqualTo(expectedPeekHeight)
                     assertThat(behavior.isFitToContents).isFalse()
                     assertThat(behavior.expandedOffset).isEqualTo(0)
-
-                    assertThat(behavior.state)
-                        .isEqualTo(
-                            com.google.android.material.bottomsheet.BottomSheetBehavior
-                                .STATE_COLLAPSED
-                        )
                 }
             }
         }

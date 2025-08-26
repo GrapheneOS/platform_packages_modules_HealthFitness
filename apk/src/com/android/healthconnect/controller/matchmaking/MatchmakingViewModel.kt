@@ -150,11 +150,28 @@ constructor(
     }
 
     private fun updateAllPermissionsGrantedStatus() {
-        val granted = _grantedPermissions.value
+        val grantedMap = _grantedPermissions.value ?: emptyMap()
         val allApps = (matchmakingState.value as? MatchmakingState.WithData)?.matchingApps
-        val allPermissions = allApps?.associate { it.metadata.packageName to it.permissions }
-        allPermissionsGranted.value =
-            granted == allPermissions && allPermissions?.isNotEmpty() ?: false
+        val allPermissionsMap =
+            allApps?.associate { it.metadata.packageName to it.permissions } ?: emptyMap()
+
+        if (allPermissionsMap.isEmpty()) {
+            allPermissionsGranted.value = false
+            return
+        }
+
+        if (grantedMap.keys != allPermissionsMap.keys) {
+            allPermissionsGranted.value = false
+            return
+        }
+
+        val allGranted =
+            allPermissionsMap.all { (packageName, allPerms) ->
+                val grantedPerms = grantedMap[packageName]
+                grantedPerms?.toSet() == allPerms.toSet()
+            }
+
+        allPermissionsGranted.value = allGranted
     }
 
     fun grantPermissions() {
