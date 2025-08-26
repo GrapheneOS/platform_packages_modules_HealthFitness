@@ -20,8 +20,10 @@ import android.cts.statsdatom.lib.AtomTestUtils
 import android.cts.statsdatom.lib.ConfigUtils
 import android.cts.statsdatom.lib.DeviceUtils
 import android.cts.statsdatom.lib.ReportUtils
+import android.healthconnect.cts.HostSideTestUtil.TEST_APP_PERMISSIONS
 import android.healthconnect.cts.HostSideTestUtil.TEST_APP_PKG_NAME
 import android.healthconnect.cts.HostSideTestUtil.UI_TESTS_HELPER
+import android.healthconnect.cts.HostSideTestUtil.grantPermissionsWithAdb
 import android.healthconnect.cts.HostSideTestUtil.isHardwareSupported
 import android.healthfitness.ui.ElementId
 import android.healthfitness.ui.PageId
@@ -70,6 +72,12 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
                 UiExtensionAtoms.HEALTH_CONNECT_UI_INTERACTION_FIELD_NUMBER,
             ),
         )
+
+        // Permissions declared in the TEST_APP's manifest should be automatically granted, however
+        // that seems flaky which led to issues like b/396574091, b/384734147.
+        // ag/31764622 which explicitly grants permissions via ADB seems to work so far, so we
+        // should do the same for this test file.
+        grantPermissionsWithAdb(device, TEST_APP_PKG_NAME, TEST_APP_PERMISSIONS)
     }
 
     @Throws(Exception::class)
