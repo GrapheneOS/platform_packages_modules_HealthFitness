@@ -138,6 +138,7 @@ class AllEntriesFragmentTest {
             .thenReturn(MutableLiveData(EntriesViewModel.EntriesDeletionScreenState.VIEW))
         whenever(viewModel.mapOfEntriesToBeDeleted).thenReturn(MutableLiveData())
         whenever(viewModel.allEntriesSelected).thenReturn(MutableLiveData(false))
+        whenever(viewModel.isLoadingDateNavigation).thenReturn(MutableLiveData(false))
     }
 
     @After
