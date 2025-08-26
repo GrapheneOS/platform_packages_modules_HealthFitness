@@ -84,6 +84,7 @@ class EntriesAndAccessFragment : Hilt_EntriesAndAccessFragment() {
 
     override fun onResume() {
         super.onResume()
+        entriesViewModel.shouldReloadEntries = true
         if (childFragmentManager.findFragmentByTag(DELETION_TAG) == null) {
             childFragmentManager.commitNow { add(DeletionFragment(), DELETION_TAG) }
         }
@@ -113,6 +114,19 @@ class EntriesAndAccessFragment : Hilt_EntriesAndAccessFragment() {
                 }
                 else -> {
                     // do nothing
+                }
+            }
+        }
+
+        entriesViewModel.isLoadingDateNavigation.observe(viewLifecycleOwner) { isLoading ->
+            val entriesTab = tabLayout.getTabAt(0)
+            if (isLoading) {
+                entriesTab?.view?.importantForAccessibility =
+                    View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+            } else {
+                view.post {
+                    entriesTab?.view?.importantForAccessibility =
+                        View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
                 }
             }
         }

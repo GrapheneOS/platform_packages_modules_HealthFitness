@@ -380,7 +380,10 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
     override fun onResume() {
         super.onResume()
         setTitle(permissionType.upperCaseLabel())
-        reloadEntries()
+        if (entriesViewModel.shouldReloadEntries) {
+            reloadEntries()
+            entriesViewModel.shouldReloadEntries = false
+        }
         setLoggerPageId()
         logger.logPageImpression()
         dateNavigationView.setDateChangedListener(
