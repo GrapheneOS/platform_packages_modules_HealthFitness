@@ -22,7 +22,8 @@ import android.view.WindowManager.LayoutParams.SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERL
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.matchmaking.MatchmakingBottomSheetDialogFragment.BottomSheetCallback
+import com.android.healthconnect.controller.shared.dialog.HealthConnectBottomSheetDialogFragment
+import com.android.healthconnect.controller.shared.dialog.HealthConnectBottomSheetDialogFragment.BottomSheetCallback
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
 import com.android.healthfitness.flags.Flags.matchmaking
@@ -35,7 +36,7 @@ class MatchmakingActivity : Hilt_MatchmakingActivity(), BottomSheetCallback {
     @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
 
     private val viewModel: MatchmakingViewModel by viewModels()
-    private var bottomSheet: MatchmakingBottomSheetDialogFragment? = null
+    private var bottomSheet: HealthConnectBottomSheetDialogFragment? = null
 
     companion object {
         private const val TAG = "MatchmakingActivity"
@@ -75,7 +76,7 @@ class MatchmakingActivity : Hilt_MatchmakingActivity(), BottomSheetCallback {
 
         if (savedInstanceState == null) {
             bottomSheet =
-                MatchmakingBottomSheetDialogFragment.newInstance(MatchmakingFragment::class.java)
+                HealthConnectBottomSheetDialogFragment.newInstance(MatchmakingFragment::class.java)
             bottomSheet?.show(supportFragmentManager, BOTTOM_SHEET_TAG)
         }
     }

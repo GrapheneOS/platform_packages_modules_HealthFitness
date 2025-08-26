@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.matchmaking
+package com.android.healthconnect.controller.shared.dialog
 
 import android.app.Dialog
 import android.content.Context
@@ -32,14 +32,13 @@ import com.android.healthconnect.controller.utils.increaseViewTouchTargetSize
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.settingslib.widget.SettingsThemeHelper
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint(BottomSheetDialogFragment::class)
-class MatchmakingBottomSheetDialogFragment : Hilt_MatchmakingBottomSheetDialogFragment() {
+class HealthConnectBottomSheetDialogFragment : Hilt_HealthConnectBottomSheetDialogFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
 
@@ -59,8 +58,10 @@ class MatchmakingBottomSheetDialogFragment : Hilt_MatchmakingBottomSheetDialogFr
         private const val FRAGMENT_CLASS_KEY = "fragment_class"
         const val HALF_EXPANDED_RATIO = 0.8
 
-        fun newInstance(fragmentClass: Class<out Fragment>): MatchmakingBottomSheetDialogFragment {
-            return MatchmakingBottomSheetDialogFragment().apply {
+        fun newInstance(
+            fragmentClass: Class<out Fragment>
+        ): HealthConnectBottomSheetDialogFragment {
+            return HealthConnectBottomSheetDialogFragment().apply {
                 arguments = Bundle().apply { putSerializable(FRAGMENT_CLASS_KEY, fragmentClass) }
             }
         }
@@ -146,7 +147,6 @@ class MatchmakingBottomSheetDialogFragment : Hilt_MatchmakingBottomSheetDialogFr
                 val behavior = BottomSheetBehavior.from(frameLayout)
                 behavior.peekHeight =
                     (resources.displayMetrics.heightPixels * HALF_EXPANDED_RATIO).toInt()
-                behavior.state = STATE_EXPANDED
                 behavior.isFitToContents = false
                 behavior.expandedOffset = 0
             }

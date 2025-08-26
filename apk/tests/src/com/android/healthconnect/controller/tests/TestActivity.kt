@@ -16,13 +16,14 @@ package com.android.healthconnect.controller.tests
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.matchmaking.MatchmakingBottomSheetDialogFragment
+import com.android.healthconnect.controller.shared.dialog.HealthConnectBottomSheetDialogFragment
 import com.android.settingslib.collapsingtoolbar.EdgeToEdgeUtils
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint(FragmentActivity::class)
-class TestActivity : Hilt_TestActivity(), MatchmakingBottomSheetDialogFragment.BottomSheetCallback {
+class TestActivity :
+    Hilt_TestActivity(), HealthConnectBottomSheetDialogFragment.BottomSheetCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         EdgeToEdgeUtils.enable(this)
         if (SettingsThemeHelper.isExpressiveTheme(this)) {
