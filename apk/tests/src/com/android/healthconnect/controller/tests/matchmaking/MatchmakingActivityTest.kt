@@ -17,6 +17,7 @@
 package com.android.healthconnect.controller.tests.matchmaking
 
 import android.app.Activity
+import android.app.Activity.RESULT_CANCELED
 import android.content.Context
 import android.content.Intent
 import android.health.connect.HealthConnectManager
@@ -27,22 +28,25 @@ import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import android.platform.test.flag.junit.SetFlagsRule
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
+import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.matchmaking.MatchmakingActivity
 import com.android.healthconnect.controller.matchmaking.MatchmakingAppData
 import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.tests.shared.BottomSheetIdlingResource
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
@@ -60,8 +64,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.times
-import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @UninstallModules(DeviceInfoUtilsModule::class)
@@ -83,11 +85,12 @@ class MatchmakingActivityTest {
     private val grantedPermissions =
         MutableLiveData<Map<String, List<FitnessPermission>>>(emptyMap())
     private lateinit var context: Context
+    private var bottomSheetIdlingResource: BottomSheetIdlingResource? = null
 
     @Before
     fun setup() {
         hiltRule.inject()
-        context = InstrumentationRegistry.getInstrumentation().targetContext
+        context = getInstrumentation().targetContext
         whenever(viewModel.matchmakingState).thenReturn(matchmakingState)
         whenever(viewModel.expandedPreferenceKeys).thenReturn(expandedKeys)
         whenever(viewModel.atLeastOnePermissionGranted).thenReturn(atLeastOnePermissionGranted)
@@ -118,6 +121,7 @@ class MatchmakingActivityTest {
     @After
     fun tearDown() {
         matchmakingState.postValue(MatchmakingViewModel.MatchmakingState.Loading)
+        bottomSheetIdlingResource?.let { IdlingRegistry.getInstance().unregister(it) }
     }
 
     @Test
@@ -141,7 +145,9 @@ class MatchmakingActivityTest {
                 )
             }
 
-        launchActivityForResult<MatchmakingActivity>(intent).use {
+        launchActivityForResult<MatchmakingActivity>(intent).use { scenario ->
+            registerBottomSheetIdlingResource(scenario)
+
             onView(withText(context.getString(R.string.matchmaking_screen_title)))
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()))
@@ -155,12 +161,25 @@ class MatchmakingActivityTest {
                 )
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()))
+            onView(withText("Allow")).inRoot(isDialog()).check(matches(isDisplayed()))
+            onView(withText("Don\'t allow")).inRoot(isDialog()).check(matches(isDisplayed()))
         }
     }
 
-    @Test
     @EnableFlags(Flags.FLAG_MATCHMAKING)
-    fun onDestroy_callsViewModelReset() {
+    @Test
+    fun matchmakingScreen_dontAllowButton_isClicked_finishesWithResultCanceled() {
+        val scenario = launchMatchmakingActivity()
+        registerBottomSheetIdlingResource(scenario)
+        atLeastOnePermissionGranted.postValue(true)
+
+        onView(withText("Don't allow")).inRoot(isDialog()).perform(click())
+
+        assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED)
+    }
+
+    private fun launchMatchmakingActivity(): ActivityScenario<MatchmakingActivity> {
+        val context = getInstrumentation().targetContext
         val intent =
             Intent(context, MatchmakingActivity::class.java).apply {
                 putExtra(
@@ -168,11 +187,14 @@ class MatchmakingActivityTest {
                     arrayOf(StepsRecord::class.java.name),
                 )
             }
+        return launchActivityForResult<MatchmakingActivity>(intent)
+    }
 
-        launchActivityForResult<MatchmakingActivity>(intent).use {
-            it.moveToState(Lifecycle.State.DESTROYED)
-
-            verify(viewModel).reset()
+    private fun registerBottomSheetIdlingResource(scenario: ActivityScenario<MatchmakingActivity>) {
+        scenario.onActivity { activity ->
+            bottomSheetIdlingResource =
+                BottomSheetIdlingResource(activity, "MatchmakingBottomSheet")
+            IdlingRegistry.getInstance().register(bottomSheetIdlingResource)
         }
     }
 }

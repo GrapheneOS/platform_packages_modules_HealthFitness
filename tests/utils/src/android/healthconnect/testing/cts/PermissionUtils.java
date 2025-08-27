@@ -39,6 +39,7 @@ import android.content.pm.PackageManager;
 import android.health.connect.HealthConnectManager;
 import android.os.UserHandle;
 import android.permission.PermissionManager;
+import android.util.Log;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -58,6 +59,8 @@ import java.util.Map;
  * this class, as that ensures that permissions are in a consistent state before and after tests.
  */
 public final class PermissionUtils {
+
+    private static final String TAG = PermissionUtils.class.getSimpleName();
 
     /** Copy of hidden {@link android.health.connect.HealthPermissions#READ_EXERCISE_ROUTE}. */
     public static final String READ_EXERCISE_ROUTE_PERMISSION =
@@ -132,6 +135,14 @@ public final class PermissionUtils {
                 requireNonNull(context.getSystemService(PermissionManager.class));
         UserHandle user = context.getUser();
 
+        Log.v(
+                TAG,
+                "grantHealthPermission(pkg="
+                        + packageName
+                        + ", permission="
+                        + permission
+                        + "): user="
+                        + user);
         runWithShellPermissionIdentity(
                 () -> packageManager.grantRuntimePermission(packageName, permission, user),
                 GRANT_RUNTIME_PERMISSIONS);
@@ -141,6 +152,7 @@ public final class PermissionUtils {
         int uid = getPackageUidUnchecked(packageManager, packageName);
         AttributionSource attributionSource =
                 new AttributionSource(uid, packageName, /* attributionTag= */ null);
+        Log.v(TAG, "checking attributionSource for uid " + uid);
         eventually(
                 () ->
                         assertThat(
@@ -224,6 +236,14 @@ public final class PermissionUtils {
     @SuppressLint("MissingPermission")
     public static void revokeAllHealthPermissions(String packageName, String reason) {
         List<String> permissions = getGrantedHealthPermissions(packageName);
+        Log.v(
+                TAG,
+                "revokeAllHealthPermissions(pkg="
+                        + packageName
+                        + ", reason="
+                        + reason
+                        + "): previous permissions were "
+                        + permissions);
         if (permissions.isEmpty()) {
             return;
         }
@@ -232,6 +252,7 @@ public final class PermissionUtils {
         PackageManager packageManager = context.getPackageManager();
         UserHandle user = context.getUser();
 
+        Log.d(TAG, "Revoking " + permissions.size() + " for user " + user);
         runWithShellPermissionIdentity(
                 () -> {
                     for (String permission : permissions) {

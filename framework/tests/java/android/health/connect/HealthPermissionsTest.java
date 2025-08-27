@@ -191,6 +191,11 @@ public class HealthPermissionsTest {
                                             HealthPermissions.READ_ALCOHOL_CONSUMPTION,
                                             HealthPermissions.WRITE_ALCOHOL_CONSUMPTION)
                                     : Stream.of(),
+                            Flags.smoking()
+                                    ? Stream.of(
+                                            HealthPermissions.READ_NICOTINE_INTAKE,
+                                            HealthPermissions.WRITE_NICOTINE_INTAKE)
+                                    : Stream.of(),
                             Flags.deviceResource()
                                     ? Stream.of(HealthPermissions.READ_MEDICAL_DATA_DEVICES)
                                     : Stream.of())

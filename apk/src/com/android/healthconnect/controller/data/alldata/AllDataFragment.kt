@@ -19,6 +19,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.accessibility.AccessibilityNodeInfo
 import androidx.annotation.VisibleForTesting
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
@@ -130,6 +131,14 @@ open class AllDataFragment : Hilt_AllDataFragment() {
                 logger.logInteraction(ToolbarElement.TOOLBAR_ENTER_DELETION_STATE_BUTTON)
                 // enter deletion state
                 triggerDeletionState(DELETE)
+                view?.post {
+                    val exitDeletionButton =
+                        requireActivity().findViewById<View>(R.id.menu_exit_deletion_state)
+                    exitDeletionButton?.performAccessibilityAction(
+                        AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
+                        null,
+                    )
+                }
                 true
             }
 
@@ -157,6 +166,14 @@ open class AllDataFragment : Hilt_AllDataFragment() {
                 logger.logInteraction(ToolbarElement.TOOLBAR_EXIT_DELETION_STATE_BUTTON)
                 // exit deletion state
                 triggerDeletionState(VIEW)
+                view?.post {
+                    val enterDeletionButton =
+                        requireActivity().findViewById<View>(R.id.menu_enter_deletion_state)
+                    enterDeletionButton?.performAccessibilityAction(
+                        AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
+                        null,
+                    )
+                }
                 true
             }
 
