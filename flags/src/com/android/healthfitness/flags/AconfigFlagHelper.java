@@ -146,4 +146,9 @@ public final class AconfigFlagHelper {
     public static boolean isAlcoholConsumptionEnabled() {
         return Flags.alcoholConsumption() && Flags.alcoholConsumptionDb();
     }
+
+    /** Returns a boolean indicating whether device data providers database changes are enabled. */
+    public static boolean isDeviceDataProvidersEnabled() {
+        return Flags.deviceDataProvidersDb() && Flags.developmentDatabase();
+    }
 }

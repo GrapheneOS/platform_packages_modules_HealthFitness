@@ -574,7 +574,8 @@ public class OnboardingStateManagerTest {
                 packageName,
                 "appName",
                 /* icon= */ null,
-                isAppUsed ? Set.of(ACTIVE_CALORIES_BURNED) : emptySet());
+                isAppUsed ? Set.of(ACTIVE_CALORIES_BURNED) : emptySet(),
+                /* deviceInfoId= */ null);
     }
 
     /** Helper method to create a PackageInfo object. */

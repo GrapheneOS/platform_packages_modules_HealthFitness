@@ -33,18 +33,21 @@ public final class AppInfoInternal {
     @Nullable private final String mName;
     @Nullable private final byte[] mIcon;
     @Nullable private Set<Integer> mRecordTypesUsed;
+    @Nullable private final Long mDeviceInfoId;
 
     public AppInfoInternal(
             long id,
             String packageName,
             @Nullable String name,
             @Nullable byte[] icon,
-            @Nullable Set<Integer> recordTypesUsed) {
+            @Nullable Set<Integer> recordTypesUsed,
+            @Nullable Long deviceInfoId) {
         mId = id;
         mPackageName = packageName;
         mName = name;
         mIcon = icon;
         mRecordTypesUsed = recordTypesUsed;
+        mDeviceInfoId = deviceInfoId;
     }
 
     @NonNull
@@ -82,6 +85,11 @@ public final class AppInfoInternal {
     @Nullable
     public Set<Integer> getRecordTypesUsed() {
         return mRecordTypesUsed;
+    }
+
+    @Nullable
+    public Long getDeviceInfoId() {
+        return mDeviceInfoId;
     }
 
     /** returns a new {@link AppInfo} object from this object */

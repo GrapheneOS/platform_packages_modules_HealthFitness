@@ -22,12 +22,14 @@ import static android.health.connect.Constants.DEFAULT_LONG;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.request.UpsertTableRequest.TYPE_STRING;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL_UNIQUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorBlob;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.isNullValue;
 import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import static java.util.Objects.requireNonNull;
@@ -53,6 +55,7 @@ import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.Pair;
 import android.util.Slog;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
@@ -61,6 +64,7 @@ import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
@@ -97,6 +101,14 @@ public final class AppInfoHelper extends DatabaseHelper {
     public static final String APP_ICON_COLUMN_NAME = "app_icon";
     private static final String TAG = "HealthConnectAppInfoHelper";
     private static final String RECORD_TYPES_USED_COLUMN_NAME = "record_types_used";
+
+    /**
+     * Public because it is used in {@link
+     * com.android.server.healthconnect.storage.DevelopmentDatabaseHelper} to check if the DDP
+     * upgrade has already been applied.
+     */
+    public static final String DEVICE_INFO_ID_COLUMN_NAME = "device_info_id";
+
     private static final int COMPRESS_FACTOR = 100;
 
     /**
@@ -184,7 +196,7 @@ public final class AppInfoHelper extends DatabaseHelper {
 
                 appInfo =
                         new AppInfoInternal(
-                                DEFAULT_LONG, packageName, record.getAppName(), null, null);
+                                DEFAULT_LONG, packageName, record.getAppName(), null, null, null);
             }
 
             insertIfNotPresent(packageName, appInfo);
@@ -210,9 +222,19 @@ public final class AppInfoHelper extends DatabaseHelper {
         var appInfo = getAppInfoMap().get(packageName);
         // using pre-existing value of recordTypesUsed.
         var recordTypesUsed = appInfo == null ? null : appInfo.getRecordTypesUsed();
+        var deviceInfoId =
+                !AconfigFlagHelper.isDeviceDataProvidersEnabled() || appInfo == null
+                        ? null
+                        : appInfo.getDeviceInfoId();
+
         AppInfoInternal appInfoInternal =
                 new AppInfoInternal(
-                        getAppInfoId(packageName), packageName, name, icon, recordTypesUsed);
+                        getAppInfoId(packageName),
+                        packageName,
+                        name,
+                        icon,
+                        recordTypesUsed,
+                        deviceInfoId);
         updateIfPresent(packageName, appInfoInternal);
     }
 
@@ -232,7 +254,10 @@ public final class AppInfoHelper extends DatabaseHelper {
                             currentAppInfo.getPackageName(),
                             name,
                             currentAppInfo.getIcon(),
-                            currentAppInfo.getRecordTypesUsed());
+                            currentAppInfo.getRecordTypesUsed(),
+                            AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                                    ? currentAppInfo.getDeviceInfoId()
+                                    : null);
             updateIfPresent(packageName, updatedAppInfo);
         }
     }
@@ -245,7 +270,15 @@ public final class AppInfoHelper extends DatabaseHelper {
         if (!containsAppInfo(packageName)) {
             byte[] icon = getIconFromPackageName(packageName);
             AppInfoInternal appInfoInternal =
-                    new AppInfoInternal(DEFAULT_LONG, packageName, name, icon, null);
+                    new AppInfoInternal(
+                            DEFAULT_LONG,
+                            packageName,
+                            name,
+                            icon,
+                            null,
+                            // TODO(b/439815121): Extend method with optional deviceInfoId, or parse
+                            // from name.
+                            null);
             insertIfNotPresent(packageName, appInfoInternal);
         }
     }
@@ -432,13 +465,25 @@ public final class AppInfoHelper extends DatabaseHelper {
                 }
                 byte[] icon = getCursorBlob(cursor, APP_ICON_COLUMN_NAME);
                 String recordTypesUsed = getCursorString(cursor, RECORD_TYPES_USED_COLUMN_NAME);
+                Long deviceInfoId = null;
+                if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                    deviceInfoId =
+                            isNullValue(cursor, DEVICE_INFO_ID_COLUMN_NAME)
+                                    ? null
+                                    : getCursorLong(cursor, DEVICE_INFO_ID_COLUMN_NAME);
+                }
 
                 Set<Integer> recordTypesListAsSet = getRecordTypesAsSet(recordTypesUsed);
 
                 appInfoMap.put(
                         packageName,
                         new AppInfoInternal(
-                                rowId, packageName, appName, icon, recordTypesListAsSet));
+                                rowId,
+                                packageName,
+                                appName,
+                                icon,
+                                recordTypesListAsSet,
+                                deviceInfoId));
                 idPackageNameMap.put(rowId, packageName);
             }
         }
@@ -716,6 +761,16 @@ public final class AppInfoHelper extends DatabaseHelper {
         return getAppInfoMap(Optional.empty());
     }
 
+    /** Adds the required column to reference device data provider information */
+    public static AlterTableRequest getAlterTableRequestForDdpInfo() {
+        var columns = List.of(new Pair<>(DEVICE_INFO_ID_COLUMN_NAME, INTEGER));
+        return new AlterTableRequest(TABLE_NAME, columns)
+                .addForeignKeyConstraint(
+                        DEVICE_INFO_ID_COLUMN_NAME,
+                        DeviceInfoHelper.TABLE_NAME,
+                        RecordHelper.PRIMARY_COLUMN_NAME);
+    }
+
     /**
      * Populates and gets the {@code mAppInfoMap} using the given {@link SQLiteDatabase} to read the
      * table. If given db is null, the default will be {@link TransactionManager#getReadableDb()}.
@@ -760,7 +815,9 @@ public final class AppInfoHelper extends DatabaseHelper {
         }
         Drawable icon = packageManager.getApplicationIcon(info);
         Bitmap bitmap = getBitmapFromDrawable(icon);
-        return new AppInfoInternal(DEFAULT_LONG, packageName, appName, encodeBitmap(bitmap), null);
+        // TODO(b/439815121): Extend method with optional deviceInfoId, or parse from name.
+        return new AppInfoInternal(
+                DEFAULT_LONG, packageName, appName, encodeBitmap(bitmap), null, null);
     }
 
     @Nullable
@@ -840,7 +897,9 @@ public final class AppInfoHelper extends DatabaseHelper {
                             .collect(Collectors.joining(","));
         }
         contentValues.put(RECORD_TYPES_USED_COLUMN_NAME, recordTypesUsedAsString);
-
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            contentValues.put(DEVICE_INFO_ID_COLUMN_NAME, appInfo.getDeviceInfoId());
+        }
         return contentValues;
     }
 
