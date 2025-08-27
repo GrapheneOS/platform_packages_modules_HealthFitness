@@ -1139,7 +1139,7 @@
     <string name="app_sources_header" msgid="3776247928235433963">"แหล่งข้อมูล"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"เพิ่มแหล่งข้อมูลในรายการเพื่อดูว่าผลรวมของข้อมูลจะเปลี่ยนแปลงไปอย่างไร การนำแหล่งข้อมูลออกจากรายการนี้จะทำให้แหล่งข้อมูลนั้นไม่มีส่วนในผลรวม แต่จะยังมีสิทธิ์เขียนอยู่"</string>
     <string name="data_sources_empty_state" msgid="478270183887252279">"ไม่มีแหล่งข้อมูล"</string>
-    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"เมื่อคุณให้สิทธิ์แก่แหล่งข้อมูลในการเขียนข้อมูล <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> แล้ว แหล่งที่มาจะแสดงขึ้นที่นี่"</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"เมื่อคุณให้สิทธิ์แก่แหล่งข้อมูลในการเขียนข้อมูล<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>แล้ว แหล่งที่มาจะแสดงขึ้นที่นี่"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"วิธีการทำงานของแหล่งที่มาและลำดับความสำคัญ"</string>
     <string name="data_sources_add_app" msgid="275066335106036460">"เพิ่มแหล่งข้อมูล"</string>
     <string name="edit_data_sources" msgid="5389744157074260179">"แก้ไขแหล่งข้อมูล"</string>

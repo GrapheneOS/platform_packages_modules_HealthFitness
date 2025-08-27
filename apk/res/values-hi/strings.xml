@@ -30,7 +30,7 @@
     <string name="no_data" msgid="1906986019249068659">"कोई डेटा उपलब्ध नहीं है"</string>
     <string name="devices_summary" msgid="8653563324512654292">"कनेक्ट किए गए सभी डिवाइस मैनेज करें"</string>
     <string name="devices_title" msgid="7548105261104504301">"डिवाइस"</string>
-    <string name="connected_apps_title" msgid="279942692804743223">"ऐप्लिकेशन अनुमतियां"</string>
+    <string name="connected_apps_title" msgid="279942692804743223">"ऐप्लिकेशन के लिए अनुमतियां"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"डिवाइस पर मौजूद ऐप्लिकेशन और उन्हें दी गई अनुमतियां मैनेज करें"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> में से <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ऐप्लिकेशन के पास ऐक्सेस है"</string>
     <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"<xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> ऐप्लिकेशन में से <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> के पास ऐक्सेस है"</string>
@@ -66,7 +66,7 @@
     <string name="manage_permissions" msgid="8394221950712608160">"अनुमतियां मैनेज करें"</string>
     <string name="recent_access_time_content_descritption" msgid="1137471676075811472">"समय: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
     <string name="recent_access_empty_state_title" msgid="4767157641389217682">"सेहत से जुड़ा डेटा हाल ही में ऐक्सेस नहीं किया गया है"</string>
-    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"इस बात की जानकारी यहां अपने-आप दिखेगी कि किस ऐप्लिकेशन ने हाल ही में आपकी सेहत से जुड़ा डेटा ऐक्सेस किया है"</string>
+    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"यह जानकारी यहां अपने-आप दिखेगी कि किन ऐप्लिकेशन ने हाल ही में आपकी सेहत का डेटा ऐक्सेस किया है"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"पूरी जानकारी देखें"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"हाल ही में ऐक्सेस किए गए डेटा को लोड नहीं किया जा सका"</string>
     <string name="recent_access_inactive_app" msgid="8754221676902025802">"यह ऐप्लिकेशन अब उपलब्ध नहीं है"</string>
@@ -182,8 +182,8 @@
     <string name="elevation_gained_lowercase_label" msgid="7532517182346738562">"तय की गई ऊंचाई का डेटा"</string>
     <string name="elevation_gained_read_content_description" msgid="6018756385903843355">"तय की गई ऊंचाई का डेटा देखने की अनुमति दें"</string>
     <string name="elevation_gained_write_content_description" msgid="6790199544670231367">"तय की गई ऊंचाई का डेटा सेव करने की अनुमति दें"</string>
-    <string name="floors_climbed_uppercase_label" msgid="3754372357767832441">"कितने फ़्लोर चढ़े गए, इसका डेटा"</string>
-    <string name="floors_climbed_lowercase_label" msgid="5326072443481377299">"कितने फ़्लोर चढ़े गए, इसका डेटा"</string>
+    <string name="floors_climbed_uppercase_label" msgid="3754372357767832441">"कितने फ़्लोर चढ़े, इसका डेटा"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5326072443481377299">"कितने फ़्लोर चढ़े, इसका डेटा"</string>
     <string name="floors_climbed_read_content_description" msgid="4730764877684911752">"कितने फ़्लोर चढ़े गए, इसका डेटा पढ़ने की अनुमति दें"</string>
     <string name="floors_climbed_write_content_description" msgid="3480340610185615655">"कितने फ़्लोर चढ़े गए, इसका डेटा सेव करने की अनुमति दें"</string>
     <string name="power_uppercase_label" msgid="8027219480901448660">"कसरत से बनी ताकत का डेटा"</string>
@@ -306,8 +306,8 @@
     <string name="heart_rate_lowercase_label" msgid="693492686337628283">"धड़कन की दर का डेटा"</string>
     <string name="heart_rate_read_content_description" msgid="4165867166260001259">"धड़कन की दर का डेटा पढ़ने की अनुमति दें"</string>
     <string name="heart_rate_write_content_description" msgid="2876667918366409170">"धड़कन की दर का डेटा सेव करने की अनुमति दें"</string>
-    <string name="heart_rate_variability_uppercase_label" msgid="2047887230527012536">"धड़कन की दर में हुए उतार-चढ़ाव"</string>
-    <string name="heart_rate_variability_lowercase_label" msgid="2332638559415663836">"धड़कन की दर में हुए उतार-चढ़ाव"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="2047887230527012536">"धड़कन की दर में हुए उतार-चढ़ाव का डेटा"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="2332638559415663836">"धड़कन की दर में हुए उतार-चढ़ाव का डेटा"</string>
     <string name="heart_rate_variability_read_content_description" msgid="5812707457872629556">"धड़कन की दर में हुए उतार-चढ़ाव का डेटा पढ़ने की अनुमति दें"</string>
     <string name="heart_rate_variability_write_content_description" msgid="3628171603035566114">"धड़कन की दर में हुए उतार-चढ़ाव का डेटा सेव करने की अनुमति दें"</string>
     <string name="oxygen_saturation_uppercase_label" msgid="1396254185616418355">"ऑक्सीजन की मात्रा का डेटा"</string>
@@ -414,7 +414,7 @@
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के किसी भी डेटा को पढ़ने या उसमें बदलाव करने की अनुमति नहीं होगी. इसमें बैकग्राउंड डेटा ऐक्सेस करने की अनुमति भी शामिल है.\n\nऐसा करके, इस ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के किसी भी डेटा को पढ़ने या उसमें बदलाव करने की अनुमति नहीं होगी. इसमें पहले से मौजूद डेटा को ऐक्सेस करने की अनुमति भी शामिल है.\n\nऐसा करके, इस ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के किसी भी डेटा को पढ़ने या उसमें बदलाव करने की अनुमति नहीं होगी. इसमें जेनरेट हो रहा नया डेटा और पहले से मौजूद डेटा, दोनों शामिल हैं.\n\nहालांकि, इस ऐप्लिकेशन को मिली दूसरी अनुमतियों पर कोई असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
-    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"<xliff:g id="APP_NAME">%1$s</xliff:g> का, Health Connect में सेव किया गया डेटा भी मिटाएं"</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"<xliff:g id="APP_NAME">%1$s</xliff:g> का Health Connect में सेव किया गया डेटा भी मिटाएं"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"क्या आपको फ़िटनेस और सेहत से जुड़ी सभी अनुमतियां हटानी हैं?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"<xliff:g id="APP_NAME">%1$s</xliff:g> पर मौजूद फिटनेस का डेटा भी Health Connect से मिटाएं"</string>
     <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"क्या आपको सेहत के डेटा से जुड़ी सभी अनुमतियां हटानी हैं?"</string>
@@ -561,7 +561,7 @@
     <string name="export_cancel_button" msgid="1952360582645412410">"रद्द करें"</string>
     <string name="import_cancel_button" msgid="2191598074422096715">"रद्द करें"</string>
     <string name="import_next_button" msgid="5706322508691854289">"आगे बढ़ें"</string>
-    <string name="import_source_location_title" msgid="4444467438013749461">"इससे इंपोर्ट करें"</string>
+    <string name="import_source_location_title" msgid="4444467438013749461">"यहां से इंपोर्ट करें"</string>
     <string name="import_invalid_storage" msgid="341798262315495399">"अपने डेटा को इंपोर्ट करने के लिए, क्लाउड स्टोरेज की सुविधा वाला कोई ऐप्लिकेशन चुनें"</string>
     <string name="export_import_tap_to_choose_account" msgid="5016799636886709580">"कोई खाता चुनने के लिए टैप करें"</string>
     <string name="export_import_choose_account_title" msgid="1047021319012735232">"कोई खाता चुनें"</string>
@@ -1021,7 +1021,7 @@
     <string name="check_for_updates_description" msgid="1347667778199095160">"पक्का करें कि इंस्टॉल किए गए ऐप्लिकेशन अप-टू-डेट हों"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"साथ काम करने वाले सभी ऐप्लिकेशन देखें"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Play पर ऐप्लिकेशन ढूंढें"</string>
-    <string name="send_feedback" msgid="7756927746070096780">"सुझाव दें या शिकायत करें"</string>
+    <string name="send_feedback" msgid="7756927746070096780">"सुझाव/राय दें या शिकायत करें"</string>
     <string name="send_feedback_description" msgid="2887207112856240778">"यह बताएं कि आपको Health Connect के साथ, सेहत और फ़िटनेस बनाए रखने में मदद करने वाले कौनसे ऐप्लिकेशन इस्तेमाल करने हैं"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"अपने-आप मिटने की सुविधा"</string>
@@ -1135,9 +1135,9 @@
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"अपडेट करना ज़रूरी है"</string>
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"अपना डेटा वापस लाने की प्रोसेस जारी रखने से पहले, अपने फ़ोन का सिस्टम अपडेट करें."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"अभी अपडेट करें"</string>
-    <string name="data_totals_header" msgid="8316977153276216025">"डेटा सोर्स की कुल संख्या"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"कुल डेटा"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"डेटा सोर्स"</string>
-    <string name="data_sources_footer" msgid="2271085147058181039">"सूची में डेटा सोर्स जोड़ें, ताकि यह देखा जा सके कि कुल डेटा में कैसे बदलाव होता है. सूची से किसी भी डेटा सोर्स को हटाने पर, उससे कुल डेटा में कोई डेटा नहीं जाता. हालांकि, इसके बाद भी डेटा सोर्स के पास डेटा में बदलाव करने की अनुमति होगी."</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"सूची में डेटा सोर्स जोड़ें, ताकि यह देखा जा सके कि कुल डेटा कैसे बदल सकता है. सूची से किसी भी डेटा सोर्स को हटाने पर उसका डेटा, कुल डेटा में जुड़ना बंद हो जाएगा. हालांकि, उस सोर्स के पास डेटा सेव करने और उसमें बदलाव करने की अनुमति अब भी होगी."</string>
     <string name="data_sources_empty_state" msgid="478270183887252279">"कोई डेटा सोर्स मौजूद नहीं है"</string>
     <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"डेटा सोर्स को <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> के डेटा में बदलाव करने की अनुमति देने पर सोर्स यहां दिखेंगे."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"सोर्स और प्राथमिकता की सेटिंग कैसे काम करती है"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"ऐसा करने पर, डिवाइस से जुड़े हुए ऐप्लिकेशन, Health Connect के इस डेटा को ऐक्सेस नहीं कर पाएंगे"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"सही का निशान लगाया गया"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"सही का निशान नहीं लगाया गया"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"कसरत के लिए, मैप रूट उपलब्ध है"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"अगले दिन"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"अगले हफ़्ते"</string>
@@ -1276,7 +1275,7 @@
     <string name="device_management_screen_footer" msgid="1787611015335737167">"इस डिवाइस से इकट्ठा किया गया डेटा, Health Connect में सेव किया जाएगा. Health Connect से कनेक्ट किए गए ऐप्लिकेशन इस डेटा को ऐक्सेस कर पाएंगे"</string>
     <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"यह डिवाइस कदमों की जानकारी ट्रैक करने की सुविधा के साथ काम नहीं करता. हालांकि, Health Connect में सेव किया गया डेटा अब भी इसमें मौजूद है"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"यह डिवाइस कदमों की संख्या ट्रैक नहीं करता"</string>
-    <string name="device_settings_label" msgid="9053791237491247819">"बदलाव करने की अनुमति है"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"यह जानकारी सेव करने की अनुमति है"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"डिवाइस पर मौजूद डेटा"</string>
     <string name="device_data_label" msgid="2056618513138892435">"डिवाइस को मैनेज करें"</string>
     <string name="device_data_button" msgid="8002406105399136401">"डिवाइस पर मौजूद डेटा देखें"</string>

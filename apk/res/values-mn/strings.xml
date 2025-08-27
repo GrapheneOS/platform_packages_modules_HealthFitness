@@ -503,8 +503,8 @@
     <string name="no_last_export_message" msgid="8138900854579872667">"Сүүлийн экспорт: байхгүй"</string>
     <string name="last_export_file_location" msgid="4069435932524304633">"<xliff:g id="EXPORT_APP_NAME">%1$s</xliff:g> • <xliff:g id="EXPORT_FILE_NAME">%2$s</xliff:g>"</string>
     <string name="scheduled_export" msgid="8737660963687364370">"Хуваарьт экспорт"</string>
-    <string name="import_data" msgid="404502315533233094">"Өгөгдөл импорт хийх"</string>
-    <string name="import_data_description" msgid="4040178599441724296">"Өмнө нь экспорт хийсэн файлаас өгөгдөл сэргээнэ үү"</string>
+    <string name="import_data" msgid="404502315533233094">"Өгөгдөл импортлох"</string>
+    <string name="import_data_description" msgid="4040178599441724296">"Өмнө нь экспортолсон файлаас өгөгдөл сэргээнэ үү"</string>
     <string name="import_error_banner_title" msgid="1480977889067027790">"Өгөгдлийг сэргээж чадсангүй"</string>
     <string name="import_wrong_file_error_banner_button" msgid="1518043363477255045">"Файл сонгох"</string>
     <string name="import_wrong_file_error_banner_summary" msgid="4857514343099050126">"Таны сонгосон файл сэргээхэд тохиромжгүй байна. Экспорт хийсэн зөв файлыг сонгоно уу."</string>
@@ -530,10 +530,10 @@
     <string name="export_invalid_storage" msgid="1459055934301871321">"Өгөгдлөө экспорт хийхэд зориулсан үүлэн хадгалах сангийн аппыг сонгоно уу"</string>
     <string name="export_default_file_name" msgid="1146984404965754445">"Health Connect"</string>
     <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"Health Connect (<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>)"</string>
-    <string name="import_confirmation_dialog_title" msgid="1218478436676890997">"Энэ файлыг импорт хийх үү?"</string>
-    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"<xliff:g id="FILE_NAME">%1$s</xliff:g>-г Health Connect руу импорт хийнэ"</string>
+    <string name="import_confirmation_dialog_title" msgid="1218478436676890997">"Энэ файлыг импортлох уу?"</string>
+    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"<xliff:g id="FILE_NAME">%1$s</xliff:g>-г Health Connect руу импортолно"</string>
     <string name="import_confirmation_dialog_cancel_button" msgid="4323351978842360895">"Цуцлах"</string>
-    <string name="import_confirmation_dialog_import_button" msgid="7090219024758375606">"Импорт хийх"</string>
+    <string name="import_confirmation_dialog_import_button" msgid="7090219024758375606">"Импортлох"</string>
     <string name="import_notification_import_in_progress_title" msgid="4657602436278942808">"Health Connect сэргээж байна"</string>
     <string name="import_notification_import_complete_title" msgid="7493223782222480412">"Health Connect сэргээж дууслаа"</string>
     <string name="import_in_progress_toast_text" msgid="3363548588078895706">"Сэргээж байна"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Холбогдсон аппууд цаашид Health Connect-с энэ өгөгдлийг унших боломжгүй болно"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Тэмдэглэсэн"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Тэмдэглээгүй"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Дасгалын газрын зургийн маршрут боломжтой"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Дараагийн өдөр"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Дараагийн долоо хоног"</string>

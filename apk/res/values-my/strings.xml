@@ -423,7 +423,7 @@
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> သည် နောက်ခံတွင်အသုံးပြုသောဒေတာ အပါအဝင် Health Connect မှ ဤဒေတာများကို ဖတ်နိုင်၊ ရေးနိုင်တော့မည် မဟုတ်ပါ။\n\n၎င်းသည် ဤအက်ပ်တွင်ရှိနိုင်သော ကင်မရာ၊ မိုက်ခရိုဖုန်း (သို့) တည်နေရာကဲ့သို့ အခြားခွင့်ပြုချက်များပေါ် သက်ရောက်မှုမရှိပါ။"</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> သည် ယခင်ဒေတာ အပါအဝင် Health Connect မှ ဤဒေတာများကို ဖတ်နိုင်၊ ရေးနိုင်တော့မည် မဟုတ်ပါ။\n\n၎င်းသည် ဤအက်ပ်တွင်ရှိနိုင်သော ကင်မရာ၊ မိုက်ခရိုဖုန်း (သို့) တည်နေရာကဲ့သို့ အခြားခွင့်ပြုချက်များအပေါ် သက်ရောက်မှုမရှိပါ။"</string>
     <string name="disconnect_all_fitness_or_medical_and_additional_permissions_dialog_message" msgid="5147728456578218902">"<xliff:g id="APP_NAME">%1$s</xliff:g> သည် နောက်ခံတွင်အသုံးပြုသောဒေတာနှင့် ယခင်ဒေတာ အပါအဝင် Health Connect မှ ဤဒေတာများကို ဖတ်နိုင်၊ ရေးနိုင်တော့မည် မဟုတ်ပါ။\n\n၎င်းသည် ဤအက်ပ်တွင်ရှိနိုင်သော ကင်မရာ၊ မိုက်ခရိုဖုန်း (သို့) တည်နေရာကဲ့သို့ အခြားခွင့်ပြုချက်များအပေါ် သက်ရောက်မှုမရှိပါ။"</string>
-    <string name="disconnect_all_health_permissions_title" msgid="3995410660376966233">"ခွင့်ပြုချက်အားလုံး ဖယ်ရှားမလား။"</string>
+    <string name="disconnect_all_health_permissions_title" msgid="3995410660376966233">"ခွင့်ပြုချက်အားလုံး ဖယ်ရှားမလား"</string>
     <string name="disconnect_all_health_no_additional_permissions_dialog_message" msgid="211728516196974197">"<xliff:g id="APP_NAME">%1$s</xliff:g> သည် Health Connect မှ ဒေတာများကို ဖတ်နိုင် (သို့) ရေးနိုင်တော့မည် မဟုတ်ပါ။\n\n၎င်းသည် ဤအက်ပ်တွင်ရှိနိုင်သော ကင်မရာ၊ မိုက်ခရိုဖုန်း (သို့) တည်နေရာကဲ့သို့ အခြားခွင့်ပြုချက်များပေါ် သက်ရောက်မှုမရှိပါ။"</string>
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> သည် နောက်ခံတွင်အသုံးပြုသောဒေတာ အပါအဝင် Health Connect မှ ဒေတာများကို ဖတ်နိုင် (သို့) ရေးနိုင်တော့မည် မဟုတ်ပါ။\n\n၎င်းသည် ဤအက်ပ်တွင်ရှိနိုင်သော ကင်မရာ၊ မိုက်ခရိုဖုန်း (သို့) တည်နေရာကဲ့သို့ အခြားခွင့်ပြုချက်များပေါ် သက်ရောက်မှုမရှိပါ။"</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> သည် ယခင်ဒေတာ အပါအဝင် Health Connect မှ ဒေတာများကို ဖတ်နိုင် (သို့) ရေးနိုင်တော့မည် မဟုတ်ပါ။\n\n၎င်းသည် ဤအက်ပ်တွင်ရှိနိုင်သော ကင်မရာ၊ မိုက်ခရိုဖုန်း (သို့) တည်နေရာကဲ့သို့ အခြားခွင့်ပြုချက်များအပေါ် သက်ရောက်မှုမရှိပါ။"</string>
@@ -454,7 +454,7 @@
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"ရေးခွင့်ပေးထားသည်များ"</string>
     <string name="no_apps_allowed" msgid="5794833581324128108">"ခွင့်ပြုထားသည့် အက်ပ်မရှိပါ"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"ငြင်းပယ်ထားသည့် အက်ပ်မရှိပါ"</string>
-    <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"အက်ပ်အားလုံးအတွက် သုံးခွင့် ဖယ်ရှားမလား။"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"အက်ပ်အားလုံးအတွက် သုံးခွင့် ဖယ်ရှားမလား"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Health Connect တွင် သင်၏ မည်သည့်အက်ပ်မျှ ဒေတာသုံးနိုင် (သို့) ထည့်နိုင်တော့မည် မဟုတ်ပါ။ ၎င်းက ရှိပြီးသားဒေတာများကို မဖျက်ပါ။\n\n၎င်းသည် တည်နေရာ၊ ကင်မရာ (သို့) မိုက်ခရိုဖုန်းကဲ့သို့ ဤအက်ပ်တွင် ရှိနိုင်သော အခြားခွင့်ပြုချက်များအပေါ် မသက်ရောက်ပါ။"</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"အားလုံး ဖယ်ရှားရန်"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"အက်ပ်စီမံခြင်း"</string>
@@ -464,9 +464,9 @@
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"အသုံးမပြုသော အက်ပ်များ"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"ဤအက်ပ်များက သုံးခွင့်မရှိတော့သော်လည်း Health Connect တွင် ဒေတာများ သိမ်းထားသေးသည်"</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> သည် <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> နောက်ပိုင်း ထည့်သောဒေတာကို ဖတ်နိုင်သည်"</string>
-    <string name="other_android_permissions" msgid="8051485761573324702">"ဤအက်ပ်ဝင်သုံးနိုင်သော အခြား Android ခွင့်ပြုချက်များ စီမံရန် ‘ဆက်တင်များ &gt; အက်ပ်များ’ သို့ သွားနိုင်သည်"</string>
+    <string name="other_android_permissions" msgid="8051485761573324702">"ဤအက်ပ်ဝင်သုံးနိုင်သော အခြား Android ခွင့်ပြုချက်များ စီမံရန် ‘ဆက်တင်များ &gt; အက်ပ်များ’ သို့ သွားပါ"</string>
     <string name="manage_permissions_rationale" msgid="2780008055185441703">"<xliff:g id="APP_NAME">%1$s</xliff:g> က သင့်ဒေတာများအား ဆောင်ရွက်ပုံကို ဆော့ဖ်ဝဲရေးသူ၏ ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒတွင် လေ့လာနိုင်သည်"</string>
-    <string name="other_android_permissions_content_description" msgid="2261431010048933820">"ဤအက်ပ်ဝင်သုံးနိုင်သော အခြား Android ခွင့်ပြုချက်များ စီမံရန် ဆက်တင်များသို့သွားပြီး အက်ပ်များကို တို့နိုင်သည်"</string>
+    <string name="other_android_permissions_content_description" msgid="2261431010048933820">"ဤအက်ပ်ဝင်သုံးနိုင်သော အခြား Android ခွင့်ပြုချက်များ စီမံရန် ဆက်တင်များသို့သွားပြီး အက်ပ်များကို တို့ပါ"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒကို ဖတ်ရန်"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"ပြီးခဲ့သော ၂၄ နာရီအတွင်း သုံးထားသည်"</string>
     <string name="app_access_title" msgid="7137018424885371763">"အက်ပ်သုံးခွင့်"</string>
@@ -530,7 +530,7 @@
     <string name="export_invalid_storage" msgid="1459055934301871321">"သင့်ဒေတာ ထုတ်ယူရန်အတွက် cloud သိုလှောင်ခန်း အက်ပ်ကို ရွေးပါ"</string>
     <string name="export_default_file_name" msgid="1146984404965754445">"Health Connect"</string>
     <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"Health Connect (<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>)"</string>
-    <string name="import_confirmation_dialog_title" msgid="1218478436676890997">"ဤဖိုင်ကို ထည့်သွင်းမလား။"</string>
+    <string name="import_confirmation_dialog_title" msgid="1218478436676890997">"ဤဖိုင်ကို ထည့်သွင်းမလား"</string>
     <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"<xliff:g id="FILE_NAME">%1$s</xliff:g> ကို Health Connect သို့ ထည့်သွင်းပါမည်"</string>
     <string name="import_confirmation_dialog_cancel_button" msgid="4323351978842360895">"မလုပ်တော့"</string>
     <string name="import_confirmation_dialog_import_button" msgid="7090219024758375606">"ထည့်သွင်းရန်"</string>
@@ -1033,7 +1033,7 @@
     <string name="range_never" msgid="4429478261788361233">"မည်သည့်အခါမှ"</string>
     <string name="range_off" msgid="8178520557618184215">"ပိတ်"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"ဤဆက်တင်များပြောင်းပါက Health Connect သည် သင်၏သတ်မှတ်ချက်အသစ်များအရ လက်ရှိဒေတာကို ဖျက်သည်"</string>
-    <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# လ နောက်ပိုင်းတွင် ဒေတာ အလိုအလျောက်ဖျက်မလား။}other{# လ နောက်ပိုင်းတွင် ဒေတာ အလိုအလျောက်ဖျက်မလား။}}"</string>
+    <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# လ နောက်ပိုင်းတွင် ဒေတာ အလိုအလျောက်ဖျက်မလား}other{# လ နောက်ပိုင်းတွင် ဒေတာ အလိုအလျောက်ဖျက်မလား}}"</string>
     <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{၎င်းသည် Health Connect မှ # လထက်ကျော်သော ဒေတာကိုလည်း ဖျက်ပါသည်။\n\nသင်၏ချိတ်ဆက်ထားသော အက်ပ်များမှ ဒေတာကို အပြီးဖျက်လိုပါက သင့်ဒေတာ သိမ်းထားနိုင်သော အက်ပ်တစ်ခုစီကို စစ်ဆေးပါ။}other{၎င်းသည် Health Connect မှ # လထက်ကျော်သော ဒေတာကိုလည်း ဖျက်ပါသည်။\n\nသင်၏ချိတ်ဆက်ထားသော အက်ပ်များမှ ဒေတာကို အပြီးဖျက်လိုပါက သင့်ဒေတာ သိမ်းထားနိုင်သော အက်ပ်တစ်ခုစီကို စစ်ဆေးပါ။}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"အလိုအလျောက်ဖျက်ခြင်း သတ်မှတ်ရန်"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"လက်ရှိဒေတာကို ဖျက်မည်"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"ချိတ်ဆက်ထားသည့် အက်ပ်များက Health Connect ထံမှ ဤဒေတာကို ဖတ်နိုင်တော့မည်မဟုတ်ပါ"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"အမှန်ခြစ်ထားသည်"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"အမှန်ခြစ်မထားပါ"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>၊ <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"လေ့ကျင့်ခန်းမြေပုံ လမ်းကြောင်း ရနိုင်သည်"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"နောက်ရက်"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"နောက်အပတ်"</string>
@@ -1185,7 +1184,7 @@
     <string name="a11y_previous_week" msgid="2992971531628685405">"ယခင်အပတ်"</string>
     <string name="a11y_previous_month" msgid="3304373968190750755">"ယခင်လ"</string>
     <string name="all_data_selected_deletion_confirmation_dialog" msgid="2103387413531373305">"ဒေတာအားလုံးကို အပြီးဖျက်မလား။"</string>
-    <string name="some_data_selected_deletion_confirmation_dialog" msgid="2466281529240054537">"ရွေးထားသော ဒေတာကို အပြီးဖျက်မလား။"</string>
+    <string name="some_data_selected_deletion_confirmation_dialog" msgid="2466281529240054537">"ရွေးထားသော ဒေတာကို အပြီးဖျက်မလား"</string>
     <string name="all_app_data_selected_deletion_confirmation_dialog" msgid="1077157006579195958">"<xliff:g id="APP_NAME">%s</xliff:g> ဒေတာအားလုံးကို အပြီးဖျက်မလား"</string>
     <string name="some_app_data_selected_deletion_confirmation_dialog" msgid="5378172524112070270">"ရွေးထားသော <xliff:g id="APP_NAME">%s</xliff:g> ဒေတာကို အပြီးဖျက်မလား။"</string>
     <string name="all_entries_selected_day_deletion_confirmation_dialog" msgid="2887646600541520444">"<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g> အတွက် ထည့်သွင်းမှုအားလုံးကို အပြီးဖျက်မလား။"</string>

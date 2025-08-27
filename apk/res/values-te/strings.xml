@@ -410,7 +410,7 @@
     <string name="medical_request_footer" msgid="6533749932770903089">"మీ ఆరోగ్య సమాచారాలన్నింటిని ఒకేచోట ఉంచడానికి, మీ విభిన్న యాప్‌లు, సోర్స్‌ల నుండి మీ ఆరోగ్య సమాచారాలను సింక్ చేయండి"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"అన్ని అనుమతులను తీసివేయాలా?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"అన్నీ తీసివేయండి"</string>
-    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై Health Connectలో ఎలాంటి డేటాను రీడ్ గానీ, రైట్ గానీ చేయలేదు.\n\nదీనివల్ల ఈ యాప్‌కు ఉండే ఇతర కెమెరా, మైక్రోఫోన్, లొకేషన్ వంటి అనుమతులపై ప్రభావం పడదు."</string>
+    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై Health Connectలో ఎలాంటి డేటానూ రీడ్ గానీ, రైట్ గానీ చేయలేదు.\n\nదీని వల్ల ఈ యాప్‌నకు ఉండే ఇతర అనుమతులపై ప్రభావం పడదు. ఉదా - కెమెరా, మైక్రోఫోన్, లొకేషన్ వంటివి."</string>
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై బ్యాక్‌గ్రౌండ్ డేటాతో సహా Health Connect నుండి ఏ డేటాను చదవలేదు లేదా రాయలేదు.\n\nఈ యాప్‌నకు ఉన్న లొకేషన్, కెమెరా, లేదా మైక్రోఫోన్ వంటి ఇతర అనుమతులను ఇది ప్రభావితం చేయదు."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై గతంలోని డేటాతో సహా Health Connect నుండి ఏ డేటాను చదవలేదు లేదా రాయలేదు.\n\nఈ యాప్‌నకు ఉన్న లొకేషన్, కెమెరా, లేదా మైక్రోఫోన్ వంటి ఇతర అనుమతులను ఇది ప్రభావితం చేయదు."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై బ్యాక్‌గ్రౌండ్, గతంలోని డేటతో సహా Health Connect నుండి ఏ డేటాను చదవలేదు లేదా రాయలేదు.\n\nఈ యాప్‌నకు ఉన్న లొకేషన్, కెమెరా, లేదా మైక్రోఫోన్ వంటి ఇతర అనుమతులను ఇది ప్రభావితం చేయదు."</string>
@@ -1026,13 +1026,13 @@
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"ఆటోమేటిక్ తొలగింపు"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"ఆటోమేటిక్ తొలగింపు"</string>
-    <string name="auto_delete_header" msgid="4258649705159293715">"Health Connectలో మీ డేటా ఎంతకాలం తర్వాత తొలగించబడాలో నిర్ణీత కాల వ్యవధిని ఎంచుకోండి"</string>
+    <string name="auto_delete_header" msgid="4258649705159293715">"Health Connectలో మీ డేటాను కంట్రోల్ చేయండి, కొంత కాలం తర్వాత అది ఆటోమేటిక్‌గా తొలగిపోయేలా షెడ్యూల్ చేయండి"</string>
     <string name="auto_delete_learn_more" msgid="7416469042791307994">"ఆటోమేటిక్ తొలగింపు గురించి మరింత తెలుసుకోండి"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"ఆటోమేటిక్ డేటా తొలగింపు"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# నెల తర్వాత}other{# నెలల తర్వాత}}"</string>
     <string name="range_never" msgid="4429478261788361233">"ఎప్పుడూ వద్దు"</string>
     <string name="range_off" msgid="8178520557618184215">"ఆఫ్ అయ్యింది"</string>
-    <string name="auto_delete_rationale" msgid="5255442126521464878">"మీరు ఈ సెట్టింగ్‌లను మార్చినప్పుడు, Health Connect మీ కొత్త ప్రాధాన్యతలను ప్రతిబింబించేలా ఇప్పటికే ఉన్న డేటాను తొలగిస్తుంది"</string>
+    <string name="auto_delete_rationale" msgid="5255442126521464878">"మీరు ఈ సెట్టింగ్‌ల‌ను మార్చినప్పుడు, మీ కొత్త ప్రాధాన్యతలకు అనుగుణంగా Health Connect ఇప్పటికే ఉన్న డేటాను తొలగిస్తుంది"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# నెల తర్వాత డేటాను ఆటోమేటిక్‌గా తొలగించాలా?}other{# నెలల తర్వాత డేటాను ఆటోమేటిక్‌గా తొలగించాలా?}}"</string>
     <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{ఇది Health Connect నుండి # నెల కంటే ముందు ఉన్న పాత డేటాను కూడా తొలగిస్తుంది.\n\nకనెక్ట్ చేసి ఉన్న మీ యాప్‌ల నుండి డేటాను పూర్తిగా తొలగించాలనుకుంటే, మీ డేటాను సేవ్ చేసే ప్రతి యాప్‌ను చెక్ చేయండి.}other{ఇది Health Connect నుండి # నెలల కంటే ముందు ఉన్న పాత డేటాను కూడా తొలగిస్తుంది.\n\nకనెక్ట్ చేసి ఉన్న మీ యాప్‌ల నుండి డేటాను పూర్తిగా తొలగించాలనుకుంటే, మీ డేటాను సేవ్ చేసే ప్రతి యాప్‌ను చెక్ చేయండి.}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"ఆటోమేటిక్ తొలగింపును సెట్ చేయండి"</string>
@@ -1137,9 +1137,9 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"ఇప్పుడే అప్‌డేట్ చేయండి"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"డేటా మొత్తాలు"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"డేటా సోర్స్‌లు"</string>
-    <string name="data_sources_footer" msgid="2271085147058181039">"డేటా మొత్తాలు ఎలా మారతాయో చూడటానికి డేటా సోర్స్‌లను లిస్ట్‌కు జోడించండి. ఈ లిస్ట్ నుండి డేటా సోర్స్‌ను తీసివేయడం వలన అది మొత్తాలకు కంట్రిబ్యూట్ చేయకుండా ఆపివేయబడుతుంది, కానీ అది ఇప్పటికీ రైట్ అనుమతులను కలిగి ఉంటుంది."</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"డేటా టోటల్స్ (మొత్తాలు) ఎలా మారుతాయో చూడటానికి ఈ లిస్ట్‌కు డేటా సోర్స్‌లను జోడించండి. ఈ లిస్ట్‌ నుండి ఒక డేటా సోర్స్‌ను తీసివేస్తే, దాన్నుండి టోటల్స్‌కు కంట్రిబ్యూషన్ ఆగిపోతుంది. అయితే దానికి ఇప్పటికీ రైట్ చేయడానికి అనుమతి ఉంటుంది."</string>
     <string name="data_sources_empty_state" msgid="478270183887252279">"డేటా సోర్స్‌లు లేవు"</string>
-    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"మీరు డేటా సోర్స్‌కు <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> డేటాను వ్రాయడానికి అనుమతి ఇచ్చిన తర్వాత, సోర్స్‌లు ఇక్కడ కనిపిస్తాయి."</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"ఒకసారి మీరు ఒక డేటా సోర్స్‌కి <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> డేటాను రాసే అనుమతిని ఇస్తే, ఆ సోర్స్‌లు ఇక్కడ కనిపిస్తాయి."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"సోర్స్‌లు &amp; ప్రాధాన్యత ఎలా పని చేస్తాయి"</string>
     <string name="data_sources_add_app" msgid="275066335106036460">"డేటా సోర్స్‌ను జోడించండి"</string>
     <string name="edit_data_sources" msgid="5389744157074260179">"డేటా సోర్స్​లను ఎడిట్ చేయడం"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"కనెక్ట్ అయి ఉన్న యాప్‌లు ఇకపై Health Connectలో ఈ డేటాను రీడ్ చేయలేవు"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"ఎంచుకోబడింది"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"ఎంచుకోలేదు"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"వ్యాయామం మ్యాప్ మార్గం అందుబాటులో ఉంది"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"తర్వాతి రోజు"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"తర్వాతి వారం"</string>
@@ -1276,7 +1275,7 @@
     <string name="device_management_screen_footer" msgid="1787611015335737167">"ఈ డివైజ్ ద్వారా కలెక్ట్ అయిన డేటా Health Connectలో స్టోర్ అవుతుంది, అక్కడ కనెక్ట్ చేయబడిన యాప్‌లు దానిని యాక్సెస్ చేస్తాయి"</string>
     <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"ఈ డివైజ్, స్టెప్ ట్రాకింగ్‌కు సపోర్ట్ చేయదు, కానీ ఇప్పటికీ Health Connectలో డేటా స్టోర్ చేసి ఉంటుంది"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"ఈ డివైజ్ స్టెప్స్‌ను ట్రాక్ చేయదు"</string>
-    <string name="device_settings_label" msgid="9053791237491247819">"రైట్ అనుమతి ఉంది"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"రైటింగ్‌కు అనుమ‌తి ఉంది"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"డివైజ్ డేటా"</string>
     <string name="device_data_label" msgid="2056618513138892435">"డివైజ్‌ను మేనేజ్ చేయండి"</string>
     <string name="device_data_button" msgid="8002406105399136401">"డివైజ్ డేటాను చూడండి"</string>

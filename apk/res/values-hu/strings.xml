@@ -530,7 +530,7 @@
     <string name="export_invalid_storage" msgid="1459055934301871321">"Válassza ki azt a felhőtárhely-alkalmazást, amelybe exportálni szeretné az adatait"</string>
     <string name="export_default_file_name" msgid="1146984404965754445">"Health Connect"</string>
     <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"Health Connect (<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>)"</string>
-    <string name="import_confirmation_dialog_title" msgid="1218478436676890997">"Importálja a fájlt!"</string>
+    <string name="import_confirmation_dialog_title" msgid="1218478436676890997">"Importálja a fájlt?"</string>
     <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"A(z) <xliff:g id="FILE_NAME">%1$s</xliff:g> importálva lesz a Health Connect alkalmazásba"</string>
     <string name="import_confirmation_dialog_cancel_button" msgid="4323351978842360895">"Mégse"</string>
     <string name="import_confirmation_dialog_import_button" msgid="7090219024758375606">"Importálás"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"A társított alkalmazások a továbbiakban nem tudják majd írni a Health Connect szolgáltatásból származó adatokat."</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Bejelölve"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Nincs bejelölve"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Rendelkezésre áll edzési térképes útvonal"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Következő nap"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Következő hét"</string>
@@ -1273,7 +1272,7 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Jelenlegi eszköz"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Ismeretlen eszköz"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Eszközadatok"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"Az eszköz által gyűjtött adatokat a Health Connect tárolja, és a társított alkalmazások itt férnek hozzájuk"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"Az eszköz által gyűjtött adatokat a Health Connect tárolja, és a társított alkalmazások itt férnek hozzájuk."</string>
     <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Ez az eszköz nem támogatja a lépésszámlálást, de továbbra is tárol adatokat a Health Connect szolgáltatásban"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Ez az eszköz nem számolja a lépéseket"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Írhat"</string>

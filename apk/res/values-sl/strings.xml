@@ -512,7 +512,7 @@
     <string name="import_version_mismatch_error_banner_summary" msgid="6165550114170534795">"Posodobite sistem, da bo Health Connect lahko obnovil vaše podatke, in nato poskusite znova."</string>
     <string name="import_other_error_banner_button" msgid="8006947649520909176">"Poskusi znova"</string>
     <string name="import_other_error_banner_summary" msgid="4378957063605649197">"Prišlo je do težave pri obnavljanju podatkov iz izvoza."</string>
-    <string name="backup_and_restore_footer_body_text" msgid="4854718727539851909">"Izvoz vam omogoča, da shranite podatke in jih prenesete v novi telefon"</string>
+    <string name="backup_and_restore_footer_body_text" msgid="4854718727539851909">"Izvoz vam omogoča, da shranite podatke in jih prenesete v novi telefon."</string>
     <string name="backup_and_restore_footer_link_text" msgid="9075133737244288876">"O varnostnem kopiranju in obnovitvi"</string>
     <string name="automatic_export_status" msgid="4407131306281440230">"<xliff:g id="EXPORT_ON_OR_OFF">%1$s</xliff:g> • <xliff:g id="EXPORT_FREQUENCY">%2$s</xliff:g>"</string>
     <string name="automatic_export_on" msgid="6972389773963624315">"Vklopljeno"</string>
@@ -531,7 +531,7 @@
     <string name="export_default_file_name" msgid="1146984404965754445">"Health Connect"</string>
     <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"Health Connect (<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>)"</string>
     <string name="import_confirmation_dialog_title" msgid="1218478436676890997">"Želite uvoziti to datoteko?"</string>
-    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"Datoteka <xliff:g id="FILE_NAME">%1$s</xliff:g> bo uvožena v Health Connect"</string>
+    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"Datoteka <xliff:g id="FILE_NAME">%1$s</xliff:g> bo uvožena v Health Connect."</string>
     <string name="import_confirmation_dialog_cancel_button" msgid="4323351978842360895">"Prekliči"</string>
     <string name="import_confirmation_dialog_import_button" msgid="7090219024758375606">"Uvozi"</string>
     <string name="import_notification_import_in_progress_title" msgid="4657602436278942808">"Poteka obnavljanje v aplikaciji Health Connect"</string>
@@ -568,7 +568,7 @@
     <string name="export_import_choose_account_cancel_button" msgid="7975616126298263479">"Prekliči"</string>
     <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"Končano"</string>
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"Na voljo ni nobene aplikacije. Namestite aplikacije za shrambo v oblaku, da bodo prikazane tu"</string>
-    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Za več možnosti namestite aplikacije za shrambo v oblaku, da bodo prikazane tu"</string>
+    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Za več možnosti namestite aplikacije za shrambo v oblaku, da bodo prikazane tu."</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Odpri Trgovino Play"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Začetek uporabe storitve Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect shranjuje vaše podatke o zdravju in telesni pripravljenosti ter vam omogoča, da na preprost način sinhronizirate različne aplikacije v napravi."</string>
@@ -782,7 +782,7 @@
     <string name="tennis" msgid="6627063985750125504">"Tenis"</string>
     <string name="upper_twist" msgid="3382862516792841928">"Sukanje trupa"</string>
     <string name="volleyball" msgid="7469885673961163729">"Odbojka"</string>
-    <string name="walking" msgid="4782496160454621769">"Hodi"</string>
+    <string name="walking" msgid="4782496160454621769">"Hoja"</string>
     <string name="water_polo" msgid="2527119748097860708">"Vaterpolo"</string>
     <string name="weightlifting" msgid="7586735291662318085">"Dviganje uteži"</string>
     <string name="wheelchair" msgid="2226734836271500057">"Invalidski voziček"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Povezane aplikacije ne bodo več mogle brati teh podatkov v storitvi Health Connect."</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Potrjeno"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Nepotrjeno"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Na voljo je vadbena pot na zemljevidu"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Naslednji dan"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Naslednji teden"</string>
@@ -1273,7 +1272,7 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Trenutna naprava"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Neznana naprava"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Podatki o napravi"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"Podatki, ki jih zbere ta naprava, bodo shranjeni v storitvi Health Connect, kjer bodo do njih dostopale povezane aplikacije"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"Podatki, ki jih zbere ta naprava, bodo shranjeni v storitvi Health Connect, kjer bodo do njih dostopale povezane aplikacije."</string>
     <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Ta naprava ne podpira spremljanja korakov, vendar so njeni podatki še vedno shranjeni v storitvi Health Connect"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Ta naprava ne spremlja korakov"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Dovoljeno zapisovanje"</string>

@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"As aplicacións conectadas xa non poderán ler estes datos de Saúde conectada"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Caixa marcada"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Caixa non marcada"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Mapa da ruta de exercicio dispoñible"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Día seguinte"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Semana seguinte"</string>

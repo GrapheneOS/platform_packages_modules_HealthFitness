@@ -1005,7 +1005,7 @@
     <string name="distance_unit_kilometers_label" msgid="1361363017122240294">"কিলোমিটাৰ"</string>
     <string name="distance_unit_miles_label" msgid="848850214987608211">"মাইল"</string>
     <string name="height_unit_centimeters_label" msgid="4096031670561995574">"ছেণ্টিমিটাৰ"</string>
-    <string name="height_unit_feet_label" msgid="3311723678628261399">"ফুট &amp; ইঞ্চি"</string>
+    <string name="height_unit_feet_label" msgid="3311723678628261399">"ফুট আৰু ইঞ্চি"</string>
     <string name="weight_unit_pound_label" msgid="8210663393844989211">"পাউণ্ড"</string>
     <string name="weight_unit_kilogram_label" msgid="6623938920860887238">"কিলোগ্ৰাম"</string>
     <string name="weight_unit_stone_label" msgid="3063787243474847180">"ষ্ট’ন"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"সংযুক্ত এপ্‌সমূহে আৰু Health Connectৰ পৰা এই ডেটা পঢ়িব নোৱাৰিব"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"টিক চিহ্ন দিয়া হৈছে"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"টিক চিহ্ন দিয়া হোৱা নাই"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"ব্যায়ামৰ মেপৰ পথ উপলব্ধ"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"পৰৱৰ্তী দিন"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"পৰৱৰ্তী সপ্তাহ"</string>

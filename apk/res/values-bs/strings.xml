@@ -444,7 +444,7 @@
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Detaljni izvorni kôd: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"Pregledajte izvorne podatke"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"Aplikacije s ovim odobrenjem mogu čitati i zapisivati vaše podatke o zdravlju i fitnesu."</string>
-    <string name="connected_apps_text" msgid="1177626440966855831">"Kontrolirajte koje aplikacije mogu pristupiti podacima pohranjenim u Health Connectu. Dodirnite aplikaciju da pregledate podatke kojima ona ima pristup za čitanje ili pisanje."</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"Kontrolirajte koje aplikacije mogu pristupiti podacima pohranjenim u Health Connectu. Dodirnite aplikaciju da pregledate podatke kojima ona ima pristup za čitanje ili zapisivanje."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Dozvoljen pristup"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Nedozvoljen pristup"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"Potrebno je ažuriranje"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Povezane aplikacije više neće moći čitati ove podatke iz Health Connecta"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Označeno"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Nije označeno"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Dostupno je vježbanje rute na mapi"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Sljedeći dan"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Sljedeća sedmica"</string>
