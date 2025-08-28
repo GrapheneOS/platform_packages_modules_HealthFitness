@@ -43,7 +43,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.health.connect.Constants;
@@ -213,11 +212,7 @@ public final class AppInfoHelper extends DatabaseHelper {
         var recordTypesUsed = appInfo == null ? null : appInfo.getRecordTypesUsed();
         AppInfoInternal appInfoInternal =
                 new AppInfoInternal(
-                        getAppInfoId(packageName),
-                        packageName,
-                        name,
-                        decodeBitmap(icon),
-                        recordTypesUsed);
+                        getAppInfoId(packageName), packageName, name, icon, recordTypesUsed);
         updateIfPresent(packageName, appInfoInternal);
     }
 
@@ -250,7 +245,7 @@ public final class AppInfoHelper extends DatabaseHelper {
         if (!containsAppInfo(packageName)) {
             byte[] icon = getIconFromPackageName(packageName);
             AppInfoInternal appInfoInternal =
-                    new AppInfoInternal(DEFAULT_LONG, packageName, name, decodeBitmap(icon), null);
+                    new AppInfoInternal(DEFAULT_LONG, packageName, name, icon, null);
             insertIfNotPresent(packageName, appInfoInternal);
         }
     }
@@ -348,6 +343,7 @@ public final class AppInfoHelper extends DatabaseHelper {
                                 (appInfo.getRecordTypesUsed() != null
                                                 && !appInfo.getRecordTypesUsed().isEmpty())
                                         || appInfoIds.contains(appInfo.getId()))
+                // TODO(b/441440072): Remove unnecessary decoding of Bitmaps.
                 .map(AppInfoInternal::toExternal)
                 .collect(Collectors.toList());
     }
@@ -435,7 +431,6 @@ public final class AppInfoHelper extends DatabaseHelper {
                                     .getDisplayName();
                 }
                 byte[] icon = getCursorBlob(cursor, APP_ICON_COLUMN_NAME);
-                Bitmap bitmap = decodeBitmap(icon);
                 String recordTypesUsed = getCursorString(cursor, RECORD_TYPES_USED_COLUMN_NAME);
 
                 Set<Integer> recordTypesListAsSet = getRecordTypesAsSet(recordTypesUsed);
@@ -443,7 +438,7 @@ public final class AppInfoHelper extends DatabaseHelper {
                 appInfoMap.put(
                         packageName,
                         new AppInfoInternal(
-                                rowId, packageName, appName, bitmap, recordTypesListAsSet));
+                                rowId, packageName, appName, icon, recordTypesListAsSet));
                 idPackageNameMap.put(rowId, packageName);
             }
         }
@@ -765,7 +760,7 @@ public final class AppInfoHelper extends DatabaseHelper {
         }
         Drawable icon = packageManager.getApplicationIcon(info);
         Bitmap bitmap = getBitmapFromDrawable(icon);
-        return new AppInfoInternal(DEFAULT_LONG, packageName, appName, bitmap, null);
+        return new AppInfoInternal(DEFAULT_LONG, packageName, appName, encodeBitmap(bitmap), null);
     }
 
     @Nullable
@@ -834,7 +829,7 @@ public final class AppInfoHelper extends DatabaseHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PACKAGE_COLUMN_NAME, packageName);
         contentValues.put(APPLICATION_COLUMN_NAME, appInfo.getName());
-        contentValues.put(APP_ICON_COLUMN_NAME, encodeBitmap(appInfo.getIcon()));
+        contentValues.put(APP_ICON_COLUMN_NAME, appInfo.getIcon());
         String recordTypesUsedAsString = null;
         // Since a list of recordTypeIds cannot be saved directly in the database, record types IDs
         // are concatenated using ',' and are saved as a string.
@@ -883,10 +878,6 @@ public final class AppInfoHelper extends DatabaseHelper {
     }
 
     @Nullable
-    private static Bitmap decodeBitmap(@Nullable byte[] bytes) {
-        return bytes != null ? BitmapFactory.decodeByteArray(bytes, 0, bytes.length) : null;
-    }
-
     private static Bitmap getBitmapFromDrawable(Drawable drawable) {
         final Bitmap bmp =
                 Bitmap.createBitmap(
