@@ -50,9 +50,9 @@
     <string name="settings_medical_permissions" msgid="4621535972501674863">"Health Connect"</string>
     <string name="backup_title" msgid="211503191266235085">"Záloha"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Zdroje dat a priorita"</string>
-    <string name="set_units_title" msgid="2657822539603758029">"Nastavit jednotky"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Nastavení jednotek"</string>
     <string name="manage_data_preferences_category_title" msgid="1183110821140344472">"Předvolby"</string>
-    <string name="manage_data_category_title" msgid="6328886061582616519">"Spravovat data"</string>
+    <string name="manage_data_category_title" msgid="6328886061582616519">"Správa dat"</string>
     <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"Export a import dat"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Nedávný přístup"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Přístup ke službě Health Connect neměly v poslední době žádné aplikace"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Připojené aplikace už k těmto datům ze služby Health Connect nebudou mít přístup"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Zaškrtnuto"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Nezaškrtnuto"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"K dispozici je mapa trasy cvičení"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Další den"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Další týden"</string>

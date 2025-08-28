@@ -521,7 +521,7 @@
     <string name="next_export_file_location" msgid="2117071837862240540">"<xliff:g id="EXPORT_APP_NAME">%1$s</xliff:g> • <xliff:g id="EXPORT_FILE_NAME">%2$s</xliff:g>"</string>
     <string name="choose_frequency_category" msgid="9094154407387676553">"Mainīt biežumu"</string>
     <string name="scheduled_export_settings_footer_text" msgid="8488483803782086291">"Ja izslēgsiet ieplānoto eksportēšanu, netiks dzēsti iepriekš eksportētie dati no vietas, kur tie tika saglabāti."</string>
-    <string name="choose_frequency" msgid="8119085390857180221">"Ieplānotās eksportēšanas iestatīšana"</string>
+    <string name="choose_frequency" msgid="8119085390857180221">"Ieplānoto eksporta datu iestatīšana"</string>
     <string name="choose_frequency_description" msgid="7698155810053504157">"Izvēlieties, cik bieži eksportēt datus."</string>
     <string name="frequency_daily" msgid="3596412357416125727">"Katru dienu"</string>
     <string name="frequency_weekly" msgid="7302587625019573393">"Katru nedēļu"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Pievienotās lietotnes vairs nevarēs lasīt šos datus no platformas Health Connect."</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Atzīmēta"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Nav atzīmēta"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Ir pieejama treniņu maršruta karte"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Nākamā diena"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Nākamā nedēļa"</string>

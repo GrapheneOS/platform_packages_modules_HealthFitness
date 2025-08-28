@@ -1139,7 +1139,7 @@
     <string name="app_sources_header" msgid="3776247928235433963">"Sources de données"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Ajoutez des sources de données à la liste pour voir les totaux de données changer. Supprimer une source de données de cette liste l\'empêchera de contribuer aux totaux, mais elle disposera toujours d\'autorisations d\'écriture."</string>
     <string name="data_sources_empty_state" msgid="478270183887252279">"Aucune source de données"</string>
-    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Une fois que la source de données aura reçu l\'autorisation d\'écrire des données <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, des sources s\'afficheront ici."</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Une fois que vous aurez accordé l\'autorisation d\'écrire des données <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> à des sources de données, elles s\'afficheront ici."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Fonctionnement des sources et des priorités"</string>
     <string name="data_sources_add_app" msgid="275066335106036460">"Ajouter une source de données"</string>
     <string name="edit_data_sources" msgid="5389744157074260179">"Modifier les sources de données"</string>
@@ -1148,7 +1148,7 @@
     <string name="move_down" msgid="4404970288236170693">"Déplacer vers le bas"</string>
     <string name="remove" msgid="1340423400489007362">"Supprimer"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Données d\'application"</string>
-    <string name="app_data_no_data_footer" msgid="7027700714577530371">"Les données de l\'appli <xliff:g id="APP_NAME">%1$s</xliff:g> s\'afficheront ici"</string>
+    <string name="app_data_no_data_footer" msgid="7027700714577530371">"Les données de <xliff:g id="APP_NAME">%1$s</xliff:g> s\'afficheront ici"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Les données issues des applications ayant accès à Santé Connect s\'afficheront ici"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Jour"</string>
     <string name="date_picker_week" msgid="1038805538316142229">"Semaine"</string>
@@ -1172,11 +1172,10 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Pour mieux sécuriser vos données de santé, définissez un code, un schéma ou un mot de passe pour cet appareil"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Définir le verrouillage de l\'écran"</string>
     <string name="select_all" msgid="837499881590001166">"Tout sélectionner"</string>
-    <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Les applications connectées ne pourront plus accéder à ces données à partir de Santé Connect"</string>
+    <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Les applications connectées ne pourront plus accéder à ces données dans Santé Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Cochée"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Non cochée"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Parcours sportif disponible"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Jour suivant"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Semaine suivante"</string>

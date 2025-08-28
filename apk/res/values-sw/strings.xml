@@ -54,7 +54,7 @@
     <string name="manage_data_preferences_category_title" msgid="1183110821140344472">"Mapendeleo"</string>
     <string name="manage_data_category_title" msgid="6328886061582616519">"Kudhibiti data"</string>
     <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"Kuhamisha na kupakia data"</string>
-    <string name="recent_access_header" msgid="7623497371790225888">"Ufikiaji wa hivi karibuni"</string>
+    <string name="recent_access_header" msgid="7623497371790225888">"Ufikiaji wa hivi majuzi"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Hakuna programu zilizofikia Health Connect hivi karibuni"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Angalia ruhusa zote za ufikiaji za karibuni"</string>
     <string name="recent_access_screen_description" msgid="331101209889185402">"Angalia ni programu zipi zilifikia data yako ndani ya saa 24 zilizopita"</string>
@@ -463,7 +463,7 @@
     <string name="delete_app_data" msgid="6890357774873859952">"Futa data ya programu"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Programu zilizozimwa"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Programu hizi hazina tena ufikiaji, lakini bado zina data iliyohifadhiwa kwenye Health Connect"</string>
-    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> inaweza kusoma data iliyowekwa baada ya <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> inaweza kusoma data iliyowekwa baada ya tarehe <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"Ili udhibiti ruhusa nyingine za Android ambazo programu hii inaweza kufikia, nenda kwenye Mipangilio &gt; Programu"</string>
     <string name="manage_permissions_rationale" msgid="2780008055185441703">"Unaweza kupata maelezo kuhusu jinsi <xliff:g id="APP_NAME">%1$s</xliff:g> inavyoshughulikia data yako katika sera ya faragha ya msanidi programu"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Ili udhibiti ruhusa zingine za Android ambazo programu hii inaweza kufikia, nenda kwenye Mipangilio kisha uguse Programu"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Programu zilizounganishwa hazitaweza tena kusoma data hii kutoka Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Imechaguliwa"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Haijachaguliwa"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Ramani inayoonyesha njia ya kufanyia mazoezi inapatikana"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Siku inayofuata"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Wiki ijayo"</string>

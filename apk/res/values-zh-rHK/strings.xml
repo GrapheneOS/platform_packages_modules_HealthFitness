@@ -444,7 +444,7 @@
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"詳細原始碼：<xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"查看來源資料"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"擁有此權限的應用程式可讀取和寫入你的健康和健身資料。"</string>
-    <string name="connected_apps_text" msgid="1177626440966855831">"控制哪些應用程式可存取儲存在 Health Connect 中的資料。輕按應用程式即可查看該應用程式可讀取或寫入的資料。"</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"控制哪些應用程式可存取「健康資料同步」中儲存的資料。輕按應用程式，就能查看該應用程式可讀取或寫入的資料。"</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"已允許存取權"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"不允許存取權"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"需要更新"</string>
@@ -463,7 +463,7 @@
     <string name="delete_app_data" msgid="6890357774873859952">"刪除應用程式資料"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"已停用的應用程式"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"這些應用程式不再擁有存取權，但仍有資料儲存在 Health Connect"</string>
-    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」可以讀取<xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>後新增的資料"</string>
+    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」可以讀取 <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>後新增的資料"</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"如要管理此應用程式可以存取的其他 Android 權限，請前往「設定」&gt; [應用程式]"</string>
     <string name="manage_permissions_rationale" msgid="2780008055185441703">"如要瞭解「<xliff:g id="APP_NAME">%1$s</xliff:g>」如何處理你的資料，請參閱開發人員的私隱權政策"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"如要管理此應用程式可以存取的其他 Android 權限，請前往「設定」，然後輕按 [應用程式]"</string>
@@ -1015,26 +1015,26 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"華氏"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"開爾文"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"說明與意見反映"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"如果你看不到已安裝的應用程式，可能是應用程式尚未兼容 Health Connect"</string>
+    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"如果你看不到所安裝的應用程式，可能是應用程式尚未兼容「健康資料同步」"</string>
     <string name="things_to_try" msgid="8200374691546152703">"試試其他選項"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"檢查更新"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"確保已安裝的應用程式為最新版本"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"查看所有兼容的應用程式"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"在 Google Play 上尋找應用程式"</string>
     <string name="send_feedback" msgid="7756927746070096780">"傳送意見"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"請告訴我們你希望在 Health Connect 上使用哪些健康和健身應用程式"</string>
+    <string name="send_feedback_description" msgid="2887207112856240778">"請告訴我們你希望在「健康資料同步」使用哪些健康和健身應用程式"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play 商店"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"自動刪除"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"自動刪除"</string>
-    <string name="auto_delete_header" msgid="4258649705159293715">"設定在指定時間後刪除 Health Connect 中的資料，控制資料的保存期"</string>
+    <string name="auto_delete_header" msgid="4258649705159293715">"設定在指定時間後刪除「健康資料同步」中的資料，控制資料的保存期"</string>
     <string name="auto_delete_learn_more" msgid="7416469042791307994">"進一步瞭解自動刪除功能"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"自動刪除資料"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# 個月後}other{# 個月後}}"</string>
     <string name="range_never" msgid="4429478261788361233">"永不"</string>
     <string name="range_off" msgid="8178520557618184215">"已關閉"</string>
-    <string name="auto_delete_rationale" msgid="5255442126521464878">"變更這些設定後，Health Connect 會根據新的偏好設定刪除現有資料"</string>
+    <string name="auto_delete_rationale" msgid="5255442126521464878">"變更這些設定後，「健康資料同步」會根據新的偏好設定刪除現有資料"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{要在 # 個月後自動刪除資料嗎？}other{要在 # 個月後自動刪除資料嗎？}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{這樣做亦會從「健康資料同步」刪除 # 個月前的資料。\n\n如果你想從已連接應用程式徹底刪除資料，請檢查每個可能有儲存資料的應用程式。}other{這樣做亦會從「健康資料同步」刪除 # 個月前的資料。\n\n如果你想從已連接應用程式徹底刪除資料，請檢查每個可能有儲存資料的應用程式。}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{這樣做亦會從「健康資料同步」刪除 # 個月前的資料。\n\n如果你想從已連接應用程式徹底刪除資料，請檢查每個可能有儲存資料的應用程式。}other{這樣做亦會從「健康資料同步」刪除 # 個月前的資料。\n\n如果你想從已連接的應用程式徹底刪除資料，請檢查每個可能有儲存資料的應用程式。}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"設定自動刪除功能"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"系統將刪除現有資料"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Health Connect 將刪除 # 個月前的所有資料。這些變更可能一天後才會在已連結的應用程式上顯示。}other{Health Connect 將刪除 # 個月前的所有資料。這些變更可能一天後才會在已連結的應用程式上顯示。}}"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"已連結的應用程式將無法在「健康資料同步」中讀取這些資料"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"已勾選"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"未勾選"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>，<xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"有可用的運動路線"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"下一天"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"下星期"</string>
@@ -1193,7 +1192,7 @@
     <string name="all_entries_selected_month_deletion_confirmation_dialog" msgid="6030161837387559132">"要永久刪除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所有項目嗎？"</string>
     <string name="some_entries_selected_day_deletion_confirmation_dialog" msgid="3481363886097542565">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所選項目嗎？"</string>
     <string name="some_entries_selected_week_deletion_confirmation_dialog" msgid="7150217982297131340">"要永久刪除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>一星期的所選項目嗎？"</string>
-    <string name="some_entries_selected_month_deletion_confirmation_dialog" msgid="3712014725077445591">"要永久刪除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所選項目嗎？"</string>
+    <string name="some_entries_selected_month_deletion_confirmation_dialog" msgid="3712014725077445591">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所選項目嗎？"</string>
     <string name="one_entry_selected_deletion_confirmation_dialog" msgid="4642573082594021789">"要永久刪除此項目嗎？"</string>
     <string name="all_app_entries_selected_day_deletion_confirmation_dialog" msgid="2342034541791960151">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>的所有「<xliff:g id="APP_NAME">%1$s</xliff:g>」項目嗎？"</string>
     <string name="all_app_entries_selected_week_deletion_confirmation_dialog" msgid="24289763841770386">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>一星期的所有「<xliff:g id="APP_NAME">%1$s</xliff:g>」項目嗎？"</string>

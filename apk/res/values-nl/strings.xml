@@ -28,7 +28,7 @@
     <string name="all_categories_title" msgid="1446410643217937926">"Alle categorieën"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Alle categorieën bekijken"</string>
     <string name="no_data" msgid="1906986019249068659">"Geen gegevens"</string>
-    <string name="devices_summary" msgid="8653563324512654292">"Je verbonden apparaten beheren"</string>
+    <string name="devices_summary" msgid="8653563324512654292">"Beheer je verbonden apparaten"</string>
     <string name="devices_title" msgid="7548105261104504301">"Apparaten"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"App-rechten"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Je apps en rechten beheren"</string>
@@ -53,7 +53,7 @@
     <string name="set_units_title" msgid="2657822539603758029">"Eenheden instellen"</string>
     <string name="manage_data_preferences_category_title" msgid="1183110821140344472">"Voorkeuren"</string>
     <string name="manage_data_category_title" msgid="6328886061582616519">"Gegevens beheren"</string>
-    <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"Gegevens exporteren en importeren"</string>
+    <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"Exporteer en importeer gegevens"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Recente toegang"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Geen apps hebben recent toegang gehad tot Health Connect"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Alle recente toegangsacties bekijken"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Gekoppelde apps kunnen deze gegevens van Health Connect niet meer lezen"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Aangevinkt"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Niet aangevinkt"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Trainingsroute beschikbaar"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Volgende dag"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Volgende week"</string>

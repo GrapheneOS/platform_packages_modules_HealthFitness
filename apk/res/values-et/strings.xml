@@ -1140,7 +1140,7 @@
     <string name="data_sources_footer" msgid="2271085147058181039">"Lisage loendisse andmeallikad, et vaadata, kuidas koguandmed muutuda võivad. Andmeallika loendist eemaldamisel ei lisa see enam oma andmeid koguandmete hulka, kuid selle kirjutusload võivad säilida."</string>
     <string name="data_sources_empty_state" msgid="478270183887252279">"Andmeallikaid pole"</string>
     <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Kui annate andmeallikale loa kirjutada kategooria <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> andmeid, kuvatakse allikad siin."</string>
-    <string name="data_sources_help_link" msgid="7740264923634947915">"Kuidas toimivad allikad ja prioriteetsus?"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Kuidas allikad ja prioriteetsus toimivad?"</string>
     <string name="data_sources_add_app" msgid="275066335106036460">"Andmeallika lisamine"</string>
     <string name="edit_data_sources" msgid="5389744157074260179">"Muuda andmeallikaid"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Seadme vaikeseade"</string>
@@ -1148,7 +1148,7 @@
     <string name="move_down" msgid="4404970288236170693">"Teisalda alla"</string>
     <string name="remove" msgid="1340423400489007362">"Eemalda"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Rakenduse andmed"</string>
-    <string name="app_data_no_data_footer" msgid="7027700714577530371">"Rakenduse <xliff:g id="APP_NAME">%1$s</xliff:g> andmed kuvatakse siin"</string>
+    <string name="app_data_no_data_footer" msgid="7027700714577530371">"Rakenduse <xliff:g id="APP_NAME">%1$s</xliff:g> andmed kuvatakse siin."</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Nende rakenduste andmed, millel on juurdepääs teenusele Health Connect, kuvatakse siin."</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Päev"</string>
     <string name="date_picker_week" msgid="1038805538316142229">"Nädal"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Ühendatud rakendused ei saa enam neid andmeid rakendusest Health Connect lugeda."</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Märgitud"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Märkimata"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Treeningu kaardimarsruut on saadaval"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Järgmine päev"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Järgmine nädal"</string>
@@ -1273,7 +1272,7 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Praegune seade"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Tundmatu seade"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Seadme teave"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"Selle seadme kogutudandmeid talletatakse Health Connectis, kus ühendatud rakendused pääsevad neile juurde"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"Selle seadme kogutud andmeid talletatakse Health Connectis, kus ühendatud rakendused pääsevad neile juurde."</string>
     <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"See seade ei toeta sammude jälgimist, kuid selle andmed on siiski Health Connecti talletatud."</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"See seade ei toeta sammude jälgimist."</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Lubatud kirjutada"</string>
