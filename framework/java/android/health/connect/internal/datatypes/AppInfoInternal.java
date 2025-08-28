@@ -18,6 +18,7 @@ package android.health.connect.internal.datatypes;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.health.connect.datatypes.AppInfo;
 
 import java.util.Set;
@@ -30,20 +31,23 @@ public final class AppInfoInternal {
     private long mId;
     private final String mPackageName;
     @Nullable private final String mName;
-    @Nullable private final Bitmap mIcon;
+    @Nullable private final byte[] mIcon;
     @Nullable private Set<Integer> mRecordTypesUsed;
+    @Nullable private final Long mDeviceInfoId;
 
     public AppInfoInternal(
             long id,
             String packageName,
             @Nullable String name,
-            @Nullable Bitmap icon,
-            @Nullable Set<Integer> recordTypesUsed) {
+            @Nullable byte[] icon,
+            @Nullable Set<Integer> recordTypesUsed,
+            @Nullable Long deviceInfoId) {
         mId = id;
         mPackageName = packageName;
         mName = name;
         mIcon = icon;
         mRecordTypesUsed = recordTypesUsed;
+        mDeviceInfoId = deviceInfoId;
     }
 
     @NonNull
@@ -74,7 +78,7 @@ public final class AppInfoInternal {
     }
 
     @Nullable
-    public Bitmap getIcon() {
+    public byte[] getIcon() {
         return mIcon;
     }
 
@@ -83,9 +87,16 @@ public final class AppInfoInternal {
         return mRecordTypesUsed;
     }
 
+    @Nullable
+    public Long getDeviceInfoId() {
+        return mDeviceInfoId;
+    }
+
     /** returns a new {@link AppInfo} object from this object */
     @NonNull
     public AppInfo toExternal() {
-        return new AppInfo.Builder(getPackageName(), getName(), getIcon()).build();
+        Bitmap bitmap =
+                mIcon == null ? null : BitmapFactory.decodeByteArray(mIcon, 0, mIcon.length);
+        return new AppInfo.Builder(getPackageName(), getName(), bitmap).build();
     }
 }
