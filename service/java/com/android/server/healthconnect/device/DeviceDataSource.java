@@ -17,8 +17,7 @@
 package com.android.server.healthconnect.device;
 
 import android.content.Context;
-
-import com.android.server.healthconnect.common.metadata.DeviceInfoHelper.DeviceInfo;
+import android.health.connect.datatypes.Device;
 
 /**
  * Represents a source of data originating from a device.
@@ -26,18 +25,36 @@ import com.android.server.healthconnect.common.metadata.DeviceInfoHelper.DeviceI
  * @hide
  */
 public class DeviceDataSource {
-    private final DeviceInfo mDeviceInfo;
+
+    private final String mManufacturer;
+    private final String mModel;
+    @Device.DeviceType private final int mDeviceType;
     private final String mDeviceId;
     private final String mDisplayName;
 
-    public DeviceDataSource(DeviceInfo deviceInfo, String deviceId, String displayName) {
-        this.mDeviceInfo = deviceInfo;
+    public DeviceDataSource(
+            String manufacturer,
+            String model,
+            @Device.DeviceType int deviceType,
+            String deviceId,
+            String displayName) {
+        mManufacturer = manufacturer;
+        mModel = model;
+        mDeviceType = deviceType;
         this.mDeviceId = deviceId;
         this.mDisplayName = displayName;
     }
 
-    public DeviceInfo getDeviceInfo() {
-        return mDeviceInfo;
+    public String getManufacturer() {
+        return mManufacturer;
+    }
+
+    public String getModel() {
+        return mModel;
+    }
+
+    public int getDeviceType() {
+        return mDeviceType;
     }
 
     /**
