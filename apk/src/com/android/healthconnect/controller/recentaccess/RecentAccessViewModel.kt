@@ -88,7 +88,14 @@ constructor(
         accessLogs: List<AccessLog>,
         maxNumEntries: Int,
     ): List<RecentAccessEntry> {
-        val connectedApps = loadHealthPermissionApps.invoke()
+        val connectedApps =
+            when (val res = loadHealthPermissionApps.invoke(Unit)) {
+                is UseCaseResults.Success -> res.data
+                is UseCaseResults.Failed -> {
+                    Log.e(TAG, "Error loading connected apps", res.exception)
+                    emptyList()
+                }
+            }
         val inactiveApps =
             connectedApps
                 .groupBy { it.status }[ConnectedAppStatus.INACTIVE]
@@ -99,7 +106,12 @@ constructor(
 
         val filteredClusters = mutableListOf<RecentAccessEntry>()
         clusters.forEach {
-            if (connectedApps.filter { it.status == ConnectedAppStatus.DENIED }.map { it.appMetadata.packageName}.contains(it.metadata.packageName)) {
+            if (
+                connectedApps
+                    .filter { it.status == ConnectedAppStatus.DENIED }
+                    .map { it.appMetadata.packageName }
+                    .contains(it.metadata.packageName)
+            ) {
                 it.shouldLaunchAppOnboardingIfAvailable = true
             }
             if (inactiveApps.contains(it.metadata.packageName)) {
@@ -203,7 +215,7 @@ constructor(
                             healthPermissionsReader.getAppPermissionsType(
                                 packageName = accessLog.packageName
                             ),
-                        shouldLaunchAppOnboardingIfAvailable = false
+                        shouldLaunchAppOnboardingIfAvailable = false,
                     ),
             )
 
