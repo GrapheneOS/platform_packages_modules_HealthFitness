@@ -494,6 +494,12 @@
     <string name="mindfulness_session_type_unknown">Unknown</string>
     <!-- endregion -->
 
+    <!-- region Nicotine Intake -->
+    <string name="nicotine_intake_type_cigarette">Cigarette</string>
+    <string name="nicotine_intake_type_vape">Vape</string>
+    <string name="nicotine_intake_type_unknown">Unknown</string>
+    <!-- endregion -->
+
     <!-- region Nutrition -->
     <string name="nutrition_biotin">Biotin</string>
     <string name="nutrition_caffeine">Caffeine</string>
