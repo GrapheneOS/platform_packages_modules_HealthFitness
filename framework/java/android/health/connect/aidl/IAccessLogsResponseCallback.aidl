@@ -5,7 +5,7 @@ import android.health.connect.aidl.HealthConnectExceptionParcel;
 
 /**
  * Callback for {@link HealthConnectManager#queryAccessLogs}
- * {@hide}
+ * @hide
  */
 interface IAccessLogsResponseCallback {
     // Called on a successful operation

@@ -6,7 +6,7 @@ import android.health.connect.aidl.HealthConnectExceptionParcel;
 /**
  * Callback for {@link IHealthConnectService#getActivityDates}.
  *
- * {@hide}
+ * @hide
  */
 interface IActivityDatesResponseCallback {
     // Called on a successful operation

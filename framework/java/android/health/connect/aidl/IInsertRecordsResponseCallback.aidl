@@ -6,7 +6,7 @@ import android.health.connect.aidl.HealthConnectExceptionParcel;
 /**
  * Callback for {@link IHealthConnectService#insertRecords}.
  *
- * {@hide}
+ * @hide
  */
 interface IInsertRecordsResponseCallback {
     // Called on a successful operation
