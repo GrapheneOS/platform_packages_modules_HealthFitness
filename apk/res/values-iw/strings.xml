@@ -561,14 +561,14 @@
     <string name="export_cancel_button" msgid="1952360582645412410">"ביטול"</string>
     <string name="import_cancel_button" msgid="2191598074422096715">"ביטול"</string>
     <string name="import_next_button" msgid="5706322508691854289">"הבא"</string>
-    <string name="import_source_location_title" msgid="4444467438013749461">"מהיכן לייבא"</string>
+    <string name="import_source_location_title" msgid="4444467438013749461">"מאיפה לייבא"</string>
     <string name="import_invalid_storage" msgid="341798262315495399">"צריך לבחור אפליקציית אחסון בענן לייבוא הנתונים"</string>
     <string name="export_import_tap_to_choose_account" msgid="5016799636886709580">"כדי לבחור חשבון צריך ללחוץ עליו"</string>
     <string name="export_import_choose_account_title" msgid="1047021319012735232">"בחירת חשבון"</string>
     <string name="export_import_choose_account_cancel_button" msgid="7975616126298263479">"ביטול"</string>
     <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"סיום"</string>
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"אין אפליקציות זמינות. אפשר להתקין אפליקציות אחסון בענן כדי לראות אותן כאן"</string>
-    <string name="export_import_install_apps_text" msgid="5026922993254770904">"אם רוצים לראות כאן עוד אפשרויות, צריך להתקין במכשיר אפליקציות לאחסון בענן"</string>
+    <string name="export_import_install_apps_text" msgid="5026922993254770904">"כדי שיופיעו פה עוד אפשרויות, צריך להתקין במכשיר אפליקציות לאחסון בענן"</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"לחנות Play"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"איך מתחילים להשתמש ב-Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"אפליקציית Health Connect מאחסנת את נתוני הבריאות והכושר שלך, ומאפשרת לך לסנכרן בקלות את האפליקציות השונות במכשיר"</string>
@@ -1015,7 +1015,7 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"פרנהייט"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"קלווין"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"עזרה ומשוב"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"אם אחת מהאפליקציות שהתקנת לא מוצגת, יכול להיות שהיא עדיין לא תואמת ל-Health Connect"</string>
+    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"לא רואה אפליקציה מסוימת שהתקנת? יכול להיות שהיא עדיין לא תואמת ל-Health Connect"</string>
     <string name="things_to_try" msgid="8200374691546152703">"פעולות שכדאי לנסות"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"חיפוש עדכונים"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"כדאי לוודא שהאפליקציות המותקנות מעודכנות"</string>
@@ -1026,7 +1026,7 @@
     <string name="playstore_app_title" msgid="4138464328693481809">"חנות Play"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"מחיקה אוטומטית"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"מחיקה אוטומטית"</string>
-    <string name="auto_delete_header" msgid="4258649705159293715">"אפשר להחליט כמה זמן הנתונים יאוחסנו ב-Health Connect ולתזמן את המחיקה שלהם לאחר זמן מוגדר מראש"</string>
+    <string name="auto_delete_header" msgid="4258649705159293715">"אפשר להחליט כמה זמן הנתונים יאוחסנו ב-Health Connect ולתזמן אחרי כמה זמן הם יימחקו"</string>
     <string name="auto_delete_learn_more" msgid="7416469042791307994">"מידע נוסף על מחיקה אוטומטית"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"מחיקה אוטומטית של נתונים"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{אחרי חודש אחד}one{אחרי # חודשים}two{אחרי חודשיים}other{אחרי # חודשים}}"</string>

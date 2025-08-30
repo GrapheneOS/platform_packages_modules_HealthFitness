@@ -1148,7 +1148,7 @@
     <string name="move_down" msgid="4404970288236170693">"Mover para baixo"</string>
     <string name="remove" msgid="1340423400489007362">"Remover"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Dados do app"</string>
-    <string name="app_data_no_data_footer" msgid="7027700714577530371">"Os dados do app <xliff:g id="APP_NAME">%1$s</xliff:g> vão aparecer aqui"</string>
+    <string name="app_data_no_data_footer" msgid="7027700714577530371">"Os dados do <xliff:g id="APP_NAME">%1$s</xliff:g> vão aparecer aqui"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Os dados de apps com acesso à Conexão Saúde vão aparecer aqui"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Dia"</string>
     <string name="date_picker_week" msgid="1038805538316142229">"Semana"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Os apps conectados não poderão mais ler esses dados da plataforma Conexão Saúde"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Marcada"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Desmarcada"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Trajeto do mapa de exercícios disponível"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Dia seguinte"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Semana seguinte"</string>

@@ -568,7 +568,7 @@
     <string name="export_import_choose_account_cancel_button" msgid="7975616126298263479">"Abbrechen"</string>
     <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"Fertig"</string>
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"Keine Apps verfügbar. Wenn du Cloud-Speicher-Apps installierst, werden sie hier angezeigt."</string>
-    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Wenn du Cloud-Speicher-Apps installierst, werden sie hier angezeigt und dir stehen weitere Optionen zur Verfügung"</string>
+    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Weitere Optionen werden dir hier angezeigt, wenn du Cloud-Speicher-Apps installierst"</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Zum Play Store"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Erste Schritte mit Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Dank Health Connect werden deine Gesundheits- und Fitnessdaten gespeichert und lassen sich einfach mit verschiedenen Apps auf deinem Gerät synchronisieren"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Verbundene Apps können diese Daten von Health Connect dann nicht mehr lesen"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Ausgewählt"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Nicht ausgewählt"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Trainingsroute auf der Karte verfügbar"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Nächster Tag"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Nächste Woche"</string>

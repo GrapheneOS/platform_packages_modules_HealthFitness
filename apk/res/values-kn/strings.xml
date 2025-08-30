@@ -38,7 +38,7 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ಆ್ಯಪ್ ಆ್ಯಕ್ಸೆಸ್ ಹೊಂದಿದೆ"</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{1 ಆ್ಯಪ್ ಆ್ಯಕ್ಸೆಸ್ ಅನ್ನು ಹೊಂದಿದೆ}one{# ಆ್ಯಪ್‌ಗಳು ಆ್ಯಕ್ಸೆಸ್ ಅನ್ನು ಹೊಂದಿವೆ}other{# ಆ್ಯಪ್‌ಗಳು ಆ್ಯಕ್ಸೆಸ್ ಅನ್ನು ಹೊಂದಿವೆ}}"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"ಯಾವುದೂ ಇಲ್ಲ"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"ಪ್ರವೇಶದ ವಿವರಗಳು"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"ನಮೂದಿನ ವಿವರಗಳು"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"ಡೇಟಾ ಬ್ರೌಸ್ ಮಾಡಿ"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"ಡೇಟಾವನ್ನು ಮತ್ತು ಯಾವ ಆ್ಯಪ್‌ಗಳು ಅದನ್ನು ಆ್ಯಕ್ಸೆಸ್‌ ಮಾಡಬಹುದು ಎಂಬುದನ್ನು ನೋಡಿ"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"ಸ್ವಯಂ-ಅಳಿಸುವಿಕೆ, ಡೇಟಾ ಮೂಲಗಳು, ಬ್ಯಾಕಪ್ ಮತ್ತು ಮರುಸ್ಥಾಪನೆ"</string>
@@ -445,7 +445,7 @@
     <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"ಮೂಲ ಡೇಟಾವನ್ನು ವೀಕ್ಷಿಸಿ"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"ಈ ಅನುಮತಿಯನ್ನು ಹೊಂದಿರುವ ಆ್ಯಪ್‌ಗಳು ನಿಮ್ಮ ಆರೋಗ್ಯ ಹಾಗೂ ಫಿಟ್‌ನೆಸ್‌ ಡೇಟಾವನ್ನು ಓದಬಹುದು ಮತ್ತು ಬರೆಯಬಹುದು."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹವಾಗಿರುವ ಡೇಟಾವನ್ನು ಯಾವ ಆ್ಯಪ್‌ಗಳು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು ಎಂಬುದನ್ನು ನಿಯಂತ್ರಿಸಿ. ಆ್ಯಪ್ ಓದಬಹುದಾದ ಅಥವಾ ಬರೆಯಬಹುದಾದ ಡೇಟಾವನ್ನು ಪರಿಶೀಲಿಸಲು ಆ್ಯಪ್ ಅನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ."</string>
-    <string name="connected_apps_section_title" msgid="2415288099612126258">"ಆ್ಯಕ್ಸೆಸ್ ಅನುಮತಿಸಲಾಗಿದೆ"</string>
+    <string name="connected_apps_section_title" msgid="2415288099612126258">"ಆ್ಯಕ್ಸೆಸ್ ಅನುಮತಿಸಿರುವುದು"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"ಆ್ಯಕ್ಸೆಸ್ ನೀಡಿಲ್ಲದಿರುವುದು"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"ಅಪ್‌ಡೇಟ್ ಮಾಡುವ ಅಗತ್ಯವಿದೆ"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಮತ್ತು ಸಹಾಯ"</string>
@@ -502,8 +502,8 @@
     <string name="last_export_time_hours_ago" msgid="3174986640795245343">"{count,plural, =1{ಕೊನೆಯದಾಗಿ ಎಕ್ಸ್‌ಪೋರ್ಟ್ ಮಾಡಿರುವುದು: 1 ಗಂಟೆಯ ಹಿಂದೆ}one{ಕೊನೆಯದಾಗಿ ಎಕ್ಸ್‌ಪೋರ್ಟ್ ಮಾಡಿರುವುದು: # ಗಂಟೆಗಳ ಹಿಂದೆ}other{ಕೊನೆಯದಾಗಿ ಎಕ್ಸ್‌ಪೋರ್ಟ್ ಮಾಡಿರುವುದು: # ಗಂಟೆಗಳ ಹಿಂದೆ}}"</string>
     <string name="no_last_export_message" msgid="8138900854579872667">"ಕೊನೆಯದಾಗಿ ಎಕ್ಸ್‌ಪೋರ್ಟ್ ಮಾಡಿರುವುದು: ಯಾವುದೂ ಇಲ್ಲ"</string>
     <string name="last_export_file_location" msgid="4069435932524304633">"<xliff:g id="EXPORT_APP_NAME">%1$s</xliff:g> • <xliff:g id="EXPORT_FILE_NAME">%2$s</xliff:g>"</string>
-    <string name="scheduled_export" msgid="8737660963687364370">"ನಿಗದಿಪಡಿಸಲಾದ ರಫ್ತು"</string>
-    <string name="import_data" msgid="404502315533233094">"ಡೇಟಾವನ್ನು ಆಮದು ಮಾಡಿ"</string>
+    <string name="scheduled_export" msgid="8737660963687364370">"ನಿಗದಿಪಡಿಸಲಾದ ಎಕ್ಸ್‌ಪೋರ್ಟ್"</string>
+    <string name="import_data" msgid="404502315533233094">"ಡೇಟಾವನ್ನು ಇಂಪೋರ್ಟ್ ಮಾಡಿ"</string>
     <string name="import_data_description" msgid="4040178599441724296">"ಹಿಂದೆ ರಫ್ತು ಮಾಡಿದ ಫೈಲ್‌ನಿಂದ ಡೇಟಾವನ್ನು ಮರುಸ್ಥಾಪಿಸಿ"</string>
     <string name="import_error_banner_title" msgid="1480977889067027790">"ಡೇಟಾವನ್ನು ಮರುಸ್ಥಾಪಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ"</string>
     <string name="import_wrong_file_error_banner_button" msgid="1518043363477255045">"ಫೈಲ್ ಆಯ್ಕೆ ಮಾಡಿ"</string>
@@ -521,17 +521,17 @@
     <string name="next_export_file_location" msgid="2117071837862240540">"<xliff:g id="EXPORT_APP_NAME">%1$s</xliff:g> • <xliff:g id="EXPORT_FILE_NAME">%2$s</xliff:g>"</string>
     <string name="choose_frequency_category" msgid="9094154407387676553">"ಫ್ರೀಕ್ವೆನ್ಸಿ ಬದಲಿಸಿ"</string>
     <string name="scheduled_export_settings_footer_text" msgid="8488483803782086291">"ನೀವು ನಿಗದಿತ ರಫ್ತು ಆಫ್ ಮಾಡಿದರೆ, ಇದು ಹಿಂದೆ ರಫ್ತು ಮಾಡಿದ ಡೇಟಾವನ್ನು ಸೇವ್ ಮಾಡಿದ ಸ್ಥಳದಿಂದ ಅಳಿಸುವುದಿಲ್ಲ"</string>
-    <string name="choose_frequency" msgid="8119085390857180221">"ನಿಗದಿತ ರಫ್ಪು ಸೆಟಪ್ ಮಾಡಿ"</string>
-    <string name="choose_frequency_description" msgid="7698155810053504157">"ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಎಷ್ಟು ಬಾರಿ ರಫ್ತು ಮಾಡಬೇಕೆಂದು ಆಯ್ಕೆಮಾಡಿ"</string>
+    <string name="choose_frequency" msgid="8119085390857180221">"ನಿಗದಿತ ಎಕ್ಸ್‌ಪೋರ್ಟ್ ಸೆಟಪ್ ಮಾಡಿ"</string>
+    <string name="choose_frequency_description" msgid="7698155810053504157">"ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಎಷ್ಟು ಬಾರಿ ಎಕ್ಸ್‌ಪೋರ್ಟ್ ಮಾಡಬೇಕೆಂದು ಆಯ್ಕೆಮಾಡಿ"</string>
     <string name="frequency_daily" msgid="3596412357416125727">"ಪ್ರತಿದಿನ"</string>
     <string name="frequency_weekly" msgid="7302587625019573393">"ಸಾಪ್ತಾಹಿಕ"</string>
     <string name="frequency_monthly" msgid="729674398053825938">"ಮಾಸಿಕ"</string>
-    <string name="export_destination_title" msgid="8352929396306002479">"ನಿಗದಿತ ರಫ್ತು ಎಲ್ಲಿ ಸೇವ್ ಮಾಡಬೇಕೆಂದು ಆರಿಸಿ"</string>
+    <string name="export_destination_title" msgid="8352929396306002479">"ನಿಗದಿತ ಎಕ್ಸ್‌ಪೋರ್ಟ್ ಎಲ್ಲಿ ಸೇವ್ ಮಾಡಬೇಕೆಂದು ಆರಿಸಿ"</string>
     <string name="export_invalid_storage" msgid="1459055934301871321">"ನಿಮ್ಮ ಡೇಟಾವನ್ನು ರಫ್ತು ಮಾಡಲು ಕ್ಲೌಡ್‌ ಸಂಗ್ರಹಣೆಯ ಆ್ಯಪ್ ಅನ್ನು ಆಯ್ಕೆಮಾಡಿ"</string>
     <string name="export_default_file_name" msgid="1146984404965754445">"Health Connect"</string>
     <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"Health Connect (<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>)"</string>
     <string name="import_confirmation_dialog_title" msgid="1218478436676890997">"ಈ ಫೈಲ್ ಅನ್ನು ಇಂಪೋರ್ಟ್ ಮಾಡಿಕೊಳ್ಳಬೇಕೇ?"</string>
-    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"<xliff:g id="FILE_NAME">%1$s</xliff:g> ಅನ್ನು Health Connect ಗೆ ಆಮದು ಮಾಡಿಕೊಳ್ಳಲಾಗುತ್ತದೆ"</string>
+    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"<xliff:g id="FILE_NAME">%1$s</xliff:g> ಅನ್ನು Health Connect ಗೆ ಇಂಪೋರ್ಟ್ ಮಾಡಿಕೊಳ್ಳಲಾಗುತ್ತದೆ"</string>
     <string name="import_confirmation_dialog_cancel_button" msgid="4323351978842360895">"ರದ್ದುಮಾಡಿ"</string>
     <string name="import_confirmation_dialog_import_button" msgid="7090219024758375606">"ಇಂಪೋರ್ಟ್ ಮಾಡಿಕೊಳ್ಳಿ"</string>
     <string name="import_notification_import_in_progress_title" msgid="4657602436278942808">"Health Connect ಮರುಸ್ಥಾಪನೆ ಪ್ರಗತಿಯಲ್ಲಿದೆ"</string>
@@ -561,7 +561,7 @@
     <string name="export_cancel_button" msgid="1952360582645412410">"ರದ್ದುಮಾಡಿ"</string>
     <string name="import_cancel_button" msgid="2191598074422096715">"ರದ್ದುಮಾಡಿ"</string>
     <string name="import_next_button" msgid="5706322508691854289">"ಮುಂದಿನದು"</string>
-    <string name="import_source_location_title" msgid="4444467438013749461">"ಇಲ್ಲಿಂದ ಆಮದು ಮಾಡಿಕೊಳ್ಳಿ"</string>
+    <string name="import_source_location_title" msgid="4444467438013749461">"ಇಲ್ಲಿಂದ ಇಂಪೋರ್ಟ್ ಮಾಡಿ"</string>
     <string name="import_invalid_storage" msgid="341798262315495399">"ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಆಮದು ಮಾಡಿಕೊಳ್ಳಲು ಕ್ಲೌಡ್‌ ಸಂಗ್ರಹಣೆಯ ಆ್ಯಪ್ ಅನ್ನು ಆಯ್ಕೆಮಾಡಿ"</string>
     <string name="export_import_tap_to_choose_account" msgid="5016799636886709580">"ಖಾತೆಯೊಂದನ್ನು ಆಯ್ಕೆಮಾಡಲು ಟ್ಯಾಪ್ ಮಾಡಿ"</string>
     <string name="export_import_choose_account_title" msgid="1047021319012735232">"ಖಾತೆಯೊಂದನ್ನು ಆಯ್ಕೆಮಾಡಿ"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"ಕನೆಕ್ಟ್ ಮಾಡಲಾದ ಆ್ಯಪ್‌ಗಳಿಗೆ ಇನ್ನು ಮುಂದೆ Health Connect ನಲ್ಲಿನ ಈ ಡೇಟಾವನ್ನು ಓದಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"ಗುರುತಿಸಲಾಗಿದೆ"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"ಗುರುತಿಸಲಾಗಿಲ್ಲ"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"ವ್ಯಾಯಾಮಕ್ಕಾಗಿ ಮಾರ್ಗ ನಕ್ಷೆ ಲಭ್ಯವಿದೆ"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"ಮುಂದಿನ ದಿನ"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"ಮುಂದಿನ ವಾರ"</string>

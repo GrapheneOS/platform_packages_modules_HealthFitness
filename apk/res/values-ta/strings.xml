@@ -1137,9 +1137,9 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"இப்போதே புதுப்பி"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"மொத்தத் தரவு"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"தரவு மூலங்கள்"</string>
-    <string name="data_sources_footer" msgid="2271085147058181039">"தரவின் மொத்த மதிப்புகள் எப்படி மாறலாம் என்பதைப் பார்க்க பட்டியலில் தரவு மூலங்களைச் சேருங்கள். இந்தப் பட்டியலிலிருந்து ஒரு தரவு மூலத்தை அகற்றினால் மொத்த மதிப்புகளுக்கான அதன் பங்களிப்பு நிறுத்தப்படும், ஆனால் எழுதுவதற்கான அனுமதிகள் அதனிடம் தொடர்ந்து இருக்கும்."</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"தரவின் மொத்த மதிப்புகள் எப்படி மாறலாம் என்பதைப் பார்க்க பட்டியலில் தரவு ஆதாரங்களைச் சேருங்கள். இந்தப் பட்டியலிலிருந்து ஒரு தரவு ஆதாரத்தை அகற்றினால் மொத்த மதிப்புகளுக்கான அதன் பங்களிப்பு நிறுத்தப்படும், ஆனால் எழுதுவதற்கான அனுமதிகள் அதனிடம் தொடர்ந்து இருக்கும்."</string>
     <string name="data_sources_empty_state" msgid="478270183887252279">"தரவு மூலங்கள் இல்லை"</string>
-    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> தரவை எழுத ஒரு தரவு மூலத்திற்கு நீங்கள் அனுமதியளித்த பிறகு மூலங்கள் இங்கே காட்டப்படும்."</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> தரவை எழுத ஒரு தரவு ஆதாரத்திற்கு நீங்கள் அனுமதியளித்த பிறகு ஆதாரங்கள் இங்கே காட்டப்படும்."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"மூலங்களும் முன்னுரிமையும் செயல்படும் விதம்"</string>
     <string name="data_sources_add_app" msgid="275066335106036460">"தரவு மூலத்தைச் சேர்"</string>
     <string name="edit_data_sources" msgid="5389744157074260179">"தரவு மூலங்களை மாற்றுதல்"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Health Connectடில் உள்ள இந்தத் தரவை இணைக்கப்பட்ட ஆப்ஸால் இனி படிக்க முடியாது"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"தேர்வுசெய்யப்பட்டது"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"தேர்வுசெய்யப்படவில்லை"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"உடற்பயிற்சிக்கான வரைப்படப் பாதை கிடைக்கிறது"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"அடுத்த நாள்"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"அடுத்த வாரம்"</string>

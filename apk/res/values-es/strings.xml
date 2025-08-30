@@ -1031,7 +1031,7 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Eliminación automática de datos"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Después de # mes}other{Después de # meses}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nunca"</string>
-    <string name="range_off" msgid="8178520557618184215">"Desactivado"</string>
+    <string name="range_off" msgid="8178520557618184215">"Desactivada"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Si cambias estos ajustes, Salud conectada eliminará los datos existentes para reflejar tus nuevas preferencias"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{¿Eliminar automáticamente los datos después de # mes?}other{¿Eliminar automáticamente los datos después de # meses?}}"</string>
     <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Esta acción también elimina los datos de Salud conectada que tengan más de # mes.\n\nSi quieres eliminar por completo los datos de todas las apps conectadas, comprueba cada app en la que puedan haberse guardado tus datos.}other{Esta acción también elimina los datos de Salud conectada que tengan más de # meses.\n\nSi quieres eliminar por completo los datos de todas las apps conectadas, comprueba cada app en la que puedan haberse guardado tus datos.}}"</string>
@@ -1147,7 +1147,7 @@
     <string name="move_up" msgid="9136155291380319606">"Mover hacia arriba"</string>
     <string name="move_down" msgid="4404970288236170693">"Mover hacia abajo"</string>
     <string name="remove" msgid="1340423400489007362">"Quitar"</string>
-    <string name="app_data_title" msgid="6499967982291000837">"Datos de la aplicación"</string>
+    <string name="app_data_title" msgid="6499967982291000837">"Datos de la app"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Los datos de <xliff:g id="APP_NAME">%1$s</xliff:g> se mostrarán aquí"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Los datos de las apps con acceso a Salud conectada se mostrarán aquí"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Día"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Las apps conectadas dejarán de leer estos datos de Salud conectada"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Marcada"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Sin marcar"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Mapa de ruta de ejercicio disponible"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Día siguiente"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Semana siguiente"</string>
@@ -1272,7 +1271,7 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configura otra aplicación con Salud conectada para que pueda empezar a compartir datos de actividad física y bienestar"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"Dispositivo actual"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Dispositivo desconocido"</string>
-    <string name="device_management_screen_title" msgid="504259497211017622">"Información del dispositivo"</string>
+    <string name="device_management_screen_title" msgid="504259497211017622">"Info del dispositivo"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Los datos recogidos por este dispositivo se almacenarán en Salud conectada, donde las apps conectadas podrán acceder a ellos"</string>
     <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Este dispositivo no admite la monitorización de pasos, pero aún tiene datos almacenados en Salud conectada"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Este dispositivo no monitoriza los pasos"</string>

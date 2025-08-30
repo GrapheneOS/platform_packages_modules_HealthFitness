@@ -410,7 +410,7 @@
     <string name="medical_request_footer" msgid="6533749932770903089">"Segerakkan rekod kesihatan anda daripada apl dan sumber anda yang lain untuk menyimpan rekod kesihatan tersebut pada satu tempat"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Alih keluar semua kebenaran?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Alih keluar semua"</string>
-    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> tidak dapat membaca atau menulis apa-apa data lagi daripada Health Connect.\n\nKeadaan ini tidak akan menjejaskan kebenaran lain yang mungkin terdapat pada apl ini, seperti kamera, mikrofon atau lokasi."</string>
+    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> tidak dapat membaca atau menulis apa-apa data lagi daripada Health Connect.\n\nHal ini tidak akan mempengaruhi kebenaran lain yang mungkin dimiliki apl ini, seperti kamera, mikrofon atau lokasi."</string>
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"<xliff:g id="APP_NAME">%1$s</xliff:g> tidak dapat membaca atau menulis apa-apa data daripada Health Connect lagi, termasuk data latar.\n\nKeadaan ini tidak akan menjejaskan kebenaran lain yang mungkin terdapat pada apl ini, seperti lokasi, kamera atau mikrofon."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"<xliff:g id="APP_NAME">%1$s</xliff:g> tidak dapat membaca atau menulis apa-apa data daripada Health Connect lagi, termasuk data yang terdahulu.\n\nKeadaan ini tidak akan menjejaskan kebenaran lain yang mungkin terdapat pada apl ini, seperti lokasi, kamera atau mikrofon."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"<xliff:g id="APP_NAME">%1$s</xliff:g> tidak dapat membaca atau menulis apa-apa data daripada Health Connect lagi, termasuk data latar dan data yang terdahulu.\n\nKeadaan ini tidak akan menjejaskan kebenaran lain yang mungkin terdapat pada apl ini, seperti lokasi, kamera atau mikrofon."</string>
@@ -446,16 +446,16 @@
     <string name="health_permission_header_description" msgid="7497601695462373927">"Apl dengan kebenaran ini boleh membaca dan menulis data kesihatan dan kecergasan anda."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Kawal jenis apl yang boleh mengakses data yang disimpan dalam Health Connect. Ketik apl untuk menyemak data yang boleh dibaca atau ditulis oleh apl itu."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Akses dibenarkan"</string>
-    <string name="not_connected_apps_section_title" msgid="452718769894103039">"Akses yang tidak dibenarkan"</string>
+    <string name="not_connected_apps_section_title" msgid="452718769894103039">"Akses tidak dibenarkan"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"Perlu dikemaskinikan"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"Tetapan &amp; bantuan"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"Alih keluar akses untuk semua apl"</string>
-    <string name="manage_permissions_read_header" msgid="2031153753057983683">"Dibenarkan untuk membaca"</string>
+    <string name="manage_permissions_read_header" msgid="2031153753057983683">"Dibenarkan membaca"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"Dibenarkan untuk menulis"</string>
     <string name="no_apps_allowed" msgid="5794833581324128108">"Tiada apl dibenarkan"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"Tiada apl ditolak"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Alih keluar akses untuk semua apl?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Tiada apl anda yang boleh mengakses atau menambahkan data baharu pada Health Connect. Tindakan ini tidak memadamkan mana-mana data sedia ada.\n\nTindakan ini tidak menjejaskan kebenaran lain yang apl ini mungkin ada seperti lokasi, kamera atau mikrofon."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Tiada apl anda yang akan dapat mengakses atau menambahkan data baharu pada Health Connect. Tindakan ini tidak memadamkan mana-mana data sedia ada.\n\nTindakan ini tidak akan mempengaruhi kebenaran lain yang mungkin dimiliki apl ini seperti lokasi, kamera atau mikrofon."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Alih keluar semua"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Urus apl"</string>
     <string name="see_app_data" msgid="3951030076195119476">"Lihat data apl"</string>
@@ -1027,7 +1027,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Autopadam"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Autopadam"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Kawal tempoh data anda disimpan dalam Health Connect dengan menjadualkan pemadaman data tersebut selepas masa yang ditetapkan"</string>
-    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Ketahui lebih lanjut tentang autopadam"</string>
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Ketahui autopadam lebih lanjut"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Autopadam data"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Selepas # bulan}other{Selepas # bulan}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Tidak sekali-kali"</string>
@@ -1137,9 +1137,9 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Kemas kinikan sekarang"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Jumlah data"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Sumber data"</string>
-    <string name="data_sources_footer" msgid="2271085147058181039">"Tambahkan sumber data pada senarai tersebut untuk melihat cara jumlah data berubah. Apabila sumber data dikeluarkan daripada senarai, sumber data tersebut akan berhenti menyumbangkan data untuk penjumlahan tetapi kebenaran tulis sumber data tetap berjalan."</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"Tambahkan sumber data pada senarai untuk melihat perubahan jumlah data. Sumber data yang dikeluarkan daripada senarai akan berhenti menyumbang pada jumlah data tetapi tetap memiliki kebenaran tulis."</string>
     <string name="data_sources_empty_state" msgid="478270183887252279">"Tiada sumber data"</string>
-    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Setelah anda memberikan kebenaran sumber data untuk menulis data <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, sumber akan ditunjukkan di sini."</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Setelah anda memberikan kebenaran kepada sumber data untuk menulis data <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, sumber akan ditunjukkan di sini."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Cara sumber &amp; keutamaan berfungsi"</string>
     <string name="data_sources_add_app" msgid="275066335106036460">"Tambahkan sumber data"</string>
     <string name="edit_data_sources" msgid="5389744157074260179">"Edit sumber data"</string>
@@ -1224,7 +1224,7 @@
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> boleh mengakses semua data kecergasan dan kesejahteraan anda sepanjang masa"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> boleh mengakses semua data kecergasan dan kesejahteraan anda semasa sedang digunakan"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Dibenarkan untuk mengakses"</string>
-    <string name="allowed_to_read" msgid="2775365229411407406">"Dibenarkan untuk membaca"</string>
+    <string name="allowed_to_read" msgid="2775365229411407406">"Dibenarkan membaca"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Kebenaran ini memberi <xliff:g id="APP_NAME">%1$s</xliff:g> akses kepada data daripada penderia peranti anda."</string>
     <string name="write_access" msgid="571547306854732263">"Akses Tulis"</string>
     <string name="read_access" msgid="3317759826769372785">"Akses Baca"</string>

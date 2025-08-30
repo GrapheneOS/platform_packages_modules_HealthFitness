@@ -1033,7 +1033,7 @@
     <string name="range_never" msgid="4429478261788361233">"Mai"</string>
     <string name="range_off" msgid="8178520557618184215">"Off"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Quando modifichi queste impostazioni, Connessione Salute elimina i dati esistenti per riflettere le tue nuove preferenze"</string>
-    <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Vuoi eliminare automaticamente i dati dopo # mese?}other{Vuoi eliminare automaticamente i dati dopo # mesi?}}"</string>
+    <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Eliminare automaticamente i dati dopo # mese?}other{Eliminare automaticamente i dati dopo # mesi?}}"</string>
     <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Questa funzionalità elimina anche i dati di Connessione Salute che risalgono a più di # mese fa.\n\nSe vuoi eliminare completamente i tuoi dati dalle app collegate, controlla ogni app dove potrebbero essere salvati i tuoi dati.}other{Questa funzionalità elimina anche i dati di Connessione Salute che risalgono a più di # mesi fa.\n\nSe vuoi eliminare completamente i tuoi dati dalle app collegate, controlla ogni app dove potrebbero essere salvati i tuoi dati.}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"Imposta eliminazione automatica"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"I dati esistenti verranno eliminati"</string>
@@ -1271,11 +1271,11 @@
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configura un\'altra app con Connessione Salute in modo che possa iniziare a condividere dati relativi a benessere e attività fisica"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"Dispositivo corrente"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Dispositivo sconosciuto"</string>
-    <string name="device_management_screen_title" msgid="504259497211017622">"Informazioni sul dispositivo"</string>
+    <string name="device_management_screen_title" msgid="504259497211017622">"Informazioni dispositivo"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"I dati raccolti da questo dispositivo verranno archiviati in Connessione Salute, dove saranno accessibili alle app collegate"</string>
     <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Questo dispositivo non supporta il rilevamento dei passi, ma ha ancora dati archiviati in Connessione Salute"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Questo dispositivo non rileva i passi"</string>
-    <string name="device_settings_label" msgid="9053791237491247819">"Autorizzata a scrivere"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"Autorizzazioni di scrittura"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Dati sul dispositivo"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Gestisci dispositivo"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Visualizza i dati sul dispositivo"</string>

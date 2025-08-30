@@ -322,7 +322,7 @@
     <string name="resting_heart_rate_lowercase_label" msgid="4533866739695973169">"hjartsláttur í hvíld"</string>
     <string name="resting_heart_rate_read_content_description" msgid="1068160055773401020">"Lesa hjartslátt í hvíld"</string>
     <string name="resting_heart_rate_write_content_description" msgid="8848198128082739995">"Skrifa hjartslátt í hvíld"</string>
-    <string name="skin_temperature_uppercase_label" msgid="4880306019368461268">"hitastig húðar"</string>
+    <string name="skin_temperature_uppercase_label" msgid="4880306019368461268">"Hitastig húðar"</string>
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"hitastigi húðar"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Lesa hitastig húðar"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Skrifa hitastig húðar"</string>
@@ -1139,7 +1139,7 @@
     <string name="app_sources_header" msgid="3776247928235433963">"Gagnauppsprettur"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Bættu gagnauppsprettum á listann til að sýna hvernig gagnasamtölur breytast. Þegar gagnauppspretta er fjarlægð af listanum er hún ekki lengur tekin með í samtölum en hefur samt sem áður áfram skrifheimildir."</string>
     <string name="data_sources_empty_state" msgid="478270183887252279">"Engar gagnauppsprettur"</string>
-    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Þegar þú gefur gagnauppsprettu heimild til að skrifa <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>-gögn munu uppspretturnar birtast hér."</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Þegar þú gefur gagnauppsprettu heimild til að skrifa gögn í flokknum „<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>“ munu uppspretturnar birtast hér."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Virkni uppruna og forgangs"</string>
     <string name="data_sources_add_app" msgid="275066335106036460">"Bæta gagnauppsprettu við"</string>
     <string name="edit_data_sources" msgid="5389744157074260179">"Breyta gagnauppsprettum"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Tengd forrit munu ekki lengur geta opnað þessi gögn Heilsutengingar"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Valið"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Ekki valið"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Kort af æfingaleið tiltækt"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Næsti dagur"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Næsta vika"</string>

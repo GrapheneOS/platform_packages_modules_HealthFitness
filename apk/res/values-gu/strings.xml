@@ -157,7 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"આ ઍપ માટે અગાઉના ડેટાનો ઍક્સેસ ચાલુ કરવા માટે, વાંચવાની ઓછામાં ઓછી એક પરવાનગી ચાલુ કરો"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"આ ઍપને Health Connectનો અગાઉનો તમામ ડેટા ઍક્સેસ કરવાની મંજૂરી આપો"</string>
     <string name="background_read_description" msgid="3203594555849969283">"જ્યારે તમે ઍપનો ઉપયોગ કરી રહ્યાં ન હો, ત્યારે આ ઍપને Health Connectનો ડેટા ઍક્સેસ કરવાની મંજૂરી આપો"</string>
-    <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"વપરાયેલી સક્રિય કૅલરી"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"વપરાયેલી ઍક્ટિવ કૅલરી"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"વપરાયેલી સક્રિય કૅલરી"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"વપરાયેલી સક્રિય કૅલરીનો ડેટા વાંચો"</string>
     <string name="active_calories_burned_write_content_description" msgid="8794383690157452892">"વપરાયેલી સક્રિય કૅલરીનો ડેટા લખો"</string>
@@ -409,7 +409,7 @@
     <string name="medical_request_summary" msgid="7281321524805015510">"જો તમે મંજૂરી આપશો, તો <xliff:g id="APP_NAME">%1$s</xliff:g> તમારી સ્વાસ્થ્ય સંબંધિત માહિતી Health Connect સાથે શેર કરી શકે છે."</string>
     <string name="medical_request_footer" msgid="6533749932770903089">"તમારી અલગ-અલગ ઍપ અને સૉર્સમાંથી તમારી સ્વાસ્થ્ય સંબંધિત માહિતી સિંક કરો, જેથી તેને એક જગ્યાએ રાખી શકાય"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"શું બધી પરવાનગીઓ કાઢી નાખીએ?"</string>
-    <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"તમામ કાઢી નાખો"</string>
+    <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"બધી કાઢી નાખો"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> હવેથી Health Connectમાંથી કોઈપણ ડેટા વાંચી કે લખી શકશે નહીં.\n\nઆનાથી કૅમેરા, માઇક્રોફોન કે લોકેશન જેવી આ ઍપ ધરાવતી હોઈ શકે એવી અન્ય પરવાનગીઓ પર કોઈ અસર થશે નહીં."</string>
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"બૅકગ્રાઉન્ડ ડેટા સહિત <xliff:g id="APP_NAME">%1$s</xliff:g> હવેથી Health Connectમાંથી કોઈપણ ડેટા વાંચી કે લખી શકશે નહીં.\n\nઆનાથી લોકેશન, કૅમેરા કે માઇક્રોફોન જેવી આ ઍપ ધરાવતી હોઈ શકે એવી અન્ય પરવાનગીઓ પર કોઈ અસર થશે નહીં."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"અગાઉના ડેટા સહિત <xliff:g id="APP_NAME">%1$s</xliff:g> હવેથી Health Connectમાંથી કોઈપણ ડેટા વાંચી કે લખી શકશે નહીં.\n\nઆનાથી લોકેશન, કૅમેરા કે માઇક્રોફોન જેવી આ ઍપ ધરાવતી હોઈ શકે એવી અન્ય પરવાનગીઓ પર કોઈ અસર થશે નહીં."</string>
@@ -448,7 +448,7 @@
     <string name="connected_apps_section_title" msgid="2415288099612126258">"ઍક્સેસ કરવાની મંજૂરી છે"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"ઍક્સેસ કરવાની મંજૂરી નથી"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"અપડેટ કરવી જરૂરી છે"</string>
-    <string name="settings_and_help_header" msgid="5749710693017621168">"સેટિંગ અને સહાય"</string>
+    <string name="settings_and_help_header" msgid="5749710693017621168">"સેટિંગ અને મદદ"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"બધી ઍપ માટેનો ઍક્સેસ કાઢી નાખો"</string>
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"વાંચવાની મંજૂરી છે"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"લખી શકવાની મંજૂરી છે"</string>
@@ -1014,7 +1014,7 @@
     <string name="temperature_unit_celsius_label" msgid="4698347100553808449">"સેલ્સિયસ"</string>
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"ફૅરન્હાઇટ"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"કેલ્વિન"</string>
-    <string name="help_and_feedback" msgid="4772169905005369871">"સહાય અને પ્રતિસાદ"</string>
+    <string name="help_and_feedback" msgid="4772169905005369871">"મદદ અને પ્રતિસાદ"</string>
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"જો તમને ઇન્સ્ટૉલ કરેલી કોઈ ઍપ ન દેખાતી હોય, તો તે કદાચ હજી પણ Health Connect સાથે સુસંગત નથી"</string>
     <string name="things_to_try" msgid="8200374691546152703">"અજમાવી જોવા જેવી બાબતો"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"અપડેટ ચેક કરો"</string>
@@ -1139,7 +1139,7 @@
     <string name="app_sources_header" msgid="3776247928235433963">"ડેટા સૉર્સ"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"ડેટાની કુલ સંખ્યામાં કેવી રીતે ફેરફાર થઈ શકે છે તે જોવા માટે, સૂચિમાં ડેટા સૉર્સ ઉમેરો. આ સૂચિમાંથી ડેટા સૉર્સ કાઢી નાખવાથી, તે ઍપ કુલ સંખ્યામાં યોગદાન આપતી અટકી જશે, પરંતુ તે હજી પણ રાઇટ પરવાનગી ધરાવશે."</string>
     <string name="data_sources_empty_state" msgid="478270183887252279">"કોઈ ડેટા સૉર્સ નથી"</string>
-    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"એકવાર તમે ડેટા સૉર્સને <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ડેટા રાઇટ કરવાની પરવાનગી આપો, પછી સૉર્સ અહીં બતાવવામાં આવશે."</string>
+    <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"એકવાર તમે ડેટા સૉર્સને <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ડેટા લખવાની પરવાનગી આપો, પછી સૉર્સ અહીં બતાવવામાં આવશે."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"સૉર્સના અને પ્રાધાન્યતા આપવાના સેટિંગની કાર્ય કરવાની રીત"</string>
     <string name="data_sources_add_app" msgid="275066335106036460">"ડેટા સૉર્સ ઉમેરો"</string>
     <string name="edit_data_sources" msgid="5389744157074260179">"ડેટા સૉર્સમાં ફેરફાર કરો"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"હવે કનેક્ટેડ ઍપ Health Connectમાંથી આ ડેટા વાંચી શકશે નહીં"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"ચેક કર્યું છે"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"ચેક કર્યું નથી"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"વ્યાયામના નકશાનો રસ્તો ઉપલબ્ધ છે"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"આગલો દિવસ"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"આગલું અઠવાડિયું"</string>

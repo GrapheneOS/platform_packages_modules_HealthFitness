@@ -209,7 +209,9 @@ public class FirstGrantTimeUnitTest {
         when(mUserManager.isUserUnlocked(any())).thenReturn(false);
         when(mDatastore.readForUser(CURRENT_USER, DATA_TYPE_CURRENT)).thenReturn(null);
         when(mDatastore.readForUser(CURRENT_USER, DATA_TYPE_STAGED)).thenReturn(null);
-        mFirstGrantTimeManager.onPermissionsChanged(SELF_PACKAGE_UID);
+        mFirstGrantTimeManager.updateFirstGrantTimesFromPermissionState(
+                CURRENT_USER, SELF_PACKAGE_UID, /* sync= */ false);
+
         // after device is unlocked
         when(mUserManager.isUserUnlocked(any())).thenReturn(true);
         UserGrantTimeState currentGrantTimeState = new UserGrantTimeState(DEFAULT_VERSION);
@@ -224,7 +226,8 @@ public class FirstGrantTimeUnitTest {
 
     @Test
     public void testOnPermissionsChanged_withHealthPermissionsUid_expectBackgroundTaskAdded() {
-        mFirstGrantTimeManager.onPermissionsChanged(SELF_PACKAGE_UID);
+        mFirstGrantTimeManager.updateFirstGrantTimesFromPermissionState(
+                CURRENT_USER, SELF_PACKAGE_UID, /* sync= */ false);
 
         verify(mThreadScheduler, times(1)).scheduleInternalTask(any());
     }
@@ -234,7 +237,8 @@ public class FirstGrantTimeUnitTest {
         when(mTracker.supportsPermissionUsageIntent(SELF_PACKAGE_NAME, CURRENT_USER))
                 .thenReturn(false);
 
-        mFirstGrantTimeManager.onPermissionsChanged(SELF_PACKAGE_UID);
+        mFirstGrantTimeManager.updateFirstGrantTimesFromPermissionState(
+                CURRENT_USER, SELF_PACKAGE_UID, /* sync= */ false);
 
         verify(mThreadScheduler, times(0)).scheduleInternalTask(any());
     }

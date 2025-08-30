@@ -157,10 +157,10 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"यो एपका हकमा पुरानो डेटा एक्सेस अन गर्न रिड गर्नेसम्बन्धी कम्तीमा एउटा अनुमति अन गर्नुहोस्"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"यो एपलाई Health Connect का सबै पुराना जानकारी एक्सेस गर्न दिनुहोस्"</string>
     <string name="background_read_description" msgid="3203594555849969283">"तपाईंले यो एप प्रयोग नगरिरहेका बेला पनि यो एपलाई Health Connect मा भएका डेटा एक्सेस गर्न दिनुहोस्"</string>
-    <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"सक्रिय हुँदा खर्च गरिएको क्यालोरी"</string>
-    <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"सक्रिय हुँदा खर्च गरिएको क्यालोरी"</string>
-    <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"सक्रिय हुँदा खर्च गरिएको क्यालोरी रिड गर्ने अनुमति दिनुहोस्"</string>
-    <string name="active_calories_burned_write_content_description" msgid="8794383690157452892">"सक्रिय हुँदा खर्च गरिएको क्यालोरी राइट गर्ने अनुमति दिनुहोस्"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"सक्रिय हुँदा खपत गरिएको क्यालोरी"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"सक्रिय हुँदा खपत गरिएको क्यालोरी"</string>
+    <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"सक्रिय हुँदा खपत गरिएको क्यालोरी रिड गर्ने अनुमति दिनुहोस्"</string>
+    <string name="active_calories_burned_write_content_description" msgid="8794383690157452892">"सक्रिय हुँदा खपत गरिएको क्यालोरी राइट गर्ने अनुमति दिनुहोस्"</string>
     <string name="exercise_uppercase_label" msgid="9174662895529523172">"कसरत"</string>
     <string name="exercise_lowercase_label" msgid="7210988327804427943">"कसरत"</string>
     <string name="exercise_read_content_description" msgid="2079728018078185556">"कसरतसम्बन्धी डेटा रिड गर्ने अनुमति दिनुहोस्"</string>
@@ -198,10 +198,10 @@
     <string name="steps_lowercase_label" msgid="706153549312838582">"कदम"</string>
     <string name="steps_read_content_description" msgid="7839297670092769964">"कदमहरूसम्बन्धी डेटा रिड गर्ने अनुमति दिनुहोस्"</string>
     <string name="steps_write_content_description" msgid="6360223825799711659">"कदमहरूसम्बन्धी डेटा राइट गर्ने अनुमति दिनुहोस्"</string>
-    <string name="total_calories_burned_uppercase_label" msgid="2749855864302679314">"खर्च भएको कुल क्यालोरी"</string>
-    <string name="total_calories_burned_lowercase_label" msgid="3185370725975873922">"खर्च भएको कुल क्यालोरी"</string>
-    <string name="total_calories_burned_read_content_description" msgid="1569722345910293531">"खर्च भएको कुल क्यालोरीसम्बन्धी डेटा रिड गर्ने अनुमति दिनुहोस्"</string>
-    <string name="total_calories_burned_write_content_description" msgid="2727752180681851608">"खर्च भएको कुल क्यालोरीसम्बन्धी डेटा राइट गर्ने अनुमति दिनुहोस्"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="2749855864302679314">"खपत भएको कुल क्यालोरी"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="3185370725975873922">"खपत भएको कुल क्यालोरी"</string>
+    <string name="total_calories_burned_read_content_description" msgid="1569722345910293531">"खपत भएको कुल क्यालोरीसम्बन्धी डेटा रिड गर्ने अनुमति दिनुहोस्"</string>
+    <string name="total_calories_burned_write_content_description" msgid="2727752180681851608">"खपत भएको कुल क्यालोरीसम्बन्धी डेटा राइट गर्ने अनुमति दिनुहोस्"</string>
     <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"अधिकतम VO2"</string>
     <string name="vo2_max_lowercase_label" msgid="824972630000900033">"अधिकतम VO2"</string>
     <string name="vo2_max_read_content_description" msgid="8132626885797169882">"अधिकतम VO2 सम्बन्धी डेटा रिड गर्ने अनुमति दिनुहोस्"</string>
@@ -1016,10 +1016,10 @@
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"केल्भिन"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"मद्दत र प्रतिक्रिया"</string>
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"तपाईंले इन्स्टल गरिएको एप देख्नुभएन भने सो एप अझै पनि Health Connect सँग कम्प्याटिबल नहुन सक्छ"</string>
-    <string name="things_to_try" msgid="8200374691546152703">"चलाई हेर्नु पर्ने एपहरू"</string>
+    <string name="things_to_try" msgid="8200374691546152703">"गर्नु पर्ने कुराहरू"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"अपडेटहरू उपलब्ध छन् कि छैनन् भन्ने कुरा जाँच्नुहोस्"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"इन्स्टल गरिएका एपहरू अपडेट गरिएका छन् कि छैनन् भन्ने कुरा जाँच्नुहोस्"</string>
-    <string name="see_all_compatible_apps" msgid="6791146164535475726">"कम्प्याटिबल सबै एपहरू हेर्नुहोस्"</string>
+    <string name="see_all_compatible_apps" msgid="6791146164535475726">"सबै कम्प्याटिबल एपहरू हेर्नुहोस्"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Play मा एपहरू भेट्टाउनुहोस्"</string>
     <string name="send_feedback" msgid="7756927746070096780">"प्रतिक्रिया दिनुहोस्"</string>
     <string name="send_feedback_description" msgid="2887207112856240778">"तपाईंले Health Connect मा प्रयोग गर्न चाहेका स्वास्थ्य तथा फिटनेससम्बन्धी एप कुन कुन हुन् भन्ने कुरा हामीलाई बताउनुहोस्"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"कनेक्ट गरिएका एपहरूले अबदेखि Health Connect मा भएको यो जानकारी रिड गर्न सक्ने छैनन्"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"चिन्ह लगाइएको"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"चिन्ह नलगाइएको"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"कसरत गर्ने ठाउँमा जाने मार्गको नक्सा उपलब्ध छ"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"अर्को दिन"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"अर्को हप्ता"</string>

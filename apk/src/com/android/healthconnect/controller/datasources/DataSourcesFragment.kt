@@ -276,6 +276,7 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
             ValuePreference(requireContext()).also {
                 it.key = key
                 it.title = cardInfo.aggregation.aggregation
+                it.firstContentDescription = cardInfo.aggregation.aggregationA11y
                 it.summary = formatDateText(cardInfo.startDate, cardInfo.endDate)
                 it.isSelectable = false
             }
@@ -328,6 +329,7 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
             } else {
                 it.isVisible = true
                 it.title = cardInfo.aggregation.aggregation
+                it.firstContentDescription = cardInfo.aggregation.aggregationA11y
                 it.summary = formatDateText(cardInfo.startDate, cardInfo.endDate)
             }
         }

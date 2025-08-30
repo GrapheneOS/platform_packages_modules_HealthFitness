@@ -50,7 +50,7 @@
     <string name="settings_medical_permissions" msgid="4621535972501674863">"Здоровье и спорт"</string>
     <string name="backup_title" msgid="211503191266235085">"Резервное копирование"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Источники данных и приоритет"</string>
-    <string name="set_units_title" msgid="2657822539603758029">"Настроить единицы измерения"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Единицы измерения"</string>
     <string name="manage_data_preferences_category_title" msgid="1183110821140344472">"Настройки"</string>
     <string name="manage_data_category_title" msgid="6328886061582616519">"Управление данными"</string>
     <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"Экспорт и импорт данных"</string>
@@ -1149,7 +1149,7 @@
     <string name="remove" msgid="1340423400489007362">"Удалить"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Данные приложения"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Здесь показываются данные из приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\"."</string>
-    <string name="all_data_no_data_footer" msgid="2553443887019153340">"Здесь будут появляться данные из приложений, у которых есть доступ к приложению \"Здоровье и спорт\"."</string>
+    <string name="all_data_no_data_footer" msgid="2553443887019153340">"Здесь будут появляться данные из приложений, у которых есть доступ к сервису \"Здоровье и спорт\"."</string>
     <string name="date_picker_day" msgid="3076687507968958991">"День"</string>
     <string name="date_picker_week" msgid="1038805538316142229">"Неделя"</string>
     <string name="date_picker_month" msgid="3560692391260778560">"Месяц"</string>
@@ -1175,8 +1175,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Связанные приложения больше не смогут считывать эти данные с платформы \"Здоровье и спорт\"."</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Выбрано"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Не выбрано"</string>
-    <!-- no translation found for a11y_checkbox_description (2261163129728710986) -->
-    <skip />
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Доступна карта маршрута тренировки"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Следующий день"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Следующая неделя"</string>
