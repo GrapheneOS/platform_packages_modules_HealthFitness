@@ -27,6 +27,7 @@ import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.ElevationGainedRecord;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.ExerciseSessionType;
+import android.health.connect.datatypes.FloorsClimbedRecord;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.PowerRecord;
@@ -385,6 +386,11 @@ public class DataGranularityStatsCollectorTest {
                 TEST_PACKAGE_NAME,
                 /* durationOfEachRecordInMillis= */ 5000L,
                 /* numberOfRecordsToInsert= */ 3);
+        insertFloorsClimbedRecord(
+                sessionStartTime,
+                TEST_PACKAGE_NAME,
+                /* durationOfEachRecordInMillis= */ 1000L,
+                /* numberOfRecordsToInsert= */ 9);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
                 mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
@@ -410,7 +416,11 @@ public class DataGranularityStatsCollectorTest {
                         new DataGranularityStatsCollector.GranularityStats(
                                 TEST_PACKAGE_NAME,
                                 RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED,
-                                /* granularity= */ 5000L));
+                                /* granularity= */ 5000L),
+                        new DataGranularityStatsCollector.GranularityStats(
+                                TEST_PACKAGE_NAME,
+                                RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED,
+                                /* granularity= */ 1000L));
 
         assertThat(stats).containsExactlyElementsIn(expectedStats);
     }
@@ -620,6 +630,28 @@ public class DataGranularityStatsCollectorTest {
                                 /* granularity= */ 2000L));
 
         assertThat(stats).containsExactlyElementsIn(expectedStats);
+    }
+
+    @Test
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
+    public void getAllGranularityStatsForLastWeek_returnsActiveAndEmptyPassiveStats() {
+        Instant sessionStartTime = Instant.now().minus(1, ChronoUnit.DAYS);
+        Instant sessionEndTime = sessionStartTime.plus(1, ChronoUnit.HOURS);
+        insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
+        insertHeartRateSeriesData(
+                sessionStartTime,
+                sessionEndTime,
+                TEST_PACKAGE_NAME,
+                /* numberOfSamplesToInsert= */ 10);
+
+        DataGranularityStatsCollector.AllGranularityStats allStats =
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek();
+
+        assertThat(allStats.passiveStats()).isEmpty();
+        assertThat(allStats.activeStats())
+                .isEqualTo(
+                        mDataGranularityStatsCollector
+                                .getLastWeekExerciseSessionsGranularityStats());
     }
 
     private void insertExerciseSession(Instant startTime, Instant endTime, String packageName) {
@@ -847,6 +879,27 @@ public class DataGranularityStatsCollectorTest {
                                     intervalStartTime,
                                     intervalEndTime,
                                     Length.fromMeters(20))
+                            .build()
+                            .toRecordInternal());
+        }
+        mFitnessTestUtils.insertRecords(packageName, records);
+    }
+
+    private void insertFloorsClimbedRecord(
+            Instant startTime,
+            String packageName,
+            long durationOfEachRecordInMillis,
+            int numberOfRecordsToInsert) {
+        List<RecordInternal<?>> records = new ArrayList<>(numberOfRecordsToInsert);
+        for (int i = 0; i < numberOfRecordsToInsert; i++) {
+            Instant intervalStartTime = startTime.plusMillis(durationOfEachRecordInMillis * i);
+            Instant intervalEndTime = intervalStartTime.plusMillis(durationOfEachRecordInMillis);
+            records.add(
+                    new FloorsClimbedRecord.Builder(
+                                    new Metadata.Builder().build(),
+                                    intervalStartTime,
+                                    intervalEndTime,
+                                    /* floors= */ 10.0)
                             .build()
                             .toRecordInternal());
         }

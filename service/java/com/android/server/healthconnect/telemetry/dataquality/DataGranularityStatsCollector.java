@@ -31,6 +31,7 @@ import com.android.server.healthconnect.fitness.recordhelpers.CyclingPedalingCad
 import com.android.server.healthconnect.fitness.recordhelpers.DistanceRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ElevationGainedRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.FloorsClimbedRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.HeartRateRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.PowerRecordHelper;
@@ -69,6 +70,10 @@ public final class DataGranularityStatsCollector {
             String packageName,
             @RecordTypeIdentifier.RecordType int recordIdentifier,
             long granularity) {}
+
+    /** A record to hold all granularity stats, categorized by active and passive data. */
+    record AllGranularityStats(
+            List<GranularityStats> activeStats, List<GranularityStats> passiveStats) {}
 
     private static final Map<@RecordTypeIdentifier.RecordType Integer, SeriesHelperData>
             SERIES_TYPE_ID_TO_TABLE_NAME_MAP =
@@ -111,12 +116,20 @@ public final class DataGranularityStatsCollector {
                             RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED,
                             TotalCaloriesBurnedRecordHelper.TOTAL_CALORIES_BURNED_RECORD_TABLE_NAME,
                             RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED,
-                            ElevationGainedRecordHelper.ELEVATION_GAINED_RECORD_TABLE_NAME);
+                            ElevationGainedRecordHelper.ELEVATION_GAINED_RECORD_TABLE_NAME,
+                            RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED,
+                            FloorsClimbedRecordHelper.FLOORS_CLIMBED_RECORD_TABLE_NAME);
 
     public DataGranularityStatsCollector(
             TransactionManager transactionManager, AppInfoHelper appInfoHelper) {
         mTransactionManager = transactionManager;
         mAppInfoHelper = appInfoHelper;
+    }
+
+    /** Returns {@link AllGranularityStats} for given session data type for past week. */
+    AllGranularityStats getAllGranularityStatsForLastWeek() {
+        return new AllGranularityStats(
+                getLastWeekExerciseSessionsGranularityStats(), Collections.emptyList());
     }
 
     /** Returns {@link GranularityStats} for given session data type for past week. */
