@@ -160,7 +160,10 @@ public final class MatchmakingManager {
         }
 
         return getCompatibleApps().stream()
-                .filter(packageInfo -> packageInfo.requestedPermissions != null)
+                .filter(
+                        packageInfo ->
+                                !packageInfo.packageName.equals(readingAppPackageName)
+                                        && packageInfo.requestedPermissions != null)
                 .map(
                         packageInfo -> {
                             Set<String> grantablePermissions =
