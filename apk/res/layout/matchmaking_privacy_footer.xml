@@ -20,8 +20,6 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd">
 
@@ -29,13 +27,14 @@
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="@dimen/spacing_normal"
         android:src="@drawable/ic_privacy_policy"/>
 
     <TextView
         android:id="@+id/summary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/spacing_normal"
         android:layout_weight="1"
         android:textAppearance="?android:attr/textAppearanceListItemSecondary"/>
 
