@@ -136,7 +136,12 @@ class FakeHealthPermissionAppsUseCase : ILoadHealthPermissionApps {
         this.list = list + connectedAppMetadata
     }
 
-    override suspend fun invoke(): List<ConnectedAppMetadata> {
+    override suspend fun invoke(input: Unit): UseCaseResults<List<ConnectedAppMetadata>> {
+        numberOfInvocations += 1
+        return UseCaseResults.Success(list)
+    }
+
+    override suspend fun execute(input: Unit): List<ConnectedAppMetadata> {
         numberOfInvocations += 1
         return list
     }
