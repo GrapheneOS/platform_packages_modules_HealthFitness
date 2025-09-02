@@ -98,7 +98,14 @@ constructor(
             systemHealthPermissions.value
                 .filterIsInstance<HealthPermission.FitnessPermission>()
                 .map { it.fitnessPermissionType }
-        val connectedApps = loadHealthPermissionApps.invoke()
+        val connectedApps =
+            when (val res = loadHealthPermissionApps.invoke(Unit)) {
+                is UseCaseResults.Success -> res.data
+                is UseCaseResults.Failed -> {
+                    Log.e(TAG, "Error loading connected apps", res.exception)
+                    emptyList()
+                }
+            }
         connectedApps.forEach { connectedAppMetadata ->
             val packageName = connectedAppMetadata.appMetadata.packageName
             val healthPermissionStatus =
