@@ -23,21 +23,23 @@ import android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR_VERSIO
 import android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR_WRONG_FILE
 import android.health.connect.exportimport.ImportStatus.DATA_IMPORT_STARTED
 import androidx.core.os.asOutcomeReceiver
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
 
 @Singleton
 class LoadImportStatusUseCase
 @Inject
 constructor(
     private val healthDataImportManager: HealthDataImportManager,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
-) : ILoadImportStatusUseCase {
-    suspend fun execute(): ImportUiState {
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+) : ILoadImportStatusUseCase, BaseUseCase<Unit, ImportUiState>(dispatcher) {
+
+    override suspend fun execute(input: Unit): ImportUiState {
         val importStatus: ImportStatus = suspendCancellableCoroutine { continuation ->
             healthDataImportManager.getImportStatus(Runnable::run, continuation.asOutcomeReceiver())
         }
@@ -57,18 +59,11 @@ constructor(
             }
         return ImportUiState(dataImportState)
     }
-
-    override suspend fun invoke(): ExportImportUseCaseResult<ImportUiState> =
-        withContext(dispatcher) {
-            try {
-                ExportImportUseCaseResult.Success(execute())
-            } catch (exception: Exception) {
-                ExportImportUseCaseResult.Failed(exception)
-            }
-        }
 }
 
 interface ILoadImportStatusUseCase {
     /** Returns the stored import status. */
-    suspend fun invoke(): ExportImportUseCaseResult<ImportUiState>
+    suspend fun invoke(input: Unit): UseCaseResults<ImportUiState>
+
+    suspend fun execute(input: Unit): ImportUiState
 }

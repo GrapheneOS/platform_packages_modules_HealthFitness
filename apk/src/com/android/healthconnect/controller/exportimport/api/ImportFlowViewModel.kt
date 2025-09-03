@@ -23,6 +23,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Instant
 import javax.inject.Inject
@@ -52,12 +53,12 @@ constructor(private val triggerImportUseCase: ITriggerImportUseCase) : ViewModel
         Slog.i(TAG, "$uri")
         viewModelScope.launch {
             when (triggerImportUseCase.invoke(uri)) {
-                is ExportImportUseCaseResult.Success -> {
+                is UseCaseResults.Success -> {
                     Slog.i(TAG, "import succeeded")
                     // TODO(b/356652714): Change to use TimeSource instead
                     setLastCompletionInstant(Instant.now())
                 }
-                is ExportImportUseCaseResult.Failed -> {
+                is UseCaseResults.Failed -> {
                     Slog.i(TAG, "import failed")
                 }
             }

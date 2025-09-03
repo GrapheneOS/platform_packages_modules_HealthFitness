@@ -16,40 +16,34 @@
 
 package com.android.healthconnect.controller.exportimport.api
 
-import android.health.connect.HealthConnectException
 import android.health.connect.exportimport.ScheduledExportSettings
-import android.util.Log
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.CoroutineDispatcher
 
 @Singleton
 class UpdateExportSettingsUseCase
 @Inject
 constructor(
     private val healthDataExportManager: HealthDataExportManager,
-) : IUpdateExportSettingsUseCase {
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+) : IUpdateExportSettingsUseCase, BaseUseCase<ScheduledExportSettings, Unit>(dispatcher) {
     companion object {
         private const val TAG = "UpdateExportSettingsUseCase"
     }
 
     /** Updates the stored export settings. */
-    override suspend operator fun invoke(
-        settings: ScheduledExportSettings
-    ): ExportImportUseCaseResult<Unit> =
-        withContext(Dispatchers.IO) {
-            try {
-                healthDataExportManager.configureScheduledExport(settings)
-                ExportImportUseCaseResult.Success(Unit)
-            } catch (ex: HealthConnectException) {
-                Log.e(TAG, "Failed to update export settings ", ex)
-                ExportImportUseCaseResult.Failed(ex)
-            }
-        }
+    override suspend fun execute(settings: ScheduledExportSettings) {
+        healthDataExportManager.configureScheduledExport(settings)
+    }
 }
 
 interface IUpdateExportSettingsUseCase {
     /** Updates the stored export settings. */
-    suspend fun invoke(settings: ScheduledExportSettings): ExportImportUseCaseResult<Unit>
+    suspend fun invoke(settings: ScheduledExportSettings): UseCaseResults<Unit>
+
+    suspend fun execute(settings: ScheduledExportSettings)
 }

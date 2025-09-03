@@ -18,26 +18,27 @@ package com.android.healthconnect.controller.exportimport.api
 
 import android.health.connect.exportimport.ScheduledExportStatus
 import androidx.core.os.asOutcomeReceiver
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
 
 @Singleton
 class LoadScheduledExportStatusUseCase
 @Inject
 constructor(
     private val healthDataExportManager: HealthDataExportManager,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-) : ILoadScheduledExportStatusUseCase {
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+) : ILoadScheduledExportStatusUseCase, BaseUseCase<Unit, ScheduledExportUiState>(dispatcher) {
 
     companion object {
         private const val TAG = "LoadScheduledExportStatusUseCase"
     }
 
-    suspend fun execute(): ScheduledExportUiState {
+    override suspend fun execute(input: Unit): ScheduledExportUiState {
         val scheduledExportStatus: ScheduledExportStatus =
             suspendCancellableCoroutine { continuation ->
                 healthDataExportManager.getScheduledExportStatus(
@@ -69,18 +70,11 @@ constructor(
             scheduledExportStatus.nextExportSequentialNumber,
         )
     }
-
-    override suspend operator fun invoke(): ExportImportUseCaseResult<ScheduledExportUiState> =
-        withContext(dispatcher) {
-            try {
-                ExportImportUseCaseResult.Success(execute())
-            } catch (exception: Exception) {
-                ExportImportUseCaseResult.Failed(exception)
-            }
-        }
 }
 
 interface ILoadScheduledExportStatusUseCase {
     /** Returns the stored scheduled export status. */
-    suspend fun invoke(): ExportImportUseCaseResult<ScheduledExportUiState>
+    suspend fun invoke(input: Unit): UseCaseResults<ScheduledExportUiState>
+
+    suspend fun execute(input: Unit): ScheduledExportUiState
 }
