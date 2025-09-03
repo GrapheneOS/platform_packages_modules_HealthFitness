@@ -33,10 +33,14 @@ import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiError
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthMigrationManager
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -45,231 +49,309 @@ import org.junit.runner.RunWith
 class LoadMigrationRestoreStateUseCaseTest {
 
     private val migrationManager = FakeHealthMigrationManager()
+    private lateinit var useCase: LoadMigrationRestoreStateUseCase
+
+    @Before
+    fun setup() {
+        useCase = LoadMigrationRestoreStateUseCase(migrationManager, Dispatchers.Main)
+    }
+
+    @After
+    fun tearDown() {
+        migrationManager.reset()
+    }
 
     @Test
     fun invoke_migrationStateIdle_mapsStateToIdle() = runTest {
-        val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
         migrationManager.setMigrationUiState(MIGRATION_UI_STATE_IDLE)
 
-        assertThat(useCase.invoke())
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(
                 MigrationRestoreState(
                     migrationUiState = MigrationUiState.IDLE,
                     dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_NONE))
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            )
     }
 
     @Test
     fun invoke_migrationStateAllowedMigratorDisabled_mapsStateToAllowedMigratorDisabled() =
         runTest {
-            val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
             migrationManager.setMigrationUiState(MIGRATION_UI_STATE_ALLOWED_MIGRATOR_DISABLED)
 
-            assertThat(useCase.invoke())
+            val result = useCase.invoke(Unit)
+            assertThat(result is UseCaseResults.Success).isTrue()
+            assertThat((result as UseCaseResults.Success).data)
                 .isEqualTo(
                     MigrationRestoreState(
                         migrationUiState = MigrationUiState.ALLOWED_MIGRATOR_DISABLED,
                         dataRestoreState = DataRestoreUiState.IDLE,
-                        dataRestoreError = DataRestoreUiError.ERROR_NONE))
+                        dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                    )
+                )
         }
 
     @Test
     fun invoke_migrationStateAllowedNotStarted_mapsAllowedNotStarted() = runTest {
-        val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
         migrationManager.setMigrationUiState(MIGRATION_UI_STATE_ALLOWED_NOT_STARTED)
 
-        assertThat(useCase.invoke())
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(
                 MigrationRestoreState(
                     migrationUiState = MigrationUiState.ALLOWED_NOT_STARTED,
                     dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_NONE))
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            )
     }
 
     @Test
     fun invoke_migrationStateAllowedPaused_mapsStateToAllowedPaused() = runTest {
-        val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
         migrationManager.setMigrationUiState(MIGRATION_UI_STATE_ALLOWED_PAUSED)
 
-        assertThat(useCase.invoke())
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(
                 MigrationRestoreState(
                     migrationUiState = MigrationUiState.ALLOWED_PAUSED,
                     dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_NONE))
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            )
     }
 
     @Test
     fun invoke_migrationStateIdleAllowedError_mapsStateToAllowedError() = runTest {
-        val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
         migrationManager.setMigrationUiState(MIGRATION_UI_STATE_ALLOWED_ERROR)
 
-        assertThat(useCase.invoke())
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(
                 MigrationRestoreState(
                     migrationUiState = MigrationUiState.ALLOWED_ERROR,
                     dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_NONE))
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            )
     }
 
     @Test
     fun invoke_migrationStateInProgress_mapsStateToInProgress() = runTest {
-        val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
         migrationManager.setMigrationUiState(MIGRATION_UI_STATE_IN_PROGRESS)
 
-        assertThat(useCase.invoke())
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(
                 MigrationRestoreState(
                     migrationUiState = MigrationUiState.IN_PROGRESS,
                     dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_NONE))
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            )
     }
 
     @Test
     fun invoke_migrationStateAppUpgradeRequired_mapsStateToAppUpgradeRequired() = runTest {
-        val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
         migrationManager.setMigrationUiState(MIGRATION_UI_STATE_APP_UPGRADE_REQUIRED)
 
-        assertThat(useCase.invoke())
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(
                 MigrationRestoreState(
                     migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
                     dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_NONE))
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            )
     }
 
     @Test
     fun invoke_migrationStateModuleUpgradeRequired_mapsStateToModuleUpgradeRequired() = runTest {
-        val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
         migrationManager.setMigrationUiState(MIGRATION_UI_STATE_MODULE_UPGRADE_REQUIRED)
 
-        assertThat(useCase.invoke())
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(
                 MigrationRestoreState(
                     migrationUiState = MigrationUiState.MODULE_UPGRADE_REQUIRED,
                     dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_NONE))
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            )
     }
 
     @Test
     fun invoke_migrationStateComplete_mapsStateToComplete() = runTest {
-        val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
         migrationManager.setMigrationUiState(MIGRATION_UI_STATE_COMPLETE)
 
-        assertThat(useCase.invoke())
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(
                 MigrationRestoreState(
                     migrationUiState = MigrationUiState.COMPLETE,
                     dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_NONE))
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            )
     }
 
     @Test
     fun invoke_migrationStateCompleteIdle_mapsStateToCompleteIdle() = runTest {
-        val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
         migrationManager.setMigrationUiState(MIGRATION_UI_STATE_COMPLETE_IDLE)
 
-        assertThat(useCase.invoke())
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(
                 MigrationRestoreState(
                     migrationUiState = MigrationUiState.COMPLETE_IDLE,
                     dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_NONE))
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            )
     }
 
     @Test
     fun invoke_dataRestoreStateIdle_mapsStateToIdle() = runTest {
-        val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
         migrationManager.setDataMigrationState(
             HealthConnectDataState(
                 HealthConnectDataState.RESTORE_STATE_IDLE,
                 HealthConnectDataState.RESTORE_ERROR_NONE,
-                HealthConnectDataState.MIGRATION_STATE_IDLE))
-        assertThat(useCase.invoke())
+                HealthConnectDataState.MIGRATION_STATE_IDLE,
+            )
+        )
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(
                 MigrationRestoreState(
                     migrationUiState = MigrationUiState.IDLE,
                     dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_NONE))
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            )
     }
 
     @Test
     fun invoke_dataRestoreStatePending_mapsStateToPending() = runTest {
-        val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
         migrationManager.setDataMigrationState(
             HealthConnectDataState(
                 HealthConnectDataState.RESTORE_STATE_PENDING,
                 HealthConnectDataState.RESTORE_ERROR_NONE,
-                HealthConnectDataState.MIGRATION_STATE_IDLE))
-        assertThat(useCase.invoke())
+                HealthConnectDataState.MIGRATION_STATE_IDLE,
+            )
+        )
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(
                 MigrationRestoreState(
                     migrationUiState = MigrationUiState.IDLE,
                     dataRestoreState = DataRestoreUiState.PENDING,
-                    dataRestoreError = DataRestoreUiError.ERROR_NONE))
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            )
     }
 
     @Test
     fun invoke_dataRestoreStateInProgress_mapsStateToInProgress() = runTest {
-        val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
         migrationManager.setDataMigrationState(
             HealthConnectDataState(
                 HealthConnectDataState.RESTORE_STATE_IN_PROGRESS,
                 HealthConnectDataState.RESTORE_ERROR_NONE,
-                HealthConnectDataState.MIGRATION_STATE_IDLE))
-        assertThat(useCase.invoke())
+                HealthConnectDataState.MIGRATION_STATE_IDLE,
+            )
+        )
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(
                 MigrationRestoreState(
                     migrationUiState = MigrationUiState.IDLE,
                     dataRestoreState = DataRestoreUiState.IN_PROGRESS,
-                    dataRestoreError = DataRestoreUiError.ERROR_NONE))
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            )
     }
 
     @Test
     fun invoke_dataRestoreErrorUnknown_mapsStateToErrorUnknown() = runTest {
-        val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
         migrationManager.setDataMigrationState(
             HealthConnectDataState(
                 HealthConnectDataState.RESTORE_STATE_IDLE,
                 HealthConnectDataState.RESTORE_ERROR_UNKNOWN,
-                HealthConnectDataState.MIGRATION_STATE_IDLE))
-        assertThat(useCase.invoke())
+                HealthConnectDataState.MIGRATION_STATE_IDLE,
+            )
+        )
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(
                 MigrationRestoreState(
                     migrationUiState = MigrationUiState.IDLE,
                     dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_UNKNOWN))
+                    dataRestoreError = DataRestoreUiError.ERROR_UNKNOWN,
+                )
+            )
     }
 
     @Test
     fun invoke_dataRestoreErrorFetchingData_mapsStateToErrorFetchingData() = runTest {
-        val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
         migrationManager.setDataMigrationState(
             HealthConnectDataState(
                 HealthConnectDataState.RESTORE_STATE_IDLE,
                 HealthConnectDataState.RESTORE_ERROR_FETCHING_DATA,
-                HealthConnectDataState.MIGRATION_STATE_IDLE))
-        assertThat(useCase.invoke())
+                HealthConnectDataState.MIGRATION_STATE_IDLE,
+            )
+        )
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(
                 MigrationRestoreState(
                     migrationUiState = MigrationUiState.IDLE,
                     dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_FETCHING_DATA))
+                    dataRestoreError = DataRestoreUiError.ERROR_FETCHING_DATA,
+                )
+            )
     }
 
     @Test
     fun invoke_dataRestoreErrorVersionDiff_mapsStateToErrorVersionDiff() = runTest {
-        val useCase = LoadMigrationRestoreStateUseCase(migrationManager)
         migrationManager.setDataMigrationState(
             HealthConnectDataState(
                 HealthConnectDataState.RESTORE_STATE_IDLE,
                 HealthConnectDataState.RESTORE_ERROR_VERSION_DIFF,
-                HealthConnectDataState.MIGRATION_STATE_IDLE))
-        assertThat(useCase.invoke())
+                HealthConnectDataState.MIGRATION_STATE_IDLE,
+            )
+        )
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(
                 MigrationRestoreState(
                     migrationUiState = MigrationUiState.IDLE,
                     dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_VERSION_DIFF))
+                    dataRestoreError = DataRestoreUiError.ERROR_VERSION_DIFF,
+                )
+            )
+    }
+
+    @Test
+    fun whenManagerError_returnUseCaseResultsFailed() = runTest {
+        migrationManager.forceFail = true
+        val result = useCase.invoke(Unit)
+        assertThat(result is UseCaseResults.Failed).isTrue()
     }
 }
