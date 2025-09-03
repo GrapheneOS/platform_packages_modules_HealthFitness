@@ -102,7 +102,7 @@ public class DataGranularityStatsCollectorTest {
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void getLastWeekActiveDataSessionsGranularityStats_noSessions_returnsEmptyList() {
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek().activeStats();
 
         assertThat(stats).isEmpty();
     }
@@ -115,7 +115,7 @@ public class DataGranularityStatsCollectorTest {
         insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek().activeStats();
 
         assertThat(stats).hasSize(0);
     }
@@ -135,7 +135,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfSamplesToInsert= */ 1);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek().activeStats();
 
         assertThat(stats).hasSize(6);
         for (DataGranularityStatsCollector.GranularityStats stat : stats) {
@@ -185,7 +185,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfSamplesToInsert= */ 2);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek().activeStats();
 
         List<DataGranularityStatsCollector.GranularityStats> expectedStats =
                 List.of(
@@ -244,7 +244,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfSamplesToInsert= */ 50);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek().activeStats();
 
         // 2 sessions * 6 data types = 12 stats
         assertThat(stats).hasSize(12);
@@ -282,7 +282,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfSamplesToInsert= */ 1);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek().activeStats();
 
         assertThat(stats).hasSize(0);
     }
@@ -313,7 +313,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfSamplesToInsert= */ 2);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek().activeStats();
         long granularity = sessionDuration / 5; // number of series inserted during session
 
         assertThat(stats).hasSize(1); // Only Heart Rate is present
@@ -345,7 +345,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfSamplesToInsert= */ 5);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek().activeStats();
         long granularity = sessionDuration / 5;
 
         assertThat(stats).hasSize(1); // Only HR data from valid package
@@ -393,7 +393,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfRecordsToInsert= */ 9);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek().activeStats();
 
         List<DataGranularityStatsCollector.GranularityStats> expectedStats =
                 List.of(
@@ -438,7 +438,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfSamplesToInsert= */ 10);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek().activeStats();
 
         assertThat(stats).isEmpty();
     }
@@ -473,7 +473,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfRecordsToInsert= */ 10);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek().activeStats();
 
         List<DataGranularityStatsCollector.GranularityStats> expectedStats =
                 List.of(
@@ -511,7 +511,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfRecordsToInsert= */ 10);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek().activeStats();
 
         assertThat(stats).hasSize(1);
         DataGranularityStatsCollector.GranularityStats stat = stats.get(0);
@@ -557,7 +557,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfRecordsToInsert= */ 1);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek().activeStats();
 
         assertThat(stats).hasSize(1);
         DataGranularityStatsCollector.GranularityStats stat = stats.get(0);
@@ -605,7 +605,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfRecordsToInsert= */ 5);
 
         List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek().activeStats();
 
         long sessionOneHrGranularity = sessionOneDuration / 20;
         long sessionTwoHrGranularity = sessionTwoDuration / 50;
@@ -648,10 +648,7 @@ public class DataGranularityStatsCollectorTest {
                 mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek();
 
         assertThat(allStats.passiveStats()).isEmpty();
-        assertThat(allStats.activeStats())
-                .isEqualTo(
-                        mDataGranularityStatsCollector
-                                .getLastWeekExerciseSessionsGranularityStats());
+        assertThat(allStats.activeStats()).isNotEmpty();
     }
 
     private void insertExerciseSession(Instant startTime, Instant endTime, String packageName) {
