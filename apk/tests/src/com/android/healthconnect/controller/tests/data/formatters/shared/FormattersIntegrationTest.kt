@@ -40,19 +40,23 @@ class FormattersIntegrationTest {
         assertThat(controllerRecordClasses).containsExactlyElementsIn(frameworkRecordClasses)
 
         for (recordTypeId in healthConnectMappings.allRecordTypeIdentifiers) {
-            val permissionCategory =
-                healthConnectMappings.getHealthPermissionCategoryForRecordType(recordTypeId)
-            val fitnessPermissionType =
-                fromHealthPermissionCategory(permissionCategory) as FitnessPermissionType
-            val expectedRecordClass =
-                healthConnectMappings.recordIdToExternalRecordClassMap[recordTypeId]!!
+            val permissionCategories =
+                healthConnectMappings.getHealthPermissionCategoriesForRecordType(recordTypeId)
+            for (permissionCategory in permissionCategories) {
+                val fitnessPermissionType =
+                    fromHealthPermissionCategory(permissionCategory) as FitnessPermissionType
+                val expectedRecordClass =
+                    healthConnectMappings.recordIdToExternalRecordClassMap[recordTypeId]!!
 
-            assertThat(HealthPermissionToDatatypeMapper.getAllDataTypes())
-                .containsKey(fitnessPermissionType)
-            assertThat(HealthPermissionToDatatypeMapper.getAllDataTypes()[fitnessPermissionType]!!)
-                .contains(expectedRecordClass)
-            assertThat(HealthPermissionToDatatypeMapper.getDataTypes(fitnessPermissionType))
-                .contains(expectedRecordClass)
+                assertThat(HealthPermissionToDatatypeMapper.getAllDataTypes())
+                    .containsKey(fitnessPermissionType)
+                assertThat(
+                        HealthPermissionToDatatypeMapper.getAllDataTypes()[fitnessPermissionType]!!
+                    )
+                    .contains(expectedRecordClass)
+                assertThat(HealthPermissionToDatatypeMapper.getDataTypes(fitnessPermissionType))
+                    .contains(expectedRecordClass)
+            }
         }
     }
 }

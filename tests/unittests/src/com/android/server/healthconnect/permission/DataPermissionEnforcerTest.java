@@ -37,6 +37,7 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -49,8 +50,10 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.ExerciseRouteInternal;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
+import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Build;
 import android.os.UserHandle;
 import android.permission.PermissionManager;
@@ -62,8 +65,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SdkSuppress;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -82,12 +89,14 @@ public class DataPermissionEnforcerTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Mock private PermissionManager mPermissionManager;
     @Mock private PackageManager mPackageManager;
-
     @Mock private Context mContext;
+    @Mock private InternalHealthConnectMappings mMockInternalHealthConnectMappings;
+    @Mock private HealthConnectMappings mMockHealthConnectMappings;
 
     private AttributionSource mAttributionSource;
 
     private DataPermissionEnforcer mDataPermissionEnforcer;
+    private HealthConnectInjector mHealthConnectInjector;
 
     @Before
     public void setUp() {
@@ -97,7 +106,7 @@ public class DataPermissionEnforcerTest {
         when(mContext.getUser()).thenReturn(UserHandle.CURRENT);
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
         when(mContext.createContextAsUser(any(), anyInt())).thenReturn(mContext);
-        HealthConnectInjector healthConnectInjector =
+        mHealthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(getInstrumentation().getContext())
                         .build();
 
@@ -105,8 +114,27 @@ public class DataPermissionEnforcerTest {
                 new DataPermissionEnforcer(
                         mPermissionManager,
                         mContext,
-                        healthConnectInjector.getInternalHealthConnectMappings());
+                        mHealthConnectInjector.getInternalHealthConnectMappings());
     }
+
+    private void setUpMocksForMultiPermTests() {
+        when(mMockInternalHealthConnectMappings.getExternalMappings())
+                .thenReturn(mMockHealthConnectMappings);
+        when(mMockHealthConnectMappings.getRecordIdToExternalRecordClassMap())
+                .thenReturn(ImmutableMap.of(TEST_RECORD_TYPE, StepsRecord.class));
+
+        mDataPermissionEnforcer =
+                new DataPermissionEnforcer(
+                        mPermissionManager, mContext, mMockInternalHealthConnectMappings);
+    }
+
+    private static final int TEST_RECORD_TYPE = -1;
+    private static final int PERMISSION_CATEGORY_1 = 1000;
+    private static final int PERMISSION_CATEGORY_2 = 1001;
+    private static final String READ_PERM_1 = "READ_PERM_1";
+    private static final String WRITE_PERM_1 = "WRITE_PERM_1";
+    private static final String READ_PERM_2 = "READ_PERM_2";
+    private static final String WRITE_PERM_2 = "WRITE_PERM_2";
 
     /** enforceRecordIdsWritePermissions */
     @Test
@@ -142,6 +170,23 @@ public class DataPermissionEnforcerTest {
                 List.of(RECORD_TYPE_STEPS, RECORD_TYPE_ACTIVE_CALORIES_BURNED), mAttributionSource);
     }
 
+    @Test
+    public void testEnforceRecordIdsWritePermissions_multipleRecordTypes_oneDenied_throws() {
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        WRITE_STEPS, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        WRITE_ACTIVE_CALORIES_BURNED, mAttributionSource, null))
+                .thenReturn(PERMISSION_HARD_DENIED);
+
+        assertThrows(
+                SecurityException.class,
+                () ->
+                        mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
+                                List.of(RECORD_TYPE_STEPS, RECORD_TYPE_ACTIVE_CALORIES_BURNED),
+                                mAttributionSource));
+    }
+
     /** enforceRecordIdsReadPermissions */
     @Test
     public void testEnforceRecordIdsReadPermissions_permissionGranted_doesNotThrow() {
@@ -174,6 +219,156 @@ public class DataPermissionEnforcerTest {
 
         mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                 List.of(RECORD_TYPE_STEPS, RECORD_TYPE_ACTIVE_CALORIES_BURNED), mAttributionSource);
+    }
+
+    @Test
+    public void testEnforceRecordIdsReadPermissions_multipleRecordTypes_oneDenied_throws() {
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_STEPS, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_ACTIVE_CALORIES_BURNED, mAttributionSource, null))
+                .thenReturn(PERMISSION_HARD_DENIED);
+
+        assertThrows(
+                SecurityException.class,
+                () ->
+                        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+                                List.of(RECORD_TYPE_STEPS, RECORD_TYPE_ACTIVE_CALORIES_BURNED),
+                                mAttributionSource));
+    }
+
+    /** Tests for multi-permission logic */
+    @Test
+    public void testReadPermissions_multiplePermissions_noneGranted_throws() {
+        setUpMocksForMultiPermTests();
+        when(mMockHealthConnectMappings.getHealthPermissionCategoriesForRecordType(
+                        TEST_RECORD_TYPE))
+                .thenReturn(ImmutableSet.of(PERMISSION_CATEGORY_1, PERMISSION_CATEGORY_2));
+        when(mMockHealthConnectMappings.getHealthReadPermission(PERMISSION_CATEGORY_1))
+                .thenReturn(READ_PERM_1);
+        when(mMockHealthConnectMappings.getHealthReadPermission(PERMISSION_CATEGORY_2))
+                .thenReturn(READ_PERM_2);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_PERM_1, mAttributionSource, null))
+                .thenReturn(PERMISSION_HARD_DENIED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_PERM_2, mAttributionSource, null))
+                .thenReturn(PERMISSION_HARD_DENIED);
+
+        assertThrows(
+                SecurityException.class,
+                () ->
+                        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+                                List.of(TEST_RECORD_TYPE), mAttributionSource));
+    }
+
+    @Test
+    public void testReadPermissions_multiplePermissions_oneGranted_doesNotThrow() {
+        setUpMocksForMultiPermTests();
+        when(mMockHealthConnectMappings.getHealthPermissionCategoriesForRecordType(
+                        TEST_RECORD_TYPE))
+                .thenReturn(ImmutableSet.of(PERMISSION_CATEGORY_1, PERMISSION_CATEGORY_2));
+        when(mMockHealthConnectMappings.getHealthReadPermission(PERMISSION_CATEGORY_1))
+                .thenReturn(READ_PERM_1);
+        when(mMockHealthConnectMappings.getHealthReadPermission(PERMISSION_CATEGORY_2))
+                .thenReturn(READ_PERM_2);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_PERM_1, mAttributionSource, null))
+                .thenReturn(PERMISSION_HARD_DENIED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_PERM_2, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+
+        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+                List.of(TEST_RECORD_TYPE), mAttributionSource); // Should not throw
+    }
+
+    @Test
+    public void testReadPermissions_multiplePermissions_allGranted_doesNotThrow() {
+        setUpMocksForMultiPermTests();
+        when(mMockHealthConnectMappings.getHealthPermissionCategoriesForRecordType(
+                        TEST_RECORD_TYPE))
+                .thenReturn(ImmutableSet.of(PERMISSION_CATEGORY_1, PERMISSION_CATEGORY_2));
+        when(mMockHealthConnectMappings.getHealthReadPermission(PERMISSION_CATEGORY_1))
+                .thenReturn(READ_PERM_1);
+        when(mMockHealthConnectMappings.getHealthReadPermission(PERMISSION_CATEGORY_2))
+                .thenReturn(READ_PERM_2);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_PERM_1, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        READ_PERM_2, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+
+        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+                List.of(TEST_RECORD_TYPE), mAttributionSource); // Should not throw
+    }
+
+    @Test
+    public void testWritePermissions_multiplePermissions_noneGranted_throws() {
+        setUpMocksForMultiPermTests();
+        when(mMockHealthConnectMappings.getHealthPermissionCategoriesForRecordType(
+                        TEST_RECORD_TYPE))
+                .thenReturn(ImmutableSet.of(PERMISSION_CATEGORY_1, PERMISSION_CATEGORY_2));
+        when(mMockHealthConnectMappings.getHealthWritePermission(PERMISSION_CATEGORY_1))
+                .thenReturn(WRITE_PERM_1);
+        when(mMockHealthConnectMappings.getHealthWritePermission(PERMISSION_CATEGORY_2))
+                .thenReturn(WRITE_PERM_2);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        WRITE_PERM_1, mAttributionSource, null))
+                .thenReturn(PERMISSION_HARD_DENIED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        WRITE_PERM_2, mAttributionSource, null))
+                .thenReturn(PERMISSION_HARD_DENIED);
+
+        assertThrows(
+                SecurityException.class,
+                () ->
+                        mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
+                                List.of(TEST_RECORD_TYPE), mAttributionSource));
+    }
+
+    @Test
+    public void testWritePermissions_multiplePermissions_oneGranted_doesNotThrow() {
+        setUpMocksForMultiPermTests();
+        when(mMockHealthConnectMappings.getHealthPermissionCategoriesForRecordType(
+                        TEST_RECORD_TYPE))
+                .thenReturn(ImmutableSet.of(PERMISSION_CATEGORY_1, PERMISSION_CATEGORY_2));
+        when(mMockHealthConnectMappings.getHealthWritePermission(PERMISSION_CATEGORY_1))
+                .thenReturn(WRITE_PERM_1);
+        when(mMockHealthConnectMappings.getHealthWritePermission(PERMISSION_CATEGORY_2))
+                .thenReturn(WRITE_PERM_2);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        WRITE_PERM_1, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        WRITE_PERM_2, mAttributionSource, null))
+                .thenReturn(PERMISSION_HARD_DENIED);
+
+        mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
+                List.of(TEST_RECORD_TYPE), mAttributionSource); // Should not throw
+    }
+
+    @Test
+    public void testWritePermissions_multiplePermissions_allGranted_doesNotThrow() {
+        setUpMocksForMultiPermTests();
+        when(mMockHealthConnectMappings.getHealthPermissionCategoriesForRecordType(
+                        TEST_RECORD_TYPE))
+                .thenReturn(ImmutableSet.of(PERMISSION_CATEGORY_1, PERMISSION_CATEGORY_2));
+        when(mMockHealthConnectMappings.getHealthWritePermission(PERMISSION_CATEGORY_1))
+                .thenReturn(WRITE_PERM_1);
+        when(mMockHealthConnectMappings.getHealthWritePermission(PERMISSION_CATEGORY_2))
+                .thenReturn(WRITE_PERM_2);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        WRITE_PERM_1, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        WRITE_PERM_2, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+
+        mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
+                List.of(TEST_RECORD_TYPE), mAttributionSource); // Should not throw
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")

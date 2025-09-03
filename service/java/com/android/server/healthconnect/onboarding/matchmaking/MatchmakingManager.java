@@ -119,7 +119,12 @@ public final class MatchmakingManager {
         Set<String> readPermissionsFilter =
                 recordTypes.stream()
                         .map(mHealthConnectMappings::getRecordType)
-                        .map(mHealthConnectMappings::getHealthPermissionCategoryForRecordType)
+                        .flatMap(
+                                recordType ->
+                                        mHealthConnectMappings
+                                                .getHealthPermissionCategoriesForRecordType(
+                                                        recordType)
+                                                .stream())
                         .map(mHealthConnectMappings::getHealthReadPermission)
                         .collect(Collectors.toSet());
         return getReadPermissions(readPermissionsFilter, packageName);

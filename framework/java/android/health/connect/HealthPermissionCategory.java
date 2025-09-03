@@ -36,8 +36,10 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SpeedRecord;
 import android.health.connect.datatypes.StepsRecord;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Represents the permission category of a {@link Record}. A record can only belong to one and only
@@ -249,5 +251,6 @@ public class HealthPermissionCategory {
         SYMPTOM_COUGH
     })
     @Retention(RetentionPolicy.SOURCE)
+    @Target(ElementType.TYPE_USE)
     public @interface Type {}
 }

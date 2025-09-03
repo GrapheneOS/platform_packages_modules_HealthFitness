@@ -254,417 +254,438 @@ public class DataTypeDescriptors {
         return Stream.of(
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_ACTIVE_CALORIES_BURNED)
-                                .setPermissionCategory(
-                                        HealthPermissionCategory.ACTIVE_CALORIES_BURNED)
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
-                                .setReadPermission(READ_ACTIVE_CALORIES_BURNED)
-                                .setWritePermission(WRITE_ACTIVE_CALORIES_BURNED)
                                 .setRecordClass(ActiveCaloriesBurnedRecord.class)
                                 .setRecordInternalClass(ActiveCaloriesBurnedRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.ACTIVE_CALORIES_BURNED,
+                                        READ_ACTIVE_CALORIES_BURNED,
+                                        WRITE_ACTIVE_CALORIES_BURNED)
                                 .build(),
                         // Redundantly explicitly checking the flag to satisfy the linter.
                         Flags.activityIntensity() && AconfigFlagHelper.isActivityIntensityEnabled()
                                 ? DataTypeDescriptor.builder()
                                         .setRecordTypeIdentifier(RECORD_TYPE_ACTIVITY_INTENSITY)
-                                        .setPermissionCategory(
-                                                HealthPermissionCategory.ACTIVITY_INTENSITY)
                                         .setDataCategory(HealthDataCategory.ACTIVITY)
-                                        .setReadPermission(READ_ACTIVITY_INTENSITY)
-                                        .setWritePermission(WRITE_ACTIVITY_INTENSITY)
                                         .setRecordClass(ActivityIntensityRecord.class)
                                         .setRecordInternalClass(
                                                 ActivityIntensityRecordInternal.class)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.ACTIVITY_INTENSITY,
+                                                READ_ACTIVITY_INTENSITY,
+                                                WRITE_ACTIVITY_INTENSITY)
                                         .build()
                                 : null,
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_BASAL_BODY_TEMPERATURE)
-                                .setPermissionCategory(
-                                        HealthPermissionCategory.BASAL_BODY_TEMPERATURE)
                                 .setDataCategory(HealthDataCategory.VITALS)
-                                .setReadPermission(READ_BASAL_BODY_TEMPERATURE)
-                                .setWritePermission(WRITE_BASAL_BODY_TEMPERATURE)
                                 .setRecordClass(BasalBodyTemperatureRecord.class)
                                 .setRecordInternalClass(BasalBodyTemperatureRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.BASAL_BODY_TEMPERATURE,
+                                        READ_BASAL_BODY_TEMPERATURE,
+                                        WRITE_BASAL_BODY_TEMPERATURE)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_BASAL_METABOLIC_RATE)
-                                .setPermissionCategory(
-                                        HealthPermissionCategory.BASAL_METABOLIC_RATE)
                                 .setDataCategory(HealthDataCategory.BODY_MEASUREMENTS)
-                                .setReadPermission(READ_BASAL_METABOLIC_RATE)
-                                .setWritePermission(WRITE_BASAL_METABOLIC_RATE)
                                 .setRecordClass(BasalMetabolicRateRecord.class)
                                 .setRecordInternalClass(BasalMetabolicRateRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.BASAL_METABOLIC_RATE,
+                                        READ_BASAL_METABOLIC_RATE,
+                                        WRITE_BASAL_METABOLIC_RATE)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_BLOOD_GLUCOSE)
-                                .setPermissionCategory(HealthPermissionCategory.BLOOD_GLUCOSE)
                                 .setDataCategory(HealthDataCategory.VITALS)
-                                .setReadPermission(READ_BLOOD_GLUCOSE)
-                                .setWritePermission(WRITE_BLOOD_GLUCOSE)
                                 .setRecordClass(BloodGlucoseRecord.class)
                                 .setRecordInternalClass(BloodGlucoseRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.BLOOD_GLUCOSE,
+                                        READ_BLOOD_GLUCOSE,
+                                        WRITE_BLOOD_GLUCOSE)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_BLOOD_PRESSURE)
-                                .setPermissionCategory(HealthPermissionCategory.BLOOD_PRESSURE)
                                 .setDataCategory(HealthDataCategory.VITALS)
-                                .setReadPermission(READ_BLOOD_PRESSURE)
-                                .setWritePermission(WRITE_BLOOD_PRESSURE)
                                 .setRecordClass(BloodPressureRecord.class)
                                 .setRecordInternalClass(BloodPressureRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.BLOOD_PRESSURE,
+                                        READ_BLOOD_PRESSURE,
+                                        WRITE_BLOOD_PRESSURE)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_BODY_FAT)
-                                .setPermissionCategory(HealthPermissionCategory.BODY_FAT)
                                 .setDataCategory(HealthDataCategory.BODY_MEASUREMENTS)
-                                .setReadPermission(READ_BODY_FAT)
-                                .setWritePermission(WRITE_BODY_FAT)
                                 .setRecordClass(BodyFatRecord.class)
                                 .setRecordInternalClass(BodyFatRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.BODY_FAT,
+                                        READ_BODY_FAT,
+                                        WRITE_BODY_FAT)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_BODY_TEMPERATURE)
-                                .setPermissionCategory(HealthPermissionCategory.BODY_TEMPERATURE)
                                 .setDataCategory(HealthDataCategory.VITALS)
-                                .setReadPermission(READ_BODY_TEMPERATURE)
-                                .setWritePermission(WRITE_BODY_TEMPERATURE)
                                 .setRecordClass(BodyTemperatureRecord.class)
                                 .setRecordInternalClass(BodyTemperatureRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.BODY_TEMPERATURE,
+                                        READ_BODY_TEMPERATURE,
+                                        WRITE_BODY_TEMPERATURE)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_BODY_WATER_MASS)
-                                .setPermissionCategory(HealthPermissionCategory.BODY_WATER_MASS)
                                 .setDataCategory(HealthDataCategory.BODY_MEASUREMENTS)
-                                .setReadPermission(READ_BODY_WATER_MASS)
-                                .setWritePermission(WRITE_BODY_WATER_MASS)
                                 .setRecordClass(BodyWaterMassRecord.class)
                                 .setRecordInternalClass(BodyWaterMassRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.BODY_WATER_MASS,
+                                        READ_BODY_WATER_MASS,
+                                        WRITE_BODY_WATER_MASS)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_BONE_MASS)
-                                .setPermissionCategory(HealthPermissionCategory.BONE_MASS)
                                 .setDataCategory(HealthDataCategory.BODY_MEASUREMENTS)
-                                .setReadPermission(READ_BONE_MASS)
-                                .setWritePermission(WRITE_BONE_MASS)
                                 .setRecordClass(BoneMassRecord.class)
                                 .setRecordInternalClass(BoneMassRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.BONE_MASS,
+                                        READ_BONE_MASS,
+                                        WRITE_BONE_MASS)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_CERVICAL_MUCUS)
-                                .setPermissionCategory(HealthPermissionCategory.CERVICAL_MUCUS)
                                 .setDataCategory(HealthDataCategory.CYCLE_TRACKING)
-                                .setReadPermission(READ_CERVICAL_MUCUS)
-                                .setWritePermission(WRITE_CERVICAL_MUCUS)
                                 .setRecordClass(CervicalMucusRecord.class)
                                 .setRecordInternalClass(CervicalMucusRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.CERVICAL_MUCUS,
+                                        READ_CERVICAL_MUCUS,
+                                        WRITE_CERVICAL_MUCUS)
                                 .build(),
                         Flags.smoking() && AconfigFlagHelper.isNicotineIntakeEnabled()
                                 ? DataTypeDescriptor.builder()
                                         .setRecordTypeIdentifier(RECORD_TYPE_NICOTINE_INTAKE)
-                                        .setPermissionCategory(
-                                                HealthPermissionCategory.NICOTINE_INTAKE)
                                         .setDataCategory(HealthDataCategory.WELLNESS)
-                                        .setReadPermission(READ_NICOTINE_INTAKE)
-                                        .setWritePermission(WRITE_NICOTINE_INTAKE)
                                         .setRecordClass(NicotineIntakeRecord.class)
                                         .setRecordInternalClass(NicotineIntakeRecordInternal.class)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.NICOTINE_INTAKE,
+                                                READ_NICOTINE_INTAKE,
+                                                WRITE_NICOTINE_INTAKE)
                                         .build()
                                 : null,
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_CYCLING_PEDALING_CADENCE)
-                                .setPermissionCategory(HealthPermissionCategory.EXERCISE)
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
-                                .setReadPermission(READ_EXERCISE)
-                                .setWritePermission(WRITE_EXERCISE)
                                 .setRecordClass(CyclingPedalingCadenceRecord.class)
                                 .setRecordInternalClass(CyclingPedalingCadenceRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.EXERCISE,
+                                        READ_EXERCISE,
+                                        WRITE_EXERCISE)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_DISTANCE)
-                                .setPermissionCategory(HealthPermissionCategory.DISTANCE)
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
-                                .setReadPermission(READ_DISTANCE)
-                                .setWritePermission(WRITE_DISTANCE)
                                 .setRecordClass(DistanceRecord.class)
                                 .setRecordInternalClass(DistanceRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.DISTANCE,
+                                        READ_DISTANCE,
+                                        WRITE_DISTANCE)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_ELEVATION_GAINED)
-                                .setPermissionCategory(HealthPermissionCategory.ELEVATION_GAINED)
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
-                                .setReadPermission(READ_ELEVATION_GAINED)
-                                .setWritePermission(WRITE_ELEVATION_GAINED)
                                 .setRecordClass(ElevationGainedRecord.class)
                                 .setRecordInternalClass(ElevationGainedRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.ELEVATION_GAINED,
+                                        READ_ELEVATION_GAINED,
+                                        WRITE_ELEVATION_GAINED)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_EXERCISE_SESSION)
-                                .setPermissionCategory(HealthPermissionCategory.EXERCISE)
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
-                                .setReadPermission(READ_EXERCISE)
-                                .setWritePermission(WRITE_EXERCISE)
                                 .setRecordClass(ExerciseSessionRecord.class)
                                 .setRecordInternalClass(ExerciseSessionRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.EXERCISE,
+                                        READ_EXERCISE,
+                                        WRITE_EXERCISE)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_FLOORS_CLIMBED)
-                                .setPermissionCategory(HealthPermissionCategory.FLOORS_CLIMBED)
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
-                                .setReadPermission(READ_FLOORS_CLIMBED)
-                                .setWritePermission(WRITE_FLOORS_CLIMBED)
                                 .setRecordClass(FloorsClimbedRecord.class)
                                 .setRecordInternalClass(FloorsClimbedRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.FLOORS_CLIMBED,
+                                        READ_FLOORS_CLIMBED,
+                                        WRITE_FLOORS_CLIMBED)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_HEART_RATE)
-                                .setPermissionCategory(HealthPermissionCategory.HEART_RATE)
                                 .setDataCategory(HealthDataCategory.VITALS)
-                                .setReadPermission(READ_HEART_RATE)
-                                .setWritePermission(WRITE_HEART_RATE)
                                 .setRecordClass(HeartRateRecord.class)
                                 .setRecordInternalClass(HeartRateRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.HEART_RATE,
+                                        READ_HEART_RATE,
+                                        WRITE_HEART_RATE)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD)
-                                .setPermissionCategory(
-                                        HealthPermissionCategory.HEART_RATE_VARIABILITY)
                                 .setDataCategory(HealthDataCategory.VITALS)
-                                .setReadPermission(READ_HEART_RATE_VARIABILITY)
-                                .setWritePermission(WRITE_HEART_RATE_VARIABILITY)
                                 .setRecordClass(HeartRateVariabilityRmssdRecord.class)
                                 .setRecordInternalClass(
                                         HeartRateVariabilityRmssdRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.HEART_RATE_VARIABILITY,
+                                        READ_HEART_RATE_VARIABILITY,
+                                        WRITE_HEART_RATE_VARIABILITY)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_HEIGHT)
-                                .setPermissionCategory(HealthPermissionCategory.HEIGHT)
                                 .setDataCategory(HealthDataCategory.BODY_MEASUREMENTS)
-                                .setReadPermission(READ_HEIGHT)
-                                .setWritePermission(WRITE_HEIGHT)
                                 .setRecordClass(HeightRecord.class)
                                 .setRecordInternalClass(HeightRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.HEIGHT, READ_HEIGHT, WRITE_HEIGHT)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_HYDRATION)
-                                .setPermissionCategory(HealthPermissionCategory.HYDRATION)
                                 .setDataCategory(HealthDataCategory.NUTRITION)
-                                .setReadPermission(READ_HYDRATION)
-                                .setWritePermission(WRITE_HYDRATION)
                                 .setRecordClass(HydrationRecord.class)
                                 .setRecordInternalClass(HydrationRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.HYDRATION,
+                                        READ_HYDRATION,
+                                        WRITE_HYDRATION)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_INTERMENSTRUAL_BLEEDING)
-                                .setPermissionCategory(
-                                        HealthPermissionCategory.INTERMENSTRUAL_BLEEDING)
                                 .setDataCategory(HealthDataCategory.CYCLE_TRACKING)
-                                .setReadPermission(READ_INTERMENSTRUAL_BLEEDING)
-                                .setWritePermission(WRITE_INTERMENSTRUAL_BLEEDING)
                                 .setRecordClass(IntermenstrualBleedingRecord.class)
                                 .setRecordInternalClass(IntermenstrualBleedingRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.INTERMENSTRUAL_BLEEDING,
+                                        READ_INTERMENSTRUAL_BLEEDING,
+                                        WRITE_INTERMENSTRUAL_BLEEDING)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_LEAN_BODY_MASS)
-                                .setPermissionCategory(HealthPermissionCategory.LEAN_BODY_MASS)
                                 .setDataCategory(HealthDataCategory.BODY_MEASUREMENTS)
-                                .setReadPermission(READ_LEAN_BODY_MASS)
-                                .setWritePermission(WRITE_LEAN_BODY_MASS)
                                 .setRecordClass(LeanBodyMassRecord.class)
                                 .setRecordInternalClass(LeanBodyMassRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.LEAN_BODY_MASS,
+                                        READ_LEAN_BODY_MASS,
+                                        WRITE_LEAN_BODY_MASS)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_MENSTRUATION_FLOW)
-                                .setPermissionCategory(HealthPermissionCategory.MENSTRUATION)
                                 .setDataCategory(HealthDataCategory.CYCLE_TRACKING)
-                                .setReadPermission(READ_MENSTRUATION)
-                                .setWritePermission(WRITE_MENSTRUATION)
                                 .setRecordClass(MenstruationFlowRecord.class)
                                 .setRecordInternalClass(MenstruationFlowRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.MENSTRUATION,
+                                        READ_MENSTRUATION,
+                                        WRITE_MENSTRUATION)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_MENSTRUATION_PERIOD)
-                                .setPermissionCategory(HealthPermissionCategory.MENSTRUATION)
                                 .setDataCategory(HealthDataCategory.CYCLE_TRACKING)
-                                .setReadPermission(READ_MENSTRUATION)
-                                .setWritePermission(WRITE_MENSTRUATION)
                                 .setRecordClass(MenstruationPeriodRecord.class)
                                 .setRecordInternalClass(MenstruationPeriodRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.MENSTRUATION,
+                                        READ_MENSTRUATION,
+                                        WRITE_MENSTRUATION)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_MINDFULNESS_SESSION)
-                                .setPermissionCategory(HealthPermissionCategory.MINDFULNESS)
                                 .setDataCategory(HealthDataCategory.WELLNESS)
-                                .setReadPermission(READ_MINDFULNESS)
-                                .setWritePermission(WRITE_MINDFULNESS)
                                 .setRecordClass(MindfulnessSessionRecord.class)
                                 .setRecordInternalClass(MindfulnessSessionRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.MINDFULNESS,
+                                        READ_MINDFULNESS,
+                                        WRITE_MINDFULNESS)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_NUTRITION)
-                                .setPermissionCategory(HealthPermissionCategory.NUTRITION)
                                 .setDataCategory(HealthDataCategory.NUTRITION)
-                                .setReadPermission(READ_NUTRITION)
-                                .setWritePermission(WRITE_NUTRITION)
                                 .setRecordClass(NutritionRecord.class)
                                 .setRecordInternalClass(NutritionRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.NUTRITION,
+                                        READ_NUTRITION,
+                                        WRITE_NUTRITION)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_OVULATION_TEST)
-                                .setPermissionCategory(HealthPermissionCategory.OVULATION_TEST)
                                 .setDataCategory(HealthDataCategory.CYCLE_TRACKING)
-                                .setReadPermission(READ_OVULATION_TEST)
-                                .setWritePermission(WRITE_OVULATION_TEST)
                                 .setRecordClass(OvulationTestRecord.class)
                                 .setRecordInternalClass(OvulationTestRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.OVULATION_TEST,
+                                        READ_OVULATION_TEST,
+                                        WRITE_OVULATION_TEST)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_OXYGEN_SATURATION)
-                                .setPermissionCategory(HealthPermissionCategory.OXYGEN_SATURATION)
                                 .setDataCategory(HealthDataCategory.VITALS)
-                                .setReadPermission(READ_OXYGEN_SATURATION)
-                                .setWritePermission(WRITE_OXYGEN_SATURATION)
                                 .setRecordClass(OxygenSaturationRecord.class)
                                 .setRecordInternalClass(OxygenSaturationRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.OXYGEN_SATURATION,
+                                        READ_OXYGEN_SATURATION,
+                                        WRITE_OXYGEN_SATURATION)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_PLANNED_EXERCISE_SESSION)
-                                .setPermissionCategory(HealthPermissionCategory.PLANNED_EXERCISE)
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
-                                .setReadPermission(READ_PLANNED_EXERCISE)
-                                .setWritePermission(WRITE_PLANNED_EXERCISE)
                                 .setRecordClass(PlannedExerciseSessionRecord.class)
                                 .setRecordInternalClass(PlannedExerciseSessionRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.PLANNED_EXERCISE,
+                                        READ_PLANNED_EXERCISE,
+                                        WRITE_PLANNED_EXERCISE)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_POWER)
-                                .setPermissionCategory(HealthPermissionCategory.POWER)
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
-                                .setReadPermission(READ_POWER)
-                                .setWritePermission(WRITE_POWER)
                                 .setRecordClass(PowerRecord.class)
                                 .setRecordInternalClass(PowerRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.POWER, READ_POWER, WRITE_POWER)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_RESPIRATORY_RATE)
-                                .setPermissionCategory(HealthPermissionCategory.RESPIRATORY_RATE)
                                 .setDataCategory(HealthDataCategory.VITALS)
-                                .setReadPermission(READ_RESPIRATORY_RATE)
-                                .setWritePermission(WRITE_RESPIRATORY_RATE)
                                 .setRecordClass(RespiratoryRateRecord.class)
                                 .setRecordInternalClass(RespiratoryRateRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.RESPIRATORY_RATE,
+                                        READ_RESPIRATORY_RATE,
+                                        WRITE_RESPIRATORY_RATE)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_RESTING_HEART_RATE)
-                                .setPermissionCategory(HealthPermissionCategory.RESTING_HEART_RATE)
                                 .setDataCategory(HealthDataCategory.VITALS)
-                                .setReadPermission(READ_RESTING_HEART_RATE)
-                                .setWritePermission(WRITE_RESTING_HEART_RATE)
                                 .setRecordClass(RestingHeartRateRecord.class)
                                 .setRecordInternalClass(RestingHeartRateRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.RESTING_HEART_RATE,
+                                        READ_RESTING_HEART_RATE,
+                                        WRITE_RESTING_HEART_RATE)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_SEXUAL_ACTIVITY)
-                                .setPermissionCategory(HealthPermissionCategory.SEXUAL_ACTIVITY)
                                 .setDataCategory(HealthDataCategory.CYCLE_TRACKING)
-                                .setReadPermission(READ_SEXUAL_ACTIVITY)
-                                .setWritePermission(WRITE_SEXUAL_ACTIVITY)
                                 .setRecordClass(SexualActivityRecord.class)
                                 .setRecordInternalClass(SexualActivityRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.SEXUAL_ACTIVITY,
+                                        READ_SEXUAL_ACTIVITY,
+                                        WRITE_SEXUAL_ACTIVITY)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_SKIN_TEMPERATURE)
-                                .setPermissionCategory(HealthPermissionCategory.SKIN_TEMPERATURE)
                                 .setDataCategory(HealthDataCategory.VITALS)
-                                .setReadPermission(READ_SKIN_TEMPERATURE)
-                                .setWritePermission(WRITE_SKIN_TEMPERATURE)
                                 .setRecordClass(SkinTemperatureRecord.class)
                                 .setRecordInternalClass(SkinTemperatureRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.SKIN_TEMPERATURE,
+                                        READ_SKIN_TEMPERATURE,
+                                        WRITE_SKIN_TEMPERATURE)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_SLEEP_SESSION)
-                                .setPermissionCategory(HealthPermissionCategory.SLEEP)
                                 .setDataCategory(HealthDataCategory.SLEEP)
-                                .setReadPermission(READ_SLEEP)
-                                .setWritePermission(WRITE_SLEEP)
                                 .setRecordClass(SleepSessionRecord.class)
                                 .setRecordInternalClass(SleepSessionRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.SLEEP, READ_SLEEP, WRITE_SLEEP)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_SPEED)
-                                .setPermissionCategory(HealthPermissionCategory.SPEED)
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
-                                .setReadPermission(READ_SPEED)
-                                .setWritePermission(WRITE_SPEED)
                                 .setRecordClass(SpeedRecord.class)
                                 .setRecordInternalClass(SpeedRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.SPEED, READ_SPEED, WRITE_SPEED)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_STEPS)
-                                .setPermissionCategory(HealthPermissionCategory.STEPS)
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
-                                .setReadPermission(READ_STEPS)
-                                .setWritePermission(WRITE_STEPS)
                                 .setRecordClass(StepsRecord.class)
                                 .setRecordInternalClass(StepsRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.STEPS, READ_STEPS, WRITE_STEPS)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_STEPS_CADENCE)
-                                .setPermissionCategory(HealthPermissionCategory.STEPS)
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
-                                .setReadPermission(READ_STEPS)
-                                .setWritePermission(WRITE_STEPS)
                                 .setRecordClass(StepsCadenceRecord.class)
                                 .setRecordInternalClass(StepsCadenceRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.STEPS, READ_STEPS, WRITE_STEPS)
                                 .build(),
                         Flags.symptoms() && AconfigFlagHelper.isSymptomsEnabled()
                                 ? DataTypeDescriptor.builder()
                                         .setRecordTypeIdentifier(RECORD_TYPE_SYMPTOM)
-                                        .setPermissionCategory(
-                                                HealthPermissionCategory.SYMPTOM_COUGH)
                                         .setDataCategory(HealthDataCategory.SYMPTOMS)
-                                        .setReadPermission(READ_SYMPTOM_COUGH)
-                                        .setWritePermission(WRITE_SYMPTOM_COUGH)
                                         .setRecordClass(SymptomRecord.class)
                                         .setRecordInternalClass(SymptomRecordInternal.class)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_COUGH,
+                                                READ_SYMPTOM_COUGH,
+                                                WRITE_SYMPTOM_COUGH)
                                         .build()
                                 : null,
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_TOTAL_CALORIES_BURNED)
-                                .setPermissionCategory(
-                                        HealthPermissionCategory.TOTAL_CALORIES_BURNED)
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
-                                .setReadPermission(READ_TOTAL_CALORIES_BURNED)
-                                .setWritePermission(WRITE_TOTAL_CALORIES_BURNED)
                                 .setRecordClass(TotalCaloriesBurnedRecord.class)
                                 .setRecordInternalClass(TotalCaloriesBurnedRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.TOTAL_CALORIES_BURNED,
+                                        READ_TOTAL_CALORIES_BURNED,
+                                        WRITE_TOTAL_CALORIES_BURNED)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_VO2_MAX)
-                                .setPermissionCategory(HealthPermissionCategory.VO2_MAX)
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
-                                .setReadPermission(READ_VO2_MAX)
-                                .setWritePermission(WRITE_VO2_MAX)
                                 .setRecordClass(Vo2MaxRecord.class)
                                 .setRecordInternalClass(Vo2MaxRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.VO2_MAX,
+                                        READ_VO2_MAX,
+                                        WRITE_VO2_MAX)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_WEIGHT)
-                                .setPermissionCategory(HealthPermissionCategory.WEIGHT)
                                 .setDataCategory(HealthDataCategory.BODY_MEASUREMENTS)
-                                .setReadPermission(READ_WEIGHT)
-                                .setWritePermission(WRITE_WEIGHT)
                                 .setRecordClass(WeightRecord.class)
                                 .setRecordInternalClass(WeightRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.WEIGHT, READ_WEIGHT, WRITE_WEIGHT)
                                 .build(),
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_WHEELCHAIR_PUSHES)
-                                .setPermissionCategory(HealthPermissionCategory.WHEELCHAIR_PUSHES)
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
-                                .setReadPermission(READ_WHEELCHAIR_PUSHES)
-                                .setWritePermission(WRITE_WHEELCHAIR_PUSHES)
                                 .setRecordClass(WheelchairPushesRecord.class)
                                 .setRecordInternalClass(WheelchairPushesRecordInternal.class)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.WHEELCHAIR_PUSHES,
+                                        READ_WHEELCHAIR_PUSHES,
+                                        WRITE_WHEELCHAIR_PUSHES)
                                 .build())
                 .filter(Objects::nonNull)
                 .toList();

@@ -39,10 +39,14 @@ object HealthPermissionToDatatypeMapper {
         val healthConnectMappings = HealthConnectMappings.getInstance()
 
         return healthConnectMappings.allRecordTypeIdentifiers
-            .map { recordTypeId ->
-                fromHealthPermissionCategory(
-                    healthConnectMappings.getHealthPermissionCategoryForRecordType(recordTypeId)
-                ) to healthConnectMappings.recordIdToExternalRecordClassMap[recordTypeId]!!
+            .flatMap { recordTypeId ->
+                val recordClass =
+                    healthConnectMappings.recordIdToExternalRecordClassMap[recordTypeId]!!
+                val permissionCategories =
+                    healthConnectMappings.getHealthPermissionCategoriesForRecordType(recordTypeId)
+                permissionCategories.map { permissionCategory ->
+                    fromHealthPermissionCategory(permissionCategory) to recordClass
+                }
             }
             .groupBy({ it.first as FitnessPermissionType }, { it.second })
     }

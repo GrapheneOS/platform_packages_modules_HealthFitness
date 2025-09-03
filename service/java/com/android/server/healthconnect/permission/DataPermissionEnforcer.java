@@ -71,13 +71,37 @@ public class DataPermissionEnforcer {
     /** Enforces default read permissions for given recordTypeIds */
     public void enforceRecordIdsReadPermissions(
             Collection<Integer> recordTypeIds, AttributionSource attributionSource) {
+        recordTypeLoop:
         for (Integer recordTypeId : recordTypeIds) {
-            String permissionName =
-                    mHealthConnectMappings.getHealthReadPermission(
-                            mHealthConnectMappings.getHealthPermissionCategoryForRecordType(
-                                    recordTypeId));
-            enforceRecordPermission(
-                    permissionName, attributionSource, recordTypeId, /* isReadPermission= */ true);
+            Set<Integer> permissionCategories =
+                    mHealthConnectMappings.getHealthPermissionCategoriesForRecordType(recordTypeId);
+            if (permissionCategories.isEmpty()) {
+                throw new SecurityException(
+                        "No permissions defined for record type " + recordTypeId);
+            }
+
+            // A record type can have multiple read permissions, at least one of which is required
+            // to be granted. We can't use enforceAnyOfPermissions because we want to check each
+            // permission individually and ignore SecurityException for denied ones.
+            for (int category : permissionCategories) {
+                String permissionName = mHealthConnectMappings.getHealthReadPermission(category);
+                try {
+                    enforceRecordPermission(
+                            permissionName,
+                            attributionSource,
+                            recordTypeId,
+                            /* isReadPermission= */ true);
+                    // As soon as we find a permission that is granted, continue to the next
+                    // recordTypeId.
+                    continue recordTypeLoop;
+                } catch (SecurityException e) {
+                    // Ignore and check the next permission
+                }
+            }
+
+            // If no permission was granted for this record type, throw an exception.
+            throw new SecurityException(
+                    "Caller requires one of the permissions for record type " + recordTypeId);
         }
     }
 
@@ -207,13 +231,37 @@ public class DataPermissionEnforcer {
 
     private void enforceRecordIdWritePermissionInternal(
             Collection<Integer> recordTypeIds, AttributionSource attributionSource) {
+        recordTypeLoop:
         for (Integer recordTypeId : recordTypeIds) {
-            String permissionName =
-                    mHealthConnectMappings.getHealthWritePermission(
-                            mHealthConnectMappings.getHealthPermissionCategoryForRecordType(
-                                    recordTypeId));
-            enforceRecordPermission(
-                    permissionName, attributionSource, recordTypeId, /* isReadPermission= */ false);
+            Set<Integer> permissionCategories =
+                    mHealthConnectMappings.getHealthPermissionCategoriesForRecordType(recordTypeId);
+            if (permissionCategories.isEmpty()) {
+                throw new SecurityException(
+                        "No permissions defined for record type " + recordTypeId);
+            }
+
+            // A record type can have multiple write permissions, at least one of which is required
+            // to be granted. We can't use enforceAnyOfPermissions because we want to check each
+            // permission individually and ignore SecurityException for denied ones.
+            for (int category : permissionCategories) {
+                String permissionName = mHealthConnectMappings.getHealthWritePermission(category);
+                try {
+                    enforceRecordPermission(
+                            permissionName,
+                            attributionSource,
+                            recordTypeId,
+                            /* isReadPermission= */ false);
+                    // As soon as we find a permission that is granted, continue to the next
+                    // recordTypeId.
+                    continue recordTypeLoop;
+                } catch (SecurityException e) {
+                    // Ignore and check the next permission.
+                }
+            }
+
+            // If no permission was granted for this record type, throw an exception.
+            throw new SecurityException(
+                    "Caller requires one of the permissions for record type " + recordTypeId);
         }
     }
 
