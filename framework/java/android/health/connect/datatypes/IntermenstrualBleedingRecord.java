@@ -73,7 +73,7 @@ public final class IntermenstrualBleedingRecord extends InstantRecord {
             Objects.requireNonNull(time);
             mMetadata = metadata;
             mTime = time;
-            mZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(time);
+            mZoneOffset = RecordUtils.getDefaultZoneOffset(time);
         }
 
         /** Sets the zone offset for the record. */
@@ -87,7 +87,7 @@ public final class IntermenstrualBleedingRecord extends InstantRecord {
         /** Clears zone offset. */
         @NonNull
         public IntermenstrualBleedingRecord.Builder clearZoneOffset() {
-            mZoneOffset = RecordUtils.getDefaultZoneOffset();
+            mZoneOffset = RecordUtils.getDefaultZoneOffset(mTime);
             return this;
         }
 

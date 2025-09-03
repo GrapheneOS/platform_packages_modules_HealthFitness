@@ -27,7 +27,7 @@
     <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"Денсаулық туралы ақпаратты және оны пайдалана алатын қолданбаларды көру"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Барлық санат"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Барлық санатты көру"</string>
-    <string name="no_data" msgid="1906986019249068659">"Ешқандай дерек жоқ."</string>
+    <string name="no_data" msgid="1906986019249068659">"Ешқандай дерек жоқ"</string>
     <string name="devices_summary" msgid="8653563324512654292">"Жалғанған құрылғыларды басқару"</string>
     <string name="devices_title" msgid="7548105261104504301">"Құрылғылар"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"Қолданба рұқсаттары"</string>
@@ -1272,7 +1272,7 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Осы құрылғы"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Белгісіз құрылғы"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Құрылғы туралы ақпарат"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"Бұл құрылғы жинайтын деректер Health Connect-те сақталады және ол жерде деректерді байланысқан қолданбалар пайдаланады"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"Бұл құрылғы жинайтын деректер Health Connect-те сақталады және ол жерде деректерді байланысқан қолданбалар пайдаланады."</string>
     <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Бұл құрылғы қадамдарды бақылауға қолдау көрсетпейді, бірақ Health Connect-те деректер сақталған"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Бұл құрылғы қадамдарды бақыламайды"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Жазуға рұқсаты бар"</string>

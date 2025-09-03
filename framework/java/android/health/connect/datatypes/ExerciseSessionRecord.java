@@ -221,9 +221,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         return mRateOfPerceivedExertion;
     }
 
-    /**
-     * Returns true if this session has an associated rate of perceived exertion.
-     */
+    /** Returns true if this session has an associated rate of perceived exertion. */
     @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
     public boolean hasRateOfPerceivedExertion() {
         return mRateOfPerceivedExertion != DEFAULT_FLOAT;
@@ -299,8 +297,8 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             mExerciseType = exerciseType;
             mSegments = new ArrayList<>();
             mLaps = new ArrayList<>();
-            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
-            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset(startTime);
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset(endTime);
         }
 
         /** Sets the zone offset of the user when the session started */
@@ -324,14 +322,14 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         /** Sets the start zone offset of this record to system default. */
         @NonNull
         public Builder clearStartZoneOffset() {
-            mStartZoneOffset = RecordUtils.getDefaultZoneOffset();
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset(mStartTime);
             return this;
         }
 
         /** Sets the start zone offset of this record to system default. */
         @NonNull
         public Builder clearEndZoneOffset() {
-            mEndZoneOffset = RecordUtils.getDefaultZoneOffset();
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset(mEndTime);
             return this;
         }
 

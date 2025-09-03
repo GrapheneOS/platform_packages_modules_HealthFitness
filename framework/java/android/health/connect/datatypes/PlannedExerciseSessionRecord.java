@@ -216,9 +216,9 @@ public final class PlannedExerciseSessionRecord extends IntervalRecord {
             mExerciseType = exerciseType;
             mHasExplicitTime = true;
             mStartTime = startTime;
-            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(mStartTime);
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset(startTime);
             mEndTime = endTime;
-            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(mEndTime);
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset(endTime);
         }
 
         /**
@@ -243,9 +243,9 @@ public final class PlannedExerciseSessionRecord extends IntervalRecord {
             mHasExplicitTime = false;
             mStartTime =
                     startDate.atTime(LocalTime.NOON).atZone(ZoneId.systemDefault()).toInstant();
-            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(mStartTime);
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset(mStartTime);
             mEndTime = mStartTime.plus(duration);
-            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(mEndTime);
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset(mEndTime);
         }
 
         /** Set the metadata for the record. */
@@ -268,7 +268,7 @@ public final class PlannedExerciseSessionRecord extends IntervalRecord {
         public Builder setStartTime(@NonNull Instant startTime) {
             Objects.requireNonNull(startTime);
             this.mStartTime = startTime;
-            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(mStartTime);
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset(startTime);
             return this;
         }
 
@@ -277,7 +277,7 @@ public final class PlannedExerciseSessionRecord extends IntervalRecord {
         public Builder setEndTime(@NonNull Instant endTime) {
             Objects.requireNonNull(endTime);
             this.mEndTime = endTime;
-            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(mEndTime);
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset(mEndTime);
             return this;
         }
 
@@ -300,14 +300,14 @@ public final class PlannedExerciseSessionRecord extends IntervalRecord {
         /** Sets the start zone offset of this record to system default. */
         @NonNull
         public Builder clearStartZoneOffset() {
-            mStartZoneOffset = RecordUtils.getDefaultZoneOffset();
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset(mStartTime);
             return this;
         }
 
         /** Sets the start zone offset of this record to system default. */
         @NonNull
         public Builder clearEndZoneOffset() {
-            mEndZoneOffset = RecordUtils.getDefaultZoneOffset();
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset(mEndTime);
             return this;
         }
 
