@@ -260,8 +260,8 @@ public final class HeartRateRecord extends IntervalRecord {
             } else {
                 mSamples = heartRateSamples;
             }
-            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
-            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset(startTime);
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset(endTime);
         }
 
         /**
@@ -291,14 +291,14 @@ public final class HeartRateRecord extends IntervalRecord {
         /** Sets the start zone offset of this record to system default. */
         @NonNull
         public Builder clearStartZoneOffset() {
-            mStartZoneOffset = RecordUtils.getDefaultZoneOffset();
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset(mStartTime);
             return this;
         }
 
         /** Sets the start zone offset of this record to system default. */
         @NonNull
         public Builder clearEndZoneOffset() {
-            mEndZoneOffset = RecordUtils.getDefaultZoneOffset();
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset(mEndTime);
             return this;
         }
 

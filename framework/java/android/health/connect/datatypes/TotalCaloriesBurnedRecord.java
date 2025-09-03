@@ -146,8 +146,8 @@ public final class TotalCaloriesBurnedRecord extends IntervalRecord {
             mStartTime = startTime;
             mEndTime = endTime;
             mEnergy = energy;
-            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
-            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset(startTime);
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset(endTime);
         }
 
         /** Sets the zone offset of the user when the activity started */
@@ -171,14 +171,14 @@ public final class TotalCaloriesBurnedRecord extends IntervalRecord {
         /** Sets the start zone offset of this record to system default. */
         @NonNull
         public Builder clearStartZoneOffset() {
-            mStartZoneOffset = RecordUtils.getDefaultZoneOffset();
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset(mStartTime);
             return this;
         }
 
         /** Sets the start zone offset of this record to system default. */
         @NonNull
         public Builder clearEndZoneOffset() {
-            mEndZoneOffset = RecordUtils.getDefaultZoneOffset();
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset(mEndTime);
             return this;
         }
 

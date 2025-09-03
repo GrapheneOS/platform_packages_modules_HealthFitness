@@ -214,8 +214,8 @@ public final class MindfulnessSessionRecord extends IntervalRecord {
             mStartTime = startTime;
             mEndTime = endTime;
             mMindfulnessSessionType = mindfulnessSessionType;
-            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
-            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset(startTime);
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset(endTime);
         }
 
         /** Sets the zone offset of the user when the activity started */
