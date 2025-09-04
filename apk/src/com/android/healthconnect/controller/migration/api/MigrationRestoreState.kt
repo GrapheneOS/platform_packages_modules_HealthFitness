@@ -15,13 +15,17 @@
  */
 package com.android.healthconnect.controller.migration.api
 
+import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiError
+import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
+import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
+
 /**
  * Internal class representing the [HealthConnectDataState] received from the HealthConnectManager.
  */
 data class MigrationRestoreState(
     val migrationUiState: MigrationUiState,
     val dataRestoreState: DataRestoreUiState,
-    val dataRestoreError: DataRestoreUiError
+    val dataRestoreError: DataRestoreUiError,
 ) {
     enum class MigrationUiState {
         IDLE,
@@ -50,3 +54,10 @@ data class MigrationRestoreState(
         ERROR_VERSION_DIFF,
     }
 }
+
+val DEFAULT_MIGRATION_RESTORE_STATE =
+    MigrationRestoreState(
+        migrationUiState = MigrationUiState.IDLE,
+        dataRestoreState = DataRestoreUiState.IDLE,
+        dataRestoreError = DataRestoreUiError.ERROR_NONE,
+    )

@@ -21,8 +21,12 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARI
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_CYCLING_CADENCE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_DISTANCE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_ELEVATION_GAINED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_FLOORS_CLIMBED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_HEART_RATE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_HRV_RMSSD;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_OXYGEN_SATURATION;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_POWER;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_RESPIRATORY_RATE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_SKIN_TEMPERATURE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_SPEED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_STEPS;
@@ -34,8 +38,6 @@ import static com.android.healthfitness.flags.Flags.latencyMetricsFlag;
 
 import android.health.HealthFitnessStatsLog;
 import android.health.connect.datatypes.RecordTypeIdentifier;
-
-import java.util.List;
 
 /**
  * Logs Health Connect data granularity stats.
@@ -58,10 +60,10 @@ public final class DataGranularityStatsLogger {
         if (!latencyMetricsFlag()) {
             return;
         }
-        List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+        DataGranularityStatsCollector.AllGranularityStats allStats =
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek();
 
-        for (DataGranularityStatsCollector.GranularityStats stat : stats) {
+        for (DataGranularityStatsCollector.GranularityStats stat : allStats.activeStats()) {
             logGranularityStat(stat.packageName(), stat.recordIdentifier(), stat.granularity());
         }
     }
@@ -111,6 +113,18 @@ public final class DataGranularityStatsLogger {
             }
             case RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED -> {
                 return HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_TOTAL_CALORIES_BURNED;
+            }
+            case RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED -> {
+                return HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_FLOORS_CLIMBED;
+            }
+            case RecordTypeIdentifier.RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD -> {
+                return HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_HRV_RMSSD;
+            }
+            case RecordTypeIdentifier.RECORD_TYPE_OXYGEN_SATURATION -> {
+                return HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_OXYGEN_SATURATION;
+            }
+            case RecordTypeIdentifier.RECORD_TYPE_RESPIRATORY_RATE -> {
+                return HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_RESPIRATORY_RATE;
             }
             default -> {
                 return HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_UNKNOWN;

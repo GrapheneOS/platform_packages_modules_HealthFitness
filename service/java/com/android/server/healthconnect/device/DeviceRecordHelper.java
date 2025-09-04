@@ -62,9 +62,9 @@ public class DeviceRecordHelper {
         // TODO(b/405980323) check if this DDP exists. If not, create it.
         // TODO(b/405980291) add ID_COLUMN_NAME and DISPLAY_NAME_COLUMN_NAME to DeviceInfoHelper
         for (RecordInternal<?> record : records) {
-            record.setManufacturer(deviceDataSource.getDeviceInfo().getManufacturer());
-            record.setModel(deviceDataSource.getDeviceInfo().getModel());
-            record.setDeviceType(deviceDataSource.getDeviceInfo().getDeviceType());
+            record.setManufacturer(deviceDataSource.getManufacturer());
+            record.setModel(deviceDataSource.getModel());
+            record.setDeviceType(deviceDataSource.getDeviceType());
         }
     }
 }

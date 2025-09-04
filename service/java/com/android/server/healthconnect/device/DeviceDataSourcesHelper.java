@@ -26,7 +26,6 @@ import android.provider.Settings;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 
 /**
  * Utility methods related to {@link com.android.server.healthconnect.device.DeviceDataSource}.
@@ -51,7 +50,9 @@ public class DeviceDataSourcesHelper {
      */
     public DeviceDataSource getCurrentDevice(Context context) {
         return new DeviceDataSource(
-                new DeviceInfoHelper.DeviceInfo(Build.MANUFACTURER, Build.MODEL, DEVICE_TYPE_PHONE),
+                Build.MANUFACTURER,
+                Build.MODEL,
+                DEVICE_TYPE_PHONE,
                 // This is a sensitive value and should not be shared outside of this module.
                 getSerial(),
                 getDisplayName(context));

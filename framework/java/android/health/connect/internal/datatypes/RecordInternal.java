@@ -54,6 +54,7 @@ public abstract class RecordInternal<T extends Record> {
     private long mDeviceInfoId = DEFAULT_LONG;
     private long mAppInfoId = DEFAULT_LONG;
     private int mRowId = DEFAULT_INT;
+    @Nullable private String mDisplayName;
 
     @Metadata.RecordingMethod private int mRecordingMethod;
 
@@ -80,6 +81,7 @@ public abstract class RecordInternal<T extends Record> {
         mModel = parcel.readString();
         mDeviceType = parcel.readInt();
         mRecordingMethod = parcel.readInt();
+        mDisplayName = parcel.readString();
     }
 
     /** Extract the record identifier from the annotations. */
@@ -109,6 +111,7 @@ public abstract class RecordInternal<T extends Record> {
         parcel.writeString(mModel);
         parcel.writeInt(mDeviceType);
         parcel.writeInt(mRecordingMethod);
+        parcel.writeString(mDisplayName);
 
         populateRecordTo(parcel);
     }
@@ -258,6 +261,18 @@ public abstract class RecordInternal<T extends Record> {
         return this;
     }
 
+    @Nullable
+    public String getDisplayName() {
+        return mDisplayName;
+    }
+
+    /** Sets the device display name. */
+    @NonNull
+    public RecordInternal<T> setDisplayName(@Nullable String displayName) {
+        mDisplayName = displayName;
+        return this;
+    }
+
     /** Returns recording method which indicates how data was recorded for the {@link Record} */
     @Metadata.RecordingMethod
     public int getRecordingMethod() {
@@ -287,6 +302,7 @@ public abstract class RecordInternal<T extends Record> {
                         .setLastModifiedTime(Instant.ofEpochMilli(getLastModifiedTime()))
                         .setRecordingMethod(getRecordingMethod())
                         .setDevice(
+                                // TODO(b/437875130): Add id and display name to device.
                                 new Device.Builder()
                                         .setManufacturer(getManufacturer())
                                         .setType(getDeviceType())

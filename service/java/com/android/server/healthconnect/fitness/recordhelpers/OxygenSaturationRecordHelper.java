@@ -34,7 +34,7 @@ import java.util.List;
  */
 public final class OxygenSaturationRecordHelper
         extends InstantRecordHelper<OxygenSaturationRecordInternal> {
-    private static final String OXYGEN_SATURATION_RECORD_TABLE_NAME =
+    public static final String OXYGEN_SATURATION_RECORD_TABLE_NAME =
             "oxygen_saturation_record_table";
     private static final String PERCENTAGE_COLUMN_NAME = "percentage";
 
