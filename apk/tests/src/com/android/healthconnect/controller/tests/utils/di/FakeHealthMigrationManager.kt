@@ -24,14 +24,15 @@ import com.android.healthconnect.controller.migration.api.HealthMigrationManager
 import java.util.concurrent.Executor
 
 class FakeHealthMigrationManager : HealthMigrationManager {
-
+    var forceFail = false
     private var migrationUiState: Int = HealthConnectMigrationUiState.MIGRATION_UI_STATE_IDLE
 
     private var dataState: HealthConnectDataState =
         HealthConnectDataState(
             HealthConnectDataState.RESTORE_STATE_IDLE,
             HealthConnectDataState.RESTORE_ERROR_NONE,
-            HealthConnectDataState.MIGRATION_STATE_IDLE)
+            HealthConnectDataState.MIGRATION_STATE_IDLE,
+        )
 
     fun setMigrationUiState(state: Int) {
         this.migrationUiState = state
@@ -43,15 +44,25 @@ class FakeHealthMigrationManager : HealthMigrationManager {
 
     override fun getHealthDataState(
         executor: Executor,
-        callback: OutcomeReceiver<HealthConnectDataState, HealthConnectException>
+        callback: OutcomeReceiver<HealthConnectDataState, HealthConnectException>,
     ) {
+        if (forceFail) {
+            throw RuntimeException("Fake exception")
+        }
         callback.onResult(dataState)
     }
 
     override fun getHealthConnectMigrationUiState(
         executor: Executor,
-        callback: OutcomeReceiver<HealthConnectMigrationUiState, HealthConnectException>
+        callback: OutcomeReceiver<HealthConnectMigrationUiState, HealthConnectException>,
     ) {
+        if (forceFail) {
+            throw RuntimeException("Fake exception")
+        }
         callback.onResult(HealthConnectMigrationUiState(migrationUiState))
+    }
+
+    fun reset() {
+        forceFail = false
     }
 }
