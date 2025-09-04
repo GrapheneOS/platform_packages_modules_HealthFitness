@@ -31,6 +31,7 @@ import com.android.server.healthconnect.fitness.recordhelpers.CyclingPedalingCad
 import com.android.server.healthconnect.fitness.recordhelpers.DistanceRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ElevationGainedRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.FloorsClimbedRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.HeartRateRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.PowerRecordHelper;
@@ -48,6 +49,7 @@ import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,6 +71,13 @@ public final class DataGranularityStatsCollector {
             String packageName,
             @RecordTypeIdentifier.RecordType int recordIdentifier,
             long granularity) {}
+
+    /** A record to hold all granularity stats, categorized by active and passive data. */
+    record AllGranularityStats(
+            List<GranularityStats> activeStats, List<GranularityStats> passiveStats) {}
+
+    /** Data class to hold start and end time for a session. */
+    private record TimeRange(long startTime, long endTime) {}
 
     private static final Map<@RecordTypeIdentifier.RecordType Integer, SeriesHelperData>
             SERIES_TYPE_ID_TO_TABLE_NAME_MAP =
@@ -111,7 +120,9 @@ public final class DataGranularityStatsCollector {
                             RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED,
                             TotalCaloriesBurnedRecordHelper.TOTAL_CALORIES_BURNED_RECORD_TABLE_NAME,
                             RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED,
-                            ElevationGainedRecordHelper.ELEVATION_GAINED_RECORD_TABLE_NAME);
+                            ElevationGainedRecordHelper.ELEVATION_GAINED_RECORD_TABLE_NAME,
+                            RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED,
+                            FloorsClimbedRecordHelper.FLOORS_CLIMBED_RECORD_TABLE_NAME);
 
     public DataGranularityStatsCollector(
             TransactionManager transactionManager, AppInfoHelper appInfoHelper) {
@@ -119,74 +130,89 @@ public final class DataGranularityStatsCollector {
         mAppInfoHelper = appInfoHelper;
     }
 
-    /** Returns {@link GranularityStats} for given session data type for past week. */
-    List<GranularityStats> getLastWeekExerciseSessionsGranularityStats() {
-
+    /** Returns {@link AllGranularityStats} for given session data type for past week. */
+    AllGranularityStats getAllGranularityStatsForLastWeek() {
         if (!Flags.latencyMetricsFlag()) {
-            return List.of();
+            return new AllGranularityStats(Collections.emptyList(), Collections.emptyList());
         }
-        List<GranularityStats> granularityStats = new ArrayList<>();
+
         String tableName = ExerciseSessionRecordHelper.EXERCISE_SESSION_RECORD_TABLE_NAME;
+        Map<Long, List<TimeRange>> appToSessionTimeMap = getAppToSessionTimeMap(tableName);
 
-        ReadTableRequest readTableRequest = getReadLastWeekSessionsRequest(tableName);
+        List<GranularityStats> activeStats = new ArrayList<>();
+        activeStats.addAll(getLastWeekIntervalGranularityStats(appToSessionTimeMap));
+        activeStats.addAll(getLastWeekSeriesGranularityStats(appToSessionTimeMap));
 
-        try (Cursor cursor = mTransactionManager.read(readTableRequest)) {
-            while (cursor.moveToNext()) {
-                long sessionEndTime =
-                        getCursorLong(cursor, IntervalRecordHelper.END_TIME_COLUMN_NAME);
-                long sessionStartTime =
-                        getCursorLong(cursor, IntervalRecordHelper.START_TIME_COLUMN_NAME);
+        return new AllGranularityStats(
+                Collections.unmodifiableList(activeStats), Collections.emptyList());
+    }
 
-                String packageName;
-                long appInfoId;
-                try {
-                    appInfoId = getCursorLong(cursor, RecordHelper.APP_INFO_ID_COLUMN_NAME);
-                    packageName =
-                            mAppInfoHelper.getPackageName(
-                                    getCursorLong(cursor, RecordHelper.APP_INFO_ID_COLUMN_NAME));
-                } catch (PackageManager.NameNotFoundException exception) {
-                    Slog.e(TAG, "Package name not found while query access logs", exception);
-                    continue;
+    private List<GranularityStats> getLastWeekIntervalGranularityStats(
+            Map<Long, List<TimeRange>> appToSessionTimeMap) {
+        List<GranularityStats> granularityStats = new ArrayList<>();
+        for (Map.Entry<Long, List<TimeRange>> entry : appToSessionTimeMap.entrySet()) {
+            long appInfoId = entry.getKey();
+            String packageName;
+            try {
+                packageName = mAppInfoHelper.getPackageName(appInfoId);
+            } catch (PackageManager.NameNotFoundException exception) {
+                // This should not happen as we have already filtered out invalid app ids.
+                Slog.wtf(TAG, "Package name not found for a pre-filtered appInfoId", exception);
+                continue;
+            }
+
+            for (TimeRange sessionTimeRange : entry.getValue()) {
+                for (Map.Entry<@RecordTypeIdentifier.RecordType Integer, String> dataTypeInfo :
+                        INTERVAL_TYPE_ID_TO_TABLE_NAME_MAP.entrySet()) {
+                    long granularity =
+                            getIntervalGranularityDataForExerciseSessions(
+                                    dataTypeInfo.getValue(),
+                                    sessionTimeRange.startTime(),
+                                    sessionTimeRange.endTime(),
+                                    appInfoId);
+                    if (granularity == -1L) {
+                        continue;
+                    }
+                    granularityStats.add(
+                            new GranularityStats(packageName, dataTypeInfo.getKey(), granularity));
                 }
+            }
+        }
+        return granularityStats;
+    }
+
+    private List<GranularityStats> getLastWeekSeriesGranularityStats(
+            Map<Long, List<TimeRange>> appToSessionTimeMap) {
+        List<GranularityStats> granularityStats = new ArrayList<>();
+        for (Map.Entry<Long, List<TimeRange>> entry : appToSessionTimeMap.entrySet()) {
+            long appInfoId = entry.getKey();
+            String packageName;
+            try {
+                packageName = mAppInfoHelper.getPackageName(appInfoId);
+            } catch (PackageManager.NameNotFoundException exception) {
+                // This should not happen as we have already filtered out invalid app ids.
+                Slog.wtf(TAG, "Package name not found for a pre-filtered appInfoId", exception);
+                continue;
+            }
+
+            for (TimeRange sessionTimeRange : entry.getValue()) {
                 for (Map.Entry<@RecordTypeIdentifier.RecordType Integer, SeriesHelperData>
                         dataTypeInfo : SERIES_TYPE_ID_TO_TABLE_NAME_MAP.entrySet()) {
                     long granularity =
                             getSeriesGranularityDataForExerciseSessions(
                                     dataTypeInfo.getValue(),
-                                    sessionStartTime,
-                                    sessionEndTime,
+                                    sessionTimeRange.startTime(),
+                                    sessionTimeRange.endTime(),
                                     appInfoId);
                     if (granularity == -1L) {
                         continue;
                     }
                     granularityStats.add(
-                            new GranularityStats(
-                                    packageName,
-                                    /* recordIdentifier= */ dataTypeInfo.getKey(),
-                                    granularity));
-                }
-
-                for (Map.Entry<@RecordTypeIdentifier.RecordType Integer, String> dataTypeInfo :
-                        INTERVAL_TYPE_ID_TO_TABLE_NAME_MAP.entrySet()) {
-                    long granularity =
-                            getIntervalGranularityDataForExerciseSessions(
-                                    /* intervalDataTypeTableName= */ dataTypeInfo.getValue(),
-                                    sessionStartTime,
-                                    sessionEndTime,
-                                    appInfoId);
-                    if (granularity == -1L) {
-                        continue;
-                    }
-                    granularityStats.add(
-                            new GranularityStats(
-                                    packageName,
-                                    /* recordIdentifier= */ dataTypeInfo.getKey(),
-                                    granularity));
+                            new GranularityStats(packageName, dataTypeInfo.getKey(), granularity));
                 }
             }
         }
-
-        return Collections.unmodifiableList(granularityStats);
+        return granularityStats;
     }
 
     private long getIntervalGranularityDataForExerciseSessions(
@@ -269,5 +295,29 @@ public final class DataGranularityStatsCollector {
         // We define granularity by the average time gap between each data point of a series
         // data type for the duration of the session.
         return totalTimeGap / numberOfRecords;
+    }
+
+    /** Returns a map of app info id to session time map from reading the sessions table. */
+    private Map<Long, List<TimeRange>> getAppToSessionTimeMap(String tableName) {
+        Map<Long, List<TimeRange>> appToSessionTimeMap = new HashMap<>();
+        ReadTableRequest readTableRequest = getReadLastWeekSessionsRequest(tableName);
+        try (Cursor cursor = mTransactionManager.read(readTableRequest)) {
+            while (cursor.moveToNext()) {
+                long appInfoId = getCursorLong(cursor, RecordHelper.APP_INFO_ID_COLUMN_NAME);
+                try {
+                    mAppInfoHelper.getPackageName(appInfoId);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Slog.e(TAG, "Package name not found while retrieving session", e);
+                    // Skip if package name not found for the app id.
+                    continue;
+                }
+                long startTime = getCursorLong(cursor, IntervalRecordHelper.START_TIME_COLUMN_NAME);
+                long endTime = getCursorLong(cursor, IntervalRecordHelper.END_TIME_COLUMN_NAME);
+                appToSessionTimeMap
+                        .computeIfAbsent(appInfoId, id -> new ArrayList<>())
+                        .add(new TimeRange(startTime, endTime));
+            }
+        }
+        return appToSessionTimeMap;
     }
 }
