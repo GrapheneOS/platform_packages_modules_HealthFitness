@@ -670,5 +670,5 @@ flag {
     description: "Enables device data providers API changes."
     bug: "437843638"
     is_fixed_read_only: false
-    is_exported: false
+    is_exported: true
 }

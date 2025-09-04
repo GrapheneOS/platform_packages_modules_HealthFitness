@@ -715,6 +715,7 @@ package android.health.connect.datatypes {
   }
 
   public final class Device {
+    method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @Nullable public String getDisplayName();
     method @Nullable public String getManufacturer();
     method @Nullable public String getModel();
     method public int getType();
@@ -739,6 +740,7 @@ package android.health.connect.datatypes {
   public static final class Device.Builder {
     ctor public Device.Builder();
     method @NonNull public android.health.connect.datatypes.Device build();
+    method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @NonNull public android.health.connect.datatypes.Device.Builder setDisplayName(@Nullable String);
     method @NonNull public android.health.connect.datatypes.Device.Builder setManufacturer(@Nullable String);
     method @NonNull public android.health.connect.datatypes.Device.Builder setModel(@Nullable String);
     method @NonNull public android.health.connect.datatypes.Device.Builder setType(int);
