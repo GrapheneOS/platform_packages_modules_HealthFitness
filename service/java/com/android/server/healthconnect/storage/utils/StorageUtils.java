@@ -18,6 +18,7 @@ package com.android.server.healthconnect.storage.utils;
 
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SYMPTOM;
 import static android.text.TextUtils.isEmpty;
 
 import static com.android.internal.annotations.VisibleForTesting.Visibility.PRIVATE;
@@ -315,7 +316,9 @@ public final class StorageUtils {
     @Nullable
     private static byte[] getDedupeByteBuffer(IntervalRecordInternal<?> record) {
         final int type = record.getRecordType();
-        if ((type == RECORD_TYPE_HYDRATION) || (type == RECORD_TYPE_NUTRITION)) {
+        if ((type == RECORD_TYPE_HYDRATION)
+                || (type == RECORD_TYPE_NUTRITION)
+                || (type == RECORD_TYPE_SYMPTOM)) {
             return null; // Some records are exempt from deduplication
         }
 

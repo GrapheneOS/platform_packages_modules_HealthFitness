@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.storage;
 
 import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.executeSqlStatements;
+import static com.android.server.healthconnect.storage.HealthConnectDatabase.createTable;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.checkColumnExists;
 
 import android.database.Cursor;
@@ -28,6 +29,7 @@ import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.SymptomRecordHelper;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 
 /**
@@ -47,7 +49,7 @@ public final class DevelopmentDatabaseHelper {
      * The current version number for the development database features. Increment this whenever you
      * make a breaking schema change to a development feature.
      */
-    @VisibleForTesting static final int CURRENT_VERSION = 13;
+    @VisibleForTesting static final int CURRENT_VERSION = 14;
 
     /** The name of the table to store development specific key value pairs. */
     private static final String SETTINGS_TABLE_NAME = "development_database_settings";
@@ -97,6 +99,11 @@ public final class DevelopmentDatabaseHelper {
         // Code for under development schema changes goes in this method but below this comment
         applyDdpAppInfoDatabaseUpgrade(db);
         applyDeviceInfoEnhancementsDatabaseUpgrade(db);
+        if (Flags.symptomsDb()) {
+            SymptomRecordHelper helper = new SymptomRecordHelper();
+            dropTableIfExists(db, helper.getMainTableName());
+            createTable(db, helper.getCreateTableRequest());
+        }
     }
 
     private static void applyDdpAppInfoDatabaseUpgrade(SQLiteDatabase db) {

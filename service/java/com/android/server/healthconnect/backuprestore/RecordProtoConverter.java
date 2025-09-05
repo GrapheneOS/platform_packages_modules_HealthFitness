@@ -81,6 +81,7 @@ import android.health.connect.internal.datatypes.SleepStageInternal;
 import android.health.connect.internal.datatypes.SpeedRecordInternal;
 import android.health.connect.internal.datatypes.StepsCadenceRecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
+import android.health.connect.internal.datatypes.SymptomRecordInternal;
 import android.health.connect.internal.datatypes.TotalCaloriesBurnedRecordInternal;
 import android.health.connect.internal.datatypes.Vo2MaxRecordInternal;
 import android.health.connect.internal.datatypes.WeightRecordInternal;
@@ -140,6 +141,7 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.S
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Speed.SpeedSample;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Steps;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.StepsCadence;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Symptoms;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.TotalCaloriesBurned;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Vo2Max;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Weight;
@@ -287,6 +289,8 @@ public final class RecordProtoConverter {
         } else if (intervalRecordInternal
                 instanceof WheelchairPushesRecordInternal wheelchairPushesRecordInternal) {
             builder.setWheelchairPushes(toWheelchairPushesProto(wheelchairPushesRecordInternal));
+        } else if (intervalRecordInternal instanceof SymptomRecordInternal symptomRecordInternal) {
+            builder.setSymptoms(toSymptomsProto(symptomRecordInternal));
         } else {
             throw new IllegalArgumentException(
                     "Unknown interval record type "
@@ -872,6 +876,19 @@ public final class RecordProtoConverter {
                 .build();
     }
 
+    private static Symptoms toSymptomsProto(SymptomRecordInternal symptomRecordInternal) {
+        Symptoms.Builder builder =
+                Symptoms.newBuilder()
+                        .setSymptomType(symptomRecordInternal.getSymptomType())
+                        .setSeverity(symptomRecordInternal.getSeverity())
+                        .setCount(symptomRecordInternal.getCount())
+                        .setTemporalType(symptomRecordInternal.getTemporalType());
+        if (symptomRecordInternal.getNotes() != null) {
+            builder.setNotes(symptomRecordInternal.getNotes());
+        }
+        return builder.build();
+    }
+
     private InstantRecord toInstantRecordProto(InstantRecordInternal<?> instantRecordInternal) {
         InstantRecord.Builder builder =
                 InstantRecord.newBuilder()
@@ -1217,6 +1234,9 @@ public final class RecordProtoConverter {
                     intervalRecordInternal =
                             populateWheelchairPushesRecordInternal(
                                     intervalRecordProto.getWheelchairPushes());
+            case SYMPTOMS ->
+                    intervalRecordInternal =
+                            populateSymptomRecordInternal(intervalRecordProto.getSymptoms());
             default ->
                     throw new IllegalArgumentException(
                             "Unknown record type " + intervalRecordProto.getDataCase());
@@ -1668,6 +1688,19 @@ public final class RecordProtoConverter {
         return new WheelchairPushesRecordInternal().setCount(wheelchairPushesProto.getCount());
     }
 
+    private static SymptomRecordInternal populateSymptomRecordInternal(Symptoms symptomsProto) {
+        SymptomRecordInternal record =
+                new SymptomRecordInternal()
+                        .setSymptomType(symptomsProto.getSymptomType())
+                        .setSeverity(symptomsProto.getSeverity())
+                        .setCount(symptomsProto.getCount())
+                        .setTemporalType(symptomsProto.getTemporalType());
+        if (symptomsProto.hasNotes()) {
+            record.setNotes(symptomsProto.getNotes());
+        }
+        return record;
+    }
+
     private static void populateInstantRecordInternal(
             InstantRecord instantRecordProto, InstantRecordInternal<?> instantRecordInternal) {
         instantRecordInternal
@@ -1934,6 +1967,7 @@ public final class RecordProtoConverter {
             case STEPS_CADENCE -> RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
             case TOTAL_CALORIES_BURNED -> RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
             case WHEELCHAIR_PUSHES -> RecordTypeIdentifier.RECORD_TYPE_WHEELCHAIR_PUSHES;
+            case SYMPTOMS -> RecordTypeIdentifier.RECORD_TYPE_SYMPTOM;
             case DATA_NOT_SET -> throw new IllegalArgumentException("Interval record not set");
         };
     }

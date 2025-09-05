@@ -109,6 +109,7 @@ message IntervalRecord {
     Speed speed = 117;
     Steps steps = 100;
     StepsCadence steps_cadence = 118;
+    Symptoms symptoms = 122;
     TotalCaloriesBurned total_calories_burned = 119;
     WheelchairPushes wheelchair_pushes = 120;
   }
@@ -547,6 +548,14 @@ message StepsCadence {
     double rate = 1;
     int64 epoch_millis = 2;
   }
+}
+
+message Symptoms {
+  int32 symptom_type = 1;
+  optional string notes = 2;
+  int32 severity = 3;
+  int32 count = 4;
+  int32 temporal_type = 5;
 }
 
 message TotalCaloriesBurned {

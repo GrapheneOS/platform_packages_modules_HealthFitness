@@ -101,6 +101,7 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.S
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Steps;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.StepsCadence;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.StepsCadence.StepsCadenceSample;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Symptoms;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.TotalCaloriesBurned;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Vo2Max;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Weight;
@@ -336,6 +337,11 @@ final class ProtoTestData {
                             .setIntervalRecord(
                                     generateIntervalRecord()
                                             .setStepsCadence(generateStepsCadence()))
+                            .build();
+            case RecordTypeIdentifier.RECORD_TYPE_SYMPTOM ->
+                    generateCoreRecord()
+                            .setIntervalRecord(
+                                    generateIntervalRecord().setSymptoms(generateSymptoms()))
                             .build();
             case RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED ->
                     generateCoreRecord()
@@ -678,6 +684,16 @@ final class ProtoTestData {
                                 .setRate(12.345)
                                 .setEpochMillis(123456)
                                 .build())
+                .build();
+    }
+
+    static Symptoms generateSymptoms() {
+        return Symptoms.newBuilder()
+                .setSymptomType(1)
+                .setNotes("notes")
+                .setSeverity(1)
+                .setCount(1)
+                .setTemporalType(1)
                 .build();
     }
 
