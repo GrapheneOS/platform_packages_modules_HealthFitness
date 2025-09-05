@@ -23,15 +23,16 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.exportimport.api.DocumentProvider
 import com.android.healthconnect.controller.exportimport.api.DocumentProviderInfo
 import com.android.healthconnect.controller.exportimport.api.DocumentProviderRoot
-import com.android.healthconnect.controller.exportimport.api.ExportImportUseCaseResult
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
 import com.android.healthconnect.controller.exportimport.api.QueryDocumentProvidersUseCase
 import com.android.healthconnect.controller.service.HealthDataExportManagerModule
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthDataExportManager
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -49,11 +50,13 @@ class QueryDocumentProvidersUseCaseTest {
         private const val TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY = "Account 1"
         private val TEST_DOCUMENT_PROVIDER_1_ROOT_1_URI =
             Uri.parse(
-                "content://android.healthconnect.tests.documentprovider1.documents/root/account1")
+                "content://android.healthconnect.tests.documentprovider1.documents/root/account1"
+            )
         private const val TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY = "Account 2"
         private val TEST_DOCUMENT_PROVIDER_1_ROOT_2_URI =
             Uri.parse(
-                "content://android.healthconnect.tests.documentprovider1.documents/root/account2")
+                "content://android.healthconnect.tests.documentprovider1.documents/root/account2"
+            )
 
         private const val TEST_DOCUMENT_PROVIDER_2_TITLE = "Document provider 2"
         private const val TEST_DOCUMENT_PROVIDER_2_AUTHORITY = "documentprovider2.com"
@@ -61,7 +64,8 @@ class QueryDocumentProvidersUseCaseTest {
         private const val TEST_DOCUMENT_PROVIDER_2_ROOT_SUMMARY = "Account"
         private val TEST_DOCUMENT_PROVIDER_2_ROOT_URI =
             Uri.parse(
-                "content://android.healthconnect.tests.documentprovider2.documents/root/account")
+                "content://android.healthconnect.tests.documentprovider2.documents/root/account"
+            )
     }
 
     @BindValue val healthDataExportManager: HealthDataExportManager = FakeHealthDataExportManager()
@@ -70,7 +74,7 @@ class QueryDocumentProvidersUseCaseTest {
 
     @Before
     fun setup() {
-        useCase = QueryDocumentProvidersUseCase(healthDataExportManager)
+        useCase = QueryDocumentProvidersUseCase(healthDataExportManager, Dispatchers.Main)
     }
 
     @After
@@ -87,14 +91,17 @@ class QueryDocumentProvidersUseCaseTest {
                     TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY,
                     TEST_DOCUMENT_PROVIDER_1_ICON_RESOURCE,
                     TEST_DOCUMENT_PROVIDER_1_ROOT_1_URI,
-                    TEST_DOCUMENT_PROVIDER_1_AUTHORITY))
+                    TEST_DOCUMENT_PROVIDER_1_AUTHORITY,
+                )
+            )
         (healthDataExportManager as FakeHealthDataExportManager).setExportImportDocumentProviders(
-            exportImportDocumentProviders)
+            exportImportDocumentProviders
+        )
 
-        val result = useCase.invoke()
+        val result = useCase.invoke(Unit)
 
-        assertThat(result is ExportImportUseCaseResult.Success).isTrue()
-        val documentProviders = (result as ExportImportUseCaseResult.Success).data
+        assertThat(result is UseCaseResults.Success).isTrue()
+        val documentProviders = (result as UseCaseResults.Success).data
         assertThat(documentProviders).hasSize(1)
         assertThat(documentProviders[0])
             .isEqualTo(
@@ -102,11 +109,16 @@ class QueryDocumentProvidersUseCaseTest {
                     DocumentProviderInfo(
                         TEST_DOCUMENT_PROVIDER_1_TITLE,
                         TEST_DOCUMENT_PROVIDER_1_AUTHORITY,
-                        TEST_DOCUMENT_PROVIDER_1_ICON_RESOURCE),
+                        TEST_DOCUMENT_PROVIDER_1_ICON_RESOURCE,
+                    ),
                     listOf(
                         DocumentProviderRoot(
                             TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY,
-                            TEST_DOCUMENT_PROVIDER_1_ROOT_1_URI))))
+                            TEST_DOCUMENT_PROVIDER_1_ROOT_1_URI,
+                        )
+                    ),
+                )
+            )
     }
 
     @Test
@@ -118,26 +130,31 @@ class QueryDocumentProvidersUseCaseTest {
                     TEST_DOCUMENT_PROVIDER_2_ROOT_SUMMARY,
                     TEST_DOCUMENT_PROVIDER_2_ICON_RESOURCE,
                     TEST_DOCUMENT_PROVIDER_2_ROOT_URI,
-                    TEST_DOCUMENT_PROVIDER_2_AUTHORITY),
+                    TEST_DOCUMENT_PROVIDER_2_AUTHORITY,
+                ),
                 ExportImportDocumentProvider(
                     TEST_DOCUMENT_PROVIDER_1_TITLE,
                     TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY,
                     TEST_DOCUMENT_PROVIDER_1_ICON_RESOURCE,
                     TEST_DOCUMENT_PROVIDER_1_ROOT_2_URI,
-                    TEST_DOCUMENT_PROVIDER_1_AUTHORITY),
+                    TEST_DOCUMENT_PROVIDER_1_AUTHORITY,
+                ),
                 ExportImportDocumentProvider(
                     TEST_DOCUMENT_PROVIDER_1_TITLE,
                     TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY,
                     TEST_DOCUMENT_PROVIDER_1_ICON_RESOURCE,
                     TEST_DOCUMENT_PROVIDER_1_ROOT_1_URI,
-                    TEST_DOCUMENT_PROVIDER_1_AUTHORITY))
+                    TEST_DOCUMENT_PROVIDER_1_AUTHORITY,
+                ),
+            )
         (healthDataExportManager as FakeHealthDataExportManager).setExportImportDocumentProviders(
-            exportImportDocumentProviders)
+            exportImportDocumentProviders
+        )
 
-        val result = useCase.invoke()
+        val result = useCase.invoke(Unit)
 
-        assertThat(result is ExportImportUseCaseResult.Success).isTrue()
-        val documentProviders = (result as ExportImportUseCaseResult.Success).data
+        assertThat(result is UseCaseResults.Success).isTrue()
+        val documentProviders = (result as UseCaseResults.Success).data
         assertThat(documentProviders).hasSize(2)
         assertThat(documentProviders[0])
             .isEqualTo(
@@ -145,37 +162,48 @@ class QueryDocumentProvidersUseCaseTest {
                     DocumentProviderInfo(
                         TEST_DOCUMENT_PROVIDER_1_TITLE,
                         TEST_DOCUMENT_PROVIDER_1_AUTHORITY,
-                        TEST_DOCUMENT_PROVIDER_1_ICON_RESOURCE),
+                        TEST_DOCUMENT_PROVIDER_1_ICON_RESOURCE,
+                    ),
                     listOf(
                         DocumentProviderRoot(
                             TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY,
-                            TEST_DOCUMENT_PROVIDER_1_ROOT_1_URI),
+                            TEST_DOCUMENT_PROVIDER_1_ROOT_1_URI,
+                        ),
                         DocumentProviderRoot(
                             TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY,
-                            TEST_DOCUMENT_PROVIDER_1_ROOT_2_URI))))
+                            TEST_DOCUMENT_PROVIDER_1_ROOT_2_URI,
+                        ),
+                    ),
+                )
+            )
         assertThat(documentProviders[1])
             .isEqualTo(
                 DocumentProvider(
                     DocumentProviderInfo(
                         TEST_DOCUMENT_PROVIDER_2_TITLE,
                         TEST_DOCUMENT_PROVIDER_2_AUTHORITY,
-                        TEST_DOCUMENT_PROVIDER_2_ICON_RESOURCE),
+                        TEST_DOCUMENT_PROVIDER_2_ICON_RESOURCE,
+                    ),
                     listOf(
                         DocumentProviderRoot(
                             TEST_DOCUMENT_PROVIDER_2_ROOT_SUMMARY,
-                            TEST_DOCUMENT_PROVIDER_2_ROOT_URI))))
+                            TEST_DOCUMENT_PROVIDER_2_ROOT_URI,
+                        )
+                    ),
+                )
+            )
     }
 
     @Test
     fun invoke_callsHealthDataExportManager_returnsFailure() = runTest {
         val exception = HealthConnectException(HealthConnectException.ERROR_UNKNOWN)
         (healthDataExportManager as FakeHealthDataExportManager).setQueryDocumentProvidersException(
-            exception)
-        val result = useCase.invoke()
+            exception
+        )
+        val result = useCase.invoke(Unit)
 
-        assertThat(result is ExportImportUseCaseResult.Failed).isTrue()
-        assertThat((result as ExportImportUseCaseResult.Failed).exception is HealthConnectException)
-            .isTrue()
+        assertThat(result is UseCaseResults.Failed).isTrue()
+        assertThat((result as UseCaseResults.Failed).exception is HealthConnectException).isTrue()
         assertThat((result.exception as HealthConnectException).errorCode)
             .isEqualTo(HealthConnectException.ERROR_UNKNOWN)
     }

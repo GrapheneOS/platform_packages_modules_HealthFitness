@@ -16,49 +16,43 @@
 
 package com.android.healthconnect.controller.exportimport.api
 
-import android.health.connect.HealthConnectException
 import android.net.Uri
-import android.util.Log
 import androidx.core.os.asOutcomeReceiver
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
 
 @Singleton
 class TriggerImportUseCase
 @Inject
 constructor(
     private val healthDataImportManager: HealthDataImportManager,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-) : ITriggerImportUseCase {
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+) : ITriggerImportUseCase, BaseUseCase<Uri, Unit>(dispatcher) {
     companion object {
         private const val TAG = "TriggerImportUseCase"
     }
 
-    suspend fun execute(fileToImportUri: Uri) {
+    /** Triggers the process to import and restore the user-selected backup file. */
+    override suspend fun execute(fileToImportUri: Uri) {
         suspendCancellableCoroutine { continuation: CancellableContinuation<Void> ->
             healthDataImportManager.runImport(
-                fileToImportUri, Runnable::run, continuation.asOutcomeReceiver())
+                fileToImportUri,
+                Runnable::run,
+                continuation.asOutcomeReceiver(),
+            )
         }
     }
-
-    /** Triggers the process to import and restore the user-selected backup file. */
-    override suspend operator fun invoke(fileToImportUri: Uri): ExportImportUseCaseResult<Unit> =
-        withContext(dispatcher) {
-            try {
-                ExportImportUseCaseResult.Success(execute(fileToImportUri))
-            } catch (ex: HealthConnectException) {
-                Log.e(TAG, "Load export settings error: ", ex)
-                ExportImportUseCaseResult.Failed(ex)
-            }
-        }
 }
 
 interface ITriggerImportUseCase {
     /** Triggers the process to import and restore the user-selected backup file. */
-    suspend fun invoke(fileToImportUri: Uri): ExportImportUseCaseResult<Unit>
+    suspend fun invoke(fileToImportUri: Uri): UseCaseResults<Unit>
+
+    suspend fun execute(fileToImportUri: Uri)
 }

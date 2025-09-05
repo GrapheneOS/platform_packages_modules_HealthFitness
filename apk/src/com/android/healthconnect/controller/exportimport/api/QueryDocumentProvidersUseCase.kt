@@ -16,51 +16,46 @@
 
 package com.android.healthconnect.controller.exportimport.api
 
-import android.health.connect.HealthConnectException
-import android.util.Log
 import androidx.core.os.asOutcomeReceiver
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
 
 @Singleton
 class QueryDocumentProvidersUseCase
 @Inject
 constructor(
     private val healthDataExportManager: HealthDataExportManager,
-) : IQueryDocumentProvidersUseCase {
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+) : IQueryDocumentProvidersUseCase, BaseUseCase<Unit, List<DocumentProvider>>(dispatcher) {
     companion object {
         private const val TAG = "QueryDocumentProvidersUseCase"
     }
 
     /** Returns the available document providers. */
-    override suspend operator fun invoke(): ExportImportUseCaseResult<List<DocumentProvider>> =
-        withContext(Dispatchers.IO) {
-            try {
-                val documentProviders: List<DocumentProvider> =
-                    suspendCancellableCoroutine { continuation ->
-                            healthDataExportManager.queryDocumentProviders(
-                                Runnable::run, continuation.asOutcomeReceiver())
-                        }
-                        .groupBy({
-                            DocumentProviderInfo(it.title, it.authority, it.iconResource)
-                        }) {
-                            DocumentProviderRoot(it.summary, it.rootUri)
-                        }
-                        .map { DocumentProvider(it.key, sortDocumentProviderRoots(it.value)) }
-                        .stream()
-                        .sorted { provider1, provider2 ->
-                            provider1.info.title.compareTo(provider2.info.title)
-                        }
-                        .toList()
-                ExportImportUseCaseResult.Success(documentProviders)
-            } catch (ex: HealthConnectException) {
-                Log.e(TAG, "Query document providers error: ", ex)
-                ExportImportUseCaseResult.Failed(ex)
-            }
-        }
+    override suspend fun execute(input: Unit): List<DocumentProvider> {
+        val documentProviders: List<DocumentProvider> =
+            suspendCancellableCoroutine { continuation ->
+                    healthDataExportManager.queryDocumentProviders(
+                        Runnable::run,
+                        continuation.asOutcomeReceiver(),
+                    )
+                }
+                .groupBy({ DocumentProviderInfo(it.title, it.authority, it.iconResource) }) {
+                    DocumentProviderRoot(it.summary, it.rootUri)
+                }
+                .map { DocumentProvider(it.key, sortDocumentProviderRoots(it.value)) }
+                .stream()
+                .sorted { provider1, provider2 ->
+                    provider1.info.title.compareTo(provider2.info.title)
+                }
+                .toList()
+        return documentProviders
+    }
 
     private fun sortDocumentProviderRoots(
         roots: List<DocumentProviderRoot>
@@ -74,5 +69,7 @@ constructor(
 
 interface IQueryDocumentProvidersUseCase {
     /** Returns the available document providers. */
-    suspend fun invoke(): ExportImportUseCaseResult<List<DocumentProvider>>
+    suspend fun invoke(input: Unit): UseCaseResults<List<DocumentProvider>>
+
+    suspend fun execute(input: Unit): List<DocumentProvider>
 }
