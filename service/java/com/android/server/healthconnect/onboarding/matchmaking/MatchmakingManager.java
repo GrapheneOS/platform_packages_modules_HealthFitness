@@ -50,7 +50,6 @@ public final class MatchmakingManager {
     @GuardedBy("this")
     private HealthConnectContext mUserContext;
 
-    private final PackageManager mPackageManager;
     private final MatchmakingDenialStateManager mMatchmakingDenialStateManager;
 
     public MatchmakingManager(
@@ -58,13 +57,11 @@ public final class MatchmakingManager {
             HealthConnectPermissionHelper healthConnectPermissionHelper,
             PackageInfoUtils packageInfoUtils,
             HealthConnectMappings healthConnectMappings,
-            PackageManager packageManager,
             MatchmakingDenialStateManager matchmakingDenialStateManager) {
         mUserContext = userContext;
         mHealthConnectPermissionHelper = healthConnectPermissionHelper;
         mPackageInfoUtils = packageInfoUtils;
         mHealthConnectMappings = healthConnectMappings;
-        mPackageManager = packageManager;
         mMatchmakingDenialStateManager = matchmakingDenialStateManager;
     }
 
@@ -214,7 +211,8 @@ public final class MatchmakingManager {
     }
 
     private boolean isDenied(PackageInfo packageInfo, String permission) {
-        return mPackageManager.checkPermission(permission, packageInfo.packageName)
+        return mPackageInfoUtils.checkPermission(
+                        mUserContext, mUserContext.getUser(), permission, packageInfo.packageName)
                 == PERMISSION_DENIED;
     }
 

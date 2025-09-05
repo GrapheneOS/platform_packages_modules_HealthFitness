@@ -610,7 +610,6 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthConnectPermissionHelper,
                                 mPackageInfoUtils,
                                 mHealthConnectMappings,
-                                context.getPackageManager(),
                                 Objects.requireNonNull(mMatchmakingDenialStateManager))
                         : builder.mMatchmakingManager;
     }

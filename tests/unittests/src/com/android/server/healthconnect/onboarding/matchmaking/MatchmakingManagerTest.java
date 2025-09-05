@@ -89,7 +89,6 @@ public class MatchmakingManagerTest {
 
     @Mock private HealthConnectPermissionHelper mHealthConnectPermissionHelper;
     @Mock private PackageInfoUtils mPackageInfoUtils;
-    @Mock private PackageManager mPackageManager;
     @Mock private MatchmakingDenialStateManager mMatchmakingDenialStateManager;
 
     private final HealthConnectMappings mHealthConnectMappings = new HealthConnectMappings();
@@ -111,7 +110,6 @@ public class MatchmakingManagerTest {
                         mHealthConnectPermissionHelper,
                         mPackageInfoUtils,
                         mHealthConnectMappings,
-                        mPackageManager,
                         mMatchmakingDenialStateManager);
         when(mMatchmakingDenialStateManager.isMatchmakingPaused(anyString(), anyInt()))
                 .thenReturn(false);
@@ -119,7 +117,7 @@ public class MatchmakingManagerTest {
 
     @After
     public void tearDown() {
-        clearInvocations(mHealthConnectPermissionHelper, mPackageInfoUtils, mPackageManager);
+        clearInvocations(mHealthConnectPermissionHelper, mPackageInfoUtils);
     }
 
     @Test
@@ -547,7 +545,8 @@ public class MatchmakingManagerTest {
     }
 
     private void mockPermissionCheckResult(String packageName, String permission, int result) {
-        when(mPackageManager.checkPermission(eq(permission), eq(packageName))).thenReturn(result);
+        when(mPackageInfoUtils.checkPermission(any(), any(), eq(permission), eq(packageName)))
+                .thenReturn(result);
     }
 
     private void mockHealthPermissionFlags(String packageName, String permission, int flags) {
