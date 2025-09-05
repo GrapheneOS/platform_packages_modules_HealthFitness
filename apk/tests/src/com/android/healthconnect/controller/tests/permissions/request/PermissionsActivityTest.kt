@@ -1994,18 +1994,25 @@ class PermissionsActivityTest {
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
         val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
+        registerBottomSheetIdlingResource(scenario)
         onIdle()
 
         onView(withId(R.id.bottom_sheet_fragment_container))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
+
         scenario.recreate()
+        registerBottomSheetIdlingResource(scenario)
         onIdle()
 
         onView(withId(R.id.bottom_sheet_fragment_container))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
-        onView(withText("Don't allow")).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withText("Don't allow"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
+        assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
     }
 
     @Test
