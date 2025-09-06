@@ -19,17 +19,18 @@ package com.android.healthconnect.controller.tests.exportimport.api
 import android.health.connect.HealthConnectException
 import android.health.connect.exportimport.ScheduledExportStatus
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.healthconnect.controller.exportimport.api.ExportImportUseCaseResult
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
 import com.android.healthconnect.controller.exportimport.api.LoadScheduledExportStatusUseCase
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
 import com.android.healthconnect.controller.service.HealthDataExportManagerModule
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthDataExportManager
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import java.time.Instant
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -48,7 +49,7 @@ class LoadScheduledExportStatusUseCaseTest {
 
     @Before
     fun setup() {
-        useCase = LoadScheduledExportStatusUseCase(healthDataExportManager)
+        useCase = LoadScheduledExportStatusUseCase(healthDataExportManager, Dispatchers.Main)
     }
 
     @After
@@ -71,10 +72,10 @@ class LoadScheduledExportStatusUseCaseTest {
                 .setNextExportSequentialNumber(5)
                 .build()
         fakeHealthDataExportManager.setScheduledExportStatus(scheduledExportStatus)
-        val result = useCase.invoke()
+        val result = useCase.invoke(Unit)
 
-        assertThat(result is ExportImportUseCaseResult.Success).isTrue()
-        val exportStatus = (result as ExportImportUseCaseResult.Success).data
+        assertThat(result is UseCaseResults.Success).isTrue()
+        val exportStatus = (result as UseCaseResults.Success).data
         assertThat(exportStatus.lastSuccessfulExportTime).isEqualTo(Instant.ofEpochMilli(100))
         assertThat(exportStatus.dataExportError)
             .isEqualTo(ScheduledExportUiState.DataExportError.DATA_EXPORT_LOST_FILE_ACCESS)
@@ -92,11 +93,10 @@ class LoadScheduledExportStatusUseCaseTest {
         val exception = HealthConnectException(HealthConnectException.ERROR_UNKNOWN)
         fakeHealthDataExportManager.setScheduledExportStatusException(exception)
 
-        val result = useCase.invoke()
+        val result = useCase.invoke(Unit)
 
-        assertThat(result is ExportImportUseCaseResult.Failed).isTrue()
-        assertThat((result as ExportImportUseCaseResult.Failed).exception is HealthConnectException)
-            .isTrue()
+        assertThat(result is UseCaseResults.Failed).isTrue()
+        assertThat((result as UseCaseResults.Failed).exception is HealthConnectException).isTrue()
         assertThat((result.exception as HealthConnectException).errorCode)
             .isEqualTo(HealthConnectException.ERROR_UNKNOWN)
     }

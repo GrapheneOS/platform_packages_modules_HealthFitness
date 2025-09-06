@@ -115,6 +115,7 @@ class AllDataViewModelTest {
                 PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
                 PermissionTypesPerCategory(HealthDataCategory.VITALS, listOf()),
                 PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
             )
         assertThat(testObserver.getLastValue())
             .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))
@@ -173,6 +174,7 @@ class AllDataViewModelTest {
                     listOf(FitnessPermissionType.HEART_RATE),
                 ),
                 PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
             )
         assertThat(testObserver.getLastValue())
             .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))

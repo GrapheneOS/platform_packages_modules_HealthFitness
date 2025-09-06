@@ -81,9 +81,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** Test class for the MatchingAppsManager class. */
+/** Test class for the {@link MatchmakingManager} class. */
 @RunWith(AndroidJUnit4.class)
-public class MatchingAppsManagerTest {
+public class MatchmakingManagerTest {
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
@@ -509,6 +509,21 @@ public class MatchingAppsManagerTest {
 
         verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
         verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, SLEEP);
+    }
+
+    @Test
+    public void fetchMatchingApps_readingPackageFilteredOut() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
+        PackageInfo matchingApp = createPackageInfo(PACKAGE_NAME, new String[] {WRITE_STEPS});
+        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp));
+        mockAppSystemStatus(PACKAGE_NAME, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME, WRITE_STEPS, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME, WRITE_STEPS, 0);
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
+
+        assertThat(result).isEmpty();
     }
 
     private void mockReadingApp(String packageName, List<String> permissions) {

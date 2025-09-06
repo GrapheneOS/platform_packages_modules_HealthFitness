@@ -380,44 +380,50 @@ class UseCaseModule {
 
     @Provides
     fun providesLoadExportSettingsUseCase(
-        healthDataExportManager: HealthDataExportManager
+        healthDataExportManager: HealthDataExportManager,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
     ): ILoadExportSettingsUseCase {
-        return LoadExportSettingsUseCase(healthDataExportManager)
+        return LoadExportSettingsUseCase(healthDataExportManager, dispatcher)
     }
 
     @Provides
     fun providesUpdateExportSettingsUseCase(
-        healthDataExportManager: HealthDataExportManager
+        healthDataExportManager: HealthDataExportManager,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
     ): IUpdateExportSettingsUseCase {
-        return UpdateExportSettingsUseCase(healthDataExportManager)
+        return UpdateExportSettingsUseCase(healthDataExportManager, dispatcher)
     }
 
     @Provides
     fun providesLoadScheduledExportStatusUseCase(
-        healthDataExportManager: HealthDataExportManager
+        healthDataExportManager: HealthDataExportManager,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
     ): ILoadScheduledExportStatusUseCase {
-        return LoadScheduledExportStatusUseCase(healthDataExportManager)
+        return LoadScheduledExportStatusUseCase(healthDataExportManager, dispatcher)
     }
 
     @Provides
     fun providesQueryDocumentProvidersUseCase(
-        healthDataExportManager: HealthDataExportManager
+        healthDataExportManager: HealthDataExportManager,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
     ): IQueryDocumentProvidersUseCase {
-        return QueryDocumentProvidersUseCase(healthDataExportManager)
+        return QueryDocumentProvidersUseCase(healthDataExportManager, dispatcher)
     }
 
     @Provides
     fun providesTriggerImportUseCase(
-        healthDataImportManager: HealthDataImportManager
+        healthDataImportManager: HealthDataImportManager,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
     ): ITriggerImportUseCase {
-        return TriggerImportUseCase(healthDataImportManager)
+        return TriggerImportUseCase(healthDataImportManager, dispatcher)
     }
 
     @Provides
     fun providesLoadImportStatusUseCase(
-        healthDataImportManager: HealthDataImportManager
+        healthDataImportManager: HealthDataImportManager,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
     ): ILoadImportStatusUseCase {
-        return LoadImportStatusUseCase(healthDataImportManager)
+        return LoadImportStatusUseCase(healthDataImportManager, dispatcher)
     }
 
     @Provides

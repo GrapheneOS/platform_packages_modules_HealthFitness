@@ -121,6 +121,7 @@ class AppDataViewModelTest {
                 PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
                 PermissionTypesPerCategory(HealthDataCategory.VITALS, listOf()),
                 PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
             )
         assertThat(testObserver.getLastValue())
             .isEqualTo(AppDataViewModel.AppDataState.WithData(expected))
@@ -176,6 +177,7 @@ class AppDataViewModelTest {
                     listOf(FitnessPermissionType.HEART_RATE),
                 ),
                 PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
             )
         assertThat(testObserver.getLastValue())
             .isEqualTo(AppDataViewModel.AppDataState.WithData(expected))
@@ -241,6 +243,7 @@ class AppDataViewModelTest {
                     listOf(FitnessPermissionType.HEART_RATE),
                 ),
                 PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
                 PermissionTypesPerCategory(MEDICAL, listOf(VACCINES)),
             )
         assertThat(testObserver.getLastValue())
@@ -275,6 +278,7 @@ class AppDataViewModelTest {
                 PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
                 PermissionTypesPerCategory(HealthDataCategory.VITALS, listOf()),
                 PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
                 PermissionTypesPerCategory(MEDICAL, listOf(VACCINES)),
             )
         assertThat(testObserver.getLastValue())
@@ -309,6 +313,7 @@ class AppDataViewModelTest {
                 PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
                 PermissionTypesPerCategory(HealthDataCategory.VITALS, listOf()),
                 PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
             )
         assertThat(testObserver.getLastValue())
             .isEqualTo(AppDataViewModel.AppDataState.WithData(expected))

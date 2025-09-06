@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -49,14 +50,14 @@ constructor(private val loadScheduledExportStatusUseCase: ILoadScheduledExportSt
     fun loadScheduledExportStatus() {
         _storedScheduledExportStatus.postValue(ScheduledExportUiStatus.Loading)
         viewModelScope.launch {
-            when (val result = loadScheduledExportStatusUseCase.invoke()) {
-                is ExportImportUseCaseResult.Success -> {
+            when (val result = loadScheduledExportStatusUseCase.invoke(Unit)) {
+                is UseCaseResults.Success -> {
                     _storedScheduledExportStatus.postValue(
                         ScheduledExportUiStatus.WithData(result.data)
                     )
                     _storedNextExportSequentialNumber.value = result.data.nextExportSequentialNumber
                 }
-                is ExportImportUseCaseResult.Failed -> {
+                is UseCaseResults.Failed -> {
                     _storedScheduledExportStatus.postValue(ScheduledExportUiStatus.LoadingFailed)
                 }
             }

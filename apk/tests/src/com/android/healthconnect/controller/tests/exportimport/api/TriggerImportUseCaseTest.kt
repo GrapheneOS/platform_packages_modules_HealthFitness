@@ -19,15 +19,16 @@ package com.android.healthconnect.controller.tests.exportimport.api
 import android.health.connect.HealthConnectException
 import android.net.Uri
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.healthconnect.controller.exportimport.api.ExportImportUseCaseResult
 import com.android.healthconnect.controller.exportimport.api.HealthDataImportManager
 import com.android.healthconnect.controller.exportimport.api.TriggerImportUseCase
 import com.android.healthconnect.controller.service.HealthDataImportManagerModule
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthDataImportManager
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -43,7 +44,8 @@ class TriggerImportUseCaseTest {
         private val TEST_DOCUMENT_URI =
             Uri.parse(
                 "content://android.healthconnect.tests.documentprovider1.documents" +
-                    "/root/account1/document")
+                    "/root/account1/document"
+            )
     }
 
     @BindValue val healthDataImportManager: HealthDataImportManager = FakeHealthDataImportManager()
@@ -52,7 +54,7 @@ class TriggerImportUseCaseTest {
 
     @Before
     fun setup() {
-        useCase = TriggerImportUseCase(healthDataImportManager)
+        useCase = TriggerImportUseCase(healthDataImportManager, Dispatchers.Main)
     }
 
     @After
@@ -64,7 +66,7 @@ class TriggerImportUseCaseTest {
     fun invoke_callsHealthDataImportManager() = runTest {
         val result = useCase.invoke(TEST_DOCUMENT_URI)
 
-        assertThat(result is ExportImportUseCaseResult.Success).isTrue()
+        assertThat(result is UseCaseResults.Success).isTrue()
     }
 
     @Test
@@ -74,9 +76,8 @@ class TriggerImportUseCaseTest {
 
         val result = useCase.invoke(TEST_DOCUMENT_URI)
 
-        assertThat(result is ExportImportUseCaseResult.Failed).isTrue()
-        assertThat((result as ExportImportUseCaseResult.Failed).exception is HealthConnectException)
-            .isTrue()
+        assertThat(result is UseCaseResults.Failed).isTrue()
+        assertThat((result as UseCaseResults.Failed).exception is HealthConnectException).isTrue()
         assertThat((result.exception as HealthConnectException).errorCode)
             .isEqualTo(HealthConnectException.ERROR_UNKNOWN)
     }

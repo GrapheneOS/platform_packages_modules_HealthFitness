@@ -17,6 +17,7 @@
 package com.android.healthconnect.controller.matchmaking
 
 import android.app.Activity.RESULT_CANCELED
+import android.app.Activity.RESULT_OK
 import android.health.connect.HealthConnectManager.EXTRA_RECORD_TYPES
 import android.health.connect.datatypes.Record
 import android.os.Bundle
@@ -28,14 +29,17 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
-import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceGroupAdapter
+import androidx.preference.PreferenceScreen
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionStrings
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.children
+import com.android.healthconnect.controller.shared.preference.ExpandablePreferenceAdapter
 import com.android.healthconnect.controller.shared.preference.HealthExpandablePreference
 import com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
 import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference
@@ -45,6 +49,7 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import com.android.healthconnect.controller.utils.pref
 import com.android.settingslib.widget.FooterPreference
+import com.android.settingslib.widget.SettingsBasePreferenceFragment
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -53,7 +58,7 @@ import javax.inject.Inject
  * A fragment shown to the user to allow them to grant permissions to multiple apps at once, based
  * on a specific record type.
  */
-@AndroidEntryPoint(PreferenceFragmentCompat::class)
+@AndroidEntryPoint(SettingsBasePreferenceFragment::class)
 class MatchmakingFragment : Hilt_MatchmakingFragment() {
 
     companion object {
@@ -74,6 +79,8 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
     @Inject lateinit var logger: HealthConnectLogger
+
+    private val customStyledPrefs = mutableListOf<Preference>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -123,6 +130,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
 
         allowButton.setOnClickListener {
             viewModel.grantPermissions()
+            activity?.setResult(RESULT_OK)
             activity?.finish()
         }
 
@@ -210,6 +218,10 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
         }
     }
 
+    override fun onCreateAdapter(preferenceScreen: PreferenceScreen): PreferenceGroupAdapter {
+        return ExpandablePreferenceAdapter(preferenceScreen, customStyledPrefs)
+    }
+
     private fun setLoading(isLoading: Boolean) {
         loadingIndicator?.isVisible = isLoading
     }
@@ -220,6 +232,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     }
 
     private fun buildAppList(apps: List<MatchmakingAppData>) {
+        customStyledPrefs.clear()
         matchmakingAppsCategory.removeAll()
         apps.forEach { appData -> addAppPreference(appData) }
     }
@@ -227,6 +240,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     private fun addAppPreference(appData: MatchmakingAppData) {
         val expandablePreference = createExpandablePreference(appData)
         matchmakingAppsCategory.addPreference(expandablePreference)
+        customStyledPrefs.add(expandablePreference)
 
         if (appData.permissions.isNotEmpty()) {
             addPermissionSwitches(appData, expandablePreference)
@@ -293,6 +307,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                     }
                 }
             healthExpandablePreference.addPreference(switch)
+            customStyledPrefs.add(switch)
         }
     }
 
@@ -312,6 +327,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                 }
             }
         healthExpandablePreference.addPreference(privacyFooter)
+        customStyledPrefs.add(privacyFooter)
     }
 
     private fun bindFooter() {

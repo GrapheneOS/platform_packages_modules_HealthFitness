@@ -52,6 +52,7 @@ import static android.health.connect.HealthPermissions.READ_SKIN_TEMPERATURE;
 import static android.health.connect.HealthPermissions.READ_SLEEP;
 import static android.health.connect.HealthPermissions.READ_SPEED;
 import static android.health.connect.HealthPermissions.READ_STEPS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_COUGH;
 import static android.health.connect.HealthPermissions.READ_TOTAL_CALORIES_BURNED;
 import static android.health.connect.HealthPermissions.READ_VO2_MAX;
 import static android.health.connect.HealthPermissions.READ_WEIGHT;
@@ -92,6 +93,7 @@ import static android.health.connect.HealthPermissions.WRITE_SKIN_TEMPERATURE;
 import static android.health.connect.HealthPermissions.WRITE_SLEEP;
 import static android.health.connect.HealthPermissions.WRITE_SPEED;
 import static android.health.connect.HealthPermissions.WRITE_STEPS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_COUGH;
 import static android.health.connect.HealthPermissions.WRITE_TOTAL_CALORIES_BURNED;
 import static android.health.connect.HealthPermissions.WRITE_VO2_MAX;
 import static android.health.connect.HealthPermissions.WRITE_WEIGHT;
@@ -135,6 +137,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SPEED;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SYMPTOM;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_VO2_MAX;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_WEIGHT;
@@ -183,6 +186,7 @@ import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.SpeedRecord;
 import android.health.connect.datatypes.StepsCadenceRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
 import android.health.connect.datatypes.Vo2MaxRecord;
 import android.health.connect.datatypes.WeightRecord;
@@ -226,6 +230,7 @@ import android.health.connect.internal.datatypes.SleepSessionRecordInternal;
 import android.health.connect.internal.datatypes.SpeedRecordInternal;
 import android.health.connect.internal.datatypes.StepsCadenceRecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
+import android.health.connect.internal.datatypes.SymptomRecordInternal;
 import android.health.connect.internal.datatypes.TotalCaloriesBurnedRecordInternal;
 import android.health.connect.internal.datatypes.Vo2MaxRecordInternal;
 import android.health.connect.internal.datatypes.WeightRecordInternal;
@@ -612,6 +617,18 @@ public class DataTypeDescriptors {
                                 .setRecordClass(StepsCadenceRecord.class)
                                 .setRecordInternalClass(StepsCadenceRecordInternal.class)
                                 .build(),
+                        Flags.symptoms() && AconfigFlagHelper.isSymptomsEnabled()
+                                ? DataTypeDescriptor.builder()
+                                        .setRecordTypeIdentifier(RECORD_TYPE_SYMPTOM)
+                                        .setPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_COUGH)
+                                        .setDataCategory(HealthDataCategory.SYMPTOMS)
+                                        .setReadPermission(READ_SYMPTOM_COUGH)
+                                        .setWritePermission(WRITE_SYMPTOM_COUGH)
+                                        .setRecordClass(SymptomRecord.class)
+                                        .setRecordInternalClass(SymptomRecordInternal.class)
+                                        .build()
+                                : null,
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_TOTAL_CALORIES_BURNED)
                                 .setPermissionCategory(

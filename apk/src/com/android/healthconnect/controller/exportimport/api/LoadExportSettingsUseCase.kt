@@ -16,38 +16,35 @@
 
 package com.android.healthconnect.controller.exportimport.api
 
-import android.health.connect.HealthConnectException
-import android.util.Log
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.CoroutineDispatcher
 
 @Singleton
 class LoadExportSettingsUseCase
 @Inject
 constructor(
     private val healthDataExportManager: HealthDataExportManager,
-) : ILoadExportSettingsUseCase {
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+) : ILoadExportSettingsUseCase, BaseUseCase<Unit, ExportFrequency>(dispatcher) {
     companion object {
         private const val TAG = "LoadExportSettingsUseCase"
     }
 
     /** Returns the stored export settings. */
-    override suspend operator fun invoke(): ExportImportUseCaseResult<ExportFrequency> =
-        withContext(Dispatchers.IO) {
-            try {
-                val periodInDays = healthDataExportManager.getScheduledExportPeriodInDays()
-                val frequency = fromPeriodInDays(periodInDays)
-                ExportImportUseCaseResult.Success(frequency)
-            } catch (ex: HealthConnectException) {
-                Log.e(TAG, "Load export settings error: ", ex)
-                ExportImportUseCaseResult.Failed(ex)
-            }
-        }
+    override suspend fun execute(input: Unit): ExportFrequency {
+        val periodInDays = healthDataExportManager.getScheduledExportPeriodInDays()
+        val frequency = fromPeriodInDays(periodInDays)
+        return frequency
+    }
 }
 
 interface ILoadExportSettingsUseCase {
     /** Returns the stored export settings. */
-    suspend fun invoke(): ExportImportUseCaseResult<ExportFrequency>
+    suspend fun invoke(input: Unit): UseCaseResults<ExportFrequency>
+
+    suspend fun execute(input: Unit): ExportFrequency
 }

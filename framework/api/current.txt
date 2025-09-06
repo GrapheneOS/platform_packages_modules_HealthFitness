@@ -185,6 +185,7 @@ package android.health.connect {
     field public static final String READ_SLEEP = "android.permission.health.READ_SLEEP";
     field public static final String READ_SPEED = "android.permission.health.READ_SPEED";
     field public static final String READ_STEPS = "android.permission.health.READ_STEPS";
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final String READ_SYMPTOM_COUGH = "android.permission.health.READ_SYMPTOM_COUGH";
     field public static final String READ_TOTAL_CALORIES_BURNED = "android.permission.health.READ_TOTAL_CALORIES_BURNED";
     field public static final String READ_VO2_MAX = "android.permission.health.READ_VO2_MAX";
     field public static final String READ_WEIGHT = "android.permission.health.READ_WEIGHT";
@@ -229,6 +230,7 @@ package android.health.connect {
     field public static final String WRITE_SLEEP = "android.permission.health.WRITE_SLEEP";
     field public static final String WRITE_SPEED = "android.permission.health.WRITE_SPEED";
     field public static final String WRITE_STEPS = "android.permission.health.WRITE_STEPS";
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final String WRITE_SYMPTOM_COUGH = "android.permission.health.WRITE_SYMPTOM_COUGH";
     field public static final String WRITE_TOTAL_CALORIES_BURNED = "android.permission.health.WRITE_TOTAL_CALORIES_BURNED";
     field public static final String WRITE_VO2_MAX = "android.permission.health.WRITE_VO2_MAX";
     field public static final String WRITE_WEIGHT = "android.permission.health.WRITE_WEIGHT";
@@ -1843,6 +1845,36 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.StepsRecord.Builder clearStartZoneOffset();
     method @NonNull public android.health.connect.datatypes.StepsRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.health.connect.datatypes.StepsRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
+  }
+
+  @FlaggedApi("com.android.healthfitness.flags.symptoms") public final class SymptomRecord extends android.health.connect.datatypes.IntervalRecord {
+    method public int getCount();
+    method @Nullable public java.time.LocalDate getDate();
+    method @Nullable public String getNotes();
+    method public int getSeverity();
+    method public int getSymptomType();
+    method public int getTemporalType();
+    field public static final int RECORD_TEMPORAL_TYPE_INSTANT = 0; // 0x0
+    field public static final int RECORD_TEMPORAL_TYPE_INTERVAL = 1; // 0x1
+    field public static final int RECORD_TEMPORAL_TYPE_LOCAL_DATE = 2; // 0x2
+    field public static final int SEVERITY_MILD = 1; // 0x1
+    field public static final int SEVERITY_MODERATE = 2; // 0x2
+    field public static final int SEVERITY_SEVERE = 3; // 0x3
+    field public static final int SEVERITY_UNSPECIFIED = 0; // 0x0
+    field public static final int SYMPTOM_TYPE_COUGH = 1; // 0x1
+    field public static final int SYMPTOM_TYPE_UNKNOWN = 0; // 0x0
+  }
+
+  public static final class SymptomRecord.Builder {
+    ctor public SymptomRecord.Builder(int, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.Metadata);
+    ctor public SymptomRecord.Builder(int, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.Metadata);
+    ctor public SymptomRecord.Builder(int, @NonNull java.time.LocalDate, @NonNull android.health.connect.datatypes.Metadata);
+    method @NonNull public android.health.connect.datatypes.SymptomRecord build();
+    method @NonNull public android.health.connect.datatypes.SymptomRecord.Builder setCount(int);
+    method @NonNull public android.health.connect.datatypes.SymptomRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.SymptomRecord.Builder setNotes(@Nullable String);
+    method @NonNull public android.health.connect.datatypes.SymptomRecord.Builder setSeverity(int);
+    method @NonNull public android.health.connect.datatypes.SymptomRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public final class TotalCaloriesBurnedRecord extends android.health.connect.datatypes.IntervalRecord {

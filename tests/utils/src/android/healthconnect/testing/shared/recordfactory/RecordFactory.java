@@ -64,6 +64,7 @@ import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.SpeedRecord;
 import android.health.connect.datatypes.StepsCadenceRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
 import android.health.connect.datatypes.Vo2MaxRecord;
 import android.health.connect.datatypes.WeightRecord;
@@ -410,6 +411,8 @@ public abstract class RecordFactory<T extends Record> {
             return new StepsCadenceRecordFactory();
         } else if (recordClass.equals(StepsRecord.class)) {
             return new StepsRecordFactory();
+        } else if (recordClass.equals(SymptomRecord.class)) {
+            return new SymptomRecordFactory();
         } else if (recordClass.equals(TotalCaloriesBurnedRecord.class)) {
             return new TotalCaloriesBurnedRecordFactory();
         } else if (recordClass.equals(Vo2MaxRecord.class)) {

@@ -17,6 +17,7 @@
 package android.health.connect;
 
 import static com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS;
+import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
 
 import android.annotation.FlaggedApi;
 import android.annotation.IntDef;
@@ -45,6 +46,10 @@ public class HealthDataCategory {
     @FlaggedApi(FLAG_MINDFULNESS)
     public static final int WELLNESS = 7;
 
+    /** @hide */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final int SYMPTOMS = 8;
+
     private HealthDataCategory() {}
 
     /** @hide */
@@ -56,7 +61,8 @@ public class HealthDataCategory {
         NUTRITION,
         SLEEP,
         VITALS,
-        WELLNESS
+        WELLNESS,
+        SYMPTOMS
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface Type {}

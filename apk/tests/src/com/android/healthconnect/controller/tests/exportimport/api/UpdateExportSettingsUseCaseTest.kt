@@ -20,15 +20,16 @@ import android.health.connect.HealthConnectException
 import android.health.connect.exportimport.ScheduledExportSettings
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency
-import com.android.healthconnect.controller.exportimport.api.ExportImportUseCaseResult
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
 import com.android.healthconnect.controller.exportimport.api.UpdateExportSettingsUseCase
 import com.android.healthconnect.controller.service.HealthDataExportManagerModule
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthDataExportManager
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -46,7 +47,7 @@ class UpdateExportSettingsUseCaseTest {
 
     @Before
     fun setup() {
-        useCase = UpdateExportSettingsUseCase(healthDataExportManager)
+        useCase = UpdateExportSettingsUseCase(healthDataExportManager, Dispatchers.Main)
     }
 
     @After
@@ -63,7 +64,7 @@ class UpdateExportSettingsUseCaseTest {
 
         val result = useCase.invoke(settings)
 
-        assertThat(result is ExportImportUseCaseResult.Success).isTrue()
+        assertThat(result is UseCaseResults.Success).isTrue()
         assertThat(healthDataExportManager.getScheduledExportPeriodInDays())
             .isEqualTo(ExportFrequency.EXPORT_FREQUENCY_DAILY.periodInDays)
     }
@@ -80,9 +81,8 @@ class UpdateExportSettingsUseCaseTest {
                 .build()
         val result = useCase.invoke(settings)
 
-        assertThat(result is ExportImportUseCaseResult.Failed).isTrue()
-        assertThat((result as ExportImportUseCaseResult.Failed).exception is HealthConnectException)
-            .isTrue()
+        assertThat(result is UseCaseResults.Failed).isTrue()
+        assertThat((result as UseCaseResults.Failed).exception is HealthConnectException).isTrue()
         assertThat((result.exception as HealthConnectException).errorCode)
             .isEqualTo(HealthConnectException.ERROR_UNKNOWN)
     }

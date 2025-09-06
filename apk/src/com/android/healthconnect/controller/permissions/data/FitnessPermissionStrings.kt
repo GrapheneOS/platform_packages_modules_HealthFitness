@@ -408,4 +408,13 @@ private val PERMISSION_TYPE_STRINGS: ImmutableMap<FitnessPermissionType, Fitness
                 R.string.nicotine_intake_write_content_description,
             ),
         )
+        .put(
+            FitnessPermissionType.SYMPTOM_COUGH,
+            FitnessPermissionStrings(
+                R.string.symptom_cough_uppercase_label,
+                R.string.symptom_cough_lowercase_label,
+                R.string.symptom_cough_read_content_description,
+                R.string.symptom_cough_write_content_description,
+            ),
+        )
         .buildOrThrow()
