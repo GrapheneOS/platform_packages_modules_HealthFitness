@@ -378,6 +378,14 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"спажыванне алкаголю"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Чытаць даныя спажывання алкаголю"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Запісваць даныя спажывання алкаголю"</string>
+    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
+    <skip />
+    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
+    <skip />
+    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
+    <skip />
+    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
+    <skip />
     <string name="read_permission_category" msgid="6002099618259628632">"Дазвольце праграме “<xliff:g id="APP_NAME">%1$s</xliff:g>” счытваць даныя"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Дазвольце праграме “<xliff:g id="APP_NAME">%1$s</xliff:g>” запісваць даныя"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Дазволіць"</string>
