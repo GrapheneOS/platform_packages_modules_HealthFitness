@@ -28,6 +28,9 @@ import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.WeightRecord
 import android.os.OutcomeReceiver
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.alldata.AllDataViewModel
@@ -44,6 +47,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -73,6 +77,7 @@ import org.mockito.invocation.InvocationOnMock
 class AllDataViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val mSetFlagsRule = SetFlagsRule()
 
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -98,7 +103,8 @@ class AllDataViewModelTest {
     }
 
     @Test
-    fun loadAllData_noFitnessData_returnsEmptyList() = runTest {
+    @EnableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun loadAllData_symptomsFlagEnabled_noFitnessData_returnsEmptyList() = runTest {
         doAnswer(prepareAnswer(mapOf())).`when`(manager).queryAllRecordTypesInfo(any(), any())
 
         val testObserver = TestObserver<AllDataViewModel.AllDataState>()
@@ -122,7 +128,32 @@ class AllDataViewModelTest {
     }
 
     @Test
-    fun loadAllData_hasData_returnsDataWrittenByAllFitnessApps() = runTest {
+    @DisableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun loadAllData_symptomsFlagDisabled_noFitnessData_returnsEmptyList() = runTest {
+        doAnswer(prepareAnswer(mapOf())).`when`(manager).queryAllRecordTypesInfo(any(), any())
+
+        val testObserver = TestObserver<AllDataViewModel.AllDataState>()
+        viewModel.allData.observeForever(testObserver)
+        viewModel.loadAllFitnessData()
+        advanceUntilIdle()
+
+        val expected =
+            listOf(
+                PermissionTypesPerCategory(HealthDataCategory.ACTIVITY, listOf()),
+                PermissionTypesPerCategory(HealthDataCategory.BODY_MEASUREMENTS, listOf()),
+                PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
+                PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
+                PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
+                PermissionTypesPerCategory(HealthDataCategory.VITALS, listOf()),
+                PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+            )
+        assertThat(testObserver.getLastValue())
+            .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun loadAllData_symptomsFlagEnabled_hasData_returnsDataWrittenByAllFitnessApps() = runTest {
         val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
             mapOf(
                 StepsRecord::class.java to
@@ -175,6 +206,65 @@ class AllDataViewModelTest {
                 ),
                 PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
                 PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
+            )
+        assertThat(testObserver.getLastValue())
+            .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun loadAllData_symptomsFlagDisabled_hasData_returnsDataWrittenByAllFitnessApps() = runTest {
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+            mapOf(
+                StepsRecord::class.java to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.STEPS,
+                        HealthDataCategory.ACTIVITY,
+                        listOf(
+                            getDataOrigin(TEST_APP_PACKAGE_NAME),
+                            getDataOrigin(TEST_APP_PACKAGE_NAME_2),
+                        ),
+                    ),
+                WeightRecord::class.java to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.WEIGHT,
+                        HealthDataCategory.BODY_MEASUREMENTS,
+                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME_2))),
+                    ),
+                HeartRateRecord::class.java to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.HEART_RATE,
+                        HealthDataCategory.VITALS,
+                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
+                    ),
+            )
+        doAnswer(prepareAnswer(recordTypeInfoMap))
+            .`when`(manager)
+            .queryAllRecordTypesInfo(any(), any())
+
+        val testObserver = TestObserver<AllDataViewModel.AllDataState>()
+        viewModel.allData.observeForever(testObserver)
+        viewModel.loadAllFitnessData()
+        advanceUntilIdle()
+
+        val expected =
+            listOf(
+                PermissionTypesPerCategory(
+                    HealthDataCategory.ACTIVITY,
+                    listOf(FitnessPermissionType.STEPS),
+                ),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.BODY_MEASUREMENTS,
+                    listOf(FitnessPermissionType.WEIGHT),
+                ),
+                PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
+                PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
+                PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.VITALS,
+                    listOf(FitnessPermissionType.HEART_RATE),
+                ),
+                PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
             )
         assertThat(testObserver.getLastValue())
             .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))

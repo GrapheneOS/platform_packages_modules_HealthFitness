@@ -27,6 +27,9 @@ import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.WeightRecord
 import android.os.OutcomeReceiver
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.appdata.AllDataUseCase
@@ -43,6 +46,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE_DIFFERENT_APP
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -63,6 +67,7 @@ import org.mockito.invocation.InvocationOnMock
 class AllDataUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val mSetFlagsRule = SetFlagsRule()
 
     @BindValue lateinit var appInfoReader: AppInfoReader
     private lateinit var context: Context
@@ -80,7 +85,8 @@ class AllDataUseCaseTest {
     }
 
     @Test
-    fun loadFitnessData_returnsDataWrittenByGivenApp() = runTest {
+    @EnableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun loadFitnessData_symptomsFlagEnabled_returnsDataWrittenByGivenApp() = runTest {
         val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
             mapOf(
                 StepsRecord::class.java to
@@ -132,7 +138,60 @@ class AllDataUseCaseTest {
     }
 
     @Test
-    fun loadAllFitnessData_returnsAllData() = runTest {
+    @DisableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun loadFitnessData_symptomsFlagDisabled_returnsDataWrittenByGivenApp() = runTest {
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+            mapOf(
+                StepsRecord::class.java to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.STEPS,
+                        HealthDataCategory.ACTIVITY,
+                        listOf(
+                            getDataOrigin(TEST_APP_PACKAGE_NAME),
+                            getDataOrigin(TEST_APP_PACKAGE_NAME_2),
+                        ),
+                    ),
+                WeightRecord::class.java to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.WEIGHT,
+                        HealthDataCategory.BODY_MEASUREMENTS,
+                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME_2))),
+                    ),
+                HeartRateRecord::class.java to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.HEART_RATE,
+                        HealthDataCategory.VITALS,
+                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
+                    ),
+            )
+        Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
+            .`when`(healthConnectManager)
+            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+
+        val expected =
+            Success(
+                listOf(
+                    PermissionTypesPerCategory(
+                        HealthDataCategory.ACTIVITY,
+                        listOf(FitnessPermissionType.STEPS),
+                    ),
+                    PermissionTypesPerCategory(HealthDataCategory.BODY_MEASUREMENTS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
+                    PermissionTypesPerCategory(
+                        HealthDataCategory.VITALS,
+                        listOf(FitnessPermissionType.HEART_RATE),
+                    ),
+                    PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                )
+            )
+        assertThat(allDataUseCase.loadFitnessAppData(TEST_APP_PACKAGE_NAME)).isEqualTo(expected)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun loadAllFitnessData_symptomsFlagEnabled_returnsAllData() = runTest {
         val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
             mapOf(
                 StepsRecord::class.java to
@@ -181,6 +240,61 @@ class AllDataUseCaseTest {
                     ),
                     PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
                     PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
+                )
+            )
+        assertThat(allDataUseCase.loadAllFitnessData()).isEqualTo(expected)
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun loadAllFitnessData_symptomsFlagDisabled_returnsAllData() = runTest {
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+            mapOf(
+                StepsRecord::class.java to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.STEPS,
+                        HealthDataCategory.ACTIVITY,
+                        listOf(
+                            getDataOrigin(TEST_APP_PACKAGE_NAME),
+                            getDataOrigin(TEST_APP_PACKAGE_NAME_2),
+                        ),
+                    ),
+                WeightRecord::class.java to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.WEIGHT,
+                        HealthDataCategory.BODY_MEASUREMENTS,
+                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME_2))),
+                    ),
+                HeartRateRecord::class.java to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.HEART_RATE,
+                        HealthDataCategory.VITALS,
+                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
+                    ),
+            )
+        Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
+            .`when`(healthConnectManager)
+            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+
+        val expected =
+            Success(
+                listOf(
+                    PermissionTypesPerCategory(
+                        HealthDataCategory.ACTIVITY,
+                        listOf(FitnessPermissionType.STEPS),
+                    ),
+                    PermissionTypesPerCategory(
+                        HealthDataCategory.BODY_MEASUREMENTS,
+                        listOf(FitnessPermissionType.WEIGHT),
+                    ),
+                    PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
+                    PermissionTypesPerCategory(
+                        HealthDataCategory.VITALS,
+                        listOf(FitnessPermissionType.HEART_RATE),
+                    ),
+                    PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
                 )
             )
         assertThat(allDataUseCase.loadAllFitnessData()).isEqualTo(expected)
