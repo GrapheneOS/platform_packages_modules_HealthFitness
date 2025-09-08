@@ -38,7 +38,13 @@ constructor(context: Context, attrs: AttributeSet? = null) :
     BaseExpandablePreference(context, attrs) {
 
     private var onCheckedChangeListener: ((Boolean) -> Unit)? = null
-    private var mIsChecked: Boolean = false
+    var isChecked: Boolean = false
+        set(value) {
+            if (field != value) {
+                field = value
+                notifyChanged()
+            }
+        }
 
     init {
         layoutResource =
@@ -59,13 +65,6 @@ constructor(context: Context, attrs: AttributeSet? = null) :
         onCheckedChangeListener = listener
     }
 
-    fun setIsChecked(isChecked: Boolean) {
-        if (mIsChecked != isChecked) {
-            mIsChecked = isChecked
-            notifyChanged()
-        }
-    }
-
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
 
@@ -76,10 +75,11 @@ constructor(context: Context, attrs: AttributeSet? = null) :
                 isClickable = true
             } as SwitchCompat
 
-        switch.isChecked = mIsChecked
+        switch.setOnCheckedChangeListener(null)
+        switch.isChecked = isChecked
         switch.setOnCheckedChangeListener { _, isChecked ->
-            if (mIsChecked != isChecked) {
-                mIsChecked = isChecked
+            if (this.isChecked != isChecked) {
+                this.isChecked = isChecked
                 onCheckedChangeListener?.invoke(isChecked)
             }
         }

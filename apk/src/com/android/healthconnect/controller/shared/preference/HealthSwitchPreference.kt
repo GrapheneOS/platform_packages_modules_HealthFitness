@@ -19,6 +19,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SwitchCompat
 import androidx.preference.Preference.OnPreferenceChangeListener
 import androidx.preference.PreferenceViewHolder
 import androidx.preference.SwitchPreferenceCompat
@@ -32,7 +33,6 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
 import com.android.healthconnect.controller.utils.logging.UIAction
 import com.android.healthconnect.controller.utils.logging.UnknownGenericElement
-import com.google.android.material.materialswitch.MaterialSwitch
 import dagger.hilt.android.EntryPointAccessors
 
 /**
@@ -49,6 +49,7 @@ constructor(context: Context, attrs: AttributeSet? = null) :
     var logNameActive: ElementName = UnknownGenericElement.UNKNOWN_SWITCH_ACTIVE_PREFERENCE
     var logNameInactive: ElementName = UnknownGenericElement.UNKNOWN_SWITCH_INACTIVE_PREFERENCE
     var permission: HealthPermission? = null
+    var isLastInGroup: Boolean = false
     private var logger: HealthConnectLogger
     private var loggingClickListener: OnPreferenceChangeListener? = null
 
@@ -146,8 +147,8 @@ constructor(context: Context, attrs: AttributeSet? = null) :
         }
     }
 
-    private fun findSwitchInView(viewGroup: View?): MaterialSwitch? {
-        if (viewGroup is MaterialSwitch) {
+    private fun findSwitchInView(viewGroup: View?): SwitchCompat? {
+        if (viewGroup is SwitchCompat) {
             return viewGroup
         }
         if (viewGroup is ViewGroup) {

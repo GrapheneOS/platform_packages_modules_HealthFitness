@@ -33,6 +33,7 @@ import com.android.healthconnect.controller.shared.CategoriesMappers.SLEEP_PERMI
 import com.android.healthconnect.controller.shared.CategoriesMappers.VITALS_PERMISSION_GROUPS
 import com.android.healthconnect.controller.shared.CategoriesMappers.WELLNESS_PERMISSION_GROUPS
 import com.android.healthconnect.controller.utils.AttributeResolver
+import com.android.healthconnect.controller.utils.LocaleSorter.sortByLocale
 
 object HealthDataCategoryExtensions {
     /** Additional category for medical permission types. */
@@ -143,6 +144,19 @@ object HealthDataCategoryExtensions {
         return getAllFitnessDataCategories().firstOrNull {
             it.healthPermissionTypes().contains(type)
         }
+    }
+
+    fun getSortedDataCategoryToStringMap(context: Context): Map<Int, String> {
+        return DATA_CATEGORY_TO_HEALTH_PERMISSION_TYPE_MAP.keys
+            .mapNotNull { category ->
+                try {
+                    category to context.getString(category.uppercaseTitle())
+                } catch (_: IllegalArgumentException) {
+                    null
+                }
+            }
+            .sortByLocale { (_, value) -> value }
+            .toMap()
     }
 }
 
