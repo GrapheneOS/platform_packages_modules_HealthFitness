@@ -17,6 +17,8 @@
 package com.android.server.healthconnect.telemetry.dataquality;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__DATA_STATE__DATA_STATE_ACTIVE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__DATA_STATE__DATA_STATE_PASSIVE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_ACTIVE_CALORIES_BURNED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_CYCLING_CADENCE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_DISTANCE;
@@ -64,22 +66,36 @@ public final class DataGranularityStatsLogger {
                 mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek();
 
         for (DataGranularityStatsCollector.GranularityStats stat : allStats.activeStats()) {
-            logGranularityStat(stat.packageName(), stat.recordIdentifier(), stat.granularity());
+            logGranularityStat(
+                    stat.packageName(),
+                    stat.recordIdentifier(),
+                    stat.granularity(),
+                    /* isActive= */ true);
         }
         for (DataGranularityStatsCollector.GranularityStats stat : allStats.passiveStats()) {
-            logGranularityStat(stat.packageName(), stat.recordIdentifier(), stat.granularity());
+            logGranularityStat(
+                    stat.packageName(),
+                    stat.recordIdentifier(),
+                    stat.granularity(),
+                    /* isActive= */ false);
         }
     }
 
     private void logGranularityStat(
             String packageName,
             @RecordTypeIdentifier.RecordType int recordTypeId,
-            long granularity) {
+            long granularity,
+            boolean isActive) {
+        int dataState =
+                isActive
+                        ? HEALTH_CONNECT_DATA_GRANULARITY_STATS__DATA_STATE__DATA_STATE_ACTIVE
+                        : HEALTH_CONNECT_DATA_GRANULARITY_STATS__DATA_STATE__DATA_STATE_PASSIVE;
         mHealthFitnessStatsLog.write(
                 HEALTH_CONNECT_DATA_GRANULARITY_STATS,
                 packageName,
                 mapDataTypeToLoggingEnum(recordTypeId),
-                granularity);
+                granularity,
+                dataState);
     }
 
     private static int mapDataTypeToLoggingEnum(@RecordTypeIdentifier.RecordType int recordTypeId) {
