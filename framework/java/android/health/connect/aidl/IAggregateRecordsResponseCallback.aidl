@@ -6,7 +6,7 @@ import android.health.connect.aidl.HealthConnectExceptionParcel;
 /**
  * Callback for {@link IHealthConnectService#aggregateRecords}.
  *
- * {@hide}
+ * @hide
  */
 interface IAggregateRecordsResponseCallback {
     // Called on a successful operation

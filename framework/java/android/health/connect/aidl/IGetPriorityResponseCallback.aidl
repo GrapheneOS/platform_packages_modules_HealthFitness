@@ -6,7 +6,7 @@ import android.health.connect.aidl.HealthConnectExceptionParcel;
 /**
  * Callback for {@link IHealthConnectService#getCurrentPriority}.
  *
- * {@hide}
+ * @hide
  */
 interface IGetPriorityResponseCallback {
     // Called on a successful operation

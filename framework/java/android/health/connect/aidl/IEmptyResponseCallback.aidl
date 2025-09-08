@@ -4,7 +4,7 @@ import android.health.connect.aidl.HealthConnectExceptionParcel;
 
 /**
  * Callback to for {@link HealthConnect} APIs with no result object
- * {@hide}
+ * @hide
  */
 interface IEmptyResponseCallback {
     // Called on a successful operation
