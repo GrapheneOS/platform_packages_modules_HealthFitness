@@ -18,10 +18,7 @@ package com.android.healthconnect.controller.shared.preference
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.ImageView
-import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
-import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
 import com.android.settingslib.widget.SettingsThemeHelper
 import com.android.settingslib.widget.preference.app.R as AppPreferenceR
@@ -35,23 +32,8 @@ import com.android.settingslib.widget.theme.R as SettingslibR
  */
 class HealthExpandablePreference
 @JvmOverloads
-constructor(context: Context, attrs: AttributeSet? = null) : PreferenceGroup(context, attrs) {
-
-    var mIsExpanded = false
-    private var mOnExpandChangeListener: OnExpandChangeListener? = null
-
-    /**
-     * Interface definition for a callback to be invoked when the expansion state of this preference
-     * changes.
-     */
-    fun interface OnExpandChangeListener {
-        /**
-         * Called when the expansion state of this preference has changed.
-         *
-         * @param isExpanded The new expansion state.
-         */
-        fun onExpandChanged(isExpanded: Boolean)
-    }
+constructor(context: Context, attrs: AttributeSet? = null) :
+    BaseExpandablePreference(context, attrs) {
 
     init {
         layoutResource =
@@ -63,43 +45,7 @@ constructor(context: Context, attrs: AttributeSet? = null) : PreferenceGroup(con
         widgetLayoutResource = R.layout.preference_expand_arrow_widget
     }
 
-    override fun onBindViewHolder(holder: PreferenceViewHolder) {
-        super.onBindViewHolder(holder)
-        holder.isDividerAllowedBelow = false
-        holder.isDividerAllowedAbove = false
-
-        val arrow = holder.findViewById(R.id.expand_arrow) as? ImageView
-        arrow?.rotation = if (mIsExpanded) 180f else 0f
-
-        holder.itemView.setOnClickListener {
-            setExpanded(!mIsExpanded)
-            mOnExpandChangeListener?.onExpandChanged(mIsExpanded)
-        }
-        updateChildPreferences()
-    }
-
-    override fun addPreference(preference: Preference): Boolean {
-        val result = super.addPreference(preference)
-        notifyChanged()
-        return result
-    }
-
-    /** Sets the expansion state of this preference. */
-    fun setExpanded(isExpanded: Boolean) {
-        if (mIsExpanded != isExpanded) {
-            mIsExpanded = isExpanded
-            notifyChanged()
-        }
-    }
-
-    /** Sets a callback to be invoked when the expansion state of this preference changes. */
-    fun setOnExpandChangeListener(listener: OnExpandChangeListener?) {
-        mOnExpandChangeListener = listener
-    }
-
-    private fun updateChildPreferences() {
-        for (i in 0 until preferenceCount) {
-            getPreference(i).isVisible = mIsExpanded
-        }
+    override fun getDropDownIconId(): Int {
+        return R.id.expand_arrow
     }
 }

@@ -16,7 +16,9 @@
 
 package com.android.server.healthconnect.telemetry.dataquality;
 
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
+import static com.android.server.healthconnect.telemetry.dataquality.DataQualityUtils.getPackageName;
 import static com.android.server.healthconnect.telemetry.dataquality.DataQualityUtils.getReadLastWeekSessionsRequest;
 
 import android.content.pm.PackageManager;
@@ -47,11 +49,14 @@ import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Logs Health Connect granularity for various datatypes.
@@ -78,6 +83,8 @@ public final class DataGranularityStatsCollector {
 
     /** Data class to hold start and end time for a session. */
     private record TimeRange(long startTime, long endTime) {}
+
+    private record StatsKey(long appId, boolean isActive) {}
 
     private static final Map<@RecordTypeIdentifier.RecordType Integer, SeriesHelperData>
             SERIES_TYPE_ID_TO_TABLE_NAME_MAP =
@@ -139,49 +146,71 @@ public final class DataGranularityStatsCollector {
         String tableName = ExerciseSessionRecordHelper.EXERCISE_SESSION_RECORD_TABLE_NAME;
         Map<Long, List<TimeRange>> appToSessionTimeMap = getAppToSessionTimeMap(tableName);
 
-        List<GranularityStats> activeStats = new ArrayList<>();
-        activeStats.addAll(getLastWeekIntervalGranularityStats(appToSessionTimeMap));
-        activeStats.addAll(getLastWeekSeriesGranularityStats(appToSessionTimeMap));
+        AllGranularityStats intervalStats =
+                getLastWeekIntervalGranularityStats(appToSessionTimeMap);
+        AllGranularityStats seriesStats = getLastWeekSeriesGranularityStats(appToSessionTimeMap);
+
+        List<GranularityStats> activeStats = new ArrayList<>(intervalStats.activeStats);
+        List<GranularityStats> passiveStats = new ArrayList<>(intervalStats.passiveStats);
+
+        activeStats.addAll(seriesStats.activeStats);
+        passiveStats.addAll(seriesStats.passiveStats);
 
         return new AllGranularityStats(
-                Collections.unmodifiableList(activeStats), Collections.emptyList());
+                Collections.unmodifiableList(activeStats),
+                Collections.unmodifiableList(passiveStats));
     }
 
-    private List<GranularityStats> getLastWeekIntervalGranularityStats(
+    private AllGranularityStats getLastWeekIntervalGranularityStats(
             Map<Long, List<TimeRange>> appToSessionTimeMap) {
-        List<GranularityStats> granularityStats = new ArrayList<>();
-        for (Map.Entry<Long, List<TimeRange>> entry : appToSessionTimeMap.entrySet()) {
-            long appInfoId = entry.getKey();
-            String packageName;
-            try {
-                packageName = mAppInfoHelper.getPackageName(appInfoId);
-            } catch (PackageManager.NameNotFoundException exception) {
-                // This should not happen as we have already filtered out invalid app ids.
-                Slog.wtf(TAG, "Package name not found for a pre-filtered appInfoId", exception);
-                continue;
-            }
+        List<GranularityStats> activeStats = new ArrayList<>();
+        List<GranularityStats> passiveStats = new ArrayList<>();
+        for (Map.Entry<@RecordTypeIdentifier.RecordType Integer, String> dataTypeInfo :
+                INTERVAL_TYPE_ID_TO_TABLE_NAME_MAP.entrySet()) {
+            Map<StatsKey, IntervalAggregator> keyToAggregatorMap = new HashMap<>();
+            ReadTableRequest readTableRequest =
+                    getReadIntervalTableRequest(dataTypeInfo.getValue());
 
-            for (TimeRange sessionTimeRange : entry.getValue()) {
-                for (Map.Entry<@RecordTypeIdentifier.RecordType Integer, String> dataTypeInfo :
-                        INTERVAL_TYPE_ID_TO_TABLE_NAME_MAP.entrySet()) {
-                    long granularity =
-                            getIntervalGranularityDataForExerciseSessions(
-                                    dataTypeInfo.getValue(),
-                                    sessionTimeRange.startTime(),
-                                    sessionTimeRange.endTime(),
-                                    appInfoId);
-                    if (granularity == -1L) {
-                        continue;
-                    }
-                    granularityStats.add(
-                            new GranularityStats(packageName, dataTypeInfo.getKey(), granularity));
+            try (Cursor cursor = mTransactionManager.read(readTableRequest)) {
+                while (cursor.moveToNext()) {
+                    long appId = getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
+                    long startTime =
+                            getCursorLong(cursor, IntervalRecordHelper.START_TIME_COLUMN_NAME);
+                    long endTime = getCursorLong(cursor, IntervalRecordHelper.END_TIME_COLUMN_NAME);
+                    boolean isActive =
+                            isRecordActive(startTime, endTime, appId, appToSessionTimeMap);
+
+                    StatsKey key = new StatsKey(appId, isActive);
+                    keyToAggregatorMap
+                            .computeIfAbsent(key, k -> new IntervalAggregator())
+                            .accept(startTime, endTime);
                 }
             }
+
+            keyToAggregatorMap.forEach(
+                    (key, aggregator) -> {
+                        if (aggregator.mRecordCount == 0) {
+                            return;
+                        }
+                        Optional<String> packageName = getPackageName(mAppInfoHelper, key.appId());
+                        if (packageName.isEmpty()) {
+                            return;
+                        }
+                        long granularity = aggregator.mTotalDuration / aggregator.mRecordCount;
+                        GranularityStats stats =
+                                new GranularityStats(
+                                        packageName.get(), dataTypeInfo.getKey(), granularity);
+                        if (key.isActive()) {
+                            activeStats.add(stats);
+                        } else {
+                            passiveStats.add(stats);
+                        }
+                    });
         }
-        return granularityStats;
+        return new AllGranularityStats(activeStats, passiveStats);
     }
 
-    private List<GranularityStats> getLastWeekSeriesGranularityStats(
+    private AllGranularityStats getLastWeekSeriesGranularityStats(
             Map<Long, List<TimeRange>> appToSessionTimeMap) {
         List<GranularityStats> granularityStats = new ArrayList<>();
         for (Map.Entry<Long, List<TimeRange>> entry : appToSessionTimeMap.entrySet()) {
@@ -212,49 +241,7 @@ public final class DataGranularityStatsCollector {
                 }
             }
         }
-        return granularityStats;
-    }
-
-    private long getIntervalGranularityDataForExerciseSessions(
-            String intervalDataTypeTableName,
-            long sessionStartTime,
-            long sessionEndTime,
-            long appInfoId) {
-        WhereClauses whereClause = new WhereClauses(WhereClauses.LogicalOperator.AND);
-        whereClause
-                .addWhereGreaterThanOrEqualClause(
-                        IntervalRecordHelper.START_TIME_COLUMN_NAME, sessionStartTime)
-                .addWhereLessThanOrEqualClause(
-                        IntervalRecordHelper.END_TIME_COLUMN_NAME, sessionEndTime)
-                .addWhereEqualsClause(
-                        RecordHelper.APP_INFO_ID_COLUMN_NAME, String.valueOf(appInfoId));
-
-        ReadTableRequest readTableRequest =
-                new ReadTableRequest(intervalDataTypeTableName)
-                        .setColumnNames(
-                                List.of(
-                                        IntervalRecordHelper.START_TIME_COLUMN_NAME,
-                                        IntervalRecordHelper.END_TIME_COLUMN_NAME))
-                        .setWhereClause(whereClause);
-
-        long numberOfRecords = 0L;
-        long totalDurationInMillis = 0L;
-        try (Cursor cursor = mTransactionManager.read(readTableRequest)) {
-            while (cursor.moveToNext()) {
-                long startTime = getCursorLong(cursor, IntervalRecordHelper.START_TIME_COLUMN_NAME);
-                long endTime = getCursorLong(cursor, IntervalRecordHelper.END_TIME_COLUMN_NAME);
-                totalDurationInMillis += (endTime - startTime);
-                numberOfRecords++;
-            }
-        }
-
-        if (numberOfRecords == 0) {
-            return -1L;
-        }
-
-        // We define granularity as total duration we have interval data for divided by number of
-        // records we have for that data type in the given duration.
-        return totalDurationInMillis / numberOfRecords;
+        return new AllGranularityStats(granularityStats, Collections.emptyList());
     }
 
     private long getSeriesGranularityDataForExerciseSessions(
@@ -272,7 +259,7 @@ public final class DataGranularityStatsCollector {
 
         WhereClauses postJoinWhereClause = new WhereClauses(WhereClauses.LogicalOperator.AND);
         postJoinWhereClause.addWhereEqualsClause(
-                RecordHelper.APP_INFO_ID_COLUMN_NAME, String.valueOf(appInfoId));
+                APP_INFO_ID_COLUMN_NAME, String.valueOf(appInfoId));
 
         ReadTableRequest readTableRequest =
                 new ReadTableRequest(seriesHelperData.seriesTableName())
@@ -304,11 +291,8 @@ public final class DataGranularityStatsCollector {
         try (Cursor cursor = mTransactionManager.read(readTableRequest)) {
             while (cursor.moveToNext()) {
                 long appInfoId = getCursorLong(cursor, RecordHelper.APP_INFO_ID_COLUMN_NAME);
-                try {
-                    mAppInfoHelper.getPackageName(appInfoId);
-                } catch (PackageManager.NameNotFoundException e) {
-                    Slog.e(TAG, "Package name not found while retrieving session", e);
-                    // Skip if package name not found for the app id.
+                if (getPackageName(mAppInfoHelper, appInfoId).isEmpty()) {
+                    Slog.e(TAG, "Package name not found while retrieving session");
                     continue;
                 }
                 long startTime = getCursorLong(cursor, IntervalRecordHelper.START_TIME_COLUMN_NAME);
@@ -319,5 +303,52 @@ public final class DataGranularityStatsCollector {
             }
         }
         return appToSessionTimeMap;
+    }
+
+    private ReadTableRequest getReadIntervalTableRequest(String tableName) {
+        long sevenDaysAgoMillis =
+                Instant.now().minus(7, ChronoUnit.DAYS).toEpochMilli();
+        List<String> columnNames =
+                List.of(
+                        APP_INFO_ID_COLUMN_NAME,
+                        IntervalRecordHelper.START_TIME_COLUMN_NAME,
+                        IntervalRecordHelper.END_TIME_COLUMN_NAME);
+        WhereClauses whereClause =
+                new WhereClauses(WhereClauses.LogicalOperator.AND)
+                        .addWhereLaterThanTimeClause(
+                                IntervalRecordHelper.START_TIME_COLUMN_NAME, sevenDaysAgoMillis);
+
+        return new ReadTableRequest(tableName)
+                .setColumnNames(columnNames)
+                .setWhereClause(whereClause);
+    }
+
+    private boolean isRecordActive(
+            long startTimeMillis,
+            long endTimeMillis,
+            long appId,
+            Map<Long, List<TimeRange>> sessionMap) {
+        if (!sessionMap.containsKey(appId)) {
+            return false;
+        }
+
+        for (TimeRange sessionTimeRange : sessionMap.get(appId)) {
+            if (startTimeMillis >= sessionTimeRange.startTime()
+                    && endTimeMillis <= sessionTimeRange.endTime()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static final class IntervalAggregator {
+        private long mTotalDuration = 0;
+        private long mRecordCount = 0;
+
+        private void accept(long startTime, long endTime) {
+            mTotalDuration += (endTime - startTime);
+            mRecordCount++;
+        }
     }
 }

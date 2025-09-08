@@ -70,7 +70,7 @@ import java.util.Map;
 
 /**
  * Interface for {@link com.android.health.connect.HealthConnectManager}
- * {@hide}
+ * @hide
  */
 interface IHealthConnectService {
     void grantHealthPermission(String packageName, String permissionName, in UserHandle user);
@@ -223,7 +223,7 @@ interface IHealthConnectService {
      *
      * @param recordTypes List of record types classes for which to get the activity dates.
      * @param callback Callback to receive the result of performing this operation.
-     * {@hide}
+     * @hide
      */
     void getActivityDates(
         in ActivityDatesRequestParcel recordTypes,

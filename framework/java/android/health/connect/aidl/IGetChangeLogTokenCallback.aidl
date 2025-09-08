@@ -6,7 +6,7 @@ import android.health.connect.changelog.ChangeLogTokenResponse;
 /**
  * Callback for {@link IHealthConnectService#getChangeLogToken}
  *
- * {@hide}
+ * @hide
  */
 interface IGetChangeLogTokenCallback {
     // Called on a successful operation

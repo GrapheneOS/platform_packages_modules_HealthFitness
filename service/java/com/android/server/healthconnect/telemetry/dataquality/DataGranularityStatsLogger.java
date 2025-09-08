@@ -66,6 +66,9 @@ public final class DataGranularityStatsLogger {
         for (DataGranularityStatsCollector.GranularityStats stat : allStats.activeStats()) {
             logGranularityStat(stat.packageName(), stat.recordIdentifier(), stat.granularity());
         }
+        for (DataGranularityStatsCollector.GranularityStats stat : allStats.passiveStats()) {
+            logGranularityStat(stat.packageName(), stat.recordIdentifier(), stat.granularity());
+        }
     }
 
     private void logGranularityStat(

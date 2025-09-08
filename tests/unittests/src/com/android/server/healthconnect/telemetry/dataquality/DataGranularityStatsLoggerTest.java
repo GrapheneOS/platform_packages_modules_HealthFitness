@@ -114,7 +114,7 @@ public class DataGranularityStatsLoggerTest {
         when(mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek())
                 .thenReturn(
                         new DataGranularityStatsCollector.AllGranularityStats(
-                                getGranularityStats(), Collections.emptyList()));
+                                getGranularityStats(), getPassiveGranularityStats()));
 
         mDataGranularityStatsLogger.logGranularityStats();
 
@@ -214,6 +214,20 @@ public class DataGranularityStatsLoggerTest {
                         TEST_PACKAGE,
                         HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_OXYGEN_SATURATION,
                         /* granularity= */ 16000L);
+
+        // Passive stats
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS,
+                        TEST_PACKAGE,
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_STEPS,
+                        /* granularity= */ 100L);
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS,
+                        TEST_PACKAGE,
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_DISTANCE,
+                        /* granularity= */ 200L);
     }
 
     @Test
@@ -289,6 +303,19 @@ public class DataGranularityStatsLoggerTest {
         stats.add(
                 new DataGranularityStatsCollector.GranularityStats(
                         TEST_PACKAGE, RECORD_TYPE_OXYGEN_SATURATION, /* granularity= */ 16000));
+        return stats;
+    }
+
+    @NonNull
+    private static List<DataGranularityStatsCollector.GranularityStats>
+            getPassiveGranularityStats() {
+        List<DataGranularityStatsCollector.GranularityStats> stats = new ArrayList<>();
+        stats.add(
+                new DataGranularityStatsCollector.GranularityStats(
+                        TEST_PACKAGE, RECORD_TYPE_STEPS, /* granularity= */ 100));
+        stats.add(
+                new DataGranularityStatsCollector.GranularityStats(
+                        TEST_PACKAGE, RECORD_TYPE_DISTANCE, /* granularity= */ 200));
         return stats;
     }
 }

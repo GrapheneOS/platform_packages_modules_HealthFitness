@@ -26,8 +26,8 @@ import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelpe
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.RECORDING_METHOD_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
+import static com.android.server.healthconnect.telemetry.dataquality.DataQualityUtils.getPackageName;
 
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.Metadata;
@@ -108,7 +108,7 @@ public final class CompletenessStatsCollector {
 
     private Optional<RecordingMethodStat> createRecordingMethodStat(Cursor cursor) {
         // Skip logging if package name not found in App info table
-        return getPackageName(getCursorInt(cursor, APP_INFO_ID_COLUMN_NAME))
+        return getPackageName(mAppInfoHelper, getCursorInt(cursor, APP_INFO_ID_COLUMN_NAME))
                 .map(
                         packageName -> {
                             int recordTypeId = getCursorInt(cursor, RECORD_TYPE_ID_COLUMN_NAME);
@@ -188,7 +188,7 @@ public final class CompletenessStatsCollector {
 
     private Optional<DeviceInfoStat> createDeviceInfoStat(Cursor cursor) {
         // Skip logging if package name not found in App info table
-        return getPackageName(getCursorInt(cursor, APP_INFO_ID_COLUMN_NAME))
+        return getPackageName(mAppInfoHelper, getCursorInt(cursor, APP_INFO_ID_COLUMN_NAME))
                 .map(
                         app -> {
                             int recordTypeId = getCursorInt(cursor, RECORD_TYPE_ID_COLUMN_NAME);
@@ -210,17 +210,6 @@ public final class CompletenessStatsCollector {
         long aWeekAgoMillis = mClock.instant().minus(7, ChronoUnit.DAYS).toEpochMilli();
         return new WhereClauses(WhereClauses.LogicalOperator.AND)
                 .addWhereLaterThanTimeClause(LAST_MODIFIED_TIME_COLUMN_NAME, aWeekAgoMillis);
-    }
-
-    private Optional<String> getPackageName(int appId) {
-        String packageName;
-        try {
-            packageName = mAppInfoHelper.getPackageName(appId);
-        } catch (PackageManager.NameNotFoundException ex) {
-            Slog.w(TAG, "Invalid app id " + appId);
-            return Optional.empty();
-        }
-        return Optional.of(packageName);
     }
 
     /**

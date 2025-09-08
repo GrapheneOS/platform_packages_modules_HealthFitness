@@ -5,7 +5,7 @@ import android.health.connect.aidl.HealthConnectExceptionParcel;
 
 /**
  * Callback for {@link HealthConnectManager#getLatestMetadataForBackup}
- * {@hide}
+ * @hide
  */
 interface IGetLatestMetadataForBackupResponseCallback {
     // Called on a successful operation

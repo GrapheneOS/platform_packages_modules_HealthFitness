@@ -378,6 +378,14 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"మద్యపానం"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"మద్యపాన డేటాను రీడ్ చేయండి"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"మద్యపాన డేటాను రైట్ చేయండి"</string>
+    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
+    <skip />
+    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
+    <skip />
+    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
+    <skip />
+    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
+    <skip />
     <string name="read_permission_category" msgid="6002099618259628632">"చదవడానికి \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" యాప్‌ను అనుమతించండి"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"రాయడానికి \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" యాప్‌ను అనుమతించండి"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"అనుమతించండి"</string>

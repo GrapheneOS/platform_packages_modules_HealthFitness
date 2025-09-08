@@ -55,10 +55,10 @@ class ExpandablePreferenceAdapter(
                         preference is MatchmakingPrivacyFooterPreference ->
                             SettingsLibResources.drawable.settingslib_round_background_bottom
 
-                        preference is HealthExpandablePreference && preference.mIsExpanded ->
+                        preference is BaseExpandablePreference && preference.mIsExpanded ->
                             SettingsLibResources.drawable.settingslib_round_background_top
 
-                        preference is HealthExpandablePreference && !preference.mIsExpanded ->
+                        preference is BaseExpandablePreference && !preference.mIsExpanded ->
                             SettingsLibResources.drawable.settingslib_round_background
 
                         else -> SettingsLibResources.drawable.settingslib_round_background_center

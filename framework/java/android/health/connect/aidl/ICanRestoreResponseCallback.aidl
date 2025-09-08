@@ -4,7 +4,7 @@ import android.health.connect.aidl.HealthConnectExceptionParcel;
 
 /**
  * Callback for {@link HealthConnectService#canRestore}
- * {@hide}
+ * @hide
  */
 interface ICanRestoreResponseCallback {
     // Called on a successful operation

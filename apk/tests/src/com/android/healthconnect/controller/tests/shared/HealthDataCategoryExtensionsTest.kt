@@ -25,6 +25,9 @@ import android.health.connect.HealthDataCategory.CYCLE_TRACKING
 import android.health.connect.HealthDataCategory.NUTRITION
 import android.health.connect.HealthDataCategory.SLEEP
 import android.health.connect.HealthDataCategory.VITALS
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
@@ -40,6 +43,7 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.lowercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import com.google.common.truth.Truth.assertWithMessage
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -56,6 +60,7 @@ import org.junit.runner.RunWith
 class HealthDataCategoryExtensionsTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val mSetFlagsRule = SetFlagsRule()
 
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
@@ -65,8 +70,17 @@ class HealthDataCategoryExtensionsTest {
     }
 
     @Test
-    fun fitnessDataCategories() {
+    @EnableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun fitnessDataCategories_symptomsFlagEnabled_returnsSymptoms() {
         assertThat(FITNESS_DATA_CATEGORIES).hasSize(8)
+        assertThat(FITNESS_DATA_CATEGORIES).containsNoDuplicates()
+        assertThat(FITNESS_DATA_CATEGORIES).doesNotContain(HealthDataCategory.UNKNOWN)
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun fitnessDataCategories_symptomsFlagDisabled_doesNotReturnSymptoms() {
+        assertThat(FITNESS_DATA_CATEGORIES).hasSize(7)
         assertThat(FITNESS_DATA_CATEGORIES).containsNoDuplicates()
         assertThat(FITNESS_DATA_CATEGORIES).doesNotContain(HealthDataCategory.UNKNOWN)
     }
