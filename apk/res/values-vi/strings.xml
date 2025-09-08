@@ -378,6 +378,14 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"mức tiêu thụ đồ uống có cồn"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Đọc dữ liệu về mức tiêu thụ đồ uống có cồn"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Ghi dữ liệu về mức tiêu thụ đồ uống có cồn"</string>
+    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
+    <skip />
+    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
+    <skip />
+    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
+    <skip />
+    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
+    <skip />
     <string name="read_permission_category" msgid="6002099618259628632">"Cho phép \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" đọc dữ liệu"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Cho phép \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" ghi dữ liệu"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Cho phép"</string>

@@ -28,7 +28,7 @@
     <string name="all_categories_title" msgid="1446410643217937926">"すべてのカテゴリ"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"すべてのカテゴリを表示"</string>
     <string name="no_data" msgid="1906986019249068659">"データがありません"</string>
-    <string name="devices_summary" msgid="8653563324512654292">"接続済みのデバイスを管理する"</string>
+    <string name="devices_summary" msgid="8653563324512654292">"接続済みのデバイスを管理します"</string>
     <string name="devices_title" msgid="7548105261104504301">"デバイス"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"アプリの権限"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"アプリと権限を管理します"</string>
@@ -378,6 +378,14 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"アルコール摂取量"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"アルコール摂取量の読み取り"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"アルコール摂取量の書き込み"</string>
+    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
+    <skip />
+    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
+    <skip />
+    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
+    <skip />
+    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
+    <skip />
     <string name="read_permission_category" msgid="6002099618259628632">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」に読み取りを許可する"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」に書き込みを許可する"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"許可する"</string>
@@ -502,7 +510,7 @@
     <string name="last_export_time_hours_ago" msgid="3174986640795245343">"{count,plural, =1{前回のエクスポート: 1 時間前}other{前回のエクスポート: # 時間前}}"</string>
     <string name="no_last_export_message" msgid="8138900854579872667">"前回のエクスポート: なし"</string>
     <string name="last_export_file_location" msgid="4069435932524304633">"<xliff:g id="EXPORT_APP_NAME">%1$s</xliff:g> • <xliff:g id="EXPORT_FILE_NAME">%2$s</xliff:g>"</string>
-    <string name="scheduled_export" msgid="8737660963687364370">"スケジュール設定されたエクスポート"</string>
+    <string name="scheduled_export" msgid="8737660963687364370">"エクスポートのスケジュール設定"</string>
     <string name="import_data" msgid="404502315533233094">"データをインポート"</string>
     <string name="import_data_description" msgid="4040178599441724296">"以前エクスポートしたファイルからデータを復元できます"</string>
     <string name="import_error_banner_title" msgid="1480977889067027790">"データを復元しますか？"</string>
@@ -521,7 +529,7 @@
     <string name="next_export_file_location" msgid="2117071837862240540">"<xliff:g id="EXPORT_APP_NAME">%1$s</xliff:g> • <xliff:g id="EXPORT_FILE_NAME">%2$s</xliff:g>"</string>
     <string name="choose_frequency_category" msgid="9094154407387676553">"間隔の変更"</string>
     <string name="scheduled_export_settings_footer_text" msgid="8488483803782086291">"スケジュール設定されたエクスポートを OFF にしても、エクスポート済みのデータは保存場所から削除されません。"</string>
-    <string name="choose_frequency" msgid="8119085390857180221">"スケジュール設定されたエクスポートをセットアップ"</string>
+    <string name="choose_frequency" msgid="8119085390857180221">"エクスポートのスケジュールを設定"</string>
     <string name="choose_frequency_description" msgid="7698155810053504157">"データをエクスポートする頻度を選択してください"</string>
     <string name="frequency_daily" msgid="3596412357416125727">"毎日"</string>
     <string name="frequency_weekly" msgid="7302587625019573393">"毎週"</string>

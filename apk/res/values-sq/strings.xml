@@ -378,6 +378,14 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"konsumi i alkoolit"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Lexo konsumin e alkoolit"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Shkruaj konsumin e alkoolit"</string>
+    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
+    <skip />
+    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
+    <skip />
+    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
+    <skip />
+    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
+    <skip />
     <string name="read_permission_category" msgid="6002099618259628632">"Lejo \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" të lexojë"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Lejo \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" të shkruajë"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Lejo"</string>
