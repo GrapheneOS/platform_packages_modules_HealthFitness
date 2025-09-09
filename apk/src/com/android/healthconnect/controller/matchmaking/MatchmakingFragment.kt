@@ -234,11 +234,11 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     private fun buildAppList(apps: List<MatchmakingAppData>) {
         customStyledPrefs.clear()
         matchmakingAppsCategory.removeAll()
-        apps.forEach { appData -> addAppPreference(appData) }
+        apps.forEach { appData -> addAppPreference(appData, apps.size) }
     }
 
-    private fun addAppPreference(appData: MatchmakingAppData) {
-        val expandablePreference = createExpandablePreference(appData)
+    private fun addAppPreference(appData: MatchmakingAppData, appListSize: Int) {
+        val expandablePreference = createExpandablePreference(appData, appListSize)
         matchmakingAppsCategory.addPreference(expandablePreference)
         customStyledPrefs.add(expandablePreference)
 
@@ -249,7 +249,8 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     }
 
     private fun createExpandablePreference(
-        appData: MatchmakingAppData
+        appData: MatchmakingAppData,
+        appListSize: Int,
     ): HealthExpandablePreference {
         return HealthExpandablePreference(requireContext(), null).apply {
             title =
@@ -259,14 +260,16 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                 )
             icon = appData.metadata.icon
             key = appData.metadata.packageName
-            setExpanded(
-                viewModel.expandedPreferenceKeys.value?.contains(appData.metadata.packageName) ==
-                    true
-            )
+            setExpanded(isInitiallyExpanded(appData, appListSize))
             setOnExpandChangeListener { isExpanded ->
                 viewModel.updateExpandedPreferenceKey(key, isExpanded)
             }
         }
+    }
+
+    private fun isInitiallyExpanded(appData: MatchmakingAppData, appListSize: Int): Boolean {
+        return appListSize == 1 ||
+            viewModel.expandedPreferenceKeys.value?.contains(appData.metadata.packageName) == true
     }
 
     private fun addPermissionSwitches(
