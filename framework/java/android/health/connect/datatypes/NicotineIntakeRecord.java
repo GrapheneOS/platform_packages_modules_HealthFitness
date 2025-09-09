@@ -179,8 +179,8 @@ public final class NicotineIntakeRecord extends IntervalRecord {
             mMetadata = Objects.requireNonNull(metadata);
             mStartTime = Objects.requireNonNull(startTime);
             mEndTime = Objects.requireNonNull(endTime);
-            mStartZoneOffset = RecordUtils.getDefaultZoneOffset(startTime);
-            mEndZoneOffset = RecordUtils.getDefaultZoneOffset(startTime);
+            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
+            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
             mQuantity = quantity;
             mNicotineIntakeType = nicotineIntakeType;
         }

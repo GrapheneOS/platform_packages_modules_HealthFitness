@@ -101,7 +101,7 @@ public final class BodyWaterMassRecord extends InstantRecord {
             mMetadata = metadata;
             mTime = time;
             mBodyWaterMass = bodyWaterMass;
-            mZoneOffset = RecordUtils.getDefaultZoneOffset(time);
+            mZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(time);
         }
 
         /** Sets the zone offset for the record. */
@@ -115,7 +115,7 @@ public final class BodyWaterMassRecord extends InstantRecord {
         /** Clears zone offset. */
         @NonNull
         public BodyWaterMassRecord.Builder clearZoneOffset() {
-            mZoneOffset = RecordUtils.getDefaultZoneOffset(mTime);
+            mZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 

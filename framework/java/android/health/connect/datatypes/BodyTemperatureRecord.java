@@ -136,7 +136,7 @@ public final class BodyTemperatureRecord extends InstantRecord {
             mTime = time;
             mMeasurementLocation = measurementLocation;
             mTemperature = temperature;
-            mZoneOffset = RecordUtils.getDefaultZoneOffset(time);
+            mZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(time);
         }
 
         /** Sets the zone offset of the user when the activity happened */
@@ -150,7 +150,7 @@ public final class BodyTemperatureRecord extends InstantRecord {
         /** Sets the zone offset of this record to system default. */
         @NonNull
         public Builder clearZoneOffset() {
-            mZoneOffset = RecordUtils.getDefaultZoneOffset(mTime);
+            mZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 
