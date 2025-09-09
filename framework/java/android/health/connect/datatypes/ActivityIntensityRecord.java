@@ -206,8 +206,8 @@ public final class ActivityIntensityRecord extends IntervalRecord {
             mStartTime = startTime;
             mEndTime = endTime;
             mActivityIntensityType = activityIntensityType;
-            mStartZoneOffset = RecordUtils.getDefaultZoneOffset(startTime);
-            mEndZoneOffset = RecordUtils.getDefaultZoneOffset(endTime);
+            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
+            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
         }
 
         /**

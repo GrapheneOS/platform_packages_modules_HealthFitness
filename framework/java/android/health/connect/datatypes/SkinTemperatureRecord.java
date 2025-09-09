@@ -345,8 +345,8 @@ public final class SkinTemperatureRecord extends IntervalRecord {
             mEndTime = endTime;
             mDeltas = new ArrayList<>();
             mMeasurementLocation = 0;
-            mStartZoneOffset = RecordUtils.getDefaultZoneOffset(startTime);
-            mEndZoneOffset = RecordUtils.getDefaultZoneOffset(endTime);
+            mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
+            mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
         }
 
         /** Sets the zone offset of the user when the activity started. */
@@ -368,14 +368,14 @@ public final class SkinTemperatureRecord extends IntervalRecord {
         /** Clears the zone offset of the user when the activity started. */
         @NonNull
         public Builder clearStartZoneOffset() {
-            mStartZoneOffset = RecordUtils.getDefaultZoneOffset(mStartTime);
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 
         /** Clears the zone offset of the user when the activity ended. */
         @NonNull
         public Builder clearEndZoneOffset() {
-            mEndZoneOffset = RecordUtils.getDefaultZoneOffset(mEndTime);
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 

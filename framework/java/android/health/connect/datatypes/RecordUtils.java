@@ -19,7 +19,6 @@ package android.health.connect.datatypes;
 import android.annotation.Nullable;
 
 import java.time.Instant;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 /**
@@ -40,8 +39,7 @@ public class RecordUtils {
         return CharSequence.compare(sequence1, sequence2) == 0;
     }
 
-    /** Returns the zone offset of the given instant in the system default zone. */
-    public static ZoneOffset getDefaultZoneOffset(Instant instant) {
-        return ZoneId.systemDefault().getRules().getOffset(instant);
+    public static ZoneOffset getDefaultZoneOffset() {
+        return ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
     }
 }
