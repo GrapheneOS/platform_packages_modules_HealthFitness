@@ -44,10 +44,13 @@ import com.android.healthconnect.controller.permissions.data.PermissionsAccessTy
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.preference.HealthExpandablePreference
 import com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
 import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -111,7 +114,11 @@ class MatchmakingFragmentTest {
                         FitnessPermission(FitnessPermissionType.EXERCISE, READ),
                         FitnessPermission(FitnessPermissionType.STEPS, READ),
                     ),
-                )
+                ),
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME_2, TEST_APP_NAME_2, null),
+                    listOf(FitnessPermission(FitnessPermissionType.DISTANCE, READ)),
+                ),
             )
         matchmakingState.postValue(
             MatchmakingViewModel.MatchmakingState.WithData(
@@ -135,19 +142,25 @@ class MatchmakingFragmentTest {
                 .add(android.R.id.content, MatchmakingFragment())
                 .commitNow()
         }
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
 
-        onView(withText("Share data between apps")).check(matches(isDisplayed()))
+        onView(withText("Share data between apps"))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+        onView(withText("Share data between apps"))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
         onView(
                 withText(
                     "Allow the Calling App app to read data from other apps on this device using Health\u00A0Connect"
                 )
             )
+            .perform(scrollTo())
             .check(matches(isDisplayed()))
         onView(withText("Data from $TEST_APP_NAME"))
             .perform(scrollTo())
             .check(matches(isDisplayed()))
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
         onView(withText("Data from $TEST_APP_NAME")).perform(scrollTo()).perform(click())
         onView(withText("Exercise")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("Steps")).perform(scrollTo()).check(matches(isDisplayed()))
@@ -208,6 +221,100 @@ class MatchmakingFragmentTest {
                 .commitNow()
             val switch = fragment.findPreference<HealthMainSwitchPreference>("allow_all_preference")
             assertThat(switch?.isChecked).isFalse()
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingFragment_withSingleApp_expandsPreferenceByDefault() {
+        val apps =
+            listOf(
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                    listOf(
+                        FitnessPermission(FitnessPermissionType.EXERCISE, READ),
+                        FitnessPermission(FitnessPermissionType.STEPS, READ),
+                    ),
+                )
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(callingPackageName, callingAppName, null),
+                apps,
+            )
+        )
+        expandedKeys.postValue(emptySet())
+
+        val scenario =
+            ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+        scenario.onActivity { activity ->
+            val fragment = MatchmakingFragment()
+            activity.supportFragmentManager
+                .beginTransaction()
+                .add(android.R.id.content, fragment)
+                .commitNow()
+
+            val expandablePreference =
+                fragment.findPreference<HealthExpandablePreference>(TEST_APP_PACKAGE_NAME)
+            assertThat(expandablePreference?.mIsExpanded).isTrue()
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingFragment_withMultipleApps_doesNotExpandPreferenceByDefault() {
+        val apps =
+            listOf(
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                    listOf(
+                        FitnessPermission(FitnessPermissionType.EXERCISE, READ),
+                        FitnessPermission(FitnessPermissionType.STEPS, READ),
+                    ),
+                ),
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME_2, TEST_APP_NAME_2, null),
+                    listOf(FitnessPermission(FitnessPermissionType.DISTANCE, READ)),
+                ),
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(callingPackageName, callingAppName, null),
+                apps,
+            )
+        )
+        expandedKeys.postValue(emptySet())
+
+        val scenario =
+            ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+        scenario.onActivity { activity ->
+            val fragment = MatchmakingFragment()
+            activity.supportFragmentManager
+                .beginTransaction()
+                .add(android.R.id.content, fragment)
+                .commitNow()
+
+            val expandablePreference1 =
+                fragment.findPreference<HealthExpandablePreference>(TEST_APP_PACKAGE_NAME)
+            assertThat(expandablePreference1?.mIsExpanded).isFalse()
+
+            val expandablePreference2 =
+                fragment.findPreference<HealthExpandablePreference>(TEST_APP_PACKAGE_NAME_2)
+            assertThat(expandablePreference2?.mIsExpanded).isFalse()
         }
     }
 }

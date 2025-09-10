@@ -25,9 +25,9 @@ import android.health.connect.HealthDataCategory.CYCLE_TRACKING
 import android.health.connect.HealthDataCategory.NUTRITION
 import android.health.connect.HealthDataCategory.SLEEP
 import android.health.connect.HealthDataCategory.VITALS
-import android.platform.test.annotations.DisableFlags
-import android.platform.test.annotations.EnableFlags
-import android.platform.test.flag.junit.SetFlagsRule
+import android.platform.test.annotations.RequiresFlagsDisabled
+import android.platform.test.annotations.RequiresFlagsEnabled
+import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
@@ -60,7 +60,8 @@ import org.junit.runner.RunWith
 class HealthDataCategoryExtensionsTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @get:Rule val mSetFlagsRule = SetFlagsRule()
+
+    @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
@@ -70,7 +71,7 @@ class HealthDataCategoryExtensionsTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun fitnessDataCategories_symptomsFlagEnabled_returnsSymptoms() {
         assertThat(FITNESS_DATA_CATEGORIES).hasSize(8)
         assertThat(FITNESS_DATA_CATEGORIES).containsNoDuplicates()
@@ -78,7 +79,7 @@ class HealthDataCategoryExtensionsTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsDisabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun fitnessDataCategories_symptomsFlagDisabled_doesNotReturnSymptoms() {
         assertThat(FITNESS_DATA_CATEGORIES).hasSize(7)
         assertThat(FITNESS_DATA_CATEGORIES).containsNoDuplicates()

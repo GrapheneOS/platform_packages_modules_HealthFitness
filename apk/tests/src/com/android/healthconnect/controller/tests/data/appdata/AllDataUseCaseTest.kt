@@ -27,9 +27,9 @@ import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.WeightRecord
 import android.os.OutcomeReceiver
-import android.platform.test.annotations.DisableFlags
-import android.platform.test.annotations.EnableFlags
-import android.platform.test.flag.junit.SetFlagsRule
+import android.platform.test.annotations.RequiresFlagsDisabled
+import android.platform.test.annotations.RequiresFlagsEnabled
+import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.appdata.AllDataUseCase
@@ -67,7 +67,7 @@ import org.mockito.invocation.InvocationOnMock
 class AllDataUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @get:Rule val mSetFlagsRule = SetFlagsRule()
+    @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @BindValue lateinit var appInfoReader: AppInfoReader
     private lateinit var context: Context
@@ -85,7 +85,7 @@ class AllDataUseCaseTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun loadFitnessData_symptomsFlagEnabled_returnsDataWrittenByGivenApp() = runTest {
         val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
             mapOf(
@@ -138,7 +138,7 @@ class AllDataUseCaseTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsDisabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun loadFitnessData_symptomsFlagDisabled_returnsDataWrittenByGivenApp() = runTest {
         val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
             mapOf(
@@ -190,7 +190,7 @@ class AllDataUseCaseTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun loadAllFitnessData_symptomsFlagEnabled_returnsAllData() = runTest {
         val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
             mapOf(
@@ -246,7 +246,7 @@ class AllDataUseCaseTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsDisabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun loadAllFitnessData_symptomsFlagDisabled_returnsAllData() = runTest {
         val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
             mapOf(

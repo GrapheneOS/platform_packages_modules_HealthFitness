@@ -167,10 +167,13 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
             }
         }
 
-        importFlowViewModel.lastImportCompletionInstant.observe(viewLifecycleOwner) {
-            importDataPreference.isEnabled = true
-            toastManager.showToast(requireActivity(), R.string.import_complete_toast_text)
-            importStatusViewModel.loadImportStatus()
+        importFlowViewModel.lastImportCompletionInstant.observe(viewLifecycleOwner) { instant ->
+            if (instant != null) {
+                importDataPreference.isEnabled = true
+                toastManager.showToast(requireActivity(), R.string.import_complete_toast_text)
+                importFlowViewModel.setLastCompletionInstant(null)
+                importStatusViewModel.loadImportStatus()
+            }
         }
 
         exportStatusViewModel.storedScheduledExportStatus.observe(viewLifecycleOwner) {
@@ -461,7 +464,7 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
             val uriString = result.data?.extras?.getString(IMPORT_FILE_URI_KEY)
             Slog.i(TAG, "uri: $uriString")
             if (uriString != null) {
-                importDataPreference.setEnabled(false)
+                importDataPreference.isEnabled = false
                 toastManager.showToast(requireActivity(), R.string.import_in_progress_toast_text)
                 importFlowViewModel.triggerImportOfSelectedFile(Uri.parse(uriString))
             }

@@ -110,6 +110,7 @@ import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.firstValue
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -577,6 +578,35 @@ class BackupAndRestoreSettingsFragmentTest {
                 .showToast(eq(activity), eq(expectedInProgressMessage), ArgumentMatchers.anyInt())
             verify(toastManager)
                 .showToast(eq(activity), eq(expectedCompleteMessage), ArgumentMatchers.anyInt())
+        }
+    }
+
+    @Test
+    fun backupAndRestoreSettingsFragment_importInstantNotSet_importStatusToastsNotShown() {
+        whenever(exportSettingsViewModel.storedExportSettings).then {
+            MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_NEVER))
+        }
+        whenever(exportSettingsViewModel.documentProviders).then {
+            MutableLiveData(DocumentProviders.WithData(listOf()))
+        }
+        whenever(importFlowViewModel.lastImportCompletionInstant).then { MutableLiveData(null) }
+        val completeMessage: Int = R.string.import_complete_toast_text
+        val expectedResult =
+            ActivityResult(
+                Activity.RESULT_OK,
+                Intent().putExtra(IMPORT_FILE_URI_KEY, TEST_LAST_IMPORT_URI),
+            )
+        intending(hasComponent(ImportFlowActivity::class.java.name)).respondWith(expectedResult)
+        val scenario: ActivityScenario<TestActivity> =
+            launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
+
+        onView(withText("Import data")).perform(click())
+        intended(hasComponent(ImportFlowActivity::class.java.name))
+
+        verify(importFlowViewModel).triggerImportOfSelectedFile(Uri.parse(TEST_LAST_IMPORT_URI))
+        scenario.onActivity { activity: TestActivity ->
+            verify(toastManager, never())
+                .showToast(eq(activity), eq(completeMessage), ArgumentMatchers.anyInt())
         }
     }
 
