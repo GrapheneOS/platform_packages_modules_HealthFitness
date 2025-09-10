@@ -276,7 +276,7 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
             ValuePreference(requireContext()).also {
                 it.key = key
                 it.title = cardInfo.aggregation.aggregation
-                it.firstContentDescription = cardInfo.aggregation.aggregationA11y
+                it.firstContentDescription = getAggregationA11yContentDescription(cardInfo)
                 it.summary = formatDateText(cardInfo.startDate, cardInfo.endDate)
                 it.isSelectable = false
             }
@@ -329,10 +329,15 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
             } else {
                 it.isVisible = true
                 it.title = cardInfo.aggregation.aggregation
-                it.firstContentDescription = cardInfo.aggregation.aggregationA11y
+                it.firstContentDescription = getAggregationA11yContentDescription(cardInfo)
                 it.summary = formatDateText(cardInfo.startDate, cardInfo.endDate)
+                it.isSelectable = false
             }
         }
+    }
+
+    private fun getAggregationA11yContentDescription(cardInfo: AggregationCardInfo): String {
+        return "${cardInfo.aggregation.aggregationA11y}, ${formatDateText(cardInfo.startDate, cardInfo.endDate)}"
     }
 
     private fun updateValuePreferenceToLoading(key: String) {
