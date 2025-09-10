@@ -48,7 +48,6 @@ import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -230,7 +229,6 @@ public class FitnessRecordUpsertHelper {
             Objects.requireNonNull(callingPackageName);
         }
 
-        List<RecordUpsertTableRequest> upsertRequests = new ArrayList<>();
         @RecordTypeIdentifier.RecordType Set<Integer> recordTypes = new ArraySet<>();
         for (RecordInternal<?> recordInternal : recordInternals) {
             mAppInfoHelper.populateAppInfoId(recordInternal, /* requireAllFields= */ true);
@@ -239,9 +237,6 @@ public class FitnessRecordUpsertHelper {
             if (updateLastModifiedTime) {
                 recordInternal.setLastModifiedTime(Instant.now().toEpochMilli());
             }
-            upsertRequests.add(
-                    createUpsertRequestForRecord(
-                            recordInternal, isInsertRequest, extraPermsStateMap));
         }
 
         if (Constants.DEBUG) {
@@ -259,7 +254,11 @@ public class FitnessRecordUpsertHelper {
 
         return mTransactionManager.runAsTransaction(
                 db -> {
-                    for (RecordUpsertTableRequest upsertRequest : upsertRequests) {
+                    for (RecordInternal<?> recordInternal : recordInternals) {
+                        // TODO(b/444206694): Replace with UpsertTableRequest
+                        RecordUpsertTableRequest upsertRequest =
+                                createUpsertRequestForRecord(
+                                        recordInternal, isInsertRequest, extraPermsStateMap);
                         if (shouldGenerateChangeLog) {
                             if (!Flags.fixChangeLogWhenInsertWithSameTimestamps()) {
                                 upsertionChangeLogs.addRecordInfo(
@@ -317,13 +316,13 @@ public class FitnessRecordUpsertHelper {
                                         Objects.requireNonNull(callingPackageName),
                                         recordTypes);
                     }
-                    return getUUIdsInOrder(upsertRequests);
+                    return getUUIdsInOrder(recordInternals);
                 });
     }
 
-    private List<String> getUUIdsInOrder(List<RecordUpsertTableRequest> upsertRequests) {
-        return upsertRequests.stream()
-                .map((request) -> request.getRecordInternal().getUuid().toString())
+    private List<String> getUUIdsInOrder(List<? extends RecordInternal<?>> recordInternals) {
+        return recordInternals.stream()
+                .map((recordInternal) -> recordInternal.getUuid().toString())
                 .collect(Collectors.toList());
     }
 
