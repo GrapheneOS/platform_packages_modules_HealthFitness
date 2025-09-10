@@ -416,7 +416,8 @@ public final class DatabaseMerger {
                             stagedTransactionManager,
                             stagedPackageNamesByAppIds,
                             requireNonNull(recordTypeClass),
-                            currentToken);
+                            currentToken,
+                            getPageSize(recordType));
             List<RecordInternal<?>> records = recordsToMergeAndToken.first;
             PageTokenWrapper token = recordsToMergeAndToken.second;
             if (records.isEmpty()) {
@@ -457,6 +458,15 @@ public final class DatabaseMerger {
         } while (!currentToken.isEmpty());
     }
 
+    private int getPageSize(int recordType) {
+        // Exercise sessions can be large, especially with route data.
+        // Use a smaller page size to reduce memory usage during the merge process.
+        if (recordType == RECORD_TYPE_EXERCISE_SESSION) {
+            return 20;
+        }
+        return DEFAULT_PAGE_SIZE;
+    }
+
     private void deleteRecordsOfType(HealthConnectDatabase stagedDatabase, int recordType) {
         RecordHelper<?> recordHelper = mInternalHealthConnectMappings.getRecordHelper(recordType);
         if (!checkTableExists(
@@ -486,10 +496,11 @@ public final class DatabaseMerger {
             TransactionManager stagedTransactionManager,
             Map<Long, String> stagedPackageNamesByAppIds,
             Class<? extends Record> recordTypeClass,
-            PageTokenWrapper requestToken) {
+            PageTokenWrapper requestToken,
+            int pageSize) {
         ReadRecordsRequestUsingFilters<?> readRecordsRequest =
                 new ReadRecordsRequestUsingFilters.Builder<>(recordTypeClass)
-                        .setPageSize(DEFAULT_PAGE_SIZE)
+                        .setPageSize(pageSize)
                         .setPageToken(requestToken.encode())
                         .build();
 
