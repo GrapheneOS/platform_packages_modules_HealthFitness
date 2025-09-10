@@ -27,9 +27,9 @@ import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.WeightRecord
 import android.os.OutcomeReceiver
-import android.platform.test.annotations.DisableFlags
-import android.platform.test.annotations.EnableFlags
-import android.platform.test.flag.junit.SetFlagsRule
+import android.platform.test.annotations.RequiresFlagsDisabled
+import android.platform.test.annotations.RequiresFlagsEnabled
+import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.appdata.AllDataUseCase
@@ -81,7 +81,7 @@ class AppDataViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    @get:Rule val mSetFlagsRule = SetFlagsRule()
+    @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -110,7 +110,7 @@ class AppDataViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun noData_symptomsFlagEnabled_returnsEmptyList() = runTest {
         doAnswer(prepareAnswer(mapOf())).`when`(manager).queryAllRecordTypesInfo(any(), any())
 
@@ -135,7 +135,7 @@ class AppDataViewModelTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsDisabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun noData_symptomsFlagDisabled_returnsEmptyList() = runTest {
         doAnswer(prepareAnswer(mapOf())).`when`(manager).queryAllRecordTypesInfo(any(), any())
 
@@ -159,7 +159,7 @@ class AppDataViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun fitnessData_symptomsFlagEnabled_returnsDataWrittenByGivenApp() = runTest {
         val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
             mapOf(
@@ -216,7 +216,7 @@ class AppDataViewModelTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsDisabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun fitnessData_symptomsFlagDisabled_returnsDataWrittenByGivenApp() = runTest {
         val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
             mapOf(
@@ -272,7 +272,7 @@ class AppDataViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun fitnessAndMedicalData_symptomsFlagEnabled_returnsDataWrittenByGivenApp() = runTest {
         val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
             mapOf(
@@ -340,7 +340,7 @@ class AppDataViewModelTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsDisabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun fitnessAndMedicalData_symptomsFlagDisabled_returnsDataWrittenByGivenApp() = runTest {
         val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
             mapOf(
@@ -407,7 +407,7 @@ class AppDataViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun medicalDataOnly_symptomsFlagEnabled_returnsDataWrittenByGivenApp() = runTest {
         doAnswer(prepareAnswer(mapOf())).`when`(manager).queryAllRecordTypesInfo(any(), any())
         val medicalResourceTypeResources: List<MedicalResourceTypeInfo> =
@@ -443,7 +443,7 @@ class AppDataViewModelTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsDisabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun medicalDataOnly_symptomsFlagDisabled_returnsDataWrittenByGivenApp() = runTest {
         doAnswer(prepareAnswer(mapOf())).`when`(manager).queryAllRecordTypesInfo(any(), any())
         val medicalResourceTypeResources: List<MedicalResourceTypeInfo> =
@@ -478,7 +478,7 @@ class AppDataViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun medicalDataFromDifferentAppOnly_symptomsFlagEnabled_returnsNoMedicalData() = runTest {
         doAnswer(prepareAnswer(mapOf())).`when`(manager).queryAllRecordTypesInfo(any(), any())
         val medicalResourceTypeResources: List<MedicalResourceTypeInfo> =
@@ -513,7 +513,7 @@ class AppDataViewModelTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsDisabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun medicalDataFromDifferentAppOnly_symptomsFlagDisabled_returnsNoMedicalData() = runTest {
         doAnswer(prepareAnswer(mapOf())).`when`(manager).queryAllRecordTypesInfo(any(), any())
         val medicalResourceTypeResources: List<MedicalResourceTypeInfo> =
