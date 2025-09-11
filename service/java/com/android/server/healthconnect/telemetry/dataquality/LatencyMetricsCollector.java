@@ -29,6 +29,7 @@ import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.SleepSessionRecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 
+import java.time.Clock;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,11 +43,13 @@ public final class LatencyMetricsCollector {
 
     private final TransactionManager mTransactionManager;
     private final AppInfoHelper mAppInfoHelper;
+    private final Clock mClock;
 
     public LatencyMetricsCollector(
-            TransactionManager transactionManager, AppInfoHelper appInfoHelper) {
+            TransactionManager transactionManager, AppInfoHelper appInfoHelper, Clock clock) {
         mTransactionManager = transactionManager;
         mAppInfoHelper = appInfoHelper;
+        mClock = clock;
     }
 
     /** Collects latency for past 7 days' exercise sessions. */
@@ -61,7 +64,9 @@ public final class LatencyMetricsCollector {
 
     private List<LatencyMetricsData> readLastWeekSessions(String tableName) {
         List<LatencyMetricsData> latencyMetricsPerRecordList = new ArrayList<>();
-        try (Cursor cursor = mTransactionManager.read(getReadLastWeekSessionsRequest(tableName))) {
+        try (Cursor cursor =
+                mTransactionManager.read(
+                        getReadLastWeekSessionsRequest(tableName, mClock.instant()))) {
             while (cursor.moveToNext()) {
                 long endTime = getCursorLong(cursor, IntervalRecordHelper.END_TIME_COLUMN_NAME);
                 long lastModifiedTime =

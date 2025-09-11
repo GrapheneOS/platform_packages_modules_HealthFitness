@@ -64,7 +64,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.time.Clock;
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,12 +76,14 @@ public class DataGranularityStatsCollectorTest {
 
     private static final String TEST_PACKAGE_NAME = "test.package.name";
     private static final String TEST_PACKAGE_NAME_TWO = "test.package.name.two";
+    private static final Instant NOW = Instant.parse("2023-01-01T12:00:00Z");
 
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
+    private final Clock mClock = Clock.fixed(NOW, ZoneOffset.UTC);
     private DataGranularityStatsCollector mDataGranularityStatsCollector;
     private FitnessTestUtils mFitnessTestUtils;
 
@@ -90,6 +94,7 @@ public class DataGranularityStatsCollectorTest {
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .setClock(mClock)
                         .build();
         mDataGranularityStatsCollector = healthConnectInjector.getDataGranularityStatsCollector();
         mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
@@ -110,7 +115,7 @@ public class DataGranularityStatsCollectorTest {
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void getLastWeekActiveDataSessionsGranularityStats_noSeriesData_returnsEmptyList() {
-        Instant sessionStartTime = Instant.now().minus(1, ChronoUnit.DAYS);
+        Instant sessionStartTime = NOW.minus(1, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(1, ChronoUnit.HOURS);
         insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
 
@@ -124,7 +129,7 @@ public class DataGranularityStatsCollectorTest {
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void
             getLastWeekExerciseSessionsGranularityStats_oneSeriesSample_returnsSessionDurationAsGranularity() {
-        Instant sessionStartTime = Instant.now().minus(1, ChronoUnit.DAYS);
+        Instant sessionStartTime = NOW.minus(1, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(8, ChronoUnit.HOURS);
         long sessionDuration = sessionEndTime.toEpochMilli() - sessionStartTime.toEpochMilli();
         insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME_TWO);
@@ -148,7 +153,7 @@ public class DataGranularityStatsCollectorTest {
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void
             getLastWeekActiveDataSessionsGranularityStats_withSeriesData_calculatesGranularity() {
-        Instant sessionStartTime = Instant.now().minus(2, ChronoUnit.DAYS);
+        Instant sessionStartTime = NOW.minus(2, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(30, ChronoUnit.MINUTES);
         long sessionDurationMillis =
                 sessionEndTime.toEpochMilli() - sessionStartTime.toEpochMilli();
@@ -221,7 +226,7 @@ public class DataGranularityStatsCollectorTest {
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void
             getLastWeekExerciseSessionsGranularityStats_multipleSessions_calculatesGranularity() {
-        Instant sessionOneStartTime = Instant.now().minus(3, ChronoUnit.DAYS);
+        Instant sessionOneStartTime = NOW.minus(3, ChronoUnit.DAYS);
         Instant sessionOneEndTime = sessionOneStartTime.plus(1, ChronoUnit.HOURS);
         long sessionOneDuration =
                 sessionOneEndTime.toEpochMilli() - sessionOneStartTime.toEpochMilli();
@@ -232,7 +237,7 @@ public class DataGranularityStatsCollectorTest {
                 TEST_PACKAGE_NAME,
                 /* numberOfSamplesToInsert= */ 20);
 
-        Instant sessionTwoStartTime = Instant.now().minus(4, ChronoUnit.DAYS);
+        Instant sessionTwoStartTime = NOW.minus(4, ChronoUnit.DAYS);
         Instant sessionTwoEndTime = sessionTwoStartTime.plus(2, ChronoUnit.HOURS);
         long sessionTwoDuration =
                 sessionTwoEndTime.toEpochMilli() - sessionTwoStartTime.toEpochMilli();
@@ -272,7 +277,7 @@ public class DataGranularityStatsCollectorTest {
     @Test
     @DisableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void flagDisabled_getLastWeekActiveDataSessionsGranularityStats_emptyListReturned() {
-        Instant sessionStartTime = Instant.now().minus(1, ChronoUnit.DAYS);
+        Instant sessionStartTime = NOW.minus(1, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(8, ChronoUnit.HOURS);
         insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME_TWO);
         insertSeriesData(
@@ -290,7 +295,7 @@ public class DataGranularityStatsCollectorTest {
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void getLastWeekActiveDataSessionsGranularityStats_seriesOutsideSessionIsIgnored() {
-        Instant sessionStartTime = Instant.now().minus(1, ChronoUnit.DAYS);
+        Instant sessionStartTime = NOW.minus(1, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(8, ChronoUnit.HOURS);
         long sessionDuration = sessionEndTime.toEpochMilli() - sessionStartTime.toEpochMilli();
         insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME_TWO);
@@ -329,7 +334,7 @@ public class DataGranularityStatsCollectorTest {
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void getLastWeekActiveDataSessionsGranularityStats_seriesFromOtherPackagesIsIgnored() {
-        Instant sessionStartTime = Instant.now().minus(1, ChronoUnit.DAYS);
+        Instant sessionStartTime = NOW.minus(1, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(8, ChronoUnit.HOURS);
         long sessionDuration = sessionEndTime.toEpochMilli() - sessionStartTime.toEpochMilli();
         insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME_TWO);
@@ -358,7 +363,7 @@ public class DataGranularityStatsCollectorTest {
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void getAllGranularityStatsForLastWeek_activeIntervalData_calculatesGranularity() {
-        Instant sessionStartTime = Instant.now().minus(2, ChronoUnit.DAYS);
+        Instant sessionStartTime = NOW.minus(2, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(30, ChronoUnit.MINUTES);
         insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
         insertStepsRecord(
@@ -428,7 +433,7 @@ public class DataGranularityStatsCollectorTest {
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void getLastWeekExerciseSessionsGranularityStats_sessionOlderThanAWeek_isIgnored() {
-        Instant sessionStartTime = Instant.now().minus(8, ChronoUnit.DAYS);
+        Instant sessionStartTime = NOW.minus(8, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(1, ChronoUnit.HOURS);
         insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
         insertSeriesData(
@@ -447,7 +452,7 @@ public class DataGranularityStatsCollectorTest {
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void
             getLastWeekExerciseSessionsGranularityStats_withSeriesAndIntervalData_calculatesGranularity() {
-        Instant sessionStartTime = Instant.now().minus(2, ChronoUnit.DAYS);
+        Instant sessionStartTime = NOW.minus(2, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(30, ChronoUnit.MINUTES);
         long sessionDurationMillis =
                 sessionEndTime.toEpochMilli() - sessionStartTime.toEpochMilli();
@@ -496,7 +501,7 @@ public class DataGranularityStatsCollectorTest {
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void getAllGranularityStatsForLastWeek_intervalDataFromOtherPackage_isPassive() {
-        Instant sessionStartTime = Instant.now().minus(2, ChronoUnit.DAYS);
+        Instant sessionStartTime = NOW.minus(2, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(30, ChronoUnit.MINUTES);
         insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
         insertStepsRecord(
@@ -530,7 +535,7 @@ public class DataGranularityStatsCollectorTest {
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void getAllGranularityStatsForLastWeek_intervalDataOutsideSession_isPassive() {
-        Instant sessionStartTime = Instant.now().minus(2, ChronoUnit.DAYS);
+        Instant sessionStartTime = NOW.minus(2, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(30, ChronoUnit.MINUTES);
         insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
 
@@ -580,7 +585,7 @@ public class DataGranularityStatsCollectorTest {
     public void
             getAllGranularityStatsForLastWeek_multipleSessionsSamePackage_calculatesGranularity() {
         // Session 1
-        Instant sessionOneStartTime = Instant.now().minus(3, ChronoUnit.DAYS);
+        Instant sessionOneStartTime = NOW.minus(3, ChronoUnit.DAYS);
         Instant sessionOneEndTime = sessionOneStartTime.plus(1, ChronoUnit.HOURS);
         long sessionOneDuration =
                 sessionOneEndTime.toEpochMilli() - sessionOneStartTime.toEpochMilli();
@@ -597,7 +602,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfRecordsToInsert= */ 10);
 
         // Session 2
-        Instant sessionTwoStartTime = Instant.now().minus(4, ChronoUnit.DAYS);
+        Instant sessionTwoStartTime = NOW.minus(4, ChronoUnit.DAYS);
         Instant sessionTwoEndTime = sessionTwoStartTime.plus(2, ChronoUnit.HOURS);
         long sessionTwoDuration =
                 sessionTwoEndTime.toEpochMilli() - sessionTwoStartTime.toEpochMilli();
@@ -641,7 +646,7 @@ public class DataGranularityStatsCollectorTest {
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void getAllGranularityStatsForLastWeek_returnsActiveAndPassiveStats() {
-        Instant sessionStartTime = Instant.now().minus(1, ChronoUnit.DAYS);
+        Instant sessionStartTime = NOW.minus(1, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(1, ChronoUnit.HOURS);
         insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
         insertHeartRateSeriesData(
@@ -649,7 +654,7 @@ public class DataGranularityStatsCollectorTest {
                 sessionEndTime,
                 TEST_PACKAGE_NAME,
                 /* numberOfSamplesToInsert= */ 10);
-        insertStepsRecord(Instant.now().minus(2, ChronoUnit.DAYS), TEST_PACKAGE_NAME, 1000, 1);
+        insertStepsRecord(NOW.minus(2, ChronoUnit.DAYS), TEST_PACKAGE_NAME, 1000, 1);
 
         DataGranularityStatsCollector.AllGranularityStats allStats =
                 mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek();
@@ -661,7 +666,7 @@ public class DataGranularityStatsCollectorTest {
     @Test
     @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
     public void getAllGranularityStatsForLastWeek_passiveIntervalData_returnsPassiveStats() {
-        Instant recordStartTime = Instant.now().minus(1, ChronoUnit.DAYS);
+        Instant recordStartTime = NOW.minus(1, ChronoUnit.DAYS);
         insertStepsRecord(
                 recordStartTime,
                 TEST_PACKAGE_NAME,
@@ -684,7 +689,7 @@ public class DataGranularityStatsCollectorTest {
     public void
             getAllGranularityStatsForLastWeek_activeAndPassiveIntervalData_returnsCorrectStats() {
         // Active data
-        Instant sessionStartTime = Instant.now().minus(2, ChronoUnit.DAYS);
+        Instant sessionStartTime = NOW.minus(2, ChronoUnit.DAYS);
         Instant sessionEndTime = sessionStartTime.plus(1, ChronoUnit.HOURS);
         insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
         insertStepsRecord(
@@ -694,7 +699,7 @@ public class DataGranularityStatsCollectorTest {
                 /* numberOfRecordsToInsert= */ 5);
 
         // Passive data
-        Instant passiveRecordStartTime = Instant.now().minus(3, ChronoUnit.DAYS);
+        Instant passiveRecordStartTime = NOW.minus(3, ChronoUnit.DAYS);
         insertDistanceRecord(
                 passiveRecordStartTime,
                 TEST_PACKAGE_NAME,
@@ -968,5 +973,172 @@ public class DataGranularityStatsCollectorTest {
                             .toRecordInternal());
         }
         mFitnessTestUtils.insertRecords(packageName, records);
+    }
+
+    @Test
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
+    public void getAllGranularityStatsForLastWeek_passiveSeriesData_returnsPassiveStats() {
+        Instant now = NOW;
+        List<HeartRateRecord.HeartRateSample> heartRateSamples =
+                List.of(
+                        new HeartRateRecord.HeartRateSample(
+                                72, now.minus(2, ChronoUnit.DAYS)), // t1
+                        new HeartRateRecord.HeartRateSample(
+                                72, now.minus(2, ChronoUnit.DAYS).plusSeconds(10)), // t2, gap 10s
+                        new HeartRateRecord.HeartRateSample(
+                                72, now.minus(2, ChronoUnit.DAYS).plusSeconds(40)), // t3, gap 30s
+                        new HeartRateRecord.HeartRateSample(
+                                72, now.minus(2, ChronoUnit.DAYS).plusSeconds(60))); // t4, gap 20s
+        // Gaps in ms: 10000, 30000, 20000. Sorted: 10000, 20000, 30000. Median: 20000.
+        HeartRateRecord heartRateRecord =
+                new HeartRateRecord.Builder(
+                                new Metadata.Builder().build(),
+                                now.minus(3, ChronoUnit.DAYS),
+                                now.minus(1, ChronoUnit.DAYS),
+                                heartRateSamples)
+                        .build();
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, heartRateRecord.toRecordInternal());
+
+        DataGranularityStatsCollector.AllGranularityStats allStats =
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek();
+
+        assertThat(allStats.activeStats()).isEmpty();
+        assertThat(allStats.passiveStats()).hasSize(1);
+        DataGranularityStatsCollector.GranularityStats stat = allStats.passiveStats().get(0);
+        assertThat(stat.packageName()).isEqualTo(TEST_PACKAGE_NAME);
+        assertThat(stat.recordIdentifier()).isEqualTo(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE);
+        assertThat(stat.granularity()).isEqualTo(20000L);
+    }
+
+    @Test
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
+    public void getAllGranularityStatsForLastWeek_onePassiveSeriesDataPoint_granularityIsOneDay() {
+        Instant now = NOW;
+        List<HeartRateRecord.HeartRateSample> heartRateSamples =
+                List.of(new HeartRateRecord.HeartRateSample(72, now.minus(2, ChronoUnit.DAYS)));
+        HeartRateRecord heartRateRecord =
+                new HeartRateRecord.Builder(
+                                new Metadata.Builder().build(),
+                                now.minus(3, ChronoUnit.DAYS),
+                                now.minus(1, ChronoUnit.DAYS),
+                                heartRateSamples)
+                        .build();
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, heartRateRecord.toRecordInternal());
+
+        DataGranularityStatsCollector.AllGranularityStats allStats =
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek();
+
+        assertThat(allStats.activeStats()).isEmpty();
+        assertThat(allStats.passiveStats()).hasSize(1);
+        DataGranularityStatsCollector.GranularityStats stat = allStats.passiveStats().get(0);
+        assertThat(stat.packageName()).isEqualTo(TEST_PACKAGE_NAME);
+        assertThat(stat.recordIdentifier()).isEqualTo(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE);
+        assertThat(stat.granularity()).isEqualTo(24 * 60 * 60 * 1000L);
+    }
+
+    @Test
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
+    public void getAllGranularityStatsForLastWeek_passiveSeriesDataOlderThanWeek_isIgnored() {
+        Instant now = NOW;
+        List<HeartRateRecord.HeartRateSample> heartRateSamples =
+                List.of(new HeartRateRecord.HeartRateSample(72, now.minus(8, ChronoUnit.DAYS)));
+        HeartRateRecord heartRateRecord =
+                new HeartRateRecord.Builder(
+                                new Metadata.Builder().build(),
+                                now.minus(9, ChronoUnit.DAYS),
+                                now.minus(8, ChronoUnit.DAYS),
+                                heartRateSamples)
+                        .build();
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, heartRateRecord.toRecordInternal());
+
+        DataGranularityStatsCollector.AllGranularityStats allStats =
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek();
+
+        assertThat(allStats.passiveStats()).isEmpty();
+        assertThat(allStats.activeStats()).isEmpty();
+    }
+
+    @Test
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
+    public void getAllGranularityStatsForLastWeek_activeAndPassiveSeriesData_returnsCorrectStats() {
+        // Active data
+        Instant sessionStartTime = NOW.minus(2, ChronoUnit.DAYS);
+        Instant sessionEndTime = sessionStartTime.plus(1, ChronoUnit.HOURS);
+        long sessionDuration = sessionEndTime.toEpochMilli() - sessionStartTime.toEpochMilli();
+        insertExerciseSession(sessionStartTime, sessionEndTime, TEST_PACKAGE_NAME);
+        insertHeartRateSeriesData(
+                sessionStartTime,
+                sessionEndTime,
+                TEST_PACKAGE_NAME,
+                /* numberOfSamplesToInsert= */ 10);
+
+        // Passive data
+        Instant now = NOW;
+        List<HeartRateRecord.HeartRateSample> passiveHeartRateSamples =
+                List.of(
+                        new HeartRateRecord.HeartRateSample(72, now.minus(3, ChronoUnit.DAYS)),
+                        new HeartRateRecord.HeartRateSample(
+                                72, now.minus(3, ChronoUnit.DAYS).plusSeconds(10)));
+        // 1 gap of 10s. Median is 10000.
+        HeartRateRecord heartRateRecord =
+                new HeartRateRecord.Builder(
+                                new Metadata.Builder().build(),
+                                now.minus(4, ChronoUnit.DAYS),
+                                now.minus(2, ChronoUnit.DAYS),
+                                passiveHeartRateSamples)
+                        .build();
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, heartRateRecord.toRecordInternal());
+
+        DataGranularityStatsCollector.AllGranularityStats allStats =
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek();
+
+        assertThat(allStats.activeStats()).hasSize(1);
+        DataGranularityStatsCollector.GranularityStats activeStat = allStats.activeStats().get(0);
+        assertThat(activeStat.packageName()).isEqualTo(TEST_PACKAGE_NAME);
+        assertThat(activeStat.recordIdentifier())
+                .isEqualTo(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE);
+        assertThat(activeStat.granularity()).isEqualTo(sessionDuration / 10);
+
+        assertThat(allStats.passiveStats()).hasSize(1);
+        DataGranularityStatsCollector.GranularityStats passiveStat = allStats.passiveStats().get(0);
+        assertThat(passiveStat.packageName()).isEqualTo(TEST_PACKAGE_NAME);
+        assertThat(passiveStat.recordIdentifier())
+                .isEqualTo(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE);
+        assertThat(passiveStat.granularity()).isEqualTo(10000L);
+    }
+
+    @Test
+    @EnableFlags(FLAG_LATENCY_METRICS_FLAG)
+    public void getAllGranularityStatsForLastWeek_passiveSeriesStressTest() {
+        Instant startTime = NOW.minus(3, ChronoUnit.DAYS);
+        int numberOfSamples = 2 * 24 * 60 * 60; // 2 days worth of samples at 1 per second
+        List<HeartRateRecord.HeartRateSample> heartRateSamples = new ArrayList<>(numberOfSamples);
+        Instant sampleTime = startTime;
+        for (int i = 0; i < numberOfSamples; i++) {
+            heartRateSamples.add(
+                    new HeartRateRecord.HeartRateSample(/* beatsPerMinute= */ 72, sampleTime));
+            sampleTime = sampleTime.plusSeconds(1);
+        }
+
+        HeartRateRecord heartRateRecord =
+                new HeartRateRecord.Builder(
+                                new Metadata.Builder().build(),
+                                startTime,
+                                sampleTime, // End time is after the last sample
+                                heartRateSamples)
+                        .build();
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, heartRateRecord.toRecordInternal());
+
+        DataGranularityStatsCollector.AllGranularityStats allStats =
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek();
+
+        assertThat(allStats.activeStats()).isEmpty();
+        assertThat(allStats.passiveStats()).hasSize(2);
+        for (DataGranularityStatsCollector.GranularityStats stat : allStats.passiveStats()) {
+            assertThat(stat.packageName()).isEqualTo(TEST_PACKAGE_NAME);
+            assertThat(stat.recordIdentifier())
+                    .isEqualTo(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE);
+            assertThat(stat.granularity()).isEqualTo(1000L);
+        }
     }
 }
