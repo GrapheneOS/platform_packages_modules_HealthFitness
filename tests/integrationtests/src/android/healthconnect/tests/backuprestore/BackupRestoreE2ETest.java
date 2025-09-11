@@ -17,8 +17,10 @@
 package android.healthconnect.tests.backuprestore;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
+import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING;
 import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermission;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeAllHealthPermissions;
+import static android.healthconnect.testing.cts.TestUtils.countAllRecords;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.getHealthConnectDataRestoreState;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
@@ -34,6 +36,8 @@ import static com.android.compatibility.common.util.SystemUtil.runWithShellPermi
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assume.assumeTrue;
+
 import static java.time.temporal.ChronoUnit.HOURS;
 import static java.util.Objects.requireNonNull;
 
@@ -46,6 +50,8 @@ import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.ExerciseRoute;
+import android.health.connect.datatypes.ExerciseRoute.Location;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.InstantRecord;
@@ -76,6 +82,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.InputStream;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -150,9 +157,7 @@ public class BackupRestoreE2ETest {
     @Test
     public void testBackupThenRestore_1000MedicalResources_expectDataIsRestoredCorrectly()
             throws Exception {
-        if (!DeviceSupportUtils.isHealthConnectFullySupported()) {
-            return;
-        }
+        assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
 
         // Insert records.
         int numOfRecords = 100;
@@ -192,9 +197,8 @@ public class BackupRestoreE2ETest {
     @Test
     public void testBackupThenRestore_over2000Records_expectDataIsRestoredCorrectly()
             throws Exception {
-        if (!DeviceSupportUtils.isHealthConnectFullySupported()) {
-            return;
-        }
+        assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
+
         int numOfRecords = 2050;
         List<Record> insertedRecords =
                 insertRecordsWithChunking(
@@ -217,9 +221,8 @@ public class BackupRestoreE2ETest {
     @Test
     public void testBackupThenRestore_trainingPlans_expectDataIsRestoredCorrectly()
             throws Exception {
-        if (!DeviceSupportUtils.isHealthConnectFullySupported()) {
-            return;
-        }
+        assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
+
         DataOrigin dataOrigin = DataFactory.getDataOrigin(mContext.getPackageName());
         Metadata.Builder metadataBuilder = new Metadata.Builder();
         metadataBuilder.setDataOrigin(dataOrigin);
@@ -284,6 +287,53 @@ public class BackupRestoreE2ETest {
                 },
                 ASSERT_TIMEOUT_MILLIS);
         log("Data Restore state = " + getHealthConnectDataRestoreState());
+    }
+
+    // b/443928914
+    @Test
+    public void testBackupThenRestore_manyExerciseRoutes_expectedRestoreSuccessful()
+            throws Exception {
+        assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
+
+        // TODO(b/444399641): Increase number of sessions once LocalTransport supports larger quota.
+        int numberOfSessions = 75;
+        insertRecordsWithChunking(
+                i -> {
+                    // Create a one hour session with 1/s route.
+                    Instant endTime = Instant.now().minus(Duration.ofHours(i));
+                    Instant startTime = endTime.minus(Duration.ofHours(1));
+
+                    ArrayList<Location> locations = new ArrayList<>();
+                    for (Instant locationTime = startTime;
+                            locationTime.isBefore(endTime);
+                            locationTime = locationTime.plusSeconds(1)) {
+                        locations.add(new Location.Builder(locationTime, 51.51, 0.12).build());
+                    }
+
+                    return new ExerciseSessionRecord.Builder(
+                                    new Metadata.Builder().build(),
+                                    startTime,
+                                    endTime,
+                                    EXERCISE_SESSION_TYPE_RUNNING)
+                            .setRoute(new ExerciseRoute(locations))
+                            .build();
+                },
+                numberOfSessions,
+                /* chunkSize= */ 25);
+
+        mBackupUtils.backupNowAndAssertSuccessForUser(
+                mBackupRestoreApkPackageName, UserHandle.myUserId());
+
+        verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
+
+        mBackupUtils.restoreAndAssertSuccessForUser(
+                LOCAL_TRANSPORT_TOKEN, mBackupRestoreApkPackageName, UserHandle.myUserId());
+
+        eventually(
+                () ->
+                        assertThat(countAllRecords(ExerciseSessionRecord.class))
+                                .isEqualTo(numberOfSessions),
+                ASSERT_TIMEOUT_MILLIS);
     }
 
     @Test
@@ -483,17 +533,23 @@ public class BackupRestoreE2ETest {
      */
     private List<Record> insertRecordsWithChunking(RecordCreator creator, int numOfRecords)
             throws InterruptedException {
+        return insertRecordsWithChunking(
+                creator, numOfRecords, MAX_NUMBER_OF_RECORD_PER_INSERT_REQUEST);
+    }
+
+    /**
+     * Chunking is needed otherwise the insertion will fail with {@code
+     * android.os.TransactionTooLargeException: data parcel size 1xxxxxx bytes}.
+     */
+    private List<Record> insertRecordsWithChunking(
+            RecordCreator creator, int numOfRecords, int chunkSize) throws InterruptedException {
         List<Record> insertedRecords = new ArrayList<>();
 
-        for (int chunk = 0;
-                chunk <= numOfRecords / MAX_NUMBER_OF_RECORD_PER_INSERT_REQUEST;
-                chunk++) {
+        for (int chunk = 0; chunk <= numOfRecords / chunkSize; chunk++) {
             List<Record> recordsToInsert = new ArrayList<>();
 
-            for (int indexWithinChunk = 0;
-                    indexWithinChunk < MAX_NUMBER_OF_RECORD_PER_INSERT_REQUEST;
-                    indexWithinChunk++) {
-                int index = chunk * MAX_NUMBER_OF_RECORD_PER_INSERT_REQUEST + indexWithinChunk;
+            for (int indexWithinChunk = 0; indexWithinChunk < chunkSize; indexWithinChunk++) {
+                int index = chunk * chunkSize + indexWithinChunk;
                 if (index >= numOfRecords) {
                     break;
                 }

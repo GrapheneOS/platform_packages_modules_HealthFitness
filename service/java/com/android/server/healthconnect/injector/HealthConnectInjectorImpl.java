@@ -579,7 +579,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
 
         mLatencyMetricsCollector =
                 builder.mLatencyMetricsCollector == null
-                        ? new LatencyMetricsCollector(mTransactionManager, mAppInfoHelper)
+                        ? new LatencyMetricsCollector(mTransactionManager, mAppInfoHelper, mClock)
                         : builder.mLatencyMetricsCollector;
         mLatencyMetricsLogger =
                 builder.mLatencyMetricsLogger == null
@@ -589,7 +589,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
 
         mDataGranularityStatsCollector =
                 builder.mDataGranularityStatsCollector == null
-                        ? new DataGranularityStatsCollector(mTransactionManager, mAppInfoHelper)
+                        ? new DataGranularityStatsCollector(
+                                mTransactionManager, mAppInfoHelper, mClock)
                         : builder.mDataGranularityStatsCollector;
 
         mDataGranularityStatsLogger =

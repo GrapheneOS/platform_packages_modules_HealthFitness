@@ -30,6 +30,7 @@ import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermi
 import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermissions;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeAllHealthPermissions;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeHealthPermission;
+import static android.healthconnect.testing.cts.PermissionUtils.revokeHealthPermissions;
 import static android.healthconnect.testing.cts.TestUtils.createConnectMatchingAppsIntent;
 import static android.healthconnect.testing.cts.TestUtils.createReadRecordsRequestUsingFilters;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
@@ -993,8 +994,12 @@ public final class HealthConnectDeviceTest {
 
         APP_A_WITH_READ_WRITE_PERMS.insertRecords(TEST_RECORDS);
 
-        revokeAllHealthPermissions(
-                APP_B_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
+        // Only revoking relevant permissions as revoking all permissions leads to flakiness.
+        // See b/433587449
+        revokeHealthPermissions(
+                APP_B_WITH_READ_WRITE_PERMS.getPackageName(),
+                List.of(READ_HEART_RATE, READ_STEPS),
+                "HealthConnectDeviceTest");
 
         HealthConnectException e =
                 assertThrows(

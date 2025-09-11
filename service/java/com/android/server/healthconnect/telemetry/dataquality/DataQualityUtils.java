@@ -41,8 +41,7 @@ final class DataQualityUtils {
     private static final String TAG = "DataQualityUtils";
 
     /** Returns {@link ReadTableRequest} to read past week data for given table name. */
-    static ReadTableRequest getReadLastWeekSessionsRequest(String tableName) {
-        final Instant now = Instant.now();
+    static ReadTableRequest getReadLastWeekSessionsRequest(String tableName, Instant now) {
         final Instant weekAgo = now.minus(7, ChronoUnit.DAYS);
 
         // TODO(b/437880789): update if filtering column needs to be changed to Last Modified Date
