@@ -255,46 +255,40 @@ public class FitnessRecordUpsertHelper {
         return mTransactionManager.runAsTransaction(
                 db -> {
                     for (RecordInternal<?> recordInternal : recordInternals) {
-                        // TODO(b/444206694): Replace with UpsertTableRequest
-                        RecordUpsertTableRequest upsertRequest =
+                        UpsertTableRequest upsertRequest =
                                 createUpsertRequestForRecord(
                                         recordInternal, isInsertRequest, extraPermsStateMap);
                         if (shouldGenerateChangeLog) {
                             if (!Flags.fixChangeLogWhenInsertWithSameTimestamps()) {
                                 upsertionChangeLogs.addRecordInfo(
-                                        upsertRequest.getRecordInternal().getRecordType(),
-                                        upsertRequest.getRecordInternal().getAppInfoId(),
-                                        upsertRequest.getRecordInternal().getUuid());
+                                        recordInternal.getRecordType(),
+                                        recordInternal.getAppInfoId(),
+                                        recordInternal.getUuid());
                             }
                             addChangeLogsForOtherModifiedRecords(
-                                    mAppInfoHelper.getAppInfoId(
-                                            upsertRequest.getRecordInternal().getPackageName()),
-                                    upsertRequest,
-                                    otherModifiedRecordsChangeLogs);
+                                    recordInternal, otherModifiedRecordsChangeLogs);
                         }
 
                         if (isInsertRequest) {
                             if (shouldPreferNewRecord) {
-                                mTransactionManager.insertOrReplaceOnConflict(
-                                        db, upsertRequest.getUpsertTableRequest());
+                                mTransactionManager.insertOrReplaceOnConflict(db, upsertRequest);
                             } else {
-                                mTransactionManager.insertOrIgnoreOnConflict(
-                                        db, upsertRequest.getUpsertTableRequest());
+                                mTransactionManager.insertOrIgnoreOnConflict(db, upsertRequest);
                             }
                         } else {
-                            mTransactionManager.update(db, upsertRequest.getUpsertTableRequest());
+                            mTransactionManager.update(db, upsertRequest);
                         }
 
-                        // RecordUpsertTableRequest objects are mutable and can be modified by
+                        // RecordInternal objects are mutable and can be modified by
                         // mTransactionManager.insertOrReplaceOnConflict, therefore upsert change
                         // logs must be generated AFTER the upserts have taken places.
                         // See b/430891167
                         if (shouldGenerateChangeLog
                                 && Flags.fixChangeLogWhenInsertWithSameTimestamps()) {
                             upsertionChangeLogs.addRecordInfo(
-                                    upsertRequest.getRecordInternal().getRecordType(),
-                                    upsertRequest.getRecordInternal().getAppInfoId(),
-                                    upsertRequest.getRecordInternal().getUuid());
+                                    recordInternal.getRecordType(),
+                                    recordInternal.getAppInfoId(),
+                                    recordInternal.getUuid());
                         }
                     }
                     if (shouldGenerateChangeLog) {
@@ -336,36 +330,29 @@ public class FitnessRecordUpsertHelper {
         return whereClauseForUpdateRequest;
     }
 
-    private RecordUpsertTableRequest createUpsertRequestForRecord(
+    private UpsertTableRequest createUpsertRequestForRecord(
             RecordInternal<?> recordInternal,
             boolean isInsertRequest,
             @Nullable ArrayMap<String, Boolean> extraPermsStateMap) {
         RecordHelper<?> recordHelper =
                 mInternalHealthConnectMappings.getRecordHelper(recordInternal.getRecordType());
 
-        RecordUpsertTableRequest request =
+        UpsertTableRequest request =
                 recordHelper.getUpsertTableRequest(recordInternal, extraPermsStateMap);
         if (!isInsertRequest) {
-            request.getUpsertTableRequest()
-                    .setUpdateWhereClauses(generateWhereClausesForUpdate(recordInternal));
+            request.setUpdateWhereClauses(generateWhereClausesForUpdate(recordInternal));
         }
         return request;
     }
 
     private void addChangeLogsForOtherModifiedRecords(
-            long callingPackageAppInfoId,
-            RecordUpsertTableRequest upsertRequest,
-            ChangeLogsTableRequests modificationChangeLogs) {
+            RecordInternal<?> recordInternal, ChangeLogsTableRequests modificationChangeLogs) {
         // Carries out read requests provided by the record helper and uses the results to add
         // change logs to the transaction.
         final RecordHelper<?> recordHelper =
-                mInternalHealthConnectMappings.getRecordHelper(
-                        upsertRequest.getRecordInternal().getRecordType());
+                mInternalHealthConnectMappings.getRecordHelper(recordInternal.getRecordType());
         for (RecordReadTableRequest additionalChangeLogUuidRequest :
-                recordHelper.getReadRequestsForRecordsModifiedByUpsertion(
-                        upsertRequest.getRecordInternal().getUuid(),
-                        upsertRequest,
-                        callingPackageAppInfoId)) {
+                recordHelper.getReadRequestsForRecordsModifiedByUpsertion(recordInternal)) {
             Cursor cursorAdditionalUuids =
                     mTransactionManager.read(additionalChangeLogUuidRequest.getReadTableRequest());
             while (cursorAdditionalUuids.moveToNext()) {
