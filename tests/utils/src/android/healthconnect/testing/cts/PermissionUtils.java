@@ -199,24 +199,48 @@ public final class PermissionUtils {
      * <p>If the app is currently running, it will be killed by the system after the revoke and this
      * method blocks until that has happened.
      */
-    @SuppressLint("MissingPermission")
     public static void revokeHealthPermission(
             String packageName, String permission, String reason) {
+        revokeHealthPermissions(packageName, List.of(permission), reason);
+    }
+
+    /**
+     * Revokes the specified health permissions from the app specified by {@code packageName}.
+     *
+     * <p>Permissions are revoked via {@link PackageManager#revokeRuntimePermission}, as {@link
+     * HealthConnectManager#revokeHealthPermission} is hidden and so can't be used by CTS. Unlike
+     * the {@code HealthConnectManager} method, this does not modify any permission flags.
+     *
+     * <p>If the app is currently running, it will be killed by the system after the revoke and this
+     * method blocks until that has happened. This does not handle the case where many permissions
+     * are revoked, which can lead to multiple asynchronous requests for the app to be killed, see
+     * b/433587449.
+     */
+    @SuppressLint("MissingPermission")
+    public static void revokeHealthPermissions(
+            String packageName, Collection<String> permissions, String reason) {
         Context context = ApplicationProvider.getApplicationContext();
         checkArgument(
                 !context.getPackageName().equals(packageName),
                 "Can not be called on self, only on other apps");
 
-        if (!getGrantedHealthPermissions(packageName).contains(permission)) {
+        List<String> grantedPermissions = getGrantedHealthPermissions(packageName);
+        List<String> permissionsToRevoke =
+                grantedPermissions.stream().filter(permissions::contains).toList();
+        if (permissionsToRevoke.isEmpty()) {
             return;
         }
 
         PackageManager packageManager = context.getPackageManager();
         UserHandle user = context.getUser();
 
-        runWithShellPermissionIdentity(
-                () -> packageManager.revokeRuntimePermission(packageName, permission, user, reason),
-                REVOKE_RUNTIME_PERMISSIONS);
+        for (String permission : permissionsToRevoke) {
+            runWithShellPermissionIdentity(
+                    () ->
+                            packageManager.revokeRuntimePermission(
+                                    packageName, permission, user, reason),
+                    REVOKE_RUNTIME_PERMISSIONS);
+        }
 
         // Apps are killed following a revoke. Wait for this to ensure that it doesn't interfere
         // with subsequent interactions with the app.
@@ -231,7 +255,9 @@ public final class PermissionUtils {
      * Unlike the {@code HealthConnectManager} method, this does not modify any permission flags.
      *
      * <p>If the app is currently running, it will be killed by the system after the revoke and this
-     * method blocks until that has happened.
+     * method blocks until that has happened. This does not handle the case where many permissions
+     * are revoked, which can lead to multiple asynchronous requests for the app to be killed, see
+     * b/433587449.
      */
     @SuppressLint("MissingPermission")
     public static void revokeAllHealthPermissions(String packageName, String reason) {
