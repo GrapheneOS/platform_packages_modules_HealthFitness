@@ -411,7 +411,7 @@ public abstract class RecordFactory<T extends Record> {
             return new StepsCadenceRecordFactory();
         } else if (recordClass.equals(StepsRecord.class)) {
             return new StepsRecordFactory();
-        } else if (recordClass.equals(SymptomRecord.class)) {
+        } else if (Flags.symptoms() && recordClass.equals(SymptomRecord.class)) {
             return new SymptomRecordFactory();
         } else if (recordClass.equals(TotalCaloriesBurnedRecord.class)) {
             return new TotalCaloriesBurnedRecordFactory();
