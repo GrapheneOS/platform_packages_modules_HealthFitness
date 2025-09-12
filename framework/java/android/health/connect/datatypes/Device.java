@@ -52,6 +52,8 @@ public final class Device {
 
         @DeviceType private int mType = DEVICE_TYPE_UNKNOWN;
 
+        @Nullable private String mDisplayName;
+
         /** Sets an optional client supplied manufacturer of the device */
         @NonNull
         public Builder setManufacturer(@Nullable String manufacturer) {
@@ -73,10 +75,21 @@ public final class Device {
             return this;
         }
 
+        /** Sets an optional display name for the device */
+        @FlaggedApi(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+        @NonNull
+        public Builder setDisplayName(@Nullable String displayName) {
+            mDisplayName = displayName;
+            return this;
+        }
+
         /** Build and return {@link Device} object */
         @NonNull
         public Device build() {
-            return new Device(mManufacturer, mModel, mType);
+            if (Flags.deviceDataProvidersApi()) {
+                return new Device(mManufacturer, mModel, mType, mDisplayName);
+            }
+            return new Device(mManufacturer, mModel, mType, null);
         }
     }
 
@@ -191,16 +204,23 @@ public final class Device {
     @Nullable private final String mModel;
     @DeviceType private final int mType;
 
+    @Nullable private final String mDisplayName;
+
     /**
      * @param manufacturer An optional client supplied manufacturer of the device
      * @param model An optional client supplied model of the device
      * @param type An optional client supplied type of the device
      */
-    private Device(@Nullable String manufacturer, @Nullable String model, @DeviceType int type) {
+    private Device(
+            @Nullable String manufacturer,
+            @Nullable String model,
+            @DeviceType int type,
+            @Nullable String displayName) {
         validateIntDefValue(type, Device.VALID_TYPES, DeviceType.class.getSimpleName());
         mManufacturer = manufacturer;
         mModel = model;
         mType = type;
+        mDisplayName = displayName;
     }
 
     /**
@@ -228,6 +248,15 @@ public final class Device {
     }
 
     /**
+     * @return The display name if set, null otherwise
+     */
+    @FlaggedApi(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @Nullable
+    public String getDisplayName() {
+        return mDisplayName;
+    }
+
+    /**
      * Indicates whether some other object is "equal to" this one.
      *
      * @param object the reference object with which to compare.
@@ -237,6 +266,12 @@ public final class Device {
     public boolean equals(@Nullable Object object) {
         if (this == object) return true;
         if (object instanceof Device other) {
+            if (Flags.deviceDataProvidersApi()) {
+                return this.getType() == other.getType()
+                        && Objects.equals(this.getManufacturer(), other.getManufacturer())
+                        && Objects.equals(this.getModel(), other.getModel())
+                        && Objects.equals(this.getDisplayName(), other.getDisplayName());
+            }
             return this.getType() == other.getType()
                     && Objects.equals(this.getManufacturer(), other.getManufacturer())
                     && Objects.equals(this.getModel(), other.getModel());
@@ -251,6 +286,10 @@ public final class Device {
      */
     @Override
     public int hashCode() {
+        if (Flags.deviceDataProvidersApi()) {
+            return Objects.hash(
+                    this.getManufacturer(), this.getModel(), this.getType(), this.getDisplayName());
+        }
         return Objects.hash(this.getManufacturer(), this.getModel(), this.getType());
     }
 
