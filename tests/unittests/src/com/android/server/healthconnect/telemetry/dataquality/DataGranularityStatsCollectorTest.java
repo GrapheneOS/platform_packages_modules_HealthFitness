@@ -565,7 +565,7 @@ public class DataGranularityStatsCollectorTest {
         insertTotalCaloriesBurnedRecord(
                 sessionEndTime.plus(1, ChronoUnit.MINUTES),
                 TEST_PACKAGE_NAME,
-                /* durationOfEachRecordInMillis= */ 1000L,
+                /* durationOfEachRecordInMillis= */ 1240L,
                 /* numberOfRecordsToInsert= */ 1);
 
         DataGranularityStatsCollector.AllGranularityStats allStats =
