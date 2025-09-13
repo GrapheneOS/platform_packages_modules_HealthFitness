@@ -27,8 +27,6 @@ import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertThrows;
-
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.SymptomRecord;
 import android.healthconnect.testing.cts.TestUtils;
@@ -76,14 +74,12 @@ public class SymptomRecordTest {
         TestUtils.deleteAllDataFromHealthConnect();
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void intervalBuilder_startTimeAfterEndTime_throws() {
         Instant startTime = Instant.now();
         Instant endTime = startTime.minusSeconds(60);
         Metadata metadata = new Metadata.Builder().build();
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new SymptomRecord.Builder(SYMPTOM_TYPE_COUGH, startTime, endTime, metadata));
+        new SymptomRecord.Builder(SYMPTOM_TYPE_COUGH, startTime, endTime, metadata);
     }
 
     @Test
@@ -234,33 +230,27 @@ public class SymptomRecordTest {
         assertThat(record1.equals(new Object())).isFalse();
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void instantBuilder_setCount_throws() {
         Instant time = Instant.now();
         Metadata metadata = new Metadata.Builder().build();
-        SymptomRecord.Builder builder =
-                new SymptomRecord.Builder(SYMPTOM_TYPE_COUGH, time, metadata);
-        assertThrows(IllegalStateException.class, () -> builder.setCount(5));
+        new SymptomRecord.Builder(SYMPTOM_TYPE_COUGH, time, metadata)
+                .setCount(5);
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void localDateBuilder_setStartZoneOffset_throws() {
         LocalDate date = LocalDate.now(ZoneId.systemDefault());
         Metadata metadata = new Metadata.Builder().build();
-        SymptomRecord.Builder builder =
-                new SymptomRecord.Builder(SYMPTOM_TYPE_COUGH, date, metadata);
-        assertThrows(
-                IllegalStateException.class,
-                () -> builder.setStartZoneOffset(ZoneOffset.ofHours(1)));
+        new SymptomRecord.Builder(SYMPTOM_TYPE_COUGH, date, metadata)
+                .setStartZoneOffset(ZoneOffset.ofHours(1));
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void localDateBuilder_setEndZoneOffset_throws() {
         LocalDate date = LocalDate.now(ZoneId.systemDefault());
         Metadata metadata = new Metadata.Builder().build();
-        SymptomRecord.Builder builder =
-                new SymptomRecord.Builder(SYMPTOM_TYPE_COUGH, date, metadata);
-        assertThrows(
-                IllegalStateException.class, () -> builder.setEndZoneOffset(ZoneOffset.ofHours(1)));
+        new SymptomRecord.Builder(SYMPTOM_TYPE_COUGH, date, metadata)
+                .setEndZoneOffset(ZoneOffset.ofHours(1));
     }
 }

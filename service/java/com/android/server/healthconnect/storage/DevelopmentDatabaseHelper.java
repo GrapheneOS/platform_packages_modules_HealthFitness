@@ -19,6 +19,7 @@ package com.android.server.healthconnect.storage;
 import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.executeSqlStatements;
 import static com.android.server.healthconnect.storage.HealthConnectDatabase.createTable;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.checkColumnExists;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.checkTableExists;
 
 import android.database.Cursor;
 import android.database.SQLException;
@@ -29,6 +30,7 @@ import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.SymptomRecordHelper;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 
@@ -49,7 +51,7 @@ public final class DevelopmentDatabaseHelper {
      * The current version number for the development database features. Increment this whenever you
      * make a breaking schema change to a development feature.
      */
-    @VisibleForTesting static final int CURRENT_VERSION = 14;
+    @VisibleForTesting static final int CURRENT_VERSION = 15;
 
     /** The name of the table to store development specific key value pairs. */
     private static final String SETTINGS_TABLE_NAME = "development_database_settings";
@@ -104,6 +106,7 @@ public final class DevelopmentDatabaseHelper {
             dropTableIfExists(db, helper.getMainTableName());
             createTable(db, helper.getCreateTableRequest());
         }
+        applyDdpDatabaseUpgrade(db);
     }
 
     private static void applyDdpAppInfoDatabaseUpgrade(SQLiteDatabase db) {
@@ -123,6 +126,14 @@ public final class DevelopmentDatabaseHelper {
             return;
         }
         executeSqlStatements(db, DeviceInfoHelper.getAlterTableRequest().getAddColumnsCommands());
+    }
+
+    private static void applyDdpDatabaseUpgrade(SQLiteDatabase db) {
+        if (checkTableExists(db, DeviceDataProviderHelper.TABLE_NAME)) {
+            // Upgrade has already been applied. Return early.
+            return;
+        }
+        createTable(db, DeviceDataProviderHelper.getCreateTableRequest());
     }
 
     @VisibleForTesting
