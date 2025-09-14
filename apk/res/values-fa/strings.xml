@@ -378,14 +378,10 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"مصرف الکل"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"خواندن مصرف الکل"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"نوشتن مصرف الکل"</string>
-    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
-    <skip />
-    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
-    <skip />
-    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
-    <skip />
-    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
-    <skip />
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"سرفه"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"سرفه"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"خواندن علائم"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"نوشتن علائم"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"اجازه دادن به «<xliff:g id="APP_NAME">%1$s</xliff:g>» برای خواندن"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"اجازه دادن به «<xliff:g id="APP_NAME">%1$s</xliff:g>» برای نوشتن"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"اجازه دادن"</string>
@@ -1289,7 +1285,7 @@
     <string name="device_data_button" msgid="8002406105399136401">"دیدن داده‌های دستگاه"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"تعداد قدم‌های ثبت‌شده در تلفن شما در Health Connect نمایش داده خواهند شد"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"تعداد قدم‌های ثبت‌شده توسط این دستگاه اکنون در Health Connect ذخیره می‌شوند تا برنامه‌های متصل بتوانند به آن‌ها دسترسی داشته باشند"</string>
-    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"رد کردن"</string>
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"بستن"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"مرور"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"تعداد قدم‌ها اکنون در ‎Health Connect‎ هستند"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"تعداد قدم‌های ثبت‌شده توسط این دستگاه اکنون در Health Connect ذخیره می‌شوند تا برنامه‌های متصل بتوانند به آن‌ها دسترسی داشته باشند"</string>

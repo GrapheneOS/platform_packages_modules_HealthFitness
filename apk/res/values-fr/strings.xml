@@ -1192,7 +1192,7 @@
     <string name="a11y_previous_week" msgid="2992971531628685405">"Semaine précédente"</string>
     <string name="a11y_previous_month" msgid="3304373968190750755">"Mois précédent"</string>
     <string name="all_data_selected_deletion_confirmation_dialog" msgid="2103387413531373305">"Supprimer définitivement toutes les données ?"</string>
-    <string name="some_data_selected_deletion_confirmation_dialog" msgid="2466281529240054537">"Supprimer définitivement les données sélectionnées de l\'application ?"</string>
+    <string name="some_data_selected_deletion_confirmation_dialog" msgid="2466281529240054537">"Supprimer définitivement les données sélectionnées ?"</string>
     <string name="all_app_data_selected_deletion_confirmation_dialog" msgid="1077157006579195958">"Supprimer définitivement toutes les données de l\'application <xliff:g id="APP_NAME">%s</xliff:g> ?"</string>
     <string name="some_app_data_selected_deletion_confirmation_dialog" msgid="5378172524112070270">"Supprimer définitivement les données sélectionnées de l\'application <xliff:g id="APP_NAME">%s</xliff:g> ?"</string>
     <string name="all_entries_selected_day_deletion_confirmation_dialog" msgid="2887646600541520444">"Supprimer définitivement toutes les entrées pour le <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g> ?"</string>
