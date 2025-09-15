@@ -64,7 +64,7 @@ class MindfulnessTest : BaseDataTypeTest<MindfulnessSessionRecord>() {
     override val expectedRecordToBeDeletedHeader =
         if (is24HourFormat(context)) "14:00 - 15:29 • ${context.packageName}"
         else "2:00 PM - 3:29 PM • ${context.packageName}"
-    override val expectedRecordToBeDeletedTitle = "Unknown type • 1h 29m"
+    override val expectedRecordToBeDeletedTitle = "Unknown type • 1h${NBSP}29m"
 
     override fun createSameCategoryRecord() = null
 
@@ -76,4 +76,8 @@ class MindfulnessTest : BaseDataTypeTest<MindfulnessSessionRecord>() {
                 EXERCISE_SESSION_TYPE_RUNNING,
             )
             .build()
+
+    private companion object {
+        const val NBSP = "\u00A0" // no break space
+    }
 }

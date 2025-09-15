@@ -116,7 +116,7 @@ public class PowerRecordHelper
     }
 
     @Override
-    String getSeriesDataTableName() {
+    public String getSeriesDataTableName() {
         return SERIES_TABLE_NAME;
     }
 

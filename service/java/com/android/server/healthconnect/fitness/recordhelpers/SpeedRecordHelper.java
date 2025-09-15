@@ -77,7 +77,7 @@ public class SpeedRecordHelper
     }
 
     @Override
-    String getSeriesDataTableName() {
+    public String getSeriesDataTableName() {
         return SERIES_TABLE_NAME;
     }
 

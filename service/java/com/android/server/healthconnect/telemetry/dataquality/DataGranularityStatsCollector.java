@@ -28,21 +28,10 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.ActiveCaloriesBurnedRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.CyclingPedalingCadenceRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.DistanceRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.ElevationGainedRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.FloorsClimbedRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.HeartRateRecordHelper;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.PowerRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.SeriesRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.SkinTemperatureRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.SpeedRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.StepsCadenceRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.StepsRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.TotalCaloriesBurnedRecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
@@ -75,8 +64,6 @@ public final class DataGranularityStatsCollector {
     private final Map<Long, List<TimeRange>> mAppToSessionTimeMap = new HashMap<>();
     private long mSevenDaysAgoMillis;
 
-    record SeriesHelperData(String tableName, String seriesTableName) {}
-
     record GranularityStats(
             String packageName,
             @RecordTypeIdentifier.RecordType int recordIdentifier,
@@ -93,50 +80,23 @@ public final class DataGranularityStatsCollector {
 
     private record SessionKey(long appId, TimeRange session) {}
 
-    private static final Map<@RecordTypeIdentifier.RecordType Integer, SeriesHelperData>
-            SERIES_TYPE_ID_TO_TABLE_NAME_MAP =
-                    Map.of(
-                            RecordTypeIdentifier.RECORD_TYPE_HEART_RATE,
-                            new SeriesHelperData(
-                                    HeartRateRecordHelper.TABLE_NAME,
-                                    HeartRateRecordHelper.SERIES_TABLE_NAME),
-                            RecordTypeIdentifier.RECORD_TYPE_SPEED,
-                            new SeriesHelperData(
-                                    SpeedRecordHelper.TABLE_NAME,
-                                    SpeedRecordHelper.SERIES_TABLE_NAME),
-                            RecordTypeIdentifier.RECORD_TYPE_POWER,
-                            new SeriesHelperData(
-                                    PowerRecordHelper.TABLE_NAME,
-                                    PowerRecordHelper.SERIES_TABLE_NAME),
-                            RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE,
-                            new SeriesHelperData(
-                                    StepsCadenceRecordHelper.TABLE_NAME,
-                                    StepsCadenceRecordHelper.SERIES_TABLE_NAME),
-                            RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE,
-                            new SeriesHelperData(
-                                    CyclingPedalingCadenceRecordHelper.TABLE_NAME,
-                                    CyclingPedalingCadenceRecordHelper.SERIES_TABLE_NAME),
-                            RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE,
-                            new SeriesHelperData(
-                                    SkinTemperatureRecordHelper.TABLE_NAME,
-                                    SkinTemperatureRecordHelper.SERIES_TABLE_NAME));
+    private static final List<@RecordTypeIdentifier.RecordType Integer> SERIES_TYPE_IDS =
+            List.of(
+                    RecordTypeIdentifier.RECORD_TYPE_HEART_RATE,
+                    RecordTypeIdentifier.RECORD_TYPE_SPEED,
+                    RecordTypeIdentifier.RECORD_TYPE_POWER,
+                    RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE,
+                    RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE,
+                    RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE);
 
-    private static final Map<@RecordTypeIdentifier.RecordType Integer, String>
-            INTERVAL_TYPE_ID_TO_TABLE_NAME_MAP =
-                    Map.of(
-                            RecordTypeIdentifier.RECORD_TYPE_STEPS,
-                            StepsRecordHelper.STEPS_TABLE_NAME,
-                            RecordTypeIdentifier.RECORD_TYPE_DISTANCE,
-                            DistanceRecordHelper.DISTANCE_RECORD_TABLE_NAME,
-                            RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED,
-                            ActiveCaloriesBurnedRecordHelper
-                                    .ACTIVE_CALORIES_BURNED_RECORD_TABLE_NAME,
-                            RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED,
-                            TotalCaloriesBurnedRecordHelper.TOTAL_CALORIES_BURNED_RECORD_TABLE_NAME,
-                            RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED,
-                            ElevationGainedRecordHelper.ELEVATION_GAINED_RECORD_TABLE_NAME,
-                            RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED,
-                            FloorsClimbedRecordHelper.FLOORS_CLIMBED_RECORD_TABLE_NAME);
+    private static final List<@RecordTypeIdentifier.RecordType Integer> INTERVAL_TYPE_IDS =
+            List.of(
+                    RecordTypeIdentifier.RECORD_TYPE_STEPS,
+                    RecordTypeIdentifier.RECORD_TYPE_DISTANCE,
+                    RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED,
+                    RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED,
+                    RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED,
+                    RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED);
 
     public DataGranularityStatsCollector(
             TransactionManager transactionManager, AppInfoHelper appInfoHelper, Clock clock) {
@@ -166,11 +126,13 @@ public final class DataGranularityStatsCollector {
     }
 
     private void calculateLastWeekIntervalGranularityStats() {
-        for (Map.Entry<@RecordTypeIdentifier.RecordType Integer, String> dataTypeInfo :
-                INTERVAL_TYPE_ID_TO_TABLE_NAME_MAP.entrySet()) {
+        for (@RecordTypeIdentifier.RecordType int recordIdentifier : INTERVAL_TYPE_IDS) {
             Map<StatsKey, IntervalAggregator> keyToAggregatorMap = new HashMap<>();
-            ReadTableRequest readTableRequest =
-                    getReadIntervalTableRequest(dataTypeInfo.getValue());
+            String tableName =
+                    InternalHealthConnectMappings.getInstance()
+                            .getRecordHelper(recordIdentifier)
+                            .getMainTableName();
+            ReadTableRequest readTableRequest = getReadIntervalTableRequest(tableName);
 
             try (Cursor cursor = mTransactionManager.read(readTableRequest)) {
                 while (cursor.moveToNext()) {
@@ -186,14 +148,20 @@ public final class DataGranularityStatsCollector {
                             .accept(startTime, endTime);
                 }
             }
-            processIntervalGranularityStats(keyToAggregatorMap, dataTypeInfo.getKey());
+            processIntervalGranularityStats(keyToAggregatorMap, recordIdentifier);
         }
     }
 
     private void calculateLastWeekSeriesGranularityStats() {
-        for (Map.Entry<@RecordTypeIdentifier.RecordType Integer, SeriesHelperData> dataTypeInfo :
-                SERIES_TYPE_ID_TO_TABLE_NAME_MAP.entrySet()) {
-            ReadTableRequest readTableRequest = getReadSeriesTableRequest(dataTypeInfo.getValue());
+        for (@RecordTypeIdentifier.RecordType int recordIdentifier : SERIES_TYPE_IDS) {
+            SeriesRecordHelper<?, ?> helper =
+                    (SeriesRecordHelper<?, ?>)
+                            InternalHealthConnectMappings.getInstance()
+                                    .getRecordHelper(recordIdentifier);
+            String tableName = helper.getMainTableName();
+            String seriesTableName = helper.getSeriesDataTableName();
+            ReadTableRequest readTableRequest =
+                    getReadSeriesTableRequest(tableName, seriesTableName);
 
             Map<SessionKey, Integer> sessionToRecordCountMap = new HashMap<>();
             Map<Long, Map<Integer, List<Long>>> appIdToDailyBucketsMap = new HashMap<>();
@@ -201,7 +169,7 @@ public final class DataGranularityStatsCollector {
                 Slog.d(
                         TAG,
                         "Number of series samples for type "
-                                + dataTypeInfo.getKey()
+                                + recordIdentifier
                                 + ": "
                                 + cursor.getCount());
                 while (cursor.moveToNext()) {
@@ -228,8 +196,8 @@ public final class DataGranularityStatsCollector {
                     }
                 }
             }
-            processActiveSeriesStats(sessionToRecordCountMap, dataTypeInfo.getKey());
-            processPassiveSeriesStats(appIdToDailyBucketsMap, dataTypeInfo.getKey());
+            processActiveSeriesStats(sessionToRecordCountMap, recordIdentifier);
+            processPassiveSeriesStats(appIdToDailyBucketsMap, recordIdentifier);
         }
     }
 
@@ -245,6 +213,7 @@ public final class DataGranularityStatsCollector {
                     if (packageName.isEmpty()) {
                         return;
                     }
+                    // Average duration millis of the records
                     long granularity = aggregator.mTotalDuration / aggregator.mRecordCount;
                     GranularityStats stats =
                             new GranularityStats(packageName.get(), recordIdentifier, granularity);
@@ -271,9 +240,8 @@ public final class DataGranularityStatsCollector {
                         return;
                     }
 
-                    // We define granularity by the average time gap between each data point of a
-                    // series
-                    // data type for the duration of the session.
+                    // Average time gap between each sample of a series data for the duration of the
+                    // session.
                     long granularity = sessionDuration / recordCount;
 
                     GranularityStats stats =
@@ -363,11 +331,11 @@ public final class DataGranularityStatsCollector {
                 .setWhereClause(whereClause);
     }
 
-    private ReadTableRequest getReadSeriesTableRequest(SeriesHelperData seriesHelperData) {
-        return new ReadTableRequest(seriesHelperData.seriesTableName())
+    private ReadTableRequest getReadSeriesTableRequest(String tableName, String seriesTableName) {
+        return new ReadTableRequest(seriesTableName)
                 .setColumnNames(
                         List.of(
-                                seriesHelperData.tableName() + "." + APP_INFO_ID_COLUMN_NAME,
+                                tableName + "." + APP_INFO_ID_COLUMN_NAME,
                                 SeriesRecordHelper.EPOCH_MILLIS_COLUMN_NAME))
                 .setWhereClause(
                         new WhereClauses(WhereClauses.LogicalOperator.AND)
@@ -376,8 +344,8 @@ public final class DataGranularityStatsCollector {
                                         mSevenDaysAgoMillis))
                 .setJoinClause(
                         new SqlJoin(
-                                seriesHelperData.seriesTableName(),
-                                seriesHelperData.tableName(),
+                                seriesTableName,
+                                tableName,
                                 SeriesRecordHelper.PARENT_KEY_COLUMN_NAME,
                                 RecordHelper.PRIMARY_COLUMN_NAME));
     }
