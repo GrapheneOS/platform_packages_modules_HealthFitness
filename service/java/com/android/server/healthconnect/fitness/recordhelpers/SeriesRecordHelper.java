@@ -109,13 +109,13 @@ public abstract class SeriesRecordHelper<
         return Collections.emptyList();
     }
 
+    /** Returns the table name required to store the series data */
+    public abstract String getSeriesDataTableName();
+
     /**
      * Returns the column names required to store the series data, excluding the parent key field
      */
     abstract List<Pair<String, String>> getSeriesRecordColumnInfo();
-
-    /** Returns the table name required to store the series data */
-    abstract String getSeriesDataTableName();
 
     /** Populates the {@code record} with values specific to dataytpe */
     abstract T populateSpecificValues(Cursor cursor);

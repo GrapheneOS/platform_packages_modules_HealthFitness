@@ -68,7 +68,6 @@ public final class SkinTemperatureRecordHelper
     private static final String SKIN_TEMPERATURE_MEASUREMENT_LOCATION_COLUMN_NAME =
             "measurement_location";
 
-
     private static final String SKIN_TEMPERATURE_DELTA_COLUMN_NAME = "delta";
 
     public SkinTemperatureRecordHelper() {
@@ -81,7 +80,7 @@ public final class SkinTemperatureRecordHelper
     }
 
     @Override
-    String getSeriesDataTableName() {
+    public String getSeriesDataTableName() {
         return SERIES_TABLE_NAME;
     }
 
