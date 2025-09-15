@@ -65,7 +65,6 @@ import com.android.server.healthconnect.common.logging.ExerciseRoutesLogger;
 import com.android.server.healthconnect.common.logging.ExerciseRoutesLogger.Operations;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.RecordReadTableRequest;
-import com.android.server.healthconnect.fitness.RecordUpsertTableRequest;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
@@ -489,10 +488,9 @@ public final class ExerciseSessionRecordHelper
 
     @Override
     public List<RecordReadTableRequest> getReadRequestsForRecordsModifiedByUpsertion(
-            UUID upsertedRecordId, RecordUpsertTableRequest upsertTableRequest, long appId) {
+            RecordInternal<?> record) {
         List<RecordReadTableRequest> result = new ArrayList<>();
-        ExerciseSessionRecordInternal session =
-                (ExerciseSessionRecordInternal) upsertTableRequest.getRecordInternal();
+        ExerciseSessionRecordInternal session = (ExerciseSessionRecordInternal) record;
         RecordHelper plannedExerciseSessionRecordHelper =
                 InternalHealthConnectMappings.getInstance()
                         .getRecordHelper(RECORD_TYPE_PLANNED_EXERCISE_SESSION);
@@ -517,7 +515,8 @@ public final class ExerciseSessionRecordHelper
                                     + StorageUtils.getHexString(
                                             session.getPlannedExerciseSessionId())
                                     + ","
-                                    + appId
+                                    // TODO(b/445095507): Query the correct app id.
+                                    + session.getAppInfoId()
                                     + "))";
                         }
                     };
@@ -535,7 +534,7 @@ public final class ExerciseSessionRecordHelper
                         COMPLETED_SESSION_ID_COLUMN_NAME));
         WhereClauses whereStatement = new WhereClauses(WhereClauses.LogicalOperator.AND);
         whereStatement.addWhereEqualsClause(
-                COMPLETED_SESSION_ID_COLUMN_NAME, StorageUtils.getHexString(upsertedRecordId));
+                COMPLETED_SESSION_ID_COLUMN_NAME, StorageUtils.getHexString(session.getUuid()));
         affectedTrainingPlanReadRequest.setWhereClause(whereStatement);
         result.add(
                 new RecordReadTableRequest(

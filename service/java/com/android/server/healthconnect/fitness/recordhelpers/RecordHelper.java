@@ -62,7 +62,6 @@ import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.fitness.RecordDeleteTableRequest;
 import com.android.server.healthconnect.fitness.RecordReadTableRequest;
-import com.android.server.healthconnect.fitness.RecordUpsertTableRequest;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
 import com.android.server.healthconnect.fitness.aggregation.TimeSplits;
@@ -299,60 +298,55 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     /** Gets {@link UpsertTableRequest} from {@code recordInternal}. */
-    public RecordUpsertTableRequest getUpsertTableRequest(RecordInternal<?> recordInternal) {
+    public UpsertTableRequest getUpsertTableRequest(RecordInternal<?> recordInternal) {
         return getUpsertTableRequest(recordInternal, null);
     }
 
     @SuppressWarnings("unchecked")
-    public RecordUpsertTableRequest getUpsertTableRequest(
+    public UpsertTableRequest getUpsertTableRequest(
             RecordInternal<?> recordInternal,
             @Nullable ArrayMap<String, Boolean> extraWritePermissionToStateMap) {
         ContentValues upsertValues = getContentValues((T) recordInternal);
         updateUpsertValuesIfRequired(upsertValues, extraWritePermissionToStateMap);
-        UpsertTableRequest upsertTableRequest =
-                new UpsertTableRequest(getMainTableName(), upsertValues, UNIQUE_COLUMNS_INFO)
-                        .setRequiresUpdateClause(
-                                new UpsertTableRequest.IRequiresUpdate() {
-                                    @Override
-                                    public boolean requiresUpdate(
-                                            Cursor cursor,
-                                            ContentValues contentValues,
-                                            UpsertTableRequest request) {
-                                        final UUID newUUID =
-                                                StorageUtils.convertBytesToUUID(
-                                                        contentValues.getAsByteArray(
-                                                                UUID_COLUMN_NAME));
-                                        final UUID oldUUID =
-                                                StorageUtils.getCursorUUID(
-                                                        cursor, UUID_COLUMN_NAME);
+        return new UpsertTableRequest(getMainTableName(), upsertValues, UNIQUE_COLUMNS_INFO)
+                .setRequiresUpdateClause(
+                        new UpsertTableRequest.IRequiresUpdate() {
+                            @Override
+                            public boolean requiresUpdate(
+                                    Cursor cursor,
+                                    ContentValues contentValues,
+                                    UpsertTableRequest request) {
+                                final UUID newUUID =
+                                        StorageUtils.convertBytesToUUID(
+                                                contentValues.getAsByteArray(UUID_COLUMN_NAME));
+                                final UUID oldUUID =
+                                        StorageUtils.getCursorUUID(cursor, UUID_COLUMN_NAME);
 
-                                        if (!Objects.equals(newUUID, oldUUID)) {
-                                            // Use old UUID in case of conflicts on de-dupe.
-                                            contentValues.put(
-                                                    UUID_COLUMN_NAME,
-                                                    StorageUtils.convertUUIDToBytes(oldUUID));
-                                            recordInternal.setUuid(oldUUID);
-                                            // This means there was a duplication conflict, we want
-                                            // to update in this case.
-                                            return true;
-                                        }
+                                if (!Objects.equals(newUUID, oldUUID)) {
+                                    // Use old UUID in case of conflicts on de-dupe.
+                                    contentValues.put(
+                                            UUID_COLUMN_NAME,
+                                            StorageUtils.convertUUIDToBytes(oldUUID));
+                                    recordInternal.setUuid(oldUUID);
+                                    // This means there was a duplication conflict, we want
+                                    // to update in this case.
+                                    return true;
+                                }
 
-                                        long clientRecordVersion =
-                                                StorageUtils.getCursorLong(
-                                                        cursor, CLIENT_RECORD_VERSION_COLUMN_NAME);
-                                        long newClientRecordVersion =
-                                                contentValues.getAsLong(
-                                                        CLIENT_RECORD_VERSION_COLUMN_NAME);
+                                long clientRecordVersion =
+                                        StorageUtils.getCursorLong(
+                                                cursor, CLIENT_RECORD_VERSION_COLUMN_NAME);
+                                long newClientRecordVersion =
+                                        contentValues.getAsLong(CLIENT_RECORD_VERSION_COLUMN_NAME);
 
-                                        return newClientRecordVersion >= clientRecordVersion;
-                                    }
-                                })
-                        .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal))
-                        .setChildTablesWithRowsToBeDeletedDuringUpdate(
-                                getChildTablesWithRowsToBeDeletedDuringUpdate(
-                                        extraWritePermissionToStateMap))
-                        .setPostUpsertCommands(getPostUpsertCommands(recordInternal));
-        return new RecordUpsertTableRequest(upsertTableRequest, recordInternal);
+                                return newClientRecordVersion >= clientRecordVersion;
+                            }
+                        })
+                .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal))
+                .setChildTablesWithRowsToBeDeletedDuringUpdate(
+                        getChildTablesWithRowsToBeDeletedDuringUpdate(
+                                extraWritePermissionToStateMap))
+                .setPostUpsertCommands(getPostUpsertCommands(recordInternal));
     }
 
     /* Updates upsert content values based on extra permissions state. */
@@ -1025,7 +1019,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * referenced it.
      */
     public List<RecordReadTableRequest> getReadRequestsForRecordsModifiedByUpsertion(
-            UUID upsertedRecordId, RecordUpsertTableRequest upsertTableRequest, long appId) {
+            RecordInternal<?> record) {
         return Collections.emptyList();
     }
 }
