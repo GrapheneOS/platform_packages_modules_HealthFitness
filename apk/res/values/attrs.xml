@@ -46,6 +46,7 @@
     <attr name="sleepCategoryIcon" format="reference"/>
     <attr name="vitalsCategoryIcon" format="reference"/>
     <attr name="wellnessCategoryIcon" format="reference"/>
+    <attr name="symptomsCategoryIcon" format="reference"/>
     <attr name="databaseIcon" format="reference" />
 
     <!-- Permission types page -->

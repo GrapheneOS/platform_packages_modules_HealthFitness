@@ -214,6 +214,11 @@
 
     <!-- Read permissions for vitals -->
     <permission
+        android:name="android.permission.health.READ_SYMPTOM_COUGH"
+        android:label="@string/symptom_cough_read_content_description"
+        android:protectionLevel="dangerous"
+        android:permissionGroup="android.permission-group.HEALTH" />
+    <permission
         android:name="android.permission.health.READ_BASAL_BODY_TEMPERATURE"
         android:label="@string/basal_body_temperature_read_content_description"
         android:protectionLevel="dangerous"
@@ -542,6 +547,11 @@
         android:permissionGroup="android.permission-group.HEALTH" />
 
     <!-- Write permissions for vitals -->
+    <permission
+        android:name="android.permission.health.WRITE_SYMPTOM_COUGH"
+        android:label="@string/symptom_cough_write_content_description"
+        android:protectionLevel="dangerous"
+        android:permissionGroup="android.permission-group.HEALTH" />
     <permission
         android:name="android.permission.health.WRITE_BASAL_BODY_TEMPERATURE"
         android:label="@string/basal_body_temperature_write_content_description"

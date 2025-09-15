@@ -103,6 +103,9 @@
     <string name="wellness_category_uppercase" description="Uppercase name for wellness category, displaying user data related to wellness (e.g. mindfulness) [CHAR LIMIT=30]">Wellness</string>
     <string name="wellness_category_lowercase" description="Lowercase name for wellness category, displaying user data related to wellness (e.g. mindfulness) [CHAR LIMIT=30]">wellness</string>
 
+    <string name="symptoms_category_uppercase" description="Uppercase name for symptoms category, displaying user data related to symptoms (e.g. cough) [CHAR LIMIT=30]">Symptoms</string>
+    <string name="symptoms_category_lowercase" description="Lowercase name for symptoms category, displaying user data related to symptoms (e.g. cough) [CHAR LIMIT=30]">symptoms</string>
+
     <string name="browse_data_category" description="Uppercase name for a section that contains user data grouped by categories. [CHAR_LIMIT=50]">Browse data</string>
     <string name="manage_data_section" description="Uppercase name for a section that has different user actions like deleting data. [CHAR_LIMIT=50]">Manage data</string>
     <string name="export_data_button" description="Uppercase name for a button that allows a user to export their data. [CHAR_LIMIT=50]">Export data</string>
@@ -518,6 +521,13 @@
     <string name="symptom_cough_lowercase_label" description="Lowercase label used to show user's cough symptom data [CHAR_LIMIT=50]">cough</string>
     <string name="symptom_cough_read_content_description" description="Content description for switch that enables permissions for reading user's cough symptom data [CHAR_LIMIT=NONE]">Read symptoms</string>
     <string name="symptom_cough_write_content_description" description="Content description for switch that enables permissions for writing user's cough symptom data [CHAR_LIMIT=NONE]">Write symptoms</string>
+
+    <string name="symptom_unknown" description="Unknown symptom type. [CHAR LIMIT=50]">Unknown</string>
+
+    <string name="symptom_severity_mild" description="Symptom severity level: Mild. [CHAR LIMIT=50]">Mild</string>
+    <string name="symptom_severity_moderate" description="Symptom severity level: Moderate. [CHAR LIMIT=50]">Moderate</string>
+    <string name="symptom_severity_severe" description="Symptom severity level: Severe. [CHAR LIMIT=50]">Severe</string>
+    <string name="symptom_entry_title" description="Title for a symptom entry, combining severity and type. [CHAR LIMIT=100]"><xliff:g example="Mild" id="severity">%1$s</xliff:g> <xliff:g example="cough" id="type">%2$s</xliff:g></string>
 
     <!--endregion-->
 

@@ -51,6 +51,7 @@ import static android.health.connect.HealthPermissions.READ_SKIN_TEMPERATURE;
 import static android.health.connect.HealthPermissions.READ_SLEEP;
 import static android.health.connect.HealthPermissions.READ_SPEED;
 import static android.health.connect.HealthPermissions.READ_STEPS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_COUGH;
 import static android.health.connect.HealthPermissions.READ_TOTAL_CALORIES_BURNED;
 import static android.health.connect.HealthPermissions.READ_VO2_MAX;
 import static android.health.connect.HealthPermissions.READ_WEIGHT;
@@ -88,6 +89,7 @@ import static android.health.connect.HealthPermissions.WRITE_SKIN_TEMPERATURE;
 import static android.health.connect.HealthPermissions.WRITE_SLEEP;
 import static android.health.connect.HealthPermissions.WRITE_SPEED;
 import static android.health.connect.HealthPermissions.WRITE_STEPS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_COUGH;
 import static android.health.connect.HealthPermissions.WRITE_TOTAL_CALORIES_BURNED;
 import static android.health.connect.HealthPermissions.WRITE_VO2_MAX;
 import static android.health.connect.HealthPermissions.WRITE_WEIGHT;
@@ -191,7 +193,9 @@ public class HealthPermissionsPresenceTest {
                     WRITE_RESPIRATORY_RATE,
                     WRITE_RESTING_HEART_RATE,
                     WRITE_SKIN_TEMPERATURE,
-                    WRITE_INTERMENSTRUAL_BLEEDING);
+                    WRITE_INTERMENSTRUAL_BLEEDING,
+                    READ_SYMPTOM_COUGH,
+                    WRITE_SYMPTOM_COUGH);
 
     private PackageManager mPackageManager;
 

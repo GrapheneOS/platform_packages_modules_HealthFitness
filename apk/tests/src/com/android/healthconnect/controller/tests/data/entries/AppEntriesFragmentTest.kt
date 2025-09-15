@@ -22,8 +22,11 @@ import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.PlannedExerciseSessionRecord
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsRecord
+import android.health.connect.datatypes.SymptomRecord
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
+import android.platform.test.annotations.RequiresFlagsEnabled
+import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
@@ -48,9 +51,9 @@ import com.android.healthconnect.controller.data.entries.EntriesViewModel.Entrie
 import com.android.healthconnect.controller.data.entries.EntriesViewModel.EntriesFragmentState.LoadingFailed
 import com.android.healthconnect.controller.data.entries.EntriesViewModel.EntriesFragmentState.With
 import com.android.healthconnect.controller.data.entries.FormattedEntry
-import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedDataEntry
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
+import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.EXERCISE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.HEART_RATE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.PLANNED_EXERCISE
@@ -82,6 +85,7 @@ import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
 import kotlinx.coroutines.test.runTest
+import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -105,6 +109,7 @@ class AppEntriesFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val setFlagsRule = SetFlagsRule()
+    @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @BindValue val viewModel: EntriesViewModel = Mockito.mock(EntriesViewModel::class.java)
     @BindValue
@@ -313,26 +318,27 @@ class AppEntriesFragmentTest {
         onView(withText("12 steps")).check(matches(isDisplayed()))
         onView(withText("8:06 - 8:06")).check(matches(isDisplayed()))
         onView(withText("15 steps")).check(matches(isDisplayed()))
-        verify(healthConnectLogger, times(2)).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
     }
 
     @Test
-    fun withMedicalData_showsListOfEntries() {
-        whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_IMMUNIZATION_LIST)))
-        whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_IMMUNIZATION_LIST.toMutableList())
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS)
+    fun withSymptomsData_showsListOfEntries() {
+        whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_SYMPTOMS_LIST)))
+        whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_SYMPTOMS_LIST.toMutableList())
 
         launchFragment<AppEntriesFragment>(
             bundleOf(
-                PERMISSION_TYPE_NAME_KEY to MedicalPermissionType.VACCINES.name,
+                PERMISSION_TYPE_NAME_KEY to FitnessPermissionType.SYMPTOM_COUGH.name,
                 EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
                 Constants.EXTRA_APP_NAME to TEST_APP_NAME,
             )
         )
 
-        onView(withText("Covid vaccine 1")).check(matches(isDisplayed()))
-        onView(withText("Covid vaccine 2")).check(matches(isDisplayed()))
-        onView(withText("Covid vaccine 3")).check(matches(isDisplayed()))
-        verify(healthConnectLogger, times(3)).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
+        onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
+        onView(withText("Mild cough")).check(matches(isDisplayed()))
+        onView(withId(R.id.item_data_entry_notes)).check(matches(isDisplayed()))
+        onView(withId(R.id.item_data_entry_notes)).check(matches(withText("Test notes")))
+        onView(withId(R.id.item_data_entry_divider)).check(matches(not(isDisplayed())))
     }
 
     @Test
@@ -584,6 +590,25 @@ class AppEntriesFragmentTest {
     }
 
     @Test
+    fun withMedicalData_showsListOfEntries() {
+        whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_IMMUNIZATION_LIST)))
+        whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_IMMUNIZATION_LIST.toMutableList())
+
+        launchFragment<AppEntriesFragment>(
+            bundleOf(
+                PERMISSION_TYPE_NAME_KEY to MedicalPermissionType.VACCINES.name,
+                EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                Constants.EXTRA_APP_NAME to TEST_APP_NAME,
+            )
+        )
+
+        onView(withText("Covid vaccine 1")).check(matches(isDisplayed()))
+        onView(withText("Covid vaccine 2")).check(matches(isDisplayed()))
+        onView(withText("Covid vaccine 3")).check(matches(isDisplayed()))
+        verify(healthConnectLogger, times(3)).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
+    }
+
+    @Test
     @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_ENTRIES_SCREEN)
     fun clickOnMedicalPermission_navigateToRawFhir() {
         whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_IMMUNIZATION_LIST)))
@@ -696,9 +721,47 @@ private val FORMATTED_EXERCISE_SESSION_LIST =
         )
     )
 
+private val FORMATTED_SYMPTOMS_LIST =
+    listOf(
+        FormattedEntry.SymptomEntry(
+            uuid = "test_id",
+            header = "7:06 - 7:06",
+            headerA11y = "from 7:06 to 7:06",
+            title = "Mild cough",
+            titleA11y = "Mild cough",
+            dataType = SymptomRecord::class,
+            notes = "Test notes",
+        )
+    )
+
+private val FORMATTED_IMMUNIZATION_LIST =
+    listOf(
+        FormattedEntry.FormattedMedicalDataEntry(
+            header = "02 May 2023 • Health Connect Toolbox",
+            headerA11y = "My Hospital",
+            title = "Covid vaccine 1",
+            titleA11y = "important vaccination",
+            medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
+        ),
+        FormattedEntry.FormattedMedicalDataEntry(
+            header = "My Hospital",
+            headerA11y = "My Hospital",
+            title = "Covid vaccine 2",
+            titleA11y = "important vaccination",
+            medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION_2.id,
+        ),
+        FormattedEntry.FormattedMedicalDataEntry(
+            header = "My Hospital 2",
+            headerA11y = "My Hospital 2",
+            title = "Covid vaccine 3",
+            titleA11y = "important vaccination",
+            medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION_3.id,
+        ),
+    )
+
 private val FORMATTED_STEPS_LIST_WITH_AGGREGATION =
     listOf(
-        FormattedAggregation(
+        FormattedEntry.FormattedAggregation(
             aggregation = "27",
             aggregationA11y = "27",
             contributingApps = TEST_APP_NAME,
@@ -718,30 +781,5 @@ private val FORMATTED_STEPS_LIST_WITH_AGGREGATION =
             title = "15 steps",
             titleA11y = "15 steps",
             dataType = StepsRecord::class,
-        ),
-    )
-
-private val FORMATTED_IMMUNIZATION_LIST =
-    listOf(
-        FormattedEntry.FormattedMedicalDataEntry(
-            header = "My Hospital",
-            headerA11y = "My Hospital",
-            title = "Covid vaccine 1",
-            titleA11y = "important vaccination",
-            medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
-        ),
-        FormattedEntry.FormattedMedicalDataEntry(
-            header = "My Hospital",
-            headerA11y = "My Hospital",
-            title = "Covid vaccine 2",
-            titleA11y = "important vaccination",
-            medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION_2.id,
-        ),
-        FormattedEntry.FormattedMedicalDataEntry(
-            header = "My Hospital 2",
-            headerA11y = "My Hospital 2",
-            title = "Covid vaccine 3",
-            titleA11y = "important vaccination",
-            medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION_3.id,
         ),
     )
