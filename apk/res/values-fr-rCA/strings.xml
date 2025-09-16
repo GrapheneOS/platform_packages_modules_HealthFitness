@@ -378,14 +378,10 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"consommation d\'alcool"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Lecture des données relatives à la consommation d\'alcool"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Écriture des données relatives à la consommation d\'alcool"</string>
-    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
-    <skip />
-    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
-    <skip />
-    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
-    <skip />
-    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
-    <skip />
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Toux"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"toux"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Lisez les symptômes"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Écrivez les symptômes"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Autoriser la lecture des données par « <xliff:g id="APP_NAME">%1$s</xliff:g> »"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Autoriser l\'écriture des données par « <xliff:g id="APP_NAME">%1$s</xliff:g> »"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Autoriser"</string>

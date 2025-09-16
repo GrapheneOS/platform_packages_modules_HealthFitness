@@ -378,14 +378,10 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"ಆಲ್ಕೋಹಾಲ್ ಬಳಕೆ"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"ಆಲ್ಕೋಹಾಲ್ ಬಳಕೆ ಕುರಿತು ಓದಿರಿ"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"ಆಲ್ಕೋಹಾಲ್ ಬಳಕೆ ಕುರಿತು ಬರೆಯಿರಿ"</string>
-    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
-    <skip />
-    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
-    <skip />
-    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
-    <skip />
-    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
-    <skip />
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"ಕೆಮ್ಮು"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"ಕೆಮ್ಮು"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"ರೋಗಲಕ್ಷಣಗಳನ್ನು ಓದಿ"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"ರೋಗಲಕ್ಷಣಗಳನ್ನು ಬರೆಯಿರಿ"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” ಗೆ ಓದಲು ಅನುಮತಿಸಿ"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” ಗೆ ಬರೆಯಲು ಅನುಮತಿಸಿ"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"ಅನುಮತಿಸಿ"</string>
