@@ -26,8 +26,12 @@ class DestinationChangedListener(private val activity: CollapsingToolbarBaseActi
     override fun onDestinationChanged(
         controller: NavController,
         destination: NavDestination,
-        arguments: Bundle?
+        arguments: Bundle?,
     ) {
         activity.setTitle(destination.label)
+        // force app bar to collapse when navigating to a new destination b/442774925
+        if (SettingsThemeHelper.isExpressiveTheme(activity)) {
+            activity.appBarLayout?.setExpanded(false)
+        }
     }
 }
