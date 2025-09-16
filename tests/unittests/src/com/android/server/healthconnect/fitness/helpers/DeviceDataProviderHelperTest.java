@@ -16,19 +16,36 @@
 
 package com.android.server.healthconnect.fitness.helpers;
 
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
+
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getIntegerAndConvertToBoolean;
+
 import static com.google.common.truth.Truth.assertThat;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.DistanceRecord;
+import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.device.DeviceDataSourceAdvertisement;
+import com.android.server.healthconnect.device.DeviceDataSourceState;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
+import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
+import com.android.server.healthconnect.storage.request.ReadTableRequest;
+import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import org.junit.Before;
@@ -39,6 +56,8 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.util.Set;
+
 @RunWith(AndroidJUnit4.class)
 public class DeviceDataProviderHelperTest {
 
@@ -46,7 +65,14 @@ public class DeviceDataProviderHelperTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
 
+    private static final String TEST_APP_PACKAGE = "com.test.app";
+    private static final String DISPLAY_NAME = "Test Pixel";
+    private static final String DEVICE_ID = "1234";
+
     private DeviceDataProviderHelper mDeviceDataProviderHelper;
+    private TransactionManager mTransactionManager;
+    private HealthConnectMappings mHealthConnectMappings;
+    private Device mDevice;
 
     @Before
     public void setUp() {
@@ -55,8 +81,19 @@ public class DeviceDataProviderHelperTest {
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
+        mTransactionManager = healthConnectInjector.getTransactionManager();
+        mHealthConnectMappings = healthConnectInjector.getHealthConnectMappings();
         mDeviceDataProviderHelper =
-                new DeviceDataProviderHelper(healthConnectInjector.getDatabaseHelpers());
+                new DeviceDataProviderHelper(
+                        healthConnectInjector.getDatabaseHelpers(),
+                        mTransactionManager,
+                        mHealthConnectMappings);
+        mDevice =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(DEVICE_TYPE_PHONE)
+                        .build();
     }
 
     @Test
@@ -107,7 +144,7 @@ public class DeviceDataProviderHelperTest {
                                 + " "
                                 + StorageUtils.TEXT_NOT_NULL);
         assertThat(createCommand)
-                .contains(DeviceDataProviderHelper.DATA_TYPE + " " + StorageUtils.TEXT_NOT_NULL);
+                .contains(DeviceDataProviderHelper.DATA_TYPE + " " + StorageUtils.INTEGER_NOT_NULL);
         assertThat(createCommand)
                 .contains(
                         DeviceDataProviderHelper.IS_AVAILABLE
@@ -124,5 +161,221 @@ public class DeviceDataProviderHelperTest {
     public void testGetMainTableName() {
         assertThat(mDeviceDataProviderHelper.getMainTableName())
                 .isEqualTo(DeviceDataProviderHelper.TABLE_NAME);
+    }
+
+    @Test
+    public void insertOrUpdateDatabase_insertNewEntry_entryInserted() {
+        int deviceInfoId = insertDeviceInfo();
+        mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                deviceInfoId,
+                new DeviceDataSourceAdvertisement(
+                        mDevice,
+                        DISPLAY_NAME,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build())));
+
+        try (Cursor cursor =
+                mTransactionManager.read(
+                        new ReadTableRequest(DeviceDataProviderHelper.TABLE_NAME))) {
+            assertThat(cursor.getCount()).isEqualTo(1);
+            cursor.moveToFirst();
+            assertThat(getCursorString(cursor, DeviceDataProviderHelper.SOURCE_PACKAGE_NAME))
+                    .isEqualTo(TEST_APP_PACKAGE);
+            assertThat(getCursorInt(cursor, RecordHelper.DEVICE_INFO_ID_COLUMN_NAME))
+                    .isEqualTo(deviceInfoId);
+            assertThat(getCursorInt(cursor, DeviceDataProviderHelper.DATA_TYPE))
+                    .isEqualTo(mHealthConnectMappings.getRecordType(StepsRecord.class));
+            assertThat(getIntegerAndConvertToBoolean(cursor, DeviceDataProviderHelper.IS_AVAILABLE))
+                    .isTrue();
+            assertThat(
+                            getIntegerAndConvertToBoolean(
+                                    cursor, DeviceDataProviderHelper.IS_USER_ENABLED))
+                    .isTrue();
+        }
+    }
+
+    @Test
+    public void insertOrUpdateDatabase_updateExistingEntry_entryUpdated() {
+        int deviceInfoId = insertDeviceInfo();
+        mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                deviceInfoId,
+                new DeviceDataSourceAdvertisement(
+                        mDevice,
+                        DISPLAY_NAME,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build())));
+        mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                deviceInfoId,
+                new DeviceDataSourceAdvertisement(
+                        mDevice,
+                        DISPLAY_NAME,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                        .setAvailable(false)
+                                        .setUserEnabled(false)
+                                        .build())));
+        try (Cursor cursor =
+                mTransactionManager.read(
+                        new ReadTableRequest(DeviceDataProviderHelper.TABLE_NAME))) {
+            assertThat(cursor.getCount()).isEqualTo(1);
+            cursor.moveToFirst();
+            assertThat(getCursorString(cursor, DeviceDataProviderHelper.SOURCE_PACKAGE_NAME))
+                    .isEqualTo(TEST_APP_PACKAGE);
+            assertThat(getCursorInt(cursor, RecordHelper.DEVICE_INFO_ID_COLUMN_NAME))
+                    .isEqualTo(deviceInfoId);
+            assertThat(getCursorInt(cursor, DeviceDataProviderHelper.DATA_TYPE))
+                    .isEqualTo(mHealthConnectMappings.getRecordType(StepsRecord.class));
+            assertThat(getIntegerAndConvertToBoolean(cursor, DeviceDataProviderHelper.IS_AVAILABLE))
+                    .isFalse();
+            assertThat(
+                            getIntegerAndConvertToBoolean(
+                                    cursor, DeviceDataProviderHelper.IS_USER_ENABLED))
+                    .isFalse();
+        }
+    }
+
+    @Test
+    public void insertOrUpdateDatabase_multipleEntries_entriesInserted() {
+        int deviceInfoId = insertDeviceInfo();
+        mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                deviceInfoId,
+                new DeviceDataSourceAdvertisement(
+                        mDevice,
+                        DISPLAY_NAME,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build(),
+                                new DeviceDataSourceState.Builder(DistanceRecord.class)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build())));
+
+        try (Cursor cursor =
+                mTransactionManager.read(
+                        new ReadTableRequest(DeviceDataProviderHelper.TABLE_NAME))) {
+            assertThat(cursor.getCount()).isEqualTo(2);
+        }
+    }
+
+    @Test
+    public void cache_clearedOnClearData() {
+        int deviceInfoId = insertDeviceInfo();
+        mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                deviceInfoId,
+                new DeviceDataSourceAdvertisement(
+                        mDevice,
+                        DISPLAY_NAME,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build())));
+
+        mDeviceDataProviderHelper.clearData(mTransactionManager);
+
+        try (Cursor cursor =
+                mTransactionManager.read(
+                        new ReadTableRequest(DeviceDataProviderHelper.TABLE_NAME))) {
+            assertThat(cursor.getCount()).isEqualTo(0);
+        }
+    }
+
+    @Test
+    public void cache_clearedOnClearCache() {
+        int deviceInfoId = insertDeviceInfo();
+        mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                deviceInfoId,
+                new DeviceDataSourceAdvertisement(
+                        mDevice,
+                        DISPLAY_NAME,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build())));
+
+        mDeviceDataProviderHelper.clearCache();
+
+        mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                deviceInfoId,
+                new DeviceDataSourceAdvertisement(
+                        mDevice,
+                        DISPLAY_NAME,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build())));
+        try (Cursor cursor =
+                mTransactionManager.read(
+                        new ReadTableRequest(DeviceDataProviderHelper.TABLE_NAME))) {
+            assertThat(cursor.getCount()).isEqualTo(1);
+        }
+    }
+
+    @Test
+    public void populateDdpCache_readsDbAndPopulatesCache() {
+        int deviceInfoId = insertDeviceInfo();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DeviceDataProviderHelper.SOURCE_PACKAGE_NAME, TEST_APP_PACKAGE);
+        contentValues.put(RecordHelper.DEVICE_INFO_ID_COLUMN_NAME, deviceInfoId);
+        contentValues.put(
+                DeviceDataProviderHelper.DATA_TYPE,
+                mHealthConnectMappings.getRecordType(StepsRecord.class));
+        contentValues.put(DeviceDataProviderHelper.IS_AVAILABLE, 1);
+        contentValues.put(DeviceDataProviderHelper.IS_USER_ENABLED, 1);
+        mTransactionManager.insertOrThrowOnConflict(
+                new UpsertTableRequest(DeviceDataProviderHelper.TABLE_NAME, contentValues));
+
+        mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                deviceInfoId,
+                new DeviceDataSourceAdvertisement(
+                        mDevice,
+                        DISPLAY_NAME,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build())));
+
+        try (Cursor cursor =
+                mTransactionManager.read(
+                        new ReadTableRequest(DeviceDataProviderHelper.TABLE_NAME))) {
+            assertThat(cursor.getCount()).isEqualTo(1);
+        }
+    }
+
+    private int insertDeviceInfo() {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DeviceInfoHelper.MANUFACTURER_COLUMN_NAME, "Google");
+        contentValues.put(DeviceInfoHelper.MODEL_COLUMN_NAME, "Pixel");
+        contentValues.put(DeviceInfoHelper.DEVICE_TYPE_COLUMN_NAME, DEVICE_TYPE_PHONE);
+        return (int)
+                mTransactionManager.insertOrThrowOnConflict(
+                        new UpsertTableRequest(DeviceInfoHelper.TABLE_NAME, contentValues));
     }
 }

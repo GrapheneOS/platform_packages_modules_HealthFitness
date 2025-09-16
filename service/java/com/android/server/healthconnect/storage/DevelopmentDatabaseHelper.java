@@ -51,7 +51,7 @@ public final class DevelopmentDatabaseHelper {
      * The current version number for the development database features. Increment this whenever you
      * make a breaking schema change to a development feature.
      */
-    @VisibleForTesting static final int CURRENT_VERSION = 15;
+    @VisibleForTesting static final int CURRENT_VERSION = 16;
 
     /** The name of the table to store development specific key value pairs. */
     private static final String SETTINGS_TABLE_NAME = "development_database_settings";
@@ -106,7 +106,7 @@ public final class DevelopmentDatabaseHelper {
             dropTableIfExists(db, helper.getMainTableName());
             createTable(db, helper.getCreateTableRequest());
         }
-        applyDdpDatabaseUpgrade(db);
+        applyDdpDatabaseUpgrade(db, oldVersion);
     }
 
     private static void applyDdpAppInfoDatabaseUpgrade(SQLiteDatabase db) {
@@ -128,7 +128,12 @@ public final class DevelopmentDatabaseHelper {
         executeSqlStatements(db, DeviceInfoHelper.getAlterTableRequest().getAddColumnsCommands());
     }
 
-    private static void applyDdpDatabaseUpgrade(SQLiteDatabase db) {
+    private static void applyDdpDatabaseUpgrade(SQLiteDatabase db, int oldVersion) {
+        if (oldVersion < 16) {
+            // Version 16 adds unique column constraints
+            dropTableIfExists(db, DeviceDataProviderHelper.TABLE_NAME);
+        }
+
         if (checkTableExists(db, DeviceDataProviderHelper.TABLE_NAME)) {
             // Upgrade has already been applied. Return early.
             return;
