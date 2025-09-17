@@ -23,6 +23,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_N
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getIntegerAndConvertToBoolean;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import android.annotation.Nullable;
 import android.content.ContentValues;
@@ -37,12 +38,16 @@ import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
+import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
+import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * A class to help with the DB transaction for storing Device Data Provider metadata and state.
@@ -105,11 +110,18 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
                         /* referencedColumnNames= */ List.of(RecordHelper.PRIMARY_COLUMN_NAME));
     }
 
-    /** Updates the database with the provided Device Data Provider information. */
+    /**
+     * Update the database with the provided Device Data Provider information.
+     *
+     * <p>Any data types no longer being advertised are removed from the database.
+     */
     public synchronized void insertOrUpdateAdvertisement(
             String sourcePackageName,
             int deviceInfoId,
             DeviceDataSourceAdvertisement deviceDataSourceAdvertisement) {
+        deleteObsoleteAdvertisements(
+                sourcePackageName, deviceInfoId, deviceDataSourceAdvertisement);
+
         for (DeviceDataSourceState state :
                 deviceDataSourceAdvertisement.getDeviceDataSourceState()) {
             int dataType = mHealthConnectMappings.getRecordType(state.getDataType());
@@ -125,7 +137,53 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     }
 
     /**
-     * Inserts ddpInfo if not present in the db or updates the states isAvailable and isUserEnabled
+     * Delete advertisements from the database for data types no longer present for the {@code
+     * sourcePackageName} and {@code deviceInfoId}.
+     */
+    private synchronized void deleteObsoleteAdvertisements(
+            String sourcePackageName,
+            int deviceInfoId,
+            DeviceDataSourceAdvertisement latestDeviceDataSourceAdvertisement) {
+        List<DeviceDataProviderKey> existingAdvertisements =
+                getDdpMap().keySet().stream()
+                        .filter(
+                                key ->
+                                        key.sourcePackageName.equals(sourcePackageName)
+                                                && key.deviceInfoId == deviceInfoId)
+                        .toList();
+
+        Set<Integer> latestDataTypes =
+                latestDeviceDataSourceAdvertisement.getDeviceDataSourceState().stream()
+                        .map(state -> mHealthConnectMappings.getRecordType(state.getDataType()))
+                        .collect(Collectors.toSet());
+        for (DeviceDataProviderKey existingAdvertisement : existingAdvertisements) {
+            if (!latestDataTypes.contains(existingAdvertisement.dataType)) {
+                delete(existingAdvertisement);
+            }
+        }
+    }
+
+    /**
+     * Delete ddpInfo from the db and cache for the given sourcePackageName, deviceInfoId and
+     * dataType.
+     */
+    private synchronized void delete(DeviceDataProviderKey key) {
+        mTransactionManager.delete(
+                new DeleteTableRequest(TABLE_NAME)
+                        .addExtraWhereClauses(
+                                new WhereClauses(AND)
+                                        .addWhereEqualsClause(
+                                                SOURCE_PACKAGE_NAME, key.sourcePackageName)
+                                        .addWhereEqualsClause(
+                                                DEVICE_INFO_ID_COLUMN_NAME,
+                                                String.valueOf(key.deviceInfoId))
+                                        .addWhereEqualsClause(
+                                                DATA_TYPE, String.valueOf(key.dataType))));
+        getDdpMap().remove(key);
+    }
+
+    /**
+     * Insert ddpInfo if not present in the db or updates the states isAvailable and isUserEnabled
      * for the given sourcePackageName, deviceInfoId and dataType.
      */
     private synchronized void insertOrUpdate(DeviceDataProviderInfo ddpInfo) {

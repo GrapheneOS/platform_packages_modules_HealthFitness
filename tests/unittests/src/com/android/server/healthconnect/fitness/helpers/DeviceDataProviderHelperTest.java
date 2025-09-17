@@ -369,6 +369,50 @@ public class DeviceDataProviderHelperTest {
         }
     }
 
+    @Test
+    public void insertOrUpdateAdvertisement_deletesUnspecifiedDataTypes() {
+        int deviceInfoId = insertDeviceInfo();
+        mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                deviceInfoId,
+                new DeviceDataSourceAdvertisement(
+                        mDevice,
+                        DISPLAY_NAME,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build(),
+                                new DeviceDataSourceState.Builder(DistanceRecord.class)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build())));
+
+        // Update with only StepsRecord, expecting DistanceRecord to be deleted
+        mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                deviceInfoId,
+                new DeviceDataSourceAdvertisement(
+                        mDevice,
+                        DISPLAY_NAME,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build())));
+
+        try (Cursor cursor =
+                mTransactionManager.read(
+                        new ReadTableRequest(DeviceDataProviderHelper.TABLE_NAME))) {
+            assertThat(cursor.getCount()).isEqualTo(1);
+            cursor.moveToFirst();
+            assertThat(getCursorInt(cursor, DeviceDataProviderHelper.DATA_TYPE))
+                    .isEqualTo(mHealthConnectMappings.getRecordType(StepsRecord.class));
+        }
+    }
+
     private int insertDeviceInfo() {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DeviceInfoHelper.MANUFACTURER_COLUMN_NAME, "Google");
