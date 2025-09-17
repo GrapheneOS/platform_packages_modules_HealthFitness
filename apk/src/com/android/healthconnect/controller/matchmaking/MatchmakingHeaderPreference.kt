@@ -16,9 +16,12 @@
 package com.android.healthconnect.controller.matchmaking
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.widget.ImageView
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
@@ -36,6 +39,23 @@ constructor(
 
     var headerTitle: CharSequence? = null
     var headerSummary: CharSequence? = null
+    var requestingAppIcon: Drawable? = null
+        set(value) {
+            field = value
+            notifyChanged()
+        }
+
+    var matchedAppIcons: List<Drawable> = emptyList()
+        set(value) {
+            field = value
+            notifyChanged()
+        }
+
+    var isIconViewVisible: Boolean = true
+        set(value) {
+            field = value
+            notifyChanged()
+        }
 
     init {
         layoutResource = R.layout.widget_matchmaking_header
@@ -44,9 +64,14 @@ constructor(
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
-        (holder.findViewById(R.id.icon) as ImageView).setBackgroundResource(
-            R.drawable.health_connect_logo
-        )
+        val iconView =
+            holder.findViewById(R.id.matchmaking_header_icon_view) as MatchmakingHeaderIconView
+        iconView.requestingAppIcon = requestingAppIcon
+        iconView.healthConnectIcon =
+            ContextCompat.getDrawable(context, R.drawable.health_connect_logo)
+        iconView.matchedAppIcons = matchedAppIcons
+        iconView.visibility = if (isIconViewVisible) VISIBLE else GONE
+
         (holder.findViewById(R.id.header_title) as TextView).text = headerTitle
         (holder.findViewById(R.id.header_summary) as TextView).text = headerSummary
     }

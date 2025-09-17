@@ -63,4 +63,11 @@
     <dimen name="vertical_padding_detailed_perms">12dp</dimen>
 
     <dimen name="expandable_preference_icon_size">40dp</dimen>
+
+    <dimen name="matchmaking_plus_n_circle_stroke_width">1dp</dimen>
+    <dimen name="matchmaking_line_stroke_width">3dp</dimen>
+    <dimen name="matchmaking_header_matched_apps_icon_size">40dp</dimen>
+    <dimen name="matchmaking_header_requesting_app_icon_size">38dp</dimen>
+    <dimen name="matchmaking_header_health_connect_icon_size">20dp</dimen>
+    <dimen name="matchmaking_overlap_negative_margin">-10dp</dimen>
 </resources>

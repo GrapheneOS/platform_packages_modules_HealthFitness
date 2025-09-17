@@ -18,6 +18,9 @@ package com.android.healthconnect.controller.tests.matchmaking
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.StepsRecord
 import android.platform.test.annotations.EnableFlags
@@ -30,7 +33,10 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
+import androidx.test.espresso.matcher.ViewMatchers.Visibility.GONE
+import androidx.test.espresso.matcher.ViewMatchers.Visibility.VISIBLE
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -60,6 +66,7 @@ import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import org.hamcrest.core.IsNot.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -316,5 +323,133 @@ class MatchmakingFragmentTest {
                 fragment.findPreference<HealthExpandablePreference>(TEST_APP_PACKAGE_NAME_2)
             assertThat(expandablePreference2?.mIsExpanded).isFalse()
         }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingHeaderIconView_correctlyDisplaysIcons() {
+        val numberOfMatchedApps = 3
+        val mockAppIcon: Drawable = ColorDrawable(Color.RED)
+        val apps =
+            (1..numberOfMatchedApps).map { i ->
+                MatchmakingAppData(
+                    AppMetadata("com.example.app$i", "App $i", mockAppIcon),
+                    listOf(FitnessPermission(FitnessPermissionType.EXERCISE, READ)),
+                )
+            }
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(callingPackageName, callingAppName, ColorDrawable(Color.BLUE)),
+                apps,
+            )
+        )
+
+        val scenario =
+            ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+        scenario.onActivity { activity ->
+            activity.supportFragmentManager
+                .beginTransaction()
+                .add(android.R.id.content, MatchmakingFragment())
+                .commitNow()
+        }
+
+        onView(withId(R.id.matchmaking_header_icon_view)).check(matches(isDisplayed()))
+        onView(withId(R.id.requesting_app_icon)).check(matches(isDisplayed()))
+        onView(withId(R.id.health_connect_icon)).check(matches(isDisplayed()))
+        onView(withId(R.id.line_1)).check(matches(isDisplayed()))
+        onView(withId(R.id.line_2)).check(matches(isDisplayed()))
+        onView(withId(R.id.matched_icons_group)).check(matches(isDisplayed()))
+        onView(withId(R.id.matched_app_icon_1_container))
+            .check(matches(withEffectiveVisibility(VISIBLE)))
+        onView(withId(R.id.matched_app_icon_2_container))
+            .check(matches(withEffectiveVisibility(GONE)))
+        onView(withId(R.id.plus_n_container)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingFragment_withZeroMatchingApps_hidesIconView() {
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(callingPackageName, callingAppName, null),
+                emptyList(),
+            )
+        )
+
+        val scenario =
+            ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+        scenario.onActivity { activity ->
+            activity.supportFragmentManager
+                .beginTransaction()
+                .add(android.R.id.content, MatchmakingFragment())
+                .commitNow()
+        }
+
+        onView(withId(R.id.matchmaking_header_icon_view)).check(matches(not(isDisplayed())))
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingHeaderIconView_activityRecreated_correctlyDisplaysIcons() {
+        val numberOfMatchedApps = 3
+        val mockAppIcon: Drawable = ColorDrawable(Color.RED)
+        val apps =
+            (1..numberOfMatchedApps).map { i ->
+                MatchmakingAppData(
+                    AppMetadata("com.example.app$i", "App $i", mockAppIcon),
+                    listOf(FitnessPermission(FitnessPermissionType.EXERCISE, READ)),
+                )
+            }
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(callingPackageName, callingAppName, ColorDrawable(Color.BLUE)),
+                apps,
+            )
+        )
+
+        val scenario =
+            ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+        scenario.onActivity { activity ->
+            activity.supportFragmentManager
+                .beginTransaction()
+                .add(android.R.id.content, MatchmakingFragment())
+                .commitNow()
+        }
+        onView(withId(R.id.matchmaking_header_icon_view)).check(matches(isDisplayed()))
+
+        scenario.recreate()
+
+        onView(withId(R.id.matchmaking_header_icon_view)).check(matches(isDisplayed()))
+        onView(withId(R.id.requesting_app_icon)).check(matches(isDisplayed()))
+        onView(withId(R.id.health_connect_icon)).check(matches(isDisplayed()))
+        onView(withId(R.id.line_1)).check(matches(isDisplayed()))
+        onView(withId(R.id.line_2)).check(matches(isDisplayed()))
+        onView(withId(R.id.matched_icons_group)).check(matches(isDisplayed()))
+        onView(withId(R.id.matched_app_icon_1_container))
+            .check(matches(withEffectiveVisibility(VISIBLE)))
+        onView(withId(R.id.matched_app_icon_2_container))
+            .check(matches(withEffectiveVisibility(GONE)))
+        onView(withId(R.id.plus_n_container)).check(matches(isDisplayed()))
     }
 }

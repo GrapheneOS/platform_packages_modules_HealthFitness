@@ -1425,6 +1425,8 @@
         other{Auto-delete is on. Data older than # months will be deleted}
     }</string>
     <string name="auto_delete_off_toast" description="Toast confirming that auto-delete is off.">Auto-delete is off</string>
+    <string name="plus_n_matched_apps_format" description="Text for the '+N' indicator when more than two apps are matched. [CHAR_LIMIT=10]">+<xliff:g example="1" id="count">%s</xliff:g></string>
+
     <!--endregion -->
 
     <!--  region Priority -->

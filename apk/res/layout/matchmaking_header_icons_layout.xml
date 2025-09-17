@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2025 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- Requesting App Icon -->
+    <ImageView
+        android:id="@+id/requesting_app_icon"
+        android:layout_width="@dimen/matchmaking_header_requesting_app_icon_size"
+        android:layout_height="@dimen/matchmaking_header_requesting_app_icon_size"
+        android:importantForAccessibility="no"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/line_1"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Line 1 -->
+    <View
+        android:id="@+id/line_1"
+        android:layout_width="@dimen/spacing_small"
+        android:layout_height="@dimen/matchmaking_line_stroke_width"
+        android:background="@color/settingslib_materialColorPrimaryContainer"
+        app:layout_constraintBottom_toBottomOf="@id/requesting_app_icon"
+        app:layout_constraintEnd_toStartOf="@id/health_connect_icon_container"
+        app:layout_constraintStart_toEndOf="@id/requesting_app_icon"
+        app:layout_constraintTop_toTopOf="@id/requesting_app_icon" />
+
+    <!-- Health Connect Icon Container (for circle background) -->
+    <FrameLayout
+        android:id="@+id/health_connect_icon_container"
+        android:layout_width="@dimen/app_icon_size"
+        android:layout_height="@dimen/app_icon_size"
+        android:background="@drawable/circle_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/line_2"
+        app:layout_constraintStart_toEndOf="@id/line_1"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/health_connect_icon"
+            android:layout_width="@dimen/matchmaking_header_health_connect_icon_size"
+            android:layout_height="@dimen/matchmaking_header_health_connect_icon_size"
+            android:layout_gravity="center"
+            android:importantForAccessibility="no" />
+        <!-- TODO(b/344334333): Apply tint on this icon. -->
+
+    </FrameLayout>
+
+    <!-- Line 2 -->
+    <View
+        android:id="@+id/line_2"
+        android:layout_width="@dimen/spacing_small"
+        android:layout_height="@dimen/matchmaking_line_stroke_width"
+        android:background="@color/settingslib_materialColorPrimaryContainer"
+        app:layout_constraintBottom_toBottomOf="@id/health_connect_icon_container"
+        app:layout_constraintEnd_toStartOf="@id/matched_icons_group"
+        app:layout_constraintStart_toEndOf="@id/health_connect_icon_container"
+        app:layout_constraintTop_toTopOf="@id/health_connect_icon_container" />
+
+    <!-- Matched Icons Group -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/matched_icons_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/line_2"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Matched App Icon 2 Container (for overlapping) -->
+        <FrameLayout
+            android:id="@+id/matched_app_icon_2_container"
+            android:layout_width="@dimen/matchmaking_header_matched_apps_icon_size"
+            android:layout_height="@dimen/matchmaking_header_matched_apps_icon_size"
+            android:layout_marginStart="@dimen/matchmaking_overlap_negative_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/matched_app_icon_1_container"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/matched_app_icon_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:importantForAccessibility="no" />
+
+        </FrameLayout>
+
+        <!-- Plus N Circle and Text (for 3+ matched apps) -->
+        <FrameLayout
+            android:id="@+id/plus_n_container"
+            android:layout_width="@dimen/matchmaking_header_matched_apps_icon_size"
+            android:layout_height="@dimen/matchmaking_header_matched_apps_icon_size"
+            android:layout_marginStart="@dimen/matchmaking_overlap_negative_margin"
+            android:background="@drawable/circle_background_stroke"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/matched_app_icon_1_container"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/plus_n_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAppearance="?attr/textAppearanceSummary" />
+
+        </FrameLayout>
+
+        <!-- Matched App Icon 1 Container (for overlapping) -->
+        <FrameLayout
+            android:id="@+id/matched_app_icon_1_container"
+            android:layout_width="@dimen/matchmaking_header_matched_apps_icon_size"
+            android:layout_height="@dimen/matchmaking_header_matched_apps_icon_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/matched_app_icon_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:importantForAccessibility="no" />
+
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
