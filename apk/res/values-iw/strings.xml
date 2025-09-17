@@ -61,7 +61,7 @@
     <string name="today_header" msgid="1006837293203834373">"היום"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"אתמול"</string>
     <string name="read_data_access_label" msgid="8968758932021241976">"קריאה: <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
-    <string name="write_data_access_label" msgid="105976369853871061">"הרשאת כתיבה ועדכון של נתונים: <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
+    <string name="write_data_access_label" msgid="105976369853871061">"כתיבת נתונים של: <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
     <string name="separator" msgid="5521285473288943819">", "</string>
     <string name="manage_permissions" msgid="8394221950712608160">"ניהול ההרשאות"</string>
     <string name="recent_access_time_content_descritption" msgid="1137471676075811472">"זמן: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
@@ -840,7 +840,8 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{סיגריה אחת ({quantity})}one{‫{quantity} סיגריות}two{‫{quantity} סיגריות}other{‫{quantity} סיגריות}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"‫{quantity, number} לא ידוע"</string>
     <string name="minute_duration" msgid="9035288227090160206">"דקה (<xliff:g id="MINUTE">%1$s</xliff:g>)"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> שע’ <xliff:g id="MIN">%2$s</xliff:g> דק’"</string>
+    <!-- no translation found for hour_minute_duration_short (1754616782635510999) -->
+    <skip />
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> שע‘"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> שע\' <xliff:g id="MINUTES">%2$s</xliff:g> דק\'"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{שעה אחת}one{# שעות}two{שעתיים}other{# שעות}}"</string>

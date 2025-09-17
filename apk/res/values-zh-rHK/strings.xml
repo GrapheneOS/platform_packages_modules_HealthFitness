@@ -378,14 +378,10 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"酒精攝取量"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"讀取酒精攝取量"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"寫入酒精攝取量"</string>
-    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
-    <skip />
-    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
-    <skip />
-    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
-    <skip />
-    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
-    <skip />
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"咳嗽"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"咳嗽"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"讀取症狀"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"寫入症狀"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」讀取"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」寫入"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"允許"</string>
@@ -844,7 +840,8 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} 根香煙}other{{quantity} 根香煙}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} 不明"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> 分鐘"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> 小時 <xliff:g id="MIN">%2$s</xliff:g> 分鐘"</string>
+    <!-- no translation found for hour_minute_duration_short (1754616782635510999) -->
+    <skip />
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> 小時"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 小時}other{# 小時}}"</string>
