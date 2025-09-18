@@ -699,3 +699,15 @@ flag {
     is_fixed_read_only: false
     is_exported: false
 }
+
+flag {
+    name: "reduce_parcel_marshalling_copies"
+    namespace: "health_fitness_aconfig"
+    description: "Enables more efficient marshalling of large Parcels to and from SharedMemory"
+    bug: "445620347"
+    is_fixed_read_only: false
+    is_exported: false
+    metadata {
+        purpose: PURPOSE_BUGFIX
+    }
+}
