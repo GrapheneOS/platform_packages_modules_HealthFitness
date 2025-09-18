@@ -16,11 +16,18 @@
 package com.android.healthconnect.controller.data.appdata
 
 import android.health.connect.HealthConnectManager
+import android.health.connect.HealthDataCategory
 import android.health.connect.MedicalResourceTypeInfo
+import android.health.connect.ReadRecordsRequestUsingFilters
+import android.health.connect.ReadRecordsResponse
 import android.health.connect.RecordTypeInfoResponse
+import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.SymptomRecord
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.core.os.asOutcomeReceiver
+import com.android.healthconnect.controller.data.entries.api.SymptomTypeMapper
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
@@ -32,6 +39,8 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthfitness.flags.Flags
+import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -45,6 +54,18 @@ constructor(
     private val healthConnectManager: HealthConnectManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) {
+
+    // A map of SymptomType IntDef to its corresponding FitnessPermissionType
+    @VisibleForTesting
+    val symptomTypeToPermissionMap by lazy {
+        if (Flags.symptoms()) {
+            FitnessPermissionType.values()
+                .filter { it.name.startsWith("SYMPTOM_") }
+                .associateBy { SymptomTypeMapper.getSymptomType(it.category) }
+        } else {
+            emptyMap()
+        }
+    }
 
     /** Returns list of all fitness categories and permission types to be shown on the HC UI. */
     suspend fun loadAllFitnessData(): UseCaseResults<List<PermissionTypesPerCategory>> =
@@ -194,19 +215,51 @@ constructor(
             .map { fromMedicalResourceType(it.medicalResourceType) }
 
     /**
-     * Returns those [FitnessPermissionType]s that have some data written by the given [packageName]
+     * Returns those [HealthPermissionType]s that have some data written by the given [packageName]
      * app. If the is no app provided then return all data.
      */
-    private fun getPermissionTypesPerCategory(
+    private suspend fun getPermissionTypesPerCategory(
         category: @HealthDataCategoryInt Int,
         recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse>,
         packageName: String?,
     ): List<HealthPermissionType> {
-        if (packageName == null) {
-            return category.healthPermissionTypes().filter { hasData(it, recordTypeInfoMap) }
+        if (Flags.symptoms() && category == HealthDataCategory.SYMPTOMS) {
+            return getSymptomPermissionTypesWithData()
         }
-        return category.healthPermissionTypes().filter {
-            hasDataByApp(it, recordTypeInfoMap, packageName)
+        val types = category.healthPermissionTypes()
+        if (packageName == null) {
+            return types.filter { hasData(it, recordTypeInfoMap) }
+        }
+        return types.filter { hasDataByApp(it, recordTypeInfoMap, packageName) }
+    }
+
+    private suspend fun getSymptomPermissionTypesWithData(): List<HealthPermissionType> {
+        val request =
+            ReadRecordsRequestUsingFilters.Builder(SymptomRecord::class.java)
+                .setTimeRangeFilter(
+                    TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build()
+                )
+                .build()
+        try {
+            val records =
+                suspendCancellableCoroutine<ReadRecordsResponse<SymptomRecord>> { continuation ->
+                    healthConnectManager.readRecords(
+                        request,
+                        Runnable::run,
+                        continuation.asOutcomeReceiver(),
+                    )
+                }
+            val symptomTypesWithData = records.records.map { it.symptomType }.toSet()
+
+            return symptomTypesWithData.mapNotNull { symptomType ->
+                symptomTypeToPermissionMap[symptomType]
+            }
+        } catch (e: Exception) {
+            Log.e("AllDataUseCase", "Error reading symptom data", e)
+            return emptyList()
         }
     }
 

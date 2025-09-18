@@ -248,17 +248,26 @@ class FakeSetTrackingEnabledUseCase : ISetTrackingEnabled {
 
 class FakeLoadDataEntriesUseCase : ILoadDataEntriesUseCase {
     private var formattedList = listOf<FormattedEntry>()
+    var wasInvoked = false
+        private set
 
     fun updateList(list: List<FormattedEntry>) {
         formattedList = list
     }
 
     override suspend fun invoke(input: LoadDataEntriesInput): UseCaseResults<List<FormattedEntry>> {
+        wasInvoked = true
         return UseCaseResults.Success(formattedList)
     }
 
     override suspend fun execute(input: LoadDataEntriesInput): List<FormattedEntry> {
+        wasInvoked = true
         return formattedList
+    }
+
+    fun reset() {
+        formattedList = emptyList()
+        wasInvoked = false
     }
 }
 

@@ -20,6 +20,8 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissionCategory
 import android.health.connect.MedicalResourceTypeInfo
+import android.health.connect.ReadRecordsRequestUsingFilters
+import android.health.connect.ReadRecordsResponse
 import android.health.connect.RecordTypeInfoResponse
 import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES
@@ -102,6 +104,13 @@ class AppDataViewModelTest {
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
         viewModel = AppDataViewModel(appInfoReader, AllDataUseCase(manager, Dispatchers.Main))
+        doAnswer { invocation ->
+                val receiver = invocation.arguments[2] as OutcomeReceiver<ReadRecordsResponse<*>, *>
+                receiver.onResult(ReadRecordsResponse(emptyList(), -1))
+                null
+            }
+            .`when`(manager)
+            .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
     }
 
     @After

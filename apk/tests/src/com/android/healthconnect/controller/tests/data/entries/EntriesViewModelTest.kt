@@ -41,6 +41,7 @@ import com.android.healthconnect.controller.tests.utils.di.FakeLoadDataEntriesUs
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadLatestEntryDateUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadMedicalEntriesUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadMenstruationDataUseCase
+import com.android.healthconnect.controller.tests.utils.di.FakeLoadSymptomEntriesUseCase
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS_AGGREGATION
 import com.google.common.truth.Truth.assertThat
@@ -131,6 +132,7 @@ class EntriesViewModelTest {
     @BindValue lateinit var appInfoReader: AppInfoReader
     private val timeSource: TimeSource = TestTimeSource
     private val fakeLoadDataEntriesUseCase = FakeLoadDataEntriesUseCase()
+    private val fakeLoadSymptomEntriesUseCase = FakeLoadSymptomEntriesUseCase()
     private val fakeLoadMenstruationDataUseCase = FakeLoadMenstruationDataUseCase()
     private val fakeLoadDataAggregationsUseCase = FakeLoadDataAggregationsUseCase()
     private val fakeLoadMedicalEntriesUseCase = FakeLoadMedicalEntriesUseCase()
@@ -149,6 +151,7 @@ class EntriesViewModelTest {
             EntriesViewModel(
                 appInfoReader,
                 fakeLoadDataEntriesUseCase,
+                fakeLoadSymptomEntriesUseCase,
                 fakeLoadMenstruationDataUseCase,
                 fakeLoadDataAggregationsUseCase,
                 fakeLoadMedicalEntriesUseCase,
@@ -236,6 +239,40 @@ class EntriesViewModelTest {
         val actual = testObserver.getLastValue()
         val expected = EntriesViewModel.EntriesFragmentState.With(listOf(FORMATTED_IMMUNIZATION))
         assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun loadDataEntries_symptomType_invokesLoadSymptomEntriesUseCase() = runTest {
+        fakeLoadSymptomEntriesUseCase.reset()
+        fakeLoadDataEntriesUseCase.updateList(emptyList())
+        val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
+        viewModel.entries.observeForever(testObserver)
+        viewModel.loadEntries(
+            FitnessPermissionType.SYMPTOM_COUGH,
+            Instant.ofEpochMilli(timeSource.currentTimeMillis()),
+            DateNavigationPeriod.PERIOD_WEEK,
+        )
+        advanceUntilIdle()
+
+        assertThat(fakeLoadSymptomEntriesUseCase.wasInvoked).isTrue()
+        assertThat(fakeLoadDataEntriesUseCase.wasInvoked).isFalse()
+    }
+
+    @Test
+    fun loadDataEntries_nonSymptomFitnessType_invokesLoadDataEntriesUseCase() = runTest {
+        fakeLoadDataEntriesUseCase.reset()
+        fakeLoadDataEntriesUseCase.updateList(emptyList())
+        val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
+        viewModel.entries.observeForever(testObserver)
+        viewModel.loadEntries(
+            FitnessPermissionType.STEPS,
+            Instant.ofEpochMilli(timeSource.currentTimeMillis()),
+            DateNavigationPeriod.PERIOD_WEEK,
+        )
+        advanceUntilIdle()
+
+        assertThat(fakeLoadDataEntriesUseCase.wasInvoked).isTrue()
+        assertThat(fakeLoadSymptomEntriesUseCase.wasInvoked).isFalse()
     }
 
     @Test
@@ -379,6 +416,7 @@ class EntriesViewModelTest {
             EntriesViewModel(
                 appInfoReader,
                 fakeLoadDataEntriesUseCase,
+                fakeLoadSymptomEntriesUseCase,
                 fakeLoadMenstruationDataUseCase,
                 fakeLoadDataAggregationsUseCase,
                 fakeLoadMedicalEntriesUseCase,
