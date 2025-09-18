@@ -230,6 +230,7 @@ public class InternalDataTypeDescriptors {
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_ACTIVE_CALORIES_BURNED)
                         .setLoggingEnum(
                                 HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ACTIVE_CALORIES_BURNED)
+                        .setSupportGranularityLogging()
                         .build(),
                 AconfigFlagHelper.isActivityIntensityEnabled()
                         ? InternalDataTypeDescriptor.builder()
@@ -302,18 +303,21 @@ public class InternalDataTypeDescriptors {
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_CYCLING_PEDALING_CADENCE)
                         .setLoggingEnum(
                                 HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CYCLING_PEDALING_CADENCE)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_DISTANCE)
                         .setRecordHelper(new DistanceRecordHelper())
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_DISTANCE)
                         .setLoggingEnum(HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DISTANCE)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_ELEVATION_GAINED)
                         .setRecordHelper(new ElevationGainedRecordHelper())
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_ELEVATION_GAINED)
                         .setLoggingEnum(HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ELEVATION_GAINED)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_EXERCISE_SESSION)
@@ -326,6 +330,7 @@ public class InternalDataTypeDescriptors {
                         .setRecordHelper(new FloorsClimbedRecordHelper())
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_FLOORS_CLIMBED)
                         .setLoggingEnum(HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__FLOORS_CLIMBED)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_HEART_RATE)
@@ -334,6 +339,7 @@ public class InternalDataTypeDescriptors {
                         .setLoggingEnum(
                                 HealthFitnessStatsLog
                                         .HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__HEART_RATE)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD)
@@ -427,6 +433,7 @@ public class InternalDataTypeDescriptors {
                         .setRecordHelper(new PowerRecordHelper())
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_POWER)
                         .setLoggingEnum(HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__POWER)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_RESPIRATORY_RATE)
@@ -452,6 +459,7 @@ public class InternalDataTypeDescriptors {
                         .setRecordHelper(new SkinTemperatureRecordHelper())
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_SKIN_TEMPERATURE)
                         .setLoggingEnum(HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__SKIN_TEMPERATURE)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_SLEEP_SESSION)
@@ -466,18 +474,21 @@ public class InternalDataTypeDescriptors {
                         .setLoggingEnum(
                                 HealthFitnessStatsLog
                                         .HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__SPEED)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_STEPS)
                         .setRecordHelper(new StepsRecordHelper())
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_STEPS)
                         .setLoggingEnum(HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__STEPS)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_STEPS_CADENCE)
                         .setRecordHelper(new StepsCadenceRecordHelper())
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_STEPS_CADENCE)
                         .setLoggingEnum(HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__STEPS_CADENCE)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_TOTAL_CALORIES_BURNED)
@@ -486,6 +497,7 @@ public class InternalDataTypeDescriptors {
                         .setLoggingEnum(
                                 HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__TOTAL_CALORIES_BURNED)
                         .setDerived()
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_VO2_MAX)

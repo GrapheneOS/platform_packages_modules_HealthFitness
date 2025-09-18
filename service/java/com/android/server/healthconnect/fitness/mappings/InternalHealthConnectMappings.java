@@ -128,6 +128,11 @@ public class InternalHealthConnectMappings {
         return getDescriptorFor(recordType).isDerived();
     }
 
+    /** Returns true if given record type supports granularity logging. */
+    public boolean supportsGranularityLogging(@RecordTypeIdentifier.RecordType int recordType) {
+        return getDescriptorFor(recordType).supportGranularityLogging();
+    }
+
     private InternalDataTypeDescriptor getDescriptorFor(
             @RecordTypeIdentifier.RecordType int recordTypeId) {
         return requireNonNull(
