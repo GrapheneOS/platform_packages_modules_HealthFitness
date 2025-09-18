@@ -74,6 +74,7 @@ class HomeFragmentTest : HealthConnectBaseTest() {
     }
 
     @Test
+    @RequiresFlagsDisabled(FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
     fun homeFragment_opensAppPermissions() {
         context.launchMainActivity {
             navigateToNewPage("App permissions")

@@ -23,11 +23,13 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.onboarding.api.ILoadOnboardingStateUseCase
 import com.android.healthconnect.controller.onboarding.api.OnboardingState
 import com.android.healthconnect.controller.shared.Constants.ONBOARDING_ONE_APP_BANNER_SEEN
 import com.android.healthconnect.controller.shared.Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN
 import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.LoadFitnessPermissionAppsUseCase
+import com.android.healthconnect.controller.shared.usecase.LoadOnboardingStateUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -39,8 +41,10 @@ class OnboardingViewModel
 @Inject
 constructor(
     @ApplicationContext private val context: Context,
-    private val loadFitnessPermissionApps: ILoadFitnessPermissionAppsUseCase,
-    private val loadOnboardingStateUseCase: ILoadOnboardingStateUseCase,
+    @LoadFitnessPermissionAppsUseCase
+    private val loadFitnessPermissionApps: BaseUseCase<Unit, List<ConnectedFitnessAppMetadata>>,
+    @LoadOnboardingStateUseCase
+    private val loadOnboardingStateUseCase: BaseUseCase<Unit, OnboardingState>,
 ) : ViewModel() {
 
     companion object {

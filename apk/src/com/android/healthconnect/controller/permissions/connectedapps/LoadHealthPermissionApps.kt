@@ -99,6 +99,4 @@ constructor(
 
 interface ILoadHealthPermissionApps {
     suspend fun invoke(input: Unit): UseCaseResults<List<ConnectedAppMetadata>>
-
-    suspend fun execute(input: Unit): List<ConnectedAppMetadata>
 }

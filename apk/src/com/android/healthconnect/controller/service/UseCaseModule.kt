@@ -74,11 +74,10 @@ import com.android.healthconnect.controller.exportimport.api.LoadScheduledExport
 import com.android.healthconnect.controller.exportimport.api.QueryDocumentProvidersUseCase
 import com.android.healthconnect.controller.exportimport.api.TriggerImportUseCase
 import com.android.healthconnect.controller.exportimport.api.UpdateExportSettingsUseCase
-import com.android.healthconnect.controller.onboarding.ILoadFitnessPermissionAppsUseCase
+import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.LoadFitnessPermissionAppsUseCase
-import com.android.healthconnect.controller.onboarding.api.HealthOnboardingManager
-import com.android.healthconnect.controller.onboarding.api.ILoadOnboardingStateUseCase
 import com.android.healthconnect.controller.onboarding.api.LoadOnboardingStateUseCase
+import com.android.healthconnect.controller.onboarding.api.OnboardingState
 import com.android.healthconnect.controller.permissions.additionalaccess.ILoadExerciseRoutePermissionUseCase
 import com.android.healthconnect.controller.permissions.additionalaccess.LoadDeclaredHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.additionalaccess.LoadExerciseRoutePermissionUseCase
@@ -98,6 +97,7 @@ import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.GetContributorAppInfoUseCase
 import com.android.healthconnect.controller.shared.app.IGetContributorAppInfoUseCase
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.utils.TimeSource
 import dagger.Module
@@ -427,6 +427,7 @@ class UseCaseModule {
     }
 
     @Provides
+    @com.android.healthconnect.controller.shared.usecase.LoadFitnessPermissionAppsUseCase
     fun providesLoadFitnessPermissionAppsUseCase(
         @ApplicationContext context: Context,
         healthPermissionReader: HealthPermissionReader,
@@ -434,7 +435,7 @@ class UseCaseModule {
         appInfoReader: AppInfoReader,
         getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase,
         @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): ILoadFitnessPermissionAppsUseCase {
+    ): BaseUseCase<Unit, List<ConnectedFitnessAppMetadata>> {
         return LoadFitnessPermissionAppsUseCase(
             context,
             healthPermissionReader,
@@ -443,14 +444,6 @@ class UseCaseModule {
             getHealthPermissionsFlagsUseCase,
             dispatcher,
         )
-    }
-
-    @Provides
-    fun providesLoadOnboardingStateUseCase(
-        healthOnboardingManager: HealthOnboardingManager,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): ILoadOnboardingStateUseCase {
-        return LoadOnboardingStateUseCase(healthOnboardingManager, dispatcher)
     }
 
     @Provides
@@ -473,5 +466,13 @@ class UseCaseModule {
         @IoDispatcher dispatcher: CoroutineDispatcher,
     ): ILoadSensorListUseCase {
         return LoadSensorListUseCase(context, dispatcher)
+    }
+
+    @Provides
+    @com.android.healthconnect.controller.shared.usecase.LoadOnboardingStateUseCase
+    fun provideLoadOnboardingStateUseCase(
+        useCase: LoadOnboardingStateUseCase
+    ): BaseUseCase<Unit, OnboardingState> {
+        return useCase
     }
 }

@@ -79,6 +79,7 @@ java_library {
     ],
     kotlincflags: ["-Xjvm-default=all"],
     apex_available: ["com.android.healthfitness"],
+    plugins: ["dagger2-compiler"],
 }
 
 java_library {
@@ -266,6 +267,7 @@ android_library {
         baseline_filename: "lint-baseline.xml",
         error_checks: ["NewApi"],
     },
+    plugins: ["dagger2-compiler"],
 }
 
 // Opt-out config for optimizing the HealthConnectController target using R8.
