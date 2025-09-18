@@ -20,9 +20,14 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.StepsRecord;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
+
+import com.android.healthfitness.flags.Flags;
 
 import com.google.common.collect.ImmutableSet;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -32,7 +37,10 @@ import java.util.Set;
 @RunWith(JUnit4.class)
 public class DeviceDataSourceAdvertisementTest {
 
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     public void constructAdvertisement_returnsCorrectValues() {
         Device device =
                 new Device.Builder()
@@ -59,6 +67,7 @@ public class DeviceDataSourceAdvertisementTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     public void constructAdvertisement_noDeviceDataSourceState_returnsCorrectValues() {
         Device device =
                 new Device.Builder()
