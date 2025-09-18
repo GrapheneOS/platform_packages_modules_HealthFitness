@@ -672,3 +672,21 @@ flag {
     is_fixed_read_only: false
     is_exported: true
 }
+
+flag {
+    name: "permissions_grouping_app_screen"
+    namespace: "health_fitness_aconfig"
+    description: "Flag to show the updated permissions grouped by data category UI on App Screen"
+    bug: "436747979"
+    is_fixed_read_only: false
+    is_exported: false
+}
+
+flag {
+    name: "permissions_grouping_settings_screen"
+    namespace: "health_fitness_aconfig"
+    description: "Flag to show the updated permissions grouped by data category UI on Settings Privacy Dashboard"
+    bug: "436747979"
+    is_fixed_read_only: false
+    is_exported: false
+}
