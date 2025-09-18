@@ -42,6 +42,9 @@ import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.AttributionSource;
@@ -63,8 +66,8 @@ import android.util.ArrayMap;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SdkSuppress;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 
@@ -89,9 +92,10 @@ public class DataPermissionEnforcerTest {
     @Mock private PermissionManager mPermissionManager;
     @Mock private PackageManager mPackageManager;
     @Mock private Context mContext;
-    @Mock private InternalHealthConnectMappings mMockInternalHealthConnectMappings;
     @Mock private HealthConnectMappings mMockHealthConnectMappings;
+    @Mock private RecordHelper mRecordHelper;
 
+    private InternalHealthConnectMappings mSpyInternalHealthConnectMappings;
     private AttributionSource mAttributionSource;
 
     private DataPermissionEnforcer mDataPermissionEnforcer;
@@ -108,23 +112,24 @@ public class DataPermissionEnforcerTest {
         mHealthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(getInstrumentation().getContext())
                         .build();
+        mSpyInternalHealthConnectMappings =
+                spy(mHealthConnectInjector.getInternalHealthConnectMappings());
 
         mDataPermissionEnforcer =
                 new DataPermissionEnforcer(
-                        mPermissionManager,
-                        mContext,
-                        mHealthConnectInjector.getInternalHealthConnectMappings());
+                        mPermissionManager, mContext, mSpyInternalHealthConnectMappings);
     }
 
     private void setUpMocksForMultiPermTests() {
-        when(mMockInternalHealthConnectMappings.getExternalMappings())
-                .thenReturn(mMockHealthConnectMappings);
+        doReturn(mMockHealthConnectMappings)
+                .when(mSpyInternalHealthConnectMappings)
+                .getExternalMappings();
         when(mMockHealthConnectMappings.getRecordIdToExternalRecordClassMap())
                 .thenReturn(ImmutableMap.of(TEST_RECORD_TYPE, StepsRecord.class));
 
         mDataPermissionEnforcer =
                 new DataPermissionEnforcer(
-                        mPermissionManager, mContext, mMockInternalHealthConnectMappings);
+                        mPermissionManager, mContext, mSpyInternalHealthConnectMappings);
     }
 
     private static final int TEST_RECORD_TYPE = -1;
@@ -499,9 +504,41 @@ public class DataPermissionEnforcerTest {
         when(mPermissionManager.checkPermissionForDataDelivery(
                         WRITE_EXERCISE_ROUTE, mAttributionSource, null))
                 .thenReturn(PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        eq("GRANULAR_PERMISSION"), any(), any()))
+                .thenReturn(PERMISSION_GRANTED);
+        doReturn(mRecordHelper).when(mSpyInternalHealthConnectMappings).getRecordHelper(anyInt());
+        when(mRecordHelper.getGranularWritePermissions(any()))
+                .thenReturn(Set.of("GRANULAR_PERMISSION"));
 
         ExerciseSessionRecordInternal record = new ExerciseSessionRecordInternal();
         mDataPermissionEnforcer.enforceRecordsWritePermissions(List.of(record), mAttributionSource);
+
+        verify(mRecordHelper).getGranularWritePermissions(record);
+    }
+
+    @Test
+    public void
+            testEnforceRecordsWritePermissions_granularPermissionDenied_throwsSecurityException() {
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        WRITE_EXERCISE, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        WRITE_EXERCISE_ROUTE, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        eq("GRANULAR_PERMISSION"), any(), any()))
+                .thenReturn(PERMISSION_DENIED);
+        doReturn(mRecordHelper).when(mSpyInternalHealthConnectMappings).getRecordHelper(anyInt());
+        when(mRecordHelper.getGranularWritePermissions(any()))
+                .thenReturn(Set.of("GRANULAR_PERMISSION"));
+
+        ExerciseSessionRecordInternal record = new ExerciseSessionRecordInternal();
+        assertThrows(
+                SecurityException.class,
+                () ->
+                        mDataPermissionEnforcer.enforceRecordsWritePermissions(
+                                List.of(record), mAttributionSource));
     }
 
     /** enforceAnyOfPermissions */

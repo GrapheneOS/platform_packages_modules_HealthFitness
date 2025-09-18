@@ -260,10 +260,16 @@ public class FitnessRecordUpsertHelper {
                                         recordInternal, isInsertRequest, extraPermsStateMap);
                         if (shouldGenerateChangeLog) {
                             if (!Flags.fixChangeLogWhenInsertWithSameTimestamps()) {
-                                upsertionChangeLogs.addRecordInfo(
-                                        recordInternal.getRecordType(),
-                                        recordInternal.getAppInfoId(),
-                                        recordInternal.getUuid());
+                                // TODO(b/448836403): Prevent insertion of Symptoms change log as we
+                                //  are not sure yet what inserted ChangeLogs for Symptoms should
+                                //  look like.
+                                if (recordInternal.getRecordType()
+                                        != RecordTypeIdentifier.RECORD_TYPE_SYMPTOM) {
+                                    upsertionChangeLogs.addRecordInfo(
+                                            recordInternal.getRecordType(),
+                                            recordInternal.getAppInfoId(),
+                                            recordInternal.getUuid());
+                                }
                             }
                             addChangeLogsForOtherModifiedRecords(
                                     recordInternal, otherModifiedRecordsChangeLogs);
@@ -285,10 +291,15 @@ public class FitnessRecordUpsertHelper {
                         // See b/430891167
                         if (shouldGenerateChangeLog
                                 && Flags.fixChangeLogWhenInsertWithSameTimestamps()) {
-                            upsertionChangeLogs.addRecordInfo(
-                                    recordInternal.getRecordType(),
-                                    recordInternal.getAppInfoId(),
-                                    recordInternal.getUuid());
+                            // TODO(b/448836403): Prevent insertion of Symptoms change log as we are
+                            //  not sure yet what inserted ChangeLogs for Symptoms should look like.
+                            if (recordInternal.getRecordType()
+                                    != RecordTypeIdentifier.RECORD_TYPE_SYMPTOM) {
+                                upsertionChangeLogs.addRecordInfo(
+                                        recordInternal.getRecordType(),
+                                        recordInternal.getAppInfoId(),
+                                        recordInternal.getUuid());
+                            }
                         }
                     }
                     if (shouldGenerateChangeLog) {

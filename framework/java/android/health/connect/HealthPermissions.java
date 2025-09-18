@@ -480,12 +480,531 @@ public final class HealthPermissions {
             "android.permission.health.READ_ALCOHOL_CONSUMPTION";
 
     /**
+     * Allows an application to read the user's abdominal pain data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_ABDOMINAL_PAIN =
+            "android.permission.health.READ_SYMPTOM_ABDOMINAL_PAIN";
+
+    /**
+     * Allows an application to read the user's acne data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_ACNE = "android.permission.health.READ_SYMPTOM_ACNE";
+
+    /**
+     * Allows an application to read the user's back pain data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_BACK_PAIN =
+            "android.permission.health.READ_SYMPTOM_BACK_PAIN";
+
+    /**
+     * Allows an application to read the user's bloating data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_BLOATING =
+            "android.permission.health.READ_SYMPTOM_BLOATING";
+
+    /**
+     * Allows an application to read the user's brain fog data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_BRAIN_FOG =
+            "android.permission.health.READ_SYMPTOM_BRAIN_FOG";
+
+    /**
+     * Allows an application to read the user's breast tenderness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_BREAST_TENDERNESS =
+            "android.permission.health.READ_SYMPTOM_BREAST_TENDERNESS";
+
+    /**
+     * Allows an application to read the user's brittle nails data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_BRITTLE_NAILS =
+            "android.permission.health.READ_SYMPTOM_BRITTLE_NAILS";
+
+    /**
+     * Allows an application to read the user's burning mouth  data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_BURNING_MOUTH =
+            "android.permission.health.READ_SYMPTOM_BURNING_MOUTH";
+
+    /**
+     * Allows an application to read the user's chest pain data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_CHEST_PAIN =
+            "android.permission.health.READ_SYMPTOM_CHEST_PAIN";
+
+    /**
+     * Allows an application to read the user's chest tightness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_CHEST_TIGHTNESS =
+            "android.permission.health.READ_SYMPTOM_CHEST_TIGHTNESS";
+
+    /**
+     * Allows an application to read the user's chills data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_CHILLS =
+            "android.permission.health.READ_SYMPTOM_CHILLS";
+
+    /**
+     * Allows an application to read the user's constipation data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_CONSTIPATION =
+            "android.permission.health.READ_SYMPTOM_CONSTIPATION";
+
+    /**
      * Allows an application to read the user's cough symptom data.
      *
      * <p>Protection level: dangerous.
      */
     @FlaggedApi(FLAG_SYMPTOMS)
     public static final String READ_SYMPTOM_COUGH = "android.permission.health.READ_SYMPTOM_COUGH";
+
+    /**
+     * Allows an application to read the user's cramps data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_CRAMPS =
+            "android.permission.health.READ_SYMPTOM_CRAMPS";
+
+    /**
+     * Allows an application to read the user's cravings data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_CRAVINGS =
+            "android.permission.health.READ_SYMPTOM_CRAVINGS";
+
+    /**
+     * Allows an application to read the user's dehydration data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_DEHYDRATION =
+            "android.permission.health.READ_SYMPTOM_DEHYDRATION";
+
+    /**
+     * Allows an application to read the user's diarrhea data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_DIARRHEA =
+            "android.permission.health.READ_SYMPTOM_DIARRHEA";
+
+    /**
+     * Allows an application to read the user's difficulty swallowing data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_DIFFICULTY_SWALLOWING =
+            "android.permission.health.READ_SYMPTOM_DIFFICULTY_SWALLOWING";
+
+    /**
+     * Allows an application to read the user's dizziness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_DIZZINESS =
+            "android.permission.health.READ_SYMPTOM_DIZZINESS";
+
+    /**
+     * Allows an application to read the user's dry skin data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_DRY_SKIN =
+            "android.permission.health.READ_SYMPTOM_DRY_SKIN";
+
+    /**
+     * Allows an application to read the user's earaches data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_EARACHES =
+            "android.permission.health.READ_SYMPTOM_EARACHES";
+
+    /**
+     * Allows an application to read the user's fatigue data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_FATIGUE =
+            "android.permission.health.READ_SYMPTOM_FATIGUE";
+
+    /**
+     * Allows an application to read the user's fever data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_FEVER = "android.permission.health.READ_SYMPTOM_FEVER";
+
+    /**
+     * Allows an application to read the user's generalized body ache data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_GENERALIZED_BODY_ACHE =
+            "android.permission.health.READ_SYMPTOM_GENERALIZED_BODY_ACHE";
+
+    /**
+     * Allows an application to read the user's hair loss data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_HAIR_LOSS =
+            "android.permission.health.READ_SYMPTOM_HAIR_LOSS";
+
+    /**
+     * Allows an application to read the user's headache data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_HEADACHE =
+            "android.permission.health.READ_SYMPTOM_HEADACHE";
+
+    /**
+     * Allows an application to read the user's heartburn data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_HEARTBURN =
+            "android.permission.health.READ_SYMPTOM_HEARTBURN";
+
+    /**
+     * Allows an application to read the user's heart palpitations data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_HEART_PALPITATIONS =
+            "android.permission.health.READ_SYMPTOM_HEART_PALPITATIONS";
+
+    /**
+     * Allows an application to read the user's hot flashes data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_HOT_FLASHES =
+            "android.permission.health.READ_SYMPTOM_HOT_FLASHES";
+
+    /**
+     * Allows an application to read the user's insomnia data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_INSOMNIA =
+            "android.permission.health.READ_SYMPTOM_INSOMNIA";
+
+    /**
+     * Allows an application to read the user's joint pain data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_JOINT_PAIN =
+            "android.permission.health.READ_SYMPTOM_JOINT_PAIN";
+
+    /**
+     * Allows an application to read the user's joint stiffness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_JOINT_STIFFNESS =
+            "android.permission.health.READ_SYMPTOM_JOINT_STIFFNESS";
+
+    /**
+     * Allows an application to read the user's loss of appetite data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_LOSS_OF_APPETITE =
+            "android.permission.health.READ_SYMPTOM_LOSS_OF_APPETITE";
+
+    /**
+     * Allows an application to read the user's loss of consciousness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_LOSS_OF_CONSCIOUSNESS =
+            "android.permission.health.READ_SYMPTOM_LOSS_OF_CONSCIOUSNESS";
+
+    /**
+     * Allows an application to read the user's lower back pain data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_LOWER_BACK_PAIN =
+            "android.permission.health.READ_SYMPTOM_LOWER_BACK_PAIN";
+
+    /**
+     * Allows an application to read the user's memory lapse data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_MEMORY_LAPSE =
+            "android.permission.health.READ_SYMPTOM_MEMORY_LAPSE";
+
+    /**
+     * Allows an application to read the user's mood change data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_MOOD_CHANGE =
+            "android.permission.health.READ_SYMPTOM_MOOD_CHANGE";
+
+    /**
+     * Allows an application to read the user's muscle pain data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_MUSCLE_PAIN =
+            "android.permission.health.READ_SYMPTOM_MUSCLE_PAIN";
+
+    /**
+     * Allows an application to read the user's nausea data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_NAUSEA =
+            "android.permission.health.READ_SYMPTOM_NAUSEA";
+
+    /**
+     * Allows an application to read the user's night sweats data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_NIGHT_SWEATS =
+            "android.permission.health.READ_SYMPTOM_NIGHT_SWEATS";
+
+    /**
+     * Allows an application to read the user's pelvic pain data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_PELVIC_PAIN =
+            "android.permission.health.READ_SYMPTOM_PELVIC_PAIN";
+
+    /**
+     * Allows an application to read the user's rapid, pounding, or fluttering heartbeat data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT =
+            "android.permission.health.READ_SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT";
+
+    /**
+     * Allows an application to read the user's reduced capacity for exercise data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE =
+            "android.permission.health.READ_SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE";
+
+    /**
+     * Allows an application to read the user's runny nose data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_RUNNY_NOSE =
+            "android.permission.health.READ_SYMPTOM_RUNNY_NOSE";
+
+    /**
+     * Allows an application to read the user's shortness of breath data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_SHORTNESS_OF_BREATH =
+            "android.permission.health.READ_SYMPTOM_SHORTNESS_OF_BREATH";
+
+    /**
+     * Allows an application to read the user's skipped heartbeat data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_SKIPPED_HEARTBEAT =
+            "android.permission.health.READ_SYMPTOM_SKIPPED_HEARTBEAT";
+
+    /**
+     * Allows an application to read the user's sleep changes data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_SLEEP_CHANGES =
+            "android.permission.health.READ_SYMPTOM_SLEEP_CHANGES";
+
+    /**
+     * Allows an application to read the user's sleepiness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_SLEEPINESS =
+            "android.permission.health.READ_SYMPTOM_SLEEPINESS";
+
+    /**
+     * Allows an application to read the user's sneezing data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_SNEEZING =
+            "android.permission.health.READ_SYMPTOM_SNEEZING";
+
+    /**
+     * Allows an application to read the user's snore data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_SNORE = "android.permission.health.READ_SYMPTOM_SNORE";
+
+    /**
+     * Allows an application to read the user's sore throat data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_SORE_THROAT =
+            "android.permission.health.READ_SYMPTOM_SORE_THROAT";
+
+    /**
+     * Allows an application to read the user's stomach ache data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_STOMACH_ACHE =
+            "android.permission.health.READ_SYMPTOM_STOMACH_ACHE";
+
+    /**
+     * Allows an application to read the user's stuffy nose data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_STUFFY_NOSE =
+            "android.permission.health.READ_SYMPTOM_STUFFY_NOSE";
+
+    /**
+     * Allows an application to read the user's unexplained weight changes data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES =
+            "android.permission.health.READ_SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES";
+
+    /**
+     * Allows an application to read the user's vaginal dryness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_VAGINAL_DRYNESS =
+            "android.permission.health.READ_SYMPTOM_VAGINAL_DRYNESS";
+
+    /**
+     * Allows an application to read the user's vaginal itchiness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_VAGINAL_ITCHINESS =
+            "android.permission.health.READ_SYMPTOM_VAGINAL_ITCHINESS";
+
+    /**
+     * Allows an application to read the user's vomiting data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_VOMITING =
+            "android.permission.health.READ_SYMPTOM_VOMITING";
+
+    /**
+     * Allows an application to read the user's water retention data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_WATER_RETENTION =
+            "android.permission.health.READ_SYMPTOM_WATER_RETENTION";
+
+    /**
+     * Allows an application to read the user's wheezing data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String READ_SYMPTOM_WHEEZING =
+            "android.permission.health.READ_SYMPTOM_WHEEZING";
 
     /**
      * Allows an application to write the user's calories burned data.
@@ -822,6 +1341,527 @@ public final class HealthPermissions {
     public static final String WRITE_SYMPTOM_COUGH =
             "android.permission.health.WRITE_SYMPTOM_COUGH";
 
+    /**
+     * Allows an application to write the user's acne data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_ACNE = "android.permission.health.WRITE_SYMPTOM_ACNE";
+
+    /**
+     * Allows an application to write the user's brittle nails data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_BRITTLE_NAILS =
+            "android.permission.health.WRITE_SYMPTOM_BRITTLE_NAILS";
+
+    /**
+     * Allows an application to write the user's burning mouth  data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_BURNING_MOUTH =
+            "android.permission.health.WRITE_SYMPTOM_BURNING_MOUTH";
+
+    /**
+     * Allows an application to write the user's chills data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_CHILLS =
+            "android.permission.health.WRITE_SYMPTOM_CHILLS";
+
+    /**
+     * Allows an application to write the user's dehydration data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_DEHYDRATION =
+            "android.permission.health.WRITE_SYMPTOM_DEHYDRATION";
+
+    /**
+     * Allows an application to write the user's dry skin data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_DRY_SKIN =
+            "android.permission.health.WRITE_SYMPTOM_DRY_SKIN";
+
+    /**
+     * Allows an application to write the user's fever data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_FEVER =
+            "android.permission.health.WRITE_SYMPTOM_FEVER";
+
+    /**
+     * Allows an application to write the user's joint pain data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_JOINT_PAIN =
+            "android.permission.health.WRITE_SYMPTOM_JOINT_PAIN";
+
+    /**
+     * Allows an application to write the user's joint stiffness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_JOINT_STIFFNESS =
+            "android.permission.health.WRITE_SYMPTOM_JOINT_STIFFNESS";
+
+    /**
+     * Allows an application to write the user's muscle pain data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_MUSCLE_PAIN =
+            "android.permission.health.WRITE_SYMPTOM_MUSCLE_PAIN";
+
+    /**
+     * Allows an application to write the user's loss of consciousness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_LOSS_OF_CONSCIOUSNESS =
+            "android.permission.health.WRITE_SYMPTOM_LOSS_OF_CONSCIOUSNESS";
+
+    /**
+     * Allows an application to write the user's reduced capacity for exercise data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE =
+            "android.permission.health.WRITE_SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE";
+
+    /**
+     * Allows an application to write the user's unexplained weight changes data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES =
+            "android.permission.health.WRITE_SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES";
+
+    /**
+     * Allows an application to write the user's generalized body ache data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_GENERALIZED_BODY_ACHE =
+            "android.permission.health.WRITE_SYMPTOM_GENERALIZED_BODY_ACHE";
+
+    /**
+     * Allows an application to write the user's fatigue data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_FATIGUE =
+            "android.permission.health.WRITE_SYMPTOM_FATIGUE";
+
+    /**
+     * Allows an application to write the user's constipation data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_CONSTIPATION =
+            "android.permission.health.WRITE_SYMPTOM_CONSTIPATION";
+
+    /**
+     * Allows an application to write the user's diarrhea data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_DIARRHEA =
+            "android.permission.health.WRITE_SYMPTOM_DIARRHEA";
+
+    /**
+     * Allows an application to write the user's loss of appetite data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_LOSS_OF_APPETITE =
+            "android.permission.health.WRITE_SYMPTOM_LOSS_OF_APPETITE";
+
+    /**
+     * Allows an application to write the user's nausea data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_NAUSEA =
+            "android.permission.health.WRITE_SYMPTOM_NAUSEA";
+
+    /**
+     * Allows an application to write the user's stomach ache data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_STOMACH_ACHE =
+            "android.permission.health.WRITE_SYMPTOM_STOMACH_ACHE";
+
+    /**
+     * Allows an application to write the user's vomiting data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_VOMITING =
+            "android.permission.health.WRITE_SYMPTOM_VOMITING";
+
+    /**
+     * Allows an application to write the user's chest pain data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_CHEST_PAIN =
+            "android.permission.health.WRITE_SYMPTOM_CHEST_PAIN";
+
+    /**
+     * Allows an application to write the user's chest tightness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_CHEST_TIGHTNESS =
+            "android.permission.health.WRITE_SYMPTOM_CHEST_TIGHTNESS";
+
+    /**
+     * Allows an application to write the user's heart palpitations data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_HEART_PALPITATIONS =
+            "android.permission.health.WRITE_SYMPTOM_HEART_PALPITATIONS";
+
+    /**
+     * Allows an application to write the user's shortness of breath data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_SHORTNESS_OF_BREATH =
+            "android.permission.health.WRITE_SYMPTOM_SHORTNESS_OF_BREATH";
+
+    /**
+     * Allows an application to write the user's wheezing data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_WHEEZING =
+            "android.permission.health.WRITE_SYMPTOM_WHEEZING";
+
+    /**
+     * Allows an application to write the user's heartburn data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_HEARTBURN =
+            "android.permission.health.WRITE_SYMPTOM_HEARTBURN";
+
+    /**
+     * Allows an application to write the user's skipped heartbeat data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_SKIPPED_HEARTBEAT =
+            "android.permission.health.WRITE_SYMPTOM_SKIPPED_HEARTBEAT";
+
+    /**
+     * Allows an application to write the user's rapid, pounding, or fluttering heartbeat data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT =
+            "android.permission.health.WRITE_SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT";
+
+    /**
+     * Allows an application to write the user's difficulty swallowing data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_DIFFICULTY_SWALLOWING =
+            "android.permission.health.WRITE_SYMPTOM_DIFFICULTY_SWALLOWING";
+
+    /**
+     * Allows an application to write the user's dizziness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_DIZZINESS =
+            "android.permission.health.WRITE_SYMPTOM_DIZZINESS";
+
+    /**
+     * Allows an application to write the user's earaches data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_EARACHES =
+            "android.permission.health.WRITE_SYMPTOM_EARACHES";
+
+    /**
+     * Allows an application to write the user's hair loss data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_HAIR_LOSS =
+            "android.permission.health.WRITE_SYMPTOM_HAIR_LOSS";
+
+    /**
+     * Allows an application to write the user's headache data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_HEADACHE =
+            "android.permission.health.WRITE_SYMPTOM_HEADACHE";
+
+    /**
+     * Allows an application to write the user's runny nose data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_RUNNY_NOSE =
+            "android.permission.health.WRITE_SYMPTOM_RUNNY_NOSE";
+
+    /**
+     * Allows an application to write the user's sneezing data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_SNEEZING =
+            "android.permission.health.WRITE_SYMPTOM_SNEEZING";
+
+    /**
+     * Allows an application to write the user's sore throat data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_SORE_THROAT =
+            "android.permission.health.WRITE_SYMPTOM_SORE_THROAT";
+
+    /**
+     * Allows an application to write the user's stuffy nose data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_STUFFY_NOSE =
+            "android.permission.health.WRITE_SYMPTOM_STUFFY_NOSE";
+
+    /**
+     * Allows an application to write the user's back pain data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_BACK_PAIN =
+            "android.permission.health.WRITE_SYMPTOM_BACK_PAIN";
+
+    /**
+     * Allows an application to write the user's lower back pain data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_LOWER_BACK_PAIN =
+            "android.permission.health.WRITE_SYMPTOM_LOWER_BACK_PAIN";
+
+    /**
+     * Allows an application to write the user's hot flashes data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_HOT_FLASHES =
+            "android.permission.health.WRITE_SYMPTOM_HOT_FLASHES";
+
+    /**
+     * Allows an application to write the user's night sweats data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_NIGHT_SWEATS =
+            "android.permission.health.WRITE_SYMPTOM_NIGHT_SWEATS";
+
+    /**
+     * Allows an application to write the user's water retention data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_WATER_RETENTION =
+            "android.permission.health.WRITE_SYMPTOM_WATER_RETENTION";
+
+    /**
+     * Allows an application to write the user's cravings data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_CRAVINGS =
+            "android.permission.health.WRITE_SYMPTOM_CRAVINGS";
+
+    /**
+     * Allows an application to write the user's bloating data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_BLOATING =
+            "android.permission.health.WRITE_SYMPTOM_BLOATING";
+
+    /**
+     * Allows an application to write the user's cramps data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_CRAMPS =
+            "android.permission.health.WRITE_SYMPTOM_CRAMPS";
+
+    /**
+     * Allows an application to write the user's abdominal pain data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_ABDOMINAL_PAIN =
+            "android.permission.health.WRITE_SYMPTOM_ABDOMINAL_PAIN";
+
+    /**
+     * Allows an application to write the user's breast tenderness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_BREAST_TENDERNESS =
+            "android.permission.health.WRITE_SYMPTOM_BREAST_TENDERNESS";
+
+    /**
+     * Allows an application to write the user's pelvic pain data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_PELVIC_PAIN =
+            "android.permission.health.WRITE_SYMPTOM_PELVIC_PAIN";
+
+    /**
+     * Allows an application to write the user's vaginal dryness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_VAGINAL_DRYNESS =
+            "android.permission.health.WRITE_SYMPTOM_VAGINAL_DRYNESS";
+
+    /**
+     * Allows an application to write the user's vaginal itchiness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_VAGINAL_ITCHINESS =
+            "android.permission.health.WRITE_SYMPTOM_VAGINAL_ITCHINESS";
+
+    /**
+     * Allows an application to write the user's brain fog data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_BRAIN_FOG =
+            "android.permission.health.WRITE_SYMPTOM_BRAIN_FOG";
+
+    /**
+     * Allows an application to write the user's mood change data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_MOOD_CHANGE =
+            "android.permission.health.WRITE_SYMPTOM_MOOD_CHANGE";
+
+    /**
+     * Allows an application to write the user's memory lapse data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_MEMORY_LAPSE =
+            "android.permission.health.WRITE_SYMPTOM_MEMORY_LAPSE";
+
+    /**
+     * Allows an application to write the user's sleepiness data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_SLEEPINESS =
+            "android.permission.health.WRITE_SYMPTOM_SLEEPINESS";
+
+    /**
+     * Allows an application to write the user's sleep changes data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_SLEEP_CHANGES =
+            "android.permission.health.WRITE_SYMPTOM_SLEEP_CHANGES";
+
+    /**
+     * Allows an application to write the user's insomnia data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_INSOMNIA =
+            "android.permission.health.WRITE_SYMPTOM_INSOMNIA";
+
+    /**
+     * Allows an application to write the user's snore data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SYMPTOMS)
+    public static final String WRITE_SYMPTOM_SNORE =
+            "android.permission.health.WRITE_SYMPTOM_SNORE";
+
     /* Personal Health Record permissions */
 
     /**
@@ -1116,7 +2156,125 @@ public final class HealthPermissions {
             case READ_ACTIVITY_INTENSITY, WRITE_ACTIVITY_INTENSITY -> Flags.activityIntensity();
             case READ_ALCOHOL_CONSUMPTION, WRITE_ALCOHOL_CONSUMPTION -> Flags.alcoholConsumption();
             case READ_NICOTINE_INTAKE, WRITE_NICOTINE_INTAKE -> Flags.smoking();
-            case READ_SYMPTOM_COUGH, WRITE_SYMPTOM_COUGH -> Flags.symptoms();
+            case READ_SYMPTOM_ABDOMINAL_PAIN,
+                    READ_SYMPTOM_ACNE,
+                    READ_SYMPTOM_BACK_PAIN,
+                    READ_SYMPTOM_BLOATING,
+                    READ_SYMPTOM_BRAIN_FOG,
+                    READ_SYMPTOM_BREAST_TENDERNESS,
+                    READ_SYMPTOM_BRITTLE_NAILS,
+                    READ_SYMPTOM_BURNING_MOUTH,
+                    READ_SYMPTOM_CHEST_PAIN,
+                    READ_SYMPTOM_CHEST_TIGHTNESS,
+                    READ_SYMPTOM_CHILLS,
+                    READ_SYMPTOM_CONSTIPATION,
+                    READ_SYMPTOM_COUGH,
+                    READ_SYMPTOM_CRAMPS,
+                    READ_SYMPTOM_CRAVINGS,
+                    READ_SYMPTOM_DEHYDRATION,
+                    READ_SYMPTOM_DIARRHEA,
+                    READ_SYMPTOM_DIFFICULTY_SWALLOWING,
+                    READ_SYMPTOM_DIZZINESS,
+                    READ_SYMPTOM_DRY_SKIN,
+                    READ_SYMPTOM_EARACHES,
+                    READ_SYMPTOM_FATIGUE,
+                    READ_SYMPTOM_FEVER,
+                    READ_SYMPTOM_GENERALIZED_BODY_ACHE,
+                    READ_SYMPTOM_HAIR_LOSS,
+                    READ_SYMPTOM_HEADACHE,
+                    READ_SYMPTOM_HEARTBURN,
+                    READ_SYMPTOM_HEART_PALPITATIONS,
+                    READ_SYMPTOM_HOT_FLASHES,
+                    READ_SYMPTOM_INSOMNIA,
+                    READ_SYMPTOM_JOINT_PAIN,
+                    READ_SYMPTOM_JOINT_STIFFNESS,
+                    READ_SYMPTOM_LOSS_OF_APPETITE,
+                    READ_SYMPTOM_LOSS_OF_CONSCIOUSNESS,
+                    READ_SYMPTOM_LOWER_BACK_PAIN,
+                    READ_SYMPTOM_MEMORY_LAPSE,
+                    READ_SYMPTOM_MOOD_CHANGE,
+                    READ_SYMPTOM_MUSCLE_PAIN,
+                    READ_SYMPTOM_NAUSEA,
+                    READ_SYMPTOM_NIGHT_SWEATS,
+                    READ_SYMPTOM_PELVIC_PAIN,
+                    READ_SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT,
+                    READ_SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE,
+                    READ_SYMPTOM_RUNNY_NOSE,
+                    READ_SYMPTOM_SHORTNESS_OF_BREATH,
+                    READ_SYMPTOM_SKIPPED_HEARTBEAT,
+                    READ_SYMPTOM_SLEEPINESS,
+                    READ_SYMPTOM_SLEEP_CHANGES,
+                    READ_SYMPTOM_SNEEZING,
+                    READ_SYMPTOM_SNORE,
+                    READ_SYMPTOM_SORE_THROAT,
+                    READ_SYMPTOM_STOMACH_ACHE,
+                    READ_SYMPTOM_STUFFY_NOSE,
+                    READ_SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES,
+                    READ_SYMPTOM_VAGINAL_DRYNESS,
+                    READ_SYMPTOM_VAGINAL_ITCHINESS,
+                    READ_SYMPTOM_VOMITING,
+                    READ_SYMPTOM_WATER_RETENTION,
+                    READ_SYMPTOM_WHEEZING,
+                    WRITE_SYMPTOM_ABDOMINAL_PAIN,
+                    WRITE_SYMPTOM_ACNE,
+                    WRITE_SYMPTOM_BACK_PAIN,
+                    WRITE_SYMPTOM_BLOATING,
+                    WRITE_SYMPTOM_BRAIN_FOG,
+                    WRITE_SYMPTOM_BREAST_TENDERNESS,
+                    WRITE_SYMPTOM_BRITTLE_NAILS,
+                    WRITE_SYMPTOM_BURNING_MOUTH,
+                    WRITE_SYMPTOM_CHEST_PAIN,
+                    WRITE_SYMPTOM_CHEST_TIGHTNESS,
+                    WRITE_SYMPTOM_CHILLS,
+                    WRITE_SYMPTOM_CONSTIPATION,
+                    WRITE_SYMPTOM_COUGH,
+                    WRITE_SYMPTOM_CRAMPS,
+                    WRITE_SYMPTOM_CRAVINGS,
+                    WRITE_SYMPTOM_DEHYDRATION,
+                    WRITE_SYMPTOM_DIARRHEA,
+                    WRITE_SYMPTOM_DIFFICULTY_SWALLOWING,
+                    WRITE_SYMPTOM_DIZZINESS,
+                    WRITE_SYMPTOM_DRY_SKIN,
+                    WRITE_SYMPTOM_EARACHES,
+                    WRITE_SYMPTOM_FATIGUE,
+                    WRITE_SYMPTOM_FEVER,
+                    WRITE_SYMPTOM_GENERALIZED_BODY_ACHE,
+                    WRITE_SYMPTOM_HAIR_LOSS,
+                    WRITE_SYMPTOM_HEADACHE,
+                    WRITE_SYMPTOM_HEARTBURN,
+                    WRITE_SYMPTOM_HEART_PALPITATIONS,
+                    WRITE_SYMPTOM_HOT_FLASHES,
+                    WRITE_SYMPTOM_INSOMNIA,
+                    WRITE_SYMPTOM_JOINT_PAIN,
+                    WRITE_SYMPTOM_JOINT_STIFFNESS,
+                    WRITE_SYMPTOM_LOSS_OF_APPETITE,
+                    WRITE_SYMPTOM_LOSS_OF_CONSCIOUSNESS,
+                    WRITE_SYMPTOM_LOWER_BACK_PAIN,
+                    WRITE_SYMPTOM_MEMORY_LAPSE,
+                    WRITE_SYMPTOM_MOOD_CHANGE,
+                    WRITE_SYMPTOM_MUSCLE_PAIN,
+                    WRITE_SYMPTOM_NAUSEA,
+                    WRITE_SYMPTOM_NIGHT_SWEATS,
+                    WRITE_SYMPTOM_PELVIC_PAIN,
+                    WRITE_SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT,
+                    WRITE_SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE,
+                    WRITE_SYMPTOM_RUNNY_NOSE,
+                    WRITE_SYMPTOM_SHORTNESS_OF_BREATH,
+                    WRITE_SYMPTOM_SKIPPED_HEARTBEAT,
+                    WRITE_SYMPTOM_SLEEPINESS,
+                    WRITE_SYMPTOM_SLEEP_CHANGES,
+                    WRITE_SYMPTOM_SNEEZING,
+                    WRITE_SYMPTOM_SNORE,
+                    WRITE_SYMPTOM_SORE_THROAT,
+                    WRITE_SYMPTOM_STOMACH_ACHE,
+                    WRITE_SYMPTOM_STUFFY_NOSE,
+                    WRITE_SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES,
+                    WRITE_SYMPTOM_VAGINAL_DRYNESS,
+                    WRITE_SYMPTOM_VAGINAL_ITCHINESS,
+                    WRITE_SYMPTOM_VOMITING,
+                    WRITE_SYMPTOM_WATER_RETENTION,
+                    WRITE_SYMPTOM_WHEEZING ->
+                    Flags.symptoms();
             case READ_MEDICAL_DATA_DEVICES -> Flags.deviceResource();
             default -> true;
         };

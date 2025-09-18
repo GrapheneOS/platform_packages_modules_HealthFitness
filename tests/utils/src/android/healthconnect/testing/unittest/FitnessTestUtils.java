@@ -53,6 +53,8 @@ import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import com.google.common.collect.ImmutableList;
 
+import org.mockito.MockitoAnnotations;
+
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -63,6 +65,7 @@ import java.util.UUID;
 /** Util class provides shared functionality for db transaction testing. */
 public final class FitnessTestUtils {
     private static final Set<String> NO_EXTRA_PERMS = Set.of();
+    private static final Set<String> NO_GRANULAR_PERMS = Set.of();
     private static final String TEST_PACKAGE_NAME = "package.name";
     private final TransactionManager mTransactionManager;
     private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
@@ -76,6 +79,7 @@ public final class FitnessTestUtils {
         mFitnessRecordReadHelper = injector.getFitnessRecordReadHelper();
         mFitnessRecordDeleteHelper = injector.getFitnessRecordDeleteHelper();
         mAppInfoHelper = injector.getAppInfoHelper();
+        MockitoAnnotations.initMocks(this);
     }
 
     /**
@@ -168,8 +172,9 @@ public final class FitnessTestUtils {
                 mTransactionManager,
                 packageName,
                 recordTypeToUuids,
-                /* startDateAccessMillis= */ NO_EXTRA_PERMS,
-                0,
+                NO_EXTRA_PERMS,
+                NO_GRANULAR_PERMS,
+                /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ true,
                 shouldRecordAccessLogs);
     }
@@ -189,7 +194,8 @@ public final class FitnessTestUtils {
                         mTransactionManager,
                         packageName,
                         request.toReadRecordsRequestParcel(),
-                        /* grantedExtraReadPermissions= */ Set.of(),
+                        NO_EXTRA_PERMS,
+                        NO_GRANULAR_PERMS,
                         /* startDateAccessMillis= */ 0,
                         /* isInForeground= */ true,
                         /* shouldRecordAccessLogs= */ false,

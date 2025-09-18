@@ -32,6 +32,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.util.Locale
 import java.util.TimeZone
 import javax.inject.Inject
@@ -127,10 +128,22 @@ class SymptomFormatterTest {
 
     @Test
     fun formatRecord_unknownSymptom_returnsCorrectlyFormattedEntry() = runBlocking {
+        // Skip validation to construct unknown symptom type as this is not possible in the public
+        // APIs
         val record =
-            SymptomRecord.Builder(SymptomRecord.SYMPTOM_TYPE_UNKNOWN, Instant.EPOCH, getMetaData())
-                .setSeverity(SymptomRecord.SEVERITY_MILD)
-                .build()
+            SymptomRecord(
+                SymptomRecord.SYMPTOM_TYPE_UNKNOWN,
+                "",
+                SymptomRecord.SEVERITY_MILD,
+                1,
+                SymptomRecord.RECORD_TEMPORAL_TYPE_INSTANT,
+                Instant.EPOCH,
+                ZoneOffset.UTC,
+                Instant.EPOCH,
+                ZoneOffset.UTC,
+                getMetaData(),
+                true,
+            )
 
         val formatted = formatter.formatRecord(record, "header", "headerA11y")
 
@@ -141,10 +154,22 @@ class SymptomFormatterTest {
 
     @Test
     fun formatRecord_unknownSymptomUnknownSeverity_returnsCorrectlyFormattedEntry() = runBlocking {
+        // Skip validation to construct unknown symptom type as this is not possible in the public
+        // APIs
         val record =
-            SymptomRecord.Builder(SymptomRecord.SYMPTOM_TYPE_UNKNOWN, Instant.EPOCH, getMetaData())
-                .setSeverity(SymptomRecord.SEVERITY_UNSPECIFIED)
-                .build()
+            SymptomRecord(
+                SymptomRecord.SYMPTOM_TYPE_UNKNOWN,
+                "",
+                SymptomRecord.SEVERITY_UNSPECIFIED,
+                1,
+                SymptomRecord.RECORD_TEMPORAL_TYPE_INSTANT,
+                Instant.EPOCH,
+                ZoneOffset.UTC,
+                Instant.EPOCH,
+                ZoneOffset.UTC,
+                getMetaData(),
+                true,
+            )
 
         val formatted = formatter.formatRecord(record, "header", "headerA11y")
 

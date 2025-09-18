@@ -13,37 +13,60 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package android.healthconnect.testing.shared.recordfactory;
-
-import static android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_COUGH;
 
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.SymptomRecord;
 import android.os.Bundle;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 
-public class SymptomRecordFactory extends RecordFactory<SymptomRecord> {
-    private static final String NOTES_KEY = PREFIX + ".notes";
-    private static final String SEVERITY_KEY = PREFIX + ".severity";
-    private static final String COUNT_KEY = PREFIX + ".count";
-    private static final String TEMPORAL_TYPE_KEY = PREFIX + ".temporal_type";
+/** Utility class to create {@link SymptomRecord} for testing. */
+public final class SymptomRecordFactory extends RecordFactory<SymptomRecord> {
+    private static final String KEY_SYMPTOM_TYPE = "symptom_type";
+    private static final String KEY_NOTES = "notes";
+    private static final String KEY_SEVERITY = "severity";
+    private static final String KEY_COUNT = "count";
+    private static final String KEY_TEMPORAL_TYPE = "temporal_type";
 
     @Override
     public SymptomRecord newFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new SymptomRecord.Builder(SYMPTOM_TYPE_COUGH, startTime, endTime, metadata)
-                .setNotes("notes")
-                .setSeverity(SymptomRecord.SEVERITY_MILD)
-                .setCount(2)
+        return new SymptomRecord.Builder(
+                        SymptomRecord.SYMPTOM_TYPE_COUGH, startTime, endTime, metadata)
+                .setStartZoneOffset(ZoneOffset.ofHours(1))
+                .setEndZoneOffset(ZoneOffset.ofHours(2))
+                .setNotes("Persistent cough")
+                .setSeverity(SymptomRecord.SEVERITY_MODERATE)
+                .setCount(5)
                 .build();
     }
 
     @Override
     public SymptomRecord anotherFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new SymptomRecord.Builder(SYMPTOM_TYPE_COUGH, startTime, endTime, metadata)
-                .setNotes("another_notes")
+        return new SymptomRecord.Builder(
+                        SymptomRecord.SYMPTOM_TYPE_HEADACHE, startTime, endTime, metadata)
+                .setStartZoneOffset(ZoneOffset.ofHours(-2))
+                .setEndZoneOffset(ZoneOffset.ofHours(-1))
+                .setNotes("Migraine")
+                .setSeverity(SymptomRecord.SEVERITY_SEVERE)
+                .setCount(1)
+                .build();
+    }
+
+    /** Creates a new SymptomRecord with an instant temporal type. */
+    public SymptomRecord newInstantRecord(Metadata metadata, Instant time) {
+        return new SymptomRecord.Builder(SymptomRecord.SYMPTOM_TYPE_DIZZINESS, time, metadata)
+                .setNotes("Sudden dizziness")
+                .setSeverity(SymptomRecord.SEVERITY_MILD)
+                .build();
+    }
+
+    /** Creates a new SymptomRecord with a local date temporal type. */
+    public SymptomRecord newLocalDateRecord(Metadata metadata, LocalDate date) {
+        return new SymptomRecord.Builder(SymptomRecord.SYMPTOM_TYPE_FEVER, date, metadata)
+                .setNotes("Fever all day")
                 .setSeverity(SymptomRecord.SEVERITY_MODERATE)
                 .setCount(3)
                 .build();
@@ -51,32 +74,52 @@ public class SymptomRecordFactory extends RecordFactory<SymptomRecord> {
 
     @Override
     public SymptomRecord newEmptyRecord(Metadata metadata, Instant startTime, Instant endTime) {
-        return new SymptomRecord.Builder(SYMPTOM_TYPE_COUGH, startTime, endTime, metadata).build();
+        return new SymptomRecord.Builder(
+                        SymptomRecord.SYMPTOM_TYPE_COUGH, startTime, endTime, metadata)
+                .build();
     }
 
     @Override
     protected SymptomRecord recordWithMetadata(SymptomRecord record, Metadata metadata) {
-        return new SymptomRecord.Builder(
-                        record.getSymptomType(),
-                        record.getStartTime(),
-                        record.getEndTime(),
-                        metadata)
-                .setNotes(record.getNotes())
+        SymptomRecord.Builder builder;
+        switch (record.getTemporalType()) {
+            case SymptomRecord.RECORD_TEMPORAL_TYPE_INSTANT:
+                builder =
+                        new SymptomRecord.Builder(
+                                record.getSymptomType(), record.getStartTime(), metadata);
+                break;
+            case SymptomRecord.RECORD_TEMPORAL_TYPE_LOCAL_DATE:
+                builder =
+                        new SymptomRecord.Builder(
+                                record.getSymptomType(), record.getDate(), metadata);
+                break;
+            case SymptomRecord.RECORD_TEMPORAL_TYPE_INTERVAL:
+            default:
+                builder =
+                        new SymptomRecord.Builder(
+                                record.getSymptomType(),
+                                record.getStartTime(),
+                                record.getEndTime(),
+                                metadata);
+                builder.setStartZoneOffset(record.getStartZoneOffset());
+                builder.setEndZoneOffset(record.getEndZoneOffset());
+                break;
+        }
+        return builder.setNotes(record.getNotes())
                 .setSeverity(record.getSeverity())
                 .setCount(record.getCount())
-                .setStartZoneOffset(record.getStartZoneOffset())
-                .setEndZoneOffset(record.getEndZoneOffset())
                 .build();
     }
 
     @Override
     protected Bundle getValuesBundleForRecord(SymptomRecord record) {
-        Bundle bundle = new Bundle();
-        bundle.putString(NOTES_KEY, record.getNotes());
-        bundle.putInt(SEVERITY_KEY, record.getSeverity());
-        bundle.putInt(COUNT_KEY, record.getCount());
-        bundle.putInt(TEMPORAL_TYPE_KEY, record.getTemporalType());
-        return bundle;
+        Bundle values = new Bundle();
+        values.putInt(KEY_SYMPTOM_TYPE, record.getSymptomType());
+        values.putString(KEY_NOTES, record.getNotes());
+        values.putInt(KEY_SEVERITY, record.getSeverity());
+        values.putInt(KEY_COUNT, record.getCount());
+        values.putInt(KEY_TEMPORAL_TYPE, record.getTemporalType());
+        return values;
     }
 
     @Override
@@ -87,17 +130,57 @@ public class SymptomRecordFactory extends RecordFactory<SymptomRecord> {
             ZoneOffset startZoneOffset,
             ZoneOffset endZoneOffset,
             Bundle bundle) {
-        return new SymptomRecord.Builder(SYMPTOM_TYPE_COUGH, startTime, endTime, metadata)
-                .setNotes(bundle.getString(NOTES_KEY))
-                .setSeverity(bundle.getInt(SEVERITY_KEY))
-                .setCount(bundle.getInt(COUNT_KEY))
-                .setStartZoneOffset(startZoneOffset)
-                .setEndZoneOffset(endZoneOffset)
-                .build();
+        int symptomType = bundle.getInt(KEY_SYMPTOM_TYPE);
+        String notes = bundle.getString(KEY_NOTES);
+        int severity = bundle.getInt(KEY_SEVERITY);
+        int count = bundle.getInt(KEY_COUNT);
+        int temporalType = bundle.getInt(KEY_TEMPORAL_TYPE);
+
+        SymptomRecord.Builder builder;
+        switch (temporalType) {
+            case SymptomRecord.RECORD_TEMPORAL_TYPE_INSTANT:
+                builder = new SymptomRecord.Builder(symptomType, startTime, metadata);
+                break;
+            case SymptomRecord.RECORD_TEMPORAL_TYPE_LOCAL_DATE:
+                builder =
+                        new SymptomRecord.Builder(
+                                symptomType,
+                                startTime.atZone(startZoneOffset).toLocalDate(),
+                                metadata);
+                break;
+            case SymptomRecord.RECORD_TEMPORAL_TYPE_INTERVAL:
+            default:
+                builder = new SymptomRecord.Builder(symptomType, startTime, endTime, metadata);
+                builder.setStartZoneOffset(startZoneOffset);
+                builder.setEndZoneOffset(endZoneOffset);
+                break;
+        }
+        return builder.setNotes(notes).setSeverity(severity).setCount(count).build();
     }
 
     @Override
     public String recordToString(SymptomRecord record) {
-        return "SymptomRecord: " + record.getSymptomType();
+        return "SymptomRecord{"
+                + "\n\tstartTime = "
+                + record.getStartTime()
+                + ",\n\tendTime = "
+                + record.getEndTime()
+                + ",\n\tstartZoneOffset = "
+                + record.getStartZoneOffset()
+                + ",\n\tendZoneOffset = "
+                + record.getEndZoneOffset()
+                + ",\n\tmetadata = "
+                + metadataToString(record.getMetadata())
+                + ",\n\tsymptomType = "
+                + record.getSymptomType()
+                + ",\n\tnotes = "
+                + record.getNotes()
+                + ",\n\tseverity = "
+                + record.getSeverity()
+                + ",\n\tcount = "
+                + record.getCount()
+                + ",\n\ttemporalType = "
+                + record.getTemporalType()
+                + "\n}";
     }
 }

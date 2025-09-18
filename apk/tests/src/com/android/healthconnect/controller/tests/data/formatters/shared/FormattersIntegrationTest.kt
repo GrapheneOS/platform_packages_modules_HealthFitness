@@ -35,7 +35,7 @@ class FormattersIntegrationTest {
         val healthConnectMappings = HealthConnectMappings()
         val frameworkRecordClasses = healthConnectMappings.recordIdToExternalRecordClassMap.values
         val controllerRecordClasses =
-            HealthPermissionToDatatypeMapper.getAllDataTypes().values.flatten()
+            HealthPermissionToDatatypeMapper.getAllDataTypes().values.flatten().distinct()
 
         assertThat(controllerRecordClasses).containsExactlyElementsIn(frameworkRecordClasses)
 

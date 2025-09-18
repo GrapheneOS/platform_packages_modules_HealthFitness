@@ -389,6 +389,7 @@ public class RecordHelperTest {
                 /* enforceSelfRead= */ false,
                 /* startDateAccess= */ 0,
                 /* grantedExtraReadPermissions= */ Set.of(),
+                /* grantedGranularPermissions= */ Set.of(),
                 /* isInForeground= */ true,
                 mAppInfoHelper);
     }

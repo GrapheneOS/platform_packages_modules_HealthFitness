@@ -214,6 +214,12 @@ public final class WhereClauses {
         return this;
     }
 
+    /** Adds a clause that is always false, effectively returning no results. */
+    public WhereClauses addFalseClause() {
+        mClauses.add("1=0");
+        return this;
+    }
+
     /**
      * Creates IN clause, where in range is another SQL request. Returns instance with extra clauses
      * set.
