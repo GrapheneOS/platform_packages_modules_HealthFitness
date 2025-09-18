@@ -378,14 +378,10 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"மது அருந்துதல்"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"மது அருந்துதல் தொடர்பான தரவை வாசிக்கும்"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"மது அருந்துதல் தொடர்பான தரவை எழுதும்"</string>
-    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
-    <skip />
-    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
-    <skip />
-    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
-    <skip />
-    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
-    <skip />
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"இருமல்"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"இருமல்"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"அறிகுறிகளைப் படிக்கும்"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"அறிகுறிகளை எழுதும்"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"படிக்க “<xliff:g id="APP_NAME">%1$s</xliff:g>” ஆப்ஸை அனுமதிக்கவும்"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"எழுத “<xliff:g id="APP_NAME">%1$s</xliff:g>” ஆப்ஸை அனுமதிக்கவும்"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"அனுமதி"</string>
@@ -844,7 +840,8 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} சிகரெட்}other{{quantity} சிகரெட்டுகள்}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} தெரியவில்லை"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>நி"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g>ம.நே <xliff:g id="MIN">%2$s</xliff:g>நி"</string>
+    <!-- no translation found for hour_minute_duration_short (1754616782635510999) -->
+    <skip />
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g>ம.நே"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 மணிநேரம்}other{# மணிநேரம்}}"</string>

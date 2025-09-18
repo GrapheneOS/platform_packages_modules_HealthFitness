@@ -378,14 +378,10 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"κατανάλωση αλκοόλ"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Ανάγνωση δεδομένων κατανάλωσης αλκοόλ"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Εγγραφή δεδομένων κατανάλωσης αλκοόλ"</string>
-    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
-    <skip />
-    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
-    <skip />
-    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
-    <skip />
-    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
-    <skip />
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Βήχας"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"βήχας"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Ανάγνωση συμπτωμάτων"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Εγγραφή συμπτωμάτων"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Παροχή στην εφαρμογή “<xliff:g id="APP_NAME">%1$s</xliff:g>” του δικαιώματος ανάγνωσης"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Να επιτρέπεται στην εφαρμογή “<xliff:g id="APP_NAME">%1$s</xliff:g>” να γράφει"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Αποδοχή"</string>
@@ -844,7 +840,7 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} τσιγάρο}other{{quantity} τσιγάρα}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"άγνωστο {quantity, number}"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> λ."</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> ώ. <xliff:g id="MIN">%2$s</xliff:g> λ."</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> ω. <xliff:g id="MIN">%2$s</xliff:g> λ."</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> ω."</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>⁠"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 ώρα}other{# ώρες}}"</string>
