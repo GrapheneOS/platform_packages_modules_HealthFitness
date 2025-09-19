@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Logs Health Connect granularity for various datatypes.
@@ -80,24 +81,6 @@ public final class DataGranularityStatsCollector {
 
     private record SessionKey(long appId, TimeRange session) {}
 
-    private static final List<@RecordTypeIdentifier.RecordType Integer> SERIES_TYPE_IDS =
-            List.of(
-                    RecordTypeIdentifier.RECORD_TYPE_HEART_RATE,
-                    RecordTypeIdentifier.RECORD_TYPE_SPEED,
-                    RecordTypeIdentifier.RECORD_TYPE_POWER,
-                    RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE,
-                    RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE,
-                    RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE);
-
-    private static final List<@RecordTypeIdentifier.RecordType Integer> INTERVAL_TYPE_IDS =
-            List.of(
-                    RecordTypeIdentifier.RECORD_TYPE_STEPS,
-                    RecordTypeIdentifier.RECORD_TYPE_DISTANCE,
-                    RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED,
-                    RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED,
-                    RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED,
-                    RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED);
-
     public DataGranularityStatsCollector(
             TransactionManager transactionManager, AppInfoHelper appInfoHelper, Clock clock) {
         mTransactionManager = transactionManager;
@@ -126,7 +109,7 @@ public final class DataGranularityStatsCollector {
     }
 
     private void calculateLastWeekIntervalGranularityStats() {
-        for (@RecordTypeIdentifier.RecordType int recordIdentifier : INTERVAL_TYPE_IDS) {
+        for (@RecordTypeIdentifier.RecordType int recordIdentifier : getIntervalTypeIds()) {
             Map<StatsKey, IntervalAggregator> keyToAggregatorMap = new HashMap<>();
             String tableName =
                     InternalHealthConnectMappings.getInstance()
@@ -153,7 +136,7 @@ public final class DataGranularityStatsCollector {
     }
 
     private void calculateLastWeekSeriesGranularityStats() {
-        for (@RecordTypeIdentifier.RecordType int recordIdentifier : SERIES_TYPE_IDS) {
+        for (@RecordTypeIdentifier.RecordType int recordIdentifier : getSeriesTypeIds()) {
             SeriesRecordHelper<?, ?> helper =
                     (SeriesRecordHelper<?, ?>)
                             InternalHealthConnectMappings.getInstance()
@@ -379,6 +362,29 @@ public final class DataGranularityStatsCollector {
         }
 
         return Collections.unmodifiableList(matchingSessions);
+    }
+
+    private List<Integer> getSeriesTypeIds() {
+        return InternalHealthConnectMappings.getInstance().getRecordHelpers().stream()
+                .filter(recordHelper -> recordHelper instanceof SeriesRecordHelper<?, ?>)
+                .map(RecordHelper::getRecordIdentifier)
+                .filter(
+                        recordIdentifier ->
+                                InternalHealthConnectMappings.getInstance()
+                                        .supportsGranularityLogging(recordIdentifier))
+                .collect(Collectors.toList());
+    }
+
+    private List<Integer> getIntervalTypeIds() {
+        return InternalHealthConnectMappings.getInstance().getRecordHelpers().stream()
+                .filter(recordHelper -> recordHelper instanceof IntervalRecordHelper<?>)
+                .filter(recordHelper -> !(recordHelper instanceof SeriesRecordHelper<?, ?>))
+                .map(RecordHelper::getRecordIdentifier)
+                .filter(
+                        recordIdentifier ->
+                                InternalHealthConnectMappings.getInstance()
+                                        .supportsGranularityLogging(recordIdentifier))
+                .collect(Collectors.toList());
     }
 
     private static final class IntervalAggregator {
