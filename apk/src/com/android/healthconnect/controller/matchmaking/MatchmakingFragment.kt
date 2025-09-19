@@ -38,6 +38,7 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionSt
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.children
 import com.android.healthconnect.controller.shared.preference.ExpandablePreferenceAdapter
 import com.android.healthconnect.controller.shared.preference.HealthExpandablePreference
@@ -210,7 +211,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                 }
                 is MatchmakingViewModel.MatchmakingState.WithData -> {
                     setLoading(false)
-                    bindHeader(state.callingAppMetaData.appName)
+                    bindHeader(state.callingAppMetaData, state.matchingApps)
                     buildAppList(state.matchingApps)
                     bindFooter()
                 }
@@ -226,9 +227,18 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
         loadingIndicator?.isVisible = isLoading
     }
 
-    private fun bindHeader(appName: String?) {
+    private fun bindHeader(
+        callingAppMetaData: AppMetadata,
+        matchingApps: List<MatchmakingAppData>,
+    ) {
+        if (matchingApps.isEmpty()) {
+            header.isIconViewVisible = false
+        }
         header.headerTitle = getString(R.string.matchmaking_screen_title)
-        header.headerSummary = getString(R.string.matchmaking_screen_summary, appName)
+        header.headerSummary =
+            getString(R.string.matchmaking_screen_summary, callingAppMetaData.appName)
+        header.requestingAppIcon = callingAppMetaData.icon
+        header.matchedAppIcons = matchingApps.mapNotNull { it.metadata.icon }
     }
 
     private fun buildAppList(apps: List<MatchmakingAppData>) {

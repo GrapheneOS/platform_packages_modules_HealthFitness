@@ -21,13 +21,11 @@
     android:paddingHorizontal="@dimen/spacing_large"
     android:paddingVertical="@dimen/spacing_normal">
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="@dimen/app_header_icon_size"
-        android:layout_height="@dimen/app_header_icon_size"
-        android:layout_gravity="center_horizontal"
-        android:backgroundTint="@color/settingslib_materialColorPrimary"
-        android:importantForAccessibility="no" />
+    <com.android.healthconnect.controller.matchmaking.MatchmakingHeaderIconView
+        android:id="@+id/matchmaking_header_icon_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal"/>
 
     <TextView
         android:id="@+id/header_title"
