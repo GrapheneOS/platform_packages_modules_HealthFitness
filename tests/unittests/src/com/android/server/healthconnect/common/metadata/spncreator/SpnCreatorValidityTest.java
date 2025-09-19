@@ -15,6 +15,7 @@
  */
 package com.android.server.healthconnect.common.metadata.spncreator;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import android.health.connect.datatypes.Device;
@@ -58,12 +59,20 @@ public class SpnCreatorValidityTest {
 
     private String mDeviceId;
 
+    private String mCallingPackage;
+
     private static Collection<Object[]> getParams() {
         final List<Object[]> params = new ArrayList<>();
+        final Random random = new Random(42);
 
         for (Integer type : Device.VALID_TYPES) {
             for (Charset encoding : ENCODINGS) {
-                params.add(new Object[] {type, generateRandomString(type, encoding)});
+                params.add(
+                        new Object[] {
+                            type,
+                            generateRandomString(encoding, random),
+                            generateRandomString(encoding, random)
+                        });
             }
         }
 
@@ -71,24 +80,60 @@ public class SpnCreatorValidityTest {
     }
 
     @Test
-    public void withRandomDeviceId_create_isValidPackageName() {
+    public void withRandomDeviceId_createCanonical_isValidPackageName() {
         for (var params : getParams()) {
             initializeRun(params);
-            String spn = SpnCreator.create(mDeviceType, mDeviceId);
+            String spn = SpnCreator.createCanonical(mDeviceType, mDeviceId);
 
             Matcher matcher = PACKAGE_PATTERN.matcher(spn);
             assertTrue(matcher.matches());
         }
     }
 
-    private static String generateRandomString(int length, Charset encoding) {
-        byte[] array = new byte[length];
-        new Random().nextBytes(array);
+    @Test
+    public void withRandomDeviceId_createCanonical_isCanonicalSpn() {
+        for (var params : getParams()) {
+            initializeRun(params);
+            String spn = SpnCreator.createCanonical(mDeviceType, mDeviceId);
+
+            assertTrue(SpnCreator.isCanonicalSpn(spn));
+            assertFalse(SpnCreator.isMaskedSpn(spn));
+        }
+    }
+
+    @Test
+    public void withRandomDeviceId_createMasked_isValidPackageName() {
+        for (var params : getParams()) {
+            initializeRun(params);
+            String canonicalSpn = SpnCreator.createCanonical(mDeviceType, mDeviceId);
+            String maskedSpn = SpnCreator.createMasked(canonicalSpn, mCallingPackage);
+
+            Matcher matcher = PACKAGE_PATTERN.matcher(maskedSpn);
+            assertTrue(matcher.matches());
+        }
+    }
+
+    @Test
+    public void withRandomSpnAndCallingPackage_createMasked_isMaskedSpn() {
+        for (var params : getParams()) {
+            initializeRun(params);
+            String canonicalSpn = SpnCreator.createCanonical(mDeviceType, mDeviceId);
+            String maskedSpn = SpnCreator.createMasked(canonicalSpn, mCallingPackage);
+
+            assertFalse(SpnCreator.isCanonicalSpn(maskedSpn));
+            assertTrue(SpnCreator.isMaskedSpn(maskedSpn));
+        }
+    }
+
+    private static String generateRandomString(Charset encoding, Random random) {
+        byte[] array = new byte[32];
+        random.nextBytes(array);
         return new String(array, encoding);
     }
 
     private void initializeRun(Object[] params) {
         mDeviceType = (int) params[0];
         mDeviceId = (String) params[1];
+        mCallingPackage = (String) params[2];
     }
 }

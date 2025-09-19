@@ -43,9 +43,10 @@ import com.android.internal.annotations.VisibleForTesting;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 /**
- * Creates Synthetic Package Names (SPNs) for Device Data Providers (DDP).
+ * Creates and validates Synthetic Package Names (SPNs) for Device Data Providers (DDP).
  *
  * <p>Health Connect requires a unique package name for every distinct data source. Since physical
  * devices (like watches or scales) do not have inherent Android package names, this utility
@@ -53,6 +54,19 @@ import java.util.UUID;
  * Connect.
  *
  * <p>See go/ddp-internals-package-names for the full design.
+ *
+ * <h2>Canonical vs. Masked SPNs</h2>
+ *
+ * To prevent cross-application tracking using stable device identifiers (a privacy requirement),
+ * this utility generates two types of SPNs:
+ *
+ * <ul>
+ *   <li><b>Canonical SPN:</b> The internal, stable identifier representing the physical device.
+ *       This is stored in the Health Connect database.
+ *   <li><b>Masked SPN:</b> An application-scoped identifier. This is what reading applications see
+ *       when querying data (e.g., via DataOrigin). Each application receives a unique Masked SPN
+ *       for the same underlying Canonical SPN.
+ * </ul>
  *
  * <h2>Properties of SPNs</h2>
  *
@@ -70,7 +84,10 @@ import java.util.UUID;
  * The SPN format is: {@code com.android.healthconnect.ddp.<DeviceTypeSegment>.<Prefix
  * Character><UUID>}
  *
- * <p>Example: {@code com.android.healthconnect.ddp.phone.d73dd75dfbc2a4707a801f13199e0d984}
+ * <p>Example Canonical SPN: {@code
+ * com.android.healthconnect.phone.d73dd75dfbc2a4707a801f13199e0d984}
+ *
+ * <p>Example Masked SPN: {@code com.android.healthconnect.phone.j2e5fda2c648545328e401e627cd41ae9}
  *
  * <h3>DeviceTypeSegment</h3>
  *
@@ -78,32 +95,46 @@ import java.util.UUID;
  * #DEVICE_TYPE_TO_DISPLAY_NAME}) is used to determine the displayed name. Unknown types will
  * fallback to using {@code DEVICE_TYPE_UNKNOWN}.
  *
- * <h3>UUID Segment</h3>
+ * <h3>UUID Segment and Prefixes</h3>
  *
- * This segment provides uniqueness. It is generated deterministically using the {@code deviceId} as
- * the seed.
+ * This segment provides uniqueness and scoping. It is generated deterministically. A prefix
+ * character ensures the segment starts with a letter and identifies the SPN type:
+ *
+ * <ul>
+ *   <li>'d' ({@link #CANONICAL_UUID_SEGMENT_PREFIX}): Canonical SPN
+ *   <li>'j' ({@link #MASKED_UUID_SEGMENT_PREFIX}): Masked SPN
+ * </ul>
  *
  * <p>The implementation uses {@link UUID#nameUUIDFromBytes(byte[])}, which generates a **UUID
- * Version 3** (MD5 hash-based) identifier. The input {@code deviceId} string is converted to bytes
- * using UTF-8 encoding. Hyphens are removed from the UUID to adhere to the Android package
- * guidelines.
+ * Version 3** (MD5 hash-based) identifier. Inputs are converted to bytes using UTF-8 encoding.
+ * Hyphens are removed from the UUID to adhere to the Android package guidelines.
+ *
+ * <p>The seeds differ based on the type:
+ *
+ * <ul>
+ *   <li><b>Canonical:</b> Seeded by the {@code deviceId}.
+ *   <li><b>Masked:</b> Seeded by a combination of the Canonical SPN's UUID segment and the {@code
+ *       callingPackageName}.
+ * </ul>
  *
  * <h2>Uniqueness Guarantee and Limitations</h2>
  *
  * Uniqueness is dependent from the client providing a unique and stable {@code deviceId} for each
  * distinct physical device. If two different physical devices are registered with the identical
- * {@code deviceType} and {@code deviceId}, they will receive the same SPN, and their data will be
- * merged into a single source within Health Connect.
+ * {@code deviceType} and {@code deviceId}, they will receive the same Canonical SPN, and their data
+ * will be merged into a single source within Health Connect.
  *
  * @hide
  */
 public class SpnCreator {
 
+    // The standard Android reverse-DNS prefix used for all SPNs.
     private static final String PACKAGE_PREFIX = "com.android.healthconnect";
 
     // A fixed prefix is prepended to the UUID segment to ensure the segment starts with a letter,
-    // complying with Android package name rules
-    private static final char UUID_SEGMENT_PREFIX = 'd';
+    // complying with Android package name rules. The two prefixes differentiate the types.
+    private static final char CANONICAL_UUID_SEGMENT_PREFIX = 'd';
+    private static final char MASKED_UUID_SEGMENT_PREFIX = 'j';
 
     private static final @DeviceType int FALLBACK_DEVICE_TYPE = DEVICE_TYPE_UNKNOWN;
 
@@ -132,28 +163,148 @@ public class SpnCreator {
                     entry(DEVICE_TYPE_PORTABLE_COMPUTER, "portable_computer"),
                     entry(DEVICE_TYPE_METER, "meter"));
 
+    // A standard UUID (128 bits) represented as a hexadecimal string has 32 characters.
+    private static final int UUID_HEX_LENGTH = 32;
+
+    // A compiled regular expression pattern used to validate if a string is a SPN.
+    private static final Pattern SPN_PATTERN;
+
+    static {
+        // 1. Build the allowed device types segment (e.g., "phone|watch|scale")
+        // Note: This assumes the display names do not contain regex metacharacters.
+        String typesRegexSegment = String.join("|", DEVICE_TYPE_TO_DISPLAY_NAME.values());
+
+        // 2. Construct the full regex: ^PREFIX\.(type1|type2|...)\.(d|j)[0-9a-f]{32}$
+        // We validate against lowercase hexadecimal characters, which matches the output
+        // behavior of Java's UUID.toString().
+        // ^           - Start of the string
+        // PREFIX\.    - The package prefix followed by a literal dot
+        // (...)\.     - The device type alternation group followed by a literal dot
+        // (d|j)       - The prefix character (Canonical or Masked)
+        // [0-9a-f]    - Hexadecimal characters (lowercase)
+        // {32}        - Exactly 32 times
+        // $           - End of the string
+        String regex =
+                "^%s\\.(%s)\\.(%s|%s)[0-9a-f]{%d}$"
+                        .formatted(
+                                PACKAGE_PREFIX,
+                                typesRegexSegment,
+                                CANONICAL_UUID_SEGMENT_PREFIX,
+                                MASKED_UUID_SEGMENT_PREFIX,
+                                UUID_HEX_LENGTH);
+
+        SPN_PATTERN = Pattern.compile(regex);
+    }
+
     /**
-     * Generates a Synthetic Package Name based on the device type and a unique device ID.
+     * Generates a Canonical (internal) Synthetic Package Name based on the device type and a unique
+     * device ID.
+     *
+     * <p>This identifier is stable and reproducible, serving as the primary key for the device
+     * within the Health Connect database.
      *
      * @param deviceType The type of the device (e.g., {@code DEVICE_TYPE_WATCH}).
      * @param deviceId A unique, stable identifier for the physical device (e.g., serial number, MAC
-     *     address).
-     * @return The generated Synthetic Package Name.
+     *     address). If {@code null}, an empty string is used as the seed.
+     * @return The generated Canonical Synthetic Package Name.
      */
     @NonNull
-    public static String create(@DeviceType int deviceType, @Nullable String deviceId) {
+    public static String createCanonical(@DeviceType int deviceType, @Nullable String deviceId) {
         String deviceSegment =
                 DEVICE_TYPE_TO_DISPLAY_NAME.getOrDefault(
                         deviceType, DEVICE_TYPE_TO_DISPLAY_NAME.get(FALLBACK_DEVICE_TYPE));
+        String uuidSegment = CANONICAL_UUID_SEGMENT_PREFIX + getNormalizedUuid(deviceId);
 
-        return PACKAGE_PREFIX + "." + deviceSegment + "." + getUuidSegment(deviceId);
+        return PACKAGE_PREFIX + "." + deviceSegment + "." + uuidSegment;
     }
 
+    /**
+     * Generates a Masked (application-scoped) Synthetic Package Name derived from a Canonical SPN
+     * and the reading application's package name.
+     *
+     * <p>This eliminates the risk of cross-app tracking via canonical SPN UUIDs.
+     *
+     * @param canonicalSpn The internal SPN generated by {@link #createCanonical}.
+     * @param callingPackageName The package name of the application requesting the data. If {@code
+     *     null}, an empty string is used for scoping.
+     * @return The generated Masked Synthetic Package Name.
+     * @throws IllegalArgumentException if the provided {@code canonicalSpn} is not a valid
+     *     Canonical SPN.
+     */
     @NonNull
-    private static String getUuidSegment(@Nullable String seed) {
+    public static String createMasked(
+            @NonNull String canonicalSpn, @Nullable String callingPackageName)
+            throws IllegalArgumentException {
+        if (!isCanonicalSpn(canonicalSpn)) {
+            throw new IllegalArgumentException(
+                    "Invalid SPN format: %s. Check SpnCreator documentation for reference."
+                            .formatted(canonicalSpn));
+        }
+
+        int prefixLength = canonicalSpn.length() - UUID_HEX_LENGTH;
+        String canonicalDeviceId = canonicalSpn.substring(prefixLength);
+        // Add a unique separator between, so that "foo" + "bar and "f" + "oobar" don't create
+        // the same seed
+        String maskedSeed = canonicalDeviceId + '\u001F' + callingPackageName;
+
+        return canonicalSpn.substring(0, prefixLength - 1) // -1 to exclude the 'd' prefix
+                + MASKED_UUID_SEGMENT_PREFIX
+                + getNormalizedUuid(maskedSeed);
+    }
+
+    /**
+     * Checks if the provided string is a structurally valid Synthetic Package Name (SPN), either
+     * Canonical or Masked.
+     *
+     * @param candidate The string to check.
+     * @return {@code true} if the string matches the SPN pattern, {@code false} otherwise.
+     */
+    public static boolean isSpn(@NonNull String candidate) {
+        return SPN_PATTERN.matcher(candidate).matches();
+    }
+
+    /**
+     * Checks if the provided string is specifically a Masked SPN.
+     *
+     * @param candidate The string to check.
+     * @return {@code true} if the string is a Masked SPN, {@code false} otherwise.
+     */
+    public static boolean isMaskedSpn(@NonNull String candidate) {
+        return matchesSpnPrefix(candidate, MASKED_UUID_SEGMENT_PREFIX);
+    }
+
+    /**
+     * Checks if the provided string is specifically a Canonical SPN.
+     *
+     * @param candidate The string to check.
+     * @return {@code true} if the string is a Canonical SPN, {@code false} otherwise.
+     */
+    public static boolean isCanonicalSpn(@NonNull String candidate) {
+        return matchesSpnPrefix(candidate, CANONICAL_UUID_SEGMENT_PREFIX);
+    }
+
+    /**
+     * Checks if the SPN candidate is valid and matches the expected prefix for the last segment.
+     */
+    private static boolean matchesSpnPrefix(@NonNull String candidate, char expectedPrefix) {
+        if (!isSpn(candidate)) return false;
+
+        int lastSegmentIndex = candidate.lastIndexOf(".");
+
+        return candidate.charAt(lastSegmentIndex + 1) == expectedPrefix;
+    }
+
+    /**
+     * Generates a deterministic UUIDv3 from a seed string and normalizes it to a 32-character
+     * lowercase hex string.
+     *
+     * @param seed The input string. If null, treated as an empty byte array.
+     * @return The normalized UUID string.
+     */
+    @NonNull
+    private static String getNormalizedUuid(@Nullable String seed) {
         byte[] seedBytes = seed == null ? new byte[0] : seed.getBytes(StandardCharsets.UTF_8);
         UUID seededUuid = UUID.nameUUIDFromBytes(seedBytes);
-        String normalizedUuid = seededUuid.toString().replace("-", "");
-        return UUID_SEGMENT_PREFIX + normalizedUuid;
+        return seededUuid.toString().replace("-", "");
     }
 }
