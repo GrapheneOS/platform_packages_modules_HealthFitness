@@ -73,6 +73,24 @@ class AllDataViewModel @Inject constructor(private val loadAllDataUseCase: AllDa
         }
     }
 
+    fun loadAllFitnessAndMedicalData() {
+        _allData.postValue(AllDataState.Loading)
+        viewModelScope.launch {
+            val fitnessResult = loadAllDataUseCase.loadAllFitnessData()
+            val medicalResult = loadAllDataUseCase.loadAllMedicalData()
+
+            if (
+                fitnessResult is UseCaseResults.Success && medicalResult is UseCaseResults.Success
+            ) {
+                val combinedData = fitnessResult.data + medicalResult.data
+                _allData.postValue(AllDataState.WithData(combinedData))
+                numOfPermissionTypes = combinedData.sumOf { it.data.size }
+            } else {
+                _allData.postValue(AllDataState.Error)
+            }
+        }
+    }
+
     sealed class AllDataState {
         data object Loading : AllDataState()
 
