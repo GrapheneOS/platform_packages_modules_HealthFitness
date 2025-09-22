@@ -236,6 +236,16 @@ public class HealthConnectMappingsTest {
     }
 
     @Test
+    public void getWritePermissionForReadPermission_mapsExerciseRoutesCorrectly() {
+        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
+
+        assertThat(
+                        healthConnectMappings.getWritePermissionForReadPermission(
+                                HealthPermissions.READ_EXERCISE_ROUTES))
+                .isEqualTo(HealthPermissions.WRITE_EXERCISE_ROUTE);
+    }
+
+    @Test
     public void getWritePermissionForReadPermission_invalidReadPermission() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
 
