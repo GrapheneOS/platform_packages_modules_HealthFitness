@@ -46,6 +46,39 @@
     </fragment>
 
     <fragment
+        android:id="@+id/newHomeFragment"
+        android:name="com.android.healthconnect.controller.newHome.HomeFragment"
+        android:label="@string/app_label">
+        <action
+            android:id="@+id/action_newHomeFragment_to_dataAndAccess"
+            app:destination="@id/data_activity"  />
+        <action
+            android:id="@+id/action_newHomeFragment_to_recentAccess"
+            app:destination="@+id/recentAccessFragment" />
+        <action
+            android:id="@+id/action_newHomeFragment_to_manageData"
+            app:destination="@+id/manageDataFragment" />
+        <action
+            android:id="@+id/action_newHomeFragment_to_connectedDevicesFragment"
+            app:destination="@+id/device_management_nav_graph" />
+        <action
+            android:id="@+id/action_newHomeFragment_to_playStoreActivity"
+            app:destination="@+id/playstore_activity"/>
+        <action
+            android:id="@+id/action_newHomeFragment_to_connectedAppsFragment"
+            app:destination="@id/connected_apps_nav_graph" />
+        <action
+            android:id="@+id/action_newHomeFragment_to_fitnessAppFragment"
+            app:destination="@id/fitness_app_nav_graph" />
+        <action
+            android:id="@+id/action_newHomeFragment_to_medicalAppFragment"
+            app:destination="@id/medical_app_nav_graph" />
+        <action
+            android:id="@+id/action_newHomeFragment_to_combinedPermissionsFragment"
+            app:destination="@id/combined_permissions_nav_graph" />
+    </fragment>
+
+    <fragment
         android:id="@+id/homeFragment"
         android:name="com.android.healthconnect.controller.home.HomeFragment"
         android:label="@string/app_label">

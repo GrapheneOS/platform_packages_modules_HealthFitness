@@ -124,6 +124,11 @@ class FakeRecentAccessUseCase : ILoadRecentAccessUseCase {
 class FakeHealthPermissionAppsUseCase : ILoadHealthPermissionApps {
     private var list: List<ConnectedAppMetadata> = emptyList()
     var numberOfInvocations = 0
+    private var forceFail = false
+
+    fun setForceFail(forceFail: Boolean) {
+        this.forceFail = forceFail
+    }
 
     fun updateList(list: List<ConnectedAppMetadata>) {
         this.list = list
@@ -135,7 +140,11 @@ class FakeHealthPermissionAppsUseCase : ILoadHealthPermissionApps {
 
     override suspend fun invoke(input: Unit): UseCaseResults<List<ConnectedAppMetadata>> {
         numberOfInvocations += 1
-        return UseCaseResults.Success(list)
+        return if (forceFail) {
+            UseCaseResults.Failed(IllegalStateException("Force fail recent access."))
+        } else {
+            UseCaseResults.Success(list)
+        }
     }
 
     override suspend fun execute(input: Unit): List<ConnectedAppMetadata> {
@@ -146,6 +155,7 @@ class FakeHealthPermissionAppsUseCase : ILoadHealthPermissionApps {
     fun reset() {
         this.list = emptyList()
         this.numberOfInvocations = 0
+        this.forceFail = false
     }
 }
 
