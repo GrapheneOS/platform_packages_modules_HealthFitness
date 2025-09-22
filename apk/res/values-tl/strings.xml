@@ -1046,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Tapos na"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{Naka-on ang auto-delete. Ide-delete ang data na mahigit # buwan ang tagal}one{Naka-on ang auto-delete. Ide-delete ang data na mahigit # buwan ang tagal}other{Naka-on ang auto-delete. Ide-delete ang data na mahigit # na buwan ang tagal}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"Naka-off ang awtomatikong i-delete"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"Itakda ang priyoridad ng app"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"Kung maglalagay ng data ng <xliff:g id="DATA_TYPE">%s</xliff:g> ang higit sa isang app, isasapriyoridad ng Health Connect ang app na pinakamataas sa listahang ito. I-drag ang mga app para baguhin ang pagkakasunod-sunod ng mga ito."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"I-save"</string>

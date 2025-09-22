@@ -840,8 +840,7 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} සිගරට්ටුවක්}one{සිගරට් {quantity}ක්}other{සිගරට් {quantity}ක්}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} නොදනී"</string>
     <string name="minute_duration" msgid="9035288227090160206">"මිනි <xliff:g id="MINUTE">%1$s</xliff:g>ක්"</string>
-    <!-- no translation found for hour_minute_duration_short (1754616782635510999) -->
-    <skip />
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"පැ<xliff:g id="HOUR">%1$s</xliff:g> මි<xliff:g id="MIN">%2$s</xliff:g>"</string>
     <string name="hour_duration" msgid="3472489613837138711">"පැය <xliff:g id="HOUR">%1$s</xliff:g>ක්"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>⁠"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{පැය 1යි}one{පැය #ක්}other{පැය #ක්}}"</string>
@@ -1047,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"නිමයි"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{ස්වයං මැකීම ක්‍රියාත්මකයි. මාස #කට වඩා පැරණි දත්ත මකනු ඇත}one{ස්වයං මැකීම ක්‍රියාත්මකයි. මාස #කට වඩා පැරණි දත්ත මකනු ඇත}other{ස්වයං මැකීම ක්‍රියාත්මකයි. මාස #කට වඩා පැරණි දත්ත මකනු ඇත}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"ස්වයං මැකීම ක්‍රියාවිරහිතයි"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"යෙදුම් ප්‍රමුඛතාව සකසන්න"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"යෙදුම් එකකට වඩා වැඩි ගණනක් <xliff:g id="DATA_TYPE">%s</xliff:g> දත්ත එක් කළහොත්, Health Connect මෙම ලැයිස්තුවේ ඉහළින්ම ඇති යෙදුමට ප්‍රමුඛතාව දෙනු ඇත. ඒවා නැවත අනුපිළිවෙළට සැකසීමට යෙදුම් අදින්න."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"සුරකින්න"</string>

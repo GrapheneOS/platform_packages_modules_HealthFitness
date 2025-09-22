@@ -1046,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Klaar"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{Automatisch verwijderen staat aan. Gegevens ouder dan # maand worden verwijderd.}other{Automatisch verwijderen staat aan. Gegevens ouder dan # maanden worden verwijderd.}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"Automatisch verwijderen staat uit"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"App-prioriteit instellen"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"Als meer dan één app gegevens van het type <xliff:g id="DATA_TYPE">%s</xliff:g> toevoegt, geeft Health Connect prioriteit aan de app die het hoogst in deze lijst staat. Sleep apps om de volgorde te wijzigen."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Opslaan"</string>

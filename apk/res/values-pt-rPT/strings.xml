@@ -1046,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Concluir"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{A Eliminação automática está ativada. Os dados com mais de # mês vão ser eliminados}other{A Eliminação automática está ativada. Os dados com mais de # meses vão ser eliminados}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"A Eliminação automática está desativada"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"Defina a prioridade das apps"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"Se mais do que uma app adicionar dados de <xliff:g id="DATA_TYPE">%s</xliff:g>, a Saúde Connect dá prioridade à primeira app desta lista. Arraste as apps para as reordenar."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Guardar"</string>

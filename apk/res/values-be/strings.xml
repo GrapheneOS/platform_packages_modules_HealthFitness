@@ -1046,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Гатова"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{Аўтавыдаленне ўключана. Даныя, якім больш за # месяц, будуць выдалены.}one{Аўтавыдаленне ўключана. Даныя, якім больш за # месяц, будуць выдалены.}few{Аўтавыдаленне ўключана. Даныя, якім больш за # месяцы, будуць выдалены.}many{Аўтавыдаленне ўключана. Даныя, якім больш за # месяцаў, будуць выдалены.}other{Аўтавыдаленне ўключана. Даныя, якім больш за # месяца, будуць выдалены.}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"Аўтавыдаленне выключана"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"Задайце прыярытэт праграм"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"Калі праграма \"Здароўе і спорт\" атрымлівае такія даныя, як <xliff:g id="DATA_TYPE">%s</xliff:g>, ад некалькіх праграм, перавага аддаецца праграме, якая стаіць першай у спісе прыярытэтаў. Перацягніце праграмы, каб змяніць іх чарговасць."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Захаваць"</string>

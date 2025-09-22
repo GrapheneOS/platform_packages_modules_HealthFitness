@@ -840,8 +840,7 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} खिल्ली चुरोट}other{{quantity} खिल्ली चुरोट}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} अज्ञात"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> मिनेट"</string>
-    <!-- no translation found for hour_minute_duration_short (1754616782635510999) -->
-    <skip />
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g>घण्टा <xliff:g id="MIN">%2$s</xliff:g>मिनेट"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> घण्टा"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>⁠"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{१ घण्टा}other{# घण्टा}}"</string>
@@ -1047,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"सम्पन्न भयो"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{स्वतः मेटाउने सुविधा अन छ। # महिनाभन्दा पुराना डेटा मेटाइने छन्}other{स्वतः मेटाउने सुविधा अन छ। # महिनाभन्दा पुराना डेटा मेटाइने छन्}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"स्वतः मेटाउने सुविधा अफ छ"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"एपको प्राथमिकता क्रम निर्धारण गर्नुहोस्"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"एकभन्दा बढी एपले <xliff:g id="DATA_TYPE">%s</xliff:g> सम्बन्धी डेटा हालेका खण्डमा Health Connect ले यो सूचीको सबैभन्दा माथि रहेको एपको डेटा प्रयोग गर्छ। ड्र्याग गरेर एपको क्रम मिलाउनुहोस्।"</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"सेभ गर्नुहोस्"</string>

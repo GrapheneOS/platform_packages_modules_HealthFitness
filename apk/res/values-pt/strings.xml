@@ -1046,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Concluído"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{A exclusão automática está ativada. Dados com mais de # mês serão excluídos.}one{A exclusão automática está ativada. Dados com mais de # meses serão excluídos.}other{A exclusão automática está ativada. Dados com mais de # meses serão excluídos.}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"A exclusão automática está desativada"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"Definir prioridade dos apps"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"Se mais de um app adicionar dados de <xliff:g id="DATA_TYPE">%s</xliff:g>, a plataforma Conexão Saúde vai priorizar aquele que estiver mais no início da lista. Arraste os apps para reordenar."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Salvar"</string>

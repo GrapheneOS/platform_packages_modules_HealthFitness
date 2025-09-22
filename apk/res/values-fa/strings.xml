@@ -456,7 +456,7 @@
     <string name="disconnect_all_apps" msgid="748945115977534726">"برداشتن دسترسی برای همه برنامه‌ها"</string>
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"مجاز به خواندن"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"مجاز به نوشتن"</string>
-    <string name="no_apps_allowed" msgid="5794833581324128108">"برنامه‌ای مجاز نشده"</string>
+    <string name="no_apps_allowed" msgid="5794833581324128108">"هیچ برنامه‌ای اجازه ندارد"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"برنامه‌ای رد نشده"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"دسترسی همه برنامه‌ها برداشته شود؟"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"هیچ‌یک از برنامه‌هایتان دیگر نمی‌تواند به Health Connect دسترسی داشته باشد یا داده‌های جدید به آن اضافه کند. این موضوع باعث حذف داده‌های موجود نمی‌شود.\n\nاین تنظیم بر دیگر اجازه‌هایی که این برنامه ممکن است داشته باشد (مثلاً مکان، دوربین، یا میکروفون) اثر نمی‌گذارد."</string>
@@ -840,8 +840,7 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{‫{quantity} سیگار}one{‫{quantity} سیگار}other{‫{quantity} سیگار}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"‫{quantity, number} نامشخص"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> دقیقه"</string>
-    <!-- no translation found for hour_minute_duration_short (1754616782635510999) -->
-    <skip />
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"‫<xliff:g id="HOUR">%1$s</xliff:g> ساعت و <xliff:g id="MIN">%2$s</xliff:g> دقیقه"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> ساعت"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{یک ساعت}one{# ساعت}other{# ساعت}}"</string>
@@ -1047,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"تمام"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{«حذف خودکار» روشن شد. داده‌های قدیمی‌تر از # ماه حذف خواهد شد}one{«حذف خودکار» روشن شد. داده‌های قدیمی‌تر از # ماه حذف خواهد شد}other{«حذف خودکار» روشن شد. داده‌های قدیمی‌تر از # ماه حذف خواهد شد}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"«حذف خودکار» خاموش است"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"تنظیم اولویت برنامه"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"اگر بیش‌از یک برنامه داده <xliff:g id="DATA_TYPE">%s</xliff:g> اضافه کند، Health Connect برنامه‌ای را که در این فهرست بالاتر قرار دارد در اولویت قرار می‌دهد. برای تغییر دادن ترتیب برنامه‌ها، آن‌ها را بکشید."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"ذخیره"</string>
@@ -1237,7 +1238,7 @@
     <string name="allowed_apps_count" msgid="2289260267605628310">"‫<xliff:g id="NUMBER_0">%1$d</xliff:g> برنامه از <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> برنامه مجاز است"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"برنامه‌ای درخواست نکرده است"</string>
     <string name="allowed" msgid="4158456017482263737">"مجاز"</string>
-    <string name="not_allowed" msgid="6092523505093372147">"مجاز نیست"</string>
+    <string name="not_allowed" msgid="6092523505093372147">"اجازه نداشتن"</string>
     <string name="access_sensor_note" msgid="7949933977197789634">"برنامه‌های دارای این اجازه می‌توانند به داده‌های <xliff:g id="DATA_TYPE">%s</xliff:g> از حسگرهای دستگاهتان دسترسی داشته باشند."</string>
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"دسترسی به <xliff:g id="DATA_TYPE">%s</xliff:g> برای همه برنامه‌های روی ساعت برداشته شود؟"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"علامت تأیید"</string>

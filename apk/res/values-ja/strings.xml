@@ -1046,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"完了"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{自動削除を ON にしました。# か月を過ぎたデータは削除されます。}other{自動削除を ON にしました。# か月を過ぎたデータは削除されます。}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"自動削除は OFF です"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"アプリの優先順位を設定する"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"<xliff:g id="DATA_TYPE">%s</xliff:g>のデータを追加するアプリが複数ある場合、ヘルスコネクトはこのリストの一番上にあるアプリを優先します。順序を変更するには、アプリをドラッグしてください。"</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"保存"</string>
