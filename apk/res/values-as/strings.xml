@@ -1046,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"কৰা হ’ল"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{স্বয়ংক্ৰিয়ভাৱে মচাটো অন আছে। # মাহতকৈ পুৰণি ডেটাখিনি মচি পেলোৱা হ’ব}one{স্বয়ংক্ৰিয়ভাৱে মচাটো অন আছে। # মাহতকৈ পুৰণি ডেটাখিনি মচি পেলোৱা হ’ব}other{স্বয়ংক্ৰিয়ভাৱে মচাটো অন আছে। # মাহতকৈ পুৰণি ডেটাখিনি মচি পেলোৱা হ’ব}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"স্বয়ংক্ৰিয়ভাৱে মচাটো অফ হৈ আছে"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"এপৰ অগ্ৰাধিকাৰ ছেট কৰক"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"যদি এটাতকৈ অধিক এপে <xliff:g id="DATA_TYPE">%s</xliff:g> ডেটা যোগ দিয়ে, তেন্তে Health Connectএ এই সূচীখনৰ একেবাৰে ওপৰত থকা এপ্‌টোক অগ্ৰাধিকাৰ দিয়ে। এপ্‌সমূহৰ ক্ৰম সলনি কৰিবলৈ সেইবোৰ টানি আনি এৰক।"</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"ছেভ কৰক"</string>

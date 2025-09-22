@@ -840,8 +840,7 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{ສູບຢາ {quantity} ເທື່ອ}other{ສູບຢາ {quantity} ເທື່ອ}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"ບໍ່ຮູ້ {quantity, number}"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>ນທ"</string>
-    <!-- no translation found for hour_minute_duration_short (1754616782635510999) -->
-    <skip />
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g>ຊມ <xliff:g id="MIN">%2$s</xliff:g>ນທ"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g>ຊມ"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>⁠"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 ຊົ່ວໂມງ}other{# ຊົ່ວໂມງ}}"</string>
@@ -1047,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"ແລ້ວໆ"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{ການລຶບອັດຕະໂນມັດເປີດຢູ່. ຂໍ້ມູນທີ່ເກົ່າກວ່າ # ເດືອນຈະຖືກລຶບອອກ}other{ການລຶບອັດຕະໂນມັດເປີດຢູ່. ຂໍ້ມູນທີ່ເກົ່າກວ່າ # ເດືອນຈະຖືກລຶບອອກ}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"ການລຶບອັດຕະໂນມັດປິດຢູ່"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"ຕັ້ງລຳດັບຄວາມສຳຄັນຂອງແອັບ"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"ຫາກມີຫຼາຍກວ່າໜຶ່ງແອັບເພີ່ມຂໍ້ມູນ <xliff:g id="DATA_TYPE">%s</xliff:g>, Health Connect ຈະໃຫ້ຄວາມສຳຄັນກັບແອັບທີ່ຢູ່ສູງສຸດໃນລາຍຊື່ນີ້. ລາກແອັບເພື່ອຈັດຮຽງພວກມັນຄືນໃໝ່."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"ບັນທຶກ"</string>

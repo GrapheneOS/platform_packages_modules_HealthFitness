@@ -1046,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"เสร็จสิ้น"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{การลบอัตโนมัติเปิดอยู่ ระบบจะลบข้อมูลที่เก่ากว่า # เดือน}other{การลบอัตโนมัติเปิดอยู่ ระบบจะลบข้อมูลที่เก่ากว่า # เดือน}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"การลบอัตโนมัติปิดอยู่"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"ตั้งค่าลำดับความสำคัญของแอป"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"หากมีแอปที่เพิ่มข้อมูล<xliff:g id="DATA_TYPE">%s</xliff:g>มากกว่า 1 แอป Health Connect จะให้ความสำคัญกับแอปที่อยู่สูงสุดในรายการนี้ ลากแอปเพื่อจัดเรียงลำดับใหม่"</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"บันทึก"</string>

@@ -1046,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"പൂർത്തിയായി"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{സ്വയമേവ-ഇല്ലാതാക്കൽ ഓണാണ്. # മാസത്തിലേറെയുള്ള ഡാറ്റ ഇല്ലാതാക്കും}other{സ്വയമേവ-ഇല്ലാതാക്കൽ ഓണാണ്. # മാസത്തിലേറെയുള്ള ഡാറ്റ ഇല്ലാതാക്കും}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"സ്വയമേവ-ഇല്ലാതാക്കൽ ഓഫാണ്"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"ആപ്പ് മുൻഗണന സജ്ജീകരിക്കുക"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"ഒന്നിലധികം ആപ്പ് <xliff:g id="DATA_TYPE">%s</xliff:g> ഡാറ്റ ചേർക്കുകയാണെങ്കിൽ, ഈ ലിസ്റ്റിലെ ഏറ്റവും മുകളിലുള്ള ആപ്പിന് Health Connect മുൻഗണന നൽകുന്നു. ആപ്പുകൾ പുനഃക്രമീകരിക്കാൻ അവ വലിച്ചിടുക."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"സംരക്ഷിക്കുക"</string>

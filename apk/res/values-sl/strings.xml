@@ -1046,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Končano"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{Samodejni izbris je vklopljen. Podatki, starejši od # meseca, bodo izbrisani.}one{Samodejni izbris je vklopljen. Podatki, starejši od # meseca, bodo izbrisani.}two{Samodejni izbris je vklopljen. Podatki, starejši od # mesecev, bodo izbrisani.}few{Samodejni izbris je vklopljen. Podatki, starejši od # mesecev, bodo izbrisani.}other{Samodejni izbris je vklopljen. Podatki, starejši od # mesecev, bodo izbrisani.}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"Samodejni izbris je izklopljen"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"Nastavitev prednosti aplikacij"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"Če podatke vrste »<xliff:g id="DATA_TYPE">%s</xliff:g>« dodaja več aplikacij, bo storitev Health Connect dala prednost tisti aplikaciji, ki je najviše na tem seznamu. Povlecite aplikacije, da jih prerazporedite."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Shrani"</string>

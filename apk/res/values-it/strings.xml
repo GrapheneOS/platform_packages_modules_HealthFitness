@@ -840,8 +840,7 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} sigaretta}other{{quantity} sigarette}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number}: sconosciuto"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
-    <!-- no translation found for hour_minute_duration_short (1754616782635510999) -->
-    <skip />
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g>h <xliff:g id="MIN">%2$s</xliff:g>m"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> h"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> e <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 ora}other{# ore}}"</string>
@@ -1047,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Fine"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{L\'eliminazione automatica è attiva. I dati risalenti a più di # mese fa verranno eliminati.}other{L\'eliminazione automatica è attiva. I dati risalenti a più di # mesi fa verranno eliminati.}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"L\'eliminazione automatica è disattivata"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"Imposta la priorità delle app"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"Se più app aggiungono dati relativi a <xliff:g id="DATA_TYPE">%s</xliff:g>, Connessione Salute dà la priorità all\'app all\'inizio di questo elenco. Trascina le app per cambiarne l\'ordine."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Salva"</string>

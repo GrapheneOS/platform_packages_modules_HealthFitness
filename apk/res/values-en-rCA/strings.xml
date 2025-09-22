@@ -1046,6 +1046,7 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Done"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{Auto-delete is on. Data older than # month will be deleted}other{Auto-delete is on. Data older than # months will be deleted}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"Auto-delete is off"</string>
+    <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+<xliff:g id="COUNT">%s</xliff:g>"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"Set app priority"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"If more than one app adds <xliff:g id="DATA_TYPE">%s</xliff:g> data, Health Connect prioritizes the app highest in this list. Drag apps to reorder them."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Save"</string>

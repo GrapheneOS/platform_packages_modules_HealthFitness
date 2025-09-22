@@ -1046,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"تم"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{ميزة \"الحذف التلقائي\" مفعَّلة. سيتم حذف كل البيانات الأقدم من شهر واحد}zero{ميزة \"الحذف التلقائي\" مفعَّلة. سيتم حذف كل البيانات الأقدم من # شهر}two{ميزة \"الحذف التلقائي\" مفعَّلة. سيتم حذف كل البيانات الأقدم من شهرين}few{ميزة \"الحذف التلقائي\" مفعَّلة. سيتم حذف كل البيانات الأقدم من # أشهر}many{ميزة \"الحذف التلقائي\" مفعَّلة. سيتم حذف كل البيانات الأقدم من # شهرًا}other{ميزة \"الحذف التلقائي\" مفعَّلة. سيتم حذف كل البيانات الأقدم من # شهر}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"ميزة \"الحذف التلقائي\" غير مفعّلة"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"ضبط ترتيب التطبيقات حسب الأولوية"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"في حال أضاف أكثر من تطبيق واحد بيانات <xliff:g id="DATA_TYPE">%s</xliff:g>، يمنح Health Connect الأولوية وفقًا لترتيب التطبيق في هذه القائمة. اسحب التطبيقات لإعادة ترتيبها."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"حفظ"</string>

@@ -1046,6 +1046,8 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Klar"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{Automatisk radering är aktiv. Data som är äldre än # månad raderas}other{Automatisk radering är aktiv. Data som är äldre än # månader raderas}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"Automatisk radering är inaktiverad"</string>
+    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
+    <skip />
     <string name="priority_dialog_title" msgid="7360654442596118085">"Ställ in prioritet för appar"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"Om mer än en app lägger till data om <xliff:g id="DATA_TYPE">%s</xliff:g> prioriteras den app som står överst i den här listan i Health Connect. Du kan ändra ordning på apparna genom att dra."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Spara"</string>
