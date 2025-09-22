@@ -107,6 +107,8 @@ public class DeviceDataProviderHelperTest {
         assertThat(DeviceDataProviderHelper.DATA_TYPE).isEqualTo("data_type");
         assertThat(DeviceDataProviderHelper.IS_AVAILABLE).isEqualTo("is_available");
         assertThat(DeviceDataProviderHelper.IS_USER_ENABLED).isEqualTo("is_user_enabled");
+        assertThat(DeviceDataProviderHelper.IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING)
+                .isEqualTo("is_visible_by_default_in_matchmaking");
     }
 
     @Test
@@ -155,6 +157,11 @@ public class DeviceDataProviderHelperTest {
                         DeviceDataProviderHelper.IS_USER_ENABLED
                                 + " "
                                 + StorageUtils.INTEGER_NOT_NULL);
+        assertThat(createCommand)
+                .contains(
+                        DeviceDataProviderHelper.IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING
+                                + " "
+                                + StorageUtils.INTEGER_NOT_NULL);
     }
 
     @Test
@@ -177,6 +184,7 @@ public class DeviceDataProviderHelperTest {
                                 new DeviceDataSourceState.Builder(StepsRecord.class)
                                         .setAvailable(true)
                                         .setUserEnabled(true)
+                                        .setVisibleByDefaultInMatchmaking(true)
                                         .build())));
 
         try (Cursor cursor =
@@ -195,6 +203,11 @@ public class DeviceDataProviderHelperTest {
             assertThat(
                             getIntegerAndConvertToBoolean(
                                     cursor, DeviceDataProviderHelper.IS_USER_ENABLED))
+                    .isTrue();
+            assertThat(
+                            getIntegerAndConvertToBoolean(
+                                    cursor,
+                                    DeviceDataProviderHelper.IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING))
                     .isTrue();
         }
     }
@@ -213,6 +226,7 @@ public class DeviceDataProviderHelperTest {
                                 new DeviceDataSourceState.Builder(StepsRecord.class)
                                         .setAvailable(true)
                                         .setUserEnabled(true)
+                                        .setVisibleByDefaultInMatchmaking(true)
                                         .build())));
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
@@ -225,6 +239,7 @@ public class DeviceDataProviderHelperTest {
                                 new DeviceDataSourceState.Builder(StepsRecord.class)
                                         .setAvailable(false)
                                         .setUserEnabled(false)
+                                        .setVisibleByDefaultInMatchmaking(false)
                                         .build())));
         try (Cursor cursor =
                 mTransactionManager.read(
@@ -242,6 +257,11 @@ public class DeviceDataProviderHelperTest {
             assertThat(
                             getIntegerAndConvertToBoolean(
                                     cursor, DeviceDataProviderHelper.IS_USER_ENABLED))
+                    .isFalse();
+            assertThat(
+                            getIntegerAndConvertToBoolean(
+                                    cursor,
+                                    DeviceDataProviderHelper.IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING))
                     .isFalse();
         }
     }
@@ -346,6 +366,7 @@ public class DeviceDataProviderHelperTest {
                 mHealthConnectMappings.getRecordType(StepsRecord.class));
         contentValues.put(DeviceDataProviderHelper.IS_AVAILABLE, 1);
         contentValues.put(DeviceDataProviderHelper.IS_USER_ENABLED, 1);
+        contentValues.put(DeviceDataProviderHelper.IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING, 1);
         mTransactionManager.insertOrThrowOnConflict(
                 new UpsertTableRequest(DeviceDataProviderHelper.TABLE_NAME, contentValues));
 
@@ -360,6 +381,7 @@ public class DeviceDataProviderHelperTest {
                                 new DeviceDataSourceState.Builder(StepsRecord.class)
                                         .setAvailable(true)
                                         .setUserEnabled(true)
+                                        .setVisibleByDefaultInMatchmaking(true)
                                         .build())));
 
         try (Cursor cursor =

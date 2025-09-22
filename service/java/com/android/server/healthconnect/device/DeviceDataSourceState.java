@@ -34,6 +34,7 @@ public final class DeviceDataSourceState {
     private final Class<? extends Record> mDataType;
     private final boolean mIsAvailable;
     private final boolean mIsUserEnabled;
+    private final boolean mIsVisibleByDefaultInMatchmaking;
 
     /**
      * @param dataType The data type this state represents.
@@ -41,12 +42,18 @@ public final class DeviceDataSourceState {
      *     Bluetooth enablement or the device being in range.
      * @param isUserEnabled Whether the user has enabled this data type. This is set by the DDP and
      *     is used for informational purposes in the UI.
+     * @param isVisibleByDefaultInMatchmaking Whether the device data source should show up by
+     *     default in app matchmaking.
      */
     private DeviceDataSourceState(
-            Class<? extends Record> dataType, boolean isAvailable, boolean isUserEnabled) {
+            Class<? extends Record> dataType,
+            boolean isAvailable,
+            boolean isUserEnabled,
+            boolean isVisibleByDefaultInMatchmaking) {
         this.mDataType = dataType;
         this.mIsAvailable = isAvailable;
         this.mIsUserEnabled = isUserEnabled;
+        this.mIsVisibleByDefaultInMatchmaking = isVisibleByDefaultInMatchmaking;
     }
 
     /**
@@ -78,6 +85,15 @@ public final class DeviceDataSourceState {
     }
 
     /**
+     * Returns whether the device data source should show up by default in app matchmaking.
+     *
+     * @hide
+     */
+    public boolean isVisibleByDefaultInMatchmaking() {
+        return mIsVisibleByDefaultInMatchmaking;
+    }
+
+    /**
      * Builder for {@link DeviceDataSourceState}.
      *
      * @hide
@@ -86,6 +102,7 @@ public final class DeviceDataSourceState {
         private final Class<? extends Record> mDataType;
         private boolean mIsAvailable = false;
         private boolean mIsUserEnabled = false;
+        private boolean mIsVisibleByDefaultInMatchmaking = false;
 
         /**
          * @param dataType The data type for which the state is being built. This is a required
@@ -107,9 +124,19 @@ public final class DeviceDataSourceState {
             return this;
         }
 
+        /**
+         * Sets whether the device data source should show up by default in app matchmaking.
+         * Defaults to false.
+         */
+        public Builder setVisibleByDefaultInMatchmaking(boolean isVisibleByDefaultInMatchmaking) {
+            this.mIsVisibleByDefaultInMatchmaking = isVisibleByDefaultInMatchmaking;
+            return this;
+        }
+
         /** Builds and returns a {@link DeviceDataSourceState} with the specified parameters. */
         public DeviceDataSourceState build() {
-            return new DeviceDataSourceState(mDataType, mIsAvailable, mIsUserEnabled);
+            return new DeviceDataSourceState(
+                    mDataType, mIsAvailable, mIsUserEnabled, mIsVisibleByDefaultInMatchmaking);
         }
     }
 }
