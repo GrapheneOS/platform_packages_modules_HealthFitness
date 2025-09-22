@@ -22,6 +22,8 @@ import android.healthconnect.testing.cts.TestUtils
 import android.healthconnect.testing.cts.ui.ActivityLauncher.launchMainActivity
 import android.healthconnect.testing.cts.ui.UiTestUtils
 import android.healthconnect.testing.shared.DataFactory
+import android.platform.test.flag.junit.CheckFlagsRule
+import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.core.app.ApplicationProvider
 import com.android.compatibility.common.util.DisableAnimationRule
 import com.android.compatibility.common.util.NonApiTest
@@ -39,6 +41,7 @@ import org.junit.Test
  */
 @NonApiTest(exemptionReasons = [], justification = "METRIC")
 class UiTestHelper {
+    @get:Rule val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
     @get:Rule val disableAnimationRule = DisableAnimationRule()
 
     private val context: Context = ApplicationProvider.getApplicationContext()
@@ -97,7 +100,7 @@ class UiTestHelper {
         )
         context.launchMainActivity {
             UiTestUtils.skipOnboardingIfAppears()
-            UiTestUtils.scrollDownToAndFindText("App permissions")
+            UiTestUtils.scrollDownToAndFindText("Data and access")
             UiTestUtils.scrollDownToAndFindText("Manage data")
             UiTestUtils.clickOnTextAndWaitForNewWindow("Manage data")
             UiTestUtils.findText("Auto-delete")

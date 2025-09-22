@@ -22,7 +22,7 @@ import android.healthconnect.testing.cts.testapphelpers.TestAppProxy
 import android.healthconnect.testing.cts.ui.ActivityLauncher.launchMainActivity
 import android.healthconnect.testing.cts.ui.UiTestUtils.clickOnTextAndWaitForNewWindow
 import android.healthconnect.testing.cts.ui.UiTestUtils.findText
-import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToNewPage
+import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToMedicalRecords
 import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_ALLERGY
 import android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION
@@ -62,7 +62,7 @@ class AllMedicalDataFragmentTest : HealthConnectBaseTest() {
     @Test
     fun allMedicalDataFragment_showsAvailableDataTypes() {
         context.launchMainActivity {
-            navigateToNewPage("Browse health records")
+            navigateToMedicalRecords()
 
             scrollDownToAndFindText("Allergies")
             scrollDownToAndFindText("Vaccines")
@@ -72,7 +72,7 @@ class AllMedicalDataFragmentTest : HealthConnectBaseTest() {
     @Test
     fun allMedicalDataFragment_clickOnPermissionType_navigatesToEntriesAndAccess() {
         context.launchMainActivity {
-            navigateToNewPage("Browse health records")
+            navigateToMedicalRecords()
 
             scrollDownToAndFindText("Allergies")
             clickOnTextAndWaitForNewWindow("Allergies")

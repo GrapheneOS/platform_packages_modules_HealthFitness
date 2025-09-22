@@ -19,7 +19,7 @@ import android.healthconnect.cts.ui.HealthConnectBaseTest
 import android.healthconnect.testing.cts.TestUtils
 import android.healthconnect.testing.cts.ui.ActivityLauncher.launchMainActivity
 import android.healthconnect.testing.cts.ui.UiTestUtils.findText
-import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToAppPermissions
+import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToManagePermissionsForApp
 import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndFindText
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
@@ -37,9 +37,9 @@ class ConnectedAppFragmentTest : HealthConnectBaseTest() {
     }
 
     @Test
-    fun appWithMedicalAndFitnessPermissions_showsCombinedPermssionsScreen() {
+    fun appWithMedicalAndFitnessPermissions_showsCombinedPermissionsScreen() {
         context.launchMainActivity {
-            navigateToAppPermissions("Health Connect cts test app 2")
+            navigateToManagePermissionsForApp("Health Connect cts test app 2")
 
             findText("Health Connect cts test app 2")
             scrollDownToAndFindText("Permissions")
@@ -57,7 +57,9 @@ class ConnectedAppFragmentTest : HealthConnectBaseTest() {
     @Ignore("b/391460826 - Elements size too large on expressive devices")
     fun appWithFitnessPermissionsOnly_showsFitnessPermissionsScreen() {
         context.launchMainActivity {
-            navigateToAppPermissions("CtsHealthConnectTestAppBWithNormalReadWritePermission")
+            navigateToManagePermissionsForApp(
+                "CtsHealthConnectTestAppBWithNormalReadWritePermission"
+            )
 
             scrollDownToAndFindText("Allowed to read")
             scrollDownToAndFindText("Allowed to write")

@@ -27,7 +27,7 @@ import android.healthconnect.testing.cts.ui.ActivityLauncher.launchMainActivity
 import android.healthconnect.testing.cts.ui.UiTestUtils.findObjectAndClick
 import android.healthconnect.testing.cts.ui.UiTestUtils.findText
 import android.healthconnect.testing.cts.ui.UiTestUtils.findTextAndClick
-import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToAppPermissions
+import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToManagePermissionsForApp
 import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToNewPage
 import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToSeeAppData
 import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndFindText
@@ -73,7 +73,9 @@ class AppDataFragmentTest : HealthConnectBaseTest() {
     @Test
     fun appPermissions_showsAppDataButton() {
         context.launchMainActivity {
-            navigateToAppPermissions("CtsHealthConnectTestAppAWithNormalReadWritePermission")
+            navigateToManagePermissionsForApp(
+                "CtsHealthConnectTestAppAWithNormalReadWritePermission"
+            )
             scrollDownToAndFindText("See app data")
         }
     }

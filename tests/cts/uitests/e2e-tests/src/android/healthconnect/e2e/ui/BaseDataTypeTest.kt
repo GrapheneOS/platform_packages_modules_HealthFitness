@@ -20,6 +20,7 @@ import android.health.connect.datatypes.Record
 import android.healthconnect.testing.cts.PermissionUtils.getGrantedHealthPermissions
 import android.healthconnect.testing.cts.TestUtils
 import android.healthconnect.testing.cts.TestUtils.readAllRecords
+import android.healthconnect.testing.cts.ui.ActivityLauncher.launchDataActivity
 import android.healthconnect.testing.cts.ui.ActivityLauncher.launchMainActivity
 import android.healthconnect.testing.cts.ui.ActivityLauncher.launchRequestPermissionActivity
 import android.healthconnect.testing.cts.ui.UiTestUtils.findDesc
@@ -28,6 +29,7 @@ import android.healthconnect.testing.cts.ui.UiTestUtils.findObject
 import android.healthconnect.testing.cts.ui.UiTestUtils.findText
 import android.healthconnect.testing.cts.ui.UiTestUtils.findTextAndClick
 import android.healthconnect.testing.cts.ui.UiTestUtils.grantPermissionViaPackageManager
+import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToManagePermissionsForApp
 import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToNewPage
 import android.healthconnect.testing.cts.ui.UiTestUtils.revokePermissionViaPackageManager
 import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownTo
@@ -41,6 +43,7 @@ import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.uiautomator.By
+import com.android.healthfitness.flags.Flags.FLAG_NEW_HOME_SCREEN
 import com.android.settingslib.widget.theme.flags.Flags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED
 import com.google.common.truth.Truth.assertThat
 import java.time.Duration.ofSeconds
@@ -110,9 +113,7 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
 
     @Test
     fun dataAndAccess_showsEntriesOfFirstAvailableDay_deletesEntry() {
-        context.launchMainActivity {
-            navigateToNewPage("Data and access")
-
+        context.launchDataActivity {
             scrollDownToAndFindText(dataCategoryString)
             navigateToNewPage(dataTypeString)
 
@@ -148,9 +149,7 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
         val anotherCategoryRecord = createAnotherCategoryRecord()
         TestUtils.insertRecords(listOfNotNull(sameCategoryRecord, anotherCategoryRecord))
 
-        context.launchMainActivity {
-            navigateToNewPage("Data and access")
-
+        context.launchDataActivity {
             findDescAndClick("Enter deletion")
             scrollDownToAndClick(By.text(dataTypeString))
             findDescAndClick("Delete data")
@@ -177,7 +176,7 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
     }
 
     @Test
-    @RequiresFlagsDisabled(FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
+    @RequiresFlagsDisabled(FLAG_IS_EXPRESSIVE_DESIGN_ENABLED, FLAG_NEW_HOME_SCREEN)
     fun legacySeeAllRecentAccess_showsDataCategory() {
         context.launchMainActivity {
             navigateToNewPage("See all recent access")
@@ -187,9 +186,19 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
 
     @Test
     @RequiresFlagsEnabled(FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
+    @RequiresFlagsDisabled(FLAG_NEW_HOME_SCREEN)
     fun expressiveSeeAllRecentAccess_showsDataCategory() {
         context.launchMainActivity {
             navigateToNewPage("View all")
+            scrollDownToAndFindText("Write: ${dataCategoryString}")
+        }
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_NEW_HOME_SCREEN)
+    fun newHomeScreen_seeRecentAccess_showsDataCategory() {
+        context.launchMainActivity {
+            navigateToNewPage("Recent access")
             scrollDownToAndFindText("Write: ${dataCategoryString}")
         }
     }
@@ -202,8 +211,7 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
         }
 
         context.launchMainActivity {
-            navigateToNewPage("App permissions")
-            navigateToNewPage(APP_WITH_READ_WRITE_PERMISSIONS_LABEL)
+            navigateToManagePermissionsForApp(APP_WITH_READ_WRITE_PERMISSIONS_LABEL)
             navigateToNewPage("Fitness and wellness")
 
             findTextAndClick("Allow all")
