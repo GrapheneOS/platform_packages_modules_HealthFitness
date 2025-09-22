@@ -17,6 +17,8 @@
 package android.health.connect.internal.datatypes.utils;
 
 import static android.health.connect.Constants.DEFAULT_INT;
+import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTES;
+import static android.health.connect.HealthPermissions.WRITE_EXERCISE_ROUTE;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toSet;
@@ -213,11 +215,16 @@ public final class HealthConnectMappings {
 
     /**
      * @return a write permission for given read permission or null if there is no corresponding
-     *     write permission..
+     *     write permission.
+     *     <p>Note: This method contains a special case for {@code READ_EXERCISE_ROUTES} which is
+     *     mapped to {@code WRITE_EXERCISE_ROUTE}.
      * @hide
      */
     @Nullable
     public String getWritePermissionForReadPermission(String readPermission) {
+        if (READ_EXERCISE_ROUTES.equals(readPermission)) {
+            return WRITE_EXERCISE_ROUTE;
+        }
         int permissionCategory = getHealthPermissionCategoryForReadPermission(readPermission);
         if (permissionCategory == DEFAULT_INT) {
             return null;
