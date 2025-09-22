@@ -197,7 +197,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET, Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun intentSkipsUnrecognisedPermission_excludesItFromResponse() {
         val permissions = arrayOf(READ_EXERCISE, WRITE_SLEEP, "permission")
         val startActivityIntent = getPermissionScreenIntent(permissions)
@@ -227,6 +227,7 @@ class PermissionsActivityTest {
 
     @Test
     @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun permissionsBottomSheetDialog_intentSkipsUnrecognisedPermission_excludesItFromResponse() {
         val permissions = arrayOf(READ_EXERCISE, WRITE_SLEEP, "permission")
         val startActivityIntent = getPermissionScreenIntent(permissions)
@@ -256,7 +257,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET, Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun intentSkipsGrantedPermissions_includesItInResponse() {
         val startActivityIntent = getPermissionScreenIntent(fitnessPermissions)
         (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
@@ -297,6 +298,7 @@ class PermissionsActivityTest {
 
     @Test
     @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun permissionsBottomSheetDialog_intentSkipsGrantedPermissions_includesItInResponse() {
         val startActivityIntent = getPermissionScreenIntent(fitnessPermissions)
         (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(

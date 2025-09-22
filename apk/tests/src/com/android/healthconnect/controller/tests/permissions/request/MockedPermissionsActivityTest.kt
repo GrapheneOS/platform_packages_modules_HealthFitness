@@ -180,9 +180,12 @@ class MockedPermissionsActivityTest {
         whenever(viewModel.additionalScreenState).then {
             MutableLiveData(AdditionalScreenState.NoAdditionalData)
         }
+        whenever(viewModel.expandedDataCategoryPreferenceKeys).then {
+            MutableLiveData(emptySet<String>())
+        }
 
         whenever(healthPermissionReader.isRationaleIntentDeclared(anyString())).thenReturn(true)
-
+        whenever(viewModel.grantedFitnessCategories).then { MutableLiveData<Set<Int>>() }
         (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(true)
         showOnboarding(context, false)
     }
@@ -511,7 +514,7 @@ class MockedPermissionsActivityTest {
 
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
-    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET, Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun showFitnessPermissionRequest_healthConnectBrand() {
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowFitness)
@@ -566,6 +569,7 @@ class MockedPermissionsActivityTest {
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
     @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun showFitnessPermissionRequest_healthConnectBrand_bottomSheet() {
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowFitness)
@@ -625,7 +629,7 @@ class MockedPermissionsActivityTest {
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @Test
-    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET, Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun showFitnessPermissionRequest_healthFitnessBrand() {
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowFitness)
@@ -684,6 +688,7 @@ class MockedPermissionsActivityTest {
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @Test
     @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun showFitnessPermissionRequest_healthFitnessBrand_bottomSheet() {
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowFitness)
@@ -694,7 +699,7 @@ class MockedPermissionsActivityTest {
                     appMetadata = appMetadata,
                     fitnessPermissions =
                         listOf(READ_STEPS, WRITE_DISTANCE).map {
-                            fromPermissionString(it) as HealthPermission.FitnessPermission
+                            fromPermissionString(it) as FitnessPermission
                         },
                     hasMedical = false,
                     historyGranted = false,

@@ -61,6 +61,9 @@ class ExpandablePreferenceAdapter(
                         preference is BaseExpandablePreference && !preference.mIsExpanded ->
                             SettingsLibResources.drawable.settingslib_round_background
 
+                        preference is HealthSwitchPreference && preference.isLastInGroup ->
+                            SettingsLibResources.drawable.settingslib_round_background_bottom
+
                         else -> SettingsLibResources.drawable.settingslib_round_background_center
                     }
 
