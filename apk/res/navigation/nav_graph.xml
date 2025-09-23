@@ -76,6 +76,18 @@
         <action
             android:id="@+id/action_newHomeFragment_to_combinedPermissionsFragment"
             app:destination="@id/combined_permissions_nav_graph" />
+        <action
+            android:id="@+id/action_newHomeFragment_to_exportSetupActivity"
+            app:destination="@id/exportSetupActivity" />
+        <action
+            android:id="@+id/action_newHomeFragment_to_migrationActivity"
+            app:destination="@id/migrationActivity" />
+        <action
+            android:id="@+id/action_newHomeFragment_to_systemUpdateActivity"
+            app:destination="@id/systemUpdateActivity" />
+        <action
+            android:id="@+id/action_newHomeFragment_to_onboardingActivity"
+            app:destination="@id/onboardingActivity" />
     </fragment>
 
     <fragment
