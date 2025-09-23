@@ -19,10 +19,9 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.health.connect.HealthDataCategory
-import android.platform.test.annotations.DisableFlags
-import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.MutableLiveData
+import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
@@ -43,7 +42,6 @@ import com.android.healthconnect.controller.migration.api.MigrationRestoreState.
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.selectabledeletion.DeletionDataViewModel
 import com.android.healthconnect.controller.tests.utils.showOnboarding
-import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -68,6 +66,7 @@ class DataManagementActivityTest {
 
     @BindValue val allDataViewModel: AllDataViewModel = Mockito.mock(AllDataViewModel::class.java)
 
+    private lateinit var activityScenario: ActivityScenario<DataManagementActivity>
     private lateinit var context: Context
 
     @Before
@@ -125,8 +124,7 @@ class DataManagementActivityTest {
         }
         val startActivityIntent = Intent(context, DataManagementActivity::class.java)
 
-        launch<DataManagementActivity>(startActivityIntent)
-
+        activityScenario = launch<DataManagementActivity>(startActivityIntent)
         onView(withText("Activity")).check(matches(isDisplayed()))
         onView(withText("Steps")).check(matches(isDisplayed()))
     }
@@ -155,7 +153,7 @@ class DataManagementActivityTest {
 
         val startActivityIntent = Intent(context, DataManagementActivity::class.java)
 
-        launch<DataManagementActivity>(startActivityIntent)
+        activityScenario = launch<DataManagementActivity>(startActivityIntent)
 
         onView(withText("Integration in progress")).check(matches(isDisplayed()))
     }
@@ -184,7 +182,7 @@ class DataManagementActivityTest {
 
         val startActivityIntent = Intent(context, DataManagementActivity::class.java)
 
-        launch<DataManagementActivity>(startActivityIntent)
+        activityScenario = launch<DataManagementActivity>(startActivityIntent)
 
         onView(withText("Restore in progress")).check(matches(isDisplayed()))
     }
@@ -213,7 +211,7 @@ class DataManagementActivityTest {
 
         val startActivityIntent = Intent(context, DataManagementActivity::class.java)
 
-        val scenario = launch<DataManagementActivity>(startActivityIntent)
+        activityScenario = launch<DataManagementActivity>(startActivityIntent)
 
         onView(withText("What's new")).inRoot(RootMatchers.isDialog()).check(matches(isDisplayed()))
         onView(
@@ -227,7 +225,7 @@ class DataManagementActivityTest {
 
         onView(withText("Got it")).inRoot(RootMatchers.isDialog()).perform(ViewActions.click())
 
-        scenario.onActivity { activity ->
+        activityScenario.onActivity { activity ->
             val preferences =
                 activity.getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
             assertThat(preferences.getBoolean("Whats New Seen", false)).isTrue()
@@ -236,6 +234,7 @@ class DataManagementActivityTest {
 
     @After
     fun tearDown() {
+        activityScenario.close()
         showOnboarding(context, false)
     }
 }

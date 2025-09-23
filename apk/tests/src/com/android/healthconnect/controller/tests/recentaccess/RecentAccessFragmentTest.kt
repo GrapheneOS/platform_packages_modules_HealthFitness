@@ -95,6 +95,8 @@ class RecentAccessFragmentTest {
     private lateinit var navHostController: TestNavHostController
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
 
+    private lateinit var activityScenario: ActivityScenario<TestActivity>
+
     @BindValue val timeSource = TestTimeSource
 
     @Before
@@ -112,6 +114,7 @@ class RecentAccessFragmentTest {
         timeSource.reset()
         Intents.release()
         reset(healthConnectLogger)
+        activityScenario.close()
     }
 
     @Test
@@ -520,8 +523,8 @@ class RecentAccessFragmentTest {
     }
 
     fun launchScenario() {
-        val scenario = ActivityScenario.launch(TestActivity::class.java)
-        scenario.onActivity { activity ->
+        activityScenario = ActivityScenario.launch(TestActivity::class.java)
+        activityScenario.onActivity { activity ->
             navHostController = TestNavHostController(activity)
             navHostController.setLifecycleOwner(activity)
             navHostController.setViewModelStore(activity.viewModelStore)
