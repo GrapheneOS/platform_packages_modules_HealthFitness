@@ -174,16 +174,22 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
         val packageName = activity?.callingPackage
         val recordTypeNames = activity?.intent?.getStringArrayExtra(EXTRA_RECORD_TYPES)
 
-        if (packageName == null) {
+        if (recordTypeNames == null) {
             activity?.apply {
                 setResult(RESULT_CANCELED)
                 finish()
             }
-            return
         }
 
-        val recordTypes = parseRecordTypeNames(recordTypeNames)
-        viewModel.loadMatchmakingApps(packageName, recordTypes)
+        val recordTypes: Set<Class<out Record>> =
+            recordTypeNames!!
+                .map { Class.forName(it) }
+                .filterIsInstance<Class<out Record>>()
+                .toSet()
+
+        if (packageName != null) {
+            viewModel.loadMatchmakingApps(packageName, recordTypes)
+        }
 
         allowAllPreference.setOnPreferenceChangeListener { _, newValue ->
             if (newValue as Boolean) {
@@ -347,24 +353,4 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
 
     private fun getPermissionKey(packageName: String, permission: String) =
         "${packageName}-${permission}"
-
-    /**
-     * Parses an array of record type names into a set of `Class<out Record>`.
-     *
-     * @param recordTypeNames An array of class names for `Record` types, or null.
-     * @return A set of `Class<out Record>` corresponding to the valid record type names, filtering
-     *   out invalid names, or an empty set if `recordTypeNames` is null or empty.
-     */
-    private fun parseRecordTypeNames(recordTypeNames: Array<String>?): Set<Class<out Record>> {
-        return (recordTypeNames ?: emptyArray())
-            .mapNotNull {
-                try {
-                    Class.forName(it)
-                } catch (e: ClassNotFoundException) {
-                    null
-                }
-            }
-            .filterIsInstance<Class<out Record>>()
-            .toSet()
-    }
 }
