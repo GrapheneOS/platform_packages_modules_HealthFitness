@@ -60,8 +60,6 @@ import com.android.healthconnect.controller.exportimport.api.IUpdateExportSettin
 import com.android.healthconnect.controller.exportimport.api.ImportUiState
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
-import com.android.healthconnect.controller.onboarding.ILoadFitnessPermissionAppsUseCase
-import com.android.healthconnect.controller.onboarding.api.ILoadOnboardingStateUseCase
 import com.android.healthconnect.controller.onboarding.api.OnboardingState
 import com.android.healthconnect.controller.permissions.additionalaccess.ExerciseRouteState
 import com.android.healthconnect.controller.permissions.additionalaccess.ILoadExerciseRoutePermissionUseCase
@@ -83,6 +81,7 @@ import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.toInstant
 import java.time.Instant
 import java.time.LocalDate
+import kotlinx.coroutines.Dispatchers
 
 class FakeRecentAccessUseCase : ILoadRecentAccessUseCase {
     private var list: List<AccessLog> = emptyList()
@@ -145,11 +144,6 @@ class FakeHealthPermissionAppsUseCase : ILoadHealthPermissionApps {
         } else {
             UseCaseResults.Success(list)
         }
-    }
-
-    override suspend fun execute(input: Unit): List<ConnectedAppMetadata> {
-        numberOfInvocations += 1
-        return list
     }
 
     fun reset() {
@@ -809,67 +803,28 @@ class FakeLoadImportStatusUseCase : ILoadImportStatusUseCase {
     }
 }
 
-class FakeLoadFitnessPermissionAppsUseCase : ILoadFitnessPermissionAppsUseCase {
+class FakeLoadFitnessPermissionAppsUseCase :
+    FakeUseCase<Unit, List<ConnectedFitnessAppMetadata>>(dispatcher = Dispatchers.Unconfined) {
     private var connectedApps: List<ConnectedFitnessAppMetadata> = emptyList()
-    private var forceFail = false
-    var invocations = 0
 
-    fun reset() {
-        connectedApps = emptyList()
-        invocations = 0
-        forceFail = false
+    override suspend fun successValue(input: Unit): List<ConnectedFitnessAppMetadata> {
+        return this.connectedApps
     }
 
     fun setConnectedApps(connectedApps: List<ConnectedFitnessAppMetadata>) {
         this.connectedApps = connectedApps
     }
-
-    override suspend fun execute(unit: Unit): List<ConnectedFitnessAppMetadata> {
-        return connectedApps
-    }
-
-    override suspend fun invoke(unit: Unit): UseCaseResults<List<ConnectedFitnessAppMetadata>> {
-        invocations += 1
-        return if (forceFail) {
-            UseCaseResults.Failed(IllegalStateException("Force fail loadFitnessPermissionApps."))
-        } else {
-            return UseCaseResults.Success(connectedApps)
-        }
-    }
-
-    fun setForceFail(forceFail: Boolean) {
-        this.forceFail = forceFail
-    }
 }
 
-class FakeLoadOnboardingStateUseCase : ILoadOnboardingStateUseCase {
+class FakeLoadOnboardingStateUseCase :
+    FakeUseCase<Unit, OnboardingState>(dispatcher = Dispatchers.Unconfined) {
     private var onboardingState = OnboardingState.ONBOARDING_BANNER_STATE_HIDE
-    private var forceFail = false
-    var invocations = 0
-
-    fun reset() {
-        invocations = 0
-        forceFail = false
-    }
 
     fun setOnboardingBannerState(onboardingState: OnboardingState) {
         this.onboardingState = onboardingState
     }
 
-    override suspend fun execute(input: Unit): OnboardingState {
-        return onboardingState
-    }
-
-    override suspend fun invoke(input: Unit): UseCaseResults<OnboardingState> {
-        invocations += 1
-        return if (forceFail) {
-            UseCaseResults.Failed(IllegalStateException("Force fail onboarding state."))
-        } else {
-            UseCaseResults.Success(onboardingState)
-        }
-    }
-
-    fun setForceFail(forceFail: Boolean) {
-        this.forceFail = forceFail
+    override suspend fun successValue(input: Unit): OnboardingState {
+        return this.onboardingState
     }
 }

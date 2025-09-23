@@ -120,6 +120,7 @@ java_defaults {
     ],
     test_config_template: "AndroidTestTemplate.xml",
     visibility: ["//visibility:private"],
+    plugins: ["dagger2-compiler"],
 }
 
 java_library {

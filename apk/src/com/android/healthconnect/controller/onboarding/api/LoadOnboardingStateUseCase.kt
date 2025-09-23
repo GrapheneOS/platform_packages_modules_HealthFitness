@@ -19,7 +19,6 @@ package com.android.healthconnect.controller.onboarding.api
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -31,7 +30,7 @@ class LoadOnboardingStateUseCase
 constructor(
     private val manager: HealthOnboardingManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : ILoadOnboardingStateUseCase, BaseUseCase<Unit, OnboardingState>(dispatcher) {
+) : BaseUseCase<Unit, OnboardingState>(dispatcher) {
 
     override suspend fun execute(input: Unit): OnboardingState {
         val state = suspendCancellableCoroutine { continuation ->
@@ -49,10 +48,4 @@ enum class OnboardingState {
     ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED,
     ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED,
     ONBOARDING_BANNER_STATE_HIDE,
-}
-
-interface ILoadOnboardingStateUseCase {
-    suspend fun invoke(input: Unit): UseCaseResults<OnboardingState>
-
-    suspend fun execute(input: Unit): OnboardingState
 }
