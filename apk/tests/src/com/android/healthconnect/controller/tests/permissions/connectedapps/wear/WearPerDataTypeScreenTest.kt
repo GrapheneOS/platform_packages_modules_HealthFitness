@@ -22,14 +22,10 @@ import android.health.connect.HealthPermissions.READ_OXYGEN_SATURATION
 import android.health.connect.HealthPermissions.READ_SKIN_TEMPERATURE
 import android.health.connect.accesslog.AccessLog
 import android.health.connect.datatypes.RecordTypeIdentifier
-import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onParent
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -139,21 +135,18 @@ class WearPerDataTypeScreenTest {
 
         composeTestRule.onRoot().printToLog("PerDataTypeScreenTest")
 
-        val listChildren =
-            composeTestRule.onNodeWithText("Skin temperature").onParent().onChildren()
-        listChildren[0].assert(hasText("Skin temperature"))
-        listChildren[1].performScrollTo().assert(hasText("Allowed"))
-        listChildren[2].performScrollTo().assert(hasText("AppName3"))
-        listChildren[3]
-            .performScrollTo()
-            .assert(
-                hasText(
-                    "Apps with this permission can access skin temperature data from your device sensors."
-                )
+        composeTestRule.onNodeWithText("Skin temperature").assertExists()
+        composeTestRule.onNodeWithText("Allowed").performScrollTo().assertExists()
+        composeTestRule.onNodeWithText("AppName3").performScrollTo().assertExists()
+        composeTestRule
+            .onNodeWithText(
+                "Apps with this permission can access skin temperature data from your device sensors."
             )
-        listChildren[4].performScrollTo().assert(hasText("Not allowed"))
-        listChildren[5].performScrollTo().assert(hasText("AppName1"))
-        listChildren[6].performScrollTo().assert(hasText("Show system"))
+            .performScrollTo()
+            .assertExists()
+        composeTestRule.onNodeWithText("Not allowed").performScrollTo().assertExists()
+        composeTestRule.onNodeWithText("AppName1").performScrollTo().assertExists()
+        composeTestRule.onNodeWithText("Show system").performScrollTo().assertExists()
     }
 
     @Test
@@ -177,22 +170,19 @@ class WearPerDataTypeScreenTest {
         composeTestRule.waitForIdle()
 
         composeTestRule.onRoot().printToLog("PerDataTypeScreenTest")
-        val systemListChildren =
-            composeTestRule.onNodeWithText("Oxygen saturation").onParent().onChildren()
-        systemListChildren[0].assert(hasText("Oxygen saturation"))
-        systemListChildren[1].performScrollTo().assert(hasText("Allowed"))
-        systemListChildren[2].performScrollTo().assert(hasText("SystemAppName1"))
-        systemListChildren[3]
-            .performScrollTo()
-            .assert(
-                hasText(
-                    "Apps with this permission can access oxygen saturation data from your device sensors."
-                )
+        composeTestRule.onNodeWithText("Oxygen saturation").assertExists()
+        composeTestRule.onNodeWithText("Allowed").performScrollTo().assertExists()
+        composeTestRule.onNodeWithText("SystemAppName1").performScrollTo().assertExists()
+        composeTestRule
+            .onNodeWithText(
+                "Apps with this permission can access oxygen saturation data from your device sensors."
             )
-        systemListChildren[4].performScrollTo().assert(hasText("Not allowed"))
-        systemListChildren[5].performScrollTo().assert(hasText("AppName1"))
-        systemListChildren[6].performScrollTo().assert(hasText("SystemAppName2"))
-        systemListChildren[7].performScrollTo().assert(hasText("Hide system"))
+            .performScrollTo()
+            .assertExists()
+        composeTestRule.onNodeWithText("Not allowed").performScrollTo().assertExists()
+        composeTestRule.onNodeWithText("AppName1").performScrollTo().assertExists()
+        composeTestRule.onNodeWithText("SystemAppName2").performScrollTo().assertExists()
+        composeTestRule.onNodeWithText("Hide system").performScrollTo().assertExists()
     }
 
     @Test
@@ -261,13 +251,11 @@ class WearPerDataTypeScreenTest {
         composeTestRule.waitForIdle()
 
         composeTestRule.onRoot().printToLog("PerDataTypeScreenTest")
-        val systemListChildren =
-            composeTestRule.onNodeWithText("Heart rate").onParent().onChildren()
-        systemListChildren[0].assert(hasText("Heart rate"))
-        systemListChildren[1].performScrollTo().assert(hasText("Allowed"))
-        systemListChildren[2].performScrollTo().assert(hasText("AppName1"))
+        composeTestRule.onNodeWithText("Heart rate").assertExists()
+        composeTestRule.onNodeWithText("Allowed").performScrollTo().assertExists()
+        composeTestRule.onNodeWithText("AppName1").performScrollTo().assertExists()
         assertTitleAndSummary(composeTestRule, "AppName1", "Accessed 07:06")
-        systemListChildren[3].performScrollTo().assert(hasText("AppName2"))
+        composeTestRule.onNodeWithText("AppName2").performScrollTo().assertExists()
         assertTitleAndSummary(composeTestRule, "AppName2", "Accessed 07:08")
     }
 
@@ -321,11 +309,9 @@ class WearPerDataTypeScreenTest {
         composeTestRule.waitForIdle()
 
         composeTestRule.onRoot().printToLog("PerDataTypeScreenTest")
-        val systemListChildren =
-            composeTestRule.onNodeWithText("Heart rate").onParent().onChildren()
-        systemListChildren[0].assert(hasText("Heart rate"))
-        systemListChildren[1].performScrollTo().assert(hasText("Allowed"))
-        systemListChildren[2].performScrollTo().assert(hasText("AppName1"))
+        composeTestRule.onNodeWithText("Heart rate").assertExists()
+        composeTestRule.onNodeWithText("Allowed").performScrollTo().assertExists()
+        composeTestRule.onNodeWithText("AppName1").performScrollTo().assertExists()
         assertTitleOnly(composeTestRule, "AppName1")
         assertTitleOnly(composeTestRule, "AppName2")
     }
@@ -369,19 +355,17 @@ class WearPerDataTypeScreenTest {
 
         composeTestRule.onRoot().printToLog("PerDataTypeScreenTest")
 
-        val listChildren = composeTestRule.onNodeWithText("Heart rate").onParent().onChildren()
-        listChildren[0].assert(hasText("Heart rate"))
+        composeTestRule.onNodeWithText("Heart rate").assertExists()
         composeTestRule.onNodeWithText("Allowed").assertDoesNotExist()
-        listChildren[1]
-            .performScrollTo()
-            .assert(
-                hasText(
-                    "Apps with this permission can access heart rate data from your device sensors."
-                )
+        composeTestRule
+            .onNodeWithText(
+                "Apps with this permission can access heart rate data from your device sensors."
             )
-        listChildren[2].performScrollTo().assert(hasText("Not allowed"))
-        listChildren[3].performScrollTo().assert(hasText("AppName1"))
-        listChildren[4].performScrollTo().assert(hasText("Show system"))
+            .performScrollTo()
+            .assertExists()
+        composeTestRule.onNodeWithText("Not allowed").performScrollTo().assertExists()
+        composeTestRule.onNodeWithText("AppName1").performScrollTo().assertExists()
+        composeTestRule.onNodeWithText("Show system").performScrollTo().assertExists()
     }
 
     @Test
@@ -423,19 +407,17 @@ class WearPerDataTypeScreenTest {
 
         composeTestRule.onRoot().printToLog("PerDataTypeScreenTest")
 
-        val listChildren = composeTestRule.onNodeWithText("Heart rate").onParent().onChildren()
-        listChildren[0].assert(hasText("Heart rate"))
-        listChildren[1].performScrollTo().assert(hasText("Allowed"))
-        listChildren[2].performScrollTo().assert(hasText("AppName1"))
-        listChildren[3]
-            .performScrollTo()
-            .assert(
-                hasText(
-                    "Apps with this permission can access heart rate data from your device sensors."
-                )
+        composeTestRule.onNodeWithText("Heart rate").assertExists()
+        composeTestRule.onNodeWithText("Allowed").performScrollTo().assertExists()
+        composeTestRule.onNodeWithText("AppName1").performScrollTo().assertExists()
+        composeTestRule
+            .onNodeWithText(
+                "Apps with this permission can access heart rate data from your device sensors."
             )
+            .performScrollTo()
+            .assertExists()
         composeTestRule.onNodeWithText("Not allowed").assertDoesNotExist()
-        listChildren[4].performScrollTo().assert(hasText("Show system"))
+        composeTestRule.onNodeWithText("Show system").performScrollTo().assertExists()
     }
 
     @Test
@@ -460,17 +442,16 @@ class WearPerDataTypeScreenTest {
         composeTestRule.waitForIdle()
 
         composeTestRule.onRoot().printToLog("PerDataTypeScreenTest")
-        val listChildren = composeTestRule.onNodeWithText("Heart rate").onParent().onChildren()
-        listChildren[0].assert(hasText("Heart rate"))
-        listChildren[1].performScrollTo().assert(hasText("Allowed"))
-        listChildren[2].performScrollTo().assert(hasText("AppName1"))
-        listChildren[3].performScrollTo().assert(hasText("AppName2"))
+        composeTestRule.onNodeWithText("Heart rate").assertExists()
+        composeTestRule.onNodeWithText("Allowed").performScrollTo().assertExists()
+        composeTestRule.onNodeWithText("AppName1").performScrollTo().assertExists()
+        composeTestRule.onNodeWithText("AppName2").performScrollTo().assertExists()
         composeTestRule.onNodeWithTag("AppName1").performClick()
         verify(mockOnAppChipClick)
             .invoke("android.permission.health.READ_HEART_RATE", "packageName1")
 
-        listChildren[5].performScrollTo().assert(hasText("Not allowed"))
-        listChildren[6].performScrollTo().assert(hasText("AppName3"))
+        composeTestRule.onNodeWithText("Not allowed").performScrollTo().assertExists()
+        composeTestRule.onNodeWithText("AppName3").performScrollTo().assertExists()
         composeTestRule.onNodeWithTag("AppName3").performClick()
         verify(mockOnAppChipClick)
             .invoke("android.permission.health.READ_HEART_RATE", "packageName3")
