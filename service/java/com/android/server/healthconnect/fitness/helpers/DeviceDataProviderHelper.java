@@ -61,6 +61,8 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     public static final String DATA_TYPE = "data_type";
     public static final String IS_AVAILABLE = "is_available";
     public static final String IS_USER_ENABLED = "is_user_enabled";
+    public static final String IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING =
+            "is_visible_by_default_in_matchmaking";
 
     // Only update the states isAvailable and isUserEnabled for each sourcePackageName, deviceInfoId
     // and dataType "key"
@@ -77,7 +79,10 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
             String sourcePackageName, int deviceInfoId, int dataType) {}
 
     private record DeviceDataProviderInfo(
-            DeviceDataProviderKey key, boolean isAvailable, boolean isUserEnabled) {}
+            DeviceDataProviderKey key,
+            boolean isAvailable,
+            boolean isUserEnabled,
+            boolean isVisibleByDefaultInMatchmaking) {}
 
     @Nullable
     private volatile ConcurrentHashMap<DeviceDataProviderKey, DeviceDataProviderInfo> mDdpCache;
@@ -128,7 +133,11 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
             DeviceDataProviderKey key =
                     new DeviceDataProviderKey(sourcePackageName, deviceInfoId, dataType);
             DeviceDataProviderInfo ddpInfo =
-                    new DeviceDataProviderInfo(key, state.isAvailable(), state.isUserEnabled());
+                    new DeviceDataProviderInfo(
+                            key,
+                            state.isAvailable(),
+                            state.isUserEnabled(),
+                            state.isVisibleByDefaultInMatchmaking());
 
             if (!getDdpMap().containsKey(key) || !getDdpMap().get(key).equals(ddpInfo)) {
                 insertOrUpdate(ddpInfo);
@@ -211,11 +220,14 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
                 int dataType = getCursorInt(cursor, DATA_TYPE);
                 boolean isAvailable = getIntegerAndConvertToBoolean(cursor, IS_AVAILABLE);
                 boolean isUserEnabled = getIntegerAndConvertToBoolean(cursor, IS_USER_ENABLED);
+                boolean isVisibleByDefaultInMatchmaking =
+                        getIntegerAndConvertToBoolean(cursor, IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING);
 
                 DeviceDataProviderKey key =
                         new DeviceDataProviderKey(sourcePackageName, deviceInfoId, dataType);
                 DeviceDataProviderInfo ddpInfo =
-                        new DeviceDataProviderInfo(key, isAvailable, isUserEnabled);
+                        new DeviceDataProviderInfo(
+                                key, isAvailable, isUserEnabled, isVisibleByDefaultInMatchmaking);
                 ddpInfoMap.put(key, ddpInfo);
             }
         }
@@ -231,6 +243,8 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
         contentValues.put(DATA_TYPE, ddpInfo.key.dataType);
         contentValues.put(IS_AVAILABLE, ddpInfo.isAvailable);
         contentValues.put(IS_USER_ENABLED, ddpInfo.isUserEnabled);
+        contentValues.put(
+                IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING, ddpInfo.isVisibleByDefaultInMatchmaking);
 
         return contentValues;
     }
@@ -251,6 +265,7 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
         columnInfo.add(new Pair<>(DATA_TYPE, INTEGER_NOT_NULL));
         columnInfo.add(new Pair<>(IS_AVAILABLE, INTEGER_NOT_NULL));
         columnInfo.add(new Pair<>(IS_USER_ENABLED, INTEGER_NOT_NULL));
+        columnInfo.add(new Pair<>(IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING, INTEGER_NOT_NULL));
 
         return columnInfo;
     }

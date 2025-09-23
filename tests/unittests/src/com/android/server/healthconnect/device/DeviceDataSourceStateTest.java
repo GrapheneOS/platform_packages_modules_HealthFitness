@@ -34,6 +34,7 @@ public class DeviceDataSourceStateTest {
         assertThat(state.getDataType()).isEqualTo(StepsRecord.class);
         assertThat(state.isAvailable()).isFalse();
         assertThat(state.isUserEnabled()).isFalse();
+        assertThat(state.isVisibleByDefaultInMatchmaking()).isFalse();
     }
 
     @Test
@@ -42,11 +43,13 @@ public class DeviceDataSourceStateTest {
                 new DeviceDataSourceState.Builder(StepsRecord.class)
                         .setAvailable(true)
                         .setUserEnabled(true)
+                        .setVisibleByDefaultInMatchmaking(true)
                         .build();
 
         assertThat(state.getDataType()).isEqualTo(StepsRecord.class);
         assertThat(state.isAvailable()).isTrue();
         assertThat(state.isUserEnabled()).isTrue();
+        assertThat(state.isVisibleByDefaultInMatchmaking()).isTrue();
     }
 
     @Test
@@ -55,10 +58,12 @@ public class DeviceDataSourceStateTest {
                 new DeviceDataSourceState.Builder(StepsRecord.class)
                         .setAvailable(false)
                         .setUserEnabled(false)
+                        .setVisibleByDefaultInMatchmaking(false)
                         .build();
 
         assertThat(state.getDataType()).isEqualTo(StepsRecord.class);
         assertThat(state.isAvailable()).isFalse();
         assertThat(state.isUserEnabled()).isFalse();
+        assertThat(state.isVisibleByDefaultInMatchmaking()).isFalse();
     }
 }
