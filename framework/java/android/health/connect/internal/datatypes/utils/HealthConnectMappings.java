@@ -20,7 +20,9 @@ import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTES;
 import static android.health.connect.HealthPermissions.WRITE_EXERCISE_ROUTE;
 
+import static java.util.stream.Collectors.flatMapping;
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
 import android.annotation.NonNull;
@@ -31,6 +33,7 @@ import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.health.connect.internal.datatypes.utils.DataTypeDescriptor.PermissionCategory;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 
@@ -43,17 +46,18 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** @hide */
 public final class HealthConnectMappings {
     public static final String WRITE = ".WRITE_";
-    private final Map<Integer, DataTypeDescriptor> mRecordIdToDescriptorMap;
-    private final Map<Integer, String> mPermissionCategoryToReadPermissionMap;
-    private final Map<String, Integer> mReadPermissionToPermissionCategoryMap;
-    private final Map<Integer, String> mPermissionCategoryToWritePermissionMap;
-    private final Map<String, Integer> mWritePermissionToDataCategoryMap;
-    private final Map<Integer, String[]> mDataCategoryToWritePermissionsMap;
+    private final ArrayMap<Integer, DataTypeDescriptor> mRecordIdToDescriptorMap;
+    private final ArrayMap<Integer, Set<Integer>> mRecordIdToPermissionCategoriesMap;
+    private final ArrayMap<Integer, String> mPermissionCategoryToReadPermissionMap;
+    private final ArrayMap<String, Integer> mReadPermissionToPermissionCategoryMap;
+    private final ArrayMap<Integer, String> mPermissionCategoryToWritePermissionMap;
+    private final ArrayMap<String, Integer> mWritePermissionToDataCategoryMap;
+    private final ArrayMap<Integer, String[]> mDataCategoryToWritePermissionsMap;
     private final Map<Integer, Class<? extends RecordInternal<?>>>
             mRecordIdToInternalRecordClassMap;
     private final Map<Integer, Class<? extends Record>> mRecordIdToRecordClassMap;
@@ -92,31 +96,18 @@ public final class HealthConnectMappings {
                 toArrayMap(
                         dataTypeDescriptors,
                         DataTypeDescriptor::getRecordTypeIdentifier,
-                        Function.identity());
+                        descriptor -> descriptor);
 
+        mRecordIdToPermissionCategoriesMap =
+                createRecordIdToPermissionCategoriesMap(dataTypeDescriptors);
         mPermissionCategoryToReadPermissionMap =
-                toArrayMap(
-                        dataTypeDescriptors,
-                        DataTypeDescriptor::getPermissionCategory,
-                        DataTypeDescriptor::getReadPermission);
-
-        mReadPermissionToPermissionCategoryMap =
-                toArrayMap(
-                        dataTypeDescriptors,
-                        DataTypeDescriptor::getReadPermission,
-                        DataTypeDescriptor::getPermissionCategory);
-
+                createPermissionCategoryToReadPermissionMap(dataTypeDescriptors);
         mPermissionCategoryToWritePermissionMap =
-                toArrayMap(
-                        dataTypeDescriptors,
-                        DataTypeDescriptor::getPermissionCategory,
-                        DataTypeDescriptor::getWritePermission);
-
+                createPermissionCategoryToWritePermissionMap(dataTypeDescriptors);
+        mReadPermissionToPermissionCategoryMap =
+                createReadPermissionToPermissionCategoryMap(dataTypeDescriptors);
         mWritePermissionToDataCategoryMap =
-                toArrayMap(
-                        dataTypeDescriptors,
-                        DataTypeDescriptor::getWritePermission,
-                        DataTypeDescriptor::getDataCategory);
+                createWritePermissionToDataCategoryMap(dataTypeDescriptors);
 
         mDataCategoryToWritePermissionsMap =
                 getDataCategoryToWritePermissionsMap(dataTypeDescriptors);
@@ -172,22 +163,21 @@ public final class HealthConnectMappings {
      * @hide
      */
     public boolean isFitnessPermission(@NonNull String permissionName) {
-        return mPermissionCategoryToReadPermissionMap.containsValue(permissionName)
-                || mPermissionCategoryToWritePermissionMap.containsValue(permissionName);
+        return isReadPermission(permissionName) || isWritePermission(permissionName);
     }
 
     /** @hide */
     public String getHealthReadPermission(@HealthPermissionCategory.Type int permissionCategory) {
         return Objects.requireNonNull(
                 mPermissionCategoryToReadPermissionMap.get(permissionCategory),
-                "Read permission not found for permission category:" + permissionCategory);
+                "Read permissions not found for permission category:" + permissionCategory);
     }
 
     /** @hide */
     public String getHealthWritePermission(@HealthPermissionCategory.Type int permissionCategory) {
         return Objects.requireNonNull(
                 mPermissionCategoryToWritePermissionMap.get(permissionCategory),
-                "Write permission not found for permission category:" + permissionCategory);
+                "Write permissions not found for permission category:" + permissionCategory);
     }
 
     /**
@@ -229,6 +219,7 @@ public final class HealthConnectMappings {
         if (permissionCategory == DEFAULT_INT) {
             return null;
         }
+
         return getHealthWritePermission(permissionCategory);
     }
 
@@ -263,14 +254,16 @@ public final class HealthConnectMappings {
         return mRecordClassToRecordIdMap.containsKey(recordClass);
     }
 
-    /** Returns {@link HealthDataCategory} for the input {@link RecordTypeIdentifier.RecordType}. */
+    /**
+     * Returns a set of {@link HealthPermissionCategory} for the input {@link
+     * RecordTypeIdentifier.RecordType}.
+     */
     @HealthPermissionCategory.Type
-    public int getHealthPermissionCategoryForRecordType(
+    public Set<@HealthPermissionCategory.Type Integer> getHealthPermissionCategoriesForRecordType(
             @RecordTypeIdentifier.RecordType int recordType) {
         return Objects.requireNonNull(
-                        mRecordIdToDescriptorMap.get(recordType),
-                        "Unsupported record type: " + recordType)
-                .getPermissionCategory();
+                mRecordIdToPermissionCategoriesMap.get(recordType),
+                "Unsupported record type: " + recordType);
     }
 
     /** Returns {@link HealthDataCategory} for the input {@link RecordTypeIdentifier.RecordType}. */
@@ -294,12 +287,81 @@ public final class HealthConnectMappings {
                         .collect(
                                 groupingBy(
                                         DataTypeDescriptor::getDataCategory,
-                                        Collectors.mapping(
-                                                DataTypeDescriptor::getWritePermission, toSet())));
+                                        flatMapping(
+                                                HealthConnectMappings::getWritePermissionStream,
+                                                toSet())));
 
         ArrayMap<Integer, String[]> result = new ArrayMap<>();
         map.forEach((k, v) -> result.put(k, v.toArray(new String[0])));
         return result;
+    }
+
+    private static Stream<String> getWritePermissionStream(DataTypeDescriptor descriptor) {
+        return descriptor.getPermissionCategories().stream()
+                .map(PermissionCategory::writePermission);
+    }
+
+    private static ArrayMap<Integer, Set<Integer>> createRecordIdToPermissionCategoriesMap(
+            List<DataTypeDescriptor> descriptors) {
+        return descriptors.stream()
+                .collect(
+                        groupingBy(
+                                DataTypeDescriptor::getRecordTypeIdentifier,
+                                ArrayMap::new,
+                                flatMapping(
+                                        descriptor ->
+                                                descriptor.getPermissionCategories().stream()
+                                                        .map(
+                                                                PermissionCategory
+                                                                        ::permissionCategoryId),
+                                        toSet())));
+    }
+
+    private static ArrayMap<Integer, String> createPermissionCategoryToReadPermissionMap(
+            List<DataTypeDescriptor> descriptors) {
+        return descriptors.stream()
+                .flatMap(descriptor -> descriptor.getPermissionCategories().stream())
+                .collect(
+                        toMap(
+                                PermissionCategory::permissionCategoryId,
+                                PermissionCategory::readPermission,
+                                (permission1, permission2) -> permission1,
+                                ArrayMap::new));
+    }
+
+    private static ArrayMap<Integer, String> createPermissionCategoryToWritePermissionMap(
+            List<DataTypeDescriptor> descriptors) {
+        return descriptors.stream()
+                .flatMap(descriptor -> descriptor.getPermissionCategories().stream())
+                .collect(
+                        toMap(
+                                PermissionCategory::permissionCategoryId,
+                                PermissionCategory::writePermission,
+                                (permission1, permission2) -> permission1,
+                                ArrayMap::new));
+    }
+
+    private static ArrayMap<String, Integer> createReadPermissionToPermissionCategoryMap(
+            List<DataTypeDescriptor> descriptors) {
+        return descriptors.stream()
+                .flatMap(descriptor -> descriptor.getPermissionCategories().stream())
+                .collect(
+                        toMap(
+                                PermissionCategory::readPermission,
+                                PermissionCategory::permissionCategoryId,
+                                (permission1, permission2) -> permission1,
+                                ArrayMap::new));
+    }
+
+    private static ArrayMap<String, Integer> createWritePermissionToDataCategoryMap(
+            List<DataTypeDescriptor> descriptors) {
+        ArrayMap<String, Integer> map = new ArrayMap<>();
+        for (DataTypeDescriptor descriptor : descriptors) {
+            for (PermissionCategory mapping : descriptor.getPermissionCategories()) {
+                map.put(mapping.writePermission(), descriptor.getDataCategory());
+            }
+        }
+        return map;
     }
 
     private static <T, K, V> ArrayMap<K, V> toArrayMap(

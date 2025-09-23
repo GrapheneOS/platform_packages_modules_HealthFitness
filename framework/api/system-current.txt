@@ -159,7 +159,8 @@ package android.health.connect {
   public class RecordTypeInfoResponse {
     method @NonNull public java.util.List<android.health.connect.datatypes.DataOrigin> getContributingPackages();
     method public int getDataCategory();
-    method public int getPermissionCategory();
+    method @FlaggedApi("com.android.healthfitness.flags.symptoms") @NonNull public java.util.Set<java.lang.Integer> getPermissionCategories();
+    method @Deprecated @FlaggedApi("com.android.healthfitness.flags.symptoms") public int getPermissionCategory();
   }
 
   public final class UpdateDataOriginPriorityOrderRequest {

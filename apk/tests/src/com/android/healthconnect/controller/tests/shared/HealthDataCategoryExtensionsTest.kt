@@ -99,6 +99,31 @@ class HealthDataCategoryExtensionsTest {
     }
 
     @Test
+    fun healthPermissionTypes_activityCategory_returnsCorrectTypes() {
+        val activityPermissionTypes = ACTIVITY.healthPermissionTypes()
+
+        assertThat(activityPermissionTypes)
+            .containsExactlyElementsIn(
+                listOf(
+                    FitnessPermissionType.ACTIVE_CALORIES_BURNED,
+                    FitnessPermissionType.ACTIVITY_INTENSITY,
+                    FitnessPermissionType.DISTANCE,
+                    FitnessPermissionType.ELEVATION_GAINED,
+                    FitnessPermissionType.EXERCISE,
+                    FitnessPermissionType.PLANNED_EXERCISE,
+                    FitnessPermissionType.FLOORS_CLIMBED,
+                    FitnessPermissionType.STEPS,
+                    FitnessPermissionType.TOTAL_CALORIES_BURNED,
+                    FitnessPermissionType.VO2_MAX,
+                    FitnessPermissionType.WHEELCHAIR_PUSHES,
+                    FitnessPermissionType.POWER,
+                    FitnessPermissionType.SPEED,
+                    FitnessPermissionType.EXERCISE_ROUTE,
+                )
+            )
+    }
+
+    @Test
     fun allFitnessPermissions_haveParentCategory() {
         val allFitnessPermissions =
             healthPermissionReader.getHealthPermissions().filterNot { perm ->

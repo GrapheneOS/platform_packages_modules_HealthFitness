@@ -16,12 +16,16 @@
 
 package android.health.connect;
 
+import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
 import android.annotation.SystemApi;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 
+import com.android.healthfitness.flags.Flags;
+
 import java.util.List;
+import java.util.Set;
 
 /**
  * Holder for the following information for each {@link RecordTypeIdentifier.RecordType}:
@@ -36,24 +40,53 @@ import java.util.List;
  */
 @SystemApi
 public class RecordTypeInfoResponse {
-    @HealthPermissionCategory.Type private final int mPermissionCategory;
+    private final Set<Integer> mPermissionCategories;
     @HealthDataCategory.Type private final int mDataCategory;
     private final List<DataOrigin> mContributingPackages;
 
-    /** @hide */
+    /**
+     * @hide
+     * @deprecated use {@link #RecordTypeInfoResponse(Set, int, List)} instead
+     */
+    @Deprecated
     public RecordTypeInfoResponse(
             @NonNull @HealthPermissionCategory.Type int permissionCategory,
+            @HealthDataCategory.Type int dataCategory,
+            @NonNull List<DataOrigin> contributingPackages) {
+        this(Set.of(permissionCategory), dataCategory, contributingPackages);
+    }
+
+    /** @hide */
+    public RecordTypeInfoResponse(
+            @NonNull Set<Integer> permissionCategories,
             @NonNull @HealthDataCategory.Type int dataCategory,
             @NonNull List<DataOrigin> contributingPackages) {
-        this.mPermissionCategory = permissionCategory;
+        this.mPermissionCategories = permissionCategories;
         this.mDataCategory = dataCategory;
         this.mContributingPackages = contributingPackages;
     }
 
-    /** Returns {@link HealthPermissionCategory} for the {@link RecordTypeIdentifier.RecordType}. */
+    /**
+     * Returns {@link HealthPermissionCategory} for the {@link RecordTypeIdentifier.RecordType}.
+     *
+     * @deprecated use {@link #getPermissionCategories()} instead. A record can have more than one
+     *     permission category associated with it.
+     */
+    @Deprecated
+    @FlaggedApi(Flags.FLAG_SYMPTOMS)
     @HealthPermissionCategory.Type
     public int getPermissionCategory() {
-        return mPermissionCategory;
+        return mPermissionCategories.iterator().next();
+    }
+
+    /**
+     * Returns a set of {@link HealthPermissionCategory} for the input {@link
+     * RecordTypeIdentifier.RecordType}.
+     */
+    @NonNull
+    @FlaggedApi(Flags.FLAG_SYMPTOMS)
+    public Set<@HealthPermissionCategory.Type Integer> getPermissionCategories() {
+        return mPermissionCategories;
     }
 
     /** Returns {@link HealthDataCategory} for the {@link RecordTypeIdentifier.RecordType}. */

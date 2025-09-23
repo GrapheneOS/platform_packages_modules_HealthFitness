@@ -54,11 +54,16 @@ object HealthDataCategoryExtensions {
         val healthConnectMappings = HealthConnectMappings.getInstance()
 
         return healthConnectMappings.allRecordTypeIdentifiers
-            .map { recordTypeId ->
-                healthConnectMappings.getRecordCategoryForRecordType(recordTypeId) to
-                    healthConnectMappings.getHealthPermissionCategoryForRecordType(recordTypeId)
+            .flatMap { recordTypeId ->
+                val dataCategory =
+                    healthConnectMappings.getRecordCategoryForRecordType(recordTypeId)
+                val permissionCategories =
+                    healthConnectMappings.getHealthPermissionCategoriesForRecordType(recordTypeId)
+                permissionCategories.map { permissionCategory ->
+                    dataCategory to fromHealthPermissionCategory(permissionCategory)
+                }
             }
-            .groupBy({ it.first }, { fromHealthPermissionCategory(it.second) })
+            .groupBy({ it.first }, { it.second })
             .toMutableMap()
             .apply { specialCases.forEach { merge(it.key, it.value) { a, b -> a + b } } }
             .mapValues { it.value.distinct() }

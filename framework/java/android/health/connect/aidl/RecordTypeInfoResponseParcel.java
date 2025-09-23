@@ -105,8 +105,8 @@ public class RecordTypeInfoResponseParcel implements Parcelable {
                 (recordType, contributingPackages) -> {
                     RecordTypeInfoResponse res =
                             new RecordTypeInfoResponse(
-                                    healthConnectMappings.getHealthPermissionCategoryForRecordType(
-                                            recordType),
+                                    healthConnectMappings
+                                            .getHealthPermissionCategoriesForRecordType(recordType),
                                     healthConnectMappings.getRecordCategoryForRecordType(
                                             recordType),
                                     getContributingPackagesAsDataOrigin(contributingPackages));
