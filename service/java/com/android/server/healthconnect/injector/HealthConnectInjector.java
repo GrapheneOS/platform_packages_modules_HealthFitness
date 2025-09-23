@@ -40,6 +40,7 @@ import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.DeviceDataProviderManager;
 import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.device.notification.NativeStepsNotificationSender;
@@ -53,6 +54,7 @@ import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
@@ -457,7 +459,22 @@ public abstract class HealthConnectInjector {
      * Getter for {@link SyntheticPackageNameResolver} instance initialised by the Health Connect
      * Injector.
      */
+    @Nullable
     public abstract SyntheticPackageNameResolver getSyntheticPackageNameResolver();
+
+    /**
+     * Getter for {@link DeviceDataProviderHelper} instance initialised by the Health Connect
+     * Injector.
+     */
+    @Nullable
+    public abstract DeviceDataProviderHelper getDeviceDataProviderHelper();
+
+    /**
+     * Getter for {@link DeviceDataProviderManager} instance initialised by the Health Connect
+     * Injector.
+     */
+    @Nullable
+    public abstract DeviceDataProviderManager getDeviceDataProviderManager();
 
     /** Used to initialize the Injector. */
     public static void setInstance(HealthConnectInjector healthConnectInjector) {

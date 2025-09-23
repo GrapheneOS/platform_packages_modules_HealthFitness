@@ -31,6 +31,8 @@ import android.database.Cursor;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.Pair;
 
+import androidx.annotation.VisibleForTesting;
+
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.device.DeviceDataSourceAdvertisement;
 import com.android.server.healthconnect.device.DeviceDataSourceState;
@@ -75,10 +77,12 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     private final TransactionManager mTransactionManager;
     private final HealthConnectMappings mHealthConnectMappings;
 
-    private record DeviceDataProviderKey(
+    @VisibleForTesting
+    public record DeviceDataProviderKey(
             String sourcePackageName, long deviceInfoId, int dataType) {}
 
-    private record DeviceDataProviderInfo(
+    @VisibleForTesting
+    public record DeviceDataProviderInfo(
             DeviceDataProviderKey key,
             boolean isAvailable,
             boolean isUserEnabled,
@@ -202,7 +206,12 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
         getDdpMap().put(ddpInfo.key, ddpInfo);
     }
 
-    private ConcurrentHashMap<DeviceDataProviderKey, DeviceDataProviderInfo> getDdpMap() {
+    /**
+     * Returns a map of DDP key sourcePackageName, deviceInfoId, dataType <> key, isAvailable,
+     * isUserEnabled, isVisibleByDefaultInMatchmaking.
+     */
+    @VisibleForTesting
+    public ConcurrentHashMap<DeviceDataProviderKey, DeviceDataProviderInfo> getDdpMap() {
         if (mDdpCache == null) {
             mDdpCache = generateDdpCache(mTransactionManager);
         }

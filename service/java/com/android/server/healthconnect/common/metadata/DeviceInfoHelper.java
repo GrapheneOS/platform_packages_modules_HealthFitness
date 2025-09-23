@@ -32,6 +32,8 @@ import android.health.connect.datatypes.Device.DeviceType;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 
+import androidx.annotation.VisibleForTesting;
+
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
@@ -187,7 +189,9 @@ public class DeviceInfoHelper extends DatabaseHelper {
         return cache;
     }
 
-    private Map<Long, DeviceInfo> getIdDeviceInfoMap() {
+    /** Returns a map of deviceInfoId <> DeviceInfo. */
+    @VisibleForTesting
+    public Map<Long, DeviceInfo> getIdDeviceInfoMap() {
         // Avoid a synchronized call to populateDeviceInfoCache if possible.
         DeviceInfoCache cache = mDeviceInfoCache;
         if (cache == null) {
@@ -205,7 +209,8 @@ public class DeviceInfoHelper extends DatabaseHelper {
         return cache.deviceToRowId;
     }
 
-    private synchronized long insertIfNotPresent(DeviceInfo deviceInfo) {
+    /** Inserts the device info into the db and returns the row id. */
+    public synchronized long insertIfNotPresent(DeviceInfo deviceInfo) {
         Long currentRowId = getDeviceInfoMap().get(deviceInfo);
         if (currentRowId != null) {
             return currentRowId;
@@ -294,6 +299,18 @@ public class DeviceInfoHelper extends DatabaseHelper {
 
         public int getDeviceType() {
             return mDeviceType;
+        }
+
+        @VisibleForTesting
+        @Nullable
+        public String getDeviceId() {
+            return mDeviceId;
+        }
+
+        @VisibleForTesting
+        @Nullable
+        public String getDisplayName() {
+            return mDisplayName;
         }
 
         @Override
