@@ -17,6 +17,7 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.dialog.HealthConnectBottomSheetDialogFragment
+import com.android.healthconnect.controller.tests.utils.CALLING_PACKAGE_NAME
 import com.android.settingslib.collapsingtoolbar.EdgeToEdgeUtils
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,5 +36,11 @@ class TestActivity : Hilt_TestActivity(), HealthConnectBottomSheetDialogFragment
 
     override fun onDialogCanceled() {
         finish()
+    }
+
+    var callingPackageName: String? = CALLING_PACKAGE_NAME
+
+    override fun getCallingPackage(): String? {
+        return callingPackageName
     }
 }
