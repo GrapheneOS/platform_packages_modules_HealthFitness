@@ -84,6 +84,10 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"પોષણ"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"સુખાકારી"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"સુખાકારી"</string>
+    <!-- no translation found for symptoms_category_uppercase (1357167834284360975) -->
+    <skip />
+    <!-- no translation found for symptoms_category_lowercase (2298815597177353672) -->
+    <skip />
     <string name="browse_data_category" msgid="4813955610391357638">"ડેટા બ્રાઉઝ કરો"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"ડેટા મેનેજ કરો"</string>
     <string name="export_data_button" msgid="7783329820434117744">"ડેટાની નિકાસ કરો"</string>
@@ -382,6 +386,16 @@
     <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"ઉધરસ"</string>
     <string name="symptom_cough_read_content_description" msgid="398516421189288025">"લક્ષણો વાંચો"</string>
     <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"લક્ષણો લખો"</string>
+    <!-- no translation found for symptom_unknown (5796719193136239306) -->
+    <skip />
+    <!-- no translation found for symptom_severity_mild (2689415474774489874) -->
+    <skip />
+    <!-- no translation found for symptom_severity_moderate (8388787027751900668) -->
+    <skip />
+    <!-- no translation found for symptom_severity_severe (4675732713898596705) -->
+    <skip />
+    <!-- no translation found for symptom_entry_title (3927744074055963604) -->
+    <skip />
     <string name="read_permission_category" msgid="6002099618259628632">"“<xliff:g id="APP_NAME">%1$s</xliff:g>”ને વાંચવાની મંજૂરી આપો"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"“<xliff:g id="APP_NAME">%1$s</xliff:g>”ને લખવાની મંજૂરી આપો"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"મંજૂરી આપો"</string>
@@ -1235,6 +1249,8 @@
     <string name="write_access" msgid="571547306854732263">"લખવાનો ઍક્સેસ"</string>
     <string name="read_access" msgid="3317759826769372785">"વાંચવાનો ઍક્સેસ"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (7942303192917497010) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g>માંથી <xliff:g id="NUMBER_0">%1$d</xliff:g> ઍપને મંજૂરી છે"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"કોઈ ઍપ વિનંતી કરી રહી નથી"</string>
     <string name="allowed" msgid="4158456017482263737">"આ ઍપને મંજૂરી છે"</string>
@@ -1291,5 +1307,29 @@
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"રિવ્યૂ કરો"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"હવે Health Connectમાં પગલાં આવે છે"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"આ ડિવાઇસ દ્વારા ટ્રૅક કરવામાં આવેલા પગલાં હવે Health Connect પર સ્ટોર થાય છે કે જેથી કનેક્ટ થયેલી ઍપ તેને ઍક્સેસ કરી શકે"</string>
+    <!-- no translation found for your_health_apps_category_title (2140744650535785802) -->
+    <skip />
+    <!-- no translation found for your_health_data_category_title (7049426060456828669) -->
+    <skip />
+    <!-- no translation found for preferences_category_title (8799354266901230310) -->
+    <skip />
+    <!-- no translation found for home_screen_footer (7572797414754117707) -->
+    <skip />
+    <!-- no translation found for home_screen_footer_link (3276430842054286014) -->
+    <skip />
+    <!-- no translation found for data_and_access_summary (1435478623777637347) -->
+    <skip />
+    <!-- no translation found for recent_access_summary (3933708982145999939) -->
+    <skip />
+    <!-- no translation found for home_devices_summary (6056984338393523399) -->
+    <skip />
+    <!-- no translation found for empty_apps_section_title (1808646811838427261) -->
+    <skip />
+    <!-- no translation found for empty_apps_section_link (5227373618435407625) -->
+    <skip />
+    <!-- no translation found for see_all_connected_apps_button (3391164556225732842) -->
+    <skip />
+    <!-- no translation found for app_not_connected_summary (3898921378270235598) -->
+    <skip />
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"હમણાં નહીં"</string>
 </resources>
