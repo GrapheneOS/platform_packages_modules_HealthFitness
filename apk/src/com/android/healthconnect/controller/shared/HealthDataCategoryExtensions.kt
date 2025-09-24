@@ -100,6 +100,7 @@ object HealthDataCategoryExtensions {
             HealthDataCategory.SLEEP -> R.string.sleep_category_lowercase
             HealthDataCategory.VITALS -> R.string.vitals_category_lowercase
             HealthDataCategory.WELLNESS -> R.string.wellness_category_lowercase
+            HealthDataCategory.SYMPTOMS -> R.string.symptoms_category_lowercase
             MEDICAL -> R.string.medical_permissions_lowercase
             else -> throw IllegalArgumentException("Category $this is not supported.")
         }
@@ -115,6 +116,7 @@ object HealthDataCategoryExtensions {
             HealthDataCategory.SLEEP -> R.string.sleep_category_uppercase
             HealthDataCategory.VITALS -> R.string.vitals_category_uppercase
             HealthDataCategory.WELLNESS -> R.string.wellness_category_uppercase
+            HealthDataCategory.SYMPTOMS -> R.string.symptoms_category_uppercase
             MEDICAL -> R.string.medical_permissions
             else -> throw IllegalArgumentException("Category $this is not supported.")
         }
@@ -130,6 +132,7 @@ object HealthDataCategoryExtensions {
                 HealthDataCategory.SLEEP -> R.attr.sleepCategoryIcon
                 HealthDataCategory.VITALS -> R.attr.vitalsCategoryIcon
                 HealthDataCategory.WELLNESS -> R.attr.wellnessCategoryIcon
+                HealthDataCategory.SYMPTOMS -> R.attr.symptomsCategoryIcon
                 // TODO(b/342156345): Add default medical icon.
                 MEDICAL -> R.attr.vitalsCategoryIcon
                 else -> throw IllegalArgumentException("Category $this is not supported.")

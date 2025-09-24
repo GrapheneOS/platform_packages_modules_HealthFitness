@@ -68,6 +68,16 @@ sealed class FormattedEntry(
         val notes: String?,
     ) : FormattedEntry(uuid, GROUP_ITEM), HasDataType
 
+    data class SymptomEntry(
+        override val uuid: String,
+        val header: String,
+        val headerA11y: String,
+        val title: String,
+        val titleA11y: String,
+        override val dataType: DataType,
+        val notes: String?,
+    ) : FormattedEntry(uuid, GROUP_ITEM), HasDataType
+
     data class ExerciseSessionEntry(
         override val uuid: String,
         val header: String,

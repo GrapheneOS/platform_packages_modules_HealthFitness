@@ -48,6 +48,7 @@
         <item name="sleepCategoryIcon">@drawable/ic_category_sleep</item>
         <item name="vitalsCategoryIcon">@drawable/ic_category_vitals</item>
         <item name="wellnessCategoryIcon">@drawable/ic_category_wellness</item>
+        <item name="symptomsCategoryIcon">@drawable/ic_symptoms</item>
         <item name="databaseIcon">@drawable/ic_database</item>
 
         <!-- Permission types page -->

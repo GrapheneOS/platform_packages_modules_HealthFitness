@@ -180,6 +180,8 @@ public class HealthPermissionsTest {
                                     HealthPermissions.WRITE_RESTING_HEART_RATE,
                                     HealthPermissions.WRITE_SKIN_TEMPERATURE,
                                     HealthPermissions.WRITE_MINDFULNESS,
+                                    HealthPermissions.READ_SYMPTOM_COUGH,
+                                    HealthPermissions.WRITE_SYMPTOM_COUGH,
                                     HealthPermissions.WRITE_MEDICAL_DATA),
                             Flags.activityIntensity()
                                     ? Stream.of(
