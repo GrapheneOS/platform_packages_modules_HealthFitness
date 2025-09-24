@@ -95,6 +95,8 @@ import static android.health.connect.HealthPermissions.WRITE_VO2_MAX;
 import static android.health.connect.HealthPermissions.WRITE_WEIGHT;
 import static android.health.connect.HealthPermissions.WRITE_WHEELCHAIR_PUSHES;
 
+import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
@@ -102,11 +104,15 @@ import android.content.pm.PackageManager;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.health.connect.HealthConnectManager;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -116,7 +122,15 @@ import java.util.Set;
  * Configuration test to check that all health permissions are defined.
  */
 @RunWith(AndroidJUnit4.class)
+@RequiresFlagsEnabled(
+        value = {
+            FLAG_SYMPTOMS,
+        })
 public class HealthPermissionsPresenceTest {
+
+    @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
+
     private static final Set<String> HEALTH_PERMISSIONS =
             Set.of(
                     READ_HEALTH_DATA_IN_BACKGROUND,
