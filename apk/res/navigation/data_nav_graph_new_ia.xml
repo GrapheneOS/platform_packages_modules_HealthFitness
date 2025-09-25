@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_allDataFragment_to_connectedApps"
             app:destination="@id/connected_apps_nav_graph" />
+        <action
+            android:id="@+id/action_medicalAllData_to_entriesAndAccess"
+            app:destination="@id/entries_and_access_nav_graph" />
     </fragment>
 
 </navigation>

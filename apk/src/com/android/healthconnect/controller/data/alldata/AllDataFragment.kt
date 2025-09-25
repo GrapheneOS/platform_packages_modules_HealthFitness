@@ -43,8 +43,8 @@ import com.android.healthconnect.controller.selectabledeletion.DeletionPermissio
 import com.android.healthconnect.controller.selectabledeletion.DeletionType
 import com.android.healthconnect.controller.selectabledeletion.DeletionViewModel
 import com.android.healthconnect.controller.selectabledeletion.SelectAllCheckboxPreference
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.MEDICAL
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
-import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.children
 import com.android.healthconnect.controller.shared.preference.EmptyPreferenceCategory
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
@@ -59,6 +59,7 @@ import com.android.healthconnect.controller.utils.logging.ToolbarElement
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.setupSharedMenu
+import com.android.healthfitness.flags.Flags.newHomeScreen
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsThemeHelper
 import com.android.settingslib.widget.ZeroStatePreference
@@ -85,9 +86,7 @@ open class AllDataFragment : Hilt_AllDataFragment() {
     @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
 
     /** Decides whether this screen is supposed to display Fitness data or Medical data. */
-    private var showMedicalData = false
-
-    @HealthDataCategoryInt private var category: Int = 0
+    private var displayType = DisplayType.FITNESS_DATA
 
     private val viewModel: AllDataViewModel by viewModels()
 
@@ -184,22 +183,34 @@ open class AllDataFragment : Hilt_AllDataFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.all_data_screen, rootKey)
-        val hasBrowseMedicalDataKey = arguments?.containsKey(IS_BROWSE_MEDICAL_DATA_SCREEN) ?: false
-        if (hasBrowseMedicalDataKey) {
-            showMedicalData =
-                arguments?.getBoolean(IS_BROWSE_MEDICAL_DATA_SCREEN)
-                    ?: throw IllegalArgumentException(
-                        "IS_BROWSE_MEDICAL_DATA_SCREEN can't be null!"
-                    )
-        }
+        displayType =
+            if (newHomeScreen()) {
+                DisplayType.COMBINED_DATA
+            } else {
+                if (arguments?.containsKey(IS_BROWSE_MEDICAL_DATA_SCREEN) == true) {
+                    val isBrowseMedicalData =
+                        arguments?.getBoolean(IS_BROWSE_MEDICAL_DATA_SCREEN)
+                            ?: throw IllegalArgumentException(
+                                "IS_BROWSE_MEDICAL_DATA_SCREEN can't be null!"
+                            )
+                    if (isBrowseMedicalData) DisplayType.MEDICAL_DATA else DisplayType.FITNESS_DATA
+                } else {
+                    DisplayType.FITNESS_DATA
+                }
+            }
+
         if (childFragmentManager.findFragmentByTag(DELETION_TAG) == null) {
             childFragmentManager.commitNow { add(DeletionFragment(), DELETION_TAG) }
         }
-        if (showMedicalData) {
-            setPageName(PageName.ALL_MEDICAL_DATA_PAGE)
-        } else {
-            setPageName(PageName.ALL_DATA_PAGE)
-        }
+        setPageName(
+            when (displayType) {
+                // TODO (b/445405721) - replace with new telemetry logs
+                DisplayType.COMBINED_DATA -> PageName.ALL_DATA_PAGE
+                DisplayType.MEDICAL_DATA -> PageName.ALL_MEDICAL_DATA_PAGE
+                DisplayType.FITNESS_DATA -> PageName.ALL_DATA_PAGE
+            }
+        )
+
         selectAllCheckboxPreference.logName = AllDataElement.SELECT_ALL_BUTTON
     }
 
@@ -245,14 +256,23 @@ open class AllDataFragment : Hilt_AllDataFragment() {
     }
 
     private fun loadAllData() {
-        if (showMedicalData) {
-            viewModel.loadAllMedicalData()
-        } else {
-            viewModel.loadAllFitnessData()
+        when (displayType) {
+            DisplayType.COMBINED_DATA -> {
+                viewModel.loadAllFitnessAndMedicalData()
+            }
+            DisplayType.MEDICAL_DATA -> {
+                viewModel.loadAllMedicalData()
+            }
+            DisplayType.FITNESS_DATA -> {
+                viewModel.loadAllFitnessData()
+            }
         }
     }
 
     private fun setTopIntroVisibility(visible: Boolean) {
+        if (displayType != DisplayType.MEDICAL_DATA) {
+            return
+        }
         if (visible) {
             if (findPreference<Preference>(KEY_TOP_INTRO) == null) {
                 preferenceScreen.addPreference(
@@ -278,12 +298,17 @@ open class AllDataFragment : Hilt_AllDataFragment() {
     private fun updatePreferenceScreen(
         permissionTypesPerCategoryList: List<PermissionTypesPerCategory>
     ) {
+        var preferenceOrder = 0
         permissionTypesListGroup.removeAll()
 
         val populatedCategories =
-            permissionTypesPerCategoryList
-                .filter { it.data.isNotEmpty() }
-                .sortByLocale { getString(it.category.uppercaseTitle()) }
+            if (newHomeScreen()) {
+                sortAndAddMedicalToLast(permissionTypesPerCategoryList)
+            } else {
+                permissionTypesPerCategoryList
+                    .filter { it.data.isNotEmpty() }
+                    .sortByLocale { getString(it.category.uppercaseTitle()) }
+            }
 
         if (populatedCategories.isEmpty()) {
             setupEmptyState()
@@ -297,32 +322,80 @@ open class AllDataFragment : Hilt_AllDataFragment() {
         footerPreference.isVisible = false
         zeroStatePreference.isVisible = false
 
+        var isFirstMedicalPreference = true
         populatedCategories.forEach { permissionTypesPerCategory ->
             val category = permissionTypesPerCategory.category
 
             val preferenceCategory =
-                if (showMedicalData) {
+                if (displayType == DisplayType.MEDICAL_DATA) {
+                    // When displaying only medical data
                     EmptyPreferenceCategory(requireContext())
                 } else {
                     PreferenceCategory(requireContext()).also {
                         it.setTitle(category.uppercaseTitle())
                     }
                 }
+
             permissionTypesListGroup.addPreference(preferenceCategory)
+            preferenceOrder += 1
+            if (
+                displayType == DisplayType.COMBINED_DATA &&
+                    permissionTypesPerCategory.category == MEDICAL &&
+                    isFirstMedicalPreference
+            ) {
+                isFirstMedicalPreference = false
+                val medicalPreference =
+                    topIntroPreference(
+                        preferenceKey = KEY_TOP_INTRO,
+                        context = requireContext(),
+                        preferenceTitle = getString(R.string.browse_health_records_intro),
+                        learnMoreText = getString(R.string.medical_request_about_health_records),
+                        learnMoreAction = {
+                            deviceInfoUtils.openHCGetStartedLink(requireActivity())
+                        },
+                        preferenceOrder = preferenceOrder,
+                    )
+                preferenceCategory.addPreference(medicalPreference)
+                preferenceOrder += 1
+            }
 
             permissionTypesPerCategory.data
                 .sortByLocale { getString(it.upperCaseLabel()) }
                 .forEach { permissionType ->
                     val icon = permissionType.icon(requireContext())
                     preferenceCategory.addPreference(
-                        getPermissionTypePreference(permissionType, icon)
+                        getPermissionTypePreference(
+                            permissionType,
+                            icon,
+                            preferenceOrder = preferenceOrder,
+                        )
                     )
+                    preferenceOrder += 1
                 }
         }
     }
 
+    /** Sorts fitness categories alphabetically and appends the medical category to the end. */
+    private fun sortAndAddMedicalToLast(
+        permissionTypesPerCategoryList: List<PermissionTypesPerCategory>
+    ): List<PermissionTypesPerCategory> {
+        val populatedFitnessCategories =
+            permissionTypesPerCategoryList
+                .filter { it.data.isNotEmpty() && it.category != MEDICAL }
+                .sortByLocale { getString(it.category.uppercaseTitle()) }
+
+        val medicalCategory =
+            permissionTypesPerCategoryList.find { it.category == MEDICAL && it.data.isNotEmpty() }
+
+        return if (medicalCategory != null) {
+            populatedFitnessCategories + medicalCategory
+        } else {
+            populatedFitnessCategories
+        }
+    }
+
     private fun updateMenu(screenState: DeletionScreenState, hasData: Boolean = true) {
-        if (!hasData && showMedicalData) {
+        if (!hasData && displayType == DisplayType.MEDICAL_DATA) {
             setupSharedMenu(viewLifecycleOwner, logger)
             return
         }
@@ -338,7 +411,7 @@ open class AllDataFragment : Hilt_AllDataFragment() {
             return
         }
 
-        if (screenState == VIEW && showMedicalData) {
+        if (screenState == VIEW && displayType == DisplayType.MEDICAL_DATA) {
             setupMenu(
                 R.menu.all_data_menu_without_data_sources,
                 viewLifecycleOwner,
@@ -412,6 +485,7 @@ open class AllDataFragment : Hilt_AllDataFragment() {
     private fun getPermissionTypePreference(
         permissionType: HealthPermissionType,
         categoryIcon: Drawable?,
+        preferenceOrder: Int = 0,
     ): Preference {
         val pref =
             DeletionPermissionTypesPreference(requireContext(), viewModel) {
@@ -431,6 +505,7 @@ open class AllDataFragment : Hilt_AllDataFragment() {
             icon = categoryIcon
             setTitle(permissionType.upperCaseLabel())
             setHealthPermissionType(permissionType)
+            order = preferenceOrder
 
             viewModel.setOfPermissionTypesToBeDeleted.observe(viewLifecycleOwner) { deleteSet ->
                 setIsChecked(permissionType in deleteSet)
@@ -451,7 +526,7 @@ open class AllDataFragment : Hilt_AllDataFragment() {
 
     private fun setupSelectAllPreference(screenState: DeletionScreenState) {
         selectAllCheckboxPreference.isVisible = screenState == DELETE
-        setTopIntroVisibility(showMedicalData && screenState == VIEW)
+        setTopIntroVisibility(displayType == DisplayType.MEDICAL_DATA && screenState == VIEW)
         if (screenState == DELETE) {
             viewModel.allPermissionTypesSelected.observe(viewLifecycleOwner) {
                 allPermissionTypesSelected ->
@@ -492,5 +567,11 @@ open class AllDataFragment : Hilt_AllDataFragment() {
                 }
             }
         }
+    }
+
+    enum class DisplayType {
+        COMBINED_DATA,
+        MEDICAL_DATA,
+        FITNESS_DATA,
     }
 }
