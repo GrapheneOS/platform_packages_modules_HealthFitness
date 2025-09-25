@@ -384,6 +384,7 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
     }
 
     private fun removeEmptyState() {
+        zeroStatePreference.isVisible = false
         preferenceScreen.removePreferenceRecursively(EMPTY_STATE_HEADER_PREFERENCE_KEY)
         preferenceScreen.removePreferenceRecursively(EMPTY_STATE_FOOTER_PREFERENCE_KEY)
     }
@@ -437,6 +438,10 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
 
                     val currentCategory = dataSourcesCategories[position]
                     currentCategorySelection = dataSourcesCategories[position]
+
+                    // Clear the screen before loading new data
+                    removeNonEmptyState()
+                    removeEmptyState()
 
                     // Reload the data sources information when a new category has been selected
                     dataSourcesViewModel.loadData(currentCategory)

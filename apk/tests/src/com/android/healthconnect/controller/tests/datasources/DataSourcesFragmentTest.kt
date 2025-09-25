@@ -738,6 +738,73 @@ class DataSourcesFragmentTest {
         verify(healthConnectLogger).logImpression(DataSourcesElement.REMOVE_APP_SOURCE_MENU_BUTTON)
     }
 
+    @Test
+    fun switchingCategory_fromEmptyToWithData_removesEmptyState() {
+        val dataSourcesLiveData = MutableLiveData<DataSourcesAndAggregationsInfo>()
+        whenever(dataSourcesViewModel.dataSourcesAndAggregationsInfo)
+            .thenReturn(dataSourcesLiveData)
+        whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
+            MutableLiveData(AggregationCardsState.WithData(true, listOf()))
+        }
+
+        val emptyData =
+            DataSourcesAndAggregationsInfo(
+                priorityListState = PriorityListState.WithData(true, listOf()),
+                potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf()),
+                aggregationCardsState = AggregationCardsState.WithData(true, listOf()),
+            )
+
+        val withData =
+            DataSourcesAndAggregationsInfo(
+                priorityListState = PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
+                potentialAppSourcesState =
+                    PotentialAppSourcesState.WithData(true, listOf(TEST_APP_3)),
+                aggregationCardsState =
+                    AggregationCardsState.WithData(
+                        true,
+                        listOf(
+                            AggregationCardInfo(
+                                FitnessPermissionType.STEPS,
+                                FormattedEntry.FormattedAggregation(
+                                    "1234 steps",
+                                    "1234 steps",
+                                    "TestApp",
+                                ),
+                                Instant.parse("2022-10-19T07:06:05.432Z"),
+                            )
+                        ),
+                    ),
+            )
+        whenever(dataSourcesViewModel.loadData(HealthDataCategory.ACTIVITY)).then {
+            dataSourcesLiveData.postValue(emptyData)
+        }
+        whenever(dataSourcesViewModel.loadData(HealthDataCategory.SLEEP)).then {
+            dataSourcesLiveData.postValue(withData)
+        }
+
+        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        onIdle()
+        onView(withText("No data sources")).check(matches(isDisplayed()))
+
+        onView(withId(android.R.id.text1)).perform(click())
+        onView(withText("Sleep")).perform(click())
+        onIdle()
+
+        onView(withText("No data sources")).check(doesNotExist())
+        onView(withText("Data sources")).check(matches(isDisplayed()))
+
+        whenever(dataSourcesViewModel.loadData(HealthDataCategory.ACTIVITY)).then {
+            dataSourcesLiveData.postValue(withData)
+        }
+
+        onView(withId(android.R.id.text1)).perform(click())
+        onView(withText("Activity")).perform(click())
+        onIdle()
+
+        onView(withText("No data sources")).check(doesNotExist())
+        onView(withText("Data sources")).check(matches(isDisplayed()))
+    }
+
     private fun launchFragment(priorityList: List<AppMetadata>) {
         whenever(dataSourcesViewModel.dataSourcesAndAggregationsInfo).then {
             MutableLiveData(
