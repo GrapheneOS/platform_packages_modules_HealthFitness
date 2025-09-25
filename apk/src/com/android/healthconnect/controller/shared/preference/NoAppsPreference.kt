@@ -20,26 +20,40 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
-import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.utils.logging.ElementName
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import com.android.healthconnect.controller.utils.logging.UnknownGenericElement
+import dagger.hilt.android.EntryPointAccessors
 
 /** A custom preference used to display a message when there are no apps available. */
-class NoAppsPreference
-@JvmOverloads
-constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = androidx.preference.R.attr.preferenceStyle,
-) : Preference(context, attrs, defStyleAttr) {
+class NoAppsPreference @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
+    HealthPreference(context, attrs) {
+    private var logger: HealthConnectLogger
 
     private var learnMoreText = ""
     private var learnMoreAction: View.OnClickListener? = null
+    override var logName: ElementName = UnknownGenericElement.UNKNOWN_HEALTH_PREFERENCE
+    private var linkLogName: ElementName = UnknownGenericElement.UNKNOWN_HEALTH_PREFERENCE
 
     init {
         key = "empty_health_apps"
         isSelectable = false
         layoutResource = R.layout.widget_no_apps_preference
+
+        val hiltEntryPoint =
+            EntryPointAccessors.fromApplication(
+                context.applicationContext,
+                HealthConnectLoggerEntryPoint::class.java,
+            )
+        logger = hiltEntryPoint.logger()
+    }
+
+    fun setLogNames(textLogName: ElementName, linkLogName: ElementName) {
+        logName = textLogName
+        this.linkLogName = linkLogName
     }
 
     fun setLearnMoreText(text: String) {
@@ -56,10 +70,14 @@ constructor(
         super.onBindViewHolder(holder)
         val learnMoreSection = holder.itemView.findViewById<TextView>(R.id.settingslib_learn_more)
 
-        if (learnMoreText.isNotEmpty()) {
+        if (learnMoreText.isNotEmpty() && learnMoreAction != null) {
+            logger.logImpression(linkLogName)
             learnMoreSection.text = learnMoreText
             learnMoreSection.visibility = View.VISIBLE
-            learnMoreSection.setOnClickListener(learnMoreAction)
+            learnMoreSection.setOnClickListener { view ->
+                logger.logInteraction(linkLogName)
+                learnMoreAction?.onClick(view)
+            }
         }
     }
 }

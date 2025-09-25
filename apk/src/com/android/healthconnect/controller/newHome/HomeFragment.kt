@@ -37,8 +37,9 @@ import com.android.healthconnect.controller.shared.preference.HealthPreferenceFr
 import com.android.healthconnect.controller.shared.preference.NoAppsPreference
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
-import com.android.healthconnect.controller.utils.logging.CommonOnboardingPageElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.NewHomePageElement
+import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
 import com.android.healthfitness.flags.Flags.stepTrackingEnabled
@@ -52,14 +53,15 @@ class HomeFragment : Hilt_HomeFragment() {
 
     companion object {
         private const val YOUR_HEALTH_APPS_CATEGORY = "your_health_apps"
-        private const val EMPTY_HEALTH_APPS_PREFERENCE = "empty_health_apps"
-        private const val YOUR_HEALTH_DATA_CATEGORY = "your_health_data"
         private const val DATA_AND_ACCESS = "data_and_access"
         private const val RECENT_ACCESS = "recent_access"
-        private const val PREFERENCES_CATEGORY = "preferences"
         private const val DEVICES = "devices"
         private const val MANAGE_DATA = "manage_data"
         private const val FOOTER = "footer"
+    }
+
+    init {
+        setPageName(PageName.NEW_HOME_PAGE)
     }
 
     private val homeViewModel: HomeViewModel by viewModels()
@@ -79,11 +81,13 @@ class HomeFragment : Hilt_HomeFragment() {
         super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.new_home_screen, rootKey)
 
+        dataAndAccessPreference.logName = NewHomePageElement.DATA_AND_ACCESS_BUTTON
         dataAndAccessPreference.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_newHomeFragment_to_dataAndAccess)
             true
         }
 
+        recentAccessPreference.logName = NewHomePageElement.RECENT_ACCESS_BUTTON
         recentAccessPreference.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_newHomeFragment_to_recentAccess)
             true
@@ -91,6 +95,7 @@ class HomeFragment : Hilt_HomeFragment() {
 
         if (stepTrackingEnabled()) {
             devicesPreference.isVisible = true
+            devicesPreference.logName = NewHomePageElement.DEVICES_BUTTON
             devicesPreference.setOnPreferenceClickListener {
                 findNavController()
                     .navigate(R.id.action_newHomeFragment_to_connectedDevicesFragment)
@@ -100,17 +105,17 @@ class HomeFragment : Hilt_HomeFragment() {
             devicesPreference.isVisible = false
         }
 
+        manageDataPreference.logName = NewHomePageElement.MANAGE_DATA_BUTTON
         manageDataPreference.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_newHomeFragment_to_manageData)
             true
         }
 
+        healthConnectLogger.logImpression(NewHomePageElement.HOME_PAGE_FOOTER)
+        healthConnectLogger.logImpression(NewHomePageElement.HOME_PAGE_FOOTER_LINK)
         footer.setLearnMoreText(getString(R.string.home_screen_footer_link))
         footer.setLearnMoreAction {
-            // TODO add telemetry
-            healthConnectLogger.logInteraction(
-                CommonOnboardingPageElement.MORE_ABOUT_HEALTH_CONNECT_BUTTON
-            )
+            healthConnectLogger.logInteraction(NewHomePageElement.HOME_PAGE_FOOTER_LINK)
             deviceInfoUtils.openHCGetStartedLink(requireActivity())
         }
     }
@@ -146,6 +151,9 @@ class HomeFragment : Hilt_HomeFragment() {
                     .also {
                         if (app.status == ConnectedAppStatus.DENIED) {
                             it.summary = getString(R.string.app_not_connected_summary)
+                            it.logName = NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON
+                        } else {
+                            it.logName = NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON
                         }
                         it.setOnPreferenceClickListener {
                             navigateToAppInfoOrOnboarding(app)
@@ -163,11 +171,17 @@ class HomeFragment : Hilt_HomeFragment() {
     private fun getNoAppsPreference(): NoAppsPreference {
         return NoAppsPreference(requireContext()).also {
             it.title = getString(R.string.empty_apps_section_title)
-            it.setLearnMoreText(getString(R.string.empty_apps_section_link))
-            it.setLearnMoreAction {
-                findNavController().navigate(R.id.action_newHomeFragment_to_playStoreActivity)
-                true
+            if (deviceInfoUtils.isPlayStoreAvailable(requireContext())) {
+                it.setLearnMoreText(getString(R.string.empty_apps_section_link))
+                it.setLearnMoreAction {
+                    findNavController().navigate(R.id.action_newHomeFragment_to_playStoreActivity)
+                    true
+                }
             }
+            it.setLogNames(
+                textLogName = NewHomePageElement.NO_APPS_AVAILABLE_HEADER,
+                linkLogName = NewHomePageElement.NO_APPS_AVAILABLE_LINK,
+            )
         }
     }
 
@@ -181,6 +195,7 @@ class HomeFragment : Hilt_HomeFragment() {
                         findNavController()
                             .navigate(R.id.action_newHomeFragment_to_connectedAppsFragment)
                     }
+                    it.logName = NewHomePageElement.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON
                 }
             } else {
                 HealthPreference(requireContext()).also {
@@ -191,6 +206,7 @@ class HomeFragment : Hilt_HomeFragment() {
                             .navigate(R.id.action_newHomeFragment_to_connectedAppsFragment)
                         true
                     }
+                    it.logName = NewHomePageElement.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON
                 }
             }
 
