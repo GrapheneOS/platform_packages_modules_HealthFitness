@@ -378,14 +378,10 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"Alkoholkonsum"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Daten zu Alkoholkonsum lesen"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Daten zu Alkoholkonsum schreiben"</string>
-    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
-    <skip />
-    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
-    <skip />
-    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
-    <skip />
-    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
-    <skip />
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Husten"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"husten"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Symptome lesen"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Symptome eingeben"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ Lesezugriff erlauben"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ Schreibzugriff gewähren"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Erlauben"</string>
@@ -418,7 +414,7 @@
     <string name="medical_request_footer" msgid="6533749932770903089">"Du kannst deine Gesundheitsdaten aus verschiedenen Apps und Quellen synchronisieren lassen, um sie an einem Ort zu speichern"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Alle Berechtigungen entfernen?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Alle entfernen"</string>
-    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ kann dann keine Daten mehr von Health Connect lesen oder schreiben.\n\nDies hat keine Auswirkungen auf andere Berechtigungen, die diese App möglicherweise hat, wie z. B. Kamera, Mikrofon oder Standort."</string>
+    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ kann dann keine Daten mehr von Health Connect lesen oder bearbeiten.\n\nDies hat keine Auswirkungen auf andere Berechtigungen, die diese App möglicherweise hat, wie z. B. Kamera, Mikrofon oder Standort."</string>
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ kann dann keine Daten mehr von Health Connect lesen oder schreiben, auch keine Hintergrunddaten.\n\nDies hat keine Auswirkungen auf andere Berechtigungen, die diese App möglicherweise hat, wie z. B. Standort, Kamera oder Mikrofon."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ kann dann keine Daten mehr von Health Connect lesen oder schreiben, auch keine früheren Daten.\n\nDies hat keine Auswirkungen auf andere Berechtigungen, die diese App möglicherweise hat, wie z. B. Standort, Kamera oder Mikrofon."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ kann dann keine Daten mehr von Health Connect lesen oder schreiben, auch keine Hintergrunddaten und früheren Daten.\n\nDies hat keine Auswirkungen auf andere Berechtigungen, die diese App möglicherweise hat, wie z. B. Standort, Kamera oder Mikrofon."</string>
@@ -844,7 +840,7 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} Zigarette}other{{quantity} Zigaretten}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} unbekannt"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> Min."</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> Std. <xliff:g id="MIN">%2$s</xliff:g> Min."</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> Std. <xliff:g id="MIN">%2$s</xliff:g> Min."</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> Std."</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 Stunde}other{# Stunden}}"</string>

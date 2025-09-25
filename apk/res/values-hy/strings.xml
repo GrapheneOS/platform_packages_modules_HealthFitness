@@ -28,7 +28,7 @@
     <string name="all_categories_title" msgid="1446410643217937926">"Բոլոր կատեգորիաները"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Տեսնել բոլոր կատեգորիաները"</string>
     <string name="no_data" msgid="1906986019249068659">"Տվյալներ չկան"</string>
-    <string name="devices_summary" msgid="8653563324512654292">"Միացված սարքերի կառավարում"</string>
+    <string name="devices_summary" msgid="8653563324512654292">"Կապակցված սարքերի կառավարում"</string>
     <string name="devices_title" msgid="7548105261104504301">"Սարքեր"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"Հավելվածների թույլտվություններ"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Կառավարեք ձեր հավելվածները և թույլտվությունները"</string>
@@ -37,7 +37,7 @@
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"Հասանելի են <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> հավելվածի"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"Հասանելի են <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> հավելվածի"</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{Հասանելի է 1 հավելվածի}one{Հասանելի է # հավելվածի}other{Հասանելի է # հավելվածի}}"</string>
-    <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Ընտրված տարրեր չկան"</string>
+    <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Ընտրված տարր չկա"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Գրառման մանրամասները"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Դիտել տվյալները"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Տեսեք տվյալները, և թե որ հավելվածներին կարող են դրանք հասանելի լինել"</string>
@@ -378,14 +378,10 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"ալկոհոլի օգտագործում"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Կարդալ ալկոհոլի օգտագործման տվյալները"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Գրանցել ալկոհոլի օգտագործման տվյալները"</string>
-    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
-    <skip />
-    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
-    <skip />
-    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
-    <skip />
-    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
-    <skip />
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Հազ"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"հազ"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Կարդալ ախտանիշները"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Գրանցել ախտանիշները"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Թույլատրել <xliff:g id="APP_NAME">%1$s</xliff:g> հավելվածին կարդալ"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Թույլատրել <xliff:g id="APP_NAME">%1$s</xliff:g> հավելվածին գրանցել"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Թույլատրել"</string>
@@ -844,7 +840,7 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} ծխախոտ}one{{quantity} ծխախոտ}other{{quantity} ծխախոտ}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} անհայտ"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> ր"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> ժ <xliff:g id="MIN">%2$s</xliff:g> ր"</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> ժ <xliff:g id="MIN">%2$s</xliff:g> ր"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> ժ"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 ժամ}one{# ժամ}other{# ժամ}}"</string>

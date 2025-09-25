@@ -378,14 +378,10 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"spożycie alkoholu"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Odczytuj dane o spożyciu alkoholu"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Zapisuj dane o spożyciu alkoholu"</string>
-    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
-    <skip />
-    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
-    <skip />
-    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
-    <skip />
-    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
-    <skip />
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Kaszel"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"kaszel"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Odczytywanie objawów"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Zapisywanie objawów"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Zezwól aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g> na dostęp do odczytu"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Zezwól aplikacji „<xliff:g id="APP_NAME">%1$s</xliff:g>” na zapisywanie"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Zezwól"</string>
@@ -844,7 +840,7 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} papieros}few{{quantity} papierosy}many{{quantity} papierosów}other{{quantity} papierosa}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"Nieznana {ilość, liczba}"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> godz. <xliff:g id="MIN">%2$s</xliff:g> min"</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> godz. <xliff:g id="MIN">%2$s</xliff:g> min"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> godz."</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 godzina}few{# godziny}many{# godzin}other{# godziny}}"</string>

@@ -378,14 +378,10 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"consumo de alcohol"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Leer consumo de alcohol"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Registrar consumo de alcohol"</string>
-    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
-    <skip />
-    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
-    <skip />
-    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
-    <skip />
-    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
-    <skip />
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Tos"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"tos"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Leer síntomas"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Escribir síntomas"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Otorgar a \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" permiso de lectura"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Permitir que \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tenga acceso de escritura"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Permitir"</string>
@@ -844,7 +840,7 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} cigarrillo}other{{quantity} cigarrillos}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} desconocido"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> min"</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> min"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> h"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 hora}other{# horas}}"</string>

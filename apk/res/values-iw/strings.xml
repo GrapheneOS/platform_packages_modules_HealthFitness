@@ -61,7 +61,7 @@
     <string name="today_header" msgid="1006837293203834373">"היום"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"אתמול"</string>
     <string name="read_data_access_label" msgid="8968758932021241976">"קריאה: <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
-    <string name="write_data_access_label" msgid="105976369853871061">"הרשאת כתיבה ועדכון של נתונים: <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
+    <string name="write_data_access_label" msgid="105976369853871061">"כתיבת נתונים של: <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
     <string name="separator" msgid="5521285473288943819">", "</string>
     <string name="manage_permissions" msgid="8394221950712608160">"ניהול ההרשאות"</string>
     <string name="recent_access_time_content_descritption" msgid="1137471676075811472">"זמן: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
@@ -378,14 +378,10 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"צריכת אלכוהול"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"קריאה של נתוני צריכת האלכוהול"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"כתיבה של נתוני צריכת האלכוהול"</string>
-    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
-    <skip />
-    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
-    <skip />
-    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
-    <skip />
-    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
-    <skip />
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"שיעול"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"שיעול"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"קריאת התסמינים"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"כתיבת התסמינים"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"מתן הרשאה לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> לקרוא נתונים"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"מתן הרשאה לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> לכתוב נתונים"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"אישור"</string>
@@ -844,7 +840,7 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{סיגריה אחת ({quantity})}one{‫{quantity} סיגריות}two{‫{quantity} סיגריות}other{‫{quantity} סיגריות}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"‫{quantity, number} לא ידוע"</string>
     <string name="minute_duration" msgid="9035288227090160206">"דקה (<xliff:g id="MINUTE">%1$s</xliff:g>)"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> שע’ <xliff:g id="MIN">%2$s</xliff:g> דק’"</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"‫<xliff:g id="HOUR">%1$s</xliff:g> שע’ ו-<xliff:g id="MIN">%2$s</xliff:g> דק’"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> שע‘"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> שע\' <xliff:g id="MINUTES">%2$s</xliff:g> דק\'"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{שעה אחת}one{# שעות}two{שעתיים}other{# שעות}}"</string>

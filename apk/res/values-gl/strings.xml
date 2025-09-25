@@ -37,7 +37,7 @@
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplicacións teñen acceso"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplicación ten acceso"</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{Unha aplicación ten acceso}other{# aplicacións teñen acceso}}"</string>
-    <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Ningunha"</string>
+    <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Ningún"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Detalles da entrada"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Consultar datos"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Ver os datos e as aplicacións que poden acceder a eles"</string>
@@ -378,14 +378,10 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"consumo de alcohol"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Ler os datos de consumo de alcohol"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Escribir os datos de consumo de alcohol"</string>
-    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
-    <skip />
-    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
-    <skip />
-    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
-    <skip />
-    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
-    <skip />
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Tose"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"tose"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Ler síntomas"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Escribir síntomas"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> lea"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> escriba"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Permitir"</string>
@@ -844,7 +840,7 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} cigarro}other{{quantity} cigarros}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} descoñ."</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> h e <xliff:g id="MIN">%2$s</xliff:g> min"</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> min"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> h"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> e <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 hora}other{# horas}}"</string>
