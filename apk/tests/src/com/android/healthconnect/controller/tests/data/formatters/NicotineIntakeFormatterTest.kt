@@ -90,6 +90,31 @@ class NicotineIntakeFormatterTest {
     }
 
     @Test
+    fun formatValue_nullNicotineIntake_formatsCorrectly() = runBlocking {
+        val record =
+            NicotineIntakeRecord.Builder(
+                    getMetaData(),
+                    NOW,
+                    NOW.plus(Duration.ofMinutes(16).plusSeconds(40)),
+                    10,
+                    NICOTINE_INTAKE_TYPE_CIGARETTE,
+                )
+                .build()
+
+        assertThat(formatter.format(record, "com.app.name"))
+            .isEqualTo(
+                FormattedEntry.FormattedDataEntry(
+                    uuid = "test_id",
+                    header = "07:06 - 07:22 • com.app.name",
+                    headerA11y = "from 07:06 to 07:22 • com.app.name",
+                    title = "10 cigarettes",
+                    titleA11y = "10 cigarettes",
+                    dataType = NicotineIntakeRecord::class,
+                )
+            )
+    }
+
+    @Test
     fun formatValue_formatsQuantityAndType() = runBlocking {
         val record =
             NicotineIntakeRecord.Builder(
@@ -107,8 +132,8 @@ class NicotineIntakeFormatterTest {
                     uuid = "test_id",
                     header = "07:06 - 07:22 • com.app.name",
                     headerA11y = "from 07:06 to 07:22 • com.app.name",
-                    title = "10 cigarettes • 0 mg",
-                    titleA11y = "10 cigarettes • 0 milligrams",
+                    title = "10 cigarettes",
+                    titleA11y = "10 cigarettes",
                     dataType = NicotineIntakeRecord::class,
                 )
             )
@@ -132,8 +157,8 @@ class NicotineIntakeFormatterTest {
                     uuid = "test_id",
                     header = "07:06 - 07:22 • com.app.name",
                     headerA11y = "from 07:06 to 07:22 • com.app.name",
-                    title = "1 cigarette • 0 mg",
-                    titleA11y = "1 cigarette • 0 milligrams",
+                    title = "1 cigarette",
+                    titleA11y = "1 cigarette",
                     dataType = NicotineIntakeRecord::class,
                 )
             )
