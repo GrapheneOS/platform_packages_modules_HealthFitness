@@ -24,6 +24,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 
+/**
+ * Do not inherit just from [BaseUseCase] here - this UseCase uses a hidden API as an input. Due to
+ * build setup limitations related to dependency injection it needs to inherit from an interface.
+ */
 @Singleton
 class UpdateExportSettingsUseCase
 @Inject
@@ -31,6 +35,10 @@ constructor(
     private val healthDataExportManager: HealthDataExportManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : IUpdateExportSettingsUseCase, BaseUseCase<ScheduledExportSettings, Unit>(dispatcher) {
+    // Do not inherit just from [BaseUseCase] here - this UseCase uses a hidden API as an input,
+    // and due to build setup limitations related to dependency injection
+    // it needs to inherit from an interface.
+
     companion object {
         private const val TAG = "UpdateExportSettingsUseCase"
     }

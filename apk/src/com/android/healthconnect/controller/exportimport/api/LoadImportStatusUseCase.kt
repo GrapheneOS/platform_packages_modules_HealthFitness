@@ -25,7 +25,6 @@ import android.health.connect.exportimport.ImportStatus.DATA_IMPORT_STARTED
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -37,7 +36,7 @@ class LoadImportStatusUseCase
 constructor(
     private val healthDataImportManager: HealthDataImportManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : ILoadImportStatusUseCase, BaseUseCase<Unit, ImportUiState>(dispatcher) {
+) : BaseUseCase<Unit, ImportUiState>(dispatcher) {
 
     override suspend fun execute(input: Unit): ImportUiState {
         val importStatus: ImportStatus = suspendCancellableCoroutine { continuation ->
@@ -59,11 +58,4 @@ constructor(
             }
         return ImportUiState(dataImportState)
     }
-}
-
-interface ILoadImportStatusUseCase {
-    /** Returns the stored import status. */
-    suspend fun invoke(input: Unit): UseCaseResults<ImportUiState>
-
-    suspend fun execute(input: Unit): ImportUiState
 }

@@ -24,7 +24,6 @@ import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.data.appdata.AllDataUseCase
-import com.android.healthconnect.controller.exportimport.api.ILoadScheduledExportStatusUseCase
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
@@ -37,7 +36,6 @@ import com.android.healthconnect.controller.shared.Constants.LOCK_SCREEN_BANNER_
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
-import com.android.healthconnect.controller.shared.usecase.LoadOnboardingStateUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.KeyguardManagerUtil
@@ -64,8 +62,7 @@ constructor(
     private val keyguardManagerUtil: KeyguardManagerUtil,
     private val deviceInfoUtils: DeviceInfoUtils,
     private val loadMigrationRestoreStateUseCase: BaseUseCase<Unit, MigrationRestoreState>,
-    private val loadScheduledExportStatusUseCase: ILoadScheduledExportStatusUseCase,
-    @LoadOnboardingStateUseCase
+    private val loadScheduledExportStatusUseCase: BaseUseCase<Unit, ScheduledExportUiState>,
     private val loadOnboardingStateUseCase: BaseUseCase<Unit, OnboardingState>,
 ) : ViewModel() {
 
