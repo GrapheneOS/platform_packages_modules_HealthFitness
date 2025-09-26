@@ -378,14 +378,10 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"مصرف الکل"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"خواندن مصرف الکل"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"نوشتن مصرف الکل"</string>
-    <!-- no translation found for symptom_cough_uppercase_label (3600429984629423943) -->
-    <skip />
-    <!-- no translation found for symptom_cough_lowercase_label (3028827340410016573) -->
-    <skip />
-    <!-- no translation found for symptom_cough_read_content_description (398516421189288025) -->
-    <skip />
-    <!-- no translation found for symptom_cough_write_content_description (8535398571528036989) -->
-    <skip />
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"سرفه"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"سرفه"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"خواندن علائم"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"نوشتن علائم"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"اجازه دادن به «<xliff:g id="APP_NAME">%1$s</xliff:g>» برای خواندن"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"اجازه دادن به «<xliff:g id="APP_NAME">%1$s</xliff:g>» برای نوشتن"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"اجازه دادن"</string>
@@ -460,7 +456,7 @@
     <string name="disconnect_all_apps" msgid="748945115977534726">"برداشتن دسترسی برای همه برنامه‌ها"</string>
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"مجاز به خواندن"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"مجاز به نوشتن"</string>
-    <string name="no_apps_allowed" msgid="5794833581324128108">"برنامه‌ای مجاز نشده"</string>
+    <string name="no_apps_allowed" msgid="5794833581324128108">"هیچ برنامه‌ای اجازه ندارد"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"برنامه‌ای رد نشده"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"دسترسی همه برنامه‌ها برداشته شود؟"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"هیچ‌یک از برنامه‌هایتان دیگر نمی‌تواند به Health Connect دسترسی داشته باشد یا داده‌های جدید به آن اضافه کند. این موضوع باعث حذف داده‌های موجود نمی‌شود.\n\nاین تنظیم بر دیگر اجازه‌هایی که این برنامه ممکن است داشته باشد (مثلاً مکان، دوربین، یا میکروفون) اثر نمی‌گذارد."</string>
@@ -844,7 +840,7 @@
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{‫{quantity} سیگار}one{‫{quantity} سیگار}other{‫{quantity} سیگار}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"‫{quantity, number} نامشخص"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> دقیقه"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> ساعت و <xliff:g id="MIN">%2$s</xliff:g> دقیقه"</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"‫<xliff:g id="HOUR">%1$s</xliff:g> ساعت و <xliff:g id="MIN">%2$s</xliff:g> دقیقه"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> ساعت"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{یک ساعت}one{# ساعت}other{# ساعت}}"</string>
@@ -1154,7 +1150,7 @@
     <string name="default_app_summary" msgid="6183876151011837062">"پیش‌فرض دستگاه"</string>
     <string name="move_up" msgid="9136155291380319606">"انتقال به بالا"</string>
     <string name="move_down" msgid="4404970288236170693">"انتقال به پایین"</string>
-    <string name="remove" msgid="1340423400489007362">"حذف کردن"</string>
+    <string name="remove" msgid="1340423400489007362">"برداشتن"</string>
     <string name="app_data_title" msgid="6499967982291000837">"داده‌های برنامه"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"داده‌های «<xliff:g id="APP_NAME">%1$s</xliff:g>» در اینجا نشان داده خواهد شد"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"داده‌های برنامه‌هایی که به Health Connect دسترسی دارند در اینجا نشان داده خواهد شد"</string>
@@ -1240,7 +1236,7 @@
     <string name="allowed_apps_count" msgid="2289260267605628310">"‫<xliff:g id="NUMBER_0">%1$d</xliff:g> برنامه از <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> برنامه مجاز است"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"برنامه‌ای درخواست نکرده است"</string>
     <string name="allowed" msgid="4158456017482263737">"مجاز"</string>
-    <string name="not_allowed" msgid="6092523505093372147">"مجاز نیست"</string>
+    <string name="not_allowed" msgid="6092523505093372147">"اجازه نداشتن"</string>
     <string name="access_sensor_note" msgid="7949933977197789634">"برنامه‌های دارای این اجازه می‌توانند به داده‌های <xliff:g id="DATA_TYPE">%s</xliff:g> از حسگرهای دستگاهتان دسترسی داشته باشند."</string>
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"دسترسی به <xliff:g id="DATA_TYPE">%s</xliff:g> برای همه برنامه‌های روی ساعت برداشته شود؟"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"علامت تأیید"</string>
@@ -1289,7 +1285,7 @@
     <string name="device_data_button" msgid="8002406105399136401">"دیدن داده‌های دستگاه"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"تعداد قدم‌های ثبت‌شده در تلفن شما در Health Connect نمایش داده خواهند شد"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"تعداد قدم‌های ثبت‌شده توسط این دستگاه اکنون در Health Connect ذخیره می‌شوند تا برنامه‌های متصل بتوانند به آن‌ها دسترسی داشته باشند"</string>
-    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"رد کردن"</string>
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"بستن"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"مرور"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"تعداد قدم‌ها اکنون در ‎Health Connect‎ هستند"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"تعداد قدم‌های ثبت‌شده توسط این دستگاه اکنون در Health Connect ذخیره می‌شوند تا برنامه‌های متصل بتوانند به آن‌ها دسترسی داشته باشند"</string>
