@@ -28,14 +28,19 @@ import android.healthconnect.testing.cts.ui.UiTestUtils.TEST_APP_PACKAGE_NAME
 import android.healthconnect.testing.cts.ui.UiTestUtils.clickOnDescAndWaitForNewWindow
 import android.healthconnect.testing.cts.ui.UiTestUtils.clickOnText
 import android.healthconnect.testing.cts.ui.UiTestUtils.clickOnTextAndWaitForNewWindow
+import android.healthconnect.testing.cts.ui.UiTestUtils.findObject
 import android.healthconnect.testing.cts.ui.UiTestUtils.findText
 import android.healthconnect.testing.cts.ui.UiTestUtils.findTextAndClick
 import android.healthconnect.testing.cts.ui.UiTestUtils.grantPermissionViaPackageManager
 import android.healthconnect.testing.cts.ui.UiTestUtils.navigateBackToHomeScreen
 import android.healthconnect.testing.cts.ui.UiTestUtils.revokePermissionViaPackageManager
 import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndFindText
+import android.platform.test.annotations.RequiresFlagsDisabled
+import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
+import androidx.test.uiautomator.By
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Rule
@@ -55,6 +60,7 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun grantPermission_updatesAppPermissions() {
         revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
         context.launchMainActivity {
@@ -69,6 +75,7 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     }
 
     @Test
+    @RequiresFlagsDisabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun revokePermission_updatesAppPermissions() {
         grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
         context.launchMainActivity {
@@ -80,6 +87,86 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
             clickOnDescAndWaitForNewWindow("Navigate up")
 
             assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+        }
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
+    fun whenGroupedPermissionsEnabled_grantPermission_updatesAppPermissions() {
+        revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+        revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
+        context.launchMainActivity {
+            navigateToManageAppPermissions()
+
+            scrollDownToAndFindText("Body measurements (2)")
+            findTextAndClick("Body measurements (2)")
+            scrollDownToAndFindText("Body fat")
+            findTextAndClick("Body fat")
+            clickOnDescAndWaitForNewWindow("Navigate up")
+
+            assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+            assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
+        }
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
+    fun whenGroupedPermissionsEnabled_revokePermission_updatesAppPermissions() {
+        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
+        context.launchMainActivity {
+            navigateToManageAppPermissions()
+            assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+
+            scrollDownToAndFindText("Body measurements (2)")
+            findTextAndClick("Body measurements (2)")
+            scrollDownToAndFindText("Body fat")
+            findTextAndClick("Body fat")
+            clickOnDescAndWaitForNewWindow("Navigate up")
+
+            assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+            assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
+        }
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
+    fun whenGroupedPermissionsEnabled_grantAllPermissionsForCategory_updatesAppPermissions() {
+        revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+        revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
+        context.launchMainActivity {
+            navigateToManageAppPermissions()
+
+            // TODO(b/447325422): Use content description once toggles have A11y support
+            scrollDownToAndFindText("Body measurements (2)")
+            val preferenceRow = findObject(By.hasDescendant(By.text("Body measurements (2)")))
+            val switchWidget = preferenceRow.parent.findObject(By.checkable(true))
+            switchWidget.click()
+            clickOnDescAndWaitForNewWindow("Navigate up")
+
+            assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+            assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
+        }
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
+    fun whenGroupedPermissionsEnabled_revokeAllPermissionsForCategory_updatesAppPermissions() {
+        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
+        context.launchMainActivity {
+            navigateToManageAppPermissions()
+            assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+
+            // TODO(b/447325422): Use content description once toggles have A11y support
+            scrollDownToAndFindText("Body measurements (2)")
+            val preferenceRow = findObject(By.hasDescendant(By.text("Body measurements (2)")))
+            val switchWidget = preferenceRow.parent.findObject(By.checkable(true))
+            switchWidget.click()
+            clickOnDescAndWaitForNewWindow("Navigate up")
+
+            assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+            assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
         }
     }
 
