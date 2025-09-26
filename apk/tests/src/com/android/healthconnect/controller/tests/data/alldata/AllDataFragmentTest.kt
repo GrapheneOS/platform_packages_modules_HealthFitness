@@ -141,6 +141,7 @@ class AllDataFragmentTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
     fun populatedFitnessDataTypesDisplayed_impressionsLogged() {
         mockData(listOf(STEPS, HEART_RATE, BASAL_BODY_TEMPERATURE))
 
@@ -152,6 +153,25 @@ class AllDataFragmentTest {
                 .check(matches(isDisplayed()))
             onView(withText("No data")).check(doesNotExist())
             verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ALL_DATA_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger, times(3))
+                .logImpression(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    fun whenCombinedData_populatedFitnessDataTypesDisplayed_impressionsLogged() {
+        mockData(listOf(STEPS, HEART_RATE, BASAL_BODY_TEMPERATURE))
+
+        launchFragment<AllDataFragment>().use {
+            onView(withText("Steps")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("Heart rate")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("Basal body temperature"))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+            onView(withText("No data")).check(doesNotExist())
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.COMBINED_ALL_DATA_PAGE)
             verify(healthConnectLogger).logPageImpression()
             verify(healthConnectLogger, times(3))
                 .logImpression(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
@@ -180,7 +200,12 @@ class AllDataFragmentTest {
             onView(withText("Allergies")).perform(scrollTo()).check(matches(isDisplayed()))
             onView(withText("Vaccines")).perform(scrollTo()).check(matches(isDisplayed()))
 
-            // TODO (b/445405721) - add telemetry logs
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.COMBINED_ALL_DATA_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger, times(5))
+                .logImpression(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
+            verify(healthConnectLogger).logImpression(AllDataElement.MEDICAL_RECORDS_HEADER)
+            verify(healthConnectLogger).logImpression(AllDataElement.MEDICAL_RECORDS_HEADER_LINK)
         }
     }
 
@@ -213,7 +238,12 @@ class AllDataFragmentTest {
             onView(withText("Allergies")).perform(scrollTo()).check(matches(isDisplayed()))
             onView(withText("Vaccines")).perform(scrollTo()).check(matches(isDisplayed()))
 
-            // TODO (b/445405721) - add telemetry logs
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.COMBINED_ALL_DATA_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger, times(2))
+                .logImpression(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
+            verify(healthConnectLogger).logImpression(AllDataElement.MEDICAL_RECORDS_HEADER)
+            verify(healthConnectLogger).logImpression(AllDataElement.MEDICAL_RECORDS_HEADER_LINK)
         }
     }
 
