@@ -84,6 +84,10 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"elikadura"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"Ongizatea"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"ongizatea"</string>
+    <!-- no translation found for symptoms_category_uppercase (1357167834284360975) -->
+    <skip />
+    <!-- no translation found for symptoms_category_lowercase (2298815597177353672) -->
+    <skip />
     <string name="browse_data_category" msgid="4813955610391357638">"Arakatu datuak"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"Kudeatu datuak"</string>
     <string name="export_data_button" msgid="7783329820434117744">"Esportatu datuak"</string>
@@ -382,6 +386,16 @@
     <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"eztula"</string>
     <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Irakurri sintomak"</string>
     <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Idatzi sintomak"</string>
+    <!-- no translation found for symptom_unknown (5796719193136239306) -->
+    <skip />
+    <!-- no translation found for symptom_severity_mild (2689415474774489874) -->
+    <skip />
+    <!-- no translation found for symptom_severity_moderate (8388787027751900668) -->
+    <skip />
+    <!-- no translation found for symptom_severity_severe (4675732713898596705) -->
+    <skip />
+    <!-- no translation found for symptom_entry_title (3927744074055963604) -->
+    <skip />
     <string name="read_permission_category" msgid="6002099618259628632">"Eman irakurtzeko baimena <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Eman idazteko baimena <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Eman baimena"</string>
@@ -1046,8 +1060,7 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Eginda"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{Ezabatze automatikoa aktibatuta dago. # hilabete baino gehiagoko datuak ezabatuko dira.}other{Ezabatze automatikoa aktibatuta dago. # hilabete baino gehiagoko datuak ezabatuko dira.}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"Ezabatze automatikoa desaktibatuta dago"</string>
-    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
-    <skip />
+    <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+ <xliff:g id="COUNT">%s</xliff:g>"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"Ezarri aplikazioen lehentasuna"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"\"<xliff:g id="DATA_TYPE">%s</xliff:g>\" motako datuak aplikazio batek baino gehiagok gehitzen badituzte, Health Connect-ek zerrendaren gorenean dagoen aplikazioari emango dio lehentasuna. Arrastatu aplikazioak ordena aldatzeko."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Gorde"</string>
@@ -1235,6 +1248,7 @@
     <string name="write_access" msgid="571547306854732263">"Idazteko baimena"</string>
     <string name="read_access" msgid="3317759826769372785">"Irakurtzeko baimena"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g>/<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplikaziok dute baimena"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Ez dago baimena eskatzen ari den aplikaziorik"</string>
     <string name="allowed" msgid="4158456017482263737">"Baimena dauka"</string>
@@ -1291,5 +1305,17 @@
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Berrikusi"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Orain, Health Connect-en daude pausoak"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Gailu honek erregistratzen dituen pausoak Health Connect-en gordetzen dira orain, aplikazio konektatuek atzitu ahal izan ditzaten"</string>
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"Zure osasun-aplikazioak"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"Osasunari buruzko datuak"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"Hobespenak"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect-ek osasunari eta fitnessari buruzko datuak aplikazio batekin baino gehiagorekin partekatzeko aukera ematen dizu. Horri esker, estatistikak eta eginbideak desblokea ditzakezu datuak seguru mantendu bitartean."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect-i buruzko informazio gehiago"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"Zure datuak eta zein aplikaziok atzi ditzaketen"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"Zure datuak berriki erabil dituzten aplikazioak"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"Berrikusi osasunari buruzko datuak atzi ditzaketen gailuak"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Instalatu Health Connect-ekin funtzionatzen duten aplikazioak hemen ikusteko"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"Ikusi aplikazio bateragarriak"</string>
+    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"Ikusi guztiak"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"Konektatu gabe"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Orain ez"</string>
 </resources>

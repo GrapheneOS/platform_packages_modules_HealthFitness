@@ -84,6 +84,10 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"კვება"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"კეთილდღეობა"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"კეთილდღეობა"</string>
+    <!-- no translation found for symptoms_category_uppercase (1357167834284360975) -->
+    <skip />
+    <!-- no translation found for symptoms_category_lowercase (2298815597177353672) -->
+    <skip />
     <string name="browse_data_category" msgid="4813955610391357638">"მონაცემთა დათვალიერება"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"მონაცემთა მართვა"</string>
     <string name="export_data_button" msgid="7783329820434117744">"მონაცემების ექსპორტი"</string>
@@ -382,6 +386,16 @@
     <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"ხველა"</string>
     <string name="symptom_cough_read_content_description" msgid="398516421189288025">"სიმპტომების წაკითხვა"</string>
     <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"სიმპტომების ჩაწერა"</string>
+    <!-- no translation found for symptom_unknown (5796719193136239306) -->
+    <skip />
+    <!-- no translation found for symptom_severity_mild (2689415474774489874) -->
+    <skip />
+    <!-- no translation found for symptom_severity_moderate (8388787027751900668) -->
+    <skip />
+    <!-- no translation found for symptom_severity_severe (4675732713898596705) -->
+    <skip />
+    <!-- no translation found for symptom_entry_title (3927744074055963604) -->
+    <skip />
     <string name="read_permission_category" msgid="6002099618259628632">"ნება მიეცით „<xliff:g id="APP_NAME">%1$s</xliff:g>“-ს, წაიკითხოს"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"ნება მიეცით „<xliff:g id="APP_NAME">%1$s</xliff:g>“-ს, წეროს"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"დაშვება"</string>
@@ -1046,8 +1060,7 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"მზადაა"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{ავტომატური წაშლა ჩართულია. # თვეზე ძველი მონაცემები წაიშლება}other{ავტომატური წაშლა ჩართულია. # თვეზე ძველი მონაცემები წაიშლება}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"ავტომატური წაშლა გამორთულია"</string>
-    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
-    <skip />
+    <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+<xliff:g id="COUNT">%s</xliff:g>"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"პრიორიტეტული აპების დაყენება"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"თუ ერთზე მეტი აპი დაამატებს <xliff:g id="DATA_TYPE">%s</xliff:g>-ის მონაცემებს, Health Connect პრიორიტეტს მიანიჭებს სიის სათავეში მყოფ აპს. ჩავლებით გადაიტანეთ აპები მათი გადაწყობისთვის."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"შენახვა"</string>
@@ -1235,6 +1248,7 @@
     <string name="write_access" msgid="571547306854732263">"წვდომა ჩაწერის უფლებით"</string>
     <string name="read_access" msgid="3317759826769372785">"წვდომა წაკითხვის უფლებით"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"დაშვებულია <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>-დან <xliff:g id="NUMBER_0">%1$d</xliff:g> აპი"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"მოთხოვნა არ არის არცერთი აპისგან"</string>
     <string name="allowed" msgid="4158456017482263737">"დაშვებულია"</string>
@@ -1291,5 +1305,17 @@
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"მიმოხილვა"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"ნაბიჯები უკვე Health Connect-შია"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Health Connect-ში უკვე ინახება ნაბიჯები, რომლებსაც ეს მოწყობილობა თვალს ადევნებს, რათა დაკავშირებულ აპებს წვდომა გააჩნდეს"</string>
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"თქვენი ჯანმრთელობის აპები"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"თქვენი ჯანმრთელობის მონაცემები"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"პარამეტრები"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect საშუალებას გაძლევთ, გააზიაროთ თქვენი ჯანმრთელობისა და ფიტნესის მონაცემები თქვენს აპებს შორის. ეს გეხმარებათ, მიიღოთ ანალიზი და გამოცდილებები თქვენი მონაცემების უსაფრთხოდ შენარჩუნების პარალელურად."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"ვრცლად Health Connect-ის შესახებ"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"თქვენი მონაცემები და რომელ აპებს შეუძლიათ მათზე წვდომა"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"აპები, რომლებმაც ახლახან გამოიყენა თქვენი მონაცემები"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"მიმოიხილეთ მოწყობილობები, რომლებსაც შეუძლია ჯანმრთელობის მონაცემებზე წვდომა"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"დააინსტალირეთ Health Connect-თან თავსებადი აპები, რათა მათი აქ ნახვა შეძლოთ"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"თავსებადი აპების ნახვა"</string>
+    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"ყველას ნახვა"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"არ არის დაკავშირებული"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"ახლა არა"</string>
 </resources>

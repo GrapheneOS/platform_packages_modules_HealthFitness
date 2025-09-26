@@ -84,6 +84,10 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"nutrition"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"Wellness"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"wellness"</string>
+    <!-- no translation found for symptoms_category_uppercase (1357167834284360975) -->
+    <skip />
+    <!-- no translation found for symptoms_category_lowercase (2298815597177353672) -->
+    <skip />
     <string name="browse_data_category" msgid="4813955610391357638">"Browse data"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"Manage data"</string>
     <string name="export_data_button" msgid="7783329820434117744">"Export data"</string>
@@ -382,6 +386,16 @@
     <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"cough"</string>
     <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Read symptoms"</string>
     <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Write symptoms"</string>
+    <!-- no translation found for symptom_unknown (5796719193136239306) -->
+    <skip />
+    <!-- no translation found for symptom_severity_mild (2689415474774489874) -->
+    <skip />
+    <!-- no translation found for symptom_severity_moderate (8388787027751900668) -->
+    <skip />
+    <!-- no translation found for symptom_severity_severe (4675732713898596705) -->
+    <skip />
+    <!-- no translation found for symptom_entry_title (3927744074055963604) -->
+    <skip />
     <string name="read_permission_category" msgid="6002099618259628632">"Allow “<xliff:g id="APP_NAME">%1$s</xliff:g>” to read"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Allow “<xliff:g id="APP_NAME">%1$s</xliff:g>” to write"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Allow"</string>
@@ -1234,6 +1248,7 @@
     <string name="write_access" msgid="571547306854732263">"Write Access"</string>
     <string name="read_access" msgid="3317759826769372785">"Read Access"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> of <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> apps allowed"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"No apps requesting"</string>
     <string name="allowed" msgid="4158456017482263737">"Allowed"</string>
@@ -1290,5 +1305,17 @@
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Review"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Steps are now in Health Connect"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Steps tracked by this device are now stored in Health Connect for connected apps to access"</string>
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"Your health apps"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"Your health data"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"Preferences"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect lets you share your health and fitness data between multiple apps. This helps you unlock insights and experiences while keeping your data secure."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"More about Health Connect"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"Your data and which apps can access it"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"Apps that recently used your data"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"Review devices that can access health data"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Install apps that work with Health Connect to see them here"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"See compatible apps"</string>
+    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"See all"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"Not connected"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Not now"</string>
 </resources>

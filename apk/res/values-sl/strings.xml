@@ -84,6 +84,10 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"prehrana"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"Dobrobit"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"dobrobit"</string>
+    <!-- no translation found for symptoms_category_uppercase (1357167834284360975) -->
+    <skip />
+    <!-- no translation found for symptoms_category_lowercase (2298815597177353672) -->
+    <skip />
     <string name="browse_data_category" msgid="4813955610391357638">"Brskanje po podatkih"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"Upravljanje podatkov"</string>
     <string name="export_data_button" msgid="7783329820434117744">"Izvoz podatkov"</string>
@@ -382,6 +386,16 @@
     <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"kašljanje"</string>
     <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Branje simptomov"</string>
     <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Zapisovanje simptomov"</string>
+    <!-- no translation found for symptom_unknown (5796719193136239306) -->
+    <skip />
+    <!-- no translation found for symptom_severity_mild (2689415474774489874) -->
+    <skip />
+    <!-- no translation found for symptom_severity_moderate (8388787027751900668) -->
+    <skip />
+    <!-- no translation found for symptom_severity_severe (4675732713898596705) -->
+    <skip />
+    <!-- no translation found for symptom_entry_title (3927744074055963604) -->
+    <skip />
     <string name="read_permission_category" msgid="6002099618259628632">"Dovoljevanje branja aplikaciji »<xliff:g id="APP_NAME">%1$s</xliff:g>«"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Dovoljevanje pisanja aplikaciji »<xliff:g id="APP_NAME">%1$s</xliff:g>«"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Dovoli"</string>
@@ -1046,8 +1060,7 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Končano"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{Samodejni izbris je vklopljen. Podatki, starejši od # meseca, bodo izbrisani.}one{Samodejni izbris je vklopljen. Podatki, starejši od # meseca, bodo izbrisani.}two{Samodejni izbris je vklopljen. Podatki, starejši od # mesecev, bodo izbrisani.}few{Samodejni izbris je vklopljen. Podatki, starejši od # mesecev, bodo izbrisani.}other{Samodejni izbris je vklopljen. Podatki, starejši od # mesecev, bodo izbrisani.}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"Samodejni izbris je izklopljen"</string>
-    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
-    <skip />
+    <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+<xliff:g id="COUNT">%s</xliff:g>"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"Nastavitev prednosti aplikacij"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"Če podatke vrste »<xliff:g id="DATA_TYPE">%s</xliff:g>« dodaja več aplikacij, bo storitev Health Connect dala prednost tisti aplikaciji, ki je najviše na tem seznamu. Povlecite aplikacije, da jih prerazporedite."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Shrani"</string>
@@ -1235,6 +1248,7 @@
     <string name="write_access" msgid="571547306854732263">"Dostop za pisanje"</string>
     <string name="read_access" msgid="3317759826769372785">"Dostop za branje"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>⁠"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"Dovoljene aplikacije: <xliff:g id="NUMBER_0">%1$d</xliff:g> od <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Nobena aplikacija ne zahteva"</string>
     <string name="allowed" msgid="4158456017482263737">"Dovoljeno"</string>
@@ -1291,5 +1305,17 @@
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Pregled"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Koraki so zdaj v storitvi Health Connect"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Koraki, ki jih spremlja ta naprava, so zdaj shranjeni v storitvi Health Connect, da lahko do njih dostopajo povezane aplikacije"</string>
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"Vaše zdravstvene aplikacije"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"Vaši podatki o zdravju"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"Nastavitve"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect vam omogoča deljenje podatkov o zdravju in telesni pripravljenosti med več aplikacijami. S tem imate dostop do vpogledov in izkušenj ter hkrati poskrbite za varnost podatkov."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"Več o storitvi Health Connect"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"Vaši podatki in katere aplikacije lahko dostopajo do njih"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"Aplikacije, ki so nedavno uporabljale vaše podatke"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"Pregled naprav, ki lahko dostopajo do podatkov o zdravju"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Namestite aplikacije, ki delujejo s storitvijo Health Connect, da bodo prikazane tukaj"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"Oglejte si združljive aplikacije"</string>
+    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"Pokaži vse"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"Ni povezana"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Ne zdaj"</string>
 </resources>

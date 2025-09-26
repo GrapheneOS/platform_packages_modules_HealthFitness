@@ -84,6 +84,10 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"διατροφή"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"Ευεξία"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"ευεξία"</string>
+    <!-- no translation found for symptoms_category_uppercase (1357167834284360975) -->
+    <skip />
+    <!-- no translation found for symptoms_category_lowercase (2298815597177353672) -->
+    <skip />
     <string name="browse_data_category" msgid="4813955610391357638">"Περιήγηση δεδομένων"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"Διαχείριση δεδομένων"</string>
     <string name="export_data_button" msgid="7783329820434117744">"Εξαγωγή δεδομένων"</string>
@@ -382,6 +386,16 @@
     <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"βήχας"</string>
     <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Ανάγνωση συμπτωμάτων"</string>
     <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Εγγραφή συμπτωμάτων"</string>
+    <!-- no translation found for symptom_unknown (5796719193136239306) -->
+    <skip />
+    <!-- no translation found for symptom_severity_mild (2689415474774489874) -->
+    <skip />
+    <!-- no translation found for symptom_severity_moderate (8388787027751900668) -->
+    <skip />
+    <!-- no translation found for symptom_severity_severe (4675732713898596705) -->
+    <skip />
+    <!-- no translation found for symptom_entry_title (3927744074055963604) -->
+    <skip />
     <string name="read_permission_category" msgid="6002099618259628632">"Παροχή στην εφαρμογή “<xliff:g id="APP_NAME">%1$s</xliff:g>” του δικαιώματος ανάγνωσης"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Να επιτρέπεται στην εφαρμογή “<xliff:g id="APP_NAME">%1$s</xliff:g>” να γράφει"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Αποδοχή"</string>
@@ -1046,8 +1060,7 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Τέλος"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{Ενεργοποιημένη Αυτόματη διαγραφή για δεδομένα πάνω από # μήνα}other{Ενεργοποιημένη Αυτόματη διαγραφή για δεδομένα πάνω από # μηνών}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"Η Αυτόματη διαγραφή είναι απενεργοποιημένη"</string>
-    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
-    <skip />
+    <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+<xliff:g id="COUNT">%s</xliff:g>"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"Ορισμός προτεραιότητας εφαρμογών"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"Εάν περισσότερες από μία εφαρμογές προσθέτουν δεδομένα τύπου \"<xliff:g id="DATA_TYPE">%s</xliff:g>\", το Health Connect δίνει προτεραιότητα στην εφαρμογή που βρίσκεται υψηλότερα σε αυτήν τη λίστα. Σύρετε τις εφαρμογές για να τις αναδιατάξετε."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Αποθήκευση"</string>
@@ -1235,6 +1248,8 @@
     <string name="write_access" msgid="571547306854732263">"Πρόσβαση εγγραφής"</string>
     <string name="read_access" msgid="3317759826769372785">"Πρόσβαση ανάγνωσης"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (7942303192917497010) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"Επιτρέπονται <xliff:g id="NUMBER_0">%1$d</xliff:g> από <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> εφαρμογές"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Δεν υπάρχουν αιτήματα από εφαρμογές"</string>
     <string name="allowed" msgid="4158456017482263737">"Επιτρέπεται"</string>
@@ -1291,5 +1306,29 @@
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Έλεγχος"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Τα βήματα είναι πλέον στο Health Connect"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Τα βήματα που παρακολουθούνται από αυτή τη συσκευή αποθηκεύονται πλέον στο Health Connect, για να έχουν πρόσβαση οι συνδεδεμένες εφαρμογές"</string>
+    <!-- no translation found for your_health_apps_category_title (2140744650535785802) -->
+    <skip />
+    <!-- no translation found for your_health_data_category_title (7049426060456828669) -->
+    <skip />
+    <!-- no translation found for preferences_category_title (8799354266901230310) -->
+    <skip />
+    <!-- no translation found for home_screen_footer (7572797414754117707) -->
+    <skip />
+    <!-- no translation found for home_screen_footer_link (3276430842054286014) -->
+    <skip />
+    <!-- no translation found for data_and_access_summary (1435478623777637347) -->
+    <skip />
+    <!-- no translation found for recent_access_summary (3933708982145999939) -->
+    <skip />
+    <!-- no translation found for home_devices_summary (6056984338393523399) -->
+    <skip />
+    <!-- no translation found for empty_apps_section_title (1808646811838427261) -->
+    <skip />
+    <!-- no translation found for empty_apps_section_link (5227373618435407625) -->
+    <skip />
+    <!-- no translation found for see_all_connected_apps_button (3391164556225732842) -->
+    <skip />
+    <!-- no translation found for app_not_connected_summary (3898921378270235598) -->
+    <skip />
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Όχι τώρα"</string>
 </resources>
