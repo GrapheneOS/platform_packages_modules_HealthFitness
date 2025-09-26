@@ -49,6 +49,7 @@ import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthfitness.flags.Flags
 import com.android.healthfitness.flags.Flags.permissionsGroupingFitnessAppScreen
+import com.android.healthfitness.flags.Flags.permissionsGroupingSettingsFitnessAppScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Instant
@@ -342,7 +343,10 @@ constructor(
                     .toSet()
             )
 
-            if (permissionsGroupingFitnessAppScreen()) {
+            if (
+                permissionsGroupingFitnessAppScreen() ||
+                    permissionsGroupingSettingsFitnessAppScreen()
+            ) {
                 val allFitnessPermissionsByCategory =
                     healthPermissionsList
                         .map { it.healthPermission }
@@ -433,7 +437,10 @@ constructor(
                         .toSet()
                 )
 
-                if (permissionsGroupingFitnessAppScreen()) {
+                if (
+                    permissionsGroupingFitnessAppScreen() ||
+                        permissionsGroupingSettingsFitnessAppScreen()
+                ) {
                     val grantedFitnessPermissionsByCategory =
                         grantedPermissions
                             .map { it.healthPermission }
