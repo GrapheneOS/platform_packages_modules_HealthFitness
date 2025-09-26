@@ -57,7 +57,6 @@ import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Build;
 import android.os.UserHandle;
 import android.permission.PermissionManager;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.ArrayMap;
 
@@ -372,7 +371,6 @@ public class DataPermissionEnforcerTest {
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     @Test(expected = SecurityException.class)
     public void
             testEnforceRecordIdsReadPermissions_permissionGranted_heartRateFromSplitPermission_throwsSecurityException() {

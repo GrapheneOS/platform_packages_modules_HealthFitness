@@ -186,6 +186,7 @@ import android.util.Pair;
 import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.modules.utils.build.SdkLevel;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.backuprestore.BackupRestoreLogger;
@@ -3607,7 +3608,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     /** Returns true if READ_HEALTH_DATA_IN_BACKGROUND is from split permission. */
     private boolean isBackgroundPermissionFromSplit(AttributionSource attributionSource) {
-        if (!Flags.replaceBodySensorPermissionEnabled()) {
+        if (!SdkLevel.isAtLeastB()) {
             return false;
         }
 

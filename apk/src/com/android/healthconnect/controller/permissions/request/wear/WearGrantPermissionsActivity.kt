@@ -23,7 +23,6 @@ import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES
 import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS
-import android.health.connect.HealthPermissions
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager.LayoutParams.SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS
@@ -32,9 +31,8 @@ import androidx.activity.viewModels
 import androidx.compose.ui.platform.ComposeView
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.permissions.request.RequestPermissionViewModel
-import com.android.healthfitness.flags.Flags
+import com.android.modules.utils.build.SdkLevel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 /** Wear Grant Permissions activity for Health Connect. */
 @AndroidEntryPoint(ComponentActivity::class)
@@ -51,7 +49,7 @@ class WearGrantPermissionsActivity : Hilt_WearGrantPermissionsActivity() {
 
         if (
             !getPackageManager().hasSystemFeature(PackageManager.FEATURE_WATCH) ||
-                !Flags.replaceBodySensorPermissionEnabled()
+                !SdkLevel.isAtLeastB()
         ) {
             Log.e(
                 TAG,

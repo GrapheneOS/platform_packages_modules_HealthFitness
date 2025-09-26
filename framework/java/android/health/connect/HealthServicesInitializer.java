@@ -24,6 +24,7 @@ import android.health.connect.HealthPermissions;
 import android.health.connect.aidl.IHealthConnectService;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.modules.utils.build.SdkLevel;
 
 /**
  * Class for performing registration for Health services.
@@ -66,7 +67,7 @@ public class HealthServicesInitializer {
         }
         // Only available on Wear for permission management.
         if (pm.hasSystemFeature(PackageManager.FEATURE_WATCH)) {
-            return Flags.replaceBodySensorPermissionEnabled()
+            return SdkLevel.isAtLeastB()
                     && context.checkSelfPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
                             == PackageManager.PERMISSION_GRANTED;
         }

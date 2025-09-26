@@ -87,6 +87,8 @@ android_test {
         ":generate-fhir-spec-r4-binarypb",
     ],
     static_libs: [
+        "modules-utils-build",
+        "truth",
         "TestParameterInjector",
         "compatibility-device-util-axt",
         "service-healthfitness.impl",
@@ -98,7 +100,6 @@ android_test {
         "flag-junit",
         "androidx.test.runner",
         "mockito",
-        "truth",
         "services.core",
         "androidx.test.ext.truth",
         "platform-parametric-runner-lib",

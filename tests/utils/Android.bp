@@ -64,6 +64,7 @@ android_library {
         "src/android/healthconnect/testing/cts/**/*.kt",
     ],
     static_libs: [
+        "modules-utils-build",
         "androidx.test.ext.junit",
         "androidx.test.ext.truth",
         "androidx.test.rules",

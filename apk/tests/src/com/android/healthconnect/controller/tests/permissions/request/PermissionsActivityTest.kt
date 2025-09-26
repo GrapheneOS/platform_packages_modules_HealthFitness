@@ -50,7 +50,6 @@ import android.health.connect.HealthPermissions.WRITE_SLEEP
 import android.os.Build
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
-import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import android.platform.test.flag.junit.SetFlagsRule
 import android.widget.Button
@@ -986,13 +985,9 @@ class PermissionsActivityTest {
         }
     }
 
-    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @RequiresFlagsEnabled(
-        Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
-        android.permission.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
-    )
     @Test
     @DisableFlags(Flags.FLAG_REMOVE_OLD_ONBOARDING)
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     fun requestFitnessPermissions_notSplitPermissionRequest_redirectsToOnboarding() {
         val permissions = arrayOf(READ_HEART_RATE)
         val startActivityIntent =
@@ -1010,12 +1005,8 @@ class PermissionsActivityTest {
         }
     }
 
-    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @RequiresFlagsEnabled(
-        Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
-        android.permission.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
-    )
     @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     fun requestFitnessPermissions_legacyBodySensorsApp_onboardingSkipped() {
         val permissions = arrayOf(READ_HEART_RATE)
         val startActivityIntent =
@@ -1037,12 +1028,8 @@ class PermissionsActivityTest {
         }
     }
 
-    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @RequiresFlagsEnabled(
-        Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
-        android.permission.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
-    )
     @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     fun requestFitnessPermissions_legacyBodySensors_canGrantPermissions() {
         val permissions = arrayOf(READ_HEART_RATE)
         val startActivityIntent =
@@ -1074,12 +1061,8 @@ class PermissionsActivityTest {
             .containsExactlyElementsIn(listOf(READ_HEART_RATE))
     }
 
-    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @RequiresFlagsEnabled(
-        Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
-        android.permission.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
-    )
     @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     fun requestFitnessPermissions_legacyBodySensors_canGrantBackgroundPermission() {
         val permissions = arrayOf(READ_HEART_RATE, READ_HEALTH_DATA_IN_BACKGROUND)
         val startActivityIntent =

@@ -31,7 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel
-import com.android.healthfitness.flags.Flags
+import com.android.modules.utils.build.SdkLevel
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Wear View App Info Permissions activity for Health&Fitness. */
@@ -49,7 +49,7 @@ class WearViewAppInfoPermissionsActivity : Hilt_WearViewAppInfoPermissionsActivi
 
         if (
             !getPackageManager().hasSystemFeature(PackageManager.FEATURE_WATCH) ||
-                !Flags.replaceBodySensorPermissionEnabled()
+                !SdkLevel.isAtLeastB()
         ) {
             Log.e(
                 TAG,

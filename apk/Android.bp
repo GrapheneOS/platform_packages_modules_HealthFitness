@@ -211,6 +211,7 @@ android_library {
         "framework-permission-s.stubs.module_lib",
     ],
     static_libs: [
+        "modules-utils-build",
         "com.google.android.material_material",
         "healthfitness-aconfig-flags-lib",
         "HealthConnectPermissionsApis",

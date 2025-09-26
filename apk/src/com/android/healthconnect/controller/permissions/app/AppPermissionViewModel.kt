@@ -47,7 +47,7 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
-import com.android.healthfitness.flags.Flags
+import com.android.modules.utils.build.SdkLevel
 import com.android.healthfitness.flags.Flags.permissionsGroupingFitnessAppScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -292,7 +292,7 @@ constructor(
         viewModelScope.launch {
             healthPermissionsList = loadAppPermissionsStatusUseCase.invoke(packageName)
             // On Wear, there are only a subset of permissions supported.
-            if (Flags.replaceBodySensorPermissionEnabled() && deviceInfoUtils.isOnWatch(context)) {
+            if (SdkLevel.isAtLeastB() && deviceInfoUtils.isOnWatch(context)) {
                 val allowedPermissionsToRequest: Set<String> =
                     healthPermissionReader.getSystemHealthPermissions().toMutableSet().also {
                         it.add(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND)
@@ -386,9 +386,7 @@ constructor(
             viewModelScope.launch {
                 var grantedPermissions =
                     loadAppPermissionsStatusUseCase.invoke(packageName).filter { it.isGranted }
-                if (
-                    Flags.replaceBodySensorPermissionEnabled() && deviceInfoUtils.isOnWatch(context)
-                ) {
+                if (SdkLevel.isAtLeastB() && deviceInfoUtils.isOnWatch(context)) {
                     val allowedPermissionsToRequest: Set<String> =
                         healthPermissionReader.getSystemHealthPermissions().toMutableSet().also {
                             it.add(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND)
@@ -860,7 +858,7 @@ constructor(
 
     /** Returns True if the packageName meets the required conditions to use health permissions. */
     fun isPackageSupported(packageName: String): Boolean {
-        if (deviceInfoUtils.isOnWatch(context) && Flags.replaceBodySensorPermissionEnabled()) {
+        if (deviceInfoUtils.isOnWatch(context) && SdkLevel.isAtLeastB()) {
             return true
         }
 

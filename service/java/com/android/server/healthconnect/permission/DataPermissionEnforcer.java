@@ -30,8 +30,8 @@ import android.os.UserHandle;
 import android.permission.PermissionManager;
 import android.util.ArrayMap;
 import android.util.ArraySet;
-
 import com.android.healthfitness.flags.Flags;
+import com.android.modules.utils.build.SdkLevel;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 
@@ -283,7 +283,8 @@ public class DataPermissionEnforcer {
         }
 
         // Deny access to HealthConnect API if READ_HEART_RATE is a split permission.
-        if (Flags.replaceBodySensorPermissionEnabled() && permissionName.equals(READ_HEART_RATE)) {
+        if (SdkLevel.isAtLeastB()
+                && permissionName.equals(READ_HEART_RATE)) {
             String packageName = attributionSource.getPackageName();
             if (packageName == null) {
                 throw new SecurityException("Caller packageName is null");

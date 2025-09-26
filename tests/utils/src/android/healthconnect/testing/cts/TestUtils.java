@@ -122,12 +122,14 @@ import android.health.connect.migration.MigrationException;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.OutcomeReceiver;
 import android.util.Log;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.modules.utils.build.SdkLevel;
 
 import java.lang.reflect.Field;
 import java.time.Duration;
@@ -1009,8 +1011,7 @@ public final class TestUtils {
     public static boolean areHealthPermissionsSupported(Context context) {
         PackageManager pm = context.getPackageManager();
         boolean isWatchEnabled =
-                pm.hasSystemFeature(PackageManager.FEATURE_WATCH)
-                        && Flags.replaceBodySensorPermissionEnabled();
+                pm.hasSystemFeature(PackageManager.FEATURE_WATCH) && SdkLevel.isAtLeastB();
         return DeviceSupportUtils.isHealthConnectFullySupported(context) || isWatchEnabled;
     }
 

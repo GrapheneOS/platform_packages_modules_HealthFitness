@@ -50,7 +50,7 @@ import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
-import com.android.healthfitness.flags.Flags
+import com.android.modules.utils.build.SdkLevel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Instant
@@ -548,7 +548,7 @@ constructor(
         // TODO: b/404305506 - Consider moving this filter upstream into HealthPermissionReader.
         if (
             context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH) &&
-                Flags.replaceBodySensorPermissionEnabled()
+                SdkLevel.isAtLeastB()
         ) {
             var allowedPermissionsToRequest =
                 healthPermissionReader
