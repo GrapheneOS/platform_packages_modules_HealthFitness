@@ -19,6 +19,7 @@ package com.android.healthfitness.flags;
 import static com.android.healthfitness.flags.AconfigFlagHelper.getDbVersionToDbFlagMap;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isDeviceDataProvidersEnabled;
+import static com.android.healthfitness.flags.AconfigFlagHelper.isSymptomsEnabled;
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -126,5 +127,25 @@ public class AconfigFlagHelperTest {
     @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void isDeviceDataProvidersEnabled_flagOn_expectTrue() {
         assertThat(isDeviceDataProvidersEnabled()).isTrue();
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_SYMPTOMS)
+    @EnableFlags({Flags.FLAG_SYMPTOMS_DB, Flags.FLAG_SMOKING_DB})
+    public void symptoms_featureFlagFalseAndDbTrue_expectFalse() {
+        assertThat(isSymptomsEnabled()).isFalse();
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_SYMPTOMS, Flags.FLAG_SMOKING_DB})
+    @DisableFlags({Flags.FLAG_SYMPTOMS_DB})
+    public void symptoms_featureFlagTrueAndDbFalse_expectFalse() {
+        assertThat(isSymptomsEnabled()).isFalse();
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB, Flags.FLAG_SMOKING_DB})
+    public void symptoms_featureFlagTrueAndDbTrue_expectTrue() {
+        assertThat(isSymptomsEnabled()).isTrue();
     }
 }

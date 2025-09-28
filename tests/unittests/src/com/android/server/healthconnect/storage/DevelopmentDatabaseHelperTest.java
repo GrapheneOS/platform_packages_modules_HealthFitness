@@ -22,7 +22,6 @@ import static android.healthconnect.testing.unittest.StorageUtils.createEmptyDat
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
-import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS_DB;
 import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.onUpgrade;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.checkTableExists;
 
@@ -260,33 +259,6 @@ public class DevelopmentDatabaseHelperTest {
                             DeviceInfoHelper.DEVICE_ID_COLUMN_NAME,
                             DeviceInfoHelper.DISPLAY_NAME_COLUMN_NAME));
         }
-    }
-
-    @Test
-    @EnableFlags({FLAG_DEVELOPMENT_DATABASE, FLAG_SYMPTOMS_DB})
-    public void testOnOpen_symptomsEnabled_createsTable() {
-        SQLiteDatabase db = createEmptyDatabase();
-        // Apply production upgrades first
-        onUpgrade(db, 0, LAST_ROLLED_OUT_DB_VERSION);
-
-        DevelopmentDatabaseHelper.onOpen(db);
-
-        assertThat(checkTableExists(db, "symptom_record_table")).isTrue();
-        db.close();
-    }
-
-    @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
-    @DisableFlags(FLAG_SYMPTOMS_DB)
-    public void testOnOpen_symptomsDisabled_doesNotCreateTable() {
-        SQLiteDatabase db = createEmptyDatabase();
-        // Apply production upgrades first
-        onUpgrade(db, 0, LAST_ROLLED_OUT_DB_VERSION);
-
-        DevelopmentDatabaseHelper.onOpen(db);
-
-        assertThat(checkTableExists(db, "symptom_record_table")).isFalse();
-        db.close();
     }
 
     @Test
