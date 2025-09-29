@@ -31,7 +31,7 @@ constructor(context: Context, attrs: AttributeSet? = null) :
     Preference(context, attrs), ComparablePreference {
 
     private var logger: HealthConnectLogger = HealthPreferenceUtils.initializeLogger(context)
-    var logName: ElementName = UnknownGenericElement.UNKNOWN_HEALTH_PREFERENCE
+    open var logName: ElementName = UnknownGenericElement.UNKNOWN_HEALTH_PREFERENCE
 
     override fun onAttached() {
         super.onAttached()

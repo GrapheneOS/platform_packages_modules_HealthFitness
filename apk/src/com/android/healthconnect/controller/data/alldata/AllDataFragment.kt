@@ -204,8 +204,7 @@ open class AllDataFragment : Hilt_AllDataFragment() {
         }
         setPageName(
             when (displayType) {
-                // TODO (b/445405721) - replace with new telemetry logs
-                DisplayType.COMBINED_DATA -> PageName.ALL_DATA_PAGE
+                DisplayType.COMBINED_DATA -> PageName.COMBINED_ALL_DATA_PAGE
                 DisplayType.MEDICAL_DATA -> PageName.ALL_MEDICAL_DATA_PAGE
                 DisplayType.FITNESS_DATA -> PageName.ALL_DATA_PAGE
             }
@@ -275,17 +274,9 @@ open class AllDataFragment : Hilt_AllDataFragment() {
         }
         if (visible) {
             if (findPreference<Preference>(KEY_TOP_INTRO) == null) {
-                preferenceScreen.addPreference(
-                    topIntroPreference(
-                        preferenceKey = KEY_TOP_INTRO,
-                        context = requireContext(),
-                        preferenceTitle = getString(R.string.browse_health_records_intro),
-                        learnMoreText = getString(R.string.medical_request_about_health_records),
-                        learnMoreAction = {
-                            deviceInfoUtils.openHCGetStartedLink(requireActivity())
-                        },
-                    )
-                )
+                preferenceScreen.addPreference(getMedicalHeaderPreference())
+                logger.logImpression(AllDataElement.MEDICAL_RECORDS_HEADER)
+                logger.logImpression(AllDataElement.MEDICAL_RECORDS_HEADER_LINK)
             }
         } else {
             val preference = findPreference<Preference>(KEY_TOP_INTRO)
@@ -344,17 +335,9 @@ open class AllDataFragment : Hilt_AllDataFragment() {
                     isFirstMedicalPreference
             ) {
                 isFirstMedicalPreference = false
-                val medicalPreference =
-                    topIntroPreference(
-                        preferenceKey = KEY_TOP_INTRO,
-                        context = requireContext(),
-                        preferenceTitle = getString(R.string.browse_health_records_intro),
-                        learnMoreText = getString(R.string.medical_request_about_health_records),
-                        learnMoreAction = {
-                            deviceInfoUtils.openHCGetStartedLink(requireActivity())
-                        },
-                        preferenceOrder = preferenceOrder,
-                    )
+                val medicalPreference = getMedicalHeaderPreference(preferenceOrder)
+                logger.logImpression(AllDataElement.MEDICAL_RECORDS_HEADER)
+                logger.logImpression(AllDataElement.MEDICAL_RECORDS_HEADER_LINK)
                 preferenceCategory.addPreference(medicalPreference)
                 preferenceOrder += 1
             }
@@ -373,6 +356,20 @@ open class AllDataFragment : Hilt_AllDataFragment() {
                     preferenceOrder += 1
                 }
         }
+    }
+
+    private fun getMedicalHeaderPreference(preferenceOrder: Int = 0): Preference {
+        return topIntroPreference(
+            preferenceKey = KEY_TOP_INTRO,
+            context = requireContext(),
+            preferenceTitle = getString(R.string.browse_health_records_intro),
+            learnMoreText = getString(R.string.medical_request_about_health_records),
+            learnMoreAction = {
+                logger.logInteraction(AllDataElement.MEDICAL_RECORDS_HEADER_LINK)
+                deviceInfoUtils.openHCGetStartedLink(requireActivity())
+            },
+            preferenceOrder = preferenceOrder,
+        )
     }
 
     /** Sorts fitness categories alphabetically and appends the medical category to the end. */

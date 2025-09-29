@@ -61,6 +61,8 @@ import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.NewHomePageElement
+import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
@@ -73,9 +75,13 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.any
+import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
@@ -100,6 +106,9 @@ class HomeFragmentTest {
         context.setLocale(Locale.US)
         navHostController = TestNavHostController(context)
         Intents.init()
+        (deviceInfoUtils as FakeDeviceInfoUtils).setIntentHandlerAvailability(true)
+        deviceInfoUtils.setPlayStoreAvailability(true)
+        deviceInfoUtils.setSendFeedbackAvailability(true)
     }
 
     @After
@@ -163,13 +172,22 @@ class HomeFragmentTest {
         onView(withText("More about Health Connect"))
             .perform(scrollTo())
             .check(matches(isDisplayed()))
+        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.NEW_HOME_PAGE)
+        verify(healthConnectLogger).logPageImpression()
+        verify(healthConnectLogger)
+            .logImpression(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
+        verify(healthConnectLogger).logImpression(NewHomePageElement.DATA_AND_ACCESS_BUTTON)
+        verify(healthConnectLogger).logImpression(NewHomePageElement.RECENT_ACCESS_BUTTON)
+        verify(healthConnectLogger).logImpression(NewHomePageElement.MANAGE_DATA_BUTTON)
+        verify(healthConnectLogger).logImpression(NewHomePageElement.HOME_PAGE_FOOTER)
     }
 
     // endregion
 
     // region Your Health Apps
     @Test
-    fun whenNoApps_showsNoAppsPreference() {
+    fun whenNoApps_andPlayStoreAvailable_showsNoAppsPreferenceWithLink() {
+        (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
         val liveData =
             MutableLiveData<HomeViewModel.HomeFragmentState>(
                 HomeViewModel.HomeFragmentState.WithData(emptyList())
@@ -181,6 +199,27 @@ class HomeFragmentTest {
         onView(withText("Install apps that work with Health Connect to " + "see them here"))
             .check(matches(isDisplayed()))
         onView(withText("See compatible apps")).check(matches(isDisplayed()))
+        verify(healthConnectLogger).logImpression(NewHomePageElement.NO_APPS_AVAILABLE_HEADER)
+        verify(healthConnectLogger).logImpression(NewHomePageElement.NO_APPS_AVAILABLE_LINK)
+    }
+
+    @Test
+    fun whenNoApps_andPlayStoreNotAvailable_showsNoAppsPreferenceWithoutLink() {
+        (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(false)
+        val liveData =
+            MutableLiveData<HomeViewModel.HomeFragmentState>(
+                HomeViewModel.HomeFragmentState.WithData(emptyList())
+            )
+        whenever(homeViewModel.homeFragmentState).thenReturn(liveData)
+
+        launchFragment<HomeFragment>(Bundle())
+
+        onView(withText("Install apps that work with Health Connect to " + "see them here"))
+            .check(matches(isDisplayed()))
+        onView(withText("See compatible apps")).check(doesNotExist())
+        verify(healthConnectLogger).logImpression(NewHomePageElement.NO_APPS_AVAILABLE_HEADER)
+        verify(healthConnectLogger, never())
+            .logImpression(NewHomePageElement.NO_APPS_AVAILABLE_LINK)
     }
 
     @Test
@@ -203,6 +242,8 @@ class HomeFragmentTest {
         onView(withText(TEST_APP_2.appName)).check(matches(isDisplayed()))
         onView(withText(TEST_APP_3.appName)).check(matches(isDisplayed()))
         onView(withText("See all")).check(doesNotExist())
+        verify(healthConnectLogger, times(3))
+            .logImpression(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
     }
 
     @Test
@@ -213,7 +254,7 @@ class HomeFragmentTest {
                 ConnectedAppMetadata(TEST_APP_2, ConnectedAppStatus.ALLOWED),
                 ConnectedAppMetadata(TEST_APP_3, ConnectedAppStatus.ALLOWED),
                 ConnectedAppMetadata(TEST_APP_4, ConnectedAppStatus.ALLOWED),
-                ConnectedAppMetadata(TEST_APP_5, ConnectedAppStatus.ALLOWED),
+                ConnectedAppMetadata(TEST_APP_5, ConnectedAppStatus.DENIED),
                 ConnectedAppMetadata(TEST_APP_6, ConnectedAppStatus.ALLOWED),
             )
         val liveData =
@@ -231,6 +272,12 @@ class HomeFragmentTest {
         onView(withText(TEST_APP_5.appName)).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText(TEST_APP_6.appName)).check(doesNotExist())
         onView(withText("See all")).perform(scrollTo()).check(matches(isDisplayed()))
+        verify(healthConnectLogger, times(4))
+            .logImpression(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
+        verify(healthConnectLogger)
+            .logImpression(NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON)
+        verify(healthConnectLogger)
+            .logImpression(NewHomePageElement.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON)
     }
 
     @Test
@@ -258,6 +305,8 @@ class HomeFragmentTest {
 
         onView(withText(TEST_APP_NAME)).perform(click())
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.fitnessAppFragment)
+        verify(healthConnectLogger)
+            .logInteraction(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
     }
 
     @Test
@@ -285,6 +334,8 @@ class HomeFragmentTest {
 
         onView(withText(TEST_APP_NAME)).perform(click())
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.medicalAppFragment)
+        verify(healthConnectLogger)
+            .logInteraction(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
     }
 
     @Test
@@ -313,6 +364,8 @@ class HomeFragmentTest {
         onView(withText(TEST_APP_NAME)).perform(click())
         assertThat(navHostController.currentDestination?.id)
             .isEqualTo(R.id.combinedPermissionsFragment)
+        verify(healthConnectLogger)
+            .logInteraction(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
     }
 
     @Test
@@ -346,6 +399,8 @@ class HomeFragmentTest {
         intended(hasPackage(TEST_APP_PACKAGE_NAME))
         // We should remain where we started.
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.newHomeFragment)
+        verify(healthConnectLogger)
+            .logInteraction(NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON)
     }
 
     @Test
@@ -377,6 +432,8 @@ class HomeFragmentTest {
 
         onView(withText(TEST_APP_NAME)).perform(click())
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.fitnessAppFragment)
+        verify(healthConnectLogger)
+            .logInteraction(NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON)
     }
 
     @Test
@@ -407,6 +464,8 @@ class HomeFragmentTest {
 
         onView(withText(TEST_APP_NAME)).perform(click())
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.medicalAppFragment)
+        verify(healthConnectLogger)
+            .logInteraction(NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON)
     }
 
     @Test
@@ -438,6 +497,8 @@ class HomeFragmentTest {
         onView(withText(TEST_APP_NAME)).perform(click())
         assertThat(navHostController.currentDestination?.id)
             .isEqualTo(R.id.combinedPermissionsFragment)
+        verify(healthConnectLogger)
+            .logInteraction(NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON)
     }
 
     // endregion
@@ -448,6 +509,7 @@ class HomeFragmentTest {
         setupFragmentForNavigation()
         onView(withText("Data and access")).perform(click())
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.data_activity)
+        verify(healthConnectLogger).logInteraction(NewHomePageElement.DATA_AND_ACCESS_BUTTON)
     }
 
     @Test
@@ -455,6 +517,7 @@ class HomeFragmentTest {
         setupFragmentForNavigation()
         onView(withText("Recent access")).perform(click())
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.recentAccessFragment)
+        verify(healthConnectLogger).logInteraction(NewHomePageElement.RECENT_ACCESS_BUTTON)
     }
 
     @Test
@@ -464,6 +527,8 @@ class HomeFragmentTest {
         onView(withText("Devices")).perform(click())
         assertThat(navHostController.currentDestination?.id)
             .isEqualTo(R.id.connectedDevicesFragment)
+        verify(healthConnectLogger).logImpression(NewHomePageElement.DEVICES_BUTTON)
+        verify(healthConnectLogger).logInteraction(NewHomePageElement.DEVICES_BUTTON)
     }
 
     @Test
@@ -471,6 +536,7 @@ class HomeFragmentTest {
     fun devices_whenFlagDisabled_isNotDisplayed() {
         setupFragmentForNavigation()
         onView(withText("Devices")).check(doesNotExist())
+        verify(healthConnectLogger, never()).logImpression(NewHomePageElement.DEVICES_BUTTON)
     }
 
     @Test
@@ -478,6 +544,7 @@ class HomeFragmentTest {
         setupFragmentForNavigation()
         onView(withText("Manage data")).perform(click())
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.manageDataFragment)
+        verify(healthConnectLogger).logInteraction(NewHomePageElement.MANAGE_DATA_BUTTON)
     }
 
     @Test
@@ -486,6 +553,7 @@ class HomeFragmentTest {
 
         onView(withText("See compatible apps")).perform(click())
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.playstore_activity)
+        verify(healthConnectLogger).logInteraction(NewHomePageElement.NO_APPS_AVAILABLE_LINK)
     }
 
     @Test
@@ -513,6 +581,8 @@ class HomeFragmentTest {
 
         onView(withText("See all")).perform(click())
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.connectedAppsFragment)
+        verify(healthConnectLogger)
+            .logInteraction(NewHomePageElement.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON)
     }
 
     @Test
