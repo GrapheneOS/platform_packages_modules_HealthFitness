@@ -74,6 +74,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.clickOnRecyclerViewItemWithText
 import com.android.healthconnect.controller.tests.utils.clickSwitchOnRecyclerViewItemWithText
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.scrollToBottomOfPreferenceScreen
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
@@ -475,6 +476,7 @@ class SettingsFitnessAppFragmentTest {
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
+        scrollToBottomOfPreferenceScreen()
         onView(
                 withText(
                     "$TEST_APP_NAME can read data added after October 20, 2022" +
@@ -509,6 +511,7 @@ class SettingsFitnessAppFragmentTest {
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
+        scrollToBottomOfPreferenceScreen()
         onView(
                 withText(
                     "$TEST_APP_NAME can read data added after October 20, 2022" +
