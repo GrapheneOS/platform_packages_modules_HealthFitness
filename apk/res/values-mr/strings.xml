@@ -84,10 +84,8 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"पोषणाशी संबंधित डेटा"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"स्वास्थ्य"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"स्वास्थ्य"</string>
-    <!-- no translation found for symptoms_category_uppercase (1357167834284360975) -->
-    <skip />
-    <!-- no translation found for symptoms_category_lowercase (2298815597177353672) -->
-    <skip />
+    <string name="symptoms_category_uppercase" msgid="1357167834284360975">"लक्षणे"</string>
+    <string name="symptoms_category_lowercase" msgid="2298815597177353672">"लक्षणे"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"डेटा ब्राउझ करा"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"डेटा व्यवस्थापित करा"</string>
     <string name="export_data_button" msgid="7783329820434117744">"डेटा एक्सपोर्ट करा"</string>
@@ -386,16 +384,11 @@
     <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"खोकला"</string>
     <string name="symptom_cough_read_content_description" msgid="398516421189288025">"लक्षणे वाचा"</string>
     <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"लक्षणे लिहा"</string>
-    <!-- no translation found for symptom_unknown (5796719193136239306) -->
-    <skip />
-    <!-- no translation found for symptom_severity_mild (2689415474774489874) -->
-    <skip />
-    <!-- no translation found for symptom_severity_moderate (8388787027751900668) -->
-    <skip />
-    <!-- no translation found for symptom_severity_severe (4675732713898596705) -->
-    <skip />
-    <!-- no translation found for symptom_entry_title (3927744074055963604) -->
-    <skip />
+    <string name="symptom_unknown" msgid="5796719193136239306">"अज्ञात"</string>
+    <string name="symptom_severity_mild" msgid="2689415474774489874">"सौम्य"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"मध्यम"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"तीव्र"</string>
+    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” ला रीड करण्याची अनुमती द्या"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” राइट करण्याची अनुमती द्या"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"अनुमती द्या"</string>
@@ -1248,8 +1241,7 @@
     <string name="write_access" msgid="571547306854732263">"राइट अ‍ॅक्सेस"</string>
     <string name="read_access" msgid="3317759826769372785">"रीड ॲक्सेस"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_data_category_expandable_preference_title (7942303192917497010) -->
-    <skip />
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>⁠"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> पैकी <xliff:g id="NUMBER_0">%1$d</xliff:g> अ‍ॅप्सना परवानगी दिली आहे"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"कोणत्याही अ‍ॅपची विनंती नाही"</string>
     <string name="allowed" msgid="4158456017482263737">"अनुमती आहे"</string>
@@ -1306,29 +1298,17 @@
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"पुनरावलोकन करा"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"पायऱ्या आता Health Connect मध्ये आहेत"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"कनेक्ट केलेली अ‍ॅप्स अ‍ॅक्सेस करण्यासाठी या डिव्हाइसद्वारे माग ठेवलेल्या पायऱ्या आता Health Connect मध्ये स्टोअर केल्या आहेत"</string>
-    <!-- no translation found for your_health_apps_category_title (2140744650535785802) -->
-    <skip />
-    <!-- no translation found for your_health_data_category_title (7049426060456828669) -->
-    <skip />
-    <!-- no translation found for preferences_category_title (8799354266901230310) -->
-    <skip />
-    <!-- no translation found for home_screen_footer (7572797414754117707) -->
-    <skip />
-    <!-- no translation found for home_screen_footer_link (3276430842054286014) -->
-    <skip />
-    <!-- no translation found for data_and_access_summary (1435478623777637347) -->
-    <skip />
-    <!-- no translation found for recent_access_summary (3933708982145999939) -->
-    <skip />
-    <!-- no translation found for home_devices_summary (6056984338393523399) -->
-    <skip />
-    <!-- no translation found for empty_apps_section_title (1808646811838427261) -->
-    <skip />
-    <!-- no translation found for empty_apps_section_link (5227373618435407625) -->
-    <skip />
-    <!-- no translation found for see_all_connected_apps_button (3391164556225732842) -->
-    <skip />
-    <!-- no translation found for app_not_connected_summary (3898921378270235598) -->
-    <skip />
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"तुमची आरोग्यविषयक अ‍ॅप्स"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"तुमचा आरोग्याशी संबंधित डेटा"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"प्राधान्ये"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect तुम्हाला तुमच्या एकाहून अधिक अ‍ॅप्सदरम्यान आरोग्य आणि फिटनेसशी संबंधित डेटा शेअर करू देते. हे तुमचा डेटा सुरक्षित ठेवून तुम्हाला इनसाइट आणि अनुभव अनलॉक करण्यास मदत करते."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect बद्दल आणखी बरेच काही"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"तुमचा डेटा आणि कोणती अ‍ॅप्स तो अ‍ॅक्सेस करू शकतात ते पहा"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"तुमचा डेटा अलीकडे वापरलेली अ‍ॅप्स"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"आरोग्याशी संबंधित डेटा अ‍ॅक्सेस करू शकणाऱ्या डिव्हाइसचे पुनरावलोकन करा"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect सह काम करणारी अ‍ॅप्स येथे पाहण्यासाठी ती इंस्टॉल करा"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"कंपॅटिबल अ‍ॅप्स पहा"</string>
+    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"सर्व पहा"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"कनेक्ट केलेले नाही"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"आताच नको"</string>
 </resources>

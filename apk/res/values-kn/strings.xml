@@ -84,10 +84,8 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"ಪೌಷ್ಟಿಕತೆ"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"ಕ್ಷೇಮ"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"ಕ್ಷೇಮ"</string>
-    <!-- no translation found for symptoms_category_uppercase (1357167834284360975) -->
-    <skip />
-    <!-- no translation found for symptoms_category_lowercase (2298815597177353672) -->
-    <skip />
+    <string name="symptoms_category_uppercase" msgid="1357167834284360975">"ಸಿಂಪ್ಟಮ್‌ಗಳು"</string>
+    <string name="symptoms_category_lowercase" msgid="2298815597177353672">"ಸಿಂಪ್ಟಮ್‌ಗಳು"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"ಡೇಟಾ ಬ್ರೌಸ್ ಮಾಡಿ"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"ಡೇಟಾವನ್ನು ನಿರ್ವಹಿಸಿ"</string>
     <string name="export_data_button" msgid="7783329820434117744">"ಡೇಟಾ ರಫ್ತು ಮಾಡಿ"</string>
@@ -386,16 +384,11 @@
     <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"ಕೆಮ್ಮು"</string>
     <string name="symptom_cough_read_content_description" msgid="398516421189288025">"ರೋಗಲಕ್ಷಣಗಳನ್ನು ಓದಿ"</string>
     <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"ರೋಗಲಕ್ಷಣಗಳನ್ನು ಬರೆಯಿರಿ"</string>
-    <!-- no translation found for symptom_unknown (5796719193136239306) -->
-    <skip />
-    <!-- no translation found for symptom_severity_mild (2689415474774489874) -->
-    <skip />
-    <!-- no translation found for symptom_severity_moderate (8388787027751900668) -->
-    <skip />
-    <!-- no translation found for symptom_severity_severe (4675732713898596705) -->
-    <skip />
-    <!-- no translation found for symptom_entry_title (3927744074055963604) -->
-    <skip />
+    <string name="symptom_unknown" msgid="5796719193136239306">"ಅಪರಿಚಿತ"</string>
+    <string name="symptom_severity_mild" msgid="2689415474774489874">"ಲಘು"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"ಸಾಧಾರಣ"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"ತೀವ್ರ"</string>
+    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>⁠"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” ಗೆ ಓದಲು ಅನುಮತಿಸಿ"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” ಗೆ ಬರೆಯಲು ಅನುಮತಿಸಿ"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"ಅನುಮತಿಸಿ"</string>
@@ -1248,8 +1241,7 @@
     <string name="write_access" msgid="571547306854732263">"ಬರೆಯಲು ಆ್ಯಕ್ಸೆಸ್"</string>
     <string name="read_access" msgid="3317759826769372785">"ಓದಲು ಆ್ಯಕ್ಸೆಸ್"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_data_category_expandable_preference_title (7942303192917497010) -->
-    <skip />
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>⁠"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> ರಲ್ಲಿ <xliff:g id="NUMBER_0">%1$d</xliff:g> ಆ್ಯಪ್‌ಗಳನ್ನು ಅನುಮತಿಸಲಾಗಿದೆ"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"ಯಾವುದೇ ಆ್ಯಪ್‌ಗಳು ವಿನಂತಿಸಿಕೊಳ್ಳುತ್ತಿಲ್ಲ"</string>
     <string name="allowed" msgid="4158456017482263737">"ಅನುಮತಿಸಲಾಗಿದೆ"</string>
@@ -1306,29 +1298,17 @@
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"ಪರಿಶೀಲಿಸಿ"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"ಹೆಜ್ಜೆಗಳು ಈಗ Health Connect ನಲ್ಲಿ ಇವೆ"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"ಈ ಸಾಧನವು ಟ್ರ್ಯಾಕ್ ಮಾಡಿದ ಹೆಜ್ಜೆಗಳನ್ನು ಈಗ Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗಿದೆ, ಇದರಿಂದ ಕನೆಕ್ಟ್ ಮಾಡಲಾದ ಆ್ಯಪ್‌ಗಳು ಅದನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು"</string>
-    <!-- no translation found for your_health_apps_category_title (2140744650535785802) -->
-    <skip />
-    <!-- no translation found for your_health_data_category_title (7049426060456828669) -->
-    <skip />
-    <!-- no translation found for preferences_category_title (8799354266901230310) -->
-    <skip />
-    <!-- no translation found for home_screen_footer (7572797414754117707) -->
-    <skip />
-    <!-- no translation found for home_screen_footer_link (3276430842054286014) -->
-    <skip />
-    <!-- no translation found for data_and_access_summary (1435478623777637347) -->
-    <skip />
-    <!-- no translation found for recent_access_summary (3933708982145999939) -->
-    <skip />
-    <!-- no translation found for home_devices_summary (6056984338393523399) -->
-    <skip />
-    <!-- no translation found for empty_apps_section_title (1808646811838427261) -->
-    <skip />
-    <!-- no translation found for empty_apps_section_link (5227373618435407625) -->
-    <skip />
-    <!-- no translation found for see_all_connected_apps_button (3391164556225732842) -->
-    <skip />
-    <!-- no translation found for app_not_connected_summary (3898921378270235598) -->
-    <skip />
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"ನಿಮ್ಮ ಹೆಲ್ತ್ ಆ್ಯಪ್‌ಗಳು"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"ನಿಮ್ಮ ಆರೋಗ್ಯ ಡೇಟಾ"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"ಆದ್ಯತೆಗಳು"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect ನಿಮ್ಮ ಆರೋಗ್ಯ ಹಾಗೂ ಫಿಟ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಬಹು ಆ್ಯಪ್‌ಗಳ ನಡುವೆ ಹಂಚಿಕೊಳ್ಳಲು ನಿಮಗೆ ಅನುಮತಿಸುತ್ತದೆ. ಇದು ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸುರಕ್ಷಿತವಾಗಿರಿಸಿಕೊಳ್ಳುವ ಸಮಯದಲ್ಲಿ ಒಳನೋಟಗಳು ಮತ್ತು ಅನುಭವಗಳನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ನಿಮಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect ಕುರಿತಾಗಿ ಹೆಚ್ಚಿನ ಮಾಹಿತಿ"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"ನಿಮ್ಮ ಡೇಟಾ ಮತ್ತು ಅದನ್ನು ಯಾವ ಆ್ಯಪ್‌ಗಳು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಇತ್ತೀಚೆಗೆ ಬಳಸಿದ ಆ್ಯಪ್‌ಗಳು"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"ಆರೋಗ್ಯ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದಾದ ಸಾಧನಗಳನ್ನು ಪರಿಶೀಲಿಸಿ"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect ಜೊತೆಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುವ ಆ್ಯಪ್‌ಗಳನ್ನು ಇಲ್ಲಿ ನೋಡಲು ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"ಹೊಂದಾಣಿಕೆಯ ಆ್ಯಪ್‌ಗಳನ್ನು ನೋಡಿ"</string>
+    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"ಎಲ್ಲವನ್ನೂ ನೋಡಿ"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"ಕನೆಕ್ಟ್ ಆಗಿಲ್ಲ"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"ಈಗ ಬೇಡ"</string>
 </resources>

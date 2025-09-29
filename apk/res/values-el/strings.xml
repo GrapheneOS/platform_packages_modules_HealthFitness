@@ -1248,8 +1248,7 @@
     <string name="write_access" msgid="571547306854732263">"Πρόσβαση εγγραφής"</string>
     <string name="read_access" msgid="3317759826769372785">"Πρόσβαση ανάγνωσης"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_data_category_expandable_preference_title (7942303192917497010) -->
-    <skip />
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"Επιτρέπονται <xliff:g id="NUMBER_0">%1$d</xliff:g> από <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> εφαρμογές"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Δεν υπάρχουν αιτήματα από εφαρμογές"</string>
     <string name="allowed" msgid="4158456017482263737">"Επιτρέπεται"</string>
@@ -1306,29 +1305,17 @@
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Έλεγχος"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Τα βήματα είναι πλέον στο Health Connect"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Τα βήματα που παρακολουθούνται από αυτή τη συσκευή αποθηκεύονται πλέον στο Health Connect, για να έχουν πρόσβαση οι συνδεδεμένες εφαρμογές"</string>
-    <!-- no translation found for your_health_apps_category_title (2140744650535785802) -->
-    <skip />
-    <!-- no translation found for your_health_data_category_title (7049426060456828669) -->
-    <skip />
-    <!-- no translation found for preferences_category_title (8799354266901230310) -->
-    <skip />
-    <!-- no translation found for home_screen_footer (7572797414754117707) -->
-    <skip />
-    <!-- no translation found for home_screen_footer_link (3276430842054286014) -->
-    <skip />
-    <!-- no translation found for data_and_access_summary (1435478623777637347) -->
-    <skip />
-    <!-- no translation found for recent_access_summary (3933708982145999939) -->
-    <skip />
-    <!-- no translation found for home_devices_summary (6056984338393523399) -->
-    <skip />
-    <!-- no translation found for empty_apps_section_title (1808646811838427261) -->
-    <skip />
-    <!-- no translation found for empty_apps_section_link (5227373618435407625) -->
-    <skip />
-    <!-- no translation found for see_all_connected_apps_button (3391164556225732842) -->
-    <skip />
-    <!-- no translation found for app_not_connected_summary (3898921378270235598) -->
-    <skip />
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"Οι εφαρμογές υγείας σας"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"Τα δεδομένα υγείας σας"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"Προτιμήσεις"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Το Health Connect σας επιτρέπει να μοιράζεστε τα δεδομένα υγείας και φυσικής κατάστασης μεταξύ πολλών εφαρμογών. Με αυτόν τον τρόπο, μπορείτε να αποκτήσετε πρόσβαση σε insight και εμπειρίες, διατηρώντας τα δεδομένα σας ασφαλή."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"Περισσότερα σχετικά με το Health Connect"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"Τα δεδομένα σας και ποιες εφαρμογές μπορούν να αποκτήσουν πρόσβαση σε αυτά"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"Εφαρμογές που χρησιμοποίησαν πρόσφατα τα δεδομένα σας"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"Έλεγχος συσκευών με πρόσβαση σε δεδομένα υγείας"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Εγκαταστήστε εφαρμογές που λειτουργούν με το Health Connect για να εμφανίζονται εδώ"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"Εμφάνιση συμβατών εφαρμογών"</string>
+    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"Εμφάνιση όλων"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"Δεν είναι συνδεδεμένη"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Όχι τώρα"</string>
 </resources>

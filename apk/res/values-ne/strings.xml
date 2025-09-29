@@ -1060,8 +1060,7 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"सम्पन्न भयो"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{स्वतः मेटाउने सुविधा अन छ। # महिनाभन्दा पुराना डेटा मेटाइने छन्}other{स्वतः मेटाउने सुविधा अन छ। # महिनाभन्दा पुराना डेटा मेटाइने छन्}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"स्वतः मेटाउने सुविधा अफ छ"</string>
-    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
-    <skip />
+    <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+<xliff:g id="COUNT">%s</xliff:g>"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"एपको प्राथमिकता क्रम निर्धारण गर्नुहोस्"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"एकभन्दा बढी एपले <xliff:g id="DATA_TYPE">%s</xliff:g> सम्बन्धी डेटा हालेका खण्डमा Health Connect ले यो सूचीको सबैभन्दा माथि रहेको एपको डेटा प्रयोग गर्छ। ड्र्याग गरेर एपको क्रम मिलाउनुहोस्।"</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"सेभ गर्नुहोस्"</string>
