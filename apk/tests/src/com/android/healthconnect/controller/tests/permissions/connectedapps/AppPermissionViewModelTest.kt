@@ -18,11 +18,12 @@ package com.android.healthconnect.controller.tests.permissions.connectedapps
 import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissions.READ_EXERCISE
 import android.health.connect.HealthPermissions.READ_STEPS
-import android.platform.test.annotations.DisableFlags
+import android.os.Build
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.SdkSuppress
 import com.android.healthconnect.controller.permissions.additionalaccess.ExerciseRouteState
 import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
@@ -397,10 +398,7 @@ class AppPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(
-        Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
-        Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN,
-    )
+    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun whenPackageSupported_wearOnlyReturnsSystemPermissions_loadAllPermissions() = runTest {
         whenever(deviceInfoUtils.isOnWatch(any())).thenReturn(true)
         whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(false)
@@ -2562,8 +2560,8 @@ class AppPermissionViewModelTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED)
-    fun isPackageSupported_watch_flagDisabled_callsCorrectMethod() {
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
+    fun isPackageSupported_watch_preBaklava_callsCorrectMethod() {
         whenever(deviceInfoUtils.isOnWatch(any())).thenReturn(true)
 
         appPermissionViewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)
@@ -2571,9 +2569,9 @@ class AppPermissionViewModelTest {
         verify(healthPermissionReader).isRationaleIntentDeclared(TEST_APP_PACKAGE_NAME)
     }
 
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     @Test
-    @EnableFlags(Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED)
-    fun isPackageSupported_watch_flagEnabled_packageSupported() {
+    fun isPackageSupported_watch_postBaklava_packageSupported() {
         whenever(deviceInfoUtils.isOnWatch(any())).thenReturn(true)
 
         assertThat(appPermissionViewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).isTrue()
@@ -2581,8 +2579,8 @@ class AppPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED)
-    fun isPackageSupported_notWatch_flagEnabled_splitPermissionApp_packageSupported() {
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    fun isPackageSupported_notWatch_postBaklava_splitPermissionApp_packageSupported() {
         whenever(healthPermissionReader.isBodySensorSplitPermissionApp(TEST_APP_PACKAGE_NAME))
             .thenReturn(true)
 

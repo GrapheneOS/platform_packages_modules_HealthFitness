@@ -52,6 +52,7 @@ java_sdk_library {
         "healthfitness-aconfig-flags-helper",
     ],
     static_libs: [
+        "modules-utils-build",
         "modules-utils-backgroundthread",
         "fhirspec-java-proto-lite",
         "backup-restore-proto",

@@ -48,8 +48,8 @@ import com.android.healthconnect.controller.shared.dialog.HealthConnectBottomShe
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
-import com.android.healthfitness.flags.Flags
 import com.android.healthfitness.flags.Flags.permissionRequestBottomSheet
+import com.android.modules.utils.build.SdkLevel
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -99,7 +99,7 @@ class PermissionsActivity :
 
         // If device is enabled on watch, redirect to WearGrantPermissionsActivity.
         if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_WATCH)) {
-            if (!Flags.replaceBodySensorPermissionEnabled()) {
+            if (!SdkLevel.isAtLeastB()) {
                 Log.e(TAG, "Health connect is not available on watch, finishing!")
                 finish()
                 return

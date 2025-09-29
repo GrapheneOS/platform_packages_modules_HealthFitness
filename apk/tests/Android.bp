@@ -94,6 +94,7 @@ java_defaults {
         "android.permission.flags-aconfig-java-export",
         "collector-device-lib",
         "aconfig_settingstheme_exported_flags_java_lib",
+        "modules-utils-build",
     ],
     libs: [
         "kotlin-annotations",

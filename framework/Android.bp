@@ -65,7 +65,7 @@ java_sdk_library {
     name: "framework-healthfitness",
     permitted_packages: [
         "android.health",
-        "com.android.healthfitness.flags",
+        "com.android.healthfitness",
     ],
     srcs: [":framework-healthfitness-sources"],
     defaults: ["framework-module-defaults"],
@@ -80,6 +80,7 @@ java_sdk_library {
         "healthfitness-statsd",
         "healthfitness-aconfig-flags-lib",
         "healthfitness-aconfig-flags-helper",
+        "modules-utils-build",
     ],
     aconfig_declarations: [
         "healthconnect-aconfig-flags",
@@ -97,4 +98,5 @@ java_sdk_library {
     lint: {
         baseline_filename: "lint-baseline.xml",
     },
+    jarjar_rules: "jarjar-rules.txt",
 }

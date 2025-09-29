@@ -39,6 +39,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission.Co
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthfitness.flags.AconfigFlagHelper
 import com.android.healthfitness.flags.Flags
+import com.android.modules.utils.build.SdkLevel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -118,7 +119,7 @@ constructor(
     fun getAppsWithHealthPermissions(): Map<String, Boolean> {
         return if (
             context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH) &&
-                Flags.replaceBodySensorPermissionEnabled()
+                SdkLevel.isAtLeastB()
         ) {
             // On Wear, do not depend on intent filter, instead, query apps by requested
             // permissions.
@@ -161,11 +162,11 @@ constructor(
             val permissionsToCheckFlags =
                 when {
                     hasIntentFilter -> filterInvalidAdditionalPermissions(requestedPermissions)
-                    Flags.replaceBodySensorPermissionEnabled() &&
+                    SdkLevel.isAtLeastB() &&
                         requestedPermissions.size == 1 &&
                         requestedPermissions.contains(HealthPermissions.READ_HEART_RATE) ->
                         requestedPermissions
-                    Flags.replaceBodySensorPermissionEnabled() &&
+                    SdkLevel.isAtLeastB() &&
                         requestedPermissions.size == 2 &&
                         requestedPermissions.contains(HealthPermissions.READ_HEART_RATE) &&
                         requestedPermissions.contains(
@@ -266,7 +267,7 @@ constructor(
      * body-sensor permission).
      */
     public fun isBodySensorSplitPermissionApp(packageName: String): Boolean {
-        if (!Flags.replaceBodySensorPermissionEnabled()) return false
+        if (!SdkLevel.isAtLeastB()) return false
         return try {
             val packageInfo =
                 context.packageManager.getPackageInfo(
