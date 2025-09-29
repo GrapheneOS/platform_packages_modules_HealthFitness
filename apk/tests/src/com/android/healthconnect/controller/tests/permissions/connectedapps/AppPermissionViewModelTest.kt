@@ -399,6 +399,7 @@ class AppPermissionViewModelTest {
 
     @Test
     @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     fun whenPackageSupported_wearOnlyReturnsSystemPermissions_loadAllPermissions() = runTest {
         whenever(deviceInfoUtils.isOnWatch(any())).thenReturn(true)
         whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(false)
