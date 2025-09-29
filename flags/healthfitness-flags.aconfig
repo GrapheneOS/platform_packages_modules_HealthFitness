@@ -690,3 +690,12 @@ flag {
     is_fixed_read_only: true
     is_exported: false
 }
+
+flag {
+    name: "write_ahead_logging_db"
+    namespace: "health_fitness_aconfig"
+    description: "Flag to enable Write-Ahead Logging in HC DB."
+    bug: "448049387"
+    is_fixed_read_only: false
+    is_exported: false
+}
