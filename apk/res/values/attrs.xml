@@ -121,6 +121,10 @@
 
     <!-- Lock screen banner -->
     <attr name="lockIcon" format="reference" />
+
+    <!-- New home screen -->
+    <attr name="connectButton" format="reference"/>
+
     <!-- END REGION -->
 
     <!-- REGION DIALOG GRAVITY -->

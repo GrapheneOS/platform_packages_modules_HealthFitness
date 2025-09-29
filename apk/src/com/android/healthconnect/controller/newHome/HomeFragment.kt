@@ -35,6 +35,7 @@ import com.android.healthconnect.controller.shared.preference.HealthButtonPrefer
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.shared.preference.NoAppsPreference
+import com.android.healthconnect.controller.shared.preference.NotConnectedAppPreference
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -146,21 +147,23 @@ class HomeFragment : Hilt_HomeFragment() {
         }
 
         homeFragmentState.connectedApps.take(5).forEach { app ->
-            yourHealthAppsCategory.addPreference(
-                HealthAppPreference(context = requireContext(), appMetadata = app.appMetadata)
-                    .also {
-                        if (app.status == ConnectedAppStatus.DENIED) {
-                            it.summary = getString(R.string.app_not_connected_summary)
+            val appPreference =
+                if (app.status == ConnectedAppStatus.DENIED) {
+                    NotConnectedAppPreference(requireContext(), appMetadata = app.appMetadata)
+                        .also {
                             it.logName = NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON
-                        } else {
-                            it.logName = NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON
                         }
-                        it.setOnPreferenceClickListener {
-                            navigateToAppInfoOrOnboarding(app)
-                            true
-                        }
+                } else {
+                    HealthAppPreference(requireContext(), app.appMetadata).also {
+                        it.logName = NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON
                     }
-            )
+                }
+            appPreference.setOnPreferenceClickListener {
+                navigateToAppInfoOrOnboarding(app)
+                true
+            }
+
+            yourHealthAppsCategory.addPreference(appPreference)
         }
 
         if (homeFragmentState.connectedApps.size > 5) {

@@ -124,6 +124,9 @@
         <!-- Connected devices -->
         <item name="devicePhoneIcon">@drawable/ic_device_phone</item>
 
+        <!-- New home screen -->
+        <item name="connectButton">@drawable/ic_connect</item>
+
         <!-- END REGION -->
 
         <!-- REGION DIALOG GRAVITY -->
