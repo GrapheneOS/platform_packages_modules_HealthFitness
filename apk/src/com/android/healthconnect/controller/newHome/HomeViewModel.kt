@@ -54,12 +54,19 @@ constructor(
     private var _isBannerSeenWithFitnessData = true
     private var _isBannerSeenWithMedicalData = true
 
+    var showSystemApps = false
+
     // TODO or mediatorLiveData?
     private val _homeFragmentState = MutableLiveData<HomeFragmentState>()
     val homeFragmentState: LiveData<HomeFragmentState>
         get() = _homeFragmentState
 
     init {
+        loadData()
+    }
+
+    fun setShouldShowSystemApps(shouldShowSystemApps: Boolean) {
+        this.showSystemApps = shouldShowSystemApps
         loadData()
     }
 
@@ -87,6 +94,7 @@ constructor(
                                     it.status != ConnectedAppStatus.INACTIVE &&
                                         it.status != ConnectedAppStatus.NEEDS_UPDATE
                                 }
+                                .filter { if (showSystemApps) true else !it.isSystem }
                                 .sortedWith(
                                     compareBy<ConnectedAppMetadata> { getSortOrder(it.status) }
                                         .thenBy { it.appMetadata.appName }

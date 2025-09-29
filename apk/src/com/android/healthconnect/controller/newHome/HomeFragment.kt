@@ -41,6 +41,7 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.NewHomePageElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.pref
+import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
 import com.android.healthfitness.flags.Flags.stepTrackingEnabled
 import com.android.settingslib.widget.FooterPreference
@@ -123,6 +124,23 @@ class HomeFragment : Hilt_HomeFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupMenu(
+            R.menu.show_system_with_send_feedback_and_help,
+            viewLifecycleOwner,
+            healthConnectLogger,
+        ) { menuItem ->
+            if (menuItem.itemId == R.id.menu_show_hide_system) {
+                val isShowingSystem = homeViewModel.showSystemApps
+                menuItem.setTitle(
+                    if (isShowingSystem) R.string.menu_show_system else R.string.menu_hide_system
+                )
+                homeViewModel.setShouldShowSystemApps(!isShowingSystem)
+                true
+            } else {
+                false
+            }
+        }
+
         homeViewModel.homeFragmentState.observe(viewLifecycleOwner) { homeFragmentState ->
             when (homeFragmentState) {
                 is HomeViewModel.HomeFragmentState.Loading -> setLoading(isLoading = true)
@@ -144,7 +162,6 @@ class HomeFragment : Hilt_HomeFragment() {
             yourHealthAppsCategory.addPreference(getNoAppsPreference())
             return
         }
-
         homeFragmentState.connectedApps.take(5).forEach { app ->
             yourHealthAppsCategory.addPreference(
                 HealthAppPreference(context = requireContext(), appMetadata = app.appMetadata)
