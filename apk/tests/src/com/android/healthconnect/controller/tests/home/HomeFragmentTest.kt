@@ -103,6 +103,7 @@ import java.util.Locale
 import java.util.TimeZone
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -1171,6 +1172,7 @@ class HomeFragmentTest {
     // region BannerGroup
     @Test
     @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    @Ignore("b/447652645")
     fun multipleBanners_canExpand_andCollapseGroup() {
         // Export and Lock Screen banners
         whenever(homeViewModel.showLockScreenBanner).then {

@@ -41,7 +41,7 @@ abstract class FakeUseCase<Input, Output>(
         }
     }
 
-    fun reset() {
+    open fun reset() {
         numberOfInvocations = 0
         shouldForceFail = false
         failureException = IllegalStateException("Forced failure in FakeUseCase")

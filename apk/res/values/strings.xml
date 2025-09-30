@@ -1852,8 +1852,8 @@
     <!-- endregion -->
 
     <!-- region Native Steps -->
-    <string name="native_steps_banner_title" description="Title of banner for native step tracking in Health Connect. [CHAR_LIMIT=100]">Steps tracked on your phone will appear in Health Connect</string>
-    <string name="native_steps_banner_summary" description="Description of banner for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps tracked by this device are now stored in Health Connect for connected apps to access</string>
+    <string name="native_steps_banner_title" description="Title of banner for native step tracking in Health Connect. [CHAR_LIMIT=100]">Steps tracked on your phone will appear in Health&#160;Connect</string>
+    <string name="native_steps_banner_summary" description="Description of banner for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps tracked by this device are now stored in Health&#160;Connect for connected apps to access</string>
     <string name="native_steps_banner_dismiss_button" description="Button to dismiss the banner for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Dismiss</string>
     <string name="native_steps_banner_review_button" description="Button of banner to take users to a page where they can review device access to Health Connect. [CHAR_LIMIT=NONE]">Review</string>
 

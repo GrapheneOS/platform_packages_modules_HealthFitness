@@ -74,6 +74,8 @@ import com.android.healthconnect.controller.exportimport.api.LoadScheduledExport
 import com.android.healthconnect.controller.exportimport.api.QueryDocumentProvidersUseCase
 import com.android.healthconnect.controller.exportimport.api.TriggerImportUseCase
 import com.android.healthconnect.controller.exportimport.api.UpdateExportSettingsUseCase
+import com.android.healthconnect.controller.migration.api.LoadMigrationRestoreStateUseCase
+import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.LoadFitnessPermissionAppsUseCase
 import com.android.healthconnect.controller.onboarding.api.LoadOnboardingStateUseCase
@@ -473,6 +475,13 @@ class UseCaseModule {
     fun provideLoadOnboardingStateUseCase(
         useCase: LoadOnboardingStateUseCase
     ): BaseUseCase<Unit, OnboardingState> {
+        return useCase
+    }
+
+    @Provides
+    fun provideLoadMigrationRestoreStateUseCase(
+        useCase: LoadMigrationRestoreStateUseCase
+    ): BaseUseCase<Unit, MigrationRestoreState> {
         return useCase
     }
 }

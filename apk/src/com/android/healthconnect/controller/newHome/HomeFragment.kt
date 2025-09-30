@@ -21,6 +21,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
@@ -38,6 +41,7 @@ import com.android.healthconnect.controller.shared.preference.NoAppsPreference
 import com.android.healthconnect.controller.shared.preference.NotConnectedAppPreference
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.NewHomePageElement
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -45,15 +49,18 @@ import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
 import com.android.healthfitness.flags.Flags.stepTrackingEnabled
+import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint(HealthPreferenceFragment::class)
 class HomeFragment : Hilt_HomeFragment() {
 
     companion object {
+        private const val BANNER_GROUP = "banner_group"
         private const val YOUR_HEALTH_APPS_CATEGORY = "your_health_apps"
         private const val DATA_AND_ACCESS = "data_and_access"
         private const val RECENT_ACCESS = "recent_access"
@@ -72,12 +79,36 @@ class HomeFragment : Hilt_HomeFragment() {
     @Inject lateinit var healthConnectLogger: HealthConnectLogger
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
+    private val bannerGroup: BannerMessagePreferenceGroup by pref(BANNER_GROUP)
     private val yourHealthAppsCategory: PreferenceGroup by pref(YOUR_HEALTH_APPS_CATEGORY)
     private val dataAndAccessPreference: HealthPreference by pref(DATA_AND_ACCESS)
     private val recentAccessPreference: HealthPreference by pref(RECENT_ACCESS)
     private val devicesPreference: HealthPreference by pref(DEVICES)
     private val manageDataPreference: HealthPreference by pref(MANAGE_DATA)
     private val footer: FooterPreference by pref(FOOTER)
+    private val dateFormatter: LocalDateTimeFormatter by lazy {
+        LocalDateTimeFormatter(requireContext())
+    }
+
+    private val bannerFactory: BannerFactory by lazy {
+        BannerFactory(requireContext(), dateFormatter, ::handleBannerAction)
+    }
+
+    private fun handleBannerAction(action: BannerAction) {
+        when (action) {
+            is BannerAction.Navigate -> findNavController().navigate(action.destinationId)
+            is BannerAction.StartActivity -> startActivity(action.intent)
+            is BannerAction.Dismiss -> homeViewModel.onDismissBanner(action.banner)
+            is BannerAction.NavigateAndDismiss -> {
+                findNavController().navigate(action.destinationId)
+                homeViewModel.onDismissBanner(action.banner)
+            }
+            is BannerAction.StartActivityAndDismiss -> {
+                startActivity(action.intent)
+                homeViewModel.onDismissBanner(action.banner)
+            }
+        }
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
@@ -124,7 +155,6 @@ class HomeFragment : Hilt_HomeFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupMenu(
             R.menu.show_system_with_send_feedback_and_help,
             viewLifecycleOwner,
@@ -142,17 +172,31 @@ class HomeFragment : Hilt_HomeFragment() {
             }
         }
 
-        homeViewModel.homeFragmentState.observe(viewLifecycleOwner) { homeFragmentState ->
-            when (homeFragmentState) {
-                is HomeViewModel.HomeFragmentState.Loading -> setLoading(isLoading = true)
-                is HomeViewModel.HomeFragmentState.Error -> {
-                    setLoading(false)
-                    setError(true)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeViewModel.homeFragmentState.collect { state ->
+                    when (state) {
+                        is HomeViewModel.HomeFragmentState.Loading -> setLoading(isLoading = true)
+                        is HomeViewModel.HomeFragmentState.Error -> {
+                            setLoading(false)
+                            setError(true)
+                        }
+                        is HomeViewModel.HomeFragmentState.WithData -> {
+                            setLoading(false)
+                            updateBanners(state.bannerState)
+                            updateScreen(state)
+                        }
+                    }
                 }
-                is HomeViewModel.HomeFragmentState.WithData -> {
-                    setLoading(false)
-                    updateScreen(homeFragmentState)
-                }
+            }
+        }
+    }
+
+    private fun updateBanners(bannerState: HomeViewModel.HomeBannerState) {
+        bannerGroup.removeAll()
+        if (bannerState is HomeViewModel.HomeBannerState.ShowBanners) {
+            bannerState.banners.forEach { bannerData ->
+                bannerGroup.addPreference(bannerFactory.getBanner(bannerData))
             }
         }
     }
@@ -221,12 +265,12 @@ class HomeFragment : Hilt_HomeFragment() {
                 HealthPreference(requireContext()).also {
                     it.setTitle(R.string.see_all_connected_apps_button)
                     it.setIcon(AttributeResolver.getResource(requireContext(), R.attr.seeAllIcon))
+                    it.logName = NewHomePageElement.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON
                     it.setOnPreferenceClickListener {
                         findNavController()
                             .navigate(R.id.action_newHomeFragment_to_connectedAppsFragment)
                         true
                     }
-                    it.logName = NewHomePageElement.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON
                 }
             }
 

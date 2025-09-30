@@ -59,6 +59,8 @@ import com.android.healthconnect.controller.exportimport.api.IQueryDocumentProvi
 import com.android.healthconnect.controller.exportimport.api.IUpdateExportSettingsUseCase
 import com.android.healthconnect.controller.exportimport.api.ImportUiState
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
+import com.android.healthconnect.controller.migration.api.DEFAULT_MIGRATION_RESTORE_STATE
+import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.api.OnboardingState
 import com.android.healthconnect.controller.permissions.additionalaccess.ExerciseRouteState
@@ -710,6 +712,7 @@ class FakeUpdateExportSettingsUseCase : IUpdateExportSettingsUseCase {
 }
 
 class FakeLoadScheduledExportStatusUseCase : ILoadScheduledExportStatusUseCase {
+    private var forceFail = false
     private var exportState: ScheduledExportUiState =
         ScheduledExportUiState(
             null,
@@ -717,6 +720,10 @@ class FakeLoadScheduledExportStatusUseCase : ILoadScheduledExportStatusUseCase {
             0,
             "0",
         )
+
+    fun setForceFail(forceFail: Boolean) {
+        this.forceFail = forceFail
+    }
 
     fun reset() {
         exportState =
@@ -726,6 +733,7 @@ class FakeLoadScheduledExportStatusUseCase : ILoadScheduledExportStatusUseCase {
                 0,
                 "0",
             )
+        forceFail = false
     }
 
     fun updateExportStatus(exportState: ScheduledExportUiState) {
@@ -733,6 +741,9 @@ class FakeLoadScheduledExportStatusUseCase : ILoadScheduledExportStatusUseCase {
     }
 
     override suspend fun invoke(input: Unit): UseCaseResults<ScheduledExportUiState> {
+        if (forceFail) {
+            return UseCaseResults.Failed(IllegalStateException("Failed to load export status"))
+        }
         return UseCaseResults.Success(exportState)
     }
 
@@ -826,5 +837,23 @@ class FakeLoadOnboardingStateUseCase :
 
     override suspend fun successValue(input: Unit): OnboardingState {
         return this.onboardingState
+    }
+}
+
+class FakeLoadMigrationStateUseCase :
+    FakeUseCase<Unit, MigrationRestoreState>(dispatcher = Dispatchers.Unconfined) {
+    private var migrationState = DEFAULT_MIGRATION_RESTORE_STATE
+
+    fun setMigrationState(migrationState: MigrationRestoreState) {
+        this.migrationState = migrationState
+    }
+
+    override suspend fun successValue(input: Unit): MigrationRestoreState {
+        return migrationState
+    }
+
+    override fun reset() {
+        super.reset()
+        migrationState = DEFAULT_MIGRATION_RESTORE_STATE
     }
 }
