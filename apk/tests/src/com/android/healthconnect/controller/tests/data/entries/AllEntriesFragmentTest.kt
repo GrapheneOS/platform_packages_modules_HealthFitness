@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.tests.data.entries
 
 import android.content.Context
 import android.health.connect.HealthConnectManager
+import android.health.connect.datatypes.AlcoholConsumptionRecord
 import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.PlannedExerciseSessionRecord
@@ -290,6 +291,23 @@ class AllEntriesFragmentTest {
         onView(withText("8:06 - 8:06")).check(matches(isDisplayed()))
         onView(withText("15 steps")).check(matches(isDisplayed()))
         verify(healthConnectLogger, times(2)).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_ALCOHOL_CONSUMPTION)
+    fun withAlcoholConsumptionData_showsListOfEntries() {
+        whenever(viewModel.entries)
+            .thenReturn(MutableLiveData(With(FORMATTED_ALCOHOL_CONSUMPTION_LIST)))
+        whenever(viewModel.getEntriesList())
+            .thenReturn(FORMATTED_ALCOHOL_CONSUMPTION_LIST.toMutableList())
+
+        launchNestedFragment<AllEntriesFragment>(
+            bundleOf(PERMISSION_TYPE_NAME_KEY to FitnessPermissionType.ALCOHOL_CONSUMPTION.name)
+        )
+
+        onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
+        onView(withText("2 • Beer")).check(matches(isDisplayed()))
+        verify(healthConnectLogger).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
     }
 
     @Test
@@ -726,6 +744,18 @@ private val FORMATTED_IMMUNIZATION_LIST =
             titleA11y = "important vaccination",
             medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION_3.id,
         ),
+    )
+
+private val FORMATTED_ALCOHOL_CONSUMPTION_LIST =
+    listOf(
+        FormattedEntry.SeriesDataEntry(
+            uuid = "test_id",
+            header = "7:06 - 7:06",
+            headerA11y = "from 7:06 to 7:06",
+            title = "2 • Beer",
+            titleA11y = "2 • Beer",
+            dataType = AlcoholConsumptionRecord::class,
+        )
     )
 
 private val FORMATTED_STEPS_LIST_WITH_AGGREGATION =

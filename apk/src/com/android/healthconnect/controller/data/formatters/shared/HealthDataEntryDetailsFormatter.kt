@@ -18,6 +18,7 @@
 
 package com.android.healthconnect.controller.data.formatters.shared
 
+import android.health.connect.datatypes.AlcoholConsumptionRecord
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord
 import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.HeartRateRecord
@@ -29,6 +30,7 @@ import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.SpeedRecord
 import android.health.connect.datatypes.StepsCadenceRecord
 import com.android.healthconnect.controller.data.entries.FormattedEntry
+import com.android.healthconnect.controller.data.formatters.AlcoholConsumptionFormatter
 import com.android.healthconnect.controller.data.formatters.CyclingPedalingCadenceFormatter
 import com.android.healthconnect.controller.data.formatters.ExerciseSessionFormatter
 import com.android.healthconnect.controller.data.formatters.HeartRateFormatter
@@ -54,6 +56,7 @@ constructor(
     private val cyclingPedalingCadenceFormatter: CyclingPedalingCadenceFormatter,
     private val skinTemperatureFormatter: SkinTemperatureFormatter,
     private val plannedExerciseSessionRecordFormatter: PlannedExerciseSessionRecordFormatter,
+    private val alcoholConsumptionFormatter: AlcoholConsumptionFormatter,
 ) {
     suspend fun formatDetails(record: Record): List<FormattedEntry> {
         return when (record) {
@@ -68,6 +71,7 @@ constructor(
             is SkinTemperatureRecord -> skinTemperatureFormatter.formatRecordDetails(record)
             is PlannedExerciseSessionRecord ->
                 plannedExerciseSessionRecordFormatter.formatRecordDetails(record)
+            is AlcoholConsumptionRecord -> alcoholConsumptionFormatter.formatRecordDetails(record)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
         }
     }

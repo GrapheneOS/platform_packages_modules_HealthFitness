@@ -226,7 +226,8 @@ private object CategoriesMappers {
             FitnessPermissionType.SKIN_TEMPERATURE,
         )
 
-    val WELLNESS_PERMISSION_GROUPS = listOf(FitnessPermissionType.MINDFULNESS)
+    val WELLNESS_PERMISSION_GROUPS =
+        listOf(FitnessPermissionType.MINDFULNESS, FitnessPermissionType.ALCOHOL_CONSUMPTION)
 }
 
 /** List of available Health data categories. */

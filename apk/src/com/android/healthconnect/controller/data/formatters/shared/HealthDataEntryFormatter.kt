@@ -20,6 +20,7 @@ package com.android.healthconnect.controller.data.formatters.shared
 
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord
 import android.health.connect.datatypes.ActivityIntensityRecord
+import android.health.connect.datatypes.AlcoholConsumptionRecord
 import android.health.connect.datatypes.BasalBodyTemperatureRecord
 import android.health.connect.datatypes.BasalMetabolicRateRecord
 import android.health.connect.datatypes.BloodGlucoseRecord
@@ -65,6 +66,7 @@ import android.health.connect.datatypes.WheelchairPushesRecord
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.ActiveCaloriesBurnedFormatter
 import com.android.healthconnect.controller.data.formatters.ActivityIntensityFormatter
+import com.android.healthconnect.controller.data.formatters.AlcoholConsumptionFormatter
 import com.android.healthconnect.controller.data.formatters.BasalBodyTemperatureFormatter
 import com.android.healthconnect.controller.data.formatters.BasalMetabolicRateFormatter
 import com.android.healthconnect.controller.data.formatters.BloodGlucoseFormatter
@@ -158,6 +160,7 @@ constructor(
     private val activityIntensityFormatter: ActivityIntensityFormatter,
     private val nicotineIntakeFormatter: NicotineIntakeFormatter,
     private val symptomFormatter: SymptomFormatter,
+    private val alcoholConsumptionFormatter: AlcoholConsumptionFormatter,
 ) {
 
     suspend fun format(record: Record, showDataOrigin: Boolean = true): FormattedEntry {
@@ -210,6 +213,7 @@ constructor(
             is ActivityIntensityRecord -> activityIntensityFormatter.format(record, appName)
             is NicotineIntakeRecord -> nicotineIntakeFormatter.format(record, appName)
             is SymptomRecord -> symptomFormatter.format(record, appName)
+            is AlcoholConsumptionRecord -> alcoholConsumptionFormatter.format(record, appName)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
         }
     }

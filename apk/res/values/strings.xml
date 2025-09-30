@@ -934,6 +934,9 @@
     <string name="liter" description="Volume value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{count, plural, =1 {1 L} other {# L}}</string>
     <string name="liter_long" description="Volume value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{count, plural, =1 {1 liter} other {# liters}}</string>
 
+    <string name="milliliter" description="Volume value with unit in milliliters. [ICU SYNTAX][CHAR LIMIT=80]">{count, plural, =1 {1 ml} other {# ml}}</string>
+    <string name="milliliter_long" description="Volume value with unit milliliters. [ICU SYNTAX][CHAR LIMIT=160]">{count, plural, =1 {1 milliliter} other {# milliliters}}</string>
+
     <string name="floors_climbed" description="Value of floors climbed. [ICU SYNTAX][CHAR LIMIT=50]">{count, plural, =1 {1 floor} other {# floors}}</string>
 
     <string name="elevation_meters" translation_description="Shown as the label in the tooltip for weight chart. [ICU SYNTAX][CHAR LIMIT=60]">{count, plural, =1 {1 m} other {# m}}</string>
@@ -1149,6 +1152,33 @@
     <string name="nicotine_intake_type_cigarette" description="Nicotine intake type: Cigarette [CHAR LIMIT=20]">{quantity, plural, =1 {{quantity} cigarette} other {{quantity} cigarettes}}</string>
     <string name="nicotine_intake_type_unknown" description="Nicotine intake type: Unknown [CHAR LIMIT=20]">{quantity, number} unknown</string>
     <!--endregion-->
+
+    <!-- region Alcohol Consumption -->
+    <string name="alcohol_consumption_title" description="Title of a single data entry for Alcohol Consumption. [CHAR LIMIT=20]"><xliff:g example="1 serving" id="serving">%1$s</xliff:g> • <xliff:g example="Beer" id="type">%2$s</xliff:g></string>
+    <string name="alcohol_consumption_beverage_type_other" description="Alcohol consumption beverage type: Other. [CHAR LIMIT=20]">Other</string>
+    <string name="alcohol_consumption_beverage_type_beer" description="Alcohol consumption beverage type: Beer. [CHAR LIMIT=20]">Beer</string>
+    <string name="alcohol_consumption_beverage_type_wine" description="Alcohol consumption beverage type: Wine. [CHAR LIMIT=20]">Wine</string>
+    <string name="alcohol_consumption_beverage_type_vodka" description="Alcohol consumption beverage type: Vodka. [CHAR LIMIT=20]">Vodka</string>
+    <string name="alcohol_consumption_beverage_type_gin" description="Alcohol consumption beverage type: Gin. [CHAR LIMIT=20]">Gin</string>
+    <string name="alcohol_consumption_beverage_type_whiskey" description="Alcohol consumption beverage type: Whiskey. [CHAR LIMIT=20]">Whiskey</string>
+    <string name="alcohol_consumption_beverage_type_rum" description="Alcohol consumption beverage type: Rum. [CHAR LIMIT=20]">Rum</string>
+    <string name="alcohol_consumption_beverage_type_tequila" description="Alcohol consumption beverage type: Tequila. [CHAR LIMIT=20]">Tequila</string>
+    <string name="alcohol_consumption_beverage_type_lager" description="Alcohol consumption beverage type: Lager. [CHAR LIMIT=20]">Lager</string>
+    <string name="alcohol_consumption_beverage_type_cider" description="Alcohol consumption beverage type: Cider. [CHAR LIMIT=20]">Cider</string>
+    <string name="alcohol_consumption_beverage_type_sake" description="Alcohol consumption beverage type: Sake. [CHAR LIMIT=20]">Sake</string>
+    <string name="alcohol_consumption_beverage_type_shochu" description="Alcohol consumption beverage type: Shochu. [CHAR LIMIT=20]">Shochu</string>
+    <string name="alcohol_consumption_beverage_type_soju" description="Alcohol consumption beverage type: Soju. [CHAR LIMIT=20]">Soju</string>
+    <string name="alcohol_consumption_beverage_type_mead" description="Alcohol consumption beverage type: Mead. [CHAR LIMIT=20]">Mead</string>
+    <string name="alcohol_consumption_beverage_type_absinthe" description="Alcohol consumption beverage type: Absinthe. [CHAR LIMIT=20]">Absinthe</string>
+    <string name="alcohol_consumption_beverage_type_brandy" description="Alcohol consumption beverage type: Brandy. [CHAR LIMIT=20]">Brandy</string>
+    <string name="alcohol_consumption_beverage_type_cocktail" description="Alcohol consumption beverage type: Cocktail. [CHAR LIMIT=20]">Cocktail</string>
+    <string name="alcohol_consumption_beverage_type_chuhai" description="Alcohol consumption beverage type: Chuhai. [CHAR LIMIT=20]">Chuhai</string>
+    <string name="alcohol_consumption_beverage_type_highball" description="Alcohol consumption beverage type: Highball. [CHAR LIMIT=20]">Highball</string>
+    <string name="serving_volume_title" description="Title for serving volume. [CHAR LIMIT=40]">Serving Volume</string>
+    <string name="alcohol_by_volume_title" description="Title for alcohol by volume. [CHAR LIMIT=40]">Alcohol by Volume</string>
+    <string name="note_title" description="Title for note. [CHAR LIMIT=40]">Note</string>
+    <string name="details_title" description="Title for details section. [CHAR LIMIT=40]">Details</string>
+    <!-- endregion -->
     <!-- endregion -->
 
     <!-- region Duration -->
