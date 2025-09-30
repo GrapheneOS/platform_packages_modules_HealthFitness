@@ -21,6 +21,7 @@ import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PHR_CHANGE_LOGS;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_SYMPTOMS;
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 import static com.android.internal.annotations.VisibleForTesting.Visibility.PRIVATE;
 
@@ -111,6 +112,8 @@ public final class AconfigFlagHelper {
         map.put(DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS, Flags::exerciseSegmentImprovementsDb);
         map.put(DB_VERSION_PHR_CHANGE_LOGS, Flags::phrChangeLogsDb);
         map.put(DB_VERSION_NICOTINE_INTAKE, Flags::smokingDb);
+        map.put(DB_VERSION_SYMPTOMS, Flags::symptomsDb);
+
         return map;
     }
 
@@ -154,7 +157,6 @@ public final class AconfigFlagHelper {
 
     /** Returns a boolean indicating whether Symptoms data type is enabled. */
     public static boolean isSymptomsEnabled() {
-        // TODO(b/439781167): Use isDbFlagEnabled once the database changes are finalized.
-        return Flags.symptoms() && Flags.symptomsDb();
+        return Flags.symptoms() && isDbFlagEnabled(DB_VERSION_SYMPTOMS);
     }
 }

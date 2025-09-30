@@ -26,6 +26,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.SymptomRecordInternal;
 import android.util.Pair;
 
+import com.android.internal.annotations.VisibleForTesting;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,12 +37,13 @@ import java.util.List;
  * @hide
  */
 public final class SymptomRecordHelper extends IntervalRecordHelper<SymptomRecordInternal> {
-    private static final String TABLE_NAME = "symptom_record_table";
-    public static final String SYMPTOM_TYPE_COLUMN_NAME = "symptom_type";
-    private static final String NOTES_COLUMN_NAME = "notes";
-    private static final String SEVERITY_COLUMN_NAME = "severity";
-    private static final String COUNT_COLUMN_NAME = "count";
-    private static final String TEMPORAL_TYPE_COLUMN_NAME = "temporal_type";
+
+    @VisibleForTesting public static final String TABLE_NAME = "symptom_record_table";
+    @VisibleForTesting public static final String SYMPTOM_TYPE_COLUMN_NAME = "symptom_type";
+    @VisibleForTesting public static final String NOTES_COLUMN_NAME = "notes";
+    @VisibleForTesting public static final String SEVERITY_COLUMN_NAME = "severity";
+    @VisibleForTesting public static final String COUNT_COLUMN_NAME = "count";
+    @VisibleForTesting public static final String TEMPORAL_TYPE_COLUMN_NAME = "temporal_type";
 
     public SymptomRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_SYMPTOM);

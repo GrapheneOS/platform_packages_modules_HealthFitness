@@ -32,7 +32,6 @@ import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.AlcoholConsumptionRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.SymptomRecordHelper;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 
 /**
@@ -104,11 +103,6 @@ public final class DevelopmentDatabaseHelper {
         // Code for under development schema changes goes in this method but below this comment
         applyDdpAppInfoDatabaseUpgrade(db);
         applyDeviceInfoEnhancementsDatabaseUpgrade(db);
-        if (Flags.symptomsDb()) {
-            SymptomRecordHelper helper = new SymptomRecordHelper();
-            dropTableIfExists(db, helper.getMainTableName());
-            createTable(db, helper.getCreateTableRequest());
-        }
         applyDdpDatabaseUpgrade(db, oldVersion);
         applyAlcoholConsumptionDatabaseUpgrade(db, oldVersion);
     }
