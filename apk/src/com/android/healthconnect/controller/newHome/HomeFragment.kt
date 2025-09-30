@@ -205,29 +205,29 @@ class HomeFragment : Hilt_HomeFragment() {
         yourHealthAppsCategory.removeAll()
         if (homeFragmentState.connectedApps.isEmpty()) {
             yourHealthAppsCategory.addPreference(getNoAppsPreference())
-            return
-        }
-        homeFragmentState.connectedApps.take(5).forEach { app ->
-            val appPreference =
-                if (app.status == ConnectedAppStatus.DENIED) {
-                    NotConnectedAppPreference(requireContext(), appMetadata = app.appMetadata)
-                        .also {
-                            it.logName = NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON
+        } else {
+            homeFragmentState.connectedApps.take(5).forEach { app ->
+                val appPreference =
+                    if (app.status == ConnectedAppStatus.DENIED) {
+                        NotConnectedAppPreference(requireContext(), appMetadata = app.appMetadata)
+                            .also {
+                                it.logName = NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON
+                            }
+                    } else {
+                        HealthAppPreference(requireContext(), app.appMetadata).also {
+                            it.logName = NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON
                         }
-                } else {
-                    HealthAppPreference(requireContext(), app.appMetadata).also {
-                        it.logName = NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON
                     }
+                appPreference.setOnPreferenceClickListener {
+                    navigateToAppInfoOrOnboarding(app)
+                    true
                 }
-            appPreference.setOnPreferenceClickListener {
-                navigateToAppInfoOrOnboarding(app)
-                true
-            }
 
-            yourHealthAppsCategory.addPreference(appPreference)
+                yourHealthAppsCategory.addPreference(appPreference)
+            }
         }
 
-        if (homeFragmentState.connectedApps.size > 5) {
+        if (homeFragmentState.showSeeMoreHealthApps) {
             yourHealthAppsCategory.addPreference(getSeeAllPreference())
         }
     }

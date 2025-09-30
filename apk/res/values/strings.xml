@@ -1872,7 +1872,7 @@
     <string name="home_devices_summary" description="Summary text for preference button taking the user to see which devices can access Health Connect [CHAR_LIMIT=NONE]">Review devices that can access health data</string>
     <string name="empty_apps_section_title" description="Summary text shown when the user does not have any Health Connect compatible apps installed [CHAR_LIMIT=NONE]">Install apps that work with Health&#160;Connect to see them here</string>
     <string name="empty_apps_section_link" description="Link text shown when the user does not have any Health Connect compatible apps installed to take them to a page showing compatible apps [CHAR_LIMIT=NONE]">See compatible apps</string>
-    <string name="see_all_connected_apps_button" description="Button taking user to the connected apps screen [CHAR_LIMIT=NONE]">See all</string>
+    <string name="see_all_connected_apps_button" description="Button taking user to the connected apps screen [CHAR_LIMIT=NONE]">See more health apps</string>
     <string name="app_not_connected_summary" description="Summary for preference indicating that an app is not connected to Health Connect [CHAR_LIMIT=NONE]">Not connected</string>
     <string name="connect_app_button_content_description" description="Content description for icon displayed on a preference for connecting an app to Health Connect">Click to connect this app to Health Connect</string>
     <!-- endregion -->

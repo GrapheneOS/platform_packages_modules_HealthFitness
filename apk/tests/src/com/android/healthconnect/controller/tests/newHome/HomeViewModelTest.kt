@@ -202,6 +202,7 @@ class HomeViewModelTest {
         assertThat(state).isInstanceOf(HomeViewModel.HomeFragmentState.WithData::class.java)
         assertThat((state as HomeViewModel.HomeFragmentState.WithData).connectedApps)
             .containsExactly(app1, app2)
+        assertThat(state.showSeeMoreHealthApps).isTrue()
     }
 
     @Test
@@ -217,6 +218,16 @@ class HomeViewModelTest {
         assertThat((state as HomeViewModel.HomeFragmentState.WithData).connectedApps)
             .containsExactly(app1, app3, app2, app4)
             .inOrder()
+        assertThat(state.showSeeMoreHealthApps).isTrue()
+    }
+
+    @Test
+    fun loadData_success_noApps_showSeeMoreHealthAppsFalse() = runTest {
+        loadHealthPermissionApps.updateList(listOf())
+        val state = loadHomeFragmentState()
+        assertThat(state).isInstanceOf(HomeViewModel.HomeFragmentState.WithData::class.java)
+        assertThat((state as HomeViewModel.HomeFragmentState.WithData).connectedApps).isEmpty()
+        assertThat(state.showSeeMoreHealthApps).isFalse()
     }
 
     // endregion

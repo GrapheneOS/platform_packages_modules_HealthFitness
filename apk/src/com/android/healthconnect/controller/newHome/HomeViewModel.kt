@@ -79,15 +79,17 @@ constructor(
 
     private val _connectedApps = MutableStateFlow<List<ConnectedAppMetadata>>(emptyList())
     private val _banners = MutableStateFlow<List<BannerData>>(emptyList())
+    private val _showSeeMoreHealthApps = MutableStateFlow(true)
     private val _isLoading = MutableStateFlow(true)
     private val _appLoadingError = MutableStateFlow(false)
 
     var showSystemApps = false
 
     val homeFragmentState: StateFlow<HomeFragmentState> =
-        combine(_connectedApps, _banners, _isLoading, _appLoadingError) {
+        combine(_connectedApps, _banners, _showSeeMoreHealthApps, _isLoading, _appLoadingError) {
                 apps,
                 banners,
+                showSeeMoreHealthApps,
                 loading,
                 error ->
                 if (error) {
@@ -97,6 +99,7 @@ constructor(
                 } else {
                     HomeFragmentState.WithData(
                         connectedApps = apps,
+                        showSeeMoreHealthApps = showSeeMoreHealthApps,
                         bannerState =
                             if (banners.isNotEmpty()) HomeBannerState.ShowBanners(banners)
                             else HomeBannerState.NoBanner,
@@ -139,17 +142,25 @@ constructor(
                 _appLoadingError.value = true
             }
             is UseCaseResults.Success -> {
-                _connectedApps.value =
-                    appsResult.data
+                val resultData = appsResult.data
+                val connectedApps =
+                    resultData
                         .filter {
                             it.status != ConnectedAppStatus.INACTIVE &&
                                 it.status != ConnectedAppStatus.NEEDS_UPDATE
                         }
-                        .filter { if (showSystemApps) true else !it.isSystem }
                         .sortedWith(
                             compareBy<ConnectedAppMetadata> { getSortOrder(it.status) }
                                 .thenBy { it.appMetadata.appName }
                         )
+                _showSeeMoreHealthApps.value =
+                    connectedApps.isNotEmpty() ||
+                        resultData.any {
+                            it.status == ConnectedAppStatus.INACTIVE ||
+                                it.status == ConnectedAppStatus.NEEDS_UPDATE
+                        }
+                _connectedApps.value =
+                    connectedApps.filter { if (showSystemApps) true else !it.isSystem }
             }
         }
     }
@@ -269,7 +280,6 @@ constructor(
 
     private fun loadLockScreenBanner() {
         viewModelScope.launch {
-            // TODO security intent
             val isDeviceSecure = keyguardManagerUtil.isDeviceSecure(context) != false
             if (isDeviceSecure) {
                 return@launch
@@ -303,7 +313,6 @@ constructor(
     }
 
     fun onDismissBanner(banner: BannerData) {
-        // TODO set all of them as seen
         val key =
             when (banner) {
                 is BannerData.LockScreenBanner -> {
@@ -346,6 +355,7 @@ constructor(
 
         data class WithData(
             val connectedApps: List<ConnectedAppMetadata>,
+            val showSeeMoreHealthApps: Boolean = true,
             val bannerState: HomeBannerState = HomeBannerState.NoBanner,
         ) : HomeFragmentState()
     }
