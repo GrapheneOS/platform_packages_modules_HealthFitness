@@ -24,6 +24,7 @@ import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTOR
 import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_WRITE_AHEAD_LOGGING_DB;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.checkTableExists;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -37,6 +38,7 @@ import android.health.connect.datatypes.MedicalDataSource;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -105,6 +107,24 @@ public class HealthConnectDatabaseTest {
                 initializeEmptyHealthConnectDatabase().getWritableDatabase();
 
         assertThat(sqliteDatabase.getVersion()).isAtMost(AconfigFlagHelper.getDbVersion());
+    }
+
+    @Test
+    @EnableFlags(FLAG_WRITE_AHEAD_LOGGING_DB)
+    public void onCreate_writeAheadLoggingFlagEnabled_expectWriteAheadLoggingEnabled() {
+        SQLiteDatabase sqliteDatabase =
+                initializeEmptyHealthConnectDatabase().getWritableDatabase();
+
+        assertThat(sqliteDatabase.isWriteAheadLoggingEnabled()).isTrue();
+    }
+
+    @Test
+    @DisableFlags(FLAG_WRITE_AHEAD_LOGGING_DB)
+    public void onCreate_writeAheadLoggingFlagDisabled_expectWriteAheadLoggingDisabled() {
+        SQLiteDatabase sqliteDatabase =
+                initializeEmptyHealthConnectDatabase().getWritableDatabase();
+
+        assertThat(sqliteDatabase.isWriteAheadLoggingEnabled()).isFalse();
     }
 
     @Test
