@@ -1844,7 +1844,7 @@
     <string name="empty_apps_section_link" description="Link text shown when the user does not have any Health Connect compatible apps installed to take them to a page showing compatible apps [CHAR_LIMIT=NONE]">See compatible apps</string>
     <string name="see_all_connected_apps_button" description="Button taking user to the connected apps screen [CHAR_LIMIT=NONE]">See all</string>
     <string name="app_not_connected_summary" description="Summary for preference indicating that an app is not connected to Health Connect [CHAR_LIMIT=NONE]">Not connected</string>
-
+    <string name="connect_app_button_content_description" description="Content description for icon displayed on a preference for connecting an app to Health Connect">Click to connect this app to Health Connect</string>
     <!-- endregion -->
 
     <string name="banner_default_dismiss_button" description="Default button to dismiss a banner in Health Connect [CHAR_LIMIT=NONE]">Not now</string>
