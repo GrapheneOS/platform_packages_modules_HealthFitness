@@ -111,7 +111,6 @@ public final class AconfigFlagHelper {
         map.put(DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS, Flags::exerciseSegmentImprovementsDb);
         map.put(DB_VERSION_PHR_CHANGE_LOGS, Flags::phrChangeLogsDb);
         map.put(DB_VERSION_NICOTINE_INTAKE, Flags::smokingDb);
-
         return map;
     }
 
@@ -144,6 +143,7 @@ public final class AconfigFlagHelper {
 
     /** Returns a boolean indicating whether Alcohol Consumption data type is enabled. */
     public static boolean isAlcoholConsumptionEnabled() {
+        // TODO(b/397369117): Use isDbFlagEnabled once the database changes are finalized.
         return Flags.alcoholConsumption() && Flags.alcoholConsumptionDb();
     }
 

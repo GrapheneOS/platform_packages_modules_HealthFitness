@@ -31,6 +31,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.AlcoholConsumptionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.SymptomRecordHelper;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 
@@ -51,7 +52,9 @@ public final class DevelopmentDatabaseHelper {
      * The current version number for the development database features. Increment this whenever you
      * make a breaking schema change to a development feature.
      */
-    @VisibleForTesting static final int CURRENT_VERSION = 17;
+    @VisibleForTesting static final int CURRENT_VERSION = 22;
+
+    public static final int DB_VERSION_ALCOHOL_CONSUMPTION = 22;
 
     /** The name of the table to store development specific key value pairs. */
     private static final String SETTINGS_TABLE_NAME = "development_database_settings";
@@ -107,6 +110,7 @@ public final class DevelopmentDatabaseHelper {
             createTable(db, helper.getCreateTableRequest());
         }
         applyDdpDatabaseUpgrade(db, oldVersion);
+        applyAlcoholConsumptionDatabaseUpgrade(db, oldVersion);
     }
 
     private static void applyDdpAppInfoDatabaseUpgrade(SQLiteDatabase db) {
@@ -140,6 +144,14 @@ public final class DevelopmentDatabaseHelper {
             return;
         }
         createTable(db, DeviceDataProviderHelper.getCreateTableRequest());
+    }
+
+    private static void applyAlcoholConsumptionDatabaseUpgrade(SQLiteDatabase db, int oldVersion) {
+        if (oldVersion < DB_VERSION_ALCOHOL_CONSUMPTION && Flags.alcoholConsumptionDb()) {
+            AlcoholConsumptionRecordHelper helper = new AlcoholConsumptionRecordHelper();
+            dropTableIfExists(db, helper.getMainTableName());
+            createTable(db, helper.getCreateTableRequest());
+        }
     }
 
     @VisibleForTesting

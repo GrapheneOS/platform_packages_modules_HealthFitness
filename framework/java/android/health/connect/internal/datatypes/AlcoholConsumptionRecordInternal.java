@@ -38,13 +38,13 @@ import android.os.Parcel;
 public class AlcoholConsumptionRecordInternal
         extends IntervalRecordInternal<AlcoholConsumptionRecord> {
 
+    private int mTemporalType;
     private int mServingCount;
     private int mBeverageType;
     private int mServingSize;
     private double mServingVolumeLiters;
     private double mAlcoholByVolume;
     @Nullable private String mNote;
-    private int mTemporalType;
 
     public AlcoholConsumptionRecordInternal() {
         super();
@@ -108,6 +108,9 @@ public class AlcoholConsumptionRecordInternal
         if (mAlcoholByVolume != DEFAULT_DOUBLE) {
             builder.setAlcoholByVolume(Percentage.fromValue(getAlcoholByVolume()));
         }
+        if (mNote != null) {
+            builder.setNote(mNote);
+        }
 
         return builder.buildWithoutValidation();
     }
@@ -137,6 +140,12 @@ public class AlcoholConsumptionRecordInternal
     @Nullable
     public CharSequence getNote() {
         return mNote;
+    }
+
+    /** Returns the temporal type of this record. */
+    @AlcoholConsumptionRecord.AlcoholConsumptionTemporalType
+    public int getTemporalType() {
+        return mTemporalType;
     }
 
     /** Returns this object with the specified number of servings. */
