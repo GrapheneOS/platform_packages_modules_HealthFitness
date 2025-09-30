@@ -24,6 +24,7 @@ import android.util.Slog;
 
 import androidx.annotation.VisibleForTesting;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 
 import java.io.File;
@@ -45,7 +46,15 @@ public final class HealthConnectDatabase extends SQLiteOpenHelper {
     }
 
     public HealthConnectDatabase(HealthConnectContext context, String databaseName) {
-        super(context, databaseName, null, getDbVersion());
+        super(
+                context,
+                databaseName,
+                getDbVersion(),
+                Flags.writeAheadLoggingDb()
+                        ? new SQLiteDatabase.OpenParams.Builder()
+                                .addOpenFlags(SQLiteDatabase.ENABLE_WRITE_AHEAD_LOGGING)
+                                .build()
+                        : new SQLiteDatabase.OpenParams.Builder().build());
         mContext = context;
     }
 
