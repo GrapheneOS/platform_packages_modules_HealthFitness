@@ -1060,8 +1060,7 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"হয়ে গেছে"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{\'অটোমেটিক মুছে দিন\' ফিচার চালু আছে। # মাসের পুরনো ডেটা মুছে দেওয়া হবে}one{\'অটোমেটিক মুছে দিন\' ফিচার চালু আছে। # মাসের পুরনো ডেটা মুছে দেওয়া হবে}other{\'অটোমেটিক মুছে দিন\' ফিচার চালু আছে। # মাসের পুরনো ডেটা মুছে দেওয়া হবে}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"\'অটোমেটিক মুছে দিন\' ফিচার বন্ধ আছে"</string>
-    <!-- no translation found for plus_n_matched_apps_format (5447899782883252148) -->
-    <skip />
+    <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+<xliff:g id="COUNT">%s</xliff:g>"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"অ্যাপের প্রায়োরিটি সেট আপ করুন"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"একাধিক অ্যাপ <xliff:g id="DATA_TYPE">%s</xliff:g> ডেটা যোগ করলে, Health Connect অ্যাপটিকে তালিকায় সবার উপরে প্রায়োরিটি দেয়। অ্যাপগুলি আবার সাজাতে টেনে আনুন।"</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"সেভ করুন"</string>
@@ -1249,8 +1248,7 @@
     <string name="write_access" msgid="571547306854732263">"লেখার অ্যাক্সেস"</string>
     <string name="read_access" msgid="3317759826769372785">"পড়ার অ্যাক্সেস"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>। <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>। <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_data_category_expandable_preference_title (7942303192917497010) -->
-    <skip />
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>⁠"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g>টি অ্যাপের মধ্যে <xliff:g id="NUMBER_0">%1$d</xliff:g>টি অনুমোদিত"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"কোনও অ্যাপ অনুমতি দেওয়ার অনুরোধ করেনি"</string>
     <string name="allowed" msgid="4158456017482263737">"অনুমোদিত"</string>
@@ -1307,29 +1305,17 @@
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"পর্যালোচনা করুন"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"স্টেপের তথ্য এখন Health Connect-এ আছে"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"এই ডিভাইসের মাধ্যমে ট্র্যাক করা স্টেপ এখন Health Connect-এ সেভ করা হয় যাতে কানেক্ট করা অ্যাপ অ্যাক্সেস করা যায়"</string>
-    <!-- no translation found for your_health_apps_category_title (2140744650535785802) -->
-    <skip />
-    <!-- no translation found for your_health_data_category_title (7049426060456828669) -->
-    <skip />
-    <!-- no translation found for preferences_category_title (8799354266901230310) -->
-    <skip />
-    <!-- no translation found for home_screen_footer (7572797414754117707) -->
-    <skip />
-    <!-- no translation found for home_screen_footer_link (3276430842054286014) -->
-    <skip />
-    <!-- no translation found for data_and_access_summary (1435478623777637347) -->
-    <skip />
-    <!-- no translation found for recent_access_summary (3933708982145999939) -->
-    <skip />
-    <!-- no translation found for home_devices_summary (6056984338393523399) -->
-    <skip />
-    <!-- no translation found for empty_apps_section_title (1808646811838427261) -->
-    <skip />
-    <!-- no translation found for empty_apps_section_link (5227373618435407625) -->
-    <skip />
-    <!-- no translation found for see_all_connected_apps_button (3391164556225732842) -->
-    <skip />
-    <!-- no translation found for app_not_connected_summary (3898921378270235598) -->
-    <skip />
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"আপনার স্বাস্থ্য সম্পর্কিত অ্যাপ"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"আপনার স্বাস্থ্য সংক্রান্ত ডেটা"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"পছন্দ"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect আপনাকে বিভিন্ন অ্যাপের মধ্যে নিজের স্বাস্থ্য ও ফিটনেস ডেটা শেয়ার করার সুবিধা দেয়। এটি আপনার ডেটা সুরক্ষিত রাখার পাশাপাশি আপনাকে ইনসাইট ও অভিজ্ঞতা পেতে সাহায্য করে।"</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect সম্পর্কে আরও তথ্য"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"ডেটা দেখুন এবং কোন অ্যাপ এটি অ্যাক্সেস করতে পারবে তা জানুন"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"যেসব অ্যাপ সম্প্রতি আপনার ডেটা ব্যবহার করেছে"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"স্বাস্থ্য সংক্রান্ত ডেটা অ্যাক্সেস করতে পারে এমন ডিভাইস পর্যালোচনা করুন"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect-এর সাথে কাজ করে এমন অ্যাপ ইনস্টল করুন যাতে সেগুলি এখানে দেখা যায়"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"মানানসই অ্যাপ দেখুন"</string>
+    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"সব দেখুন"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"কানেক্ট করা নেই"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"এখন নয়"</string>
 </resources>

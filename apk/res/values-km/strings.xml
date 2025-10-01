@@ -84,10 +84,8 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"អាហារូបត្ថម្ភ"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"សុខុមាលភាព"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"សុខុមាលភាព"</string>
-    <!-- no translation found for symptoms_category_uppercase (1357167834284360975) -->
-    <skip />
-    <!-- no translation found for symptoms_category_lowercase (2298815597177353672) -->
-    <skip />
+    <string name="symptoms_category_uppercase" msgid="1357167834284360975">"រោគ​សញ្ញា"</string>
+    <string name="symptoms_category_lowercase" msgid="2298815597177353672">"រោគ​សញ្ញា"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"រុករកទិន្នន័យ"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"គ្រប់គ្រង​ទិន្នន័យ"</string>
     <string name="export_data_button" msgid="7783329820434117744">"នាំចេញ​ទិន្នន័យ"</string>
@@ -386,16 +384,11 @@
     <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"ក្អក"</string>
     <string name="symptom_cough_read_content_description" msgid="398516421189288025">"អានរោគសញ្ញា"</string>
     <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"សរសេររោគសញ្ញា"</string>
-    <!-- no translation found for symptom_unknown (5796719193136239306) -->
-    <skip />
-    <!-- no translation found for symptom_severity_mild (2689415474774489874) -->
-    <skip />
-    <!-- no translation found for symptom_severity_moderate (8388787027751900668) -->
-    <skip />
-    <!-- no translation found for symptom_severity_severe (4675732713898596705) -->
-    <skip />
-    <!-- no translation found for symptom_entry_title (3927744074055963604) -->
-    <skip />
+    <string name="symptom_unknown" msgid="5796719193136239306">"មិនស្គាល់"</string>
+    <string name="symptom_severity_mild" msgid="2689415474774489874">"ស្រាល"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"មធ្យម"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"ធ្ងន់ធ្ងរ"</string>
+    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>⁠"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"អនុញ្ញាតឱ្យ “<xliff:g id="APP_NAME">%1$s</xliff:g>” អាន"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"អនុញ្ញាតឱ្យ “<xliff:g id="APP_NAME">%1$s</xliff:g>” សរសេរ"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"អនុញ្ញាត"</string>
@@ -1248,8 +1241,7 @@
     <string name="write_access" msgid="571547306854732263">"សិទ្ធិចូលសរសេរ"</string>
     <string name="read_access" msgid="3317759826769372785">"សិទ្ធិចូលអាន"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>។ <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>។ <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_data_category_expandable_preference_title (7942303192917497010) -->
-    <skip />
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>⁠"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"បានអនុញ្ញាតកម្មវិធី <xliff:g id="NUMBER_0">%1$d</xliff:g> នៃ <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"គ្មានកម្មវិធីដែលកំពុងស្នើសុំទេ"</string>
     <string name="allowed" msgid="4158456017482263737">"បាន​អនុញ្ញាត"</string>
@@ -1306,29 +1298,17 @@
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"ពិនិត្យមើល"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"ឥឡូវ ចំនួនជំហានមានក្នុង Health Connect"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"ឥឡូវនេះ ចំនួនជំហានដែលតាមដានដោយឧបករណ៍នេះត្រូវបានរក្សាទុកនៅក្នុង Health Connect សម្រាប់ឱ្យកម្មវិធីតភ្ជាប់ចូលប្រើ"</string>
-    <!-- no translation found for your_health_apps_category_title (2140744650535785802) -->
-    <skip />
-    <!-- no translation found for your_health_data_category_title (7049426060456828669) -->
-    <skip />
-    <!-- no translation found for preferences_category_title (8799354266901230310) -->
-    <skip />
-    <!-- no translation found for home_screen_footer (7572797414754117707) -->
-    <skip />
-    <!-- no translation found for home_screen_footer_link (3276430842054286014) -->
-    <skip />
-    <!-- no translation found for data_and_access_summary (1435478623777637347) -->
-    <skip />
-    <!-- no translation found for recent_access_summary (3933708982145999939) -->
-    <skip />
-    <!-- no translation found for home_devices_summary (6056984338393523399) -->
-    <skip />
-    <!-- no translation found for empty_apps_section_title (1808646811838427261) -->
-    <skip />
-    <!-- no translation found for empty_apps_section_link (5227373618435407625) -->
-    <skip />
-    <!-- no translation found for see_all_connected_apps_button (3391164556225732842) -->
-    <skip />
-    <!-- no translation found for app_not_connected_summary (3898921378270235598) -->
-    <skip />
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"កម្មវិធីសុខភាពរបស់អ្នក"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"ទិន្នន័យសុខភាពរបស់អ្នក"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"ចំណូល​ចិត្ត"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect អនុញ្ញាតឱ្យអ្នកចែករំលែកទិន្នន័យសុខភាព និង​សម្បទារបស់អ្នករវាងកម្មវិធីជាច្រើន។ ការធ្វើបែបនេះជួយឱ្យអ្នកទទួលបានព័ត៌មានស៊ីជម្រៅ និងបទពិសោធប្រើប្រាស់ ដោយរក្សាទិន្នន័យរបស់អ្នកឱ្យមានសុវត្ថិភាព។"</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"ព័ត៌មានបន្ថែម​អំពី Health Connect"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"ទិន្នន័យរបស់អ្នក និង​កម្មវិធី​ដែលអាចចូលប្រើ​វាបាន"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"កម្មវិធីដែលបានប្រើទិន្នន័យរបស់អ្នកនាពេលថ្មីៗនេះ"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"ពិនិត្យមើលឧបករណ៍ដែលអាចចូលប្រើទិន្នន័យសុខភាព"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"ដំឡើងកម្មវិធីដែលដំណើរការជាមួយ Health Connect ដើម្បីមើលឃើញកម្មវិធីទាំងនោះនៅទីនេះ"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"មើលកម្មវិធីដែលត្រូវគ្នា"</string>
+    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"មើល​ទាំងអស់"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"មិន​បាន​ភ្ជាប់"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"កុំទាន់"</string>
 </resources>

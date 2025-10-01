@@ -84,10 +84,8 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"prehrana"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"Dobrobit"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"dobrobit"</string>
-    <!-- no translation found for symptoms_category_uppercase (1357167834284360975) -->
-    <skip />
-    <!-- no translation found for symptoms_category_lowercase (2298815597177353672) -->
-    <skip />
+    <string name="symptoms_category_uppercase" msgid="1357167834284360975">"Simptomi"</string>
+    <string name="symptoms_category_lowercase" msgid="2298815597177353672">"simptomi"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"Brskanje po podatkih"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"Upravljanje podatkov"</string>
     <string name="export_data_button" msgid="7783329820434117744">"Izvoz podatkov"</string>
@@ -386,16 +384,11 @@
     <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"kašljanje"</string>
     <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Branje simptomov"</string>
     <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Zapisovanje simptomov"</string>
-    <!-- no translation found for symptom_unknown (5796719193136239306) -->
-    <skip />
-    <!-- no translation found for symptom_severity_mild (2689415474774489874) -->
-    <skip />
-    <!-- no translation found for symptom_severity_moderate (8388787027751900668) -->
-    <skip />
-    <!-- no translation found for symptom_severity_severe (4675732713898596705) -->
-    <skip />
-    <!-- no translation found for symptom_entry_title (3927744074055963604) -->
-    <skip />
+    <string name="symptom_unknown" msgid="5796719193136239306">"Neznano"</string>
+    <string name="symptom_severity_mild" msgid="2689415474774489874">"Blaga"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"Zmerna"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"Huda"</string>
+    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>⁠"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Dovoljevanje branja aplikaciji »<xliff:g id="APP_NAME">%1$s</xliff:g>«"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Dovoljevanje pisanja aplikaciji »<xliff:g id="APP_NAME">%1$s</xliff:g>«"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Dovoli"</string>

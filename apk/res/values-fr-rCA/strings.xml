@@ -1248,8 +1248,7 @@
     <string name="write_access" msgid="571547306854732263">"Accès en écriture"</string>
     <string name="read_access" msgid="3317759826769372785">"Accès en lecture"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_data_category_expandable_preference_title (7942303192917497010) -->
-    <skip />
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> applis autorisées sur <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Aucune appli ne demande une autorisation"</string>
     <string name="allowed" msgid="4158456017482263737">"Autorisée"</string>
@@ -1306,29 +1305,17 @@
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Examiner"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Les pas sont stockés dans Connexion santé"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Les pas suivis par cet appareil sont désormais stockés dans Connexion santé afin que les applis connectées puissent y accéder"</string>
-    <!-- no translation found for your_health_apps_category_title (2140744650535785802) -->
-    <skip />
-    <!-- no translation found for your_health_data_category_title (7049426060456828669) -->
-    <skip />
-    <!-- no translation found for preferences_category_title (8799354266901230310) -->
-    <skip />
-    <!-- no translation found for home_screen_footer (7572797414754117707) -->
-    <skip />
-    <!-- no translation found for home_screen_footer_link (3276430842054286014) -->
-    <skip />
-    <!-- no translation found for data_and_access_summary (1435478623777637347) -->
-    <skip />
-    <!-- no translation found for recent_access_summary (3933708982145999939) -->
-    <skip />
-    <!-- no translation found for home_devices_summary (6056984338393523399) -->
-    <skip />
-    <!-- no translation found for empty_apps_section_title (1808646811838427261) -->
-    <skip />
-    <!-- no translation found for empty_apps_section_link (5227373618435407625) -->
-    <skip />
-    <!-- no translation found for see_all_connected_apps_button (3391164556225732842) -->
-    <skip />
-    <!-- no translation found for app_not_connected_summary (3898921378270235598) -->
-    <skip />
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"Vos applis de santé"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"Vos données relatives à la santé"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"Préférences"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Connexion santé vous permet de partager vos données de santé et d\'activité physique entre plusieurs applis. Cela vous aide à découvrir des statistiques et des expériences tout en assurant la sécurité de vos données."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"En savoir plus sur Connexion santé"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"Vos données et les applis qui y ont accès"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"Applis qui ont récemment utilisé vos données"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"Examiner les appareils qui peuvent accéder aux données relatives à la santé"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Installez des applis compatibles avec Connexion santé pour les afficher ici"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"Afficher les applis compatibles"</string>
+    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"Tout afficher"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"Non associée"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Pas maintenant"</string>
 </resources>
