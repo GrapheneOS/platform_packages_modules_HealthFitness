@@ -34,6 +34,9 @@ filegroup {
         // However, at the moment it is working more as an integration test on the real platform.
         // It is safer leaving the test as is.
         "java/android/health/connect/HealthPermissionsTest.java",
+        // TODO(b/448324240): Remove once Robolectric supports new Parcel APIs.
+        "java/android/health/connect/MigrationEntityParcelTest.java",
+        "java/android/health/connect/internal/ParcelUtilsTest.java",
     ],
     visibility: [
         "//packages/modules/HealthFitness:__subpackages__",
