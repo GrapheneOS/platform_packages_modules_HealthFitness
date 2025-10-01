@@ -671,6 +671,8 @@
     <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{1 wheelchair push}other{# wheelchair pushes}}"</string>
     <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 L}other{# L}}"</string>
     <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 liter}other{# liters}}"</string>
+    <string name="milliliter" msgid="7730118351176678375">"{count,plural, =1{1 ml}other{# ml}}"</string>
+    <string name="milliliter_long" msgid="6431396151823725792">"{count,plural, =1{1 milliliter}other{# milliliters}}"</string>
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 floor}other{# floors}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 m}other{# m}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 meter}other{# meters}}"</string>
@@ -846,6 +848,30 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} vape puff}other{{quantity} vape puffs}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} cigarette}other{{quantity} cigarettes}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} unknown"</string>
+    <string name="alcohol_consumption_title" msgid="2627266871623334972">"<xliff:g id="SERVING">%1$s</xliff:g> • <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"Other"</string>
+    <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Beer"</string>
+    <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Wine"</string>
+    <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
+    <string name="alcohol_consumption_beverage_type_gin" msgid="5945396443339874907">"Gin"</string>
+    <string name="alcohol_consumption_beverage_type_whiskey" msgid="1085904168947658887">"Whiskey"</string>
+    <string name="alcohol_consumption_beverage_type_rum" msgid="5230691377430212826">"Rum"</string>
+    <string name="alcohol_consumption_beverage_type_tequila" msgid="9074751455065347442">"Tequila"</string>
+    <string name="alcohol_consumption_beverage_type_lager" msgid="1490153167547219382">"Lager"</string>
+    <string name="alcohol_consumption_beverage_type_cider" msgid="3348115754435446544">"Cider"</string>
+    <string name="alcohol_consumption_beverage_type_sake" msgid="2773512901340614154">"Sake"</string>
+    <string name="alcohol_consumption_beverage_type_shochu" msgid="3491300198222489324">"Shochu"</string>
+    <string name="alcohol_consumption_beverage_type_soju" msgid="113120387013483711">"Soju"</string>
+    <string name="alcohol_consumption_beverage_type_mead" msgid="1673063923088962681">"Mead"</string>
+    <string name="alcohol_consumption_beverage_type_absinthe" msgid="3972259596196421914">"Absinthe"</string>
+    <string name="alcohol_consumption_beverage_type_brandy" msgid="3782444367994599131">"Brandy"</string>
+    <string name="alcohol_consumption_beverage_type_cocktail" msgid="4711099215987668649">"Cocktail"</string>
+    <string name="alcohol_consumption_beverage_type_chuhai" msgid="4727177353197748690">"Chuhai"</string>
+    <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Highball"</string>
+    <string name="serving_volume_title" msgid="4727986574534974167">"Serving Volume"</string>
+    <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Alcohol by Volume"</string>
+    <string name="note_title" msgid="4101166558186573016">"Note"</string>
+    <string name="details_title" msgid="8411891773854413790">"Details"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>m"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g>h <xliff:g id="MIN">%2$s</xliff:g>m"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g>h"</string>
@@ -1292,8 +1318,10 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Device data"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Manage device"</string>
     <string name="device_data_button" msgid="8002406105399136401">"See device data"</string>
-    <string name="native_steps_banner_title" msgid="7668164332675458871">"Steps tracked on your phone will appear in Health Connect"</string>
-    <string name="native_steps_banner_summary" msgid="7109953051996114646">"Steps tracked by this device are now stored in Health Connect for connected apps to access"</string>
+    <!-- no translation found for native_steps_banner_title (8990874387340782536) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_summary (8255767487167444809) -->
+    <skip />
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Dismiss"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Review"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Steps are now in Health Connect"</string>
@@ -1310,5 +1338,6 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"See compatible apps"</string>
     <string name="see_all_connected_apps_button" msgid="3391164556225732842">"See all"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Not connected"</string>
+    <string name="connect_app_button_content_description" msgid="296796277841527165">"Click to connect this app to Health Connect"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Not now"</string>
 </resources>

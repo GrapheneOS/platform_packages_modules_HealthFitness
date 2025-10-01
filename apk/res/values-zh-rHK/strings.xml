@@ -671,6 +671,10 @@
     <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{推輪椅 1 下}other{推輪椅 # 下}}"</string>
     <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 公升}other{# 公升}}"</string>
     <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 公升}other{# 公升}}"</string>
+    <!-- no translation found for milliliter (7730118351176678375) -->
+    <skip />
+    <!-- no translation found for milliliter_long (6431396151823725792) -->
+    <skip />
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 層樓}other{# 層樓}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 米}other{# 米}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 米}other{# 米}}"</string>
@@ -846,6 +850,54 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} 個煙彈}other{{quantity} 個煙彈}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} 根香煙}other{{quantity} 根香煙}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} 不明"</string>
+    <!-- no translation found for alcohol_consumption_title (2627266871623334972) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_other (8951149340640427255) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_beer (1753954064025455693) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_wine (539865325714724419) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_vodka (8617871659386650818) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_gin (5945396443339874907) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_whiskey (1085904168947658887) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_rum (5230691377430212826) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_tequila (9074751455065347442) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_lager (1490153167547219382) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_cider (3348115754435446544) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_sake (2773512901340614154) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_shochu (3491300198222489324) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_soju (113120387013483711) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_mead (1673063923088962681) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_absinthe (3972259596196421914) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_brandy (3782444367994599131) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_cocktail (4711099215987668649) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_chuhai (4727177353197748690) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_highball (8694072892834520500) -->
+    <skip />
+    <!-- no translation found for serving_volume_title (4727986574534974167) -->
+    <skip />
+    <!-- no translation found for alcohol_by_volume_title (6942673552238435422) -->
+    <skip />
+    <!-- no translation found for note_title (4101166558186573016) -->
+    <skip />
+    <!-- no translation found for details_title (8411891773854413790) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> 分鐘"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> 小時 <xliff:g id="MIN">%2$s</xliff:g> 分鐘"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> 小時"</string>
@@ -1292,8 +1344,10 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"裝置資料"</string>
     <string name="device_data_label" msgid="2056618513138892435">"管理裝置"</string>
     <string name="device_data_button" msgid="8002406105399136401">"查看裝置資料"</string>
-    <string name="native_steps_banner_title" msgid="7668164332675458871">"手機追蹤的步數會在「健康資料同步」中顯示"</string>
-    <string name="native_steps_banner_summary" msgid="7109953051996114646">"此裝置追蹤的步數現已儲存於「健康資料同步」供連結的應用程式存取"</string>
+    <!-- no translation found for native_steps_banner_title (8990874387340782536) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_summary (8255767487167444809) -->
+    <skip />
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"關閉"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"查看"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"現在「健康資料同步」會顯示步數"</string>
@@ -1301,14 +1355,16 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"你的健康應用程式"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"你的健康資料"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"偏好設定"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"「健康資料同步」讓你在多個應用程式之間分享健康和健身資料，協助你取得分析資料和享用體驗，同時保障你的資料安全。"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"「健康資料同步」讓你在多個應用程式之間分享健康和健身資料，協助你取得分析資料和盡享更優質的體驗，同時保障你的資料安全。"</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"進一步瞭解「健康資料同步」"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"你的資料，以及可存取資料的應用程式"</string>
-    <string name="recent_access_summary" msgid="3933708982145999939">"近期使用過你的資料的應用程式"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"近期使用過你資料的應用程式"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"查看可存取健康資料的應用程式"</string>
-    <string name="empty_apps_section_title" msgid="1808646811838427261">"安裝適用於「健康資料同步」的應用程式以在此查看"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"安裝適用於「健康資料同步」的應用程式，就可以在這裡查看相關資料"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"查看兼容的應用程式"</string>
     <string name="see_all_connected_apps_button" msgid="3391164556225732842">"查看全部"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"未連接"</string>
+    <!-- no translation found for connect_app_button_content_description (296796277841527165) -->
+    <skip />
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"暫時不要"</string>
 </resources>

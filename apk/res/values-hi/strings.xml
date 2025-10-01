@@ -84,10 +84,8 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"पोषण"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"तंदरुस्ती का डेटा"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"सेहत का डेटा"</string>
-    <!-- no translation found for symptoms_category_uppercase (1357167834284360975) -->
-    <skip />
-    <!-- no translation found for symptoms_category_lowercase (2298815597177353672) -->
-    <skip />
+    <string name="symptoms_category_uppercase" msgid="1357167834284360975">"लक्षण"</string>
+    <string name="symptoms_category_lowercase" msgid="2298815597177353672">"लक्षण"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"डेटा ब्राउज़ करें"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"डेटा मैनेज करें"</string>
     <string name="export_data_button" msgid="7783329820434117744">"डेटा एक्सपोर्ट करें"</string>
@@ -386,16 +384,11 @@
     <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"खांसी"</string>
     <string name="symptom_cough_read_content_description" msgid="398516421189288025">"खांसी के लक्षणों से जुड़ा डेटा देखने की अनुमति दें"</string>
     <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"खांसी के लक्षणों से जुड़े डेटा में बदलाव करने की अनुमति दें"</string>
-    <!-- no translation found for symptom_unknown (5796719193136239306) -->
-    <skip />
-    <!-- no translation found for symptom_severity_mild (2689415474774489874) -->
-    <skip />
-    <!-- no translation found for symptom_severity_moderate (8388787027751900668) -->
-    <skip />
-    <!-- no translation found for symptom_severity_severe (4675732713898596705) -->
-    <skip />
-    <!-- no translation found for symptom_entry_title (3927744074055963604) -->
-    <skip />
+    <string name="symptom_unknown" msgid="5796719193136239306">"कोई जानकारी नहीं है"</string>
+    <string name="symptom_severity_mild" msgid="2689415474774489874">"हल्की-फुल्की"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"थोड़ी-बहुत"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"बहुत ज़्यादा"</string>
+    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” को डेटा देखने की अनुमति दें"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” को डेटा में बदलाव करने की अनुमति दें"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"अनुमति दें"</string>
@@ -678,6 +671,10 @@
     <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{1 व्हीलचेयर पुश}one{# व्हीलचेयर पुश}other{# व्हीलचेयर पुश}}"</string>
     <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 ली॰}one{# ली॰}other{# ली॰}}"</string>
     <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 लीटर}one{# लीटर}other{# लीटर}}"</string>
+    <!-- no translation found for milliliter (7730118351176678375) -->
+    <skip />
+    <!-- no translation found for milliliter_long (6431396151823725792) -->
+    <skip />
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 फ़्लोर}one{# फ़्लोर}other{# फ़्लोर}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 मी॰}one{# मी॰}other{# मी॰}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 मीटर}one{# मीटर}other{# मीटर}}"</string>
@@ -853,6 +850,54 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} वेप पफ़}one{{quantity} वेप पफ़}other{{quantity} वेप पफ़}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} सिगरेट}one{{quantity} सिगरेट}other{{quantity} सिगरेट}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} की जानकारी नहीं है"</string>
+    <!-- no translation found for alcohol_consumption_title (2627266871623334972) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_other (8951149340640427255) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_beer (1753954064025455693) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_wine (539865325714724419) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_vodka (8617871659386650818) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_gin (5945396443339874907) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_whiskey (1085904168947658887) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_rum (5230691377430212826) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_tequila (9074751455065347442) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_lager (1490153167547219382) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_cider (3348115754435446544) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_sake (2773512901340614154) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_shochu (3491300198222489324) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_soju (113120387013483711) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_mead (1673063923088962681) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_absinthe (3972259596196421914) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_brandy (3782444367994599131) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_cocktail (4711099215987668649) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_chuhai (4727177353197748690) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_highball (8694072892834520500) -->
+    <skip />
+    <!-- no translation found for serving_volume_title (4727986574534974167) -->
+    <skip />
+    <!-- no translation found for alcohol_by_volume_title (6942673552238435422) -->
+    <skip />
+    <!-- no translation found for note_title (4101166558186573016) -->
+    <skip />
+    <!-- no translation found for details_title (8411891773854413790) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> मिनट"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> घंटे <xliff:g id="MIN">%2$s</xliff:g> मिनट"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> घंटा"</string>
@@ -1299,8 +1344,10 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"डिवाइस पर मौजूद डेटा"</string>
     <string name="device_data_label" msgid="2056618513138892435">"डिवाइस को मैनेज करें"</string>
     <string name="device_data_button" msgid="8002406105399136401">"डिवाइस पर मौजूद डेटा देखें"</string>
-    <string name="native_steps_banner_title" msgid="7668164332675458871">"आपके फ़ोन से ट्रैक किए गए कदमों का डेटा, Health Connect में दिखेगा"</string>
-    <string name="native_steps_banner_summary" msgid="7109953051996114646">"इस डिवाइस से ट्रैक किए गए कदमों का डेटा, अब Health Connect में सेव किया जा रहा है. कनेक्ट किए गए ऐप्लिकेशन, यहां से इस डेटा को ऐक्सेस कर सकते हैं"</string>
+    <!-- no translation found for native_steps_banner_title (8990874387340782536) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_summary (8255767487167444809) -->
+    <skip />
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"खारिज करें"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"देखें"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"कदमों का डेटा अब Health Connect में उपलब्ध है"</string>
@@ -1308,7 +1355,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"सेहत से जुड़े ऐप्लिकेशन"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"आपकी सेहत से जुड़ा डेटा"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"प्राथमिकताएं"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect की मदद से, अपनी सेहत और फ़िटनेस का डेटा कई ऐप्लिकेशन के बीच शेयर किया जा सकता है. इससे आपको अहम जानकारी और बेहतर अनुभव मिलता है. साथ ही, आपका डेटा सुरक्षित रहता है."</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect की मदद से, अपनी सेहत और फ़िटनेस का डेटा कई ऐप्लिकेशन के बीच शेयर किया जा सकता है. इससे आपको अहम जानकारी और बेहतर अनुभव मिलता है और आपके डेटा की सुरक्षा भी बनी रहती है."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect के बारे में ज़्यादा जानकारी"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"अपना डेटा देखें और जानें कि कौनसे ऐप्लिकेशन इसे ऐक्सेस कर सकते हैं"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"ऐसे ऐप्लिकेशन जिन्होंने हाल ही में आपका डेटा इस्तेमाल किया है"</string>
@@ -1317,5 +1364,7 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"इसके साथ काम करने वाले ऐप्लिकेशन देखें"</string>
     <string name="see_all_connected_apps_button" msgid="3391164556225732842">"सभी देखें"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"कनेक्ट नहीं है"</string>
+    <!-- no translation found for connect_app_button_content_description (296796277841527165) -->
+    <skip />
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"अभी नहीं"</string>
 </resources>
