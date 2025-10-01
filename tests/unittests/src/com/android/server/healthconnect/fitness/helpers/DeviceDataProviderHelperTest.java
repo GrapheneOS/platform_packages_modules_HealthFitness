@@ -19,6 +19,7 @@ package com.android.server.healthconnect.fitness.helpers;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getIntegerAndConvertToBoolean;
 
@@ -172,7 +173,7 @@ public class DeviceDataProviderHelperTest {
 
     @Test
     public void insertOrUpdateDatabase_insertNewEntry_entryInserted() {
-        int deviceInfoId = insertDeviceInfo();
+        long deviceInfoId = insertDeviceInfo();
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
@@ -214,7 +215,7 @@ public class DeviceDataProviderHelperTest {
 
     @Test
     public void insertOrUpdateDatabase_updateExistingEntry_entryUpdated() {
-        int deviceInfoId = insertDeviceInfo();
+        long deviceInfoId = insertDeviceInfo();
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
@@ -248,7 +249,7 @@ public class DeviceDataProviderHelperTest {
             cursor.moveToFirst();
             assertThat(getCursorString(cursor, DeviceDataProviderHelper.SOURCE_PACKAGE_NAME))
                     .isEqualTo(TEST_APP_PACKAGE);
-            assertThat(getCursorInt(cursor, RecordHelper.DEVICE_INFO_ID_COLUMN_NAME))
+            assertThat(getCursorLong(cursor, RecordHelper.DEVICE_INFO_ID_COLUMN_NAME))
                     .isEqualTo(deviceInfoId);
             assertThat(getCursorInt(cursor, DeviceDataProviderHelper.DATA_TYPE))
                     .isEqualTo(mHealthConnectMappings.getRecordType(StepsRecord.class));
@@ -268,7 +269,7 @@ public class DeviceDataProviderHelperTest {
 
     @Test
     public void insertOrUpdateDatabase_multipleEntries_entriesInserted() {
-        int deviceInfoId = insertDeviceInfo();
+        long deviceInfoId = insertDeviceInfo();
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
@@ -295,7 +296,7 @@ public class DeviceDataProviderHelperTest {
 
     @Test
     public void cache_clearedOnClearData() {
-        int deviceInfoId = insertDeviceInfo();
+        long deviceInfoId = insertDeviceInfo();
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
@@ -320,7 +321,7 @@ public class DeviceDataProviderHelperTest {
 
     @Test
     public void cache_clearedOnClearCache() {
-        int deviceInfoId = insertDeviceInfo();
+        long deviceInfoId = insertDeviceInfo();
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
@@ -357,7 +358,7 @@ public class DeviceDataProviderHelperTest {
 
     @Test
     public void populateDdpCache_readsDbAndPopulatesCache() {
-        int deviceInfoId = insertDeviceInfo();
+        long deviceInfoId = insertDeviceInfo();
         ContentValues contentValues = new ContentValues();
         contentValues.put(DeviceDataProviderHelper.SOURCE_PACKAGE_NAME, TEST_APP_PACKAGE);
         contentValues.put(RecordHelper.DEVICE_INFO_ID_COLUMN_NAME, deviceInfoId);
@@ -393,7 +394,7 @@ public class DeviceDataProviderHelperTest {
 
     @Test
     public void insertOrUpdateAdvertisement_deletesUnspecifiedDataTypes() {
-        int deviceInfoId = insertDeviceInfo();
+        long deviceInfoId = insertDeviceInfo();
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
@@ -435,12 +436,12 @@ public class DeviceDataProviderHelperTest {
         }
     }
 
-    private int insertDeviceInfo() {
+    private long insertDeviceInfo() {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DeviceInfoHelper.MANUFACTURER_COLUMN_NAME, "Google");
         contentValues.put(DeviceInfoHelper.MODEL_COLUMN_NAME, "Pixel");
         contentValues.put(DeviceInfoHelper.DEVICE_TYPE_COLUMN_NAME, DEVICE_TYPE_PHONE);
-        return (int)
+        return (long)
                 mTransactionManager.insertOrThrowOnConflict(
                         new UpsertTableRequest(DeviceInfoHelper.TABLE_NAME, contentValues));
     }

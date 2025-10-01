@@ -76,7 +76,7 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     private final HealthConnectMappings mHealthConnectMappings;
 
     private record DeviceDataProviderKey(
-            String sourcePackageName, int deviceInfoId, int dataType) {}
+            String sourcePackageName, long deviceInfoId, int dataType) {}
 
     private record DeviceDataProviderInfo(
             DeviceDataProviderKey key,
@@ -122,7 +122,7 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
      */
     public synchronized void insertOrUpdateAdvertisement(
             String sourcePackageName,
-            int deviceInfoId,
+            long deviceInfoId,
             DeviceDataSourceAdvertisement deviceDataSourceAdvertisement) {
         deleteObsoleteAdvertisements(
                 sourcePackageName, deviceInfoId, deviceDataSourceAdvertisement);
@@ -151,7 +151,7 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
      */
     private synchronized void deleteObsoleteAdvertisements(
             String sourcePackageName,
-            int deviceInfoId,
+            long deviceInfoId,
             DeviceDataSourceAdvertisement latestDeviceDataSourceAdvertisement) {
         List<DeviceDataProviderKey> existingAdvertisements =
                 getDdpMap().keySet().stream()
@@ -215,7 +215,7 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
                 new ConcurrentHashMap<>();
         try (Cursor cursor = transactionManager.read(new ReadTableRequest(TABLE_NAME))) {
             while (cursor.moveToNext()) {
-                int deviceInfoId = getCursorInt(cursor, DEVICE_INFO_ID_COLUMN_NAME);
+                long deviceInfoId = getCursorInt(cursor, DEVICE_INFO_ID_COLUMN_NAME);
                 String sourcePackageName = getCursorString(cursor, SOURCE_PACKAGE_NAME);
                 int dataType = getCursorInt(cursor, DATA_TYPE);
                 boolean isAvailable = getIntegerAndConvertToBoolean(cursor, IS_AVAILABLE);
