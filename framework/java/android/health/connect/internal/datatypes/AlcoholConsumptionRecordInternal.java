@@ -16,6 +16,7 @@
 package android.health.connect.internal.datatypes;
 
 import static android.health.connect.Constants.DEFAULT_DOUBLE;
+import static android.health.connect.datatypes.AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_INSTANT;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION;
 
@@ -42,8 +43,8 @@ public class AlcoholConsumptionRecordInternal
     private int mServingCount;
     private int mBeverageType;
     private int mServingSize;
-    private double mServingVolumeLiters;
-    private double mAlcoholByVolume;
+    private double mServingVolumeLiters = DEFAULT_DOUBLE;
+    private double mAlcoholByVolume = DEFAULT_DOUBLE;
     @Nullable private String mNote;
 
     public AlcoholConsumptionRecordInternal() {
@@ -75,7 +76,7 @@ public class AlcoholConsumptionRecordInternal
     @Override
     public AlcoholConsumptionRecord toExternalRecord() {
         AlcoholConsumptionRecord.Builder builder;
-        if (mTemporalType == AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_INSTANT) {
+        if (mTemporalType == RECORD_TEMPORAL_TYPE_INSTANT) {
             builder =
                     new AlcoholConsumptionRecord.Builder(
                             buildMetaData(), getStartTime(), mServingCount, mBeverageType);
@@ -96,6 +97,7 @@ public class AlcoholConsumptionRecordInternal
                             mBeverageType);
         }
 
+        builder.setServingSize(mServingSize);
         if (getStartZoneOffset() != null) {
             builder.setStartZoneOffset(getStartZoneOffset());
         }

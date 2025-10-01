@@ -23,6 +23,7 @@ import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
+import static android.health.connect.datatypes.AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_INTERVAL;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_UNKNOWN;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_MANUAL_ENTRY;
@@ -79,6 +80,7 @@ public class AlcoholConsumptionInternalTest {
                 (AlcoholConsumptionRecordInternal)
                         new AlcoholConsumptionRecordInternal()
                                 .setServingCount(3)
+                                .setTemporalType(RECORD_TEMPORAL_TYPE_INTERVAL)
                                 .setBeverageType(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
                                 .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT)
                                 .setServingVolumeLiters(0.568)
@@ -210,7 +212,7 @@ public class AlcoholConsumptionInternalTest {
         assertThat(decodedRecord.getServingSize())
                 .isEqualTo(ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS);
         assertThat(decodedRecord.getServingVolumeLiters()).isEqualTo(0.250);
-        assertThat(decodedRecord.getAlcoholByVolume()).isEqualTo(Percentage.fromValue(12));
+        assertThat(decodedRecord.getAlcoholByVolume()).isEqualTo(12);
         assertThat(decodedRecord.getNote()).isEqualTo("note");
         assertThat(decodedRecord.getStartTimeInMillis()).isEqualTo(1357924680);
         assertThat(decodedRecord.getEndTimeInMillis()).isEqualTo(1357924681);
@@ -255,7 +257,7 @@ public class AlcoholConsumptionInternalTest {
         assertThat(decodedRecord.getServingSize())
                 .isEqualTo(ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER);
         assertThat(decodedRecord.getServingVolumeLiters()).isEqualTo(DEFAULT_DOUBLE);
-        assertThat(decodedRecord.getAlcoholByVolume()).isEqualTo(null);
+        assertThat(decodedRecord.getAlcoholByVolume()).isEqualTo(DEFAULT_DOUBLE);
         assertThat(decodedRecord.getNote()).isEqualTo(null);
         assertThat(decodedRecord.getStartTimeInMillis()).isEqualTo(0);
         assertThat(decodedRecord.getEndTimeInMillis()).isEqualTo(0);

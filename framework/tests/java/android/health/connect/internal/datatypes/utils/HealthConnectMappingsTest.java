@@ -410,7 +410,12 @@ public class HealthConnectMappingsTest {
         }
     }
 
-    @DisableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING, Flags.FLAG_SYMPTOMS})
+    @DisableFlags({
+        Flags.FLAG_ACTIVITY_INTENSITY,
+        Flags.FLAG_SMOKING,
+        Flags.FLAG_SYMPTOMS,
+        Flags.FLAG_ALCOHOL_CONSUMPTION
+    })
     @Test
     public void getRecordCategoryForRecordType_equalsToLegacy() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();

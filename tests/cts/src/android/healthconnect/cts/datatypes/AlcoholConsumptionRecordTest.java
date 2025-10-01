@@ -174,8 +174,10 @@ public class AlcoholConsumptionRecordTest {
 
     @Test
     public void equals_hashCode_allFieldsEqual_recordsEqual() {
-        AlcoholConsumptionRecord recordA = getFullRecordBuilder().build();
-        AlcoholConsumptionRecord recordB = getFullRecordBuilder().build();
+        Instant startTime = Instant.now().minusSeconds(60);
+        Instant endTime = Instant.now();
+        AlcoholConsumptionRecord recordA = getFullRecordBuilder(startTime, endTime).build();
+        AlcoholConsumptionRecord recordB = getFullRecordBuilder(startTime, endTime).build();
 
         assertThat(recordA).isEqualTo(recordB);
         assertThat(recordA.hashCode()).isEqualTo(recordB.hashCode());
@@ -348,6 +350,11 @@ public class AlcoholConsumptionRecordTest {
         return ZoneOffset.systemDefault().getRules().getOffset(instant);
     }
 
+    private AlcoholConsumptionRecord.Builder getFullRecordBuilder(
+            Instant startTime, Instant endTime) {
+        return getFullRecordBuilder(new Metadata.Builder().build(), startTime, endTime);
+    }
+
     private AlcoholConsumptionRecord.Builder getFullRecordBuilder() {
         return getFullRecordBuilder(new Metadata.Builder().build());
     }
@@ -355,6 +362,23 @@ public class AlcoholConsumptionRecordTest {
     private AlcoholConsumptionRecord.Builder getFullRecordBuilder(Metadata metadata) {
         Instant startTime = Instant.now().minusSeconds(60);
         Instant endTime = Instant.now();
+        return new AlcoholConsumptionRecord.Builder(
+                        metadata,
+                        startTime,
+                        endTime,
+                        /* servingCount= */ 2,
+                        ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
+                .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT)
+                .setStartZoneOffset(ZoneOffset.ofHours(2))
+                .setEndZoneOffset(ZoneOffset.ofHours(2))
+                .setServingVolume(Volume.fromLiters(0.568))
+                .setAlcoholByVolume(Percentage.fromValue(7.0))
+                .setNote("Pub Crawl");
+    }
+
+    private AlcoholConsumptionRecord.Builder getFullRecordBuilder(
+            Metadata metadata, Instant startTime, Instant endTime) {
+
         return new AlcoholConsumptionRecord.Builder(
                         metadata,
                         startTime,

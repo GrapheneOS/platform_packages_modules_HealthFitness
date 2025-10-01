@@ -23,6 +23,7 @@ import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_MANUAL_
 
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.ActivityIntensityRecord;
+import android.health.connect.datatypes.AlcoholConsumptionRecord;
 import android.health.connect.datatypes.BasalBodyTemperatureRecord;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.BloodGlucoseRecord;
@@ -337,6 +338,9 @@ public abstract class RecordFactory<T extends Record> {
             return new ActiveCaloriesBurnedRecordFactory();
         } else if (recordClass.equals(ActivityIntensityRecord.class)) {
             return new ActivityIntensityRecordFactory();
+        } else if (Flags.alcoholConsumption()
+                && recordClass.equals(AlcoholConsumptionRecord.class)) {
+            return new AlcoholConsumptionRecordFactory();
         } else if (recordClass.equals(BasalBodyTemperatureRecord.class)) {
             return new BasalBodyTemperatureRecordFactory();
         } else if (recordClass.equals(BasalMetabolicRateRecord.class)) {
