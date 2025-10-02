@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.fitness.recordhelpers;
 
+import static android.health.connect.Constants.DEFAULT_DOUBLE;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_OTHER;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
@@ -174,8 +175,8 @@ public class AlcoholConsumptionRecordHelperTest {
             assertThat(readRecord.getServingCount()).isEqualTo(insertedRecord.getServingCount());
             assertThat(readRecord.getBeverageType()).isEqualTo(insertedRecord.getBeverageType());
             assertThat(readRecord.getServingSize()).isEqualTo(0);
-            assertThat(readRecord.getServingVolumeLiters()).isEqualTo(0.0);
-            assertThat(readRecord.getAlcoholByVolume()).isEqualTo(0.0);
+            assertThat(readRecord.getServingVolumeLiters()).isEqualTo(DEFAULT_DOUBLE);
+            assertThat(readRecord.getAlcoholByVolume()).isEqualTo(DEFAULT_DOUBLE);
             assertThat(readRecord.getNote()).isNull();
         }
     }

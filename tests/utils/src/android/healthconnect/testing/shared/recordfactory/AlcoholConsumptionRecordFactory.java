@@ -35,6 +35,7 @@ public final class AlcoholConsumptionRecordFactory extends RecordFactory<Alcohol
     private static final String KEY_SERVING_COUNT = PREFIX + "SERVING_COUNT";
     private static final String KEY_SERVING_SIZE = PREFIX + "SERVING_SIZE";
     private static final String KEY_TYPE = PREFIX + "TYPE";
+    private static final String KEY_TEMPORAL_TYPE = "TEMPORAL_TYPE";
     private static final String KEY_ALCOHOL_BY_VOLUME = PREFIX + "ALCOHOL_BY_VOLUME";
     private static final String KEY_SERVING_VOLUME = PREFIX + "SERVING_VOLUME";
     private static final String KEY_NOTE = PREFIX + "NOTE";
@@ -45,7 +46,8 @@ public final class AlcoholConsumptionRecordFactory extends RecordFactory<Alcohol
 
         return new AlcoholConsumptionRecord.Builder(
                         metadata,
-                        time, /* servingCount */
+                        time,
+                        endTime, /* servingCount */
                         3,
                         ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
                 .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT)
@@ -63,7 +65,8 @@ public final class AlcoholConsumptionRecordFactory extends RecordFactory<Alcohol
 
         return new AlcoholConsumptionRecord.Builder(
                         metadata,
-                        time, /* servingCount */
+                        time,
+                        endTime, /* servingCount */
                         2,
                         ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE)
                 .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS)
@@ -80,7 +83,8 @@ public final class AlcoholConsumptionRecordFactory extends RecordFactory<Alcohol
             Metadata metadata, Instant time, Instant endTime) {
         return new AlcoholConsumptionRecord.Builder(
                         metadata,
-                        time, /* servingCount */
+                        time,
+                        endTime, /* servingCount */
                         1,
                         ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_OTHER)
                 .build();
@@ -110,6 +114,7 @@ public final class AlcoholConsumptionRecordFactory extends RecordFactory<Alcohol
         values.putInt(KEY_SERVING_COUNT, record.getServingCount());
         values.putInt(KEY_TYPE, record.getBeverageType());
         values.putInt(KEY_SERVING_SIZE, record.getServingSize());
+        values.putInt(KEY_TEMPORAL_TYPE, record.getTemporalType());
         if (record.getServingVolume() != null) {
             values.putDouble(KEY_SERVING_VOLUME, record.getServingVolume().getInLiters());
         }
@@ -134,6 +139,7 @@ public final class AlcoholConsumptionRecordFactory extends RecordFactory<Alcohol
                 new AlcoholConsumptionRecord.Builder(
                                 metadata,
                                 time,
+                                endTime,
                                 bundle.getInt(KEY_SERVING_COUNT),
                                 bundle.getInt(KEY_TYPE))
                         .setServingSize(bundle.getInt(KEY_SERVING_SIZE))

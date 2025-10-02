@@ -53,24 +53,24 @@ public class AlcoholConsumptionRecordInternal
 
     public AlcoholConsumptionRecordInternal(Parcel parcel) {
         super(parcel);
+        mTemporalType = parcel.readInt();
         mServingCount = parcel.readInt();
         mBeverageType = parcel.readInt();
         mServingSize = parcel.readInt();
         mServingVolumeLiters = parcel.readDouble();
         mAlcoholByVolume = parcel.readDouble();
         mNote = parcel.readString();
-        mTemporalType = parcel.readInt();
     }
 
     @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
+        parcel.writeInt(mTemporalType);
         parcel.writeInt(mServingCount);
         parcel.writeInt(mBeverageType);
         parcel.writeInt(mServingSize);
         parcel.writeDouble(mServingVolumeLiters);
         parcel.writeDouble(mAlcoholByVolume);
         parcel.writeString(mNote);
-        parcel.writeInt(mTemporalType);
     }
 
     @Override

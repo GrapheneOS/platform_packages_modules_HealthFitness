@@ -88,9 +88,7 @@ public class AlcoholConsumptionRecordHelper
         contentValues.put(
                 SERVING_VOLUME_LITERS_COLUMN_NAME, recordInternal.getServingVolumeLiters());
         contentValues.put(ALCOHOL_BY_VOLUME_COLUMN_NAME, recordInternal.getAlcoholByVolume());
-        if (recordInternal.getNote() != null) {
-            contentValues.put(NOTE_COLUMN_NAME, recordInternal.getNote().toString());
-        }
+        contentValues.put(NOTE_COLUMN_NAME, (String) recordInternal.getNote());
     }
 
     @Override
