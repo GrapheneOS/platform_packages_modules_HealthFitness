@@ -38,6 +38,10 @@ class ActivityIntensityTest : BaseDataTypeTest<ActivityIntensityRecord>() {
     override val sameCategoryDataTypeString = "Steps"
     override val anotherCategoryString = "Vitals"
 
+    override val hasDetailsScreen = false
+    override val expectedRecordDetailsHeader = null
+    override val expectedRecordDetailsTitle = null
+
     override fun createRecord() =
         ActivityIntensityRecord.Builder(
                 newEmptyMetadata(),

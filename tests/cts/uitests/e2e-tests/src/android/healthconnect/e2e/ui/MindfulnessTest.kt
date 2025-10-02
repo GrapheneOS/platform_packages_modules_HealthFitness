@@ -35,6 +35,10 @@ class MindfulnessTest : BaseDataTypeTest<MindfulnessSessionRecord>() {
     override val sameCategoryDataTypeString = null
     override val anotherCategoryString = "Activity"
 
+    override val hasDetailsScreen = false
+    override val expectedRecordDetailsHeader = null
+    override val expectedRecordDetailsTitle = null
+
     override fun createRecord() =
         MindfulnessSessionRecord.Builder(
                 newEmptyMetadata(),

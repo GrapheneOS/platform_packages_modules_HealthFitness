@@ -63,6 +63,10 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
     abstract val expectedRecordTitle: String
     abstract val expectedRecordSubtitle: String?
 
+    abstract val hasDetailsScreen: Boolean
+    abstract val expectedRecordDetailsHeader: String?
+    abstract val expectedRecordDetailsTitle: String?
+
     abstract fun createRecordToBeDeleted(): Record
 
     abstract val expectedRecordToBeDeletedHeader: String
@@ -109,6 +113,31 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
     }
 
     @Test
+    fun dataAndAccess_showsEntryDetailsIfAvailable() {
+        if (!hasDetailsScreen) {
+            return
+        }
+        context.launchMainActivity {
+            navigateToNewPage("Data and access")
+
+            scrollDownToAndFindText(dataCategoryString)
+            navigateToNewPage(dataTypeString)
+
+            waitForObjectNotFound(By.text("No data"), timeout = ofSeconds(3))
+            scrollToEnd()
+
+            findText(expectedRecordHeader)
+            findText(expectedRecordTitle)
+            expectedRecordSubtitle?.let { findText(it) }
+
+            findTextAndClick(expectedRecordTitle)
+
+            findText(checkNotNull(expectedRecordDetailsHeader))
+            findText(checkNotNull(expectedRecordDetailsTitle))
+        }
+    }
+
+    @Test
     fun dataAndAccess_showsEntriesOfFirstAvailableDay_deletesEntry() {
         context.launchMainActivity {
             navigateToNewPage("Data and access")
@@ -124,8 +153,11 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
             expectedRecordSubtitle?.let { findText(it) }
 
             findText(expectedRecordToBeDeletedHeader)
+
             // Check that clicking on the entry does not open the details screen.
-            findTextAndClick(expectedRecordToBeDeletedTitle)
+            if (!hasDetailsScreen) {
+                findTextAndClick(expectedRecordToBeDeletedTitle)
+            }
             findText(expectedRecordTitle)
             findDesc("Previous day")
 

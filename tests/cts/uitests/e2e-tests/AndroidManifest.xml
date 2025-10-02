@@ -40,6 +40,7 @@
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
     <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"/>
     <uses-permission android:name="android.permission.health.READ_ACTIVITY_INTENSITY"/>
+    <uses-permission android:name="android.permission.health.READ_ALCOHOL_CONSUMPTION"/>
     <uses-permission android:name="android.permission.health.READ_BASAL_BODY_TEMPERATURE"/>
     <uses-permission android:name="android.permission.health.READ_BASAL_METABOLIC_RATE"/>
     <uses-permission android:name="android.permission.health.READ_BLOOD_GLUCOSE"/>
@@ -80,8 +81,10 @@
     <uses-permission android:name="android.permission.health.READ_WAIST_CIRCUMFERENCE"/>
     <uses-permission android:name="android.permission.health.READ_WEIGHT"/>
     <uses-permission android:name="android.permission.health.READ_WHEELCHAIR_PUSHES"/>
+
     <uses-permission android:name="android.permission.health.WRITE_ACTIVE_CALORIES_BURNED"/>
     <uses-permission android:name="android.permission.health.WRITE_ACTIVITY_INTENSITY"/>
+    <uses-permission android:name="android.permission.health.WRITE_ALCOHOL_CONSUMPTION"/>
     <uses-permission android:name="android.permission.health.WRITE_BASAL_BODY_TEMPERATURE"/>
     <uses-permission android:name="android.permission.health.WRITE_BASAL_METABOLIC_RATE"/>
     <uses-permission android:name="android.permission.health.WRITE_BLOOD_GLUCOSE"/>
