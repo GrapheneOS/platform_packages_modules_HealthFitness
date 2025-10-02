@@ -154,6 +154,7 @@ class HomeFragmentTest {
                 HomeViewModel.HomeFragmentState.WithData(
                     connectedApps =
                         listOf(ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED)),
+                    showSeeMoreHealthApps = true,
                     bannerState =
                         HomeViewModel.HomeBannerState.ShowBanners(
                             listOf(
@@ -173,9 +174,11 @@ class HomeFragmentTest {
         onView(withText("Health Connect test app"))
             .perform(scrollTo())
             .check(matches(isDisplayed()))
+        onView(withText("See more health apps")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("Your health data")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("Data and access")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("Recent access")).perform(scrollTo()).check(matches(isDisplayed()))
+        scrollToBottomOfPreferenceScreen()
         onView(withText("Preferences")).perform(scrollTo()).check(matches(isDisplayed()))
         scrollToBottomOfPreferenceScreen()
         onView(withText("Manage data")).perform(scrollTo()).check(matches(isDisplayed()))
@@ -242,7 +245,18 @@ class HomeFragmentTest {
     }
 
     @Test
-    fun whenThreeApps_showsThreeApps_andNoSeeAllButton() {
+    fun whenEmptyState_showsSeeMoreButton() {
+        val stateFlow =
+            MutableStateFlow<HomeViewModel.HomeFragmentState>(
+                HomeViewModel.HomeFragmentState.WithData(connectedApps = listOf())
+            )
+        whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
+        launchFragment<HomeFragment>(Bundle())
+        onView(withText("See more health apps")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun whenThreeApps_showsThreeApps_andSeeMoreButton() {
         val apps =
             listOf(
                 ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED),
@@ -260,13 +274,13 @@ class HomeFragmentTest {
         onView(withText(TEST_APP.appName)).check(matches(isDisplayed()))
         onView(withText(TEST_APP_2.appName)).check(matches(isDisplayed()))
         onView(withText(TEST_APP_3.appName)).check(matches(isDisplayed()))
-        onView(withText("See all")).check(doesNotExist())
+        onView(withText("See more health apps")).check(matches(isDisplayed()))
         verify(healthConnectLogger, times(3))
             .logImpression(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
     }
 
     @Test
-    fun whenSixApps_showsFiveApps_andSeeAllButton() {
+    fun whenSixApps_showsFiveApps_andSeeMoreButton() {
         val apps =
             listOf(
                 ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED),
@@ -290,7 +304,7 @@ class HomeFragmentTest {
         onView(withText(TEST_APP_4.appName)).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText(TEST_APP_5.appName)).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText(TEST_APP_6.appName)).check(doesNotExist())
-        onView(withText("See all")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("See more health apps")).perform(scrollTo()).check(matches(isDisplayed()))
         verify(healthConnectLogger, times(4))
             .logImpression(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
         verify(healthConnectLogger)
@@ -557,6 +571,7 @@ class HomeFragmentTest {
     @Test
     fun manageData_navigatesToManageData() {
         setupFragmentForNavigation()
+        scrollToBottomOfPreferenceScreen()
         onView(withText("Manage data")).perform(click())
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.manageDataFragment)
         verify(healthConnectLogger).logInteraction(NewHomePageElement.MANAGE_DATA_BUTTON)
@@ -590,7 +605,7 @@ class HomeFragmentTest {
 
         launchFragmentWithNavigation()
 
-        onView(withText("See all")).perform(click())
+        onView(withText("See more health apps")).perform(click())
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.connectedAppsFragment)
         verify(healthConnectLogger)
             .logInteraction(NewHomePageElement.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON)
