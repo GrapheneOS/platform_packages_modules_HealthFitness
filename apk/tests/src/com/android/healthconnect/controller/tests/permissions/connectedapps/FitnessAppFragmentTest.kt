@@ -67,7 +67,6 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission.Companion.fromPermissionString
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
-import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.READ
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.WRITE
 import com.android.healthconnect.controller.permissions.request.PermissionGroupKey
@@ -176,15 +175,8 @@ class FitnessAppFragmentTest {
         }
         whenever(viewModel.lastReadPermissionDisconnected).then { MutableLiveData(false) }
         whenever(viewModel.expandedDataCategoryPreferenceKeys).then {
-            MutableLiveData(
-                setOf(
-                    PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                        .toString()
-                )
-            )
+            MutableLiveData(setOf(PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString()))
         }
-
-        whenever(viewModel.grantedFitnessCategories).then { MutableLiveData<Set<String>>() }
 
         Intents.init()
     }
@@ -1184,11 +1176,6 @@ class FitnessAppFragmentTest {
 
         verify(viewModel)
             .updatePermissions(TEST_APP_PACKAGE_NAME, listOf(stepsPermission), grant = true)
-        verify(viewModel)
-            .updateHealthDataCategory(
-                PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString(),
-                true,
-            )
     }
 
     @Test
@@ -1214,8 +1201,7 @@ class FitnessAppFragmentTest {
                     as FitnessAppFragment
             expandablePreference =
                 fragment.preferenceScreen.findPreference(
-                    PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                        .toString()
+                    PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString()
                 )!!
         }
         assertThat(expandablePreference.isChecked).isFalse()

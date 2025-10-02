@@ -352,7 +352,7 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
         val dataCategoryEnumToDataCategoryStringSortedMap =
             getSortedDataCategoryToStringMap(requireContext())
 
-        val permissionsMap =
+        val permissionGroupKeyToRequestedPermissions =
             permissions.groupBy {
                 PermissionGroupKey(
                     it.permissionsAccessType,
@@ -361,14 +361,14 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
             }
 
         populateGroupedPermissionsUi(
-            permissionsMap,
+            permissionGroupKeyToRequestedPermissions,
             PermissionsAccessType.READ,
             readPermissionCategory,
             dataCategoryEnumToDataCategoryStringSortedMap,
         )
 
         populateGroupedPermissionsUi(
-            permissionsMap,
+            permissionGroupKeyToRequestedPermissions,
             PermissionsAccessType.WRITE,
             writePermissionCategory,
             dataCategoryEnumToDataCategoryStringSortedMap,
@@ -394,32 +394,37 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
     }
 
     private fun populateGroupedPermissionsUi(
-        permissionsMap: Map<PermissionGroupKey, List<FitnessPermission>>,
+        permissionGroupKeyToRequestedPermissions: Map<PermissionGroupKey, List<FitnessPermission>>,
         accessType: PermissionsAccessType,
         preferenceGroup: PreferenceGroup,
         sortedCategories: Map<Int, String>,
     ) {
         sortedCategories.keys
             .filter { dataCategory ->
-                !permissionsMap[PermissionGroupKey(accessType, dataCategory)].isNullOrEmpty()
+                !permissionGroupKeyToRequestedPermissions[
+                        PermissionGroupKey(accessType, dataCategory)]
+                    .isNullOrEmpty()
             }
             .forEach { dataCategory ->
-                val groupKey = PermissionGroupKey(accessType, dataCategory)
-                val permissions = permissionsMap[groupKey]!!
+                val permissionGroupKey = PermissionGroupKey(accessType, dataCategory)
+                val permissions = permissionGroupKeyToRequestedPermissions[permissionGroupKey]!!
 
-                val preferenceKey = groupKey.toString()
                 if (
                     appPermissionViewModel.expandedDataCategoryPreferenceKeys.value?.isEmpty() ==
                         true
                 ) {
                     appPermissionViewModel.updateDataCategoryPreferenceKey(
-                        preferenceKey,
+                        permissionGroupKey,
                         /* isExpanded= */ true,
                     )
                 }
 
                 val expandablePreference =
-                    getExpandablePreferenceForDataCategory(dataCategory, preferenceKey, permissions)
+                    getExpandablePreferenceForDataCategory(
+                        dataCategory,
+                        permissionGroupKey,
+                        permissions,
+                    )
                 customStylePreferences.add(expandablePreference)
                 preferenceGroup.addPreference(expandablePreference)
 
@@ -433,7 +438,6 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
                             getPermissionPreference(
                                 permission,
                                 isLastInGroup = index == permissions.size - 1,
-                                parentPreferenceKey = groupKey,
                             )
                         customStylePreferences.add(permissionPreference)
                         expandablePreference.addPreference(permissionPreference)
@@ -443,19 +447,19 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
 
     private fun getExpandablePreferenceForDataCategory(
         dataCategory: Int,
-        preferenceKey: String,
+        preferenceKey: PermissionGroupKey,
         permissionsForCategory: List<FitnessPermission>,
     ): HealthToggleExpandablePreference {
         return HealthToggleExpandablePreference(requireContext()).apply {
             title = getExpandablePreferenceTitle(dataCategory, permissionsForCategory.size)
-            key = preferenceKey
+            key = preferenceKey.toString()
             setExpanded(
                 appPermissionViewModel.expandedDataCategoryPreferenceKeys.value?.contains(
-                    preferenceKey
+                    preferenceKey.toString()
                 ) == true
             )
             setOnExpandChangeListener { isExpanded ->
-                appPermissionViewModel.updateDataCategoryPreferenceKey(key, isExpanded)
+                appPermissionViewModel.updateDataCategoryPreferenceKey(preferenceKey, isExpanded)
             }
             appPermissionViewModel.grantedFitnessPermissions.observe(viewLifecycleOwner) {
                 grantedPermissions ->
@@ -467,7 +471,6 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
                     permissionsForCategory,
                     isChecked,
                 )
-                appPermissionViewModel.updateHealthDataCategory(preferenceKey, isChecked)
             }
         }
     }
@@ -487,7 +490,6 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
     private fun getPermissionPreference(
         permission: FitnessPermission,
         isLastInGroup: Boolean = false,
-        parentPreferenceKey: PermissionGroupKey? = null,
     ): HealthSwitchPreference {
         return HealthSwitchPreference(requireContext()).also {
             val healthCategory = fromFitnessPermissionType(permission.fitnessPermissionType)
@@ -498,13 +500,6 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
             it.permission = permission
             if (permissionsGroupingFitnessAppScreen()) {
                 it.isLastInGroup = isLastInGroup
-                appPermissionViewModel.grantedFitnessCategories.observe(viewLifecycleOwner) {
-                    grantedCategories ->
-                    it.isChecked =
-                        appPermissionViewModel.grantedFitnessPermissions.value?.contains(
-                            permission
-                        ) == true || grantedCategories.contains(parentPreferenceKey!!.toString())
-                }
             }
             it.setOnPreferenceChangeListener { _, newValue ->
                 val checked = newValue as Boolean

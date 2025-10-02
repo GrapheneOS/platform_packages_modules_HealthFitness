@@ -178,15 +178,8 @@ class SettingsFitnessAppFragmentTest {
         }
         whenever(viewModel.lastReadPermissionDisconnected).then { MutableLiveData(false) }
         whenever(viewModel.expandedDataCategoryPreferenceKeys).then {
-            MutableLiveData(
-                setOf(
-                    PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                        .toString()
-                )
-            )
+            MutableLiveData(setOf(PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString()))
         }
-
-        whenever(viewModel.grantedFitnessCategories).then { MutableLiveData<Set<String>>() }
     }
 
     @After
@@ -865,11 +858,6 @@ class SettingsFitnessAppFragmentTest {
 
         verify(viewModel)
             .updatePermissions(TEST_APP_PACKAGE_NAME, listOf(stepsPermission), grant = true)
-        verify(viewModel)
-            .updateHealthDataCategory(
-                PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString(),
-                true,
-            )
     }
 
     @Test
@@ -895,8 +883,7 @@ class SettingsFitnessAppFragmentTest {
                     as SettingsFitnessAppFragment
             expandablePreference =
                 fragment.preferenceScreen.findPreference(
-                    PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                        .toString()
+                    PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString()
                 )!!
         }
         assertThat(expandablePreference.isChecked).isFalse()
