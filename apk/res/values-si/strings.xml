@@ -671,6 +671,10 @@
     <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{1 රෝද පුටු තල්ලු කිරීමක්}one{රෝද පුටු තල්ලු කිරීම් #ක්}other{රෝද පුටු තල්ලු කිරීම් #ක්}}"</string>
     <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 L}one{# L}other{# L}}"</string>
     <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{ලීටර 1ක්}one{ලීටර #ක්}other{ලීටර #ක්}}"</string>
+    <!-- no translation found for milliliter (7730118351176678375) -->
+    <skip />
+    <!-- no translation found for milliliter_long (6431396151823725792) -->
+    <skip />
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{මහල් 1ක්}one{මහල් #ක්}other{මහල් #ක්}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{මි 1}one{මි #}other{මි #}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{මීටර 1ක්}one{මීටර #ක්}other{මීටර #ක්}}"</string>
@@ -846,6 +850,54 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{වේප් පෆ් {quantity}}one{වේප් පෆ් {quantity}}other{වේප් පෆ් {quantity}}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} සිගරට්ටුවක්}one{සිගරට් {quantity}ක්}other{සිගරට් {quantity}ක්}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} නොදනී"</string>
+    <!-- no translation found for alcohol_consumption_title (2627266871623334972) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_other (8951149340640427255) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_beer (1753954064025455693) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_wine (539865325714724419) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_vodka (8617871659386650818) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_gin (5945396443339874907) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_whiskey (1085904168947658887) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_rum (5230691377430212826) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_tequila (9074751455065347442) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_lager (1490153167547219382) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_cider (3348115754435446544) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_sake (2773512901340614154) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_shochu (3491300198222489324) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_soju (113120387013483711) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_mead (1673063923088962681) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_absinthe (3972259596196421914) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_brandy (3782444367994599131) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_cocktail (4711099215987668649) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_chuhai (4727177353197748690) -->
+    <skip />
+    <!-- no translation found for alcohol_consumption_beverage_type_highball (8694072892834520500) -->
+    <skip />
+    <!-- no translation found for serving_volume_title (4727986574534974167) -->
+    <skip />
+    <!-- no translation found for alcohol_by_volume_title (6942673552238435422) -->
+    <skip />
+    <!-- no translation found for note_title (4101166558186573016) -->
+    <skip />
+    <!-- no translation found for details_title (8411891773854413790) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"මිනි <xliff:g id="MINUTE">%1$s</xliff:g>ක්"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"පැ<xliff:g id="HOUR">%1$s</xliff:g> මි<xliff:g id="MIN">%2$s</xliff:g>"</string>
     <string name="hour_duration" msgid="3472489613837138711">"පැය <xliff:g id="HOUR">%1$s</xliff:g>ක්"</string>
@@ -1292,8 +1344,10 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"උපාංග දත්ත"</string>
     <string name="device_data_label" msgid="2056618513138892435">"උපාංගය කළමනාකරණය කරන්න"</string>
     <string name="device_data_button" msgid="8002406105399136401">"උපාංග දත්ත බලන්න"</string>
-    <string name="native_steps_banner_title" msgid="7668164332675458871">"ඔබේ දුරකථනයේ නිරීක්ෂණය කරන ලද පියවර Health Connect හි දිස්වනු ඇත"</string>
-    <string name="native_steps_banner_summary" msgid="7109953051996114646">"සම්බන්ධිත යෙදුම් වෙත ප්‍රවේශ වීම සඳහා මෙම උපාංගය මඟින් නිරීක්ෂණය කරන ලද පියවර දැන් Health Connect හි ගබඩා කර ඇත"</string>
+    <!-- no translation found for native_steps_banner_title (8990874387340782536) -->
+    <skip />
+    <!-- no translation found for native_steps_banner_summary (8255767487167444809) -->
+    <skip />
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"අස් කරන්න"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"සමාලෝචන කරන්න"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"පියවර දැන් Health Connect හි ඇත"</string>
@@ -1310,5 +1364,7 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"ගැළපෙන යෙදුම් බලන්න"</string>
     <string name="see_all_connected_apps_button" msgid="3391164556225732842">"සියල්ල බලන්න"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"සම්බන්ධ වී නොමැත"</string>
+    <!-- no translation found for connect_app_button_content_description (296796277841527165) -->
+    <skip />
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"දැන් නොවේ"</string>
 </resources>
