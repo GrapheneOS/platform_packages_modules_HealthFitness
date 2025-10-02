@@ -18,9 +18,17 @@ package com.android.healthconnect.controller.tests.utils
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.NoMatchingViewException
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.contrib.RecyclerViewActions.scrollTo
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 
 fun scrollToTopOfPreferenceScreen() {
     onView(withId(androidx.preference.R.id.recycler_view))
@@ -32,4 +40,28 @@ fun scrollToBottomOfPreferenceScreen() {
     onView(withId(androidx.preference.R.id.recycler_view))
         .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
     onIdle()
+}
+
+fun scrollToText(text: String) {
+    onView(withId(androidx.preference.R.id.recycler_view))
+        .perform(scrollTo<RecyclerView.ViewHolder>(hasDescendant(withText(text))))
+}
+
+fun scrollToTextAndClick(text: String) {
+    onView(withId(androidx.preference.R.id.recycler_view))
+        .perform(
+            RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
+                hasDescendant(withText(text)),
+                click(),
+            )
+        )
+}
+
+fun checkTextIsDisplayed(text: String) {
+    try {
+        onView(withText(text)).check(matches(isDisplayed()))
+    } catch (e: NoMatchingViewException) {
+        scrollToText(text)
+        onView(withText(text)).check(matches(isDisplayed()))
+    }
 }

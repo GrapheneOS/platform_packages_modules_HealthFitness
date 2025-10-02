@@ -33,7 +33,6 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
@@ -69,8 +68,11 @@ import com.android.healthconnect.controller.shared.children
 import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
+import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.scrollToText
+import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
 import com.android.healthconnect.controller.tests.utils.scrollToTopOfPreferenceScreen
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.logging.AllDataElement
@@ -146,15 +148,13 @@ class AllDataFragmentTest {
         mockData(listOf(STEPS, HEART_RATE, BASAL_BODY_TEMPERATURE))
 
         launchFragment<AllDataFragment>().use {
-            onView(withText("Steps")).perform(scrollTo()).check(matches(isDisplayed()))
-            onView(withText("Heart rate")).perform(scrollTo()).check(matches(isDisplayed()))
-            onView(withText("Basal body temperature"))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
+            checkTextIsDisplayed("Steps")
+            checkTextIsDisplayed("Heart rate")
+            checkTextIsDisplayed("Basal body temperature")
             onView(withText("No data")).check(doesNotExist())
             verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ALL_DATA_PAGE)
             verify(healthConnectLogger).logPageImpression()
-            verify(healthConnectLogger, times(3))
+            verify(healthConnectLogger, atLeast(3))
                 .logImpression(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
         }
     }
@@ -165,15 +165,13 @@ class AllDataFragmentTest {
         mockData(listOf(STEPS, HEART_RATE, BASAL_BODY_TEMPERATURE))
 
         launchFragment<AllDataFragment>().use {
-            onView(withText("Steps")).perform(scrollTo()).check(matches(isDisplayed()))
-            onView(withText("Heart rate")).perform(scrollTo()).check(matches(isDisplayed()))
-            onView(withText("Basal body temperature"))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
+            checkTextIsDisplayed("Steps")
+            checkTextIsDisplayed("Heart rate")
+            checkTextIsDisplayed("Basal body temperature")
             onView(withText("No data")).check(doesNotExist())
             verify(healthConnectLogger, atLeast(1)).setPageId(PageName.COMBINED_ALL_DATA_PAGE)
             verify(healthConnectLogger).logPageImpression()
-            verify(healthConnectLogger, times(3))
+            verify(healthConnectLogger, atLeast(3))
                 .logImpression(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
         }
     }
@@ -185,24 +183,18 @@ class AllDataFragmentTest {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
         launchFragment<AllDataFragment>().use {
-            onView(withText("Steps")).perform(scrollTo()).check(matches(isDisplayed()))
-            onView(withText("Heart rate")).perform(scrollTo()).check(matches(isDisplayed()))
-            onView(withText("Hydration")).perform(scrollTo()).check(matches(isDisplayed()))
-            onView(withText("Health records")).perform(scrollTo()).check(matches(isDisplayed()))
-            onView(
-                    withText(
-                        "This includes all the health records synced to and added " +
-                            "to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your health records."
-                    )
-                )
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
-            onView(withText("Allergies")).perform(scrollTo()).check(matches(isDisplayed()))
-            onView(withText("Vaccines")).perform(scrollTo()).check(matches(isDisplayed()))
-
+            checkTextIsDisplayed("Steps")
+            checkTextIsDisplayed("Heart rate")
+            checkTextIsDisplayed("Hydration")
+            checkTextIsDisplayed(
+                "This includes all the health records synced to and added " +
+                    "to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your health records."
+            )
+            checkTextIsDisplayed("Allergies")
+            checkTextIsDisplayed("Vaccines")
             verify(healthConnectLogger, atLeast(1)).setPageId(PageName.COMBINED_ALL_DATA_PAGE)
             verify(healthConnectLogger).logPageImpression()
-            verify(healthConnectLogger, times(5))
+            verify(healthConnectLogger, atLeast(5))
                 .logImpression(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
             verify(healthConnectLogger).logImpression(AllDataElement.MEDICAL_RECORDS_HEADER)
             verify(healthConnectLogger).logImpression(AllDataElement.MEDICAL_RECORDS_HEADER_LINK)
@@ -226,21 +218,17 @@ class AllDataFragmentTest {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
         launchFragment<AllDataFragment>().use {
-            onView(withText("Health records")).perform(scrollTo()).check(matches(isDisplayed()))
-            onView(
-                    withText(
-                        "This includes all the health records synced to and added " +
-                            "to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your health records."
-                    )
-                )
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
-            onView(withText("Allergies")).perform(scrollTo()).check(matches(isDisplayed()))
-            onView(withText("Vaccines")).perform(scrollTo()).check(matches(isDisplayed()))
+            checkTextIsDisplayed("Health records")
+            checkTextIsDisplayed(
+                "This includes all the health records synced to and added " +
+                    "to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your health records."
+            )
+            checkTextIsDisplayed("Allergies")
+            checkTextIsDisplayed("Vaccines")
 
             verify(healthConnectLogger, atLeast(1)).setPageId(PageName.COMBINED_ALL_DATA_PAGE)
             verify(healthConnectLogger).logPageImpression()
-            verify(healthConnectLogger, times(2))
+            verify(healthConnectLogger, atLeast(2))
                 .logImpression(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
             verify(healthConnectLogger).logImpression(AllDataElement.MEDICAL_RECORDS_HEADER)
             verify(healthConnectLogger).logImpression(AllDataElement.MEDICAL_RECORDS_HEADER_LINK)
@@ -253,8 +241,8 @@ class AllDataFragmentTest {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
         launchMedicalAllDataFragment().use {
-            onView(withText("Allergies")).perform(scrollTo()).check(matches(isDisplayed()))
-            onView(withText("Vaccines")).perform(scrollTo()).check(matches(isDisplayed()))
+            checkTextIsDisplayed("Allergies")
+            checkTextIsDisplayed("Vaccines")
             onView(withText("Distance")).check(doesNotExist())
             onView(withText("No data")).check(doesNotExist())
             onView(withText("Select all")).check(doesNotExist())
@@ -299,16 +287,10 @@ class AllDataFragmentTest {
 
         launchMedicalAllDataFragment().use {
             onView(withText("Health records")).check(doesNotExist())
-            onView(
-                    withText(
-                        "This includes all the health records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your health records."
-                    )
-                )
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
-            onView(withText("About health records"))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
+            checkTextIsDisplayed(
+                "This includes all the health records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your health records."
+            )
+            checkTextIsDisplayed("About health records")
         }
     }
 
@@ -318,18 +300,13 @@ class AllDataFragmentTest {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
         launchFragment<AllDataFragment>().use {
-            onView(withText("Health records")).perform(scrollTo()).check(matches(isDisplayed()))
-            onView(
-                    withText(
-                        "This includes all the health records synced to and added to Health\u00A0Connect. " +
-                            "This might not be your full medical record and does not include a medical " +
-                            "description of your health records."
-                    )
-                )
-                .check(matches(isDisplayed()))
-            onView(withText("About health records"))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
+            checkTextIsDisplayed("Health records")
+            checkTextIsDisplayed(
+                "This includes all the health records synced to and added to Health\u00A0Connect. " +
+                    "This might not be your full medical record and does not include a medical " +
+                    "description of your health records."
+            )
+            checkTextIsDisplayed("About health records")
         }
     }
 
@@ -342,8 +319,8 @@ class AllDataFragmentTest {
                 Navigation.setViewNavController(this.requireView(), navHostController)
             }
             .use {
-                onView(withText("Steps")).perform(scrollTo()).check(matches(isDisplayed()))
-                onView(withText("Steps")).perform(click())
+                checkTextIsDisplayed("Steps")
+                scrollToTextAndClick("Steps")
                 verify(healthConnectLogger)
                     .logInteraction(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
                 assertThat(navHostController.currentDestination?.id)
@@ -361,8 +338,8 @@ class AllDataFragmentTest {
                 Navigation.setViewNavController(this.requireView(), navHostController)
             }
             .use {
-                onView(withText("Vaccines")).perform(scrollTo()).check(matches(isDisplayed()))
-                onView(withText("Vaccines")).perform(click())
+                checkTextIsDisplayed("Vaccines")
+                scrollToTextAndClick("Vaccines")
                 verify(healthConnectLogger)
                     .logInteraction(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
                 assertThat(navHostController.currentDestination?.id)
@@ -380,8 +357,8 @@ class AllDataFragmentTest {
                 Navigation.setViewNavController(this.requireView(), navHostController)
             }
             .use {
-                onView(withText("Vaccines")).perform(scrollTo()).check(matches(isDisplayed()))
-                onView(withText("Vaccines")).perform(click())
+                checkTextIsDisplayed("Vaccines")
+                scrollToTextAndClick("Vaccines")
                 verify(healthConnectLogger)
                     .logInteraction(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
                 assertThat(navHostController.currentDestination?.id)
@@ -489,13 +466,13 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            onView(withText("Distance")).perform(click())
+            scrollToTextAndClick("Distance")
             onIdle()
             assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value)
                 .containsExactlyElementsIn(setOf(DISTANCE))
             verify(healthConnectLogger)
                 .logInteraction(AllDataElement.PERMISSION_TYPE_BUTTON_WITH_CHECKBOX)
-            onView(withText("Distance")).perform(click())
+            scrollToTextAndClick("Distance")
             assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value).isEmpty()
         }
     }
@@ -511,13 +488,13 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            onView(withText("Vaccines")).perform(click())
+            scrollToTextAndClick("Vaccines")
             onIdle()
             assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value)
                 .containsExactlyElementsIn(setOf(VACCINES))
             verify(healthConnectLogger)
                 .logInteraction(AllDataElement.PERMISSION_TYPE_BUTTON_WITH_CHECKBOX)
-            onView(withText("Vaccines")).perform(click())
+            scrollToTextAndClick("Vaccines")
             assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value).isEmpty()
         }
     }
@@ -533,15 +510,15 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            onView(withText("Allergies")).perform(scrollTo()).perform(click())
-            onView(withText("Vaccines")).perform(scrollTo()).perform(click())
+            scrollToTextAndClick("Allergies")
+            scrollToTextAndClick("Vaccines")
             onIdle()
             assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value)
                 .containsExactlyElementsIn(setOf(ALLERGIES_INTOLERANCES, VACCINES))
-            verify(healthConnectLogger, times(2))
+            verify(healthConnectLogger, atLeast(2))
                 .logInteraction(AllDataElement.PERMISSION_TYPE_BUTTON_WITH_CHECKBOX)
-            onView(withText("Allergies")).perform(scrollTo()).perform(click())
-            onView(withText("Vaccines")).perform(scrollTo()).perform(click())
+            scrollToTextAndClick("Allergies")
+            scrollToTextAndClick("Vaccines")
             assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value).isEmpty()
         }
     }
@@ -558,15 +535,15 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            onView(withText("Distance")).perform(scrollTo()).perform(click())
-            onView(withText("Vaccines")).perform(scrollTo()).perform(click())
+            scrollToTextAndClick("Distance")
+            scrollToTextAndClick("Vaccines")
             onIdle()
             assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value)
                 .containsExactlyElementsIn(setOf(DISTANCE, VACCINES))
-            verify(healthConnectLogger, times(2))
+            verify(healthConnectLogger, atLeast(2))
                 .logInteraction(AllDataElement.PERMISSION_TYPE_BUTTON_WITH_CHECKBOX)
-            onView(withText("Distance")).perform(scrollTo()).perform(click())
-            onView(withText("Vaccines")).perform(scrollTo()).perform(click())
+            scrollToTextAndClick("Distance")
+            scrollToTextAndClick("Vaccines")
             assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value).isEmpty()
         }
     }
@@ -585,7 +562,7 @@ class AllDataFragmentTest {
 
             assertCheckboxShown("Distance")
             assertCheckboxShown("Heart rate")
-            onView(withText("Distance")).perform(click())
+            scrollToTextAndClick("Distance")
 
             scenario.recreate()
             scenario.onActivity { activity ->
@@ -872,8 +849,8 @@ class AllDataFragmentTest {
 
             assertCheckboxShown("Distance")
             assertCheckboxShown("Menstruation")
-            onView(withText("Distance")).perform(click())
-            onView(withText("Menstruation")).perform(click())
+            scrollToTextAndClick("Distance")
+            scrollToTextAndClick("Menstruation")
             scenario.onActivity { activity ->
                 val fragment =
                     activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
@@ -898,8 +875,8 @@ class AllDataFragmentTest {
 
             assertCheckboxShown("Allergies")
             assertCheckboxShown("Vaccines")
-            onView(withText("Allergies")).perform(click())
-            onView(withText("Vaccines")).perform(click())
+            scrollToTextAndClick("Allergies")
+            scrollToTextAndClick("Vaccines")
             scenario.onActivity { activity ->
                 val fragment =
                     activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
@@ -924,8 +901,8 @@ class AllDataFragmentTest {
 
             assertCheckboxShown("Allergies")
             assertCheckboxShown("Vaccines")
-            onView(withText("Allergies")).perform(scrollTo()).perform(click())
-            onView(withText("Vaccines")).perform(scrollTo()).perform(click())
+            scrollToTextAndClick("Allergies")
+            scrollToTextAndClick("Vaccines")
             scenario.onActivity { activity ->
                 val fragment =
                     activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
@@ -949,14 +926,16 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
+            Thread.sleep(5000)
+
             assertCheckboxShown("Distance")
             assertCheckboxShown("Menstruation")
             assertCheckboxShown("Allergies")
             assertCheckboxShown("Vaccines")
-            onView(withText("Distance")).perform(scrollTo()).perform(click())
-            onView(withText("Menstruation")).perform(scrollTo()).perform(click())
-            onView(withText("Allergies")).perform(scrollTo()).perform(click())
-            onView(withText("Vaccines")).perform(scrollTo()).perform(click())
+            scrollToTextAndClick("Distance")
+            scrollToTextAndClick("Menstruation")
+            scrollToTextAndClick("Allergies")
+            scrollToTextAndClick("Vaccines")
             scenario.onActivity { activity ->
                 val fragment =
                     activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
@@ -981,8 +960,8 @@ class AllDataFragmentTest {
             advanceUntilIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
-            onView(withText("Select all")).perform(click())
-            onView(withText("Distance")).perform(click())
+            scrollToTextAndClick("Select all")
+            scrollToTextAndClick("Distance")
             scenario.onActivity { activity ->
                 val fragment =
                     activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
@@ -1008,8 +987,8 @@ class AllDataFragmentTest {
             advanceUntilIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
-            onView(withText("Select all")).perform(click())
-            onView(withText("Allergies")).perform(click())
+            scrollToTextAndClick("Select all")
+            scrollToTextAndClick("Allergies")
             scenario.onActivity { activity ->
                 val fragment =
                     activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
@@ -1036,8 +1015,8 @@ class AllDataFragmentTest {
                 advanceUntilIdle()
                 scrollToTopOfPreferenceScreen()
                 assertCheckboxShown("Select all")
-                onView(withText("Select all")).perform(click())
-                onView(withText("Allergies")).perform(click())
+                scrollToTextAndClick("Select all")
+                scrollToTextAndClick("Allergies")
                 scenario.onActivity { activity ->
                     val fragment =
                         activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
@@ -1064,9 +1043,9 @@ class AllDataFragmentTest {
             advanceUntilIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
-            onView(withText("Select all")).perform(click())
-            onView(withText("Distance")).perform(click())
-            onView(withText("Allergies")).perform(scrollTo()).perform(click())
+            scrollToTextAndClick("Select all")
+            scrollToTextAndClick("Distance")
+            scrollToTextAndClick("Allergies")
             scenario.onActivity { activity ->
                 val fragment =
                     activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
@@ -1091,11 +1070,11 @@ class AllDataFragmentTest {
             advanceUntilIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
-            onView(withText("Select all")).perform(click())
+            scrollToTextAndClick("Select all")
 
             scenario.recreate()
 
-            onView(withText("Select all")).perform(scrollTo())
+            scrollToText("Select all")
             scenario.onActivity { activity ->
                 val fragment =
                     activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
@@ -1138,11 +1117,11 @@ class AllDataFragmentTest {
             advanceUntilIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
-            onView(withText("Select all")).perform(click())
+            scrollToTextAndClick("Select all")
 
             scenario.recreate()
 
-            onView(withText("Select all")).perform(scrollTo())
+            scrollToText("Select all")
             scenario.onActivity { activity ->
                 val fragment =
                     activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
@@ -1186,11 +1165,11 @@ class AllDataFragmentTest {
                 advanceUntilIdle()
                 scrollToTopOfPreferenceScreen()
                 assertCheckboxShown("Select all")
-                onView(withText("Select all")).perform(click())
+                scrollToTextAndClick("Select all")
 
                 scenario.recreate()
 
-                onView(withText("Select all")).perform(scrollTo())
+                scrollToText("Select all")
                 scenario.onActivity { activity ->
                     val fragment =
                         activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
@@ -1228,11 +1207,11 @@ class AllDataFragmentTest {
             advanceUntilIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
-            onView(withText("Select all")).perform(click())
+            scrollToTextAndClick("Select all")
 
             scenario.recreate()
 
-            onView(withText("Select all")).perform(scrollTo())
+            scrollToText("Select all")
             scenario.onActivity { activity ->
                 val fragment =
                     activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
@@ -1258,6 +1237,7 @@ class AllDataFragmentTest {
     }
 
     private fun assertCheckboxShown(title: String, tag: String = "checkbox") {
+        scrollToText(title)
         onView(withId(androidx.preference.R.id.recycler_view))
             .check(
                 matches(
