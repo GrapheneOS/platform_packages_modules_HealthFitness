@@ -48,6 +48,7 @@ import com.android.server.healthconnect.common.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.common.logging.UsageStatsCollector;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
@@ -187,6 +188,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Nullable private final MatchmakingManager mMatchmakingManager;
     @Nullable private final MatchmakingDenialStateManager mMatchmakingDenialStateManager;
     private final Clock mClock;
+    private final SyntheticPackageNameResolver mSyntheticPackageNameResolver;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -613,6 +615,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthConnectMappings,
                                 Objects.requireNonNull(mMatchmakingDenialStateManager))
                         : builder.mMatchmakingManager;
+        mSyntheticPackageNameResolver = new SyntheticPackageNameResolver(mAppInfoHelper);
     }
 
     @Override
@@ -981,6 +984,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         return new CompletenessStatsCollector(mTransactionManager, mAppInfoHelper, mClock);
     }
 
+    @Override
+    public SyntheticPackageNameResolver getSyntheticPackageNameResolver() {
+        return mSyntheticPackageNameResolver;
+    }
+
     /**
      * Returns a new Builder of Health Connect Injector
      *
@@ -1064,6 +1072,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private MatchmakingManager mMatchmakingManager;
         @Nullable private MatchmakingDenialStateManager mMatchmakingDenialStateManager;
         @Nullable private Clock mClock;
+        @Nullable private SyntheticPackageNameResolver mSyntheticPackageNameResolver;
 
         private Builder(Context context) {
             mContext = context;
@@ -1475,6 +1484,13 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         /** Set fake or custom {@link Clock}. */
         public Builder setClock(Clock clock) {
             mClock = Objects.requireNonNull(clock);
+            return this;
+        }
+
+        /** Set fake or custom {@link SyntheticPackageNameResolver}. */
+        public Builder setSyntheticPackageNameResolver(
+                SyntheticPackageNameResolver syntheticPackageNameResolver) {
+            mSyntheticPackageNameResolver = syntheticPackageNameResolver;
             return this;
         }
 

@@ -1,0 +1,140 @@
+/*
+ * Copyright (C) 2025 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.android.server.healthconnect.common.metadata;
+
+import android.annotation.NonNull;
+
+import com.android.healthfitness.flags.Flags;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Optional;
+
+/**
+ * A wrapper class for masking and unmasking Synthetic Package Names (SPNs) that are used for
+ * identifying data from physical devices.
+ *
+ * <p>This class handles the translation between canonical package names (used internally by the
+ * system) and masked package names (exposed to external callers). The masking is caller-specific,
+ * ensuring that different external callers receive different masked identifiers for the same
+ * device, thereby protecting physical device identity.
+ *
+ * <p>See go/ddp-internals-package-names for the full design and {@link SyntheticPackageNameCreator}
+ * for further details.
+ *
+ * @hide
+ */
+public class SyntheticPackageNameResolver {
+    private final AppInfoHelper mAppInfoHelper;
+
+    public SyntheticPackageNameResolver(AppInfoHelper appInfoHelper) {
+        mAppInfoHelper = appInfoHelper;
+    }
+
+    /**
+     * Masks a SPN from an internal caller's context to its external representation.
+     *
+     * <p>If the package name is a canonical SPN, it is converted into a masked SPN specific to the
+     * caller. Otherwise, the original package name is returned.
+     *
+     * @param packageName The package name (potentially canonical) to mask.
+     * @param callingPackageName The package name of the caller requesting the operation.
+     * @return The masked SPN if required by the calling context, otherwise the original.
+     * @throws IllegalArgumentException if trying to mask an already masked name.
+     */
+    @NonNull
+    public String mask(@NonNull String packageName, @NonNull String callingPackageName)
+            throws IllegalArgumentException {
+        validateMaskRequest(packageName);
+
+        if (!requiresMasking(packageName)) {
+            return packageName;
+        }
+
+        return SyntheticPackageNameCreator.createMasked(packageName, callingPackageName);
+    }
+
+    /**
+     * Unmasks a SPN from an external caller's context to its internal representation.
+     *
+     * <p>If the package name is a masked SPN, it is converted back into its canonical SPN.
+     * Otherwise, the original package name is returned.
+     *
+     * @param packageName The package name (potentially masked) to unmask.
+     * @param callingPackageName The package name of the caller requesting the operation.
+     * @return The canonical SPN if required by the calling context, otherwise the original.
+     * @throws NoSuchElementException if the masked package name cannot be resolved to a canonical
+     *     one.
+     */
+    @NonNull
+    public String unmask(@NonNull String packageName, @NonNull String callingPackageName)
+            throws NoSuchElementException {
+        if (!requiresUnmasking(packageName)) {
+            return packageName;
+        }
+
+        Optional<String> canonicalName =
+                getAllPackageNames().stream()
+                        .filter(SyntheticPackageNameCreator::isCanonicalSpn)
+                        .filter(
+                                canonicalSpn ->
+                                        Objects.equals(
+                                                SyntheticPackageNameCreator.createMasked(
+                                                        canonicalSpn, callingPackageName),
+                                                packageName))
+                        .findFirst();
+
+        if (canonicalName.isEmpty()) {
+            throw new NoSuchElementException(
+                    "Could not resolve masked, synthetic package name "
+                            + packageName
+                            + " called by "
+                            + callingPackageName);
+        }
+
+        return canonicalName.get();
+    }
+
+    private void validateMaskRequest(@NonNull String packageName) throws IllegalArgumentException {
+        if (SyntheticPackageNameCreator.isMaskedSpn(packageName)) {
+            // Even though we could ignore masked names and just return them as-is in masking,
+            // this state suggests improper usage of the masking mechanic. Using the masked SPN in
+            // database requests would not necessarily throw an error but return empty data, as the
+            // associated device is saved with its canonical SPN. Throwing an error prevents
+            // skipping device data where it might has not been intended.
+            throw new IllegalArgumentException(
+                    "Trying to mask an already masked synthetic package name. "
+                            + "Make sure to call unmask() before masking, "
+                            + "as otherwise the data associated with the responding device "
+                            + "will not be found in requests.");
+        }
+    }
+
+    private List<String> getAllPackageNames() {
+        return mAppInfoHelper.getAppInfoMap().keySet().stream().toList();
+    }
+
+    private static boolean requiresUnmasking(@NonNull String packageName) {
+        return Flags.deviceDataProvidersApi()
+                && SyntheticPackageNameCreator.isMaskedSpn(packageName);
+    }
+
+    private static boolean requiresMasking(@NonNull String packageName) {
+        return Flags.deviceDataProvidersApi()
+                && SyntheticPackageNameCreator.isCanonicalSpn(packageName);
+    }
+}
