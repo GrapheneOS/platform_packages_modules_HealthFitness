@@ -8,11 +8,6 @@ import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.scrollTo
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.MainActivity
@@ -32,6 +27,7 @@ import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
+import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
 import com.android.healthconnect.controller.tests.utils.showNativeSteps
 import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -127,16 +123,14 @@ class MainActivityTest {
             Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        launchActivityForResult<MainActivity>(startActivityIntent)
-
-        if (SettingsThemeHelper.isExpressiveTheme(context)) {
-            onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
-        } else {
-            onView(withText("No apps recently accessed Health\u00A0Connect"))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
+        launchActivityForResult<MainActivity>(startActivityIntent).use {
+            if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                checkTextIsDisplayed("No recent access")
+            } else {
+                checkTextIsDisplayed("No apps recently accessed Health\u00A0Connect")
+            }
+            checkTextIsDisplayed("Permissions and data")
         }
-        onView(withText("Permissions and data")).perform(scrollTo()).check(matches(isDisplayed()))
     }
 
     @Test
@@ -166,9 +160,9 @@ class MainActivityTest {
             Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        launchActivityForResult<MainActivity>(startActivityIntent)
-
-        onView(withText("Integration in progress")).check(matches(isDisplayed()))
+        launchActivityForResult<MainActivity>(startActivityIntent).use {
+            checkTextIsDisplayed("Integration in progress")
+        }
     }
 
     @Test
@@ -198,9 +192,9 @@ class MainActivityTest {
             Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        launchActivityForResult<MainActivity>(startActivityIntent)
-
-        onView(withText("Restore in progress")).check(matches(isDisplayed()))
+        launchActivityForResult<MainActivity>(startActivityIntent).use {
+            checkTextIsDisplayed("Restore in progress")
+        }
     }
 
     @Test
@@ -226,22 +220,19 @@ class MainActivityTest {
                 )
             )
         }
-
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        launchActivityForResult<MainActivity>(startActivityIntent)
-
-        onView(withText("Resume integration")).perform(scrollTo()).check(matches(isDisplayed()))
-        if (SettingsThemeHelper.isExpressiveTheme(context)) {
-            onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
-        } else {
-            onView(withText("No apps recently accessed Health\u00A0Connect"))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
+        launchActivityForResult<MainActivity>(startActivityIntent).use {
+            checkTextIsDisplayed("Resume integration")
+            if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                checkTextIsDisplayed("No recent access")
+            } else {
+                checkTextIsDisplayed("No apps recently accessed Health\u00A0Connect")
+            }
+            checkTextIsDisplayed("Permissions and data")
         }
-        onView(withText("Permissions and data")).perform(scrollTo()).check(matches(isDisplayed()))
     }
 
     @Test
@@ -272,17 +263,14 @@ class MainActivityTest {
             Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        launchActivityForResult<MainActivity>(startActivityIntent)
-
-        onView(withText("Resume integration")).perform(scrollTo()).check(matches(isDisplayed()))
-        if (SettingsThemeHelper.isExpressiveTheme(context)) {
-            onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
-        } else {
-            onView(withText("No apps recently accessed Health\u00A0Connect"))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
+        launchActivityForResult<MainActivity>(startActivityIntent).use {
+            if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                checkTextIsDisplayed("No recent access")
+            } else {
+                checkTextIsDisplayed("No apps recently accessed Health\u00A0Connect")
+            }
+            checkTextIsDisplayed("Permissions and data")
         }
-        onView(withText("Permissions and data")).perform(scrollTo()).check(matches(isDisplayed()))
     }
 
     @Test
@@ -313,17 +301,15 @@ class MainActivityTest {
             Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        launchActivityForResult<MainActivity>(startActivityIntent)
-
-        onView(withText("Resume integration")).perform(scrollTo()).check(matches(isDisplayed()))
-        if (SettingsThemeHelper.isExpressiveTheme(context)) {
-            onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
-        } else {
-            onView(withText("No apps recently accessed Health\u00A0Connect"))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
+        launchActivityForResult<MainActivity>(startActivityIntent).use {
+            checkTextIsDisplayed("Resume integration")
+            if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                checkTextIsDisplayed("No recent access")
+            } else {
+                checkTextIsDisplayed("No apps recently accessed Health\u00A0Connect")
+            }
+            checkTextIsDisplayed("Permissions and data")
         }
-        onView(withText("Permissions and data")).perform(scrollTo()).check(matches(isDisplayed()))
     }
 
     @After
