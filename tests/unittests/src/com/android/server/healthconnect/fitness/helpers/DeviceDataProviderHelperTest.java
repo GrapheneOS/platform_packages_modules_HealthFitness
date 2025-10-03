@@ -31,11 +31,13 @@ import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
+import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.device.DeviceDataSourceAdvertisement;
 import com.android.server.healthconnect.device.DeviceDataSourceState;
@@ -58,6 +60,7 @@ import org.mockito.junit.MockitoRule;
 
 import java.util.Set;
 
+@EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_DB, Flags.FLAG_DEVICE_DATA_PROVIDERS_API})
 @RunWith(AndroidJUnit4.class)
 public class DeviceDataProviderHelperTest {
 
