@@ -30,7 +30,7 @@ class QueryDocumentProvidersUseCase
 @Inject
 constructor(
     private val healthDataExportManager: HealthDataExportManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : IQueryDocumentProvidersUseCase, BaseUseCase<Unit, List<DocumentProvider>>(dispatcher) {
     companion object {
         private const val TAG = "QueryDocumentProvidersUseCase"

@@ -32,7 +32,7 @@ class LoadMigrationRestoreStateUseCase
 @Inject
 constructor(
     private val manager: HealthMigrationManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : BaseUseCase<Unit, MigrationRestoreState>(dispatcher) {
 
     override suspend fun execute(input: Unit): MigrationRestoreState {

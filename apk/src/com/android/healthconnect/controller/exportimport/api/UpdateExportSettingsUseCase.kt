@@ -29,7 +29,7 @@ class UpdateExportSettingsUseCase
 @Inject
 constructor(
     private val healthDataExportManager: HealthDataExportManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : IUpdateExportSettingsUseCase, BaseUseCase<ScheduledExportSettings, Unit>(dispatcher) {
     companion object {
         private const val TAG = "UpdateExportSettingsUseCase"
