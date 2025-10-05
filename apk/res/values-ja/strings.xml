@@ -1344,10 +1344,8 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"デバイスデータ"</string>
     <string name="device_data_label" msgid="2056618513138892435">"デバイスの管理"</string>
     <string name="device_data_button" msgid="8002406105399136401">"デバイスデータを表示"</string>
-    <!-- no translation found for native_steps_banner_title (8990874387340782536) -->
-    <skip />
-    <!-- no translation found for native_steps_banner_summary (8255767487167444809) -->
-    <skip />
+    <string name="native_steps_banner_title" msgid="8990874387340782536">"スマートフォンで記録された歩数がヘルスコネクトに表示されます"</string>
+    <string name="native_steps_banner_summary" msgid="8255767487167444809">"このデバイスで記録された歩数がヘルスコネクトに保存され、接続されているアプリがアクセスできるようになりました"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"閉じる"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"確認"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"歩数がヘルスコネクトに保存されます"</string>
@@ -1362,7 +1360,8 @@
     <string name="home_devices_summary" msgid="6056984338393523399">"健康に関するデータにアクセスできるデバイスを確認する"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"ヘルスコネクトに対応しているアプリをインストールすると、ここに表示されます"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"対応アプリを表示する"</string>
-    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"すべて表示"</string>
+    <!-- no translation found for see_all_connected_apps_button (4936994269737336811) -->
+    <skip />
     <string name="app_not_connected_summary" msgid="3898921378270235598">"未接続"</string>
     <!-- no translation found for connect_app_button_content_description (296796277841527165) -->
     <skip />

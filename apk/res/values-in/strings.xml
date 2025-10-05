@@ -1362,7 +1362,8 @@
     <string name="home_devices_summary" msgid="6056984338393523399">"Tinjau perangkat yang dapat mengakses data kesehatan"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Instal aplikasi yang berfungsi dengan Health Connect untuk melihatnya di sini"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Lihat aplikasi yang kompatibel"</string>
-    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"Lihat semua"</string>
+    <!-- no translation found for see_all_connected_apps_button (4936994269737336811) -->
+    <skip />
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Tidak terhubung"</string>
     <!-- no translation found for connect_app_button_content_description (296796277841527165) -->
     <skip />

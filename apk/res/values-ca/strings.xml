@@ -1362,7 +1362,8 @@
     <string name="home_devices_summary" msgid="6056984338393523399">"Revisa els dispositius que poden accedir a les dades de salut"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Instal·la aplicacions que funcionin amb Salut connectada per veure-les aquí"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Mostra les aplicacions compatibles"</string>
-    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"Mostra-ho tot"</string>
+    <!-- no translation found for see_all_connected_apps_button (4936994269737336811) -->
+    <skip />
     <string name="app_not_connected_summary" msgid="3898921378270235598">"No connectada"</string>
     <!-- no translation found for connect_app_button_content_description (296796277841527165) -->
     <skip />
