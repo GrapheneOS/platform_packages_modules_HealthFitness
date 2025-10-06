@@ -3112,15 +3112,16 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
-     * @see HealthConnectManager#recordMatchmakingDenial(String, List, Executor, OutcomeReceiver)
+     * @see HealthConnectManager#recordMatchmakingDenial(String, List, List, Executor,
+     *     OutcomeReceiver)
      */
-    @Override
     public void recordMatchmakingDenial(
             AttributionSource attributionSource,
-            String deniedPackageName,
+            String callingPackageName,
+            List<String> matchingPackageNames,
             List<String> deniedPermissions,
             IEmptyResponseCallback callback) {
-        checkParamsNonNull(attributionSource, deniedPackageName, callback);
+        checkParamsNonNull(attributionSource, callingPackageName, callback);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -3134,14 +3135,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
                     mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
-                    if (deniedPackageName.isEmpty()) {
+                    if (callingPackageName.isEmpty()) {
                         throw new HealthConnectException(
-                                ERROR_INVALID_ARGUMENT, "Package name can't be empty.");
+                                ERROR_INVALID_ARGUMENT, "Calling package name can't be empty.");
                     }
                     throwExceptionIfDataSyncInProgress();
                     if (mMatchmakingManager != null) {
                         mMatchmakingManager.recordMatchmakingDenial(
-                                deniedPackageName, deniedPermissions);
+                                callingPackageName, matchingPackageNames, deniedPermissions);
                     }
                     callback.onResult();
                 },

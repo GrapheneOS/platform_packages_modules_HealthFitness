@@ -626,12 +626,15 @@ interface IHealthConnectService {
     /**
      * Records that a user has denied matchmaking for a given package.
      *
-     * @param packageName package name of the app that was denied.
+     * @param callingPackageName package name of the app that was denied from.
+     * @param matchingPackageNames package names of the apps that were denied.
+     * @param permissions permissions that were denied.
      * @param callback Callback to receive result of performing this operation.
      */
     void recordMatchmakingDenial(
             in AttributionSource attributionSource,
-            String packageName,
+            String callingPackageName,
+            in List<String> matchingPackageNames,
             in List<String> permissions,
             in IEmptyResponseCallback callback);
 

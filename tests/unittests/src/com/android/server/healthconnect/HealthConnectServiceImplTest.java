@@ -351,6 +351,8 @@ public class HealthConnectServiceImplTest {
     private static final long DEFAULT_PACKAGE_APP_INFO = 123L;
 
     private static final String HC_PACKAGE_NAME = "com.android.healthconnect";
+    private static final String TEST_PACKAGE_NAME = "com.test.package";
+    private static final String TEST_PACKAGE_NAME_2 = "com.test.package2";
 
     /** Package name where {@link HealthConnectServiceImplTest this test} runs in. */
     private static final String THIS_TEST_PACKAGE_NAME = "com.android.healthconnect.unittests";
@@ -3540,7 +3542,8 @@ public class HealthConnectServiceImplTest {
 
         mHealthConnectService.recordMatchmakingDenial(
                 mAttributionSource,
-                THIS_TEST_PACKAGE_NAME,
+                TEST_PACKAGE_NAME,
+                List.of(TEST_PACKAGE_NAME_2),
                 List.of(WRITE_STEPS),
                 mEmptyResponseCallback);
         awaitAllExecutorsIdle();
@@ -3556,7 +3559,26 @@ public class HealthConnectServiceImplTest {
         setDataManagementPermission(PERMISSION_GRANTED);
 
         mHealthConnectService.recordMatchmakingDenial(
-                mAttributionSource, "package.name", List.of(WRITE_STEPS), mEmptyResponseCallback);
+                mAttributionSource,
+                TEST_PACKAGE_NAME,
+                List.of(TEST_PACKAGE_NAME_2),
+                List.of(WRITE_STEPS),
+                mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
+    }
+
+    @Test
+    @EnableFlags(FLAG_MATCHMAKING)
+    public void recordMatchmakingDenial_noMatchingApps_callsManager() throws RemoteException {
+        setDataManagementPermission(PERMISSION_GRANTED);
+
+        mHealthConnectService.recordMatchmakingDenial(
+                mAttributionSource,
+                TEST_PACKAGE_NAME,
+                List.of(),
+                List.of(WRITE_STEPS),
+                mEmptyResponseCallback);
 
         verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
     }
@@ -3568,7 +3590,11 @@ public class HealthConnectServiceImplTest {
         setDataManagementPermission(PERMISSION_GRANTED);
 
         mHealthConnectService.recordMatchmakingDenial(
-                mAttributionSource, "package.name", List.of(), mEmptyResponseCallback);
+                mAttributionSource,
+                TEST_PACKAGE_NAME,
+                List.of(TEST_PACKAGE_NAME_2),
+                List.of(),
+                mEmptyResponseCallback);
 
         verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
     }

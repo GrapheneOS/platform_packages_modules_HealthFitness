@@ -32,11 +32,16 @@ constructor(
 
     override suspend fun execute(input: RecordMatchmakingDenialInput) {
         healthConnectManager.recordMatchmakingDenial(
-            input.packageName,
+            input.callingPackageName,
+            input.matchingPackageNames,
             input.permissions,
             Runnable::run,
         ) {}
     }
 
-    data class RecordMatchmakingDenialInput(val packageName: String, val permissions: List<String>)
+    data class RecordMatchmakingDenialInput(
+        val callingPackageName: String,
+        val matchingPackageNames: List<String>,
+        val permissions: List<String>,
+    )
 }
