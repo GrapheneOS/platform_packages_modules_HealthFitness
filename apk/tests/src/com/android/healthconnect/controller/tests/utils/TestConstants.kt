@@ -534,6 +534,8 @@ const val DEVICE_DATA_PROVIDER_APP_NAME = "Pixel 9a"
 const val OLD_APP_NAME = "Old permissions test app"
 const val MEDICAL_APP_NAME = "Medical permissions HC app"
 const val BODY_SENSORS_TEST_APP_NAME = "Body Sensors Test App"
+const val CALLING_PACKAGE_NAME = "com.example.calling.app"
+const val CALLING_APP_NAME = "Calling App"
 
 val TEST_APP =
     AppMetadata(packageName = TEST_APP_PACKAGE_NAME, appName = TEST_APP_NAME, icon = null)
