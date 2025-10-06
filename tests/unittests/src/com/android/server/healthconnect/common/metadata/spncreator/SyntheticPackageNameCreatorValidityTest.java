@@ -24,7 +24,7 @@ import android.platform.test.annotations.LargeTest;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.server.healthconnect.common.metadata.SpnCreator;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class SpnCreatorValidityTest {
+public class SyntheticPackageNameCreatorValidityTest {
     // See {@link GetMedicalDataSourcesRequest}
     private static final String PACKAGE_NAME_REGEX =
             "^([A-Za-z][a-zA-Z0-9_]*\\.)+[A-Za-z][a-zA-Z0-9_]*$";
@@ -83,7 +83,7 @@ public class SpnCreatorValidityTest {
     public void withRandomDeviceId_createCanonical_isValidPackageName() {
         for (var params : getParams()) {
             initializeRun(params);
-            String spn = SpnCreator.createCanonical(mDeviceType, mDeviceId);
+            String spn = SyntheticPackageNameCreator.createCanonical(mDeviceType, mDeviceId);
 
             Matcher matcher = PACKAGE_PATTERN.matcher(spn);
             assertTrue(matcher.matches());
@@ -94,10 +94,10 @@ public class SpnCreatorValidityTest {
     public void withRandomDeviceId_createCanonical_isCanonicalSpn() {
         for (var params : getParams()) {
             initializeRun(params);
-            String spn = SpnCreator.createCanonical(mDeviceType, mDeviceId);
+            String spn = SyntheticPackageNameCreator.createCanonical(mDeviceType, mDeviceId);
 
-            assertTrue(SpnCreator.isCanonicalSpn(spn));
-            assertFalse(SpnCreator.isMaskedSpn(spn));
+            assertTrue(SyntheticPackageNameCreator.isCanonicalSpn(spn));
+            assertFalse(SyntheticPackageNameCreator.isMaskedSpn(spn));
         }
     }
 
@@ -105,8 +105,10 @@ public class SpnCreatorValidityTest {
     public void withRandomDeviceId_createMasked_isValidPackageName() {
         for (var params : getParams()) {
             initializeRun(params);
-            String canonicalSpn = SpnCreator.createCanonical(mDeviceType, mDeviceId);
-            String maskedSpn = SpnCreator.createMasked(canonicalSpn, mCallingPackage);
+            String canonicalSpn =
+                    SyntheticPackageNameCreator.createCanonical(mDeviceType, mDeviceId);
+            String maskedSpn =
+                    SyntheticPackageNameCreator.createMasked(canonicalSpn, mCallingPackage);
 
             Matcher matcher = PACKAGE_PATTERN.matcher(maskedSpn);
             assertTrue(matcher.matches());
@@ -117,11 +119,13 @@ public class SpnCreatorValidityTest {
     public void withRandomSpnAndCallingPackage_createMasked_isMaskedSpn() {
         for (var params : getParams()) {
             initializeRun(params);
-            String canonicalSpn = SpnCreator.createCanonical(mDeviceType, mDeviceId);
-            String maskedSpn = SpnCreator.createMasked(canonicalSpn, mCallingPackage);
+            String canonicalSpn =
+                    SyntheticPackageNameCreator.createCanonical(mDeviceType, mDeviceId);
+            String maskedSpn =
+                    SyntheticPackageNameCreator.createMasked(canonicalSpn, mCallingPackage);
 
-            assertFalse(SpnCreator.isCanonicalSpn(maskedSpn));
-            assertTrue(SpnCreator.isMaskedSpn(maskedSpn));
+            assertFalse(SyntheticPackageNameCreator.isCanonicalSpn(maskedSpn));
+            assertTrue(SyntheticPackageNameCreator.isMaskedSpn(maskedSpn));
         }
     }
 

@@ -126,7 +126,7 @@ import java.util.regex.Pattern;
  *
  * @hide
  */
-public class SpnCreator {
+public class SyntheticPackageNameCreator {
 
     // The standard Android reverse-DNS prefix used for all SPNs.
     private static final String PACKAGE_PREFIX = "com.android.healthconnect";
@@ -237,7 +237,8 @@ public class SpnCreator {
             throws IllegalArgumentException {
         if (!isCanonicalSpn(canonicalSpn)) {
             throw new IllegalArgumentException(
-                    "Invalid SPN format: %s. Check SpnCreator documentation for reference."
+                    ("Invalid SPN format: %s. Check SyntheticPackageNameCreator documentation "
+                                    + "for reference.")
                             .formatted(canonicalSpn));
         }
 

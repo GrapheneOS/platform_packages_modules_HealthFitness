@@ -38,7 +38,7 @@ import android.health.connect.datatypes.Device.DeviceType;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.server.healthconnect.common.metadata.SpnCreator;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,7 +53,7 @@ import java.util.zip.CRC32;
  * against the assertions, DO NOT change the expected values.
  */
 @RunWith(AndroidJUnit4.class)
-public class SpnCreatorIntegrityTest {
+public class SyntheticPackageNameCreatorIntegrityTest {
 
     private @DeviceType int mDeviceType;
 
@@ -195,7 +195,7 @@ public class SpnCreatorIntegrityTest {
     public void withTypeAndId_createCanonical_staysConsistent() {
         for (var params : getParams()) {
             initializeRun(params);
-            String actualSpn = SpnCreator.createCanonical(mDeviceType, mDeviceId);
+            String actualSpn = SyntheticPackageNameCreator.createCanonical(mDeviceType, mDeviceId);
 
             assertEquals(mExpectedCanonicalSpn, actualSpn);
         }
@@ -205,7 +205,9 @@ public class SpnCreatorIntegrityTest {
     public void withCanonicalAndCallingPackage_createMasked_staysConsistent() {
         for (var params : getParams()) {
             initializeRun(params);
-            String actualSpn = SpnCreator.createMasked(mExpectedCanonicalSpn, mCallingPackage);
+            String actualSpn =
+                    SyntheticPackageNameCreator.createMasked(
+                            mExpectedCanonicalSpn, mCallingPackage);
 
             assertEquals(mExpectedMaskedSpn, actualSpn);
         }
@@ -219,9 +221,11 @@ public class SpnCreatorIntegrityTest {
 
         for (var params : getParams()) {
             initializeRun(params);
-            ingestion.append(SpnCreator.createCanonical(mDeviceType, mDeviceId));
+            ingestion.append(SyntheticPackageNameCreator.createCanonical(mDeviceType, mDeviceId));
             ingestion.append('\u001F');
-            ingestion.append(SpnCreator.createMasked(mExpectedCanonicalSpn, mCallingPackage));
+            ingestion.append(
+                    SyntheticPackageNameCreator.createMasked(
+                            mExpectedCanonicalSpn, mCallingPackage));
             ingestion.append('\u001F');
         }
 
