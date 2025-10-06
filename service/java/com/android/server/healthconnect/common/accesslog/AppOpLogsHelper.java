@@ -17,6 +17,13 @@
 package com.android.server.healthconnect.common.accesslog;
 
 import static android.app.AppOpsManager.HISTORY_FLAG_GET_ATTRIBUTION_CHAINS;
+import static android.app.AppOpsManager.OPSTR_READ_BLOOD_PRESSURE;
+import static android.app.AppOpsManager.OPSTR_READ_HEART_RATE;
+import static android.app.AppOpsManager.OPSTR_READ_HEART_RATE_VARIABILITY;
+import static android.app.AppOpsManager.OPSTR_READ_OXYGEN_SATURATION;
+import static android.app.AppOpsManager.OPSTR_READ_RESPIRATORY_RATE;
+import static android.app.AppOpsManager.OPSTR_READ_SKIN_TEMPERATURE;
+import static android.app.AppOpsManager.OPSTR_READ_VO2_MAX;
 import static android.app.AppOpsManager.OP_FLAG_SELF;
 import static android.app.AppOpsManager.OP_FLAG_TRUSTED_PROXIED;
 import static android.app.AppOpsManager.OP_FLAG_TRUSTED_PROXY;
@@ -215,12 +222,20 @@ public final class AppOpLogsHelper {
     @VisibleForTesting
     static int opNameToRecordType(String opName) {
         switch (opName) {
-            case AppOpsManager.OPSTR_READ_HEART_RATE:
+            case OPSTR_READ_HEART_RATE:
                 return RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
-            case AppOpsManager.OPSTR_READ_OXYGEN_SATURATION:
+            case OPSTR_READ_OXYGEN_SATURATION:
                 return RecordTypeIdentifier.RECORD_TYPE_OXYGEN_SATURATION;
-            case AppOpsManager.OPSTR_READ_SKIN_TEMPERATURE:
+            case OPSTR_READ_SKIN_TEMPERATURE:
                 return RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE;
+            case OPSTR_READ_BLOOD_PRESSURE:
+                return RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE;
+            case OPSTR_READ_HEART_RATE_VARIABILITY:
+                return RecordTypeIdentifier.RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD;
+            case OPSTR_READ_RESPIRATORY_RATE:
+                return RecordTypeIdentifier.RECORD_TYPE_RESPIRATORY_RATE;
+            case OPSTR_READ_VO2_MAX:
+                return RecordTypeIdentifier.RECORD_TYPE_VO2_MAX;
             default:
                 return RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
         }

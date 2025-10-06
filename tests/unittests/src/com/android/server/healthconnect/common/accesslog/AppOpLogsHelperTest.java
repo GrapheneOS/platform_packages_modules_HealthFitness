@@ -31,8 +31,6 @@ import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.os.Build;
 import android.os.UserHandle;
-import android.platform.test.flag.junit.CheckFlagsRule;
-import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -56,9 +54,6 @@ public class AppOpLogsHelperTest {
     private static final String TEST_APP_PACKAGE_NAME = "android.health.fitness.app";
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
-
-    @Rule
-    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
     @Mock private AppOpsManager mAppOpsManager;
     @Mock private PackageManager mPackageManager;
@@ -94,7 +89,11 @@ public class AppOpLogsHelperTest {
                 .containsExactly(
                         RecordTypeIdentifier.RECORD_TYPE_HEART_RATE,
                         RecordTypeIdentifier.RECORD_TYPE_OXYGEN_SATURATION,
-                        RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE);
+                        RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE,
+                        RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE,
+                        RecordTypeIdentifier.RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD,
+                        RecordTypeIdentifier.RECORD_TYPE_RESPIRATORY_RATE,
+                        RecordTypeIdentifier.RECORD_TYPE_VO2_MAX);
     }
 
     @Test
