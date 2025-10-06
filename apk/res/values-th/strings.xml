@@ -1362,7 +1362,8 @@
     <string name="home_devices_summary" msgid="6056984338393523399">"ตรวจสอบอุปกรณ์ที่เข้าถึงข้อมูลสุขภาพได้"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"ติดตั้งแอปที่ทำงานร่วมกับ Health Connect ได้เพื่อดูแอปที่นี่"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"ดูแอปที่เข้ากันได้"</string>
-    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"ดูทั้งหมด"</string>
+    <!-- no translation found for see_all_connected_apps_button (4936994269737336811) -->
+    <skip />
     <string name="app_not_connected_summary" msgid="3898921378270235598">"ไม่ได้เชื่อมต่อ"</string>
     <!-- no translation found for connect_app_button_content_description (296796277841527165) -->
     <skip />

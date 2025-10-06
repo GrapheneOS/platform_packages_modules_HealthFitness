@@ -1362,7 +1362,8 @@
     <string name="home_devices_summary" msgid="6056984338393523399">"ကျန်းမာရေးဒေတာသုံးနိုင်သော စက်များကို ကြည့်ပါ"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect နှင့် တွဲသုံးနိုင်သော အက်ပ်များကို ဤနေရာတွင် မြင်ရရန် ထည့်သွင်းပါ"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"တွဲသုံးနိုင်သော အက်ပ်များကို ကြည့်ရန်"</string>
-    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"အားလုံးကြည့်ရန်"</string>
+    <!-- no translation found for see_all_connected_apps_button (4936994269737336811) -->
+    <skip />
     <string name="app_not_connected_summary" msgid="3898921378270235598">"ချိတ်ဆက်မထားပါ"</string>
     <!-- no translation found for connect_app_button_content_description (296796277841527165) -->
     <skip />

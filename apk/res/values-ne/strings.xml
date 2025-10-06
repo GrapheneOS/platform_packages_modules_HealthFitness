@@ -1362,7 +1362,8 @@
     <string name="home_devices_summary" msgid="6056984338393523399">"स्वास्थ्यसम्बन्धी डेटा एक्सेस गर्न सक्ने डिभाइसहरूको समीक्षा गर्नुहोस्"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect सँग काम गर्ने एपहरू इन्स्टल गर्नुहोस् र ती एपहरू यहाँ हेर्नुहोस्"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"कम्प्याटिबल एपहरू हेर्नुहोस्"</string>
-    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"सबै हेर्नुहोस्"</string>
+    <!-- no translation found for see_all_connected_apps_button (4936994269737336811) -->
+    <skip />
     <string name="app_not_connected_summary" msgid="3898921378270235598">"कनेक्ट गरिएको छैन"</string>
     <!-- no translation found for connect_app_button_content_description (296796277841527165) -->
     <skip />

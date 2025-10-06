@@ -671,10 +671,8 @@
     <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{1 guranje invalidskih kolica}one{# guranje invalidskih kolica}few{# guranja invalidskih kolica}other{# guranja invalidskih kolica}}"</string>
     <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 l}one{# l}few{# l}other{# l}}"</string>
     <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 litar}one{# litar}few{# litra}other{# litara}}"</string>
-    <!-- no translation found for milliliter (7730118351176678375) -->
-    <skip />
-    <!-- no translation found for milliliter_long (6431396151823725792) -->
-    <skip />
+    <string name="milliliter" msgid="7730118351176678375">"{count,plural, =1{1 ml}one{# ml}few{# ml}other{# ml}}"</string>
+    <string name="milliliter_long" msgid="6431396151823725792">"{count,plural, =1{1 mililitar}one{# mililitar}few{# mililitra}other{# mililitara}}"</string>
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 sprat}one{# sprat}few{# sprata}other{# spratova}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 min}one{# min}few{# min}other{# min}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 metar}one{# metar}few{# metra}other{# metara}}"</string>
@@ -850,54 +848,30 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} udah iz vejpa}one{{quantity} udah iz vejpa}few{{quantity} udaha iz vejpa}other{{quantity} udaha iz vejpa}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} cigareta}one{{quantity} cigareta}few{{quantity} cigarete}other{{quantity} cigareta}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"Nepoznato: {quantity, number}"</string>
-    <!-- no translation found for alcohol_consumption_title (2627266871623334972) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (8951149340640427255) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_beer (1753954064025455693) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_wine (539865325714724419) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_vodka (8617871659386650818) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_gin (5945396443339874907) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_whiskey (1085904168947658887) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_rum (5230691377430212826) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_tequila (9074751455065347442) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_lager (1490153167547219382) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_cider (3348115754435446544) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_sake (2773512901340614154) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_shochu (3491300198222489324) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_soju (113120387013483711) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_mead (1673063923088962681) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_absinthe (3972259596196421914) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_brandy (3782444367994599131) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_cocktail (4711099215987668649) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_chuhai (4727177353197748690) -->
-    <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_highball (8694072892834520500) -->
-    <skip />
-    <!-- no translation found for serving_volume_title (4727986574534974167) -->
-    <skip />
-    <!-- no translation found for alcohol_by_volume_title (6942673552238435422) -->
-    <skip />
-    <!-- no translation found for note_title (4101166558186573016) -->
-    <skip />
-    <!-- no translation found for details_title (8411891773854413790) -->
-    <skip />
+    <string name="alcohol_consumption_title" msgid="2627266871623334972">"<xliff:g id="SERVING">%1$s</xliff:g> • <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"Drugo"</string>
+    <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Pivo"</string>
+    <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Vino"</string>
+    <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Votka"</string>
+    <string name="alcohol_consumption_beverage_type_gin" msgid="5945396443339874907">"Džin"</string>
+    <string name="alcohol_consumption_beverage_type_whiskey" msgid="1085904168947658887">"Viski"</string>
+    <string name="alcohol_consumption_beverage_type_rum" msgid="5230691377430212826">"Rum"</string>
+    <string name="alcohol_consumption_beverage_type_tequila" msgid="9074751455065347442">"Tekila"</string>
+    <string name="alcohol_consumption_beverage_type_lager" msgid="1490153167547219382">"Lager pivo"</string>
+    <string name="alcohol_consumption_beverage_type_cider" msgid="3348115754435446544">"Sajder"</string>
+    <string name="alcohol_consumption_beverage_type_sake" msgid="2773512901340614154">"Sake"</string>
+    <string name="alcohol_consumption_beverage_type_shochu" msgid="3491300198222489324">"Šoču"</string>
+    <string name="alcohol_consumption_beverage_type_soju" msgid="113120387013483711">"Sodžu"</string>
+    <string name="alcohol_consumption_beverage_type_mead" msgid="1673063923088962681">"Medovina"</string>
+    <string name="alcohol_consumption_beverage_type_absinthe" msgid="3972259596196421914">"Apsint"</string>
+    <string name="alcohol_consumption_beverage_type_brandy" msgid="3782444367994599131">"Brendi"</string>
+    <string name="alcohol_consumption_beverage_type_cocktail" msgid="4711099215987668649">"Koktel"</string>
+    <string name="alcohol_consumption_beverage_type_chuhai" msgid="4727177353197748690">"Čuhaj"</string>
+    <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Hajbol"</string>
+    <string name="serving_volume_title" msgid="4727986574534974167">"Zapremina porcije"</string>
+    <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Procenat alkohola"</string>
+    <string name="note_title" msgid="4101166558186573016">"Napomena"</string>
+    <string name="details_title" msgid="8411891773854413790">"Detalji"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> s <xliff:g id="MIN">%2$s</xliff:g> m"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> s"</string>
@@ -1362,9 +1336,9 @@
     <string name="home_devices_summary" msgid="6056984338393523399">"Pregledajte uređaje koji mogu da pristupaju podacima o zdravlju"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Instalirajte aplikacije koje rade sa Povezivanjem zdravlja da biste ih videli ovde"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Pogledajte kompatibilne aplikacije"</string>
-    <string name="see_all_connected_apps_button" msgid="3391164556225732842">"Prikaži sve"</string>
-    <string name="app_not_connected_summary" msgid="3898921378270235598">"Nije povezano"</string>
-    <!-- no translation found for connect_app_button_content_description (296796277841527165) -->
+    <!-- no translation found for see_all_connected_apps_button (4936994269737336811) -->
     <skip />
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"Nije povezano"</string>
+    <string name="connect_app_button_content_description" msgid="296796277841527165">"Kliknite da biste povezali ovu aplikaciju sa Povezivanjem zdravlja"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Ne sada"</string>
 </resources>
