@@ -37,6 +37,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
 import androidx.test.espresso.matcher.ViewMatchers.Visibility.GONE
 import androidx.test.espresso.matcher.ViewMatchers.Visibility.VISIBLE
+import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -188,7 +189,27 @@ class MatchmakingFragmentTest {
 
     @Test
     @EnableFlags(Flags.FLAG_MATCHMAKING)
-    fun allowAllSwitch_isChecked_whenAllPermissionsGranted() {
+    fun allowAllSwitch_whenChecked_addsAllPermissionToGrantedList() {
+        val apps =
+            listOf(
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                    listOf(
+                        FitnessPermission(FitnessPermissionType.EXERCISE, READ),
+                        FitnessPermission(FitnessPermissionType.STEPS, READ),
+                    ),
+                ),
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME_2, TEST_APP_NAME_2, null),
+                    listOf(FitnessPermission(FitnessPermissionType.DISTANCE, READ)),
+                ),
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                apps,
+            )
+        )
         allPermissionsGranted.postValue(true)
         val scenario =
             ActivityScenario.launch<TestActivity>(
@@ -213,6 +234,26 @@ class MatchmakingFragmentTest {
     @Test
     @EnableFlags(Flags.FLAG_MATCHMAKING)
     fun allowAllSwitch_isNotChecked_whenAllPermissionsNotGranted() {
+        val apps =
+            listOf(
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                    listOf(
+                        FitnessPermission(FitnessPermissionType.EXERCISE, READ),
+                        FitnessPermission(FitnessPermissionType.STEPS, READ),
+                    ),
+                ),
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME_2, TEST_APP_NAME_2, null),
+                    listOf(FitnessPermission(FitnessPermissionType.DISTANCE, READ)),
+                ),
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                apps,
+            )
+        )
         allPermissionsGranted.postValue(false)
         val scenario =
             ActivityScenario.launch<TestActivity>(
