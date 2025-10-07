@@ -192,6 +192,11 @@ class HomeFragment : Hilt_HomeFragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        homeViewModel.loadInitialData()
+    }
+
     private fun updateBanners(bannerState: HomeViewModel.HomeBannerState) {
         bannerGroup.removeAll()
         if (bannerState is HomeViewModel.HomeBannerState.ShowBanners) {
