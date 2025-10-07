@@ -13,70 +13,82 @@
  */
 package android.healthconnect.cts.ui
 
-import android.health.connect.HealthPermissions.READ_NICOTINE_INTAKE
-import android.health.connect.HealthPermissions.WRITE_NICOTINE_INTAKE
+import android.health.connect.HealthPermissions.READ_ALCOHOL_CONSUMPTION
+import android.health.connect.HealthPermissions.WRITE_ALCOHOL_CONSUMPTION
+import android.health.connect.datatypes.AlcoholConsumptionRecord
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT
 import android.health.connect.datatypes.MindfulnessSessionRecord
 import android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_BREATHING
-import android.health.connect.datatypes.NicotineIntakeRecord
-import android.health.connect.datatypes.NicotineIntakeRecord.NICOTINE_INTAKE_TYPE_CIGARETTE
-import android.health.connect.datatypes.NicotineIntakeRecord.NICOTINE_INTAKE_TYPE_VAPE
 import android.health.connect.datatypes.RespiratoryRateRecord
-import android.health.connect.datatypes.units.Mass
+import android.health.connect.datatypes.units.Percentage
+import android.health.connect.datatypes.units.Volume
 import android.healthconnect.testing.shared.recordfactory.RecordFactory.YESTERDAY_11AM
 import android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadata
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.text.format.DateFormat.is24HourFormat
-import com.android.healthfitness.flags.Flags.FLAG_SMOKING
+import com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION
+import java.time.ZoneOffset
 
-@RequiresFlagsEnabled(FLAG_SMOKING)
-class NicotineIntakeTest : BaseDataTypeTest<NicotineIntakeRecord>() {
+@RequiresFlagsEnabled(FLAG_ALCOHOL_CONSUMPTION)
+class AlcoholConsumptionTest : BaseDataTypeTest<AlcoholConsumptionRecord>() {
 
-    override val dataTypeString = "Nicotine intake"
+    override val dataTypeString = "Alcohol consumption"
     override val dataCategoryString = "Wellness"
-    override val permissionString = "Nicotine intake"
-    override val permissions = listOf(READ_NICOTINE_INTAKE, WRITE_NICOTINE_INTAKE)
+    override val permissionString = "Alcohol consumption"
+    override val permissions = listOf(READ_ALCOHOL_CONSUMPTION, WRITE_ALCOHOL_CONSUMPTION)
 
     override val sameCategoryDataTypeString = "Mindfulness"
     override val anotherCategoryString = "Vitals"
 
-    override val hasDetailsScreen = false
-    override val expectedRecordDetailsHeader = null
-    override val expectedRecordDetailsTitle = null
+    override val hasDetailsScreen = true
+    override val expectedRecordDetailsHeader = "Serving Volume"
+    override val expectedRecordDetailsTitle = "568 ml"
 
     override fun createRecord() =
-        NicotineIntakeRecord.Builder(
+        AlcoholConsumptionRecord.Builder(
                 newEmptyMetadata(),
                 YESTERDAY_11AM.toInstant(),
                 YESTERDAY_11AM.plusMinutes(15).toInstant(),
                 7,
-                NICOTINE_INTAKE_TYPE_VAPE,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER,
             )
-            .setNicotineIntake(Mass.fromGrams(0.25))
+            .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT)
+            .setStartZoneOffset(ZoneOffset.ofHours(2))
+            .setEndZoneOffset(ZoneOffset.ofHours(2))
+            .setServingVolume(Volume.fromLiters(0.568))
+            .setAlcoholByVolume(Percentage.fromValue(7.0))
             .build()
 
     override val expectedRecordHeader =
         if (is24HourFormat(context)) "11:00 - 11:15 • ${context.packageName}"
         else "11:00 AM - 11:15 AM • ${context.packageName}"
 
-    override val expectedRecordTitle = "7 vape puffs • 250 mg"
+    override val expectedRecordTitle = "7 • Beer"
     override val expectedRecordSubtitle = null
 
     override fun createRecordToBeDeleted() =
-        NicotineIntakeRecord.Builder(
+        AlcoholConsumptionRecord.Builder(
                 newEmptyMetadata(),
                 YESTERDAY_11AM.plusHours(3).toInstant(),
                 YESTERDAY_11AM.plusHours(4).plusMinutes(29).toInstant(),
                 5,
-                NICOTINE_INTAKE_TYPE_CIGARETTE,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE,
             )
-            .setNicotineIntake(Mass.fromGrams(0.4))
+            .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS)
+            .setStartZoneOffset(ZoneOffset.ofHours(2))
+            .setEndZoneOffset(ZoneOffset.ofHours(2))
+            .setServingVolume(Volume.fromLiters(0.765))
+            .setAlcoholByVolume(Percentage.fromValue(12.1))
             .build()
 
     override val expectedRecordToBeDeletedHeader =
         if (is24HourFormat(context)) "14:00 - 15:29 • ${context.packageName}"
         else "2:00 PM - 3:29 PM • ${context.packageName}"
 
-    override val expectedRecordToBeDeletedTitle = "5 cigarettes • 400 mg"
+    override val expectedRecordToBeDeletedTitle = "5 • Wine"
 
     override fun createSameCategoryRecord() =
         MindfulnessSessionRecord.Builder(
