@@ -21,6 +21,7 @@ import android.healthconnect.testing.cts.testapphelpers.TestAppProxy
 import android.healthconnect.testing.cts.ui.ActivityLauncher.launchMainActivity
 import android.healthconnect.testing.cts.ui.UiTestUtils.findObject
 import android.healthconnect.testing.cts.ui.UiTestUtils.findText
+import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToMedicalRecords
 import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToNewPage
 import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_FHIR_DATA_IMMUNIZATION
@@ -64,7 +65,7 @@ class AllMedicalEntriesFragmentTest : HealthConnectBaseTest() {
     @Test
     fun allMedicalEntriesFragment_showsAvailableEntries() {
         context.launchMainActivity {
-            navigateToNewPage("Browse health records")
+            navigateToMedicalRecords()
             navigateToNewPage("Vaccines")
 
             findText("Entries")
@@ -77,7 +78,7 @@ class AllMedicalEntriesFragmentTest : HealthConnectBaseTest() {
     @Test
     fun allMedicalEntriesFragment_navigatesToAccessScreen() {
         context.launchMainActivity {
-            navigateToNewPage("Browse health records")
+            navigateToMedicalRecords()
             navigateToNewPage("Vaccines")
 
             findText("Entries")

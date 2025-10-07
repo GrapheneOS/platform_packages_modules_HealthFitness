@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,6 +22,8 @@ import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiError
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
+import com.android.healthconnect.controller.newHome.HomeViewModel
+import com.android.healthconnect.controller.newHome.HomeViewModel.BannerData
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.OnboardingViewModel
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
@@ -31,13 +35,16 @@ import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
 import com.android.healthconnect.controller.tests.utils.showNativeSteps
 import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthfitness.flags.Flags
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -56,6 +63,7 @@ class MainActivityTest {
     @BindValue val recentAccessViewModel: RecentAccessViewModel = mock()
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
     @BindValue val onboardingViewModel: OnboardingViewModel = mock()
+    @BindValue val newHomeViewModel: HomeViewModel = mock()
 
     private lateinit var context: Context
 
@@ -115,9 +123,14 @@ class MainActivityTest {
         setPreferenceSeen(context, Constants.SEE_MORE_COMPATIBLE_APPS_BANNER_SEEN, true)
         setPreferenceSeen(context, Constants.START_USING_HC_BANNER_SEEN, true)
         setPreferenceSeen(context, Constants.CONNECT_MORE_APPS_BANNER_SEEN, true)
+
+        whenever(newHomeViewModel.homeFragmentState).then {
+            MutableStateFlow(HomeViewModel.HomeFragmentState.WithData(emptyList()))
+        }
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
     fun homeSettingsIntent_launchesMainActivity() = runTest {
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
@@ -131,6 +144,18 @@ class MainActivityTest {
             }
             checkTextIsDisplayed("Permissions and data")
         }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    fun homeSettingsIntent_launchesMainActivity_withNewHomeScreen() = runTest {
+        val startActivityIntent =
+            Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        launchActivityForResult<MainActivity>(startActivityIntent)
+        checkTextIsDisplayed("Your health apps")
+        checkTextIsDisplayed("Your health data")
     }
 
     @Test
@@ -198,6 +223,7 @@ class MainActivityTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
     fun homeSettingsIntent_migrationPending_moduleUpdateSeen_launchesMainActivity() = runTest {
         showOnboarding(context, false)
         showNativeSteps(context, false)
@@ -236,6 +262,56 @@ class MainActivityTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @Ignore("b/445923123 - enable when banners working")
+    fun homeSettingsIntent_migrationPending_moduleUpdateSeen_launchesMainActivity_withNewHomeScreen() =
+        runTest {
+            showOnboarding(context, false)
+            showNativeSteps(context, false)
+            setPreferenceSeen(context, Constants.MODULE_UPDATE_NEEDED_SEEN, true)
+            whenever(viewModel.getCurrentMigrationUiState()).then {
+                MigrationRestoreState(
+                    migrationUiState = MigrationUiState.MODULE_UPGRADE_REQUIRED,
+                    dataRestoreState = DataRestoreUiState.IDLE,
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            }
+            whenever(viewModel.migrationState).then {
+                MutableLiveData(
+                    WithData(
+                        MigrationRestoreState(
+                            migrationUiState = MigrationUiState.MODULE_UPGRADE_REQUIRED,
+                            dataRestoreState = DataRestoreUiState.IDLE,
+                            dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                        )
+                    )
+                )
+            }
+            whenever(newHomeViewModel.homeFragmentState).then {
+                MutableStateFlow(
+                    HomeViewModel.HomeFragmentState.WithData(
+                        connectedApps = emptyList(),
+                        bannerState =
+                            HomeViewModel.HomeBannerState.ShowBanners(
+                                listOf(BannerData.MigrationBanner)
+                            ),
+                    )
+                )
+            }
+
+            val startActivityIntent =
+                Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            launchActivityForResult<MainActivity>(startActivityIntent)
+
+            checkTextIsDisplayed("Resume integration")
+            checkTextIsDisplayed("Your health apps")
+            checkTextIsDisplayed("Your health data")
+        }
+
+    @Test
+    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
     fun homeSettingsIntent_migrationPending_appUpgradeSeen_launchesMainActivity() = runTest {
         showOnboarding(context, false)
         showNativeSteps(context, false)
@@ -274,7 +350,57 @@ class MainActivityTest {
     }
 
     @Test
-    fun homeSettingsIntent_migrationPending_IntegrationPausedSeen_launchesMainActivity() = runTest {
+    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @Ignore("b/445923123 - enable when banners working")
+    fun homeSettingsIntent_migrationPending_appUpgradeSeen_launchesMainActivity_withNewHomeScreen() =
+        runTest {
+            showOnboarding(context, false)
+            showNativeSteps(context, false)
+            setPreferenceSeen(context, Constants.APP_UPDATE_NEEDED_SEEN, true)
+            whenever(viewModel.getCurrentMigrationUiState()).then {
+                MigrationRestoreState(
+                    migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
+                    dataRestoreState = DataRestoreUiState.IDLE,
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            }
+            whenever(viewModel.migrationState).then {
+                MutableLiveData(
+                    WithData(
+                        MigrationRestoreState(
+                            migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
+                            dataRestoreState = DataRestoreUiState.IDLE,
+                            dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                        )
+                    )
+                )
+            }
+            whenever(newHomeViewModel.homeFragmentState).then {
+                MutableStateFlow(
+                    HomeViewModel.HomeFragmentState.WithData(
+                        connectedApps = emptyList(),
+                        bannerState =
+                            HomeViewModel.HomeBannerState.ShowBanners(
+                                listOf(BannerData.MigrationBanner)
+                            ),
+                    )
+                )
+            }
+
+            val startActivityIntent =
+                Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            launchActivityForResult<MainActivity>(startActivityIntent)
+
+            checkTextIsDisplayed("Resume integration")
+            checkTextIsDisplayed("Your health apps")
+            checkTextIsDisplayed("Your health data")
+        }
+
+    @Test
+    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    fun homeSettingsIntent_migrationPending_integrationPausedSeen_launchesMainActivity() = runTest {
         showOnboarding(context, false)
         showNativeSteps(context, false)
         setPreferenceSeen(context, Constants.INTEGRATION_PAUSED_SEEN_KEY, true)
@@ -311,6 +437,55 @@ class MainActivityTest {
             checkTextIsDisplayed("Permissions and data")
         }
     }
+
+    @Test
+    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @Ignore("b/445923123 - enable when banners working")
+    fun homeSettingsIntent_migrationPending_integrationPausedSeen_launchesMainActivity_withNewHomeScreen() =
+        runTest {
+            showOnboarding(context, false)
+            showNativeSteps(context, false)
+            setPreferenceSeen(context, Constants.INTEGRATION_PAUSED_SEEN_KEY, true)
+            whenever(viewModel.getCurrentMigrationUiState()).then {
+                MigrationRestoreState(
+                    migrationUiState = MigrationUiState.ALLOWED_PAUSED,
+                    dataRestoreState = DataRestoreUiState.IDLE,
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            }
+            whenever(viewModel.migrationState).then {
+                MutableLiveData(
+                    WithData(
+                        MigrationRestoreState(
+                            migrationUiState = MigrationUiState.ALLOWED_PAUSED,
+                            dataRestoreState = DataRestoreUiState.IDLE,
+                            dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                        )
+                    )
+                )
+            }
+            whenever(newHomeViewModel.homeFragmentState).then {
+                MutableStateFlow(
+                    HomeViewModel.HomeFragmentState.WithData(
+                        connectedApps = emptyList(),
+                        bannerState =
+                            HomeViewModel.HomeBannerState.ShowBanners(
+                                listOf(BannerData.MigrationBanner)
+                            ),
+                    )
+                )
+            }
+
+            val startActivityIntent =
+                Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            launchActivityForResult<MainActivity>(startActivityIntent)
+
+            checkTextIsDisplayed("Resume integration")
+            checkTextIsDisplayed("Your health apps")
+            checkTextIsDisplayed("Your health data")
+        }
 
     @After
     fun tearDown() {

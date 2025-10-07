@@ -42,6 +42,7 @@ import androidx.test.uiautomator.Until
 import com.android.compatibility.common.util.SystemUtil
 import com.android.compatibility.common.util.UiAutomatorUtils2
 import com.android.compatibility.common.util.UiDumpUtils
+import com.android.healthfitness.flags.Flags.newHomeScreen
 import java.time.Duration
 import java.time.Instant
 import java.util.concurrent.TimeoutException
@@ -148,13 +149,30 @@ object UiTestUtils {
     }
 
     fun navigateToSeeAppData(appName: String) {
-        navigateToAppPermissions(appName)
+        navigateToManagePermissionsForApp(appName)
         navigateToNewPage("See app data")
     }
 
-    fun navigateToAppPermissions(appName: String) {
-        navigateToNewPage("App permissions")
+    fun navigateToAppPermissions() {
+        if (newHomeScreen()) {
+            navigateToNewPage("See more health apps")
+        } else {
+            navigateToNewPage("App permissions")
+        }
+        scrollDownToAndFindText("Allowed access")
+    }
+
+    fun navigateToManagePermissionsForApp(appName: String) {
+        navigateToAppPermissions()
         navigateToNewPage(appName)
+    }
+
+    fun navigateToMedicalRecords() {
+        if (newHomeScreen()) {
+            navigateToNewPage("Data and access")
+        } else {
+            navigateToNewPage("Browse health records")
+        }
     }
 
     /**
