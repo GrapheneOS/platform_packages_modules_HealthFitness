@@ -65,7 +65,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 abstract class BaseApiTest<T extends Record> {
-    private static final ZonedDateTime YESTERDAY_11AM =
+    protected static final ZonedDateTime YESTERDAY_11AM =
             LocalDate.now(ZoneId.systemDefault())
                     .minusDays(1)
                     .atTime(11, 0)
@@ -79,10 +79,10 @@ abstract class BaseApiTest<T extends Record> {
      */
     private final Supplier<Class<T>> mRecordClassSupplier;
 
-    private Class<T> mRecordClass;
+    protected Class<T> mRecordClass;
     private final String mReadPermission;
     private final String mWritePermission;
-    private final RecordFactory<T> mRecordFactory;
+    protected final RecordFactory<T> mRecordFactory;
 
     BaseApiTest(
             Supplier<Class<T>> recordClassSupplier,
@@ -1056,7 +1056,8 @@ abstract class BaseApiTest<T extends Record> {
         return mRecordFactory.recordWithIdAndPackageName(record, id, TEST_PACKAGE_NAME);
     }
 
-    private static List<String> insertRecordsAndReturnIds(List<Record> records) throws Exception {
+    protected static List<String> insertRecordsAndReturnIds(List<? extends Record> records)
+            throws Exception {
         return TestUtils.insertRecords(records).stream().map(r -> r.getMetadata().getId()).toList();
     }
 

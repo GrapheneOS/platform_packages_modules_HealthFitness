@@ -53,7 +53,65 @@ import static android.health.connect.HealthPermissions.READ_SKIN_TEMPERATURE;
 import static android.health.connect.HealthPermissions.READ_SLEEP;
 import static android.health.connect.HealthPermissions.READ_SPEED;
 import static android.health.connect.HealthPermissions.READ_STEPS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_ABDOMINAL_PAIN;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_ACNE;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_BACK_PAIN;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_BLOATING;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_BRAIN_FOG;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_BREAST_TENDERNESS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_BRITTLE_NAILS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_BURNING_MOUTH;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_CHEST_PAIN;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_CHEST_TIGHTNESS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_CHILLS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_CONSTIPATION;
 import static android.health.connect.HealthPermissions.READ_SYMPTOM_COUGH;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_CRAMPS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_CRAVINGS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_DEHYDRATION;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_DIARRHEA;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_DIFFICULTY_SWALLOWING;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_DIZZINESS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_DRY_SKIN;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_EARACHES;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_FATIGUE;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_FEVER;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_GENERALIZED_BODY_ACHE;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_HAIR_LOSS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_HEADACHE;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_HEARTBURN;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_HEART_PALPITATIONS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_HOT_FLASHES;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_INSOMNIA;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_JOINT_PAIN;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_JOINT_STIFFNESS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_LOSS_OF_APPETITE;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_LOSS_OF_CONSCIOUSNESS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_LOWER_BACK_PAIN;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_MEMORY_LAPSE;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_MOOD_CHANGE;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_MUSCLE_PAIN;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_NAUSEA;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_NIGHT_SWEATS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_PELVIC_PAIN;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_RUNNY_NOSE;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_SHORTNESS_OF_BREATH;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_SKIPPED_HEARTBEAT;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_SLEEPINESS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_SLEEP_CHANGES;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_SNEEZING;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_SNORE;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_SORE_THROAT;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_STOMACH_ACHE;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_STUFFY_NOSE;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_VAGINAL_DRYNESS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_VAGINAL_ITCHINESS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_VOMITING;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_WATER_RETENTION;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_WHEEZING;
 import static android.health.connect.HealthPermissions.READ_TOTAL_CALORIES_BURNED;
 import static android.health.connect.HealthPermissions.READ_VO2_MAX;
 import static android.health.connect.HealthPermissions.READ_WEIGHT;
@@ -95,7 +153,65 @@ import static android.health.connect.HealthPermissions.WRITE_SKIN_TEMPERATURE;
 import static android.health.connect.HealthPermissions.WRITE_SLEEP;
 import static android.health.connect.HealthPermissions.WRITE_SPEED;
 import static android.health.connect.HealthPermissions.WRITE_STEPS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_ABDOMINAL_PAIN;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_ACNE;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_BACK_PAIN;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_BLOATING;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_BRAIN_FOG;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_BREAST_TENDERNESS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_BRITTLE_NAILS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_BURNING_MOUTH;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_CHEST_PAIN;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_CHEST_TIGHTNESS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_CHILLS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_CONSTIPATION;
 import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_COUGH;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_CRAMPS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_CRAVINGS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_DEHYDRATION;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_DIARRHEA;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_DIFFICULTY_SWALLOWING;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_DIZZINESS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_DRY_SKIN;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_EARACHES;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_FATIGUE;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_FEVER;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_GENERALIZED_BODY_ACHE;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_HAIR_LOSS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_HEADACHE;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_HEARTBURN;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_HEART_PALPITATIONS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_HOT_FLASHES;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_INSOMNIA;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_JOINT_PAIN;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_JOINT_STIFFNESS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_LOSS_OF_APPETITE;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_LOSS_OF_CONSCIOUSNESS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_LOWER_BACK_PAIN;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_MEMORY_LAPSE;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_MOOD_CHANGE;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_MUSCLE_PAIN;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_NAUSEA;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_NIGHT_SWEATS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_PELVIC_PAIN;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_RUNNY_NOSE;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_SHORTNESS_OF_BREATH;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_SKIPPED_HEARTBEAT;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_SLEEPINESS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_SLEEP_CHANGES;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_SNEEZING;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_SNORE;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_SORE_THROAT;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_STOMACH_ACHE;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_STUFFY_NOSE;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_VAGINAL_DRYNESS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_VAGINAL_ITCHINESS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_VOMITING;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_WATER_RETENTION;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_WHEEZING;
 import static android.health.connect.HealthPermissions.WRITE_TOTAL_CALORIES_BURNED;
 import static android.health.connect.HealthPermissions.WRITE_VO2_MAX;
 import static android.health.connect.HealthPermissions.WRITE_WEIGHT;
@@ -666,6 +782,245 @@ public class DataTypeDescriptors {
                                                 HealthPermissionCategory.SYMPTOM_COUGH,
                                                 READ_SYMPTOM_COUGH,
                                                 WRITE_SYMPTOM_COUGH)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_ABDOMINAL_PAIN,
+                                                READ_SYMPTOM_ABDOMINAL_PAIN,
+                                                WRITE_SYMPTOM_ABDOMINAL_PAIN)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_ACNE,
+                                                READ_SYMPTOM_ACNE,
+                                                WRITE_SYMPTOM_ACNE)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_BACK_PAIN,
+                                                READ_SYMPTOM_BACK_PAIN,
+                                                WRITE_SYMPTOM_BACK_PAIN)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_BLOATING,
+                                                READ_SYMPTOM_BLOATING,
+                                                WRITE_SYMPTOM_BLOATING)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_BRAIN_FOG,
+                                                READ_SYMPTOM_BRAIN_FOG,
+                                                WRITE_SYMPTOM_BRAIN_FOG)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_BREAST_TENDERNESS,
+                                                READ_SYMPTOM_BREAST_TENDERNESS,
+                                                WRITE_SYMPTOM_BREAST_TENDERNESS)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_BRITTLE_NAILS,
+                                                READ_SYMPTOM_BRITTLE_NAILS,
+                                                WRITE_SYMPTOM_BRITTLE_NAILS)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_BURNING_MOUTH,
+                                                READ_SYMPTOM_BURNING_MOUTH,
+                                                WRITE_SYMPTOM_BURNING_MOUTH)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_CHEST_PAIN,
+                                                READ_SYMPTOM_CHEST_PAIN,
+                                                WRITE_SYMPTOM_CHEST_PAIN)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_CHEST_TIGHTNESS,
+                                                READ_SYMPTOM_CHEST_TIGHTNESS,
+                                                WRITE_SYMPTOM_CHEST_TIGHTNESS)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_CHILLS,
+                                                READ_SYMPTOM_CHILLS,
+                                                WRITE_SYMPTOM_CHILLS)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_CONSTIPATION,
+                                                READ_SYMPTOM_CONSTIPATION,
+                                                WRITE_SYMPTOM_CONSTIPATION)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_CRAMPS,
+                                                READ_SYMPTOM_CRAMPS,
+                                                WRITE_SYMPTOM_CRAMPS)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_CRAVINGS,
+                                                READ_SYMPTOM_CRAVINGS,
+                                                WRITE_SYMPTOM_CRAVINGS)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_DEHYDRATION,
+                                                READ_SYMPTOM_DEHYDRATION,
+                                                WRITE_SYMPTOM_DEHYDRATION)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_DIARRHEA,
+                                                READ_SYMPTOM_DIARRHEA,
+                                                WRITE_SYMPTOM_DIARRHEA)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory
+                                                        .SYMPTOM_DIFFICULTY_SWALLOWING,
+                                                READ_SYMPTOM_DIFFICULTY_SWALLOWING,
+                                                WRITE_SYMPTOM_DIFFICULTY_SWALLOWING)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_DIZZINESS,
+                                                READ_SYMPTOM_DIZZINESS,
+                                                WRITE_SYMPTOM_DIZZINESS)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_DRY_SKIN,
+                                                READ_SYMPTOM_DRY_SKIN,
+                                                WRITE_SYMPTOM_DRY_SKIN)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_EARACHES,
+                                                READ_SYMPTOM_EARACHES,
+                                                WRITE_SYMPTOM_EARACHES)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_FATIGUE,
+                                                READ_SYMPTOM_FATIGUE,
+                                                WRITE_SYMPTOM_FATIGUE)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_FEVER,
+                                                READ_SYMPTOM_FEVER,
+                                                WRITE_SYMPTOM_FEVER)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory
+                                                        .SYMPTOM_GENERALIZED_BODY_ACHE,
+                                                READ_SYMPTOM_GENERALIZED_BODY_ACHE,
+                                                WRITE_SYMPTOM_GENERALIZED_BODY_ACHE)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_HAIR_LOSS,
+                                                READ_SYMPTOM_HAIR_LOSS,
+                                                WRITE_SYMPTOM_HAIR_LOSS)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_HEADACHE,
+                                                READ_SYMPTOM_HEADACHE,
+                                                WRITE_SYMPTOM_HEADACHE)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_HEARTBURN,
+                                                READ_SYMPTOM_HEARTBURN,
+                                                WRITE_SYMPTOM_HEARTBURN)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_HEART_PALPITATIONS,
+                                                READ_SYMPTOM_HEART_PALPITATIONS,
+                                                WRITE_SYMPTOM_HEART_PALPITATIONS)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_HOT_FLASHES,
+                                                READ_SYMPTOM_HOT_FLASHES,
+                                                WRITE_SYMPTOM_HOT_FLASHES)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_INSOMNIA,
+                                                READ_SYMPTOM_INSOMNIA,
+                                                WRITE_SYMPTOM_INSOMNIA)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_JOINT_PAIN,
+                                                READ_SYMPTOM_JOINT_PAIN,
+                                                WRITE_SYMPTOM_JOINT_PAIN)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_JOINT_STIFFNESS,
+                                                READ_SYMPTOM_JOINT_STIFFNESS,
+                                                WRITE_SYMPTOM_JOINT_STIFFNESS)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_LOSS_OF_APPETITE,
+                                                READ_SYMPTOM_LOSS_OF_APPETITE,
+                                                WRITE_SYMPTOM_LOSS_OF_APPETITE)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory
+                                                        .SYMPTOM_LOSS_OF_CONSCIOUSNESS,
+                                                READ_SYMPTOM_LOSS_OF_CONSCIOUSNESS,
+                                                WRITE_SYMPTOM_LOSS_OF_CONSCIOUSNESS)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_LOWER_BACK_PAIN,
+                                                READ_SYMPTOM_LOWER_BACK_PAIN,
+                                                WRITE_SYMPTOM_LOWER_BACK_PAIN)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_MEMORY_LAPSE,
+                                                READ_SYMPTOM_MEMORY_LAPSE,
+                                                WRITE_SYMPTOM_MEMORY_LAPSE)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_MOOD_CHANGE,
+                                                READ_SYMPTOM_MOOD_CHANGE,
+                                                WRITE_SYMPTOM_MOOD_CHANGE)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_MUSCLE_PAIN,
+                                                READ_SYMPTOM_MUSCLE_PAIN,
+                                                WRITE_SYMPTOM_MUSCLE_PAIN)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_NAUSEA,
+                                                READ_SYMPTOM_NAUSEA,
+                                                WRITE_SYMPTOM_NAUSEA)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_NIGHT_SWEATS,
+                                                READ_SYMPTOM_NIGHT_SWEATS,
+                                                WRITE_SYMPTOM_NIGHT_SWEATS)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_PELVIC_PAIN,
+                                                READ_SYMPTOM_PELVIC_PAIN,
+                                                WRITE_SYMPTOM_PELVIC_PAIN)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory
+                                                        .SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT,
+                                                READ_SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT,
+                                                WRITE_SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory
+                                                        .SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE,
+                                                READ_SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE,
+                                                WRITE_SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_RUNNY_NOSE,
+                                                READ_SYMPTOM_RUNNY_NOSE,
+                                                WRITE_SYMPTOM_RUNNY_NOSE)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory
+                                                        .SYMPTOM_SHORTNESS_OF_BREATH,
+                                                READ_SYMPTOM_SHORTNESS_OF_BREATH,
+                                                WRITE_SYMPTOM_SHORTNESS_OF_BREATH)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_SKIPPED_HEARTBEAT,
+                                                READ_SYMPTOM_SKIPPED_HEARTBEAT,
+                                                WRITE_SYMPTOM_SKIPPED_HEARTBEAT)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_SLEEPINESS,
+                                                READ_SYMPTOM_SLEEPINESS,
+                                                WRITE_SYMPTOM_SLEEPINESS)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_SLEEP_CHANGES,
+                                                READ_SYMPTOM_SLEEP_CHANGES,
+                                                WRITE_SYMPTOM_SLEEP_CHANGES)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_SNEEZING,
+                                                READ_SYMPTOM_SNEEZING,
+                                                WRITE_SYMPTOM_SNEEZING)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_SNORE,
+                                                READ_SYMPTOM_SNORE,
+                                                WRITE_SYMPTOM_SNORE)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_SORE_THROAT,
+                                                READ_SYMPTOM_SORE_THROAT,
+                                                WRITE_SYMPTOM_SORE_THROAT)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_STOMACH_ACHE,
+                                                READ_SYMPTOM_STOMACH_ACHE,
+                                                WRITE_SYMPTOM_STOMACH_ACHE)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_STUFFY_NOSE,
+                                                READ_SYMPTOM_STUFFY_NOSE,
+                                                WRITE_SYMPTOM_STUFFY_NOSE)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory
+                                                        .SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES,
+                                                READ_SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES,
+                                                WRITE_SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_VAGINAL_DRYNESS,
+                                                READ_SYMPTOM_VAGINAL_DRYNESS,
+                                                WRITE_SYMPTOM_VAGINAL_DRYNESS)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_VAGINAL_ITCHINESS,
+                                                READ_SYMPTOM_VAGINAL_ITCHINESS,
+                                                WRITE_SYMPTOM_VAGINAL_ITCHINESS)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_VOMITING,
+                                                READ_SYMPTOM_VOMITING,
+                                                WRITE_SYMPTOM_VOMITING)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_WATER_RETENTION,
+                                                READ_SYMPTOM_WATER_RETENTION,
+                                                WRITE_SYMPTOM_WATER_RETENTION)
+                                        .addPermissionCategory(
+                                                HealthPermissionCategory.SYMPTOM_WHEEZING,
+                                                READ_SYMPTOM_WHEEZING,
+                                                WRITE_SYMPTOM_WHEEZING)
                                         .build()
                                 : null,
                         DataTypeDescriptor.builder()

@@ -101,6 +101,9 @@
     <uses-permission android:name="android.permission.health.READ_SPEED"/>
     <uses-permission android:name="android.permission.health.READ_STEPS"/>
     <uses-permission android:name="android.permission.health.READ_SYMPTOM_COUGH"/>
+    <uses-permission android:name="android.permission.health.READ_SYMPTOM_HEADACHE"/>
+    <uses-permission android:name="android.permission.health.READ_SYMPTOM_DIZZINESS"/>
+    <uses-permission android:name="android.permission.health.READ_SYMPTOM_FEVER"/>
     <uses-permission android:name="android.permission.health.READ_TOTAL_CALORIES_BURNED"/>
     <uses-permission android:name="android.permission.health.READ_VO2_MAX"/>
     <uses-permission android:name="android.permission.health.READ_WEIGHT"/>
@@ -145,10 +148,14 @@
     <uses-permission android:name="android.permission.health.WRITE_SPEED"/>
     <uses-permission android:name="android.permission.health.WRITE_STEPS"/>
     <uses-permission android:name="android.permission.health.WRITE_SYMPTOM_COUGH"/>
+    <uses-permission android:name="android.permission.health.WRITE_SYMPTOM_HEADACHE"/>
+    <uses-permission android:name="android.permission.health.WRITE_SYMPTOM_DIZZINESS"/>
+    <uses-permission android:name="android.permission.health.WRITE_SYMPTOM_FEVER"/>
     <uses-permission android:name="android.permission.health.WRITE_TOTAL_CALORIES_BURNED"/>
     <uses-permission android:name="android.permission.health.WRITE_VO2_MAX"/>
     <uses-permission android:name="android.permission.health.WRITE_WEIGHT"/>
     <uses-permission android:name="android.permission.health.WRITE_WHEELCHAIR_PUSHES"/>
+    <uses-permission android:name="android.permission.health.WRITE_MEDICAL_DATA"/>
 
     <!--  self-instrumenting test package. -->
 </manifest>

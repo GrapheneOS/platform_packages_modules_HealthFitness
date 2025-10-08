@@ -781,6 +781,20 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     final Set<String> grantedExtraReadPermissions =
                             mDataPermissionEnforcer.collectGrantedExtraReadPermissions(
                                     Set.of(request.getRecordType()), attributionSource);
+                    final RecordHelper<?> recordHelper =
+                            mInternalHealthConnectMappings.getRecordHelper(request.getRecordType());
+                    final Set<String> grantedGranularPermissions;
+                    if (holdsDataManagementPermission) {
+                        grantedGranularPermissions = recordHelper.getGranularReadPermissions();
+                    } else {
+                        grantedGranularPermissions =
+                                recordHelper.getGranularReadPermissions().stream()
+                                        .filter(
+                                                permission ->
+                                                        mDataPermissionEnforcer.isPermissionGranted(
+                                                                permission, attributionSource))
+                                        .collect(Collectors.toSet());
+                    }
 
                     try {
                         long startDateAccessEpochMilli = request.getStartTime();
@@ -809,6 +823,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         callingPackageName,
                                         request,
                                         grantedExtraReadPermissions,
+                                        grantedGranularPermissions,
                                         startDateAccessEpochMilli,
                                         isInForeground,
                                         shouldRecordAccessLog,
@@ -1120,15 +1135,29 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         Set<String> grantedExtraReadPermissions =
                                 mDataPermissionEnforcer.collectGrantedExtraReadPermissions(
                                         recordTypeToUpsertedUuids.keySet(), attributionSource);
+                        final Set<String> grantedGranularPermissions =
+                                recordTypeToUpsertedUuids.keySet().stream()
+                                        .map(mInternalHealthConnectMappings::getRecordHelper)
+                                        .flatMap(
+                                                recordHelper ->
+                                                        recordHelper
+                                                                .getGranularReadPermissions()
+                                                                .stream())
+                                        .filter(
+                                                permission ->
+                                                        mDataPermissionEnforcer.isPermissionGranted(
+                                                                permission, attributionSource))
+                                        .collect(Collectors.toSet());
                         recordInternals =
                                 mFitnessRecordReadHelper.readRecords(
                                         mTransactionManager,
                                         callerPackageName,
                                         recordTypeToUpsertedUuids,
                                         grantedExtraReadPermissions,
+                                        grantedGranularPermissions,
                                         startDateAccessEpochMilli,
                                         isInForeground,
-                                        /* shouldRecordAccessLog= */ true);
+                                        /* shouldRecordAccessLogs= */ true);
                     }
                     List<DeletedLog> deletedLogs = changeLogsResponse.getDeletedLogs();
 

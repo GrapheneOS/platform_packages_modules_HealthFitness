@@ -49,11 +49,16 @@ import android.health.connect.datatypes.BloodPressureRecord;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.health.connect.internal.datatypes.SymptomRecordInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.os.UserHandle;
 import android.platform.test.annotations.EnableFlags;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.Pair;
 
@@ -95,6 +100,10 @@ import java.util.stream.Stream;
 public class FitnessRecordReadHelperTest {
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
+    @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
+
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
 
@@ -103,6 +112,7 @@ public class FitnessRecordReadHelperTest {
     private static final String BAR_PACKAGE_NAME = "package.bar";
     private static final String UNKNOWN_PACKAGE_NAME = "package.unknown";
     private static final Set<String> WRITE_EXERCISE_ROUTE_EXTRA_PERM = Set.of(WRITE_EXERCISE_ROUTE);
+    private static final Set<String> NO_GRANULAR_PERMS = Set.of();
 
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
@@ -161,6 +171,7 @@ public class FitnessRecordReadHelperTest {
                                 TEST_PACKAGE_NAME,
                                 request.toReadRecordsRequestParcel(),
                                 /* grantedExtraReadPermissions= */ Set.of(),
+                                NO_GRANULAR_PERMS,
                                 /* startDateAccessMillis= */ 0,
                                 /* isInForeground= */ false,
                                 /* shouldRecordAccessLogs= */ false,
@@ -193,6 +204,7 @@ public class FitnessRecordReadHelperTest {
                                 TEST_PACKAGE_NAME,
                                 request.toReadRecordsRequestParcel(),
                                 /* grantedExtraReadPermissions= */ Set.of(),
+                                NO_GRANULAR_PERMS,
                                 /* startDateAccessMillis= */ 0,
                                 /* isInForeground= */ false,
                                 /* shouldRecordAccessLogs= */ false,
@@ -228,6 +240,7 @@ public class FitnessRecordReadHelperTest {
                                 TEST_PACKAGE_NAME,
                                 request.toReadRecordsRequestParcel(),
                                 /* grantedExtraReadPermissions= */ Set.of(),
+                                NO_GRANULAR_PERMS,
                                 /* startDateAccessMillis= */ 0,
                                 /* isInForeground= */ false,
                                 /* shouldRecordAccessLogs= */ false,
@@ -250,6 +263,7 @@ public class FitnessRecordReadHelperTest {
                 TEST_PACKAGE_NAME,
                 request.toReadRecordsRequestParcel(),
                 /* grantedExtraReadPermissions= */ Set.of(),
+                NO_GRANULAR_PERMS,
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ false,
                 /* shouldRecordAccessLogs= */ true,
@@ -291,6 +305,7 @@ public class FitnessRecordReadHelperTest {
                         TEST_PACKAGE_NAME,
                         request.toReadRecordsRequestParcel(),
                         /* grantedExtraReadPermissions= */ Set.of(),
+                        NO_GRANULAR_PERMS,
                         /* startDateAccessMillis= */ 0,
                         /* isInForeground= */ false,
                         /* shouldRecordAccessLogs= */ true,
@@ -314,6 +329,7 @@ public class FitnessRecordReadHelperTest {
                 TEST_PACKAGE_NAME,
                 request.toReadRecordsRequestParcel(),
                 /* grantedExtraReadPermissions= */ Set.of(),
+                NO_GRANULAR_PERMS,
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ false,
                 /* shouldRecordAccessLogs= */ true,
@@ -341,6 +357,7 @@ public class FitnessRecordReadHelperTest {
                 TEST_PACKAGE_NAME,
                 request.toReadRecordsRequestParcel(),
                 /* grantedExtraReadPermissions= */ Set.of(),
+                NO_GRANULAR_PERMS,
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ false,
                 /* shouldRecordAccessLogs= */ true,
@@ -377,6 +394,7 @@ public class FitnessRecordReadHelperTest {
                                 RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE,
                                 bloodPressureUuids),
                         /* grantedExtraReadPermissions= */ Set.of(),
+                        NO_GRANULAR_PERMS,
                         /* startDateAccessMillis= */ 0,
                         /* isInForeground= */ false,
                         /* shouldRecordAccessLogs= */ false);
@@ -410,6 +428,7 @@ public class FitnessRecordReadHelperTest {
                                 RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE,
                                 bloodPressureUuids),
                         /* grantedExtraReadPermissions= */ Set.of(),
+                        NO_GRANULAR_PERMS,
                         /* startDateAccessMillis= */ 0,
                         /* isInForeground= */ false,
                         /* shouldRecordAccessLogs= */ false);
@@ -440,6 +459,7 @@ public class FitnessRecordReadHelperTest {
                 readerPackage,
                 ImmutableMap.of(RECORD_TYPE_STEPS, ImmutableList.of(UUID.fromString(uuid))),
                 /* grantedExtraReadPermissions= */ Set.of(),
+                NO_GRANULAR_PERMS,
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ true,
                 /* shouldRecordAccessLogs */ true);
@@ -476,6 +496,7 @@ public class FitnessRecordReadHelperTest {
                         .build()
                         .toReadRecordsRequestParcel(),
                 /* grantedExtraReadPermissions= */ Set.of(),
+                NO_GRANULAR_PERMS,
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ true,
                 /* shouldRecordAccessLogs */ true,
@@ -510,6 +531,7 @@ public class FitnessRecordReadHelperTest {
                 readerPackage,
                 ImmutableMap.of(RECORD_TYPE_STEPS, ImmutableList.of(UUID.fromString(uuid))),
                 /* grantedExtraReadPermissions= */ Set.of(),
+                NO_GRANULAR_PERMS,
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ true,
                 /* shouldRecordAccessLogs */ false);
@@ -547,6 +569,7 @@ public class FitnessRecordReadHelperTest {
                 readerPackage,
                 request.toReadRecordsRequestParcel(),
                 /* grantedExtraReadPermissions= */ Set.of(),
+                NO_GRANULAR_PERMS,
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ true,
                 /* shouldRecordAccessLogs */ true,
@@ -589,6 +612,7 @@ public class FitnessRecordReadHelperTest {
                 readerPackage,
                 request.toReadRecordsRequestParcel(),
                 /* grantedExtraReadPermissions= */ Set.of(),
+                NO_GRANULAR_PERMS,
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ true,
                 /* shouldRecordAccessLogs */ false,
@@ -622,6 +646,7 @@ public class FitnessRecordReadHelperTest {
                 TEST_PACKAGE_NAME,
                 request.toReadRecordsRequestParcel(),
                 /* grantedExtraReadPermissions= */ Set.of(),
+                NO_GRANULAR_PERMS,
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ true,
                 /* shouldRecordAccessLogs */ true,
@@ -647,6 +672,7 @@ public class FitnessRecordReadHelperTest {
                                 RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION,
                                 ImmutableList.of()),
                         WRITE_EXERCISE_ROUTE_EXTRA_PERM,
+                        NO_GRANULAR_PERMS,
                         /* startDateAccessMillis= */ 0,
                         /* isInForeground= */ true,
                         /* shouldRecordAccessLogs= */ false);
@@ -674,6 +700,7 @@ public class FitnessRecordReadHelperTest {
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION, allUuids),
                         WRITE_EXERCISE_ROUTE_EXTRA_PERM,
+                        NO_GRANULAR_PERMS,
                         /* startDateAccessMillis= */ 0,
                         /* isInForeground= */ true,
                         /* shouldRecordAccessLogs= */ false);
@@ -705,7 +732,8 @@ public class FitnessRecordReadHelperTest {
                         UNKNOWN_PACKAGE_NAME,
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION, List.of(uuid)),
-                        /* startDateAccessMillis= */ WRITE_EXERCISE_ROUTE_EXTRA_PERM,
+                        /* grantedExtraReadPermissions= */ WRITE_EXERCISE_ROUTE_EXTRA_PERM,
+                        NO_GRANULAR_PERMS,
                         0,
                         /* isInForeground= */ true,
                         /* shouldRecordAccessLogs= */ false);
@@ -730,6 +758,7 @@ public class FitnessRecordReadHelperTest {
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION, List.of(uuid)),
                         Set.of(HealthPermissions.READ_EXERCISE_ROUTE),
+                        NO_GRANULAR_PERMS,
                         /* startDateAccessMillis= */ 0,
                         /* isInForeground= */ true,
                         /* shouldRecordAccessLogs= */ false);
@@ -768,6 +797,7 @@ public class FitnessRecordReadHelperTest {
                                 TEST_PACKAGE_NAME,
                                 request,
                                 WRITE_EXERCISE_ROUTE_EXTRA_PERM,
+                                NO_GRANULAR_PERMS,
                                 /* startDateAccessMillis= */ 0,
                                 /* isInForeground= */ true,
                                 /* shouldRecordAccessLogs */ false,
@@ -811,6 +841,7 @@ public class FitnessRecordReadHelperTest {
                                 TEST_PACKAGE_NAME,
                                 request,
                                 Set.of(HealthPermissions.READ_EXERCISE_ROUTE),
+                                NO_GRANULAR_PERMS,
                                 /* startDateAccessMillis= */ 0,
                                 /* isInForeground= */ true,
                                 /* shouldRecordAccessLogs */ false,
@@ -846,6 +877,7 @@ public class FitnessRecordReadHelperTest {
                                 UNKNOWN_PACKAGE_NAME,
                                 request,
                                 WRITE_EXERCISE_ROUTE_EXTRA_PERM,
+                                NO_GRANULAR_PERMS,
                                 /* startDateAccessMillis= */ 0,
                                 /* isInForeground= */ false,
                                 /* shouldRecordAccessLogs */ false,
@@ -858,5 +890,47 @@ public class FitnessRecordReadHelperTest {
                 (ExerciseSessionRecordInternal) returnedRecords.get(0);
         assertThat(returnedRecord.hasRoute()).isTrue();
         assertThat(returnedRecord.getRoute()).isNull();
+    }
+
+    @Test
+    @RequiresFlagsEnabled({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB})
+    public void readRecords_withGranularPermissions_filtersCorrectly() {
+        mFitnessTestUtils.insertRecords(
+                TEST_PACKAGE_NAME,
+                new SymptomRecordInternal()
+                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
+                        .setStartTime(1000L)
+                        .setEndTime(2000L),
+                new SymptomRecordInternal()
+                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_FEVER)
+                        .setStartTime(3000L)
+                        .setEndTime(4000L));
+        ReadRecordsRequestParcel request =
+                new ReadRecordsRequestUsingFilters.Builder<>(SymptomRecord.class)
+                        .setTimeRangeFilter(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(Instant.EPOCH)
+                                        .setEndTime(Instant.now())
+                                        .build())
+                        .build()
+                        .toReadRecordsRequestParcel();
+
+        Pair<List<RecordInternal<?>>, PageTokenWrapper> result =
+                mFitnessRecordReadHelper.readRecords(
+                        mTransactionManager,
+                        TEST_PACKAGE_NAME,
+                        request,
+                        /* grantedExtraReadPermissions= */ Set.of(),
+                        /* grantedGranularPermissions= */ Set.of(
+                                HealthPermissions.READ_SYMPTOM_COUGH),
+                        /* startDateAccessMillis= */ 0,
+                        /* isInForeground= */ true,
+                        /* shouldRecordAccessLogs */ false,
+                        /* enforceSelfRead= */ false,
+                        /* packageNamesByAppIds= */ null);
+
+        assertThat(result.first).hasSize(1);
+        SymptomRecordInternal returnedRecord = (SymptomRecordInternal) result.first.get(0);
+        assertThat(returnedRecord.getSymptomType()).isEqualTo(SymptomRecord.SYMPTOM_TYPE_COUGH);
     }
 }

@@ -46,7 +46,6 @@ public class HealthDataCategory {
     @FlaggedApi(FLAG_MINDFULNESS)
     public static final int WELLNESS = 7;
 
-    /** @hide */
     @FlaggedApi(FLAG_SYMPTOMS)
     public static final int SYMPTOMS = 8;
 

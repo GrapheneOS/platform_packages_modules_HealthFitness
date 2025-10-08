@@ -23,13 +23,19 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.SymptomRecordInternal;
+import android.health.connect.internal.datatypes.utils.SymptomTypePermissionMapper;
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A helper class for SymptomsRecord.
@@ -47,6 +53,21 @@ public final class SymptomRecordHelper extends IntervalRecordHelper<SymptomRecor
 
     public SymptomRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_SYMPTOM);
+    }
+
+    @Override
+    public Set<String> getGranularWritePermissions(RecordInternal<?> record) {
+        SymptomRecordInternal symptomsRecord = (SymptomRecordInternal) record;
+        String requiredPermission =
+                SymptomTypePermissionMapper.getWritePermission(symptomsRecord.getSymptomType());
+        return Collections.singleton(requiredPermission);
+    }
+
+    @Override
+    public Set<String> getGranularReadPermissions() {
+        return SymptomTypePermissionMapper.getSymptomTypes().stream()
+                .map(SymptomTypePermissionMapper::getReadPermission)
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -83,5 +104,28 @@ public final class SymptomRecordHelper extends IntervalRecordHelper<SymptomRecor
                 new Pair<>(SEVERITY_COLUMN_NAME, INTEGER),
                 new Pair<>(COUNT_COLUMN_NAME, INTEGER),
                 new Pair<>(TEMPORAL_TYPE_COLUMN_NAME, INTEGER));
+    }
+
+    @Override
+    protected void addCustomReadTableWhereClauses(
+            WhereClauses whereClauses, Set<String> grantedGranularPermissions) {
+        Set<Integer> allowedSymptomTypes =
+                SymptomTypePermissionMapper.getSymptomTypes().stream()
+                        .filter(
+                                (symptomType) ->
+                                        grantedGranularPermissions.contains(
+                                                SymptomTypePermissionMapper.getReadPermission(
+                                                        symptomType)))
+                        .collect(Collectors.toSet());
+
+        if (allowedSymptomTypes.isEmpty()) {
+            // No permissions for any symptom types, return a request that yields empty results by
+            // adding a clause that is always false.
+            whereClauses.addFalseClause();
+        } else {
+            whereClauses.addWhereInClause(
+                    SYMPTOM_TYPE_COLUMN_NAME,
+                    allowedSymptomTypes.stream().map(String::valueOf).collect(Collectors.toList()));
+        }
     }
 }

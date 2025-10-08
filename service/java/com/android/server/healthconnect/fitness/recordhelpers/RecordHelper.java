@@ -114,6 +114,24 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         mRecordIdentifier = recordIdentifier;
     }
 
+    /**
+     * Returns a collection of granular write permissions required for this record. The default
+     * implementation returns an empty collection, assuming category-level checks are sufficient.
+     *
+     * @param record The specific record being written.
+     */
+    public Set<String> getGranularWritePermissions(RecordInternal<?> record) {
+        return Collections.emptySet();
+    }
+
+    /**
+     * Returns a set of granular read permissions that apply to this record type. The default
+     * implementation returns an empty set.
+     */
+    public Set<String> getGranularReadPermissions() {
+        return Collections.emptySet();
+    }
+
     /** Database migration. Introduces automatic local time generation. */
     public abstract void applyGeneratedLocalTimeUpgrade(SQLiteDatabase db);
 
@@ -385,25 +403,46 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         }
     }
 
-    /** Returns ReadSingleTableRequest for {@code request} and package name {@code packageName} */
+    /**
+     * Returns RecordReadTableRequest for { @code request} and package name { @code packageName},
+     * including a DataPermissionEnforcer. This method is intended to be overridden by record
+     * helpers that require special permission handling.
+     *
+     * @param request The read request describing what to read.
+     * @param callingPackageName The package name of the app making this request.
+     * @param enforceSelfRead Whether returned data should be filtered for data written by the
+     *     calling app.
+     * @param startDateAccessMillis The earliest time this app is allowed to read from.
+     * @param grantedExtraReadPermissions List of permissions granted to this app to read associated
+     *     data.
+     * @param grantedGranularPermissions A set of granted granular permissions for the read
+     *     operation. These will be used to filter data in cases where a record type is associated
+     *     with multiple permissions, ensuring only data permitted based on these permissions is
+     *     returned.
+     * @param isInForeground If the calling app is in the foreground.
+     * @param appInfoHelper The AppInfoHelper to use.
+     */
     public RecordReadTableRequest getReadTableRequest(
             ReadRecordsRequestParcel request,
             String callingPackageName,
             boolean enforceSelfRead,
             long startDateAccessMillis,
             Set<String> grantedExtraReadPermissions,
+            Set<String> grantedGranularPermissions,
             boolean isInForeground,
             AppInfoHelper appInfoHelper) {
+        WhereClauses whereClause =
+                getReadTableWhereClause(
+                        request,
+                        callingPackageName,
+                        enforceSelfRead,
+                        startDateAccessMillis,
+                        appInfoHelper);
+        addCustomReadTableWhereClauses(whereClause, grantedGranularPermissions);
         ReadTableRequest readTableRequest =
                 new ReadTableRequest(getMainTableName())
                         .setJoinClause(getJoinForReadRequest())
-                        .setWhereClause(
-                                getReadTableWhereClause(
-                                        request,
-                                        callingPackageName,
-                                        enforceSelfRead,
-                                        startDateAccessMillis,
-                                        appInfoHelper))
+                        .setWhereClause(whereClause)
                         .setOrderBy(getOrderByClause(request))
                         .setLimit(getLimitSize(request))
                         .setExtraReadRequests(
@@ -445,24 +484,40 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         // Do nothing, implement in record specific helpers
     }
 
-    /** Returns ReadTableRequest for {@code uuids} */
-    public final RecordReadTableRequest getReadTableRequest(
+    /**
+     * Returns RecordReadTableRequest for {@code uuids}. This method is intended to be overridden by
+     * record helpers that require special permission handling.
+     *
+     * @param packageName The package name of the app making this request.
+     * @param uuids The list of UUIDs to read.
+     * @param startDateAccess The earliest time this app is allowed to read from.
+     * @param grantedExtraReadPermissions List of permissions granted to this app to read associated
+     *     data.
+     * @param grantedGranularPermissions A set of granted granular permissions for the read
+     *     operation. These will be used to filter data in cases where a record type is associated
+     *     with multiple permissions, ensuring only data permitted based on these permissions is
+     *     returned.
+     * @param isInForeground If the calling app is in the foreground.
+     * @param appInfoHelper The AppInfoHelper to use.
+     */
+    public RecordReadTableRequest getReadTableRequest(
             String packageName,
             List<UUID> uuids,
             long startDateAccess,
             Set<String> grantedExtraReadPermissions,
+            Set<String> grantedGranularPermissions,
             boolean isInForeground,
             AppInfoHelper appInfoHelper) {
+        WhereClauses whereClause =
+                new WhereClauses(AND)
+                        .addWhereInClauseWithoutQuotes(
+                                UUID_COLUMN_NAME, StorageUtils.getListOfHexStrings(uuids))
+                        .addWhereLaterThanTimeClause(getStartTimeColumnName(), startDateAccess);
+        addCustomReadTableWhereClauses(whereClause, grantedGranularPermissions);
         ReadTableRequest readTableRequest =
                 new ReadTableRequest(getMainTableName())
                         .setJoinClause(getJoinForReadRequest())
-                        .setWhereClause(
-                                new WhereClauses(AND)
-                                        .addWhereInClauseWithoutQuotes(
-                                                UUID_COLUMN_NAME,
-                                                StorageUtils.getListOfHexStrings(uuids))
-                                        .addWhereLaterThanTimeClause(
-                                                getStartTimeColumnName(), startDateAccess))
+                        .setWhereClause(whereClause)
                         .setExtraReadRequests(
                                 getExtraDataReadRequests(
                                         packageName,
@@ -472,6 +527,19 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                                         isInForeground,
                                         appInfoHelper));
         return new RecordReadTableRequest(readTableRequest, this);
+    }
+
+    /**
+     * Adds custom WHERE clauses for reading records. Subclasses can override this to add their own
+     * filtering logic.
+     *
+     * @param whereClauses The WhereClauses object to add clauses to.
+     * @param grantedGranularPermissions A set of granted granular permissions for the read
+     *     operation.
+     */
+    protected void addCustomReadTableWhereClauses(
+            WhereClauses whereClauses, Set<String> grantedGranularPermissions) {
+        // Default is a no-op
     }
 
     /**

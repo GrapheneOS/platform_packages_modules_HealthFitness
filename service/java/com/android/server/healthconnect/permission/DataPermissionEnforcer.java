@@ -30,7 +30,7 @@ import android.os.UserHandle;
 import android.permission.PermissionManager;
 import android.util.ArrayMap;
 import android.util.ArraySet;
-import com.android.healthfitness.flags.Flags;
+
 import com.android.modules.utils.build.SdkLevel;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
@@ -162,6 +162,11 @@ public class DataPermissionEnforcer {
             RecordHelper<?> recordHelper =
                     mInternalHealthConnectMappings.getRecordHelper(recordTypeId);
 
+            // Enforce granular permissions
+            for (String permission : recordHelper.getGranularWritePermissions(recordInternal)) {
+                enforcePermission(permission, attributionSource);
+            }
+
             if (!recordTypeIdToExtraPerms.containsKey(recordTypeId)) {
                 recordTypeIdToExtraPerms.put(recordTypeId, new ArraySet<>());
             }
@@ -197,6 +202,13 @@ public class DataPermissionEnforcer {
         throw new SecurityException(
                 "Caller requires one of the following permissions: "
                         + String.join(", ", permissions));
+    }
+
+    /** Enforces that caller has the given permission. */
+    public void enforcePermission(String permissionName, AttributionSource attributionSource) {
+        if (!isPermissionGranted(permissionName, attributionSource)) {
+            throw new SecurityException("Caller doesn't have " + permissionName);
+        }
     }
 
     /**
@@ -321,8 +333,8 @@ public class DataPermissionEnforcer {
         }
     }
 
-    private boolean isPermissionGranted(
-            String permissionName, AttributionSource attributionSource) {
+    /** Checks if the given permission is granted for the given {@link AttributionSource}. */
+    public boolean isPermissionGranted(String permissionName, AttributionSource attributionSource) {
         return mPermissionManager.checkPermissionForDataDelivery(
                         permissionName, attributionSource, null)
                 == PERMISSION_GRANTED;

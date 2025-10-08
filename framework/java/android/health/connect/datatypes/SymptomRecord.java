@@ -15,6 +15,8 @@
  */
 package android.health.connect.datatypes;
 
+import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
+
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
 
 import android.annotation.FlaggedApi;
@@ -31,11 +33,39 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Captures a description of a user's symptom. Each record represents a particular symptom
  * experienced one or more times over a time period.
+ *
+ * <p><b>Permission Handling:</b> Each symptom type is guarded by its own specific read and write
+ * permissions (e.g., {@code android.permission.health.READ_SYMPTOM_COUGH}).
+ *
+ * <p>An app has read access to a symptom type if:
+ *
+ * <ul>
+ *   <li>The app is the owner of the data (i.e., it wrote the data), and it holds <b>either</b> the
+ *       specific READ or WRITE permission for that symptom type.
+ *   <li>The app is not the owner of the data, but it has been granted the specific READ permission
+ *       for that symptom type.
+ * </ul>
+ *
+ * <p>Enforcement:
+ *
+ * <ul>
+ *   <li>When reading symptoms by a time range, records for which the calling app does not have read
+ *       access to the symptom type will be silently skipped.
+ *   <li>When reading a single symptom record by its ID, if the calling app does not have read
+ *       access to that record's symptom type, a {@link SecurityException} will be thrown.
+ *   <li>When performing a batch read of multiple symptom records by their IDs, a {@link
+ *       SecurityException} will be thrown if the calling app does not have read access to
+ *       <i>any</i> of the symptom types included in the batch request.
+ * </ul>
  */
+// TODO(b/448882608): Add multi app API CTS tests for SymptomRecord.
+// TODO(b/448836403): Add change log handling for symptoms permissions, so that each change log is
+// filtered based on the correct symptom permission for the corresponding symptom type.
 @FlaggedApi(FLAG_SYMPTOMS)
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SYMPTOM)
 public final class SymptomRecord extends IntervalRecord {
@@ -80,6 +110,10 @@ public final class SymptomRecord extends IntervalRecord {
                 endZoneOffset,
                 skipValidation,
                 /* enforceFutureTimeRestrictions= */ true);
+        if (!skipValidation) {
+            validateIntDefValue(
+                    symptomType, VALID_SYMPTOM_TYPES, SymptomType.class.getSimpleName());
+        }
         mSymptomType = symptomType;
         mNotes = notes;
         mSeverity = severity;
@@ -168,8 +202,66 @@ public final class SymptomRecord extends IntervalRecord {
 
     /** @hide */
     @IntDef({
-        SYMPTOM_TYPE_UNKNOWN,
+        SYMPTOM_TYPE_ABDOMINAL_PAIN,
+        SYMPTOM_TYPE_ACNE,
+        SYMPTOM_TYPE_BACK_PAIN,
+        SYMPTOM_TYPE_BLOATING,
+        SYMPTOM_TYPE_BRAIN_FOG,
+        SYMPTOM_TYPE_BREAST_TENDERNESS,
+        SYMPTOM_TYPE_BRITTLE_NAILS,
+        SYMPTOM_TYPE_BURNING_MOUTH,
+        SYMPTOM_TYPE_CHEST_PAIN,
+        SYMPTOM_TYPE_CHEST_TIGHTNESS,
+        SYMPTOM_TYPE_CHILLS,
+        SYMPTOM_TYPE_CONSTIPATION,
         SYMPTOM_TYPE_COUGH,
+        SYMPTOM_TYPE_CRAMPS,
+        SYMPTOM_TYPE_CRAVINGS,
+        SYMPTOM_TYPE_DEHYDRATION,
+        SYMPTOM_TYPE_DIARRHEA,
+        SYMPTOM_TYPE_DIFFICULTY_SWALLOWING,
+        SYMPTOM_TYPE_DIZZINESS,
+        SYMPTOM_TYPE_DRY_SKIN,
+        SYMPTOM_TYPE_EARACHES,
+        SYMPTOM_TYPE_FATIGUE,
+        SYMPTOM_TYPE_FEVER,
+        SYMPTOM_TYPE_GENERALIZED_BODY_ACHE,
+        SYMPTOM_TYPE_HAIR_LOSS,
+        SYMPTOM_TYPE_HEADACHE,
+        SYMPTOM_TYPE_HEARTBURN,
+        SYMPTOM_TYPE_HEART_PALPITATIONS,
+        SYMPTOM_TYPE_HOT_FLASHES,
+        SYMPTOM_TYPE_INSOMNIA,
+        SYMPTOM_TYPE_JOINT_PAIN,
+        SYMPTOM_TYPE_JOINT_STIFFNESS,
+        SYMPTOM_TYPE_LOSS_OF_APPETITE,
+        SYMPTOM_TYPE_LOSS_OF_CONSCIOUSNESS,
+        SYMPTOM_TYPE_LOWER_BACK_PAIN,
+        SYMPTOM_TYPE_MEMORY_LAPSE,
+        SYMPTOM_TYPE_MOOD_CHANGE,
+        SYMPTOM_TYPE_MUSCLE_PAIN,
+        SYMPTOM_TYPE_NAUSEA,
+        SYMPTOM_TYPE_NIGHT_SWEATS,
+        SYMPTOM_TYPE_PELVIC_PAIN,
+        SYMPTOM_TYPE_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT,
+        SYMPTOM_TYPE_REDUCED_CAPACITY_FOR_EXERCISE,
+        SYMPTOM_TYPE_RUNNY_NOSE,
+        SYMPTOM_TYPE_SHORTNESS_OF_BREATH,
+        SYMPTOM_TYPE_SKIPPED_HEARTBEAT,
+        SYMPTOM_TYPE_SLEEPINESS,
+        SYMPTOM_TYPE_SLEEP_CHANGES,
+        SYMPTOM_TYPE_SNEEZING,
+        SYMPTOM_TYPE_SNORE,
+        SYMPTOM_TYPE_SORE_THROAT,
+        SYMPTOM_TYPE_STOMACH_ACHE,
+        SYMPTOM_TYPE_STUFFY_NOSE,
+        SYMPTOM_TYPE_UNEXPLAINED_WEIGHT_CHANGES,
+        SYMPTOM_TYPE_UNKNOWN,
+        SYMPTOM_TYPE_VAGINAL_DRYNESS,
+        SYMPTOM_TYPE_VAGINAL_ITCHINESS,
+        SYMPTOM_TYPE_VOMITING,
+        SYMPTOM_TYPE_WATER_RETENTION,
+        SYMPTOM_TYPE_WHEEZING,
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface SymptomType {}
@@ -177,10 +269,250 @@ public final class SymptomRecord extends IntervalRecord {
     /** Unknown symptom type. */
     public static final int SYMPTOM_TYPE_UNKNOWN = 0;
 
-    /** Cough symptom. */
-    public static final int SYMPTOM_TYPE_COUGH = 1;
+    /** Abdominal pain symptom. */
+    public static final int SYMPTOM_TYPE_ABDOMINAL_PAIN = 1;
 
-    // TODO(b/438675118): Add remaining symptom types once permissions are added.
+    /** Acne symptom. */
+    public static final int SYMPTOM_TYPE_ACNE = 2;
+
+    /** Back pain symptom. */
+    public static final int SYMPTOM_TYPE_BACK_PAIN = 3;
+
+    /** Bloating symptom. */
+    public static final int SYMPTOM_TYPE_BLOATING = 4;
+
+    /** Brain fog symptom. */
+    public static final int SYMPTOM_TYPE_BRAIN_FOG = 5;
+
+    /** Breast tenderness symptom. */
+    public static final int SYMPTOM_TYPE_BREAST_TENDERNESS = 6;
+
+    /** Brittle nails symptom. */
+    public static final int SYMPTOM_TYPE_BRITTLE_NAILS = 7;
+
+    /** Burning mouth symptom. */
+    public static final int SYMPTOM_TYPE_BURNING_MOUTH = 8;
+
+    /** Chest pain symptom. */
+    public static final int SYMPTOM_TYPE_CHEST_PAIN = 9;
+
+    /** Chest tightness symptom. */
+    public static final int SYMPTOM_TYPE_CHEST_TIGHTNESS = 10;
+
+    /** Chills symptom. */
+    public static final int SYMPTOM_TYPE_CHILLS = 11;
+
+    /** Constipation symptom. */
+    public static final int SYMPTOM_TYPE_CONSTIPATION = 12;
+
+    /** Cough symptom. */
+    public static final int SYMPTOM_TYPE_COUGH = 13;
+
+    /** Cramps symptom. */
+    public static final int SYMPTOM_TYPE_CRAMPS = 14;
+
+    /** Cravings symptom. */
+    public static final int SYMPTOM_TYPE_CRAVINGS = 15;
+
+    /** Dehydration symptom. */
+    public static final int SYMPTOM_TYPE_DEHYDRATION = 16;
+
+    /** Diarrhea symptom. */
+    public static final int SYMPTOM_TYPE_DIARRHEA = 17;
+
+    /** Difficulty swallowing symptom. */
+    public static final int SYMPTOM_TYPE_DIFFICULTY_SWALLOWING = 18;
+
+    /** Dizziness symptom. */
+    public static final int SYMPTOM_TYPE_DIZZINESS = 19;
+
+    /** Dry skin symptom. */
+    public static final int SYMPTOM_TYPE_DRY_SKIN = 20;
+
+    /** Earaches symptom. */
+    public static final int SYMPTOM_TYPE_EARACHES = 21;
+
+    /** Fatigue symptom. */
+    public static final int SYMPTOM_TYPE_FATIGUE = 22;
+
+    /** Fever symptom. */
+    public static final int SYMPTOM_TYPE_FEVER = 23;
+
+    /** Generalized body ache symptom. */
+    public static final int SYMPTOM_TYPE_GENERALIZED_BODY_ACHE = 24;
+
+    /** Hair loss symptom. */
+    public static final int SYMPTOM_TYPE_HAIR_LOSS = 25;
+
+    /** Headache symptom. */
+    public static final int SYMPTOM_TYPE_HEADACHE = 26;
+
+    /** Heartburn symptom. */
+    public static final int SYMPTOM_TYPE_HEARTBURN = 27;
+
+    /** Heart palpitations symptom. */
+    public static final int SYMPTOM_TYPE_HEART_PALPITATIONS = 28;
+
+    /** Hot flashes symptom. */
+    public static final int SYMPTOM_TYPE_HOT_FLASHES = 29;
+
+    /** Insomnia symptom. */
+    public static final int SYMPTOM_TYPE_INSOMNIA = 30;
+
+    /** Joint pain symptom. */
+    public static final int SYMPTOM_TYPE_JOINT_PAIN = 31;
+
+    /** Joint stiffness symptom. */
+    public static final int SYMPTOM_TYPE_JOINT_STIFFNESS = 32;
+
+    /** Loss of appetite symptom. */
+    public static final int SYMPTOM_TYPE_LOSS_OF_APPETITE = 33;
+
+    /** Loss of consciousness symptom. */
+    public static final int SYMPTOM_TYPE_LOSS_OF_CONSCIOUSNESS = 34;
+
+    /** Lower back pain symptom. */
+    public static final int SYMPTOM_TYPE_LOWER_BACK_PAIN = 35;
+
+    /** Memory lapse symptom. */
+    public static final int SYMPTOM_TYPE_MEMORY_LAPSE = 36;
+
+    /** Mood change symptom. */
+    public static final int SYMPTOM_TYPE_MOOD_CHANGE = 37;
+
+    /** Muscle pain symptom. */
+    public static final int SYMPTOM_TYPE_MUSCLE_PAIN = 38;
+
+    /** Nausea symptom. */
+    public static final int SYMPTOM_TYPE_NAUSEA = 39;
+
+    /** Night sweats symptom. */
+    public static final int SYMPTOM_TYPE_NIGHT_SWEATS = 40;
+
+    /** Pelvic pain symptom. */
+    public static final int SYMPTOM_TYPE_PELVIC_PAIN = 41;
+
+    /** Rapid pounding or fluttering heartbeat symptom. */
+    public static final int SYMPTOM_TYPE_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT = 42;
+
+    /** Reduced capacity for exercise symptom. */
+    public static final int SYMPTOM_TYPE_REDUCED_CAPACITY_FOR_EXERCISE = 43;
+
+    /** Runny nose symptom. */
+    public static final int SYMPTOM_TYPE_RUNNY_NOSE = 44;
+
+    /** Shortness of breath symptom. */
+    public static final int SYMPTOM_TYPE_SHORTNESS_OF_BREATH = 45;
+
+    /** Skipped heartbeat symptom. */
+    public static final int SYMPTOM_TYPE_SKIPPED_HEARTBEAT = 46;
+
+    /** Sleepiness symptom. */
+    public static final int SYMPTOM_TYPE_SLEEPINESS = 47;
+
+    /** Sleep changes symptom. */
+    public static final int SYMPTOM_TYPE_SLEEP_CHANGES = 48;
+
+    /** Sneezing symptom. */
+    public static final int SYMPTOM_TYPE_SNEEZING = 49;
+
+    /** Snore symptom. */
+    public static final int SYMPTOM_TYPE_SNORE = 50;
+
+    /** Sore throat symptom. */
+    public static final int SYMPTOM_TYPE_SORE_THROAT = 51;
+
+    /** Stomach ache symptom. */
+    public static final int SYMPTOM_TYPE_STOMACH_ACHE = 52;
+
+    /** Stuffy nose symptom. */
+    public static final int SYMPTOM_TYPE_STUFFY_NOSE = 53;
+
+    /** Unexplained weight changes symptom. */
+    public static final int SYMPTOM_TYPE_UNEXPLAINED_WEIGHT_CHANGES = 54;
+
+    /** Vaginal dryness symptom. */
+    public static final int SYMPTOM_TYPE_VAGINAL_DRYNESS = 55;
+
+    /** Vaginal itchiness symptom. */
+    public static final int SYMPTOM_TYPE_VAGINAL_ITCHINESS = 56;
+
+    /** Vomiting symptom. */
+    public static final int SYMPTOM_TYPE_VOMITING = 57;
+
+    /** Water retention symptom. */
+    public static final int SYMPTOM_TYPE_WATER_RETENTION = 58;
+
+    /** Wheezing symptom. */
+    public static final int SYMPTOM_TYPE_WHEEZING = 59;
+
+    /**
+     * Valid set of values for {@link SymptomType}. Update this set when adding a new type or
+     * deprecating an existing type.
+     *
+     * @hide
+     */
+    public static final Set<Integer> VALID_SYMPTOM_TYPES =
+            Set.of(
+                    SYMPTOM_TYPE_ABDOMINAL_PAIN,
+                    SYMPTOM_TYPE_ACNE,
+                    SYMPTOM_TYPE_BACK_PAIN,
+                    SYMPTOM_TYPE_BLOATING,
+                    SYMPTOM_TYPE_BRAIN_FOG,
+                    SYMPTOM_TYPE_BREAST_TENDERNESS,
+                    SYMPTOM_TYPE_BRITTLE_NAILS,
+                    SYMPTOM_TYPE_BURNING_MOUTH,
+                    SYMPTOM_TYPE_CHEST_PAIN,
+                    SYMPTOM_TYPE_CHEST_TIGHTNESS,
+                    SYMPTOM_TYPE_CHILLS,
+                    SYMPTOM_TYPE_CONSTIPATION,
+                    SYMPTOM_TYPE_COUGH,
+                    SYMPTOM_TYPE_CRAMPS,
+                    SYMPTOM_TYPE_CRAVINGS,
+                    SYMPTOM_TYPE_DEHYDRATION,
+                    SYMPTOM_TYPE_DIARRHEA,
+                    SYMPTOM_TYPE_DIFFICULTY_SWALLOWING,
+                    SYMPTOM_TYPE_DIZZINESS,
+                    SYMPTOM_TYPE_DRY_SKIN,
+                    SYMPTOM_TYPE_EARACHES,
+                    SYMPTOM_TYPE_FATIGUE,
+                    SYMPTOM_TYPE_FEVER,
+                    SYMPTOM_TYPE_GENERALIZED_BODY_ACHE,
+                    SYMPTOM_TYPE_HAIR_LOSS,
+                    SYMPTOM_TYPE_HEADACHE,
+                    SYMPTOM_TYPE_HEARTBURN,
+                    SYMPTOM_TYPE_HEART_PALPITATIONS,
+                    SYMPTOM_TYPE_HOT_FLASHES,
+                    SYMPTOM_TYPE_INSOMNIA,
+                    SYMPTOM_TYPE_JOINT_PAIN,
+                    SYMPTOM_TYPE_JOINT_STIFFNESS,
+                    SYMPTOM_TYPE_LOSS_OF_APPETITE,
+                    SYMPTOM_TYPE_LOSS_OF_CONSCIOUSNESS,
+                    SYMPTOM_TYPE_LOWER_BACK_PAIN,
+                    SYMPTOM_TYPE_MEMORY_LAPSE,
+                    SYMPTOM_TYPE_MOOD_CHANGE,
+                    SYMPTOM_TYPE_MUSCLE_PAIN,
+                    SYMPTOM_TYPE_NAUSEA,
+                    SYMPTOM_TYPE_NIGHT_SWEATS,
+                    SYMPTOM_TYPE_PELVIC_PAIN,
+                    SYMPTOM_TYPE_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT,
+                    SYMPTOM_TYPE_REDUCED_CAPACITY_FOR_EXERCISE,
+                    SYMPTOM_TYPE_RUNNY_NOSE,
+                    SYMPTOM_TYPE_SHORTNESS_OF_BREATH,
+                    SYMPTOM_TYPE_SKIPPED_HEARTBEAT,
+                    SYMPTOM_TYPE_SLEEPINESS,
+                    SYMPTOM_TYPE_SLEEP_CHANGES,
+                    SYMPTOM_TYPE_SNEEZING,
+                    SYMPTOM_TYPE_SNORE,
+                    SYMPTOM_TYPE_SORE_THROAT,
+                    SYMPTOM_TYPE_STOMACH_ACHE,
+                    SYMPTOM_TYPE_STUFFY_NOSE,
+                    SYMPTOM_TYPE_UNEXPLAINED_WEIGHT_CHANGES,
+                    SYMPTOM_TYPE_VAGINAL_DRYNESS,
+                    SYMPTOM_TYPE_VAGINAL_ITCHINESS,
+                    SYMPTOM_TYPE_VOMITING,
+                    SYMPTOM_TYPE_WATER_RETENTION,
+                    SYMPTOM_TYPE_WHEEZING);
 
     /** @hide */
     @Retention(RetentionPolicy.SOURCE)
