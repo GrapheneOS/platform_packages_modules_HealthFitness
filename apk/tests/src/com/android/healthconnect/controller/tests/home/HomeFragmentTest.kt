@@ -1566,8 +1566,7 @@ class HomeFragmentTest {
                 onView(withText("Set up")).perform(scrollTo()).perform(click())
                 verify(healthConnectLogger)
                     .logInteraction(HomePageElement.ZERO_APPS_CONNECTED_BANNER_SET_UP_BUTTON)
-                assertThat(navHostController.currentDestination?.id)
-                    .isEqualTo(R.id.onboardingActivity)
+                intended(hasAction("android.health.connect.action.SYNC_MORE_APPS"))
             }
     }
 
@@ -1659,8 +1658,7 @@ class HomeFragmentTest {
 
                 verify(healthConnectLogger)
                     .logInteraction(HomePageElement.ONE_APP_CONNECTED_BANNER_SET_UP_BUTTON)
-                assertThat(navHostController.currentDestination?.id)
-                    .isEqualTo(R.id.onboardingActivity)
+                intended(hasAction("android.health.connect.action.SYNC_MORE_APPS"))
             }
     }
 

@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.newHome
 
 import android.content.Context
 import android.content.Intent
+import android.health.connect.HealthConnectManager
 import android.provider.Settings
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.newHome.HomeViewModel.BannerData
@@ -58,6 +59,7 @@ class BannerFactory(
         const val ONBOARDING_ONE_APP_BANNER_KEY = "onboarding_one_app_banner_key"
         const val NATIVE_STEPS_BANNER_KEY = "native_steps_banner_key"
         private val securitySettingsIntent = Intent(Settings.ACTION_SECURITY_SETTINGS)
+        private val onboardingActivityIntent = Intent(HealthConnectManager.ACTION_SYNC_MORE_APPS)
     }
 
     fun getBanner(bannerData: BannerData): HealthBannerPreference {
@@ -194,7 +196,7 @@ class BannerFactory(
                 text = context.getString(R.string.zero_apps_onboarding_banner_button),
                 logName = HomePageElement.ZERO_APPS_CONNECTED_BANNER_SET_UP_BUTTON,
             ) {
-                onAction(BannerAction.Navigate(R.id.action_newHomeFragment_to_onboardingActivity))
+                onAction(BannerAction.StartActivity(onboardingActivityIntent))
             }
 
             banner.setNegativeButton(
@@ -219,7 +221,7 @@ class BannerFactory(
                 text = context.getString(R.string.one_app_onboarding_banner_button),
                 logName = HomePageElement.ONE_APP_CONNECTED_BANNER_SET_UP_BUTTON,
             ) {
-                onAction(BannerAction.Navigate(R.id.action_newHomeFragment_to_onboardingActivity))
+                onAction(BannerAction.StartActivity(onboardingActivityIntent))
             }
 
             banner.setNegativeButton(

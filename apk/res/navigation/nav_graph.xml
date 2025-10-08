@@ -85,9 +85,6 @@
         <action
             android:id="@+id/action_newHomeFragment_to_systemUpdateActivity"
             app:destination="@id/systemUpdateActivity" />
-        <action
-            android:id="@+id/action_newHomeFragment_to_onboardingActivity"
-            app:destination="@id/onboardingActivity" />
     </fragment>
 
     <fragment
@@ -131,16 +128,9 @@
             android:id="@+id/action_homeFragment_to_playstoreActivity"
             app:destination="@id/playstore_activity" />
         <action
-            android:id="@+id/action_homeFragment_to_onboardingActivity"
-            app:destination="@id/onboardingActivity" />
-        <action
             android:id="@+id/action_homeFragment_to_connectedDevicesFragment"
             app:destination="@id/device_management_nav_graph" />
     </fragment>
-
-    <activity
-        android:id="@+id/onboardingActivity"
-        android:name="com.android.healthconnect.controller.onboarding.ConnectAppsOnboardingActivity" />
 
     <activity
         android:id="@+id/migrationActivity"

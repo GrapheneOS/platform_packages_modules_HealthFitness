@@ -986,7 +986,7 @@ class HomeFragmentTest {
         onView(withText("Start sharing fitness and wellness data between your apps"))
             .check(matches(isDisplayed()))
         onView(withText("Set up")).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.onboardingActivity)
+        intended(hasAction("android.health.connect.action.SYNC_MORE_APPS"))
         verify(healthConnectLogger)
             .logInteraction(HomePageElement.ZERO_APPS_CONNECTED_BANNER_SET_UP_BUTTON)
     }
@@ -1061,7 +1061,7 @@ class HomeFragmentTest {
         onView(withText("Set up another app so it can start sharing fitness and wellness data"))
             .check(matches(isDisplayed()))
         onView(withText("Continue")).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.onboardingActivity)
+        intended(hasAction("android.health.connect.action.SYNC_MORE_APPS"))
         verify(healthConnectLogger)
             .logInteraction(HomePageElement.ONE_APP_CONNECTED_BANNER_SET_UP_BUTTON)
     }
