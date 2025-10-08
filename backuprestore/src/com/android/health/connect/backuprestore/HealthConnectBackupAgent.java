@@ -19,6 +19,7 @@ package com.android.health.connect.backuprestore;
 import static android.os.ParcelFileDescriptor.MODE_READ_ONLY;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.app.backup.BackupAgent;
 import android.app.backup.BackupDataInput;
 import android.app.backup.BackupDataOutput;
@@ -33,6 +34,7 @@ import android.util.Slog;
 import com.android.internal.annotations.VisibleForTesting;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
@@ -72,10 +74,7 @@ public class HealthConnectBackupAgent extends BackupAgent {
                     File file = new File(backupDataDir, fileName);
                     try {
                         file.createNewFile();
-                        pfdsByFileName.put(
-                                fileName,
-                                ParcelFileDescriptor.open(
-                                        file, ParcelFileDescriptor.MODE_WRITE_ONLY));
+                        pfdsByFileName.put(fileName, openFileForWritingTruncateMode(file));
                     } catch (IOException e) {
                         Slog.e(TAG, "Unable to backup " + fileName, e);
                     }
@@ -195,5 +194,15 @@ public class HealthConnectBackupAgent extends BackupAgent {
     public void onDestroy() {
         super.onDestroy();
         Slog.i(TAG, "onDestroy.");
+    }
+
+    @Nullable
+    private static ParcelFileDescriptor openFileForWritingTruncateMode(File file)
+            throws FileNotFoundException {
+        return ParcelFileDescriptor.open(
+                file,
+                ParcelFileDescriptor.MODE_WRITE_ONLY
+                        | ParcelFileDescriptor.MODE_CREATE
+                        | ParcelFileDescriptor.MODE_TRUNCATE);
     }
 }
