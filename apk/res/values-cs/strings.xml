@@ -1284,10 +1284,10 @@
     <string name="device_data_label" msgid="2056618513138892435">"Správa zařízení"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Zobrazit data ze zařízení"</string>
     <string name="native_steps_banner_title" msgid="7668164332675458871">"Kroky zaznamenané na telefonu se zobrazí v aplikaci Health Connect"</string>
-    <string name="native_steps_banner_summary" msgid="7109953051996114646">"Kroky zaznamenané tímto zařízením se teď ukládají do Health Connect, aby k nim měly přístup propojené aplikace"</string>
+    <string name="native_steps_banner_summary" msgid="7109953051996114646">"Kroky zaznamenané tímto zařízením se teď ukládají do Health Connect, aby k nim měly přístup připojené aplikace"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Zavřít"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Zkontrolovat"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Kroky jsou teď v aplikaci Health Connect"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"Kroky zaznamenané tímto zařízením se teď ukládají do Health Connect, aby k nim měly přístup propojené aplikace"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"Kroky zaznamenané tímto zařízením se teď ukládají do Health Connect, aby k nim měly přístup připojené aplikace"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Teď ne"</string>
 </resources>
