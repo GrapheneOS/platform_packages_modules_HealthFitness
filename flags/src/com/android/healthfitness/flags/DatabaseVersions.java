@@ -47,6 +47,7 @@ public final class DatabaseVersions {
 
     public static final int DB_VERSION_NICOTINE_INTAKE = 21;
     public static final int DB_VERSION_SYMPTOMS = 22;
+    public static final int DB_VERSION_ALCOHOL_CONSUMPTION = 23;
 
     // For historical reasons, we do not support versions below this
     // See go/hc-mainline-dev/trunk_stable/db-and-aconfig#a-bit-of-history
