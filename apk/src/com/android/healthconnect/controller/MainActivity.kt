@@ -41,7 +41,9 @@ class MainActivity : Hilt_MainActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setStartDestinationFragment()
+        if (savedInstanceState == null) {
+            setStartDestinationFragment()
+        }
 
         // This flag ensures a non system app cannot show an overlay on Health Connect. b/313425281
         window.addSystemFlags(

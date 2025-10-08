@@ -32,6 +32,7 @@ import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
+import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
 import com.android.healthconnect.controller.tests.utils.showNativeSteps
 import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -153,10 +154,29 @@ class MainActivityTest {
             Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        launchActivityForResult<MainActivity>(startActivityIntent)
-        checkTextIsDisplayed("Your health apps")
-        checkTextIsDisplayed("Your health data")
+        launchActivityForResult<MainActivity>(startActivityIntent).use {
+            checkTextIsDisplayed("Your health apps")
+            checkTextIsDisplayed("Your health data")
+        }
     }
+
+    @Test
+    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    fun homeSettingsIntent_launchesMainActivity_retainsFragmentDestinationAfterRotation() =
+        runTest {
+            val startActivityIntent =
+                Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            launchActivityForResult<MainActivity>(startActivityIntent).use { scenario ->
+                checkTextIsDisplayed("Your health apps")
+                checkTextIsDisplayed("Your health data")
+                scrollToTextAndClick("Recent access")
+                checkTextIsDisplayed("See which apps have accessed your data in the past 24 hours")
+                scenario.recreate()
+                checkTextIsDisplayed("See which apps have accessed your data in the past 24 hours")
+            }
+        }
 
     @Test
     fun homeSettingsIntent_migrationInProgress_redirectsToMigrationInProgress() = runTest {
