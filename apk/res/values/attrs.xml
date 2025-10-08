@@ -25,6 +25,7 @@
     <attr name="manageDataIcon" format="reference"/>
     <attr name="optionsIcon" format="reference"/>
     <attr name="collapseIcon" format="reference"/>
+    <attr name="notConnectedAppTitleColor" format="reference"/>
 
     <!-- App permissions page -->
     <attr name="removeAccessForAllAppsIcon" format="reference"/>

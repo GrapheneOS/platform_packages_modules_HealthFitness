@@ -24,6 +24,7 @@ import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.HealthAppPreference
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.utils.AttributeResolver
 
 /** A preference for apps that are not currently connected to Health Connect */
 class NotConnectedAppPreference(context: Context, appMetadata: AppMetadata) :
@@ -36,7 +37,7 @@ class NotConnectedAppPreference(context: Context, appMetadata: AppMetadata) :
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
-        val color = com.android.settingslib.widget.theme.R.color.settingslib_colorAccentPrimary
+        val color = AttributeResolver.getResource(context, R.attr.notConnectedAppTitleColor)
         val titleView = holder.findViewById(android.R.id.title) as TextView
         titleView.setTextColor(ContextCompat.getColor(context, color))
 

@@ -21,6 +21,7 @@
         <item name="headerSummary">@style/TextAppearance.SettingsLib.BodyLarge</item>
         <item name="permissionHeaderTitle">@style/TextAppearance.HealthConnect.Expressive.PermissionHeading</item>
         <item name="headerDetails">@style/TextAppearance.HealthConnect.Expressive.DetailedHeading</item>
+        <item name="notConnectedAppTitleColor">@color/settingslib_materialColorPrimary</item>
     </style>
 
     <style name="Theme.HealthConnect.MatchMakingActivity.Expressive" parent="Theme.HealthConnect.Expressive">
