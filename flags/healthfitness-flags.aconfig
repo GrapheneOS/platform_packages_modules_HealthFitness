@@ -175,6 +175,15 @@ flag {
 }
 
 flag {
+    name: "cycle_phases_db"
+    namespace: "health_fitness_aconfig"
+    description: "Enables DB changes to support the menstrual cycle phases data type."
+    bug: "296855479"
+    is_fixed_read_only: false
+    is_exported: false
+}
+
+flag {
    name: "add_missing_access_logs"
    namespace: "health_fitness_aconfig"
    description: "Adds missing access logs"
