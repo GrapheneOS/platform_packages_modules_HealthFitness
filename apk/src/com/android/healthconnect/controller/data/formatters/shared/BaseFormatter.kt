@@ -14,6 +14,7 @@
 package com.android.healthconnect.controller.data.formatters.shared
 
 import android.content.Context
+import android.health.connect.datatypes.AlcoholConsumptionRecord
 import android.health.connect.datatypes.InstantRecord
 import android.health.connect.datatypes.IntervalRecord
 import android.health.connect.datatypes.Record
@@ -76,6 +77,14 @@ abstract class BaseFormatter<T : Record>(
 
     private fun getFormattedTime(record: T): String {
         return when (record) {
+            is AlcoholConsumptionRecord ->
+                TemporalTypeFormatter.format(
+                    timeFormatter,
+                    record.temporalType,
+                    record.startTime,
+                    record.endTime,
+                    record.date,
+                )
             is IntervalRecord -> timeFormatter.formatTimeRange(record.startTime, record.endTime)
             is InstantRecord -> timeFormatter.formatTime(record.time)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
@@ -84,6 +93,14 @@ abstract class BaseFormatter<T : Record>(
 
     private fun getFormattedA11yTime(record: T): String {
         return when (record) {
+            is AlcoholConsumptionRecord ->
+                TemporalTypeFormatter.formatA11y(
+                    timeFormatter,
+                    record.temporalType,
+                    record.startTime,
+                    record.endTime,
+                    record.date,
+                )
             is IntervalRecord -> timeFormatter.formatTimeRangeA11y(record.startTime, record.endTime)
             is InstantRecord -> timeFormatter.formatTime(record.time)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
