@@ -24,11 +24,13 @@ import android.os.Bundle
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
+import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
@@ -47,6 +49,7 @@ import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
+import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
@@ -56,9 +59,10 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_5
 import com.android.healthconnect.controller.tests.utils.TEST_APP_6
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
-import com.android.healthconnect.controller.tests.utils.scrollToBottomOfPreferenceScreen
+import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
@@ -132,8 +136,9 @@ class HomeFragmentTest {
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
 
-        launchFragmentWithNavigation()
-        onView(withId(R.id.progress_indicator)).check(matches(isDisplayed()))
+        launchFragmentWithNavigation().use {
+            onView(withId(R.id.progress_indicator)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -142,9 +147,9 @@ class HomeFragmentTest {
             MutableStateFlow<HomeViewModel.HomeFragmentState>(HomeViewModel.HomeFragmentState.Error)
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
 
-        launchFragment<HomeFragment>(Bundle())
-
-        onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+        launchFragment<HomeFragment>(Bundle()).use {
+            onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -165,43 +170,33 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(withText("Set a screen lock")).check(matches(isDisplayed()))
-        // TODO re-enable when b/447652645 is fixed
-        //        onView(withText("More items (1)")).check(matches(isDisplayed()))
-        onView(withText("Your health apps")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Health Connect test app"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("See more health apps")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Your health data")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Data and access")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Recent access")).perform(scrollTo()).check(matches(isDisplayed()))
-        scrollToBottomOfPreferenceScreen()
-        onView(withText("Preferences")).perform(scrollTo()).check(matches(isDisplayed()))
-        scrollToBottomOfPreferenceScreen()
-        onView(withText("Manage data")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Health Connect lets you share your health and fitness data between " +
-                        "multiple apps. This helps you unlock insights and experiences while keeping " +
-                        "your data secure."
-                )
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed("Set a screen lock")
+            // TODO re-enable when b/447652645 is fixed
+            //        checkTextIsDisplayed("More items (1)")
+            checkTextIsDisplayed("Your health apps")
+            checkTextIsDisplayed("Health Connect test app")
+            checkTextIsDisplayed("See more health apps")
+            checkTextIsDisplayed("Your health data")
+            checkTextIsDisplayed("Data and access")
+            checkTextIsDisplayed("Recent access")
+            checkTextIsDisplayed("Preferences")
+            checkTextIsDisplayed("Manage data")
+            checkTextIsDisplayed(
+                "Health Connect lets you share your health and fitness data between " +
+                    "multiple apps. This helps you unlock insights and experiences while keeping " +
+                    "your data secure."
             )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("More about Health Connect"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.NEW_HOME_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger)
-            .logImpression(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
-        verify(healthConnectLogger).logImpression(NewHomePageElement.DATA_AND_ACCESS_BUTTON)
-        verify(healthConnectLogger).logImpression(NewHomePageElement.RECENT_ACCESS_BUTTON)
-        verify(healthConnectLogger).logImpression(NewHomePageElement.MANAGE_DATA_BUTTON)
-        verify(healthConnectLogger).logImpression(NewHomePageElement.HOME_PAGE_FOOTER)
+            checkTextIsDisplayed("More about Health Connect")
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.NEW_HOME_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger)
+                .logImpression(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
+            verify(healthConnectLogger).logImpression(NewHomePageElement.DATA_AND_ACCESS_BUTTON)
+            verify(healthConnectLogger).logImpression(NewHomePageElement.RECENT_ACCESS_BUTTON)
+            verify(healthConnectLogger).logImpression(NewHomePageElement.MANAGE_DATA_BUTTON)
+            verify(healthConnectLogger).logImpression(NewHomePageElement.HOME_PAGE_FOOTER)
+        }
     }
 
     // endregion
@@ -216,13 +211,12 @@ class HomeFragmentTest {
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
 
-        launchFragment<HomeFragment>(Bundle())
-
-        onView(withText("Install apps that work with Health Connect to " + "see them here"))
-            .check(matches(isDisplayed()))
-        onView(withText("See compatible apps")).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(NewHomePageElement.NO_APPS_AVAILABLE_HEADER)
-        verify(healthConnectLogger).logImpression(NewHomePageElement.NO_APPS_AVAILABLE_LINK)
+        launchFragment<HomeFragment>(Bundle()).use {
+            checkTextIsDisplayed("Install apps that work with Health Connect to " + "see them here")
+            checkTextIsDisplayed("See compatible apps")
+            verify(healthConnectLogger).logImpression(NewHomePageElement.NO_APPS_AVAILABLE_HEADER)
+            verify(healthConnectLogger).logImpression(NewHomePageElement.NO_APPS_AVAILABLE_LINK)
+        }
     }
 
     @Test
@@ -234,14 +228,13 @@ class HomeFragmentTest {
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
 
-        launchFragment<HomeFragment>(Bundle())
-
-        onView(withText("Install apps that work with Health Connect to " + "see them here"))
-            .check(matches(isDisplayed()))
-        onView(withText("See compatible apps")).check(doesNotExist())
-        verify(healthConnectLogger).logImpression(NewHomePageElement.NO_APPS_AVAILABLE_HEADER)
-        verify(healthConnectLogger, never())
-            .logImpression(NewHomePageElement.NO_APPS_AVAILABLE_LINK)
+        launchFragment<HomeFragment>(Bundle()).use {
+            checkTextIsDisplayed("Install apps that work with Health Connect to " + "see them here")
+            onView(withText("See compatible apps")).check(doesNotExist())
+            verify(healthConnectLogger).logImpression(NewHomePageElement.NO_APPS_AVAILABLE_HEADER)
+            verify(healthConnectLogger, never())
+                .logImpression(NewHomePageElement.NO_APPS_AVAILABLE_LINK)
+        }
     }
 
     @Test
@@ -251,8 +244,7 @@ class HomeFragmentTest {
                 HomeViewModel.HomeFragmentState.WithData(connectedApps = listOf())
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragment<HomeFragment>(Bundle())
-        onView(withText("See more health apps")).check(matches(isDisplayed()))
+        launchFragment<HomeFragment>(Bundle()).use { checkTextIsDisplayed("See more health apps") }
     }
 
     @Test
@@ -269,14 +261,14 @@ class HomeFragmentTest {
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
 
-        launchFragment<HomeFragment>(Bundle())
-
-        onView(withText(TEST_APP.appName)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_2.appName)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_3.appName)).check(matches(isDisplayed()))
-        onView(withText("See more health apps")).check(matches(isDisplayed()))
-        verify(healthConnectLogger, times(3))
-            .logImpression(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
+        launchFragment<HomeFragment>(Bundle()).use {
+            checkTextIsDisplayed(TEST_APP.appName)
+            checkTextIsDisplayed(TEST_APP_2.appName)
+            checkTextIsDisplayed(TEST_APP_3.appName)
+            checkTextIsDisplayed("See more health apps")
+            verify(healthConnectLogger, times(3))
+                .logImpression(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
+        }
     }
 
     @Test
@@ -296,21 +288,21 @@ class HomeFragmentTest {
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
 
-        launchFragment<HomeFragment>(Bundle())
-
-        onView(withText(TEST_APP.appName)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_2.appName)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_3.appName)).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_4.appName)).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_5.appName)).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_6.appName)).check(doesNotExist())
-        onView(withText("See more health apps")).perform(scrollTo()).check(matches(isDisplayed()))
-        verify(healthConnectLogger, times(4))
-            .logImpression(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(NewHomePageElement.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON)
+        launchFragment<HomeFragment>(Bundle()).use {
+            checkTextIsDisplayed(TEST_APP.appName)
+            checkTextIsDisplayed(TEST_APP_2.appName)
+            checkTextIsDisplayed(TEST_APP_3.appName)
+            checkTextIsDisplayed(TEST_APP_4.appName)
+            checkTextIsDisplayed(TEST_APP_5.appName)
+            onView(withText(TEST_APP_6.appName)).check(doesNotExist())
+            checkTextIsDisplayed("See more health apps")
+            verify(healthConnectLogger, times(4))
+                .logImpression(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(NewHomePageElement.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON)
+        }
     }
 
     @Test
@@ -330,12 +322,12 @@ class HomeFragmentTest {
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
 
-        launchFragmentWithNavigation()
-
-        onView(withText(TEST_APP_NAME)).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.fitnessAppFragment)
-        verify(healthConnectLogger)
-            .logInteraction(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
+        launchFragmentWithNavigation().use {
+            scrollToTextAndClick(TEST_APP_NAME)
+            assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.fitnessAppFragment)
+            verify(healthConnectLogger)
+                .logInteraction(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
+        }
     }
 
     @Test
@@ -355,16 +347,12 @@ class HomeFragmentTest {
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
 
-        launchFragment<HomeFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.newHomeFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
+        launchFragmentWithNavigation().use {
+            scrollToTextAndClick(TEST_APP_NAME)
+            assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.medicalAppFragment)
+            verify(healthConnectLogger)
+                .logInteraction(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
         }
-
-        onView(withText(TEST_APP_NAME)).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.medicalAppFragment)
-        verify(healthConnectLogger)
-            .logInteraction(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
     }
 
     @Test
@@ -384,17 +372,13 @@ class HomeFragmentTest {
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
 
-        launchFragment<HomeFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.newHomeFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
+        launchFragmentWithNavigation().use {
+            scrollToTextAndClick(TEST_APP_NAME)
+            assertThat(navHostController.currentDestination?.id)
+                .isEqualTo(R.id.combinedPermissionsFragment)
+            verify(healthConnectLogger)
+                .logInteraction(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
         }
-
-        onView(withText(TEST_APP_NAME)).perform(click())
-        assertThat(navHostController.currentDestination?.id)
-            .isEqualTo(R.id.combinedPermissionsFragment)
-        verify(healthConnectLogger)
-            .logInteraction(NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON)
     }
 
     @Test
@@ -417,19 +401,15 @@ class HomeFragmentTest {
             )
             .thenReturn(testIntent)
 
-        launchFragment<HomeFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.newHomeFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
+        launchFragmentWithNavigation().use {
+            scrollToTextAndClick(TEST_APP_NAME)
+            intended(hasAction(ACTION_SHOW_ONBOARDING))
+            intended(hasPackage(TEST_APP_PACKAGE_NAME))
+            // We should remain where we started.
+            assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.newHomeFragment)
+            verify(healthConnectLogger)
+                .logInteraction(NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON)
         }
-
-        onView(withText(TEST_APP_NAME)).perform(click())
-        intended(hasAction(ACTION_SHOW_ONBOARDING))
-        intended(hasPackage(TEST_APP_PACKAGE_NAME))
-        // We should remain where we started.
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.newHomeFragment)
-        verify(healthConnectLogger)
-            .logInteraction(NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON)
     }
 
     @Test
@@ -448,21 +428,16 @@ class HomeFragmentTest {
                 HomeViewModel.HomeFragmentState.WithData(connectedApps = apps)
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-
-        launchFragment<HomeFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.newHomeFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
         whenever(
                 healthPermissionReader.getOnboardingActivityIntent(any(), eq(TEST_APP.packageName))
             )
             .thenReturn(null)
-
-        onView(withText(TEST_APP_NAME)).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.fitnessAppFragment)
-        verify(healthConnectLogger)
-            .logInteraction(NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON)
+        launchFragmentWithNavigation().use {
+            scrollToTextAndClick(TEST_APP_NAME)
+            assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.fitnessAppFragment)
+            verify(healthConnectLogger)
+                .logInteraction(NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON)
+        }
     }
 
     @Test
@@ -480,21 +455,17 @@ class HomeFragmentTest {
                 HomeViewModel.HomeFragmentState.WithData(connectedApps = apps)
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-
-        launchFragment<HomeFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.newHomeFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
         whenever(
                 healthPermissionReader.getOnboardingActivityIntent(any(), eq(TEST_APP.packageName))
             )
             .thenReturn(null)
 
-        onView(withText(TEST_APP_NAME)).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.medicalAppFragment)
-        verify(healthConnectLogger)
-            .logInteraction(NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON)
+        launchFragmentWithNavigation().use {
+            scrollToTextAndClick(TEST_APP_NAME)
+            assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.medicalAppFragment)
+            verify(healthConnectLogger)
+                .logInteraction(NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON)
+        }
     }
 
     @Test
@@ -512,22 +483,17 @@ class HomeFragmentTest {
                 HomeViewModel.HomeFragmentState.WithData(connectedApps = apps)
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-
-        launchFragment<HomeFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.newHomeFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
         whenever(
                 healthPermissionReader.getOnboardingActivityIntent(any(), eq(TEST_APP.packageName))
             )
             .thenReturn(null)
-
-        onView(withText(TEST_APP_NAME)).perform(click())
-        assertThat(navHostController.currentDestination?.id)
-            .isEqualTo(R.id.combinedPermissionsFragment)
-        verify(healthConnectLogger)
-            .logInteraction(NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON)
+        launchFragmentWithNavigation().use {
+            scrollToTextAndClick(TEST_APP_NAME)
+            assertThat(navHostController.currentDestination?.id)
+                .isEqualTo(R.id.combinedPermissionsFragment)
+            verify(healthConnectLogger)
+                .logInteraction(NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON)
+        }
     }
 
     // endregion
@@ -535,55 +501,62 @@ class HomeFragmentTest {
     // Navigation
     @Test
     fun dataAndAccess_navigatesToDataAndAccess() {
-        setupFragmentForNavigation()
-        onView(withText("Data and access")).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.data_activity)
-        verify(healthConnectLogger).logInteraction(NewHomePageElement.DATA_AND_ACCESS_BUTTON)
+        setupFragmentForNavigation().use {
+            scrollToTextAndClick("Data and access")
+            assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.data_activity)
+            verify(healthConnectLogger).logInteraction(NewHomePageElement.DATA_AND_ACCESS_BUTTON)
+        }
     }
 
     @Test
     fun recentAccess_navigatesToRecentAccess() {
-        setupFragmentForNavigation()
-        onView(withText("Recent access")).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.recentAccessFragment)
-        verify(healthConnectLogger).logInteraction(NewHomePageElement.RECENT_ACCESS_BUTTON)
+        setupFragmentForNavigation().use {
+            scrollToTextAndClick("Recent access")
+            assertThat(navHostController.currentDestination?.id)
+                .isEqualTo(R.id.recentAccessFragment)
+            verify(healthConnectLogger).logInteraction(NewHomePageElement.RECENT_ACCESS_BUTTON)
+        }
     }
 
     @Test
     @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     fun devices_navigatesToConnectedDevices() {
-        setupFragmentForNavigation()
-        onView(withText("Devices")).perform(click())
-        assertThat(navHostController.currentDestination?.id)
-            .isEqualTo(R.id.connectedDevicesFragment)
-        verify(healthConnectLogger).logImpression(NewHomePageElement.DEVICES_BUTTON)
-        verify(healthConnectLogger).logInteraction(NewHomePageElement.DEVICES_BUTTON)
+        setupFragmentForNavigation().use {
+            scrollToTextAndClick("Devices")
+            assertThat(navHostController.currentDestination?.id)
+                .isEqualTo(R.id.connectedDevicesFragment)
+            verify(healthConnectLogger).logImpression(NewHomePageElement.DEVICES_BUTTON)
+            verify(healthConnectLogger).logInteraction(NewHomePageElement.DEVICES_BUTTON)
+        }
     }
 
     @Test
     @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     fun devices_whenFlagDisabled_isNotDisplayed() {
-        setupFragmentForNavigation()
-        onView(withText("Devices")).check(doesNotExist())
-        verify(healthConnectLogger, never()).logImpression(NewHomePageElement.DEVICES_BUTTON)
+        setupFragmentForNavigation().use {
+            onView(withText("Devices")).check(doesNotExist())
+            onIdle()
+            verify(healthConnectLogger, never()).logImpression(NewHomePageElement.DEVICES_BUTTON)
+        }
     }
 
     @Test
     fun manageData_navigatesToManageData() {
-        setupFragmentForNavigation()
-        scrollToBottomOfPreferenceScreen()
-        onView(withText("Manage data")).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.manageDataFragment)
-        verify(healthConnectLogger).logInteraction(NewHomePageElement.MANAGE_DATA_BUTTON)
+        setupFragmentForNavigation().use {
+            scrollToTextAndClick("Manage data")
+            assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.manageDataFragment)
+            verify(healthConnectLogger).logInteraction(NewHomePageElement.MANAGE_DATA_BUTTON)
+        }
     }
 
     @Test
     fun seeCompatibleApps_navigatesToPlayStore() {
-        setupFragmentForNavigation()
-
-        onView(withText("See compatible apps")).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.playstore_activity)
-        verify(healthConnectLogger).logInteraction(NewHomePageElement.NO_APPS_AVAILABLE_LINK)
+        setupFragmentForNavigation().use {
+            onView(withText("See compatible apps")).perform(click())
+            onIdle()
+            assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.playstore_activity)
+            verify(healthConnectLogger).logInteraction(NewHomePageElement.NO_APPS_AVAILABLE_LINK)
+        }
     }
 
     @Test
@@ -603,12 +576,13 @@ class HomeFragmentTest {
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
 
-        launchFragmentWithNavigation()
-
-        onView(withText("See more health apps")).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.connectedAppsFragment)
-        verify(healthConnectLogger)
-            .logInteraction(NewHomePageElement.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON)
+        launchFragmentWithNavigation().use {
+            scrollToTextAndClick("See more health apps")
+            assertThat(navHostController.currentDestination?.id)
+                .isEqualTo(R.id.connectedAppsFragment)
+            verify(healthConnectLogger)
+                .logInteraction(NewHomePageElement.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON)
+        }
     }
 
     @Test
@@ -632,19 +606,16 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(withText("Couldn\'t export data")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "There was a problem with the export for October 20, 2022. " +
-                        "Please set up a new scheduled export and try again."
-                )
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed("Couldn\'t export data")
+            checkTextIsDisplayed(
+                "There was a problem with the export for October 20, 2022. " +
+                    "Please set up a new scheduled export and try again."
             )
-            .check(matches(isDisplayed()))
-        onView(withText("Set up")).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(HomePageElement.EXPORT_ERROR_BANNER)
-        verify(healthConnectLogger).logImpression(HomePageElement.EXPORT_ERROR_BANNER_BUTTON)
+            checkTextIsDisplayed("Set up")
+            verify(healthConnectLogger).logImpression(HomePageElement.EXPORT_ERROR_BANNER)
+            verify(healthConnectLogger).logImpression(HomePageElement.EXPORT_ERROR_BANNER_BUTTON)
+        }
     }
 
     @Test
@@ -660,19 +631,17 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-        onView(withText("Couldn\'t export data")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "There was a problem with the export for October 20, 2022. " +
-                        "Please set up a new scheduled export and try again."
-                )
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed("Couldn\'t export data")
+            checkTextIsDisplayed(
+                "There was a problem with the export for October 20, 2022. " +
+                    "Please set up a new scheduled export and try again."
             )
-            .check(matches(isDisplayed()))
-        onView(withText("Set up")).check(matches(isDisplayed()))
-        onView(withText("Set up")).perform(click())
-        verify(healthConnectLogger).logInteraction(HomePageElement.EXPORT_ERROR_BANNER_BUTTON)
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.exportSetupActivity)
+            onView(withText("Set up")).perform(click())
+            onIdle()
+            verify(healthConnectLogger).logInteraction(HomePageElement.EXPORT_ERROR_BANNER_BUTTON)
+            assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.exportSetupActivity)
+        }
     }
 
     @Test
@@ -688,14 +657,16 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(withText("Resume integration")).check(matches(isDisplayed()))
-        onView(withText("Tap to continue integrating Health Connect with the Android system."))
-            .check(matches(isDisplayed()))
-        onView(withText("Continue")).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(MigrationElement.MIGRATION_RESUME_BANNER)
-        verify(healthConnectLogger).logImpression(MigrationElement.MIGRATION_RESUME_BANNER_BUTTON)
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed("Resume integration")
+            checkTextIsDisplayed(
+                "Tap to continue integrating Health Connect with the Android system."
+            )
+            checkTextIsDisplayed("Continue")
+            verify(healthConnectLogger).logImpression(MigrationElement.MIGRATION_RESUME_BANNER)
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_RESUME_BANNER_BUTTON)
+        }
     }
 
     @Test
@@ -711,15 +682,17 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(withText("Resume integration")).check(matches(isDisplayed()))
-        onView(withText("Tap to continue integrating Health Connect with the Android system."))
-            .check(matches(isDisplayed()))
-        onView(withText("Continue")).check(matches(isDisplayed()))
-        onView(withText("Continue")).perform(click())
-        verify(healthConnectLogger).logInteraction(MigrationElement.MIGRATION_RESUME_BANNER_BUTTON)
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.migrationActivity)
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed("Resume integration")
+            checkTextIsDisplayed(
+                "Tap to continue integrating Health Connect with the Android system."
+            )
+            onView(withText("Continue")).perform(click())
+            onIdle()
+            verify(healthConnectLogger)
+                .logInteraction(MigrationElement.MIGRATION_RESUME_BANNER_BUTTON)
+            assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.migrationActivity)
+        }
     }
 
     @Test
@@ -735,15 +708,14 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(withText("Update needed")).check(matches(isDisplayed()))
-        onView(withText("Before continuing restoring your data, update your phone system."))
-            .check(matches(isDisplayed()))
-        onView(withText("Update now")).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(DataRestoreElement.RESTORE_PENDING_BANNER)
-        verify(healthConnectLogger)
-            .logImpression(DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON)
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed("Update needed")
+            checkTextIsDisplayed("Before continuing restoring your data, update your phone system.")
+            checkTextIsDisplayed("Update now")
+            verify(healthConnectLogger).logImpression(DataRestoreElement.RESTORE_PENDING_BANNER)
+            verify(healthConnectLogger)
+                .logImpression(DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON)
+        }
     }
 
     @Test
@@ -759,16 +731,16 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(withText("Update needed")).check(matches(isDisplayed()))
-        onView(withText("Before continuing restoring your data, update your phone system."))
-            .check(matches(isDisplayed()))
-        onView(withText("Update now")).check(matches(isDisplayed()))
-        onView(withText("Update now")).perform(click())
-        verify(healthConnectLogger)
-            .logInteraction(DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON)
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.systemUpdateActivity)
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed("Update needed")
+            checkTextIsDisplayed("Before continuing restoring your data, update your phone system.")
+            onView(withText("Update now")).perform(click())
+            onIdle()
+            verify(healthConnectLogger)
+                .logInteraction(DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON)
+            assertThat(navHostController.currentDestination?.id)
+                .isEqualTo(R.id.systemUpdateActivity)
+        }
     }
 
     @Test
@@ -784,20 +756,21 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(withText("Set a screen lock")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "For added security for your health data, set a PIN, pattern, or password for this device"
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed("Set a screen lock")
+            onView(
+                    withText(
+                        "For added security for your health data, set a PIN, pattern, or password for this device"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Set screen lock")).check(matches(isDisplayed()))
-        onView(withText("Not now")).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(HomePageElement.LOCK_SCREEN_BANNER)
-        verify(healthConnectLogger).logImpression(HomePageElement.LOCK_SCREEN_BANNER_BUTTON)
-        verify(healthConnectLogger).logImpression(HomePageElement.LOCK_SCREEN_BANNER_DISMISS_BUTTON)
+                .check(matches(isDisplayed()))
+            checkTextIsDisplayed("Set screen lock")
+            checkTextIsDisplayed("Not now")
+            verify(healthConnectLogger).logImpression(HomePageElement.LOCK_SCREEN_BANNER)
+            verify(healthConnectLogger).logImpression(HomePageElement.LOCK_SCREEN_BANNER_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(HomePageElement.LOCK_SCREEN_BANNER_DISMISS_BUTTON)
+        }
     }
 
     @Test
@@ -813,18 +786,20 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(
-                withText(
-                    "For added security for your health data, set a PIN, pattern, or password for this device"
-                )
+        launchFragmentWithNavigation().use { scenario ->
+            checkTextIsDisplayed(
+                "For added security for your health data, set a PIN, pattern, or password for this device"
             )
-            .check(matches(isDisplayed()))
-        onView(withText("Set screen lock")).perform(click())
-        intended(hasAction("android.settings.SECURITY_SETTINGS"))
-        verify(homeViewModel).onDismissBanner(eq(BannerData.LockScreenBanner(true, true)))
-        verify(healthConnectLogger).logInteraction(HomePageElement.LOCK_SCREEN_BANNER_BUTTON)
+            onView(withText("Set screen lock")).perform(click())
+            onIdle()
+            intended(hasAction("android.settings.SECURITY_SETTINGS"))
+            verify(healthConnectLogger).logInteraction(HomePageElement.LOCK_SCREEN_BANNER_BUTTON)
+            verify(homeViewModel, never())
+                .onDismissBanner(eq(BannerData.LockScreenBanner(true, true)))
+            scenario.moveToState(Lifecycle.State.DESTROYED)
+            onIdle()
+            verify(homeViewModel).onDismissBanner(eq(BannerData.LockScreenBanner(true, true)))
+        }
     }
 
     @Test
@@ -840,18 +815,16 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(
-                withText(
-                    "For added security for your health data, set a PIN, pattern, or password for this device"
-                )
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed(
+                "For added security for your health data, set a PIN, pattern, or password for this device"
             )
-            .check(matches(isDisplayed()))
-        onView(withText("Not now")).perform(click())
-        verify(homeViewModel).onDismissBanner(eq(BannerData.LockScreenBanner(true, true)))
-        verify(healthConnectLogger)
-            .logInteraction(HomePageElement.LOCK_SCREEN_BANNER_DISMISS_BUTTON)
+            onView(withText("Not now")).perform(click())
+            onIdle()
+            verify(homeViewModel).onDismissBanner(eq(BannerData.LockScreenBanner(true, true)))
+            verify(healthConnectLogger)
+                .logInteraction(HomePageElement.LOCK_SCREEN_BANNER_DISMISS_BUTTON)
+        }
     }
 
     @Test
@@ -867,22 +840,19 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(withText("Steps tracked on your phone will appear in Health Connect"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Steps tracked by this device are now stored in Health Connect for connected apps to access"
-                )
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed("Steps tracked on your phone will appear in Health Connect")
+            checkTextIsDisplayed(
+                "Steps tracked by this device are now stored in Health Connect for connected apps to access"
             )
-            .check(matches(isDisplayed()))
-        onView(withText("Review")).check(matches(isDisplayed()))
-        onView(withText("Dismiss")).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(HomePageElement.NATIVE_STEPS_BANNER)
-        verify(healthConnectLogger).logImpression(HomePageElement.NATIVE_STEPS_BANNER_REVIEW_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(HomePageElement.NATIVE_STEPS_BANNER_DISMISS_BUTTON)
+            checkTextIsDisplayed("Review")
+            checkTextIsDisplayed("Dismiss")
+            verify(healthConnectLogger).logImpression(HomePageElement.NATIVE_STEPS_BANNER)
+            verify(healthConnectLogger)
+                .logImpression(HomePageElement.NATIVE_STEPS_BANNER_REVIEW_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(HomePageElement.NATIVE_STEPS_BANNER_DISMISS_BUTTON)
+        }
     }
 
     @Test
@@ -898,20 +868,18 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(
-                withText(
-                    "Steps tracked by this device are now stored in Health Connect for connected apps to access"
-                )
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed(
+                "Steps tracked by this device are now stored in Health Connect for connected apps to access"
             )
-            .check(matches(isDisplayed()))
-        onView(withText("Review")).perform(click())
-        assertThat(navHostController.currentDestination?.id)
-            .isEqualTo(R.id.connectedDevicesFragment)
-        verify(homeViewModel).onDismissBanner(eq(BannerData.NativeStepsBanner))
-        verify(healthConnectLogger)
-            .logInteraction(HomePageElement.NATIVE_STEPS_BANNER_REVIEW_BUTTON)
+            onView(withText("Review")).perform(click())
+            onIdle()
+            assertThat(navHostController.currentDestination?.id)
+                .isEqualTo(R.id.connectedDevicesFragment)
+            verify(homeViewModel).onDismissBanner(eq(BannerData.NativeStepsBanner))
+            verify(healthConnectLogger)
+                .logInteraction(HomePageElement.NATIVE_STEPS_BANNER_REVIEW_BUTTON)
+        }
     }
 
     @Test
@@ -927,17 +895,16 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-        onView(
-                withText(
-                    "Steps tracked by this device are now stored in Health Connect for connected apps to access"
-                )
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed(
+                "Steps tracked by this device are now stored in Health Connect for connected apps to access"
             )
-            .check(matches(isDisplayed()))
-        onView(withText("Dismiss")).perform(click())
-        verify(homeViewModel).onDismissBanner(eq(BannerData.NativeStepsBanner))
-        verify(healthConnectLogger)
-            .logInteraction(HomePageElement.NATIVE_STEPS_BANNER_DISMISS_BUTTON)
+            onView(withText("Dismiss")).perform(click())
+            onIdle()
+            verify(homeViewModel).onDismissBanner(eq(BannerData.NativeStepsBanner))
+            verify(healthConnectLogger)
+                .logInteraction(HomePageElement.NATIVE_STEPS_BANNER_DISMISS_BUTTON)
+        }
     }
 
     @Test
@@ -953,18 +920,17 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(withText("See your health data across apps")).check(matches(isDisplayed()))
-        onView(withText("Start sharing fitness and wellness data between your apps"))
-            .check(matches(isDisplayed()))
-        onView(withText("Not now")).check(matches(isDisplayed()))
-        onView(withText("Set up")).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(HomePageElement.ZERO_APPS_CONNECTED_BANNER)
-        verify(healthConnectLogger)
-            .logImpression(HomePageElement.ZERO_APPS_CONNECTED_BANNER_SET_UP_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(HomePageElement.ZERO_APPS_CONNECTED_BANNER_DISMISS_BUTTON)
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed("See your health data across apps")
+            checkTextIsDisplayed("Start sharing fitness and wellness data between your apps")
+            checkTextIsDisplayed("Not now")
+            checkTextIsDisplayed("Set up")
+            verify(healthConnectLogger).logImpression(HomePageElement.ZERO_APPS_CONNECTED_BANNER)
+            verify(healthConnectLogger)
+                .logImpression(HomePageElement.ZERO_APPS_CONNECTED_BANNER_SET_UP_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(HomePageElement.ZERO_APPS_CONNECTED_BANNER_DISMISS_BUTTON)
+        }
     }
 
     @Test
@@ -980,15 +946,15 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(withText("See your health data across apps")).check(matches(isDisplayed()))
-        onView(withText("Start sharing fitness and wellness data between your apps"))
-            .check(matches(isDisplayed()))
-        onView(withText("Set up")).perform(click())
-        intended(hasAction("android.health.connect.action.SYNC_MORE_APPS"))
-        verify(healthConnectLogger)
-            .logInteraction(HomePageElement.ZERO_APPS_CONNECTED_BANNER_SET_UP_BUTTON)
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed("See your health data across apps")
+            checkTextIsDisplayed("Start sharing fitness and wellness data between your apps")
+            onView(withText("Set up")).perform(click())
+            onIdle()
+            intended(hasAction("android.health.connect.action.SYNC_MORE_APPS"))
+            verify(healthConnectLogger)
+                .logInteraction(HomePageElement.ZERO_APPS_CONNECTED_BANNER_SET_UP_BUTTON)
+        }
     }
 
     @Test
@@ -1004,15 +970,15 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(withText("See your health data across apps")).check(matches(isDisplayed()))
-        onView(withText("Start sharing fitness and wellness data between your apps"))
-            .check(matches(isDisplayed()))
-        onView(withText("Not now")).perform(click())
-        verify(homeViewModel).onDismissBanner(BannerData.ZeroAppsOnboardingBanner)
-        verify(healthConnectLogger)
-            .logInteraction(HomePageElement.ZERO_APPS_CONNECTED_BANNER_DISMISS_BUTTON)
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed("See your health data across apps")
+            checkTextIsDisplayed("Start sharing fitness and wellness data between your apps")
+            onView(withText("Not now")).perform(click())
+            onIdle()
+            verify(homeViewModel).onDismissBanner(BannerData.ZeroAppsOnboardingBanner)
+            verify(healthConnectLogger)
+                .logInteraction(HomePageElement.ZERO_APPS_CONNECTED_BANNER_DISMISS_BUTTON)
+        }
     }
 
     @Test
@@ -1028,18 +994,19 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(withText("Connect a second app")).check(matches(isDisplayed()))
-        onView(withText("Set up another app so it can start sharing fitness and wellness data"))
-            .check(matches(isDisplayed()))
-        onView(withText("Not now")).check(matches(isDisplayed()))
-        onView(withText("Continue")).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(HomePageElement.ONE_APP_CONNECTED_BANNER)
-        verify(healthConnectLogger)
-            .logImpression(HomePageElement.ONE_APP_CONNECTED_BANNER_SET_UP_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(HomePageElement.ONE_APP_CONNECTED_BANNER_DISMISS_BUTTON)
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed("Connect a second app")
+            checkTextIsDisplayed(
+                "Set up another app so it can start sharing fitness and wellness data"
+            )
+            checkTextIsDisplayed("Not now")
+            checkTextIsDisplayed("Continue")
+            verify(healthConnectLogger).logImpression(HomePageElement.ONE_APP_CONNECTED_BANNER)
+            verify(healthConnectLogger)
+                .logImpression(HomePageElement.ONE_APP_CONNECTED_BANNER_SET_UP_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(HomePageElement.ONE_APP_CONNECTED_BANNER_DISMISS_BUTTON)
+        }
     }
 
     @Test
@@ -1055,15 +1022,17 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(withText("Connect a second app")).check(matches(isDisplayed()))
-        onView(withText("Set up another app so it can start sharing fitness and wellness data"))
-            .check(matches(isDisplayed()))
-        onView(withText("Continue")).perform(click())
-        intended(hasAction("android.health.connect.action.SYNC_MORE_APPS"))
-        verify(healthConnectLogger)
-            .logInteraction(HomePageElement.ONE_APP_CONNECTED_BANNER_SET_UP_BUTTON)
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed("Connect a second app")
+            checkTextIsDisplayed(
+                "Set up another app so it can start sharing fitness and wellness data"
+            )
+            onView(withText("Continue")).perform(click())
+            onIdle()
+            intended(hasAction("android.health.connect.action.SYNC_MORE_APPS"))
+            verify(healthConnectLogger)
+                .logInteraction(HomePageElement.ONE_APP_CONNECTED_BANNER_SET_UP_BUTTON)
+        }
     }
 
     @Test
@@ -1079,34 +1048,35 @@ class HomeFragmentTest {
                 )
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
-        launchFragmentWithNavigation()
-
-        onView(withText("Connect a second app")).check(matches(isDisplayed()))
-        onView(withText("Set up another app so it can start sharing fitness and wellness data"))
-            .check(matches(isDisplayed()))
-        onView(withText("Not now")).perform(click())
-        verify(homeViewModel).onDismissBanner(BannerData.OneAppOnboardingBanner)
-        verify(healthConnectLogger)
-            .logInteraction(HomePageElement.ONE_APP_CONNECTED_BANNER_DISMISS_BUTTON)
+        launchFragmentWithNavigation().use {
+            checkTextIsDisplayed("Connect a second app")
+            checkTextIsDisplayed(
+                "Set up another app so it can start sharing fitness and wellness data"
+            )
+            onView(withText("Not now")).perform(click())
+            onIdle()
+            verify(homeViewModel).onDismissBanner(BannerData.OneAppOnboardingBanner)
+            verify(healthConnectLogger)
+                .logInteraction(HomePageElement.ONE_APP_CONNECTED_BANNER_DISMISS_BUTTON)
+        }
     }
 
     // endregion
 
-    private fun setupFragmentForNavigation() {
+    private fun setupFragmentForNavigation(): ActivityScenario<TestActivity> {
         val stateFlow =
             MutableStateFlow<HomeViewModel.HomeFragmentState>(
                 HomeViewModel.HomeFragmentState.WithData(connectedApps = emptyList())
             )
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
 
-        launchFragmentWithNavigation()
+        return launchFragmentWithNavigation()
     }
 
-    private fun launchFragmentWithNavigation() {
+    private fun launchFragmentWithNavigation(): ActivityScenario<TestActivity> =
         launchFragment<HomeFragment>(Bundle()) {
             navHostController.setGraph(R.navigation.nav_graph)
             navHostController.setCurrentDestination(R.id.newHomeFragment)
             Navigation.setViewNavController(this.requireView(), navHostController)
         }
-    }
 }
