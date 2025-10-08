@@ -322,6 +322,7 @@ class PermissionsActivityTest {
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()))
                 .perform(click())
+            onIdle()
 
             assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
             val returnedIntent = scenario.result.resultData
@@ -559,7 +560,9 @@ class PermissionsActivityTest {
                 .inRoot(isDialog())
                 .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
             onView(withText("Conditions")).inRoot(isDialog()).perform(click())
+            onIdle()
             onView(withText("Allow")).inRoot(isDialog()).perform(click())
+            onIdle()
 
             assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
             val returnedIntent = scenario.result.resultData
@@ -1021,7 +1024,8 @@ class PermissionsActivityTest {
         // Ensure this app has never shown onboarding before.
         showOnboarding(context, true)
 
-        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
+            registerBottomSheetIdlingResource(scenario)
             onIdle()
             onView(withId(R.id.onboarding)).check(doesNotExist())
             onView(withText("Allow")).check(matches(isDisplayed()))
@@ -1043,9 +1047,11 @@ class PermissionsActivityTest {
         )
 
         val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
+        registerBottomSheetIdlingResource(scenario)
         onView(withId(androidx.preference.R.id.recycler_view))
             .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
         onView(withText("Heart rate")).perform(click())
+        onIdle()
         onView(withText("Allow")).perform(click())
 
         assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
@@ -1997,6 +2003,7 @@ class PermissionsActivityTest {
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
             .perform(click())
+        onIdle()
         assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
     }
 
