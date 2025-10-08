@@ -31,7 +31,6 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.AlcoholConsumptionRecordHelper;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 
 /**
@@ -104,7 +103,6 @@ public final class DevelopmentDatabaseHelper {
         applyDdpAppInfoDatabaseUpgrade(db);
         applyDeviceInfoEnhancementsDatabaseUpgrade(db);
         applyDdpDatabaseUpgrade(db, oldVersion);
-        applyAlcoholConsumptionDatabaseUpgrade(db, oldVersion);
     }
 
     private static void applyDdpAppInfoDatabaseUpgrade(SQLiteDatabase db) {
@@ -138,14 +136,6 @@ public final class DevelopmentDatabaseHelper {
             return;
         }
         createTable(db, DeviceDataProviderHelper.getCreateTableRequest());
-    }
-
-    private static void applyAlcoholConsumptionDatabaseUpgrade(SQLiteDatabase db, int oldVersion) {
-        if (oldVersion < DB_VERSION_ALCOHOL_CONSUMPTION && Flags.alcoholConsumptionDb()) {
-            AlcoholConsumptionRecordHelper helper = new AlcoholConsumptionRecordHelper();
-            dropTableIfExists(db, helper.getMainTableName());
-            createTable(db, helper.getCreateTableRequest());
-        }
     }
 
     @VisibleForTesting

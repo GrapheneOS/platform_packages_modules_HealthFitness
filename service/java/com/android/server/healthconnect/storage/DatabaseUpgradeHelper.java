@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ACTIVITY_INTENSITY;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ALCOHOL_CONSUMPTION;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ECOSYSTEM_METRICS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
@@ -55,6 +56,7 @@ import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriori
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.ActivityIntensityRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.AlcoholConsumptionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSegmentRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.MindfulnessSessionRecordHelper;
@@ -116,6 +118,9 @@ final class DatabaseUpgradeHelper {
     private static final Upgrader UPGRADE_TO_SYMPTOMS =
             db -> createTable(db, new SymptomRecordHelper().getCreateTableRequest());
 
+    private static final Upgrader UPGRADE_TO_ALCOHOL_CONSUMPTION =
+            db -> createTable(db, new AlcoholConsumptionRecordHelper().getCreateTableRequest());
+
     /**
      * A list of db version -> Upgrader to upgrade the db from the previous version to the version.
      * The upgrades must be executed one by one in the numeric order of db versions, hence TreeMap.
@@ -142,7 +147,8 @@ final class DatabaseUpgradeHelper {
                                     UPGRADE_TO_EXERCISE_SEGMENT_WEIGHT),
                             entry(DB_VERSION_PHR_CHANGE_LOGS, UPGRADE_TO_PHR_CHANGE_LOGS),
                             entry(DB_VERSION_NICOTINE_INTAKE, UPGRADE_TO_NICOTINE_INTAKE),
-                            entry(DB_VERSION_SYMPTOMS, UPGRADE_TO_SYMPTOMS)));
+                            entry(DB_VERSION_SYMPTOMS, UPGRADE_TO_SYMPTOMS),
+                            entry(DB_VERSION_ALCOHOL_CONSUMPTION, UPGRADE_TO_ALCOHOL_CONSUMPTION)));
 
     /**
      * Applies db upgrades to bring the current schema to the latest supported version.

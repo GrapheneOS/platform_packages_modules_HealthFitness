@@ -17,6 +17,7 @@
 package com.android.healthfitness.flags;
 
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ACTIVITY_INTENSITY;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ALCOHOL_CONSUMPTION;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
@@ -113,6 +114,7 @@ public final class AconfigFlagHelper {
         map.put(DB_VERSION_PHR_CHANGE_LOGS, Flags::phrChangeLogsDb);
         map.put(DB_VERSION_NICOTINE_INTAKE, Flags::smokingDb);
         map.put(DB_VERSION_SYMPTOMS, Flags::symptomsDb);
+        map.put(DB_VERSION_ALCOHOL_CONSUMPTION, Flags::alcoholConsumptionDb);
 
         return map;
     }

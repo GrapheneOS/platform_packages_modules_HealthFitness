@@ -17,6 +17,7 @@
 package com.android.healthfitness.flags;
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.getDbVersionToDbFlagMap;
+import static com.android.healthfitness.flags.AconfigFlagHelper.isAlcoholConsumptionEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isDeviceDataProvidersEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isSymptomsEnabled;
@@ -147,5 +148,30 @@ public class AconfigFlagHelperTest {
     @EnableFlags({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB, Flags.FLAG_SMOKING_DB})
     public void symptoms_featureFlagTrueAndDbTrue_expectTrue() {
         assertThat(isSymptomsEnabled()).isTrue();
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_ALCOHOL_CONSUMPTION)
+    @EnableFlags({Flags.FLAG_ALCOHOL_CONSUMPTION_DB, Flags.FLAG_SYMPTOMS_DB, Flags.FLAG_SMOKING_DB})
+    public void alcohol_consumption_featureFlagFalseAndDbTrue_expectFalse() {
+        assertThat(isAlcoholConsumptionEnabled()).isFalse();
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_ALCOHOL_CONSUMPTION, Flags.FLAG_SYMPTOMS_DB, Flags.FLAG_SMOKING_DB})
+    @DisableFlags({Flags.FLAG_ALCOHOL_CONSUMPTION_DB})
+    public void alcohol_consumption_featureFlagTrueAndDbFalse_expectFalse() {
+        assertThat(isAlcoholConsumptionEnabled()).isFalse();
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_ALCOHOL_CONSUMPTION,
+        Flags.FLAG_ALCOHOL_CONSUMPTION_DB,
+        Flags.FLAG_SYMPTOMS_DB,
+        Flags.FLAG_SMOKING_DB
+    })
+    public void alcohol_consumption_featureFlagTrueAndDbTrue_expectTrue() {
+        assertThat(isAlcoholConsumptionEnabled()).isTrue();
     }
 }
