@@ -122,6 +122,7 @@ constructor(
     }
 
     fun loadInitialData() {
+        _banners.value = emptyList()
         viewModelScope.launch {
             _isLoading.value = true
             launch { loadMigrationBanners() }

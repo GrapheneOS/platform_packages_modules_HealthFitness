@@ -727,6 +727,76 @@ class HomeViewModelTest {
             )
     }
 
+    @Test
+    @EnableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
+    fun loadInitialData_doesNotDuplicateBanners() = runTest {
+        // Lock screen banner
+        whenever(keyguardManagerUtil.isDeviceSecure(any())).thenReturn(false)
+        setPreferenceSeen(context, Constants.LOCK_SCREEN_BANNER_SEEN_FITNESS, false)
+        setPreferenceSeen(context, Constants.LOCK_SCREEN_BANNER_SEEN_MEDICAL, false)
+        mockLoadAllDataUseCase(
+            medicalResourceTypeInfo = mockMedicalData,
+            recordTypeInfoMap = mockFitnessData,
+        )
+
+        // Export error banner
+        loadScheduledExportStatusUseCase.updateExportStatus(
+            ScheduledExportUiState(
+                dataExportError =
+                    ScheduledExportUiState.DataExportError.DATA_EXPORT_LOST_FILE_ACCESS,
+                periodInDays = 3,
+                lastFailedExportTime = NOW,
+            )
+        )
+
+        // Migration banner
+        loadMigrationRestoreStateUseCase.setMigrationState(
+            MigrationRestoreState(
+                migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
+                dataRestoreState = MigrationRestoreState.DataRestoreUiState.IDLE,
+                dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
+            )
+        )
+
+        // Onboarding banner
+        setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
+        setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
+        loadOnboardingStateUseCase.setOnboardingBannerState(
+            OnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED
+        )
+
+        // Native steps banner
+        setPreferenceSeen(context, Constants.NATIVE_STEPS_BANNER_SEEN, false)
+
+        // Load first time
+        val state = loadBannerState()
+        assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+        assertThat((state as HomeBannerState.ShowBanners).banners)
+            .containsExactlyElementsIn(
+                listOf(
+                    BannerData.MigrationBanner,
+                    BannerData.ExportErrorBanner(NOW),
+                    BannerData.LockScreenBanner(true, true),
+                    BannerData.OneAppOnboardingBanner,
+                    BannerData.NativeStepsBanner,
+                )
+            )
+
+        // Load second time
+        val state2 = loadBannerState()
+        assertThat(state2).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+        assertThat((state2 as HomeBannerState.ShowBanners).banners)
+            .containsExactlyElementsIn(
+                listOf(
+                    BannerData.MigrationBanner,
+                    BannerData.ExportErrorBanner(NOW),
+                    BannerData.LockScreenBanner(true, true),
+                    BannerData.OneAppOnboardingBanner,
+                    BannerData.NativeStepsBanner,
+                )
+            )
+    }
+
     private fun TestScope.loadHomeFragmentState(): HomeViewModel.HomeFragmentState {
         viewModel.loadInitialData()
         advanceUntilIdle()
