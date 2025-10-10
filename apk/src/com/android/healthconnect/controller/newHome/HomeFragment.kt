@@ -94,6 +94,8 @@ class HomeFragment : Hilt_HomeFragment() {
         BannerFactory(requireContext(), dateFormatter, ::handleBannerAction)
     }
 
+    private var bannerToDismissOnStop: HomeViewModel.BannerData? = null
+
     private fun handleBannerAction(action: BannerAction) {
         when (action) {
             is BannerAction.Navigate -> findNavController().navigate(action.destinationId)
@@ -105,7 +107,7 @@ class HomeFragment : Hilt_HomeFragment() {
             }
             is BannerAction.StartActivityAndDismiss -> {
                 startActivity(action.intent)
-                homeViewModel.onDismissBanner(action.banner)
+                bannerToDismissOnStop = action.banner
             }
         }
     }
@@ -205,6 +207,14 @@ class HomeFragment : Hilt_HomeFragment() {
     override fun onResume() {
         super.onResume()
         homeViewModel.loadInitialData()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        bannerToDismissOnStop?.let {
+            homeViewModel.onDismissBanner(it)
+            bannerToDismissOnStop = null
+        }
     }
 
     private fun updateBanners(bannerState: HomeViewModel.HomeBannerState) {
