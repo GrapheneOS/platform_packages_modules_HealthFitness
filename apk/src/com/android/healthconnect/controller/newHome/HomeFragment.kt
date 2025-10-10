@@ -159,13 +159,23 @@ class HomeFragment : Hilt_HomeFragment() {
             R.menu.show_system_with_send_feedback_and_help,
             viewLifecycleOwner,
             healthConnectLogger,
+            onPrepareMenu = { menu ->
+                val showHideSystemMenuItem = menu.findItem(R.id.menu_show_hide_system)
+                showHideSystemMenuItem?.let {
+                    val isShowingSystem = homeViewModel.showSystemApps
+                    it.setTitle(
+                        if (isShowingSystem) {
+                            R.string.menu_hide_system
+                        } else {
+                            R.string.menu_show_system
+                        }
+                    )
+                }
+            },
         ) { menuItem ->
             if (menuItem.itemId == R.id.menu_show_hide_system) {
-                val isShowingSystem = homeViewModel.showSystemApps
-                menuItem.setTitle(
-                    if (isShowingSystem) R.string.menu_show_system else R.string.menu_hide_system
-                )
-                homeViewModel.setShouldShowSystemApps(!isShowingSystem)
+                homeViewModel.setShouldShowSystemApps(!homeViewModel.showSystemApps)
+                requireActivity().invalidateMenu()
                 true
             } else {
                 false
