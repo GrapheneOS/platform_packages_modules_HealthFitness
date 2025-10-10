@@ -526,17 +526,16 @@ public class HealthConnectManagerTest {
         doAnswer(
                         (Answer<Void>)
                                 invocation -> {
-                                    IEmptyResponseCallback callback = invocation.getArgument(4);
+                                    IEmptyResponseCallback callback = invocation.getArgument(3);
                                     callback.onResult();
                                     return null;
                                 })
                 .when(mService)
-                .recordMatchmakingDenial(any(), any(), any(), any(), any());
+                .recordMatchmakingDenial(any(), any(), any(), any());
 
         healthConnectManager.recordMatchmakingDenial(
                 PACKAGE_TO_MATCH,
-                List.of(MATCHING_PACKAGE),
-                List.of(WRITE_EXERCISE),
+                Map.of(MATCHING_PACKAGE, List.of(WRITE_EXERCISE)),
                 Executors.newSingleThreadExecutor(),
                 receiver);
 
@@ -549,23 +548,19 @@ public class HealthConnectManagerTest {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
         TestOutcomeReceiver<Void> receiver = new TestOutcomeReceiver<>();
-        ArgumentCaptor<List<String>> permissionsCaptor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Map<String, List<String>>> deniedAppsCaptor =
+                ArgumentCaptor.forClass(Map.class);
 
         healthConnectManager.recordMatchmakingDenial(
                 PACKAGE_TO_MATCH,
-                List.of(MATCHING_PACKAGE),
-                Collections.emptyList(),
+                Map.of(MATCHING_PACKAGE, Collections.emptyList()),
                 Executors.newSingleThreadExecutor(),
                 receiver);
 
         verify(mService)
                 .recordMatchmakingDenial(
-                        any(),
-                        eq(PACKAGE_TO_MATCH),
-                        eq(List.of(MATCHING_PACKAGE)),
-                        permissionsCaptor.capture(),
-                        any());
-        assertThat(permissionsCaptor.getValue()).isEmpty();
+                        any(), eq(PACKAGE_TO_MATCH), deniedAppsCaptor.capture(), any());
+        assertThat(deniedAppsCaptor.getValue().get(MATCHING_PACKAGE)).isEmpty();
     }
 
     @Test
@@ -575,24 +570,21 @@ public class HealthConnectManagerTest {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
         TestOutcomeReceiver<Void> receiver = new TestOutcomeReceiver<>();
-        ArgumentCaptor<List<String>> permissionsCaptor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Map<String, List<String>>> deniedAppsCaptor =
+                ArgumentCaptor.forClass(Map.class);
         List<String> permissions = List.of(WRITE_STEPS, WRITE_SLEEP);
 
         healthConnectManager.recordMatchmakingDenial(
                 PACKAGE_TO_MATCH,
-                List.of(MATCHING_PACKAGE),
-                permissions,
+                Map.of(MATCHING_PACKAGE, permissions),
                 Executors.newSingleThreadExecutor(),
                 receiver);
 
         verify(mService)
                 .recordMatchmakingDenial(
-                        any(),
-                        eq(PACKAGE_TO_MATCH),
-                        eq(List.of(MATCHING_PACKAGE)),
-                        permissionsCaptor.capture(),
-                        any());
-        assertThat(permissionsCaptor.getValue()).containsExactlyElementsIn(permissions);
+                        any(), eq(PACKAGE_TO_MATCH), deniedAppsCaptor.capture(), any());
+        assertThat(deniedAppsCaptor.getValue().get(MATCHING_PACKAGE))
+                .containsExactlyElementsIn(permissions);
     }
 
     @Test
@@ -604,7 +596,7 @@ public class HealthConnectManagerTest {
         doAnswer(
                         (Answer<Void>)
                                 invocation -> {
-                                    IEmptyResponseCallback callback = invocation.getArgument(4);
+                                    IEmptyResponseCallback callback = invocation.getArgument(3);
                                     callback.onError(
                                             new HealthConnectExceptionParcel(
                                                     new HealthConnectException(
@@ -613,12 +605,11 @@ public class HealthConnectManagerTest {
                                     return null;
                                 })
                 .when(mService)
-                .recordMatchmakingDenial(any(), any(), any(), any(), any());
+                .recordMatchmakingDenial(any(), any(), any(), any());
 
         healthConnectManager.recordMatchmakingDenial(
                 PACKAGE_TO_MATCH,
-                List.of(MATCHING_PACKAGE),
-                List.of(WRITE_EXERCISE),
+                Map.of(MATCHING_PACKAGE, List.of(WRITE_EXERCISE)),
                 Executors.newSingleThreadExecutor(),
                 receiver);
 

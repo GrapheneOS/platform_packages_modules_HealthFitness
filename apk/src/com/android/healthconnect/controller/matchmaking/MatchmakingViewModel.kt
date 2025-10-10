@@ -195,16 +195,20 @@ constructor(
             return
         }
         val callingPackageName = state.callingAppMetaData.packageName
-        val matchingPackageNames = state.matchingApps.map { it.metadata.packageName }
-        val permissions =
-            state.matchingApps.flatMap { it.permissions }.map { it.toString() }.distinct()
+        val deniedApps =
+            state.matchingApps
+                .filter { it.permissions.isNotEmpty() }
+                .associate {
+                    it.metadata.packageName to
+                        it.permissions.map { permission -> permission.toString() }
+                }
 
-        if (matchingPackageNames.isEmpty() || permissions.isEmpty()) {
+        if (deniedApps.isEmpty()) {
             return
         }
         viewModelScope.launch {
             recordMatchmakingDenialUseCase.invoke(
-                RecordMatchmakingDenialInput(callingPackageName, matchingPackageNames, permissions)
+                RecordMatchmakingDenialInput(callingPackageName, deniedApps)
             )
         }
     }

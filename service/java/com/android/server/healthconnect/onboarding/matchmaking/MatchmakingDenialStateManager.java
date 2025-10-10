@@ -37,7 +37,7 @@ public final class MatchmakingDenialStateManager {
     private static final String TAG = MatchmakingDenialStateManager.class.getSimpleName();
 
     @VisibleForTesting static final int MAX_DENIALS_BEFORE_PAUSE = 2;
-    private static final Duration PAUSE_DURATION = Duration.ofDays(30);
+    @VisibleForTesting static final Duration PAUSE_DURATION = Duration.ofDays(90);
 
     @VisibleForTesting static final String DENIAL_PREFERENCE_PREFIX = "matchmaking_denial_state";
 

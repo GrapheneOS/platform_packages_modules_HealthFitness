@@ -457,7 +457,7 @@ public class MatchmakingManagerTest {
     @Test
     public void recordMatchmakingDenial_callsDenialManager() {
         mMatchmakingManager.recordMatchmakingDenial(
-                PACKAGE_NAME, List.of(PACKAGE_NAME_2), List.of(WRITE_EXERCISE));
+                PACKAGE_NAME, Map.of(PACKAGE_NAME_2, List.of(WRITE_EXERCISE)));
 
         verify(mMatchmakingDenialStateManager)
                 .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, ACTIVITY);
@@ -466,7 +466,7 @@ public class MatchmakingManagerTest {
     @Test
     public void recordMatchmakingDenial_sleepCategory_callsDenialManager() {
         mMatchmakingManager.recordMatchmakingDenial(
-                PACKAGE_NAME, List.of(PACKAGE_NAME_2), List.of(WRITE_SLEEP));
+                PACKAGE_NAME, Map.of(PACKAGE_NAME_2, List.of(WRITE_SLEEP)));
 
         verify(mMatchmakingDenialStateManager)
                 .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, SLEEP);
@@ -475,7 +475,7 @@ public class MatchmakingManagerTest {
     @Test
     public void recordMatchmakingDenial_multiplePermissionsSameCategory_callsDenialManagerOnce() {
         mMatchmakingManager.recordMatchmakingDenial(
-                PACKAGE_NAME, List.of(PACKAGE_NAME_2), List.of(WRITE_EXERCISE, WRITE_STEPS));
+                PACKAGE_NAME, Map.of(PACKAGE_NAME_2, List.of(WRITE_EXERCISE, WRITE_STEPS)));
 
         verify(mMatchmakingDenialStateManager)
                 .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, ACTIVITY);
@@ -485,8 +485,9 @@ public class MatchmakingManagerTest {
     public void recordMatchmakingDenial_duplicatePermissionsSameCategory_callsDenialManagerOnce() {
         mMatchmakingManager.recordMatchmakingDenial(
                 PACKAGE_NAME,
-                List.of(PACKAGE_NAME_2),
-                List.of(WRITE_EXERCISE, WRITE_STEPS, WRITE_EXERCISE, WRITE_EXERCISE));
+                Map.of(
+                        PACKAGE_NAME_2,
+                        List.of(WRITE_EXERCISE, WRITE_STEPS, WRITE_EXERCISE, WRITE_EXERCISE)));
 
         verify(mMatchmakingDenialStateManager)
                 .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, ACTIVITY);
@@ -496,13 +497,14 @@ public class MatchmakingManagerTest {
     public void recordMatchmakingDenial_multipleCategories_callsForEachCategory() {
         mMatchmakingManager.recordMatchmakingDenial(
                 PACKAGE_NAME,
-                List.of(PACKAGE_NAME_2),
-                List.of(
-                        WRITE_EXERCISE,
-                        WRITE_SLEEP,
-                        WRITE_MENSTRUATION,
-                        WRITE_HEART_RATE,
-                        WRITE_NUTRITION));
+                Map.of(
+                        PACKAGE_NAME_2,
+                        List.of(
+                                WRITE_EXERCISE,
+                                WRITE_SLEEP,
+                                WRITE_MENSTRUATION,
+                                WRITE_HEART_RATE,
+                                WRITE_NUTRITION)));
 
         verify(mMatchmakingDenialStateManager)
                 .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, ACTIVITY);
@@ -520,8 +522,11 @@ public class MatchmakingManagerTest {
     public void recordMatchmakingDenial_multipleMatchingApps_callsForEachApp() {
         mMatchmakingManager.recordMatchmakingDenial(
                 PACKAGE_NAME,
-                List.of(PACKAGE_NAME_2, PACKAGE_NAME_3),
-                List.of(WRITE_EXERCISE, WRITE_SLEEP));
+                Map.of(
+                        PACKAGE_NAME_2,
+                        List.of(WRITE_EXERCISE, WRITE_SLEEP),
+                        PACKAGE_NAME_3,
+                        List.of(WRITE_EXERCISE, WRITE_SLEEP)));
 
         verify(mMatchmakingDenialStateManager)
                 .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, ACTIVITY);
@@ -537,8 +542,9 @@ public class MatchmakingManagerTest {
     public void recordMatchmakingDenial_filtersNonWritePermissions() {
         mMatchmakingManager.recordMatchmakingDenial(
                 PACKAGE_NAME,
-                List.of(PACKAGE_NAME_2),
-                List.of(WRITE_EXERCISE, READ_STEPS, WRITE_SLEEP, READ_SLEEP));
+                Map.of(
+                        PACKAGE_NAME_2,
+                        List.of(WRITE_EXERCISE, READ_STEPS, WRITE_SLEEP, READ_SLEEP)));
 
         verify(mMatchmakingDenialStateManager)
                 .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, ACTIVITY);

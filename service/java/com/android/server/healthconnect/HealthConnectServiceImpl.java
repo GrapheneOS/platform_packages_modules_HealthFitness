@@ -3112,14 +3112,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
-     * @see HealthConnectManager#recordMatchmakingDenial(String, List, List, Executor,
-     *     OutcomeReceiver)
+     * @see HealthConnectManager#recordMatchmakingDenial(String, Map, Executor, OutcomeReceiver)
      */
+    @Override
     public void recordMatchmakingDenial(
             AttributionSource attributionSource,
             String callingPackageName,
-            List<String> matchingPackageNames,
-            List<String> deniedPermissions,
+            Map<String, List<String>> matchingApps,
             IEmptyResponseCallback callback) {
         checkParamsNonNull(attributionSource, callingPackageName, callback);
         final int uid = Binder.getCallingUid();
@@ -3130,7 +3129,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
                     if (mMatchmakingManager == null || !Flags.matchmaking()) {
-                        throw new UnsupportedOperationException("getMatchingApps is not supported");
+                        throw new UnsupportedOperationException(
+                                "recordMatchmakingDenial is not supported");
                     }
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
@@ -3142,7 +3142,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     throwExceptionIfDataSyncInProgress();
                     if (mMatchmakingManager != null) {
                         mMatchmakingManager.recordMatchmakingDenial(
-                                callingPackageName, matchingPackageNames, deniedPermissions);
+                                callingPackageName, matchingApps);
                     }
                     callback.onResult();
                 },

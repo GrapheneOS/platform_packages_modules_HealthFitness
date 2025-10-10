@@ -61,26 +61,24 @@ class RecordMatchmakingDenialUseCaseTest {
         useCase.invoke(
             RecordMatchmakingDenialInput(
                 TEST_APP_PACKAGE_NAME,
-                listOf(TEST_APP_PACKAGE_NAME_2),
-                permissions,
+                mapOf(TEST_APP_PACKAGE_NAME_2 to permissions),
             )
         )
 
-        verify(healthConnectManager).recordMatchmakingDenial(any(), any(), any(), any(), any())
+        verify(healthConnectManager).recordMatchmakingDenial(any(), any(), any(), any())
     }
 
     @Test
     fun invoke_healthConnectManagerThrowsException_returnsFailed() = runTest {
         val permissions = listOf("permission1", "permission2")
-        whenever(healthConnectManager.recordMatchmakingDenial(any(), any(), any(), any(), any()))
+        whenever(healthConnectManager.recordMatchmakingDenial(any(), any(), any(), any()))
             .doThrow(RuntimeException("test"))
 
         val result =
             useCase.invoke(
                 RecordMatchmakingDenialInput(
                     TEST_APP_PACKAGE_NAME,
-                    listOf(TEST_APP_PACKAGE_NAME_2),
-                    permissions,
+                    mapOf(TEST_APP_PACKAGE_NAME_2 to permissions),
                 )
             )
 

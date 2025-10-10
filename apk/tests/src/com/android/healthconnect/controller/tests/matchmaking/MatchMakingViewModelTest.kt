@@ -289,14 +289,17 @@ class MatchMakingViewModelTest {
         setupWithData()
         val captor = argumentCaptor<RecordMatchmakingDenialUseCase.RecordMatchmakingDenialInput>()
         val callingPackageName = TEST_APP_PACKAGE_NAME_3
-        val matchingPackageNames = listOf(TEST_APP_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
+        val deniedApps =
+            mapOf(
+                TEST_APP_PACKAGE_NAME to listOf(WRITE_STEPS),
+                TEST_APP_PACKAGE_NAME_2 to listOf(WRITE_EXERCISE),
+            )
 
         viewModel.recordMatchmakingDenial()
 
         verify(recordMatchmakingDenialUseCase).invoke(captor.capture())
         assertThat(captor.firstValue.callingPackageName).isEqualTo(callingPackageName)
-        assertThat(captor.firstValue.matchingPackageNames).isEqualTo(matchingPackageNames)
-        assertThat(captor.firstValue.permissions).containsExactly(WRITE_STEPS, WRITE_EXERCISE)
+        assertThat(captor.firstValue.deniedApps).isEqualTo(deniedApps)
     }
 
     @Test
@@ -307,14 +310,17 @@ class MatchMakingViewModelTest {
         viewModel.addPermissionToGrantedList(TEST_APP_PACKAGE_NAME, permission)
         val captor = argumentCaptor<RecordMatchmakingDenialUseCase.RecordMatchmakingDenialInput>()
         val callingPackageName = TEST_APP_PACKAGE_NAME_3
-        val matchingPackageNames = listOf(TEST_APP_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
+        val deniedApps =
+            mapOf(
+                TEST_APP_PACKAGE_NAME to listOf(WRITE_STEPS),
+                TEST_APP_PACKAGE_NAME_2 to listOf(WRITE_EXERCISE),
+            )
 
         viewModel.recordMatchmakingDenial()
 
         verify(recordMatchmakingDenialUseCase).invoke(captor.capture())
         assertThat(captor.firstValue.callingPackageName).isEqualTo(callingPackageName)
-        assertThat(captor.firstValue.matchingPackageNames).isEqualTo(matchingPackageNames)
-        assertThat(captor.firstValue.permissions).containsExactly(WRITE_STEPS, WRITE_EXERCISE)
+        assertThat(captor.firstValue.deniedApps).isEqualTo(deniedApps)
     }
 
     private suspend fun setupWithData() {

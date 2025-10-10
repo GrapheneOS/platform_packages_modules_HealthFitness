@@ -3543,8 +3543,7 @@ public class HealthConnectServiceImplTest {
         mHealthConnectService.recordMatchmakingDenial(
                 mAttributionSource,
                 TEST_PACKAGE_NAME,
-                List.of(TEST_PACKAGE_NAME_2),
-                List.of(WRITE_STEPS),
+                Map.of(TEST_PACKAGE_NAME_2, List.of(WRITE_STEPS)),
                 mEmptyResponseCallback);
         awaitAllExecutorsIdle();
 
@@ -3561,8 +3560,7 @@ public class HealthConnectServiceImplTest {
         mHealthConnectService.recordMatchmakingDenial(
                 mAttributionSource,
                 TEST_PACKAGE_NAME,
-                List.of(TEST_PACKAGE_NAME_2),
-                List.of(WRITE_STEPS),
+                Map.of(TEST_PACKAGE_NAME_2, List.of(WRITE_STEPS)),
                 mEmptyResponseCallback);
 
         verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
@@ -3574,11 +3572,7 @@ public class HealthConnectServiceImplTest {
         setDataManagementPermission(PERMISSION_GRANTED);
 
         mHealthConnectService.recordMatchmakingDenial(
-                mAttributionSource,
-                TEST_PACKAGE_NAME,
-                List.of(),
-                List.of(WRITE_STEPS),
-                mEmptyResponseCallback);
+                mAttributionSource, TEST_PACKAGE_NAME, Map.of(), mEmptyResponseCallback);
 
         verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
     }
@@ -3592,8 +3586,7 @@ public class HealthConnectServiceImplTest {
         mHealthConnectService.recordMatchmakingDenial(
                 mAttributionSource,
                 TEST_PACKAGE_NAME,
-                List.of(TEST_PACKAGE_NAME_2),
-                List.of(),
+                Map.of(TEST_PACKAGE_NAME_2, List.of()),
                 mEmptyResponseCallback);
 
         verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();

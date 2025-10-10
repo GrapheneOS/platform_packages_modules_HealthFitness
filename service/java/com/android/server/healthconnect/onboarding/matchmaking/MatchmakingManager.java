@@ -96,12 +96,11 @@ public final class MatchmakingManager {
 
     /** Increments the denial counter for the given package and permissions. */
     public void recordMatchmakingDenial(
-            String callingPackageName,
-            List<String> matchingPackageNames,
-            List<String> permissions) {
-        Set<Integer> writeCategories = getUniqueWriteCategories(permissions);
-
-        for (String matchingPackageName : matchingPackageNames) {
+            String callingPackageName, Map<String, List<String>> deniedApps) {
+        for (Map.Entry<String, List<String>> entry : deniedApps.entrySet()) {
+            String matchingPackageName = entry.getKey();
+            List<String> permissions = entry.getValue();
+            Set<Integer> writeCategories = getUniqueWriteCategories(permissions);
             for (int category : writeCategories) {
                 mMatchmakingDenialStateManager.recordMatchmakingDenial(
                         callingPackageName, matchingPackageName, category);

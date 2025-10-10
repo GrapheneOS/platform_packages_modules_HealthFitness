@@ -19,6 +19,7 @@ import static android.health.connect.HealthDataCategory.ACTIVITY;
 import static android.health.connect.HealthDataCategory.SLEEP;
 
 import static com.android.server.healthconnect.onboarding.matchmaking.MatchmakingDenialStateManager.MAX_DENIALS_BEFORE_PAUSE;
+import static com.android.server.healthconnect.onboarding.matchmaking.MatchmakingDenialStateManager.PAUSE_DURATION;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -149,7 +150,7 @@ public class MatchmakingDenialStateManagerTest {
 
     @Test
     public void isMatchmakingPaused_pauseExpired_removesStoredStateAndReturnsFalse() {
-        Instant expiredTimestamp = Instant.now().minus(40, ChronoUnit.DAYS);
+        Instant expiredTimestamp = Instant.now().minus(10, ChronoUnit.DAYS).minus(PAUSE_DURATION);
         String preferenceValue =
                 new DenialState(MAX_DENIALS_BEFORE_PAUSE + 5, expiredTimestamp)
                         .toPreferenceString();
@@ -165,7 +166,7 @@ public class MatchmakingDenialStateManagerTest {
 
     @Test
     public void isMatchmakingPaused_oneStateExpired_onlyResetsExpiredState() {
-        Instant expiredTimestamp = Instant.now().minus(40, ChronoUnit.DAYS);
+        Instant expiredTimestamp = Instant.now().minus(10, ChronoUnit.DAYS).minus(PAUSE_DURATION);
         String expiredStateValue =
                 new DenialState(MAX_DENIALS_BEFORE_PAUSE, expiredTimestamp).toPreferenceString();
         when(mPreferenceHelper.getPreference(PREFERENCE_KEY)).thenReturn(expiredStateValue);
