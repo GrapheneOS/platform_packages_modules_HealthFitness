@@ -148,7 +148,6 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        whenever(viewModel.grantedFitnessCategories).then { MutableLiveData<Set<Int>>() }
     }
 
     @After
@@ -985,12 +984,6 @@ class FitnessPermissionsFragmentTest {
         clickSwitchOnRecyclerViewItemWithText("Activity (1)")
 
         verify(viewModel).updateHealthPermissions(activityPermissions, true)
-        verify(viewModel)
-            .updateHealthDataCategory(
-                PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                    .toString(),
-                true,
-            )
     }
 
     @Test

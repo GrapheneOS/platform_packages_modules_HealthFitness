@@ -14,7 +14,6 @@
 package com.android.healthconnect.controller.permissions.app
 
 import android.content.Context
-import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissions
 import android.util.Log
 import androidx.annotation.VisibleForTesting
@@ -40,7 +39,6 @@ import com.android.healthconnect.controller.permissions.data.PermissionsAccessTy
 import com.android.healthconnect.controller.permissions.request.PermissionGroupKey
 import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteAppData
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteAppDataUseCase
-import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromFitnessPermissionType
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
@@ -48,8 +46,6 @@ import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.modules.utils.build.SdkLevel
-import com.android.healthfitness.flags.Flags.permissionsGroupingFitnessAppScreen
-import com.android.healthfitness.flags.Flags.permissionsGroupingSettingsFitnessAppScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Instant
@@ -160,17 +156,6 @@ constructor(
                 this.value = value || atLeastOneFitnessPermissionGranted.value ?: false
             }
         }
-
-    private val _grantedFitnessCategories = MutableLiveData<Set<String>>()
-
-    /**
-     * [HealthDataCategory] that have all their permissions granted locally via a toggle, but not
-     * yet requested. This is used to update the UI of the parent category toggle. When all
-     * permissions in a category are granted, the category is added to this set. This is used in
-     * conjunction with [grantedFitnessPermissions] to determine the state of the UI.
-     */
-    val grantedFitnessCategories: LiveData<Set<String>>
-        get() = _grantedFitnessCategories
 
     private val _expandedDataCategoryPreferenceKeys = MutableLiveData<Set<String>>(emptySet())
 
@@ -342,45 +327,6 @@ constructor(
                     .filterIsInstance<AdditionalPermission>()
                     .toSet()
             )
-
-            if (
-                permissionsGroupingFitnessAppScreen() ||
-                    permissionsGroupingSettingsFitnessAppScreen()
-            ) {
-                val allFitnessPermissionsByCategory =
-                    healthPermissionsList
-                        .map { it.healthPermission }
-                        .filterIsInstance<FitnessPermission>()
-                        .groupBy {
-                            PermissionGroupKey(
-                                it.permissionsAccessType,
-                                fromFitnessPermissionType(it.fitnessPermissionType),
-                            )
-                        }
-
-                val grantedFitnessPermissionsByCategory =
-                    healthPermissionsList
-                        .filter { it.isGranted }
-                        .map { it.healthPermission }
-                        .filterIsInstance<FitnessPermission>()
-                        .groupBy {
-                            PermissionGroupKey(
-                                it.permissionsAccessType,
-                                fromFitnessPermissionType(it.fitnessPermissionType),
-                            )
-                        }
-                _grantedFitnessCategories.postValue(
-                    allFitnessPermissionsByCategory
-                        .filter { (category, allPermissions) ->
-                            val grantedPermissions = grantedFitnessPermissionsByCategory[category]
-                            grantedPermissions != null &&
-                                grantedPermissions.size == allPermissions.size
-                        }
-                        .keys
-                        .map { it.toString() }
-                        .toSet()
-                )
-            }
         }
     }
 
@@ -434,26 +380,6 @@ constructor(
                         .filterIsInstance<AdditionalPermission>()
                         .toSet()
                 )
-
-                if (
-                    permissionsGroupingFitnessAppScreen() ||
-                        permissionsGroupingSettingsFitnessAppScreen()
-                ) {
-                    val grantedFitnessPermissionsByCategory =
-                        grantedPermissions
-                            .map { it.healthPermission }
-                            .filterIsInstance<FitnessPermission>()
-                            .groupBy {
-                                PermissionGroupKey(
-                                    it.permissionsAccessType,
-                                    fromFitnessPermissionType(it.fitnessPermissionType),
-                                )
-                            }
-
-                    _grantedFitnessCategories.postValue(
-                        grantedFitnessPermissionsByCategory.keys.map { it.toString() }.toSet()
-                    )
-                }
             }
             shouldLoadGrantedPermissions = false
         }
@@ -464,28 +390,14 @@ constructor(
     }
 
     /** Mark dropdown for given [android.health.connect.HealthDataCategory] expanded or collapsed */
-    fun updateDataCategoryPreferenceKey(key: String, isExpanded: Boolean) {
+    fun updateDataCategoryPreferenceKey(key: PermissionGroupKey, isExpanded: Boolean) {
         val currentKeys = _expandedDataCategoryPreferenceKeys.value.orEmpty().toMutableSet()
         if (isExpanded) {
-            currentKeys.add(key)
+            currentKeys.add(key.toString())
         } else {
-            currentKeys.remove(key)
+            currentKeys.remove(key.toString())
         }
         _expandedDataCategoryPreferenceKeys.value = currentKeys.toSet()
-    }
-
-    /** Marks the given [HealthDataCategory] as locally granted or revoked. */
-    fun updateHealthDataCategory(key: String, grant: Boolean) {
-        val updatedFitnessPermissionsForCategory =
-            _grantedFitnessCategories.value.orEmpty().toMutableSet()
-
-        if (grant) {
-            updatedFitnessPermissionsForCategory.add(key)
-        } else {
-            updatedFitnessPermissionsForCategory.remove(key)
-        }
-
-        _grantedFitnessCategories.postValue(updatedFitnessPermissionsForCategory)
     }
 
     fun updatePermissions(

@@ -185,7 +185,6 @@ class MockedPermissionsActivityTest {
         }
 
         whenever(healthPermissionReader.isRationaleIntentDeclared(anyString())).thenReturn(true)
-        whenever(viewModel.grantedFitnessCategories).then { MutableLiveData<Set<Int>>() }
         (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(true)
         showOnboarding(context, false)
     }

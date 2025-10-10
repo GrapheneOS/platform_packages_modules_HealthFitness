@@ -1764,63 +1764,28 @@ class RequestPermissionViewModelTest {
     fun updateDataCategoryPreferenceKey_addKey_addsToLiveData() = runTest {
         val testObserver = TestObserver<Set<String>>()
         viewModel.expandedDataCategoryPreferenceKeys.observeForever(testObserver)
-        val key =
-            PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY).toString()
+        val key = PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
 
         viewModel.updateDataCategoryPreferenceKey(key, isExpanded = true)
         advanceUntilIdle()
 
-        assertThat(testObserver.getLastValue()).contains(key)
+        assertThat(testObserver.getLastValue()).contains(key.toString())
     }
 
     @Test
     fun updateDataCategoryPreferenceKey_removeKey_removesFromLiveData() = runTest {
         val testObserver = TestObserver<Set<String>>()
         viewModel.expandedDataCategoryPreferenceKeys.observeForever(testObserver)
-        val key =
-            PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY).toString()
+        val key = PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
         viewModel.updateDataCategoryPreferenceKey(key, isExpanded = true)
         advanceUntilIdle()
-        assertThat(testObserver.getLastValue()).contains(key)
+        assertThat(testObserver.getLastValue()).contains(key.toString())
 
         viewModel.updateDataCategoryPreferenceKey(key, isExpanded = false)
         advanceUntilIdle()
 
-        assertThat(testObserver.getLastValue()).doesNotContain(key)
+        assertThat(testObserver.getLastValue()).doesNotContain(key.toString())
     }
-
-    @Test
-    fun updateHealthPermissionsCategory_grant_updatesGrantedFitnessPermissionsForCategory() =
-        runTest {
-            val permissionGroupKey =
-                PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                    .toString()
-            val testObserver = TestObserver<Set<String>>()
-            viewModel.grantedFitnessCategories.observeForever(testObserver)
-
-            viewModel.updateHealthDataCategory(permissionGroupKey, grant = true)
-            advanceUntilIdle()
-
-            assertThat(testObserver.getLastValue()).contains(permissionGroupKey)
-        }
-
-    @Test
-    fun updateHealthPermissionsCategory_revoke_updatesGrantedFitnessPermissionsForCategory() =
-        runTest {
-            val permissionGroupKey =
-                PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                    .toString()
-            val testObserver = TestObserver<Set<String>>()
-            viewModel.grantedFitnessCategories.observeForever(testObserver)
-            viewModel.updateHealthDataCategory(permissionGroupKey, grant = true)
-            advanceUntilIdle()
-            assertThat(testObserver.getLastValue()).contains(permissionGroupKey)
-
-            viewModel.updateHealthDataCategory(permissionGroupKey, grant = false)
-            advanceUntilIdle()
-
-            assertThat(testObserver.getLastValue()).doesNotContain(permissionGroupKey)
-        }
 
     @Test
     fun updateHealthPermissions_grant_updatesGrantedFitnessPermissions() = runTest {

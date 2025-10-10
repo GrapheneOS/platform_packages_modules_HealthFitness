@@ -115,12 +115,12 @@ constructor(
         get() = _expandedDataCategoryPreferenceKeys
 
     /** Mark dropdown for given [android.health.connect.HealthDataCategory] expanded or collapsed */
-    fun updateDataCategoryPreferenceKey(key: String, isExpanded: Boolean) {
+    fun updateDataCategoryPreferenceKey(key: PermissionGroupKey, isExpanded: Boolean) {
         val currentKeys = _expandedDataCategoryPreferenceKeys.value.orEmpty().toMutableSet()
         if (isExpanded) {
-            currentKeys.add(key)
+            currentKeys.add(key.toString())
         } else {
-            currentKeys.remove(key)
+            currentKeys.remove(key.toString())
         }
         _expandedDataCategoryPreferenceKeys.value = currentKeys.toSet()
     }
@@ -195,20 +195,6 @@ constructor(
     /** [FitnessPermission]s that have been granted locally via a toggle, but not yet requested */
     val grantedFitnessPermissions: LiveData<Set<FitnessPermission>>
         get() = _grantedFitnessPermissions
-
-    private val _grantedFitnessCategories =
-        savedStateHandle.getLiveData<Set<String>>(
-            GRANTED_FITNESS_CATEGORY_PERMISSIONS_KEY,
-            emptySet(),
-        )
-    /**
-     * [HealthDataCategory] that have all their permissions granted locally via a toggle, but not
-     * yet requested. This is used to update the UI of the parent category toggle. When all
-     * permissions in a category are granted, the category is added to this set. This is used in
-     * conjunction with [grantedFitnessPermissions] to determine the state of the UI.
-     */
-    val grantedFitnessCategories: LiveData<Set<String>>
-        get() = _grantedFitnessCategories
 
     /**
      * [AdditionalPermission]s that have been granted locally via a toggle, but not yet requested
@@ -406,20 +392,6 @@ constructor(
         }
 
         _grantedFitnessPermissions.postValue(updatedGrantedPermissions)
-    }
-
-    /** Marks the given [HealthDataCategory] as locally granted or revoked. */
-    fun updateHealthDataCategory(category: String, grant: Boolean) {
-        val updatedFitnessPermissionsForCategory =
-            _grantedFitnessCategories.value.orEmpty().toMutableSet()
-
-        if (grant) {
-            updatedFitnessPermissionsForCategory.add(category)
-        } else {
-            updatedFitnessPermissionsForCategory.remove(category)
-        }
-
-        _grantedFitnessCategories.postValue(updatedFitnessPermissionsForCategory)
     }
 
     /** Mark all [MedicalPermission]s as locally granted */

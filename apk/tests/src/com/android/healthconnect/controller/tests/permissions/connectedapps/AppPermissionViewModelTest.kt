@@ -195,7 +195,6 @@ class AppPermissionViewModelTest {
         val atLeastOneFitnessPermissionGrantedObserver = TestObserver<Boolean>()
         val atLeastOneMedicalPermissionGrantedObserver = TestObserver<Boolean>()
         val atLeastOneHealthPermissionGrantedObserver = TestObserver<Boolean>()
-        val grantedFitnessCategoriesObserver = TestObserver<Set<String>>()
         appPermissionViewModel.atLeastOneFitnessPermissionGranted.observeForever(
             atLeastOneFitnessPermissionGrantedObserver
         )
@@ -205,9 +204,6 @@ class AppPermissionViewModelTest {
         appPermissionViewModel.atLeastOneHealthPermissionGranted.observeForever(
             atLeastOneHealthPermissionGrantedObserver
         )
-        appPermissionViewModel.grantedFitnessCategories.observeForever(
-            grantedFitnessCategoriesObserver
-        )
 
         appPermissionViewModel.loadPermissionsForPackage(TEST_APP_PACKAGE_NAME)
         advanceUntilIdle()
@@ -216,7 +212,6 @@ class AppPermissionViewModelTest {
         val grantedFitnessPermissionsResult = grantedFitnessPermissionsObserver.getLastValue()
         val medicalPermissionsResult = medicalPermissionsObserver.getLastValue()
         val grantedMedicalPermissionsResult = grantedMedicalPermissionsObserver.getLastValue()
-        val grantedFitnessCategoriesResult = grantedFitnessCategoriesObserver.getLastValue()
 
         val atLeastOneFitnessPermissionGrantedResult =
             atLeastOneFitnessPermissionGrantedObserver.getLastValue()
@@ -239,14 +234,6 @@ class AppPermissionViewModelTest {
         assertThat(medicalPermissionsResult).containsExactlyElementsIn(listOf<MedicalPermission>())
         assertThat(grantedMedicalPermissionsResult)
             .containsExactlyElementsIn(setOf<MedicalPermission>())
-        assertThat(grantedFitnessCategoriesResult)
-            .containsExactly(
-                PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                    .toString(),
-                PermissionGroupKey(PermissionsAccessType.WRITE, HealthDataCategory.ACTIVITY)
-                    .toString(),
-            )
-
         assertThat(atLeastOneFitnessPermissionGrantedResult).isTrue()
         assertThat(atLeastOneMedicalPermissionGrantedResult).isFalse()
         assertThat(atLeastOneHealthPermissionGrantedResult).isTrue()
@@ -272,7 +259,6 @@ class AppPermissionViewModelTest {
         val atLeastOneFitnessPermissionGrantedObserver = TestObserver<Boolean>()
         val atLeastOneMedicalPermissionGrantedObserver = TestObserver<Boolean>()
         val atLeastOneHealthPermissionGrantedObserver = TestObserver<Boolean>()
-        val grantedFitnessCategoriesObserver = TestObserver<Set<String>>()
         appPermissionViewModel.atLeastOneFitnessPermissionGranted.observeForever(
             atLeastOneFitnessPermissionGrantedObserver
         )
@@ -281,9 +267,6 @@ class AppPermissionViewModelTest {
         )
         appPermissionViewModel.atLeastOneHealthPermissionGranted.observeForever(
             atLeastOneHealthPermissionGrantedObserver
-        )
-        appPermissionViewModel.grantedFitnessCategories.observeForever(
-            grantedFitnessCategoriesObserver
         )
         appPermissionViewModel.loadPermissionsForPackage(TEST_APP_PACKAGE_NAME)
         advanceUntilIdle()
@@ -299,7 +282,6 @@ class AppPermissionViewModelTest {
             atLeastOneMedicalPermissionGrantedObserver.getLastValue()
         val atLeastOneHealthPermissionGrantedResult =
             atLeastOneHealthPermissionGrantedObserver.getLastValue()
-        val grantedFitnessCategoriesResult = grantedFitnessCategoriesObserver.getLastValue()
 
         assertThat(fitnessPermissionsResult)
             .containsExactlyElementsIn(
@@ -320,11 +302,6 @@ class AppPermissionViewModelTest {
         assertThat(atLeastOneFitnessPermissionGrantedResult).isTrue()
         assertThat(atLeastOneMedicalPermissionGrantedResult).isTrue()
         assertThat(atLeastOneHealthPermissionGrantedResult).isTrue()
-        assertThat(grantedFitnessCategoriesResult)
-            .containsExactly(
-                PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                    .toString()
-            )
     }
 
     @Test
@@ -341,7 +318,6 @@ class AppPermissionViewModelTest {
         val grantedFitnessPermissionsObserver = TestObserver<Set<FitnessPermission>>()
         val medicalPermissionsObserver = TestObserver<List<MedicalPermission>>()
         val grantedMedicalPermissionsObserver = TestObserver<Set<MedicalPermission>>()
-        val grantedFitnessCategoriesObserver = TestObserver<Set<String>>()
         appPermissionViewModel.fitnessPermissions.observeForever(fitnessPermissionsObserver)
         appPermissionViewModel.grantedFitnessPermissions.observeForever(
             grantedFitnessPermissionsObserver
@@ -363,9 +339,6 @@ class AppPermissionViewModelTest {
         appPermissionViewModel.atLeastOneHealthPermissionGranted.observeForever(
             atLeastOneHealthPermissionGrantedObserver
         )
-        appPermissionViewModel.grantedFitnessCategories.observeForever(
-            grantedFitnessCategoriesObserver
-        )
 
         appPermissionViewModel.loadPermissionsForPackage(TEST_APP_PACKAGE_NAME)
         advanceUntilIdle()
@@ -374,7 +347,6 @@ class AppPermissionViewModelTest {
         val grantedFitnessPermissionsResult = grantedFitnessPermissionsObserver.getLastValue()
         val medicalPermissionsResult = medicalPermissionsObserver.getLastValue()
         val grantedMedicalPermissionsResult = grantedMedicalPermissionsObserver.getLastValue()
-        val grantedFitnessCategoriesResult = grantedFitnessCategoriesObserver.getLastValue()
 
         val atLeastOneFitnessPermissionGrantedResult =
             atLeastOneFitnessPermissionGrantedObserver.getLastValue()
@@ -394,7 +366,6 @@ class AppPermissionViewModelTest {
         assertThat(atLeastOneFitnessPermissionGrantedResult).isFalse()
         assertThat(atLeastOneMedicalPermissionGrantedResult).isTrue()
         assertThat(atLeastOneHealthPermissionGrantedResult).isTrue()
-        assertThat(grantedFitnessCategoriesResult).isEmpty()
     }
 
     @Test
@@ -437,7 +408,6 @@ class AppPermissionViewModelTest {
         appPermissionViewModel.grantedAdditionalPermissions.observeForever(
             grantedAdditionalPermissionsObserver
         )
-        val grantedFitnessCategoriesObserver = TestObserver<Set<String>>()
         val atLeastOneFitnessPermissionGrantedObserver = TestObserver<Boolean>()
         val atLeastOneMedicalPermissionGrantedObserver = TestObserver<Boolean>()
         val atLeastOneHealthPermissionGrantedObserver = TestObserver<Boolean>()
@@ -450,9 +420,6 @@ class AppPermissionViewModelTest {
         appPermissionViewModel.atLeastOneHealthPermissionGranted.observeForever(
             atLeastOneHealthPermissionGrantedObserver
         )
-        appPermissionViewModel.grantedFitnessCategories.observeForever(
-            grantedFitnessCategoriesObserver
-        )
 
         appPermissionViewModel.loadPermissionsForPackage(TEST_APP_PACKAGE_NAME)
         advanceUntilIdle()
@@ -462,7 +429,6 @@ class AppPermissionViewModelTest {
         val medicalPermissionsResult = medicalPermissionsObserver.getLastValue()
         val grantedMedicalPermissionsResult = grantedMedicalPermissionsObserver.getLastValue()
         val grantedAdditionalPermissionsResult = grantedAdditionalPermissionsObserver.getLastValue()
-        val grantedFitnessCategoriesResult = grantedFitnessCategoriesObserver.getLastValue()
 
         val atLeastOneFitnessPermissionGrantedResult =
             atLeastOneFitnessPermissionGrantedObserver.getLastValue()
@@ -486,8 +452,6 @@ class AppPermissionViewModelTest {
         assertThat(atLeastOneFitnessPermissionGrantedResult).isTrue()
         assertThat(atLeastOneMedicalPermissionGrantedResult).isFalse()
         assertThat(atLeastOneHealthPermissionGrantedResult).isTrue()
-        // Not all permissions in Vitals were granted
-        assertThat(grantedFitnessCategoriesResult).isEmpty()
     }
 
     @Test
@@ -523,15 +487,10 @@ class AppPermissionViewModelTest {
         appPermissionViewModel.loadPermissionsForPackage(TEST_APP_PACKAGE_NAME)
         advanceUntilIdle()
 
-        val grantedFitnessCategoriesObserver = TestObserver<Set<String>>()
-        appPermissionViewModel.grantedFitnessCategories.observeForever(
-            grantedFitnessCategoriesObserver
-        )
         val fitnessPermissionResult = fitnessPermissionsObserver.getLastValue()
         val grantedFitnessPermissionsResult = grantedFitnessPermissionsObserver.getLastValue()
         val medicalPermissionResult = medicalPermissionsObserver.getLastValue()
         val grantedMedicalPermissionsResult = grantedMedicalPermissionsObserver.getLastValue()
-        val grantedFitnessCategoriesResult = grantedFitnessCategoriesObserver.getLastValue()
 
         assertThat(fitnessPermissionResult)
             .containsExactlyElementsIn(listOf(readExercisePermission))
@@ -540,11 +499,6 @@ class AppPermissionViewModelTest {
         assertThat(medicalPermissionResult).containsExactlyElementsIn(listOf<MedicalPermission>())
         assertThat(grantedMedicalPermissionsResult)
             .containsExactlyElementsIn(setOf<MedicalPermission>())
-        assertThat(grantedFitnessCategoriesResult)
-            .containsExactly(
-                PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                    .toString()
-            )
     }
 
     @Test
@@ -569,10 +523,6 @@ class AppPermissionViewModelTest {
         appPermissionViewModel.grantedMedicalPermissions.observeForever(
             grantedMedicalPermissionsObserver
         )
-        val grantedFitnessCategoriesObserver = TestObserver<Set<String>>()
-        appPermissionViewModel.grantedFitnessCategories.observeForever(
-            grantedFitnessCategoriesObserver
-        )
         appPermissionViewModel.loadPermissionsForPackage(TEST_APP_PACKAGE_NAME)
         advanceUntilIdle()
 
@@ -580,7 +530,6 @@ class AppPermissionViewModelTest {
         val grantedFitnessPermissionsResult = grantedFitnessPermissionsObserver.getLastValue()
         val medicalPermissionResult = medicalPermissionsObserver.getLastValue()
         val grantedMedicalPermissionsResult = grantedMedicalPermissionsObserver.getLastValue()
-        val grantedFitnessCategoriesResult = grantedFitnessCategoriesObserver.getLastValue()
 
         assertThat(fitnessPermissionResult).containsExactlyElementsIn(listOf<FitnessPermission>())
         assertThat(grantedFitnessPermissionsResult)
@@ -588,7 +537,6 @@ class AppPermissionViewModelTest {
         assertThat(medicalPermissionResult).containsExactlyElementsIn(listOf(writeMedicalData))
         assertThat(grantedMedicalPermissionsResult)
             .containsExactlyElementsIn(setOf(writeMedicalData))
-        assertThat(grantedFitnessCategoriesResult).isEmpty()
     }
 
     @Test
@@ -622,10 +570,6 @@ class AppPermissionViewModelTest {
         appPermissionViewModel.grantedMedicalPermissions.observeForever(
             grantedMedicalPermissionsObserver
         )
-        val grantedFitnessCategoriesObserver = TestObserver<Set<String>>()
-        appPermissionViewModel.grantedFitnessCategories.observeForever(
-            grantedFitnessCategoriesObserver
-        )
         appPermissionViewModel.loadPermissionsForPackage(TEST_APP_PACKAGE_NAME)
         advanceUntilIdle()
 
@@ -633,7 +577,6 @@ class AppPermissionViewModelTest {
         val grantedFitnessPermissionsResult = grantedFitnessPermissionsObserver.getLastValue()
         val medicalPermissionResult = medicalPermissionsObserver.getLastValue()
         val grantedMedicalPermissionsResult = grantedMedicalPermissionsObserver.getLastValue()
-        val grantedFitnessCategoriesResult = grantedFitnessCategoriesObserver.getLastValue()
 
         assertThat(fitnessPermissionResult)
             .containsExactlyElementsIn(listOf(readExercisePermission))
@@ -642,11 +585,6 @@ class AppPermissionViewModelTest {
         assertThat(medicalPermissionResult).containsExactlyElementsIn(listOf(writeMedicalData))
         assertThat(grantedMedicalPermissionsResult)
             .containsExactlyElementsIn(setOf(writeMedicalData))
-        assertThat(grantedFitnessCategoriesResult)
-            .containsExactly(
-                PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                    .toString()
-            )
     }
 
     @Test
@@ -693,10 +631,6 @@ class AppPermissionViewModelTest {
             appPermissionViewModel.grantedAdditionalPermissions.observeForever(
                 grantedAdditionalPermissionsObserver
             )
-            val grantedFitnessCategoriesObserver = TestObserver<Set<String>>()
-            appPermissionViewModel.grantedFitnessCategories.observeForever(
-                grantedFitnessCategoriesObserver
-            )
             appPermissionViewModel.loadPermissionsForPackage(TEST_APP_PACKAGE_NAME)
             advanceUntilIdle()
 
@@ -706,7 +640,6 @@ class AppPermissionViewModelTest {
             val grantedMedicalPermissionsResult = grantedMedicalPermissionsObserver.getLastValue()
             val grantedAdditionalPermissionsResult =
                 grantedAdditionalPermissionsObserver.getLastValue()
-            val grantedFitnessCategoriesResult = grantedFitnessCategoriesObserver.getLastValue()
 
             assertThat(fitnessPermissionResult)
                 .containsExactlyElementsIn(listOf(readHeartRatePermission))
@@ -718,11 +651,6 @@ class AppPermissionViewModelTest {
                 .containsExactlyElementsIn(listOf<MedicalPermission>())
             assertThat(grantedMedicalPermissionsResult)
                 .containsExactlyElementsIn(setOf<MedicalPermission>())
-            assertThat(grantedFitnessCategoriesResult)
-                .containsExactly(
-                    PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.VITALS)
-                        .toString()
-                )
         }
 
     @Test
@@ -3492,63 +3420,28 @@ class AppPermissionViewModelTest {
     fun updateDataCategoryPreferenceKey_addKey_addsToLiveData() = runTest {
         val testObserver = TestObserver<Set<String>>()
         appPermissionViewModel.expandedDataCategoryPreferenceKeys.observeForever(testObserver)
-        val key =
-            PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY).toString()
+        val key = PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
 
         appPermissionViewModel.updateDataCategoryPreferenceKey(key, isExpanded = true)
         advanceUntilIdle()
 
-        assertThat(testObserver.getLastValue()).contains(key)
+        assertThat(testObserver.getLastValue()).contains(key.toString())
     }
 
     @Test
     fun updateDataCategoryPreferenceKey_removeKey_removesFromLiveData() = runTest {
         val testObserver = TestObserver<Set<String>>()
         appPermissionViewModel.expandedDataCategoryPreferenceKeys.observeForever(testObserver)
-        val key =
-            PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY).toString()
+        val key = PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
         appPermissionViewModel.updateDataCategoryPreferenceKey(key, isExpanded = true)
         advanceUntilIdle()
-        assertThat(testObserver.getLastValue()).contains(key)
+        assertThat(testObserver.getLastValue()).contains(key.toString())
 
         appPermissionViewModel.updateDataCategoryPreferenceKey(key, isExpanded = false)
         advanceUntilIdle()
 
-        assertThat(testObserver.getLastValue()).doesNotContain(key)
+        assertThat(testObserver.getLastValue()).doesNotContain(key.toString())
     }
-
-    @Test
-    fun updateHealthPermissionsCategory_grant_updatesGrantedFitnessPermissionsForCategory() =
-        runTest {
-            val permissionGroupKey =
-                PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                    .toString()
-            val testObserver = TestObserver<Set<String>>()
-            appPermissionViewModel.grantedFitnessCategories.observeForever(testObserver)
-
-            appPermissionViewModel.updateHealthDataCategory(permissionGroupKey, grant = true)
-            advanceUntilIdle()
-
-            assertThat(testObserver.getLastValue()).contains(permissionGroupKey)
-        }
-
-    @Test
-    fun updateHealthPermissionsCategory_revoke_updatesGrantedFitnessPermissionsForCategory() =
-        runTest {
-            val permissionGroupKey =
-                PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                    .toString()
-            val testObserver = TestObserver<Set<String>>()
-            appPermissionViewModel.grantedFitnessCategories.observeForever(testObserver)
-            appPermissionViewModel.updateHealthDataCategory(permissionGroupKey, grant = true)
-            advanceUntilIdle()
-            assertThat(testObserver.getLastValue()).contains(permissionGroupKey)
-
-            appPermissionViewModel.updateHealthDataCategory(permissionGroupKey, grant = false)
-            advanceUntilIdle()
-
-            assertThat(testObserver.getLastValue()).doesNotContain(permissionGroupKey)
-        }
 
     @Test
     fun updateHealthPermissions_grant_updatesGrantedFitnessPermissions() = runTest {
