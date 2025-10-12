@@ -17,6 +17,7 @@
 package com.android.healthconnect.controller.tests.matchmaking
 
 import android.health.connect.HealthPermissions.WRITE_EXERCISE
+import android.health.connect.HealthPermissions.WRITE_SLEEP
 import android.health.connect.HealthPermissions.WRITE_STEPS
 import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.StepsRecord
@@ -246,6 +247,78 @@ class MatchMakingViewModelTest {
         verify(healthPermissionManager).grantHealthPermission(TEST_APP_PACKAGE_NAME, WRITE_STEPS)
         verify(healthPermissionManager, never())
             .grantHealthPermission(TEST_APP_PACKAGE_NAME_2, WRITE_EXERCISE)
+    }
+
+    @Test
+    fun grantPermissions_withNoPermissionsGranted_recordsDenialForAllPermissions() = runTest {
+        setupWithData()
+        val captor = argumentCaptor<RecordMatchmakingDenialUseCase.RecordMatchmakingDenialInput>()
+
+        viewModel.grantPermissions()
+
+        verify(recordMatchmakingDenialUseCase).invoke(captor.capture())
+        assertThat(captor.firstValue.callingPackageName).isEqualTo(TEST_APP_PACKAGE_NAME_3)
+        assertThat(captor.firstValue.deniedApps)
+            .containsExactly(
+                TEST_APP_PACKAGE_NAME,
+                listOf(WRITE_STEPS),
+                TEST_APP_PACKAGE_NAME_2,
+                listOf(WRITE_EXERCISE),
+            )
+    }
+
+    @Test
+    fun grantPermissions_allFromOneAppAndSomeFromAnother_recordsDenialCorrectly() = runTest {
+        val packageName = TEST_APP_PACKAGE_NAME_3
+        val recordTypes = setOf(ExerciseSessionRecord::class.java, StepsRecord::class.java)
+        val appMetadata = AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null)
+        val appMetadata2 = AppMetadata(TEST_APP_PACKAGE_NAME_2, TEST_APP_NAME_2, null)
+        val permissions =
+            listOf(
+                HealthPermission.fromPermissionString(WRITE_STEPS)
+                    as HealthPermission.FitnessPermission
+            )
+        val permissions2 =
+            listOf(
+                HealthPermission.fromPermissionString(WRITE_EXERCISE)
+                    as HealthPermission.FitnessPermission,
+                HealthPermission.fromPermissionString(WRITE_SLEEP)
+                    as HealthPermission.FitnessPermission,
+            )
+        val expected =
+            listOf(
+                MatchmakingAppData(appMetadata, permissions),
+                MatchmakingAppData(appMetadata2, permissions2),
+            )
+        val useCaseResult = UseCaseResults.Success(expected)
+        whenever(getMatchingAppsUseCase.invoke(any())).doReturn(useCaseResult)
+        viewModel.loadMatchmakingApps(packageName, recordTypes)
+
+        val writeStepsPermission =
+            HealthPermission.fromPermissionString(WRITE_STEPS) as HealthPermission.FitnessPermission
+        val writeExercisePermission =
+            HealthPermission.fromPermissionString(WRITE_EXERCISE)
+                as HealthPermission.FitnessPermission
+        viewModel.addPermissionToGrantedList(TEST_APP_PACKAGE_NAME, writeStepsPermission)
+        viewModel.addPermissionToGrantedList(TEST_APP_PACKAGE_NAME_2, writeExercisePermission)
+        val captor = argumentCaptor<RecordMatchmakingDenialUseCase.RecordMatchmakingDenialInput>()
+
+        viewModel.grantPermissions()
+
+        verify(recordMatchmakingDenialUseCase).invoke(captor.capture())
+        assertThat(captor.firstValue.callingPackageName).isEqualTo(TEST_APP_PACKAGE_NAME_3)
+        assertThat(captor.firstValue.deniedApps)
+            .containsExactly(TEST_APP_PACKAGE_NAME_2, listOf(WRITE_SLEEP))
+    }
+
+    @Test
+    fun grantPermissions_withAllPermissionsGranted_doesNotRecordDenial() = runTest {
+        setupWithData()
+        viewModel.addAllPermissionsToGrantedList()
+
+        viewModel.grantPermissions()
+
+        verify(recordMatchmakingDenialUseCase, never()).invoke(any())
     }
 
     @Test

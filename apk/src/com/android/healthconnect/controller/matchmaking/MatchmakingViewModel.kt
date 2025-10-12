@@ -184,8 +184,35 @@ constructor(
                     )
                 }
             }
+
+            recordDenialForUngrantedPermissions()
+
             grantedPermissions.postValue(emptyMap())
             atLeastOnePermissionGranted.postValue(false)
+        }
+    }
+
+    private suspend fun recordDenialForUngrantedPermissions() {
+        val state = matchmakingState.value
+        if (state is MatchmakingState.WithData) {
+            val allPermissionsByPackage =
+                state.matchingApps.associate { it.metadata.packageName to it.permissions.toSet() }
+            val grantedPermissionsByPackage = grantedPermissions.value ?: emptyMap()
+            val deniedApps = mutableMapOf<String, List<String>>()
+
+            allPermissionsByPackage.forEach { (packageName, allPerms) ->
+                val grantedPerms = grantedPermissionsByPackage[packageName]?.toSet() ?: emptySet()
+                val currentDeniedPerms = allPerms - grantedPerms
+                if (currentDeniedPerms.isNotEmpty()) {
+                    deniedApps[packageName] = currentDeniedPerms.map { it.toString() }
+                }
+            }
+
+            if (deniedApps.isNotEmpty()) {
+                recordMatchmakingDenialUseCase.invoke(
+                    RecordMatchmakingDenialInput(state.callingAppMetaData.packageName, deniedApps)
+                )
+            }
         }
     }
 
