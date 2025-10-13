@@ -1263,7 +1263,7 @@
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"మీ వెల్‌నెస్ డేటాను <xliff:g id="APP_NAME">%1$s</xliff:g> ఉపయోగంలో ఉన్నప్పుడు మాత్రమే యాక్సెస్ చేయగలదు"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"యాక్సెస్ చేయడానికి అనుమతించబడ్డాయి"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"రీడ్ చేయడానికి అనుమతించబడినవి"</string>
-    <string name="give_permission_prompt" msgid="5788144216023065504">"ఈ అనుమతులు, మీ పరికర సెన్సర్‌ల నుండి <xliff:g id="APP_NAME">%1$s</xliff:g>కు  డేటా యాక్సెస్‌ను ఇస్తాయి."</string>
+    <string name="give_permission_prompt" msgid="5788144216023065504">"ఈ అనుమతులు, మీ డివైజ్ సెన్సార్‌ల నుండి <xliff:g id="APP_NAME">%1$s</xliff:g>కు డేటా యాక్సెస్‌ను ఇస్తాయి."</string>
     <string name="write_access" msgid="571547306854732263">"రైట్ యాక్సెస్"</string>
     <string name="read_access" msgid="3317759826769372785">"రీడ్ యాక్సెస్"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
@@ -1272,7 +1272,7 @@
     <string name="no_apps_requesting" msgid="8088684445910698363">"యాప్‌లు ఏవీ రిక్వెస్ట్ చేయట్లేదు"</string>
     <string name="allowed" msgid="4158456017482263737">"అనుమతించబడింది"</string>
     <string name="not_allowed" msgid="6092523505093372147">"అనుమతించబడలేదు"</string>
-    <string name="access_sensor_note" msgid="7949933977197789634">"ఈ అనుమతి ఉన్న యాప్‌లు మీ పరికర సెన్సార్‌ల నుండి <xliff:g id="DATA_TYPE">%s</xliff:g> డేటాను యాక్సెస్ చేయగలవు."</string>
+    <string name="access_sensor_note" msgid="7949933977197789634">"ఈ అనుమతి ఉన్న యాప్‌లు మీ డివైజ్ సెన్సార్‌ల నుండి <xliff:g id="DATA_TYPE">%s</xliff:g> డేటాను యాక్సెస్ చేయగలవు."</string>
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"మీ వాచ్‌లో ఉన్న అన్ని యాప్‌లకు <xliff:g id="DATA_TYPE">%s</xliff:g> యాక్సెస్‌ను తీసివేయాలా?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"ఎంపిక గుర్తు"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"క్రాస్ గుర్తు"</string>
