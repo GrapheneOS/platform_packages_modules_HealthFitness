@@ -31,6 +31,7 @@ import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.util.Locale
@@ -176,5 +177,50 @@ class SymptomFormatterTest {
         assertThat(formatted).isInstanceOf(FormattedEntry.SymptomEntry::class.java)
         val symptomEntry = formatted as FormattedEntry.SymptomEntry
         assertThat(symptomEntry.title).isEqualTo("Unknown")
+    }
+
+    @Test
+    fun format_intervalRecord_usesTimeRangeInHeader() = runBlocking {
+        val startTime = Instant.parse("2023-01-01T10:00:00Z")
+        val endTime = Instant.parse("2023-01-01T11:00:00Z")
+        val record =
+            SymptomRecord.Builder(
+                    SymptomRecord.SYMPTOM_TYPE_COUGH,
+                    startTime,
+                    endTime,
+                    getMetaData(),
+                )
+                .setSeverity(SymptomRecord.SEVERITY_MILD)
+                .build()
+
+        val formatted = formatter.format(record, "TestApp") as FormattedEntry.SymptomEntry
+
+        assertThat(formatted.header).isEqualTo("10:00 AM - 11:00 AM • TestApp")
+    }
+
+    @Test
+    fun format_instantRecord_usesTimeInHeader() = runBlocking {
+        val time = Instant.parse("2023-01-01T10:00:00Z")
+        val record =
+            SymptomRecord.Builder(SymptomRecord.SYMPTOM_TYPE_COUGH, time, getMetaData())
+                .setSeverity(SymptomRecord.SEVERITY_MILD)
+                .build()
+
+        val formatted = formatter.format(record, "TestApp") as FormattedEntry.SymptomEntry
+
+        assertThat(formatted.header).isEqualTo("10:00 AM • TestApp")
+    }
+
+    @Test
+    fun format_dateRecord_usesDateInHeader() = runBlocking {
+        val date = LocalDate.parse("2023-01-01")
+        val record =
+            SymptomRecord.Builder(SymptomRecord.SYMPTOM_TYPE_COUGH, date, getMetaData())
+                .setSeverity(SymptomRecord.SEVERITY_MILD)
+                .build()
+
+        val formatted = formatter.format(record, "TestApp") as FormattedEntry.SymptomEntry
+
+        assertThat(formatted.header).isEqualTo("Jan 1, 2023 • TestApp")
     }
 }
