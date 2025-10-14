@@ -23,17 +23,27 @@ import static android.healthconnect.testing.unittest.RecordInternalFactory.build
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.os.Build;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.SdkSuppress;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
@@ -51,6 +61,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.util.Collections;
 import java.util.List;
@@ -59,6 +71,11 @@ import java.util.Set;
 import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
+@EnableFlags({
+    Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+    Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+    Flags.FLAG_DEVELOPMENT_DATABASE
+})
 public class DeviceDataProviderManagerTest {
 
     private static final String PACKAGE_NAME = "com.example.app";
@@ -68,6 +85,7 @@ public class DeviceDataProviderManagerTest {
     private static final String MODEL = "TestModel";
     private static final int DEVICE_TYPE = DEVICE_TYPE_PHONE;
 
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
@@ -79,12 +97,17 @@ public class DeviceDataProviderManagerTest {
     private DeviceDataProviderManager mDeviceDataProviderManager;
     private FitnessRecordReadHelper mFitnessRecordReadHelper;
     private TransactionManager mTransactionManager;
+    private Context mContext;
 
     @Before
     public void setUp() throws Exception {
-        Context context = ApplicationProvider.getApplicationContext();
+
+        Context applicationContext = ApplicationProvider.getApplicationContext();
+        mContext = spy(applicationContext);
+        doReturn(mContext).when(mContext).getApplicationContext();
+        doReturn(mContext).when(mContext).createContextAsUser(any(), anyInt());
         HealthConnectInjector healthConnectInjector =
-                HealthConnectInjectorImpl.newBuilderForTest(context)
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
 
@@ -97,11 +120,6 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
-    })
     public void handleAdvertisements_insertsNewDeviceAndAppInfo() {
         Device device =
                 new Device.Builder()
@@ -159,11 +177,6 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
-    })
     public void handleMultipleAdvertisements_duplicatesAreIdempotent() {
         Device device =
                 new Device.Builder()
@@ -191,11 +204,6 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
-    })
     // TODO(b/440066697): Check how we want to handle display name updates.
     public void handleAdvertisementWithNewDeviceName_savesNewDevice() {
         Device device =
@@ -280,12 +288,6 @@ public class DeviceDataProviderManagerTest {
                 .isEqualTo(renamedDisplayName);
     }
 
-    @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
-    })
     public void insertDeviceRecords_insertsRecordCorrectly() {
         Device device =
                 new Device.Builder()
@@ -317,12 +319,6 @@ public class DeviceDataProviderManagerTest {
         assertThat(insertedUuids).hasSize(1);
     }
 
-    @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
-    })
     public void insertDeviceRecords_verifiesRecordMetadata() {
         Device device =
                 new Device.Builder()
@@ -377,12 +373,6 @@ public class DeviceDataProviderManagerTest {
         assertThat(readRecord.getDisplayName()).isEqualTo(DISPLAY_NAME);
     }
 
-    @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
-    })
     public void insertDeviceRecords_insertsRecordsCorrectly() {
         Device device =
                 new Device.Builder()
@@ -418,12 +408,6 @@ public class DeviceDataProviderManagerTest {
         assertThat(insertedUuids).hasSize(2);
     }
 
-    @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
-    })
     public void insertDeviceRecords_deviceNotFound_throwsException() {
         List<RecordInternal<?>> records = Collections.emptyList();
 
@@ -441,12 +425,6 @@ public class DeviceDataProviderManagerTest {
                                 + " source has been advertised");
     }
 
-    @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
-    })
     public void insertDeviceRecords_doesNotCreateNewDeviceOrAppInfo() {
         Device device =
                 new Device.Builder()
@@ -479,12 +457,6 @@ public class DeviceDataProviderManagerTest {
         assertThat(mAppInfoHelper.getAppInfoMap().size()).isEqualTo(initialAppInfoCount);
     }
 
-    @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
-    })
     public void advertisementAndNormalInsertion_createsTwoDistinctDeviceInfoEntries() {
         Device device =
                 new Device.Builder()
@@ -525,5 +497,145 @@ public class DeviceDataProviderManagerTest {
         assertThat(deviceInfo2.getModel()).isEqualTo(MODEL);
         assertThat(deviceInfo2.getDeviceType()).isEqualTo(DEVICE_TYPE);
         assertThat(deviceInfo2.getDisplayName()).isEqualTo(DISPLAY_NAME);
+    }
+
+    @Test
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    public void isPermittedToProvideDeviceData_baklavaAndLower_withManagePermission_returnsTrue() {
+        doReturn(PackageManager.PERMISSION_DENIED)
+                .when(mContext)
+                .checkPermission(
+                        Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA,
+                        /* pid= */ 0,
+                        /* uid= */ 0);
+        doReturn(PackageManager.PERMISSION_GRANTED)
+                .when(mContext)
+                .checkPermission(
+                        HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION,
+                        /* pid= */ 0,
+                        /* uid= */ 0);
+
+        assertThat(
+                        mDeviceDataProviderManager.isPermittedToProvideDeviceData(
+                                PACKAGE_NAME, /* uid= */ 0, /* pid= */ 0))
+                .isTrue();
+    }
+
+    @Test
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    public void isPermittedToProvideDeviceData_baklavaAndLower_noPermission_returnsFalse() {
+        doReturn(PackageManager.PERMISSION_DENIED)
+                .when(mContext)
+                .checkPermission(
+                        Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA,
+                        /* pid= */ 0,
+                        /* uid= */ 0);
+        doReturn(PackageManager.PERMISSION_DENIED)
+                .when(mContext)
+                .checkPermission(
+                        HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION,
+                        /* pid= */ 0,
+                        /* uid= */ 0);
+
+        assertThat(
+                        mDeviceDataProviderManager.isPermittedToProvideDeviceData(
+                                PACKAGE_NAME, /* uid= */ 0, /* pid= */ 0))
+                .isFalse();
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA + 1)
+    public void isPermittedToProvideDeviceData_postBaklava_withProvidePermission_returnsTrue() {
+        doReturn(PackageManager.PERMISSION_GRANTED)
+                .when(mContext)
+                .checkPermission(
+                        Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA,
+                        /* pid= */ 0,
+                        /* uid= */ 0);
+        doReturn(PackageManager.PERMISSION_DENIED)
+                .when(mContext)
+                .checkPermission(
+                        HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION,
+                        /* pid= */ 0,
+                        /* uid= */ 0);
+
+        assertThat(
+                        mDeviceDataProviderManager.isPermittedToProvideDeviceData(
+                                PACKAGE_NAME, /* uid= */ 0, /* pid= */ 0))
+                .isTrue();
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA + 1)
+    public void isPermittedToProvideDeviceData_postBaklava_withManagePermission_returnsFalse() {
+        doReturn(PackageManager.PERMISSION_DENIED)
+                .when(mContext)
+                .checkPermission(
+                        Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA,
+                        /* pid= */ 0,
+                        /* uid= */ 0);
+        doReturn(PackageManager.PERMISSION_GRANTED)
+                .when(mContext)
+                .checkPermission(
+                        HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION,
+                        /* pid= */ 0,
+                        /* uid= */ 0);
+
+        assertThat(
+                        mDeviceDataProviderManager.isPermittedToProvideDeviceData(
+                                PACKAGE_NAME, /* uid= */ 0, /* pid= */ 0))
+                .isFalse();
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA + 1)
+    public void isPermittedToProvideDeviceData_postBaklava_noPermission_returnsFalse() {
+        doReturn(PackageManager.PERMISSION_DENIED)
+                .when(mContext)
+                .checkPermission(
+                        Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA,
+                        /* pid= */ 0,
+                        /* uid= */ 0);
+        doReturn(PackageManager.PERMISSION_DENIED)
+                .when(mContext)
+                .checkPermission(
+                        HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION,
+                        /* pid= */ 0,
+                        /* uid= */ 0);
+
+        assertThat(
+                        mDeviceDataProviderManager.isPermittedToProvideDeviceData(
+                                PACKAGE_NAME, /* uid= */ 0, /* pid= */ 0))
+                .isFalse();
+    }
+
+    @Test
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    public void isPermittedToProvideDeviceData_baklavaAndLower_aRPackage_returnsTrue() {
+        doReturn(PackageManager.PERMISSION_DENIED)
+                .when(mContext)
+                .checkPermission(
+                        HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION,
+                        /* pid= */ 0,
+                        /* uid= */ 0);
+
+        final String systemActivityRecognizerPackage;
+        final int resourceId =
+                Resources.getSystem()
+                        .getIdentifier("config_systemActivityRecognizer", "string", "android");
+        if (resourceId != 0) {
+            systemActivityRecognizerPackage = Resources.getSystem().getString(resourceId);
+        } else {
+            systemActivityRecognizerPackage = null;
+        }
+
+        if (systemActivityRecognizerPackage == null || systemActivityRecognizerPackage.isEmpty()) {
+            return; // Test passes if there is no package to check
+        }
+
+        assertThat(
+                        mDeviceDataProviderManager.isPermittedToProvideDeviceData(
+                                systemActivityRecognizerPackage, /* uid= */ 0, /* pid= */ 0))
+                .isTrue();
     }
 }
