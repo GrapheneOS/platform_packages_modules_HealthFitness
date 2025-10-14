@@ -191,17 +191,24 @@ constructor(
 
     fun recordMatchmakingDenial() {
         val state = matchmakingState.value
-        if (state is MatchmakingState.WithData) {
-            val permissions =
-                state.matchingApps.flatMap { it.permissions }.map { it.toString() }.distinct()
-            recordMatchmakingDenial(state.callingAppMetaData.packageName, permissions)
+        if (state !is MatchmakingState.WithData) {
+            return
         }
-    }
+        val callingPackageName = state.callingAppMetaData.packageName
+        val deniedApps =
+            state.matchingApps
+                .filter { it.permissions.isNotEmpty() }
+                .associate {
+                    it.metadata.packageName to
+                        it.permissions.map { permission -> permission.toString() }
+                }
 
-    private fun recordMatchmakingDenial(packageName: String, permissions: List<String>) {
+        if (deniedApps.isEmpty()) {
+            return
+        }
         viewModelScope.launch {
             recordMatchmakingDenialUseCase.invoke(
-                RecordMatchmakingDenialInput(packageName, permissions)
+                RecordMatchmakingDenialInput(callingPackageName, deniedApps)
             )
         }
     }

@@ -111,7 +111,7 @@ public class MatchmakingManagerTest {
                         mPackageInfoUtils,
                         mHealthConnectMappings,
                         mMatchmakingDenialStateManager);
-        when(mMatchmakingDenialStateManager.isMatchmakingPaused(anyString(), anyInt()))
+        when(mMatchmakingDenialStateManager.isMatchmakingPaused(anyString(), anyString(), anyInt()))
                 .thenReturn(false);
     }
 
@@ -170,7 +170,8 @@ public class MatchmakingManagerTest {
     @Test
     public void fetchMatchingApps_matchExists_paused_returnsEmpty() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS));
-        when(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME, ACTIVITY))
+        when(mMatchmakingDenialStateManager.isMatchmakingPaused(
+                        PACKAGE_NAME, PACKAGE_NAME_2, ACTIVITY))
                 .thenReturn(true);
         PackageInfo matchingApp = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
         mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp));
@@ -413,7 +414,8 @@ public class MatchmakingManagerTest {
     public void fetchMatchingApps_oneCategoryPaused_returnsSuggestionsForOtherCategories() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_SLEEP));
         // Matchmaking is paused for ACTIVITY category.
-        when(mMatchmakingDenialStateManager.isMatchmakingPaused(PACKAGE_NAME, ACTIVITY))
+        when(mMatchmakingDenialStateManager.isMatchmakingPaused(
+                        PACKAGE_NAME, PACKAGE_NAME_2, ACTIVITY))
                 .thenReturn(true);
         PackageInfo matchingApp =
                 createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS, WRITE_SLEEP});
@@ -434,7 +436,8 @@ public class MatchmakingManagerTest {
     @Test
     public void fetchMatchingApps_allCategoriesPaused_returnsEmpty() {
         mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_SLEEP));
-        when(mMatchmakingDenialStateManager.isMatchmakingPaused(eq(PACKAGE_NAME), anyInt()))
+        when(mMatchmakingDenialStateManager.isMatchmakingPaused(
+                        eq(PACKAGE_NAME), eq(PACKAGE_NAME_2), anyInt()))
                 .thenReturn(true);
         PackageInfo matchingApp =
                 createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS, WRITE_SLEEP});
@@ -453,60 +456,100 @@ public class MatchmakingManagerTest {
 
     @Test
     public void recordMatchmakingDenial_callsDenialManager() {
-        mMatchmakingManager.recordMatchmakingDenial(PACKAGE_NAME, List.of(WRITE_EXERCISE));
+        mMatchmakingManager.recordMatchmakingDenial(
+                PACKAGE_NAME, Map.of(PACKAGE_NAME_2, List.of(WRITE_EXERCISE)));
 
-        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
+        verify(mMatchmakingDenialStateManager)
+                .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, ACTIVITY);
     }
 
     @Test
     public void recordMatchmakingDenial_sleepCategory_callsDenialManager() {
-        mMatchmakingManager.recordMatchmakingDenial(PACKAGE_NAME, List.of(WRITE_SLEEP));
+        mMatchmakingManager.recordMatchmakingDenial(
+                PACKAGE_NAME, Map.of(PACKAGE_NAME_2, List.of(WRITE_SLEEP)));
 
-        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, SLEEP);
+        verify(mMatchmakingDenialStateManager)
+                .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, SLEEP);
     }
 
     @Test
     public void recordMatchmakingDenial_multiplePermissionsSameCategory_callsDenialManagerOnce() {
         mMatchmakingManager.recordMatchmakingDenial(
-                PACKAGE_NAME, List.of(WRITE_EXERCISE, WRITE_STEPS));
+                PACKAGE_NAME, Map.of(PACKAGE_NAME_2, List.of(WRITE_EXERCISE, WRITE_STEPS)));
 
-        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
+        verify(mMatchmakingDenialStateManager)
+                .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, ACTIVITY);
     }
 
     @Test
     public void recordMatchmakingDenial_duplicatePermissionsSameCategory_callsDenialManagerOnce() {
         mMatchmakingManager.recordMatchmakingDenial(
-                PACKAGE_NAME, List.of(WRITE_EXERCISE, WRITE_STEPS, WRITE_EXERCISE, WRITE_EXERCISE));
+                PACKAGE_NAME,
+                Map.of(
+                        PACKAGE_NAME_2,
+                        List.of(WRITE_EXERCISE, WRITE_STEPS, WRITE_EXERCISE, WRITE_EXERCISE)));
 
-        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
+        verify(mMatchmakingDenialStateManager)
+                .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, ACTIVITY);
     }
 
     @Test
     public void recordMatchmakingDenial_multipleCategories_callsForEachCategory() {
         mMatchmakingManager.recordMatchmakingDenial(
                 PACKAGE_NAME,
-                List.of(
-                        WRITE_EXERCISE,
-                        WRITE_SLEEP,
-                        WRITE_MENSTRUATION,
-                        WRITE_HEART_RATE,
-                        WRITE_NUTRITION));
+                Map.of(
+                        PACKAGE_NAME_2,
+                        List.of(
+                                WRITE_EXERCISE,
+                                WRITE_SLEEP,
+                                WRITE_MENSTRUATION,
+                                WRITE_HEART_RATE,
+                                WRITE_NUTRITION)));
 
-        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
-        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, SLEEP);
         verify(mMatchmakingDenialStateManager)
-                .recordMatchmakingDenial(PACKAGE_NAME, CYCLE_TRACKING);
-        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, VITALS);
-        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, NUTRITION);
+                .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, ACTIVITY);
+        verify(mMatchmakingDenialStateManager)
+                .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, SLEEP);
+        verify(mMatchmakingDenialStateManager)
+                .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, CYCLE_TRACKING);
+        verify(mMatchmakingDenialStateManager)
+                .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, VITALS);
+        verify(mMatchmakingDenialStateManager)
+                .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, NUTRITION);
+    }
+
+    @Test
+    public void recordMatchmakingDenial_multipleMatchingApps_callsForEachApp() {
+        mMatchmakingManager.recordMatchmakingDenial(
+                PACKAGE_NAME,
+                Map.of(
+                        PACKAGE_NAME_2,
+                        List.of(WRITE_EXERCISE, WRITE_SLEEP),
+                        PACKAGE_NAME_3,
+                        List.of(WRITE_EXERCISE, WRITE_SLEEP)));
+
+        verify(mMatchmakingDenialStateManager)
+                .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, ACTIVITY);
+        verify(mMatchmakingDenialStateManager)
+                .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, SLEEP);
+        verify(mMatchmakingDenialStateManager)
+                .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_3, ACTIVITY);
+        verify(mMatchmakingDenialStateManager)
+                .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_3, SLEEP);
     }
 
     @Test
     public void recordMatchmakingDenial_filtersNonWritePermissions() {
         mMatchmakingManager.recordMatchmakingDenial(
-                PACKAGE_NAME, List.of(WRITE_EXERCISE, READ_STEPS, WRITE_SLEEP, READ_SLEEP));
+                PACKAGE_NAME,
+                Map.of(
+                        PACKAGE_NAME_2,
+                        List.of(WRITE_EXERCISE, READ_STEPS, WRITE_SLEEP, READ_SLEEP)));
 
-        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, ACTIVITY);
-        verify(mMatchmakingDenialStateManager).recordMatchmakingDenial(PACKAGE_NAME, SLEEP);
+        verify(mMatchmakingDenialStateManager)
+                .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, ACTIVITY);
+        verify(mMatchmakingDenialStateManager)
+                .recordMatchmakingDenial(PACKAGE_NAME, PACKAGE_NAME_2, SLEEP);
     }
 
     @Test

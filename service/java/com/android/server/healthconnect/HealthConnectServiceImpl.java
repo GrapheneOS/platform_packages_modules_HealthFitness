@@ -3141,15 +3141,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
-     * @see HealthConnectManager#recordMatchmakingDenial(String, List, Executor, OutcomeReceiver)
+     * @see HealthConnectManager#recordMatchmakingDenial(String, Map, Executor, OutcomeReceiver)
      */
     @Override
     public void recordMatchmakingDenial(
             AttributionSource attributionSource,
-            String deniedPackageName,
-            List<String> deniedPermissions,
+            String callingPackageName,
+            Map<String, List<String>> matchingApps,
             IEmptyResponseCallback callback) {
-        checkParamsNonNull(attributionSource, deniedPackageName, callback);
+        checkParamsNonNull(attributionSource, callingPackageName, callback);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -3158,19 +3158,20 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
                     if (mMatchmakingManager == null || !Flags.matchmaking()) {
-                        throw new UnsupportedOperationException("getMatchingApps is not supported");
+                        throw new UnsupportedOperationException(
+                                "recordMatchmakingDenial is not supported");
                     }
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
                     mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
-                    if (deniedPackageName.isEmpty()) {
+                    if (callingPackageName.isEmpty()) {
                         throw new HealthConnectException(
-                                ERROR_INVALID_ARGUMENT, "Package name can't be empty.");
+                                ERROR_INVALID_ARGUMENT, "Calling package name can't be empty.");
                     }
                     throwExceptionIfDataSyncInProgress();
                     if (mMatchmakingManager != null) {
                         mMatchmakingManager.recordMatchmakingDenial(
-                                deniedPackageName, deniedPermissions);
+                                callingPackageName, matchingApps);
                     }
                     callback.onResult();
                 },

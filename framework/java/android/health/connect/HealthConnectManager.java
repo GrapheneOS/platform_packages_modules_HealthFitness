@@ -3472,26 +3472,29 @@ public class HealthConnectManager {
     /**
      * Records that a user has denied matchmaking for a given package.
      *
-     * @param packageName package name of the app that was denied.
-     * @param executor The {@link Executor} on which to invoke the callback.
+     * @param callingPackageName package name of the app that initiated matchmaking.
+     * @param deniedApps package name and permissions of the potentially matching apps that were
+     *     denied.
+     * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
      * @hide
      */
     @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
     public void recordMatchmakingDenial(
-            @NonNull String packageName,
-            @NonNull List<String> permissions,
+            @NonNull String callingPackageName,
+            @NonNull Map<String, List<String>> deniedApps,
             @NonNull @CallbackExecutor Executor executor,
             @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
-        Objects.requireNonNull(packageName);
+        Objects.requireNonNull(callingPackageName);
+        Objects.requireNonNull(deniedApps);
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
 
         try {
             mService.recordMatchmakingDenial(
                     mContext.getAttributionSource(),
-                    packageName,
-                    permissions,
+                    callingPackageName,
+                    deniedApps,
                     new IEmptyResponseCallback.Stub() {
                         @Override
                         public void onResult() {

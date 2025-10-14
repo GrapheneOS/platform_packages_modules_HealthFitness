@@ -22,6 +22,7 @@ import com.android.healthconnect.controller.matchmaking.api.RecordMatchmakingDen
 import com.android.healthconnect.controller.matchmaking.api.RecordMatchmakingDenialUseCase.RecordMatchmakingDenialInput
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.google.common.truth.Truth
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
@@ -57,7 +58,12 @@ class RecordMatchmakingDenialUseCaseTest {
     @Test
     fun invoke_callsMatchmakingManager() = runTest {
         val permissions = listOf("permission1", "permission2")
-        useCase.invoke(RecordMatchmakingDenialInput(TEST_APP_PACKAGE_NAME, permissions))
+        useCase.invoke(
+            RecordMatchmakingDenialInput(
+                TEST_APP_PACKAGE_NAME,
+                mapOf(TEST_APP_PACKAGE_NAME_2 to permissions),
+            )
+        )
 
         verify(healthConnectManager).recordMatchmakingDenial(any(), any(), any(), any())
     }
@@ -69,7 +75,12 @@ class RecordMatchmakingDenialUseCaseTest {
             .doThrow(RuntimeException("test"))
 
         val result =
-            useCase.invoke(RecordMatchmakingDenialInput(TEST_APP_PACKAGE_NAME, permissions))
+            useCase.invoke(
+                RecordMatchmakingDenialInput(
+                    TEST_APP_PACKAGE_NAME,
+                    mapOf(TEST_APP_PACKAGE_NAME_2 to permissions),
+                )
+            )
 
         Truth.assertThat(result).isInstanceOf(UseCaseResults.Failed::class.java)
     }

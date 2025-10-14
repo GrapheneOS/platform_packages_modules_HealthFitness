@@ -82,6 +82,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class HealthConnectManagerTest {
 
     public static final String PACKAGE_TO_MATCH = "package.to.match";
+    public static final String MATCHING_PACKAGE = "matching.package";
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
@@ -534,7 +535,7 @@ public class HealthConnectManagerTest {
 
         healthConnectManager.recordMatchmakingDenial(
                 PACKAGE_TO_MATCH,
-                List.of(WRITE_EXERCISE),
+                Map.of(MATCHING_PACKAGE, List.of(WRITE_EXERCISE)),
                 Executors.newSingleThreadExecutor(),
                 receiver);
 
@@ -547,18 +548,19 @@ public class HealthConnectManagerTest {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
         TestOutcomeReceiver<Void> receiver = new TestOutcomeReceiver<>();
-        ArgumentCaptor<List<String>> permissionsCaptor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Map<String, List<String>>> deniedAppsCaptor =
+                ArgumentCaptor.forClass(Map.class);
 
         healthConnectManager.recordMatchmakingDenial(
                 PACKAGE_TO_MATCH,
-                Collections.emptyList(),
+                Map.of(MATCHING_PACKAGE, Collections.emptyList()),
                 Executors.newSingleThreadExecutor(),
                 receiver);
 
         verify(mService)
                 .recordMatchmakingDenial(
-                        any(), eq(PACKAGE_TO_MATCH), permissionsCaptor.capture(), any());
-        assertThat(permissionsCaptor.getValue()).isEmpty();
+                        any(), eq(PACKAGE_TO_MATCH), deniedAppsCaptor.capture(), any());
+        assertThat(deniedAppsCaptor.getValue().get(MATCHING_PACKAGE)).isEmpty();
     }
 
     @Test
@@ -568,16 +570,21 @@ public class HealthConnectManagerTest {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
         TestOutcomeReceiver<Void> receiver = new TestOutcomeReceiver<>();
-        ArgumentCaptor<List<String>> permissionsCaptor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Map<String, List<String>>> deniedAppsCaptor =
+                ArgumentCaptor.forClass(Map.class);
         List<String> permissions = List.of(WRITE_STEPS, WRITE_SLEEP);
 
         healthConnectManager.recordMatchmakingDenial(
-                PACKAGE_TO_MATCH, permissions, Executors.newSingleThreadExecutor(), receiver);
+                PACKAGE_TO_MATCH,
+                Map.of(MATCHING_PACKAGE, permissions),
+                Executors.newSingleThreadExecutor(),
+                receiver);
 
         verify(mService)
                 .recordMatchmakingDenial(
-                        any(), eq(PACKAGE_TO_MATCH), permissionsCaptor.capture(), any());
-        assertThat(permissionsCaptor.getValue()).containsExactlyElementsIn(permissions);
+                        any(), eq(PACKAGE_TO_MATCH), deniedAppsCaptor.capture(), any());
+        assertThat(deniedAppsCaptor.getValue().get(MATCHING_PACKAGE))
+                .containsExactlyElementsIn(permissions);
     }
 
     @Test
@@ -602,7 +609,7 @@ public class HealthConnectManagerTest {
 
         healthConnectManager.recordMatchmakingDenial(
                 PACKAGE_TO_MATCH,
-                List.of(WRITE_EXERCISE),
+                Map.of(MATCHING_PACKAGE, List.of(WRITE_EXERCISE)),
                 Executors.newSingleThreadExecutor(),
                 receiver);
 

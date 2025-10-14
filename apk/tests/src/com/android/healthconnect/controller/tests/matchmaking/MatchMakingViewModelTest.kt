@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.tests.matchmaking
 
 import android.health.connect.HealthPermissions.WRITE_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_STEPS
+import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.StepsRecord
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -248,15 +249,57 @@ class MatchMakingViewModelTest {
     }
 
     @Test
+    fun recordMatchmakingDenial_notWithData_doesNothing() = runTest {
+        viewModel.recordMatchmakingDenial()
+
+        verify(recordMatchmakingDenialUseCase, never()).invoke(any())
+    }
+
+    @Test
+    fun recordMatchmakingDenial_noMatchingApps_doesNothing() = runTest {
+        whenever(getMatchingAppsUseCase.invoke(any()))
+            .thenReturn(UseCaseResults.Success(emptyList()))
+        viewModel.loadMatchmakingApps(TEST_APP_PACKAGE_NAME_3, setOf(StepsRecord::class.java))
+
+        viewModel.recordMatchmakingDenial()
+
+        verify(recordMatchmakingDenialUseCase, never()).invoke(any())
+    }
+
+    @Test
+    fun recordMatchmakingDenial_noPermissions_doesNothing() = runTest {
+        val appMetadata = AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null)
+        val appMetadata2 = AppMetadata(TEST_APP_PACKAGE_NAME_2, TEST_APP_NAME_2, null)
+        val appsWithNoPermissions =
+            listOf(
+                MatchmakingAppData(appMetadata, emptyList()),
+                MatchmakingAppData(appMetadata2, emptyList()),
+            )
+        whenever(getMatchingAppsUseCase.invoke(any()))
+            .thenReturn(UseCaseResults.Success(appsWithNoPermissions))
+        viewModel.loadMatchmakingApps(TEST_APP_PACKAGE_NAME_3, setOf(StepsRecord::class.java))
+
+        viewModel.recordMatchmakingDenial()
+
+        verify(recordMatchmakingDenialUseCase, never()).invoke(any())
+    }
+
+    @Test
     fun recordMatchmakingDenial_callsUseCaseWithCorrectParameters() = runTest {
         setupWithData()
         val captor = argumentCaptor<RecordMatchmakingDenialUseCase.RecordMatchmakingDenialInput>()
+        val callingPackageName = TEST_APP_PACKAGE_NAME_3
+        val deniedApps =
+            mapOf(
+                TEST_APP_PACKAGE_NAME to listOf(WRITE_STEPS),
+                TEST_APP_PACKAGE_NAME_2 to listOf(WRITE_EXERCISE),
+            )
 
         viewModel.recordMatchmakingDenial()
 
         verify(recordMatchmakingDenialUseCase).invoke(captor.capture())
-        assertThat(captor.firstValue.packageName).isEqualTo(TEST_APP_PACKAGE_NAME_3)
-        assertThat(captor.firstValue.permissions).containsExactly(WRITE_STEPS, WRITE_EXERCISE)
+        assertThat(captor.firstValue.callingPackageName).isEqualTo(callingPackageName)
+        assertThat(captor.firstValue.deniedApps).isEqualTo(deniedApps)
     }
 
     @Test
@@ -266,17 +309,23 @@ class MatchMakingViewModelTest {
             HealthPermission.fromPermissionString(WRITE_STEPS) as HealthPermission.FitnessPermission
         viewModel.addPermissionToGrantedList(TEST_APP_PACKAGE_NAME, permission)
         val captor = argumentCaptor<RecordMatchmakingDenialUseCase.RecordMatchmakingDenialInput>()
+        val callingPackageName = TEST_APP_PACKAGE_NAME_3
+        val deniedApps =
+            mapOf(
+                TEST_APP_PACKAGE_NAME to listOf(WRITE_STEPS),
+                TEST_APP_PACKAGE_NAME_2 to listOf(WRITE_EXERCISE),
+            )
 
         viewModel.recordMatchmakingDenial()
 
         verify(recordMatchmakingDenialUseCase).invoke(captor.capture())
-        assertThat(captor.firstValue.packageName).isEqualTo(TEST_APP_PACKAGE_NAME_3)
-        assertThat(captor.firstValue.permissions).containsExactly(WRITE_STEPS, WRITE_EXERCISE)
+        assertThat(captor.firstValue.callingPackageName).isEqualTo(callingPackageName)
+        assertThat(captor.firstValue.deniedApps).isEqualTo(deniedApps)
     }
 
     private suspend fun setupWithData() {
         val packageName = TEST_APP_PACKAGE_NAME_3
-        val recordTypes = setOf(StepsRecord::class.java)
+        val recordTypes = setOf(ExerciseSessionRecord::class.java, StepsRecord::class.java)
         val appMetadata = AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null)
         val appMetadata2 = AppMetadata(TEST_APP_PACKAGE_NAME_2, TEST_APP_NAME_2, null)
         val permissions =
