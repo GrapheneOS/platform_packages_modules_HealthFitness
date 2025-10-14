@@ -21,14 +21,19 @@ import android.health.connect.datatypes.units.Volume
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.AlcoholConsumptionFormatter
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
+import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.ZoneId
+import java.util.Locale
+import java.util.TimeZone
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -48,6 +53,8 @@ class AlcoholConsumptionFormatterTest {
 
     @Before
     fun setup() {
+        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
+        InstrumentationRegistry.getInstrumentation().context.setLocale(Locale.US)
         hiltRule.inject()
     }
 
