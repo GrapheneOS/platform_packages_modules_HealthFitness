@@ -144,24 +144,53 @@ constructor(
             }
             is UseCaseResults.Success -> {
                 val resultData = appsResult.data
-                val connectedApps =
+                val activeApps =
                     resultData
+                        .filter { if (showSystemApps) true else !it.isSystem }
                         .filter {
                             it.status != ConnectedAppStatus.INACTIVE &&
                                 it.status != ConnectedAppStatus.NEEDS_UPDATE
                         }
-                        .sortedWith(
-                            compareBy<ConnectedAppMetadata> { getSortOrder(it.status) }
-                                .thenBy { it.appMetadata.appName }
-                        )
+
+                val (deniedApps, allowedApps) =
+                    activeApps.partition { it.status == ConnectedAppStatus.DENIED }
+                val sortedAllowedApps = allowedApps.sortedBy { it.appMetadata.appName }
+                val sortedDeniedApps = deniedApps.sortedBy { it.appMetadata.appName }
+
+                val finalList = mutableListOf<ConnectedAppMetadata>()
+                val remainingAllowed = sortedAllowedApps.toMutableList()
+                val remainingDenied = sortedDeniedApps.toMutableList()
+
+                // Fill the first 3 slots with allowed apps.
+                val topAllowedCount = minOf(remainingAllowed.size, 3)
+                finalList.addAll(remainingAllowed.take(topAllowedCount))
+                repeat(topAllowedCount) { remainingAllowed.removeFirst() }
+
+                // How many denied apps can we place in the reserved slots (max 2)
+                val numOfDeniedAppsToShow = minOf(remainingDenied.size, 2)
+
+                // How many allowed apps are needed to fill the rest of the top 5
+                val numOfAllowedAppsToFill = minOf(remainingAllowed.size, 2 - numOfDeniedAppsToShow)
+                finalList.addAll(remainingAllowed.take(numOfAllowedAppsToFill))
+                repeat(numOfAllowedAppsToFill) { remainingAllowed.removeFirst() }
+
+                // Add the denied apps into their reserved slots (right-to-left logic implicitly
+                // handled).
+                finalList.addAll(remainingDenied.take(numOfDeniedAppsToShow))
+                repeat(numOfDeniedAppsToShow) { remainingDenied.removeFirst() }
+
+                // 3. Add all remaining apps to the end of the list.
+                finalList.addAll(remainingAllowed)
+                finalList.addAll(remainingDenied)
+                val connectedApps = finalList
+
                 _showSeeMoreHealthApps.value =
                     connectedApps.isNotEmpty() ||
                         resultData.any {
                             it.status == ConnectedAppStatus.INACTIVE ||
                                 it.status == ConnectedAppStatus.NEEDS_UPDATE
                         }
-                _connectedApps.value =
-                    connectedApps.filter { if (showSystemApps) true else !it.isSystem }
+                _connectedApps.value = connectedApps
             }
         }
     }
