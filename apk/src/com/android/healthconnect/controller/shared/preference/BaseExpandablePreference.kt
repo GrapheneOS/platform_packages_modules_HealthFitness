@@ -22,6 +22,12 @@ import android.widget.ImageView
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import androidx.preference.PreferenceViewHolder
+import com.android.healthconnect.controller.utils.logging.ElementName
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import com.android.healthconnect.controller.utils.logging.UIAction
+import com.android.healthconnect.controller.utils.logging.UnknownGenericElement
+import dagger.hilt.android.EntryPointAccessors
 
 /**
  * A base class for [PreferenceGroup] that can be expanded and collapsed.
@@ -35,6 +41,17 @@ constructor(context: Context, attrs: AttributeSet? = null) : PreferenceGroup(con
 
     var mIsExpanded = false
     private var mOnExpandChangeListener: OnExpandChangeListener? = null
+    private var logger: HealthConnectLogger
+    var logName: ElementName = UnknownGenericElement.UNKNOWN_HEALTH_PREFERENCE
+
+    init {
+        val hiltEntryPoint =
+            EntryPointAccessors.fromApplication(
+                context.applicationContext,
+                HealthConnectLoggerEntryPoint::class.java,
+            )
+        logger = hiltEntryPoint.logger()
+    }
 
     /**
      * Interface definition for a callback to be invoked when the expansion state of this preference
@@ -58,10 +75,16 @@ constructor(context: Context, attrs: AttributeSet? = null) : PreferenceGroup(con
         arrow?.rotation = if (mIsExpanded) 180f else 0f
 
         holder.itemView.setOnClickListener {
+            logger.logInteraction(logName, UIAction.ACTION_CLICK)
             setExpanded(!mIsExpanded)
             mOnExpandChangeListener?.onExpandChanged(mIsExpanded)
         }
         updateChildPreferences()
+    }
+
+    override fun onAttached() {
+        super.onAttached()
+        logger.logImpression(logName)
     }
 
     override fun addPreference(preference: Preference): Boolean {
