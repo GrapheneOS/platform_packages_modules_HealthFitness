@@ -96,6 +96,7 @@ import android.health.connect.accesslog.AccessLogsResponseParcel;
 import android.health.connect.aidl.ActivityDatesRequestParcel;
 import android.health.connect.aidl.ActivityDatesResponseParcel;
 import android.health.connect.aidl.AggregateDataRequestParcel;
+import android.health.connect.aidl.AggregateDataResponseParcel;
 import android.health.connect.aidl.ApplicationInfoResponseParcel;
 import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.GetPriorityResponseParcel;
@@ -616,6 +617,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             AttributionSource attributionSource,
             AggregateDataRequestParcel request,
             IAggregateRecordsResponseCallback callback) {
+        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, request, callback);
 
         final int uid = Binder.getCallingUid();
@@ -627,23 +629,25 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 holdsDataManagementPermission, READ_AGGREGATED_DATA)
                         .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionSource.getPackageName());
+        final AggregateDataRequestParcel unmaskedRequest =
+                request.toUnmasked(getUnmaskingFunction(attributionSource.getPackageName()));
 
         ErrorCallback errorCallback = callback::onError;
         scheduleLoggingHealthDataApiErrors(
                 () -> {
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
-                    logger.setNumberOfRecords(request.getAggregateIds().length);
+                    logger.setNumberOfRecords(unmaskedRequest.getAggregateIds().length);
                     throwExceptionIfDataSyncInProgress();
                     List<Integer> recordTypesToTest = new ArrayList<>();
-                    for (int aggregateId : request.getAggregateIds()) {
+                    for (int aggregateId : unmaskedRequest.getAggregateIds()) {
                         recordTypesToTest.add(
                                 mAggregationTypeIdMapper
                                         .getAggregationTypeFor(aggregateId)
                                         .getApplicableRecordTypeId());
                     }
 
-                    long startDateAccess = request.getStartTime();
+                    long startDateAccess = unmaskedRequest.getStartTime();
                     // TODO(b/309776578): Consider making background reads possible for
                     // aggregations when only using own data
                     if (!holdsDataManagementPermission) {
@@ -679,23 +683,27 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                             .toEpochMilli();
                         }
                         maybeEnforceOnlyCallingPackageDataRequested(
-                                request.getPackageFilters(),
+                                unmaskedRequest.getPackageFilters(),
                                 attributionSource.getPackageName(),
                                 enforceSelfRead,
                                 "aggregationTypes: "
-                                        + Arrays.stream(request.getAggregateIds())
+                                        + Arrays.stream(unmaskedRequest.getAggregateIds())
                                                 .mapToObj(
                                                         mAggregationTypeIdMapper
                                                                 ::getAggregationTypeFor)
                                                 .collect(Collectors.toList()));
                     }
                     boolean shouldRecordAccessLog = !holdsDataManagementPermission;
-                    callback.onResult(
-                            mFitnessRecordAggregateHelper.aggregateRecords(
-                                    attributionSource.getPackageName(),
-                                    request,
-                                    startDateAccess,
-                                    shouldRecordAccessLog));
+                    AggregateDataResponseParcel maskedResponse =
+                            mFitnessRecordAggregateHelper
+                                    .aggregateRecords(
+                                            attributionSource.getPackageName(),
+                                            unmaskedRequest,
+                                            startDateAccess,
+                                            shouldRecordAccessLog)
+                                    .toMasked(
+                                            getMaskingFunction(attributionSource.getPackageName()));
+                    callback.onResult(maskedResponse);
                     logger.setDataTypesFromRecordTypes(recordTypesToTest)
                             .setHealthDataServiceApiStatusSuccess();
                 },

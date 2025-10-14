@@ -132,7 +132,7 @@ public class RecordsParcel implements Parcelable, PackageNameMasker<RecordsParce
 
     @NonNull
     @Override
-    public RecordsParcel toMasked(Function<String, String> packageMasker) {
+    public RecordsParcel toMasked(@NonNull Function<String, String> packageMasker) {
         return new RecordsParcel(
                 this.mRecordInternals.stream()
                         .<RecordInternal<?>>map(record -> record.toMasked(packageMasker))

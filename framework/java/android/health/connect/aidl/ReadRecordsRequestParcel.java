@@ -201,7 +201,7 @@ public class ReadRecordsRequestParcel
 
     @NonNull
     @Override
-    public ReadRecordsRequestParcel toUnmasked(Function<String, String> packageUnmasker) {
+    public ReadRecordsRequestParcel toUnmasked(@NonNull Function<String, String> packageUnmasker) {
         return new ReadRecordsRequestParcel(
                 mRecordIdFiltersParcel,
                 mRecordType,

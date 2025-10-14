@@ -50,5 +50,5 @@ public interface PackageNameUnmasker<T> {
      *     canonical form.
      */
     @NonNull
-    T toUnmasked(Function<String, String> packageUnmasker);
+    T toUnmasked(@NonNull Function<String, String> packageUnmasker);
 }

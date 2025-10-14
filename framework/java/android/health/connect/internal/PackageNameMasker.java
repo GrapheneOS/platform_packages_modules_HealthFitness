@@ -55,5 +55,5 @@ public interface PackageNameMasker<T> {
      *     client-specific form.
      */
     @NonNull
-    T toMasked(Function<String, String> packageMasker);
+    T toMasked(@NonNull Function<String, String> packageMasker);
 }

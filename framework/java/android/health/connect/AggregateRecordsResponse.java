@@ -25,11 +25,17 @@ import android.util.ArrayMap;
 
 import java.time.ZoneOffset;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 
-/** A class representing response for {@link HealthConnectManager#aggregate} */
+/**
+ * A class representing response for {@link HealthConnectManager#aggregate}
+ *
+ * @param <T> The type of the aggregated result (e.g., Long, Duration)
+ */
 public final class AggregateRecordsResponse<T> {
     private final Map<AggregationType<T>, AggregateResult<T>> mAggregateResults;
 
@@ -155,5 +161,19 @@ public final class AggregateRecordsResponse<T> {
     @NonNull
     public Set<DataOrigin> getDataOrigins(@NonNull AggregationType<T> aggregationType) {
         return getDataOriginsInternal(aggregationType, mAggregateResults);
+    }
+
+    /** @hide */
+    @NonNull
+    public AggregateRecordsResponse<T> toMasked(@NonNull Function<String, String> packageMasker) {
+        Map<Integer, AggregateResult<?>> maskedResults = new HashMap<>();
+        for (var entry : mAggregateResults.entrySet()) {
+            Integer newKey = AggregationTypeIdMapper.getInstance().getIdFor(entry.getKey());
+            AggregateResult<?> newValue =
+                    entry.getValue() == null ? null : entry.getValue().toMasked(packageMasker);
+            maskedResults.put(newKey, newValue);
+        }
+
+        return new AggregateRecordsResponse<>(maskedResults);
     }
 }

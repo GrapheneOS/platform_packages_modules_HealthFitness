@@ -83,7 +83,7 @@ public class ReadRecordsResponseParcel
 
     @NonNull
     @Override
-    public ReadRecordsResponseParcel toMasked(Function<String, String> packageMasker) {
+    public ReadRecordsResponseParcel toMasked(@NonNull Function<String, String> packageMasker) {
         return new ReadRecordsResponseParcel(mRecordsParcel.toMasked(packageMasker), mPageToken);
     }
 }

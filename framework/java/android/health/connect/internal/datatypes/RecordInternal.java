@@ -30,7 +30,9 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.PackageNameMasker;
 import android.health.connect.internal.PackageNameUnmasker;
 import android.os.Parcel;
+
 import com.android.healthfitness.flags.Flags;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -90,7 +92,7 @@ public abstract class RecordInternal<T extends Record>
 
     @NonNull
     @Override
-    public RecordInternal<T> toMasked(Function<String, String> packageMasker) {
+    public RecordInternal<T> toMasked(@NonNull Function<String, String> packageMasker) {
         if (Objects.equals(null, mPackageName)) {
             return this;
         }
@@ -100,7 +102,7 @@ public abstract class RecordInternal<T extends Record>
 
     @NonNull
     @Override
-    public RecordInternal<T> toUnmasked(Function<String, String> packageUnmasker) {
+    public RecordInternal<T> toUnmasked(@NonNull Function<String, String> packageUnmasker) {
         if (Objects.equals(null, mPackageName)) {
             return this;
         }
