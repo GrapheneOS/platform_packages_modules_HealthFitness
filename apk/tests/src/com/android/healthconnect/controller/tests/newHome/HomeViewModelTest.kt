@@ -49,6 +49,8 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_3
 import com.android.healthconnect.controller.tests.utils.TEST_APP_4
+import com.android.healthconnect.controller.tests.utils.TEST_APP_5
+import com.android.healthconnect.controller.tests.utils.TEST_APP_6
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
@@ -206,17 +208,107 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun loadData_success_sortsAppsByStatusThenByName() = runTest {
+    fun loadData_success_onlyAllowedApps_showsAllInAlphabeticOrder() = runTest {
         val app1 = ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED)
-        val app2 = ConnectedAppMetadata(TEST_APP_2, ConnectedAppStatus.DENIED)
+        val app2 = ConnectedAppMetadata(TEST_APP_2, ConnectedAppStatus.ALLOWED)
         val app3 = ConnectedAppMetadata(TEST_APP_3, ConnectedAppStatus.ALLOWED)
-        val app4 = ConnectedAppMetadata(TEST_APP_4, ConnectedAppStatus.DENIED)
-        loadHealthPermissionApps.updateList(listOf(app1, app2, app3, app4))
+        val app4 = ConnectedAppMetadata(TEST_APP_4, ConnectedAppStatus.ALLOWED)
+        val app5 = ConnectedAppMetadata(TEST_APP_5, ConnectedAppStatus.ALLOWED)
+        val app6 = ConnectedAppMetadata(TEST_APP_6, ConnectedAppStatus.ALLOWED)
+        loadHealthPermissionApps.updateList(listOf(app1, app2, app3, app4, app5, app6))
 
         val state = loadHomeFragmentState()
         assertThat(state).isInstanceOf(HomeViewModel.HomeFragmentState.WithData::class.java)
         assertThat((state as HomeViewModel.HomeFragmentState.WithData).connectedApps)
-            .containsExactly(app1, app3, app2, app4)
+            .containsExactly(app1, app2, app3, app4, app5, app6)
+            .inOrder()
+        assertThat(state.showSeeMoreHealthApps).isTrue()
+    }
+
+    @Test
+    fun loadData_success_onlyDeniedApps_showsAllInAlphabeticOrder() = runTest {
+        val app1 = ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.DENIED)
+        val app2 = ConnectedAppMetadata(TEST_APP_2, ConnectedAppStatus.DENIED)
+        val app3 = ConnectedAppMetadata(TEST_APP_3, ConnectedAppStatus.DENIED)
+        val app4 = ConnectedAppMetadata(TEST_APP_4, ConnectedAppStatus.DENIED)
+        val app5 = ConnectedAppMetadata(TEST_APP_5, ConnectedAppStatus.DENIED)
+        val app6 = ConnectedAppMetadata(TEST_APP_6, ConnectedAppStatus.DENIED)
+        loadHealthPermissionApps.updateList(listOf(app1, app2, app3, app4, app5, app6))
+
+        val state = loadHomeFragmentState()
+        assertThat(state).isInstanceOf(HomeViewModel.HomeFragmentState.WithData::class.java)
+        assertThat((state as HomeViewModel.HomeFragmentState.WithData).connectedApps)
+            .containsExactly(app1, app2, app3, app4, app5, app6)
+            .inOrder()
+        assertThat(state.showSeeMoreHealthApps).isTrue()
+    }
+
+    @Test
+    fun loadData_success_oneDeniedApp_showsDeniedAppInTop5() = runTest {
+        val app1 = ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED)
+        val app2 = ConnectedAppMetadata(TEST_APP_2, ConnectedAppStatus.DENIED)
+        val app3 = ConnectedAppMetadata(TEST_APP_3, ConnectedAppStatus.ALLOWED)
+        val app4 = ConnectedAppMetadata(TEST_APP_4, ConnectedAppStatus.ALLOWED)
+        val app5 = ConnectedAppMetadata(TEST_APP_5, ConnectedAppStatus.ALLOWED)
+        val app6 = ConnectedAppMetadata(TEST_APP_6, ConnectedAppStatus.ALLOWED)
+        loadHealthPermissionApps.updateList(listOf(app1, app2, app3, app4, app5, app6))
+
+        val state = loadHomeFragmentState()
+        assertThat(state).isInstanceOf(HomeViewModel.HomeFragmentState.WithData::class.java)
+        assertThat((state as HomeViewModel.HomeFragmentState.WithData).connectedApps)
+            .containsExactly(app1, app3, app4, app5, app2, app6)
+            .inOrder()
+        assertThat(state.showSeeMoreHealthApps).isTrue()
+    }
+
+    @Test
+    fun loadData_success_3allowed2denied() = runTest {
+        val app1 = ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED)
+        val app2 = ConnectedAppMetadata(TEST_APP_2, ConnectedAppStatus.DENIED)
+        val app3 = ConnectedAppMetadata(TEST_APP_3, ConnectedAppStatus.ALLOWED)
+        val app4 = ConnectedAppMetadata(TEST_APP_4, ConnectedAppStatus.DENIED)
+        val app5 = ConnectedAppMetadata(TEST_APP_5, ConnectedAppStatus.ALLOWED)
+        val app6 = ConnectedAppMetadata(TEST_APP_6, ConnectedAppStatus.ALLOWED)
+        loadHealthPermissionApps.updateList(listOf(app1, app2, app3, app4, app5, app6))
+
+        val state = loadHomeFragmentState()
+        assertThat(state).isInstanceOf(HomeViewModel.HomeFragmentState.WithData::class.java)
+        assertThat((state as HomeViewModel.HomeFragmentState.WithData).connectedApps)
+            .containsExactly(app1, app3, app5, app2, app4, app6)
+            .inOrder()
+        assertThat(state.showSeeMoreHealthApps).isTrue()
+    }
+
+    @Test
+    fun loadData_success_2allowed3denied() = runTest {
+        val app1 = ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED)
+        val app2 = ConnectedAppMetadata(TEST_APP_2, ConnectedAppStatus.DENIED)
+        val app3 = ConnectedAppMetadata(TEST_APP_3, ConnectedAppStatus.ALLOWED)
+        val app4 = ConnectedAppMetadata(TEST_APP_4, ConnectedAppStatus.DENIED)
+        val app5 = ConnectedAppMetadata(TEST_APP_5, ConnectedAppStatus.DENIED)
+        loadHealthPermissionApps.updateList(listOf(app1, app2, app3, app4, app5))
+
+        val state = loadHomeFragmentState()
+        assertThat(state).isInstanceOf(HomeViewModel.HomeFragmentState.WithData::class.java)
+        assertThat((state as HomeViewModel.HomeFragmentState.WithData).connectedApps)
+            .containsExactly(app1, app3, app2, app4, app5)
+            .inOrder()
+        assertThat(state.showSeeMoreHealthApps).isTrue()
+    }
+
+    @Test
+    fun loadData_success_1allowed4denied() = runTest {
+        val app1 = ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED)
+        val app2 = ConnectedAppMetadata(TEST_APP_2, ConnectedAppStatus.DENIED)
+        val app3 = ConnectedAppMetadata(TEST_APP_3, ConnectedAppStatus.DENIED)
+        val app4 = ConnectedAppMetadata(TEST_APP_4, ConnectedAppStatus.DENIED)
+        val app5 = ConnectedAppMetadata(TEST_APP_5, ConnectedAppStatus.DENIED)
+        loadHealthPermissionApps.updateList(listOf(app1, app2, app3, app4, app5))
+
+        val state = loadHomeFragmentState()
+        assertThat(state).isInstanceOf(HomeViewModel.HomeFragmentState.WithData::class.java)
+        assertThat((state as HomeViewModel.HomeFragmentState.WithData).connectedApps)
+            .containsExactly(app1, app2, app3, app4, app5)
             .inOrder()
         assertThat(state.showSeeMoreHealthApps).isTrue()
     }
