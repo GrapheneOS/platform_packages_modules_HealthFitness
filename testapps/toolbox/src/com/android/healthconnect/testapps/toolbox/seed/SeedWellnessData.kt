@@ -17,6 +17,36 @@ package com.android.healthconnect.testapps.toolbox.seed
 
 import android.content.Context
 import android.health.connect.HealthConnectManager
+import android.health.connect.datatypes.AlcoholConsumptionRecord
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_ABSINTHE
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BRANDY
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_CHUHAI
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_CIDER
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_COCKTAIL
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_GIN
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_HIGHBALL
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_LAGER
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_MEAD
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_OTHER
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_RUM
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_SAKE
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_SHOCHU
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_SOJU
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_TEQUILA
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_VODKA
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WHISKEY
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_BOTTLE
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_CAN
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_HALF_PINT
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_HANDLE
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_SHOT
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_STANDARD_DRINK
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_UNIT
 import android.health.connect.datatypes.MindfulnessSessionRecord
 import android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_BREATHING
 import android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_MEDITATION
@@ -29,11 +59,16 @@ import android.health.connect.datatypes.NicotineIntakeRecord
 import android.health.connect.datatypes.NicotineIntakeRecord.NICOTINE_INTAKE_TYPE_CIGARETTE
 import android.health.connect.datatypes.NicotineIntakeRecord.NICOTINE_INTAKE_TYPE_VAPE
 import android.health.connect.datatypes.units.Mass
+import android.health.connect.datatypes.units.Percentage
+import android.health.connect.datatypes.units.Volume
+import android.util.Log
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.getMetaData
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.insertRecords
 import java.time.Duration.ofDays
 import java.time.Duration.ofMinutes
 import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random
 import kotlinx.coroutines.runBlocking
@@ -51,8 +86,48 @@ class SeedWellnessData(private val context: Context, private val manager: Health
                 MINDFULNESS_SESSION_TYPE_UNKNOWN,
             )
 
+        val VALID_ALCOHOL_CONSUMPTION_TYPE =
+            setOf(
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_OTHER,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_VODKA,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_GIN,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WHISKEY,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_RUM,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_TEQUILA,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_LAGER,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_CIDER,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_SAKE,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_SHOCHU,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_SOJU,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_MEAD,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_ABSINTHE,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BRANDY,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_COCKTAIL,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_CHUHAI,
+                ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_HIGHBALL,
+            )
+
+        val VALID_ALCOHOL_CONSUMPTION_SERVING_SIZE =
+            setOf(
+                ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER,
+                ALCOHOL_CONSUMPTION_SERVING_SIZE_STANDARD_DRINK,
+                ALCOHOL_CONSUMPTION_SERVING_SIZE_UNIT,
+                ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT,
+                ALCOHOL_CONSUMPTION_SERVING_SIZE_HALF_PINT,
+                ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS,
+                ALCOHOL_CONSUMPTION_SERVING_SIZE_SHOT,
+                ALCOHOL_CONSUMPTION_SERVING_SIZE_BOTTLE,
+                ALCOHOL_CONSUMPTION_SERVING_SIZE_CAN,
+                ALCOHOL_CONSUMPTION_SERVING_SIZE_HANDLE,
+            )
+
         val VALID_NICOTINE_INTAKE_TYPE =
             setOf(NICOTINE_INTAKE_TYPE_CIGARETTE, NICOTINE_INTAKE_TYPE_VAPE)
+
+        val ALCOHOL_CONSUMPTION_NOTES =
+            listOf("Pub quiz night", "Pub crawl", "Celebration", "Birthday", null)
     }
 
     private val start = Instant.now().truncatedTo(ChronoUnit.DAYS)
@@ -65,8 +140,9 @@ class SeedWellnessData(private val context: Context, private val manager: Health
             try {
                 seedMindfulnessSessionRecord()
                 seedNicotineIntakeRecord()
+                seedAlcoholConsumptionRecord()
             } catch (ex: Exception) {
-                throw ex
+                Log.e("SeedWellnessData", "Error when seeding wellness data $ex")
             }
         }
     }
@@ -88,6 +164,18 @@ class SeedWellnessData(private val context: Context, private val manager: Health
             (1L..3).map { timeOffSet ->
                 getMindfulnessSessionRecord(lastMonth.plus(ofMinutes(timeOffSet)))
             }
+
+        insertRecords(records, manager)
+        insertRecords(yesterdayRecords, manager)
+        insertRecords(lastWeekRecords, manager)
+        insertRecords(lastMonthRecords, manager)
+    }
+
+    private suspend fun seedAlcoholConsumptionRecord() {
+        val records = getAlcoholConsumptionRecords(start)
+        val yesterdayRecords = getAlcoholConsumptionRecords(yesterday)
+        val lastWeekRecords = getAlcoholConsumptionRecords(lastWeek)
+        val lastMonthRecords = getAlcoholConsumptionRecords(lastMonth)
 
         insertRecords(records, manager)
         insertRecords(yesterdayRecords, manager)
@@ -136,6 +224,65 @@ class SeedWellnessData(private val context: Context, private val manager: Health
                 VALID_NICOTINE_INTAKE_TYPE.random(),
             )
             .setNicotineIntake(Mass.fromGrams(Random.nextDouble(0.0, 0.01)))
+            .build()
+    }
+
+    private fun getAlcoholConsumptionRecords(startTime: Instant): List<AlcoholConsumptionRecord> {
+        return listOf(
+            getAlcoholConsumptionRecordInstant(startTime.plus(ofMinutes(5))),
+            getAlcoholConsumptionRecordInterval(
+                startTime.plus(ofMinutes(10)),
+                startTime.plus(ofMinutes(20)),
+            ),
+            getAlcoholConsumptionRecordDate(
+                LocalDate.ofInstant(startTime, ZoneOffset.systemDefault())
+            ),
+        )
+    }
+
+    private fun getAlcoholConsumptionRecordInstant(time: Instant): AlcoholConsumptionRecord {
+        return AlcoholConsumptionRecord.Builder(
+                getMetaData(context),
+                time,
+                Random.nextInt(1, 11),
+                VALID_ALCOHOL_CONSUMPTION_TYPE.random(),
+            )
+            .setServingSize(VALID_ALCOHOL_CONSUMPTION_SERVING_SIZE.random())
+            .setAlcoholByVolume(Percentage.fromValue(Random.nextDouble(1.0, 100.0)))
+            .setServingVolume(Volume.fromLiters(Random.nextDouble(1.0, 10.0)))
+            .setNote(ALCOHOL_CONSUMPTION_NOTES.random())
+            .build()
+    }
+
+    private fun getAlcoholConsumptionRecordInterval(
+        startTime: Instant,
+        endTime: Instant,
+    ): AlcoholConsumptionRecord {
+        return AlcoholConsumptionRecord.Builder(
+                getMetaData(context),
+                startTime,
+                endTime,
+                Random.nextInt(1, 11),
+                VALID_ALCOHOL_CONSUMPTION_TYPE.random(),
+            )
+            .setServingSize(VALID_ALCOHOL_CONSUMPTION_SERVING_SIZE.random())
+            .setAlcoholByVolume(Percentage.fromValue(Random.nextDouble(1.0, 100.0)))
+            .setServingVolume(Volume.fromLiters(Random.nextDouble(1.0, 10.0)))
+            .setNote(ALCOHOL_CONSUMPTION_NOTES.random())
+            .build()
+    }
+
+    private fun getAlcoholConsumptionRecordDate(date: LocalDate): AlcoholConsumptionRecord {
+        return AlcoholConsumptionRecord.Builder(
+                getMetaData(context),
+                date,
+                Random.nextInt(1, 11),
+                VALID_ALCOHOL_CONSUMPTION_TYPE.random(),
+            )
+            .setServingSize(VALID_ALCOHOL_CONSUMPTION_SERVING_SIZE.random())
+            .setAlcoholByVolume(Percentage.fromValue(Random.nextDouble(1.0, 100.0)))
+            .setServingVolume(Volume.fromLiters(Random.nextDouble(1.0, 10.0)))
+            .setNote(ALCOHOL_CONSUMPTION_NOTES.random())
             .build()
     }
 }

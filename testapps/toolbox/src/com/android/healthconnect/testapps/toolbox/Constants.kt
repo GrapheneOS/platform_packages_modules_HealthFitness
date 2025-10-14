@@ -17,6 +17,7 @@ package com.android.healthconnect.testapps.toolbox
 
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord
 import android.health.connect.datatypes.ActivityIntensityRecord
+import android.health.connect.datatypes.AlcoholConsumptionRecord
 import android.health.connect.datatypes.BasalBodyTemperatureRecord
 import android.health.connect.datatypes.BasalMetabolicRateRecord
 import android.health.connect.datatypes.BloodGlucoseRecord
@@ -80,6 +81,7 @@ object Constants {
         arrayOf(
             "android.permission.health.READ_ACTIVE_CALORIES_BURNED",
             "android.permission.health.READ_ACTIVITY_INTENSITY",
+            "android.permission.health.READ_ALCOHOL_CONSUMPTION",
             "android.permission.health.READ_BASAL_BODY_TEMPERATURE",
             "android.permission.health.READ_BASAL_METABOLIC_RATE",
             "android.permission.health.READ_BLOOD_GLUCOSE",
@@ -125,6 +127,7 @@ object Constants {
         arrayOf(
             "android.permission.health.WRITE_ACTIVE_CALORIES_BURNED",
             "android.permission.health.WRITE_ACTIVITY_INTENSITY",
+            "android.permission.health.WRITE_ALCOHOL_CONSUMPTION",
             "android.permission.health.WRITE_BASAL_BODY_TEMPERATURE",
             "android.permission.health.WRITE_BASAL_METABOLIC_RATE",
             "android.permission.health.WRITE_BLOOD_GLUCOSE",
@@ -302,7 +305,11 @@ object Constants {
             )
 
         val WELLNESS_PERMISSION_GROUPS =
-            listOf(HealthPermissionType.MINDFULNESS, HealthPermissionType.NICOTINE_INTAKE)
+            listOf(
+                HealthPermissionType.ALCOHOL_CONSUMPTION,
+                HealthPermissionType.MINDFULNESS,
+                HealthPermissionType.NICOTINE_INTAKE,
+            )
     }
 
     enum class HealthPermissionType(
@@ -381,6 +388,7 @@ object Constants {
         SKIN_TEMPERATURE(SkinTemperatureRecord::class, R.string.skin_temperature_label),
 
         // WELLNESS
+        ALCOHOL_CONSUMPTION(AlcoholConsumptionRecord::class, R.string.alcohol_consumption_label),
         MINDFULNESS(MindfulnessSessionRecord::class, R.string.mindfulness_label),
         NICOTINE_INTAKE(NicotineIntakeRecord::class, R.string.nicotine_intake_label),
     }
