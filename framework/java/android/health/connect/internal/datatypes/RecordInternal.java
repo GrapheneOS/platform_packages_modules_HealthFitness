@@ -27,12 +27,15 @@ import android.health.connect.datatypes.Identifier;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.PackageNameMasker;
+import android.health.connect.internal.PackageNameUnmasker;
 import android.os.Parcel;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * Base class for all health connect datatype records.
@@ -40,7 +43,8 @@ import java.util.UUID;
  * @param <T> The record type.
  * @hide
  */
-public abstract class RecordInternal<T extends Record> {
+public abstract class RecordInternal<T extends Record>
+        implements PackageNameMasker<RecordInternal<T>>, PackageNameUnmasker<RecordInternal<T>> {
     private final int mRecordIdentifier;
     @Nullable private UUID mUuid;
     @Nullable private String mPackageName;
@@ -82,6 +86,26 @@ public abstract class RecordInternal<T extends Record> {
         mDeviceType = parcel.readInt();
         mRecordingMethod = parcel.readInt();
         mDisplayName = parcel.readString();
+    }
+
+    @NonNull
+    @Override
+    public RecordInternal<T> toMasked(Function<String, String> packageMasker) {
+        if (Objects.equals(null, mPackageName)) {
+            return this;
+        }
+
+        return this.setPackageName(packageMasker.apply(mPackageName));
+    }
+
+    @NonNull
+    @Override
+    public RecordInternal<T> toUnmasked(Function<String, String> packageUnmasker) {
+        if (Objects.equals(null, mPackageName)) {
+            return this;
+        }
+
+        return this.setPackageName(packageUnmasker.apply(mPackageName));
     }
 
     /** Extract the record identifier from the annotations. */
@@ -341,7 +365,7 @@ public abstract class RecordInternal<T extends Record> {
     public abstract long getRecordTime();
 
     /**
-     * Populate {@code bundle} with the data required to un-bundle self. This is used suring IPC
+     * Populate {@code bundle} with the data required to un-bundle self. This is used during IPC
      * transmissions
      */
     abstract void populateRecordTo(@NonNull Parcel bundle);

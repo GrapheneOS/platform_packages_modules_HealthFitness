@@ -22,6 +22,7 @@ import android.annotation.NonNull;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.TimeRangeFilterHelper;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.internal.PackageNameUnmasker;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -30,13 +31,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
  * @see DeleteUsingFiltersRequest
  * @hide
  */
-public class DeleteUsingFiltersRequestParcel implements Parcelable {
+public class DeleteUsingFiltersRequestParcel
+        implements Parcelable, PackageNameUnmasker<DeleteUsingFiltersRequestParcel> {
     public static final Creator<DeleteUsingFiltersRequestParcel> CREATOR =
             new Creator<>() {
                 @Override
@@ -119,6 +122,21 @@ public class DeleteUsingFiltersRequestParcel implements Parcelable {
         mPackageNameFilters = packages;
     }
 
+    private DeleteUsingFiltersRequestParcel(
+            List<String> packageNameFilters,
+            int[] recordTypeFilters,
+            long startTime,
+            long endTime,
+            RecordIdFiltersParcel recordIdFiltersParcel,
+            boolean localTimeFilter) {
+        mPackageNameFilters = packageNameFilters;
+        mRecordTypeFilters = recordTypeFilters;
+        mStartTime = startTime;
+        mEndTime = endTime;
+        mRecordIdFiltersParcel = recordIdFiltersParcel;
+        mLocalTimeFilter = localTimeFilter;
+    }
+
     public List<Integer> getRecordTypeFilters() {
         if (mRecordIdFiltersParcel != null
                 && !mRecordIdFiltersParcel.getRecordIdFilters().isEmpty()) {
@@ -172,5 +190,17 @@ public class DeleteUsingFiltersRequestParcel implements Parcelable {
         return mRecordTypeFilters.length != 0
                 || mStartTime != DEFAULT_LONG
                 || mEndTime != DEFAULT_LONG;
+    }
+
+    @NonNull
+    @Override
+    public DeleteUsingFiltersRequestParcel toUnmasked(Function<String, String> packageUnmasker) {
+        return new DeleteUsingFiltersRequestParcel(
+                mPackageNameFilters.stream().map(packageUnmasker).toList(),
+                mRecordTypeFilters,
+                mStartTime,
+                mEndTime,
+                mRecordIdFiltersParcel,
+                mLocalTimeFilter);
     }
 }

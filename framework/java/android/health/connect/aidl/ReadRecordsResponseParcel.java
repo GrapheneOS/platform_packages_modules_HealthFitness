@@ -18,15 +18,19 @@ package android.health.connect.aidl;
 
 import android.annotation.NonNull;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.internal.PackageNameMasker;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.function.Function;
 
 /**
  * A parcel to carry response to {@link HealthConnectManager#readRecords}
  *
  * @hide
  */
-public class ReadRecordsResponseParcel implements Parcelable {
+public class ReadRecordsResponseParcel
+        implements Parcelable, PackageNameMasker<ReadRecordsResponseParcel> {
     /** RecordsParcel read from {@link HealthConnectManager#readRecords} */
     private final RecordsParcel mRecordsParcel;
 
@@ -75,5 +79,11 @@ public class ReadRecordsResponseParcel implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeParcelable(mRecordsParcel, 0);
         dest.writeLong(mPageToken);
+    }
+
+    @NonNull
+    @Override
+    public ReadRecordsResponseParcel toMasked(Function<String, String> packageMasker) {
+        return new ReadRecordsResponseParcel(mRecordsParcel.toMasked(packageMasker), mPageToken);
     }
 }

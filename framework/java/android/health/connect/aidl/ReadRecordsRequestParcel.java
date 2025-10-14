@@ -26,12 +26,14 @@ import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.TimeRangeFilterHelper;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.PackageNameUnmasker;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -39,7 +41,8 @@ import java.util.stream.Collectors;
  *
  * @hide
  */
-public class ReadRecordsRequestParcel implements Parcelable {
+public class ReadRecordsRequestParcel
+        implements Parcelable, PackageNameUnmasker<ReadRecordsRequestParcel> {
     public static final Creator<ReadRecordsRequestParcel> CREATOR =
             new Creator<>() {
                 @Override
@@ -116,6 +119,27 @@ public class ReadRecordsRequestParcel implements Parcelable {
         mAscending = request.isAscending();
     }
 
+    private ReadRecordsRequestParcel(
+            @Nullable RecordIdFiltersParcel recordIdFiltersParcel,
+            @RecordTypeIdentifier.RecordType int recordType,
+            List<String> packageFilters,
+            long startTime,
+            long endTime,
+            int pageSize,
+            long pageToken,
+            boolean ascending,
+            boolean localTimeFilter) {
+        mRecordIdFiltersParcel = recordIdFiltersParcel;
+        mRecordType = recordType;
+        mPackageFilters = packageFilters;
+        mStartTime = startTime;
+        mEndTime = endTime;
+        mPageSize = pageSize;
+        mPageToken = pageToken;
+        mAscending = ascending;
+        mLocalTimeFilter = localTimeFilter;
+    }
+
     public int getRecordType() {
         return mRecordType;
     }
@@ -173,5 +197,20 @@ public class ReadRecordsRequestParcel implements Parcelable {
         dest.writeInt(mPageSize);
         dest.writeLong(mPageToken);
         dest.writeBoolean(mAscending);
+    }
+
+    @NonNull
+    @Override
+    public ReadRecordsRequestParcel toUnmasked(Function<String, String> packageUnmasker) {
+        return new ReadRecordsRequestParcel(
+                mRecordIdFiltersParcel,
+                mRecordType,
+                mPackageFilters.stream().map(packageUnmasker).toList(),
+                mStartTime,
+                mEndTime,
+                mPageSize,
+                mPageToken,
+                mAscending,
+                mLocalTimeFilter);
     }
 }

@@ -115,7 +115,8 @@ public class HealthConnectManagerService extends SystemService {
                         mHealthConnectInjector.getTrackerManager(),
                         mHealthConnectInjector.getCloudBackupManager(),
                         mHealthConnectInjector.getCloudRestoreManager(),
-                        mHealthConnectInjector.getMatchingAppsManager());
+                        mHealthConnectInjector.getMatchingAppsManager(),
+                        mHealthConnectInjector.getSyntheticPackageNameResolver());
         mHealthConnectPermissionsChangedListener =
                 new HealthConnectPermissionsChangedListener(
                         mContext, healthConnectInjector.getFirstGrantTimeManager());
