@@ -3,8 +3,8 @@
 Build and run test the app using the following command
 
 ```
-m HealthConnectToolbox &&
-adb install $OUT/system/app/HealthConnectToolbox/HealthConnectToolbox.apk
+m <HealthConnectToolboxTarget> &&
+adb install $OUT/system/app/<HealthConnectToolboxTarget>/<HealthConnectToolboxTarget>.apk
 ```
 
 ## Workflows
@@ -41,4 +41,65 @@ adb install $OUT/system/app/HealthConnectToolbox/HealthConnectToolbox.apk
 
 [Demo video for the aforementioned workflows.](https://drive.google.com/file/d/1kbO2duqZ4NGJ9gpRJe3C-3MCjq6F7eFn/view?usp=sharing&resourcekey=0-A9DL0nlGNr56jfcKLHE7IQ)
 
+## Modular Manifest Structure
 
+The Health Connect Toolbox application uses a modular manifest system to create different build targets with varying sets of permissions and features. This is managed through the `Android.bp` file and several `AndroidManifest.xml` files.
+
+### Manifest Files Overview
+
+-   **`AndroidManifest.xml`**: The base manifest containing common application components like activities, providers, and receivers.
+-   **`AndroidManifestFitnessPermissions.xml`**: Contains all `uses-permission` tags related to fitness data types.
+-   **`AndroidManifestMedicalPermissions.xml`**: Contains all `uses-permission` tags related to medical data types.
+-   **`AndroidManifestAdditionalPermissions.xml`**: Contains permissions for background and history data access.
+-   **`AndroidManifestOnboardingActivity.xml`**: Adds a specific activity for the onboarding flow.
+-   **`AndroidManifestToolbox*.xml`**: These are primary manifests for each build target. They mainly serve to set a unique `package` name and `android:label` for the application, allowing multiple versions of the Toolbox to be installed on a single device.
+
+### Combining Manifests for a New Target
+
+The `android_app` definitions in `Android.bp` show how these files are combined. The `manifest` property points to the primary manifest, and `additional_manifests` lists all other manifests to be merged.
+
+To create a new build target (e.g., for a specific testing scenario):
+
+1.  **Create a new primary manifest file**:
+    Create a file like `AndroidManifestMyNewTarget.xml`. This file needs to define a unique package name and application label. You can use `AndroidManifestToolboxFitness.xml` as a template:
+
+    ```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              package="com.android.healthconnect.testapps.mynewtarget">
+      <application android:label="HC Toolbox MyNewTarget" tools:replace="android:label"/>
+    </manifest>
+    ```
+
+2.  **Add a new `android_app` module to `Android.bp`**:
+    Copy an existing `android_app` definition and modify it for your new target.
+
+    ```kotlin
+    android_app {
+        name: "HealthConnectToolboxMyNewTarget", // Unique name for the build target
+        sdk_version: "module_current",
+        min_sdk_version: "34",
+        rename_resources_package: false,
+        updatable: true,
+        package_name: "com.android.healthconnect.testapps.mynewtarget", // Must match the package in your new manifest
+        manifest: "AndroidManifestMyNewTarget.xml", // Your new primary manifest
+        additional_manifests: [
+            "AndroidManifest.xml", // Base manifest
+            "AndroidManifestFitnessPermissions.xml", // Include desired permission sets
+            // "AndroidManifestMedicalPermissions.xml",
+            // "AndroidManifestAdditionalPermissions.xml",
+        ],
+        certificate: "platform",
+        static_libs: [
+            "HealthConnectToolboxLibrary",
+        ],
+    }
+    ```
+
+3.  **Build your new target**:
+    You can now build your new APK using the `name` you defined:
+    ```
+    m HealthConnectToolboxMyNewTarget
+    ```
+This approach allows for flexible creation of different Toolbox variants without duplicating common manifest entries.
