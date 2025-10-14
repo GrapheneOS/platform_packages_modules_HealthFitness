@@ -1270,7 +1270,7 @@
     <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"‫<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g>‏ <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"‫<xliff:g id="NUMBER_0">%1$d</xliff:g> برنامه از <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> برنامه مجاز است"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"برنامه‌ای درخواست نکرده است"</string>
-    <string name="allowed" msgid="4158456017482263737">"مجاز"</string>
+    <string name="allowed" msgid="4158456017482263737">"اجازه داشتن"</string>
     <string name="not_allowed" msgid="6092523505093372147">"اجازه نداشتن"</string>
     <string name="access_sensor_note" msgid="7949933977197789634">"برنامه‌های دارای این اجازه می‌توانند به داده‌های <xliff:g id="DATA_TYPE">%s</xliff:g> از حسگرهای دستگاهتان دسترسی داشته باشند."</string>
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"دسترسی به <xliff:g id="DATA_TYPE">%s</xliff:g> برای همه برنامه‌های روی ساعت برداشته شود؟"</string>
