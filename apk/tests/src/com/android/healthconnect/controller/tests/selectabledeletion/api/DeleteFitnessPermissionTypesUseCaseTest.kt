@@ -16,15 +16,22 @@
 package com.android.healthconnect.controller.tests.selectabledeletion.api
 
 import android.health.connect.DeleteUsingFiltersRequest
+import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
+import android.health.connect.ReadRecordsRequestUsingFilters
+import android.health.connect.ReadRecordsResponse
+import android.health.connect.RecordIdFilter
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord
 import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MenstruationPeriodRecord
+import android.health.connect.datatypes.Metadata
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsCadenceRecord
 import android.health.connect.datatypes.StepsRecord
+import android.health.connect.datatypes.SymptomRecord
+import android.os.OutcomeReceiver
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
@@ -33,6 +40,7 @@ import com.android.healthconnect.controller.selectabledeletion.api.DeleteFitness
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.Instant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -40,8 +48,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
-import org.mockito.Captor
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Captor
 import org.mockito.Mockito
 import org.mockito.Mockito.doAnswer
 import org.mockito.MockitoAnnotations
@@ -57,6 +65,7 @@ class DeleteFitnessPermissionTypesUseCaseTest {
     var manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
 
     @Captor lateinit var filtersCaptor: ArgumentCaptor<DeleteUsingFiltersRequest>
+    @Captor lateinit var idFiltersCaptor: ArgumentCaptor<List<RecordIdFilter>>
 
     @Before
     fun setup() {
@@ -103,8 +112,60 @@ class DeleteFitnessPermissionTypesUseCaseTest {
             )
     }
 
+    @Test
+    fun invoke_deleteSymptomPermissionType_deletesOnlyThatSymptom() = runTest {
+        val coughRecord =
+            SymptomRecord.Builder(
+                    SymptomRecord.SYMPTOM_TYPE_COUGH,
+                    Instant.now(),
+                    Metadata.Builder().build(),
+                )
+                .build()
+        val feverRecord =
+            SymptomRecord.Builder(
+                    SymptomRecord.SYMPTOM_TYPE_FEVER,
+                    Instant.now(),
+                    Metadata.Builder().build(),
+                )
+                .build()
+        val symptomRecords = listOf(coughRecord, feverRecord)
+        val response = Mockito.mock(ReadRecordsResponse::class.java)
+        Mockito.`when`(response.records).thenReturn(symptomRecords)
+        doAnswer {
+                val receiver =
+                    it.getArgument(2)
+                        as
+                        OutcomeReceiver<ReadRecordsResponse<SymptomRecord>, HealthConnectException>
+                receiver.onResult(response as ReadRecordsResponse<SymptomRecord>)
+                null
+            }
+            .`when`(manager)
+            .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
+
+        doAnswer(prepareAnswer())
+            .`when`(manager)
+            .deleteRecords(any<List<RecordIdFilter>>(), any(), any())
+
+        val deletePermissionType =
+            DeleteHealthPermissionTypes(setOf(FitnessPermissionType.SYMPTOM_COUGH), 1)
+        useCase.invoke(deletePermissionType)
+
+        Mockito.verify(manager, Mockito.times(1))
+            .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
+        Mockito.verify(manager, Mockito.times(1))
+            .deleteRecords(idFiltersCaptor.capture(), any(), any())
+
+        assertThat(idFiltersCaptor.value).hasSize(1)
+        assertThat(idFiltersCaptor.value[0].id).isEqualTo(coughRecord.metadata.id)
+    }
+
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {
-        val answer = { _: InvocationOnMock -> null }
+        val answer = { invocation: InvocationOnMock ->
+            val receiver =
+                invocation.getArgument(2) as OutcomeReceiver<Void, HealthConnectException>
+            receiver.onResult(null)
+            null
+        }
         return answer
     }
 }

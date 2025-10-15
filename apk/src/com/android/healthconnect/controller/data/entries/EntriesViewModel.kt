@@ -30,6 +30,7 @@ import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesInpu
 import com.android.healthconnect.controller.data.entries.api.LoadLatestEntryDateInput
 import com.android.healthconnect.controller.data.entries.api.LoadMedicalEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataInput
+import com.android.healthconnect.controller.data.entries.api.LoadSymptomEntriesUseCase
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.DISTANCE
@@ -55,6 +56,7 @@ class EntriesViewModel
 constructor(
     private val appInfoReader: AppInfoReader,
     private val loadDataEntriesUseCase: ILoadDataEntriesUseCase,
+    private val loadSymptomEntriesUseCase: LoadSymptomEntriesUseCase,
     private val loadMenstruationDataUseCase: ILoadMenstruationDataUseCase,
     private val loadDataAggregationsUseCase: ILoadDataAggregationsUseCase,
     private val loadMedicalEntriesUseCase: ILoadMedicalEntriesUseCase,
@@ -269,7 +271,11 @@ constructor(
     ): UseCaseResults<List<FormattedEntry>> {
         val input =
             LoadDataEntriesInput(permissionType, packageName, selectedDate, period, showDataOrigin)
-        return loadDataEntriesUseCase.invoke(input)
+        return if (permissionType.name.startsWith("SYMPTOM_")) {
+            loadSymptomEntriesUseCase.invoke(input)
+        } else {
+            loadDataEntriesUseCase.invoke(input)
+        }
     }
 
     private suspend fun loadAppEntries(

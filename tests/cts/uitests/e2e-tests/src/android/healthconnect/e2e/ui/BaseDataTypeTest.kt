@@ -193,7 +193,7 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
             assertThat(readAllRecords(anotherCategoryRecord::class.java)).hasSize(1)
 
             verifyTextNotFound(dataTypeString)
-            findText(anotherCategoryString)
+            findObject(By.text(anotherCategoryString), timeout = ofSeconds(3))
 
             sameCategoryRecord?.let {
                 assertThat(readAllRecords(it::class.java)).hasSize(1)

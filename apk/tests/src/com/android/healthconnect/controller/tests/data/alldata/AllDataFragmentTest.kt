@@ -16,14 +16,20 @@
 package com.android.healthconnect.controller.tests.data.alldata
 
 import android.content.Context
+import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.MedicalResourceTypeInfo
+import android.health.connect.ReadRecordsRequestUsingFilters
+import android.health.connect.ReadRecordsResponse
 import android.health.connect.RecordTypeInfoResponse
 import android.health.connect.datatypes.MedicalDataSource
 import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.SymptomRecord
 import android.os.OutcomeReceiver
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
+import android.platform.test.annotations.RequiresFlagsEnabled
+import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
@@ -68,6 +74,7 @@ import com.android.healthconnect.controller.shared.children
 import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
+import com.android.healthconnect.controller.tests.utils.TestData.getSymptomRecord
 import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.android.healthconnect.controller.tests.utils.launchFragment
@@ -87,7 +94,6 @@ import dagger.hilt.android.testing.UninstallModules
 import java.util.Locale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.`is`
@@ -97,13 +103,12 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.any
 import org.mockito.invocation.InvocationOnMock
-import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
-import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -114,6 +119,7 @@ class AllDataFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val setFlagsRule = SetFlagsRule()
+    @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @BindValue val manager: HealthConnectManager = mock()
 
@@ -130,6 +136,14 @@ class AllDataFragmentTest {
         context = InstrumentationRegistry.getInstrumentation().context
         navHostController = TestNavHostController(context)
         context.setLocale(Locale.US)
+
+        doAnswer { invocation ->
+                val receiver = invocation.arguments[2] as OutcomeReceiver<ReadRecordsResponse<*>, *>
+                receiver.onResult(ReadRecordsResponse<Record>(emptyList(), -1))
+                null
+            }
+            .`when`(manager)
+            .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
 
         mockData(listOf())
         mockData(listOf(), setOf())
@@ -501,7 +515,7 @@ class AllDataFragmentTest {
 
     @Test
     @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
-    fun inDeletionState_combinedData_onlyMedicalShown_checkedItemsAddedToDeleteSet() {
+    fun inDeletionState_combinedData_onlyMedicalShown_checkedItemsAddedToDeleteSet() = runTest {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
         launchFragment<AllDataFragment>().use { scenario ->
@@ -519,6 +533,7 @@ class AllDataFragmentTest {
                 .logInteraction(AllDataElement.PERMISSION_TYPE_BUTTON_WITH_CHECKBOX)
             scrollToTextAndClick("Allergies")
             scrollToTextAndClick("Vaccines")
+            onIdle()
             assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value).isEmpty()
         }
     }
@@ -558,7 +573,7 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            advanceUntilIdle()
+            onIdle()
 
             assertCheckboxShown("Distance")
             assertCheckboxShown("Heart rate")
@@ -669,7 +684,7 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            advanceUntilIdle()
+            onIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
             onView(withText("Select all")).perform(click())
@@ -690,7 +705,7 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            advanceUntilIdle()
+            onIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
             onView(withText("Select all")).perform(click())
@@ -712,7 +727,7 @@ class AllDataFragmentTest {
                     (fragment as AllDataFragment).triggerDeletionState(DELETE)
                 }
 
-                advanceUntilIdle()
+                onIdle()
                 scrollToTopOfPreferenceScreen()
                 assertCheckboxShown("Select all")
                 onView(withText("Select all")).perform(click())
@@ -734,7 +749,7 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            advanceUntilIdle()
+            onIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
             onView(withText("Select all")).perform(click())
@@ -756,7 +771,7 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            advanceUntilIdle()
+            onIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
             onView(withText("Select all")).perform(click())
@@ -778,7 +793,7 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            advanceUntilIdle()
+            onIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
             onView(withText("Select all")).perform(click())
@@ -801,7 +816,7 @@ class AllDataFragmentTest {
                     (fragment as AllDataFragment).triggerDeletionState(DELETE)
                 }
 
-                advanceUntilIdle()
+                onIdle()
                 scrollToTopOfPreferenceScreen()
                 assertCheckboxShown("Select all")
                 onView(withText("Select all")).perform(click())
@@ -824,7 +839,7 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            advanceUntilIdle()
+            onIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
             onView(withText("Select all")).perform(click())
@@ -838,7 +853,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    fun inDeletionState_allPermissionTypesChecked_selectAllShouldBeChecked() {
+    fun inDeletionState_allPermissionTypesChecked_selectAllShouldBeChecked() = runTest {
         mockData(listOf(DISTANCE, MENSTRUATION))
 
         launchFragment<AllDataFragment>().use { scenario ->
@@ -851,6 +866,7 @@ class AllDataFragmentTest {
             assertCheckboxShown("Menstruation")
             scrollToTextAndClick("Distance")
             scrollToTextAndClick("Menstruation")
+            onIdle()
             scenario.onActivity { activity ->
                 val fragment =
                     activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
@@ -890,62 +906,66 @@ class AllDataFragmentTest {
 
     @Test
     @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
-    fun inDeletionState_combinedData_onlyMedicalShown_allPermissionTypesChecked_selectAllShouldBeChecked() {
-        mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
+    fun inDeletionState_combinedData_onlyMedicalShown_allPermissionTypesChecked_selectAllShouldBeChecked() =
+        runTest {
+            mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
-        launchFragment<AllDataFragment>().use { scenario ->
-            scenario.onActivity { activity ->
-                val fragment = activity.supportFragmentManager.findFragmentByTag("")
-                (fragment as AllDataFragment).triggerDeletionState(DELETE)
-            }
+            launchFragment<AllDataFragment>().use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = activity.supportFragmentManager.findFragmentByTag("")
+                    (fragment as AllDataFragment).triggerDeletionState(DELETE)
+                }
 
-            assertCheckboxShown("Allergies")
-            assertCheckboxShown("Vaccines")
-            scrollToTextAndClick("Allergies")
-            scrollToTextAndClick("Vaccines")
-            scenario.onActivity { activity ->
-                val fragment =
-                    activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
-                val selectAllCheckboxPreference =
-                    fragment.preferenceScreen.findPreference("key_select_all")
-                        as SelectAllCheckboxPreference?
-                assertThat(selectAllCheckboxPreference?.getIsChecked()).isTrue()
+                assertCheckboxShown("Allergies")
+                assertCheckboxShown("Vaccines")
+                scrollToTextAndClick("Allergies")
+                scrollToTextAndClick("Vaccines")
+                onIdle()
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
+                    val selectAllCheckboxPreference =
+                        fragment.preferenceScreen.findPreference("key_select_all")
+                            as SelectAllCheckboxPreference?
+                    assertThat(selectAllCheckboxPreference?.getIsChecked()).isTrue()
+                }
             }
         }
-    }
 
     @Test
     @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
-    fun inDeletionState_combinedData_allPermissionTypesChecked_selectAllShouldBeChecked() {
-        mockData(listOf(DISTANCE, MENSTRUATION))
-        mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
+    fun inDeletionState_combinedData_allPermissionTypesChecked_selectAllShouldBeChecked() =
+        runTest {
+            mockData(listOf(DISTANCE, MENSTRUATION))
+            mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
-        launchFragment<AllDataFragment>().use { scenario ->
-            scenario.onActivity { activity ->
-                val fragment = activity.supportFragmentManager.findFragmentByTag("")
-                (fragment as AllDataFragment).triggerDeletionState(DELETE)
-            }
+            launchFragment<AllDataFragment>().use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = activity.supportFragmentManager.findFragmentByTag("")
+                    (fragment as AllDataFragment).triggerDeletionState(DELETE)
+                }
 
-            Thread.sleep(5000)
+                Thread.sleep(5000)
 
-            assertCheckboxShown("Distance")
-            assertCheckboxShown("Menstruation")
-            assertCheckboxShown("Allergies")
-            assertCheckboxShown("Vaccines")
-            scrollToTextAndClick("Distance")
-            scrollToTextAndClick("Menstruation")
-            scrollToTextAndClick("Allergies")
-            scrollToTextAndClick("Vaccines")
-            scenario.onActivity { activity ->
-                val fragment =
-                    activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
-                val selectAllCheckboxPreference =
-                    fragment.preferenceScreen.findPreference("key_select_all")
-                        as SelectAllCheckboxPreference?
-                assertThat(selectAllCheckboxPreference?.getIsChecked()).isTrue()
+                assertCheckboxShown("Distance")
+                assertCheckboxShown("Menstruation")
+                assertCheckboxShown("Allergies")
+                assertCheckboxShown("Vaccines")
+                scrollToTextAndClick("Distance")
+                scrollToTextAndClick("Menstruation")
+                scrollToTextAndClick("Allergies")
+                scrollToTextAndClick("Vaccines")
+                onIdle()
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
+                    val selectAllCheckboxPreference =
+                        fragment.preferenceScreen.findPreference("key_select_all")
+                            as SelectAllCheckboxPreference?
+                    assertThat(selectAllCheckboxPreference?.getIsChecked()).isTrue()
+                }
             }
         }
-    }
 
     @Test
     fun inDeletionState_selectAllChecked_oneUnchecked_selectAllUnchecked() = runTest {
@@ -957,7 +977,7 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            advanceUntilIdle()
+            onIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
             scrollToTextAndClick("Select all")
@@ -984,7 +1004,7 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            advanceUntilIdle()
+            onIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
             scrollToTextAndClick("Select all")
@@ -1012,7 +1032,7 @@ class AllDataFragmentTest {
                     (fragment as AllDataFragment).triggerDeletionState(DELETE)
                 }
 
-                advanceUntilIdle()
+                onIdle()
                 scrollToTopOfPreferenceScreen()
                 assertCheckboxShown("Select all")
                 scrollToTextAndClick("Select all")
@@ -1040,7 +1060,7 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            advanceUntilIdle()
+            onIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
             scrollToTextAndClick("Select all")
@@ -1067,7 +1087,7 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            advanceUntilIdle()
+            onIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
             scrollToTextAndClick("Select all")
@@ -1114,7 +1134,7 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            advanceUntilIdle()
+            onIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
             scrollToTextAndClick("Select all")
@@ -1162,7 +1182,7 @@ class AllDataFragmentTest {
                     (fragment as AllDataFragment).triggerDeletionState(DELETE)
                 }
 
-                advanceUntilIdle()
+                onIdle()
                 scrollToTopOfPreferenceScreen()
                 assertCheckboxShown("Select all")
                 scrollToTextAndClick("Select all")
@@ -1204,7 +1224,7 @@ class AllDataFragmentTest {
                 (fragment as AllDataFragment).triggerDeletionState(DELETE)
             }
 
-            advanceUntilIdle()
+            onIdle()
             scrollToTopOfPreferenceScreen()
             assertCheckboxShown("Select all")
             scrollToTextAndClick("Select all")
@@ -1317,4 +1337,31 @@ class AllDataFragmentTest {
 
     private fun launchMedicalAllDataFragment(): ActivityScenario<TestActivity> =
         launchFragment<AllDataFragment>(bundleOf(IS_BROWSE_MEDICAL_DATA_SCREEN to true))
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun givenSymptomData_onlyDisplaysSymptomsWithData() {
+        val coughRecord = getSymptomRecord(symptomType = SymptomRecord.SYMPTOM_TYPE_COUGH)
+        val vomitingRecord = getSymptomRecord(symptomType = SymptomRecord.SYMPTOM_TYPE_VOMITING)
+        val feverRecord = getSymptomRecord(symptomType = SymptomRecord.SYMPTOM_TYPE_FEVER)
+        val records = listOf(coughRecord, vomitingRecord, feverRecord)
+        doAnswer {
+                val receiver =
+                    it.arguments[2]
+                        as
+                        OutcomeReceiver<ReadRecordsResponse<SymptomRecord>, HealthConnectException>
+                receiver.onResult(ReadRecordsResponse(records, -1))
+                null
+            }
+            .`when`(manager)
+            .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
+
+        launchFragment<AllDataFragment>().use {
+            checkTextIsDisplayed("Cough")
+            checkTextIsDisplayed("Vomiting")
+            checkTextIsDisplayed("Fever")
+            onView(withText("Headache")).check(doesNotExist())
+            onView(withText("Abdominal pain")).check(doesNotExist())
+        }
+    }
 }
