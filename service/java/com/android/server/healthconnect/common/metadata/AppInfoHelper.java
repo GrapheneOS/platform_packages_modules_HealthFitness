@@ -186,6 +186,19 @@ public final class AppInfoHelper extends DatabaseHelper {
         AppInfoInternal appInfo = getAppInfoMap().get(packageName);
 
         if (appInfo == null) {
+            if (SyntheticPackageNameCreator.isCanonicalSpn(packageName)) {
+                Slog.e(
+                        TAG,
+                        "Synthetic package name "
+                                + packageName
+                                + "not found in app info map, ensure the device data source has"
+                                + " been advertised");
+                throw new IllegalStateException(
+                        "Synthetic package name "
+                                + packageName
+                                + "not found in app info map, ensure the device data source has"
+                                + " been advertised");
+            }
             try {
                 appInfo = getAppInfo(packageName);
             } catch (NameNotFoundException e) {

@@ -637,7 +637,10 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 && AconfigFlagHelper.isDeviceDataProvidersEnabled()
                                 && mDeviceDataProviderHelper != null
                         ? new DeviceDataProviderManager(
-                                mDeviceInfoHelper, mAppInfoHelper, mDeviceDataProviderHelper)
+                                mDeviceInfoHelper,
+                                mAppInfoHelper,
+                                mDeviceDataProviderHelper,
+                                mFitnessRecordUpsertHelper)
                         : builder.mDeviceDataProviderManager;
     }
 
