@@ -39,6 +39,7 @@ import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 
 import java.util.HashSet;
@@ -312,6 +313,16 @@ public final class HealthPermissions {
      */
     public static final String READ_CERVICAL_MUCUS =
             "android.permission.health.READ_CERVICAL_MUCUS";
+
+    /**
+     * Allows an application to read the user's cycle phases data.
+     *
+     * <p>Protection level: dangerous.
+     *
+     * @hide
+     */
+    @FlaggedApi("com.android.healthconnect.flags.cycle_phases")
+    public static final String READ_CYCLE_PHASES = "android.permission.health.READ_CYCLE_PHASES";
 
     /**
      * Allows an application to read the user's menstruation data.
@@ -1165,6 +1176,16 @@ public final class HealthPermissions {
      */
     public static final String WRITE_CERVICAL_MUCUS =
             "android.permission.health.WRITE_CERVICAL_MUCUS";
+
+    /**
+     * Allows an application to write the user's cycle phases data.
+     *
+     * <p>Protection level: dangerous.
+     *
+     * @hide
+     */
+    @FlaggedApi("com.android.healthconnect.flags.cycle_phases")
+    public static final String WRITE_CYCLE_PHASES = "android.permission.health.WRITE_CYCLE_PHASES";
 
     /**
      * Allows an application to write the user's menstruation data.
@@ -2023,6 +2044,7 @@ public final class HealthPermissions {
                             WRITE_LEAN_BODY_MASS,
                             WRITE_WEIGHT,
                             WRITE_CERVICAL_MUCUS,
+                            WRITE_CYCLE_PHASES,
                             WRITE_MENSTRUATION,
                             WRITE_INTERMENSTRUAL_BLEEDING,
                             WRITE_OVULATION_TEST,
@@ -2156,6 +2178,7 @@ public final class HealthPermissions {
             case READ_ACTIVITY_INTENSITY, WRITE_ACTIVITY_INTENSITY -> Flags.activityIntensity();
             case READ_ALCOHOL_CONSUMPTION, WRITE_ALCOHOL_CONSUMPTION -> Flags.alcoholConsumption();
             case READ_NICOTINE_INTAKE, WRITE_NICOTINE_INTAKE -> Flags.smoking();
+            case READ_CYCLE_PHASES, WRITE_CYCLE_PHASES -> Flags.cyclePhases();
             case READ_SYMPTOM_ABDOMINAL_PAIN,
                     READ_SYMPTOM_ACNE,
                     READ_SYMPTOM_BACK_PAIN,
@@ -2329,6 +2352,10 @@ public final class HealthPermissions {
 
         sWriteHealthPermissionToHealthDataCategoryMap.put(
                 WRITE_CERVICAL_MUCUS, HealthDataCategory.CYCLE_TRACKING);
+        if (AconfigFlagHelper.isCyclePhasesEnabled()) {
+            sWriteHealthPermissionToHealthDataCategoryMap.put(
+                    WRITE_CYCLE_PHASES, HealthDataCategory.CYCLE_TRACKING);
+        }
         sWriteHealthPermissionToHealthDataCategoryMap.put(
                 WRITE_MENSTRUATION, HealthDataCategory.CYCLE_TRACKING);
         sWriteHealthPermissionToHealthDataCategoryMap.put(
@@ -2400,15 +2427,28 @@ public final class HealthPermissions {
                     WRITE_WEIGHT
                 });
 
-        sDataCategoryToWritePermissionsMap.put(
-                HealthDataCategory.CYCLE_TRACKING,
-                new String[] {
-                    WRITE_CERVICAL_MUCUS,
-                    WRITE_MENSTRUATION,
-                    WRITE_OVULATION_TEST,
-                    WRITE_SEXUAL_ACTIVITY,
-                    WRITE_INTERMENSTRUAL_BLEEDING
-                });
+        if (AconfigFlagHelper.isCyclePhasesEnabled()) {
+            sDataCategoryToWritePermissionsMap.put(
+                    HealthDataCategory.CYCLE_TRACKING,
+                    new String[] {
+                        WRITE_CERVICAL_MUCUS,
+                        WRITE_CYCLE_PHASES,
+                        WRITE_MENSTRUATION,
+                        WRITE_OVULATION_TEST,
+                        WRITE_SEXUAL_ACTIVITY,
+                        WRITE_INTERMENSTRUAL_BLEEDING
+                    });
+        } else {
+            sDataCategoryToWritePermissionsMap.put(
+                    HealthDataCategory.CYCLE_TRACKING,
+                    new String[] {
+                        WRITE_CERVICAL_MUCUS,
+                        WRITE_MENSTRUATION,
+                        WRITE_OVULATION_TEST,
+                        WRITE_SEXUAL_ACTIVITY,
+                        WRITE_INTERMENSTRUAL_BLEEDING
+                    });
+        }
 
         sDataCategoryToWritePermissionsMap.put(
                 HealthDataCategory.NUTRITION, new String[] {WRITE_HYDRATION, WRITE_NUTRITION});
