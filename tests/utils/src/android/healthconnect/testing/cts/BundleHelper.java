@@ -125,10 +125,10 @@ public final class BundleHelper {
     public static final String SELF_REVOKE_PERMISSION_REQUEST =
             PREFIX + "SELF_REVOKE_PERMISSION_REQUEST";
 
-    public static final String CAN_CONNECT_MATCHING_APPS_QUERY =
-            PREFIX + "CAN_CONNECT_MATCHING_APPS_QUERY";
+    public static final String IS_MATCHMAKING_POSSIBLE_QUERY =
+            PREFIX + "IS_MATCHMAKING_POSSIBLE_QUERY";
 
-    public static final String CAN_CONNECT_MATCHING_APPS_RESPONSE =
+    public static final String IS_MATCHMAKING_POSSIBLE_RESPONSE =
             PREFIX + "CAN_CONNECT_MATCHING_APPS_RESPONSE";
 
     public static final String KILL_SELF_REQUEST = PREFIX + "KILL_SELF_REQUEST";
@@ -742,16 +742,16 @@ public final class BundleHelper {
      * Converts a set of {@link Record} classes into a bundle with QUERY_TYPE set to
      * CAN_CONNECT_MATCHING_APPS_QUERY
      */
-    public static Bundle fromCanConnectMatchingAppsQuery(Set<Class<? extends Record>> recordTypes) {
+    public static Bundle fromIsMatchmakingPossibleQuery(Set<Class<? extends Record>> recordTypes) {
         Bundle bundle = new Bundle();
-        bundle.putString(QUERY_TYPE, CAN_CONNECT_MATCHING_APPS_QUERY);
+        bundle.putString(QUERY_TYPE, IS_MATCHMAKING_POSSIBLE_QUERY);
         List<String> recordClassNames = recordTypes.stream().map(Class::getName).toList();
         bundle.putStringArrayList(RECORD_CLASS_NAME, new ArrayList<>(recordClassNames));
         return bundle;
     }
 
     /** Converts a bundle to a set of {@link Record} classes. */
-    public static Set<Class<? extends Record>> toCanConnectMatchingAppsQuery(Bundle bundle) {
+    public static Set<Class<? extends Record>> toIsMatchmakingPossibleQuery(Bundle bundle) {
         List<String> recordClassNames = bundle.getStringArrayList(RECORD_CLASS_NAME);
 
         return recordClassNames.stream()
@@ -760,14 +760,14 @@ public final class BundleHelper {
     }
 
     /** Converts a boolean from a bundle. */
-    public static boolean toCanConnectMatchingAppsResponse(Bundle bundle) {
-        return bundle.getBoolean(CAN_CONNECT_MATCHING_APPS_RESPONSE);
+    public static boolean toIsMatchmakingPossibleResponse(Bundle bundle) {
+        return bundle.getBoolean(IS_MATCHMAKING_POSSIBLE_RESPONSE);
     }
 
     /** Converts a boolean to a bundle for sending to another app. */
-    public static Bundle fromCanConnectMatchingAppsResponse(boolean response) {
+    public static Bundle fromIsMatchmakingPossibleResponse(boolean response) {
         Bundle bundle = new Bundle();
-        bundle.putBoolean(CAN_CONNECT_MATCHING_APPS_RESPONSE, response);
+        bundle.putBoolean(IS_MATCHMAKING_POSSIBLE_RESPONSE, response);
         return bundle;
     }
 

@@ -68,7 +68,6 @@ import android.health.connect.aidl.IAccessLogsResponseCallback;
 import android.health.connect.aidl.IActivityDatesResponseCallback;
 import android.health.connect.aidl.IAggregateRecordsResponseCallback;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
-import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
@@ -83,6 +82,7 @@ import android.health.connect.aidl.IGetMatchingAppsCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
+import android.health.connect.aidl.IIsMatchmakingPossibleCallback;
 import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.aidl.IMedicalResourceListParcelResponseCallback;
@@ -454,18 +454,17 @@ public class HealthConnectManager {
      *
      * <p>Input: caller must provide a {@code String[]} extra {@link #EXTRA_RECORD_TYPES}.
      *
-     * @see #createConnectMatchingAppsIntent(Set)
+     * @see #createMatchmakingIntent(Set)
      * @hide
      */
     @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
-    public static final String ACTION_CONNECT_MATCHING_APPS =
-            "android.health.connect.action.CONNECT_MATCHING_APPS";
+    public static final String ACTION_MATCHMAKING = "android.health.connect.action.MATCHMAKING";
 
     /**
      * A string array of record type canonical class names to be used with {@link
-     * #ACTION_CONNECT_MATCHING_APPS}.
+     * #ACTION_MATCHMAKING}.
      *
-     * @see #createConnectMatchingAppsIntent(Set)
+     * @see #createMatchmakingIntent(Set)
      * @hide
      */
     public static final String EXTRA_RECORD_TYPES = "android.health.connect.extra.RECORD_TYPES";
@@ -3296,27 +3295,27 @@ public class HealthConnectManager {
     }
 
     /**
-     * Checks if launching the intent returned by {@link #createConnectMatchingAppsIntent(Set)} with
-     * the same arguments will result in showing at least one matching application.
+     * Checks if launching the intent returned by {@link #createMatchmakingIntent(Set)} with the
+     * same arguments will result in showing at least one matching application.
      *
      * <ul>
      *   <li>Returns {@code true} if the flow launched by the {@link Intent} from {@link
-     *       #createConnectMatchingAppsIntent(Set)} would display at least one matching app,
-     *       allowing the user to take action.
+     *       #createMatchmakingIntent(Set)} would display at least one matching app, allowing the
+     *       user to take action.
      *   <li>Returns {@code false} if the launched flow would immediately return {@link
      *       android.app.Activity#RESULT_CANCELED} because there are no relevant apps to show.
      * </ul>
      *
      * @param recordTypes A non-null set of {@link Record} classes. See description at {@link
-     *     #createConnectMatchingAppsIntent(Set)}.
+     *     #createMatchmakingIntent(Set)}.
      * @param executor A non-null {@link Executor} on which the {@code callback} will be invoked.
      * @param callback A non-null {@link OutcomeReceiver} to receive the result. The {@code
      *     onResult} method will be called with a boolean indicating if there are matching writing
      *     applications to show. The {@code onError} method will be called if an error occurs.
-     * @see #createConnectMatchingAppsIntent(Set)
+     * @see #createMatchmakingIntent(Set)
      */
     @FlaggedApi(FLAG_MATCHMAKING)
-    public void canConnectMatchingApps(
+    public void isMatchmakingPossible(
             @NonNull Set<Class<? extends Record>> recordTypes,
             @NonNull @CallbackExecutor Executor executor,
             @NonNull OutcomeReceiver<Boolean, HealthConnectException> callback) {
@@ -3324,10 +3323,10 @@ public class HealthConnectManager {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
-            mService.canConnectMatchingApps(
+            mService.isMatchmakingPossible(
                     mContext.getAttributionSource(),
                     new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build(),
-                    new ICanConnectMatchingAppsCallback.Stub() {
+                    new IIsMatchmakingPossibleCallback.Stub() {
                         @Override
                         public void onResult(boolean hasMatchingApps) {
                             Binder.clearCallingIdentity();
@@ -3336,9 +3335,7 @@ public class HealthConnectManager {
 
                         @Override
                         public void onError(HealthConnectExceptionParcel exception) {
-                            Binder.clearCallingIdentity();
-                            executor.execute(
-                                    () -> callback.onError(exception.getHealthConnectException()));
+                            returnError(executor, exception, callback);
                         }
                     });
         } catch (RemoteException e) {
@@ -3376,7 +3373,7 @@ public class HealthConnectManager {
      *       closing the activity or by not granting any permissions. {@link
      *       android.app.Activity#RESULT_CANCELED} can also occur if the intent was launched in a
      *       discouraged way when no matching apps are available. This can be avoided by ensuring
-     *       {@link #canConnectMatchingApps(Set, Executor, OutcomeReceiver)} returns {@code true}
+     *       {@link #isMatchmakingPossible(Set, Executor, OutcomeReceiver)} returns {@code true}
      *       before launching the intent.
      * </ul>
      *
@@ -3402,14 +3399,13 @@ public class HealthConnectManager {
      * @return An {@link Intent} configured to show the flow for discovering and managing write
      *     permissions for matching data origins. This intent must be launched using {@link
      *     android.app.Activity#startActivityForResult(Intent, int)}.
-     * @see #canConnectMatchingApps(Set, Executor, OutcomeReceiver)
+     * @see #isMatchmakingPossible(Set, Executor, OutcomeReceiver)
      */
     @FlaggedApi(FLAG_MATCHMAKING)
     @NonNull
-    public Intent createConnectMatchingAppsIntent(
-            @NonNull Set<Class<? extends Record>> recordTypes) {
+    public Intent createMatchmakingIntent(@NonNull Set<Class<? extends Record>> recordTypes) {
         Objects.requireNonNull(recordTypes);
-        Intent intent = new Intent(ACTION_CONNECT_MATCHING_APPS);
+        Intent intent = new Intent(ACTION_MATCHMAKING);
         String[] recordTypeNames =
                 recordTypes.stream().map(Class::getCanonicalName).distinct().toArray(String[]::new);
         intent.putExtra(EXTRA_RECORD_TYPES, recordTypeNames);
@@ -3418,11 +3414,11 @@ public class HealthConnectManager {
 
     /**
      * Returns a map of package names to their associated permissions that should be displayed on
-     * the screen launched by the intent from {@link #createConnectMatchingAppsIntent(Set)}. The
-     * apps and their mapped permissions returned here are identical to what {@link
-     * #canConnectMatchingApps(Set, Executor, OutcomeReceiver)} identifies as matches.
+     * the screen launched by the intent from {@link #createMatchmakingIntent(Set)}. The apps and
+     * their mapped permissions returned here are identical to what {@link
+     * #isMatchmakingPossible(Set, Executor, OutcomeReceiver)} identifies as matches.
      *
-     * <p>The returned map will be empty if {@link #canConnectMatchingApps(Set, Executor,
+     * <p>The returned map will be empty if {@link #isMatchmakingPossible(Set, Executor,
      * OutcomeReceiver)} would return {@code false} for the same parameters, and non-empty if it
      * would return {@code true}.
      *

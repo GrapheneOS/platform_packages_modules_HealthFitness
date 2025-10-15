@@ -271,12 +271,12 @@ public final class TestAppProxy {
         getFromTestApp(requestBundle);
     }
 
-    /** Calls canConnectMatchingApps on behalf of the app. */
-    public boolean canConnectMatchingApps(Set<Class<? extends Record>> recordTypes)
+    /** Calls isMatchmakingPossible on behalf of the app. */
+    public boolean isMatchmakingPossible(Set<Class<? extends Record>> recordTypes)
             throws Exception {
-        Bundle requestBundle = BundleHelper.fromCanConnectMatchingAppsQuery(recordTypes);
+        Bundle requestBundle = BundleHelper.fromIsMatchmakingPossibleQuery(recordTypes);
         Bundle responseBundle = getFromTestApp(requestBundle);
-        return BundleHelper.toCanConnectMatchingAppsResponse(responseBundle);
+        return BundleHelper.toIsMatchmakingPossibleResponse(responseBundle);
     }
 
     /** Instructs the app to self-revokes the specified permission. */

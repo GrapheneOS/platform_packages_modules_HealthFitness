@@ -171,9 +171,9 @@ class GeneralUtils {
             }
         }
 
-        suspend fun canConnectMatchingApps(manager: HealthConnectManager): Boolean {
+        suspend fun isMatchmakingPossible(manager: HealthConnectManager): Boolean {
             return suspendCancellableCoroutine { continuation ->
-                manager.canConnectMatchingApps(
+                manager.isMatchmakingPossible(
                     setOf(),
                     Runnable::run,
                     continuation.asOutcomeReceiver(),

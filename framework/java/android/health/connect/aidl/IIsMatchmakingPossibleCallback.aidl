@@ -19,11 +19,11 @@ package android.health.connect.aidl;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
 
 /**
- * Callback for {@link IHealthConnectService#canConnectMatchingApps}
+ * Callback for {@link IHealthConnectService#isMatchmakingPossible}
  *
  * @hide
  */
-interface ICanConnectMatchingAppsCallback {
+interface IIsMatchmakingPossibleCallback {
     oneway void onResult(in boolean hasMatchingApps);
 
     oneway void onError(in HealthConnectExceptionParcel exception);

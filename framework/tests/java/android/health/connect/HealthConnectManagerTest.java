@@ -34,10 +34,10 @@ import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
-import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetMatchingAppsCallback;
 import android.health.connect.aidl.IHealthConnectService;
+import android.health.connect.aidl.IIsMatchmakingPossibleCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.MedicalDataSource;
@@ -363,14 +363,14 @@ public class HealthConnectManagerTest {
 
     @Test
     @EnableFlags(Flags.FLAG_MATCHMAKING)
-    public void testCanConnectMatchingApps_usesExceptionFromService() throws Exception {
+    public void testIsMatchmakingPossible_usesExceptionFromService() throws Exception {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
         TestOutcomeReceiver<Boolean> receiver = new TestOutcomeReceiver<>();
         doAnswer(
                         (Answer<Void>)
                                 invocation -> {
-                                    ICanConnectMatchingAppsCallback callback =
+                                    IIsMatchmakingPossibleCallback callback =
                                             invocation.getArgument(2);
                                     callback.onError(
                                             new HealthConnectExceptionParcel(
@@ -380,9 +380,9 @@ public class HealthConnectManagerTest {
                                     return null;
                                 })
                 .when(mService)
-                .canConnectMatchingApps(any(), any(), any());
+                .isMatchmakingPossible(any(), any(), any());
 
-        healthConnectManager.canConnectMatchingApps(
+        healthConnectManager.isMatchmakingPossible(
                 ImmutableSet.of(), Executors.newSingleThreadExecutor(), receiver);
 
         assertThat(receiver.assertAndGetException().getErrorCode())
@@ -391,22 +391,22 @@ public class HealthConnectManagerTest {
 
     @Test
     @EnableFlags(Flags.FLAG_MATCHMAKING)
-    public void testCanConnectMatchingApps_matchingApps_true() throws Exception {
+    public void testIsMatchmakingPossible_matchingApps_true() throws Exception {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
         TestOutcomeReceiver<Boolean> receiver = new TestOutcomeReceiver<>();
         doAnswer(
                         (Answer<Void>)
                                 invocation -> {
-                                    ICanConnectMatchingAppsCallback callback =
+                                    IIsMatchmakingPossibleCallback callback =
                                             invocation.getArgument(2);
                                     callback.onResult(true);
                                     return null;
                                 })
                 .when(mService)
-                .canConnectMatchingApps(any(), any(), any());
+                .isMatchmakingPossible(any(), any(), any());
 
-        healthConnectManager.canConnectMatchingApps(
+        healthConnectManager.isMatchmakingPossible(
                 ImmutableSet.of(StepsRecord.class, SleepSessionRecord.class),
                 Executors.newSingleThreadExecutor(),
                 receiver);
@@ -416,22 +416,22 @@ public class HealthConnectManagerTest {
 
     @Test
     @EnableFlags(Flags.FLAG_MATCHMAKING)
-    public void testCanConnectMatchingApps_noMatchingApps_false() throws Exception {
+    public void testIsMatchmakingPossible_noMatchingApps_false() throws Exception {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
         TestOutcomeReceiver<Boolean> receiver = new TestOutcomeReceiver<>();
         doAnswer(
                         (Answer<Void>)
                                 invocation -> {
-                                    ICanConnectMatchingAppsCallback callback =
+                                    IIsMatchmakingPossibleCallback callback =
                                             invocation.getArgument(2);
                                     callback.onResult(false);
                                     return null;
                                 })
                 .when(mService)
-                .canConnectMatchingApps(any(), any(), any());
+                .isMatchmakingPossible(any(), any(), any());
 
-        healthConnectManager.canConnectMatchingApps(
+        healthConnectManager.isMatchmakingPossible(
                 ImmutableSet.of(StepsRecord.class, SleepSessionRecord.class),
                 Executors.newSingleThreadExecutor(),
                 receiver);

@@ -105,7 +105,6 @@ import android.health.connect.aidl.IAccessLogsResponseCallback;
 import android.health.connect.aidl.IActivityDatesResponseCallback;
 import android.health.connect.aidl.IAggregateRecordsResponseCallback;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
-import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
@@ -120,6 +119,7 @@ import android.health.connect.aidl.IGetMatchingAppsCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
+import android.health.connect.aidl.IIsMatchmakingPossibleCallback;
 import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.aidl.IMedicalResourceListParcelResponseCallback;
@@ -3096,13 +3096,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
-     * @see HealthConnectManager#canConnectMatchingApps(Set, Executor, OutcomeReceiver)
+     * @see HealthConnectManager#isMatchmakingPossible(Set, Executor, OutcomeReceiver)
      */
     @Override
-    public void canConnectMatchingApps(
+    public void isMatchmakingPossible(
             AttributionSource attributionSource,
             GetMatchingAppsRequest request,
-            ICanConnectMatchingAppsCallback callback) {
+            IIsMatchmakingPossibleCallback callback) {
         checkParamsNonNull(attributionSource, request, callback);
         getMatchingApps(
                 attributionSource,

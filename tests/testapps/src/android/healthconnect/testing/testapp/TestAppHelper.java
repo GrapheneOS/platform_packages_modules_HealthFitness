@@ -17,7 +17,6 @@
 package android.healthconnect.testing.testapp;
 
 import static android.healthconnect.testing.cts.BundleHelper.AGGREGATE_STEPS_COUNT_TOTAL_QUERY;
-import static android.healthconnect.testing.cts.BundleHelper.CAN_CONNECT_MATCHING_APPS_QUERY;
 import static android.healthconnect.testing.cts.BundleHelper.CREATE_MEDICAL_DATA_SOURCE_QUERY;
 import static android.healthconnect.testing.cts.BundleHelper.DELETE_MEDICAL_DATA_SOURCE_WITH_DATA_QUERY;
 import static android.healthconnect.testing.cts.BundleHelper.DELETE_MEDICAL_RESOURCES_BY_IDS_QUERY;
@@ -28,6 +27,7 @@ import static android.healthconnect.testing.cts.BundleHelper.GET_MEDICAL_DATA_SO
 import static android.healthconnect.testing.cts.BundleHelper.GET_MEDICAL_DATA_SOURCES_USING_REQUEST_QUERY;
 import static android.healthconnect.testing.cts.BundleHelper.INSERT_RECORDS_QUERY;
 import static android.healthconnect.testing.cts.BundleHelper.INTENT_EXCEPTION;
+import static android.healthconnect.testing.cts.BundleHelper.IS_MATCHMAKING_POSSIBLE_QUERY;
 import static android.healthconnect.testing.cts.BundleHelper.QUERY_TYPE;
 import static android.healthconnect.testing.cts.BundleHelper.READ_CHANGE_LOGS_QUERY;
 import static android.healthconnect.testing.cts.BundleHelper.READ_MEDICAL_RESOURCES_BY_IDS_QUERY;
@@ -117,7 +117,7 @@ final class TestAppHelper {
             case DELETE_MEDICAL_DATA_SOURCE_WITH_DATA_QUERY ->
                     handleDeleteMedicalDataSourceWithData(context, bundle);
             case SELF_REVOKE_PERMISSION_REQUEST -> handleSelfRevoke(context, bundle);
-            case CAN_CONNECT_MATCHING_APPS_QUERY -> handleCanConnectMatchingApps(context, bundle);
+            case IS_MATCHMAKING_POSSIBLE_QUERY -> handleIsMatchmakingPossible(context, bundle);
             default ->
                     throw new IllegalStateException(
                             "Unknown query received from launcher app: " + queryType);
@@ -266,14 +266,14 @@ final class TestAppHelper {
         return new Bundle();
     }
 
-    private static Bundle handleCanConnectMatchingApps(Context context, Bundle bundle)
+    private static Bundle handleIsMatchmakingPossible(Context context, Bundle bundle)
             throws Exception {
         Set<Class<? extends Record>> recordTypes =
-                BundleHelper.toCanConnectMatchingAppsQuery(bundle);
+                BundleHelper.toIsMatchmakingPossibleQuery(bundle);
         HealthConnectReceiver<Boolean> receiver = new HealthConnectReceiver<>();
         TestUtils.getHealthConnectManager(context)
-                .canConnectMatchingApps(recordTypes, Executors.newSingleThreadExecutor(), receiver);
-        return BundleHelper.fromCanConnectMatchingAppsResponse(receiver.getResponse());
+                .isMatchmakingPossible(recordTypes, Executors.newSingleThreadExecutor(), receiver);
+        return BundleHelper.fromIsMatchmakingPossibleResponse(receiver.getResponse());
     }
 
     private static Bundle handleSelfRevoke(Context context, Bundle bundle) throws Exception {

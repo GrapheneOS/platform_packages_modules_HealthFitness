@@ -24,7 +24,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.testapps.toolbox.seed.SeedData
-import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.canConnectMatchingApps
+import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.isMatchmakingPossible
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -35,9 +35,9 @@ class HomeFragmentViewModel : ViewModel() {
     val seedAllDataState: LiveData<SeedAllDataState>
         get() = _seedAllDataState
 
-    private val _canConnectMatchingApps = MutableLiveData<Boolean>(false)
-    val canConnectMatchingApps: LiveData<Boolean>
-        get() = _canConnectMatchingApps
+    private val _isMatchmakingPossible = MutableLiveData<Boolean>(false)
+    val isMatchmakingPossible: LiveData<Boolean>
+        get() = _isMatchmakingPossible
 
     fun seedAllDataViewModel(context: Context, manager: HealthConnectManager) {
         viewModelScope.launch {
@@ -53,17 +53,17 @@ class HomeFragmentViewModel : ViewModel() {
     fun loadMatchmakingStatus(manager: HealthConnectManager) {
         viewModelScope.launch {
             try {
-                val canConnect = canConnectMatchingApps(manager)
-                _canConnectMatchingApps.postValue(canConnect)
+                val isMatchmakingPossible = isMatchmakingPossible(manager)
+                _isMatchmakingPossible.postValue(isMatchmakingPossible)
             } catch (ex: Exception) {
-                _canConnectMatchingApps.postValue(false)
-                Log.e("MATCHMAKING", "canConnectMatchingApps failed with $ex")
+                _isMatchmakingPossible.postValue(false)
+                Log.e("MATCHMAKING", "isMatchmakingPossible failed with $ex")
             }
         }
     }
 
     fun createMatchmakingIntent(manager: HealthConnectManager): Intent {
-        return manager.createConnectMatchingAppsIntent(emptySet())
+        return manager.createMatchmakingIntent(emptySet())
     }
 
     sealed class SeedAllDataState {
