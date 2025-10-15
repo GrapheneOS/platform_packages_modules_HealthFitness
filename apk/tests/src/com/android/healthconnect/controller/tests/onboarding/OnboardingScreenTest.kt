@@ -79,7 +79,7 @@ class OnboardingScreenTest {
         onView(withText("Get started with Health\u00A0Connect")).check(matches(isDisplayed()))
         onView(
                 withText(
-                    "Health\u00A0Connect stores and syncs your health and fitness data from different apps.\n\nFitness and wellness data, including exercise sessions, steps, nutrition, sleep and more\n\nHealth records, including vaccines, lab results and more"
+                    "Health\u00A0Connect stores and syncs your health and fitness data from different apps.\n\nFitness and wellness data, including exercise sessions, steps, nutrition, sleep and more\n\nMedical records, including vaccines, lab results and more"
                 )
             )
             .check(matches(isDisplayed()))

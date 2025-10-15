@@ -247,11 +247,11 @@ class MockedPermissionsActivityTest {
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
         launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
-            onView(withText("Allow $TEST_APP_NAME to access your health records?"))
+            onView(withText("Allow $TEST_APP_NAME to access your medical records?"))
                 .check(matches(isDisplayed()))
             onView(
                     withText(
-                        "If you allow, $TEST_APP_NAME can share your health records with Health Connect."
+                        "If you allow, $TEST_APP_NAME can share your medical records with Health Connect."
                     )
                 )
                 .check(matches(isDisplayed()))
@@ -274,19 +274,19 @@ class MockedPermissionsActivityTest {
             Espresso.onIdle()
             onView(
                     withText(
-                        "Sync your health records from your different apps and sources to keep " +
+                        "Sync your medical records from your different apps and sources to keep " +
                             "them in one place"
                     )
                 )
                 .perform(scrollTo())
             onView(
                     withText(
-                        "Sync your health records from your different apps and sources to keep " +
+                        "Sync your medical records from your different apps and sources to keep " +
                             "them in one place"
                     )
                 )
                 .check(matches(isDisplayed()))
-            onView(withText("About health records")).check(matches(isDisplayed()))
+            onView(withText("About medical records")).check(matches(isDisplayed()))
         }
     }
 
@@ -313,12 +313,12 @@ class MockedPermissionsActivityTest {
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
         launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
-            onView(withText("Allow $TEST_APP_NAME to access your health records?"))
+            onView(withText("Allow $TEST_APP_NAME to access your medical records?"))
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()))
             onView(
                     withText(
-                        "If you allow, $TEST_APP_NAME can share your health records with Health Connect."
+                        "If you allow, $TEST_APP_NAME can share your medical records with Health Connect."
                     )
                 )
                 .inRoot(isDialog())
@@ -349,7 +349,7 @@ class MockedPermissionsActivityTest {
             Espresso.onIdle()
             onView(
                     withText(
-                        "Sync your health records from your different apps and sources to keep " +
+                        "Sync your medical records from your different apps and sources to keep " +
                             "them in one place"
                     )
                 )
@@ -357,13 +357,13 @@ class MockedPermissionsActivityTest {
                 .perform(scrollTo())
             onView(
                     withText(
-                        "Sync your health records from your different apps and sources to keep " +
+                        "Sync your medical records from your different apps and sources to keep " +
                             "them in one place"
                     )
                 )
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()))
-            onView(withText("About health records"))
+            onView(withText("About medical records"))
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()))
         }
@@ -426,13 +426,13 @@ class MockedPermissionsActivityTest {
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
         launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
-            onView(withText("Allow $TEST_APP_NAME to access your health records?"))
+            onView(withText("Allow $TEST_APP_NAME to access your medical records?"))
                 .check(matches(isDisplayed()))
             onView(withText("Choose data you want this app to read or write to Health Connect"))
                 .check(matches(isDisplayed()))
             onView(
                     withText(
-                        "If you give access, the app can read and write data such as allergies, lab results, vaccines and more\nAbout health records"
+                        "If you give access, the app can read and write data such as allergies, lab results, vaccines and more\nAbout medical records"
                     )
                 )
                 .check(matches(isDisplayed()))
@@ -449,7 +449,7 @@ class MockedPermissionsActivityTest {
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
             onView(withText("Vaccines")).check(matches(isDisplayed()))
-            onView(withText("All health records")).check(matches(isDisplayed()))
+            onView(withText("All medical records")).check(matches(isDisplayed()))
         }
     }
 
@@ -478,7 +478,7 @@ class MockedPermissionsActivityTest {
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
         launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
-            onView(withText("Allow $TEST_APP_NAME to access your health records?"))
+            onView(withText("Allow $TEST_APP_NAME to access your medical records?"))
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()))
             onView(withText("Choose data you want this app to read or write to Health Connect"))
@@ -486,7 +486,7 @@ class MockedPermissionsActivityTest {
                 .check(matches(isDisplayed()))
             onView(
                     withText(
-                        "If you give access, the app can read and write data such as allergies, lab results, vaccines and more\nAbout health records"
+                        "If you give access, the app can read and write data such as allergies, lab results, vaccines and more\nAbout medical records"
                     )
                 )
                 .inRoot(isDialog())
@@ -507,7 +507,7 @@ class MockedPermissionsActivityTest {
                 .inRoot(isDialog())
                 .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
             onView(withText("Vaccines")).inRoot(isDialog()).check(matches(isDisplayed()))
-            onView(withText("All health records")).inRoot(isDialog()).check(matches(isDisplayed()))
+            onView(withText("All medical records")).inRoot(isDialog()).check(matches(isDisplayed()))
         }
     }
 

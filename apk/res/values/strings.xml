@@ -22,8 +22,8 @@
     <string name="permissions_and_data_header" description="Header for section listing actions for showing connected apps permissions and data screens [CHAR LIMIT=NONE] ">Permissions and data</string>
     <string name="home_subtitle" description="Description on the home screen of the app. [CHAR_LIMIT=NONE]">Manage the health and fitness data on your device, and control which apps can access it</string>
     <string name="data_title" description="Label for a button that takes the user to the data management screens. [CHAR_LIMIT=40]">Data and access</string>
-    <string name="browse_medical_data" description="Label for a button that navigates to a screen with medical data. [CHAR_LIMIT=50]">Browse health records</string>
-    <string name="browse_medical_data_subtitle" description="Description for a button that navigates to a screen with medical data. [CHAR_LIMIT=NONE]">View your health records and which apps can access them</string>
+    <string name="browse_medical_data" description="Label for a button that navigates to a screen with medical data. [CHAR_LIMIT=50]">Browse medical records</string>
+    <string name="browse_medical_data_subtitle" description="Description for a button that navigates to a screen with medical data. [CHAR_LIMIT=NONE]">View your medical records and which apps can access them</string>
     <string name="all_categories_title" description="Title of a screen that lists all health data categories. [CHAR_LIMIT=40]">All categories</string>
     <string name="see_all_categories" description="Label for a button that takes the user to the all categories screens. [CHAR_LIMIT=40]">See all categories</string>
     <string name="no_data" description="Label that is displayed when the given health data category does not have any data.">No data</string>
@@ -149,8 +149,8 @@
     <!-- Other health permissions -->
     <!-- Single request -->
     <string name="background_read_single_request_title" description="Title for screen to give permission to an app to read health data in the background. [CHAR_LIMIT=NONE]">Allow <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> to access data in the background?</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" description="Description for screen to give permission to an app to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">If you allow, this app can access fitness and wellness data and health records when you\'re not using the app.</string>
-    <string name="background_read_medical_single_request_description_medical_granted" description="Description for screen to give permission to an app to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">If you allow, this app can access health records when you\'re not using the app.</string>
+    <string name="background_read_medical_single_request_description_both_types_granted" description="Description for screen to give permission to an app to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">If you allow, this app can access fitness and wellness data and medical records when you\'re not using the app.</string>
+    <string name="background_read_medical_single_request_description_medical_granted" description="Description for screen to give permission to an app to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">If you allow, this app can access medical records when you\'re not using the app.</string>
     <string name="background_read_medical_single_request_description_fitness_granted" description="Description for screen to give permission to an app to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">If you allow, this app can access fitness and wellness data when you\'re not using the app.</string>
     <string name="background_read_single_request_description" description="Description for screen to give permission to an app to read health data in the background. [CHAR_LIMIT=NONE]">If you allow, this app can access Health&#160;Connect data when you\'re not using the app.</string>
 
@@ -166,9 +166,9 @@
     <string name="additional_permissions_combined_request_description" description="Description for screen to give additional permissions to an app. [CHAR_LIMIT=NONE]"><xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> also wants to access these Health&#160;Connect settings</string>
 
     <string name="background_read_medical_combined_request_title_both_types_granted" description="Title for permission to read health data in the background, when the app also has medical permissions [CHAR_LIMIT=NONE]">Access all data in the background</string>
-    <string name="background_read_medical_combined_request_title_medical_granted" description="Title for permission to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">Access health records in the background</string>
+    <string name="background_read_medical_combined_request_title_medical_granted" description="Title for permission to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">Access medical records in the background</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" description="Title for permission to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">Access fitness and wellness data in the background</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" description="Description for permission to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">Allow this app to access fitness and wellness data and health records when you\'re not using the app</string>
+    <string name="background_read_medical_combined_request_description_both_types_granted" description="Description for permission to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">Allow this app to access fitness and wellness data and medical records when you\'re not using the app</string>
     <string name="background_read_medical_combined_request_description_medical_granted" description="Description for permission to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">Allow this app to access this data when you\'re not using the app</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" description="Description for permission to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">Allow this app to access this data when you\'re not using the app</string>
 
@@ -183,15 +183,15 @@
     <string name="history_read_combined_request_description" description="Description for permission to access past health data. [CHAR_LIMIT=NONE]">Allow this app to access Health&#160;Connect data added before <xliff:g example="22 January 2022" id="data_access_date">%1$s</xliff:g></string>
     <string name="history_read_combined_request_description_fallback" description="Description for permission to access past health data when there is no access date [CHAR_LIMIT=NONE]">Allow this app to access all past Health&#160;Connect data</string>
 
-    <string name="history_read_medical_combined_request_footer" description="Footer of screen to request past data permissions for an app when medical read permissions are granted [CHAR_LIMIT=NONE]"><xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> can already access past data for your health records</string>
+    <string name="history_read_medical_combined_request_footer" description="Footer of screen to request past data permissions for an app when medical read permissions are granted [CHAR_LIMIT=NONE]"><xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> can already access past data for your medical records</string>
     <string name="history_read_medical_combined_request_footer_link" description="Link of footer of screen to request past data permissions for an app when medical read permissions are granted [CHAR_LIMIT=NONE]">Read more about permissions</string>
 
     <!-- Additional access screen -->
     <string name="background_read_medical_access_title_both_types_granted" description="Title for permission to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">Access all data in the background</string>
-    <string name="background_read_medical_access_title_medical_granted" description="Title for permission to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">Access health records in the background</string>
+    <string name="background_read_medical_access_title_medical_granted" description="Title for permission to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">Access medical records in the background</string>
     <string name="background_read_medical_access_title_fitness_granted" description="Title for permission to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">Access fitness and wellness data in the background</string>
 
-    <string name="background_read_medical_access_description_both_types_granted" description="Description for permission to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">Allow this app to access fitness and wellness data and health records when you\'re not using the app</string>
+    <string name="background_read_medical_access_description_both_types_granted" description="Description for permission to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">Allow this app to access fitness and wellness data and medical records when you\'re not using the app</string>
     <string name="background_read_medical_access_description_medical_granted" description="Description for permission to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">Allow this app to access this data when you\'re not using the app</string>
     <string name="background_read_medical_access_description_fitness_granted" description="Description for permission to read health data in the background when the app also has medical permissions. [CHAR_LIMIT=NONE]">Allow this app to access this data when you\'re not using the app</string>
 
@@ -208,8 +208,8 @@
 
     <!-- Warnings and footers -->
     <string name="history_read_medical_access_read_warning" description="Message to inform the user that no fitness data is currently being read [CHAR_LIMIT=NONE]">No fitness data is currently being read because <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> has no read permissions on</string>
-    <string name="additional_access_medical_read_footer" description="Footer of screen to manage additional permissions for an app when medical read permissions are granted [CHAR_LIMIT=NONE]"><xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> can already access past data for your health records. To change this, turn off health record permissions for this app</string>
-    <string name="additional_access_medical_read_footer_link" description="Link to manage health records permissions in footer of screen showing the additional permissions of an app [CHAR_LIMIT=NONE]">Manage health record permissions</string>
+    <string name="additional_access_medical_read_footer" description="Footer of screen to manage additional permissions for an app when medical read permissions are granted [CHAR_LIMIT=NONE]"><xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> can already access past data for your medical records. To change this, turn off medical record permissions for this app</string>
+    <string name="additional_access_medical_read_footer_link" description="Link to manage medical records permissions in footer of screen showing the additional permissions of an app [CHAR_LIMIT=NONE]">Manage medical record permissions</string>
 
     <!-- Disabled additional permissions footers -->
     <string name="additional_access_combined_footer" description="Footer of screen to manage additional permissions for an app when no read fitness permissions are granted [CHAR_LIMIT=NONE]">Enable at least one read permission in order to turn on background or past data access for this app</string>
@@ -450,11 +450,11 @@
     <!--endregion-->
 
     <!-- region Medical data types -->
-    <string name="browse_health_records_intro" description="Top intro for the Browse health records screen that lists the available Health records categories in Health Connect. [CHAR_LIMIT=NONE]">This includes all the health records synced to and added to Health&#160;Connect. This might not be your full medical record and does not include a medical description of your health records.</string>
+    <string name="browse_health_records_intro" description="Top intro for the Browse medical records screen that lists the available medical records categories in Health Connect. [CHAR_LIMIT=NONE]">This includes all the medical records synced to and added to Health&#160;Connect. This might not be your full medical record and does not include a medical description of your medical records.</string>
 
-    <string name="all_medical_data_uppercase_label" description="Uppercase label used to show the user's active calories burned data [CHAR_LIMIT=50]">All health records</string>
-    <string name="all_medical_data_lowercase_label" description="Lowercase label used to show the user's active calories burned data [CHAR_LIMIT=50]">all health records</string>
-    <string name="all_medical_data_content_description" description="Content description for switch that enables permissions for writing the user's medical data [CHAR_LIMIT=NONE]">Write all health records</string>
+    <string name="all_medical_data_uppercase_label" description="Uppercase label used to show the user's active calories burned data [CHAR_LIMIT=50]">All medical records</string>
+    <string name="all_medical_data_lowercase_label" description="Lowercase label used to show the user's active calories burned data [CHAR_LIMIT=50]">all medical records</string>
+    <string name="all_medical_data_content_description" description="Content description for switch that enables permissions for writing the user's medical data [CHAR_LIMIT=NONE]">Write all medical records</string>
 
     <string name="allergies_intolerances_uppercase_label" description="Uppercase label used to show the user's allergy intolerance data [CHAR_LIMIT=50]">Allergies</string>
     <string name="allergies_intolerances_lowercase_label" description="Lowercase label used to show the user's allergy intolerance data [CHAR_LIMIT=50]">allergies</string>
@@ -570,13 +570,13 @@
     <!--endregion-->
 
     <!-- region Medical permission request -->
-    <string name="medical_request_header" description="Title for screen to give medical permissions to an app [CHAR_LIMIT=NONE]">Allow <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> to access your health records?</string>
-    <string name="medical_request_header_access_info_read_write" description="Text describing which medical data can be accessed by the app that is requesting medical permissions [CHAR_LIMIT=NONE]">If you give access, the app can read and write data such as allergies, lab results, vaccines and more\n<xliff:g example="About health records" id="about_health_records_link">%1$s</xliff:g></string>
-    <string name="medical_request_header_access_info_read" description="Text describing which medical data can be accessed by the app that is requesting medical permissions [CHAR_LIMIT=NONE]">If you give access, the app can read data such as allergies, lab results, vaccines and more\n<xliff:g example="About health records" id="about_health_records_link">%1$s</xliff:g></string>
-    <string name="medical_request_about_health_records" description="Link to a help page about health records [CHAR_LIMIT=NONE]">About health records</string>
+    <string name="medical_request_header" description="Title for screen to give medical permissions to an app [CHAR_LIMIT=NONE]">Allow <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> to access your medical records?</string>
+    <string name="medical_request_header_access_info_read_write" description="Text describing which medical data can be accessed by the app that is requesting medical permissions [CHAR_LIMIT=NONE]">If you give access, the app can read and write data such as allergies, lab results, vaccines and more\n<xliff:g example="About medical records" id="about_health_records_link">%1$s</xliff:g></string>
+    <string name="medical_request_header_access_info_read" description="Text describing which medical data can be accessed by the app that is requesting medical permissions [CHAR_LIMIT=NONE]">If you give access, the app can read data such as allergies, lab results, vaccines and more\n<xliff:g example="About medical records" id="about_health_records_link">%1$s</xliff:g></string>
+    <string name="medical_request_about_health_records" description="Link to a help page about medical records [CHAR_LIMIT=NONE]">About medical records</string>
     <string name="medical_request_data_to_share" description="Title for section of the medical permission request screen which lists some examples of the data types accessed by this write permission [CHAR_LIMIT=NONE]">Data to share includes</string>
-    <string name="medical_request_summary" description="Explanation than an app can access all health records when it requests medical write permissions [CHAR_LIMIT=NONE]">If you allow, <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> can share your health records with Health&#160;Connect.</string>
-    <string name="medical_request_footer" description="Footer for screen requesting medical write permissions for an app [CHAR_LIMIT=NONE]">Sync your health records from your different apps and sources to keep them in one place</string>
+    <string name="medical_request_summary" description="Explanation than an app can access all medical records when it requests medical write permissions [CHAR_LIMIT=NONE]">If you allow, <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> can share your medical records with Health&#160;Connect.</string>
+    <string name="medical_request_footer" description="Footer for screen requesting medical write permissions for an app [CHAR_LIMIT=NONE]">Sync your medical records from your different apps and sources to keep them in one place</string>
     <!--endregion-->
 
     <!-- region Fitness permissions (no medical) disconnect -->
@@ -595,8 +595,8 @@
     <!--endregion-->
 
     <!-- region Medical permissions disconnect -->
-    <string name="disconnect_all_medical_permissions_title" description="Title for dialog asking user to confirm they want to remove all medical permissions for an app [CHAR_LIMIT=60]">Remove all health record permissions?</string>
-    <string name="disconnect_all_medical_permissions_dialog_checkbox" description="Text of a checkbox to decide whether to delete all medical data written by the app that is being disconnected by the user. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">Also delete health records from <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> from Health&#160;Connect</string>
+    <string name="disconnect_all_medical_permissions_title" description="Title for dialog asking user to confirm they want to remove all medical permissions for an app [CHAR_LIMIT=60]">Remove all medical record permissions?</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" description="Text of a checkbox to decide whether to delete all medical data written by the app that is being disconnected by the user. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">Also delete medical records from <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> from Health&#160;Connect</string>
     <!--endregion-->
 
     <!-- region Medical or fitness permissions disconnect message -->
@@ -612,7 +612,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" description="Text informing the user that an app will no longer be able to read or write fitness and medical data after the permissions have been removed. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]"><xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> will no longer be able to read or write data from Health&#160;Connect, including background data.\n\nThis doesn\'t affect other permissions this app may have, like camera, microphone or location.</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" description="Text informing the user that an app will no longer be able to read or write fitness and medical data after the permissions have been removed. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]"><xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> will no longer be able to read or write data from Health&#160;Connect, including past data.\n\nThis doesn\'t affect other permissions this app may have, like camera, microphone or location.</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" description="Text informing the user that an app will no longer be able to read or write fitness and medical data after the permissions have been removed. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]"><xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> will no longer be able to read or write data from Health&#160;Connect, including background and past data.\n\nThis doesn\'t affect other permissions this app may have, like camera, microphone or location.</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" description="Text of a checkbox to decide whether to delete all fitness and medical data written by the app that is being disconnected by the user. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">Also delete fitness data and health records from <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> from Health&#160;Connect</string>
+    <string name="disconnect_all_health_permissions_dialog_checkbox" description="Text of a checkbox to decide whether to delete all fitness and medical data written by the app that is being disconnected by the user. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">Also delete fitness data and medical records from <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> from Health&#160;Connect</string>
     <string name="disconnect_all_health_permissions_success_toast" description="Toast shown when permissions have been successfully removed [CHAR_LIMIT=NONE]">Removed permissions for this app</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" description="Text of a checkbox to decide whether to delete all data from Health Connect">Also delete all Health&#160;Connect data</string>
     <!--endregion-->
@@ -676,8 +676,8 @@
     <string name="permissions_header" description="Title shown for section that lists permissions. [CHAR_LIMIT=40]">Permissions</string>
     <string name="fitness_permissions" description="Label of a button that opens the fitness permissions screen. [CHAR_LIMIT=40]">Fitness and wellness</string>
     <string name="fitness_permissions_summary" description="Summary of a button that opens the fitness permissions screen. [CHAR_LIMIT=40]">Exercise, sleep, nutrition and others</string>
-    <string name="medical_permissions" description="Uppercase name of medical data category that contains lab results, vaccines, medications, etc. [CHAR_LIMIT=40]">Health records</string>
-    <string name="medical_permissions_lowercase" description="Lowercase name of medical data category that contains lab results, vaccines, medications, etc. [CHAR_LIMIT=40]">health records</string>
+    <string name="medical_permissions" description="Uppercase name of medical data category that contains lab results, vaccines, medications, etc. [CHAR_LIMIT=40]">Medical records</string>
+    <string name="medical_permissions_lowercase" description="Lowercase name of medical data category that contains lab results, vaccines, medications, etc. [CHAR_LIMIT=40]">medical records</string>
     <string name="medical_permissions_summary" description="Summary of a button that opens the medical permissions screen. [CHAR_LIMIT=40]">Lab results, medications, vaccines and others</string>
     <!--endregion-->
 
@@ -797,7 +797,7 @@
     <!--region Onboarding -->
     <string name="onboarding_title" description="Label used to show the title of onboarding page when user opens Health Connect app for the fist time">Get started with Health&#160;Connect</string>
     <string name="onboarding_description" description="Content description of Health Connect app on the onboarding page">Health&#160;Connect stores your health and fitness data, giving you a simple way to sync the different apps on your device</string>
-    <string name="onboarding_description_health_records" description="Content description of Health Connect app on the onboarding page that includes health records">Health&#160;Connect stores and syncs your health and fitness data from different apps.\n\n<b>Fitness and wellness data,</b> including exercise sessions, steps, nutrition, sleep and more\n\n<b>Health records,</b> including vaccines, lab results and more</string>
+    <string name="onboarding_description_health_records" description="Content description of Health Connect app on the onboarding page that includes medical records">Health&#160;Connect stores and syncs your health and fitness data from different apps.\n\n<b>Fitness and wellness data,</b> including exercise sessions, steps, nutrition, sleep and more\n\n<b>Medical records,</b> including vaccines, lab results and more</string>
     <string name="onboarding_description_with_health_connect" description="Content description of Health Connect app on the onboarding page that explains what the user can do with this app">With Health&#160;Connect you can</string>
     <string name="share_data_text" description="Text explaining how the user can share data with apps"><b>Share data with your apps</b>\nChoose the data each app can read or write to Health&#160;Connect</string>
     <string name="manage_your_settings_text" description="Text explaining how the user can change app permissions and manage data"><b>Manage your settings and privacy</b>\nChange app permissions and manage your data at any time</string>

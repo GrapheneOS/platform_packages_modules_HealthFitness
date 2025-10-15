@@ -291,7 +291,7 @@
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 
-    <!-- Read permissions for personal health records -->
+    <!-- Read permissions for personal medical records -->
     <permission
         android:name="android.permission.health.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES"
         android:label="@string/allergies_intolerances_content_description"
@@ -918,7 +918,7 @@
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 
-    <!-- Write permissions for personal health records -->
+    <!-- Write permissions for personal medical records -->
     <permission
         android:name="android.permission.health.WRITE_MEDICAL_DATA"
         android:label="@string/all_medical_data_content_description"

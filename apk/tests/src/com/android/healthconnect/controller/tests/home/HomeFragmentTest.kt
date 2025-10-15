@@ -249,8 +249,8 @@ class HomeFragmentTest {
         whenever(homeViewModel.hasAnyMedicalData).then { MutableLiveData(true) }
         setupFragmentForNavigation()
 
-        onView(withText("Browse health records")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Browse health records")).perform(scrollTo()).perform(click())
+        onView(withText("Browse medical records")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Browse medical records")).perform(scrollTo()).perform(click())
 
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.medicalAllDataFragment)
     }
@@ -775,8 +775,8 @@ class HomeFragmentTest {
 
         setupFragmentForNavigation()
 
-        onView(withText("Browse health records")).check(doesNotExist())
-        onView(withText("View your health records and which apps can access them"))
+        onView(withText("Browse medical records")).check(doesNotExist())
+        onView(withText("View your medical records and which apps can access them"))
             .check(doesNotExist())
         verify(healthConnectLogger, times(0))
             .logImpression(HomePageElement.BROWSE_HEALTH_RECORDS_BUTTON)
@@ -789,8 +789,8 @@ class HomeFragmentTest {
 
         setupFragmentForNavigation()
 
-        onView(withText("Browse health records")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("View your health records and which apps can access them"))
+        onView(withText("Browse medical records")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("View your medical records and which apps can access them"))
             .perform(scrollTo())
             .check(matches(isDisplayed()))
         verify(healthConnectLogger).logImpression(HomePageElement.BROWSE_HEALTH_RECORDS_BUTTON)

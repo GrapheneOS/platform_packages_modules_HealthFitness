@@ -383,7 +383,7 @@ class PermissionsActivityTest {
             // Only medical write needs granting
             onView(
                     withText(
-                        "If you allow, $TEST_APP_NAME can share your health records with Health Connect."
+                        "If you allow, $TEST_APP_NAME can share your medical records with Health Connect."
                     )
                 )
                 .check(matches(isDisplayed()))
@@ -418,7 +418,7 @@ class PermissionsActivityTest {
             // Only medical write needs granting
             onView(
                     withText(
-                        "If you allow, $TEST_APP_NAME can share your health records with Health Connect."
+                        "If you allow, $TEST_APP_NAME can share your medical records with Health Connect."
                     )
                 )
                 .inRoot(isDialog())
@@ -453,7 +453,7 @@ class PermissionsActivityTest {
             // Only medical write needs granting
             onView(
                     withText(
-                        "If you allow, $TEST_APP_NAME can share your health records with Health Connect."
+                        "If you allow, $TEST_APP_NAME can share your medical records with Health Connect."
                     )
                 )
                 .check(matches(isDisplayed()))
@@ -488,7 +488,7 @@ class PermissionsActivityTest {
             // Only medical write needs granting
             onView(
                     withText(
-                        "If you allow, $TEST_APP_NAME can share your health records with Health Connect."
+                        "If you allow, $TEST_APP_NAME can share your medical records with Health Connect."
                     )
                 )
                 .inRoot(isDialog())

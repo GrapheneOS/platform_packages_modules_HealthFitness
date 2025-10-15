@@ -29,6 +29,6 @@
   <string name="settings_manage_permission" description="Label for manage permissions in Settings. [CHAR_LIMIT=40]">Health, fitness and wellness</string>
   <string name="settings_combined_permissions" description="Label for view detailed fitness and medical permissions in Settings. [CHAR_LIMIT=40]">Health, fitness and wellness</string>
   <string name="settings_fitness_permissions" description="Label for view detailed fitness permissions in Settings. [CHAR_LIMIT=40]">Fitness and wellness</string>
-  <string name="settings_medical_permissions" description="Label for view detailed medical permissions in Settings. [CHAR_LIMIT=40]">Health records</string>
+  <string name="settings_medical_permissions" description="Label for view detailed medical permissions in Settings. [CHAR_LIMIT=40]">Medical records</string>
 
 </resources>

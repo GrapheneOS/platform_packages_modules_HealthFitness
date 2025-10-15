@@ -392,8 +392,8 @@ class AccessFragmentTest {
         }
         launchFragment<AccessFragment>(allMedicalDataBundle)
 
-        onView(withText("Can read all health records")).check(doesNotExist())
-        onView(withText("Can write all health records")).check(matches(isDisplayed()))
+        onView(withText("Can read all medical records")).check(doesNotExist())
+        onView(withText("Can write all medical records")).check(matches(isDisplayed()))
         onView(withText("Inactive apps")).check(doesNotExist())
         onView(
                 withText(

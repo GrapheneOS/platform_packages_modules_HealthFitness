@@ -189,7 +189,7 @@ class SettingsCombinedPermissionsFragmentTest {
         onView(withText("Permissions")).check(matches(isDisplayed()))
         onView(withText("Fitness and wellness")).check(matches(isDisplayed()))
         onView(withText("Exercise, sleep, nutrition and others")).check(matches(isDisplayed()))
-        onView(withText("Health records")).check(matches(isDisplayed()))
+        onView(withText("Medical records")).check(matches(isDisplayed()))
         onView(withText("Lab results, medications, vaccines and others"))
             .check(matches(isDisplayed()))
         onView(withText("Additional access")).perform(scrollTo()).check(matches(isDisplayed()))
@@ -561,7 +561,7 @@ class SettingsCombinedPermissionsFragmentTest {
             .check(matches(isDisplayed()))
         onView(
                 withText(
-                    "Also delete fitness data and health records from " +
+                    "Also delete fitness data and medical records from " +
                         "$TEST_APP_NAME from Health Connect"
                 )
             )
@@ -617,7 +617,7 @@ class SettingsCombinedPermissionsFragmentTest {
             .check(matches(isDisplayed()))
         onView(
                 withText(
-                    "Also delete fitness data and health records from " +
+                    "Also delete fitness data and medical records from " +
                         "$TEST_APP_NAME from Health Connect"
                 )
             )
@@ -673,7 +673,7 @@ class SettingsCombinedPermissionsFragmentTest {
             .check(matches(isDisplayed()))
         onView(
                 withText(
-                    "Also delete fitness data and health records from " +
+                    "Also delete fitness data and medical records from " +
                         "$TEST_APP_NAME from Health Connect"
                 )
             )
@@ -711,7 +711,7 @@ class SettingsCombinedPermissionsFragmentTest {
             .check(matches(isDisplayed()))
         onView(
                 withText(
-                    "Also delete fitness data and health records from " +
+                    "Also delete fitness data and medical records from " +
                         "$TEST_APP_NAME from Health Connect"
                 )
             )
@@ -750,7 +750,7 @@ class SettingsCombinedPermissionsFragmentTest {
             .check(matches(isDisplayed()))
         onView(
                 withText(
-                    "Also delete fitness data and health records from " +
+                    "Also delete fitness data and medical records from " +
                         "$TEST_APP_NAME from Health Connect"
                 )
             )
@@ -771,7 +771,7 @@ class SettingsCombinedPermissionsFragmentTest {
             .check(matches(isDisplayed()))
         onView(
                 withText(
-                    "Also delete fitness data and health records from " +
+                    "Also delete fitness data and medical records from " +
                         "$TEST_APP_NAME from Health Connect"
                 )
             )

@@ -189,7 +189,7 @@
     <string name="fitness_permissions">Fitness permissions</string>
     <string name="health_permissions">Health permissions</string>
     <string name="read_permission">Read</string>
-    <string name="medical">Personal health record</string>
+    <string name="medical">Personal medical record</string>
     <string name="additional_permissions">Additional</string>
     <string name="history_read_permission">History read</string>
     <string name="background_read_permission">Background read</string>

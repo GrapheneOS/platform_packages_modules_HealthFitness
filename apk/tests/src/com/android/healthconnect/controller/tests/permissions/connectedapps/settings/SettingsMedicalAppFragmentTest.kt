@@ -262,7 +262,7 @@ class SettingsMedicalAppFragmentTest {
             bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
         )
 
-        onView(withContentDescription("All health records. Write Access. On"))
+        onView(withContentDescription("All medical records. Write Access. On"))
             .check(matches(isDisplayed()))
         onView(withContentDescription("Vaccines. Read Access. On")).check(matches(isDisplayed()))
     }
@@ -279,7 +279,7 @@ class SettingsMedicalAppFragmentTest {
             bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
         )
 
-        onView(withContentDescription("All health records. Write Access. Off"))
+        onView(withContentDescription("All medical records. Write Access. Off"))
             .check(matches(isDisplayed()))
         onView(withContentDescription("Vaccines. Read Access. Off")).check(matches(isDisplayed()))
     }
@@ -307,7 +307,7 @@ class SettingsMedicalAppFragmentTest {
 
         onView(withText("Allow all")).check(matches(isDisplayed()))
         onView(withText("Vaccines")).check(matches(isDisplayed()))
-        onView(withText("All health records")).check(matches(isDisplayed()))
+        onView(withText("All medical records")).check(matches(isDisplayed()))
         onView(withText("Vaccines")).perform(click())
         onView(withText("Vaccines")).check(matches(not(isChecked())))
 
