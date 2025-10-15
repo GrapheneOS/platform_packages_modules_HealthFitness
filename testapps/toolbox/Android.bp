@@ -64,11 +64,19 @@ android_library {
 }
 
 android_app {
-    name: "HealthConnectToolbox",
+    name: "HealthConnectToolbox1",
     sdk_version: "module_current",
     min_sdk_version: "34",
     rename_resources_package: false,
     updatable: true,
+    package_name: "com.android.healthconnect.testapps.toolboxcombined",
+    manifest: "AndroidManifestToolboxCombined1.xml",
+    additional_manifests: [
+        "AndroidManifest.xml",
+        "AndroidManifestFitnessPermissions.xml",
+        "AndroidManifestMedicalPermissions.xml",
+        "AndroidManifestAdditionalPermissions.xml",
+    ],
     certificate: "platform",
     static_libs: [
         "HealthConnectToolboxLibrary",
@@ -81,10 +89,13 @@ android_app {
     min_sdk_version: "34",
     rename_resources_package: false,
     updatable: true,
-    package_name: "com.android.healthconnect.testapps.toolbox2",
-    manifest: "AndroidManifest2.xml",
+    package_name: "com.android.healthconnect.testapps.toolboxcombined2",
+    manifest: "AndroidManifestToolboxCombined2.xml",
     additional_manifests: [
         "AndroidManifest.xml",
+        "AndroidManifestFitnessPermissions.xml",
+        "AndroidManifestMedicalPermissions.xml",
+        "AndroidManifestAdditionalPermissions.xml",
     ],
     certificate: "platform",
     static_libs: [
@@ -98,10 +109,72 @@ android_app {
     min_sdk_version: "34",
     rename_resources_package: false,
     updatable: true,
-    package_name: "com.android.healthconnect.testapps.toolbox3",
-    manifest: "AndroidManifest3.xml",
+    package_name: "com.android.healthconnect.testapps.toolboxcombined3",
+    manifest: "AndroidManifestToolboxCombined3.xml",
     additional_manifests: [
         "AndroidManifest.xml",
+        "AndroidManifestFitnessPermissions.xml",
+        "AndroidManifestMedicalPermissions.xml",
+        "AndroidManifestAdditionalPermissions.xml",
+    ],
+    certificate: "platform",
+    static_libs: [
+        "HealthConnectToolboxLibrary",
+    ],
+}
+
+android_app {
+    name: "HealthConnectToolboxFitness",
+    sdk_version: "module_current",
+    min_sdk_version: "34",
+    rename_resources_package: false,
+    updatable: true,
+    package_name: "com.android.healthconnect.testapps.toolboxfitness",
+    manifest: "AndroidManifestToolboxFitness.xml",
+    additional_manifests: [
+        "AndroidManifest.xml",
+        "AndroidManifestFitnessPermissions.xml",
+        "AndroidManifestAdditionalPermissions.xml",
+    ],
+    certificate: "platform",
+    static_libs: [
+        "HealthConnectToolboxLibrary",
+    ],
+}
+
+android_app {
+    name: "HealthConnectToolboxMedical",
+    sdk_version: "module_current",
+    min_sdk_version: "34",
+    rename_resources_package: false,
+    updatable: true,
+    package_name: "com.android.healthconnect.testapps.toolboxmedical",
+    manifest: "AndroidManifestToolboxMedical.xml",
+    additional_manifests: [
+        "AndroidManifest.xml",
+        "AndroidManifestMedicalPermissions.xml",
+        "AndroidManifestAdditionalPermissions.xml",
+    ],
+    certificate: "platform",
+    static_libs: [
+        "HealthConnectToolboxLibrary",
+    ],
+}
+
+android_app {
+    name: "HealthConnectToolboxOnboarding",
+    sdk_version: "module_current",
+    min_sdk_version: "34",
+    rename_resources_package: false,
+    updatable: true,
+    package_name: "com.android.healthconnect.testapps.toolboxcombinedonboarding",
+    manifest: "AndroidManifestToolboxCombinedOnboarding.xml",
+    additional_manifests: [
+        "AndroidManifest.xml",
+        "AndroidManifestFitnessPermissions.xml",
+        "AndroidManifestMedicalPermissions.xml",
+        "AndroidManifestAdditionalPermissions.xml",
+        "AndroidManifestOnboardingActivity.xml",
     ],
     certificate: "platform",
     static_libs: [

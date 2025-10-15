@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.android.healthconnect.testapps.toolbox">
+    <application
+        tools:node="merge">
+
+        <activity
+            android:name=".OnboardingActivity"
+            android:exported="true"
+            android:label="@string/app_label"
+            android:theme="@style/AppTheme"
+            android:permission="android.permission.health.START_ONBOARDING">
+            <intent-filter>
+                <action android:name="android.health.connect.action.SHOW_ONBOARDING" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
