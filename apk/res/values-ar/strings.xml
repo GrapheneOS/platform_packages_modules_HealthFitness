@@ -1338,476 +1338,240 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"غير مرتبط"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"يُرجى النقر لربط هذا التطبيق بـ Health Connect"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"لاحقًا"</string>
-    <!-- no translation found for acne_read_content_description (1176708404029936065) -->
-    <skip />
-    <!-- no translation found for acne_write_content_description (9221785868351412493) -->
-    <skip />
-    <!-- no translation found for brittle_nails_read_content_description (423745726647038216) -->
-    <skip />
-    <!-- no translation found for brittle_nails_write_content_description (1804481735143147688) -->
-    <skip />
-    <!-- no translation found for burning_mouth_read_content_description (71088318928262260) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2778289937475041118) -->
-    <skip />
-    <!-- no translation found for chills_read_content_description (7244946135559432433) -->
-    <skip />
-    <!-- no translation found for chills_write_content_description (6478646233405107436) -->
-    <skip />
-    <!-- no translation found for dehydration_read_content_description (7633935838518756206) -->
-    <skip />
-    <!-- no translation found for dehydration_write_content_description (541514183036921571) -->
-    <skip />
-    <!-- no translation found for dry_skin_read_content_description (6798683159412202977) -->
-    <skip />
-    <!-- no translation found for dry_skin_write_content_description (1312998001092991619) -->
-    <skip />
-    <!-- no translation found for fever_read_content_description (3385209639730909489) -->
-    <skip />
-    <!-- no translation found for fever_write_content_description (8440573327719878961) -->
-    <skip />
-    <!-- no translation found for joint_pain_read_content_description (2932523124488927967) -->
-    <skip />
-    <!-- no translation found for joint_pain_write_content_description (7405551860978844535) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_read_content_description (2132696730582070534) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_write_content_description (7556318646656369856) -->
-    <skip />
-    <!-- no translation found for muscle_pain_read_content_description (3116385630330673084) -->
-    <skip />
-    <!-- no translation found for muscle_pain_write_content_description (2544204740665773272) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_read_content_description (8346630124770268372) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_write_content_description (1959348657257573252) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_read_content_description (2246901110448734533) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_write_content_description (8119106053737965766) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_read_content_description (7644187172731376645) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_write_content_description (8744350844236958279) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_read_content_description (3132494584303814009) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_write_content_description (4282920161878530009) -->
-    <skip />
-    <!-- no translation found for fatigue_read_content_description (8447413794808220408) -->
-    <skip />
-    <!-- no translation found for fatigue_write_content_description (3000326883358951973) -->
-    <skip />
-    <!-- no translation found for constipation_read_content_description (4024154136010015370) -->
-    <skip />
-    <!-- no translation found for constipation_write_content_description (9059835998017996999) -->
-    <skip />
-    <!-- no translation found for diarrhea_read_content_description (6643311788778713543) -->
-    <skip />
-    <!-- no translation found for diarrhea_write_content_description (2525160401458506448) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_read_content_description (5825568361431664706) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_write_content_description (7370817778828856877) -->
-    <skip />
-    <!-- no translation found for nausea_read_content_description (7696809485706809234) -->
-    <skip />
-    <!-- no translation found for nausea_write_content_description (7956853318058549079) -->
-    <skip />
-    <!-- no translation found for stomach_ache_read_content_description (6960461949095524373) -->
-    <skip />
-    <!-- no translation found for stomach_ache_write_content_description (4822349196740130790) -->
-    <skip />
-    <!-- no translation found for vomiting_read_content_description (6425637340168306118) -->
-    <skip />
-    <!-- no translation found for vomiting_write_content_description (2768436321239967229) -->
-    <skip />
-    <!-- no translation found for chest_pain_read_content_description (5388099127082653993) -->
-    <skip />
-    <!-- no translation found for chest_pain_write_content_description (7570421665813979598) -->
-    <skip />
-    <!-- no translation found for chest_tightness_read_content_description (3234587929340517638) -->
-    <skip />
-    <!-- no translation found for chest_tightness_write_content_description (3365518444505217882) -->
-    <skip />
-    <!-- no translation found for cough_read_content_description (4834360757270578547) -->
-    <skip />
-    <!-- no translation found for cough_write_content_description (2927943192149715422) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_read_content_description (5830132363981902576) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_write_content_description (6195434828951874561) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_read_content_description (5285037217314042125) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_write_content_description (1812050225998794712) -->
-    <skip />
-    <!-- no translation found for wheezing_read_content_description (3698103133045395859) -->
-    <skip />
-    <!-- no translation found for wheezing_write_content_description (3555234332119025686) -->
-    <skip />
-    <!-- no translation found for heartburn_read_content_description (4650825508743336439) -->
-    <skip />
-    <!-- no translation found for heartburn_write_content_description (1857706822547818187) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_read_content_description (4732209374634649857) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_write_content_description (834686289232563614) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_read_content_description (7616019217735602113) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_write_content_description (271585170557004393) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_read_content_description (3506995529886706872) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_write_content_description (4087127686579577768) -->
-    <skip />
-    <!-- no translation found for dizziness_read_content_description (2525565486057144416) -->
-    <skip />
-    <!-- no translation found for dizziness_write_content_description (1875365619054873732) -->
-    <skip />
-    <!-- no translation found for earaches_read_content_description (4643142391473401154) -->
-    <skip />
-    <!-- no translation found for earaches_write_content_description (3551386029980258801) -->
-    <skip />
-    <!-- no translation found for hair_loss_read_content_description (4057044821025872986) -->
-    <skip />
-    <!-- no translation found for hair_loss_write_content_description (7387442867237711823) -->
-    <skip />
-    <!-- no translation found for headache_read_content_description (7485283472508878298) -->
-    <skip />
-    <!-- no translation found for headache_write_content_description (720183844750746485) -->
-    <skip />
-    <!-- no translation found for runny_nose_read_content_description (443700998701222852) -->
-    <skip />
-    <!-- no translation found for runny_nose_write_content_description (6210009950948827090) -->
-    <skip />
-    <!-- no translation found for sneezing_read_content_description (1825781985598094799) -->
-    <skip />
-    <!-- no translation found for sneezing_write_content_description (8125072216406958337) -->
-    <skip />
-    <!-- no translation found for sore_throat_read_content_description (7798247670004858562) -->
-    <skip />
-    <!-- no translation found for sore_throat_write_content_description (6058043292544091397) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_read_content_description (6604212451531546331) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_write_content_description (6950875986047625521) -->
-    <skip />
-    <!-- no translation found for back_pain_read_content_description (1176155927269014089) -->
-    <skip />
-    <!-- no translation found for back_pain_write_content_description (6282959987099901645) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_read_content_description (1437405008757136462) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_write_content_description (3519700764000282215) -->
-    <skip />
-    <!-- no translation found for hot_flashes_read_content_description (2229463748079331513) -->
-    <skip />
-    <!-- no translation found for hot_flashes_write_content_description (441093768815039294) -->
-    <skip />
-    <!-- no translation found for night_sweats_read_content_description (7644094250441074129) -->
-    <skip />
-    <!-- no translation found for night_sweats_write_content_description (7501357533280452509) -->
-    <skip />
-    <!-- no translation found for water_retention_read_content_description (211789030125880649) -->
-    <skip />
-    <!-- no translation found for water_retention_write_content_description (7109328727506593781) -->
-    <skip />
-    <!-- no translation found for cravings_read_content_description (9098905292448612603) -->
-    <skip />
-    <!-- no translation found for cravings_write_content_description (7932335159387976333) -->
-    <skip />
-    <!-- no translation found for bloating_read_content_description (8942780558464500997) -->
-    <skip />
-    <!-- no translation found for bloating_write_content_description (5014366726518564943) -->
-    <skip />
-    <!-- no translation found for cramps_read_content_description (5853663240074256855) -->
-    <skip />
-    <!-- no translation found for cramps_write_content_description (6777230560926849939) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_read_content_description (6331928351160142817) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_write_content_description (9213133328064016367) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_read_content_description (1556133668276886256) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_write_content_description (5405234499024881940) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_read_content_description (8872893212311881743) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_write_content_description (8482016412474126674) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_read_content_description (21587787265978758) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_write_content_description (7639415261021656468) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_read_content_description (6027886706003079912) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_write_content_description (6833099607694941406) -->
-    <skip />
-    <!-- no translation found for brain_fog_read_content_description (4240133221789017568) -->
-    <skip />
-    <!-- no translation found for brain_fog_write_content_description (354508934978268288) -->
-    <skip />
-    <!-- no translation found for mood_change_read_content_description (5114563193264125173) -->
-    <skip />
-    <!-- no translation found for mood_change_write_content_description (7613564641235985120) -->
-    <skip />
-    <!-- no translation found for memory_lapse_read_content_description (3639865098888366357) -->
-    <skip />
-    <!-- no translation found for memory_lapse_write_content_description (211569063190179476) -->
-    <skip />
-    <!-- no translation found for sleepiness_read_content_description (797381777988304669) -->
-    <skip />
-    <!-- no translation found for sleepiness_write_content_description (888236364245216476) -->
-    <skip />
-    <!-- no translation found for sleep_changes_read_content_description (277237231470749744) -->
-    <skip />
-    <!-- no translation found for sleep_changes_write_content_description (9078270254664653838) -->
-    <skip />
-    <!-- no translation found for insomnia_read_content_description (5225449618972721129) -->
-    <skip />
-    <!-- no translation found for insomnia_write_content_description (4237153589826489083) -->
-    <skip />
-    <!-- no translation found for snore_read_content_description (3447953925696237628) -->
-    <skip />
-    <!-- no translation found for snore_write_content_description (959354771204900433) -->
-    <skip />
-    <!-- no translation found for acne_uppercase_label (60568062993817483) -->
-    <skip />
-    <!-- no translation found for acne_lowercase_label (5301949536428255159) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_uppercase_label (442393846492385702) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_lowercase_label (4136643670361233063) -->
-    <skip />
-    <!-- no translation found for back_pain_uppercase_label (6034795846635350255) -->
-    <skip />
-    <!-- no translation found for back_pain_lowercase_label (7487168354843582888) -->
-    <skip />
-    <!-- no translation found for bloating_uppercase_label (2827024204358491650) -->
-    <skip />
-    <!-- no translation found for bloating_lowercase_label (4108236897678347488) -->
-    <skip />
-    <!-- no translation found for brain_fog_uppercase_label (3782508630097437711) -->
-    <skip />
-    <!-- no translation found for brain_fog_lowercase_label (8018499987092429724) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_uppercase_label (3633574517042452397) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_lowercase_label (3745105353936751222) -->
-    <skip />
-    <!-- no translation found for brittle_nails_uppercase_label (7290899807816681152) -->
-    <skip />
-    <!-- no translation found for brittle_nails_lowercase_label (43861645923597496) -->
-    <skip />
-    <!-- no translation found for burning_mouth_uppercase_label (8975226712238467359) -->
-    <skip />
-    <!-- no translation found for burning_mouth_lowercase_label (3378970972990933484) -->
-    <skip />
-    <!-- no translation found for chest_pain_uppercase_label (8091501402224214622) -->
-    <skip />
-    <!-- no translation found for chest_pain_lowercase_label (8817807562310689177) -->
-    <skip />
-    <!-- no translation found for chest_tightness_uppercase_label (8988021502622503503) -->
-    <skip />
-    <!-- no translation found for chest_tightness_lowercase_label (1770063390635610292) -->
-    <skip />
-    <!-- no translation found for chills_uppercase_label (4320786490882838834) -->
-    <skip />
-    <!-- no translation found for chills_lowercase_label (1306612496314055832) -->
-    <skip />
-    <!-- no translation found for constipation_uppercase_label (7245001778443725742) -->
-    <skip />
-    <!-- no translation found for constipation_lowercase_label (6217542866033766747) -->
-    <skip />
-    <!-- no translation found for cough_uppercase_label (5570609736970603012) -->
-    <skip />
-    <!-- no translation found for cough_lowercase_label (459638956679172779) -->
-    <skip />
-    <!-- no translation found for cramps_uppercase_label (5162905309136173937) -->
-    <skip />
-    <!-- no translation found for cramps_lowercase_label (4644485808002493449) -->
-    <skip />
-    <!-- no translation found for cravings_uppercase_label (4754194354806284307) -->
-    <skip />
-    <!-- no translation found for cravings_lowercase_label (5836041614136287213) -->
-    <skip />
-    <!-- no translation found for dehydration_uppercase_label (10278239942824711) -->
-    <skip />
-    <!-- no translation found for dehydration_lowercase_label (8692632632276643276) -->
-    <skip />
-    <!-- no translation found for diarrhea_uppercase_label (6310170127529968752) -->
-    <skip />
-    <!-- no translation found for diarrhea_lowercase_label (5938774694742839016) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_uppercase_label (3546617155300878657) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_lowercase_label (4980631237611433200) -->
-    <skip />
-    <!-- no translation found for dizziness_uppercase_label (8129950094459563983) -->
-    <skip />
-    <!-- no translation found for dizziness_lowercase_label (3462347558609662379) -->
-    <skip />
-    <!-- no translation found for dry_skin_uppercase_label (4542430684082075550) -->
-    <skip />
-    <!-- no translation found for dry_skin_lowercase_label (6892264917735291961) -->
-    <skip />
-    <!-- no translation found for earaches_uppercase_label (107701950625572701) -->
-    <skip />
-    <!-- no translation found for earaches_lowercase_label (6240790850403958317) -->
-    <skip />
-    <!-- no translation found for fatigue_uppercase_label (7514286788083426578) -->
-    <skip />
-    <!-- no translation found for fatigue_lowercase_label (2669560685808367387) -->
-    <skip />
-    <!-- no translation found for fever_uppercase_label (6889273008212535253) -->
-    <skip />
-    <!-- no translation found for fever_lowercase_label (3634400562894397159) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_uppercase_label (2171378172300618053) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_lowercase_label (1725534000111875030) -->
-    <skip />
-    <!-- no translation found for hair_loss_uppercase_label (6359351347019795813) -->
-    <skip />
-    <!-- no translation found for hair_loss_lowercase_label (2764498189966225461) -->
-    <skip />
-    <!-- no translation found for headache_uppercase_label (863800537735413054) -->
-    <skip />
-    <!-- no translation found for headache_lowercase_label (6564231905087583135) -->
-    <skip />
-    <!-- no translation found for heartburn_uppercase_label (1170571383460859644) -->
-    <skip />
-    <!-- no translation found for heartburn_lowercase_label (6235983036978705474) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_uppercase_label (2026400872833911547) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_lowercase_label (1468243523322721340) -->
-    <skip />
-    <!-- no translation found for hot_flashes_uppercase_label (2410116266729711836) -->
-    <skip />
-    <!-- no translation found for hot_flashes_lowercase_label (6485269554856410007) -->
-    <skip />
-    <!-- no translation found for insomnia_uppercase_label (4946197328995261738) -->
-    <skip />
-    <!-- no translation found for insomnia_lowercase_label (3742025423716451058) -->
-    <skip />
-    <!-- no translation found for joint_pain_uppercase_label (7693454621285586935) -->
-    <skip />
-    <!-- no translation found for joint_pain_lowercase_label (1877680075365305488) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_uppercase_label (5230114867081881444) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_lowercase_label (8766445235392409480) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_uppercase_label (4023141061302523950) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_lowercase_label (7558077308061468558) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_uppercase_label (4195502722277905266) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_lowercase_label (4822860811117141611) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_uppercase_label (2307572603791750654) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_lowercase_label (940765534682997044) -->
-    <skip />
-    <!-- no translation found for memory_lapse_uppercase_label (241393771674969441) -->
-    <skip />
-    <!-- no translation found for memory_lapse_lowercase_label (5590619293782264318) -->
-    <skip />
-    <!-- no translation found for mood_change_uppercase_label (6591596468077187132) -->
-    <skip />
-    <!-- no translation found for mood_change_lowercase_label (5154765930188874067) -->
-    <skip />
-    <!-- no translation found for muscle_pain_uppercase_label (2470771124188001900) -->
-    <skip />
-    <!-- no translation found for muscle_pain_lowercase_label (7842677871351347822) -->
-    <skip />
-    <!-- no translation found for nausea_uppercase_label (8384006696113532259) -->
-    <skip />
-    <!-- no translation found for nausea_lowercase_label (8182471893071968504) -->
-    <skip />
-    <!-- no translation found for night_sweats_uppercase_label (6177687233700001658) -->
-    <skip />
-    <!-- no translation found for night_sweats_lowercase_label (5041101323453286082) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_uppercase_label (9057761232218571640) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_lowercase_label (8993103170034473121) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_uppercase_label (2029088854167004239) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_lowercase_label (5744229600679518473) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_uppercase_label (7471254320615756463) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_lowercase_label (3820574649548616546) -->
-    <skip />
-    <!-- no translation found for runny_nose_uppercase_label (6561156187042071551) -->
-    <skip />
-    <!-- no translation found for runny_nose_lowercase_label (2214697492382685914) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_uppercase_label (3747502224212110471) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_lowercase_label (3970444639088619346) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_uppercase_label (1004040920818222022) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_lowercase_label (2446049805930852514) -->
-    <skip />
-    <!-- no translation found for sleep_changes_uppercase_label (817870703301327111) -->
-    <skip />
-    <!-- no translation found for sleep_changes_lowercase_label (8606593835222848643) -->
-    <skip />
-    <!-- no translation found for sleepiness_uppercase_label (8292543897598171825) -->
-    <skip />
-    <!-- no translation found for sleepiness_lowercase_label (7563434619994665081) -->
-    <skip />
-    <!-- no translation found for sneezing_uppercase_label (3559089195823390830) -->
-    <skip />
-    <!-- no translation found for sneezing_lowercase_label (4614496100578986753) -->
-    <skip />
-    <!-- no translation found for snore_uppercase_label (5408933698329003980) -->
-    <skip />
-    <!-- no translation found for snore_lowercase_label (4813706716393000341) -->
-    <skip />
-    <!-- no translation found for sore_throat_uppercase_label (7652461264264564339) -->
-    <skip />
-    <!-- no translation found for sore_throat_lowercase_label (2671417552726018944) -->
-    <skip />
-    <!-- no translation found for stomach_ache_uppercase_label (8450868632465837793) -->
-    <skip />
-    <!-- no translation found for stomach_ache_lowercase_label (3263518334946627327) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_uppercase_label (4216439398397550673) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_lowercase_label (346310767340271161) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_uppercase_label (1882204558194305221) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_lowercase_label (8433998024876395101) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_uppercase_label (4256721076420375400) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_lowercase_label (1329282833647595593) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_uppercase_label (2843508264503404145) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_lowercase_label (4569019157289060524) -->
-    <skip />
-    <!-- no translation found for vomiting_uppercase_label (258794137964470267) -->
-    <skip />
-    <!-- no translation found for vomiting_lowercase_label (2520559377010270583) -->
-    <skip />
-    <!-- no translation found for water_retention_uppercase_label (4748866467103152119) -->
-    <skip />
-    <!-- no translation found for water_retention_lowercase_label (3738721149186742861) -->
-    <skip />
-    <!-- no translation found for wheezing_uppercase_label (2837114949197811787) -->
-    <skip />
-    <!-- no translation found for wheezing_lowercase_label (1278548371813007771) -->
-    <skip />
+    <string name="acne_read_content_description" msgid="1176708404029936065">"قراءة بيانات حب الشباب"</string>
+    <string name="acne_write_content_description" msgid="9221785868351412493">"كتابة بيانات حب الشباب"</string>
+    <string name="brittle_nails_read_content_description" msgid="423745726647038216">"قراءة بيانات ضعف الأظافر"</string>
+    <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"كتابة بيانات ضعف الأظافر"</string>
+    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"قراءة بيانات حرقان الفم "</string>
+    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"كتابة بيانات حرقان الفم "</string>
+    <string name="chills_read_content_description" msgid="7244946135559432433">"قراءة بيانات القشعريرة"</string>
+    <string name="chills_write_content_description" msgid="6478646233405107436">"كتابة بيانات القشعريرة"</string>
+    <string name="dehydration_read_content_description" msgid="7633935838518756206">"قراءة بيانات الجفاف"</string>
+    <string name="dehydration_write_content_description" msgid="541514183036921571">"كتابة بيانات الجفاف"</string>
+    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"قراءة بيانات جفاف الجلد"</string>
+    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"كتابة بيانات جفاف الجلد"</string>
+    <string name="fever_read_content_description" msgid="3385209639730909489">"قراءة بيانات الحُمَّى"</string>
+    <string name="fever_write_content_description" msgid="8440573327719878961">"كتابة بيانات الحُمَّى"</string>
+    <string name="joint_pain_read_content_description" msgid="2932523124488927967">"قراءة بيانات آلام المفاصل"</string>
+    <string name="joint_pain_write_content_description" msgid="7405551860978844535">"كتابة بيانات آلام المفاصل"</string>
+    <string name="joint_stiffness_read_content_description" msgid="2132696730582070534">"قراءة بيانات تيبُّس المفاصل"</string>
+    <string name="joint_stiffness_write_content_description" msgid="7556318646656369856">"كتابة بيانات تيبُّس المفاصل"</string>
+    <string name="muscle_pain_read_content_description" msgid="3116385630330673084">"قراءة بيانات آلام العضلات"</string>
+    <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"كتابة بيانات آلام العضلات"</string>
+    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"قراءة بيانات فقدان الوعي"</string>
+    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"كتابة بيانات فقدان الوعي"</string>
+    <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"قراءة بيانات انخفاض القدرة على ممارسة التمارين الرياضية"</string>
+    <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"كتابة بيانات انخفاض القدرة على ممارسة التمارين الرياضية"</string>
+    <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"قراءة بيانات التغيُّرات غير المبرَّرة في الوزن"</string>
+    <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"كتابة بيانات التغيُّرات غير المبرَّرة في الوزن"</string>
+    <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"قراءة بيانات الآلام في كل الجسم"</string>
+    <string name="generalized_body_ache_write_content_description" msgid="4282920161878530009">"كتابة بيانات الآلام في كل الجسم"</string>
+    <string name="fatigue_read_content_description" msgid="8447413794808220408">"قراءة بيانات الإرهاق"</string>
+    <string name="fatigue_write_content_description" msgid="3000326883358951973">"كتابة بيانات الإرهاق"</string>
+    <string name="constipation_read_content_description" msgid="4024154136010015370">"قراءة بيانات الإمساك"</string>
+    <string name="constipation_write_content_description" msgid="9059835998017996999">"كتابة بيانات الإمساك"</string>
+    <string name="diarrhea_read_content_description" msgid="6643311788778713543">"قراءة بيانات الإسهال"</string>
+    <string name="diarrhea_write_content_description" msgid="2525160401458506448">"كتابة بيانات الإسهال"</string>
+    <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"قراءة بيانات فقدان الشهية"</string>
+    <string name="loss_of_appetite_write_content_description" msgid="7370817778828856877">"كتابة بيانات فقدان الشهية"</string>
+    <string name="nausea_read_content_description" msgid="7696809485706809234">"قراءة بيانات الغثيان"</string>
+    <string name="nausea_write_content_description" msgid="7956853318058549079">"كتابة بيانات الغثيان"</string>
+    <string name="stomach_ache_read_content_description" msgid="6960461949095524373">"قراءة بيانات آلام المعدة"</string>
+    <string name="stomach_ache_write_content_description" msgid="4822349196740130790">"كتابة بيانات آلام المعدة"</string>
+    <string name="vomiting_read_content_description" msgid="6425637340168306118">"قراءة بيانات التقيؤ"</string>
+    <string name="vomiting_write_content_description" msgid="2768436321239967229">"كتابة بيانات التقيؤ"</string>
+    <string name="chest_pain_read_content_description" msgid="5388099127082653993">"قراءة بيانات ألم الصدر"</string>
+    <string name="chest_pain_write_content_description" msgid="7570421665813979598">"كتابة بيانات ألم الصدر"</string>
+    <string name="chest_tightness_read_content_description" msgid="3234587929340517638">"قراءة بيانات ضيق الصدر"</string>
+    <string name="chest_tightness_write_content_description" msgid="3365518444505217882">"كتابة بيانات ضيق الصدر"</string>
+    <string name="cough_read_content_description" msgid="4834360757270578547">"قراءة بيانات السعال"</string>
+    <string name="cough_write_content_description" msgid="2927943192149715422">"كتابة بيانات السعال"</string>
+    <string name="heart_palpitations_read_content_description" msgid="5830132363981902576">"قراءة بيانات خفقان القلب"</string>
+    <string name="heart_palpitations_write_content_description" msgid="6195434828951874561">"كتابة بيانات خفقان القلب"</string>
+    <string name="shortness_of_breath_read_content_description" msgid="5285037217314042125">"قراءة بيانات ضيق التنفس"</string>
+    <string name="shortness_of_breath_write_content_description" msgid="1812050225998794712">"كتابة بيانات ضيق التنفس"</string>
+    <string name="wheezing_read_content_description" msgid="3698103133045395859">"قراءة بيانات صعوبة التنفّس"</string>
+    <string name="wheezing_write_content_description" msgid="3555234332119025686">"كتابة بيانات صعوبة التنفّس"</string>
+    <string name="heartburn_read_content_description" msgid="4650825508743336439">"قراءة بيانات الحرقة في المعدة"</string>
+    <string name="heartburn_write_content_description" msgid="1857706822547818187">"كتابة بيانات الحرقة في المعدة"</string>
+    <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"قراءة بيانات اضطراب نظم القلب"</string>
+    <string name="skipped_heartbeat_write_content_description" msgid="834686289232563614">"كتابة بيانات اضطراب نظم القلب"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"قراءة بيانات نبضات القلب السريعة أو الخفّاقة أو المتقطّعة"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"كتابة بيانات نبضات القلب السريعة أو الخفّاقة أو المتقطّعة"</string>
+    <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"قراءة بيانات صعوبة البلع"</string>
+    <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"كتابة بيانات صعوبة البلع"</string>
+    <string name="dizziness_read_content_description" msgid="2525565486057144416">"قراءة بيانات الدوخة"</string>
+    <string name="dizziness_write_content_description" msgid="1875365619054873732">"كتابة بيانات الدوخة"</string>
+    <string name="earaches_read_content_description" msgid="4643142391473401154">"قراءة بيانات آلام الأذن"</string>
+    <string name="earaches_write_content_description" msgid="3551386029980258801">"كتابة بيانات آلام الأذن"</string>
+    <string name="hair_loss_read_content_description" msgid="4057044821025872986">"قراءة بيانات تساقط الشعر"</string>
+    <string name="hair_loss_write_content_description" msgid="7387442867237711823">"كتابة بيانات تساقط الشعر"</string>
+    <string name="headache_read_content_description" msgid="7485283472508878298">"قراءة بيانات الصداع"</string>
+    <string name="headache_write_content_description" msgid="720183844750746485">"كتابة بيانات الصداع"</string>
+    <string name="runny_nose_read_content_description" msgid="443700998701222852">"قراءة بيانات سيلان الأنف"</string>
+    <string name="runny_nose_write_content_description" msgid="6210009950948827090">"كتابة بيانات سيلان الأنف"</string>
+    <string name="sneezing_read_content_description" msgid="1825781985598094799">"قراءة بيانات العُطاس"</string>
+    <string name="sneezing_write_content_description" msgid="8125072216406958337">"كتابة بيانات العُطاس"</string>
+    <string name="sore_throat_read_content_description" msgid="7798247670004858562">"قراءة بيانات احتقان الحلق"</string>
+    <string name="sore_throat_write_content_description" msgid="6058043292544091397">"كتابة بيانات احتقان الحلق"</string>
+    <string name="stuffy_nose_read_content_description" msgid="6604212451531546331">"قراءة بيانات انسداد الأنف"</string>
+    <string name="stuffy_nose_write_content_description" msgid="6950875986047625521">"كتابة بيانات انسداد الأنف"</string>
+    <string name="back_pain_read_content_description" msgid="1176155927269014089">"قراءة بيانات آلام الظهر"</string>
+    <string name="back_pain_write_content_description" msgid="6282959987099901645">"كتابة بيانات آلام الظهر"</string>
+    <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"قراءة بيانات آلام أسفل الظهر"</string>
+    <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"كتابة بيانات آلام أسفل الظهر"</string>
+    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"قراءة بيانات هبّات الحرارة"</string>
+    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"كتابة بيانات هبّات الحرارة"</string>
+    <string name="night_sweats_read_content_description" msgid="7644094250441074129">"قراءة بيانات التعرُّق الليلي"</string>
+    <string name="night_sweats_write_content_description" msgid="7501357533280452509">"كتابة بيانات التعرُّق الليلي"</string>
+    <string name="water_retention_read_content_description" msgid="211789030125880649">"قراءة بيانات احتباس الماء"</string>
+    <string name="water_retention_write_content_description" msgid="7109328727506593781">"كتابة بيانات احتباس الماء"</string>
+    <string name="cravings_read_content_description" msgid="9098905292448612603">"قراءة بيانات الشراهة"</string>
+    <string name="cravings_write_content_description" msgid="7932335159387976333">"كتابة بيانات الشراهة"</string>
+    <string name="bloating_read_content_description" msgid="8942780558464500997">"قراءة بيانات الانتفاخ"</string>
+    <string name="bloating_write_content_description" msgid="5014366726518564943">"كتابة بيانات الانتفاخ"</string>
+    <string name="cramps_read_content_description" msgid="5853663240074256855">"قراءة بيانات التقلّصات"</string>
+    <string name="cramps_write_content_description" msgid="6777230560926849939">"كتابة بيانات التقلّصات"</string>
+    <string name="abdominal_pain_read_content_description" msgid="6331928351160142817">"قراءة بيانات آلام البطن"</string>
+    <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"كتابة بيانات آلام البطن"</string>
+    <string name="breast_tenderness_read_content_description" msgid="1556133668276886256">"قراءة بيانات آلام الثدي"</string>
+    <string name="breast_tenderness_write_content_description" msgid="5405234499024881940">"كتابة بيانات آلام الثدي"</string>
+    <string name="pelvic_pain_read_content_description" msgid="8872893212311881743">"قراءة بيانات آلام الحوض"</string>
+    <string name="pelvic_pain_write_content_description" msgid="8482016412474126674">"كتابة بيانات آلام الحوض"</string>
+    <string name="vaginal_dryness_read_content_description" msgid="21587787265978758">"قراءة بيانات جفاف المهبل"</string>
+    <string name="vaginal_dryness_write_content_description" msgid="7639415261021656468">"كتابة بيانات جفاف المهبل"</string>
+    <string name="vaginal_itchiness_read_content_description" msgid="6027886706003079912">"قراءة بيانات حكّة المهبل"</string>
+    <string name="vaginal_itchiness_write_content_description" msgid="6833099607694941406">"كتابة بيانات حكّة المهبل"</string>
+    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"قراءة بيانات التشوّش الذهني"</string>
+    <string name="brain_fog_write_content_description" msgid="354508934978268288">"كتابة بيانات التشوّش الذهني"</string>
+    <string name="mood_change_read_content_description" msgid="5114563193264125173">"قراءة بيانات تقلُّب المزاج"</string>
+    <string name="mood_change_write_content_description" msgid="7613564641235985120">"كتابة بيانات تقلُّب المزاج"</string>
+    <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"قراءة بيانات فقدان الذاكرة"</string>
+    <string name="memory_lapse_write_content_description" msgid="211569063190179476">"كتابة بيانات فقدان الذاكرة"</string>
+    <string name="sleepiness_read_content_description" msgid="797381777988304669">"قراءة بيانات النعاس"</string>
+    <string name="sleepiness_write_content_description" msgid="888236364245216476">"كتابة بيانات النعاس"</string>
+    <string name="sleep_changes_read_content_description" msgid="277237231470749744">"قراءة بيانات النوم غير المنتظم"</string>
+    <string name="sleep_changes_write_content_description" msgid="9078270254664653838">"كتابة بيانات النوم غير المنتظم"</string>
+    <string name="insomnia_read_content_description" msgid="5225449618972721129">"قراءة بيانات الأرق"</string>
+    <string name="insomnia_write_content_description" msgid="4237153589826489083">"كتابة بيانات الأرق"</string>
+    <string name="snore_read_content_description" msgid="3447953925696237628">"قراءة بيانات الشخير"</string>
+    <string name="snore_write_content_description" msgid="959354771204900433">"كتابة بيانات الشخير"</string>
+    <string name="acne_uppercase_label" msgid="60568062993817483">"حب الشباب"</string>
+    <string name="acne_lowercase_label" msgid="5301949536428255159">"حب الشباب"</string>
+    <string name="abdominal_pain_uppercase_label" msgid="442393846492385702">"آلام البطن"</string>
+    <string name="abdominal_pain_lowercase_label" msgid="4136643670361233063">"آلام البطن"</string>
+    <string name="back_pain_uppercase_label" msgid="6034795846635350255">"آلام الظهر"</string>
+    <string name="back_pain_lowercase_label" msgid="7487168354843582888">"آلام الظهر"</string>
+    <string name="bloating_uppercase_label" msgid="2827024204358491650">"الانتفاخ"</string>
+    <string name="bloating_lowercase_label" msgid="4108236897678347488">"الانتفاخ"</string>
+    <string name="brain_fog_uppercase_label" msgid="3782508630097437711">"التشوّش الذهني"</string>
+    <string name="brain_fog_lowercase_label" msgid="8018499987092429724">"التشوّش الذهني"</string>
+    <string name="breast_tenderness_uppercase_label" msgid="3633574517042452397">"آلام الثدي"</string>
+    <string name="breast_tenderness_lowercase_label" msgid="3745105353936751222">"آلام الثدي"</string>
+    <string name="brittle_nails_uppercase_label" msgid="7290899807816681152">"ضعف الأظافر"</string>
+    <string name="brittle_nails_lowercase_label" msgid="43861645923597496">"ضعف الأظافر"</string>
+    <string name="burning_mouth_uppercase_label" msgid="8975226712238467359">"حرقان الفم"</string>
+    <string name="burning_mouth_lowercase_label" msgid="3378970972990933484">"حرقان الفم"</string>
+    <string name="chest_pain_uppercase_label" msgid="8091501402224214622">"ألم الصدر"</string>
+    <string name="chest_pain_lowercase_label" msgid="8817807562310689177">"ألم الصدر"</string>
+    <string name="chest_tightness_uppercase_label" msgid="8988021502622503503">"ضيق الصدر"</string>
+    <string name="chest_tightness_lowercase_label" msgid="1770063390635610292">"ضيق الصدر"</string>
+    <string name="chills_uppercase_label" msgid="4320786490882838834">"القشعريرة"</string>
+    <string name="chills_lowercase_label" msgid="1306612496314055832">"القشعريرة"</string>
+    <string name="constipation_uppercase_label" msgid="7245001778443725742">"الإمساك"</string>
+    <string name="constipation_lowercase_label" msgid="6217542866033766747">"الإمساك"</string>
+    <string name="cough_uppercase_label" msgid="5570609736970603012">"السعال"</string>
+    <string name="cough_lowercase_label" msgid="459638956679172779">"السعال"</string>
+    <string name="cramps_uppercase_label" msgid="5162905309136173937">"التقلّصات"</string>
+    <string name="cramps_lowercase_label" msgid="4644485808002493449">"التقلّصات"</string>
+    <string name="cravings_uppercase_label" msgid="4754194354806284307">"الشراهة"</string>
+    <string name="cravings_lowercase_label" msgid="5836041614136287213">"الشراهة"</string>
+    <string name="dehydration_uppercase_label" msgid="10278239942824711">"الجفاف"</string>
+    <string name="dehydration_lowercase_label" msgid="8692632632276643276">"الجفاف"</string>
+    <string name="diarrhea_uppercase_label" msgid="6310170127529968752">"الإسهال"</string>
+    <string name="diarrhea_lowercase_label" msgid="5938774694742839016">"الإسهال"</string>
+    <string name="difficulty_swallowing_uppercase_label" msgid="3546617155300878657">"صعوبة البلع"</string>
+    <string name="difficulty_swallowing_lowercase_label" msgid="4980631237611433200">"صعوبة البلع"</string>
+    <string name="dizziness_uppercase_label" msgid="8129950094459563983">"الدوخة"</string>
+    <string name="dizziness_lowercase_label" msgid="3462347558609662379">"الدوخة"</string>
+    <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"جفاف الجلد"</string>
+    <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"جفاف الجلد"</string>
+    <string name="earaches_uppercase_label" msgid="107701950625572701">"آلام الأذن"</string>
+    <string name="earaches_lowercase_label" msgid="6240790850403958317">"آلام الأذن"</string>
+    <string name="fatigue_uppercase_label" msgid="7514286788083426578">"الإرهاق"</string>
+    <string name="fatigue_lowercase_label" msgid="2669560685808367387">"الإرهاق"</string>
+    <string name="fever_uppercase_label" msgid="6889273008212535253">"الحُمَّى"</string>
+    <string name="fever_lowercase_label" msgid="3634400562894397159">"الحُمَّى"</string>
+    <string name="generalized_body_ache_uppercase_label" msgid="2171378172300618053">"آلام في كل الجسم"</string>
+    <string name="generalized_body_ache_lowercase_label" msgid="1725534000111875030">"آلام في كل الجسم"</string>
+    <string name="hair_loss_uppercase_label" msgid="6359351347019795813">"تساقط الشعر"</string>
+    <string name="hair_loss_lowercase_label" msgid="2764498189966225461">"تساقط الشعر"</string>
+    <string name="headache_uppercase_label" msgid="863800537735413054">"الصداع"</string>
+    <string name="headache_lowercase_label" msgid="6564231905087583135">"الصداع"</string>
+    <string name="heartburn_uppercase_label" msgid="1170571383460859644">"حرقة في المعدة"</string>
+    <string name="heartburn_lowercase_label" msgid="6235983036978705474">"حرقة في المعدة"</string>
+    <string name="heart_palpitations_uppercase_label" msgid="2026400872833911547">"خفقان القلب"</string>
+    <string name="heart_palpitations_lowercase_label" msgid="1468243523322721340">"خفقان القلب"</string>
+    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"هبّات الحرارة"</string>
+    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"هبّات الحرارة"</string>
+    <string name="insomnia_uppercase_label" msgid="4946197328995261738">"الأرق"</string>
+    <string name="insomnia_lowercase_label" msgid="3742025423716451058">"الأرق"</string>
+    <string name="joint_pain_uppercase_label" msgid="7693454621285586935">"آلام المفاصل"</string>
+    <string name="joint_pain_lowercase_label" msgid="1877680075365305488">"آلام المفاصل"</string>
+    <string name="joint_stiffness_uppercase_label" msgid="5230114867081881444">"تيبُّس المفاصل"</string>
+    <string name="joint_stiffness_lowercase_label" msgid="8766445235392409480">"تيبُّس المفاصل"</string>
+    <string name="loss_of_appetite_uppercase_label" msgid="4023141061302523950">"فقدان الشهية"</string>
+    <string name="loss_of_appetite_lowercase_label" msgid="7558077308061468558">"فقدان الشهية"</string>
+    <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"فقدان الوعي"</string>
+    <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"فقدان الوعي"</string>
+    <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"آلام أسفل الظهر"</string>
+    <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"آلام أسفل الظهر"</string>
+    <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"فقدان الذاكرة"</string>
+    <string name="memory_lapse_lowercase_label" msgid="5590619293782264318">"فقدان الذاكرة"</string>
+    <string name="mood_change_uppercase_label" msgid="6591596468077187132">"تقلُّب المزاج"</string>
+    <string name="mood_change_lowercase_label" msgid="5154765930188874067">"تقلُّب المزاج"</string>
+    <string name="muscle_pain_uppercase_label" msgid="2470771124188001900">"آلام العضلات"</string>
+    <string name="muscle_pain_lowercase_label" msgid="7842677871351347822">"آلام العضلات"</string>
+    <string name="nausea_uppercase_label" msgid="8384006696113532259">"الغثيان"</string>
+    <string name="nausea_lowercase_label" msgid="8182471893071968504">"الغثيان"</string>
+    <string name="night_sweats_uppercase_label" msgid="6177687233700001658">"التعرُّق الليلي"</string>
+    <string name="night_sweats_lowercase_label" msgid="5041101323453286082">"التعرُّق الليلي"</string>
+    <string name="pelvic_pain_uppercase_label" msgid="9057761232218571640">"آلام الحوض"</string>
+    <string name="pelvic_pain_lowercase_label" msgid="8993103170034473121">"آلام الحوض"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"نبضات القلب السريعة أو الخفّاقة أو المتقطّعة"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"نبضات القلب السريعة أو الخفّاقة أو المتقطّعة"</string>
+    <string name="reduced_capacity_for_exercise_uppercase_label" msgid="7471254320615756463">"انخفاض القدرة على ممارسة التمارين الرياضية"</string>
+    <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"انخفاض القدرة على ممارسة التمارين الرياضية"</string>
+    <string name="runny_nose_uppercase_label" msgid="6561156187042071551">"سيلان الأنف"</string>
+    <string name="runny_nose_lowercase_label" msgid="2214697492382685914">"سيلان الأنف"</string>
+    <string name="shortness_of_breath_uppercase_label" msgid="3747502224212110471">"ضيق التنفس"</string>
+    <string name="shortness_of_breath_lowercase_label" msgid="3970444639088619346">"ضيق التنفس"</string>
+    <string name="skipped_heartbeat_uppercase_label" msgid="1004040920818222022">"اضطراب نظم القلب"</string>
+    <string name="skipped_heartbeat_lowercase_label" msgid="2446049805930852514">"اضطراب نظم القلب"</string>
+    <string name="sleep_changes_uppercase_label" msgid="817870703301327111">"النوم غير المنتظم"</string>
+    <string name="sleep_changes_lowercase_label" msgid="8606593835222848643">"النوم غير المنتظم"</string>
+    <string name="sleepiness_uppercase_label" msgid="8292543897598171825">"النعاس"</string>
+    <string name="sleepiness_lowercase_label" msgid="7563434619994665081">"النعاس"</string>
+    <string name="sneezing_uppercase_label" msgid="3559089195823390830">"العُطاس"</string>
+    <string name="sneezing_lowercase_label" msgid="4614496100578986753">"العُطاس"</string>
+    <string name="snore_uppercase_label" msgid="5408933698329003980">"الشخير"</string>
+    <string name="snore_lowercase_label" msgid="4813706716393000341">"الشخير"</string>
+    <string name="sore_throat_uppercase_label" msgid="7652461264264564339">"احتقان الحلق"</string>
+    <string name="sore_throat_lowercase_label" msgid="2671417552726018944">"احتقان الحلق"</string>
+    <string name="stomach_ache_uppercase_label" msgid="8450868632465837793">"آلام المعدة"</string>
+    <string name="stomach_ache_lowercase_label" msgid="3263518334946627327">"آلام المعدة"</string>
+    <string name="stuffy_nose_uppercase_label" msgid="4216439398397550673">"انسداد الأنف"</string>
+    <string name="stuffy_nose_lowercase_label" msgid="346310767340271161">"انسداد الأنف"</string>
+    <string name="unexplained_weight_changes_uppercase_label" msgid="1882204558194305221">"التغيُّرات غير المبرَّرة في الوزن"</string>
+    <string name="unexplained_weight_changes_lowercase_label" msgid="8433998024876395101">"التغيُّرات غير المبرَّرة في الوزن"</string>
+    <string name="vaginal_dryness_uppercase_label" msgid="4256721076420375400">"جفاف المهبل"</string>
+    <string name="vaginal_dryness_lowercase_label" msgid="1329282833647595593">"جفاف المهبل"</string>
+    <string name="vaginal_itchiness_uppercase_label" msgid="2843508264503404145">"حكّة المهبل"</string>
+    <string name="vaginal_itchiness_lowercase_label" msgid="4569019157289060524">"حكّة المهبل"</string>
+    <string name="vomiting_uppercase_label" msgid="258794137964470267">"التقيؤ"</string>
+    <string name="vomiting_lowercase_label" msgid="2520559377010270583">"التقيؤ"</string>
+    <string name="water_retention_uppercase_label" msgid="4748866467103152119">"احتباس الماء"</string>
+    <string name="water_retention_lowercase_label" msgid="3738721149186742861">"احتباس الماء"</string>
+    <string name="wheezing_uppercase_label" msgid="2837114949197811787">"صعوبة التنفّس"</string>
+    <string name="wheezing_lowercase_label" msgid="1278548371813007771">"صعوبة التنفّس"</string>
 </resources>
