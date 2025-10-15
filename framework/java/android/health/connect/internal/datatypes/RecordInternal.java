@@ -28,7 +28,7 @@ import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.os.Parcel;
-
+import com.android.healthfitness.flags.Flags;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -96,7 +96,7 @@ public abstract class RecordInternal<T extends Record> {
     }
 
     /**
-     * Populates {@code parcel} with the self information, required to reconstructor this object
+     * Populates {@code parcel} with the self information, required to reconstruct this object
      * during IPC
      */
     @NonNull
@@ -294,6 +294,15 @@ public abstract class RecordInternal<T extends Record> {
         @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         DataOrigin dataOrigin = new DataOrigin.Builder().setPackageName(getPackageName()).build();
 
+        Device.Builder deviceBuilder =
+                new Device.Builder()
+                        .setManufacturer(getManufacturer())
+                        .setType(getDeviceType())
+                        .setModel(getModel());
+        if (Flags.deviceDataProvidersApi()) {
+            deviceBuilder.setDisplayName(getDisplayName());
+        }
+
         Metadata.Builder builder =
                 new Metadata.Builder()
                         .setClientRecordId(getClientRecordId())
@@ -301,13 +310,7 @@ public abstract class RecordInternal<T extends Record> {
                         .setDataOrigin(dataOrigin)
                         .setLastModifiedTime(Instant.ofEpochMilli(getLastModifiedTime()))
                         .setRecordingMethod(getRecordingMethod())
-                        .setDevice(
-                                // TODO(b/437875130): Add id and display name to device.
-                                new Device.Builder()
-                                        .setManufacturer(getManufacturer())
-                                        .setType(getDeviceType())
-                                        .setModel(getModel())
-                                        .build());
+                        .setDevice(deviceBuilder.build());
         UUID id = getUuid();
         if (id != null) {
             builder.setId(id.toString());
@@ -318,7 +321,7 @@ public abstract class RecordInternal<T extends Record> {
     /** Sets the fields for meta data for internal records */
     @NonNull
     public RecordInternal<T> setMetaData(Metadata metaData) {
-        return this.setUuid(metaData.getId())
+        this.setUuid(metaData.getId())
                 .setPackageName(metaData.getDataOrigin().getPackageName())
                 .setLastModifiedTime(metaData.getLastModifiedTime().toEpochMilli())
                 .setClientRecordId(metaData.getClientRecordId())
@@ -327,6 +330,10 @@ public abstract class RecordInternal<T extends Record> {
                 .setModel(metaData.getDevice().getModel())
                 .setDeviceType(metaData.getDevice().getType())
                 .setRecordingMethod(metaData.getRecordingMethod());
+        if (Flags.deviceDataProvidersApi()) {
+            this.setDisplayName(metaData.getDevice().getDisplayName());
+        }
+        return this;
     }
 
     /**
@@ -341,7 +348,7 @@ public abstract class RecordInternal<T extends Record> {
     public abstract long getRecordTime();
 
     /**
-     * Populate {@code bundle} with the data required to un-bundle self. This is used suring IPC
+     * Populate {@code bundle} with the data required to un-bundle self. This is used during IPC
      * transmissions
      */
     abstract void populateRecordTo(@NonNull Parcel bundle);
