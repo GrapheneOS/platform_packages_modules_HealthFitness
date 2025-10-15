@@ -80,13 +80,13 @@ public class RecordTypeInfoResponse {
     }
 
     /**
-     * Returns a set of {@link HealthPermissionCategory} for the input {@link
+     * Returns an array of {@link HealthPermissionCategory} for the input {@link
      * RecordTypeIdentifier.RecordType}.
      */
     @NonNull
     @FlaggedApi(Flags.FLAG_SYMPTOMS)
-    public Set<@HealthPermissionCategory.Type Integer> getPermissionCategories() {
-        return mPermissionCategories;
+    public @HealthPermissionCategory.Type int[] getPermissionCategories() {
+        return mPermissionCategories.stream().mapToInt(Integer::intValue).toArray();
     }
 
     /** Returns {@link HealthDataCategory} for the {@link RecordTypeIdentifier.RecordType}. */

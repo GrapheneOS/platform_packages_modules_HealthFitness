@@ -90,7 +90,7 @@ public final class SymptomRecord extends IntervalRecord {
      * @param skipValidation Whether to skip validation of the record.
      * @hide
      */
-    public SymptomRecord(
+    private SymptomRecord(
             @SymptomType int symptomType,
             @Nullable String notes,
             @SymptomSeverity int severity,
