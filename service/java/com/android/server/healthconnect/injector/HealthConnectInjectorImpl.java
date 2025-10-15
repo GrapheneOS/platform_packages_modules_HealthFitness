@@ -30,6 +30,7 @@ import android.os.UserManager;
 
 import androidx.annotation.Nullable;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
@@ -51,6 +52,7 @@ import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.DeviceDataProviderManager;
 import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.device.notification.NativeStepsNotificationSender;
@@ -66,6 +68,7 @@ import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
@@ -188,7 +191,9 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Nullable private final MatchmakingManager mMatchmakingManager;
     @Nullable private final MatchmakingDenialStateManager mMatchmakingDenialStateManager;
     private final Clock mClock;
-    private final SyntheticPackageNameResolver mSyntheticPackageNameResolver;
+    @Nullable private final SyntheticPackageNameResolver mSyntheticPackageNameResolver;
+    @Nullable private final DeviceDataProviderHelper mDeviceDataProviderHelper;
+    @Nullable private final DeviceDataProviderManager mDeviceDataProviderManager;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -615,7 +620,25 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthConnectMappings,
                                 Objects.requireNonNull(mMatchmakingDenialStateManager))
                         : builder.mMatchmakingManager;
-        mSyntheticPackageNameResolver = new SyntheticPackageNameResolver(mAppInfoHelper);
+        mSyntheticPackageNameResolver =
+                builder.mSyntheticPackageNameResolver == null && Flags.deviceDataProvidersApi()
+                        ? new SyntheticPackageNameResolver(mAppInfoHelper)
+                        : builder.mSyntheticPackageNameResolver;
+        mDeviceDataProviderHelper =
+                builder.mDeviceDataProviderHelper == null
+                                && Flags.deviceDataProvidersApi()
+                                && AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                        ? new DeviceDataProviderHelper(
+                                mDatabaseHelpers, mTransactionManager, mHealthConnectMappings)
+                        : builder.mDeviceDataProviderHelper;
+        mDeviceDataProviderManager =
+                builder.mDeviceDataProviderManager == null
+                                && Flags.deviceDataProvidersApi()
+                                && AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                                && mDeviceDataProviderHelper != null
+                        ? new DeviceDataProviderManager(
+                                mDeviceInfoHelper, mAppInfoHelper, mDeviceDataProviderHelper)
+                        : builder.mDeviceDataProviderManager;
     }
 
     @Override
@@ -984,9 +1007,22 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         return new CompletenessStatsCollector(mTransactionManager, mAppInfoHelper, mClock);
     }
 
+    @Nullable
     @Override
     public SyntheticPackageNameResolver getSyntheticPackageNameResolver() {
         return mSyntheticPackageNameResolver;
+    }
+
+    @Nullable
+    @Override
+    public DeviceDataProviderHelper getDeviceDataProviderHelper() {
+        return mDeviceDataProviderHelper;
+    }
+
+    @Nullable
+    @Override
+    public DeviceDataProviderManager getDeviceDataProviderManager() {
+        return mDeviceDataProviderManager;
     }
 
     /**
@@ -1073,6 +1109,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private MatchmakingDenialStateManager mMatchmakingDenialStateManager;
         @Nullable private Clock mClock;
         @Nullable private SyntheticPackageNameResolver mSyntheticPackageNameResolver;
+        @Nullable private DeviceDataProviderHelper mDeviceDataProviderHelper;
+        @Nullable private DeviceDataProviderManager mDeviceDataProviderManager;
 
         private Builder(Context context) {
             mContext = context;
@@ -1491,6 +1529,20 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         public Builder setSyntheticPackageNameResolver(
                 SyntheticPackageNameResolver syntheticPackageNameResolver) {
             mSyntheticPackageNameResolver = syntheticPackageNameResolver;
+            return this;
+        }
+
+        /** Set fake or custom {@link DeviceDataProviderHelper}. */
+        public Builder setDeviceDataProviderHelper(
+                DeviceDataProviderHelper deviceDataProviderHelper) {
+            mDeviceDataProviderHelper = deviceDataProviderHelper;
+            return this;
+        }
+
+        /** Set fake or custom {@link DeviceDataProviderManager}. */
+        public Builder setDeviceDataProviderManager(
+                DeviceDataProviderManager deviceDataProviderManager) {
+            mDeviceDataProviderManager = deviceDataProviderManager;
             return this;
         }
 

@@ -87,7 +87,7 @@ import java.util.stream.Collectors;
 
 /**
  * A class to help with the DB transaction for storing Application Info. {@link AppInfoHelper} acts
- * as a layer b/w the application_igenfo_table stored in the DB and helps perform insert and read
+ * as a layer b/w the application_info_table stored in the DB and helps perform insert and read
  * operations on the table
  *
  * @hide
@@ -769,6 +769,23 @@ public final class AppInfoHelper extends DatabaseHelper {
                         DEVICE_INFO_ID_COLUMN_NAME,
                         DeviceInfoHelper.TABLE_NAME,
                         RecordHelper.PRIMARY_COLUMN_NAME);
+    }
+
+    /**
+     * Generates an app info for a device with {@code syntheticPackageName} used by DDP APIs and
+     * inserts it into the db.
+     */
+    public synchronized void insertDeviceDataSourceIfNotPresent(
+            String syntheticPackageName, long deviceInfoId) {
+        AppInfoInternal appInfo =
+                new AppInfoInternal(
+                        DEFAULT_LONG,
+                        syntheticPackageName,
+                        /* name= */ null,
+                        /* icon= */ null,
+                        /* recordTypesUsed= */ null,
+                        deviceInfoId);
+        insertIfNotPresent(syntheticPackageName, appInfo);
     }
 
     /**
