@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.tests.permissions.request
 
 import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissions.READ_DISTANCE
+import android.health.connect.HealthPermissions.READ_MINDFULNESS
 import android.health.connect.HealthPermissions.READ_SLEEP
 import android.health.connect.HealthPermissions.READ_STEPS
 import android.health.connect.HealthPermissions.WRITE_HEART_RATE
@@ -32,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -65,6 +67,7 @@ import com.android.healthconnect.controller.tests.utils.clickOnRecyclerViewItemW
 import com.android.healthconnect.controller.tests.utils.clickSwitchOnRecyclerViewItemWithText
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.scrollToText
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
@@ -79,6 +82,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import java.util.Locale
+import kotlin.collections.listOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.After
 import org.junit.Before
@@ -885,13 +889,19 @@ class FitnessPermissionsFragmentTest {
                     historyGranted = false,
                     hasMedical = false,
                     appMetadata = appMetadata,
-                    fitnessPermissions = fitnessReadWritePermissions,
+                    fitnessPermissions =
+                        listOf(
+                            fromPermissionString(READ_STEPS),
+                            fromPermissionString(READ_MINDFULNESS),
+                            fromPermissionString(WRITE_HEART_RATE),
+                            fromPermissionString(WRITE_HYDRATION),
+                        ),
                 )
             )
         }
         launchFragment<FitnessPermissionsFragment>(Bundle()).use { scenario ->
             // Sorted order is Activity, Sleep for read.
-            // So Activity (1) should be expanded.
+            // So Activity should be expanded.
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(
                     RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -913,18 +923,18 @@ class FitnessPermissionsFragmentTest {
             }
             assertThat(expandablePreference.mIsExpanded).isTrue()
 
-            // Now expand Sleep category
-            clickOnRecyclerViewItemWithText("Sleep (1)")
+            // Now expand Wellness category
+            clickOnRecyclerViewItemWithText("Wellness")
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(
                     RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                        hasDescendant(withText("Sleep"))
+                        hasDescendant(withText("Mindfulness"))
                     )
                 )
-            onView(withText("Sleep")).check(matches(isDisplayed()))
+            onView(withText("Mindfulness")).check(matches(isDisplayed()))
 
             // Now expand Vitals category (write permissions)
-            clickOnRecyclerViewItemWithText("Vitals (1)")
+            clickOnRecyclerViewItemWithText("Vitals")
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(
                     RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -934,7 +944,7 @@ class FitnessPermissionsFragmentTest {
             onView(withText("Heart rate")).check(matches(isDisplayed()))
 
             // Now expand Nutrition category
-            clickOnRecyclerViewItemWithText("Nutrition (1)")
+            clickOnRecyclerViewItemWithText("Nutrition")
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(
                     RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -948,7 +958,7 @@ class FitnessPermissionsFragmentTest {
     @Test
     @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun togglePermissionInCategory_updatesViewModel_whenFlagEnabled() {
-        val sleepPermission = fromPermissionString(READ_SLEEP)
+        val stepsPermission = fromPermissionString(READ_STEPS)
         whenever(viewModel.fitnessScreenState).then {
             MutableLiveData(
                 FitnessScreenState.ShowFitnessReadWrite(
@@ -959,20 +969,123 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        // Expand Sleep category to see "Sleep" permission
+        // Expand Activity category to see "Steps" permission
         whenever(viewModel.expandedDataCategoryPreferenceKeys).then {
             MutableLiveData(
                 setOf(
-                    PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.SLEEP)
+                    PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
                         .toString()
                 )
             )
         }
 
         launchFragment<FitnessPermissionsFragment>(Bundle()).use {
-            clickOnRecyclerViewItemWithText("Sleep")
+            clickOnRecyclerViewItemWithText("Steps")
 
-            verify(viewModel).updateHealthPermission(sleepPermission, true)
+            verify(viewModel).updateHealthPermission(stepsPermission, true)
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
+    fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_partialPermissionsGranted() {
+        val stepsPermission = fromPermissionString(READ_STEPS)
+        val distancePermission = fromPermissionString(READ_DISTANCE)
+        whenever(viewModel.fitnessScreenState).then {
+            MutableLiveData(
+                FitnessScreenState.ShowFitnessReadWrite(
+                    historyGranted = false,
+                    hasMedical = false,
+                    appMetadata = appMetadata,
+                    fitnessPermissions = listOf(stepsPermission, distancePermission),
+                )
+            )
+        }
+
+        whenever(viewModel.expandedDataCategoryPreferenceKeys).then {
+            MutableLiveData(
+                setOf(
+                    PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
+                        .toString()
+                )
+            )
+        }
+
+        whenever(viewModel.grantedFitnessPermissions).then {
+            MutableLiveData(setOf(stepsPermission))
+        }
+
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
+            scrollToText("1 of 2 selected")
+            onView(withText("1 of 2 selected")).check(matches(isDisplayed()))
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
+    fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_allPermissionsGranted() {
+        val stepsPermission = fromPermissionString(READ_STEPS)
+        val distancePermission = fromPermissionString(READ_DISTANCE)
+        whenever(viewModel.fitnessScreenState).then {
+            MutableLiveData(
+                FitnessScreenState.ShowFitnessReadWrite(
+                    historyGranted = false,
+                    hasMedical = false,
+                    appMetadata = appMetadata,
+                    fitnessPermissions = listOf(stepsPermission, distancePermission),
+                )
+            )
+        }
+
+        whenever(viewModel.expandedDataCategoryPreferenceKeys).then {
+            MutableLiveData(
+                setOf(
+                    PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
+                        .toString()
+                )
+            )
+        }
+
+        whenever(viewModel.grantedFitnessPermissions).then {
+            MutableLiveData(setOf(stepsPermission, distancePermission))
+        }
+
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
+            scrollToText("2 of 2 selected")
+            onView(withText("2 of 2 selected")).check(matches(isDisplayed()))
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
+    fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_zeroPermissionsGranted() {
+        val stepsPermission = fromPermissionString(READ_STEPS)
+        val distancePermission = fromPermissionString(READ_DISTANCE)
+        whenever(viewModel.fitnessScreenState).then {
+            MutableLiveData(
+                FitnessScreenState.ShowFitnessReadWrite(
+                    historyGranted = false,
+                    hasMedical = false,
+                    appMetadata = appMetadata,
+                    fitnessPermissions = listOf(stepsPermission, distancePermission),
+                )
+            )
+        }
+
+        whenever(viewModel.expandedDataCategoryPreferenceKeys).then {
+            MutableLiveData(
+                setOf(
+                    PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
+                        .toString()
+                )
+            )
+        }
+
+        whenever(viewModel.grantedFitnessPermissions).then { MutableLiveData<Set<String>>() }
+
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
+            scrollToText("0 of 2 selected")
+            onView(withText("0 of 2 selected")).check(matches(isDisplayed()))
         }
     }
 
@@ -992,7 +1105,7 @@ class FitnessPermissionsFragmentTest {
         }
 
         launchFragment<FitnessPermissionsFragment>(Bundle()).use {
-            clickSwitchOnRecyclerViewItemWithText("Activity (1)")
+            clickSwitchOnRecyclerViewItemWithText("Activity")
 
             verify(viewModel).updateHealthPermissions(activityPermissions, true)
         }

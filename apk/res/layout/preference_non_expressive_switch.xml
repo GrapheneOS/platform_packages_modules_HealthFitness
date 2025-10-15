@@ -35,7 +35,7 @@
 
         <ImageView
             android:id="@+id/expand_arrow"
-            android:src="@drawable/ic_expand_more"
+            android:src="@drawable/ic_expand_more_24"
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size" />
 
@@ -46,8 +46,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/settingslib_listPreferredItemPaddingStart"
-        android:paddingTop="@dimen/settingslib_listPreferredItemPaddingStart">
+        android:paddingBottom="@dimen/vertical_padding_permission_grouping"
+        android:paddingTop="@dimen/vertical_padding_permission_grouping">
 
         <TextView
             android:id="@android:id/title"
@@ -57,6 +57,13 @@
             android:fadingEdge="horizontal"
             android:maxLines="2"
             android:textAppearance="?android:attr/textAppearanceListItem" />
+
+        <TextView
+            android:id="@android:id/summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textDirection="locale"
+            android:textAppearance="?attr/textAppearanceSummary"/>
 
     </LinearLayout>
 

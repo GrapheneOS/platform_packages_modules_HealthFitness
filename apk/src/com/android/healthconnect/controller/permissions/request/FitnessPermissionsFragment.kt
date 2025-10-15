@@ -15,7 +15,6 @@
  */
 package com.android.healthconnect.controller.permissions.request
 
-import android.icu.number.NumberFormatter
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -365,7 +364,12 @@ class FitnessPermissionsFragment : Hilt_FitnessPermissionsFragment() {
         permissionsForCategory: List<FitnessPermission>,
     ): HealthToggleExpandablePreference {
         return HealthToggleExpandablePreference(requireContext()).apply {
-            title = getExpandablePreferenceTitle(dataCategory, permissionsForCategory.size)
+            title = getExpandablePreferenceTitle(dataCategory)
+            summary =
+                getExpandablePreferenceSummary(
+                    permissionsForCategory,
+                    viewModel.grantedFitnessPermissions.value,
+                )
             key = preferenceKey.toString()
             setExpanded(
                 viewModel.expandedDataCategoryPreferenceKeys.value?.contains(
@@ -377,6 +381,11 @@ class FitnessPermissionsFragment : Hilt_FitnessPermissionsFragment() {
             }
             viewModel.grantedFitnessPermissions.observe(viewLifecycleOwner) { grantedPermissions ->
                 isChecked = grantedPermissions.containsAll(permissionsForCategory)
+                summary =
+                    getExpandablePreferenceSummary(
+                        permissionsForCategory,
+                        viewModel.grantedFitnessPermissions.value,
+                    )
             }
             setOnSwitchChangeListener { isChecked ->
                 viewModel.updateHealthPermissions(permissionsForCategory, isChecked)
@@ -384,15 +393,30 @@ class FitnessPermissionsFragment : Hilt_FitnessPermissionsFragment() {
         }
     }
 
-    private fun getExpandablePreferenceTitle(dataCategory: Int, permissionsCount: Int): String {
+    private fun getExpandablePreferenceTitle(dataCategory: Int): String {
         return requireContext()
             .getString(
                 R.string.health_data_category_expandable_preference_title,
                 getString(dataCategory.uppercaseTitle()),
-                NumberFormatter.with()
-                    .locale(requireContext().resources.configuration.locale)
-                    .format(permissionsCount)
-                    .toString(),
+            )
+    }
+
+    private fun getExpandablePreferenceSummary(
+        permissionsRequestedForCategory: List<FitnessPermission>,
+        allPermissionsGranted: Set<FitnessPermission>?,
+    ): String {
+        // TODO(b/461857819): Move this logic to the view model.
+        val numberOfPermissionsGrantedForCategory =
+            if (allPermissionsGranted.isNullOrEmpty()) {
+                0
+            } else {
+                allPermissionsGranted.intersect(permissionsRequestedForCategory).size
+            }
+        return requireContext()
+            .getString(
+                R.string.app_permissions_granted_summary,
+                numberOfPermissionsGrantedForCategory,
+                permissionsRequestedForCategory.size,
             )
     }
 

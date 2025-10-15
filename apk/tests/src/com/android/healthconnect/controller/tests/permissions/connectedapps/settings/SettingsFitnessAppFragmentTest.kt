@@ -21,6 +21,7 @@ import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissions.READ_DISTANCE
 import android.health.connect.HealthPermissions.READ_STEPS
 import android.os.Bundle
+import android.platform.test.annotations.EnableFlags
 import android.platform.test.annotations.RequiresFlagsDisabled
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
@@ -75,6 +76,7 @@ import com.android.healthconnect.controller.tests.utils.clickOnRecyclerViewItemW
 import com.android.healthconnect.controller.tests.utils.clickSwitchOnRecyclerViewItemWithText
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.scrollToBottomOfPreferenceScreen
+import com.android.healthconnect.controller.tests.utils.scrollToText
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
@@ -807,7 +809,7 @@ class SettingsFitnessAppFragmentTest {
 
     @Test
     @RequiresFlagsEnabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
-    fun displaysGroupedPermissions_firstIsGroupExpanded_whenFlagEnabled() {
+    fun displaysGroupedPermissions_whenFlagEnabled() {
         val writePermission = FitnessPermission(HYDRATION, WRITE)
         val readPermission = FitnessPermission(STEPS, READ)
         whenever(viewModel.fitnessPermissions).then {
@@ -820,8 +822,7 @@ class SettingsFitnessAppFragmentTest {
                 }
             )
             .use { scenario ->
-                // Sorted order is Activity, Sleep for read.
-                // So Activity (1) should be expanded.
+                // Activity category was marked expanded in the test Setup
                 onView(withId(androidx.preference.R.id.recycler_view))
                     .perform(
                         RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -843,7 +844,7 @@ class SettingsFitnessAppFragmentTest {
                 assertThat(expandablePreference.mIsExpanded).isTrue()
 
                 // Now expand Nutrition category (write permissions)
-                clickOnRecyclerViewItemWithText("Nutrition (1)")
+                clickOnRecyclerViewItemWithText("Nutrition")
                 onView(withId(androidx.preference.R.id.recycler_view))
                     .perform(
                         RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -895,10 +896,95 @@ class SettingsFitnessAppFragmentTest {
                 }
             )
             .use {
-                clickSwitchOnRecyclerViewItemWithText("Activity (1)")
+                clickSwitchOnRecyclerViewItemWithText("Activity")
 
                 verify(viewModel)
                     .updatePermissions(TEST_APP_PACKAGE_NAME, listOf(stepsPermission), grant = true)
+            }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_SETTINGS_FITNESS_APP_SCREEN)
+    fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_partialPermissionsGranted() {
+        val stepsPermission = fromPermissionString(READ_STEPS)
+        val distancePermission = fromPermissionString(READ_DISTANCE)
+        whenever(viewModel.fitnessPermissions).then {
+            MutableLiveData(listOf(stepsPermission, distancePermission))
+        }
+
+        whenever(viewModel.expandedDataCategoryPreferenceKeys).then {
+            MutableLiveData(setOf(PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString()))
+        }
+
+        whenever(viewModel.grantedFitnessPermissions).then {
+            MutableLiveData(setOf(stepsPermission))
+        }
+
+        launchFragment<SettingsFitnessAppFragment>(
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
+            )
+            .use {
+                scrollToText("1 of 2 selected")
+                onView(withText("1 of 2 selected")).check(matches(isDisplayed()))
+            }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_SETTINGS_FITNESS_APP_SCREEN)
+    fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_allPermissionsGranted() {
+        val stepsPermission = fromPermissionString(READ_STEPS)
+        val distancePermission = fromPermissionString(READ_DISTANCE)
+        whenever(viewModel.fitnessPermissions).then {
+            MutableLiveData(listOf(stepsPermission, distancePermission))
+        }
+
+        whenever(viewModel.expandedDataCategoryPreferenceKeys).then {
+            MutableLiveData(setOf(PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString()))
+        }
+
+        whenever(viewModel.grantedFitnessPermissions).then {
+            MutableLiveData(setOf(stepsPermission, distancePermission))
+        }
+
+        launchFragment<SettingsFitnessAppFragment>(
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
+            )
+            .use {
+                scrollToText("2 of 2 selected")
+                onView(withText("2 of 2 selected")).check(matches(isDisplayed()))
+            }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_SETTINGS_FITNESS_APP_SCREEN)
+    fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_zeroPermissionsGranted() {
+        val stepsPermission = fromPermissionString(READ_STEPS)
+        val distancePermission = fromPermissionString(READ_DISTANCE)
+        whenever(viewModel.fitnessPermissions).then {
+            MutableLiveData(listOf(stepsPermission, distancePermission))
+        }
+
+        whenever(viewModel.expandedDataCategoryPreferenceKeys).then {
+            MutableLiveData(setOf(PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString()))
+        }
+
+        whenever(viewModel.grantedFitnessPermissions).then { MutableLiveData<Set<String>>() }
+
+        launchFragment<SettingsFitnessAppFragment>(
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
+            )
+            .use {
+                scrollToText("0 of 2 selected")
+                onView(withText("0 of 2 selected")).check(matches(isDisplayed()))
             }
     }
 
