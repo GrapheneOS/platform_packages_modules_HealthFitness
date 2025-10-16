@@ -34,10 +34,11 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
 import androidx.test.espresso.matcher.ViewMatchers.Visibility.GONE
 import androidx.test.espresso.matcher.ViewMatchers.Visibility.VISIBLE
-import androidx.test.espresso.matcher.ViewMatchers.isChecked
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -54,7 +55,6 @@ import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.preference.HealthExpandablePreference
-import com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
 import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.CALLING_APP_NAME
 import com.android.healthconnect.controller.tests.utils.CALLING_PACKAGE_NAME
@@ -65,6 +65,10 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.MatchmakingElement
+import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.logging.PermissionsElement
+import com.android.healthconnect.controller.utils.logging.UIAction
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
@@ -72,13 +76,17 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import org.hamcrest.core.IsNot.not
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
+import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -86,10 +94,10 @@ import org.mockito.kotlin.whenever
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class MatchmakingFragmentTest {
-
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @BindValue val viewModel: MatchmakingViewModel = mock<MatchmakingViewModel>()
+
     @BindValue val appInfoReader: AppInfoReader = mock<AppInfoReader>()
     @BindValue val healthPermissionReader: HealthPermissionReader = mock<HealthPermissionReader>()
     @BindValue val logger: HealthConnectLogger = mock<HealthConnectLogger>()
@@ -106,12 +114,19 @@ class MatchmakingFragmentTest {
 
     @Before
     fun setup() {
+        hiltRule.inject()
+
         whenever(viewModel.matchmakingState).thenReturn(matchmakingState)
         whenever(viewModel.expandedPreferenceKeys).thenReturn(expandedKeys)
         whenever(viewModel.atLeastOnePermissionGranted).thenReturn(atLeastOnePermissionGranted)
         whenever(viewModel.allPermissionsGranted).thenReturn(allPermissionsGranted)
         whenever(viewModel.grantedPermissions).thenReturn(grantedPermissions)
         whenever(deviceInfoUtils.isHealthConnectAvailable(any())).thenReturn(true)
+    }
+
+    @After
+    fun teardown() {
+        reset(logger)
     }
 
     @Test
@@ -185,11 +200,76 @@ class MatchmakingFragmentTest {
         onView(withId(androidx.preference.R.id.recycler_view))
             .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
         onView(withText(rationaleText)).check(matches(isDisplayed()))
+        verify(logger, atLeast(1)).setPageId(PageName.MATCHMAKING_PAGE)
+        verify(logger).logPageImpression()
+        verify(logger).logImpression(MatchmakingElement.MATCHMAKING_SCREEN_HEADER)
+        verify(logger).logImpression(MatchmakingElement.MATCHMAKING_SCREEN_HEADER_ICON_VIEW)
+        verify(logger).logImpression(PermissionsElement.ALLOW_ALL_SWITCH)
+        verify(logger, times(2)).logImpression(MatchmakingElement.MATCHMAKING_EXPANDABLE_PREFERENCE)
+        verify(logger, times(3)).logImpression(PermissionsElement.PERMISSION_SWITCH)
+        verify(logger).logImpression(MatchmakingElement.MATCHMAKING_SCREEN_FOOTER)
+        verify(logger).logImpression(MatchmakingElement.MATCHMAKING_SCREEN_FOOTER_LINK)
+        verify(logger).logImpression(PermissionsElement.ALLOW_PERMISSIONS_BUTTON)
+        verify(logger).logImpression(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
     }
 
     @Test
     @EnableFlags(Flags.FLAG_MATCHMAKING)
-    fun allowAllSwitch_whenChecked_addsAllPermissionToGrantedList() {
+    fun matchmakingFragment_allowAllToggleOn_updatesAllPermissions() {
+        val apps =
+            listOf(
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                    listOf(
+                        FitnessPermission(FitnessPermissionType.EXERCISE, READ),
+                        FitnessPermission(FitnessPermissionType.STEPS, READ),
+                    ),
+                ),
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME_2, TEST_APP_NAME_2, null),
+                    listOf(FitnessPermission(FitnessPermissionType.DISTANCE, READ)),
+                ),
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                apps,
+            )
+        )
+
+        val scenario =
+            ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+        scenario.onActivity { activity ->
+            val fragment = MatchmakingFragment()
+            activity.supportFragmentManager
+                .beginTransaction()
+                .add(android.R.id.content, fragment)
+                .commitNow()
+        }
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                    hasDescendant(withText("Allow all"))
+                )
+            )
+        onView(withText("Allow all")).perform(click())
+
+        verify(viewModel).addAllPermissionsToGrantedList()
+        verify(logger)
+            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_ON)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingFragment_allowAllToggleOff_updatesAllPermissions() {
         val apps =
             listOf(
                 MatchmakingAppData(
@@ -211,6 +291,7 @@ class MatchmakingFragmentTest {
             )
         )
         allPermissionsGranted.postValue(true)
+
         val scenario =
             ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
@@ -226,14 +307,24 @@ class MatchmakingFragmentTest {
                 .beginTransaction()
                 .add(android.R.id.content, fragment)
                 .commitNow()
-            val switch = fragment.findPreference<HealthMainSwitchPreference>("allow_all_preference")
-            assertThat(switch?.isChecked).isTrue()
         }
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                    hasDescendant(withText("Allow all"))
+                )
+            )
+        onView(withText("Allow all")).perform(click())
+
+        verify(viewModel).removeAllPermissionsFromGrantedList()
+        verify(logger)
+            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_OFF)
     }
 
     @Test
     @EnableFlags(Flags.FLAG_MATCHMAKING)
-    fun allowAllSwitch_isNotChecked_whenAllPermissionsNotGranted() {
+    fun matchmakingFragment_allowPermissionsClicked_interactionIsLogged() {
         val apps =
             listOf(
                 MatchmakingAppData(
@@ -254,7 +345,8 @@ class MatchmakingFragmentTest {
                 apps,
             )
         )
-        allPermissionsGranted.postValue(false)
+        atLeastOnePermissionGranted.postValue(true)
+
         val scenario =
             ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
@@ -270,9 +362,64 @@ class MatchmakingFragmentTest {
                 .beginTransaction()
                 .add(android.R.id.content, fragment)
                 .commitNow()
-            val switch = fragment.findPreference<HealthMainSwitchPreference>("allow_all_preference")
-            assertThat(switch?.isChecked).isFalse()
         }
+
+        onView(withText("Data from $TEST_APP_NAME")).perform(scrollTo()).perform(click())
+        onView(withText("Exercise")).perform(scrollTo()).perform(click())
+        onView(withText("Allow")).perform(click())
+
+        verify(viewModel).grantPermissions()
+        verify(logger).logInteraction(MatchmakingElement.MATCHMAKING_EXPANDABLE_PREFERENCE)
+        verify(logger)
+            .logInteraction(PermissionsElement.PERMISSION_SWITCH, UIAction.ACTION_TOGGLE_ON)
+        verify(logger).logInteraction(PermissionsElement.ALLOW_PERMISSIONS_BUTTON)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingFragment_cancelPermissionsClicked_interactionIsLogged() {
+        val apps =
+            listOf(
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                    listOf(
+                        FitnessPermission(FitnessPermissionType.EXERCISE, READ),
+                        FitnessPermission(FitnessPermissionType.STEPS, READ),
+                    ),
+                ),
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME_2, TEST_APP_NAME_2, null),
+                    listOf(FitnessPermission(FitnessPermissionType.DISTANCE, READ)),
+                ),
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                apps,
+            )
+        )
+
+        val scenario =
+            ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+        scenario.onActivity { activity ->
+            val fragment = MatchmakingFragment()
+            activity.supportFragmentManager
+                .beginTransaction()
+                .add(android.R.id.content, fragment)
+                .commitNow()
+        }
+
+        onView(withText("Don\'t allow")).perform(click())
+
+        verify(viewModel).removeAllPermissionsFromGrantedList()
+        verify(logger).logInteraction(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
     }
 
     @Test

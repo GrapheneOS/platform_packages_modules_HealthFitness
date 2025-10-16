@@ -49,6 +49,8 @@ import com.android.healthconnect.controller.shared.preference.HealthSwitchPrefer
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.increaseViewTouchTargetSize
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.MatchmakingElement
+import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import com.android.healthconnect.controller.utils.pref
 import com.android.settingslib.widget.FooterPreference
@@ -84,6 +86,10 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     @Inject lateinit var logger: HealthConnectLogger
 
     private val customStyledPrefs = mutableListOf<Preference>()
+
+    init {
+        this.setPageName(PageName.MATCHMAKING_PAGE)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -138,6 +144,8 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.matchmaking_fragment, rootKey)
 
+        allowAllPreference.logNameActive = PermissionsElement.ALLOW_ALL_SWITCH
+        allowAllPreference.logNameInactive = PermissionsElement.ALLOW_ALL_SWITCH
         val packageName = activity?.callingPackage
         val recordTypeNames = activity?.intent?.getStringArrayExtra(EXTRA_RECORD_TYPES)
 
@@ -172,6 +180,8 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
         if (matchingApps.isEmpty()) {
             header.isIconViewVisible = false
         }
+        logger.logImpression(MatchmakingElement.MATCHMAKING_SCREEN_HEADER)
+        logger.logImpression(MatchmakingElement.MATCHMAKING_SCREEN_HEADER_ICON_VIEW)
         header.headerTitle = getString(R.string.matchmaking_screen_title)
         header.headerSummary =
             getString(R.string.matchmaking_screen_summary, callingAppMetaData.appName)
@@ -208,6 +218,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                 )
             icon = appData.metadata.icon
             key = appData.metadata.packageName
+            logName = MatchmakingElement.MATCHMAKING_EXPANDABLE_PREFERENCE
             setExpanded(isInitiallyExpanded(appData, appListSize))
             setOnExpandChangeListener { isExpanded ->
                 viewModel.updateExpandedPreferenceKey(key, isExpanded)
@@ -282,9 +293,12 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     }
 
     private fun bindFooter() {
+        logger.logImpression(MatchmakingElement.MATCHMAKING_SCREEN_FOOTER)
         footerPref.summary = getString(R.string.matchmaking_screen_footer)
         footerPref.setLearnMoreText(getString(R.string.more_about_health_connect))
+        logger.logImpression(MatchmakingElement.MATCHMAKING_SCREEN_FOOTER_LINK)
         footerPref.setLearnMoreAction {
+            logger.logInteraction(MatchmakingElement.MATCHMAKING_SCREEN_FOOTER_LINK)
             deviceInfoUtils.openHealthFitnessPermissionsLearnMoreLink(requireActivity())
         }
     }
@@ -315,24 +329,49 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     }
 
     private fun setupAllowAll() {
-        viewModel.allPermissionsGranted.observe(viewLifecycleOwner) { allGranted ->
-            allowAllPreference.isChecked = allGranted
-        }
-
-        allowAllPreference.setOnPreferenceChangeListener { _, newValue ->
-            if (newValue as Boolean) {
-                viewModel.addAllPermissionsToGrantedList()
-            } else {
-                viewModel.removeAllPermissionsFromGrantedList()
-            }
+        val onChecked = suspend {
+            toggleAllMatchmakingPermissions(true)
             true
         }
+        val onUnchecked = suspend {
+            toggleAllMatchmakingPermissions(false)
+            true
+        }
+
+        allowAllPreference.setUpStateManagement(
+            viewLifecycleOwner,
+            viewModel.allPermissionsGranted,
+            onChecked,
+            onUnchecked,
+        )
+    }
+
+    private fun toggleAllMatchmakingPermissions(isChecked: Boolean) {
+        matchmakingAppsCategory.children.forEach { preference ->
+            if (preference is HealthExpandablePreference) {
+                preference.children.forEach { child ->
+                    if (child is HealthSwitchPreference) {
+                        child.isChecked = isChecked
+                    }
+                }
+            }
+        }
+        if (isChecked) {
+            viewModel.addAllPermissionsToGrantedList()
+        } else {
+            viewModel.removeAllPermissionsFromGrantedList()
+        }
+        // Notify the adapter that the data has changed to force a redraw of the visible items.
+        // This is crucial because PreferenceFragmentCompat uses a RecyclerView.
+        (listView.adapter as? PreferenceGroupAdapter)?.notifyDataSetChanged()
     }
 
     private fun setupActionButtons(view: View) {
         val allowButton = view.findViewById<Button>(R.id.primary_button_outline)
         val allowButtonFull = view.findViewById<Button>(R.id.primary_button_full)
         val dontAllowButton = view.findViewById<Button>(R.id.secondary_button)
+        logger.logImpression(PermissionsElement.ALLOW_PERMISSIONS_BUTTON)
+        logger.logImpression(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
 
         allowButtonFull.visibility = View.GONE
         allowButton.visibility = View.VISIBLE
@@ -347,12 +386,14 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
         increaseViewTouchTargetSize(requireContext(), dontAllowButton, dontAllowParentView)
 
         allowButton.setOnClickListener {
+            logger.logInteraction(PermissionsElement.ALLOW_PERMISSIONS_BUTTON)
             viewModel.grantPermissions()
             activity?.setResult(RESULT_OK)
             activity?.finish()
         }
 
         dontAllowButton.setOnClickListener {
+            logger.logInteraction(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
             viewModel.recordMatchmakingDenial()
             viewModel.removeAllPermissionsFromGrantedList()
             activity?.setResult(RESULT_CANCELED)
