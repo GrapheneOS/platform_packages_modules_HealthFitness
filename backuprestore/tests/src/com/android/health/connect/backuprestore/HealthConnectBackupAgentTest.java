@@ -19,6 +19,8 @@ package com.android.health.connect.backuprestore;
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -50,7 +52,9 @@ import org.mockito.MockitoAnnotations;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -78,6 +82,16 @@ public class HealthConnectBackupAgentTest {
         MockitoAnnotations.initMocks(this);
         mContext = InstrumentationRegistry.getInstrumentation().getContext();
         mBackupDataDirectory = mContext.getDir("mock_data", Context.MODE_PRIVATE);
+
+        // Clean up directory before each test to ensure test isolation
+        if (mBackupDataDirectory.exists()) {
+            File[] files = mBackupDataDirectory.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    file.delete();
+                }
+            }
+        }
 
         mHealthConnectBackupAgent = new TestableHealthConnectBackupAgent();
         mHealthConnectBackupAgent.onCreate();
@@ -178,6 +192,45 @@ public class HealthConnectBackupAgentTest {
     }
 
     @Test
+    public void onFullBackup_withExistingFile_truncatesFileBeforeBackup() throws IOException {
+        // Purpose: Verifies that if a backup file already exists, it's truncated before writing
+        // new backup data. This tests the flags used in openFileForWritingTruncateMode.
+        String fileName = "testFile.txt";
+        File testFile = new File(mBackupDataDirectory, fileName);
+        String oldData = "OLD_DATA";
+        String newData = "NEW_DATA";
+
+        // Setup: Create a file with old data in the backup directory.
+        try (FileWriter writer = new FileWriter(testFile)) {
+            writer.write(oldData);
+        }
+        assertThat(testFile.length()).isEqualTo(oldData.length());
+
+        // Setup: Mock HealthConnectManager to return our test file name.
+        when(mHealthConnectManager.getAllBackupFileNames(anyBoolean()))
+                .thenReturn(Set.of(fileName));
+
+        // Setup: When HealthConnectManager is asked to write data, write "NEW_DATA".
+        doAnswer(
+                        invocation -> {
+                            Map<String, ParcelFileDescriptor> pfds = invocation.getArgument(0);
+                            try (ParcelFileDescriptor pfd = pfds.get(fileName);
+                                    FileWriter writer = new FileWriter(pfd.getFileDescriptor())) {
+                                writer.write(newData);
+                            }
+                            return null;
+                        })
+                .when(mHealthConnectManager)
+                .getAllDataForBackup(any());
+
+        // Action: Run the full backup.
+        mHealthConnectBackupAgent.onFullBackup(mFullBackupDataOutput);
+
+        // Assertion: Check that the file content read during backupFile was the new data.
+        assertThat(mHealthConnectBackupAgent.getBackedUpFileContent(fileName)).isEqualTo(newData);
+    }
+
+    @Test
     public void testOnRestore_doesNotStageAnything() throws IOException {
         createAndGetNonEmptyFile(mHealthConnectBackupAgent.getBackupDataDir(), "testFile1");
         createAndGetNonEmptyFile(mHealthConnectBackupAgent.getBackupDataDir(), "testFile2");
@@ -203,6 +256,7 @@ public class HealthConnectBackupAgentTest {
     /** A testable {@link HealthConnectBackupAgent} */
     public class TestableHealthConnectBackupAgent extends HealthConnectBackupAgent {
         List<File> mBackedUpFiles = new ArrayList<>();
+        Map<String, String> mBackedUpFileContents = new HashMap<>();
 
         @Override
         public Context getBaseContext() {
@@ -222,6 +276,17 @@ public class HealthConnectBackupAgentTest {
         @Override
         void backupFile(File file, FullBackupDataOutput data) {
             mBackedUpFiles.add(file);
+            // Read file content during backup for verification
+            try {
+                mBackedUpFileContents.put(
+                        file.getName(), new String(Files.readAllBytes(file.toPath())));
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to read backup file for test verification", e);
+            }
+        }
+
+        public String getBackedUpFileContent(String fileName) {
+            return mBackedUpFileContents.get(fileName);
         }
     }
 }
