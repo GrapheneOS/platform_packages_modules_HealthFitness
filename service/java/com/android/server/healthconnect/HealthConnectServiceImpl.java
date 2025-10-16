@@ -339,7 +339,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final HealthFitnessStatsLog mStatsLog;
     @Nullable private final MatchmakingManager mMatchmakingManager;
 
-    private final SyntheticPackageNameResolver mSyntheticPackageNameResolver;
+    @Nullable private final SyntheticPackageNameResolver mSyntheticPackageNameResolver;
 
     private volatile UserHandle mCurrentForegroundUser;
 
@@ -388,7 +388,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @Nullable CloudBackupManager cloudBackupManager,
             @Nullable CloudRestoreManager cloudRestoreManager,
             @Nullable MatchmakingManager matchmakingManager,
-            SyntheticPackageNameResolver syntheticPackageNameResolver) {
+            @Nullable SyntheticPackageNameResolver syntheticPackageNameResolver) {
         mContext = context;
         mCurrentForegroundUser = context.getUser();
         mTimeSource = timeSource;
@@ -3817,19 +3817,22 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     private Function<String, String> getMaskingFunction(String callingPackageName) {
-        if (!Flags.deviceDataProvidersApi()) {
-            return (packageName) -> packageName;
-        }
+        return (packageName) -> {
+            if (!Flags.deviceDataProvidersApi() || mSyntheticPackageNameResolver == null) {
+                return packageName;
+            }
 
-        return (packageName) -> mSyntheticPackageNameResolver.mask(packageName, callingPackageName);
+            return mSyntheticPackageNameResolver.mask(packageName, callingPackageName);
+        };
     }
 
     private Function<String, String> getUnmaskingFunction(String callingPackageName) {
-        if (!Flags.deviceDataProvidersApi()) {
-            return (packageName) -> packageName;
-        }
+        return (packageName) -> {
+            if (!Flags.deviceDataProvidersApi() || mSyntheticPackageNameResolver == null) {
+                return packageName;
+            }
 
-        return (packageName) ->
-                mSyntheticPackageNameResolver.unmask(packageName, callingPackageName);
+            return mSyntheticPackageNameResolver.unmask(packageName, callingPackageName);
+        };
     }
 }
