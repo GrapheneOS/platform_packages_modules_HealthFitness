@@ -19,6 +19,8 @@ package android.health.connect.aidl;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.internal.PackageNameMasker;
+import android.health.connect.internal.PackageNameUnmasker;
 import android.health.connect.internal.ParcelUtils;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.ParcelRecordConverter;
@@ -28,6 +30,7 @@ import android.os.Parcelable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * A wrapper to carry a list of entries of type {@link RecordInternal} from and to {@link
@@ -35,7 +38,10 @@ import java.util.List;
  *
  * @hide
  */
-public class RecordsParcel implements Parcelable {
+public class RecordsParcel
+        implements Parcelable,
+                PackageNameMasker<RecordsParcel>,
+                PackageNameUnmasker<RecordsParcel> {
     @NonNull
     public static final Creator<RecordsParcel> CREATOR =
             new Creator<>() {
@@ -58,6 +64,15 @@ public class RecordsParcel implements Parcelable {
         mRecordInternals = recordInternals;
     }
 
+    private RecordsParcel(
+            @NonNull List<RecordInternal<?>> recordInternals,
+            long recordsChunkSize,
+            @Nullable List<Long> recordsSize) {
+        mRecordInternals = recordInternals;
+        mRecordsChunkSize = recordsChunkSize;
+        mRecordsSize = recordsSize;
+    }
+
     private RecordsParcel(@NonNull Parcel in) {
         in = ParcelUtils.getParcelForSharedMemoryIfRequired(in);
         int size = in.readInt();
@@ -73,9 +88,9 @@ public class RecordsParcel implements Parcelable {
                 mRecordsSize.add(remainingParcelSize - in.dataAvail());
                 remainingParcelSize = in.dataAvail();
             } catch (InstantiationException
-                     | IllegalAccessException
-                     | NoSuchMethodException
-                     | InvocationTargetException e) {
+                    | IllegalAccessException
+                    | NoSuchMethodException
+                    | InvocationTargetException e) {
                 throw new IllegalArgumentException();
             }
         }
@@ -117,5 +132,27 @@ public class RecordsParcel implements Parcelable {
             dest.writeInt(recordInternal.getRecordType());
             recordInternal.writeToParcel(dest);
         }
+    }
+
+    @NonNull
+    @Override
+    public RecordsParcel toMasked(Function<String, String> packageMasker) {
+        return new RecordsParcel(
+                this.mRecordInternals.stream()
+                        .<RecordInternal<?>>map(record -> record.toMasked(packageMasker))
+                        .toList(),
+                this.mRecordsChunkSize,
+                this.mRecordsSize);
+    }
+
+    @NonNull
+    @Override
+    public RecordsParcel toUnmasked(Function<String, String> packageUnmasker) {
+        return new RecordsParcel(
+                this.mRecordInternals.stream()
+                        .<RecordInternal<?>>map(record -> record.toUnmasked(packageUnmasker))
+                        .toList(),
+                this.mRecordsChunkSize,
+                this.mRecordsSize);
     }
 }

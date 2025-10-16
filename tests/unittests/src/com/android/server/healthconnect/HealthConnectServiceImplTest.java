@@ -512,7 +512,8 @@ public class HealthConnectServiceImplTest {
                         mTrackerManager,
                         healthConnectInjector.getCloudBackupManager(),
                         healthConnectInjector.getCloudRestoreManager(),
-                        healthConnectInjector.getMatchingAppsManager());
+                        healthConnectInjector.getMatchingAppsManager(),
+                        healthConnectInjector.getSyntheticPackageNameResolver());
         mBackupRestore = healthConnectInjector.getBackupRestore();
     }
 
