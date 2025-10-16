@@ -29,11 +29,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
+import android.health.connect.aidl.IDeviceDataSourceCapabilitiesCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetMatchingAppsCallback;
 import android.health.connect.aidl.IHealthConnectService;
@@ -42,6 +44,7 @@ import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
@@ -629,6 +632,88 @@ public class HealthConnectManagerTest {
 
         assertThat(receiver.assertAndGetException().getErrorCode())
                 .isEqualTo(HealthConnectException.ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    public void testGetDeviceDataSourceCapabilities_usesResultFromService() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<DeviceDataSourceCapabilities> receiver = new TestOutcomeReceiver<>();
+        ArgumentCaptor<IDeviceDataSourceCapabilitiesCallback> callbackCaptor =
+                ArgumentCaptor.forClass(IDeviceDataSourceCapabilitiesCallback.class);
+        doNothing().when(mService).getDeviceDataSourceCapabilities(any(), callbackCaptor.capture());
+        int stepsRecordType = RecordTypeIdentifier.RECORD_TYPE_STEPS;
+        int distanceRecordType = RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
+
+        healthConnectManager.getDeviceDataSourceCapabilities(
+                Executors.newSingleThreadExecutor(), receiver);
+        android.health.connect.aidl.DeviceDataSourceCapabilities result =
+                new android.health.connect.aidl.DeviceDataSourceCapabilities();
+        result.recordTypeIds = new int[] {stepsRecordType, distanceRecordType};
+        callbackCaptor.getValue().onResult(result);
+
+        assertThat(receiver.getResponse().getRecordTypes())
+                .containsExactly(StepsRecord.class, DistanceRecord.class);
+    }
+
+    @Test
+    public void testGetDeviceDataSourceCapabilities_emptyCapabilities_returnsEmptySet()
+            throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<DeviceDataSourceCapabilities> receiver = new TestOutcomeReceiver<>();
+        ArgumentCaptor<IDeviceDataSourceCapabilitiesCallback> callbackCaptor =
+                ArgumentCaptor.forClass(IDeviceDataSourceCapabilitiesCallback.class);
+        doNothing().when(mService).getDeviceDataSourceCapabilities(any(), callbackCaptor.capture());
+
+        healthConnectManager.getDeviceDataSourceCapabilities(
+                Executors.newSingleThreadExecutor(), receiver);
+        android.health.connect.aidl.DeviceDataSourceCapabilities result =
+                new android.health.connect.aidl.DeviceDataSourceCapabilities();
+        result.recordTypeIds = new int[0];
+        callbackCaptor.getValue().onResult(result);
+
+        assertThat(receiver.getResponse().getRecordTypes()).isEmpty();
+    }
+
+    @Test
+    public void testGetDeviceDataSourceCapabilities_invalidRecordType_omitsValue()
+            throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<DeviceDataSourceCapabilities> receiver = new TestOutcomeReceiver<>();
+        ArgumentCaptor<IDeviceDataSourceCapabilitiesCallback> callbackCaptor =
+                ArgumentCaptor.forClass(IDeviceDataSourceCapabilitiesCallback.class);
+        doNothing().when(mService).getDeviceDataSourceCapabilities(any(), callbackCaptor.capture());
+        int recordType = RecordTypeIdentifier.RECORD_TYPE_STEPS;
+
+        healthConnectManager.getDeviceDataSourceCapabilities(
+                Executors.newSingleThreadExecutor(), receiver);
+        android.health.connect.aidl.DeviceDataSourceCapabilities result =
+                new android.health.connect.aidl.DeviceDataSourceCapabilities();
+        result.recordTypeIds = new int[] {recordType, -1};
+        callbackCaptor.getValue().onResult(result);
+
+        assertThat(receiver.getResponse().getRecordTypes()).containsExactly(StepsRecord.class);
+    }
+
+    @Test
+    public void testGetDeviceDataSourceCapabilities_usesExceptionFromService() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<DeviceDataSourceCapabilities> receiver = new TestOutcomeReceiver<>();
+        ArgumentCaptor<IDeviceDataSourceCapabilitiesCallback> callbackCaptor =
+                ArgumentCaptor.forClass(IDeviceDataSourceCapabilitiesCallback.class);
+        doNothing().when(mService).getDeviceDataSourceCapabilities(any(), callbackCaptor.capture());
+        HealthConnectException exception =
+                new HealthConnectException(HealthConnectException.ERROR_UNSUPPORTED_OPERATION);
+
+        healthConnectManager.getDeviceDataSourceCapabilities(
+                Executors.newSingleThreadExecutor(), receiver);
+        callbackCaptor.getValue().onError(new HealthConnectExceptionParcel(exception));
+
+        assertThat(receiver.assertAndGetException().getErrorCode())
+                .isEqualTo(exception.getErrorCode());
     }
 
     @Test

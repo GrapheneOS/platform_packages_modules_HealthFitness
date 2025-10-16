@@ -147,11 +147,13 @@ import android.health.connect.MatchmakingResponse;
 import android.health.connect.MedicalResourceId;
 import android.health.connect.ReadMedicalResourcesInitialRequest;
 import android.health.connect.UpsertMedicalResourceRequest;
+import android.health.connect.aidl.DeviceDataSourceCapabilities;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
+import android.health.connect.aidl.IDeviceDataSourceCapabilitiesCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
@@ -224,6 +226,7 @@ import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.device.FakeSerialDeviceDataProviderManager;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -367,7 +370,8 @@ public class HealthConnectServiceImplTest {
                     "getHealthConnectOnboardingState",
                     "updateHealthConnectBackupAndRestoreSettings",
                     "updateHealthConnectRestoreStatus",
-                    "updateHealthConnectBackupStatus");
+                    "updateHealthConnectBackupStatus",
+                    "getDeviceDataSourceCapabilities");
 
     static final String ONBOARDING_STATE_PREFERENCE_KEY = "onboarding_state_";
     private static final String TEST_URI = "content://com.android.server.healthconnect/testuri";
@@ -424,6 +428,7 @@ public class HealthConnectServiceImplTest {
     @Mock private IChangeLogsResponseCallback mChangeLogsResponseCallback;
     @Mock private OnboardingStateManager mOnboardingStateManager;
     @Mock private MatchmakingManager mMatchmakingManager;
+    @Mock private DeviceDataSourcesHelper mDeviceDataSourcesHelper;
     @Captor ArgumentCaptor<HealthConnectExceptionParcel> mErrorCaptor;
     @Captor ArgumentCaptor<InsertRecordsResponseParcel> mInsertResultCaptor;
     @Captor private ArgumentCaptor<HealthConnectOnboardingState> mOnboardingStateCaptor;
@@ -565,6 +570,7 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getCloudRestoreManager(),
                         healthConnectInjector.getMatchingAppsManager(),
                         mSyntheticPackageNameResolver,
+                        mDeviceDataSourcesHelper,
                         mDeviceDataProviderManager);
     }
 
@@ -4299,6 +4305,72 @@ public class HealthConnectServiceImplTest {
                         maskedRuntimeId, mAttributionSource.getPackageName());
 
         assertEquals(mDeviceDataProviderManager.getStableCurrentDeviceId(), actualUnmaskedStableId);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void getDeviceDataSourceCapabilities_noAdvertisedData_returnsOnlySteps()
+            throws Exception {
+        IDeviceDataSourceCapabilitiesCallback.Stub callback =
+                mock(IDeviceDataSourceCapabilitiesCallback.Stub.class);
+        when(mDeviceDataSourcesHelper.getAllAdvertisedRecordTypes()).thenReturn(Set.of());
+
+        mHealthConnectService.getDeviceDataSourceCapabilities(mAttributionSource, callback);
+        awaitAllExecutorsIdle();
+
+        ArgumentCaptor<DeviceDataSourceCapabilities> captor =
+                ArgumentCaptor.forClass(DeviceDataSourceCapabilities.class);
+        verify(callback).onResult(captor.capture());
+        // Steps is always included because Health Connect can provide passive steps
+        assertThat(captor.getValue().recordTypeIds).asList().containsExactly(RECORD_TYPE_STEPS);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void getDeviceDataSourceCapabilities_withAdvertisedData_returnsCapabilities()
+            throws Exception {
+        IDeviceDataSourceCapabilitiesCallback.Stub callback =
+                mock(IDeviceDataSourceCapabilitiesCallback.Stub.class);
+
+        when(mDeviceDataSourcesHelper.getAllAdvertisedRecordTypes())
+                .thenReturn(Set.of(RECORD_TYPE_HEART_RATE, RECORD_TYPE_STEPS));
+
+        mHealthConnectService.getDeviceDataSourceCapabilities(mAttributionSource, callback);
+        awaitAllExecutorsIdle();
+
+        ArgumentCaptor<DeviceDataSourceCapabilities> captor =
+                ArgumentCaptor.forClass(DeviceDataSourceCapabilities.class);
+        verify(callback).onResult(captor.capture());
+        assertThat(captor.getValue().recordTypeIds)
+                .asList()
+                .containsExactly(RECORD_TYPE_STEPS, RECORD_TYPE_HEART_RATE);
+    }
+
+    @Test
+    @DisableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void getDeviceDataSourceCapabilities_flagDisabled_throwsUnsupportedOperation()
+            throws Exception {
+        IDeviceDataSourceCapabilitiesCallback.Stub callback =
+                mock(IDeviceDataSourceCapabilitiesCallback.Stub.class);
+
+        mHealthConnectService.getDeviceDataSourceCapabilities(mAttributionSource, callback);
+        awaitAllExecutorsIdle();
+
+        verify(callback).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
     }
 
     private void setUpCreateMedicalDataSourceDefaultMocks() {
