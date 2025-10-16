@@ -948,4 +948,13 @@ private val PERMISSION_TYPE_STRINGS: ImmutableMap<FitnessPermissionType, Fitness
                 R.string.wheezing_write_content_description,
             ),
         )
+        .put(
+            FitnessPermissionType.CYCLE_PHASES,
+            FitnessPermissionStrings(
+                R.string.cycle_phases_uppercase_label,
+                R.string.cycle_phases_lowercase_label,
+                R.string.cycle_phases_read_content_description,
+                R.string.cycle_phases_write_content_description,
+            ),
+        )
         .buildOrThrow()
