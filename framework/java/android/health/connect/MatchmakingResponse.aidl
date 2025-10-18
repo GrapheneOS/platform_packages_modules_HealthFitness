@@ -14,18 +14,7 @@
  * limitations under the License.
  */
 
-package android.health.connect.aidl;
+package android.health.connect;
 
-import android.health.connect.aidl.HealthConnectExceptionParcel;
-import android.health.connect.MatchmakingResponse;
-
-/**
- * Callback for {@link IHealthConnectService#isMatchmakingPossible}
- *
- * @hide
- */
-interface IIsMatchmakingPossibleCallback {
-    oneway void onResult(in MatchmakingResponse response);
-
-    oneway void onError(in HealthConnectExceptionParcel exception);
-}
+/** @hide */
+parcelable MatchmakingResponse;

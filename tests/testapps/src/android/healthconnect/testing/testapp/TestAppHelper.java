@@ -45,6 +45,8 @@ import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.GetMedicalDataSourcesRequest;
+import android.health.connect.MatchmakingRequest;
+import android.health.connect.MatchmakingResponse;
 import android.health.connect.MedicalResourceId;
 import android.health.connect.ReadMedicalResourcesRequest;
 import android.health.connect.ReadMedicalResourcesResponse;
@@ -67,7 +69,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Executors;
 
 final class TestAppHelper {
@@ -268,11 +269,10 @@ final class TestAppHelper {
 
     private static Bundle handleIsMatchmakingPossible(Context context, Bundle bundle)
             throws Exception {
-        Set<Class<? extends Record>> recordTypes =
-                BundleHelper.toIsMatchmakingPossibleQuery(bundle);
-        HealthConnectReceiver<Boolean> receiver = new HealthConnectReceiver<>();
+        MatchmakingRequest request = BundleHelper.toIsMatchmakingPossibleQuery(bundle);
+        HealthConnectReceiver<MatchmakingResponse> receiver = new HealthConnectReceiver<>();
         TestUtils.getHealthConnectManager(context)
-                .isMatchmakingPossible(recordTypes, Executors.newSingleThreadExecutor(), receiver);
+                .isMatchmakingPossible(request, Executors.newSingleThreadExecutor(), receiver);
         return BundleHelper.fromIsMatchmakingPossibleResponse(receiver.getResponse());
     }
 

@@ -41,6 +41,7 @@ import android.annotation.IntDef;
 import android.annotation.IntRange;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.annotation.PermissionManuallyEnforced;
 import android.annotation.RequiresPermission;
 import android.annotation.SdkConstant;
 import android.annotation.SystemApi;
@@ -454,7 +455,7 @@ public class HealthConnectManager {
      *
      * <p>Input: caller must provide a {@code String[]} extra {@link #EXTRA_RECORD_TYPES}.
      *
-     * @see #createMatchmakingIntent(Set)
+     * @see #createMatchmakingIntent(MatchmakingRequest)
      * @hide
      */
     @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
@@ -464,7 +465,7 @@ public class HealthConnectManager {
      * A string array of record type canonical class names to be used with {@link
      * #ACTION_MATCHMAKING}.
      *
-     * @see #createMatchmakingIntent(Set)
+     * @see #createMatchmakingIntent(MatchmakingRequest)
      * @hide
      */
     public static final String EXTRA_RECORD_TYPES = "android.health.connect.extra.RECORD_TYPES";
@@ -3295,45 +3296,49 @@ public class HealthConnectManager {
     }
 
     /**
-     * Checks if launching the intent returned by {@link #createMatchmakingIntent(Set)} with the
-     * same arguments will result in showing at least one matching application.
+     * Checks if launching the intent returned by {@link
+     * #createMatchmakingIntent(MatchmakingRequest)} with the same arguments will result in showing
+     * at least one matching data source.
      *
      * <ul>
      *   <li>Returns {@code true} if the flow launched by the {@link Intent} from {@link
-     *       #createMatchmakingIntent(Set)} would display at least one matching app, allowing the
-     *       user to take action.
+     *       #createMatchmakingIntent(MatchmakingRequest)} would display at least one matching data
+     *       source, allowing the user to take action.
      *   <li>Returns {@code false} if the launched flow would immediately return {@link
-     *       android.app.Activity#RESULT_CANCELED} because there are no relevant apps to show.
+     *       android.app.Activity#RESULT_CANCELED} because there are no relevant data sources to
+     *       show.
      * </ul>
      *
-     * @param recordTypes A non-null set of {@link Record} classes. See description at {@link
-     *     #createMatchmakingIntent(Set)}.
+     * @param request A non-null {@link MatchmakingRequest} that contains a set of {@link Record}
+     *     classes. See description at {@link #createMatchmakingIntent(MatchmakingRequest)}.
      * @param executor A non-null {@link Executor} on which the {@code callback} will be invoked.
      * @param callback A non-null {@link OutcomeReceiver} to receive the result. The {@code
      *     onResult} method will be called with a boolean indicating if there are matching writing
-     *     applications to show. The {@code onError} method will be called if an error occurs.
-     * @see #createMatchmakingIntent(Set)
+     *     data sources to show. The {@code onError} method will be called if an error occurs.
+     * @see #createMatchmakingIntent(MatchmakingRequest)
      */
     @FlaggedApi(FLAG_MATCHMAKING)
     public void isMatchmakingPossible(
-            @NonNull Set<Class<? extends Record>> recordTypes,
+            @NonNull MatchmakingRequest request,
             @NonNull @CallbackExecutor Executor executor,
-            @NonNull OutcomeReceiver<Boolean, HealthConnectException> callback) {
-        Objects.requireNonNull(recordTypes);
+            @NonNull OutcomeReceiver<MatchmakingResponse, HealthConnectException> callback) {
+        Objects.requireNonNull(request);
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
             mService.isMatchmakingPossible(
                     mContext.getAttributionSource(),
-                    new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build(),
+                    request,
                     new IIsMatchmakingPossibleCallback.Stub() {
                         @Override
-                        public void onResult(boolean hasMatchingApps) {
+                        @PermissionManuallyEnforced
+                        public void onResult(MatchmakingResponse response) {
                             Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(hasMatchingApps));
+                            executor.execute(() -> callback.onResult(response));
                         }
 
                         @Override
+                        @PermissionManuallyEnforced
                         public void onError(HealthConnectExceptionParcel exception) {
                             returnError(executor, exception, callback);
                         }
@@ -3347,16 +3352,17 @@ public class HealthConnectManager {
      * Creates an {@link Intent} to launch a Health Connect flow where users can:
      *
      * <ul>
-     *   <li><b>Discover compatible apps:</b> See other installed applications that have not yet
-     *       granted permissions to write some of the {@link Record} classes the calling app can
+     *   <li><b>Discover compatible data sources:</b> See other installed data sources that have not
+     *       yet granted permissions to write some of the {@link Record} classes the calling app can
      *       read.
-     *   <li><b>Grant missing permissions:</b> Easily grant these discovered applications the
+     *   <li><b>Grant missing permissions:</b> Easily grant these discovered data sources the
      *       necessary write permissions for health data record types that haven't been granted yet.
-     *       Only {@link Record} types the calling app is permitted to read are being considered.
+     *       Only {@link Record} types the calling package is permitted to read are being
+     *       considered.
      * </ul>
      *
      * This flow helps users connect new data sources to Health Connect, by matching record types
-     * readable by the calling app to appropriate writing apps.
+     * readable by the calling package to appropriate writing data sources.
      *
      * <p><b>How to launch this Intent</b>This intent must be launched using the {@link
      * androidx.activity.result.ActivityResultLauncher} with an appropriate contract (e.g., {@link
@@ -3373,78 +3379,76 @@ public class HealthConnectManager {
      *       closing the activity or by not granting any permissions. {@link
      *       android.app.Activity#RESULT_CANCELED} can also occur if the intent was launched in a
      *       discouraged way when no matching apps are available. This can be avoided by ensuring
-     *       {@link #isMatchmakingPossible(Set, Executor, OutcomeReceiver)} returns {@code true}
-     *       before launching the intent.
+     *       {@link #isMatchmakingPossible(MatchmakingRequest, Executor, OutcomeReceiver)} returns
+     *       {@code true} before launching the intent.
      * </ul>
      *
-     * <p>The launched flow will only show applications that have declared, but not yet been granted
+     * <p>The launched flow will only show packages that have declared, but not yet been granted
      * write permissions (that have not been denied by the user twice) for at least one of the
      * relevant {@code recordTypes}:
      *
      * <ul>
-     *   <li><b>If {@code recordTypes} is not empty:</b> The launched screen will focus on
-     *       applications capable of writing data for at least one of the specified health {@code
-     *       recordTypes}. The user can then grant write permissions to these discovered
-     *       applications specifically for these types. Record types the calling app does not have
+     *   <li><b>If {@code recordTypes} is not empty:</b> The launched screen will focus on data
+     *       sources capable of writing data for at least one of the specified health {@code
+     *       recordTypes}. The user can then grant write permissions to these discovered data
+     *       sources specifically for these types. Record types the calling app does not have
      *       permission to read are considered ignored.
      *   <li><b>If {@code recordTypes} is empty:</b> The system first determines all health data
-     *       record types for which the calling application has already been granted read
-     *       permission. The launched flow will then display applications capable of writing any of
-     *       these record types, where the user can grant write permissions for these types.
+     *       record types for which the calling package has already been granted read permission.
+     *       The launched flow will then display data sources capable of writing any of these record
+     *       types, where the user can grant write permissions for these types.
      * </ul>
      *
-     * @param recordTypes A non-null set of {@link Record} classes. If non-empty, the flow focuses
-     *     on these specific types. If empty, the flow focuses on types for which the calling app
-     *     has permission to read.
+     * @param request A {@link MatchmakingRequest} that contains a non-null set of {@link Record}
+     *     classes. If non-empty, the flow focuses on these specific types. If empty, the flow
+     *     focuses on types for which the calling package has permission to read.
      * @return An {@link Intent} configured to show the flow for discovering and managing write
      *     permissions for matching data origins. This intent must be launched using {@link
      *     android.app.Activity#startActivityForResult(Intent, int)}.
-     * @see #isMatchmakingPossible(Set, Executor, OutcomeReceiver)
+     * @see #isMatchmakingPossible(MatchmakingRequest, Executor, OutcomeReceiver)
      */
     @FlaggedApi(FLAG_MATCHMAKING)
     @NonNull
-    public Intent createMatchmakingIntent(@NonNull Set<Class<? extends Record>> recordTypes) {
-        Objects.requireNonNull(recordTypes);
+    public Intent createMatchmakingIntent(@NonNull MatchmakingRequest request) {
+        Objects.requireNonNull(request);
         Intent intent = new Intent(ACTION_MATCHMAKING);
         String[] recordTypeNames =
-                recordTypes.stream().map(Class::getCanonicalName).distinct().toArray(String[]::new);
+                request.getRecordTypes().stream()
+                        .map(Class::getCanonicalName)
+                        .distinct()
+                        .toArray(String[]::new);
         intent.putExtra(EXTRA_RECORD_TYPES, recordTypeNames);
         return intent;
     }
 
     /**
      * Returns a map of package names to their associated permissions that should be displayed on
-     * the screen launched by the intent from {@link #createMatchmakingIntent(Set)}. The apps and
-     * their mapped permissions returned here are identical to what {@link
-     * #isMatchmakingPossible(Set, Executor, OutcomeReceiver)} identifies as matches.
+     * the screen launched by the intent from {@link #createMatchmakingIntent(MatchmakingRequest)}.
+     * The data sources and their mapped permissions returned here are identical to what {@link
+     * #isMatchmakingPossible(MatchmakingRequest, Executor, OutcomeReceiver)} identifies as matches.
      *
-     * <p>The returned map will be empty if {@link #isMatchmakingPossible(Set, Executor,
-     * OutcomeReceiver)} would return {@code false} for the same parameters, and non-empty if it
-     * would return {@code true}.
+     * <p>The returned map will be empty if {@link #isMatchmakingPossible(MatchmakingRequest,
+     * Executor, OutcomeReceiver)} would return {@code false} for the same parameters, and non-empty
+     * if it would return {@code true}.
      *
-     * @param recordTypes A non-null set of {@link Record} classes.
-     * @param packageName The package name of the app requesting the matching apps.
+     * @param request A non-null {@link MatchmakingRequest}.
      * @param executor The {@link Executor} on which to invoke the callback.
-     * @param callback The callback which will receive the map of matching apps to their matching
-     *     permissions or the {@link HealthConnectException}.
+     * @param callback The callback which will receive the map of matching data sources to their
+     *     matching permissions or the {@link HealthConnectException}.
      * @hide
      */
     @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
     public void getMatchingApps(
-            @NonNull Set<Class<? extends Record>> recordTypes,
-            @NonNull String packageName,
+            @NonNull MatchmakingRequest request,
             @NonNull @CallbackExecutor Executor executor,
             @NonNull OutcomeReceiver<Map<String, Set<String>>, HealthConnectException> callback) {
-        Objects.requireNonNull(recordTypes);
+        Objects.requireNonNull(request);
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
             mService.getMatchingApps(
                     mContext.getAttributionSource(),
-                    new GetMatchingAppsRequest.Builder()
-                            .setPackageName(packageName)
-                            .addRecordTypes(recordTypes)
-                            .build(),
+                    request,
                     new IGetMatchingAppsCallback.Stub() {
                         @Override
                         public void onResult(GetMatchingAppsResponse response) {
@@ -3468,10 +3472,10 @@ public class HealthConnectManager {
     /**
      * Records that a user has denied matchmaking for a given package.
      *
-     * @param callingPackageName package name of the app that initiated matchmaking.
+     * @param callingPackageName package name of the data source that initiated matchmaking.
      * @param deniedApps package name and permissions of the potentially matching apps that were
      *     denied.
-     * @param executor Executor on which to invoke the callback.
+     * @param executor The {@link Executor} on which to invoke the callback.
      * @param callback Callback to receive result of performing this operation.
      * @hide
      */

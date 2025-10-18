@@ -18,6 +18,7 @@ package com.android.healthconnect.testapps.toolbox.viewmodels
 import android.content.Context
 import android.content.Intent
 import android.health.connect.HealthConnectManager
+import android.health.connect.MatchmakingRequest
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -53,8 +54,8 @@ class HomeFragmentViewModel : ViewModel() {
     fun loadMatchmakingStatus(manager: HealthConnectManager) {
         viewModelScope.launch {
             try {
-                val isMatchmakingPossible = isMatchmakingPossible(manager)
-                _isMatchmakingPossible.postValue(isMatchmakingPossible)
+                val matchmakingResponse = isMatchmakingPossible(manager)
+                _isMatchmakingPossible.postValue(matchmakingResponse.isMatchmakingPossible)
             } catch (ex: Exception) {
                 _isMatchmakingPossible.postValue(false)
                 Log.e("MATCHMAKING", "isMatchmakingPossible failed with $ex")
@@ -63,7 +64,9 @@ class HomeFragmentViewModel : ViewModel() {
     }
 
     fun createMatchmakingIntent(manager: HealthConnectManager): Intent {
-        return manager.createMatchmakingIntent(emptySet())
+        return manager.createMatchmakingIntent(
+            MatchmakingRequest.Builder().addRecordTypes(emptySet()).build()
+        )
     }
 
     sealed class SeedAllDataState {

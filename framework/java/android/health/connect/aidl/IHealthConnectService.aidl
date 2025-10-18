@@ -5,7 +5,7 @@ import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.MedicalResourceId;
-import android.health.connect.GetMatchingAppsRequest;
+import android.health.connect.MatchmakingRequest;
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.aidl.ActivityDatesRequestParcel;
 import android.health.connect.aidl.AggregateDataRequestParcel;
@@ -607,7 +607,7 @@ interface IHealthConnectService {
      */
     void isMatchmakingPossible(
             in AttributionSource attributionSource,
-            in GetMatchingAppsRequest request,
+            in MatchmakingRequest request,
             in IIsMatchmakingPossibleCallback callback);
 
     /**
@@ -620,7 +620,7 @@ interface IHealthConnectService {
      */
     void getMatchingApps(
             in AttributionSource attributionSource,
-            in GetMatchingAppsRequest request,
+            in MatchmakingRequest request,
             in IGetMatchingAppsCallback callback);
 
     /**

@@ -21,6 +21,8 @@ import android.health.connect.AggregateRecordsRequest
 import android.health.connect.AggregateRecordsResponse
 import android.health.connect.HealthConnectManager
 import android.health.connect.InsertRecordsResponse
+import android.health.connect.MatchmakingRequest
+import android.health.connect.MatchmakingResponse
 import android.health.connect.ReadRecordsRequest
 import android.health.connect.ReadRecordsRequestUsingFilters
 import android.health.connect.ReadRecordsResponse
@@ -171,10 +173,10 @@ class GeneralUtils {
             }
         }
 
-        suspend fun isMatchmakingPossible(manager: HealthConnectManager): Boolean {
+        suspend fun isMatchmakingPossible(manager: HealthConnectManager): MatchmakingResponse {
             return suspendCancellableCoroutine { continuation ->
                 manager.isMatchmakingPossible(
-                    setOf(),
+                    MatchmakingRequest.Builder().build(),
                     Runnable::run,
                     continuation.asOutcomeReceiver(),
                 )

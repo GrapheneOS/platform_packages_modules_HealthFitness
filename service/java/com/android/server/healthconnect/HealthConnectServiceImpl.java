@@ -77,7 +77,6 @@ import android.health.connect.Constants;
 import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
-import android.health.connect.GetMatchingAppsRequest;
 import android.health.connect.GetMatchingAppsResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectDataState;
@@ -86,6 +85,8 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthConnectManager.DataDownloadState;
 import android.health.connect.HealthConnectOnboardingState;
 import android.health.connect.HealthDataCategory;
+import android.health.connect.MatchmakingRequest;
+import android.health.connect.MatchmakingResponse;
 import android.health.connect.MedicalResourceId;
 import android.health.connect.MedicalResourceTypeInfo;
 import android.health.connect.PageTokenWrapper;
@@ -3096,12 +3097,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
-     * @see HealthConnectManager#isMatchmakingPossible(Set, Executor, OutcomeReceiver)
+     * @see HealthConnectManager#isMatchmakingPossible(MatchmakingRequest, Executor,
+     *     OutcomeReceiver)
      */
     @Override
     public void isMatchmakingPossible(
             AttributionSource attributionSource,
-            GetMatchingAppsRequest request,
+            MatchmakingRequest request,
             IIsMatchmakingPossibleCallback callback) {
         checkParamsNonNull(attributionSource, request, callback);
         getMatchingApps(
@@ -3110,7 +3112,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 new IGetMatchingAppsCallback.Stub() {
                     @Override
                     public void onResult(GetMatchingAppsResponse response) throws RemoteException {
-                        callback.onResult(response.hasMatchingApps());
+                        callback.onResult(
+                                new MatchmakingResponse.Builder(response.hasMatchingApps())
+                                        .build());
                     }
 
                     @Override
@@ -3127,7 +3131,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void getMatchingApps(
             AttributionSource attributionSource,
-            GetMatchingAppsRequest request,
+            MatchmakingRequest request,
             IGetMatchingAppsCallback callback) {
         checkParamsNonNull(attributionSource, request, callback);
         final int uid = Binder.getCallingUid();
@@ -3150,7 +3154,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     }
                     enforceIsForegroundUser(userHandle);
                     throwExceptionIfDataSyncInProgress();
-                    String requestPackageName = request.getPackageName();
+                    String requestPackageName = request.getCallingPackageName();
                     if (holdsDataManagementPermission) {
                         checkArgument(requestPackageName != null, "package name must be provided");
                     } else {

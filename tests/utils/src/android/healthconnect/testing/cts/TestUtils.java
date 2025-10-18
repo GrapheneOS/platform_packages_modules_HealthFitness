@@ -58,6 +58,7 @@ import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissionCategory;
 import android.health.connect.InsertRecordsResponse;
+import android.health.connect.MatchmakingRequest;
 import android.health.connect.ReadRecordsRequest;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
@@ -1087,7 +1088,9 @@ public final class TestUtils {
 
     /** Creates an {@link Intent} to launch the matching apps flow. */
     public static Intent createMatchmakingIntent(Set<Class<? extends Record>> recordTypes) {
-        return getHealthConnectManager().createMatchmakingIntent(recordTypes);
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
+        return getHealthConnectManager().createMatchmakingIntent(request);
     }
 
     /** Copies record ids from the one list to another in order. Workaround for b/328228842. */
