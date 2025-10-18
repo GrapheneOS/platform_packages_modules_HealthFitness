@@ -31,7 +31,7 @@ class LoadScheduledExportStatusUseCase
 @Inject
 constructor(
     private val healthDataExportManager: HealthDataExportManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadScheduledExportStatusUseCase, BaseUseCase<Unit, ScheduledExportUiState>(dispatcher) {
 
     companion object {

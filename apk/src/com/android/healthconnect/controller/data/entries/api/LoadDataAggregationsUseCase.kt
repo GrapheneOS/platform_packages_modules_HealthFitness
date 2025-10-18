@@ -68,7 +68,7 @@ constructor(
     private val mindfulnessSessionFormatter: MindfulnessSessionFormatter,
     private val healthConnectManager: HealthConnectManager,
     private val appInfoReader: AppInfoReader,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) :
     BaseUseCase<LoadAggregationInput, FormattedAggregation>(dispatcher),
     ILoadDataAggregationsUseCase {

@@ -43,7 +43,7 @@ class AllDataUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) {
 
     /** Returns list of all fitness categories and permission types to be shown on the HC UI. */

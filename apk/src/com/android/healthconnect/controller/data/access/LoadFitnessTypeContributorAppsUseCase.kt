@@ -36,7 +36,7 @@ class LoadFitnessTypeContributorAppsUseCase
 constructor(
     private val appInfoReader: AppInfoReader,
     private val healthConnectManager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadFitnessTypeContributorAppsUseCase {
 
     /** Returns a list of [AppMetadata]s that have data in this [FitnessPermissionType]. */

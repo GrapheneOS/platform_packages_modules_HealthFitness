@@ -29,7 +29,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 class LoadLatestEntryDateUseCase
 @Inject
 constructor(
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
     private val loadEntriesHelper: LoadEntriesHelper,
 ) : BaseUseCase<LoadLatestEntryDateInput, Instant>(dispatcher), ILoadLatestEntryDateUseCase {
 

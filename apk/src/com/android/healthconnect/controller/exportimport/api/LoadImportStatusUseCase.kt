@@ -36,7 +36,7 @@ class LoadImportStatusUseCase
 @Inject
 constructor(
     private val healthDataImportManager: HealthDataImportManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadImportStatusUseCase, BaseUseCase<Unit, ImportUiState>(dispatcher) {
 
     override suspend fun execute(input: Unit): ImportUiState {

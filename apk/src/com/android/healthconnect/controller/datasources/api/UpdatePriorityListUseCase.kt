@@ -29,7 +29,7 @@ class UpdatePriorityListUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : IUpdatePriorityListUseCase {
 
     /** Updates the priority list of the stored [DataOrigin]s for given [HealthDataCategory]. */

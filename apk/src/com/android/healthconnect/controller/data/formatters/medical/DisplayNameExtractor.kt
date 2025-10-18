@@ -41,7 +41,7 @@ import org.json.JSONObject
 class DisplayNameExtractor
 @Inject
 constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val extractorUtils: ExtractorUtils,
 ) {
 

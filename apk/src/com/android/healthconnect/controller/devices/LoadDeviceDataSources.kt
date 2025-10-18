@@ -33,9 +33,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 class LoadDeviceDataSources
 @Inject
 constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val healthConnectManager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadDeviceDataSources, BaseUseCase<Unit, List<DeviceDataSource>>(dispatcher) {
     override suspend fun execute(input: Unit): List<DeviceDataSource> {
         // TODO(b/421131223): Fetch the actual device data sources from the service.

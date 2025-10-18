@@ -28,7 +28,7 @@ class LoadExportSettingsUseCase
 @Inject
 constructor(
     private val healthDataExportManager: HealthDataExportManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadExportSettingsUseCase, BaseUseCase<Unit, ExportFrequency>(dispatcher) {
     companion object {
         private const val TAG = "LoadExportSettingsUseCase"

@@ -29,7 +29,7 @@ class LoadOnboardingStateUseCase
 @Inject
 constructor(
     private val manager: HealthOnboardingManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : BaseUseCase<Unit, OnboardingState>(dispatcher) {
 
     override suspend fun execute(input: Unit): OnboardingState {

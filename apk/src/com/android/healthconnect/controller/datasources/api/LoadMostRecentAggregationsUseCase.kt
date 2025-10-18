@@ -37,7 +37,7 @@ constructor(
     private val loadDataAggregationsUseCase: ILoadDataAggregationsUseCase,
     private val loadLastDateWithPriorityDataUseCase: ILoadLastDateWithPriorityDataUseCase,
     private val sleepSessionHelper: ISleepSessionHelper,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadMostRecentAggregationsUseCase {
 
     /**

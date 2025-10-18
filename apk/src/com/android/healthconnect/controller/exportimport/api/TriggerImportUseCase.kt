@@ -32,7 +32,7 @@ class TriggerImportUseCase
 @Inject
 constructor(
     private val healthDataImportManager: HealthDataImportManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ITriggerImportUseCase, BaseUseCase<Uri, Unit>(dispatcher) {
     companion object {
         private const val TAG = "TriggerImportUseCase"

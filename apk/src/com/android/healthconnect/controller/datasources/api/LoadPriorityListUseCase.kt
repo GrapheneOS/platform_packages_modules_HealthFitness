@@ -36,7 +36,7 @@ class LoadPriorityListUseCase
 constructor(
     private val healthConnectManager: HealthConnectManager,
     private val appInfoReader: AppInfoReader,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) :
     BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>(dispatcher),
     ILoadPriorityListUseCase {

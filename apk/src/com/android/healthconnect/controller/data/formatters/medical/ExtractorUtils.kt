@@ -24,7 +24,7 @@ import javax.inject.Singleton
 import org.json.JSONObject
 
 @Singleton
-class ExtractorUtils @Inject constructor(@ApplicationContext private val context: Context) {
+class ExtractorUtils @Inject constructor(@param:ApplicationContext private val context: Context) {
 
     companion object {
         private const val RESOURCE_TYPE = "resourceType"

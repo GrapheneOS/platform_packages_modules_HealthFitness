@@ -36,7 +36,7 @@ class LoadMenstruationDataUseCase
 @Inject
 constructor(
     private val loadEntriesHelper: LoadEntriesHelper,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) :
     BaseUseCase<LoadMenstruationDataInput, List<FormattedEntry>>(dispatcher),
     ILoadMenstruationDataUseCase {

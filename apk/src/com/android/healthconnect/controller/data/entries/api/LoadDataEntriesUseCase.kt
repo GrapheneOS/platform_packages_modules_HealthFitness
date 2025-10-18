@@ -31,7 +31,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 class LoadDataEntriesUseCase
 @Inject
 constructor(
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
     private val loadEntriesHelper: LoadEntriesHelper,
 ) : BaseUseCase<LoadDataEntriesInput, List<FormattedEntry>>(dispatcher), ILoadDataEntriesUseCase {
 

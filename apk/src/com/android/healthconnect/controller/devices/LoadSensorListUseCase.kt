@@ -32,8 +32,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 class LoadSensorListUseCase
 @Inject
 constructor(
-    @ApplicationContext private val context: Context,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:ApplicationContext private val context: Context,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadSensorListUseCase, BaseUseCase<Unit, List<Sensor>>(dispatcher) {
     override suspend fun execute(input: Unit): List<Sensor> {
         val manager: SensorManager =

@@ -35,7 +35,7 @@ constructor(
     private val appInfoReader: AppInfoReader,
     private val displayNameExtractor: DisplayNameExtractor,
     private val timeFieldExtractor: TimeFieldExtractor,
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
 ) {
     suspend fun formatResource(
         resource: MedicalResource,
