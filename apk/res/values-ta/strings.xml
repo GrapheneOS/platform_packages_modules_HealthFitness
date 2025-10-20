@@ -256,6 +256,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"வெள்ளைப்படுதல்"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"வெள்ளைப்படுதல் தொடர்பான தரவை வாசிக்கும்"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"வெள்ளைப்படுதல் தொடர்பான தரவை எழுதும்"</string>
+    <string name="cycle_phases_uppercase_label" msgid="1693612101973701017">"சுழற்சி நிலைகள்"</string>
+    <string name="cycle_phases_lowercase_label" msgid="6513009148778082622">"சுழற்சி நிலைகள்"</string>
+    <string name="cycle_phases_read_content_description" msgid="1974818937933604194">"சுழற்சி நிலைகளைப் படிக்கும்"</string>
+    <string name="cycle_phases_write_content_description" msgid="8779256196190212513">"சுழற்சி நிலைகளை எழுதும்"</string>
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"மாதவிடாயற்ற காலத்தில் ஏற்படும் ரத்தப்போக்கு"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"மாதவிடாயற்ற காலத்தில் ஏற்படும் ரத்தப்போக்கு"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"மாதவிடாயற்ற காலத்தில் ஏற்படும் ரத்தப்போக்கு குறித்த தரவைப் படிக்கும்"</string>
@@ -1348,8 +1352,8 @@
     <string name="chills_write_content_description" msgid="6478646233405107436">"குளிர் நடுக்கம் தொடர்பான தரவை எழுதும்"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"நீரிழப்பு தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
     <string name="dehydration_write_content_description" msgid="541514183036921571">"நீரிழப்பு தொடர்பான தரவை எழுதும்"</string>
-    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"வறண்ட தோல் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
-    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"வறண்ட தோல் தொடர்பான தரவை எழுதும்"</string>
+    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"சரும வறட்சி தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
+    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"சரும வறட்சி தொடர்பான தரவை எழுதும்"</string>
     <string name="fever_read_content_description" msgid="3385209639730909489">"காய்ச்சல் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
     <string name="fever_write_content_description" msgid="8440573327719878961">"காய்ச்சல் தொடர்பான தரவை எழுதும்"</string>
     <string name="joint_pain_read_content_description" msgid="2932523124488927967">"மூட்டு வலி தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
@@ -1358,8 +1362,8 @@
     <string name="joint_stiffness_write_content_description" msgid="7556318646656369856">"மூட்டு விறைப்பு தொடர்பான தரவை எழுதும்"</string>
     <string name="muscle_pain_read_content_description" msgid="3116385630330673084">"தசை வலி தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
     <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"தசை வலி தொடர்பான தரவை எழுதும்"</string>
-    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"சுயநினைவு இழத்தல் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
-    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"சுயநினைவு இழத்தல் தொடர்பான தரவை எழுதும்"</string>
+    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"சுயநினைவு இழப்பு தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
+    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"சுயநினைவு இழப்பு தொடர்பான தரவை எழுதும்"</string>
     <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"குறைந்த உடற்பயிற்சித் திறன் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
     <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"குறைந்த உடற்பயிற்சித் திறன் தொடர்பான தரவை எழுதும்"</string>
     <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"விளக்கமற்ற எடை மாற்றங்கள் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
@@ -1420,8 +1424,8 @@
     <string name="back_pain_write_content_description" msgid="6282959987099901645">"முதுகு வலி தொடர்பான தரவை எழுதும்"</string>
     <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"கீழ் முதுகு வலி தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
     <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"கீழ் முதுகு வலி தொடர்பான தரவை எழுதும்"</string>
-    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"திடீரென உடல் சூடாதல் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
-    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"திடீரென உடல் சூடாதல் தொடர்பான தரவை எழுதும்"</string>
+    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"ஹாட் ஃபிளாஷெஸ் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
+    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"ஹாட் ஃபிளாஷெஸ் தொடர்பான தரவை எழுதும்"</string>
     <string name="night_sweats_read_content_description" msgid="7644094250441074129">"இரவில் வியர்த்தல் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
     <string name="night_sweats_write_content_description" msgid="7501357533280452509">"இரவில் வியர்த்தல் தொடர்பான தரவை எழுதும்"</string>
     <string name="water_retention_read_content_description" msgid="211789030125880649">"உடலில் நீர்த் தேக்கம் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
@@ -1494,8 +1498,8 @@
     <string name="difficulty_swallowing_lowercase_label" msgid="4980631237611433200">"விழுங்குவதில் சிரமம்"</string>
     <string name="dizziness_uppercase_label" msgid="8129950094459563983">"தலைசுற்றல்"</string>
     <string name="dizziness_lowercase_label" msgid="3462347558609662379">"தலைசுற்றல்"</string>
-    <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"வறண்ட தோல்"</string>
-    <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"வறண்ட தோல்"</string>
+    <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"சரும வறட்சி"</string>
+    <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"சரும வறட்சி"</string>
     <string name="earaches_uppercase_label" msgid="107701950625572701">"காதுவலி"</string>
     <string name="earaches_lowercase_label" msgid="6240790850403958317">"காதுவலி"</string>
     <string name="fatigue_uppercase_label" msgid="7514286788083426578">"உடல் சோர்வு"</string>
@@ -1512,8 +1516,8 @@
     <string name="heartburn_lowercase_label" msgid="6235983036978705474">"நெஞ்செரிச்சல்"</string>
     <string name="heart_palpitations_uppercase_label" msgid="2026400872833911547">"சீரற்ற இதயத் துடிப்பு"</string>
     <string name="heart_palpitations_lowercase_label" msgid="1468243523322721340">"சீரற்ற இதயத் துடிப்பு"</string>
-    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"திடீரென உடல் சூடாதல்"</string>
-    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"திடீரென உடல் சூடாதல்"</string>
+    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"ஹாட் ஃபிளாஷெஸ்"</string>
+    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"ஹாட் ஃபிளாஷெஸ்"</string>
     <string name="insomnia_uppercase_label" msgid="4946197328995261738">"தூக்கமின்மை"</string>
     <string name="insomnia_lowercase_label" msgid="3742025423716451058">"தூக்கமின்மை"</string>
     <string name="joint_pain_uppercase_label" msgid="7693454621285586935">"மூட்டு வலி"</string>
@@ -1522,8 +1526,8 @@
     <string name="joint_stiffness_lowercase_label" msgid="8766445235392409480">"மூட்டு விறைப்பு"</string>
     <string name="loss_of_appetite_uppercase_label" msgid="4023141061302523950">"பசியின்மை"</string>
     <string name="loss_of_appetite_lowercase_label" msgid="7558077308061468558">"பசியின்மை"</string>
-    <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"சுயநினைவு இழத்தல்"</string>
-    <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"சுயநினைவு இழத்தல்"</string>
+    <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"சுயநினைவு இழப்பு"</string>
+    <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"சுயநினைவு இழப்பு"</string>
     <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"கீழ் முதுகு வலி"</string>
     <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"கீழ் முதுகு வலி"</string>
     <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"தற்காலிக மறதி"</string>

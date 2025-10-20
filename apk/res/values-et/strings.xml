@@ -256,6 +256,14 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"emakakaela lima"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"Emakakaela lima näidu lugemine"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"Emakakaela lima näidu kirjutamine"</string>
+    <!-- no translation found for cycle_phases_uppercase_label (1693612101973701017) -->
+    <skip />
+    <!-- no translation found for cycle_phases_lowercase_label (6513009148778082622) -->
+    <skip />
+    <!-- no translation found for cycle_phases_read_content_description (1974818937933604194) -->
+    <skip />
+    <!-- no translation found for cycle_phases_write_content_description (8779256196190212513) -->
+    <skip />
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"Menstruatsioonide vaheline veritsus"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"menstruatsioonide vaheline veritsus"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Menstruatsioonide vahelise veritsuse andmete lugemine"</string>

@@ -256,6 +256,14 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"cervikálny hlien"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"Čítanie údajov o cervikálnom hliene"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"Zapisovanie údajov o cervikálnom hliene"</string>
+    <!-- no translation found for cycle_phases_uppercase_label (1693612101973701017) -->
+    <skip />
+    <!-- no translation found for cycle_phases_lowercase_label (6513009148778082622) -->
+    <skip />
+    <!-- no translation found for cycle_phases_read_content_description (1974818937933604194) -->
+    <skip />
+    <!-- no translation found for cycle_phases_write_content_description (8779256196190212513) -->
+    <skip />
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"Intermenštruačné krvácanie"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"intermenštruačné krvácanie"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Čítať údaje o intermenštruačnom krvácaní"</string>
@@ -1360,8 +1368,8 @@
     <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"Zapisovať údaje o bolesti svalov"</string>
     <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"Čítať údaje o strate vedomia"</string>
     <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"Zapisovať údaje o strate vedomia"</string>
-    <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"Čítať údaje o zníženej chuti na cvičenie"</string>
-    <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"Zapisovať údaje o zníženej chuti na cvičenie"</string>
+    <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"Čítať údaje o zníženej schopnosti fyzickej záťaže"</string>
+    <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"Zapisovať údaje o zníženej schopnosti fyzickej záťaže"</string>
     <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"Čítať údaje o nevysvetliteľných zmenách hmotnosti"</string>
     <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"Zapisovať údaje o nevysvetliteľných zmenách hmotnosti"</string>
     <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"Čítať údaje o všeobecnej bolesti tela"</string>
@@ -1399,7 +1407,7 @@
     <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"Čítať údaje o rýchlom, silnom alebo nepravidelnom pulze"</string>
     <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"Zapisovať údaje o rýchlom, silnom alebo nepravidelnom pulze"</string>
     <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"Čítať údaje o ťažkostiach s prehĺtaním"</string>
-    <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"Zapisovať údaje o ťažkosti s prehĺtaním"</string>
+    <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"Zapisovať údaje o ťažkostiach s prehĺtaním"</string>
     <string name="dizziness_read_content_description" msgid="2525565486057144416">"Čítať údaje o závrate"</string>
     <string name="dizziness_write_content_description" msgid="1875365619054873732">"Zapisovať údaje o závrate"</string>
     <string name="earaches_read_content_description" msgid="4643142391473401154">"Čítať údaje o bolesti uší"</string>
@@ -1433,7 +1441,7 @@
     <string name="cramps_read_content_description" msgid="5853663240074256855">"Čítať údaje o kŕčoch"</string>
     <string name="cramps_write_content_description" msgid="6777230560926849939">"Zapisovať údaje o kŕčoch"</string>
     <string name="abdominal_pain_read_content_description" msgid="6331928351160142817">"Čítať údaje o bolesti brucha"</string>
-    <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"Zapisovanie údajov o bolesti brucha"</string>
+    <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"Zapisovať údaje o bolesti brucha"</string>
     <string name="breast_tenderness_read_content_description" msgid="1556133668276886256">"Čítať údaje o citlivosti prsníkov"</string>
     <string name="breast_tenderness_write_content_description" msgid="5405234499024881940">"Zapisovať údaje o citlivosti prsníkov"</string>
     <string name="pelvic_pain_read_content_description" msgid="8872893212311881743">"Čítať údaje o bolesti panvy"</string>
@@ -1442,12 +1450,12 @@
     <string name="vaginal_dryness_write_content_description" msgid="7639415261021656468">"Zapisovať údaje o vaginálnej suchosti"</string>
     <string name="vaginal_itchiness_read_content_description" msgid="6027886706003079912">"Čítať údaje o svrbení vagíny"</string>
     <string name="vaginal_itchiness_write_content_description" msgid="6833099607694941406">"Zapisovať údaje o svrbení vagíny"</string>
-    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"Čítať údaje o mozgovej hmle"</string>
-    <string name="brain_fog_write_content_description" msgid="354508934978268288">"Zapisovať údaje o mozgovej hmle"</string>
+    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"Čítať údaje o zahmlení mysle"</string>
+    <string name="brain_fog_write_content_description" msgid="354508934978268288">"Zapisovať údaje o zahmlení mysle"</string>
     <string name="mood_change_read_content_description" msgid="5114563193264125173">"Čítať údaje o zmenách nálady"</string>
     <string name="mood_change_write_content_description" msgid="7613564641235985120">"Zapisovať údaje o zmenách nálady"</string>
-    <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"Čítať údaje o poruchách pamäte"</string>
-    <string name="memory_lapse_write_content_description" msgid="211569063190179476">"Zapisovať údaje o poruchách pamäte"</string>
+    <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"Čítať údaje o poruchách pamäti"</string>
+    <string name="memory_lapse_write_content_description" msgid="211569063190179476">"Zapisovať údaje o poruchách pamäti"</string>
     <string name="sleepiness_read_content_description" msgid="797381777988304669">"Čítať údaje o ospanlivosti"</string>
     <string name="sleepiness_write_content_description" msgid="888236364245216476">"Zapisovať údaje o ospanlivosti"</string>
     <string name="sleep_changes_read_content_description" msgid="277237231470749744">"Čítať údaje o zmenách spánku"</string>
@@ -1464,8 +1472,8 @@
     <string name="back_pain_lowercase_label" msgid="7487168354843582888">"bolesť chrbta"</string>
     <string name="bloating_uppercase_label" msgid="2827024204358491650">"Nadúvanie"</string>
     <string name="bloating_lowercase_label" msgid="4108236897678347488">"nadúvanie"</string>
-    <string name="brain_fog_uppercase_label" msgid="3782508630097437711">"Mozgová hmla"</string>
-    <string name="brain_fog_lowercase_label" msgid="8018499987092429724">"mozgová hmla"</string>
+    <string name="brain_fog_uppercase_label" msgid="3782508630097437711">"Zahmlenie mysle"</string>
+    <string name="brain_fog_lowercase_label" msgid="8018499987092429724">"zahmlenie mysle"</string>
     <string name="breast_tenderness_uppercase_label" msgid="3633574517042452397">"Citlivosť prsníkov"</string>
     <string name="breast_tenderness_lowercase_label" msgid="3745105353936751222">"citlivosť prsníkov"</string>
     <string name="brittle_nails_uppercase_label" msgid="7290899807816681152">"Lámavé nechty"</string>
@@ -1526,8 +1534,8 @@
     <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"strata vedomia"</string>
     <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"Bolesť spodnej časti chrbta"</string>
     <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"bolesť spodnej časti chrbta"</string>
-    <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"Poruchy pamäte"</string>
-    <string name="memory_lapse_lowercase_label" msgid="5590619293782264318">"poruchy pamäte"</string>
+    <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"Poruchy pamäti"</string>
+    <string name="memory_lapse_lowercase_label" msgid="5590619293782264318">"poruchy pamäti"</string>
     <string name="mood_change_uppercase_label" msgid="6591596468077187132">"Zmeny nálady"</string>
     <string name="mood_change_lowercase_label" msgid="5154765930188874067">"zmeny nálady"</string>
     <string name="muscle_pain_uppercase_label" msgid="2470771124188001900">"Bolesť svalov"</string>
@@ -1540,8 +1548,8 @@
     <string name="pelvic_pain_lowercase_label" msgid="8993103170034473121">"bolesť panvy"</string>
     <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"Rýchly, silný alebo nepravidelný pulz"</string>
     <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"rýchly, silný alebo nepravidelný pulz"</string>
-    <string name="reduced_capacity_for_exercise_uppercase_label" msgid="7471254320615756463">"Znížená chuť na cvičenie"</string>
-    <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"znížená chuť na cvičenie"</string>
+    <string name="reduced_capacity_for_exercise_uppercase_label" msgid="7471254320615756463">"Znížená schopnosť fyzickej záťaže"</string>
+    <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"znížená schopnosť fyzickej záťaže"</string>
     <string name="runny_nose_uppercase_label" msgid="6561156187042071551">"Nádcha"</string>
     <string name="runny_nose_lowercase_label" msgid="2214697492382685914">"nádcha"</string>
     <string name="shortness_of_breath_uppercase_label" msgid="3747502224212110471">"Dýchavičnosť"</string>

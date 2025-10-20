@@ -256,6 +256,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"muco cervical"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"Ler informações de muco cervical"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"Gravar muco cervical"</string>
+    <string name="cycle_phases_uppercase_label" msgid="1693612101973701017">"Fases do ciclo"</string>
+    <string name="cycle_phases_lowercase_label" msgid="6513009148778082622">"fases do ciclo"</string>
+    <string name="cycle_phases_read_content_description" msgid="1974818937933604194">"Ler fases do ciclo"</string>
+    <string name="cycle_phases_write_content_description" msgid="8779256196190212513">"Registrar fases do ciclo"</string>
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"Sangramento intermenstrual"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"sangramento intermenstrual"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Ler dados de sangramento intermenstrual"</string>
@@ -1338,124 +1342,124 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Não conectado"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Clique para conectar este app à Conexão Saúde"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Agora não"</string>
-    <string name="acne_read_content_description" msgid="1176708404029936065">"Acessar dados de acne"</string>
-    <string name="acne_write_content_description" msgid="9221785868351412493">"Registrar dados de acne"</string>
-    <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Acessar dados de unhas quebradiças"</string>
-    <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Registrar dados de unhas quebradiças"</string>
-    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Acessar dados de ardência na boca "</string>
-    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Registrar dados de ardência na boca "</string>
-    <string name="chills_read_content_description" msgid="7244946135559432433">"Acessar dados de calafrios"</string>
-    <string name="chills_write_content_description" msgid="6478646233405107436">"Registrar dados de calafrios"</string>
-    <string name="dehydration_read_content_description" msgid="7633935838518756206">"Acessar dados de desidratação"</string>
-    <string name="dehydration_write_content_description" msgid="541514183036921571">"Registrar dados de desidratação"</string>
-    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"Acessar dados de pele seca"</string>
-    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"Registrar dados de pele seca"</string>
-    <string name="fever_read_content_description" msgid="3385209639730909489">"Acessar dados de febre"</string>
-    <string name="fever_write_content_description" msgid="8440573327719878961">"Registrar dados de febre"</string>
-    <string name="joint_pain_read_content_description" msgid="2932523124488927967">"Acessar dados de dor nas articulações"</string>
-    <string name="joint_pain_write_content_description" msgid="7405551860978844535">"Registrar dados de dor nas articulações"</string>
-    <string name="joint_stiffness_read_content_description" msgid="2132696730582070534">"Acessar dados de rigidez nas articulações"</string>
-    <string name="joint_stiffness_write_content_description" msgid="7556318646656369856">"Registrar dados de rigidez nas articulações"</string>
-    <string name="muscle_pain_read_content_description" msgid="3116385630330673084">"Acessar dados de dor muscular"</string>
-    <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"Registrar dados de dor muscular"</string>
-    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"Acessar dados de perda de consciência"</string>
-    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"Registrar dados de perda de consciência"</string>
-    <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"Acessar dados de capacidade reduzida para exercícios"</string>
-    <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"Registrar dados de capacidade reduzida para exercícios"</string>
-    <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"Acessar dados de mudanças de peso sem motivos"</string>
-    <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"Registrar dados de mudanças de peso sem motivos"</string>
-    <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"Acessar dados de dor generalizada no corpo"</string>
-    <string name="generalized_body_ache_write_content_description" msgid="4282920161878530009">"Registrar dados de dor generalizada no corpo"</string>
-    <string name="fatigue_read_content_description" msgid="8447413794808220408">"Acessar dados de cansaço"</string>
-    <string name="fatigue_write_content_description" msgid="3000326883358951973">"Registrar dados de cansaço"</string>
-    <string name="constipation_read_content_description" msgid="4024154136010015370">"Acessar dados de constipação"</string>
-    <string name="constipation_write_content_description" msgid="9059835998017996999">"Registrar dados de constipação"</string>
-    <string name="diarrhea_read_content_description" msgid="6643311788778713543">"Acessar dados de diarreia"</string>
-    <string name="diarrhea_write_content_description" msgid="2525160401458506448">"Registrar dados de diarreia"</string>
-    <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"Acessar dados de perda de apetite"</string>
-    <string name="loss_of_appetite_write_content_description" msgid="7370817778828856877">"Registrar dados de perda de apetite"</string>
-    <string name="nausea_read_content_description" msgid="7696809485706809234">"Acessar dados de náusea"</string>
-    <string name="nausea_write_content_description" msgid="7956853318058549079">"Registrar dados de náusea"</string>
-    <string name="stomach_ache_read_content_description" msgid="6960461949095524373">"Acessar dados de dor de estômago"</string>
-    <string name="stomach_ache_write_content_description" msgid="4822349196740130790">"Registrar dados de dor de estômago"</string>
-    <string name="vomiting_read_content_description" msgid="6425637340168306118">"Acessar dados de vômito"</string>
-    <string name="vomiting_write_content_description" msgid="2768436321239967229">"Registrar dados de vômitos"</string>
-    <string name="chest_pain_read_content_description" msgid="5388099127082653993">"Acessar dados de dor no peito"</string>
-    <string name="chest_pain_write_content_description" msgid="7570421665813979598">"Registrar dados de dor no peito"</string>
-    <string name="chest_tightness_read_content_description" msgid="3234587929340517638">"Acessar dados de aperto no peito"</string>
-    <string name="chest_tightness_write_content_description" msgid="3365518444505217882">"Registrar dados de aperto no peito"</string>
-    <string name="cough_read_content_description" msgid="4834360757270578547">"Acessar dados de tosse"</string>
-    <string name="cough_write_content_description" msgid="2927943192149715422">"Registrar dados de tosse"</string>
-    <string name="heart_palpitations_read_content_description" msgid="5830132363981902576">"Acessar dados de palpitações"</string>
-    <string name="heart_palpitations_write_content_description" msgid="6195434828951874561">"Registrar dados de palpitações"</string>
-    <string name="shortness_of_breath_read_content_description" msgid="5285037217314042125">"Acessar dados de falta de ar"</string>
-    <string name="shortness_of_breath_write_content_description" msgid="1812050225998794712">"Registrar dados de falta de ar"</string>
-    <string name="wheezing_read_content_description" msgid="3698103133045395859">"Acessar dados de chiado no peito"</string>
-    <string name="wheezing_write_content_description" msgid="3555234332119025686">"Registrar dados de chiado no peito"</string>
-    <string name="heartburn_read_content_description" msgid="4650825508743336439">"Acessar dados de azia"</string>
-    <string name="heartburn_write_content_description" msgid="1857706822547818187">"Registrar dados de azia"</string>
-    <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"Acessar dados de arritmia"</string>
-    <string name="skipped_heartbeat_write_content_description" msgid="834686289232563614">"Registrar dados de arritmia"</string>
-    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"Acessar dados de batimentos cardíacos rápidos, fortes ou irregulares"</string>
-    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"Registrar dados de batimentos cardíacos rápidos, fortes ou irregulares"</string>
-    <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"Acessar dados de dificuldade para engolir"</string>
-    <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"Registrar dados de dificuldade para engolir"</string>
-    <string name="dizziness_read_content_description" msgid="2525565486057144416">"Acessar dados de tontura"</string>
-    <string name="dizziness_write_content_description" msgid="1875365619054873732">"Registrar dados de tontura"</string>
-    <string name="earaches_read_content_description" msgid="4643142391473401154">"Acessar dados de dor de ouvido"</string>
-    <string name="earaches_write_content_description" msgid="3551386029980258801">"Registrar dados de dor de ouvido"</string>
-    <string name="hair_loss_read_content_description" msgid="4057044821025872986">"Acessar dados de queda de cabelo"</string>
-    <string name="hair_loss_write_content_description" msgid="7387442867237711823">"Registrar dados de queda de cabelo"</string>
-    <string name="headache_read_content_description" msgid="7485283472508878298">"Acessar dados de dor de cabeça"</string>
-    <string name="headache_write_content_description" msgid="720183844750746485">"Registrar dados de dor de cabeça"</string>
-    <string name="runny_nose_read_content_description" msgid="443700998701222852">"Acessar dados de nariz escorrendo"</string>
-    <string name="runny_nose_write_content_description" msgid="6210009950948827090">"Registrar dados de nariz escorrendo"</string>
-    <string name="sneezing_read_content_description" msgid="1825781985598094799">"Acessar dados de espirros"</string>
-    <string name="sneezing_write_content_description" msgid="8125072216406958337">"Registrar dados de espirros"</string>
-    <string name="sore_throat_read_content_description" msgid="7798247670004858562">"Acessar dados de dor de garganta"</string>
-    <string name="sore_throat_write_content_description" msgid="6058043292544091397">"Registrar dados de dor de garganta"</string>
-    <string name="stuffy_nose_read_content_description" msgid="6604212451531546331">"Acessar dados de nariz entupido"</string>
-    <string name="stuffy_nose_write_content_description" msgid="6950875986047625521">"Registrar dados de nariz entupido"</string>
-    <string name="back_pain_read_content_description" msgid="1176155927269014089">"Acessar dados de dor nas costas"</string>
-    <string name="back_pain_write_content_description" msgid="6282959987099901645">"Registrar dados de dor nas costas"</string>
-    <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"Acessar dados de dor na lombar"</string>
-    <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"Registrar dados de dor na lombar"</string>
-    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"Acessar dados de ondas de calor"</string>
-    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"Registrar dados de ondas de calor"</string>
-    <string name="night_sweats_read_content_description" msgid="7644094250441074129">"Acessar dados de suor noturno"</string>
-    <string name="night_sweats_write_content_description" msgid="7501357533280452509">"Registrar dados de suor noturno"</string>
-    <string name="water_retention_read_content_description" msgid="211789030125880649">"Acessar dados de retenção de líquido"</string>
-    <string name="water_retention_write_content_description" msgid="7109328727506593781">"Registrar dados de retenção de líquido"</string>
-    <string name="cravings_read_content_description" msgid="9098905292448612603">"Acessar dados de desejos"</string>
-    <string name="cravings_write_content_description" msgid="7932335159387976333">"Registrar dados de desejos"</string>
-    <string name="bloating_read_content_description" msgid="8942780558464500997">"Acessar dados de inchaço"</string>
-    <string name="bloating_write_content_description" msgid="5014366726518564943">"Registrar dados de inchaço"</string>
-    <string name="cramps_read_content_description" msgid="5853663240074256855">"Acessar dados de cãibra"</string>
-    <string name="cramps_write_content_description" msgid="6777230560926849939">"Registrar dados de cãibra"</string>
-    <string name="abdominal_pain_read_content_description" msgid="6331928351160142817">"Acessar dados de dor abdominal"</string>
-    <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"Registrar dados de dor abdominal"</string>
-    <string name="breast_tenderness_read_content_description" msgid="1556133668276886256">"Acessar dados de sensibilidade nas mamas"</string>
-    <string name="breast_tenderness_write_content_description" msgid="5405234499024881940">"Registrar dados de sensibilidade nas mamas"</string>
-    <string name="pelvic_pain_read_content_description" msgid="8872893212311881743">"Acessar dados de dor pélvica"</string>
-    <string name="pelvic_pain_write_content_description" msgid="8482016412474126674">"Registrar dados de dor pélvica"</string>
-    <string name="vaginal_dryness_read_content_description" msgid="21587787265978758">"Acessar dados de secura vaginal"</string>
-    <string name="vaginal_dryness_write_content_description" msgid="7639415261021656468">"Registrar dados de secura vaginal"</string>
-    <string name="vaginal_itchiness_read_content_description" msgid="6027886706003079912">"Acessar dados de coceira vaginal"</string>
-    <string name="vaginal_itchiness_write_content_description" msgid="6833099607694941406">"Registrar dados de coceira vaginal"</string>
-    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"Acessar dados de confusão mental"</string>
-    <string name="brain_fog_write_content_description" msgid="354508934978268288">"Registrar dados de confusão mental"</string>
-    <string name="mood_change_read_content_description" msgid="5114563193264125173">"Acessar dados de mudança de humor"</string>
-    <string name="mood_change_write_content_description" msgid="7613564641235985120">"Registrar dados de mudança de humor"</string>
-    <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"Acessar dados de lapso de memória"</string>
-    <string name="memory_lapse_write_content_description" msgid="211569063190179476">"Registrar dados de lapso de memória"</string>
-    <string name="sleepiness_read_content_description" msgid="797381777988304669">"Acessar dados de sonolência"</string>
-    <string name="sleepiness_write_content_description" msgid="888236364245216476">"Registrar dados de sonolência"</string>
-    <string name="sleep_changes_read_content_description" msgid="277237231470749744">"Acessar dados de mudanças no sono"</string>
-    <string name="sleep_changes_write_content_description" msgid="9078270254664653838">"Registrar dados de mudanças no sono"</string>
-    <string name="insomnia_read_content_description" msgid="5225449618972721129">"Acessar dados de insônia"</string>
-    <string name="insomnia_write_content_description" msgid="4237153589826489083">"Registrar dados de insônia"</string>
-    <string name="snore_read_content_description" msgid="3447953925696237628">"Acessar dados de ronco"</string>
-    <string name="snore_write_content_description" msgid="959354771204900433">"Registrar dados de ronco"</string>
+    <string name="acne_read_content_description" msgid="1176708404029936065">"Acessar dados sobre acne"</string>
+    <string name="acne_write_content_description" msgid="9221785868351412493">"Registrar dados sobre acne"</string>
+    <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Acessar dados sobre unhas quebradiças"</string>
+    <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Registrar dados sobre unhas quebradiças"</string>
+    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Acessar dados sobre ardência bucal "</string>
+    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Registrar dados sobre ardência bucal "</string>
+    <string name="chills_read_content_description" msgid="7244946135559432433">"Acessar dados sobre calafrios"</string>
+    <string name="chills_write_content_description" msgid="6478646233405107436">"Registrar dados sobre calafrios"</string>
+    <string name="dehydration_read_content_description" msgid="7633935838518756206">"Acessar dados sobre desidratação"</string>
+    <string name="dehydration_write_content_description" msgid="541514183036921571">"Registrar dados sobre desidratação"</string>
+    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"Acessar dados sobre pele seca"</string>
+    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"Registrar dados sobre pele seca"</string>
+    <string name="fever_read_content_description" msgid="3385209639730909489">"Acessar dados sobre febre"</string>
+    <string name="fever_write_content_description" msgid="8440573327719878961">"Registrar dados sobre febre"</string>
+    <string name="joint_pain_read_content_description" msgid="2932523124488927967">"Acessar dados sobre dor nas articulações"</string>
+    <string name="joint_pain_write_content_description" msgid="7405551860978844535">"Registrar dados sobre dor nas articulações"</string>
+    <string name="joint_stiffness_read_content_description" msgid="2132696730582070534">"Acessar dados sobre rigidez nas articulações"</string>
+    <string name="joint_stiffness_write_content_description" msgid="7556318646656369856">"Registrar dados sobre rigidez nas articulações"</string>
+    <string name="muscle_pain_read_content_description" msgid="3116385630330673084">"Acessar dados sobre dor muscular"</string>
+    <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"Registrar dados sobre dor muscular"</string>
+    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"Acessar dados sobre perda de consciência"</string>
+    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"Registrar dados sobre perda de consciência"</string>
+    <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"Acessar dados sobre capacidade reduzida para exercícios"</string>
+    <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"Registrar dados sobre capacidade reduzida para exercícios"</string>
+    <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"Acessar dados sobre mudanças de peso sem motivos"</string>
+    <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"Registrar dados sobre mudanças de peso sem motivos"</string>
+    <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"Acessar dados sobre dor generalizada no corpo"</string>
+    <string name="generalized_body_ache_write_content_description" msgid="4282920161878530009">"Registrar dados sobre dor generalizada no corpo"</string>
+    <string name="fatigue_read_content_description" msgid="8447413794808220408">"Acessar dados sobre cansaço"</string>
+    <string name="fatigue_write_content_description" msgid="3000326883358951973">"Registrar dados sobre cansaço"</string>
+    <string name="constipation_read_content_description" msgid="4024154136010015370">"Acessar dados sobre constipação"</string>
+    <string name="constipation_write_content_description" msgid="9059835998017996999">"Registrar dados sobre constipação"</string>
+    <string name="diarrhea_read_content_description" msgid="6643311788778713543">"Acessar dados sobre diarreia"</string>
+    <string name="diarrhea_write_content_description" msgid="2525160401458506448">"Registrar dados sobre diarreia"</string>
+    <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"Acessar dados sobre perda de apetite"</string>
+    <string name="loss_of_appetite_write_content_description" msgid="7370817778828856877">"Registrar dados sobre perda de apetite"</string>
+    <string name="nausea_read_content_description" msgid="7696809485706809234">"Acessar dados sobre náusea"</string>
+    <string name="nausea_write_content_description" msgid="7956853318058549079">"Registrar dados sobre náusea"</string>
+    <string name="stomach_ache_read_content_description" msgid="6960461949095524373">"Acessar dados sobre dor de estômago"</string>
+    <string name="stomach_ache_write_content_description" msgid="4822349196740130790">"Registrar dados sobre dor de estômago"</string>
+    <string name="vomiting_read_content_description" msgid="6425637340168306118">"Acessar dados sobre vômito"</string>
+    <string name="vomiting_write_content_description" msgid="2768436321239967229">"Registrar dados sobre vômitos"</string>
+    <string name="chest_pain_read_content_description" msgid="5388099127082653993">"Acessar dados sobre dor no peito"</string>
+    <string name="chest_pain_write_content_description" msgid="7570421665813979598">"Registrar dados sobre dor no peito"</string>
+    <string name="chest_tightness_read_content_description" msgid="3234587929340517638">"Acessar dados sobre sensação de aperto no peito"</string>
+    <string name="chest_tightness_write_content_description" msgid="3365518444505217882">"Registrar dados sobre sensação de aperto no peito"</string>
+    <string name="cough_read_content_description" msgid="4834360757270578547">"Acessar dados sobre tosse"</string>
+    <string name="cough_write_content_description" msgid="2927943192149715422">"Registrar dados sobre tosse"</string>
+    <string name="heart_palpitations_read_content_description" msgid="5830132363981902576">"Acessar dados sobre palpitações"</string>
+    <string name="heart_palpitations_write_content_description" msgid="6195434828951874561">"Registrar dados sobre palpitações"</string>
+    <string name="shortness_of_breath_read_content_description" msgid="5285037217314042125">"Acessar dados sobre falta de ar"</string>
+    <string name="shortness_of_breath_write_content_description" msgid="1812050225998794712">"Registrar dados sobre falta de ar"</string>
+    <string name="wheezing_read_content_description" msgid="3698103133045395859">"Acessar dados sobre chiado no peito"</string>
+    <string name="wheezing_write_content_description" msgid="3555234332119025686">"Registrar dados sobre chiado no peito"</string>
+    <string name="heartburn_read_content_description" msgid="4650825508743336439">"Acessar dados sobre azia"</string>
+    <string name="heartburn_write_content_description" msgid="1857706822547818187">"Registrar dados sobre azia"</string>
+    <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"Acessar dados sobre arritmia"</string>
+    <string name="skipped_heartbeat_write_content_description" msgid="834686289232563614">"Registrar dados sobre arritmia"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"Acessar dados sobre batimentos cardíacos rápidos, fortes ou irregulares"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"Registrar dados sobre batimentos cardíacos rápidos, fortes ou irregulares"</string>
+    <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"Acessar dados sobre dificuldade para engolir"</string>
+    <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"Registrar dados sobre dificuldade para engolir"</string>
+    <string name="dizziness_read_content_description" msgid="2525565486057144416">"Acessar dados sobre tontura"</string>
+    <string name="dizziness_write_content_description" msgid="1875365619054873732">"Registrar dados sobre tontura"</string>
+    <string name="earaches_read_content_description" msgid="4643142391473401154">"Acessar dados sobre dor de ouvido"</string>
+    <string name="earaches_write_content_description" msgid="3551386029980258801">"Registrar dados sobre dor de ouvido"</string>
+    <string name="hair_loss_read_content_description" msgid="4057044821025872986">"Acessar dados sobre queda de cabelo"</string>
+    <string name="hair_loss_write_content_description" msgid="7387442867237711823">"Registrar dados sobre queda de cabelo"</string>
+    <string name="headache_read_content_description" msgid="7485283472508878298">"Acessar dados sobre dor de cabeça"</string>
+    <string name="headache_write_content_description" msgid="720183844750746485">"Registrar dados sobre dor de cabeça"</string>
+    <string name="runny_nose_read_content_description" msgid="443700998701222852">"Acessar dados sobre nariz escorrendo"</string>
+    <string name="runny_nose_write_content_description" msgid="6210009950948827090">"Registrar dados sobre nariz escorrendo"</string>
+    <string name="sneezing_read_content_description" msgid="1825781985598094799">"Acessar dados sobre espirros"</string>
+    <string name="sneezing_write_content_description" msgid="8125072216406958337">"Registrar dados sobre espirros"</string>
+    <string name="sore_throat_read_content_description" msgid="7798247670004858562">"Acessar dados sobre dor de garganta"</string>
+    <string name="sore_throat_write_content_description" msgid="6058043292544091397">"Registrar dados sobre dor de garganta"</string>
+    <string name="stuffy_nose_read_content_description" msgid="6604212451531546331">"Acessar dados sobre nariz entupido"</string>
+    <string name="stuffy_nose_write_content_description" msgid="6950875986047625521">"Registrar dados sobre nariz entupido"</string>
+    <string name="back_pain_read_content_description" msgid="1176155927269014089">"Acessar dados sobre dor nas costas"</string>
+    <string name="back_pain_write_content_description" msgid="6282959987099901645">"Registrar dados sobre dor nas costas"</string>
+    <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"Acessar dados sobre dor na lombar"</string>
+    <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"Registrar dados sobre dor na lombar"</string>
+    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"Acessar dados sobre ondas de calor"</string>
+    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"Registrar dados sobre ondas de calor"</string>
+    <string name="night_sweats_read_content_description" msgid="7644094250441074129">"Acessar dados sobre suor noturno"</string>
+    <string name="night_sweats_write_content_description" msgid="7501357533280452509">"Registrar dados sobre suor noturno"</string>
+    <string name="water_retention_read_content_description" msgid="211789030125880649">"Acessar dados sobre retenção de líquido"</string>
+    <string name="water_retention_write_content_description" msgid="7109328727506593781">"Registrar dados sobre retenção de líquido"</string>
+    <string name="cravings_read_content_description" msgid="9098905292448612603">"Acessar dados sobre fissura"</string>
+    <string name="cravings_write_content_description" msgid="7932335159387976333">"Registrar dados sobre fissuras"</string>
+    <string name="bloating_read_content_description" msgid="8942780558464500997">"Acessar dados sobre inchaço"</string>
+    <string name="bloating_write_content_description" msgid="5014366726518564943">"Registrar dados sobre inchaço"</string>
+    <string name="cramps_read_content_description" msgid="5853663240074256855">"Acessar dados sobre cãibra"</string>
+    <string name="cramps_write_content_description" msgid="6777230560926849939">"Registrar dados sobre cãibra"</string>
+    <string name="abdominal_pain_read_content_description" msgid="6331928351160142817">"Acessar dados sobre dor abdominal"</string>
+    <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"Registrar dados sobre dor abdominal"</string>
+    <string name="breast_tenderness_read_content_description" msgid="1556133668276886256">"Acessar dados sobre sensibilidade nas mamas"</string>
+    <string name="breast_tenderness_write_content_description" msgid="5405234499024881940">"Registrar dados sobre sensibilidade nas mamas"</string>
+    <string name="pelvic_pain_read_content_description" msgid="8872893212311881743">"Acessar dados sobre dor pélvica"</string>
+    <string name="pelvic_pain_write_content_description" msgid="8482016412474126674">"Registrar dados sobre dor pélvica"</string>
+    <string name="vaginal_dryness_read_content_description" msgid="21587787265978758">"Acessar dados sobre secura vaginal"</string>
+    <string name="vaginal_dryness_write_content_description" msgid="7639415261021656468">"Registrar dados sobre secura vaginal"</string>
+    <string name="vaginal_itchiness_read_content_description" msgid="6027886706003079912">"Acessar dados sobre coceira vaginal"</string>
+    <string name="vaginal_itchiness_write_content_description" msgid="6833099607694941406">"Registrar dados sobre coceira vaginal"</string>
+    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"Acessar dados sobre confusão mental"</string>
+    <string name="brain_fog_write_content_description" msgid="354508934978268288">"Registrar dados sobre confusão mental"</string>
+    <string name="mood_change_read_content_description" msgid="5114563193264125173">"Acessar dados sobre mudança de humor"</string>
+    <string name="mood_change_write_content_description" msgid="7613564641235985120">"Registrar dados sobre mudança de humor"</string>
+    <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"Acessar dados sobre lapso de memória"</string>
+    <string name="memory_lapse_write_content_description" msgid="211569063190179476">"Registrar dados sobre lapso de memória"</string>
+    <string name="sleepiness_read_content_description" msgid="797381777988304669">"Acessar dados sobre sonolência"</string>
+    <string name="sleepiness_write_content_description" msgid="888236364245216476">"Registrar dados sobre sonolência"</string>
+    <string name="sleep_changes_read_content_description" msgid="277237231470749744">"Acessar dados sobre mudanças no sono"</string>
+    <string name="sleep_changes_write_content_description" msgid="9078270254664653838">"Registrar dados sobre mudanças no sono"</string>
+    <string name="insomnia_read_content_description" msgid="5225449618972721129">"Acessar dados sobre insônia"</string>
+    <string name="insomnia_write_content_description" msgid="4237153589826489083">"Registrar dados sobre insônia"</string>
+    <string name="snore_read_content_description" msgid="3447953925696237628">"Acessar dados sobre ronco"</string>
+    <string name="snore_write_content_description" msgid="959354771204900433">"Registrar dados sobre ronco"</string>
     <string name="acne_uppercase_label" msgid="60568062993817483">"Acne"</string>
     <string name="acne_lowercase_label" msgid="5301949536428255159">"acne"</string>
     <string name="abdominal_pain_uppercase_label" msgid="442393846492385702">"Dor abdominal"</string>
@@ -1470,8 +1474,8 @@
     <string name="breast_tenderness_lowercase_label" msgid="3745105353936751222">"sensibilidade nas mamas"</string>
     <string name="brittle_nails_uppercase_label" msgid="7290899807816681152">"Unhas quebradiças"</string>
     <string name="brittle_nails_lowercase_label" msgid="43861645923597496">"unhas quebradiças"</string>
-    <string name="burning_mouth_uppercase_label" msgid="8975226712238467359">"Ardência na boca"</string>
-    <string name="burning_mouth_lowercase_label" msgid="3378970972990933484">"ardência na boca"</string>
+    <string name="burning_mouth_uppercase_label" msgid="8975226712238467359">"Ardência bucal"</string>
+    <string name="burning_mouth_lowercase_label" msgid="3378970972990933484">"ardência bucal"</string>
     <string name="chest_pain_uppercase_label" msgid="8091501402224214622">"Dor no peito"</string>
     <string name="chest_pain_lowercase_label" msgid="8817807562310689177">"dor no peito"</string>
     <string name="chest_tightness_uppercase_label" msgid="8988021502622503503">"Aperto no peito"</string>
@@ -1484,8 +1488,8 @@
     <string name="cough_lowercase_label" msgid="459638956679172779">"tosse"</string>
     <string name="cramps_uppercase_label" msgid="5162905309136173937">"Cãibra"</string>
     <string name="cramps_lowercase_label" msgid="4644485808002493449">"Cãibra"</string>
-    <string name="cravings_uppercase_label" msgid="4754194354806284307">"Desejos"</string>
-    <string name="cravings_lowercase_label" msgid="5836041614136287213">"desejos"</string>
+    <string name="cravings_uppercase_label" msgid="4754194354806284307">"Fissuras"</string>
+    <string name="cravings_lowercase_label" msgid="5836041614136287213">"fissuras"</string>
     <string name="dehydration_uppercase_label" msgid="10278239942824711">"Desidratação"</string>
     <string name="dehydration_lowercase_label" msgid="8692632632276643276">"desidratação"</string>
     <string name="diarrhea_uppercase_label" msgid="6310170127529968752">"Diarreia"</string>
@@ -1538,8 +1542,8 @@
     <string name="night_sweats_lowercase_label" msgid="5041101323453286082">"suor noturno"</string>
     <string name="pelvic_pain_uppercase_label" msgid="9057761232218571640">"Dor pélvica"</string>
     <string name="pelvic_pain_lowercase_label" msgid="8993103170034473121">"dor pélvica"</string>
-    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"Batimentos rápidos, fortes ou irregulares"</string>
-    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"batimentos rápidos, fortes ou irregulares"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"Batimentos cardíacos rápidos, fortes irregulares"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"batimentos cardíacos rápidos, fortes, irregulares"</string>
     <string name="reduced_capacity_for_exercise_uppercase_label" msgid="7471254320615756463">"Capacidade reduzida para exercícios"</string>
     <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"capacidade reduzida para exercícios"</string>
     <string name="runny_nose_uppercase_label" msgid="6561156187042071551">"Nariz escorrendo"</string>

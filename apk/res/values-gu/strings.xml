@@ -256,6 +256,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"ગર્ભાશયનું શ્લેષ્મ"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"ગર્ભાશયના શ્લેષ્મનો ડેટા વાંચો"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"ગર્ભાશયના શ્લેષ્મનો ડેટા લખો"</string>
+    <string name="cycle_phases_uppercase_label" msgid="1693612101973701017">"ચક્રના તબક્કા"</string>
+    <string name="cycle_phases_lowercase_label" msgid="6513009148778082622">"ચક્રના તબક્કા"</string>
+    <string name="cycle_phases_read_content_description" msgid="1974818937933604194">"ચક્રના તબક્કા વાંચો"</string>
+    <string name="cycle_phases_write_content_description" msgid="8779256196190212513">"ચક્રના તબક્કા લખો"</string>
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"માસિક ચક્ર દરમિયાન કોઈપણ સમયે થતા રક્તસ્રાવનો ડેટા"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"માસિક ચક્ર દરમિયાન કોઈપણ સમયે થતા રક્તસ્રાવનો ડેટા"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"સામાન્ય માસિક ચક્ર સિવાયના, માસિક ચક્ર દરમિયાન કોઈપણ સમયે થતા રક્તસ્રાવનો ડેટા વાંચો"</string>
@@ -1448,8 +1452,8 @@
     <string name="mood_change_write_content_description" msgid="7613564641235985120">"મનોવિકાર પર આધારિત ડેટા લખવા સંબંધિત પરવાનગીઓ"</string>
     <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"યાદશક્તિમાં ઘટાડા પર આધારિત ડેટા વાંચવા સંબંધિત પરવાનગીઓ"</string>
     <string name="memory_lapse_write_content_description" msgid="211569063190179476">"યાદશક્તિમાં ઘટાડા પર આધારિત ડેટા લખવા સંબંધિત પરવાનગીઓ"</string>
-    <string name="sleepiness_read_content_description" msgid="797381777988304669">"નિંદ્રા પર આધારિત ડેટા વાંચવા સંબંધિત પરવાનગીઓ"</string>
-    <string name="sleepiness_write_content_description" msgid="888236364245216476">"નિંદ્રા પર આધારિત ડેટા લખવા સંબંધિત પરવાનગીઓ"</string>
+    <string name="sleepiness_read_content_description" msgid="797381777988304669">"નિંદ્રા રોગ પર આધારિત ડેટા વાંચવા સંબંધિત પરવાનગીઓ"</string>
+    <string name="sleepiness_write_content_description" msgid="888236364245216476">"નિંદ્રા રોગ પર આધારિત ડેટા લખવા સંબંધિત પરવાનગીઓ"</string>
     <string name="sleep_changes_read_content_description" msgid="277237231470749744">"ઊંઘના વિકાર પર આધારિત ડેટા વાંચવા સંબંધિત પરવાનગીઓ"</string>
     <string name="sleep_changes_write_content_description" msgid="9078270254664653838">"ઊંઘના વિકાર પર આધારિત ડેટા લખવા સંબંધિત પરવાનગીઓ"</string>
     <string name="insomnia_read_content_description" msgid="5225449618972721129">"અનિદ્રા પર આધારિત ડેટા વાંચવા સંબંધિત પરવાનગીઓ"</string>

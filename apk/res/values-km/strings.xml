@@ -256,6 +256,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"ទឹករំអិល​មាត់ស្បូន"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"អានទឹករំអិល​មាត់ស្បូន"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"សរសេរទឹករំអិល​មាត់ស្បូន"</string>
+    <string name="cycle_phases_uppercase_label" msgid="1693612101973701017">"ដំណាក់កាលនៃវដ្ដរដូវ"</string>
+    <string name="cycle_phases_lowercase_label" msgid="6513009148778082622">"ដំណាក់កាលនៃវដ្ដរដូវ"</string>
+    <string name="cycle_phases_read_content_description" msgid="1974818937933604194">"អានដំណាក់កាលវដ្ដ"</string>
+    <string name="cycle_phases_write_content_description" msgid="8779256196190212513">"សរសេរដំណាក់កាលវដ្ដរដូវ"</string>
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"ទិន្នន័យការហូរឈាមរដូវ"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"ទិន្នន័យការហូរឈាមរដូវ"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"អានទិន្នន័យការហូរឈាមរដូវ"</string>

@@ -256,6 +256,14 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"umetokiaren lepoko mukia"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"Irakurri umetokiaren lepoko mukiari buruzko datuak"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"Idatzi umetokiaren lepoko mukiari buruzko datuak"</string>
+    <!-- no translation found for cycle_phases_uppercase_label (1693612101973701017) -->
+    <skip />
+    <!-- no translation found for cycle_phases_lowercase_label (6513009148778082622) -->
+    <skip />
+    <!-- no translation found for cycle_phases_read_content_description (1974818937933604194) -->
+    <skip />
+    <!-- no translation found for cycle_phases_write_content_description (8779256196190212513) -->
+    <skip />
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"Hilekoen arteko odola"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"hilekoen arteko odola"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Irakurri hilekoen arteko odolari buruzko datuak"</string>
@@ -1372,8 +1380,8 @@
     <string name="constipation_write_content_description" msgid="9059835998017996999">"Idatzi idorreriari buruzko datuak"</string>
     <string name="diarrhea_read_content_description" msgid="6643311788778713543">"Irakurri beherakoari buruzko datuak"</string>
     <string name="diarrhea_write_content_description" msgid="2525160401458506448">"Idatzi beherakoari buruzko datuak"</string>
-    <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"Irakurri gose ezari buruzko datuak"</string>
-    <string name="loss_of_appetite_write_content_description" msgid="7370817778828856877">"Idatzi gose ezari buruzko datuak"</string>
+    <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"Irakurri goserik ezari buruzko datuak"</string>
+    <string name="loss_of_appetite_write_content_description" msgid="7370817778828856877">"Idatzi goserik ezari buruzko datuak"</string>
     <string name="nausea_read_content_description" msgid="7696809485706809234">"Irakurri goragaleari buruzko datuak"</string>
     <string name="nausea_write_content_description" msgid="7956853318058549079">"Idatzi goragaleari buruzko datuak"</string>
     <string name="stomach_ache_read_content_description" msgid="6960461949095524373">"Irakurri tripako minari buruzko datuak"</string>
@@ -1418,8 +1426,8 @@
     <string name="stuffy_nose_write_content_description" msgid="6950875986047625521">"Idatzi sudurreko kongestioari buruzko datuak"</string>
     <string name="back_pain_read_content_description" msgid="1176155927269014089">"Irakurri bizkarreko minari buruzko datuak"</string>
     <string name="back_pain_write_content_description" msgid="6282959987099901645">"Idatzi bizkarreko minari buruzko datuak"</string>
-    <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"Irakurri bizkarraren behealdeko minari buruzko datuak"</string>
-    <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"Idatzi bizkarraren behealdeko minari buruzko datuak"</string>
+    <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"Irakurri lunbagoari buruzko datuak"</string>
+    <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"Idatzi lunbagoari buruzko datuak"</string>
     <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"Irakurri beroaldiei buruzko datuak"</string>
     <string name="hot_flashes_write_content_description" msgid="441093768815039294">"Idatzi beroaldiei buruzko datuak"</string>
     <string name="night_sweats_read_content_description" msgid="7644094250441074129">"Irakurri gaueko izerdiei buruzko datuak"</string>
@@ -1430,8 +1438,8 @@
     <string name="cravings_write_content_description" msgid="7932335159387976333">"Idatzi apetei buruzko datuak"</string>
     <string name="bloating_read_content_description" msgid="8942780558464500997">"Irakurri hanturari buruzko datuak"</string>
     <string name="bloating_write_content_description" msgid="5014366726518564943">"Idatzi hanturari buruzko datuak"</string>
-    <string name="cramps_read_content_description" msgid="5853663240074256855">"Irakurri arranpari buruzko datuak"</string>
-    <string name="cramps_write_content_description" msgid="6777230560926849939">"Idatzi arranpari buruzko datuak"</string>
+    <string name="cramps_read_content_description" msgid="5853663240074256855">"Irakurri arranpei buruzko datuak"</string>
+    <string name="cramps_write_content_description" msgid="6777230560926849939">"Idatzi arranpei buruzko datuak"</string>
     <string name="abdominal_pain_read_content_description" msgid="6331928351160142817">"Irakurri sabeleko minari buruzko datuak"</string>
     <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"Idatzi sabeleko minari buruzko datuak"</string>
     <string name="breast_tenderness_read_content_description" msgid="1556133668276886256">"Irakurri bularretako oinazeari buruzko datuak"</string>
@@ -1482,8 +1490,8 @@
     <string name="constipation_lowercase_label" msgid="6217542866033766747">"idorreria"</string>
     <string name="cough_uppercase_label" msgid="5570609736970603012">"Eztula"</string>
     <string name="cough_lowercase_label" msgid="459638956679172779">"eztula"</string>
-    <string name="cramps_uppercase_label" msgid="5162905309136173937">"Arranpa"</string>
-    <string name="cramps_lowercase_label" msgid="4644485808002493449">"arranpa"</string>
+    <string name="cramps_uppercase_label" msgid="5162905309136173937">"Arranpak"</string>
+    <string name="cramps_lowercase_label" msgid="4644485808002493449">"arranpak"</string>
     <string name="cravings_uppercase_label" msgid="4754194354806284307">"Apetak"</string>
     <string name="cravings_lowercase_label" msgid="5836041614136287213">"apetak"</string>
     <string name="dehydration_uppercase_label" msgid="10278239942824711">"Deshidratazioa"</string>
@@ -1520,12 +1528,12 @@
     <string name="joint_pain_lowercase_label" msgid="1877680075365305488">"artikulazioetako mina"</string>
     <string name="joint_stiffness_uppercase_label" msgid="5230114867081881444">"Artikulazioen zurruntasuna"</string>
     <string name="joint_stiffness_lowercase_label" msgid="8766445235392409480">"artikulazioen zurruntasuna"</string>
-    <string name="loss_of_appetite_uppercase_label" msgid="4023141061302523950">"Gose eza"</string>
-    <string name="loss_of_appetite_lowercase_label" msgid="7558077308061468558">"gose eza"</string>
+    <string name="loss_of_appetite_uppercase_label" msgid="4023141061302523950">"Goserik eza"</string>
+    <string name="loss_of_appetite_lowercase_label" msgid="7558077308061468558">"goserik eza"</string>
     <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"Konortea galtzea"</string>
     <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"konortea galtzea"</string>
-    <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"Bizkarraren behealdeko mina"</string>
-    <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"bizkarraren behealdeko mina"</string>
+    <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"Lunbagoa"</string>
+    <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"lunbagoa"</string>
     <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"Oroimen-lapsusak"</string>
     <string name="memory_lapse_lowercase_label" msgid="5590619293782264318">"oroimen-lapsusak"</string>
     <string name="mood_change_uppercase_label" msgid="6591596468077187132">"Aldarte-aldaketa"</string>

@@ -256,6 +256,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"子宮頸管粘液"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"子宮頸管粘液の読み取り"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"子宮頸管粘液の書き込み"</string>
+    <string name="cycle_phases_uppercase_label" msgid="1693612101973701017">"月経周期"</string>
+    <string name="cycle_phases_lowercase_label" msgid="6513009148778082622">"月経周期"</string>
+    <string name="cycle_phases_read_content_description" msgid="1974818937933604194">"月経周期の読み取り"</string>
+    <string name="cycle_phases_write_content_description" msgid="8779256196190212513">"月経周期の書き込み"</string>
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"中間期出血"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"中間期出血"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"中間期出血を読み取る"</string>

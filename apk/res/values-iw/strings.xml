@@ -256,6 +256,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"ריר צוואר הרחם"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"קריאה של נתוני ריר צוואר הרחם"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"כתיבה של נתוני ריר צוואר הרחם"</string>
+    <string name="cycle_phases_uppercase_label" msgid="1693612101973701017">"שלבי המחזור"</string>
+    <string name="cycle_phases_lowercase_label" msgid="6513009148778082622">"שלבי המחזור"</string>
+    <string name="cycle_phases_read_content_description" msgid="1974818937933604194">"קריאה של נתוני שלבי המחזור"</string>
+    <string name="cycle_phases_write_content_description" msgid="8779256196190212513">"כתיבה של נתוני שלבי המחזור"</string>
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"דימום בין וסתי"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"דימום בין וסתי"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"קריאה של נתוני הדימום הבין וסתי"</string>
@@ -1350,8 +1354,8 @@
     <string name="dehydration_write_content_description" msgid="541514183036921571">"כתיבה של נתוני ההתייבשות"</string>
     <string name="dry_skin_read_content_description" msgid="6798683159412202977">"קריאה של נתוני העור היבש"</string>
     <string name="dry_skin_write_content_description" msgid="1312998001092991619">"כתיבה של נתוני העור היבש"</string>
-    <string name="fever_read_content_description" msgid="3385209639730909489">"קריאה של נתוני מצב החום"</string>
-    <string name="fever_write_content_description" msgid="8440573327719878961">"כתיבה של נתוני מצב החום"</string>
+    <string name="fever_read_content_description" msgid="3385209639730909489">"קריאה של טמפרטורת הגוף"</string>
+    <string name="fever_write_content_description" msgid="8440573327719878961">"כתיבה של טמפרטורת הגוף"</string>
     <string name="joint_pain_read_content_description" msgid="2932523124488927967">"קריאה של נתוני כאבי המפרקים"</string>
     <string name="joint_pain_write_content_description" msgid="7405551860978844535">"כתיבה של נתוני כאבי המפרקים"</string>
     <string name="joint_stiffness_read_content_description" msgid="2132696730582070534">"קריאה של נתוני הנוקשות במפרקים"</string>
@@ -1366,10 +1370,10 @@
     <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"כתיבה של נתוני השינויים הלא מוסברים במשקל"</string>
     <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"קריאה של נתוני הכאבים הכלליים בגוף"</string>
     <string name="generalized_body_ache_write_content_description" msgid="4282920161878530009">"כתיבה של נתוני הכאבים הכלליים בגוף"</string>
-    <string name="fatigue_read_content_description" msgid="8447413794808220408">"קריאה של נתוני העייפות"</string>
-    <string name="fatigue_write_content_description" msgid="3000326883358951973">"כתיבה של נתוני העייפות"</string>
-    <string name="constipation_read_content_description" msgid="4024154136010015370">"קריאה של נתוני העצירות"</string>
-    <string name="constipation_write_content_description" msgid="9059835998017996999">"כתיבה של נתוני העצירות"</string>
+    <string name="fatigue_read_content_description" msgid="8447413794808220408">"קריאה של נתוני העייפוּת"</string>
+    <string name="fatigue_write_content_description" msgid="3000326883358951973">"כתיבה של נתוני העייפוּת"</string>
+    <string name="constipation_read_content_description" msgid="4024154136010015370">"קריאה של נתוני העצירוּת"</string>
+    <string name="constipation_write_content_description" msgid="9059835998017996999">"כתיבה של נתוני העצירוּת"</string>
     <string name="diarrhea_read_content_description" msgid="6643311788778713543">"קריאה של נתוני השלשול"</string>
     <string name="diarrhea_write_content_description" msgid="2525160401458506448">"כתיבה של נתוני השלשול"</string>
     <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"קריאה של נתוני אובדן התיאבון"</string>
@@ -1478,8 +1482,8 @@
     <string name="chest_tightness_lowercase_label" msgid="1770063390635610292">"תחושת לחץ בחזה"</string>
     <string name="chills_uppercase_label" msgid="4320786490882838834">"צמרמורות"</string>
     <string name="chills_lowercase_label" msgid="1306612496314055832">"צמרמורות"</string>
-    <string name="constipation_uppercase_label" msgid="7245001778443725742">"עצירות"</string>
-    <string name="constipation_lowercase_label" msgid="6217542866033766747">"עצירות"</string>
+    <string name="constipation_uppercase_label" msgid="7245001778443725742">"עצירוּת"</string>
+    <string name="constipation_lowercase_label" msgid="6217542866033766747">"עצירוּת"</string>
     <string name="cough_uppercase_label" msgid="5570609736970603012">"שיעול"</string>
     <string name="cough_lowercase_label" msgid="459638956679172779">"שיעול"</string>
     <string name="cramps_uppercase_label" msgid="5162905309136173937">"התכווצויות"</string>
@@ -1498,10 +1502,10 @@
     <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"עור יבש"</string>
     <string name="earaches_uppercase_label" msgid="107701950625572701">"כאבי אוזניים"</string>
     <string name="earaches_lowercase_label" msgid="6240790850403958317">"כאבי אוזניים"</string>
-    <string name="fatigue_uppercase_label" msgid="7514286788083426578">"עייפות"</string>
-    <string name="fatigue_lowercase_label" msgid="2669560685808367387">"עייפות"</string>
-    <string name="fever_uppercase_label" msgid="6889273008212535253">"מצב החום"</string>
-    <string name="fever_lowercase_label" msgid="3634400562894397159">"מצב החום"</string>
+    <string name="fatigue_uppercase_label" msgid="7514286788083426578">"עייפוּת"</string>
+    <string name="fatigue_lowercase_label" msgid="2669560685808367387">"עייפוּת"</string>
+    <string name="fever_uppercase_label" msgid="6889273008212535253">"טמפרטורת הגוף"</string>
+    <string name="fever_lowercase_label" msgid="3634400562894397159">"טמפרטורת הגוף"</string>
     <string name="generalized_body_ache_uppercase_label" msgid="2171378172300618053">"כאבים כלליים בגוף"</string>
     <string name="generalized_body_ache_lowercase_label" msgid="1725534000111875030">"כאבים כלליים בגוף"</string>
     <string name="hair_loss_uppercase_label" msgid="6359351347019795813">"נשירת שיער"</string>

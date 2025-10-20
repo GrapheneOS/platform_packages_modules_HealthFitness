@@ -256,6 +256,14 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"宫颈粘液"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"读取宫颈粘液数据"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"写入宫颈粘液数据"</string>
+    <!-- no translation found for cycle_phases_uppercase_label (1693612101973701017) -->
+    <skip />
+    <!-- no translation found for cycle_phases_lowercase_label (6513009148778082622) -->
+    <skip />
+    <!-- no translation found for cycle_phases_read_content_description (1974818937933604194) -->
+    <skip />
+    <!-- no translation found for cycle_phases_write_content_description (8779256196190212513) -->
+    <skip />
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"经间期出血"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"经间期出血"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"读取经间期出血数据"</string>
@@ -1362,8 +1370,8 @@
     <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"写入意识丧失数据"</string>
     <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"读取运动能力下降数据"</string>
     <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"写入运动能力下降数据"</string>
-    <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"读取体重变化不明数据"</string>
-    <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"写入体重变化不明数据"</string>
+    <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"读取不明原因的体重变化数据"</string>
+    <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"写入不明原因的体重变化数据"</string>
     <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"读取全身疼痛数据"</string>
     <string name="generalized_body_ache_write_content_description" msgid="4282920161878530009">"写入全身疼痛数据"</string>
     <string name="fatigue_read_content_description" msgid="8447413794808220408">"读取疲劳数据"</string>
@@ -1388,10 +1396,10 @@
     <string name="cough_write_content_description" msgid="2927943192149715422">"写入咳嗽数据"</string>
     <string name="heart_palpitations_read_content_description" msgid="5830132363981902576">"读取心悸数据"</string>
     <string name="heart_palpitations_write_content_description" msgid="6195434828951874561">"写入心悸数据"</string>
-    <string name="shortness_of_breath_read_content_description" msgid="5285037217314042125">"读取气促数据"</string>
-    <string name="shortness_of_breath_write_content_description" msgid="1812050225998794712">"写入气促数据"</string>
-    <string name="wheezing_read_content_description" msgid="3698103133045395859">"读取气喘数据"</string>
-    <string name="wheezing_write_content_description" msgid="3555234332119025686">"写入气喘数据"</string>
+    <string name="shortness_of_breath_read_content_description" msgid="5285037217314042125">"读取呼吸短促数据"</string>
+    <string name="shortness_of_breath_write_content_description" msgid="1812050225998794712">"写入呼吸短促数据"</string>
+    <string name="wheezing_read_content_description" msgid="3698103133045395859">"读取哮鸣数据"</string>
+    <string name="wheezing_write_content_description" msgid="3555234332119025686">"写入哮鸣数据"</string>
     <string name="heartburn_read_content_description" msgid="4650825508743336439">"读取胃灼热数据"</string>
     <string name="heartburn_write_content_description" msgid="1857706822547818187">"写入胃灼热数据"</string>
     <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"读取漏搏数据"</string>
@@ -1400,8 +1408,8 @@
     <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"写入心跳过快、心跳剧烈或心跳不稳数据"</string>
     <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"读取吞咽困难数据"</string>
     <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"写入吞咽困难数据"</string>
-    <string name="dizziness_read_content_description" msgid="2525565486057144416">"读取眩晕数据"</string>
-    <string name="dizziness_write_content_description" msgid="1875365619054873732">"写入眩晕数据"</string>
+    <string name="dizziness_read_content_description" msgid="2525565486057144416">"读取头晕数据"</string>
+    <string name="dizziness_write_content_description" msgid="1875365619054873732">"写入头晕数据"</string>
     <string name="earaches_read_content_description" msgid="4643142391473401154">"读取耳痛数据"</string>
     <string name="earaches_write_content_description" msgid="3551386029980258801">"写入耳痛数据"</string>
     <string name="hair_loss_read_content_description" msgid="4057044821025872986">"读取脱发数据"</string>
@@ -1492,8 +1500,8 @@
     <string name="diarrhea_lowercase_label" msgid="5938774694742839016">"腹泻"</string>
     <string name="difficulty_swallowing_uppercase_label" msgid="3546617155300878657">"吞咽困难"</string>
     <string name="difficulty_swallowing_lowercase_label" msgid="4980631237611433200">"吞咽困难"</string>
-    <string name="dizziness_uppercase_label" msgid="8129950094459563983">"眩晕"</string>
-    <string name="dizziness_lowercase_label" msgid="3462347558609662379">"眩晕"</string>
+    <string name="dizziness_uppercase_label" msgid="8129950094459563983">"头晕"</string>
+    <string name="dizziness_lowercase_label" msgid="3462347558609662379">"头晕"</string>
     <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"皮肤干燥"</string>
     <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"皮肤干燥"</string>
     <string name="earaches_uppercase_label" msgid="107701950625572701">"耳痛"</string>
@@ -1544,8 +1552,8 @@
     <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"运动能力下降"</string>
     <string name="runny_nose_uppercase_label" msgid="6561156187042071551">"流鼻涕"</string>
     <string name="runny_nose_lowercase_label" msgid="2214697492382685914">"流鼻涕"</string>
-    <string name="shortness_of_breath_uppercase_label" msgid="3747502224212110471">"气促"</string>
-    <string name="shortness_of_breath_lowercase_label" msgid="3970444639088619346">"气促"</string>
+    <string name="shortness_of_breath_uppercase_label" msgid="3747502224212110471">"呼吸短促"</string>
+    <string name="shortness_of_breath_lowercase_label" msgid="3970444639088619346">"呼吸短促"</string>
     <string name="skipped_heartbeat_uppercase_label" msgid="1004040920818222022">"漏搏"</string>
     <string name="skipped_heartbeat_lowercase_label" msgid="2446049805930852514">"漏搏"</string>
     <string name="sleep_changes_uppercase_label" msgid="817870703301327111">"睡眠变化"</string>
@@ -1562,8 +1570,8 @@
     <string name="stomach_ache_lowercase_label" msgid="3263518334946627327">"胃痛"</string>
     <string name="stuffy_nose_uppercase_label" msgid="4216439398397550673">"鼻塞"</string>
     <string name="stuffy_nose_lowercase_label" msgid="346310767340271161">"鼻塞"</string>
-    <string name="unexplained_weight_changes_uppercase_label" msgid="1882204558194305221">"体重变化不明"</string>
-    <string name="unexplained_weight_changes_lowercase_label" msgid="8433998024876395101">"体重变化不明"</string>
+    <string name="unexplained_weight_changes_uppercase_label" msgid="1882204558194305221">"不明原因的体重变化"</string>
+    <string name="unexplained_weight_changes_lowercase_label" msgid="8433998024876395101">"不明原因的体重变化"</string>
     <string name="vaginal_dryness_uppercase_label" msgid="4256721076420375400">"阴道干涩"</string>
     <string name="vaginal_dryness_lowercase_label" msgid="1329282833647595593">"阴道干涩"</string>
     <string name="vaginal_itchiness_uppercase_label" msgid="2843508264503404145">"阴道瘙痒"</string>
@@ -1572,6 +1580,6 @@
     <string name="vomiting_lowercase_label" msgid="2520559377010270583">"呕吐"</string>
     <string name="water_retention_uppercase_label" msgid="4748866467103152119">"水肿"</string>
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"水肿"</string>
-    <string name="wheezing_uppercase_label" msgid="2837114949197811787">"气喘"</string>
-    <string name="wheezing_lowercase_label" msgid="1278548371813007771">"气喘"</string>
+    <string name="wheezing_uppercase_label" msgid="2837114949197811787">"哮鸣"</string>
+    <string name="wheezing_lowercase_label" msgid="1278548371813007771">"哮鸣"</string>
 </resources>
