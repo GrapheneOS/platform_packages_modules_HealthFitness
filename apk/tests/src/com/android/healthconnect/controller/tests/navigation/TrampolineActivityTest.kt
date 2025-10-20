@@ -38,15 +38,9 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso.onIdle
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.alldata.AllDataViewModel
 import com.android.healthconnect.controller.data.appdata.PermissionTypesPerCategory
 import com.android.healthconnect.controller.exportimport.api.ExportStatusViewModel
@@ -81,7 +75,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
-import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthfitness.flags.Flags
@@ -133,7 +126,6 @@ class TrampolineActivityTest {
             .getUiAutomation()
             .adoptShellPermissionIdentity(Manifest.permission.READ_DEVICE_CONFIG)
 
-        showOnboarding(context, show = false)
         (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(true)
 
         // Disable migration to show MainActivity and DataManagementActivity
@@ -280,28 +272,6 @@ class TrampolineActivityTest {
             ->
             onIdle()
             assertEquals(Lifecycle.State.DESTROYED, scenario.state)
-        }
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_REMOVE_OLD_ONBOARDING)
-    fun homeSettingsAction_onboardingNotDone_redirectsToOnboarding() {
-        showOnboarding(context, true)
-
-        launchActivityForResult<TrampolineActivity>(createStartIntent()).use {
-            onIdle()
-            onView(withId(R.id.onboarding)).check(matches(isDisplayed()))
-        }
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_REMOVE_OLD_ONBOARDING)
-    fun homeSettingsAction_onboardingNotDone_onboardingFlagOn_hidesOnboarding() {
-        showOnboarding(context, true)
-
-        launchActivityForResult<TrampolineActivity>(createStartIntent()).use {
-            onIdle()
-            onView(withId(R.id.onboarding)).check((doesNotExist()))
         }
     }
 

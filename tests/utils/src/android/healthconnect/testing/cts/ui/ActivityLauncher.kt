@@ -21,8 +21,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.health.connect.HealthConnectManager
+import android.healthconnect.testing.cts.ui.UiTestUtils.pressBack
+import android.healthconnect.testing.cts.ui.UiTestUtils.waitDataActivityDisplayed
+import android.healthconnect.testing.cts.ui.UiTestUtils.waitForIdle
+import android.healthconnect.testing.cts.ui.UiTestUtils.waitHomeScreenDisplayed
+import android.healthconnect.testing.cts.ui.UiTestUtils.waitManageHealthPermissionActivityDisplayed
+import android.healthconnect.testing.cts.ui.UiTestUtils.waitRequestPermissionsDisplayed
 import com.android.compatibility.common.util.SystemUtil
-import com.android.compatibility.common.util.UiAutomatorUtils2
 
 /** A class that provides a way to launch the Health Connect [MainActivity] in tests. */
 object ActivityLauncher {
@@ -34,7 +39,8 @@ object ActivityLauncher {
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         executeBlockAndExit(block) {
             startActivity(intent)
-            UiTestUtils.skipOnboardingIfAppears()
+            waitForIdle()
+            waitHomeScreenDisplayed()
         }
     }
 
@@ -45,7 +51,8 @@ object ActivityLauncher {
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         executeBlockAndExit(block) {
             startActivity(intent)
-            UiTestUtils.skipOnboardingIfAppears()
+            waitForIdle()
+            waitDataActivityDisplayed()
         }
     }
 
@@ -65,7 +72,8 @@ object ActivityLauncher {
             SystemUtil.runWithShellPermissionIdentity(
                 {
                     startActivity(intent)
-                    UiTestUtils.skipOnboardingIfAppears()
+                    waitForIdle()
+                    waitRequestPermissionsDisplayed()
                 },
                 Manifest.permission.GRANT_RUNTIME_PERMISSIONS,
             )
@@ -81,7 +89,8 @@ object ActivityLauncher {
             SystemUtil.runWithShellPermissionIdentity(
                 {
                     startActivity(intent)
-                    UiTestUtils.skipOnboardingIfAppears()
+                    waitForIdle()
+                    waitManageHealthPermissionActivityDisplayed()
                 },
                 Manifest.permission.GRANT_RUNTIME_PERMISSIONS,
             )
@@ -89,12 +98,11 @@ object ActivityLauncher {
     }
 
     private fun executeBlockAndExit(block: () -> Unit, launchActivity: () -> Unit) {
-        val uiDevice = UiAutomatorUtils2.getUiDevice()
-        uiDevice.waitForIdle()
+        waitForIdle()
         launchActivity()
-        uiDevice.waitForIdle()
+        waitForIdle()
         block()
-        uiDevice.pressBack()
-        uiDevice.waitForIdle()
+        pressBack()
+        waitForIdle()
     }
 }

@@ -103,6 +103,30 @@ object UiTestUtils {
         }
     }
 
+    fun waitHomeScreenDisplayed(waitTimeout: Duration = WAIT_TIMEOUT) {
+        waitDisplayed(
+            selector =
+                if (newHomeScreen()) {
+                    By.text("Your health apps")
+                } else {
+                    By.text("Recent access")
+                },
+            waitTimeout = waitTimeout,
+        )
+    }
+
+    fun waitDataActivityDisplayed(waitTimeout: Duration = WAIT_TIMEOUT) {
+        waitDisplayed(selector = By.desc("Data sources and priority"), waitTimeout = waitTimeout)
+    }
+
+    fun waitRequestPermissionsDisplayed(waitTimeout: Duration = WAIT_TIMEOUT) {
+        waitDisplayed(selector = By.textContains("to access"), waitTimeout = waitTimeout)
+    }
+
+    fun waitManageHealthPermissionActivityDisplayed(waitTimeout: Duration = WAIT_TIMEOUT) {
+        waitDisplayed(selector = By.textContains("Allowed access"), waitTimeout = waitTimeout)
+    }
+
     /**
      * Returns an object if it's visible on the screen or returns null otherwise.
      *
@@ -330,24 +354,6 @@ object UiTestUtils {
         findTextContains(text)
     }
 
-    fun skipOnboardingIfAppears() {
-        UiAutomatorUtils2.getUiDevice().waitForIdle()
-
-        val getStartedButton =
-            findObjectWithRetry({ _ -> findObjectOrNull(By.text("Get started")) })
-        if (getStartedButton != null) {
-            clickOnTextAndWaitForNewWindow("Get started")
-        } else {
-            val getStartedButton2 =
-                findObjectWithRetry({ _ -> findObjectOrNull(By.text("GET STARTED")) })
-            if (getStartedButton2 != null) {
-                clickOnTextAndWaitForNewWindow("GET STARTED")
-            } else {
-                Log.i(TAG, "No onboarding button found!")
-            }
-        }
-    }
-
     /** Clicks on [UiObject2] with given [text]. */
     fun clickOnText(string: String) {
         waitDisplayed(By.text(string)) { it.click() }
@@ -394,6 +400,14 @@ object UiTestUtils {
         }
         freezeRotation()
         waitForIdle()
+    }
+
+    fun waitForIdle() {
+        UiAutomatorUtils2.getUiDevice().waitForIdle()
+    }
+
+    fun pressBack() {
+        UiAutomatorUtils2.getUiDevice().pressBack()
     }
 
     private fun findObjectWithRetry(

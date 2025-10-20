@@ -39,8 +39,6 @@ import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
-import com.android.healthconnect.controller.onboarding.OnboardingActivity
-import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.shouldRedirectToOnboardingActivity
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.permissions.request.wear.WearGrantPermissionsActivity
 import com.android.healthconnect.controller.shared.HealthPermissionReader
@@ -138,11 +136,6 @@ class PermissionsActivity :
 
         // Some actions don't apply to apps that get health permissions via split-permission.
         if (!healthPermissionReader.isBodySensorSplitPermissionApp(getPackageNameExtra())) {
-            // Check if we need to show onboarding screen.
-            if (savedInstanceState == null && shouldRedirectToOnboardingActivity(this)) {
-                openOnboardingActivity.launch(OnboardingActivity.createIntent(this))
-            }
-
             // Check that app has declared rationale intent.
             val rationaleIntentDeclared =
                 healthPermissionReader.isRationaleIntentDeclared(getPackageNameExtra())

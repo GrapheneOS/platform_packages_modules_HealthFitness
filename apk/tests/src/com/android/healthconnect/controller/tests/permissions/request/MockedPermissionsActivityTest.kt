@@ -82,7 +82,6 @@ import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
-import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
@@ -186,7 +185,6 @@ class MockedPermissionsActivityTest {
 
         whenever(healthPermissionReader.isRationaleIntentDeclared(anyString())).thenReturn(true)
         (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(true)
-        showOnboarding(context, false)
     }
 
     @After
