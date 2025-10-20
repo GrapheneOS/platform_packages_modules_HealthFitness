@@ -131,15 +131,13 @@ public final class BackupRestore {
     @VisibleForTesting
     static final long DATA_MERGING_RETRY_DELAY_MILLIS = 12 * DateUtils.HOUR_IN_MILLIS;
 
-    // Used in #setOverrideDeadline to set a minimum window of 24 hours. See b/311402873,
-    // b/319721118
-    @VisibleForTesting
-    static final long MINIMUM_LATENCY_WINDOW_MILLIS = 24 * DateUtils.HOUR_IN_MILLIS;
+    @VisibleForTesting static final long DATA_MERGING_DELAY_MILLIS = 5 * DateUtils.MINUTE_IN_MILLIS;
 
     @VisibleForTesting static final String DATA_DOWNLOAD_TIMEOUT_KEY = "data_download_timeout_key";
 
     @VisibleForTesting static final String DATA_STAGING_TIMEOUT_KEY = "data_staging_timeout_key";
     @VisibleForTesting static final String DATA_MERGING_TIMEOUT_KEY = "data_merging_timeout_key";
+    @VisibleForTesting static final String DATA_MERGING_KEY = "data_merging_key";
 
     @VisibleForTesting
     static final String DATA_DOWNLOAD_TIMEOUT_CANCELLED_KEY = "data_download_timeout_cancelled_key";
@@ -150,9 +148,7 @@ public final class BackupRestore {
     @VisibleForTesting
     static final String DATA_MERGING_TIMEOUT_CANCELLED_KEY = "data_merging_timeout_cancelled_key";
 
-    @VisibleForTesting static final String DATA_MERGING_RETRY_KEY = "data_merging_retry_key";
-    private static final String DATA_MERGING_RETRY_CANCELLED_KEY =
-            "data_merging_retry_cancelled_key";
+    private static final String DATA_MERGING_CANCELLED_KEY = "data_merging_cancelled_key";
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
@@ -541,13 +537,18 @@ public final class BackupRestore {
         scheduleStagingTimeoutJob();
         scheduleMergingTimeoutJob();
 
-        // We can schedule "retry merging" only if we are in the STAGING_DONE state.  However, if we
-        // are in STAGING_DONE state, then we should definitely attempt merging now - and that's
-        // what we will do below.
-        // So, there's no point in scheduling a "retry merging" job.  If Migration is going on then
-        // the merge attempt will take care of that automatically (and schedule the retry job as
-        // needed).
-        triggerMergingIfApplicable();
+        // We schedule merging job to avoid strain on server on device boot.
+        // If Migration is going on then the merge attempt will take care of that automatically
+        // (and schedule the retry job if needed).
+        if (shouldAttemptMerging()) {
+            Slog.i(TAG, "Attempting merging.");
+            // Remove the timeouts from the disk to ensure we do not use a previous timer as it
+            // will begin the merge process early and increase chances of a boot loop.
+            mPreferenceHelper.insertOrReplacePreference(DATA_MERGING_KEY, "");
+            mPreferenceHelper.insertOrReplacePreference(DATA_MERGING_CANCELLED_KEY, "");
+            setInternalRestoreState(INTERNAL_RESTORE_STATE_STAGING_DONE, true);
+            scheduleMergingJob(DATA_MERGING_DELAY_MILLIS);
+        }
     }
 
     /** Cancel all the jobs and sets the cancelled time. */
@@ -556,7 +557,7 @@ public final class BackupRestore {
         setJobCancelledTimeIfExists(DATA_DOWNLOAD_TIMEOUT_KEY, DATA_DOWNLOAD_TIMEOUT_CANCELLED_KEY);
         setJobCancelledTimeIfExists(DATA_STAGING_TIMEOUT_KEY, DATA_STAGING_TIMEOUT_CANCELLED_KEY);
         setJobCancelledTimeIfExists(DATA_MERGING_TIMEOUT_KEY, DATA_MERGING_TIMEOUT_CANCELLED_KEY);
-        setJobCancelledTimeIfExists(DATA_MERGING_RETRY_KEY, DATA_MERGING_RETRY_CANCELLED_KEY);
+        setJobCancelledTimeIfExists(DATA_MERGING_KEY, DATA_MERGING_CANCELLED_KEY);
     }
 
     public UserHandle getCurrentUserHandle() {
@@ -625,7 +626,7 @@ public final class BackupRestore {
             case DATA_DOWNLOAD_TIMEOUT_KEY -> executeDownloadStateTimeoutJob();
             case DATA_STAGING_TIMEOUT_KEY -> executeStagingTimeoutJob();
             case DATA_MERGING_TIMEOUT_KEY -> executeMergingTimeoutJob();
-            case DATA_MERGING_RETRY_KEY -> executeRetryMergingJob();
+            case DATA_MERGING_KEY -> executeMergingJob();
             default -> Slog.w(TAG, "Unknown job" + jobName + " delivered.");
         }
         // None of the jobs want to reschedule.
@@ -654,7 +655,8 @@ public final class BackupRestore {
 
         if (mMigrationStateManager.isMigrationInProgress()) {
             Slog.i(TAG, "Not merging as Migration in progress.");
-            scheduleRetryMergingJob();
+            // Reschedule merging job with a delay
+            scheduleMergingJob(DATA_MERGING_RETRY_DELAY_MILLIS);
             return;
         }
 
@@ -805,8 +807,7 @@ public final class BackupRestore {
                                 BackupRestoreJobService.BACKUP_RESTORE_JOB_ID + userId,
                                 new ComponentName(mContext, BackupRestoreJobService.class))
                         .setExtras(extras)
-                        .setMinimumLatency(timeoutMillis)
-                        .setOverrideDeadline(timeoutMillis + MINIMUM_LATENCY_WINDOW_MILLIS);
+                        .setMinimumLatency(timeoutMillis);
         Slog.i(
                 TAG,
                 "Scheduling download state timeout job with period: " + timeoutMillis + " millis");
@@ -861,8 +862,7 @@ public final class BackupRestore {
                                 BackupRestoreJobService.BACKUP_RESTORE_JOB_ID + userId,
                                 new ComponentName(mContext, BackupRestoreJobService.class))
                         .setExtras(extras)
-                        .setMinimumLatency(timeoutMillis)
-                        .setOverrideDeadline(timeoutMillis + MINIMUM_LATENCY_WINDOW_MILLIS);
+                        .setMinimumLatency(timeoutMillis);
         Slog.i(TAG, "Scheduling staging timeout job with period: " + timeoutMillis + " millis");
         mJobScheduler.schedule(mContext, jobInfoBuilder.build(), this);
 
@@ -914,8 +914,7 @@ public final class BackupRestore {
                                 BackupRestoreJobService.BACKUP_RESTORE_JOB_ID + userId,
                                 new ComponentName(mContext, BackupRestoreJobService.class))
                         .setExtras(extras)
-                        .setMinimumLatency(timeoutMillis)
-                        .setOverrideDeadline(timeoutMillis + MINIMUM_LATENCY_WINDOW_MILLIS);
+                        .setMinimumLatency(timeoutMillis);
         Slog.i(TAG, "Scheduling merging timeout job with period: " + timeoutMillis + " millis");
         mJobScheduler.schedule(mContext, jobInfoBuilder.build(), this);
 
@@ -938,7 +937,7 @@ public final class BackupRestore {
         }
     }
 
-    private void scheduleRetryMergingJob() {
+    private void scheduleMergingJob(long delayMillis) {
         @InternalRestoreState int internalRestoreState = getInternalRestoreState();
         if (internalRestoreState != INTERNAL_RESTORE_STATE_STAGING_DONE) {
             // We can do merging only if we are in the STAGING_DONE state.
@@ -951,55 +950,41 @@ public final class BackupRestore {
         int userId = mCurrentForegroundUser.getIdentifier();
         final PersistableBundle extras = new PersistableBundle();
         extras.putInt(EXTRA_USER_ID, userId);
-        extras.putString(EXTRA_JOB_NAME_KEY, DATA_MERGING_RETRY_KEY);
+        extras.putString(EXTRA_JOB_NAME_KEY, DATA_MERGING_KEY);
 
-        // We might be here because the device rebooted or the user switched. If a timer was already
-        // going on then we want to continue that timer.
+        // If a timer was already going on then we want to continue that timer. A timer will only
+        // already be going when retrying after merging fails due to a concurrent migration.
         long timeoutMillis =
                 getRemainingTimeoutMillis(
-                        DATA_MERGING_RETRY_KEY,
-                        DATA_MERGING_RETRY_CANCELLED_KEY,
-                        DATA_MERGING_RETRY_DELAY_MILLIS);
+                        DATA_MERGING_KEY, DATA_MERGING_CANCELLED_KEY, delayMillis);
         JobInfo.Builder jobInfoBuilder =
                 new JobInfo.Builder(
                                 BackupRestoreJobService.BACKUP_RESTORE_JOB_ID + userId,
                                 new ComponentName(mContext, BackupRestoreJobService.class))
                         .setExtras(extras)
-                        .setMinimumLatency(timeoutMillis)
-                        .setOverrideDeadline(timeoutMillis + MINIMUM_LATENCY_WINDOW_MILLIS);
+                        .setMinimumLatency(timeoutMillis);
         Slog.i(TAG, "Scheduling retry merging job with period: " + timeoutMillis + " millis");
         mJobScheduler.schedule(mContext, jobInfoBuilder.build(), this);
 
         // Set the start time
         mPreferenceHelper.insertOrReplacePreference(
-                DATA_MERGING_RETRY_KEY, Long.toString(Instant.now().toEpochMilli()));
+                DATA_MERGING_KEY, Long.toString(Instant.now().toEpochMilli()));
     }
 
-    private void executeRetryMergingJob() {
+    private void executeMergingJob() {
         @InternalRestoreState int internalRestoreState = getInternalRestoreState();
         if (internalRestoreState == INTERNAL_RESTORE_STATE_STAGING_DONE) {
-            Slog.i(TAG, "Retrying merging");
+            Slog.i(TAG, "Executing merging job");
             merge();
 
             if (getInternalRestoreState() == INTERNAL_RESTORE_STATE_MERGING_DONE) {
                 // Remove the remaining timeouts from the disk
-                mPreferenceHelper.insertOrReplacePreference(DATA_MERGING_RETRY_KEY, "");
-                mPreferenceHelper.insertOrReplacePreference(DATA_MERGING_RETRY_CANCELLED_KEY, "");
+                mPreferenceHelper.insertOrReplacePreference(DATA_MERGING_KEY, "");
+                mPreferenceHelper.insertOrReplacePreference(DATA_MERGING_CANCELLED_KEY, "");
             }
         } else {
-            Slog.i(TAG, "Merging retry job fired in state: " + internalRestoreState);
+            Slog.i(TAG, "Merging job fired in state: " + internalRestoreState);
         }
-    }
-
-    private void triggerMergingIfApplicable() {
-        mThreadScheduler.scheduleInternalTask(
-                () -> {
-                    if (shouldAttemptMerging()) {
-                        Slog.i(TAG, "Attempting merging.");
-                        setInternalRestoreState(INTERNAL_RESTORE_STATE_STAGING_DONE, true);
-                        merge();
-                    }
-                });
     }
 
     private long getRemainingTimeoutMillis(

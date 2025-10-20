@@ -31,8 +31,9 @@ import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_TIMEOUT_CANCELLED_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_TIMEOUT_INTERVAL_MILLIS;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_TIMEOUT_KEY;
+import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_MERGING_DELAY_MILLIS;
+import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_MERGING_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_MERGING_RETRY_DELAY_MILLIS;
-import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_MERGING_RETRY_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_MERGING_TIMEOUT_CANCELLED_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_MERGING_TIMEOUT_INTERVAL_MILLIS;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_MERGING_TIMEOUT_KEY;
@@ -47,7 +48,6 @@ import static com.android.server.healthconnect.backuprestore.BackupRestore.INTER
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_STAGING_DONE;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING;
-import static com.android.server.healthconnect.backuprestore.BackupRestore.MINIMUM_LATENCY_WINDOW_MILLIS;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.STAGED_DATABASE_DIR;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.STAGED_DATABASE_NAME;
 
@@ -111,7 +111,6 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /** Unit test for class {@link BackupRestore} */
 @RunWith(AndroidJUnit4.class)
@@ -368,8 +367,6 @@ public class BackupRestoreTest {
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
 
         assertThat(jobInfo.getMinLatencyMillis()).isEqualTo(DATA_DOWNLOAD_TIMEOUT_INTERVAL_MILLIS);
-        assertThat(jobInfo.getMaxExecutionDelayMillis())
-                .isEqualTo(DATA_DOWNLOAD_TIMEOUT_INTERVAL_MILLIS + MINIMUM_LATENCY_WINDOW_MILLIS);
         assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
                 .isEqualTo(DATA_DOWNLOAD_TIMEOUT_KEY);
     }
@@ -391,7 +388,6 @@ public class BackupRestoreTest {
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
 
         assertThat(jobInfo.getMinLatencyMillis()).isEqualTo(0);
-        assertThat(jobInfo.getMaxExecutionDelayMillis()).isEqualTo(MINIMUM_LATENCY_WINDOW_MILLIS);
         assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
                 .isEqualTo(DATA_DOWNLOAD_TIMEOUT_KEY);
     }
@@ -436,8 +432,6 @@ public class BackupRestoreTest {
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
 
         assertThat(jobInfo.getMinLatencyMillis()).isEqualTo(DATA_STAGING_TIMEOUT_INTERVAL_MILLIS);
-        assertThat(jobInfo.getMaxExecutionDelayMillis())
-                .isEqualTo(DATA_STAGING_TIMEOUT_INTERVAL_MILLIS + MINIMUM_LATENCY_WINDOW_MILLIS);
         assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
                 .isEqualTo(DATA_STAGING_TIMEOUT_KEY);
     }
@@ -459,7 +453,6 @@ public class BackupRestoreTest {
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
 
         assertThat(jobInfo.getMinLatencyMillis()).isEqualTo(0);
-        assertThat(jobInfo.getMaxExecutionDelayMillis()).isEqualTo(MINIMUM_LATENCY_WINDOW_MILLIS);
         assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
                 .isEqualTo(DATA_STAGING_TIMEOUT_KEY);
     }
@@ -474,12 +467,12 @@ public class BackupRestoreTest {
                 .schedule(
                         eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
 
-        JobInfo jobInfo = findMergeTimeoutJob(mJobInfoArgumentCaptor.getAllValues());
+        JobInfo jobInfo = findJob(mJobInfoArgumentCaptor.getAllValues(), DATA_MERGING_TIMEOUT_KEY);
         assertWithMessage("Merging timeout job not found").that(jobInfo).isNotNull();
     }
 
     @Test
-    public void testScheduleAllTimeoutJobs_stagingDone_triggersMergingJob() throws Exception {
+    public void testScheduleAllTimeoutJobs_stagingDone_schedulesMergingJob() throws Exception {
         mFakePreferenceHelper.insertOrReplacePreference(
                 DATA_RESTORE_STATE_KEY, String.valueOf(INTERNAL_RESTORE_STATE_STAGING_DONE));
 
@@ -489,13 +482,13 @@ public class BackupRestoreTest {
 
         mBackupRestore.scheduleAllJobs();
 
-        assertThat(
-                        mFakePreferenceHelper.await(
-                                DATA_RESTORE_STATE_KEY,
-                                String.valueOf(INTERNAL_RESTORE_STATE_MERGING_DONE),
-                                10,
-                                TimeUnit.SECONDS))
-                .isTrue();
+        mBackupRestore.scheduleAllJobs();
+        verify(mBackupRestoreJobScheduler, atLeastOnce())
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
+
+        JobInfo jobInfo = findJob(mJobInfoArgumentCaptor.getAllValues(), DATA_MERGING_KEY);
+        assertWithMessage("Merging timeout job not found").that(jobInfo).isNotNull();
     }
 
     @Test
@@ -508,11 +501,9 @@ public class BackupRestoreTest {
                 .schedule(
                         eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
 
-        JobInfo jobInfo = findMergeTimeoutJob(mJobInfoArgumentCaptor.getAllValues());
+        JobInfo jobInfo = findJob(mJobInfoArgumentCaptor.getAllValues(), DATA_MERGING_TIMEOUT_KEY);
         assertWithMessage("Merging timeout job not found").that(jobInfo).isNotNull();
         assertThat(jobInfo.getMinLatencyMillis()).isEqualTo(DATA_MERGING_TIMEOUT_INTERVAL_MILLIS);
-        assertThat(jobInfo.getMaxExecutionDelayMillis())
-                .isEqualTo(DATA_MERGING_TIMEOUT_INTERVAL_MILLIS + MINIMUM_LATENCY_WINDOW_MILLIS);
     }
 
     @Test
@@ -530,10 +521,9 @@ public class BackupRestoreTest {
                 .schedule(
                         eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
 
-        JobInfo jobInfo = findMergeTimeoutJob(mJobInfoArgumentCaptor.getAllValues());
+        JobInfo jobInfo = findJob(mJobInfoArgumentCaptor.getAllValues(), DATA_MERGING_TIMEOUT_KEY);
         assertWithMessage("Merging timeout job not found").that(jobInfo).isNotNull();
         assertThat(jobInfo.getMinLatencyMillis()).isEqualTo(0);
-        assertThat(jobInfo.getMaxExecutionDelayMillis()).isEqualTo(MINIMUM_LATENCY_WINDOW_MILLIS);
     }
 
     @Test
@@ -543,13 +533,22 @@ public class BackupRestoreTest {
 
         when(mMockMigrationStateManager.isMigrationInProgress()).thenReturn(true);
 
+        // Schedule the first merge job (with 5 min delay)
         mBackupRestore.scheduleAllJobs();
         verify(mBackupRestoreJobScheduler, timeout(2000))
                 .schedule(
                         eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
-        JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
-        assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
-                .isEqualTo(DATA_MERGING_RETRY_KEY);
+        JobInfo firstJobInfo = mJobInfoArgumentCaptor.getValue();
+
+        // Run the first job, which will schedule the second one i.e. when migration in progress
+        mBackupRestore.handleJob(firstJobInfo.getExtras());
+        verify(mBackupRestoreJobScheduler, timeout(2000).times(2))
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
+        JobInfo secondJobInfo = mJobInfoArgumentCaptor.getAllValues().get(1);
+
+        assertThat(secondJobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
+                .isEqualTo(DATA_MERGING_KEY);
     }
 
     @Test
@@ -560,57 +559,98 @@ public class BackupRestoreTest {
 
         when(mMockMigrationStateManager.isMigrationInProgress()).thenReturn(true);
 
+        // Schedule the first merge job (with 5 min delay)
         mBackupRestore.scheduleAllJobs();
         verify(mBackupRestoreJobScheduler, timeout(2000))
                 .schedule(
                         eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
-        JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
-        assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
-                .isEqualTo(DATA_MERGING_RETRY_KEY);
+        JobInfo firstJobInfo = mJobInfoArgumentCaptor.getValue();
+
+        // Run the first job, which will schedule the second one i.e. when migration in progress
+        mBackupRestore.handleJob(firstJobInfo.getExtras());
+        verify(mBackupRestoreJobScheduler, timeout(2000).times(2))
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
+        JobInfo secondJobInfo = mJobInfoArgumentCaptor.getAllValues().get(1);
+
+        assertThat(secondJobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
+                .isEqualTo(DATA_MERGING_KEY);
     }
 
     @Test
-    public void testRetryMergingTimeoutJob_retryLatencyElapsed_usesRetryLatency() {
+    public void testRetryMergingJob_alwaysUsesRetryMergeLatency() {
         mFakePreferenceHelper.insertOrReplacePreference(
                 DATA_RESTORE_STATE_KEY, String.valueOf(INTERNAL_RESTORE_STATE_STAGING_DONE));
 
         when(mMockMigrationStateManager.isMigrationInProgress()).thenReturn(true);
 
+        // Schedule the first merge job (with 5 min delay)
+        mBackupRestore.scheduleAllJobs();
+        verify(mBackupRestoreJobScheduler, timeout(2000))
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
+        JobInfo firstJobInfo = mJobInfoArgumentCaptor.getValue();
+
+        // Run the first job, which will schedule the second one i.e. when migration in progress
+        mBackupRestore.handleJob(firstJobInfo.getExtras());
+        verify(mBackupRestoreJobScheduler, timeout(2000).times(2))
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
+        JobInfo secondJobInfo = mJobInfoArgumentCaptor.getAllValues().get(1);
+
+        // Assert the retry job has the latency is bit below default retry latency
+        // The difference between DATA_MERGING_RETRY_DELAY_MILLIS and min latency would be the time
+        // taken by the merge job to schedule the retry (ideally couple of milliseconds)
+        // Merge and retry are part of same job so it is merge itself is responsible for scheduling
+        // a merge job when migration is in progress.
+        assertThat(secondJobInfo.getMinLatencyMillis()).isLessThan(DATA_MERGING_RETRY_DELAY_MILLIS);
+        assertThat(secondJobInfo.getMinLatencyMillis()).isGreaterThan(0);
+        assertThat(secondJobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
+                .isEqualTo(DATA_MERGING_KEY);
+    }
+
+    @Test
+    public void testMergingJob_usesDefaultLatency() {
+        mFakePreferenceHelper.insertOrReplacePreference(
+                DATA_RESTORE_STATE_KEY, String.valueOf(INTERNAL_RESTORE_STATE_STAGING_DONE));
+        mFakePreferenceHelper.insertOrReplacePreference(
+                DATA_MERGING_KEY, String.valueOf(Instant.now()));
+
+        when(mMockMigrationStateManager.isMigrationInProgress()).thenReturn(true);
+
+        // Schedule the first merge job (with 5 min delay)
         mBackupRestore.scheduleAllJobs();
         verify(mBackupRestoreJobScheduler, timeout(2000))
                 .schedule(
                         eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
 
-        assertThat(jobInfo.getMinLatencyMillis()).isEqualTo(DATA_MERGING_RETRY_DELAY_MILLIS);
-        assertThat(jobInfo.getMaxExecutionDelayMillis())
-                .isEqualTo(DATA_MERGING_RETRY_DELAY_MILLIS + MINIMUM_LATENCY_WINDOW_MILLIS);
-        assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
-                .isEqualTo(DATA_MERGING_RETRY_KEY);
+        assertThat(jobInfo.getMinLatencyMillis()).isEqualTo(DATA_MERGING_DELAY_MILLIS);
+        assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY)).isEqualTo(DATA_MERGING_KEY);
     }
 
     @Test
-    public void testRetryMergingTimeoutJob_retryLatencyElapsed_usesMinimumLatency() {
+    public void testRetryMergingJob_retryLatencyElapsed_usesMinimumLatency() {
         Instant now = Instant.now();
         mFakePreferenceHelper.insertOrReplacePreference(
                 DATA_RESTORE_STATE_KEY, String.valueOf(INTERNAL_RESTORE_STATE_STAGING_DONE));
         mFakePreferenceHelper.insertOrReplacePreference(
-                DATA_MERGING_RETRY_KEY,
+                DATA_MERGING_KEY,
                 String.valueOf(
                         now.minusMillis(DATA_MERGING_TIMEOUT_INTERVAL_MILLIS).toEpochMilli()));
 
         when(mMockMigrationStateManager.isMigrationInProgress()).thenReturn(true);
 
-        mBackupRestore.scheduleAllJobs();
-        verify(mBackupRestoreJobScheduler, timeout(2000))
+        // Call merge directly to avoid reset of merge delay clock and ensure that the retry latency
+        // has elapsed. Scheduling merge again would reset the merge latency.
+        mBackupRestore.merge();
+        verify(mBackupRestoreJobScheduler, timeout(2000).times(1))
                 .schedule(
                         eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
 
         assertThat(jobInfo.getMinLatencyMillis()).isEqualTo(0);
-        assertThat(jobInfo.getMaxExecutionDelayMillis()).isEqualTo(MINIMUM_LATENCY_WINDOW_MILLIS);
-        assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
-                .isEqualTo(DATA_MERGING_RETRY_KEY);
+        assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY)).isEqualTo(DATA_MERGING_KEY);
     }
 
     @Test
@@ -795,8 +835,7 @@ public class BackupRestoreTest {
                 .schedule(
                         eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
-        assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
-                .isEqualTo(DATA_MERGING_RETRY_KEY);
+        assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY)).isEqualTo(DATA_MERGING_KEY);
         verify(mFirstGrantTimeManager, never())
                 .applyAndStageGrantTimeStateForUser(eq(mUserHandle), any());
     }
@@ -848,10 +887,9 @@ public class BackupRestoreTest {
     }
 
     @Nullable
-    private static JobInfo findMergeTimeoutJob(List<JobInfo> jobInfos) {
+    private static JobInfo findJob(List<JobInfo> jobInfos, String jobKey) {
         for (JobInfo jobInfo : jobInfos) {
-            if (DATA_MERGING_TIMEOUT_KEY.equals(
-                    jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))) {
+            if (jobKey.equals(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))) {
                 return jobInfo;
             }
         }
