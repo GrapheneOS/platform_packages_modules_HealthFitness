@@ -73,7 +73,6 @@ import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.RecentAccessElement
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
-import com.android.healthfitness.flags.Flags.onboarding
 import com.android.healthfitness.flags.Flags.stepTrackingEnabled
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -188,10 +187,8 @@ class HomeFragment : Hilt_HomeFragment() {
         homeViewModel.loadConnectedApps()
         exportStatusViewModel.loadScheduledExportStatus()
         homeViewModel.loadHasAnyMedicalData()
-        if (onboarding()) {
-            onboardingViewModel.loadConnectedApps()
-            onboardingViewModel.loadOnboardingBannerState()
-        }
+        onboardingViewModel.loadConnectedApps()
+        onboardingViewModel.loadOnboardingBannerState()
         if (stepTrackingEnabled()) {
             nativeStepsNotificationViewModel.loadWasSeen()
         }
@@ -267,10 +264,8 @@ class HomeFragment : Hilt_HomeFragment() {
             }
         }
 
-        if (onboarding()) {
-            onboardingViewModel.onboardingBannerState.observe(viewLifecycleOwner) { state ->
-                maybeShowOnboardingBanner(state)
-            }
+        onboardingViewModel.onboardingBannerState.observe(viewLifecycleOwner) { state ->
+            maybeShowOnboardingBanner(state)
         }
 
         if (stepTrackingEnabled()) {
@@ -330,9 +325,6 @@ class HomeFragment : Hilt_HomeFragment() {
     }
 
     private fun maybeShowOnboardingBanner(state: OnboardingViewModel.OnboardingBannerState) {
-        if (!onboarding()) {
-            return
-        }
         when (state) {
             is OnboardingViewModel.OnboardingBannerState.ZeroAppsOnboardingBanner ->
                 showZeroAppsConnectedBanner()

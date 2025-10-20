@@ -634,20 +634,8 @@ class HomeViewModelTest {
     // endregion
 
     // region Onboarding banner
-    @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
-    fun loadOnboardingBanner_whenOnboardingFlagOff_doesNotAddOnboardingBanner() = runTest {
-        setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
-        setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
-        loadOnboardingStateUseCase.setOnboardingBannerState(
-            OnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED
-        )
-        val state = loadBannerState()
-        assertThat(state).isInstanceOf(HomeBannerState.NoBanner::class.java)
-    }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING)
     fun loadOnboardingBanner_whenOnboardingError_doesNotAddOnboardingBanner() = runTest {
         setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
         setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
@@ -657,7 +645,6 @@ class HomeViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING)
     fun loadOnboardingBanner_whenZeroAppsBannerSeen_doesNotAddOnboardingBanner() = runTest {
         setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, true)
         setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
@@ -669,7 +656,6 @@ class HomeViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING)
     fun loadOnboardingBanner_whenOneAppBannerSeen_doesNotAddOnboardingBanner() = runTest {
         setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
         setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, true)
@@ -681,7 +667,6 @@ class HomeViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING)
     fun loadOnboardingBanner_whenZeroAppsBannerNotSeen_addsOnboardingBanner() = runTest {
         setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
         setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
@@ -695,7 +680,6 @@ class HomeViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING)
     fun loadOnboardingBanner_whenOneAppBannerNotSeen_addsOnboardingBanner() = runTest {
         setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
         setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
@@ -709,7 +693,6 @@ class HomeViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING)
     fun loadOnboardingBanner_whenOnboardingStateHide_doesNotAddOnboardingBanner() = runTest {
         setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
         setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
@@ -765,7 +748,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
+    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     fun loadBanners_canAddAllBanners() = runTest {
         // Lock screen banner
         whenever(keyguardManagerUtil.isDeviceSecure(any())).thenReturn(false)
@@ -820,7 +803,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
+    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     fun loadInitialData_doesNotDuplicateBanners() = runTest {
         // Lock screen banner
         whenever(keyguardManagerUtil.isDeviceSecure(any())).thenReturn(false)

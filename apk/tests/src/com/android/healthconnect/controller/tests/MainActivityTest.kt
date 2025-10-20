@@ -33,6 +33,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
 import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
+import com.android.healthconnect.controller.tests.utils.setPreferenceSeen
 import com.android.healthconnect.controller.tests.utils.showNativeSteps
 import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -121,9 +122,6 @@ class MainActivityTest {
         whenever(onboardingViewModel.onboardingBannerState).then {
             MediatorLiveData(OnboardingViewModel.OnboardingBannerState.NoOnboardingBanner)
         }
-        setPreferenceSeen(context, Constants.SEE_MORE_COMPATIBLE_APPS_BANNER_SEEN, true)
-        setPreferenceSeen(context, Constants.START_USING_HC_BANNER_SEEN, true)
-        setPreferenceSeen(context, Constants.CONNECT_MORE_APPS_BANNER_SEEN, true)
 
         whenever(newHomeViewModel.homeFragmentState).then {
             MutableStateFlow(HomeViewModel.HomeFragmentState.WithData(emptyList()))
@@ -514,17 +512,5 @@ class MainActivityTest {
         setPreferenceSeen(context, Constants.APP_UPDATE_NEEDED_SEEN, false)
         setPreferenceSeen(context, Constants.MODULE_UPDATE_NEEDED_SEEN, false)
         setPreferenceSeen(context, Constants.INTEGRATION_PAUSED_SEEN_KEY, false)
-
-        setPreferenceSeen(context, Constants.SEE_MORE_COMPATIBLE_APPS_BANNER_SEEN, false)
-        setPreferenceSeen(context, Constants.START_USING_HC_BANNER_SEEN, false)
-        setPreferenceSeen(context, Constants.CONNECT_MORE_APPS_BANNER_SEEN, false)
-    }
-
-    private fun setPreferenceSeen(context: Context, preferenceName: String, seen: Boolean) {
-        val sharedPreference =
-            context.getSharedPreferences(Constants.USER_ACTIVITY_TRACKER, Context.MODE_PRIVATE)
-        val editor = sharedPreference.edit()
-        editor.putBoolean(preferenceName, seen)
-        editor.apply()
     }
 }
