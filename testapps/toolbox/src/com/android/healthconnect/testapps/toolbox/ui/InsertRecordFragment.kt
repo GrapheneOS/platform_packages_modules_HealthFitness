@@ -39,6 +39,7 @@ import android.health.connect.datatypes.PlannedExerciseSessionRecord
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SexualActivityRecord
 import android.health.connect.datatypes.SkinTemperatureRecord
+import android.health.connect.datatypes.SymptomRecord
 import android.health.connect.datatypes.Vo2MaxRecord
 import android.health.connect.datatypes.units.BloodGlucose
 import android.health.connect.datatypes.units.Energy
@@ -374,6 +375,113 @@ class InsertRecordFragment : Fragment() {
             AlcoholConsumptionRecord::class -> {
                 fieldName = "mServingCount"
                 field = EditableTextView(this.requireContext(), fieldName, INPUT_TYPE_INT)
+            }
+
+            SymptomRecord::class -> {
+                val temporalTypes =
+                    mapOf(
+                        "Interval" to SymptomRecord.RECORD_TEMPORAL_TYPE_INTERVAL,
+                        "Instant" to SymptomRecord.RECORD_TEMPORAL_TYPE_INSTANT,
+                        "LocalDate" to SymptomRecord.RECORD_TEMPORAL_TYPE_LOCAL_DATE,
+                    )
+                val temporalTypeField =
+                    EnumDropDown(
+                        this.requireContext(),
+                        "mTemporalType",
+                        EnumFieldsWithValues(temporalTypes as Map<String, Any>),
+                    )
+                mLinearLayout.addView(temporalTypeField)
+                mFieldNameToFieldInput["mTemporalType"] = temporalTypeField
+
+                val symptomTypes =
+                    mapOf(
+                        "Cough" to SymptomRecord.SYMPTOM_TYPE_COUGH,
+                        "Snore" to SymptomRecord.SYMPTOM_TYPE_SNORE,
+                        "Abdominal Pain" to SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN,
+                        "Acne" to SymptomRecord.SYMPTOM_TYPE_ACNE,
+                        "Back Pain" to SymptomRecord.SYMPTOM_TYPE_BACK_PAIN,
+                        "Bloating" to SymptomRecord.SYMPTOM_TYPE_BLOATING,
+                        "Brain Fog" to SymptomRecord.SYMPTOM_TYPE_BRAIN_FOG,
+                        "Breast Tenderness" to SymptomRecord.SYMPTOM_TYPE_BREAST_TENDERNESS,
+                        "Brittle Nails" to SymptomRecord.SYMPTOM_TYPE_BRITTLE_NAILS,
+                        "Burning Mouth" to SymptomRecord.SYMPTOM_TYPE_BURNING_MOUTH,
+                        "Chest Pain" to SymptomRecord.SYMPTOM_TYPE_CHEST_PAIN,
+                        "Chest Tightness" to SymptomRecord.SYMPTOM_TYPE_CHEST_TIGHTNESS,
+                        "Chills" to SymptomRecord.SYMPTOM_TYPE_CHILLS,
+                        "Constipation" to SymptomRecord.SYMPTOM_TYPE_CONSTIPATION,
+                        "Cramps" to SymptomRecord.SYMPTOM_TYPE_CRAMPS,
+                        "Cravings" to SymptomRecord.SYMPTOM_TYPE_CRAVINGS,
+                        "Dehydration" to SymptomRecord.SYMPTOM_TYPE_DEHYDRATION,
+                        "Diarrhea" to SymptomRecord.SYMPTOM_TYPE_DIARRHEA,
+                        "Difficulty Swallowing" to SymptomRecord.SYMPTOM_TYPE_DIFFICULTY_SWALLOWING,
+                        "Dizziness" to SymptomRecord.SYMPTOM_TYPE_DIZZINESS,
+                        "Dry Skin" to SymptomRecord.SYMPTOM_TYPE_DRY_SKIN,
+                        "Earaches" to SymptomRecord.SYMPTOM_TYPE_EARACHES,
+                        "Fatigue" to SymptomRecord.SYMPTOM_TYPE_FATIGUE,
+                        "Fever" to SymptomRecord.SYMPTOM_TYPE_FEVER,
+                        "Generalized Body Ache" to SymptomRecord.SYMPTOM_TYPE_GENERALIZED_BODY_ACHE,
+                        "Hair Loss" to SymptomRecord.SYMPTOM_TYPE_HAIR_LOSS,
+                        "Headache" to SymptomRecord.SYMPTOM_TYPE_HEADACHE,
+                        "Heartburn" to SymptomRecord.SYMPTOM_TYPE_HEARTBURN,
+                        "Heart Palpitations" to SymptomRecord.SYMPTOM_TYPE_HEART_PALPITATIONS,
+                        "Hot Flashes" to SymptomRecord.SYMPTOM_TYPE_HOT_FLASHES,
+                        "Insomnia" to SymptomRecord.SYMPTOM_TYPE_INSOMNIA,
+                        "Joint Pain" to SymptomRecord.SYMPTOM_TYPE_JOINT_PAIN,
+                        "Joint Stiffness" to SymptomRecord.SYMPTOM_TYPE_JOINT_STIFFNESS,
+                        "Loss Of Appetite" to SymptomRecord.SYMPTOM_TYPE_LOSS_OF_APPETITE,
+                        "Loss Of Consciousness" to SymptomRecord.SYMPTOM_TYPE_LOSS_OF_CONSCIOUSNESS,
+                        "Lower Back Pain" to SymptomRecord.SYMPTOM_TYPE_LOWER_BACK_PAIN,
+                        "Memory Lapse" to SymptomRecord.SYMPTOM_TYPE_MEMORY_LAPSE,
+                        "Mood Change" to SymptomRecord.SYMPTOM_TYPE_MOOD_CHANGE,
+                        "Muscle Pain" to SymptomRecord.SYMPTOM_TYPE_MUSCLE_PAIN,
+                        "Nausea" to SymptomRecord.SYMPTOM_TYPE_NAUSEA,
+                        "Night Sweats" to SymptomRecord.SYMPTOM_TYPE_NIGHT_SWEATS,
+                        "Pelvic Pain" to SymptomRecord.SYMPTOM_TYPE_PELVIC_PAIN,
+                        "Rapid Pounding Or Fluttering Heartbeat" to
+                            SymptomRecord.SYMPTOM_TYPE_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT,
+                        "Reduced Capacity For Exercise" to
+                            SymptomRecord.SYMPTOM_TYPE_REDUCED_CAPACITY_FOR_EXERCISE,
+                        "Runny Nose" to SymptomRecord.SYMPTOM_TYPE_RUNNY_NOSE,
+                        "Shortness Of Breath" to SymptomRecord.SYMPTOM_TYPE_SHORTNESS_OF_BREATH,
+                        "Skipped Heartbeat" to SymptomRecord.SYMPTOM_TYPE_SKIPPED_HEARTBEAT,
+                        "Sleepiness" to SymptomRecord.SYMPTOM_TYPE_SLEEPINESS,
+                        "Sleep Changes" to SymptomRecord.SYMPTOM_TYPE_SLEEP_CHANGES,
+                        "Sneezing" to SymptomRecord.SYMPTOM_TYPE_SNEEZING,
+                        "Sore Throat" to SymptomRecord.SYMPTOM_TYPE_SORE_THROAT,
+                        "Stomach Ache" to SymptomRecord.SYMPTOM_TYPE_STOMACH_ACHE,
+                        "Stuffy Nose" to SymptomRecord.SYMPTOM_TYPE_STUFFY_NOSE,
+                        "Unexplained Weight Changes" to
+                            SymptomRecord.SYMPTOM_TYPE_UNEXPLAINED_WEIGHT_CHANGES,
+                        "Vaginal Dryness" to SymptomRecord.SYMPTOM_TYPE_VAGINAL_DRYNESS,
+                        "Vaginal Itchiness" to SymptomRecord.SYMPTOM_TYPE_VAGINAL_ITCHINESS,
+                        "Vomiting" to SymptomRecord.SYMPTOM_TYPE_VOMITING,
+                        "Water Retention" to SymptomRecord.SYMPTOM_TYPE_WATER_RETENTION,
+                        "Wheezing" to SymptomRecord.SYMPTOM_TYPE_WHEEZING,
+                    )
+                val typeField =
+                    EnumDropDown(
+                        this.requireContext(),
+                        "mType",
+                        EnumFieldsWithValues(symptomTypes as Map<String, Any>),
+                    )
+                mLinearLayout.addView(typeField)
+                mFieldNameToFieldInput["mType"] = typeField
+
+                val severities =
+                    mapOf(
+                        "Unspecified" to SymptomRecord.SEVERITY_UNSPECIFIED,
+                        "Mild" to SymptomRecord.SEVERITY_MILD,
+                        "Moderate" to SymptomRecord.SEVERITY_MODERATE,
+                        "Severe" to SymptomRecord.SEVERITY_SEVERE,
+                    )
+                val severityField =
+                    EnumDropDown(
+                        this.requireContext(),
+                        "mSeverity",
+                        EnumFieldsWithValues(severities as Map<String, Any>),
+                    )
+                mLinearLayout.addView(severityField)
+                mFieldNameToFieldInput["mSeverity"] = severityField
             }
         }
         if (field != null && fieldName != null) {
