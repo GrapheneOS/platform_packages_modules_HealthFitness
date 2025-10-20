@@ -84,6 +84,8 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"хранене"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"Уелнес"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"уелнес"</string>
+    <string name="symptoms_category_uppercase" msgid="1357167834284360975">"Симптоми"</string>
+    <string name="symptoms_category_lowercase" msgid="2298815597177353672">"симптоми"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"Разглеждане на данните"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"Управление на данните"</string>
     <string name="export_data_button" msgid="7783329820434117744">"Експортиране на данни"</string>
@@ -378,6 +380,15 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"консумация на алкохол"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Четене на данните за консумацията на алкохол"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Записване на данни за консумацията на алкохол"</string>
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Кашлица"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"кашлица"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Четене на симптомите"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Записване на симптомите"</string>
+    <string name="symptom_unknown" msgid="5796719193136239306">"Неизвестно"</string>
+    <string name="symptom_severity_mild" msgid="2689415474774489874">"Лека проява"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"Умерена проява"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"Тежка проява"</string>
+    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> на <xliff:g id="TYPE">%2$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Разрешаване на <xliff:g id="APP_NAME">%1$s</xliff:g> да чете"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Разрешаване на <xliff:g id="APP_NAME">%1$s</xliff:g> да записва"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Разрешаване"</string>
@@ -660,6 +671,8 @@
     <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{1 бутане на инвалидна количка}other{# бутания на инвалидна количка}}"</string>
     <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 л}other{# л}}"</string>
     <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 литър}other{# литра}}"</string>
+    <string name="milliliter" msgid="7730118351176678375">"{count,plural, =1{1 мл}other{# мл}}"</string>
+    <string name="milliliter_long" msgid="6431396151823725792">"{count,plural, =1{1 милилитър}other{# милилитра}}"</string>
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 етаж}other{# етажа}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 м}other{# м}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 метър}other{# метра}}"</string>
@@ -835,8 +848,32 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} дръпване от електронна цигара}other{{quantity} дръпвания от електронна цигара}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} цигара}other{{quantity} цигари}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"Няма информация за {quantity, number}"</string>
+    <string name="alcohol_consumption_title" msgid="2627266871623334972">"<xliff:g id="SERVING">%1$s</xliff:g> • <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"Друго"</string>
+    <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Бира"</string>
+    <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Вино"</string>
+    <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Водка"</string>
+    <string name="alcohol_consumption_beverage_type_gin" msgid="5945396443339874907">"Джин"</string>
+    <string name="alcohol_consumption_beverage_type_whiskey" msgid="1085904168947658887">"Уиски"</string>
+    <string name="alcohol_consumption_beverage_type_rum" msgid="5230691377430212826">"Ром"</string>
+    <string name="alcohol_consumption_beverage_type_tequila" msgid="9074751455065347442">"Текила"</string>
+    <string name="alcohol_consumption_beverage_type_lager" msgid="1490153167547219382">"Лагер"</string>
+    <string name="alcohol_consumption_beverage_type_cider" msgid="3348115754435446544">"Сайдер"</string>
+    <string name="alcohol_consumption_beverage_type_sake" msgid="2773512901340614154">"Саке"</string>
+    <string name="alcohol_consumption_beverage_type_shochu" msgid="3491300198222489324">"Шочу"</string>
+    <string name="alcohol_consumption_beverage_type_soju" msgid="113120387013483711">"Соджу"</string>
+    <string name="alcohol_consumption_beverage_type_mead" msgid="1673063923088962681">"Медовина"</string>
+    <string name="alcohol_consumption_beverage_type_absinthe" msgid="3972259596196421914">"Абсент"</string>
+    <string name="alcohol_consumption_beverage_type_brandy" msgid="3782444367994599131">"Бренди"</string>
+    <string name="alcohol_consumption_beverage_type_cocktail" msgid="4711099215987668649">"Коктейл"</string>
+    <string name="alcohol_consumption_beverage_type_chuhai" msgid="4727177353197748690">"Чухай"</string>
+    <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Хайбол"</string>
+    <string name="serving_volume_title" msgid="4727986574534974167">"Размер на порцията"</string>
+    <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Алкохолно съдържание по обем"</string>
+    <string name="note_title" msgid="4101166558186573016">"Бележка"</string>
+    <string name="details_title" msgid="8411891773854413790">"Подробности"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> мин"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> ч и <xliff:g id="MIN">%2$s</xliff:g> мин"</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> ч и <xliff:g id="MIN">%2$s</xliff:g> мин"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> ч"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> и <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 час}other{# часа}}"</string>
@@ -1042,6 +1079,7 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Готово"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{Авт. изтриване е включено. Данните, по-стари от # месец, ще бъдат изтрити}other{Авт. изтриване е включено. Данните, по-стари от # месеца, ще бъдат изтрити}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"Автоматичното изтриване е изключено"</string>
+    <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+<xliff:g id="COUNT">%s</xliff:g>"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"Задаване на приоритет за приложенията"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"Ако повече от едно приложение добави данни от типа „<xliff:g id="DATA_TYPE">%s</xliff:g>“, Health Connect дава приоритет на това, което е най-напред в списъка. Можете да промените реда на приложенията чрез преместване с плъзгане."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Запазване"</string>
@@ -1175,6 +1213,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Свързаните приложения вече няма да могат да четат тези данни от Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"С отметка"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Без отметка"</string>
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Налице е маршрут на картата за упражнения"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Следващият ден"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Следващата седмица"</string>
@@ -1228,6 +1267,7 @@
     <string name="write_access" msgid="571547306854732263">"Достъп за записване"</string>
     <string name="read_access" msgid="3317759826769372785">"Достъп за четене"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> от <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> приложения имат разрешение"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Няма заявяващи достъп приложения"</string>
     <string name="allowed" msgid="4158456017482263737">"Разрешено"</string>
@@ -1272,21 +1312,266 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"Неизвестно устройство"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Информация за устройството"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Данните, събирани от това устройство, ще се съхраняват в Health Connect, където свързаните приложения ще имат достъп до тях"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Това устройство не поддържа проследяване на крачките, но данни от него все още се съхраняват в Health Connect"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Това устройство не проследява крачките"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"С разрешение за записване"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Данни от устройството"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Управление на устройството"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Преглед на данните от устройството"</string>
-    <string name="native_steps_banner_title" msgid="7668164332675458871">"Крачките, прослед. на телеф., ще се показват в Health Connect"</string>
-    <string name="native_steps_banner_summary" msgid="7109953051996114646">"Крачките, проследявани от това устройство, вече се съхраняват в Health Connect, за да имат достъп до тях свързаните приложения"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_title" msgid="8990874387340782536">"Крачките, проследявани на телефона ви, ще се показват в Health Connect"</string>
+    <string name="native_steps_banner_summary" msgid="8255767487167444809">"Крачките, проследявани от това устройство, вече се съхраняват в Health Connect, за да имат достъп до тях свързаните приложения"</string>
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Отхвърляне"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Преглед"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Крачките вече са в Health Connect"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Крачките, проследявани от това устройство, вече се съхраняват в Health Connect, за да имат достъп до тях свързаните приложения"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"Вашите здравни приложения"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"Вашите здравни данни"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"Предпочитания"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect ви дава възможност да споделяте данните за здравето и физическата си активност между няколко приложения. Това ви помага да отключвате статистика и нови възможности, като същевременно запазва безопасността на данните ви."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"Още за Health Connect"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"Вашите данни и приложенията, които имат достъп до тях"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"Приложения, които наскоро са използвали данните ви"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"Преглед на устройствата, които имат достъп до здравните данни"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Инсталирайте приложения, които работят с Health Connect, за да ги виждате тук"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"Преглед на съвместимите приложения"</string>
+    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Преглед на още здравни приложения"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"Няма връзка"</string>
+    <string name="connect_app_button_content_description" msgid="296796277841527165">"Кликнете, за да свържете това приложение с Health Connect"</string>
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Не сега"</string>
+    <string name="acne_read_content_description" msgid="1176708404029936065">"Четене на данните за акнето"</string>
+    <string name="acne_write_content_description" msgid="9221785868351412493">"Записване на данни за акнето"</string>
+    <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Четене на данните за чупливите нокти"</string>
+    <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Записване на данни за чупливите нокти"</string>
+    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Четене на данните за паренето в устата"</string>
+    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Записване на данни за паренето в устата"</string>
+    <string name="chills_read_content_description" msgid="7244946135559432433">"Четене на данните за втрисането"</string>
+    <string name="chills_write_content_description" msgid="6478646233405107436">"Записване на данни за втрисането"</string>
+    <string name="dehydration_read_content_description" msgid="7633935838518756206">"Четене на данните за дехидратацията"</string>
+    <string name="dehydration_write_content_description" msgid="541514183036921571">"Записване на данни за дехидратацията"</string>
+    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"Четене на данните за сухата кожа"</string>
+    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"Записване на данни за сухата кожа"</string>
+    <string name="fever_read_content_description" msgid="3385209639730909489">"Четене на данните за температурата"</string>
+    <string name="fever_write_content_description" msgid="8440573327719878961">"Записване на данни за температурата"</string>
+    <string name="joint_pain_read_content_description" msgid="2932523124488927967">"Четене на данните за болките в ставите"</string>
+    <string name="joint_pain_write_content_description" msgid="7405551860978844535">"Записване на данни за болките в ставите"</string>
+    <string name="joint_stiffness_read_content_description" msgid="2132696730582070534">"Четене на данните за сковаността на ставите"</string>
+    <string name="joint_stiffness_write_content_description" msgid="7556318646656369856">"Записване на данни за сковаността на ставите"</string>
+    <string name="muscle_pain_read_content_description" msgid="3116385630330673084">"Четене на данните за мускулните болки"</string>
+    <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"Записване на данни за мускулните болки"</string>
+    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"Четене на данните за загубата на съзнание"</string>
+    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"Записване на данни за загубата на съзнание"</string>
+    <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"Четене на данните за намаления капацитет за упражнения"</string>
+    <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"Записване на данни за намаления капацитет за упражнения"</string>
+    <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"Четене на данните за необяснимите промени в теглото"</string>
+    <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"Записване на данни за необяснимите промени в теглото"</string>
+    <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"Четене на данните за общата болка в тялото"</string>
+    <string name="generalized_body_ache_write_content_description" msgid="4282920161878530009">"Записване на данни за обща болка в тялото"</string>
+    <string name="fatigue_read_content_description" msgid="8447413794808220408">"Четене на данните за умората"</string>
+    <string name="fatigue_write_content_description" msgid="3000326883358951973">"Записване на данни за умората"</string>
+    <string name="constipation_read_content_description" msgid="4024154136010015370">"Четене на данните за запека"</string>
+    <string name="constipation_write_content_description" msgid="9059835998017996999">"Записване на данни за запека"</string>
+    <string name="diarrhea_read_content_description" msgid="6643311788778713543">"Четене на данните за диарията"</string>
+    <string name="diarrhea_write_content_description" msgid="2525160401458506448">"Записване на данни за диарията"</string>
+    <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"Четене на данните за загубата на апетит"</string>
+    <string name="loss_of_appetite_write_content_description" msgid="7370817778828856877">"Записване на данни за загубата на апетит"</string>
+    <string name="nausea_read_content_description" msgid="7696809485706809234">"Четене на данните за гаденето"</string>
+    <string name="nausea_write_content_description" msgid="7956853318058549079">"Записване на данни за гаденето"</string>
+    <string name="stomach_ache_read_content_description" msgid="6960461949095524373">"Четене на данните за болките в корема"</string>
+    <string name="stomach_ache_write_content_description" msgid="4822349196740130790">"Записване на данни за болките в корема"</string>
+    <string name="vomiting_read_content_description" msgid="6425637340168306118">"Четене на данните за повръщането"</string>
+    <string name="vomiting_write_content_description" msgid="2768436321239967229">"Записване на данни за повръщането"</string>
+    <string name="chest_pain_read_content_description" msgid="5388099127082653993">"Четене на данните за болката в гърдите"</string>
+    <string name="chest_pain_write_content_description" msgid="7570421665813979598">"Записване на данни за болката в гърдите"</string>
+    <string name="chest_tightness_read_content_description" msgid="3234587929340517638">"Четене на данните за стягането в гърдите"</string>
+    <string name="chest_tightness_write_content_description" msgid="3365518444505217882">"Записване на данни за стягането в гърдите"</string>
+    <string name="cough_read_content_description" msgid="4834360757270578547">"Четене на данните за кашлицата"</string>
+    <string name="cough_write_content_description" msgid="2927943192149715422">"Записване на данни за кашлицата"</string>
+    <string name="heart_palpitations_read_content_description" msgid="5830132363981902576">"Четене на данните за сърцебиенето"</string>
+    <string name="heart_palpitations_write_content_description" msgid="6195434828951874561">"Записване на данни за сърцебиенето"</string>
+    <string name="shortness_of_breath_read_content_description" msgid="5285037217314042125">"Четене на данните за задуха"</string>
+    <string name="shortness_of_breath_write_content_description" msgid="1812050225998794712">"Записване на данни за задуха"</string>
+    <string name="wheezing_read_content_description" msgid="3698103133045395859">"Четене на данните за хриповете"</string>
+    <string name="wheezing_write_content_description" msgid="3555234332119025686">"Записване на данни за хриповете"</string>
+    <string name="heartburn_read_content_description" msgid="4650825508743336439">"Четене на данните за киселините"</string>
+    <string name="heartburn_write_content_description" msgid="1857706822547818187">"Записване на данни за киселините"</string>
+    <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"Четене на данните за прескачането на сърцето"</string>
+    <string name="skipped_heartbeat_write_content_description" msgid="834686289232563614">"Записване на данни за прескачането на сърцето"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"Четене на данните за сърцебиенето, бързия или неравномерния пулс"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"Записване на данни за сърцебиенето, бързия или неравномерния пулс"</string>
+    <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"Четене на данните за затрудненото преглъщане"</string>
+    <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"Записване на данни за затрудненото преглъщане"</string>
+    <string name="dizziness_read_content_description" msgid="2525565486057144416">"Четене на данните за замаяността"</string>
+    <string name="dizziness_write_content_description" msgid="1875365619054873732">"Записване на данни за замаяността"</string>
+    <string name="earaches_read_content_description" msgid="4643142391473401154">"Четене на данните за болките в ушите"</string>
+    <string name="earaches_write_content_description" msgid="3551386029980258801">"Записване на данни за болките в ушите"</string>
+    <string name="hair_loss_read_content_description" msgid="4057044821025872986">"Четене на данните за косопада"</string>
+    <string name="hair_loss_write_content_description" msgid="7387442867237711823">"Записване на данни за косопада"</string>
+    <string name="headache_read_content_description" msgid="7485283472508878298">"Четене на данните за главоболието"</string>
+    <string name="headache_write_content_description" msgid="720183844750746485">"Записване на данни за главоболието"</string>
+    <string name="runny_nose_read_content_description" msgid="443700998701222852">"Четене на данните за хремата"</string>
+    <string name="runny_nose_write_content_description" msgid="6210009950948827090">"Записване на данни за хремата"</string>
+    <string name="sneezing_read_content_description" msgid="1825781985598094799">"Четене на данните за кихането"</string>
+    <string name="sneezing_write_content_description" msgid="8125072216406958337">"Записване на данни за кихането"</string>
+    <string name="sore_throat_read_content_description" msgid="7798247670004858562">"Четене на данните за болката в гърлото"</string>
+    <string name="sore_throat_write_content_description" msgid="6058043292544091397">"Записване на данни за болката в гърлото"</string>
+    <string name="stuffy_nose_read_content_description" msgid="6604212451531546331">"Четене на данните за запушения нос"</string>
+    <string name="stuffy_nose_write_content_description" msgid="6950875986047625521">"Записване на данни за запушения нос"</string>
+    <string name="back_pain_read_content_description" msgid="1176155927269014089">"Четене на данните за болките в гърба"</string>
+    <string name="back_pain_write_content_description" msgid="6282959987099901645">"Записване на данни за болките в гърба"</string>
+    <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"Четене на данните за болките в долната част на гърба"</string>
+    <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"Записване на данни за болките в долната част на гърба"</string>
+    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"Четене на данните за горещите вълни"</string>
+    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"Записване на данни за горещите вълни"</string>
+    <string name="night_sweats_read_content_description" msgid="7644094250441074129">"Четене на данните за нощното изпотяване"</string>
+    <string name="night_sweats_write_content_description" msgid="7501357533280452509">"Записване на данни за нощното изпотяване"</string>
+    <string name="water_retention_read_content_description" msgid="211789030125880649">"Четене на данните за задържането на вода"</string>
+    <string name="water_retention_write_content_description" msgid="7109328727506593781">"Записване на данни за задържането на вода"</string>
+    <string name="cravings_read_content_description" msgid="9098905292448612603">"Четене на данните за пристъпите на глад"</string>
+    <string name="cravings_write_content_description" msgid="7932335159387976333">"Записване на данни за пристъпите на глад"</string>
+    <string name="bloating_read_content_description" msgid="8942780558464500997">"Четене на данните за подуването на корема"</string>
+    <string name="bloating_write_content_description" msgid="5014366726518564943">"Записване на данни за подуването на корема"</string>
+    <string name="cramps_read_content_description" msgid="5853663240074256855">"Четене на данните за крампите"</string>
+    <string name="cramps_write_content_description" msgid="6777230560926849939">"Записване на данни за крампите"</string>
+    <string name="abdominal_pain_read_content_description" msgid="6331928351160142817">"Четене на данните за болките в корема"</string>
+    <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"Записване на данни за болките в корема"</string>
+    <string name="breast_tenderness_read_content_description" msgid="1556133668276886256">"Четене на данните за чувствителността на гърдите"</string>
+    <string name="breast_tenderness_write_content_description" msgid="5405234499024881940">"Записване на данни за чувствителността на гърдите"</string>
+    <string name="pelvic_pain_read_content_description" msgid="8872893212311881743">"Четене на данните за болките в таза"</string>
+    <string name="pelvic_pain_write_content_description" msgid="8482016412474126674">"Записване на данни за болките в таза"</string>
+    <string name="vaginal_dryness_read_content_description" msgid="21587787265978758">"Четене на данните за вагиналната сухота"</string>
+    <string name="vaginal_dryness_write_content_description" msgid="7639415261021656468">"Записване на данни за вагиналната сухота"</string>
+    <string name="vaginal_itchiness_read_content_description" msgid="6027886706003079912">"Четене на данните за вагиналния сърбеж"</string>
+    <string name="vaginal_itchiness_write_content_description" msgid="6833099607694941406">"Записване на данни за вагиналния сърбеж"</string>
+    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"Четене на данните за замъгленото съзнание"</string>
+    <string name="brain_fog_write_content_description" msgid="354508934978268288">"Записване на данни за замъгленото съзнание"</string>
+    <string name="mood_change_read_content_description" msgid="5114563193264125173">"Четене на данните за промяната в настроението"</string>
+    <string name="mood_change_write_content_description" msgid="7613564641235985120">"Записване на данни за промяната в настроението"</string>
+    <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"Четене на данните за моментната загуба на памет"</string>
+    <string name="memory_lapse_write_content_description" msgid="211569063190179476">"Записване на данни за моментната загуба на памет"</string>
+    <string name="sleepiness_read_content_description" msgid="797381777988304669">"Четене на данните за сънливостта"</string>
+    <string name="sleepiness_write_content_description" msgid="888236364245216476">"Записване на данни за сънливостта"</string>
+    <string name="sleep_changes_read_content_description" msgid="277237231470749744">"Четене на данните за промените в съня"</string>
+    <string name="sleep_changes_write_content_description" msgid="9078270254664653838">"Записване на данни за промените в съня"</string>
+    <string name="insomnia_read_content_description" msgid="5225449618972721129">"Четене на данните за безсънието"</string>
+    <string name="insomnia_write_content_description" msgid="4237153589826489083">"Записване на данни за безсънието"</string>
+    <string name="snore_read_content_description" msgid="3447953925696237628">"Четене на данните за хъркането"</string>
+    <string name="snore_write_content_description" msgid="959354771204900433">"Записване на данни за хъркането"</string>
+    <string name="acne_uppercase_label" msgid="60568062993817483">"Акне"</string>
+    <string name="acne_lowercase_label" msgid="5301949536428255159">"акне"</string>
+    <string name="abdominal_pain_uppercase_label" msgid="442393846492385702">"Болки в корема"</string>
+    <string name="abdominal_pain_lowercase_label" msgid="4136643670361233063">"болки в корема"</string>
+    <string name="back_pain_uppercase_label" msgid="6034795846635350255">"Болки в гърба"</string>
+    <string name="back_pain_lowercase_label" msgid="7487168354843582888">"болки в гърба"</string>
+    <string name="bloating_uppercase_label" msgid="2827024204358491650">"Подуване на корема"</string>
+    <string name="bloating_lowercase_label" msgid="4108236897678347488">"подуване на корема"</string>
+    <string name="brain_fog_uppercase_label" msgid="3782508630097437711">"Замъглено съзнание"</string>
+    <string name="brain_fog_lowercase_label" msgid="8018499987092429724">"замъглено съзнание"</string>
+    <string name="breast_tenderness_uppercase_label" msgid="3633574517042452397">"Чувствителност на гърдите"</string>
+    <string name="breast_tenderness_lowercase_label" msgid="3745105353936751222">"чувствителност на гърдите"</string>
+    <string name="brittle_nails_uppercase_label" msgid="7290899807816681152">"Чупливи нокти"</string>
+    <string name="brittle_nails_lowercase_label" msgid="43861645923597496">"чупливи нокти"</string>
+    <string name="burning_mouth_uppercase_label" msgid="8975226712238467359">"Парене в устата"</string>
+    <string name="burning_mouth_lowercase_label" msgid="3378970972990933484">"парене в устата"</string>
+    <string name="chest_pain_uppercase_label" msgid="8091501402224214622">"Болка в гърдите"</string>
+    <string name="chest_pain_lowercase_label" msgid="8817807562310689177">"болка в гърдите"</string>
+    <string name="chest_tightness_uppercase_label" msgid="8988021502622503503">"Стягане в гърдите"</string>
+    <string name="chest_tightness_lowercase_label" msgid="1770063390635610292">"стягане в гърдите"</string>
+    <string name="chills_uppercase_label" msgid="4320786490882838834">"Втрисане"</string>
+    <string name="chills_lowercase_label" msgid="1306612496314055832">"втрисане"</string>
+    <string name="constipation_uppercase_label" msgid="7245001778443725742">"Запек"</string>
+    <string name="constipation_lowercase_label" msgid="6217542866033766747">"запек"</string>
+    <string name="cough_uppercase_label" msgid="5570609736970603012">"Кашлица"</string>
+    <string name="cough_lowercase_label" msgid="459638956679172779">"кашлица"</string>
+    <string name="cramps_uppercase_label" msgid="5162905309136173937">"Крампи"</string>
+    <string name="cramps_lowercase_label" msgid="4644485808002493449">"крампи"</string>
+    <string name="cravings_uppercase_label" msgid="4754194354806284307">"Пристъпи на глад"</string>
+    <string name="cravings_lowercase_label" msgid="5836041614136287213">"пристъпи на глад"</string>
+    <string name="dehydration_uppercase_label" msgid="10278239942824711">"Дехидратация"</string>
+    <string name="dehydration_lowercase_label" msgid="8692632632276643276">"дехидратация"</string>
+    <string name="diarrhea_uppercase_label" msgid="6310170127529968752">"Диария"</string>
+    <string name="diarrhea_lowercase_label" msgid="5938774694742839016">"диария"</string>
+    <string name="difficulty_swallowing_uppercase_label" msgid="3546617155300878657">"Затруднено преглъщане"</string>
+    <string name="difficulty_swallowing_lowercase_label" msgid="4980631237611433200">"затруднено преглъщане"</string>
+    <string name="dizziness_uppercase_label" msgid="8129950094459563983">"Замаяност"</string>
+    <string name="dizziness_lowercase_label" msgid="3462347558609662379">"замаяност"</string>
+    <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"Суха кожа"</string>
+    <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"суха кожа"</string>
+    <string name="earaches_uppercase_label" msgid="107701950625572701">"Болки в ушите"</string>
+    <string name="earaches_lowercase_label" msgid="6240790850403958317">"болки в ушите"</string>
+    <string name="fatigue_uppercase_label" msgid="7514286788083426578">"Умора"</string>
+    <string name="fatigue_lowercase_label" msgid="2669560685808367387">"умора"</string>
+    <string name="fever_uppercase_label" msgid="6889273008212535253">"Температура"</string>
+    <string name="fever_lowercase_label" msgid="3634400562894397159">"температура"</string>
+    <string name="generalized_body_ache_uppercase_label" msgid="2171378172300618053">"Обща болка в тялото"</string>
+    <string name="generalized_body_ache_lowercase_label" msgid="1725534000111875030">"обща болка в тялото"</string>
+    <string name="hair_loss_uppercase_label" msgid="6359351347019795813">"Косопад"</string>
+    <string name="hair_loss_lowercase_label" msgid="2764498189966225461">"косопад"</string>
+    <string name="headache_uppercase_label" msgid="863800537735413054">"Главоболие"</string>
+    <string name="headache_lowercase_label" msgid="6564231905087583135">"главоболие"</string>
+    <string name="heartburn_uppercase_label" msgid="1170571383460859644">"Киселини"</string>
+    <string name="heartburn_lowercase_label" msgid="6235983036978705474">"киселини"</string>
+    <string name="heart_palpitations_uppercase_label" msgid="2026400872833911547">"Сърцебиене"</string>
+    <string name="heart_palpitations_lowercase_label" msgid="1468243523322721340">"сърцебиене"</string>
+    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"Горещи вълни"</string>
+    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"горещи вълни"</string>
+    <string name="insomnia_uppercase_label" msgid="4946197328995261738">"Безсъние"</string>
+    <string name="insomnia_lowercase_label" msgid="3742025423716451058">"безсъние"</string>
+    <string name="joint_pain_uppercase_label" msgid="7693454621285586935">"Болки в ставите"</string>
+    <string name="joint_pain_lowercase_label" msgid="1877680075365305488">"болки в ставите"</string>
+    <string name="joint_stiffness_uppercase_label" msgid="5230114867081881444">"Скованост на ставите"</string>
+    <string name="joint_stiffness_lowercase_label" msgid="8766445235392409480">"скованост на ставите"</string>
+    <string name="loss_of_appetite_uppercase_label" msgid="4023141061302523950">"Загуба на апетит"</string>
+    <string name="loss_of_appetite_lowercase_label" msgid="7558077308061468558">"загуба на апетит"</string>
+    <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"Загуба на съзнание"</string>
+    <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"загуба на съзнание"</string>
+    <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"Болки в долната част на гърба"</string>
+    <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"болки в долната част на гърба"</string>
+    <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"Моментна загуба на памет"</string>
+    <string name="memory_lapse_lowercase_label" msgid="5590619293782264318">"моментна загуба на памет"</string>
+    <string name="mood_change_uppercase_label" msgid="6591596468077187132">"Промяна в настроението"</string>
+    <string name="mood_change_lowercase_label" msgid="5154765930188874067">"промяна в настроението"</string>
+    <string name="muscle_pain_uppercase_label" msgid="2470771124188001900">"Мускулни болки"</string>
+    <string name="muscle_pain_lowercase_label" msgid="7842677871351347822">"мускулни болки"</string>
+    <string name="nausea_uppercase_label" msgid="8384006696113532259">"Гадене"</string>
+    <string name="nausea_lowercase_label" msgid="8182471893071968504">"гадене"</string>
+    <string name="night_sweats_uppercase_label" msgid="6177687233700001658">"Нощно изпотяване"</string>
+    <string name="night_sweats_lowercase_label" msgid="5041101323453286082">"нощно изпотяване"</string>
+    <string name="pelvic_pain_uppercase_label" msgid="9057761232218571640">"Болки в таза"</string>
+    <string name="pelvic_pain_lowercase_label" msgid="8993103170034473121">"болки в таза"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"Сърцебиене, бърз или неравномерен пулс"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"сърцебиене, бърз или неравномерен пулс"</string>
+    <string name="reduced_capacity_for_exercise_uppercase_label" msgid="7471254320615756463">"Намален капацитет за упражнения"</string>
+    <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"намален капацитет за упражнения"</string>
+    <string name="runny_nose_uppercase_label" msgid="6561156187042071551">"Хрема"</string>
+    <string name="runny_nose_lowercase_label" msgid="2214697492382685914">"хрема"</string>
+    <string name="shortness_of_breath_uppercase_label" msgid="3747502224212110471">"Задух"</string>
+    <string name="shortness_of_breath_lowercase_label" msgid="3970444639088619346">"задух"</string>
+    <string name="skipped_heartbeat_uppercase_label" msgid="1004040920818222022">"Прескачане на сърцето"</string>
+    <string name="skipped_heartbeat_lowercase_label" msgid="2446049805930852514">"прескачане на сърцето"</string>
+    <string name="sleep_changes_uppercase_label" msgid="817870703301327111">"Промени в съня"</string>
+    <string name="sleep_changes_lowercase_label" msgid="8606593835222848643">"промени в съня"</string>
+    <string name="sleepiness_uppercase_label" msgid="8292543897598171825">"Сънливост"</string>
+    <string name="sleepiness_lowercase_label" msgid="7563434619994665081">"сънливост"</string>
+    <string name="sneezing_uppercase_label" msgid="3559089195823390830">"Кихане"</string>
+    <string name="sneezing_lowercase_label" msgid="4614496100578986753">"кихане"</string>
+    <string name="snore_uppercase_label" msgid="5408933698329003980">"Хъркане"</string>
+    <string name="snore_lowercase_label" msgid="4813706716393000341">"хъркане"</string>
+    <string name="sore_throat_uppercase_label" msgid="7652461264264564339">"Болка в гърлото"</string>
+    <string name="sore_throat_lowercase_label" msgid="2671417552726018944">"болка в гърлото"</string>
+    <string name="stomach_ache_uppercase_label" msgid="8450868632465837793">"Болки в корема"</string>
+    <string name="stomach_ache_lowercase_label" msgid="3263518334946627327">"болки в корема"</string>
+    <string name="stuffy_nose_uppercase_label" msgid="4216439398397550673">"Запушен нос"</string>
+    <string name="stuffy_nose_lowercase_label" msgid="346310767340271161">"запушен нос"</string>
+    <string name="unexplained_weight_changes_uppercase_label" msgid="1882204558194305221">"Необясними промени в теглото"</string>
+    <string name="unexplained_weight_changes_lowercase_label" msgid="8433998024876395101">"необясними промени в теглото"</string>
+    <string name="vaginal_dryness_uppercase_label" msgid="4256721076420375400">"Вагинална сухота"</string>
+    <string name="vaginal_dryness_lowercase_label" msgid="1329282833647595593">"вагинална сухота"</string>
+    <string name="vaginal_itchiness_uppercase_label" msgid="2843508264503404145">"Вагинален сърбеж"</string>
+    <string name="vaginal_itchiness_lowercase_label" msgid="4569019157289060524">"вагинален сърбеж"</string>
+    <string name="vomiting_uppercase_label" msgid="258794137964470267">"Повръщане"</string>
+    <string name="vomiting_lowercase_label" msgid="2520559377010270583">"повръщане"</string>
+    <string name="water_retention_uppercase_label" msgid="4748866467103152119">"Задържане на вода"</string>
+    <string name="water_retention_lowercase_label" msgid="3738721149186742861">"задържане на вода"</string>
+    <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Хрипове"</string>
+    <string name="wheezing_lowercase_label" msgid="1278548371813007771">"хрипове"</string>
 </resources>

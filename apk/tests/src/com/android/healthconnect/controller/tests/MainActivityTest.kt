@@ -4,15 +4,12 @@ import android.Manifest
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.scrollTo
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.MainActivity
@@ -25,6 +22,8 @@ import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiError
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
+import com.android.healthconnect.controller.newHome.HomeViewModel
+import com.android.healthconnect.controller.newHome.HomeViewModel.BannerData
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.OnboardingViewModel
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
@@ -32,16 +31,21 @@ import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
+import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
+import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
 import com.android.healthconnect.controller.tests.utils.showNativeSteps
 import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthfitness.flags.Flags
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -60,6 +64,7 @@ class MainActivityTest {
     @BindValue val recentAccessViewModel: RecentAccessViewModel = mock()
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
     @BindValue val onboardingViewModel: OnboardingViewModel = mock()
+    @BindValue val newHomeViewModel: HomeViewModel = mock()
 
     private lateinit var context: Context
 
@@ -119,25 +124,59 @@ class MainActivityTest {
         setPreferenceSeen(context, Constants.SEE_MORE_COMPATIBLE_APPS_BANNER_SEEN, true)
         setPreferenceSeen(context, Constants.START_USING_HC_BANNER_SEEN, true)
         setPreferenceSeen(context, Constants.CONNECT_MORE_APPS_BANNER_SEEN, true)
+
+        whenever(newHomeViewModel.homeFragmentState).then {
+            MutableStateFlow(HomeViewModel.HomeFragmentState.WithData(emptyList()))
+        }
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
     fun homeSettingsIntent_launchesMainActivity() = runTest {
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        launchActivityForResult<MainActivity>(startActivityIntent)
-
-        if (SettingsThemeHelper.isExpressiveTheme(context)) {
-            onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
-        } else {
-            onView(withText("No apps recently accessed Health\u00A0Connect"))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
+        launchActivityForResult<MainActivity>(startActivityIntent).use {
+            if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                checkTextIsDisplayed("No recent access")
+            } else {
+                checkTextIsDisplayed("No apps recently accessed Health\u00A0Connect")
+            }
+            checkTextIsDisplayed("Permissions and data")
         }
-        onView(withText("Permissions and data")).perform(scrollTo()).check(matches(isDisplayed()))
     }
+
+    @Test
+    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    fun homeSettingsIntent_launchesMainActivity_withNewHomeScreen() = runTest {
+        val startActivityIntent =
+            Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        launchActivityForResult<MainActivity>(startActivityIntent).use {
+            checkTextIsDisplayed("Your health apps")
+            checkTextIsDisplayed("Your health data")
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    fun homeSettingsIntent_launchesMainActivity_retainsFragmentDestinationAfterRotation() =
+        runTest {
+            val startActivityIntent =
+                Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            launchActivityForResult<MainActivity>(startActivityIntent).use { scenario ->
+                checkTextIsDisplayed("Your health apps")
+                checkTextIsDisplayed("Your health data")
+                scrollToTextAndClick("Recent access")
+                checkTextIsDisplayed("See which apps have accessed your data in the past 24 hours")
+                scenario.recreate()
+                checkTextIsDisplayed("See which apps have accessed your data in the past 24 hours")
+            }
+        }
 
     @Test
     fun homeSettingsIntent_migrationInProgress_redirectsToMigrationInProgress() = runTest {
@@ -166,9 +205,9 @@ class MainActivityTest {
             Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        launchActivityForResult<MainActivity>(startActivityIntent)
-
-        onView(withText("Integration in progress")).check(matches(isDisplayed()))
+        launchActivityForResult<MainActivity>(startActivityIntent).use {
+            checkTextIsDisplayed("Integration in progress")
+        }
     }
 
     @Test
@@ -198,12 +237,13 @@ class MainActivityTest {
             Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        launchActivityForResult<MainActivity>(startActivityIntent)
-
-        onView(withText("Restore in progress")).check(matches(isDisplayed()))
+        launchActivityForResult<MainActivity>(startActivityIntent).use {
+            checkTextIsDisplayed("Restore in progress")
+        }
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
     fun homeSettingsIntent_migrationPending_moduleUpdateSeen_launchesMainActivity() = runTest {
         showOnboarding(context, false)
         showNativeSteps(context, false)
@@ -226,25 +266,72 @@ class MainActivityTest {
                 )
             )
         }
-
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        launchActivityForResult<MainActivity>(startActivityIntent)
-
-        onView(withText("Resume integration")).perform(scrollTo()).check(matches(isDisplayed()))
-        if (SettingsThemeHelper.isExpressiveTheme(context)) {
-            onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
-        } else {
-            onView(withText("No apps recently accessed Health\u00A0Connect"))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
+        launchActivityForResult<MainActivity>(startActivityIntent).use {
+            checkTextIsDisplayed("Resume integration")
+            if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                checkTextIsDisplayed("No recent access")
+            } else {
+                checkTextIsDisplayed("No apps recently accessed Health\u00A0Connect")
+            }
+            checkTextIsDisplayed("Permissions and data")
         }
-        onView(withText("Permissions and data")).perform(scrollTo()).check(matches(isDisplayed()))
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @Ignore("b/445923123 - enable when banners working")
+    fun homeSettingsIntent_migrationPending_moduleUpdateSeen_launchesMainActivity_withNewHomeScreen() =
+        runTest {
+            showOnboarding(context, false)
+            showNativeSteps(context, false)
+            setPreferenceSeen(context, Constants.MODULE_UPDATE_NEEDED_SEEN, true)
+            whenever(viewModel.getCurrentMigrationUiState()).then {
+                MigrationRestoreState(
+                    migrationUiState = MigrationUiState.MODULE_UPGRADE_REQUIRED,
+                    dataRestoreState = DataRestoreUiState.IDLE,
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            }
+            whenever(viewModel.migrationState).then {
+                MutableLiveData(
+                    WithData(
+                        MigrationRestoreState(
+                            migrationUiState = MigrationUiState.MODULE_UPGRADE_REQUIRED,
+                            dataRestoreState = DataRestoreUiState.IDLE,
+                            dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                        )
+                    )
+                )
+            }
+            whenever(newHomeViewModel.homeFragmentState).then {
+                MutableStateFlow(
+                    HomeViewModel.HomeFragmentState.WithData(
+                        connectedApps = emptyList(),
+                        bannerState =
+                            HomeViewModel.HomeBannerState.ShowBanners(
+                                listOf(BannerData.MigrationBanner)
+                            ),
+                    )
+                )
+            }
+
+            val startActivityIntent =
+                Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            launchActivityForResult<MainActivity>(startActivityIntent)
+
+            checkTextIsDisplayed("Resume integration")
+            checkTextIsDisplayed("Your health apps")
+            checkTextIsDisplayed("Your health data")
+        }
+
+    @Test
+    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
     fun homeSettingsIntent_migrationPending_appUpgradeSeen_launchesMainActivity() = runTest {
         showOnboarding(context, false)
         showNativeSteps(context, false)
@@ -272,21 +359,68 @@ class MainActivityTest {
             Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        launchActivityForResult<MainActivity>(startActivityIntent)
-
-        onView(withText("Resume integration")).perform(scrollTo()).check(matches(isDisplayed()))
-        if (SettingsThemeHelper.isExpressiveTheme(context)) {
-            onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
-        } else {
-            onView(withText("No apps recently accessed Health\u00A0Connect"))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
+        launchActivityForResult<MainActivity>(startActivityIntent).use {
+            if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                checkTextIsDisplayed("No recent access")
+            } else {
+                checkTextIsDisplayed("No apps recently accessed Health\u00A0Connect")
+            }
+            checkTextIsDisplayed("Permissions and data")
         }
-        onView(withText("Permissions and data")).perform(scrollTo()).check(matches(isDisplayed()))
     }
 
     @Test
-    fun homeSettingsIntent_migrationPending_IntegrationPausedSeen_launchesMainActivity() = runTest {
+    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @Ignore("b/445923123 - enable when banners working")
+    fun homeSettingsIntent_migrationPending_appUpgradeSeen_launchesMainActivity_withNewHomeScreen() =
+        runTest {
+            showOnboarding(context, false)
+            showNativeSteps(context, false)
+            setPreferenceSeen(context, Constants.APP_UPDATE_NEEDED_SEEN, true)
+            whenever(viewModel.getCurrentMigrationUiState()).then {
+                MigrationRestoreState(
+                    migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
+                    dataRestoreState = DataRestoreUiState.IDLE,
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            }
+            whenever(viewModel.migrationState).then {
+                MutableLiveData(
+                    WithData(
+                        MigrationRestoreState(
+                            migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
+                            dataRestoreState = DataRestoreUiState.IDLE,
+                            dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                        )
+                    )
+                )
+            }
+            whenever(newHomeViewModel.homeFragmentState).then {
+                MutableStateFlow(
+                    HomeViewModel.HomeFragmentState.WithData(
+                        connectedApps = emptyList(),
+                        bannerState =
+                            HomeViewModel.HomeBannerState.ShowBanners(
+                                listOf(BannerData.MigrationBanner)
+                            ),
+                    )
+                )
+            }
+
+            val startActivityIntent =
+                Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            launchActivityForResult<MainActivity>(startActivityIntent)
+
+            checkTextIsDisplayed("Resume integration")
+            checkTextIsDisplayed("Your health apps")
+            checkTextIsDisplayed("Your health data")
+        }
+
+    @Test
+    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    fun homeSettingsIntent_migrationPending_integrationPausedSeen_launchesMainActivity() = runTest {
         showOnboarding(context, false)
         showNativeSteps(context, false)
         setPreferenceSeen(context, Constants.INTEGRATION_PAUSED_SEEN_KEY, true)
@@ -313,18 +447,65 @@ class MainActivityTest {
             Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        launchActivityForResult<MainActivity>(startActivityIntent)
-
-        onView(withText("Resume integration")).perform(scrollTo()).check(matches(isDisplayed()))
-        if (SettingsThemeHelper.isExpressiveTheme(context)) {
-            onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
-        } else {
-            onView(withText("No apps recently accessed Health\u00A0Connect"))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
+        launchActivityForResult<MainActivity>(startActivityIntent).use {
+            checkTextIsDisplayed("Resume integration")
+            if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                checkTextIsDisplayed("No recent access")
+            } else {
+                checkTextIsDisplayed("No apps recently accessed Health\u00A0Connect")
+            }
+            checkTextIsDisplayed("Permissions and data")
         }
-        onView(withText("Permissions and data")).perform(scrollTo()).check(matches(isDisplayed()))
     }
+
+    @Test
+    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @Ignore("b/445923123 - enable when banners working")
+    fun homeSettingsIntent_migrationPending_integrationPausedSeen_launchesMainActivity_withNewHomeScreen() =
+        runTest {
+            showOnboarding(context, false)
+            showNativeSteps(context, false)
+            setPreferenceSeen(context, Constants.INTEGRATION_PAUSED_SEEN_KEY, true)
+            whenever(viewModel.getCurrentMigrationUiState()).then {
+                MigrationRestoreState(
+                    migrationUiState = MigrationUiState.ALLOWED_PAUSED,
+                    dataRestoreState = DataRestoreUiState.IDLE,
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            }
+            whenever(viewModel.migrationState).then {
+                MutableLiveData(
+                    WithData(
+                        MigrationRestoreState(
+                            migrationUiState = MigrationUiState.ALLOWED_PAUSED,
+                            dataRestoreState = DataRestoreUiState.IDLE,
+                            dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                        )
+                    )
+                )
+            }
+            whenever(newHomeViewModel.homeFragmentState).then {
+                MutableStateFlow(
+                    HomeViewModel.HomeFragmentState.WithData(
+                        connectedApps = emptyList(),
+                        bannerState =
+                            HomeViewModel.HomeBannerState.ShowBanners(
+                                listOf(BannerData.MigrationBanner)
+                            ),
+                    )
+                )
+            }
+
+            val startActivityIntent =
+                Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            launchActivityForResult<MainActivity>(startActivityIntent)
+
+            checkTextIsDisplayed("Resume integration")
+            checkTextIsDisplayed("Your health apps")
+            checkTextIsDisplayed("Your health data")
+        }
 
     @After
     fun tearDown() {

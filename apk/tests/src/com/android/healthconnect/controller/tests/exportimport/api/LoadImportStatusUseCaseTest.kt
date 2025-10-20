@@ -20,16 +20,17 @@ import android.health.connect.HealthConnectException
 import android.health.connect.exportimport.ImportStatus
 import android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR_NONE
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.healthconnect.controller.exportimport.api.ExportImportUseCaseResult
 import com.android.healthconnect.controller.exportimport.api.HealthDataImportManager
 import com.android.healthconnect.controller.exportimport.api.ImportUiState
 import com.android.healthconnect.controller.exportimport.api.LoadImportStatusUseCase
 import com.android.healthconnect.controller.service.HealthDataImportManagerModule
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthDataImportManager
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -46,7 +47,7 @@ class LoadImportStatusUseCaseTest {
 
     @Before
     fun setup() {
-        useCase = LoadImportStatusUseCase(healthDataImportManager)
+        useCase = LoadImportStatusUseCase(healthDataImportManager, Dispatchers.Main)
     }
 
     @After
@@ -58,10 +59,10 @@ class LoadImportStatusUseCaseTest {
     fun invoke_callsHealthDataImportManager() = runTest {
         val importStatus = ImportStatus(DATA_IMPORT_ERROR_NONE)
         (healthDataImportManager as FakeHealthDataImportManager).setImportStatus(importStatus)
-        val result = useCase.invoke()
+        val result = useCase.invoke(Unit)
 
-        assertThat(result is ExportImportUseCaseResult.Success).isTrue()
-        val importStatusResult = (result as ExportImportUseCaseResult.Success).data
+        assertThat(result is UseCaseResults.Success).isTrue()
+        val importStatusResult = (result as UseCaseResults.Success).data
         assertThat(importStatusResult.dataImportState)
             .isEqualTo(ImportUiState.DataImportState.DATA_IMPORT_ERROR_NONE)
     }
@@ -70,12 +71,12 @@ class LoadImportStatusUseCaseTest {
     fun invoke_callsHealthDataImportManager_returnsFailure() = runTest {
         val exception = HealthConnectException(HealthConnectException.ERROR_UNKNOWN)
         (healthDataImportManager as FakeHealthDataImportManager).setGetImportStatusException(
-            exception)
-        val result = useCase.invoke()
+            exception
+        )
+        val result = useCase.invoke(Unit)
 
-        assertThat(result is ExportImportUseCaseResult.Failed).isTrue()
-        assertThat((result as ExportImportUseCaseResult.Failed).exception is HealthConnectException)
-            .isTrue()
+        assertThat(result is UseCaseResults.Failed).isTrue()
+        assertThat((result as UseCaseResults.Failed).exception is HealthConnectException).isTrue()
         assertThat((result.exception as HealthConnectException).errorCode)
             .isEqualTo(HealthConnectException.ERROR_UNKNOWN)
     }

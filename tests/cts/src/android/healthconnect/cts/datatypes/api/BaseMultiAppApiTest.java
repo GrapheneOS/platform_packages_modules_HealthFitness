@@ -370,7 +370,8 @@ abstract class BaseMultiAppApiTest<T extends Record> {
         return mRecordFactory.recordWithIdAndPackageName(record, id, packageName);
     }
 
-    private static List<String> insertRecordsAndReturnIds(List<Record> records) throws Exception {
+    private static List<String> insertRecordsAndReturnIds(List<? extends Record> records)
+            throws Exception {
         return TestUtils.insertRecords(records).stream().map(r -> r.getMetadata().getId()).toList();
     }
 
@@ -378,4 +379,5 @@ abstract class BaseMultiAppApiTest<T extends Record> {
         return TestUtils.readRecords(
                 new ReadRecordsRequestUsingFilters.Builder<>(mRecordClass).build());
     }
+
 }

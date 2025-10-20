@@ -28,7 +28,7 @@
     <string name="all_categories_title" msgid="1446410643217937926">"所有类别"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"查看所有类别"</string>
     <string name="no_data" msgid="1906986019249068659">"无数据"</string>
-    <string name="devices_summary" msgid="8653563324512654292">"管理您已连接的设备"</string>
+    <string name="devices_summary" msgid="8653563324512654292">"管理已连接的设备"</string>
     <string name="devices_title" msgid="7548105261104504301">"设备"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"应用权限"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"管理应用和权限"</string>
@@ -84,6 +84,8 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"营养"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"健康"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"健康"</string>
+    <string name="symptoms_category_uppercase" msgid="1357167834284360975">"症状"</string>
+    <string name="symptoms_category_lowercase" msgid="2298815597177353672">"症状"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"浏览数据"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"管理数据"</string>
     <string name="export_data_button" msgid="7783329820434117744">"导出数据"</string>
@@ -378,6 +380,15 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"饮酒量"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"读取饮酒量数据"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"写入饮酒量数据"</string>
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"咳嗽"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"咳嗽"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"读取症状数据"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"写入症状数据"</string>
+    <string name="symptom_unknown" msgid="5796719193136239306">"未知"</string>
+    <string name="symptom_severity_mild" msgid="2689415474774489874">"轻微"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"中度"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"严重"</string>
+    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g><xliff:g id="TYPE">%2$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"允许 <xliff:g id="APP_NAME">%1$s</xliff:g> 读取"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”写入"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"允许"</string>
@@ -449,13 +460,13 @@
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"不允许访问"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"需要更新"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"设置和帮助"</string>
-    <string name="disconnect_all_apps" msgid="748945115977534726">"撤消所有应用的访问权限"</string>
+    <string name="disconnect_all_apps" msgid="748945115977534726">"撤销所有应用的访问权限"</string>
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"允许读取"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"允许写入"</string>
     <string name="no_apps_allowed" msgid="5794833581324128108">"未允许任何应用"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"未拒绝任何应用"</string>
-    <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"要撤消所有应用的访问权限吗？"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"您的应用都将无法访问“健康数据共享”中的数据，也不能向其中添加新数据。这不会删除任何现有数据。\n\n这也不会影响此应用可能拥有的其他权限，例如位置信息、相机或麦克风权限。"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"要撤销所有应用的访问权限吗？"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"所有应用都将无法访问“健康数据共享”中的数据，也不能向其中添加新数据。此操作不会删除任何现有数据。\n\n应用可能拥有的其他权限（例如位置信息、相机或麦克风权限）也不受影响。"</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"全部撤销"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"管理应用"</string>
     <string name="see_app_data" msgid="3951030076195119476">"查看应用数据"</string>
@@ -660,6 +671,8 @@
     <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{推轮椅 1 次}other{推轮椅 # 次}}"</string>
     <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 L}other{# L}}"</string>
     <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 升}other{# 升}}"</string>
+    <string name="milliliter" msgid="7730118351176678375">"{count,plural, =1{1 ml}other{# ml}}"</string>
+    <string name="milliliter_long" msgid="6431396151823725792">"{count,plural, =1{1 毫升}other{# 毫升}}"</string>
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 层}other{# 层}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 m}other{# m}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 米}other{# 米}}"</string>
@@ -835,8 +848,32 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} 口电子烟}other{{quantity} 口电子烟}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} 根香烟}other{{quantity} 根香烟}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number}未知"</string>
+    <string name="alcohol_consumption_title" msgid="2627266871623334972">"<xliff:g id="SERVING">%1$s</xliff:g> • <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"其他"</string>
+    <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"啤酒"</string>
+    <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"葡萄酒"</string>
+    <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"伏特加"</string>
+    <string name="alcohol_consumption_beverage_type_gin" msgid="5945396443339874907">"杜松子酒"</string>
+    <string name="alcohol_consumption_beverage_type_whiskey" msgid="1085904168947658887">"威士忌"</string>
+    <string name="alcohol_consumption_beverage_type_rum" msgid="5230691377430212826">"朗姆酒"</string>
+    <string name="alcohol_consumption_beverage_type_tequila" msgid="9074751455065347442">"龙舌兰"</string>
+    <string name="alcohol_consumption_beverage_type_lager" msgid="1490153167547219382">"拉格啤酒"</string>
+    <string name="alcohol_consumption_beverage_type_cider" msgid="3348115754435446544">"苹果酒"</string>
+    <string name="alcohol_consumption_beverage_type_sake" msgid="2773512901340614154">"清酒"</string>
+    <string name="alcohol_consumption_beverage_type_shochu" msgid="3491300198222489324">"日本烧酒"</string>
+    <string name="alcohol_consumption_beverage_type_soju" msgid="113120387013483711">"韩国烧酒"</string>
+    <string name="alcohol_consumption_beverage_type_mead" msgid="1673063923088962681">"蜂蜜酒"</string>
+    <string name="alcohol_consumption_beverage_type_absinthe" msgid="3972259596196421914">"苦艾酒"</string>
+    <string name="alcohol_consumption_beverage_type_brandy" msgid="3782444367994599131">"白兰地"</string>
+    <string name="alcohol_consumption_beverage_type_cocktail" msgid="4711099215987668649">"鸡尾酒"</string>
+    <string name="alcohol_consumption_beverage_type_chuhai" msgid="4727177353197748690">"楚海酒"</string>
+    <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"高球酒"</string>
+    <string name="serving_volume_title" msgid="4727986574534974167">"份量"</string>
+    <string name="alcohol_by_volume_title" msgid="6942673552238435422">"酒精度"</string>
+    <string name="note_title" msgid="4101166558186573016">"备注"</string>
+    <string name="details_title" msgid="8411891773854413790">"详细信息"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> 分钟"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> 小时 <xliff:g id="MIN">%2$s</xliff:g> 分钟"</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> 小时 <xliff:g id="MIN">%2$s</xliff:g> 分钟"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> 小时"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 小时}other{# 小时}}"</string>
@@ -1033,8 +1070,8 @@
     <string name="range_never" msgid="4429478261788361233">"永不"</string>
     <string name="range_off" msgid="8178520557618184215">"已关闭"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"更改这些设置后，“健康数据共享”会根据您的新偏好设置删除现有数据"</string>
-    <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{在 # 个月后自动删除数据？}other{在 # 个月后自动删除数据？}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{“健康数据共享”中保留时长超过 # 个月的数据也会被删除。\n\n如要从关联的应用中彻底删除数据，请检查每个可能保存您数据的应用。}other{“健康数据共享”中保留时长超过 # 个月的数据也会被删除。\n\n如要从关联的应用中彻底删除数据，请检查每个可能保存您数据的应用。}}"</string>
+    <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{要在 # 个月后自动删除数据吗？}other{要在 # 个月后自动删除数据吗？}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{此操作也会删除“健康数据共享”中保留时长超过 # 个月的数据。\n\n如要从关联的应用中彻底删除数据，请检查每个可能保存您数据的应用。}other{此操作也会删除“健康数据共享”中保留时长超过 # 个月的数据。\n\n如要从关联的应用中彻底删除数据，请检查每个可能保存您数据的应用。}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"设置自动删除"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"现有数据将被删除"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{“健康数据共享”将会删除存储时长已超过 # 个月的所有数据。这些更改可能需要一天的时间才会体现在您已关联的应用内。}other{“健康数据共享”将会删除存储时长已超过 # 个月的所有数据。这些更改可能需要一天的时间才会体现在您已关联的应用内。}}"</string>
@@ -1042,6 +1079,7 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"完成"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{自动删除功能已开启，保留时长超过 # 个月的数据将被删除}other{自动删除功能已开启，保留时长超过 # 个月的数据将被删除}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"自动删除功能已关闭"</string>
+    <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+<xliff:g id="COUNT">%s</xliff:g>"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"设置应用优先级"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"如果多个应用都可以添加<xliff:g id="DATA_TYPE">%s</xliff:g>数据，健康数据共享会优先考虑此列表中排在最前面的应用。拖动应用即可重新排序。"</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"保存"</string>
@@ -1137,10 +1175,10 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"立即更新"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"数据总值"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"数据源"</string>
-    <string name="data_sources_footer" msgid="2271085147058181039">"将数据源添加到列表中，查看数据总值如何变化。从此列表中删除某个数据源后，该数据源的数据将不再计入总值，但该数据源仍具有写入权限。"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"您可以将数据源添加到列表中，查看数据总值的变化。从列表中删除某个数据源后，来自该数据源的数据将不再计入数据总值，但该数据源仍具有写入权限。"</string>
     <string name="data_sources_empty_state" msgid="478270183887252279">"没有数据源"</string>
     <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"您为数据源授予写入<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>数据的权限后，相应数据源就会显示在此处。"</string>
-    <string name="data_sources_help_link" msgid="7740264923634947915">"来源和优先级的运作方式"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"数据源和优先级的运作方式"</string>
     <string name="data_sources_add_app" msgid="275066335106036460">"添加数据源"</string>
     <string name="edit_data_sources" msgid="5389744157074260179">"修改数据源"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"设备默认设置"</string>
@@ -1175,6 +1213,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"关联的应用将无法再通过“健康数据共享”读取相应数据"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"已选中"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"未选中"</string>
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>，<xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"有锻炼路线地图可供使用"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"次日"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"下周"</string>
@@ -1189,9 +1228,9 @@
     <string name="all_entries_selected_day_deletion_confirmation_dialog" msgid="2887646600541520444">"要永久删除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所有条目吗？"</string>
     <string name="all_entries_selected_week_deletion_confirmation_dialog" msgid="6759608395185369048">"要永久删除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>这一周的所有条目吗？"</string>
     <string name="all_entries_selected_month_deletion_confirmation_dialog" msgid="6030161837387559132">"要永久删除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所有条目吗？"</string>
-    <string name="some_entries_selected_day_deletion_confirmation_dialog" msgid="3481363886097542565">"要永久删除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所选条目吗？"</string>
-    <string name="some_entries_selected_week_deletion_confirmation_dialog" msgid="7150217982297131340">"要永久删除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>这一周的所选条目吗？"</string>
-    <string name="some_entries_selected_month_deletion_confirmation_dialog" msgid="3712014725077445591">"要永久删除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所选条目吗？"</string>
+    <string name="some_entries_selected_day_deletion_confirmation_dialog" msgid="3481363886097542565">"要永久删除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所选数据记录吗？"</string>
+    <string name="some_entries_selected_week_deletion_confirmation_dialog" msgid="7150217982297131340">"要永久删除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>这一周的所选数据记录吗？"</string>
+    <string name="some_entries_selected_month_deletion_confirmation_dialog" msgid="3712014725077445591">"要永久删除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所选数据记录吗？"</string>
     <string name="one_entry_selected_deletion_confirmation_dialog" msgid="4642573082594021789">"要永久删除此条目吗？"</string>
     <string name="all_app_entries_selected_day_deletion_confirmation_dialog" msgid="2342034541791960151">"要永久删除<xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>的所有“<xliff:g id="APP_NAME">%1$s</xliff:g>”条目吗？"</string>
     <string name="all_app_entries_selected_week_deletion_confirmation_dialog" msgid="24289763841770386">"要永久删除<xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>这一周的所有“<xliff:g id="APP_NAME">%1$s</xliff:g>”条目吗？"</string>
@@ -1228,6 +1267,7 @@
     <string name="write_access" msgid="571547306854732263">"写入权限"</string>
     <string name="read_access" msgid="3317759826769372785">"读取权限"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>，<xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>，<xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"已允许 <xliff:g id="NUMBER_0">%1$d</xliff:g> 个应用（共 <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> 个）"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"没有应用请求权限"</string>
     <string name="allowed" msgid="4158456017482263737">"已允许"</string>
@@ -1272,21 +1312,266 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"未知设备"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"设备信息"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"此设备收集的数据将存储在“健康数据共享”中，关联的应用将可访问这些数据"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"此设备不支持步数跟踪，但仍会有数据存储在“健康数据共享”中"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"此设备无法跟踪步数"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"允许写入"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"设备数据"</string>
     <string name="device_data_label" msgid="2056618513138892435">"管理设备"</string>
     <string name="device_data_button" msgid="8002406105399136401">"查看设备数据"</string>
-    <string name="native_steps_banner_title" msgid="7668164332675458871">"手机跟踪的步数将显示在“健康数据共享”中"</string>
-    <string name="native_steps_banner_summary" msgid="7109953051996114646">"此设备跟踪的步数现已存储在“健康数据共享”中，可供关联的应用访问"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_title" msgid="8990874387340782536">"手机跟踪的步数将显示在“健康数据共享”中"</string>
+    <string name="native_steps_banner_summary" msgid="8255767487167444809">"此设备跟踪的步数现已存储在“健康数据共享”中，可供关联的应用访问"</string>
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"关闭"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"查看"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"步数现已存储在“健康数据共享”中"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"此设备跟踪的步数现已存储在“健康数据共享”中，可供关联的应用访问"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"您的健康类应用"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"您的健康数据"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"偏好设置"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"借助“健康数据共享”，您可以在多个应用之间共享健康与健身数据。这能帮您获得更多见解和体验，同时保障数据安全。"</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"详细了解“健康数据共享”"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"您的数据及可以访问这些数据的应用"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"近期使用过您数据的应用"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"查看可以访问健康数据的设备"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"安装可与“健康数据共享”搭配使用的应用，即可在此处查看这些应用的数据"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"查看兼容应用"</string>
+    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"查看更多健康类应用"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"未连接"</string>
+    <string name="connect_app_button_content_description" msgid="296796277841527165">"点击即可将此应用关联到“健康数据共享”"</string>
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"以后再说"</string>
+    <string name="acne_read_content_description" msgid="1176708404029936065">"读取痤疮数据"</string>
+    <string name="acne_write_content_description" msgid="9221785868351412493">"写入痤疮数据"</string>
+    <string name="brittle_nails_read_content_description" msgid="423745726647038216">"读取脆甲数据"</string>
+    <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"写入脆甲数据"</string>
+    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"读取口腔灼痛数据"</string>
+    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"写入口腔灼痛数据"</string>
+    <string name="chills_read_content_description" msgid="7244946135559432433">"读取发冷数据"</string>
+    <string name="chills_write_content_description" msgid="6478646233405107436">"写入发冷数据"</string>
+    <string name="dehydration_read_content_description" msgid="7633935838518756206">"读取脱水数据"</string>
+    <string name="dehydration_write_content_description" msgid="541514183036921571">"写入脱水数据"</string>
+    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"读取皮肤干燥数据"</string>
+    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"写入皮肤干燥数据"</string>
+    <string name="fever_read_content_description" msgid="3385209639730909489">"读取发烧数据"</string>
+    <string name="fever_write_content_description" msgid="8440573327719878961">"写入发烧数据"</string>
+    <string name="joint_pain_read_content_description" msgid="2932523124488927967">"读取关节疼痛数据"</string>
+    <string name="joint_pain_write_content_description" msgid="7405551860978844535">"写入关节疼痛数据"</string>
+    <string name="joint_stiffness_read_content_description" msgid="2132696730582070534">"读取关节僵硬数据"</string>
+    <string name="joint_stiffness_write_content_description" msgid="7556318646656369856">"写入关节僵硬数据"</string>
+    <string name="muscle_pain_read_content_description" msgid="3116385630330673084">"读取肌肉疼痛数据"</string>
+    <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"写入肌肉疼痛数据"</string>
+    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"读取意识丧失数据"</string>
+    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"写入意识丧失数据"</string>
+    <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"读取运动能力下降数据"</string>
+    <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"写入运动能力下降数据"</string>
+    <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"读取体重变化不明数据"</string>
+    <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"写入体重变化不明数据"</string>
+    <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"读取全身疼痛数据"</string>
+    <string name="generalized_body_ache_write_content_description" msgid="4282920161878530009">"写入全身疼痛数据"</string>
+    <string name="fatigue_read_content_description" msgid="8447413794808220408">"读取疲劳数据"</string>
+    <string name="fatigue_write_content_description" msgid="3000326883358951973">"写入疲劳数据"</string>
+    <string name="constipation_read_content_description" msgid="4024154136010015370">"读取便秘数据"</string>
+    <string name="constipation_write_content_description" msgid="9059835998017996999">"写入便秘数据"</string>
+    <string name="diarrhea_read_content_description" msgid="6643311788778713543">"读取腹泻数据"</string>
+    <string name="diarrhea_write_content_description" msgid="2525160401458506448">"写入腹泻数据"</string>
+    <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"读取食欲不振数据"</string>
+    <string name="loss_of_appetite_write_content_description" msgid="7370817778828856877">"写入食欲不振数据"</string>
+    <string name="nausea_read_content_description" msgid="7696809485706809234">"读取恶心数据"</string>
+    <string name="nausea_write_content_description" msgid="7956853318058549079">"写入恶心数据"</string>
+    <string name="stomach_ache_read_content_description" msgid="6960461949095524373">"读取胃痛数据"</string>
+    <string name="stomach_ache_write_content_description" msgid="4822349196740130790">"写入胃痛数据"</string>
+    <string name="vomiting_read_content_description" msgid="6425637340168306118">"读取呕吐数据"</string>
+    <string name="vomiting_write_content_description" msgid="2768436321239967229">"写入呕吐数据"</string>
+    <string name="chest_pain_read_content_description" msgid="5388099127082653993">"读取胸痛数据"</string>
+    <string name="chest_pain_write_content_description" msgid="7570421665813979598">"写入胸痛数据"</string>
+    <string name="chest_tightness_read_content_description" msgid="3234587929340517638">"读取胸闷数据"</string>
+    <string name="chest_tightness_write_content_description" msgid="3365518444505217882">"写入胸闷数据"</string>
+    <string name="cough_read_content_description" msgid="4834360757270578547">"读取咳嗽数据"</string>
+    <string name="cough_write_content_description" msgid="2927943192149715422">"写入咳嗽数据"</string>
+    <string name="heart_palpitations_read_content_description" msgid="5830132363981902576">"读取心悸数据"</string>
+    <string name="heart_palpitations_write_content_description" msgid="6195434828951874561">"写入心悸数据"</string>
+    <string name="shortness_of_breath_read_content_description" msgid="5285037217314042125">"读取气促数据"</string>
+    <string name="shortness_of_breath_write_content_description" msgid="1812050225998794712">"写入气促数据"</string>
+    <string name="wheezing_read_content_description" msgid="3698103133045395859">"读取气喘数据"</string>
+    <string name="wheezing_write_content_description" msgid="3555234332119025686">"写入气喘数据"</string>
+    <string name="heartburn_read_content_description" msgid="4650825508743336439">"读取胃灼热数据"</string>
+    <string name="heartburn_write_content_description" msgid="1857706822547818187">"写入胃灼热数据"</string>
+    <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"读取漏搏数据"</string>
+    <string name="skipped_heartbeat_write_content_description" msgid="834686289232563614">"写入漏搏数据"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"读取心跳过快、心跳剧烈或心跳不稳数据"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"写入心跳过快、心跳剧烈或心跳不稳数据"</string>
+    <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"读取吞咽困难数据"</string>
+    <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"写入吞咽困难数据"</string>
+    <string name="dizziness_read_content_description" msgid="2525565486057144416">"读取眩晕数据"</string>
+    <string name="dizziness_write_content_description" msgid="1875365619054873732">"写入眩晕数据"</string>
+    <string name="earaches_read_content_description" msgid="4643142391473401154">"读取耳痛数据"</string>
+    <string name="earaches_write_content_description" msgid="3551386029980258801">"写入耳痛数据"</string>
+    <string name="hair_loss_read_content_description" msgid="4057044821025872986">"读取脱发数据"</string>
+    <string name="hair_loss_write_content_description" msgid="7387442867237711823">"写入脱发数据"</string>
+    <string name="headache_read_content_description" msgid="7485283472508878298">"读取头痛数据"</string>
+    <string name="headache_write_content_description" msgid="720183844750746485">"写入头痛数据"</string>
+    <string name="runny_nose_read_content_description" msgid="443700998701222852">"读取流鼻涕数据"</string>
+    <string name="runny_nose_write_content_description" msgid="6210009950948827090">"写入流鼻涕数据"</string>
+    <string name="sneezing_read_content_description" msgid="1825781985598094799">"读取打喷嚏数据"</string>
+    <string name="sneezing_write_content_description" msgid="8125072216406958337">"写入打喷嚏数据"</string>
+    <string name="sore_throat_read_content_description" msgid="7798247670004858562">"读取咽喉痛数据"</string>
+    <string name="sore_throat_write_content_description" msgid="6058043292544091397">"写入咽喉痛数据"</string>
+    <string name="stuffy_nose_read_content_description" msgid="6604212451531546331">"读取鼻塞数据"</string>
+    <string name="stuffy_nose_write_content_description" msgid="6950875986047625521">"写入鼻塞数据"</string>
+    <string name="back_pain_read_content_description" msgid="1176155927269014089">"读取背痛数据"</string>
+    <string name="back_pain_write_content_description" msgid="6282959987099901645">"写入背痛数据"</string>
+    <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"读取下背痛数据"</string>
+    <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"写入下背痛数据"</string>
+    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"读取潮热数据"</string>
+    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"写入潮热数据"</string>
+    <string name="night_sweats_read_content_description" msgid="7644094250441074129">"读取夜间盗汗数据"</string>
+    <string name="night_sweats_write_content_description" msgid="7501357533280452509">"写入夜间盗汗数据"</string>
+    <string name="water_retention_read_content_description" msgid="211789030125880649">"读取水肿数据"</string>
+    <string name="water_retention_write_content_description" msgid="7109328727506593781">"写入水肿数据"</string>
+    <string name="cravings_read_content_description" msgid="9098905292448612603">"读取成瘾数据"</string>
+    <string name="cravings_write_content_description" msgid="7932335159387976333">"写入成瘾数据"</string>
+    <string name="bloating_read_content_description" msgid="8942780558464500997">"读取腹胀数据"</string>
+    <string name="bloating_write_content_description" msgid="5014366726518564943">"写入腹胀数据"</string>
+    <string name="cramps_read_content_description" msgid="5853663240074256855">"读取痉挛数据"</string>
+    <string name="cramps_write_content_description" msgid="6777230560926849939">"写入痉挛数据"</string>
+    <string name="abdominal_pain_read_content_description" msgid="6331928351160142817">"读取腹痛数据"</string>
+    <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"写入腹痛数据"</string>
+    <string name="breast_tenderness_read_content_description" msgid="1556133668276886256">"读取乳房压痛数据"</string>
+    <string name="breast_tenderness_write_content_description" msgid="5405234499024881940">"写入乳房压痛数据"</string>
+    <string name="pelvic_pain_read_content_description" msgid="8872893212311881743">"读取盆腔疼痛数据"</string>
+    <string name="pelvic_pain_write_content_description" msgid="8482016412474126674">"写入盆腔疼痛数据"</string>
+    <string name="vaginal_dryness_read_content_description" msgid="21587787265978758">"读取阴道干涩数据"</string>
+    <string name="vaginal_dryness_write_content_description" msgid="7639415261021656468">"写入阴道干涩数据"</string>
+    <string name="vaginal_itchiness_read_content_description" msgid="6027886706003079912">"读取阴道瘙痒数据"</string>
+    <string name="vaginal_itchiness_write_content_description" msgid="6833099607694941406">"写入阴道瘙痒数据"</string>
+    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"读取脑雾数据"</string>
+    <string name="brain_fog_write_content_description" msgid="354508934978268288">"写入脑雾数据"</string>
+    <string name="mood_change_read_content_description" msgid="5114563193264125173">"读取情绪变化数据"</string>
+    <string name="mood_change_write_content_description" msgid="7613564641235985120">"写入情绪变化数据"</string>
+    <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"读取记忆丧失数据"</string>
+    <string name="memory_lapse_write_content_description" msgid="211569063190179476">"写入记忆丧失数据"</string>
+    <string name="sleepiness_read_content_description" msgid="797381777988304669">"读取嗜睡数据"</string>
+    <string name="sleepiness_write_content_description" msgid="888236364245216476">"写入嗜睡数据"</string>
+    <string name="sleep_changes_read_content_description" msgid="277237231470749744">"读取睡眠变化数据"</string>
+    <string name="sleep_changes_write_content_description" msgid="9078270254664653838">"写入睡眠变化数据"</string>
+    <string name="insomnia_read_content_description" msgid="5225449618972721129">"读取失眠数据"</string>
+    <string name="insomnia_write_content_description" msgid="4237153589826489083">"写入失眠数据"</string>
+    <string name="snore_read_content_description" msgid="3447953925696237628">"读取打鼾数据"</string>
+    <string name="snore_write_content_description" msgid="959354771204900433">"写入打鼾数据"</string>
+    <string name="acne_uppercase_label" msgid="60568062993817483">"痤疮"</string>
+    <string name="acne_lowercase_label" msgid="5301949536428255159">"痤疮"</string>
+    <string name="abdominal_pain_uppercase_label" msgid="442393846492385702">"腹痛"</string>
+    <string name="abdominal_pain_lowercase_label" msgid="4136643670361233063">"腹痛"</string>
+    <string name="back_pain_uppercase_label" msgid="6034795846635350255">"背痛"</string>
+    <string name="back_pain_lowercase_label" msgid="7487168354843582888">"背痛"</string>
+    <string name="bloating_uppercase_label" msgid="2827024204358491650">"腹胀"</string>
+    <string name="bloating_lowercase_label" msgid="4108236897678347488">"腹胀"</string>
+    <string name="brain_fog_uppercase_label" msgid="3782508630097437711">"脑雾"</string>
+    <string name="brain_fog_lowercase_label" msgid="8018499987092429724">"脑雾"</string>
+    <string name="breast_tenderness_uppercase_label" msgid="3633574517042452397">"乳房压痛"</string>
+    <string name="breast_tenderness_lowercase_label" msgid="3745105353936751222">"乳房压痛"</string>
+    <string name="brittle_nails_uppercase_label" msgid="7290899807816681152">"脆甲"</string>
+    <string name="brittle_nails_lowercase_label" msgid="43861645923597496">"脆甲"</string>
+    <string name="burning_mouth_uppercase_label" msgid="8975226712238467359">"口腔灼痛"</string>
+    <string name="burning_mouth_lowercase_label" msgid="3378970972990933484">"口腔灼痛"</string>
+    <string name="chest_pain_uppercase_label" msgid="8091501402224214622">"胸痛"</string>
+    <string name="chest_pain_lowercase_label" msgid="8817807562310689177">"胸痛"</string>
+    <string name="chest_tightness_uppercase_label" msgid="8988021502622503503">"胸闷"</string>
+    <string name="chest_tightness_lowercase_label" msgid="1770063390635610292">"胸闷"</string>
+    <string name="chills_uppercase_label" msgid="4320786490882838834">"发冷"</string>
+    <string name="chills_lowercase_label" msgid="1306612496314055832">"发冷"</string>
+    <string name="constipation_uppercase_label" msgid="7245001778443725742">"便秘"</string>
+    <string name="constipation_lowercase_label" msgid="6217542866033766747">"便秘"</string>
+    <string name="cough_uppercase_label" msgid="5570609736970603012">"咳嗽"</string>
+    <string name="cough_lowercase_label" msgid="459638956679172779">"咳嗽"</string>
+    <string name="cramps_uppercase_label" msgid="5162905309136173937">"痉挛"</string>
+    <string name="cramps_lowercase_label" msgid="4644485808002493449">"痉挛"</string>
+    <string name="cravings_uppercase_label" msgid="4754194354806284307">"成瘾"</string>
+    <string name="cravings_lowercase_label" msgid="5836041614136287213">"成瘾"</string>
+    <string name="dehydration_uppercase_label" msgid="10278239942824711">"脱水"</string>
+    <string name="dehydration_lowercase_label" msgid="8692632632276643276">"脱水"</string>
+    <string name="diarrhea_uppercase_label" msgid="6310170127529968752">"腹泻"</string>
+    <string name="diarrhea_lowercase_label" msgid="5938774694742839016">"腹泻"</string>
+    <string name="difficulty_swallowing_uppercase_label" msgid="3546617155300878657">"吞咽困难"</string>
+    <string name="difficulty_swallowing_lowercase_label" msgid="4980631237611433200">"吞咽困难"</string>
+    <string name="dizziness_uppercase_label" msgid="8129950094459563983">"眩晕"</string>
+    <string name="dizziness_lowercase_label" msgid="3462347558609662379">"眩晕"</string>
+    <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"皮肤干燥"</string>
+    <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"皮肤干燥"</string>
+    <string name="earaches_uppercase_label" msgid="107701950625572701">"耳痛"</string>
+    <string name="earaches_lowercase_label" msgid="6240790850403958317">"耳痛"</string>
+    <string name="fatigue_uppercase_label" msgid="7514286788083426578">"疲劳"</string>
+    <string name="fatigue_lowercase_label" msgid="2669560685808367387">"疲劳"</string>
+    <string name="fever_uppercase_label" msgid="6889273008212535253">"发烧"</string>
+    <string name="fever_lowercase_label" msgid="3634400562894397159">"发烧"</string>
+    <string name="generalized_body_ache_uppercase_label" msgid="2171378172300618053">"全身疼痛"</string>
+    <string name="generalized_body_ache_lowercase_label" msgid="1725534000111875030">"全身疼痛"</string>
+    <string name="hair_loss_uppercase_label" msgid="6359351347019795813">"脱发"</string>
+    <string name="hair_loss_lowercase_label" msgid="2764498189966225461">"脱发"</string>
+    <string name="headache_uppercase_label" msgid="863800537735413054">"头痛"</string>
+    <string name="headache_lowercase_label" msgid="6564231905087583135">"头痛"</string>
+    <string name="heartburn_uppercase_label" msgid="1170571383460859644">"胃灼热"</string>
+    <string name="heartburn_lowercase_label" msgid="6235983036978705474">"胃灼热"</string>
+    <string name="heart_palpitations_uppercase_label" msgid="2026400872833911547">"心悸"</string>
+    <string name="heart_palpitations_lowercase_label" msgid="1468243523322721340">"心悸"</string>
+    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"潮热"</string>
+    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"潮热"</string>
+    <string name="insomnia_uppercase_label" msgid="4946197328995261738">"失眠"</string>
+    <string name="insomnia_lowercase_label" msgid="3742025423716451058">"失眠"</string>
+    <string name="joint_pain_uppercase_label" msgid="7693454621285586935">"关节疼痛"</string>
+    <string name="joint_pain_lowercase_label" msgid="1877680075365305488">"关节疼痛"</string>
+    <string name="joint_stiffness_uppercase_label" msgid="5230114867081881444">"关节僵硬"</string>
+    <string name="joint_stiffness_lowercase_label" msgid="8766445235392409480">"关节僵硬"</string>
+    <string name="loss_of_appetite_uppercase_label" msgid="4023141061302523950">"食欲不振"</string>
+    <string name="loss_of_appetite_lowercase_label" msgid="7558077308061468558">"食欲不振"</string>
+    <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"意识丧失"</string>
+    <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"意识丧失"</string>
+    <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"下背痛"</string>
+    <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"下背痛"</string>
+    <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"记忆丧失"</string>
+    <string name="memory_lapse_lowercase_label" msgid="5590619293782264318">"记忆丧失"</string>
+    <string name="mood_change_uppercase_label" msgid="6591596468077187132">"情绪变化"</string>
+    <string name="mood_change_lowercase_label" msgid="5154765930188874067">"情绪变化"</string>
+    <string name="muscle_pain_uppercase_label" msgid="2470771124188001900">"肌肉疼痛"</string>
+    <string name="muscle_pain_lowercase_label" msgid="7842677871351347822">"肌肉疼痛"</string>
+    <string name="nausea_uppercase_label" msgid="8384006696113532259">"恶心"</string>
+    <string name="nausea_lowercase_label" msgid="8182471893071968504">"恶心"</string>
+    <string name="night_sweats_uppercase_label" msgid="6177687233700001658">"夜间盗汗"</string>
+    <string name="night_sweats_lowercase_label" msgid="5041101323453286082">"夜间盗汗"</string>
+    <string name="pelvic_pain_uppercase_label" msgid="9057761232218571640">"盆腔疼痛"</string>
+    <string name="pelvic_pain_lowercase_label" msgid="8993103170034473121">"盆腔疼痛"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"心跳过快、心跳剧烈或心跳不稳"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"心跳过快、心跳剧烈或心跳不稳"</string>
+    <string name="reduced_capacity_for_exercise_uppercase_label" msgid="7471254320615756463">"运动能力下降"</string>
+    <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"运动能力下降"</string>
+    <string name="runny_nose_uppercase_label" msgid="6561156187042071551">"流鼻涕"</string>
+    <string name="runny_nose_lowercase_label" msgid="2214697492382685914">"流鼻涕"</string>
+    <string name="shortness_of_breath_uppercase_label" msgid="3747502224212110471">"气促"</string>
+    <string name="shortness_of_breath_lowercase_label" msgid="3970444639088619346">"气促"</string>
+    <string name="skipped_heartbeat_uppercase_label" msgid="1004040920818222022">"漏搏"</string>
+    <string name="skipped_heartbeat_lowercase_label" msgid="2446049805930852514">"漏搏"</string>
+    <string name="sleep_changes_uppercase_label" msgid="817870703301327111">"睡眠变化"</string>
+    <string name="sleep_changes_lowercase_label" msgid="8606593835222848643">"睡眠变化"</string>
+    <string name="sleepiness_uppercase_label" msgid="8292543897598171825">"嗜睡"</string>
+    <string name="sleepiness_lowercase_label" msgid="7563434619994665081">"嗜睡"</string>
+    <string name="sneezing_uppercase_label" msgid="3559089195823390830">"打喷嚏"</string>
+    <string name="sneezing_lowercase_label" msgid="4614496100578986753">"打喷嚏"</string>
+    <string name="snore_uppercase_label" msgid="5408933698329003980">"打鼾"</string>
+    <string name="snore_lowercase_label" msgid="4813706716393000341">"打鼾"</string>
+    <string name="sore_throat_uppercase_label" msgid="7652461264264564339">"咽喉痛"</string>
+    <string name="sore_throat_lowercase_label" msgid="2671417552726018944">"咽喉痛"</string>
+    <string name="stomach_ache_uppercase_label" msgid="8450868632465837793">"胃痛"</string>
+    <string name="stomach_ache_lowercase_label" msgid="3263518334946627327">"胃痛"</string>
+    <string name="stuffy_nose_uppercase_label" msgid="4216439398397550673">"鼻塞"</string>
+    <string name="stuffy_nose_lowercase_label" msgid="346310767340271161">"鼻塞"</string>
+    <string name="unexplained_weight_changes_uppercase_label" msgid="1882204558194305221">"体重变化不明"</string>
+    <string name="unexplained_weight_changes_lowercase_label" msgid="8433998024876395101">"体重变化不明"</string>
+    <string name="vaginal_dryness_uppercase_label" msgid="4256721076420375400">"阴道干涩"</string>
+    <string name="vaginal_dryness_lowercase_label" msgid="1329282833647595593">"阴道干涩"</string>
+    <string name="vaginal_itchiness_uppercase_label" msgid="2843508264503404145">"阴道瘙痒"</string>
+    <string name="vaginal_itchiness_lowercase_label" msgid="4569019157289060524">"阴道瘙痒"</string>
+    <string name="vomiting_uppercase_label" msgid="258794137964470267">"呕吐"</string>
+    <string name="vomiting_lowercase_label" msgid="2520559377010270583">"呕吐"</string>
+    <string name="water_retention_uppercase_label" msgid="4748866467103152119">"水肿"</string>
+    <string name="water_retention_lowercase_label" msgid="3738721149186742861">"水肿"</string>
+    <string name="wheezing_uppercase_label" msgid="2837114949197811787">"气喘"</string>
+    <string name="wheezing_lowercase_label" msgid="1278548371813007771">"气喘"</string>
 </resources>

@@ -17,12 +17,18 @@
 package com.android.server.healthconnect.telemetry.dataquality;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__DATA_STATE__DATA_STATE_ACTIVE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__DATA_STATE__DATA_STATE_PASSIVE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_ACTIVE_CALORIES_BURNED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_CYCLING_CADENCE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_DISTANCE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_ELEVATION_GAINED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_FLOORS_CLIMBED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_HEART_RATE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_HRV_RMSSD;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_OXYGEN_SATURATION;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_POWER;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_RESPIRATORY_RATE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_SKIN_TEMPERATURE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_SPEED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_STEPS;
@@ -34,8 +40,6 @@ import static com.android.healthfitness.flags.Flags.latencyMetricsFlag;
 
 import android.health.HealthFitnessStatsLog;
 import android.health.connect.datatypes.RecordTypeIdentifier;
-
-import java.util.List;
 
 /**
  * Logs Health Connect data granularity stats.
@@ -58,23 +62,40 @@ public final class DataGranularityStatsLogger {
         if (!latencyMetricsFlag()) {
             return;
         }
-        List<DataGranularityStatsCollector.GranularityStats> stats =
-                mDataGranularityStatsCollector.getLastWeekExerciseSessionsGranularityStats();
+        DataGranularityStatsCollector.AllGranularityStats allStats =
+                mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek();
 
-        for (DataGranularityStatsCollector.GranularityStats stat : stats) {
-            logGranularityStat(stat.packageName(), stat.recordIdentifier(), stat.granularity());
+        for (DataGranularityStatsCollector.GranularityStats stat : allStats.activeStats()) {
+            logGranularityStat(
+                    stat.packageName(),
+                    stat.recordIdentifier(),
+                    stat.granularity(),
+                    /* isActive= */ true);
+        }
+        for (DataGranularityStatsCollector.GranularityStats stat : allStats.passiveStats()) {
+            logGranularityStat(
+                    stat.packageName(),
+                    stat.recordIdentifier(),
+                    stat.granularity(),
+                    /* isActive= */ false);
         }
     }
 
     private void logGranularityStat(
             String packageName,
             @RecordTypeIdentifier.RecordType int recordTypeId,
-            long granularity) {
+            long granularity,
+            boolean isActive) {
+        int dataState =
+                isActive
+                        ? HEALTH_CONNECT_DATA_GRANULARITY_STATS__DATA_STATE__DATA_STATE_ACTIVE
+                        : HEALTH_CONNECT_DATA_GRANULARITY_STATS__DATA_STATE__DATA_STATE_PASSIVE;
         mHealthFitnessStatsLog.write(
                 HEALTH_CONNECT_DATA_GRANULARITY_STATS,
                 packageName,
                 mapDataTypeToLoggingEnum(recordTypeId),
-                granularity);
+                granularity,
+                dataState);
     }
 
     private static int mapDataTypeToLoggingEnum(@RecordTypeIdentifier.RecordType int recordTypeId) {
@@ -111,6 +132,18 @@ public final class DataGranularityStatsLogger {
             }
             case RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED -> {
                 return HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_TOTAL_CALORIES_BURNED;
+            }
+            case RecordTypeIdentifier.RECORD_TYPE_FLOORS_CLIMBED -> {
+                return HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_FLOORS_CLIMBED;
+            }
+            case RecordTypeIdentifier.RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD -> {
+                return HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_HRV_RMSSD;
+            }
+            case RecordTypeIdentifier.RECORD_TYPE_OXYGEN_SATURATION -> {
+                return HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_OXYGEN_SATURATION;
+            }
+            case RecordTypeIdentifier.RECORD_TYPE_RESPIRATORY_RATE -> {
+                return HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_RESPIRATORY_RATE;
             }
             default -> {
                 return HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_UNKNOWN;

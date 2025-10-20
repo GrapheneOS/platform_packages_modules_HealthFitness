@@ -31,6 +31,7 @@ import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMIS
 import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponse;
 import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 import static android.healthconnect.testing.cts.HealthConnectReceiver.outcomeExecutor;
+import static android.healthconnect.testing.shared.DataFactory.DEFAULT_LONG;
 import static android.healthconnect.testing.shared.DataFactory.getDataOrigin;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
@@ -121,12 +122,14 @@ import android.health.connect.migration.MigrationException;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.OutcomeReceiver;
 import android.util.Log;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.modules.utils.build.SdkLevel;
 
 import java.lang.reflect.Field;
 import java.time.Duration;
@@ -416,6 +419,23 @@ public final class TestUtils {
                                     .build());
         }
         return records;
+    }
+
+    /** Counts the number of records of the given {@code recordClass} in the DB. */
+    public static <T extends Record> int countAllRecords(Class<T> recordClass)
+            throws InterruptedException {
+        int count = 0;
+        long pageToken = DEFAULT_LONG;
+        do {
+            ReadRecordsResponse<T> response =
+                    readRecordsWithPagination(
+                            new ReadRecordsRequestUsingFilters.Builder<>(recordClass)
+                                    .setPageToken(pageToken)
+                                    .build());
+            count += response.getRecords().size();
+            pageToken = response.getNextPageToken();
+        } while (pageToken != DEFAULT_LONG);
+        return count;
     }
 
     public static <T extends Record> ReadRecordsResponse<T> readRecordsWithPagination(
@@ -991,8 +1011,7 @@ public final class TestUtils {
     public static boolean areHealthPermissionsSupported(Context context) {
         PackageManager pm = context.getPackageManager();
         boolean isWatchEnabled =
-                pm.hasSystemFeature(PackageManager.FEATURE_WATCH)
-                        && Flags.replaceBodySensorPermissionEnabled();
+                pm.hasSystemFeature(PackageManager.FEATURE_WATCH) && SdkLevel.isAtLeastB();
         return DeviceSupportUtils.isHealthConnectFullySupported(context) || isWatchEnabled;
     }
 

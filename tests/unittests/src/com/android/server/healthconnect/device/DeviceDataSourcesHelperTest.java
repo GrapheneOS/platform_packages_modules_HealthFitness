@@ -48,7 +48,7 @@ public class DeviceDataSourcesHelperTest {
                                 InstrumentationRegistry.getInstrumentation().getContext());
         assertThat(deviceDataSource.getDeviceId())
                 .isEqualTo(FakeSerialDeviceDataSourcesHelper.TEST_SERIAL_NUMBER);
-        assertThat(deviceDataSource.getDeviceInfo().getDeviceType()).isEqualTo(DEVICE_TYPE_PHONE);
+        assertThat(deviceDataSource.getDeviceType()).isEqualTo(DEVICE_TYPE_PHONE);
     }
 
     @Test

@@ -17,17 +17,23 @@
 package android.health.connect.internal;
 
 import android.annotation.NonNull;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.SharedMemory;
 import android.system.ErrnoException;
+import android.util.Log;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 
+import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 
 /** @hide */
 public final class ParcelUtils {
+    private static final String TAG = "HealthConnectParcelUtils";
+
     @VisibleForTesting public static final int USING_SHARED_MEMORY = 0;
     @VisibleForTesting public static final int USING_PARCEL = 1;
 
@@ -45,9 +51,15 @@ public final class ParcelUtils {
             try (SharedMemory memory = SharedMemory.CREATOR.createFromParcel(in)) {
                 Parcel dataParcel = Parcel.obtain();
                 ByteBuffer buffer = memory.mapReadOnly();
-                byte[] payload = new byte[buffer.limit()];
-                buffer.get(payload);
-                dataParcel.unmarshall(payload, 0, payload.length);
+                if (Flags.reduceParcelMarshallingCopies()
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA
+                        && Build.VERSION.SDK_INT_FULL >= Build.VERSION_CODES_FULL.BAKLAVA_1) {
+                    dataParcel.unmarshall(buffer);
+                } else {
+                    byte[] payload = new byte[buffer.limit()];
+                    buffer.get(payload);
+                    dataParcel.unmarshall(payload, 0, payload.length);
+                }
                 dataParcel.setDataPosition(0);
                 return dataParcel;
             } catch (ErrnoException e) {
@@ -59,6 +71,23 @@ public final class ParcelUtils {
 
     public static SharedMemory getSharedMemoryForParcel(Parcel dataParcel) {
         try {
+            if (Flags.reduceParcelMarshallingCopies()
+                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA
+                    && Build.VERSION.SDK_INT_FULL >= Build.VERSION_CODES_FULL.BAKLAVA_1) {
+                SharedMemory sharedMemory =
+                        SharedMemory.create("RecordsParcelSharedMemory", dataParcel.dataSize());
+                ByteBuffer buffer = sharedMemory.mapReadWrite();
+                try {
+                    dataParcel.marshall(buffer);
+                    return sharedMemory;
+                } catch (BufferOverflowException e) {
+                    Log.wtf(TAG, "Failed to marshall directly into ByteBuffer", e);
+                    sharedMemory.close();
+                    // Fallback to marshalling to an array first.
+                }
+            }
+
+            // Marshall first to ensure the correct size is allocated.
             byte[] data = dataParcel.marshall();
             SharedMemory sharedMemory =
                     SharedMemory.create("RecordsParcelSharedMemory", data.length);

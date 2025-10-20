@@ -78,7 +78,6 @@ import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE;
-import static com.android.healthfitness.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_STATE_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_RESTORE_STATE_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_STAGING_DONE;
@@ -352,6 +351,8 @@ public class HealthConnectServiceImplTest {
     private static final long DEFAULT_PACKAGE_APP_INFO = 123L;
 
     private static final String HC_PACKAGE_NAME = "com.android.healthconnect";
+    private static final String TEST_PACKAGE_NAME = "com.test.package";
+    private static final String TEST_PACKAGE_NAME_2 = "com.test.package2";
 
     /** Package name where {@link HealthConnectServiceImplTest this test} runs in. */
     private static final String THIS_TEST_PACKAGE_NAME = "com.android.healthconnect.unittests";
@@ -511,7 +512,8 @@ public class HealthConnectServiceImplTest {
                         mTrackerManager,
                         healthConnectInjector.getCloudBackupManager(),
                         healthConnectInjector.getCloudRestoreManager(),
-                        healthConnectInjector.getMatchingAppsManager());
+                        healthConnectInjector.getMatchingAppsManager(),
+                        healthConnectInjector.getSyntheticPackageNameResolver());
         mBackupRestore = healthConnectInjector.getBackupRestore();
     }
 
@@ -1028,7 +1030,6 @@ public class HealthConnectServiceImplTest {
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     @Test
     public void
             testGetMedicalDataSources_byIds_fromBgWithBgReadPermFromSplit_callsHelperWithoutBgRead()
@@ -1287,7 +1288,6 @@ public class HealthConnectServiceImplTest {
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     @Test
     public void
             testGetMedicalDataSources_byRequest_fromBgWithBgReadPermFromSplit_callsHelperWithoutBgRead()
@@ -1656,7 +1656,6 @@ public class HealthConnectServiceImplTest {
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     @Test
     public void
             testReadMedicalResources_byIds_fromBgWithBgReadPermFromSplit_callsHelperWithoutBgRead()
@@ -1849,7 +1848,6 @@ public class HealthConnectServiceImplTest {
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     @Test
     public void
             testReadMedicalResources_byRequest_onlyReadPermission_withBgReadFromSplitPermission_enforceSelfRead()
@@ -3111,12 +3109,13 @@ public class HealthConnectServiceImplTest {
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
+                .thenReturn(Map.of());
+
         GetMatchingAppsRequest request =
                 new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
         mHealthConnectService.getMatchingApps(
                 mAttributionSource, request, mGetMatchingAppsCallback);
-        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
-                .thenReturn(Map.of());
 
         verify(mGetMatchingAppsCallback, timeout(5000).times(1))
                 .onResult(new GetMatchingAppsResponse(Map.of()));
@@ -3129,14 +3128,14 @@ public class HealthConnectServiceImplTest {
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of();
+        Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
+        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
+                .thenReturn(matchingApps);
+
         GetMatchingAppsRequest request =
                 new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
         mHealthConnectService.getMatchingApps(
                 mAttributionSource, request, mGetMatchingAppsCallback);
-        Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-
-        when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
-                .thenReturn(matchingApps);
 
         verify(mGetMatchingAppsCallback, timeout(5000).times(1))
                 .onResult(new GetMatchingAppsResponse(matchingApps));
@@ -3544,8 +3543,8 @@ public class HealthConnectServiceImplTest {
 
         mHealthConnectService.recordMatchmakingDenial(
                 mAttributionSource,
-                THIS_TEST_PACKAGE_NAME,
-                List.of(WRITE_STEPS),
+                TEST_PACKAGE_NAME,
+                Map.of(TEST_PACKAGE_NAME_2, List.of(WRITE_STEPS)),
                 mEmptyResponseCallback);
         awaitAllExecutorsIdle();
 
@@ -3560,7 +3559,21 @@ public class HealthConnectServiceImplTest {
         setDataManagementPermission(PERMISSION_GRANTED);
 
         mHealthConnectService.recordMatchmakingDenial(
-                mAttributionSource, "package.name", List.of(WRITE_STEPS), mEmptyResponseCallback);
+                mAttributionSource,
+                TEST_PACKAGE_NAME,
+                Map.of(TEST_PACKAGE_NAME_2, List.of(WRITE_STEPS)),
+                mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
+    }
+
+    @Test
+    @EnableFlags(FLAG_MATCHMAKING)
+    public void recordMatchmakingDenial_noMatchingApps_callsManager() throws RemoteException {
+        setDataManagementPermission(PERMISSION_GRANTED);
+
+        mHealthConnectService.recordMatchmakingDenial(
+                mAttributionSource, TEST_PACKAGE_NAME, Map.of(), mEmptyResponseCallback);
 
         verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
     }
@@ -3572,7 +3585,10 @@ public class HealthConnectServiceImplTest {
         setDataManagementPermission(PERMISSION_GRANTED);
 
         mHealthConnectService.recordMatchmakingDenial(
-                mAttributionSource, "package.name", List.of(), mEmptyResponseCallback);
+                mAttributionSource,
+                TEST_PACKAGE_NAME,
+                Map.of(TEST_PACKAGE_NAME_2, List.of()),
+                mEmptyResponseCallback);
 
         verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
     }

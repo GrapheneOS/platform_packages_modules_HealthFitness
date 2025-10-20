@@ -103,6 +103,9 @@
     <string name="wellness_category_uppercase" description="Uppercase name for wellness category, displaying user data related to wellness (e.g. mindfulness) [CHAR LIMIT=30]">Wellness</string>
     <string name="wellness_category_lowercase" description="Lowercase name for wellness category, displaying user data related to wellness (e.g. mindfulness) [CHAR LIMIT=30]">wellness</string>
 
+    <string name="symptoms_category_uppercase" description="Uppercase name for symptoms category, displaying user data related to symptoms (e.g. cough) [CHAR LIMIT=30]">Symptoms</string>
+    <string name="symptoms_category_lowercase" description="Lowercase name for symptoms category, displaying user data related to symptoms (e.g. cough) [CHAR LIMIT=30]">symptoms</string>
+
     <string name="browse_data_category" description="Uppercase name for a section that contains user data grouped by categories. [CHAR_LIMIT=50]">Browse data</string>
     <string name="manage_data_section" description="Uppercase name for a section that has different user actions like deleting data. [CHAR_LIMIT=50]">Manage data</string>
     <string name="export_data_button" description="Uppercase name for a button that allows a user to export their data. [CHAR_LIMIT=50]">Export data</string>
@@ -344,11 +347,15 @@
     <string name="cervical_mucus_read_content_description" description="Content description for switch that enables permissions for reading the user's cervical mucus data [CHAR_LIMIT=NONE]">Read cervical mucus</string>
     <string name="cervical_mucus_write_content_description" description="Content description for switch that enables permissions for writing the user's cervical mucus data [CHAR_LIMIT=NONE]">Write cervical mucus</string>
 
+    <string name="cycle_phases_uppercase_label" description="Uppercase label used to show the user's cycle phases data [CHAR_LIMIT=50]">Cycle phases</string>
+    <string name="cycle_phases_lowercase_label" description="Lowercase label used to show the user's cycle phases data [CHAR_LIMIT=50]">cycle phases</string>
+    <string name="cycle_phases_read_content_description" description="Content description for switch that enables permissions for reading the user's cycle phases data [CHAR_LIMIT=NONE]">Read cycle phases</string>
+    <string name="cycle_phases_write_content_description" description="Content description for switch that enables permissions for writing the user's cycle phases data [CHAR_LIMIT=NONE]">Write cycle phases</string>
+
     <string name="intermenstrual_bleeding_uppercase_label" description="Uppercase label used to show the user's intermenstrual bleeding data [CHAR_LIMIT=50]">Intermenstrual bleeding</string>
     <string name="intermenstrual_bleeding_lowercase_label" description="Lowercase label used to show the user's intermenstrual bleeding data [CHAR_LIMIT=50]">intermenstrual bleeding</string>
     <string name="intermenstrual_bleeding_read_content_description" description="Content description for switch that enables permissions for reading the user's intermenstrual bleeding data [CHAR_LIMIT=NONE]">Read intermenstrual bleeding</string>
     <string name="intermenstrual_bleeding_write_content_description" description="Content description for switch that enables permissions for writing the user's intermenstrual bleeding data [CHAR_LIMIT=NONE]">Write intermenstrual bleeding</string>
-
 
     <string name="menstruation_uppercase_label" description="Uppercase label used to show the user's menstruation data [CHAR_LIMIT=50]">Menstruation</string>
     <string name="menstruation_lowercase_label" description="Lowercase label used to show the user's menstruation data [CHAR_LIMIT=50]">menstruation</string>
@@ -513,6 +520,18 @@
     <string name="alcohol_consumption_lowercase_label" description="Lowercase label used to show user's alcohol consumption data [CHAR_LIMIT=50]">alcohol consumption</string>
     <string name="alcohol_consumption_read_content_description" description="Content description for switch that enables permissions for reading user's alcohol consumption data [CHAR_LIMIT=NONE]">Read alcohol consumption</string>
     <string name="alcohol_consumption_write_content_description" description="Content description for switch that enables permissions for writing user's alcohol consumption data [CHAR_LIMIT=NONE]">Write alcohol consumption</string>
+
+    <string name="symptom_cough_uppercase_label" description="Uppercase label used to show user's cough symptom data [CHAR_LIMIT=50]">Cough</string>
+    <string name="symptom_cough_lowercase_label" description="Lowercase label used to show user's cough symptom data [CHAR_LIMIT=50]">cough</string>
+    <string name="symptom_cough_read_content_description" description="Content description for switch that enables permissions for reading user's cough symptom data [CHAR_LIMIT=NONE]">Read symptoms</string>
+    <string name="symptom_cough_write_content_description" description="Content description for switch that enables permissions for writing user's cough symptom data [CHAR_LIMIT=NONE]">Write symptoms</string>
+
+    <string name="symptom_unknown" description="Unknown symptom type. [CHAR LIMIT=50]">Unknown</string>
+
+    <string name="symptom_severity_mild" description="Symptom severity level: Mild. [CHAR LIMIT=50]">Mild</string>
+    <string name="symptom_severity_moderate" description="Symptom severity level: Moderate. [CHAR LIMIT=50]">Moderate</string>
+    <string name="symptom_severity_severe" description="Symptom severity level: Severe. [CHAR LIMIT=50]">Severe</string>
+    <string name="symptom_entry_title" description="Title for a symptom entry, combining severity and type. [CHAR LIMIT=100]"><xliff:g example="Mild" id="severity">%1$s</xliff:g> <xliff:g example="cough" id="type">%2$s</xliff:g></string>
 
     <!--endregion-->
 
@@ -919,6 +938,9 @@
     <string name="liter" description="Volume value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{count, plural, =1 {1 L} other {# L}}</string>
     <string name="liter_long" description="Volume value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{count, plural, =1 {1 liter} other {# liters}}</string>
 
+    <string name="milliliter" description="Volume value with unit in milliliters. [ICU SYNTAX][CHAR LIMIT=80]">{count, plural, =1 {1 ml} other {# ml}}</string>
+    <string name="milliliter_long" description="Volume value with unit milliliters. [ICU SYNTAX][CHAR LIMIT=160]">{count, plural, =1 {1 milliliter} other {# milliliters}}</string>
+
     <string name="floors_climbed" description="Value of floors climbed. [ICU SYNTAX][CHAR LIMIT=50]">{count, plural, =1 {1 floor} other {# floors}}</string>
 
     <string name="elevation_meters" translation_description="Shown as the label in the tooltip for weight chart. [ICU SYNTAX][CHAR LIMIT=60]">{count, plural, =1 {1 m} other {# m}}</string>
@@ -1134,19 +1156,45 @@
     <string name="nicotine_intake_type_cigarette" description="Nicotine intake type: Cigarette [CHAR LIMIT=20]">{quantity, plural, =1 {{quantity} cigarette} other {{quantity} cigarettes}}</string>
     <string name="nicotine_intake_type_unknown" description="Nicotine intake type: Unknown [CHAR LIMIT=20]">{quantity, number} unknown</string>
     <!--endregion-->
+
+    <!-- region Alcohol Consumption -->
+    <string name="alcohol_consumption_title" description="Title of a single data entry for Alcohol Consumption. [CHAR LIMIT=20]"><xliff:g example="1 serving" id="serving">%1$s</xliff:g> • <xliff:g example="Beer" id="type">%2$s</xliff:g></string>
+    <string name="alcohol_consumption_beverage_type_other" description="Alcohol consumption beverage type: Other. [CHAR LIMIT=20]">Other</string>
+    <string name="alcohol_consumption_beverage_type_beer" description="Alcohol consumption beverage type: Beer. [CHAR LIMIT=20]">Beer</string>
+    <string name="alcohol_consumption_beverage_type_wine" description="Alcohol consumption beverage type: Wine. [CHAR LIMIT=20]">Wine</string>
+    <string name="alcohol_consumption_beverage_type_vodka" description="Alcohol consumption beverage type: Vodka. [CHAR LIMIT=20]">Vodka</string>
+    <string name="alcohol_consumption_beverage_type_gin" description="Alcohol consumption beverage type: Gin. [CHAR LIMIT=20]">Gin</string>
+    <string name="alcohol_consumption_beverage_type_whiskey" description="Alcohol consumption beverage type: Whiskey. [CHAR LIMIT=20]">Whiskey</string>
+    <string name="alcohol_consumption_beverage_type_rum" description="Alcohol consumption beverage type: Rum. [CHAR LIMIT=20]">Rum</string>
+    <string name="alcohol_consumption_beverage_type_tequila" description="Alcohol consumption beverage type: Tequila. [CHAR LIMIT=20]">Tequila</string>
+    <string name="alcohol_consumption_beverage_type_lager" description="Alcohol consumption beverage type: Lager. [CHAR LIMIT=20]">Lager</string>
+    <string name="alcohol_consumption_beverage_type_cider" description="Alcohol consumption beverage type: Cider. [CHAR LIMIT=20]">Cider</string>
+    <string name="alcohol_consumption_beverage_type_sake" description="Alcohol consumption beverage type: Sake. [CHAR LIMIT=20]">Sake</string>
+    <string name="alcohol_consumption_beverage_type_shochu" description="Alcohol consumption beverage type: Shochu. [CHAR LIMIT=20]">Shochu</string>
+    <string name="alcohol_consumption_beverage_type_soju" description="Alcohol consumption beverage type: Soju. [CHAR LIMIT=20]">Soju</string>
+    <string name="alcohol_consumption_beverage_type_mead" description="Alcohol consumption beverage type: Mead. [CHAR LIMIT=20]">Mead</string>
+    <string name="alcohol_consumption_beverage_type_absinthe" description="Alcohol consumption beverage type: Absinthe. [CHAR LIMIT=20]">Absinthe</string>
+    <string name="alcohol_consumption_beverage_type_brandy" description="Alcohol consumption beverage type: Brandy. [CHAR LIMIT=20]">Brandy</string>
+    <string name="alcohol_consumption_beverage_type_cocktail" description="Alcohol consumption beverage type: Cocktail. [CHAR LIMIT=20]">Cocktail</string>
+    <string name="alcohol_consumption_beverage_type_chuhai" description="Alcohol consumption beverage type: Chuhai. [CHAR LIMIT=20]">Chuhai</string>
+    <string name="alcohol_consumption_beverage_type_highball" description="Alcohol consumption beverage type: Highball. [CHAR LIMIT=20]">Highball</string>
+    <string name="serving_volume_title" description="Title for serving volume. [CHAR LIMIT=40]">Serving Volume</string>
+    <string name="alcohol_by_volume_title" description="Title for alcohol by volume. [CHAR LIMIT=40]">Alcohol by Volume</string>
+    <string name="note_title" description="Title for note. [CHAR LIMIT=40]">Note</string>
+    <string name="details_title" description="Title for details section. [CHAR LIMIT=40]">Details</string>
+    <!-- endregion -->
     <!-- endregion -->
 
     <!-- region Duration -->
-    <string name="minute_duration" translation_description="minute duration representation [CHAR LIMIT=8]"><xliff:g example="1" id="minute">%1$s</xliff:g>m</string>
-    <string name="hour_minute_duration_short" translation_description="Hour and minute time duration representation [CHAR LIMIT=8]"><xliff:g example="1" id="hour">%1$s</xliff:g>h <xliff:g example="31" id="min">%2$s</xliff:g>m</string>
-    <string name="hour_duration" translation_description="hour duration representation [CHAR LIMIT=8]"><xliff:g example="1" id="hour">%1$s</xliff:g>h</string>
+    <string name="minute_duration" translation_description="minute duration representation. When translating, do not add a space if it is not required. If a space is required, use a no break space &#xA0; [CHAR LIMIT=8]"><xliff:g example="1" id="minute">%1$s</xliff:g>m</string>
+    <string name="hour_minute_duration_short" translation_description="Hour and minute time duration representation. When translating, do not add a space if it is not required. If a space is required, use a no break space &#xA0; [CHAR LIMIT=8]"><xliff:g example="1" id="hour">%1$s</xliff:g>h&#xA0;<xliff:g example="31" id="min">%2$s</xliff:g>m</string>
+    <string name="hour_duration" translation_description="hour duration representation. When translating, do not add a space if it is not required. If a space is required, use a no break space &#xA0; [CHAR LIMIT=8]"><xliff:g example="1" id="hour">%1$s</xliff:g>h</string>
 
     <string name="hour_minute_duration_accessibility" translation_description="Hour and minute time duration representation used by accessibility, 'space' between minute and second should be deleted or replaced according to each language to translate [CHAR LIMIT=NONE]">
-  <xliff:g example="2 hours" id="hours">%1$s</xliff:g> <xliff:g example="2 minutes" id="minutes">%2$s</xliff:g>
-  </string>
+  <xliff:g example="2 hours" id="hours">%1$s</xliff:g> <xliff:g example="2 minutes" id="minutes">%2$s</xliff:g></string>
+
     <string name="hour_duration_accessibility" translation_description="Hour time duration representation used by accessibility. [ICU SYNTAX][CHAR LIMIT=NONE]">{count, plural, =1 {1 hour} other {# hours}}</string>
     <string name="minute_duration_accessibility" translation_description="minute duration representation used by accessibility. [ICU SYNTAX][CHAR LIMIT=NONE]">{count, plural, =1 {1 minute} other {# minutes}}</string>
-
 
     <string name="day_duration" translation_description="Days duration representation [CHAR LIMIT=8]"><xliff:g example="2 days" id="days">%1$s</xliff:g></string>
     <string name="day_hour_duration" translation_description="Days and hours time duration representation [CHAR LIMIT=8]"><xliff:g example="2 days" id="days">%1$s</xliff:g> and <xliff:g example="3 hours" id="hours">%2$s</xliff:g></string>
@@ -1421,6 +1469,8 @@
         other{Auto-delete is on. Data older than # months will be deleted}
     }</string>
     <string name="auto_delete_off_toast" description="Toast confirming that auto-delete is off.">Auto-delete is off</string>
+    <string name="plus_n_matched_apps_format" description="Text for the '+N' indicator when more than two apps are matched. [CHAR_LIMIT=10]">+<xliff:g example="1" id="count">%s</xliff:g></string>
+
     <!--endregion -->
 
     <!--  region Priority -->
@@ -1636,6 +1686,7 @@
     <string name="deletion_confirmation_dialog_body" description="Text for dialog asking the user to confirm they want to delete all data">Connected apps will no longer be able to read this data from Health&#160;Connect</string>
     <string name="a11y_checked" description="A11y title for an entry that has a checkbox showing and the checkbox is checked">Checked</string>
     <string name="a11y_unchecked" description="A11y title for an entry that has a checkbox showing and the checkbox is not checked">Not checked</string>
+    <string name="a11y_checkbox_description" description="A11y title for an entry with a title and header that has a checkbox."><xliff:g example="from 11:00 AM to 12:00 AM • Run Tracker" id="header">%1$s</xliff:g>, <xliff:g example="123 Steps" id="title">%2$s</xliff:g></string>
     <string name="a11y_map_description" description="Generic description of map to indicate it is present in an exercise entry view">Exercise map route available</string>
     <string name="a11y_next_day" description="Content description for the next day button in the entries screen">Next day</string>
     <string name="a11y_next_week" description="Content description for the next week button in the entries screen">Next week</string>
@@ -1734,6 +1785,7 @@
     <string name="write_access" description="Label for switches to toggle write permissions.">Write Access</string>
     <string name="read_access" description="Label for switches to toggle read permissions.">Read Access</string>
     <string name="health_switch_content_description" description="A11y content description for a switch."><xliff:g id="switch_title" example="Steps">%1$s</xliff:g>. <xliff:g id="switch_function" example="Write Access">%2$s</xliff:g>. <xliff:g id="switch_state" example="On">%3$s</xliff:g></string>
+    <string name="health_data_category_expandable_preference_title" description="Title for the expandable data category preference when requesting permissions. It also shows the number of permissions being requested for that data category."><xliff:g id="data_category_title" example="Activity">%1$s</xliff:g> <xliff:g id="number_of_permissions_requested_for_category" example="(1)">(%2$s)</xliff:g></string>
     <!-- endregion -->
 
     <!-- region Permission Manager  -->
@@ -1804,8 +1856,8 @@
     <!-- endregion -->
 
     <!-- region Native Steps -->
-    <string name="native_steps_banner_title" description="Title of banner for native step tracking in Health Connect. [CHAR_LIMIT=100]">Steps tracked on your phone will appear in Health Connect</string>
-    <string name="native_steps_banner_summary" description="Description of banner for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps tracked by this device are now stored in Health Connect for connected apps to access</string>
+    <string name="native_steps_banner_title" description="Title of banner for native step tracking in Health Connect. [CHAR_LIMIT=100]">Steps tracked on your phone will appear in Health&#160;Connect</string>
+    <string name="native_steps_banner_summary" description="Description of banner for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps tracked by this device are now stored in Health&#160;Connect for connected apps to access</string>
     <string name="native_steps_banner_dismiss_button" description="Button to dismiss the banner for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Dismiss</string>
     <string name="native_steps_banner_review_button" description="Button of banner to take users to a page where they can review device access to Health Connect. [CHAR_LIMIT=NONE]">Review</string>
 
@@ -1813,7 +1865,263 @@
     <string name="native_steps_notification_content" description="Description of notification for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps tracked by this device are now stored in Health Connect for connected apps to access</string>
     <!-- endregion -->
 
+    <!-- region New Home Screen -->
+    <string name="your_health_apps_category_title" description="Title of category on the home screen listing the health apps present on a user's phone [CHAR_LIMIT=NONE]">Your health apps</string>
+    <string name="your_health_data_category_title" description="Title of category on the home screen listing actions that a user can take to see their health data [CHAR_LIMIT=NONE]">Your health data</string>
+    <string name="preferences_category_title" description="Title of category on the home screen listing actions that a user can take to set preferences for their health data [CHAR_LIMIT=NONE]">Preferences</string>
+    <string name="home_screen_footer" description="Footer of home screen that explains the use of Health Connect. [CHAR_LIMIT=NONE]">Health&#160;Connect lets you share your health and fitness data between multiple apps. This helps you unlock insights and experiences while keeping your data secure.</string>
+    <string name="home_screen_footer_link" description="Link for footer of home screen that explains the use of Health Connect. [CHAR_LIMIT=NONE]">More about Health&#160;Connect</string>
+    <string name="data_and_access_summary" description="Summary text for preference button taking the user to see their data in Health Connect [CHAR_LIMIT=NONE]">Your data and which apps can access it</string>
+    <string name="recent_access_summary" description="Summary text for preference button taking the user to see which apps recently accessed their data in Health Connect [CHAR_LIMIT=NONE]">Apps that recently used your data</string>
+    <string name="home_devices_summary" description="Summary text for preference button taking the user to see which devices can access Health Connect [CHAR_LIMIT=NONE]">Review devices that can access health data</string>
+    <string name="empty_apps_section_title" description="Summary text shown when the user does not have any Health Connect compatible apps installed [CHAR_LIMIT=NONE]">Install apps that work with Health&#160;Connect to see them here</string>
+    <string name="empty_apps_section_link" description="Link text shown when the user does not have any Health Connect compatible apps installed to take them to a page showing compatible apps [CHAR_LIMIT=NONE]">See compatible apps</string>
+    <string name="see_all_connected_apps_button" description="Button taking user to the connected apps screen [CHAR_LIMIT=NONE]">See more health apps</string>
+    <string name="app_not_connected_summary" description="Summary for preference indicating that an app is not connected to Health Connect [CHAR_LIMIT=NONE]">Not connected</string>
+    <string name="connect_app_button_content_description" description="Content description for icon displayed on a preference for connecting an app to Health Connect">Click to connect this app to Health Connect</string>
+    <!-- endregion -->
+
     <string name="banner_default_dismiss_button" description="Default button to dismiss a banner in Health Connect [CHAR_LIMIT=NONE]">Not now</string>
+
+    <!-- region Symptoms data types -->
+    <string name="acne_read_content_description" description="Content description for switch that enables permissions for reading the user's acne data [CHAR_LIMIT=NONE]">Read acne</string>
+    <string name="acne_write_content_description" description="Content description for switch that enables permissions for writing the user's acne data [CHAR_LIMIT=NONE]">Write acne</string>
+    <string name="brittle_nails_read_content_description" description="Content description for switch that enables permissions for reading the user's brittle nails data [CHAR_LIMIT=NONE]">Read brittle nails</string>
+    <string name="brittle_nails_write_content_description" description="Content description for switch that enables permissions for writing the user's brittle nails data [CHAR_LIMIT=NONE]">Write brittle nails</string>
+    <string name="burning_mouth_read_content_description" description="Content description for switch that enables permissions for reading the user's burning mouth  data [CHAR_LIMIT=NONE]">Read burning mouth </string>
+    <string name="burning_mouth_write_content_description" description="Content description for switch that enables permissions for writing the user's burning mouth  data [CHAR_LIMIT=NONE]">Write burning mouth </string>
+    <string name="chills_read_content_description" description="Content description for switch that enables permissions for reading the user's chills data [CHAR_LIMIT=NONE]">Read chills</string>
+    <string name="chills_write_content_description" description="Content description for switch that enables permissions for writing the user's chills data [CHAR_LIMIT=NONE]">Write chills</string>
+    <string name="dehydration_read_content_description" description="Content description for switch that enables permissions for reading the user's dehydration data [CHAR_LIMIT=NONE]">Read dehydration</string>
+    <string name="dehydration_write_content_description" description="Content description for switch that enables permissions for writing the user's dehydration data [CHAR_LIMIT=NONE]">Write dehydration</string>
+    <string name="dry_skin_read_content_description" description="Content description for switch that enables permissions for reading the user's dry skin data [CHAR_LIMIT=NONE]">Read dry skin</string>
+    <string name="dry_skin_write_content_description" description="Content description for switch that enables permissions for writing the user's dry skin data [CHAR_LIMIT=NONE]">Write dry skin</string>
+    <string name="fever_read_content_description" description="Content description for switch that enables permissions for reading the user's fever data [CHAR_LIMIT=NONE]">Read fever</string>
+    <string name="fever_write_content_description" description="Content description for switch that enables permissions for writing the user's fever data [CHAR_LIMIT=NONE]">Write fever</string>
+    <string name="joint_pain_read_content_description" description="Content description for switch that enables permissions for reading the user's joint pain data [CHAR_LIMIT=NONE]">Read joint pain</string>
+    <string name="joint_pain_write_content_description" description="Content description for switch that enables permissions for writing the user's joint pain data [CHAR_LIMIT=NONE]">Write joint pain</string>
+    <string name="joint_stiffness_read_content_description" description="Content description for switch that enables permissions for reading the user's joint stiffness data [CHAR_LIMIT=NONE]">Read joint stiffness</string>
+    <string name="joint_stiffness_write_content_description" description="Content description for switch that enables permissions for writing the user's joint stiffness data [CHAR_LIMIT=NONE]">Write joint stiffness</string>
+    <string name="muscle_pain_read_content_description" description="Content description for switch that enables permissions for reading the user's muscle pain data [CHAR_LIMIT=NONE]">Read muscle pain</string>
+    <string name="muscle_pain_write_content_description" description="Content description for switch that enables permissions for writing the user's muscle pain data [CHAR_LIMIT=NONE]">Write muscle pain</string>
+    <string name="loss_of_consciousness_read_content_description" description="Content description for switch that enables permissions for reading the user's loss of consciousness data [CHAR_LIMIT=NONE]">Read loss of consciousness</string>
+    <string name="loss_of_consciousness_write_content_description" description="Content description for switch that enables permissions for writing the user's loss of consciousness data [CHAR_LIMIT=NONE]">Write loss of consciousness</string>
+    <string name="reduced_capacity_for_exercise_read_content_description" description="Content description for switch that enables permissions for reading the user's reduced capacity for exercise data [CHAR_LIMIT=NONE]">Read reduced capacity for exercise</string>
+    <string name="reduced_capacity_for_exercise_write_content_description" description="Content description for switch that enables permissions for writing the user's reduced capacity for exercise data [CHAR_LIMIT=NONE]">Write reduced capacity for exercise</string>
+    <string name="unexplained_weight_changes_read_content_description" description="Content description for switch that enables permissions for reading the user's unexplained weight changes data [CHAR_LIMIT=NONE]">Read unexplained weight changes</string>
+    <string name="unexplained_weight_changes_write_content_description" description="Content description for switch that enables permissions for writing the user's unexplained weight changes data [CHAR_LIMIT=NONE]">Write unexplained weight changes</string>
+    <string name="generalized_body_ache_read_content_description" description="Content description for switch that enables permissions for reading the user's generalized body ache data [CHAR_LIMIT=NONE]">Read generalized body ache</string>
+    <string name="generalized_body_ache_write_content_description" description="Content description for switch that enables permissions for writing the user's generalized body ache data [CHAR_LIMIT=NONE]">Write generalized body ache</string>
+    <string name="fatigue_read_content_description" description="Content description for switch that enables permissions for reading the user's fatigue data [CHAR_LIMIT=NONE]">Read fatigue</string>
+    <string name="fatigue_write_content_description" description="Content description for switch that enables permissions for writing the user's fatigue data [CHAR_LIMIT=NONE]">Write fatigue</string>
+    <string name="constipation_read_content_description" description="Content description for switch that enables permissions for reading the user's constipation data [CHAR_LIMIT=NONE]">Read constipation</string>
+    <string name="constipation_write_content_description" description="Content description for switch that enables permissions for writing the user's constipation data [CHAR_LIMIT=NONE]">Write constipation</string>
+    <string name="diarrhea_read_content_description" description="Content description for switch that enables permissions for reading the user's diarrhea data [CHAR_LIMIT=NONE]">Read diarrhea</string>
+    <string name="diarrhea_write_content_description" description="Content description for switch that enables permissions for writing the user's diarrhea data [CHAR_LIMIT=NONE]">Write diarrhea</string>
+    <string name="loss_of_appetite_read_content_description" description="Content description for switch that enables permissions for reading the user's loss of appetite data [CHAR_LIMIT=NONE]">Read loss of appetite</string>
+    <string name="loss_of_appetite_write_content_description" description="Content description for switch that enables permissions for writing the user's loss of appetite data [CHAR_LIMIT=NONE]">Write loss of appetite</string>
+    <string name="nausea_read_content_description" description="Content description for switch that enables permissions for reading the user's nausea data [CHAR_LIMIT=NONE]">Read nausea</string>
+    <string name="nausea_write_content_description" description="Content description for switch that enables permissions for writing the user's nausea data [CHAR_LIMIT=NONE]">Write nausea</string>
+    <string name="stomach_ache_read_content_description" description="Content description for switch that enables permissions for reading the user's stomach ache data [CHAR_LIMIT=NONE]">Read stomach ache</string>
+    <string name="stomach_ache_write_content_description" description="Content description for switch that enables permissions for writing the user's stomach ache data [CHAR_LIMIT=NONE]">Write stomach ache</string>
+    <string name="vomiting_read_content_description" description="Content description for switch that enables permissions for reading the user's vomiting data [CHAR_LIMIT=NONE]">Read vomiting</string>
+    <string name="vomiting_write_content_description" description="Content description for switch that enables permissions for writing the user's vomiting data [CHAR_LIMIT=NONE]">Write vomiting</string>
+    <string name="chest_pain_read_content_description" description="Content description for switch that enables permissions for reading the user's chest pain data [CHAR_LIMIT=NONE]">Read chest pain</string>
+    <string name="chest_pain_write_content_description" description="Content description for switch that enables permissions for writing the user's chest pain data [CHAR_LIMIT=NONE]">Write chest pain</string>
+    <string name="chest_tightness_read_content_description" description="Content description for switch that enables permissions for reading the user's chest tightness data [CHAR_LIMIT=NONE]">Read chest tightness</string>
+    <string name="chest_tightness_write_content_description" description="Content description for switch that enables permissions for writing the user's chest tightness data [CHAR_LIMIT=NONE]">Write chest tightness</string>
+    <string name="cough_read_content_description" description="Content description for switch that enables permissions for reading the user's cough data [CHAR_LIMIT=NONE]">Read cough</string>
+    <string name="cough_write_content_description" description="Content description for switch that enables permissions for writing the user's cough data [CHAR_LIMIT=NONE]">Write cough</string>
+    <string name="heart_palpitations_read_content_description" description="Content description for switch that enables permissions for reading the user's heart palpitations data [CHAR_LIMIT=NONE]">Read heart palpitations</string>
+    <string name="heart_palpitations_write_content_description" description="Content description for switch that enables permissions for writing the user's heart palpitations data [CHAR_LIMIT=NONE]">Write heart palpitations</string>
+    <string name="shortness_of_breath_read_content_description" description="Content description for switch that enables permissions for reading the user's shortness of breath data [CHAR_LIMIT=NONE]">Read shortness of breath</string>
+    <string name="shortness_of_breath_write_content_description" description="Content description for switch that enables permissions for writing the user's shortness of breath data [CHAR_LIMIT=NONE]">Write shortness of breath</string>
+    <string name="wheezing_read_content_description" description="Content description for switch that enables permissions for reading the user's wheezing data [CHAR_LIMIT=NONE]">Read wheezing</string>
+    <string name="wheezing_write_content_description" description="Content description for switch that enables permissions for writing the user's wheezing data [CHAR_LIMIT=NONE]">Write wheezing</string>
+    <string name="heartburn_read_content_description" description="Content description for switch that enables permissions for reading the user's heartburn data [CHAR_LIMIT=NONE]">Read heartburn</string>
+    <string name="heartburn_write_content_description" description="Content description for switch that enables permissions for writing the user's heartburn data [CHAR_LIMIT=NONE]">Write heartburn</string>
+    <string name="skipped_heartbeat_read_content_description" description="Content description for switch that enables permissions for reading the user's skipped heartbeat data [CHAR_LIMIT=NONE]">Read skipped heartbeat</string>
+    <string name="skipped_heartbeat_write_content_description" description="Content description for switch that enables permissions for writing the user's skipped heartbeat data [CHAR_LIMIT=NONE]">Write skipped heartbeat</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" description="Content description for switch that enables permissions for reading the user's rapid, pounding, or fluttering heartbeat data [CHAR_LIMIT=NONE]">Read rapid, pounding, or fluttering heartbeat</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" description="Content description for switch that enables permissions for writing the user's rapid, pounding, or fluttering heartbeat data [CHAR_LIMIT=NONE]">Write rapid, pounding, or fluttering heartbeat</string>
+    <string name="difficulty_swallowing_read_content_description" description="Content description for switch that enables permissions for reading the user's difficulty swallowing data [CHAR_LIMIT=NONE]">Read difficulty swallowing</string>
+    <string name="difficulty_swallowing_write_content_description" description="Content description for switch that enables permissions for writing the user's difficulty swallowing data [CHAR_LIMIT=NONE]">Write difficulty swallowing</string>
+    <string name="dizziness_read_content_description" description="Content description for switch that enables permissions for reading the user's dizziness data [CHAR_LIMIT=NONE]">Read dizziness</string>
+    <string name="dizziness_write_content_description" description="Content description for switch that enables permissions for writing the user's dizziness data [CHAR_LIMIT=NONE]">Write dizziness</string>
+    <string name="earaches_read_content_description" description="Content description for switch that enables permissions for reading the user's earaches data [CHAR_LIMIT=NONE]">Read earaches</string>
+    <string name="earaches_write_content_description" description="Content description for switch that enables permissions for writing the user's earaches data [CHAR_LIMIT=NONE]">Write earaches</string>
+    <string name="hair_loss_read_content_description" description="Content description for switch that enables permissions for reading the user's hair loss data [CHAR_LIMIT=NONE]">Read hair loss</string>
+    <string name="hair_loss_write_content_description" description="Content description for switch that enables permissions for writing the user's hair loss data [CHAR_LIMIT=NONE]">Write hair loss</string>
+    <string name="headache_read_content_description" description="Content description for switch that enables permissions for reading the user's headache data [CHAR_LIMIT=NONE]">Read headache</string>
+    <string name="headache_write_content_description" description="Content description for switch that enables permissions for writing the user's headache data [CHAR_LIMIT=NONE]">Write headache</string>
+    <string name="runny_nose_read_content_description" description="Content description for switch that enables permissions for reading the user's runny nose data [CHAR_LIMIT=NONE]">Read runny nose</string>
+    <string name="runny_nose_write_content_description" description="Content description for switch that enables permissions for writing the user's runny nose data [CHAR_LIMIT=NONE]">Write runny nose</string>
+    <string name="sneezing_read_content_description" description="Content description for switch that enables permissions for reading the user's sneezing data [CHAR_LIMIT=NONE]">Read sneezing</string>
+    <string name="sneezing_write_content_description" description="Content description for switch that enables permissions for writing the user's sneezing data [CHAR_LIMIT=NONE]">Write sneezing</string>
+    <string name="sore_throat_read_content_description" description="Content description for switch that enables permissions for reading the user's sore throat data [CHAR_LIMIT=NONE]">Read sore throat</string>
+    <string name="sore_throat_write_content_description" description="Content description for switch that enables permissions for writing the user's sore throat data [CHAR_LIMIT=NONE]">Write sore throat</string>
+    <string name="stuffy_nose_read_content_description" description="Content description for switch that enables permissions for reading the user's stuffy nose data [CHAR_LIMIT=NONE]">Read stuffy nose</string>
+    <string name="stuffy_nose_write_content_description" description="Content description for switch that enables permissions for writing the user's stuffy nose data [CHAR_LIMIT=NONE]">Write stuffy nose</string>
+    <string name="back_pain_read_content_description" description="Content description for switch that enables permissions for reading the user's back pain data [CHAR_LIMIT=NONE]">Read back pain</string>
+    <string name="back_pain_write_content_description" description="Content description for switch that enables permissions for writing the user's back pain data [CHAR_LIMIT=NONE]">Write back pain</string>
+    <string name="lower_back_pain_read_content_description" description="Content description for switch that enables permissions for reading the user's lower back pain data [CHAR_LIMIT=NONE]">Read lower back pain</string>
+    <string name="lower_back_pain_write_content_description" description="Content description for switch that enables permissions for writing the user's lower back pain data [CHAR_LIMIT=NONE]">Write lower back pain</string>
+    <string name="hot_flashes_read_content_description" description="Content description for switch that enables permissions for reading the user's hot flashes data [CHAR_LIMIT=NONE]">Read hot flashes</string>
+    <string name="hot_flashes_write_content_description" description="Content description for switch that enables permissions for writing the user's hot flashes data [CHAR_LIMIT=NONE]">Write hot flashes</string>
+    <string name="night_sweats_read_content_description" description="Content description for switch that enables permissions for reading the user's night sweats data [CHAR_LIMIT=NONE]">Read night sweats</string>
+    <string name="night_sweats_write_content_description" description="Content description for switch that enables permissions for writing the user's night sweats data [CHAR_LIMIT=NONE]">Write night sweats</string>
+    <string name="water_retention_read_content_description" description="Content description for switch that enables permissions for reading the user's water retention data [CHAR_LIMIT=NONE]">Read water retention</string>
+    <string name="water_retention_write_content_description" description="Content description for switch that enables permissions for writing the user's water retention data [CHAR_LIMIT=NONE]">Write water retention</string>
+    <string name="cravings_read_content_description" description="Content description for switch that enables permissions for reading the user's cravings data [CHAR_LIMIT=NONE]">Read cravings</string>
+    <string name="cravings_write_content_description" description="Content description for switch that enables permissions for writing the user's cravings data [CHAR_LIMIT=NONE]">Write cravings</string>
+    <string name="bloating_read_content_description" description="Content description for switch that enables permissions for reading the user's bloating data [CHAR_LIMIT=NONE]">Read bloating</string>
+    <string name="bloating_write_content_description" description="Content description for switch that enables permissions for writing the user's bloating data [CHAR_LIMIT=NONE]">Write bloating</string>
+    <string name="cramps_read_content_description" description="Content description for switch that enables permissions for reading the user's cramps data [CHAR_LIMIT=NONE]">Read cramps</string>
+    <string name="cramps_write_content_description" description="Content description for switch that enables permissions for writing the user's cramps data [CHAR_LIMIT=NONE]">Write cramps</string>
+    <string name="abdominal_pain_read_content_description" description="Content description for switch that enables permissions for reading the user's abdominal pain data [CHAR_LIMIT=NONE]">Read abdominal pain</string>
+    <string name="abdominal_pain_write_content_description" description="Content description for switch that enables permissions for writing the user's abdominal pain data [CHAR_LIMIT=NONE]">Write abdominal pain</string>
+    <string name="breast_tenderness_read_content_description" description="Content description for switch that enables permissions for reading the user's breast tenderness data [CHAR_LIMIT=NONE]">Read breast tenderness</string>
+    <string name="breast_tenderness_write_content_description" description="Content description for switch that enables permissions for writing the user's breast tenderness data [CHAR_LIMIT=NONE]">Write breast tenderness</string>
+    <string name="pelvic_pain_read_content_description" description="Content description for switch that enables permissions for reading the user's pelvic pain data [CHAR_LIMIT=NONE]">Read pelvic pain</string>
+    <string name="pelvic_pain_write_content_description" description="Content description for switch that enables permissions for writing the user's pelvic pain data [CHAR_LIMIT=NONE]">Write pelvic pain</string>
+    <string name="vaginal_dryness_read_content_description" description="Content description for switch that enables permissions for reading the user's vaginal dryness data [CHAR_LIMIT=NONE]">Read vaginal dryness</string>
+    <string name="vaginal_dryness_write_content_description" description="Content description for switch that enables permissions for writing the user's vaginal dryness data [CHAR_LIMIT=NONE]">Write vaginal dryness</string>
+    <string name="vaginal_itchiness_read_content_description" description="Content description for switch that enables permissions for reading the user's vaginal itchiness data [CHAR_LIMIT=NONE]">Read vaginal itchiness</string>
+    <string name="vaginal_itchiness_write_content_description" description="Content description for switch that enables permissions for writing the user's vaginal itchiness data [CHAR_LIMIT=NONE]">Write vaginal itchiness</string>
+    <string name="brain_fog_read_content_description" description="Content description for switch that enables permissions for reading the user's brain fog data [CHAR_LIMIT=NONE]">Read brain fog</string>
+    <string name="brain_fog_write_content_description" description="Content description for switch that enables permissions for writing the user's brain fog data [CHAR_LIMIT=NONE]">Write brain fog</string>
+    <string name="mood_change_read_content_description" description="Content description for switch that enables permissions for reading the user's mood change data [CHAR_LIMIT=NONE]">Read mood change</string>
+    <string name="mood_change_write_content_description" description="Content description for switch that enables permissions for writing the user's mood change data [CHAR_LIMIT=NONE]">Write mood change</string>
+    <string name="memory_lapse_read_content_description" description="Content description for switch that enables permissions for reading the user's memory lapse data [CHAR_LIMIT=NONE]">Read memory lapse</string>
+    <string name="memory_lapse_write_content_description" description="Content description for switch that enables permissions for writing the user's memory lapse data [CHAR_LIMIT=NONE]">Write memory lapse</string>
+    <string name="sleepiness_read_content_description" description="Content description for switch that enables permissions for reading the user's sleepiness data [CHAR_LIMIT=NONE]">Read sleepiness</string>
+    <string name="sleepiness_write_content_description" description="Content description for switch that enables permissions for writing the user's sleepiness data [CHAR_LIMIT=NONE]">Write sleepiness</string>
+    <string name="sleep_changes_read_content_description" description="Content description for switch that enables permissions for reading the user's sleep changes data [CHAR_LIMIT=NONE]">Read sleep changes</string>
+    <string name="sleep_changes_write_content_description" description="Content description for switch that enables permissions for writing the user's sleep changes data [CHAR_LIMIT=NONE]">Write sleep changes</string>
+    <string name="insomnia_read_content_description" description="Content description for switch that enables permissions for reading the user's insomnia data [CHAR_LIMIT=NONE]">Read insomnia</string>
+    <string name="insomnia_write_content_description" description="Content description for switch that enables permissions for writing the user's insomnia data [CHAR_LIMIT=NONE]">Write insomnia</string>
+    <string name="snore_read_content_description" description="Content description for switch that enables permissions for reading the user's snore data [CHAR_LIMIT=NONE]">Read snore</string>
+    <string name="snore_write_content_description" description="Content description for switch that enables permissions for writing the user's snore data [CHAR_LIMIT=NONE]">Write snore</string>
+
+    <string name="acne_uppercase_label" description="[CHAR_LIMIT=50]">Acne</string>
+    <string name="acne_lowercase_label" description="[CHAR_LIMIT=50]">acne</string>
+    <string name="abdominal_pain_uppercase_label" description="[CHAR_LIMIT=50]">Abdominal pain</string>
+    <string name="abdominal_pain_lowercase_label" description="[CHAR_LIMIT=50]">abdominal pain</string>
+    <string name="back_pain_uppercase_label" description="[CHAR_LIMIT=50]">Back pain</string>
+    <string name="back_pain_lowercase_label" description="[CHAR_LIMIT=50]">back pain</string>
+    <string name="bloating_uppercase_label" description="[CHAR_LIMIT=50]">Bloating</string>
+    <string name="bloating_lowercase_label" description="[CHAR_LIMIT=50]">bloating</string>
+    <string name="brain_fog_uppercase_label" description="[CHAR_LIMIT=50]">Brain fog</string>
+    <string name="brain_fog_lowercase_label" description="[CHAR_LIMIT=50]">brain fog</string>
+    <string name="breast_tenderness_uppercase_label" description="[CHAR_LIMIT=50]">Breast tenderness</string>
+    <string name="breast_tenderness_lowercase_label" description="[CHAR_LIMIT=50]">breast tenderness</string>
+    <string name="brittle_nails_uppercase_label" description="[CHAR_LIMIT=50]">Brittle nails</string>
+    <string name="brittle_nails_lowercase_label" description="[CHAR_LIMIT=50]">brittle nails</string>
+    <string name="burning_mouth_uppercase_label" description="[CHAR_LIMIT=50]">Burning mouth</string>
+    <string name="burning_mouth_lowercase_label" description="[CHAR_LIMIT=50]">burning mouth</string>
+    <string name="chest_pain_uppercase_label" description="[CHAR_LIMIT=50]">Chest pain</string>
+    <string name="chest_pain_lowercase_label" description="[CHAR_LIMIT=50]">chest pain</string>
+    <string name="chest_tightness_uppercase_label" description="[CHAR_LIMIT=50]">Chest tightness</string>
+    <string name="chest_tightness_lowercase_label" description="[CHAR_LIMIT=50]">chest tightness</string>
+    <string name="chills_uppercase_label" description="[CHAR_LIMIT=50]">Chills</string>
+    <string name="chills_lowercase_label" description="[CHAR_LIMIT=50]">chills</string>
+    <string name="constipation_uppercase_label" description="[CHAR_LIMIT=50]">Constipation</string>
+    <string name="constipation_lowercase_label" description="[CHAR_LIMIT=50]">constipation</string>
+    <string name="cough_uppercase_label" description="[CHAR_LIMIT=50]">Cough</string>
+    <string name="cough_lowercase_label" description="[CHAR_LIMIT=50]">cough</string>
+    <string name="cramps_uppercase_label" description="[CHAR_LIMIT=50]">Cramps</string>
+    <string name="cramps_lowercase_label" description="[CHAR_LIMIT=50]">cramps</string>
+    <string name="cravings_uppercase_label" description="[CHAR_LIMIT=50]">Cravings</string>
+    <string name="cravings_lowercase_label" description="[CHAR_LIMIT=50]">cravings</string>
+    <string name="dehydration_uppercase_label" description="[CHAR_LIMIT=50]">Dehydration</string>
+    <string name="dehydration_lowercase_label" description="[CHAR_LIMIT=50]">dehydration</string>
+    <string name="diarrhea_uppercase_label" description="[CHAR_LIMIT=50]">Diarrhea</string>
+    <string name="diarrhea_lowercase_label" description="[CHAR_LIMIT=50]">diarrhea</string>
+    <string name="difficulty_swallowing_uppercase_label" description="[CHAR_LIMIT=50]">Difficulty swallowing</string>
+    <string name="difficulty_swallowing_lowercase_label" description="[CHAR_LIMIT=50]">difficulty swallowing</string>
+    <string name="dizziness_uppercase_label" description="[CHAR_LIMIT=50]">Dizziness</string>
+    <string name="dizziness_lowercase_label" description="[CHAR_LIMIT=50]">dizziness</string>
+    <string name="dry_skin_uppercase_label" description="[CHAR_LIMIT=50]">Dry skin</string>
+    <string name="dry_skin_lowercase_label" description="[CHAR_LIMIT=50]">dry skin</string>
+    <string name="earaches_uppercase_label" description="[CHAR_LIMIT=50]">Earaches</string>
+    <string name="earaches_lowercase_label" description="[CHAR_LIMIT=50]">earaches</string>
+    <string name="fatigue_uppercase_label" description="[CHAR_LIMIT=50]">Fatigue</string>
+    <string name="fatigue_lowercase_label" description="[CHAR_LIMIT=50]">fatigue</string>
+    <string name="fever_uppercase_label" description="[CHAR_LIMIT=50]">Fever</string>
+    <string name="fever_lowercase_label" description="[CHAR_LIMIT=50]">fever</string>
+    <string name="generalized_body_ache_uppercase_label" description="[CHAR_LIMIT=50]">Generalized body ache</string>
+    <string name="generalized_body_ache_lowercase_label" description="[CHAR_LIMIT=50]">generalized body ache</string>
+    <string name="hair_loss_uppercase_label" description="[CHAR_LIMIT=50]">Hair loss</string>
+    <string name="hair_loss_lowercase_label" description="[CHAR_LIMIT=50]">hair loss</string>
+    <string name="headache_uppercase_label" description="[CHAR_LIMIT=50]">Headache</string>
+    <string name="headache_lowercase_label" description="[CHAR_LIMIT=50]">headache</string>
+    <string name="heartburn_uppercase_label" description="[CHAR_LIMIT=50]">Heartburn</string>
+    <string name="heartburn_lowercase_label" description="[CHAR_LIMIT=50]">heartburn</string>
+    <string name="heart_palpitations_uppercase_label" description="[CHAR_LIMIT=50]">Heart palpitations</string>
+    <string name="heart_palpitations_lowercase_label" description="[CHAR_LIMIT=50]">heart palpitations</string>
+    <string name="hot_flashes_uppercase_label" description="[CHAR_LIMIT=50]">Hot flashes</string>
+    <string name="hot_flashes_lowercase_label" description="[CHAR_LIMIT=50]">hot flashes</string>
+    <string name="insomnia_uppercase_label" description="[CHAR_LIMIT=50]">Insomnia</string>
+    <string name="insomnia_lowercase_label" description="[CHAR_LIMIT=50]">insomnia</string>
+    <string name="joint_pain_uppercase_label" description="[CHAR_LIMIT=50]">Joint pain</string>
+    <string name="joint_pain_lowercase_label" description="[CHAR_LIMIT=50]">joint pain</string>
+    <string name="joint_stiffness_uppercase_label" description="[CHAR_LIMIT=50]">Joint stiffness</string>
+    <string name="joint_stiffness_lowercase_label" description="[CHAR_LIMIT=50]">joint stiffness</string>
+    <string name="loss_of_appetite_uppercase_label" description="[CHAR_LIMIT=50]">Loss of appetite</string>
+    <string name="loss_of_appetite_lowercase_label" description="[CHAR_LIMIT=50]">loss of appetite</string>
+    <string name="loss_of_consciousness_uppercase_label" description="[CHAR_LIMIT=50]">Loss of consciousness</string>
+    <string name="loss_of_consciousness_lowercase_label" description="[CHAR_LIMIT=50]">loss of consciousness</string>
+    <string name="lower_back_pain_uppercase_label" description="[CHAR_LIMIT=50]">Lower back pain</string>
+    <string name="lower_back_pain_lowercase_label" description="[CHAR_LIMIT=50]">lower back pain</string>
+    <string name="memory_lapse_uppercase_label" description="[CHAR_LIMIT=50]">Memory lapse</string>
+    <string name="memory_lapse_lowercase_label" description="[CHAR_LIMIT=50]">memory lapse</string>
+    <string name="mood_change_uppercase_label" description="[CHAR_LIMIT=50]">Mood change</string>
+    <string name="mood_change_lowercase_label" description="[CHAR_LIMIT=50]">mood change</string>
+    <string name="muscle_pain_uppercase_label" description="[CHAR_LIMIT=50]">Muscle pain</string>
+    <string name="muscle_pain_lowercase_label" description="[CHAR_LIMIT=50]">muscle pain</string>
+    <string name="nausea_uppercase_label" description="[CHAR_LIMIT=50]">Nausea</string>
+    <string name="nausea_lowercase_label" description="[CHAR_LIMIT=50]">nausea</string>
+    <string name="night_sweats_uppercase_label" description="[CHAR_LIMIT=50]">Night sweats</string>
+    <string name="night_sweats_lowercase_label" description="[CHAR_LIMIT=50]">night sweats</string>
+    <string name="pelvic_pain_uppercase_label" description="[CHAR_LIMIT=50]">Pelvic pain</string>
+    <string name="pelvic_pain_lowercase_label" description="[CHAR_LIMIT=50]">pelvic pain</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" description="[CHAR_LIMIT=50]">Rapid, pounding, or fluttering heartbeat</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" description="[CHAR_LIMIT=50]">rapid, pounding, or fluttering heartbeat</string>
+    <string name="reduced_capacity_for_exercise_uppercase_label" description="[CHAR_LIMIT=50]">Reduced capacity for exercise</string>
+    <string name="reduced_capacity_for_exercise_lowercase_label" description="[CHAR_LIMIT=50]">reduced capacity for exercise</string>
+    <string name="runny_nose_uppercase_label" description="[CHAR_LIMIT=50]">Runny nose</string>
+    <string name="runny_nose_lowercase_label" description="[CHAR_LIMIT=50]">runny nose</string>
+    <string name="shortness_of_breath_uppercase_label" description="[CHAR_LIMIT=50]">Shortness of breath</string>
+    <string name="shortness_of_breath_lowercase_label" description="[CHAR_LIMIT=50]">shortness of breath</string>
+    <string name="skipped_heartbeat_uppercase_label" description="[CHAR_LIMIT=50]">Skipped heartbeat</string>
+    <string name="skipped_heartbeat_lowercase_label" description="[CHAR_LIMIT=50]">skipped heartbeat</string>
+    <string name="sleep_changes_uppercase_label" description="[CHAR_LIMIT=50]">Sleep changes</string>
+    <string name="sleep_changes_lowercase_label" description="[CHAR_LIMIT=50]">sleep changes</string>
+    <string name="sleepiness_uppercase_label" description="[CHAR_LIMIT=50]">Sleepiness</string>
+    <string name="sleepiness_lowercase_label" description="[CHAR_LIMIT=50]">sleepiness</string>
+    <string name="sneezing_uppercase_label" description="[CHAR_LIMIT=50]">Sneezing</string>
+    <string name="sneezing_lowercase_label" description="[CHAR_LIMIT=50]">sneezing</string>
+    <string name="snore_uppercase_label" description="[CHAR_LIMIT=50]">Snore</string>
+    <string name="snore_lowercase_label" description="[CHAR_LIMIT=50]">snore</string>
+    <string name="sore_throat_uppercase_label" description="[CHAR_LIMIT=50]">Sore throat</string>
+    <string name="sore_throat_lowercase_label" description="[CHAR_LIMIT=50]">sore throat</string>
+    <string name="stomach_ache_uppercase_label" description="[CHAR_LIMIT=50]">Stomach ache</string>
+    <string name="stomach_ache_lowercase_label" description="[CHAR_LIMIT=50]">stomach ache</string>
+    <string name="stuffy_nose_uppercase_label" description="[CHAR_LIMIT=50]">Stuffy nose</string>
+    <string name="stuffy_nose_lowercase_label" description="[CHAR_LIMIT=50]">stuffy nose</string>
+    <string name="unexplained_weight_changes_uppercase_label" description="[CHAR_LIMIT=50]">Unexplained weight changes</string>
+    <string name="unexplained_weight_changes_lowercase_label" description="[CHAR_LIMIT=50]">unexplained weight changes</string>
+    <string name="vaginal_dryness_uppercase_label" description="[CHAR_LIMIT=50]">Vaginal dryness</string>
+    <string name="vaginal_dryness_lowercase_label" description="[CHAR_LIMIT=50]">vaginal dryness</string>
+    <string name="vaginal_itchiness_uppercase_label" description="[CHAR_LIMIT=50]">Vaginal itchiness</string>
+    <string name="vaginal_itchiness_lowercase_label" description="[CHAR_LIMIT=50]">vaginal itchiness</string>
+    <string name="vomiting_uppercase_label" description="[CHAR_LIMIT=50]">Vomiting</string>
+    <string name="vomiting_lowercase_label" description="[CHAR_LIMIT=50]">vomiting</string>
+    <string name="water_retention_uppercase_label" description="[CHAR_LIMIT=50]">Water retention</string>
+    <string name="water_retention_lowercase_label" description="[CHAR_LIMIT=50]">water retention</string>
+    <string name="wheezing_uppercase_label" description="[CHAR_LIMIT=50]">Wheezing</string>
+    <string name="wheezing_lowercase_label" description="[CHAR_LIMIT=50]">wheezing</string>
+    <!--endregion-->
 
     <!-- endregion -->
 </resources>

@@ -23,13 +23,9 @@ import android.health.connect.HealthPermissions.READ_OXYGEN_SATURATION
 import android.health.connect.HealthPermissions.READ_SKIN_TEMPERATURE
 import android.health.connect.accesslog.AccessLog
 import android.health.connect.datatypes.RecordTypeIdentifier
-import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onParent
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.printToLog
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -197,7 +193,7 @@ class WearAllDataTypesScreenTest {
                 AllDataTypesScreen(
                     viewModel = wearConnectedAppsViewModel,
                     showRecentAccess = false,
-                    onClick = { _, _ -> },
+                    onClick = { _ -> },
                 )
             }
         }
@@ -303,7 +299,7 @@ class WearAllDataTypesScreenTest {
                 AllDataTypesScreen(
                     viewModel = wearConnectedAppsViewModel,
                     showRecentAccess = false,
-                    onClick = { _, _ -> },
+                    onClick = { _ -> },
                 )
             }
         }
@@ -313,10 +309,9 @@ class WearAllDataTypesScreenTest {
 
         composeTestRule.onNodeWithText("Fitness and wellness").assertIsDisplayed()
         composeTestRule.onNodeWithText("Vitals").assertIsDisplayed()
-        val listChildren = composeTestRule.onNodeWithText("Heart rate").onParent().onChildren()
-        listChildren[2].assert(hasText("Oxygen saturation"))
-        listChildren[3].assert(hasText("Skin temperature"))
-        listChildren[4].assert(hasText("Heart rate"))
+        composeTestRule.onNodeWithText("Oxygen saturation").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Skin temperature").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Heart rate").assertIsDisplayed()
     }
 
     @Test
@@ -411,7 +406,7 @@ class WearAllDataTypesScreenTest {
                 AllDataTypesScreen(
                     viewModel = wearConnectedAppsViewModel,
                     showRecentAccess = false,
-                    onClick = { _, _ -> },
+                    onClick = { _ -> },
                 )
             }
         }
@@ -511,7 +506,7 @@ class WearAllDataTypesScreenTest {
                 AllDataTypesScreen(
                     viewModel = wearConnectedAppsViewModel,
                     showRecentAccess = false,
-                    onClick = { _, _ -> },
+                    onClick = { _ -> },
                 )
             }
         }
@@ -622,7 +617,7 @@ class WearAllDataTypesScreenTest {
                 AllDataTypesScreen(
                     viewModel = wearConnectedAppsViewModel,
                     showRecentAccess = true,
-                    onClick = { _, _ -> },
+                    onClick = { _ -> },
                 )
             }
         }
@@ -728,7 +723,7 @@ class WearAllDataTypesScreenTest {
                 AllDataTypesScreen(
                     viewModel = wearConnectedAppsViewModel,
                     showRecentAccess = true,
-                    onClick = { _, _ -> },
+                    onClick = { _ -> },
                 )
             }
         }

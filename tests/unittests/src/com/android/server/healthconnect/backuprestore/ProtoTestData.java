@@ -17,6 +17,9 @@
 package com.android.server.healthconnect.backuprestore;
 
 import static android.health.connect.datatypes.ActivityIntensityRecord.ACTIVITY_INTENSITY_TYPE_VIGOROUS;
+import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
+import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
+import static android.health.connect.datatypes.AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_INSTANT;
 import static android.health.connect.datatypes.BloodGlucoseRecord.RelationToMealType.RELATION_TO_MEAL_AFTER_MEAL;
 import static android.health.connect.datatypes.BloodGlucoseRecord.SpecimenSource.SPECIMEN_SOURCE_TEARS;
 import static android.health.connect.datatypes.BloodPressureRecord.BloodPressureMeasurementLocation.BLOOD_PRESSURE_MEASUREMENT_LOCATION_RIGHT_WRIST;
@@ -45,6 +48,7 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ActiveCaloriesBurned;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ActivityIntensity;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.AlcoholConsumption;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BasalBodyTemperature;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BasalMetabolicRate;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BloodGlucose;
@@ -101,6 +105,7 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.S
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Steps;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.StepsCadence;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.StepsCadence.StepsCadenceSample;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Symptoms;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.TotalCaloriesBurned;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Vo2Max;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Weight;
@@ -126,6 +131,12 @@ final class ProtoTestData {
                             .setIntervalRecord(
                                     generateIntervalRecord()
                                             .setActivityIntensity(generateActivityIntensity()))
+                            .build();
+            case RecordTypeIdentifier.RECORD_TYPE_ALCOHOL_CONSUMPTION ->
+                    generateCoreRecord()
+                            .setIntervalRecord(
+                                    generateIntervalRecord()
+                                            .setAlcoholConsumption(generateAlcoholConsumption()))
                             .build();
             case RecordTypeIdentifier.RECORD_TYPE_BASAL_BODY_TEMPERATURE ->
                     generateCoreRecord()
@@ -337,6 +348,11 @@ final class ProtoTestData {
                                     generateIntervalRecord()
                                             .setStepsCadence(generateStepsCadence()))
                             .build();
+            case RecordTypeIdentifier.RECORD_TYPE_SYMPTOM ->
+                    generateCoreRecord()
+                            .setIntervalRecord(
+                                    generateIntervalRecord().setSymptoms(generateSymptoms()))
+                            .build();
             case RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED ->
                     generateCoreRecord()
                             .setIntervalRecord(
@@ -363,6 +379,18 @@ final class ProtoTestData {
 
     static ActiveCaloriesBurned generateActiveCaloriesBurned() {
         return ActiveCaloriesBurned.newBuilder().setEnergy(123).build();
+    }
+
+    static AlcoholConsumption generateAlcoholConsumption() {
+        return AlcoholConsumption.newBuilder()
+                .setTemporalType(RECORD_TEMPORAL_TYPE_INSTANT)
+                .setServingCount(2)
+                .setBeverageType(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
+                .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT)
+                .setServingVolume(0.568)
+                .setAlcoholByVolume(4.5)
+                .setNote("A pint of beer")
+                .build();
     }
 
     static ActivityIntensity generateActivityIntensity() {
@@ -678,6 +706,16 @@ final class ProtoTestData {
                                 .setRate(12.345)
                                 .setEpochMillis(123456)
                                 .build())
+                .build();
+    }
+
+    static Symptoms generateSymptoms() {
+        return Symptoms.newBuilder()
+                .setSymptomType(1)
+                .setNotes("notes")
+                .setSeverity(1)
+                .setCount(1)
+                .setTemporalType(1)
                 .build();
     }
 

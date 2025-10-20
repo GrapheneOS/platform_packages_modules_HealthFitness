@@ -202,6 +202,9 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
             onSelectEntryListener = onSelectEntryListener,
         )
     }
+    private val symptomItemViewBinder by lazy {
+        SymptomItemViewBinder(onSelectEntryListener = onSelectEntryListener)
+    }
     private val seriesDataItemViewBinder by lazy {
         SeriesDataItemViewBinder(
             onItemClickedListener = onClickEntryListener,
@@ -345,6 +348,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                 FormattedEntry.ExerciseSessionEntry::class.java,
                 exerciseSessionItemViewBinder,
             )
+            .setViewBinder(FormattedEntry.SymptomEntry::class.java, symptomItemViewBinder)
             .setViewBinder(FormattedEntry.SeriesDataEntry::class.java, seriesDataItemViewBinder)
             .setViewBinder(FormattedEntry.FormattedAggregation::class.java, aggregationViewBinder)
             .setViewBinder(
@@ -372,6 +376,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                 FormattedEntry.ExerciseSessionEntry::class.java,
                 exerciseSessionItemViewBinder,
             )
+            .setViewBinder(FormattedEntry.SymptomEntry::class.java, symptomItemViewBinder)
             .setViewBinder(FormattedEntry.SeriesDataEntry::class.java, seriesDataItemViewBinder)
             .setViewBinder(FormattedEntry.FormattedAggregation::class.java, aggregationViewBinder)
             .setViewBinder(

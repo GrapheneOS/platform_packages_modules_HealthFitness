@@ -18,6 +18,10 @@ package com.android.healthconnect.testapps.toolbox.utils
 import android.content.Context
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord
 import android.health.connect.datatypes.ActivityIntensityRecord
+import android.health.connect.datatypes.AlcoholConsumptionRecord
+import android.health.connect.datatypes.AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_INSTANT
+import android.health.connect.datatypes.AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_INTERVAL
+import android.health.connect.datatypes.AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_LOCAL_DATE
 import android.health.connect.datatypes.BasalBodyTemperatureRecord
 import android.health.connect.datatypes.BasalMetabolicRateRecord
 import android.health.connect.datatypes.BloodGlucoseRecord
@@ -83,6 +87,8 @@ import com.android.healthconnect.testapps.toolbox.data.ExerciseRoutesTestData.Co
 import com.android.healthconnect.testapps.toolbox.fieldviews.InputFieldView
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.getMetaData
 import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneOffset
 import kotlin.reflect.KClass
 
 class InsertOrUpdateRecords {
@@ -834,6 +840,80 @@ class InsertOrUpdateRecords {
                             }
                         }
                         .build()
+
+                AlcoholConsumptionRecord::class -> {
+                    val temporalType =
+                        mFieldNameToFieldInput["mTemporalType"]?.getFieldValue().toString().toInt()
+
+                    val builder =
+                        when (temporalType) {
+                            RECORD_TEMPORAL_TYPE_INTERVAL ->
+                                AlcoholConsumptionRecord.Builder(
+                                    metaData,
+                                    getStartTime(mFieldNameToFieldInput),
+                                    getEndTime(mFieldNameToFieldInput),
+                                    getIntegerValue(mFieldNameToFieldInput, "mServingCount"),
+                                    mFieldNameToFieldInput["mBeverageType"]
+                                        ?.getFieldValue()
+                                        .toString()
+                                        .toInt(),
+                                )
+                            RECORD_TEMPORAL_TYPE_INSTANT ->
+                                AlcoholConsumptionRecord.Builder(
+                                    metaData,
+                                    getStartTime(mFieldNameToFieldInput),
+                                    getIntegerValue(mFieldNameToFieldInput, "mServingCount"),
+                                    mFieldNameToFieldInput["mBeverageType"]
+                                        ?.getFieldValue()
+                                        .toString()
+                                        .toInt(),
+                                )
+                            RECORD_TEMPORAL_TYPE_LOCAL_DATE -> {
+                                val date =
+                                    LocalDate.ofInstant(
+                                        getStartTime(mFieldNameToFieldInput),
+                                        ZoneOffset.UTC,
+                                    )
+                                AlcoholConsumptionRecord.Builder(
+                                    metaData,
+                                    date,
+                                    getIntegerValue(mFieldNameToFieldInput, "mServingCount"),
+                                    mFieldNameToFieldInput["mBeverageType"]
+                                        ?.getFieldValue()
+                                        .toString()
+                                        .toInt(),
+                                )
+                            }
+                            else -> throw IllegalStateException("$temporalType Not supported!")
+                        }
+
+                    return builder
+                        .apply {
+                            mFieldNameToFieldInput["mServingSize"]
+                                ?.takeIf { !it.isEmpty() }
+                                ?.let { setServingSize(it.getFieldValue().toString().toInt()) }
+                            mFieldNameToFieldInput["mServingVolume"]
+                                ?.takeIf { !it.isEmpty() }
+                                ?.let {
+                                    setServingVolume(
+                                        Volume.fromLiters(it.getFieldValue().toString().toDouble())
+                                    )
+                                }
+                            mFieldNameToFieldInput["mAlcoholByVolume"]
+                                ?.takeIf { !it.isEmpty() }
+                                ?.let {
+                                    setAlcoholByVolume(
+                                        Percentage.fromValue(
+                                            it.getFieldValue().toString().toDouble()
+                                        )
+                                    )
+                                }
+                            mFieldNameToFieldInput["mNote"]
+                                ?.takeIf { !it.isEmpty() }
+                                ?.let { setNote(it.getFieldValue().toString()) }
+                        }
+                        .build()
+                }
 
                 else -> throw NotImplementedError("Record type not implemented")
             }

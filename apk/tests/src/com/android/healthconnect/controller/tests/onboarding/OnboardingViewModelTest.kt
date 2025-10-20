@@ -88,7 +88,7 @@ class OnboardingViewModelTest {
         )
         viewModel.loadConnectedApps()
         advanceUntilIdle()
-        assertThat(loadFitnessPermissionApps.invocations).isEqualTo(1)
+        assertThat(loadFitnessPermissionApps.numberOfInvocations).isEqualTo(1)
     }
 
     @Test
@@ -226,7 +226,7 @@ class OnboardingViewModelTest {
         )
         viewModel.loadOnboardingBannerState()
         advanceUntilIdle()
-        assertThat(loadOnboardingStateUseCase.invocations).isEqualTo(1)
+        assertThat(loadOnboardingStateUseCase.numberOfInvocations).isEqualTo(1)
     }
 
     @Test

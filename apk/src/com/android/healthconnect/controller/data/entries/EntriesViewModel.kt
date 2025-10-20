@@ -30,6 +30,7 @@ import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesInpu
 import com.android.healthconnect.controller.data.entries.api.LoadLatestEntryDateInput
 import com.android.healthconnect.controller.data.entries.api.LoadMedicalEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataInput
+import com.android.healthconnect.controller.data.entries.api.LoadSymptomEntriesUseCase
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.DISTANCE
@@ -55,6 +56,7 @@ class EntriesViewModel
 constructor(
     private val appInfoReader: AppInfoReader,
     private val loadDataEntriesUseCase: ILoadDataEntriesUseCase,
+    private val loadSymptomEntriesUseCase: LoadSymptomEntriesUseCase,
     private val loadMenstruationDataUseCase: ILoadMenstruationDataUseCase,
     private val loadDataAggregationsUseCase: ILoadDataAggregationsUseCase,
     private val loadMedicalEntriesUseCase: ILoadMedicalEntriesUseCase,
@@ -102,6 +104,12 @@ constructor(
     private var entriesList: MutableList<FormattedEntry> = mutableListOf()
 
     val latestDate = MutableLiveData<Instant>()
+
+    private val _isLoadingDateNavigation = MutableLiveData<Boolean>()
+    val isLoadingDateNavigation: LiveData<Boolean>
+        get() = _isLoadingDateNavigation
+
+    var shouldReloadEntries = true
 
     fun loadLatestRecordDate(
         permissionType: HealthPermissionType,
@@ -176,6 +184,7 @@ constructor(
         period: DateNavigationPeriod,
         showDataOrigin: Boolean,
     ) {
+        _isLoadingDateNavigation.postValue(true)
         _entries.postValue(EntriesFragmentState.Loading)
         currentSelectedDate.postValue(selectedDate)
         this.period.postValue(period)
@@ -223,6 +232,7 @@ constructor(
                     _entries.postValue(EntriesFragmentState.LoadingFailed)
                 }
             }
+            _isLoadingDateNavigation.postValue(false)
         }
     }
 
@@ -261,7 +271,11 @@ constructor(
     ): UseCaseResults<List<FormattedEntry>> {
         val input =
             LoadDataEntriesInput(permissionType, packageName, selectedDate, period, showDataOrigin)
-        return loadDataEntriesUseCase.invoke(input)
+        return if (permissionType.name.startsWith("SYMPTOM_")) {
+            loadSymptomEntriesUseCase.invoke(input)
+        } else {
+            loadDataEntriesUseCase.invoke(input)
+        }
     }
 
     private suspend fun loadAppEntries(

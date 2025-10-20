@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.tests.permissions.request
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissions.READ_EXERCISE
 import android.health.connect.HealthPermissions.READ_EXERCISE_ROUTES
 import android.health.connect.HealthPermissions.READ_HEALTH_DATA_HISTORY
@@ -49,9 +50,11 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission.Co
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.MedicalPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
+import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.permissions.request.AdditionalScreenState
 import com.android.healthconnect.controller.permissions.request.FitnessScreenState
 import com.android.healthconnect.controller.permissions.request.MedicalScreenState
+import com.android.healthconnect.controller.permissions.request.PermissionGroupKey
 import com.android.healthconnect.controller.permissions.request.PermissionsActivityState
 import com.android.healthconnect.controller.permissions.request.RequestPermissionViewModel
 import com.android.healthconnect.controller.service.HealthPermissionManagerModule
@@ -1756,4 +1759,66 @@ class RequestPermissionViewModelTest {
             assertThat(grants[fromPermissionString(READ_EXERCISE)])
                 .isEqualTo(PermissionState.GRANTED)
         }
+
+    @Test
+    fun updateDataCategoryPreferenceKey_addKey_addsToLiveData() = runTest {
+        val testObserver = TestObserver<Set<String>>()
+        viewModel.expandedDataCategoryPreferenceKeys.observeForever(testObserver)
+        val key = PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
+
+        viewModel.updateDataCategoryPreferenceKey(key, isExpanded = true)
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue()).contains(key.toString())
+    }
+
+    @Test
+    fun updateDataCategoryPreferenceKey_removeKey_removesFromLiveData() = runTest {
+        val testObserver = TestObserver<Set<String>>()
+        viewModel.expandedDataCategoryPreferenceKeys.observeForever(testObserver)
+        val key = PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
+        viewModel.updateDataCategoryPreferenceKey(key, isExpanded = true)
+        advanceUntilIdle()
+        assertThat(testObserver.getLastValue()).contains(key.toString())
+
+        viewModel.updateDataCategoryPreferenceKey(key, isExpanded = false)
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue()).doesNotContain(key.toString())
+    }
+
+    @Test
+    fun updateHealthPermissions_grant_updatesGrantedFitnessPermissions() = runTest {
+        val permissions =
+            listOf(
+                fromPermissionString(READ_STEPS) as FitnessPermission,
+                fromPermissionString(READ_EXERCISE) as FitnessPermission,
+            )
+        val testObserver = TestObserver<Set<FitnessPermission>>()
+        viewModel.grantedFitnessPermissions.observeForever(testObserver)
+
+        viewModel.updateHealthPermissions(permissions, grant = true)
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue()).containsExactlyElementsIn(permissions)
+    }
+
+    @Test
+    fun updateHealthPermissions_revoke_updatesGrantedFitnessPermissions() = runTest {
+        val permissions =
+            listOf(
+                fromPermissionString(READ_STEPS) as FitnessPermission,
+                fromPermissionString(READ_EXERCISE) as FitnessPermission,
+            )
+        val testObserver = TestObserver<Set<FitnessPermission>>()
+        viewModel.grantedFitnessPermissions.observeForever(testObserver)
+        viewModel.updateHealthPermissions(permissions, grant = true)
+        advanceUntilIdle()
+        assertThat(testObserver.getLastValue()).containsExactlyElementsIn(permissions)
+
+        viewModel.updateHealthPermissions(permissions, grant = false)
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue()).isEmpty()
+    }
 }

@@ -84,6 +84,8 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"පෝෂණය"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"සුවතාව"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"සුවතාව"</string>
+    <string name="symptoms_category_uppercase" msgid="1357167834284360975">"රෝග ලක්ෂණ"</string>
+    <string name="symptoms_category_lowercase" msgid="2298815597177353672">"රෝග ලක්ෂණ"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"දත්ත බ්‍රවුස් කරන්න"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"දත්ත කළමනා කරන්න"</string>
     <string name="export_data_button" msgid="7783329820434117744">"දත්ත නිර්යාත කරන්න"</string>
@@ -378,6 +380,15 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"මත්පැන් පරිභෝජනය"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"මත්පැන් පරිභෝජනය කියවන්න"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"මත්පැන් පරිභෝජනය ලියන්න"</string>
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"කැස්ස"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"කැස්ස"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"ලක්ෂණ කියවන්න"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"ලක්ෂණ ලියන්න"</string>
+    <string name="symptom_unknown" msgid="5796719193136239306">"නොදනී"</string>
+    <string name="symptom_severity_mild" msgid="2689415474774489874">"මෘදු"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"මධ්‍යස්ථ"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"දරුණු"</string>
+    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>⁠"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” හට කියවීමට ඉඩ දෙන්න"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” හට ලිවීමට ඉඩ දෙන්න"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"ඉඩ දෙන්න"</string>
@@ -660,6 +671,8 @@
     <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{1 රෝද පුටු තල්ලු කිරීමක්}one{රෝද පුටු තල්ලු කිරීම් #ක්}other{රෝද පුටු තල්ලු කිරීම් #ක්}}"</string>
     <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 L}one{# L}other{# L}}"</string>
     <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{ලීටර 1ක්}one{ලීටර #ක්}other{ලීටර #ක්}}"</string>
+    <string name="milliliter" msgid="7730118351176678375">"{count,plural, =1{1 ml}one{# ml}other{# ml}}"</string>
+    <string name="milliliter_long" msgid="6431396151823725792">"{count,plural, =1{මිලිලීටර 1}one{මිලිලීටර#}other{මිලිලීටර#}}"</string>
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{මහල් 1ක්}one{මහල් #ක්}other{මහල් #ක්}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{මි 1}one{මි #}other{මි #}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{මීටර 1ක්}one{මීටර #ක්}other{මීටර #ක්}}"</string>
@@ -835,8 +848,32 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{වේප් පෆ් {quantity}}one{වේප් පෆ් {quantity}}other{වේප් පෆ් {quantity}}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} සිගරට්ටුවක්}one{සිගරට් {quantity}ක්}other{සිගරට් {quantity}ක්}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} නොදනී"</string>
+    <string name="alcohol_consumption_title" msgid="2627266871623334972">"<xliff:g id="SERVING">%1$s</xliff:g> • <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"වෙනත්"</string>
+    <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"බියර්"</string>
+    <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"වයින්"</string>
+    <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"වොඩ්කා"</string>
+    <string name="alcohol_consumption_beverage_type_gin" msgid="5945396443339874907">"ජින්"</string>
+    <string name="alcohol_consumption_beverage_type_whiskey" msgid="1085904168947658887">"විස්කි"</string>
+    <string name="alcohol_consumption_beverage_type_rum" msgid="5230691377430212826">"රම්"</string>
+    <string name="alcohol_consumption_beverage_type_tequila" msgid="9074751455065347442">"ටෙකීලා"</string>
+    <string name="alcohol_consumption_beverage_type_lager" msgid="1490153167547219382">"Lager"</string>
+    <string name="alcohol_consumption_beverage_type_cider" msgid="3348115754435446544">"සයිඩර්"</string>
+    <string name="alcohol_consumption_beverage_type_sake" msgid="2773512901340614154">"සකේ"</string>
+    <string name="alcohol_consumption_beverage_type_shochu" msgid="3491300198222489324">"ෂෝචු"</string>
+    <string name="alcohol_consumption_beverage_type_soju" msgid="113120387013483711">"සොජු"</string>
+    <string name="alcohol_consumption_beverage_type_mead" msgid="1673063923088962681">"මීඩ්"</string>
+    <string name="alcohol_consumption_beverage_type_absinthe" msgid="3972259596196421914">"අබ්සින්ත"</string>
+    <string name="alcohol_consumption_beverage_type_brandy" msgid="3782444367994599131">"බ්‍රැන්ඩි"</string>
+    <string name="alcohol_consumption_beverage_type_cocktail" msgid="4711099215987668649">"කොක්ටේල්"</string>
+    <string name="alcohol_consumption_beverage_type_chuhai" msgid="4727177353197748690">"චුහායි"</string>
+    <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"හයිබෝල්"</string>
+    <string name="serving_volume_title" msgid="4727986574534974167">"පිළිගන්වන පරිමාව"</string>
+    <string name="alcohol_by_volume_title" msgid="6942673552238435422">"පරිමාව අනුව මත්පැන්"</string>
+    <string name="note_title" msgid="4101166558186573016">"සටහන"</string>
+    <string name="details_title" msgid="8411891773854413790">"විස්තර"</string>
     <string name="minute_duration" msgid="9035288227090160206">"මිනි <xliff:g id="MINUTE">%1$s</xliff:g>ක්"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"පැ<xliff:g id="HOUR">%1$s</xliff:g> මි<xliff:g id="MIN">%2$s</xliff:g>"</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"පැ<xliff:g id="HOUR">%1$s</xliff:g> මි<xliff:g id="MIN">%2$s</xliff:g>"</string>
     <string name="hour_duration" msgid="3472489613837138711">"පැය <xliff:g id="HOUR">%1$s</xliff:g>ක්"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>⁠"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{පැය 1යි}one{පැය #ක්}other{පැය #ක්}}"</string>
@@ -1042,6 +1079,7 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"නිමයි"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{ස්වයං මැකීම ක්‍රියාත්මකයි. මාස #කට වඩා පැරණි දත්ත මකනු ඇත}one{ස්වයං මැකීම ක්‍රියාත්මකයි. මාස #කට වඩා පැරණි දත්ත මකනු ඇත}other{ස්වයං මැකීම ක්‍රියාත්මකයි. මාස #කට වඩා පැරණි දත්ත මකනු ඇත}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"ස්වයං මැකීම ක්‍රියාවිරහිතයි"</string>
+    <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+<xliff:g id="COUNT">%s</xliff:g>"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"යෙදුම් ප්‍රමුඛතාව සකසන්න"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"යෙදුම් එකකට වඩා වැඩි ගණනක් <xliff:g id="DATA_TYPE">%s</xliff:g> දත්ත එක් කළහොත්, Health Connect මෙම ලැයිස්තුවේ ඉහළින්ම ඇති යෙදුමට ප්‍රමුඛතාව දෙනු ඇත. ඒවා නැවත අනුපිළිවෙළට සැකසීමට යෙදුම් අදින්න."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"සුරකින්න"</string>
@@ -1175,6 +1213,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"සම්බන්ධිත යෙදුම්වලට තවදුරටත් Health Connect වෙතින් මෙම දත්ත කියවීමට නොහැකි වනු ඇත"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"සලකුණු කරන ලදි"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"සලකුණු නොකළ"</string>
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"අභ්‍යාස සිතියම් මාර්ගය තිබේ"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"ඊළඟ දිනය"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"ඊළඟ සතිය"</string>
@@ -1228,6 +1267,7 @@
     <string name="write_access" msgid="571547306854732263">"ලිවීමේ ප්‍රවේශය"</string>
     <string name="read_access" msgid="3317759826769372785">"කියවීම් ප්‍රවේශය"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>⁠"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"යෙදුම් <xliff:g id="NUMBER_0">%1$d</xliff:g>කින් <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>කට ඉඩ දෙන ලදි"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"යෙදුම් කිසිවක් ඉල්ලා නැත"</string>
     <string name="allowed" msgid="4158456017482263737">"ඉඩ දී ඇත"</string>
@@ -1272,21 +1312,266 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"නොදන්නා උපාංගය"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"උපාංග තතු"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"මෙම උපාංගය මගින් රැස් කරන ලද දත්ත Health Connect හි ගබඩා කරනු ලබන අතර, එහි දී සම්බන්ධිත යෙදුම් එයට ප්‍රවේශ වනු ඇත"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"මෙම උපාංගය පියවර ලුහුබැඳීමට සහාය නොදක්වයි, නමුත් තවමත් Health Connect හි දත්ත ගබඩා කර ඇත"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"මෙම උපාංගය පියවර ලුහුබැඳීම සිදු නොකරයි."</string>
     <string name="device_settings_label" msgid="9053791237491247819">"ලිවීමට ඉඩ දුන්නා"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"උපාංග දත්ත"</string>
     <string name="device_data_label" msgid="2056618513138892435">"උපාංගය කළමනාකරණය කරන්න"</string>
     <string name="device_data_button" msgid="8002406105399136401">"උපාංග දත්ත බලන්න"</string>
-    <string name="native_steps_banner_title" msgid="7668164332675458871">"ඔබේ දුරකථනයේ නිරීක්ෂණය කරන ලද පියවර Health Connect හි දිස්වනු ඇත"</string>
-    <string name="native_steps_banner_summary" msgid="7109953051996114646">"සම්බන්ධිත යෙදුම් වෙත ප්‍රවේශ වීම සඳහා මෙම උපාංගය මඟින් නිරීක්ෂණය කරන ලද පියවර දැන් Health Connect හි ගබඩා කර ඇත"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_title" msgid="8990874387340782536">"ඔබේ දුරකථනයේ නිරීක්ෂණය කරන ලද පියවර Health Connect හි දිස්වනු ඇත"</string>
+    <string name="native_steps_banner_summary" msgid="8255767487167444809">"සම්බන්ධිත යෙදුම් වෙත ප්‍රවේශ වීම සඳහා මෙම උපාංගය මඟින් නිරීක්ෂණය කරන ලද පියවර දැන් Health Connect හි ගබඩා කර ඇත"</string>
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"අස් කරන්න"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"සමාලෝචන කරන්න"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"පියවර දැන් Health Connect හි ඇත"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"සම්බන්ධිත යෙදුම් වෙත ප්‍රවේශ වීම සඳහා මෙම උපාංගය මඟින් නිරීක්ෂණය කරන ලද පියවර දැන් Health Connect හි ගබඩා කර ඇත"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"ඔබේ සෞඛ්‍ය යෙදුම්"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"ඔබේ සෞඛ්‍ය දත්ත"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"මනාප"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect මඟින් ඔබේ සෞඛ්‍ය සහ යෝග්‍යතා දත්ත බහු යෙදුම් අතර බෙදා ගැනීමට ඔබට ඉඩ දෙයි. මෙය ඔබේ දත්ත සුරක්ෂිතව තබා ගනිමින් ඇතුළාන්තයන් සහ අත්දැකීම් අගුළු හැරීමට ඔබට උදවු වේ."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect පිළිබඳ වැඩිදුර"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"ඔබේ දත්ත සහ ඒවාට ප්‍රවේශ විය හැකි යෙදුම්"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"මෑතකදී ඔබේ දත්ත භාවිත කළ යෙදුම්"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"සෞඛ්‍ය දත්ත වෙත ප්‍රවේශ විය හැකි උපාංග සමාලෝචනය කරන්න"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect සමග ක්‍රියා කරන යෙදුම් මෙහි දැකීමට ස්ථාපනය කරන්න"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"ගැළපෙන යෙදුම් බලන්න"</string>
+    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"තවත් සෞඛ්‍ය යෙදුම් බලන්න"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"සම්බන්ධ වී නොමැත"</string>
+    <string name="connect_app_button_content_description" msgid="296796277841527165">"මෙම යෙදුම Health Connect වෙත සම්බන්ධ කිරීමට ක්ලික් කරන්න"</string>
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"දැන් නොවේ"</string>
+    <string name="acne_read_content_description" msgid="1176708404029936065">"කුරුලෑ කියවන්න"</string>
+    <string name="acne_write_content_description" msgid="9221785868351412493">"කුරුලෑ ලියන්න"</string>
+    <string name="brittle_nails_read_content_description" msgid="423745726647038216">"බිඳෙනසුලු නියපොතු කියවන්න"</string>
+    <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"බිඳෙනසුලු නියපොතු ලියන්න"</string>
+    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"මුඛය දැවිල්ල කියවන්න "</string>
+    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"මුඛය දැවිල්ල ලියන්න "</string>
+    <string name="chills_read_content_description" msgid="7244946135559432433">"මිරිස් කියවන්න"</string>
+    <string name="chills_write_content_description" msgid="6478646233405107436">"මිරිස් ලියන්න"</string>
+    <string name="dehydration_read_content_description" msgid="7633935838518756206">"විජලනය කියවන්න"</string>
+    <string name="dehydration_write_content_description" msgid="541514183036921571">"විජලනය ලියන්න"</string>
+    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"වියළි සම කියවන්න"</string>
+    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"වියළි සම ලියන්න"</string>
+    <string name="fever_read_content_description" msgid="3385209639730909489">"උණ කියවන්න"</string>
+    <string name="fever_write_content_description" msgid="8440573327719878961">"උණ ලියන්න"</string>
+    <string name="joint_pain_read_content_description" msgid="2932523124488927967">"සන්ධි වේදනාව කියවන්න"</string>
+    <string name="joint_pain_write_content_description" msgid="7405551860978844535">"සන්ධි වේදනාව ලියන්න"</string>
+    <string name="joint_stiffness_read_content_description" msgid="2132696730582070534">"සන්ධි තද බව කියවන්න"</string>
+    <string name="joint_stiffness_write_content_description" msgid="7556318646656369856">"සන්ධි තද බව ලියන්න"</string>
+    <string name="muscle_pain_read_content_description" msgid="3116385630330673084">"මාංශ පේශි වේදනාව කියවන්න"</string>
+    <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"මාංශ පේශි වේදනාව ලියන්න"</string>
+    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"සිහිය නැතිවීම කියවන්න"</string>
+    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"සිහිය නැතිවීම ලියන්න"</string>
+    <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"ව්‍යායාම කිරීමේ ධාරිතාව අඩු වීම කියවන්න"</string>
+    <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"ව්‍යායාම කිරීමේ ධාරිතාව අඩු වීම ලියන්න"</string>
+    <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"පැහැදිලි කළ නොහැකි බර වෙනස්වීම් කියවන්න"</string>
+    <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"පැහැදිලි කළ නොහැකි බර වෙනස්වීම් ලියන්න"</string>
+    <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"සාමාන්‍ය ශරීර වේදනාව කියවන්න"</string>
+    <string name="generalized_body_ache_write_content_description" msgid="4282920161878530009">"සාමාන්‍ය ශරීර වේදනාව ලියන්න"</string>
+    <string name="fatigue_read_content_description" msgid="8447413794808220408">"තෙහෙට්ටුව කියවන්න"</string>
+    <string name="fatigue_write_content_description" msgid="3000326883358951973">"තෙහෙට්ටුව ලියන්න"</string>
+    <string name="constipation_read_content_description" msgid="4024154136010015370">"මලබද්ධය කියවන්න"</string>
+    <string name="constipation_write_content_description" msgid="9059835998017996999">"මලබද්ධය ලියන්න"</string>
+    <string name="diarrhea_read_content_description" msgid="6643311788778713543">"පාචනය කියවන්න"</string>
+    <string name="diarrhea_write_content_description" msgid="2525160401458506448">"පාචනය ලියන්න"</string>
+    <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"ආහාර රුචිය නැති වීම කියවන්න"</string>
+    <string name="loss_of_appetite_write_content_description" msgid="7370817778828856877">"ආහාර රුචිය නැති වීම ලියන්න"</string>
+    <string name="nausea_read_content_description" msgid="7696809485706809234">"ඔක්කාරය කියවන්න"</string>
+    <string name="nausea_write_content_description" msgid="7956853318058549079">"ඔක්කාරය ලියන්න"</string>
+    <string name="stomach_ache_read_content_description" msgid="6960461949095524373">"බඩේ අමාරුව කියවන්න"</string>
+    <string name="stomach_ache_write_content_description" msgid="4822349196740130790">"බඩේ අමාරුව ලියන්න"</string>
+    <string name="vomiting_read_content_description" msgid="6425637340168306118">"වමනය කියවන්න"</string>
+    <string name="vomiting_write_content_description" msgid="2768436321239967229">"වමනය ලියන්න"</string>
+    <string name="chest_pain_read_content_description" msgid="5388099127082653993">"පපුවේ වේදනාව කියවන්න"</string>
+    <string name="chest_pain_write_content_description" msgid="7570421665813979598">"පපුවේ වේදනාව ලියන්න"</string>
+    <string name="chest_tightness_read_content_description" msgid="3234587929340517638">"පපුව හිරවීම කියවන්න"</string>
+    <string name="chest_tightness_write_content_description" msgid="3365518444505217882">"පපුවේ හිරවීම ලියන්න"</string>
+    <string name="cough_read_content_description" msgid="4834360757270578547">"කැස්ස කියවන්න"</string>
+    <string name="cough_write_content_description" msgid="2927943192149715422">"කැස්ස ලියන්න"</string>
+    <string name="heart_palpitations_read_content_description" msgid="5830132363981902576">"හෘද ස්පන්දන කියවන්න"</string>
+    <string name="heart_palpitations_write_content_description" msgid="6195434828951874561">"හෘද ස්පන්දන ලියන්න"</string>
+    <string name="shortness_of_breath_read_content_description" msgid="5285037217314042125">"හුස්ම හිරවීම කියවන්න"</string>
+    <string name="shortness_of_breath_write_content_description" msgid="1812050225998794712">"හුස්ම හිරවීම ලියන්න"</string>
+    <string name="wheezing_read_content_description" msgid="3698103133045395859">"ඇදුම කියවන්න"</string>
+    <string name="wheezing_write_content_description" msgid="3555234332119025686">"ඇදුම ලියන්න"</string>
+    <string name="heartburn_read_content_description" msgid="4650825508743336439">"පපුව දැවිල්ල කියවන්න"</string>
+    <string name="heartburn_write_content_description" msgid="1857706822547818187">"පපුව දැවිල්ල ලියන්න"</string>
+    <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"හෘද ස්පන්දනය මඟ හැරුණි කියවන්න"</string>
+    <string name="skipped_heartbeat_write_content_description" msgid="834686289232563614">"හෘද ස්පන්දනය මඟ හැරුණි ලියන්න"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"වේගවත්, කම්පා වන හෝ ගැහෙන හෘද ස්පන්දනය කියවන්න"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"වේගවත්, කම්පා වන හෝ ගැහෙන හෘද ස්පන්දනය ලියන්න"</string>
+    <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"ගිලීමේ අපහසුතාව කියවන්න"</string>
+    <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"ගිලීමේ අපහසුතාව ලියන්න"</string>
+    <string name="dizziness_read_content_description" msgid="2525565486057144416">"කරකැවිල්ල කියවන්න"</string>
+    <string name="dizziness_write_content_description" msgid="1875365619054873732">"කරකැවිල්ල ලියන්න"</string>
+    <string name="earaches_read_content_description" msgid="4643142391473401154">"කන් කැක්කුම කියවන්න"</string>
+    <string name="earaches_write_content_description" msgid="3551386029980258801">"කන් කැක්කුම ලියන්න"</string>
+    <string name="hair_loss_read_content_description" msgid="4057044821025872986">"හිසකෙස් නැතිවීම කියවන්න"</string>
+    <string name="hair_loss_write_content_description" msgid="7387442867237711823">"හිසකෙස් නැතිවීම ලියන්න"</string>
+    <string name="headache_read_content_description" msgid="7485283472508878298">"හිසරදය කියවන්න"</string>
+    <string name="headache_write_content_description" msgid="720183844750746485">"හිසරදය ලියන්න"</string>
+    <string name="runny_nose_read_content_description" msgid="443700998701222852">"ද්‍රවීය නාසය කියවන්න"</string>
+    <string name="runny_nose_write_content_description" msgid="6210009950948827090">"ද්‍රවීය නාසය ලියන්න"</string>
+    <string name="sneezing_read_content_description" msgid="1825781985598094799">"කිවිසුම් යාම කියවන්න"</string>
+    <string name="sneezing_write_content_description" msgid="8125072216406958337">"කිවිසුම් යාම ලියන්න"</string>
+    <string name="sore_throat_read_content_description" msgid="7798247670004858562">"වේදනා සහිත උගුර කියවන්න"</string>
+    <string name="sore_throat_write_content_description" msgid="6058043292544091397">"වේදනා සහිත උගුර ලියන්න"</string>
+    <string name="stuffy_nose_read_content_description" msgid="6604212451531546331">"නාසය හිරවීම කියවන්න"</string>
+    <string name="stuffy_nose_write_content_description" msgid="6950875986047625521">"නාසය හිරවීම ලියන්න"</string>
+    <string name="back_pain_read_content_description" msgid="1176155927269014089">"කොන්ද වේදනාව කියවන්න"</string>
+    <string name="back_pain_write_content_description" msgid="6282959987099901645">"කොන්ද වේදනාව ලියන්න"</string>
+    <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"කොන්දේ පහළ වේදනාව කියවන්න"</string>
+    <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"කොන්දේ පහළ වේදනාව ලියන්න"</string>
+    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"උණුසුම් දැල්වීම් කියවන්න"</string>
+    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"උණුසුම් දැල්වීම් ලියන්න"</string>
+    <string name="night_sweats_read_content_description" msgid="7644094250441074129">"රෑට දහඩිය දැමීම කියවන්න"</string>
+    <string name="night_sweats_write_content_description" msgid="7501357533280452509">"රෑට දහඩිය දැමීම ලියන්න"</string>
+    <string name="water_retention_read_content_description" msgid="211789030125880649">"ජලය රැඳවුම කියවන්න"</string>
+    <string name="water_retention_write_content_description" msgid="7109328727506593781">"ජල රැඳවුම ලියන්න"</string>
+    <string name="cravings_read_content_description" msgid="9098905292448612603">"ආශාවන් කියවන්න"</string>
+    <string name="cravings_write_content_description" msgid="7932335159387976333">"ආශාවන් ලියන්න"</string>
+    <string name="bloating_read_content_description" msgid="8942780558464500997">"බඩ පිපීම කියවන්න"</string>
+    <string name="bloating_write_content_description" msgid="5014366726518564943">"බඩ පිපීම ලියන්න"</string>
+    <string name="cramps_read_content_description" msgid="5853663240074256855">"කැක්කුම කියවන්න"</string>
+    <string name="cramps_write_content_description" msgid="6777230560926849939">"කැක්කුම ලියන්න"</string>
+    <string name="abdominal_pain_read_content_description" msgid="6331928351160142817">"උදර වේදනාව කියවන්න"</string>
+    <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"උදර වේදනාව ලියන්න"</string>
+    <string name="breast_tenderness_read_content_description" msgid="1556133668276886256">"පියයුරුවල මුදු මොළොක් බව කියවන්න"</string>
+    <string name="breast_tenderness_write_content_description" msgid="5405234499024881940">"පියයුරුවල මුදු මොළොක් බව ලියන්න"</string>
+    <string name="pelvic_pain_read_content_description" msgid="8872893212311881743">"ශ්‍රෝණි වේදනාව කියවන්න"</string>
+    <string name="pelvic_pain_write_content_description" msgid="8482016412474126674">"ශ්‍රෝණි වේදනාව ලියන්න"</string>
+    <string name="vaginal_dryness_read_content_description" msgid="21587787265978758">"යෝනි මාර්ගයේ වියළි බව කියවන්න"</string>
+    <string name="vaginal_dryness_write_content_description" msgid="7639415261021656468">"යෝනි මාර්ගයේ වියළි බව ලියන්න"</string>
+    <string name="vaginal_itchiness_read_content_description" msgid="6027886706003079912">"යෝනි මාර්ගයේ කැසීම කියවන්න"</string>
+    <string name="vaginal_itchiness_write_content_description" msgid="6833099607694941406">"යෝනි මාර්ගයේ කැසීම ලියන්න"</string>
+    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"මානසික වෙහෙස කියවන්න"</string>
+    <string name="brain_fog_write_content_description" msgid="354508934978268288">"මානසික වෙහෙස ලියන්න"</string>
+    <string name="mood_change_read_content_description" msgid="5114563193264125173">"මනෝභාවය වෙනස් වීම කියවන්න"</string>
+    <string name="mood_change_write_content_description" msgid="7613564641235985120">"මනෝභාවය වෙනස් වීම ලියන්න"</string>
+    <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"මතක අඩු වීම කියවන්න"</string>
+    <string name="memory_lapse_write_content_description" msgid="211569063190179476">"මතකය අඩු වීම ලියන්න"</string>
+    <string name="sleepiness_read_content_description" msgid="797381777988304669">"නිදිමත කියවන්න"</string>
+    <string name="sleepiness_write_content_description" msgid="888236364245216476">"නිදිමත ලියන්න"</string>
+    <string name="sleep_changes_read_content_description" msgid="277237231470749744">"නින්ද වෙනස් විම් කියවන්න"</string>
+    <string name="sleep_changes_write_content_description" msgid="9078270254664653838">"නින්ද වෙනස් විම් ලියන්න"</string>
+    <string name="insomnia_read_content_description" msgid="5225449618972721129">"නින්ද නොයාම කියවන්න"</string>
+    <string name="insomnia_write_content_description" msgid="4237153589826489083">"නින්ද නොයාම ලියන්න"</string>
+    <string name="snore_read_content_description" msgid="3447953925696237628">"ගෙරවීම කියවන්න"</string>
+    <string name="snore_write_content_description" msgid="959354771204900433">"ගෙරවීම ලියන්න"</string>
+    <string name="acne_uppercase_label" msgid="60568062993817483">"කුරුලෑ"</string>
+    <string name="acne_lowercase_label" msgid="5301949536428255159">"කුරුලෑ"</string>
+    <string name="abdominal_pain_uppercase_label" msgid="442393846492385702">"උදර වේදනාව"</string>
+    <string name="abdominal_pain_lowercase_label" msgid="4136643670361233063">"උදර වේදනාව"</string>
+    <string name="back_pain_uppercase_label" msgid="6034795846635350255">"කොන්ද වේදනාව"</string>
+    <string name="back_pain_lowercase_label" msgid="7487168354843582888">"කොන්ද වේදනාව"</string>
+    <string name="bloating_uppercase_label" msgid="2827024204358491650">"බඩ පිපීම"</string>
+    <string name="bloating_lowercase_label" msgid="4108236897678347488">"බඩ පිපීම"</string>
+    <string name="brain_fog_uppercase_label" msgid="3782508630097437711">"මානසික වෙහෙස"</string>
+    <string name="brain_fog_lowercase_label" msgid="8018499987092429724">"මානසික වෙහෙස"</string>
+    <string name="breast_tenderness_uppercase_label" msgid="3633574517042452397">"පියයුරුවල මුදු මොළොක් බව"</string>
+    <string name="breast_tenderness_lowercase_label" msgid="3745105353936751222">"පියයුරුවල මුදු මොළොක් බව"</string>
+    <string name="brittle_nails_uppercase_label" msgid="7290899807816681152">"බිඳෙනසුලු නියපොතු"</string>
+    <string name="brittle_nails_lowercase_label" msgid="43861645923597496">"බිඳෙනසුලු නියපොතු"</string>
+    <string name="burning_mouth_uppercase_label" msgid="8975226712238467359">"මුඛය දැවිල්ල"</string>
+    <string name="burning_mouth_lowercase_label" msgid="3378970972990933484">"මුඛය දැවිල්ල"</string>
+    <string name="chest_pain_uppercase_label" msgid="8091501402224214622">"පපුවේ වේදනාව"</string>
+    <string name="chest_pain_lowercase_label" msgid="8817807562310689177">"පපුවේ වේදනාව"</string>
+    <string name="chest_tightness_uppercase_label" msgid="8988021502622503503">"පපුව හිරවීම"</string>
+    <string name="chest_tightness_lowercase_label" msgid="1770063390635610292">"පපුව හිරවීම"</string>
+    <string name="chills_uppercase_label" msgid="4320786490882838834">"මිරිස්"</string>
+    <string name="chills_lowercase_label" msgid="1306612496314055832">"මිරිස්"</string>
+    <string name="constipation_uppercase_label" msgid="7245001778443725742">"මලබද්ධය"</string>
+    <string name="constipation_lowercase_label" msgid="6217542866033766747">"මලබද්ධය"</string>
+    <string name="cough_uppercase_label" msgid="5570609736970603012">"කැස්ස"</string>
+    <string name="cough_lowercase_label" msgid="459638956679172779">"කැස්ස"</string>
+    <string name="cramps_uppercase_label" msgid="5162905309136173937">"කැක්කුම"</string>
+    <string name="cramps_lowercase_label" msgid="4644485808002493449">"කැක්කුම"</string>
+    <string name="cravings_uppercase_label" msgid="4754194354806284307">"ආශාවන්"</string>
+    <string name="cravings_lowercase_label" msgid="5836041614136287213">"ආශාවන්"</string>
+    <string name="dehydration_uppercase_label" msgid="10278239942824711">"විජලනය"</string>
+    <string name="dehydration_lowercase_label" msgid="8692632632276643276">"විජලනය"</string>
+    <string name="diarrhea_uppercase_label" msgid="6310170127529968752">"පාචනය"</string>
+    <string name="diarrhea_lowercase_label" msgid="5938774694742839016">"පාචනය"</string>
+    <string name="difficulty_swallowing_uppercase_label" msgid="3546617155300878657">"ගිලීමේ අපහසුතාව"</string>
+    <string name="difficulty_swallowing_lowercase_label" msgid="4980631237611433200">"ගිලීමේ අපහසුතාව"</string>
+    <string name="dizziness_uppercase_label" msgid="8129950094459563983">"කරකැවිල්ල"</string>
+    <string name="dizziness_lowercase_label" msgid="3462347558609662379">"කරකැවිල්ල"</string>
+    <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"වියළි සම"</string>
+    <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"වියළි සම"</string>
+    <string name="earaches_uppercase_label" msgid="107701950625572701">"කන් කැක්කුම"</string>
+    <string name="earaches_lowercase_label" msgid="6240790850403958317">"කන් කැක්කුම"</string>
+    <string name="fatigue_uppercase_label" msgid="7514286788083426578">"තෙහෙට්ටුව"</string>
+    <string name="fatigue_lowercase_label" msgid="2669560685808367387">"තෙහෙට්ටුව"</string>
+    <string name="fever_uppercase_label" msgid="6889273008212535253">"උණ"</string>
+    <string name="fever_lowercase_label" msgid="3634400562894397159">"උණ"</string>
+    <string name="generalized_body_ache_uppercase_label" msgid="2171378172300618053">"සාමාන්‍ය ශරීර වේදනාව"</string>
+    <string name="generalized_body_ache_lowercase_label" msgid="1725534000111875030">"සාමාන්‍ය ශරීර වේදනාව"</string>
+    <string name="hair_loss_uppercase_label" msgid="6359351347019795813">"හිස කෙස් වැටීම"</string>
+    <string name="hair_loss_lowercase_label" msgid="2764498189966225461">"හිස කෙස් වැටීම"</string>
+    <string name="headache_uppercase_label" msgid="863800537735413054">"හිසරදය"</string>
+    <string name="headache_lowercase_label" msgid="6564231905087583135">"හිසරදය"</string>
+    <string name="heartburn_uppercase_label" msgid="1170571383460859644">"පපුව දැවිල්ල"</string>
+    <string name="heartburn_lowercase_label" msgid="6235983036978705474">"පපුව දැවිල්ල"</string>
+    <string name="heart_palpitations_uppercase_label" msgid="2026400872833911547">"හෘද ස්පන්දන"</string>
+    <string name="heart_palpitations_lowercase_label" msgid="1468243523322721340">"හෘද ස්පන්දන"</string>
+    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"උණුසුම් දැල්වීම්"</string>
+    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"උණුසුම් දැල්වීම්"</string>
+    <string name="insomnia_uppercase_label" msgid="4946197328995261738">"නින්ද නොයාම"</string>
+    <string name="insomnia_lowercase_label" msgid="3742025423716451058">"නින්ද නොයාම"</string>
+    <string name="joint_pain_uppercase_label" msgid="7693454621285586935">"සන්ධි වේදනාව"</string>
+    <string name="joint_pain_lowercase_label" msgid="1877680075365305488">"සන්ධි වේදනාව"</string>
+    <string name="joint_stiffness_uppercase_label" msgid="5230114867081881444">"සන්ධි තද බව"</string>
+    <string name="joint_stiffness_lowercase_label" msgid="8766445235392409480">"සන්ධි තද බව"</string>
+    <string name="loss_of_appetite_uppercase_label" msgid="4023141061302523950">"ආහාර රුචිය නැති වීම"</string>
+    <string name="loss_of_appetite_lowercase_label" msgid="7558077308061468558">"ආහාර රුචිය නැති වීම"</string>
+    <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"සිහිය නැතිවීම"</string>
+    <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"සිහිය නැතිවීම"</string>
+    <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"කොන්දේ පහළ වේදනාව"</string>
+    <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"කොන්දේ පහළ වේදනාව"</string>
+    <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"මතකය අඩු වීම"</string>
+    <string name="memory_lapse_lowercase_label" msgid="5590619293782264318">"මතකය අඩු වීම"</string>
+    <string name="mood_change_uppercase_label" msgid="6591596468077187132">"මනෝභාවය වෙනස් වීම"</string>
+    <string name="mood_change_lowercase_label" msgid="5154765930188874067">"මනෝභාවය වෙනස් වීම"</string>
+    <string name="muscle_pain_uppercase_label" msgid="2470771124188001900">"මාංශ පේශි වේදනාව"</string>
+    <string name="muscle_pain_lowercase_label" msgid="7842677871351347822">"මාංශ පේශි වේදනාව"</string>
+    <string name="nausea_uppercase_label" msgid="8384006696113532259">"ඔක්කාරය"</string>
+    <string name="nausea_lowercase_label" msgid="8182471893071968504">"ඔක්කාරය"</string>
+    <string name="night_sweats_uppercase_label" msgid="6177687233700001658">"රෑට දහඩිය දැමීම"</string>
+    <string name="night_sweats_lowercase_label" msgid="5041101323453286082">"රෑට දහඩිය දැමීම"</string>
+    <string name="pelvic_pain_uppercase_label" msgid="9057761232218571640">"ශ්‍රෝණි වේදනාව"</string>
+    <string name="pelvic_pain_lowercase_label" msgid="8993103170034473121">"ශ්‍රෝණි වේදනාව"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"වේගවත්, කම්පා වන හෝ ගැහෙන හෘද ස්පන්දනය"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"වේගවත්, කම්පා වන හෝ ගැහෙන හෘද ස්පන්දනය"</string>
+    <string name="reduced_capacity_for_exercise_uppercase_label" msgid="7471254320615756463">"ව්‍යායාම කිරීමේ ධාරිතාව අඩු වීම"</string>
+    <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"ව්‍යායාම කිරීමේ ධාරිතාව අඩු වීම"</string>
+    <string name="runny_nose_uppercase_label" msgid="6561156187042071551">"ද්‍රවීය නාසය"</string>
+    <string name="runny_nose_lowercase_label" msgid="2214697492382685914">"ද්‍රවීය නාසය"</string>
+    <string name="shortness_of_breath_uppercase_label" msgid="3747502224212110471">"හුස්ම හිරවීම"</string>
+    <string name="shortness_of_breath_lowercase_label" msgid="3970444639088619346">"හුස්ම හිරවීම"</string>
+    <string name="skipped_heartbeat_uppercase_label" msgid="1004040920818222022">"හෘද ස්පන්දනය මඟ හැරුණි"</string>
+    <string name="skipped_heartbeat_lowercase_label" msgid="2446049805930852514">"හෘද ස්පන්දනය මඟ හැරුණි"</string>
+    <string name="sleep_changes_uppercase_label" msgid="817870703301327111">"නින්ද වෙනස් විම්"</string>
+    <string name="sleep_changes_lowercase_label" msgid="8606593835222848643">"නින්ද වෙනස් විම්"</string>
+    <string name="sleepiness_uppercase_label" msgid="8292543897598171825">"නිදිමත"</string>
+    <string name="sleepiness_lowercase_label" msgid="7563434619994665081">"නිදිමත"</string>
+    <string name="sneezing_uppercase_label" msgid="3559089195823390830">"කිවිසීම"</string>
+    <string name="sneezing_lowercase_label" msgid="4614496100578986753">"කිවිසීම"</string>
+    <string name="snore_uppercase_label" msgid="5408933698329003980">"ගෙරවීම"</string>
+    <string name="snore_lowercase_label" msgid="4813706716393000341">"ගෙරවීම"</string>
+    <string name="sore_throat_uppercase_label" msgid="7652461264264564339">"වේදනා සහිත උගුර"</string>
+    <string name="sore_throat_lowercase_label" msgid="2671417552726018944">"වේදනා සහිත උගුර"</string>
+    <string name="stomach_ache_uppercase_label" msgid="8450868632465837793">"බඩේ කැක්කුම"</string>
+    <string name="stomach_ache_lowercase_label" msgid="3263518334946627327">"බඩේ කැක්කුම"</string>
+    <string name="stuffy_nose_uppercase_label" msgid="4216439398397550673">"නාසය හිරවීම"</string>
+    <string name="stuffy_nose_lowercase_label" msgid="346310767340271161">"නාසය හිරවීම"</string>
+    <string name="unexplained_weight_changes_uppercase_label" msgid="1882204558194305221">"පැහැදිලි කළ නොහැකි බර වෙනස්වීම්"</string>
+    <string name="unexplained_weight_changes_lowercase_label" msgid="8433998024876395101">"පැහැදිලි කළ නොහැකි බර වෙනස්වීම්"</string>
+    <string name="vaginal_dryness_uppercase_label" msgid="4256721076420375400">"යෝනි මාර්ගයේ වියළි බව"</string>
+    <string name="vaginal_dryness_lowercase_label" msgid="1329282833647595593">"යෝනි මාර්ගයේ වියළි බව"</string>
+    <string name="vaginal_itchiness_uppercase_label" msgid="2843508264503404145">"යෝනි මාර්ගයේ කැසීම"</string>
+    <string name="vaginal_itchiness_lowercase_label" msgid="4569019157289060524">"යෝනි මාර්ගයේ කැසීම"</string>
+    <string name="vomiting_uppercase_label" msgid="258794137964470267">"වමනය"</string>
+    <string name="vomiting_lowercase_label" msgid="2520559377010270583">"වමනය"</string>
+    <string name="water_retention_uppercase_label" msgid="4748866467103152119">"ජල රැඳවුම"</string>
+    <string name="water_retention_lowercase_label" msgid="3738721149186742861">"ජල රැඳවුම"</string>
+    <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ඇදුම"</string>
+    <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ඇදුම"</string>
 </resources>

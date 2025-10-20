@@ -66,7 +66,6 @@ import com.android.server.healthconnect.exportimport.ExportManager.ErrorReporter
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
-import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.utils.FilesUtil;
@@ -114,8 +113,6 @@ public class ExportManagerTest {
     private ExportImportSettingsStorage mExportImportSettingsStorage;
     private PhrTestUtils mPhrTestUtils;
 
-    // TODO(b/373322447): Remove the mock FirstGrantTimeManager
-    @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     @Mock private ExportImportLogger mExportImportLogger;
     @Mock private ErrorReporter mErrorReporter;
     @Mock private HealthConnectResourcesContext mResourcesContext;
@@ -134,7 +131,6 @@ public class ExportManagerTest {
         mHealthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setPreferenceHelper(new FakePreferenceHelper())
-                        .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .setHealthConnectResourcesContext(mResourcesContext)
                         .build();

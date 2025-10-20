@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.shared.HelpAndFeedbackFragment.Companion.FEEDBACK_INTENT_RESULT_CODE
 import com.android.healthconnect.controller.permissions.shared.HelpAndFeedbackFragment.Companion.USER_INITIATED_FEEDBACK_BUCKET_ID
-import com.android.healthfitness.flags.Flags
+import com.android.modules.utils.build.SdkLevel
 import com.android.settingslib.HelpUtils
 import dagger.Module
 import dagger.Provides
@@ -130,7 +130,7 @@ class DeviceInfoUtilsImpl @Inject constructor() : DeviceInfoUtils {
 
     private fun isHardwareSupported(context: Context): Boolean {
         val pm: PackageManager = context.packageManager
-        val disabledOnWatch = isOnWatch(context) && !Flags.replaceBodySensorPermissionEnabled()
+        val disabledOnWatch = isOnWatch(context) && !SdkLevel.isAtLeastB()
         return (!pm.hasSystemFeature(PackageManager.FEATURE_EMBEDDED) &&
             !disabledOnWatch &&
             !pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK) &&

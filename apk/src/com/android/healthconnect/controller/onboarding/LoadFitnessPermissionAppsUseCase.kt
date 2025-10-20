@@ -26,7 +26,6 @@ import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -46,9 +45,7 @@ constructor(
     private val appInfoReader: AppInfoReader,
     private val getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
-) :
-    ILoadFitnessPermissionAppsUseCase,
-    BaseUseCase<Unit, List<ConnectedFitnessAppMetadata>>(dispatcher) {
+) : BaseUseCase<Unit, List<ConnectedFitnessAppMetadata>>(dispatcher) {
 
     override suspend fun execute(unit: Unit): List<ConnectedFitnessAppMetadata> {
         val appsWithHealthPermissions = healthPermissionReader.getAppsWithHealthPermissions()
@@ -117,12 +114,6 @@ constructor(
                 .thenBy { it.appMetadata.appName }
         )
     }
-}
-
-interface ILoadFitnessPermissionAppsUseCase {
-    suspend fun invoke(unit: Unit): UseCaseResults<List<ConnectedFitnessAppMetadata>>
-
-    suspend fun execute(unit: Unit): List<ConnectedFitnessAppMetadata>
 }
 
 data class ConnectedFitnessAppMetadata(

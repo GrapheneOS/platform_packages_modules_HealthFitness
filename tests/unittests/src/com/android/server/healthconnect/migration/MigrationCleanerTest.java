@@ -29,7 +29,6 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigrationStateManager.StateChangedListener;
-import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.storage.TransactionManager;
 
 import org.junit.Before;
@@ -49,9 +48,6 @@ public class MigrationCleanerTest {
     @Mock private TransactionManager mTransactionManager;
     @Mock private MigrationStateManager mMigrationStateManager;
 
-    // TODO(b/373322447): Remove the mock FirstGrantTimeManager
-    @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-
     private MigrationCleaner mCleaner;
 
     @Before
@@ -60,7 +56,6 @@ public class MigrationCleanerTest {
                 HealthConnectInjectorImpl.newBuilderForTest(
                                 InstrumentationRegistry.getInstrumentation().getContext())
                         .setTransactionManager(mTransactionManager)
-                        .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setMigrationStateManager(mMigrationStateManager)
                         .build();
 

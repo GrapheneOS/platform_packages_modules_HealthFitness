@@ -69,9 +69,10 @@ import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 /** Performs API calls to HC on behalf of test apps. */
-public class TestAppProxy {
+public final class TestAppProxy {
     private static final String TAG = "TestAppProxy";
     private static final long POLLING_TIMEOUT_MILLIS = TimeUnit.SECONDS.toMillis(55);
 
@@ -338,6 +339,17 @@ public class TestAppProxy {
         return ProxyActivity.launchActivityForResult(testAppIntent, runnable);
     }
 
+    @Override
+    public String toString() {
+        return "TestAppProxy [userId="
+                + mContext.getUser().getIdentifier()
+                + ", packageName="
+                + mPackageName
+                + ", inBackground="
+                + mInBackground
+                + "]";
+    }
+
     private Bundle getFromTestApp(Bundle bundleToCreateIntent) throws Exception {
         if (mInBackground) {
             return getFromTestAppReceiver(bundleToCreateIntent);
@@ -358,7 +370,7 @@ public class TestAppProxy {
                                 "Got broadcast result code: "
                                         + getResultCode()
                                         + " with extras: "
-                                        + resultExtras);
+                                        + TestAppProxy.toString(resultExtras));
                         resultQueue.add(resultExtras);
                     }
                 };
@@ -372,7 +384,9 @@ public class TestAppProxy {
                 "Sending broadcast: "
                         + intent
                         + " with QUERY_TYPE="
-                        + intent.getStringExtra(QUERY_TYPE));
+                        + intent.getStringExtra(QUERY_TYPE)
+                        + " and extras "
+                        + toString(bundleToCreateIntent));
         mContext.sendOrderedBroadcast(
                 intent,
                 /* receiverPermission= */ null,
@@ -401,7 +415,9 @@ public class TestAppProxy {
                 "Starting activity: "
                         + intent
                         + " with QUERY_TYPE="
-                        + intent.getStringExtra(QUERY_TYPE));
+                        + intent.getStringExtra(QUERY_TYPE)
+                        + " and extras="
+                        + toString(bundleToCreateIntent));
         Instrumentation.ActivityResult activityResult =
                 ProxyActivity.launchActivityForResult(intent);
         Log.d(
@@ -409,7 +425,7 @@ public class TestAppProxy {
                 "Got activity result code: "
                         + activityResult.getResultCode()
                         + " with data: "
-                        + activityResult.getResultData());
+                        + toString(activityResult.getResultData()));
 
         Bundle resultExtras = requireNonNull(activityResult.getResultData().getExtras());
         throwExceptionIfPresent(resultExtras);
@@ -421,5 +437,25 @@ public class TestAppProxy {
         if (exception != null) {
             throw exception;
         }
+    }
+
+    private static String toString(Intent intent) {
+        if (intent == null) {
+            return "(null)";
+        }
+        return "Intent[action="
+                + intent.getAction()
+                + ", extras="
+                + toString(intent.getExtras())
+                + "]";
+    }
+
+    @SuppressWarnings("deprecation")
+    private static String toString(Bundle bundle) {
+        return "["
+                + bundle.keySet().stream()
+                        .map(key -> key + "=" + bundle.get(key))
+                        .collect(Collectors.joining(", "))
+                + "]";
     }
 }

@@ -17,61 +17,55 @@ package com.android.healthconnect.controller.migration.api
 
 import android.health.connect.HealthConnectDataState
 import android.health.connect.migration.HealthConnectMigrationUiState
-import android.util.Log
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
 
 @Singleton
 class LoadMigrationRestoreStateUseCase
 @Inject
-constructor(private val manager: HealthMigrationManager) {
+constructor(
+    private val manager: HealthMigrationManager,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
+) : BaseUseCase<Unit, MigrationRestoreState>(dispatcher) {
 
-    suspend operator fun invoke(): MigrationRestoreState {
-        return withContext(Dispatchers.IO) {
-            try {
-                // Gets the data restore state
-                val migrationRestoreState = suspendCancellableCoroutine { continuation ->
-                    manager.getHealthDataState(Runnable::run, continuation.asOutcomeReceiver())
-                }
+    override suspend fun execute(input: Unit): MigrationRestoreState {
 
-                // Gets the migration UI state
-                val migrationUiState =
-                    suspendCancellableCoroutine { continuation ->
-                            manager.getHealthConnectMigrationUiState(
-                                Runnable::run,
-                                continuation.asOutcomeReceiver(),
-                            )
-                        }
-                        .healthConnectMigrationUiState
-
-                MigrationRestoreState(
-                    migrationUiState =
-                        migrationUiStateMapping.getOrDefault(
-                            migrationUiState,
-                            MigrationUiState.IDLE,
-                        ),
-                    dataRestoreState =
-                        dataRestoreUiStateMapping.getOrDefault(
-                            migrationRestoreState.dataRestoreState,
-                            DataRestoreUiState.IDLE,
-                        ),
-                    dataRestoreError =
-                        dataRestoreUiErrorMapping.getOrDefault(
-                            migrationRestoreState.dataRestoreError,
-                            MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
-                        ),
-                )
-            } catch (e: Exception) {
-                Log.e(TAG, "Load error ", e)
-                defaultMigrationRestoreState
-            }
+        // Gets the data restore state
+        val migrationRestoreState = suspendCancellableCoroutine { continuation ->
+            manager.getHealthDataState(Runnable::run, continuation.asOutcomeReceiver())
         }
+
+        // Gets the migration UI state
+        val migrationUiState =
+            suspendCancellableCoroutine { continuation ->
+                    manager.getHealthConnectMigrationUiState(
+                        Runnable::run,
+                        continuation.asOutcomeReceiver(),
+                    )
+                }
+                .healthConnectMigrationUiState
+
+        return MigrationRestoreState(
+            migrationUiState =
+                migrationUiStateMapping.getOrDefault(migrationUiState, MigrationUiState.IDLE),
+            dataRestoreState =
+                dataRestoreUiStateMapping.getOrDefault(
+                    migrationRestoreState.dataRestoreState,
+                    DataRestoreUiState.IDLE,
+                ),
+            dataRestoreError =
+                dataRestoreUiErrorMapping.getOrDefault(
+                    migrationRestoreState.dataRestoreError,
+                    MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
+                ),
+        )
     }
 
     companion object {
@@ -117,13 +111,6 @@ constructor(private val manager: HealthMigrationManager) {
                     MigrationRestoreState.DataRestoreUiError.ERROR_FETCHING_DATA,
                 HealthConnectDataState.RESTORE_ERROR_VERSION_DIFF to
                     MigrationRestoreState.DataRestoreUiError.ERROR_VERSION_DIFF,
-            )
-
-        private val defaultMigrationRestoreState =
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IDLE,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
             )
     }
 }

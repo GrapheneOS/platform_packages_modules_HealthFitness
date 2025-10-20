@@ -25,6 +25,7 @@
     <attr name="manageDataIcon" format="reference"/>
     <attr name="optionsIcon" format="reference"/>
     <attr name="collapseIcon" format="reference"/>
+    <attr name="notConnectedAppTitleColor" format="reference"/>
 
     <!-- App permissions page -->
     <attr name="removeAccessForAllAppsIcon" format="reference"/>
@@ -46,6 +47,7 @@
     <attr name="sleepCategoryIcon" format="reference"/>
     <attr name="vitalsCategoryIcon" format="reference"/>
     <attr name="wellnessCategoryIcon" format="reference"/>
+    <attr name="symptomsCategoryIcon" format="reference"/>
     <attr name="databaseIcon" format="reference" />
 
     <!-- Permission types page -->
@@ -120,6 +122,10 @@
 
     <!-- Lock screen banner -->
     <attr name="lockIcon" format="reference" />
+
+    <!-- New home screen -->
+    <attr name="connectButton" format="reference"/>
+
     <!-- END REGION -->
 
     <!-- REGION DIALOG GRAVITY -->

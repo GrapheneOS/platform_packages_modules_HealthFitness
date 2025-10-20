@@ -175,6 +175,15 @@ flag {
 }
 
 flag {
+    name: "cycle_phases_db"
+    namespace: "health_fitness_aconfig"
+    description: "Enables DB changes to support the menstrual cycle phases data type."
+    bug: "296855479"
+    is_fixed_read_only: false
+    is_exported: false
+}
+
+flag {
    name: "add_missing_access_logs"
    namespace: "health_fitness_aconfig"
    description: "Adds missing access logs"
@@ -653,4 +662,61 @@ flag {
     bug: "436747979"
     is_fixed_read_only: true
     is_exported: false
+}
+
+flag {
+    name: "device_data_providers_db"
+    namespace: "health_fitness_aconfig"
+    description: "Enables device data providers database changes."
+    bug: "416236349"
+    is_fixed_read_only: false
+    is_exported: false
+}
+
+flag {
+    name: "device_data_providers_api"
+    namespace: "health_fitness_aconfig"
+    description: "Enables device data providers API changes."
+    bug: "437843638"
+    is_fixed_read_only: false
+    is_exported: true
+}
+
+flag {
+    name: "permissions_grouping_fitness_app_screen"
+    namespace: "health_fitness_aconfig"
+    description: "Flag to show the updated permissions grouped by data category UI on App Screen"
+    bug: "436747979"
+    is_fixed_read_only: true
+    is_exported: false
+}
+
+flag {
+    name: "permissions_grouping_settings_fitness_app_screen"
+    namespace: "health_fitness_aconfig"
+    description: "Flag to show the updated permissions grouped by data category UI on Settings Privacy Dashboard"
+    bug: "436747979"
+    is_fixed_read_only: true
+    is_exported: false
+}
+
+flag {
+    name: "write_ahead_logging_db"
+    namespace: "health_fitness_aconfig"
+    description: "Flag to enable Write-Ahead Logging in HC DB."
+    bug: "448049387"
+    is_fixed_read_only: false
+    is_exported: false
+}
+
+flag {
+    name: "reduce_parcel_marshalling_copies"
+    namespace: "health_fitness_aconfig"
+    description: "Enables more efficient marshalling of large Parcels to and from SharedMemory"
+    bug: "445620347"
+    is_fixed_read_only: false
+    is_exported: false
+    metadata {
+        purpose: PURPOSE_BUGFIX
+    }
 }

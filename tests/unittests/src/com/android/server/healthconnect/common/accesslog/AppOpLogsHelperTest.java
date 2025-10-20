@@ -29,14 +29,14 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.accesslog.AccessLog;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.os.Build;
 import android.os.UserHandle;
-import android.permission.flags.Flags;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.SdkSuppress;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -84,7 +84,7 @@ public class AppOpLogsHelperTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void getRecordsWithSystemAppOps_returnsRecordsWithSystemAppOps() {
         AppOpLogsHelper appOpLogsHelper =
                 new AppOpLogsHelper(mAppOpsManager, mPackageManager, mHealthPermissions);
@@ -98,7 +98,7 @@ public class AppOpLogsHelperTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void getAccessLogsFromAppOps_returnsAccessLogs() {
         doAnswer(
                         invocation -> {
@@ -135,7 +135,7 @@ public class AppOpLogsHelperTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void getAccessLogsFromAppOps_filtersAgainstUserHandlereturnsAccessLogs() {
         doAnswer(
                         invocation -> {

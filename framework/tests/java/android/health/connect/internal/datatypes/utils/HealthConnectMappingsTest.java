@@ -22,6 +22,9 @@ import static android.health.connect.HealthPermissions.WRITE_NICOTINE_INTAKE;
 import static android.health.connect.HealthPermissions.WRITE_STEPS;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVITY_INTENSITY;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NICOTINE_INTAKE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SYMPTOM;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 import static android.health.connect.internal.datatypes.utils.DataTypeDescriptors.getAllDataTypeDescriptors;
 
@@ -29,6 +32,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import android.health.connect.HealthDataCategory;
+import android.health.connect.HealthPermissionCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Record;
 import android.health.connect.internal.datatypes.RecordInternal;
@@ -68,22 +72,65 @@ public class HealthConnectMappingsTest {
     public void getHealthReadPermission() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
         for (DataTypeDescriptor descriptor : getAllDataTypeDescriptors()) {
-            assertThat(
-                            healthConnectMappings.getHealthReadPermission(
-                                    descriptor.getPermissionCategory()))
-                    .isEqualTo(descriptor.getReadPermission());
+            for (DataTypeDescriptor.PermissionCategory category :
+                    descriptor.getPermissionCategories()) {
+                assertThat(
+                                healthConnectMappings.getHealthReadPermission(
+                                        category.permissionCategoryId()))
+                        .isEqualTo(category.readPermission());
+            }
         }
+    }
+
+    @Test
+    public void getHealthPermissions_exerciseCategory_returnsCorrectPermissions() {
+        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
+        String readPermission =
+                healthConnectMappings.getHealthReadPermission(HealthPermissionCategory.EXERCISE);
+        String writePermission =
+                healthConnectMappings.getHealthWritePermission(HealthPermissionCategory.EXERCISE);
+
+        assertThat(readPermission).isEqualTo(HealthPermissions.READ_EXERCISE);
+        assertThat(writePermission).isEqualTo(HealthPermissions.WRITE_EXERCISE);
+    }
+
+    @Test
+    public void getHealthPermissions_stepsCategory_returnsCorrectPermissions() {
+        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
+        String readPermission =
+                healthConnectMappings.getHealthReadPermission(HealthPermissionCategory.STEPS);
+        String writePermission =
+                healthConnectMappings.getHealthWritePermission(HealthPermissionCategory.STEPS);
+
+        assertThat(readPermission).isEqualTo(HealthPermissions.READ_STEPS);
+        assertThat(writePermission).isEqualTo(HealthPermissions.WRITE_STEPS);
+        assertThat(
+                        healthConnectMappings
+                                .getHealthPermissionCategoriesForRecordType(RECORD_TYPE_STEPS)
+                                .iterator()
+                                .next())
+                .isEqualTo(HealthPermissionCategory.STEPS);
+        assertThat(
+                        healthConnectMappings
+                                .getHealthPermissionCategoriesForRecordType(
+                                        RECORD_TYPE_STEPS_CADENCE)
+                                .iterator()
+                                .next())
+                .isEqualTo(HealthPermissionCategory.STEPS);
     }
 
     @Test
     public void getHealthWritePermission() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
         for (DataTypeDescriptor descriptor : getAllDataTypeDescriptors()) {
-            assertWithMessage(descriptor.getRecordClass().getSimpleName())
-                    .that(
-                            healthConnectMappings.getHealthWritePermission(
-                                    descriptor.getPermissionCategory()))
-                    .isEqualTo(descriptor.getWritePermission());
+            for (DataTypeDescriptor.PermissionCategory category :
+                    descriptor.getPermissionCategories()) {
+                assertWithMessage(descriptor.getRecordClass().getSimpleName())
+                        .that(
+                                healthConnectMappings.getHealthWritePermission(
+                                        category.permissionCategoryId()))
+                        .isEqualTo(category.writePermission());
+            }
         }
     }
 
@@ -91,12 +138,15 @@ public class HealthConnectMappingsTest {
     public void isWritePermission() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
         for (DataTypeDescriptor descriptor : getAllDataTypeDescriptors()) {
-            assertWithMessage(descriptor.getWritePermission())
-                    .that(healthConnectMappings.isWritePermission(descriptor.getWritePermission()))
-                    .isTrue();
-            assertWithMessage(descriptor.getReadPermission())
-                    .that(healthConnectMappings.isWritePermission(descriptor.getReadPermission()))
-                    .isFalse();
+            for (DataTypeDescriptor.PermissionCategory category :
+                    descriptor.getPermissionCategories()) {
+                assertWithMessage(category.writePermission())
+                        .that(healthConnectMappings.isWritePermission(category.writePermission()))
+                        .isTrue();
+                assertWithMessage(category.readPermission())
+                        .that(healthConnectMappings.isWritePermission(category.readPermission()))
+                        .isFalse();
+            }
         }
     }
 
@@ -104,12 +154,15 @@ public class HealthConnectMappingsTest {
     public void isReadPermission() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
         for (DataTypeDescriptor descriptor : getAllDataTypeDescriptors()) {
-            assertWithMessage(descriptor.getWritePermission())
-                    .that(healthConnectMappings.isReadPermission(descriptor.getWritePermission()))
-                    .isFalse();
-            assertWithMessage(descriptor.getReadPermission())
-                    .that(healthConnectMappings.isReadPermission(descriptor.getReadPermission()))
-                    .isTrue();
+            for (DataTypeDescriptor.PermissionCategory category :
+                    descriptor.getPermissionCategories()) {
+                assertWithMessage(category.writePermission())
+                        .that(healthConnectMappings.isReadPermission(category.writePermission()))
+                        .isFalse();
+                assertWithMessage(category.readPermission())
+                        .that(healthConnectMappings.isReadPermission(category.readPermission()))
+                        .isTrue();
+            }
         }
     }
 
@@ -118,20 +171,19 @@ public class HealthConnectMappingsTest {
     public void getHealthDataCategoryForWritePermission() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
         for (DataTypeDescriptor descriptor : getAllDataTypeDescriptors()) {
-            String writePermission = descriptor.getWritePermission();
-            String readPermission = descriptor.getReadPermission();
-
-            assertWithMessage(writePermission)
-                    .that(
-                            healthConnectMappings.getHealthDataCategoryForWritePermission(
-                                    writePermission))
-                    .isEqualTo(descriptor.getDataCategory());
-
-            assertWithMessage(readPermission)
-                    .that(
-                            healthConnectMappings.getHealthDataCategoryForWritePermission(
-                                    readPermission))
-                    .isEqualTo(DEFAULT_INT);
+            for (DataTypeDescriptor.PermissionCategory category :
+                    descriptor.getPermissionCategories()) {
+                assertWithMessage(category.writePermission())
+                        .that(
+                                healthConnectMappings.getHealthDataCategoryForWritePermission(
+                                        category.writePermission()))
+                        .isEqualTo(descriptor.getDataCategory());
+                assertWithMessage(category.readPermission())
+                        .that(
+                                healthConnectMappings.getHealthDataCategoryForWritePermission(
+                                        category.readPermission()))
+                        .isEqualTo(DEFAULT_INT);
+            }
         }
 
         assertThat(healthConnectMappings.getHealthDataCategoryForWritePermission(null))
@@ -144,20 +196,19 @@ public class HealthConnectMappingsTest {
     public void getHealthPermissionCategoryForReadPermission() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
         for (DataTypeDescriptor descriptor : getAllDataTypeDescriptors()) {
-            String writePermission = descriptor.getWritePermission();
-            String readPermission = descriptor.getReadPermission();
-
-            assertWithMessage(readPermission)
-                    .that(
-                            healthConnectMappings.getHealthPermissionCategoryForReadPermission(
-                                    readPermission))
-                    .isEqualTo(descriptor.getPermissionCategory());
-
-            assertWithMessage(writePermission)
-                    .that(
-                            healthConnectMappings.getHealthPermissionCategoryForReadPermission(
-                                    writePermission))
-                    .isEqualTo(DEFAULT_INT);
+            for (DataTypeDescriptor.PermissionCategory category :
+                    descriptor.getPermissionCategories()) {
+                assertWithMessage(category.writePermission())
+                        .that(
+                                healthConnectMappings.getHealthPermissionCategoryForReadPermission(
+                                        category.writePermission()))
+                        .isEqualTo(DEFAULT_INT);
+                assertWithMessage(category.readPermission())
+                        .that(
+                                healthConnectMappings.getHealthPermissionCategoryForReadPermission(
+                                        category.readPermission()))
+                        .isEqualTo(category.permissionCategoryId());
+            }
         }
 
         assertThat(healthConnectMappings.getHealthPermissionCategoryForReadPermission(null))
@@ -171,14 +222,16 @@ public class HealthConnectMappingsTest {
     public void getHealthDataCategoryForWritePermission_flagDisabled_equalsToLegacy() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
         for (DataTypeDescriptor descriptor : getAllDataTypeDescriptors()) {
-            String writePermission = descriptor.getWritePermission();
-            assertWithMessage(writePermission)
-                    .that(
-                            healthConnectMappings.getHealthDataCategoryForWritePermission(
-                                    writePermission))
-                    .isEqualTo(
-                            HealthPermissions.getHealthDataCategoryForWritePermission(
-                                    writePermission));
+            for (DataTypeDescriptor.PermissionCategory category :
+                    descriptor.getPermissionCategories()) {
+                assertWithMessage(category.writePermission())
+                        .that(
+                                healthConnectMappings.getHealthDataCategoryForWritePermission(
+                                        category.writePermission()))
+                        .isEqualTo(
+                                HealthPermissions.getHealthDataCategoryForWritePermission(
+                                        category.writePermission()));
+            }
         }
     }
 
@@ -227,11 +280,24 @@ public class HealthConnectMappingsTest {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
 
         for (DataTypeDescriptor descriptor : getAllDataTypeDescriptors()) {
-            String readPermission = descriptor.getReadPermission();
-            String expectedWritePermission = descriptor.getWritePermission();
-            assertThat(healthConnectMappings.getWritePermissionForReadPermission(readPermission))
-                    .isEqualTo(expectedWritePermission);
+            for (DataTypeDescriptor.PermissionCategory category :
+                    descriptor.getPermissionCategories()) {
+                assertThat(
+                                healthConnectMappings.getWritePermissionForReadPermission(
+                                        category.readPermission()))
+                        .isEqualTo(category.writePermission());
+            }
         }
+    }
+
+    @Test
+    public void getWritePermissionForReadPermission_mapsExerciseRoutesCorrectly() {
+        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
+
+        assertThat(
+                        healthConnectMappings.getWritePermissionForReadPermission(
+                                HealthPermissions.READ_EXERCISE_ROUTES))
+                .isEqualTo(HealthPermissions.WRITE_EXERCISE_ROUTE);
     }
 
     @Test
@@ -344,7 +410,12 @@ public class HealthConnectMappingsTest {
         }
     }
 
-    @DisableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING})
+    @DisableFlags({
+        Flags.FLAG_ACTIVITY_INTENSITY,
+        Flags.FLAG_SMOKING,
+        Flags.FLAG_SYMPTOMS,
+        Flags.FLAG_ALCOHOL_CONSUMPTION
+    })
     @Test
     public void getRecordCategoryForRecordType_equalsToLegacy() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -444,10 +515,13 @@ public class HealthConnectMappingsTest {
     public void isFitnessPermission_returnsTrueForAllFitnessPermissions() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
         for (DataTypeDescriptor descriptor : getAllDataTypeDescriptors()) {
-            assertThat(healthConnectMappings.isFitnessPermission(descriptor.getReadPermission()))
-                    .isTrue();
-            assertThat(healthConnectMappings.isFitnessPermission(descriptor.getWritePermission()))
-                    .isTrue();
+            for (DataTypeDescriptor.PermissionCategory category :
+                    descriptor.getPermissionCategories()) {
+                assertThat(healthConnectMappings.isFitnessPermission(category.readPermission()))
+                        .isTrue();
+                assertThat(healthConnectMappings.isFitnessPermission(category.writePermission()))
+                        .isTrue();
+            }
         }
     }
 
@@ -474,5 +548,34 @@ public class HealthConnectMappingsTest {
         for (String permission : HealthPermissions.getAllMedicalPermissions()) {
             assertThat(healthConnectMappings.isFitnessPermission(permission)).isFalse();
         }
+    }
+
+    @EnableFlags({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB})
+    @Test
+    public void symptomsFlagEnabled_containsSymptoms() {
+        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
+
+        assertThat(healthConnectMappings.getAllRecordTypeIdentifiers())
+                .contains(RECORD_TYPE_SYMPTOM);
+    }
+
+    @EnableFlags(Flags.FLAG_SYMPTOMS_DB)
+    @DisableFlags(Flags.FLAG_SYMPTOMS)
+    @Test
+    public void symptomsFlagDisabled_doesNotContainSymptoms() {
+        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
+
+        assertThat(healthConnectMappings.getAllRecordTypeIdentifiers())
+                .doesNotContain(RECORD_TYPE_SYMPTOM);
+    }
+
+    @EnableFlags(Flags.FLAG_SYMPTOMS)
+    @DisableFlags(Flags.FLAG_SYMPTOMS_DB)
+    @Test
+    public void symptomsDbFlagDisabled_doesNotContainSymptoms() {
+        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
+
+        assertThat(healthConnectMappings.getAllRecordTypeIdentifiers())
+                .doesNotContain(RECORD_TYPE_SYMPTOM);
     }
 }

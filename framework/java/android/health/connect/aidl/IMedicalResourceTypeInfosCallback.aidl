@@ -6,7 +6,7 @@ import android.health.connect.aidl.HealthConnectExceptionParcel;
 /**
  * Callback for {@link IHealthConnectService#queryAllMedicalResourceTypeInfos}.
  *
- * {@hide}
+ * @hide
  */
 interface IMedicalResourceTypeInfosCallback {
     // Called on a successful operation

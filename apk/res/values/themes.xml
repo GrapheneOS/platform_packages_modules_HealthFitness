@@ -48,6 +48,7 @@
         <item name="sleepCategoryIcon">@drawable/ic_category_sleep</item>
         <item name="vitalsCategoryIcon">@drawable/ic_category_vitals</item>
         <item name="wellnessCategoryIcon">@drawable/ic_category_wellness</item>
+        <item name="symptomsCategoryIcon">@drawable/ic_symptoms</item>
         <item name="databaseIcon">@drawable/ic_database</item>
 
         <!-- Permission types page -->
@@ -122,6 +123,9 @@
 
         <!-- Connected devices -->
         <item name="devicePhoneIcon">@drawable/ic_device_phone</item>
+
+        <!-- New home screen -->
+        <item name="connectButton">@drawable/ic_connect</item>
 
         <!-- END REGION -->
 
@@ -198,6 +202,8 @@
         <item name="android:clipToPadding">true</item>
         <item name="android:clipChildren">true</item>
         <!-- END REGION -->
+
+        <item name="notConnectedAppTitleColor">@color/settingslib_text_color_preference_category_title</item>
     </style>
 
     <style name="Theme.HealthConnect" parent="Base.Theme.HealthConnect" />

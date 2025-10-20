@@ -103,6 +103,7 @@ import java.util.Locale
 import java.util.TimeZone
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -1171,6 +1172,7 @@ class HomeFragmentTest {
     // region BannerGroup
     @Test
     @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    @Ignore("b/447652645")
     fun multipleBanners_canExpand_andCollapseGroup() {
         // Export and Lock Screen banners
         whenever(homeViewModel.showLockScreenBanner).then {
@@ -1564,8 +1566,7 @@ class HomeFragmentTest {
                 onView(withText("Set up")).perform(scrollTo()).perform(click())
                 verify(healthConnectLogger)
                     .logInteraction(HomePageElement.ZERO_APPS_CONNECTED_BANNER_SET_UP_BUTTON)
-                assertThat(navHostController.currentDestination?.id)
-                    .isEqualTo(R.id.onboardingActivity)
+                intended(hasAction("android.health.connect.action.SYNC_MORE_APPS"))
             }
     }
 
@@ -1657,8 +1658,7 @@ class HomeFragmentTest {
 
                 verify(healthConnectLogger)
                     .logInteraction(HomePageElement.ONE_APP_CONNECTED_BANNER_SET_UP_BUTTON)
-                assertThat(navHostController.currentDestination?.id)
-                    .isEqualTo(R.id.onboardingActivity)
+                intended(hasAction("android.health.connect.action.SYNC_MORE_APPS"))
             }
     }
 

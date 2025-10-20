@@ -47,7 +47,7 @@ package android.health.connect {
     field public static final int RESTORE_STATE_PENDING = 1; // 0x1
   }
 
-  @RestrictedForEnvironment(environments=android.annotation.RestrictedForEnvironment.ENVIRONMENT_SDK_RUNTIME, from=android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) public class HealthConnectManager {
+  public class HealthConnectManager {
     method @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") @RequiresPermission(android.Manifest.permission.RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS) public void canRestore(int, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Boolean,android.health.connect.HealthConnectException>);
     method @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS) public void deleteRecords(@NonNull android.health.connect.DeleteUsingFiltersRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.HealthConnectException>);
     method @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void fetchDataOriginsPriorityOrder(int, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.FetchDataOriginsPriorityOrderResponse,android.health.connect.HealthConnectException>);
@@ -92,6 +92,7 @@ package android.health.connect {
     field public static final int CYCLE_TRACKING = 3; // 0x3
     field public static final int NUTRITION = 4; // 0x4
     field public static final int SLEEP = 5; // 0x5
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOMS = 8; // 0x8
     field public static final int UNKNOWN = 0; // 0x0
     field public static final int VITALS = 6; // 0x6
     field @FlaggedApi("com.android.healthfitness.flags.mindfulness") public static final int WELLNESS = 7; // 0x7
@@ -100,6 +101,7 @@ package android.health.connect {
   public class HealthPermissionCategory {
     field public static final int ACTIVE_CALORIES_BURNED = 1; // 0x1
     field @FlaggedApi("com.android.healthfitness.flags.activity_intensity") public static final int ACTIVITY_INTENSITY = 42; // 0x2a
+    field @FlaggedApi("com.android.healthfitness.flags.alcohol_consumption") public static final int ALCOHOL_CONSUMPTION = 44; // 0x2c
     field public static final int BASAL_BODY_TEMPERATURE = 33; // 0x21
     field public static final int BASAL_METABOLIC_RATE = 9; // 0x9
     field public static final int BLOOD_GLUCOSE = 26; // 0x1a
@@ -134,6 +136,65 @@ package android.health.connect {
     field public static final int SLEEP = 25; // 0x19
     field public static final int SPEED = 37; // 0x25
     field public static final int STEPS = 6; // 0x6
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_ABDOMINAL_PAIN = 45; // 0x2d
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_ACNE = 46; // 0x2e
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_BACK_PAIN = 47; // 0x2f
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_BLOATING = 48; // 0x30
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_BRAIN_FOG = 49; // 0x31
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_BREAST_TENDERNESS = 50; // 0x32
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_BRITTLE_NAILS = 51; // 0x33
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_BURNING_MOUTH = 52; // 0x34
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_CHEST_PAIN = 53; // 0x35
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_CHEST_TIGHTNESS = 54; // 0x36
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_CHILLS = 55; // 0x37
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_CONSTIPATION = 56; // 0x38
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_COUGH = 57; // 0x39
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_CRAMPS = 58; // 0x3a
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_CRAVINGS = 59; // 0x3b
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_DEHYDRATION = 60; // 0x3c
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_DIARRHEA = 61; // 0x3d
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_DIFFICULTY_SWALLOWING = 62; // 0x3e
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_DIZZINESS = 63; // 0x3f
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_DRY_SKIN = 64; // 0x40
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_EARACHES = 65; // 0x41
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_FATIGUE = 66; // 0x42
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_FEVER = 67; // 0x43
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_GENERALIZED_BODY_ACHE = 68; // 0x44
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_HAIR_LOSS = 69; // 0x45
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_HEADACHE = 70; // 0x46
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_HEARTBURN = 71; // 0x47
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_HEART_PALPITATIONS = 72; // 0x48
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_HOT_FLASHES = 73; // 0x49
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_INSOMNIA = 74; // 0x4a
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_JOINT_PAIN = 75; // 0x4b
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_JOINT_STIFFNESS = 76; // 0x4c
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_LOSS_OF_APPETITE = 77; // 0x4d
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_LOSS_OF_CONSCIOUSNESS = 78; // 0x4e
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_LOWER_BACK_PAIN = 79; // 0x4f
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_MEMORY_LAPSE = 80; // 0x50
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_MOOD_CHANGE = 81; // 0x51
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_MUSCLE_PAIN = 82; // 0x52
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_NAUSEA = 83; // 0x53
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_NIGHT_SWEATS = 84; // 0x54
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_PELVIC_PAIN = 85; // 0x55
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT = 86; // 0x56
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE = 87; // 0x57
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_RUNNY_NOSE = 88; // 0x58
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_SHORTNESS_OF_BREATH = 89; // 0x59
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_SKIPPED_HEARTBEAT = 90; // 0x5a
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_SLEEPINESS = 92; // 0x5c
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_SLEEP_CHANGES = 91; // 0x5b
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_SNEEZING = 93; // 0x5d
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_SNORE = 94; // 0x5e
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_SORE_THROAT = 95; // 0x5f
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_STOMACH_ACHE = 96; // 0x60
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_STUFFY_NOSE = 97; // 0x61
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES = 98; // 0x62
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_VAGINAL_DRYNESS = 99; // 0x63
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_VAGINAL_ITCHINESS = 100; // 0x64
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_VOMITING = 101; // 0x65
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_WATER_RETENTION = 102; // 0x66
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int SYMPTOM_WHEEZING = 103; // 0x67
     field public static final int TOTAL_CALORIES_BURNED = 35; // 0x23
     field public static final int UNKNOWN = 0; // 0x0
     field public static final int VO2_MAX = 7; // 0x7
@@ -159,7 +220,8 @@ package android.health.connect {
   public class RecordTypeInfoResponse {
     method @NonNull public java.util.List<android.health.connect.datatypes.DataOrigin> getContributingPackages();
     method public int getDataCategory();
-    method public int getPermissionCategory();
+    method @FlaggedApi("com.android.healthfitness.flags.symptoms") @NonNull public java.util.Set<java.lang.Integer> getPermissionCategories();
+    method @Deprecated @FlaggedApi("com.android.healthfitness.flags.symptoms") public int getPermissionCategory();
   }
 
   public final class UpdateDataOriginPriorityOrderRequest {
@@ -251,6 +313,7 @@ package android.health.connect.datatypes {
   public final class RecordTypeIdentifier {
     field public static final int RECORD_TYPE_ACTIVE_CALORIES_BURNED = 2; // 0x2
     field @FlaggedApi("com.android.healthfitness.flags.activity_intensity") public static final int RECORD_TYPE_ACTIVITY_INTENSITY = 42; // 0x2a
+    field @FlaggedApi("com.android.healthfitness.flags.alcohol_consumption") public static final int RECORD_TYPE_ALCOHOL_CONSUMPTION = 45; // 0x2d
     field public static final int RECORD_TYPE_BASAL_BODY_TEMPERATURE = 20; // 0x14
     field public static final int RECORD_TYPE_BASAL_METABOLIC_RATE = 16; // 0x10
     field public static final int RECORD_TYPE_BLOOD_GLUCOSE = 25; // 0x19
@@ -288,6 +351,7 @@ package android.health.connect.datatypes {
     field public static final int RECORD_TYPE_SPEED = 14; // 0xe
     field public static final int RECORD_TYPE_STEPS = 1; // 0x1
     field public static final int RECORD_TYPE_STEPS_CADENCE = 15; // 0xf
+    field @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final int RECORD_TYPE_SYMPTOM = 44; // 0x2c
     field public static final int RECORD_TYPE_TOTAL_CALORIES_BURNED = 9; // 0x9
     field public static final int RECORD_TYPE_UNKNOWN = 0; // 0x0
     field public static final int RECORD_TYPE_VO2_MAX = 18; // 0x12

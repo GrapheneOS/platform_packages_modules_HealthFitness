@@ -26,6 +26,7 @@ import com.android.healthconnect.controller.selectabledeletion.api.DeleteAllData
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.postValueIfUpdated
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -87,20 +88,33 @@ constructor(
 
     fun loadConnectedApps() {
         viewModelScope.launch {
-            _connectedApps.postValueIfUpdated(
-                loadHealthPermissionApps.invoke().filterUnwantedApps()
-            )
+            when (val res = loadHealthPermissionApps.invoke(Unit)) {
+                is UseCaseResults.Success -> {
+                    _connectedApps.postValueIfUpdated(res.data.filterUnwantedApps())
+                }
+                is UseCaseResults.Failed -> {
+                    Log.e(TAG, "Error loading connected apps", res.exception)
+                    _connectedApps.postValueIfUpdated(emptyList())
+                }
+            }
         }
     }
 
     fun searchConnectedApps(searchValue: String) {
         viewModelScope.launch {
-            _connectedApps.postValueIfUpdated(
-                searchHealthPermissionApps.search(
-                    loadHealthPermissionApps.invoke().filterUnwantedApps(),
-                    searchValue,
-                )
-            )
+            when (val res = loadHealthPermissionApps.invoke(Unit)) {
+                is UseCaseResults.Success -> {
+                    _connectedApps.postValueIfUpdated(
+                        searchHealthPermissionApps.search(
+                            res.data.filterUnwantedApps(),
+                            searchValue,
+                        )
+                    )
+                }
+                is UseCaseResults.Failed -> {
+                    _connectedApps.postValueIfUpdated(emptyList())
+                }
+            }
         }
     }
 

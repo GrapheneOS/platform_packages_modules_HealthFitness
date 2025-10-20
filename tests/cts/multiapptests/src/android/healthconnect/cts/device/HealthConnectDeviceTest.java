@@ -30,6 +30,7 @@ import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermi
 import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermissions;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeAllHealthPermissions;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeHealthPermission;
+import static android.healthconnect.testing.cts.PermissionUtils.revokeHealthPermissions;
 import static android.healthconnect.testing.cts.TestUtils.createConnectMatchingAppsIntent;
 import static android.healthconnect.testing.cts.TestUtils.createReadRecordsRequestUsingFilters;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
@@ -60,6 +61,7 @@ import static com.android.compatibility.common.util.SystemUtil.runWithShellPermi
 import static com.android.healthfitness.flags.Flags.FLAG_MATCHMAKING;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
@@ -123,7 +125,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
-public class HealthConnectDeviceTest {
+public final class HealthConnectDeviceTest {
     public static final String MANAGE_HEALTH_DATA = HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 
     public static final String APP_A_DECLARED_PERMISSION = READ_STEPS;
@@ -992,8 +994,12 @@ public class HealthConnectDeviceTest {
 
         APP_A_WITH_READ_WRITE_PERMS.insertRecords(TEST_RECORDS);
 
-        revokeAllHealthPermissions(
-                APP_B_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
+        // Only revoking relevant permissions as revoking all permissions leads to flakiness.
+        // See b/433587449
+        revokeHealthPermissions(
+                APP_B_WITH_READ_WRITE_PERMS.getPackageName(),
+                List.of(READ_HEART_RATE, READ_STEPS),
+                "HealthConnectDeviceTest");
 
         HealthConnectException e =
                 assertThrows(
@@ -1029,7 +1035,9 @@ public class HealthConnectDeviceTest {
 
         boolean canConnect = APP_A_WITH_READ_WRITE_PERMS.canConnectMatchingApps(Set.of());
 
-        assertThat(canConnect).isTrue();
+        assertWithMessage("%s.canConnectMatchingApps(empty_set)", APP_A_WITH_READ_WRITE_PERMS)
+                .that(canConnect)
+                .isTrue();
     }
 
     @RequiresFlagsEnabled(FLAG_MATCHMAKING)
@@ -1042,7 +1050,9 @@ public class HealthConnectDeviceTest {
 
         boolean canConnect = APP_A_WITH_READ_WRITE_PERMS.canConnectMatchingApps(Set.of());
 
-        assertThat(canConnect).isFalse();
+        assertWithMessage("%s.canConnectMatchingApps(empty_set)", APP_A_WITH_READ_WRITE_PERMS)
+                .that(canConnect)
+                .isFalse();
     }
 
     @RequiresFlagsEnabled(FLAG_MATCHMAKING)
@@ -1059,7 +1069,11 @@ public class HealthConnectDeviceTest {
                 APP_A_WITH_READ_WRITE_PERMS.canConnectMatchingApps(
                         Set.of(SleepSessionRecord.class));
 
-        assertThat(canConnect).isFalse();
+        assertWithMessage(
+                        "%s.canConnectMatchingApps([SleepSessionRecord])",
+                        APP_A_WITH_READ_WRITE_PERMS)
+                .that(canConnect)
+                .isFalse();
     }
 
     @RequiresFlagsEnabled(FLAG_MATCHMAKING)
@@ -1076,7 +1090,11 @@ public class HealthConnectDeviceTest {
                 APP_A_WITH_READ_WRITE_PERMS.canConnectMatchingApps(
                         Set.of(SleepSessionRecord.class));
 
-        assertThat(canConnect).isTrue();
+        assertWithMessage(
+                        "%s.canConnectMatchingApps([SleepSessionRecord])",
+                        APP_A_WITH_READ_WRITE_PERMS)
+                .that(canConnect)
+                .isTrue();
     }
 
     @RequiresFlagsEnabled(FLAG_MATCHMAKING)
@@ -1094,7 +1112,11 @@ public class HealthConnectDeviceTest {
                 APP_A_WITH_READ_WRITE_PERMS.canConnectMatchingApps(
                         Set.of(DistanceRecord.class, SleepSessionRecord.class));
 
-        assertThat(canConnect).isFalse();
+        assertWithMessage(
+                        "%s.canConnectMatchingApps([DistanceRecord, SleepSessionRecord])",
+                        APP_A_WITH_READ_WRITE_PERMS)
+                .that(canConnect)
+                .isFalse();
     }
 
     @RequiresFlagsEnabled(FLAG_MATCHMAKING)
@@ -1113,7 +1135,12 @@ public class HealthConnectDeviceTest {
                 APP_A_WITH_READ_WRITE_PERMS.canConnectMatchingApps(
                         Set.of(SleepSessionRecord.class, StepsRecord.class, HeartRateRecord.class));
 
-        assertThat(canConnect).isTrue();
+        assertWithMessage(
+                        "%s.canConnectMatchingApps([SleepSessionRecord, StepsRecord,"
+                                + " HeartRateRecord])",
+                        APP_A_WITH_READ_WRITE_PERMS)
+                .that(canConnect)
+                .isTrue();
     }
 
     @RequiresFlagsEnabled(FLAG_MATCHMAKING)
@@ -1138,7 +1165,12 @@ public class HealthConnectDeviceTest {
                 APP_A_WITH_READ_WRITE_PERMS.canConnectMatchingApps(
                         Set.of(SleepSessionRecord.class, StepsRecord.class, HeartRateRecord.class));
 
-        assertThat(canConnect).isTrue();
+        assertWithMessage(
+                        "%s.canConnectMatchingApps([SleepSessionRecord, StepsRecord,"
+                                + " HeartRateRecord])",
+                        APP_A_WITH_READ_WRITE_PERMS)
+                .that(canConnect)
+                .isTrue();
     }
 
     // TODO(b/427663271): Replace this with meaningful test once the controller handles this intent.

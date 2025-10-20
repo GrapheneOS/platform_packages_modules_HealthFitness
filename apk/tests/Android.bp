@@ -94,6 +94,7 @@ java_defaults {
         "android.permission.flags-aconfig-java-export",
         "collector-device-lib",
         "aconfig_settingstheme_exported_flags_java_lib",
+        "modules-utils-build",
     ],
     libs: [
         "kotlin-annotations",
@@ -120,6 +121,7 @@ java_defaults {
     ],
     test_config_template: "AndroidTestTemplate.xml",
     visibility: ["//visibility:private"],
+    plugins: ["dagger2-compiler"],
 }
 
 java_library {
@@ -257,6 +259,7 @@ filegroup {
     srcs: [
         "src/com/android/healthconnect/controller/tests/home/**/*.java",
         "src/com/android/healthconnect/controller/tests/home/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/newhome/**/*.kt",
         "src/com/android/healthconnect/controller/tests/onboarding/**/*.java",
         "src/com/android/healthconnect/controller/tests/onboarding/**/*.kt",
         "src/com/android/healthconnect/controller/tests/recentaccess/**/*.java",
@@ -344,6 +347,8 @@ android_test {
 filegroup {
     name: "permission-tests-srcs",
     srcs: [
+        "src/com/android/healthconnect/controller/tests/matchmaking/*.java",
+        "src/com/android/healthconnect/controller/tests/matchmaking/*.kt",
         "src/com/android/healthconnect/controller/tests/permissions/**/*.java",
         "src/com/android/healthconnect/controller/tests/permissions/**/*.kt",
         "src/com/android/healthconnect/controller/tests/shared/**/*.java",
@@ -365,6 +370,7 @@ android_test {
     manifest_values: {
         applicationId: "com.android.healthconnect.controller.tests.permissions",
     },
+    compile_multilib: "both",
     instrumentation_target_package: "com.android.healthconnect.controller.tests.permissions",
 }
 
@@ -475,9 +481,6 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/permissions/request/MedicalPermissionsFragmentTest.kt",
         "src/com/android/healthconnect/controller/tests/permissions/request/PermissionsActivityTest.kt",
         "src/com/android/healthconnect/controller/tests/permissions/request/RequestPermissionViewModelTest.kt",
-        // At the moment robolectrci doesn't transition activity to state DESTROYED after finish()
-        // in some circumstances
-        "src/com/android/healthconnect/controller/tests/permissions/request/PermissionsBottomSheetDialogFragmentTest.kt",
         // Needs more investigation. Just faking the appInfoReader causes the on device test to
         // fail, and isn't enough to get the robo test working.
         "src/com/android/healthconnect/controller/tests/recentaccess/RecentAccessViewModelTest.kt",

@@ -70,7 +70,7 @@ import java.util.Map;
 
 /**
  * Interface for {@link com.android.health.connect.HealthConnectManager}
- * {@hide}
+ * @hide
  */
 interface IHealthConnectService {
     void grantHealthPermission(String packageName, String permissionName, in UserHandle user);
@@ -223,7 +223,7 @@ interface IHealthConnectService {
      *
      * @param recordTypes List of record types classes for which to get the activity dates.
      * @param callback Callback to receive the result of performing this operation.
-     * {@hide}
+     * @hide
      */
     void getActivityDates(
         in ActivityDatesRequestParcel recordTypes,
@@ -624,15 +624,17 @@ interface IHealthConnectService {
             in IGetMatchingAppsCallback callback);
 
     /**
-     * Records that a user has denied matchmaking for a given package.
+     * Records that a user has denied matchmaking for a calling package, denied packages and their
+     * denied permissions.
      *
-     * @param packageName package name of the app that was denied.
+     * @param callingPackageName package name of the app that initiated matchmaking.
+     * @param matchingApps map of package name to permissions of the apps that were denied.
      * @param callback Callback to receive result of performing this operation.
      */
     void recordMatchmakingDenial(
             in AttributionSource attributionSource,
-            String packageName,
-            in List<String> permissions,
+            String callingPackageName,
+            in Map<String, List<String>> deniedApps,
             in IEmptyResponseCallback callback);
 
     /**

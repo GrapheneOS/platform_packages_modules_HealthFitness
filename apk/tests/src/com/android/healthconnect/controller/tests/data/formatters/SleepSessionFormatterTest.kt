@@ -174,7 +174,7 @@ class SleepSessionFormatterTest {
         val endTime = Instant.parse("2023-02-12T08:14:00Z")
         val totalSleepTime = Duration.between(startTime, endTime).toMillis()
 
-        assertThat(formatter.formatUnit(totalSleepTime)).isEqualTo("10h 54m")
+        assertThat(formatter.formatUnit(totalSleepTime)).isEqualTo("10h${NBSP}54m")
     }
 
     @Test
@@ -196,5 +196,9 @@ class SleepSessionFormatterTest {
             .setNotes(note)
             .setStages(stages)
             .build()
+    }
+
+    private companion object {
+        const val NBSP = "\u00A0" // no break space
     }
 }

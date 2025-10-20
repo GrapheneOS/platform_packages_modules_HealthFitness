@@ -23,7 +23,6 @@ import android.annotation.Nullable;
 import android.annotation.WorkerThread;
 import android.content.Context;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.health.connect.Constants;
 import android.os.UserHandle;
 import android.os.UserManager;
@@ -50,11 +49,10 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  *
  * @hide
  */
-public final class FirstGrantTimeManager implements PackageManager.OnPermissionsChangedListener {
+public final class FirstGrantTimeManager {
     private static final String TAG = "HealthFirstGrantTimeMan";
     private static final int CURRENT_VERSION = 1;
 
-    private final PackageManager mPackageManager;
     private final UserManager mUserManager;
     private final HealthPermissionIntentAppsTracker mTracker;
 
@@ -93,8 +91,6 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
 
         mUidToGrantTimeCache = new UidToGrantTimeCache();
         mUserManager = context.getSystemService(UserManager.class);
-        mPackageManager = context.getPackageManager();
-        mPackageManager.addOnPermissionsChangeListener(this);
         mThreadScheduler = threadScheduler;
     }
 
@@ -157,18 +153,13 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
         }
     }
 
-    @Override
-    public void onPermissionsChanged(int uid) {
-        updateFirstGrantTimesFromPermissionState(UserHandle.getUserHandleForUid(uid), uid, false);
-    }
-
     /**
      * Checks whether the {@code uid} is mapped to valid package names of valid health apps before
      * updating first grant times from the current permission state. The update can be perform in
      * the same thread where this method is called if {@code sync} is set to {@code true}, another
      * background thread otherwise.
      */
-    private void updateFirstGrantTimesFromPermissionState(UserHandle user, int uid, boolean sync) {
+    void updateFirstGrantTimesFromPermissionState(UserHandle user, int uid, boolean sync) {
         if (!mUserManager.isUserUnlocked(user)) {
             // this method is called in onPermissionsChanged(uid) which is called as soon as the
             // system boots up, even before the user has unlock the device for the first time.

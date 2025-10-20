@@ -25,31 +25,34 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /** @hide */
 public class DataTypeDescriptor {
     @RecordTypeIdentifier.RecordType private final int mRecordTypeIdentifier;
-    @HealthPermissionCategory.Type private final int mPermissionCategory;
     @HealthDataCategory.Type private final int mDataCategory;
-    private final String mReadPermission;
-    private final String mWritePermission;
+    private final Set<PermissionCategory> mPermissionCategories;
     private final Class<? extends RecordInternal<?>> mRecordInternalClass;
     private final Class<? extends Record> mRecordClass;
+
+    /** A class to hold the permission category which includes read and write permissions. */
+    public record PermissionCategory(
+            @HealthPermissionCategory.Type int permissionCategoryId,
+            String readPermission,
+            String writePermission) {}
 
     private DataTypeDescriptor(Builder builder) {
         checkArgument(builder.mRecordTypeIdentifier != RECORD_TYPE_UNKNOWN, "Unknown record type");
         checkArgument(
-                builder.mHealthPermissionCategory != HealthPermissionCategory.UNKNOWN,
-                "Unknown permission category");
+                !builder.mPermissionCategories.isEmpty(), "Permission categories cannot be empty");
         checkArgument(
                 builder.mHealthDataCategory != HealthDataCategory.UNKNOWN,
                 "Unknown health data category");
         mRecordTypeIdentifier = builder.mRecordTypeIdentifier;
-        mPermissionCategory = builder.mHealthPermissionCategory;
+        mPermissionCategories = builder.mPermissionCategories;
         mDataCategory = builder.mHealthDataCategory;
-        mReadPermission = Objects.requireNonNull(builder.mReadPermission);
-        mWritePermission = Objects.requireNonNull(builder.mWritePermission);
         mRecordInternalClass = Objects.requireNonNull(builder.mRecordInternalClass);
         mRecordClass = Objects.requireNonNull(builder.mRecordClass);
     }
@@ -59,22 +62,13 @@ public class DataTypeDescriptor {
         return mRecordTypeIdentifier;
     }
 
-    @HealthPermissionCategory.Type
-    public int getPermissionCategory() {
-        return mPermissionCategory;
+    public Set<PermissionCategory> getPermissionCategories() {
+        return mPermissionCategories;
     }
 
     @HealthDataCategory.Type
     public int getDataCategory() {
         return mDataCategory;
-    }
-
-    public String getReadPermission() {
-        return mReadPermission;
-    }
-
-    public String getWritePermission() {
-        return mWritePermission;
     }
 
     public Class<? extends RecordInternal<?>> getRecordInternalClass() {
@@ -86,36 +80,30 @@ public class DataTypeDescriptor {
     }
 
     interface RecordTypeIdentifierBuilderStep {
-        PermissionCategoryBuilderStep setRecordTypeIdentifier(
+        DataCategoryBuilderStep setRecordTypeIdentifier(
                 @RecordTypeIdentifier.RecordType int recordTypeIdentifier);
     }
 
-    interface PermissionCategoryBuilderStep {
-        DataCategoryBuilderStep setPermissionCategory(
-                @HealthPermissionCategory.Type int healthPermissionCategory);
-    }
-
     interface DataCategoryBuilderStep {
-        ReadPermissionBuilderStep setDataCategory(@HealthDataCategory.Type int healthDataCategory);
-    }
-
-    interface ReadPermissionBuilderStep {
-        WritePermissionBuilderStep setReadPermission(String readPermission);
-    }
-
-    interface WritePermissionBuilderStep {
-        RecordClassBuilderStep setWritePermission(String writePermission);
+        RecordClassBuilderStep setDataCategory(@HealthDataCategory.Type int healthDataCategory);
     }
 
     interface RecordClassBuilderStep {
         RecordInternalClassBuilderStep setRecordClass(Class<? extends Record> recordClass);
     }
 
+
     interface RecordInternalClassBuilderStep {
-        BuildStep setRecordInternalClass(Class<? extends RecordInternal<?>> recordInternalClass);
+        PermissionCategoryBuilderStep setRecordInternalClass(
+                Class<? extends RecordInternal<?>> recordInternalClass);
     }
 
-    interface BuildStep {
+    interface PermissionCategoryBuilderStep {
+        PermissionCategoryBuilderStep addPermissionCategory(
+                @HealthPermissionCategory.Type int permissionCategoryId,
+                String readPermission,
+                String writePermission);
+
         DataTypeDescriptor build();
     }
 
@@ -124,30 +112,23 @@ public class DataTypeDescriptor {
     }
 
     /* Using the step builder pattern to make the builder compile time safe. */
-    private static class Builder
+    static class Builder
             implements RecordTypeIdentifierBuilderStep,
-                    PermissionCategoryBuilderStep,
                     DataCategoryBuilderStep,
-                    ReadPermissionBuilderStep,
-                    WritePermissionBuilderStep,
                     RecordClassBuilderStep,
                     RecordInternalClassBuilderStep,
-                    BuildStep {
+                    PermissionCategoryBuilderStep {
         @RecordTypeIdentifier.RecordType private int mRecordTypeIdentifier = RECORD_TYPE_UNKNOWN;
 
-        @HealthPermissionCategory.Type
-        private int mHealthPermissionCategory = HealthPermissionCategory.UNKNOWN;
-
         @HealthDataCategory.Type private int mHealthDataCategory = HealthDataCategory.UNKNOWN;
-        @Nullable private String mReadPermission;
-        @Nullable private String mWritePermission;
         @Nullable private Class<? extends Record> mRecordClass;
         @Nullable private Class<? extends RecordInternal<?>> mRecordInternalClass;
+        private final Set<PermissionCategory> mPermissionCategories = new HashSet<>();
 
         private Builder() {}
 
         @Override
-        public PermissionCategoryBuilderStep setRecordTypeIdentifier(
+        public DataCategoryBuilderStep setRecordTypeIdentifier(
                 @RecordTypeIdentifier.RecordType int recordTypeIdentifier) {
             checkArgument(
                     recordTypeIdentifier != HealthPermissionCategory.UNKNOWN,
@@ -157,34 +138,12 @@ public class DataTypeDescriptor {
         }
 
         @Override
-        public DataCategoryBuilderStep setPermissionCategory(
-                @HealthPermissionCategory.Type int permissionCategory) {
-            checkArgument(
-                    permissionCategory != HealthPermissionCategory.UNKNOWN,
-                    "Unknown permission category");
-            mHealthPermissionCategory = permissionCategory;
-            return this;
-        }
-
-        @Override
-        public ReadPermissionBuilderStep setDataCategory(
+        public RecordClassBuilderStep setDataCategory(
                 @HealthDataCategory.Type int healthDataCategory) {
             checkArgument(
                     healthDataCategory != HealthDataCategory.UNKNOWN,
                     "Unknown health data category");
             mHealthDataCategory = healthDataCategory;
-            return this;
-        }
-
-        @Override
-        public WritePermissionBuilderStep setReadPermission(String readPermission) {
-            mReadPermission = Objects.requireNonNull(readPermission);
-            return this;
-        }
-
-        @Override
-        public RecordClassBuilderStep setWritePermission(String writePermission) {
-            mWritePermission = Objects.requireNonNull(writePermission);
             return this;
         }
 
@@ -195,9 +154,20 @@ public class DataTypeDescriptor {
         }
 
         @Override
-        public BuildStep setRecordInternalClass(
+        public PermissionCategoryBuilderStep setRecordInternalClass(
                 Class<? extends RecordInternal<?>> recordInternalClass) {
             mRecordInternalClass = Objects.requireNonNull(recordInternalClass);
+            return this;
+        }
+
+        /** Adds a permission category to the descriptor. */
+        @Override
+        public PermissionCategoryBuilderStep addPermissionCategory(
+                @HealthPermissionCategory.Type int permissionCategoryId,
+                String readPermission,
+                String writePermission) {
+            mPermissionCategories.add(
+                    new PermissionCategory(permissionCategoryId, readPermission, writePermission));
             return this;
         }
 

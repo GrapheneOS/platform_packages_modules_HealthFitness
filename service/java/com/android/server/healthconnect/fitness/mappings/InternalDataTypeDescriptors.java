@@ -18,6 +18,7 @@ package com.android.server.healthconnect.fitness.mappings;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ACTIVE_CALORIES_BURNED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ACTIVITY_INTENSITY;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ALCOHOL_CONSUMPTION;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BASAL_BODY_TEMPERATURE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BASAL_METABOLIC_RATE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BLOOD_GLUCOSE;
@@ -28,6 +29,7 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__D
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BONE_MASS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CERVICAL_MUCUS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CYCLING_PEDALING_CADENCE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DATA_TYPE_NOT_ASSIGNED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DISTANCE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ELEVATION_GAINED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__EXERCISE_SESSION;
@@ -59,6 +61,7 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__D
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__WHEELCHAIR_PUSHES;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVITY_INTENSITY;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ALCOHOL_CONSUMPTION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_BODY_TEMPERATURE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BLOOD_GLUCOSE;
@@ -96,6 +99,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SPEED;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SYMPTOM;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_VO2_MAX;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_WEIGHT;
@@ -104,6 +108,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static com.android.internal.annotations.VisibleForTesting.Visibility.PACKAGE;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_ACTIVE_CALORIES_BURNED;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_ACTIVITY_INTENSITY;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_ALCOHOL_CONSUMPTION;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BASAL_BODY_TEMPERATURE;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BASAL_METABOLIC_RATE;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BLOOD_GLUCOSE;
@@ -141,6 +146,7 @@ import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForU
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_SPEED;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_STEPS;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_STEPS_CADENCE;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_SYMPTOMS;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_TOTAL_CALORIES_BURNED;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_VO2_MAX;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_WEIGHT;
@@ -153,6 +159,7 @@ import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.recordhelpers.ActiveCaloriesBurnedRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ActivityIntensityRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.AlcoholConsumptionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.BasalBodyTemperatureRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.BasalMetabolicRateRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.BloodGlucoseRecordHelper;
@@ -190,6 +197,7 @@ import com.android.server.healthconnect.fitness.recordhelpers.SleepSessionRecord
 import com.android.server.healthconnect.fitness.recordhelpers.SpeedRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.StepsCadenceRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.StepsRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.SymptomRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.TotalCaloriesBurnedRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.Vo2MaxRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.WeightRecordHelper;
@@ -213,6 +221,13 @@ public class InternalDataTypeDescriptors {
     private static final int LOGGING_ENUM_NICOTINE_INTAKE =
             HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__NICOTINE_INTAKE;
 
+    // TODO(b/425404543): Remove once the correct logging enum for Symptoms is available.
+    private static final int LOGGING_ENUM_NOT_ASSIGNED =
+            HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DATA_TYPE_NOT_ASSIGNED;
+
+    private static final int LOGGING_ENUM_ALCOHOL_CONSUMPTION =
+            HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ALCOHOL_CONSUMPTION;
+
     @VisibleForTesting(visibility = PACKAGE)
     static List<InternalDataTypeDescriptor> getAllInternalDataTypeDescriptors() {
         return listOfNonNull(
@@ -222,6 +237,7 @@ public class InternalDataTypeDescriptors {
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_ACTIVE_CALORIES_BURNED)
                         .setLoggingEnum(
                                 HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ACTIVE_CALORIES_BURNED)
+                        .setSupportGranularityLogging()
                         .build(),
                 AconfigFlagHelper.isActivityIntensityEnabled()
                         ? InternalDataTypeDescriptor.builder()
@@ -229,6 +245,14 @@ public class InternalDataTypeDescriptors {
                                 .setRecordHelper(new ActivityIntensityRecordHelper())
                                 .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_ACTIVITY_INTENSITY)
                                 .setLoggingEnum(LOGGING_ENUM_ACTIVITY_INTENSITY)
+                                .build()
+                        : null,
+                AconfigFlagHelper.isAlcoholConsumptionEnabled()
+                        ? InternalDataTypeDescriptor.builder()
+                                .setRecordTypeIdentifier(RECORD_TYPE_ALCOHOL_CONSUMPTION)
+                                .setRecordHelper(new AlcoholConsumptionRecordHelper())
+                                .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_ALCOHOL_CONSUMPTION)
+                                .setLoggingEnum(LOGGING_ENUM_ALCOHOL_CONSUMPTION)
                                 .build()
                         : null,
                 InternalDataTypeDescriptor.builder()
@@ -294,18 +318,21 @@ public class InternalDataTypeDescriptors {
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_CYCLING_PEDALING_CADENCE)
                         .setLoggingEnum(
                                 HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CYCLING_PEDALING_CADENCE)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_DISTANCE)
                         .setRecordHelper(new DistanceRecordHelper())
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_DISTANCE)
                         .setLoggingEnum(HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DISTANCE)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_ELEVATION_GAINED)
                         .setRecordHelper(new ElevationGainedRecordHelper())
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_ELEVATION_GAINED)
                         .setLoggingEnum(HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ELEVATION_GAINED)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_EXERCISE_SESSION)
@@ -318,6 +345,7 @@ public class InternalDataTypeDescriptors {
                         .setRecordHelper(new FloorsClimbedRecordHelper())
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_FLOORS_CLIMBED)
                         .setLoggingEnum(HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__FLOORS_CLIMBED)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_HEART_RATE)
@@ -326,6 +354,7 @@ public class InternalDataTypeDescriptors {
                         .setLoggingEnum(
                                 HealthFitnessStatsLog
                                         .HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__HEART_RATE)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD)
@@ -419,6 +448,7 @@ public class InternalDataTypeDescriptors {
                         .setRecordHelper(new PowerRecordHelper())
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_POWER)
                         .setLoggingEnum(HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__POWER)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_RESPIRATORY_RATE)
@@ -444,6 +474,7 @@ public class InternalDataTypeDescriptors {
                         .setRecordHelper(new SkinTemperatureRecordHelper())
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_SKIN_TEMPERATURE)
                         .setLoggingEnum(HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__SKIN_TEMPERATURE)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_SLEEP_SESSION)
@@ -458,18 +489,21 @@ public class InternalDataTypeDescriptors {
                         .setLoggingEnum(
                                 HealthFitnessStatsLog
                                         .HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__SPEED)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_STEPS)
                         .setRecordHelper(new StepsRecordHelper())
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_STEPS)
                         .setLoggingEnum(HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__STEPS)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_STEPS_CADENCE)
                         .setRecordHelper(new StepsCadenceRecordHelper())
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_STEPS_CADENCE)
                         .setLoggingEnum(HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__STEPS_CADENCE)
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_TOTAL_CALORIES_BURNED)
@@ -478,6 +512,7 @@ public class InternalDataTypeDescriptors {
                         .setLoggingEnum(
                                 HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__TOTAL_CALORIES_BURNED)
                         .setDerived()
+                        .setSupportGranularityLogging()
                         .build(),
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_VO2_MAX)
@@ -497,7 +532,17 @@ public class InternalDataTypeDescriptors {
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_WHEELCHAIR_PUSHES)
                         .setLoggingEnum(
                                 HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__WHEELCHAIR_PUSHES)
-                        .build());
+                        .build(),
+                AconfigFlagHelper.isSymptomsEnabled()
+                        ? InternalDataTypeDescriptor.builder()
+                                .setRecordTypeIdentifier(RECORD_TYPE_SYMPTOM)
+                                .setRecordHelper(new SymptomRecordHelper())
+                                .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_SYMPTOMS)
+                                // TODO(b/425404543): Use the correct logging enum for Symptoms once
+                                // it is available.
+                                .setLoggingEnum(LOGGING_ENUM_NOT_ASSIGNED)
+                                .build()
+                        : null);
     }
 
     @SafeVarargs

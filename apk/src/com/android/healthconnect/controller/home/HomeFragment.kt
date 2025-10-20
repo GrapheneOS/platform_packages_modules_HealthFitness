@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.home
 
 import android.content.Context
 import android.content.Intent
+import android.health.connect.HealthConnectManager
 import android.icu.text.MessageFormat
 import android.os.Bundle
 import android.provider.Settings.ACTION_SECURITY_SETTINGS
@@ -369,7 +370,7 @@ class HomeFragment : Hilt_HomeFragment() {
                     text = getString(R.string.zero_apps_onboarding_banner_button),
                     logName = HomePageElement.ZERO_APPS_CONNECTED_BANNER_SET_UP_BUTTON,
                 ) {
-                    findNavController().navigate(R.id.action_homeFragment_to_onboardingActivity)
+                    startActivity(Intent(HealthConnectManager.ACTION_SYNC_MORE_APPS))
                 }
 
                 banner.setNegativeButton(
@@ -399,7 +400,7 @@ class HomeFragment : Hilt_HomeFragment() {
                     text = getString(R.string.one_app_onboarding_banner_button),
                     logName = HomePageElement.ONE_APP_CONNECTED_BANNER_SET_UP_BUTTON,
                 ) {
-                    findNavController().navigate(R.id.action_homeFragment_to_onboardingActivity)
+                    startActivity(Intent(HealthConnectManager.ACTION_SYNC_MORE_APPS))
                 }
 
                 banner.setNegativeButton(

@@ -23,6 +23,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -88,11 +89,11 @@ constructor(
     fun loadExportSettings() {
         _storedExportSettings.postValue(ExportSettings.Loading)
         viewModelScope.launch {
-            when (val result = loadExportSettingsUseCase.invoke()) {
-                is ExportImportUseCaseResult.Success -> {
+            when (val result = loadExportSettingsUseCase.invoke(Unit)) {
+                is UseCaseResults.Success -> {
                     _storedExportSettings.postValue(ExportSettings.WithData(result.data))
                 }
-                is ExportImportUseCaseResult.Failed -> {
+                is UseCaseResults.Failed -> {
                     _storedExportSettings.postValue(ExportSettings.LoadingFailed)
                 }
             }
@@ -103,11 +104,11 @@ constructor(
     fun loadDocumentProviders() {
         _documentProviders.postValue(DocumentProviders.Loading)
         viewModelScope.launch {
-            when (val result = queryDocumentProvidersUseCase.invoke()) {
-                is ExportImportUseCaseResult.Success -> {
+            when (val result = queryDocumentProvidersUseCase.invoke(Unit)) {
+                is UseCaseResults.Success -> {
                     _documentProviders.postValue(DocumentProviders.WithData(result.data))
                 }
-                is ExportImportUseCaseResult.Failed -> {
+                is UseCaseResults.Failed -> {
                     _documentProviders.postValue(DocumentProviders.LoadingFailed)
                 }
             }
@@ -168,13 +169,13 @@ constructor(
     private fun updateExportSettings(settings: ScheduledExportSettings) {
         viewModelScope.launch {
             when (updateExportSettingsUseCase.invoke(settings)) {
-                is ExportImportUseCaseResult.Success -> {
+                is UseCaseResults.Success -> {
                     if (settings.periodInDays != DEFAULT_INT) {
                         val frequency = fromPeriodInDays(settings.periodInDays)
                         _storedExportSettings.postValue(ExportSettings.WithData(frequency))
                     }
                 }
-                is ExportImportUseCaseResult.Failed -> {
+                is UseCaseResults.Failed -> {
                     _storedExportSettings.postValue(ExportSettings.LoadingFailed)
                 }
             }

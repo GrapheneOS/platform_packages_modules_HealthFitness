@@ -84,6 +84,8 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"nutrition"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"Wellness"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"wellness"</string>
+    <string name="symptoms_category_uppercase" msgid="1357167834284360975">"Symptoms"</string>
+    <string name="symptoms_category_lowercase" msgid="2298815597177353672">"symptoms"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"Browse data"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"Manage data"</string>
     <string name="export_data_button" msgid="7783329820434117744">"Export data"</string>
@@ -378,6 +380,15 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"alcohol consumption"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Read alcohol consumption"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Write alcohol consumption"</string>
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Cough"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"cough"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Read symptoms"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Write symptoms"</string>
+    <string name="symptom_unknown" msgid="5796719193136239306">"Unknown"</string>
+    <string name="symptom_severity_mild" msgid="2689415474774489874">"Mild"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"Moderate"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"Severe"</string>
+    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Allow “<xliff:g id="APP_NAME">%1$s</xliff:g>” to read"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Allow “<xliff:g id="APP_NAME">%1$s</xliff:g>” to write"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Allow"</string>
@@ -660,6 +671,8 @@
     <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{1 wheelchair push}other{# wheelchair pushes}}"</string>
     <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 L}other{# L}}"</string>
     <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 liter}other{# liters}}"</string>
+    <string name="milliliter" msgid="7730118351176678375">"{count,plural, =1{1 ml}other{# ml}}"</string>
+    <string name="milliliter_long" msgid="6431396151823725792">"{count,plural, =1{1 milliliter}other{# milliliters}}"</string>
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 floor}other{# floors}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 m}other{# m}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 meter}other{# meters}}"</string>
@@ -835,8 +848,32 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} vape puff}other{{quantity} vape puffs}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} cigarette}other{{quantity} cigarettes}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} unknown"</string>
+    <string name="alcohol_consumption_title" msgid="2627266871623334972">"<xliff:g id="SERVING">%1$s</xliff:g> • <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"Other"</string>
+    <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Beer"</string>
+    <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Wine"</string>
+    <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
+    <string name="alcohol_consumption_beverage_type_gin" msgid="5945396443339874907">"Gin"</string>
+    <string name="alcohol_consumption_beverage_type_whiskey" msgid="1085904168947658887">"Whiskey"</string>
+    <string name="alcohol_consumption_beverage_type_rum" msgid="5230691377430212826">"Rum"</string>
+    <string name="alcohol_consumption_beverage_type_tequila" msgid="9074751455065347442">"Tequila"</string>
+    <string name="alcohol_consumption_beverage_type_lager" msgid="1490153167547219382">"Lager"</string>
+    <string name="alcohol_consumption_beverage_type_cider" msgid="3348115754435446544">"Cider"</string>
+    <string name="alcohol_consumption_beverage_type_sake" msgid="2773512901340614154">"Sake"</string>
+    <string name="alcohol_consumption_beverage_type_shochu" msgid="3491300198222489324">"Shochu"</string>
+    <string name="alcohol_consumption_beverage_type_soju" msgid="113120387013483711">"Soju"</string>
+    <string name="alcohol_consumption_beverage_type_mead" msgid="1673063923088962681">"Mead"</string>
+    <string name="alcohol_consumption_beverage_type_absinthe" msgid="3972259596196421914">"Absinthe"</string>
+    <string name="alcohol_consumption_beverage_type_brandy" msgid="3782444367994599131">"Brandy"</string>
+    <string name="alcohol_consumption_beverage_type_cocktail" msgid="4711099215987668649">"Cocktail"</string>
+    <string name="alcohol_consumption_beverage_type_chuhai" msgid="4727177353197748690">"Chuhai"</string>
+    <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Highball"</string>
+    <string name="serving_volume_title" msgid="4727986574534974167">"Serving Volume"</string>
+    <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Alcohol by Volume"</string>
+    <string name="note_title" msgid="4101166558186573016">"Note"</string>
+    <string name="details_title" msgid="8411891773854413790">"Details"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>m"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g>h <xliff:g id="MIN">%2$s</xliff:g>m"</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g>h <xliff:g id="MIN">%2$s</xliff:g>m"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g>h"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 hour}other{# hours}}"</string>
@@ -1042,6 +1079,7 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Done"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{Auto-delete is on. Data older than # month will be deleted}other{Auto-delete is on. Data older than # months will be deleted}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"Auto-delete is off"</string>
+    <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+<xliff:g id="COUNT">%s</xliff:g>"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"Set app priority"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"If more than one app adds <xliff:g id="DATA_TYPE">%s</xliff:g> data, Health Connect prioritizes the app highest in this list. Drag apps to reorder them."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Save"</string>
@@ -1175,6 +1213,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Connected apps will no longer be able to read this data from Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Checked"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Not checked"</string>
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Exercise map route available"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Next day"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Next week"</string>
@@ -1228,6 +1267,7 @@
     <string name="write_access" msgid="571547306854732263">"Write Access"</string>
     <string name="read_access" msgid="3317759826769372785">"Read Access"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> of <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> apps allowed"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"No apps requesting"</string>
     <string name="allowed" msgid="4158456017482263737">"Allowed"</string>
@@ -1278,11 +1318,260 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Device data"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Manage device"</string>
     <string name="device_data_button" msgid="8002406105399136401">"See device data"</string>
-    <string name="native_steps_banner_title" msgid="7668164332675458871">"Steps tracked on your phone will appear in Health Connect"</string>
-    <string name="native_steps_banner_summary" msgid="7109953051996114646">"Steps tracked by this device are now stored in Health Connect for connected apps to access"</string>
+    <string name="native_steps_banner_title" msgid="8990874387340782536">"Steps tracked on your phone will appear in Health Connect"</string>
+    <string name="native_steps_banner_summary" msgid="8255767487167444809">"Steps tracked by this device are now stored in Health Connect for connected apps to access"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Dismiss"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Review"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Steps are now in Health Connect"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Steps tracked by this device are now stored in Health Connect for connected apps to access"</string>
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"Your health apps"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"Your health data"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"Preferences"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect lets you share your health and fitness data between multiple apps. This helps you unlock insights and experiences while keeping your data secure."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"More about Health Connect"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"Your data and which apps can access it"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"Apps that recently used your data"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"Review devices that can access health data"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Install apps that work with Health Connect to see them here"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"See compatible apps"</string>
+    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"See more health apps"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"Not connected"</string>
+    <string name="connect_app_button_content_description" msgid="296796277841527165">"Click to connect this app to Health Connect"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Not now"</string>
+    <string name="acne_read_content_description" msgid="1176708404029936065">"Read acne"</string>
+    <string name="acne_write_content_description" msgid="9221785868351412493">"Write acne"</string>
+    <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Read brittle nails"</string>
+    <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Write brittle nails"</string>
+    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Read burning mouth "</string>
+    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Write burning mouth "</string>
+    <string name="chills_read_content_description" msgid="7244946135559432433">"Read chills"</string>
+    <string name="chills_write_content_description" msgid="6478646233405107436">"Write chills"</string>
+    <string name="dehydration_read_content_description" msgid="7633935838518756206">"Read dehydration"</string>
+    <string name="dehydration_write_content_description" msgid="541514183036921571">"Write dehydration"</string>
+    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"Read dry skin"</string>
+    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"Write dry skin"</string>
+    <string name="fever_read_content_description" msgid="3385209639730909489">"Read fever"</string>
+    <string name="fever_write_content_description" msgid="8440573327719878961">"Write fever"</string>
+    <string name="joint_pain_read_content_description" msgid="2932523124488927967">"Read joint pain"</string>
+    <string name="joint_pain_write_content_description" msgid="7405551860978844535">"Write joint pain"</string>
+    <string name="joint_stiffness_read_content_description" msgid="2132696730582070534">"Read joint stiffness"</string>
+    <string name="joint_stiffness_write_content_description" msgid="7556318646656369856">"Write joint stiffness"</string>
+    <string name="muscle_pain_read_content_description" msgid="3116385630330673084">"Read muscle pain"</string>
+    <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"Write muscle pain"</string>
+    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"Read loss of consciousness"</string>
+    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"Write loss of consciousness"</string>
+    <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"Read reduced capacity for exercise"</string>
+    <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"Write reduced capacity for exercise"</string>
+    <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"Read unexplained weight changes"</string>
+    <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"Write unexplained weight changes"</string>
+    <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"Read generalized body ache"</string>
+    <string name="generalized_body_ache_write_content_description" msgid="4282920161878530009">"Write generalized body ache"</string>
+    <string name="fatigue_read_content_description" msgid="8447413794808220408">"Read fatigue"</string>
+    <string name="fatigue_write_content_description" msgid="3000326883358951973">"Write fatigue"</string>
+    <string name="constipation_read_content_description" msgid="4024154136010015370">"Read constipation"</string>
+    <string name="constipation_write_content_description" msgid="9059835998017996999">"Write constipation"</string>
+    <string name="diarrhea_read_content_description" msgid="6643311788778713543">"Read diarrhea"</string>
+    <string name="diarrhea_write_content_description" msgid="2525160401458506448">"Write diarrhea"</string>
+    <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"Read loss of appetite"</string>
+    <string name="loss_of_appetite_write_content_description" msgid="7370817778828856877">"Write loss of appetite"</string>
+    <string name="nausea_read_content_description" msgid="7696809485706809234">"Read nausea"</string>
+    <string name="nausea_write_content_description" msgid="7956853318058549079">"Write nausea"</string>
+    <string name="stomach_ache_read_content_description" msgid="6960461949095524373">"Read stomach ache"</string>
+    <string name="stomach_ache_write_content_description" msgid="4822349196740130790">"Write stomach ache"</string>
+    <string name="vomiting_read_content_description" msgid="6425637340168306118">"Read vomiting"</string>
+    <string name="vomiting_write_content_description" msgid="2768436321239967229">"Write vomiting"</string>
+    <string name="chest_pain_read_content_description" msgid="5388099127082653993">"Read chest pain"</string>
+    <string name="chest_pain_write_content_description" msgid="7570421665813979598">"Write chest pain"</string>
+    <string name="chest_tightness_read_content_description" msgid="3234587929340517638">"Read chest tightness"</string>
+    <string name="chest_tightness_write_content_description" msgid="3365518444505217882">"Write chest tightness"</string>
+    <string name="cough_read_content_description" msgid="4834360757270578547">"Read cough"</string>
+    <string name="cough_write_content_description" msgid="2927943192149715422">"Write cough"</string>
+    <string name="heart_palpitations_read_content_description" msgid="5830132363981902576">"Read heart palpitations"</string>
+    <string name="heart_palpitations_write_content_description" msgid="6195434828951874561">"Write heart palpitations"</string>
+    <string name="shortness_of_breath_read_content_description" msgid="5285037217314042125">"Read shortness of breath"</string>
+    <string name="shortness_of_breath_write_content_description" msgid="1812050225998794712">"Write shortness of breath"</string>
+    <string name="wheezing_read_content_description" msgid="3698103133045395859">"Read wheezing"</string>
+    <string name="wheezing_write_content_description" msgid="3555234332119025686">"Write wheezing"</string>
+    <string name="heartburn_read_content_description" msgid="4650825508743336439">"Read heartburn"</string>
+    <string name="heartburn_write_content_description" msgid="1857706822547818187">"Write heartburn"</string>
+    <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"Read skipped heartbeat"</string>
+    <string name="skipped_heartbeat_write_content_description" msgid="834686289232563614">"Write skipped heartbeat"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"Read rapid, pounding, or fluttering heartbeat"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"Write rapid, pounding, or fluttering heartbeat"</string>
+    <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"Read difficulty swallowing"</string>
+    <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"Write difficulty swallowing"</string>
+    <string name="dizziness_read_content_description" msgid="2525565486057144416">"Read dizziness"</string>
+    <string name="dizziness_write_content_description" msgid="1875365619054873732">"Write dizziness"</string>
+    <string name="earaches_read_content_description" msgid="4643142391473401154">"Read earaches"</string>
+    <string name="earaches_write_content_description" msgid="3551386029980258801">"Write earaches"</string>
+    <string name="hair_loss_read_content_description" msgid="4057044821025872986">"Read hair loss"</string>
+    <string name="hair_loss_write_content_description" msgid="7387442867237711823">"Write hair loss"</string>
+    <string name="headache_read_content_description" msgid="7485283472508878298">"Read headache"</string>
+    <string name="headache_write_content_description" msgid="720183844750746485">"Write headache"</string>
+    <string name="runny_nose_read_content_description" msgid="443700998701222852">"Read runny nose"</string>
+    <string name="runny_nose_write_content_description" msgid="6210009950948827090">"Write runny nose"</string>
+    <string name="sneezing_read_content_description" msgid="1825781985598094799">"Read sneezing"</string>
+    <string name="sneezing_write_content_description" msgid="8125072216406958337">"Write sneezing"</string>
+    <string name="sore_throat_read_content_description" msgid="7798247670004858562">"Read sore throat"</string>
+    <string name="sore_throat_write_content_description" msgid="6058043292544091397">"Write sore throat"</string>
+    <string name="stuffy_nose_read_content_description" msgid="6604212451531546331">"Read stuffy nose"</string>
+    <string name="stuffy_nose_write_content_description" msgid="6950875986047625521">"Write stuffy nose"</string>
+    <string name="back_pain_read_content_description" msgid="1176155927269014089">"Read back pain"</string>
+    <string name="back_pain_write_content_description" msgid="6282959987099901645">"Write back pain"</string>
+    <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"Read lower back pain"</string>
+    <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"Write lower back pain"</string>
+    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"Read hot flashes"</string>
+    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"Write hot flashes"</string>
+    <string name="night_sweats_read_content_description" msgid="7644094250441074129">"Read night sweats"</string>
+    <string name="night_sweats_write_content_description" msgid="7501357533280452509">"Write night sweats"</string>
+    <string name="water_retention_read_content_description" msgid="211789030125880649">"Read water retention"</string>
+    <string name="water_retention_write_content_description" msgid="7109328727506593781">"Write water retention"</string>
+    <string name="cravings_read_content_description" msgid="9098905292448612603">"Read cravings"</string>
+    <string name="cravings_write_content_description" msgid="7932335159387976333">"Write cravings"</string>
+    <string name="bloating_read_content_description" msgid="8942780558464500997">"Read bloating"</string>
+    <string name="bloating_write_content_description" msgid="5014366726518564943">"Write bloating"</string>
+    <string name="cramps_read_content_description" msgid="5853663240074256855">"Read cramps"</string>
+    <string name="cramps_write_content_description" msgid="6777230560926849939">"Write cramps"</string>
+    <string name="abdominal_pain_read_content_description" msgid="6331928351160142817">"Read abdominal pain"</string>
+    <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"Write abdominal pain"</string>
+    <string name="breast_tenderness_read_content_description" msgid="1556133668276886256">"Read breast tenderness"</string>
+    <string name="breast_tenderness_write_content_description" msgid="5405234499024881940">"Write breast tenderness"</string>
+    <string name="pelvic_pain_read_content_description" msgid="8872893212311881743">"Read pelvic pain"</string>
+    <string name="pelvic_pain_write_content_description" msgid="8482016412474126674">"Write pelvic pain"</string>
+    <string name="vaginal_dryness_read_content_description" msgid="21587787265978758">"Read vaginal dryness"</string>
+    <string name="vaginal_dryness_write_content_description" msgid="7639415261021656468">"Write vaginal dryness"</string>
+    <string name="vaginal_itchiness_read_content_description" msgid="6027886706003079912">"Read vaginal itchiness"</string>
+    <string name="vaginal_itchiness_write_content_description" msgid="6833099607694941406">"Write vaginal itchiness"</string>
+    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"Read brain fog"</string>
+    <string name="brain_fog_write_content_description" msgid="354508934978268288">"Write brain fog"</string>
+    <string name="mood_change_read_content_description" msgid="5114563193264125173">"Read mood change"</string>
+    <string name="mood_change_write_content_description" msgid="7613564641235985120">"Write mood change"</string>
+    <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"Read memory lapse"</string>
+    <string name="memory_lapse_write_content_description" msgid="211569063190179476">"Write memory lapse"</string>
+    <string name="sleepiness_read_content_description" msgid="797381777988304669">"Read sleepiness"</string>
+    <string name="sleepiness_write_content_description" msgid="888236364245216476">"Write sleepiness"</string>
+    <string name="sleep_changes_read_content_description" msgid="277237231470749744">"Read sleep changes"</string>
+    <string name="sleep_changes_write_content_description" msgid="9078270254664653838">"Write sleep changes"</string>
+    <string name="insomnia_read_content_description" msgid="5225449618972721129">"Read insomnia"</string>
+    <string name="insomnia_write_content_description" msgid="4237153589826489083">"Write insomnia"</string>
+    <string name="snore_read_content_description" msgid="3447953925696237628">"Read snore"</string>
+    <string name="snore_write_content_description" msgid="959354771204900433">"Write snore"</string>
+    <string name="acne_uppercase_label" msgid="60568062993817483">"Acne"</string>
+    <string name="acne_lowercase_label" msgid="5301949536428255159">"acne"</string>
+    <string name="abdominal_pain_uppercase_label" msgid="442393846492385702">"Abdominal pain"</string>
+    <string name="abdominal_pain_lowercase_label" msgid="4136643670361233063">"abdominal pain"</string>
+    <string name="back_pain_uppercase_label" msgid="6034795846635350255">"Back pain"</string>
+    <string name="back_pain_lowercase_label" msgid="7487168354843582888">"back pain"</string>
+    <string name="bloating_uppercase_label" msgid="2827024204358491650">"Bloating"</string>
+    <string name="bloating_lowercase_label" msgid="4108236897678347488">"bloating"</string>
+    <string name="brain_fog_uppercase_label" msgid="3782508630097437711">"Brain fog"</string>
+    <string name="brain_fog_lowercase_label" msgid="8018499987092429724">"brain fog"</string>
+    <string name="breast_tenderness_uppercase_label" msgid="3633574517042452397">"Breast tenderness"</string>
+    <string name="breast_tenderness_lowercase_label" msgid="3745105353936751222">"breast tenderness"</string>
+    <string name="brittle_nails_uppercase_label" msgid="7290899807816681152">"Brittle nails"</string>
+    <string name="brittle_nails_lowercase_label" msgid="43861645923597496">"brittle nails"</string>
+    <string name="burning_mouth_uppercase_label" msgid="8975226712238467359">"Burning mouth"</string>
+    <string name="burning_mouth_lowercase_label" msgid="3378970972990933484">"burning mouth"</string>
+    <string name="chest_pain_uppercase_label" msgid="8091501402224214622">"Chest pain"</string>
+    <string name="chest_pain_lowercase_label" msgid="8817807562310689177">"chest pain"</string>
+    <string name="chest_tightness_uppercase_label" msgid="8988021502622503503">"Chest tightness"</string>
+    <string name="chest_tightness_lowercase_label" msgid="1770063390635610292">"chest tightness"</string>
+    <string name="chills_uppercase_label" msgid="4320786490882838834">"Chills"</string>
+    <string name="chills_lowercase_label" msgid="1306612496314055832">"chills"</string>
+    <string name="constipation_uppercase_label" msgid="7245001778443725742">"Constipation"</string>
+    <string name="constipation_lowercase_label" msgid="6217542866033766747">"constipation"</string>
+    <string name="cough_uppercase_label" msgid="5570609736970603012">"Cough"</string>
+    <string name="cough_lowercase_label" msgid="459638956679172779">"cough"</string>
+    <string name="cramps_uppercase_label" msgid="5162905309136173937">"Cramps"</string>
+    <string name="cramps_lowercase_label" msgid="4644485808002493449">"cramps"</string>
+    <string name="cravings_uppercase_label" msgid="4754194354806284307">"Cravings"</string>
+    <string name="cravings_lowercase_label" msgid="5836041614136287213">"cravings"</string>
+    <string name="dehydration_uppercase_label" msgid="10278239942824711">"Dehydration"</string>
+    <string name="dehydration_lowercase_label" msgid="8692632632276643276">"dehydration"</string>
+    <string name="diarrhea_uppercase_label" msgid="6310170127529968752">"Diarrhea"</string>
+    <string name="diarrhea_lowercase_label" msgid="5938774694742839016">"diarrhea"</string>
+    <string name="difficulty_swallowing_uppercase_label" msgid="3546617155300878657">"Difficulty swallowing"</string>
+    <string name="difficulty_swallowing_lowercase_label" msgid="4980631237611433200">"difficulty swallowing"</string>
+    <string name="dizziness_uppercase_label" msgid="8129950094459563983">"Dizziness"</string>
+    <string name="dizziness_lowercase_label" msgid="3462347558609662379">"dizziness"</string>
+    <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"Dry skin"</string>
+    <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"dry skin"</string>
+    <string name="earaches_uppercase_label" msgid="107701950625572701">"Earaches"</string>
+    <string name="earaches_lowercase_label" msgid="6240790850403958317">"earaches"</string>
+    <string name="fatigue_uppercase_label" msgid="7514286788083426578">"Fatigue"</string>
+    <string name="fatigue_lowercase_label" msgid="2669560685808367387">"fatigue"</string>
+    <string name="fever_uppercase_label" msgid="6889273008212535253">"Fever"</string>
+    <string name="fever_lowercase_label" msgid="3634400562894397159">"fever"</string>
+    <string name="generalized_body_ache_uppercase_label" msgid="2171378172300618053">"Generalized body ache"</string>
+    <string name="generalized_body_ache_lowercase_label" msgid="1725534000111875030">"generalized body ache"</string>
+    <string name="hair_loss_uppercase_label" msgid="6359351347019795813">"Hair loss"</string>
+    <string name="hair_loss_lowercase_label" msgid="2764498189966225461">"hair loss"</string>
+    <string name="headache_uppercase_label" msgid="863800537735413054">"Headache"</string>
+    <string name="headache_lowercase_label" msgid="6564231905087583135">"headache"</string>
+    <string name="heartburn_uppercase_label" msgid="1170571383460859644">"Heartburn"</string>
+    <string name="heartburn_lowercase_label" msgid="6235983036978705474">"heartburn"</string>
+    <string name="heart_palpitations_uppercase_label" msgid="2026400872833911547">"Heart palpitations"</string>
+    <string name="heart_palpitations_lowercase_label" msgid="1468243523322721340">"heart palpitations"</string>
+    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"Hot flashes"</string>
+    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"hot flashes"</string>
+    <string name="insomnia_uppercase_label" msgid="4946197328995261738">"Insomnia"</string>
+    <string name="insomnia_lowercase_label" msgid="3742025423716451058">"insomnia"</string>
+    <string name="joint_pain_uppercase_label" msgid="7693454621285586935">"Joint pain"</string>
+    <string name="joint_pain_lowercase_label" msgid="1877680075365305488">"joint pain"</string>
+    <string name="joint_stiffness_uppercase_label" msgid="5230114867081881444">"Joint stiffness"</string>
+    <string name="joint_stiffness_lowercase_label" msgid="8766445235392409480">"joint stiffness"</string>
+    <string name="loss_of_appetite_uppercase_label" msgid="4023141061302523950">"Loss of appetite"</string>
+    <string name="loss_of_appetite_lowercase_label" msgid="7558077308061468558">"loss of appetite"</string>
+    <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"Loss of consciousness"</string>
+    <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"loss of consciousness"</string>
+    <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"Lower back pain"</string>
+    <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"lower back pain"</string>
+    <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"Memory lapse"</string>
+    <string name="memory_lapse_lowercase_label" msgid="5590619293782264318">"memory lapse"</string>
+    <string name="mood_change_uppercase_label" msgid="6591596468077187132">"Mood change"</string>
+    <string name="mood_change_lowercase_label" msgid="5154765930188874067">"mood change"</string>
+    <string name="muscle_pain_uppercase_label" msgid="2470771124188001900">"Muscle pain"</string>
+    <string name="muscle_pain_lowercase_label" msgid="7842677871351347822">"muscle pain"</string>
+    <string name="nausea_uppercase_label" msgid="8384006696113532259">"Nausea"</string>
+    <string name="nausea_lowercase_label" msgid="8182471893071968504">"nausea"</string>
+    <string name="night_sweats_uppercase_label" msgid="6177687233700001658">"Night sweats"</string>
+    <string name="night_sweats_lowercase_label" msgid="5041101323453286082">"night sweats"</string>
+    <string name="pelvic_pain_uppercase_label" msgid="9057761232218571640">"Pelvic pain"</string>
+    <string name="pelvic_pain_lowercase_label" msgid="8993103170034473121">"pelvic pain"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"Rapid, pounding, or fluttering heartbeat"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"rapid, pounding, or fluttering heartbeat"</string>
+    <string name="reduced_capacity_for_exercise_uppercase_label" msgid="7471254320615756463">"Reduced capacity for exercise"</string>
+    <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"reduced capacity for exercise"</string>
+    <string name="runny_nose_uppercase_label" msgid="6561156187042071551">"Runny nose"</string>
+    <string name="runny_nose_lowercase_label" msgid="2214697492382685914">"runny nose"</string>
+    <string name="shortness_of_breath_uppercase_label" msgid="3747502224212110471">"Shortness of breath"</string>
+    <string name="shortness_of_breath_lowercase_label" msgid="3970444639088619346">"shortness of breath"</string>
+    <string name="skipped_heartbeat_uppercase_label" msgid="1004040920818222022">"Skipped heartbeat"</string>
+    <string name="skipped_heartbeat_lowercase_label" msgid="2446049805930852514">"skipped heartbeat"</string>
+    <string name="sleep_changes_uppercase_label" msgid="817870703301327111">"Sleep changes"</string>
+    <string name="sleep_changes_lowercase_label" msgid="8606593835222848643">"sleep changes"</string>
+    <string name="sleepiness_uppercase_label" msgid="8292543897598171825">"Sleepiness"</string>
+    <string name="sleepiness_lowercase_label" msgid="7563434619994665081">"sleepiness"</string>
+    <string name="sneezing_uppercase_label" msgid="3559089195823390830">"Sneezing"</string>
+    <string name="sneezing_lowercase_label" msgid="4614496100578986753">"sneezing"</string>
+    <string name="snore_uppercase_label" msgid="5408933698329003980">"Snore"</string>
+    <string name="snore_lowercase_label" msgid="4813706716393000341">"snore"</string>
+    <string name="sore_throat_uppercase_label" msgid="7652461264264564339">"Sore throat"</string>
+    <string name="sore_throat_lowercase_label" msgid="2671417552726018944">"sore throat"</string>
+    <string name="stomach_ache_uppercase_label" msgid="8450868632465837793">"Stomach ache"</string>
+    <string name="stomach_ache_lowercase_label" msgid="3263518334946627327">"stomach ache"</string>
+    <string name="stuffy_nose_uppercase_label" msgid="4216439398397550673">"Stuffy nose"</string>
+    <string name="stuffy_nose_lowercase_label" msgid="346310767340271161">"stuffy nose"</string>
+    <string name="unexplained_weight_changes_uppercase_label" msgid="1882204558194305221">"Unexplained weight changes"</string>
+    <string name="unexplained_weight_changes_lowercase_label" msgid="8433998024876395101">"unexplained weight changes"</string>
+    <string name="vaginal_dryness_uppercase_label" msgid="4256721076420375400">"Vaginal dryness"</string>
+    <string name="vaginal_dryness_lowercase_label" msgid="1329282833647595593">"vaginal dryness"</string>
+    <string name="vaginal_itchiness_uppercase_label" msgid="2843508264503404145">"Vaginal itchiness"</string>
+    <string name="vaginal_itchiness_lowercase_label" msgid="4569019157289060524">"vaginal itchiness"</string>
+    <string name="vomiting_uppercase_label" msgid="258794137964470267">"Vomiting"</string>
+    <string name="vomiting_lowercase_label" msgid="2520559377010270583">"vomiting"</string>
+    <string name="water_retention_uppercase_label" msgid="4748866467103152119">"Water retention"</string>
+    <string name="water_retention_lowercase_label" msgid="3738721149186742861">"water retention"</string>
+    <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Wheezing"</string>
+    <string name="wheezing_lowercase_label" msgid="1278548371813007771">"wheezing"</string>
 </resources>

@@ -19,6 +19,8 @@ import android.content.Context
 import android.content.Intent
 import android.health.connect.HealthConnectManager
 import android.health.connect.MedicalResourceTypeInfo
+import android.health.connect.ReadRecordsRequestUsingFilters
+import android.health.connect.ReadRecordsResponse
 import android.health.connect.RecordTypeInfoResponse
 import android.health.connect.datatypes.Record
 import android.os.OutcomeReceiver
@@ -70,11 +72,9 @@ import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -84,7 +84,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
+import org.mockito.ArgumentMatchers
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
@@ -120,6 +120,17 @@ class AppDataFragmentTest {
         navHostController = TestNavHostController(context)
         val allDataUseCase = AllDataUseCase(manager, Dispatchers.Main)
         appDataViewModel = AppDataViewModel(appInfoReader, allDataUseCase)
+        doAnswer { invocation ->
+                val receiver = invocation.arguments[2] as OutcomeReceiver<ReadRecordsResponse<*>, *>
+                receiver.onResult(ReadRecordsResponse(emptyList(), -1))
+                null
+            }
+            .`when`(manager)
+            .readRecords(
+                ArgumentMatchers.any(ReadRecordsRequestUsingFilters::class.java),
+                any(),
+                ArgumentMatchers.any(),
+            )
     }
 
     @After
@@ -188,7 +199,7 @@ class AppDataFragmentTest {
     }
 
     @Test
-    fun navigatesToAppEntries() {
+    fun navigatesToAppEntries() = runTest {
         mockData(
             listOf(
                 FitnessPermissionType.DISTANCE,
@@ -215,7 +226,7 @@ class AppDataFragmentTest {
     }
 
     @Test
-    fun navigatesToMedicalAppEntries() {
+    fun navigatesToMedicalAppEntries() = runTest {
         mockData(listOf(MedicalPermissionType.VACCINES))
         launchFragment<AppDataFragment>(
             bundleOf(
@@ -303,6 +314,7 @@ class AppDataFragmentTest {
             val fragment = activity.supportFragmentManager.findFragmentByTag("")
             (fragment as AppDataFragment).triggerDeletionState(DELETE)
         }
+        onIdle()
 
         assertCheckboxShown("Distance")
         assertCheckboxShown("Steps")
@@ -313,7 +325,7 @@ class AppDataFragmentTest {
     }
 
     @Test
-    fun inDeletionState_withMedicalData_showsCheckboxes() {
+    fun inDeletionState_withMedicalData_showsCheckboxes() = runTest {
         mockData(
             listOf(
                 FitnessPermissionType.DISTANCE,
@@ -340,6 +352,7 @@ class AppDataFragmentTest {
             val fragment = activity.supportFragmentManager.findFragmentByTag("")
             (fragment as AppDataFragment).triggerDeletionState(DELETE)
         }
+        onIdle()
 
         assertCheckboxShown("Allergies")
         assertCheckboxShown("Vaccines")
@@ -365,6 +378,7 @@ class AppDataFragmentTest {
             val fragment = activity.supportFragmentManager.findFragmentByTag("")
             (fragment as AppDataFragment).triggerDeletionState(DELETE)
         }
+        onIdle()
 
         onView(withText("Distance")).perform(click())
         onIdle()
@@ -373,11 +387,12 @@ class AppDataFragmentTest {
         verify(healthConnectLogger)
             .logInteraction(AppDataElement.PERMISSION_TYPE_BUTTON_WITH_CHECKBOX)
         onView(withText("Distance")).perform(click())
+        onIdle()
         assertThat(appDataViewModel.setOfPermissionTypesToBeDeleted.value).isEmpty()
     }
 
     @Test
-    fun inDeletionState_withMedicalData_checkedItemsAddedToDeleteSet() {
+    fun inDeletionState_withMedicalData_checkedItemsAddedToDeleteSet() = runTest {
         mockData(
             listOf(
                 FitnessPermissionType.DISTANCE,
@@ -398,6 +413,7 @@ class AppDataFragmentTest {
             val fragment = activity.supportFragmentManager.findFragmentByTag("")
             (fragment as AppDataFragment).triggerDeletionState(DELETE)
         }
+        onIdle()
 
         onView(withText("Vaccines")).perform(scrollTo()).perform(click())
         onIdle()
@@ -406,6 +422,7 @@ class AppDataFragmentTest {
         verify(healthConnectLogger)
             .logInteraction(AppDataElement.PERMISSION_TYPE_BUTTON_WITH_CHECKBOX)
         onView(withText("Vaccines")).perform(click())
+        onIdle()
         assertThat(appDataViewModel.setOfPermissionTypesToBeDeleted.value).isEmpty()
     }
 
@@ -424,12 +441,15 @@ class AppDataFragmentTest {
             val fragment = activity.supportFragmentManager.findFragmentByTag("")
             (fragment as AppDataFragment).triggerDeletionState(DELETE)
         }
+        onIdle()
 
         assertCheckboxShown("Distance")
         assertCheckboxShown("Steps")
         onView(withText("Distance")).perform(click())
+        onIdle()
 
         scenario.recreate()
+        onIdle()
         scenario.onActivity { activity ->
             val fragment = activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
             val fitnessCategoryPreference =
@@ -480,14 +500,17 @@ class AppDataFragmentTest {
             val fragment = activity.supportFragmentManager.findFragmentByTag("")
             (fragment as AppDataFragment).triggerDeletionState(DELETE)
         }
+        onIdle()
 
         assertCheckboxShown("Distance")
         assertCheckboxShown("Steps")
         assertCheckboxShown("Pregnancy")
         onView(withText("Distance")).perform(click())
         onView(withText("Pregnancy")).perform(scrollTo()).perform(click())
+        onIdle()
 
         scenario.recreate()
+        onIdle()
         scenario.onActivity { activity ->
             val fragment = activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
             val fitnessCategoryPreference =
@@ -538,6 +561,7 @@ class AppDataFragmentTest {
             val fragment = activity.supportFragmentManager.findFragmentByTag("")
             (fragment as AppDataFragment).triggerDeletionState(DELETE)
         }
+        onIdle()
 
         assertCheckboxShown("Select all")
     }
@@ -564,6 +588,7 @@ class AppDataFragmentTest {
             val fragment = activity.supportFragmentManager.findFragmentByTag("")
             (fragment as AppDataFragment).triggerDeletionState(DELETE)
         }
+        onIdle()
 
         assertCheckboxShown("Select all")
     }
@@ -603,10 +628,11 @@ class AppDataFragmentTest {
                 }
             }
         }
+        onIdle()
 
         assertCheckboxShown("Select all")
         onView(withText("Select all")).perform(click())
-        advanceUntilIdle()
+        onIdle()
 
         scenario.onActivity { activity ->
             val fragment = activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
@@ -684,10 +710,11 @@ class AppDataFragmentTest {
                 }
             }
         }
+        onIdle()
 
         assertCheckboxShown("Select all")
         onView(withText("Select all")).perform(click())
-        advanceUntilIdle()
+        onIdle()
 
         scenario.onActivity { activity ->
             val fragment = activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
@@ -742,13 +769,16 @@ class AppDataFragmentTest {
             val fragment = activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
             fragment.triggerDeletionState(DELETE)
         }
+        onIdle()
         assertCheckboxShown("Select all")
         onView(withText("Select all")).perform(click())
+        onIdle()
         assertThat(appDataViewModel.setOfPermissionTypesToBeDeleted.value)
             .containsExactlyElementsIn(
                 setOf(FitnessPermissionType.DISTANCE, FitnessPermissionType.STEPS)
             )
         onView(withText("Select all")).perform(click())
+        onIdle()
 
         scenario.onActivity { activity ->
             val fragment = activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
@@ -800,8 +830,10 @@ class AppDataFragmentTest {
                     activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
                 fragment.triggerDeletionState(DELETE)
             }
+            onIdle()
             assertCheckboxShown("Select all")
             onView(withText("Select all")).perform(click())
+            onIdle()
             assertThat(appDataViewModel.setOfPermissionTypesToBeDeleted.value)
                 .containsExactlyElementsIn(
                     setOf(
@@ -812,6 +844,7 @@ class AppDataFragmentTest {
                     )
                 )
             onView(withText("Select all")).perform(click())
+            onIdle()
 
             scenario.onActivity { activity ->
                 val fragment =
@@ -858,11 +891,14 @@ class AppDataFragmentTest {
             val fragment = activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
             fragment.triggerDeletionState(DELETE)
         }
+        onIdle()
 
         assertCheckboxShown("Select all")
         onView(withText("Select all")).perform(click())
+        onIdle()
 
         scenario.recreate()
+        onIdle()
         onView(withText("Select all")).perform(scrollTo())
         scenario.onActivity { activity ->
             val fragment = activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
@@ -908,11 +944,14 @@ class AppDataFragmentTest {
                     activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
                 fragment.triggerDeletionState(DELETE)
             }
+            onIdle()
 
             assertCheckboxShown("Select all")
             onView(withText("Select all")).perform(click())
+            onIdle()
 
             scenario.recreate()
+            onIdle()
             onView(withText("Select all")).perform(scrollTo())
             scenario.onActivity { activity ->
                 val fragment =
@@ -952,10 +991,12 @@ class AppDataFragmentTest {
             val fragment = activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
             fragment.triggerDeletionState(DELETE)
         }
-        advanceUntilIdle()
+        onIdle()
         assertCheckboxShown("Select all")
         onView(withText("Select all")).perform(click())
+        onIdle()
         onView(withText("Distance")).perform(click())
+        onIdle()
         scenario.onActivity { activity ->
             val fragment = activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
             val selectAllCheckboxPreference =
@@ -988,12 +1029,12 @@ class AppDataFragmentTest {
                     activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
                 fragment.triggerDeletionState(DELETE)
             }
-            advanceUntilIdle()
+            onIdle()
             assertCheckboxShown("Select all")
             onView(withText("Select all")).perform(click())
-            onView(withText("Pregnancy"))
-                .perform(scrollTo())
-                .perform(click())
+            onIdle()
+            onView(withText("Pregnancy")).perform(scrollTo()).perform(click())
+            onIdle()
             scenario.onActivity { activity ->
                 val fragment =
                     activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
@@ -1019,12 +1060,14 @@ class AppDataFragmentTest {
             val fragment = activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
             fragment.triggerDeletionState(DELETE)
         }
-        advanceUntilIdle()
+        onIdle()
 
         assertCheckboxShown("Distance")
         assertCheckboxShown("Menstruation")
         onView(withText("Distance")).perform(click())
+        onIdle()
         onView(withText("Menstruation")).perform(click())
+        onIdle()
         scenario.onActivity { activity ->
             val fragment = activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
             val selectAllCheckboxPreference =
@@ -1057,14 +1100,17 @@ class AppDataFragmentTest {
                     activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
                 fragment.triggerDeletionState(DELETE)
             }
-            advanceUntilIdle()
+            onIdle()
 
             assertCheckboxShown("Distance")
             assertCheckboxShown("Menstruation")
             assertCheckboxShown("Social history")
             onView(withText("Distance")).perform(click())
+            onIdle()
             onView(withText("Menstruation")).perform(scrollTo()).perform(click())
+            onIdle()
             onView(withText("Social history")).perform(scrollTo()).perform(click())
+            onIdle()
             scenario.onActivity { activity ->
                 val fragment =
                     activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment

@@ -36,6 +36,7 @@ final class InternalDataTypeDescriptor {
     @RecordTypeIdForUuid.Type private final int mRecordTypeIdForUuid;
     private final int mLoggingEnum;
     private final boolean mIsDerived;
+    private final boolean mSupportGranularityLogging;
 
     private InternalDataTypeDescriptor(Builder builder) {
         checkArgument(builder.mRecordTypeIdentifier != RECORD_TYPE_UNKNOWN);
@@ -48,6 +49,7 @@ final class InternalDataTypeDescriptor {
         mRecordTypeIdForUuid = builder.mRecordTypeIdForUuid;
         mLoggingEnum = builder.mLoggingEnum;
         mIsDerived = builder.mIsDerived;
+        mSupportGranularityLogging = builder.mSupportGranularityLogging;
     }
 
     @RecordTypeIdentifier.RecordType
@@ -72,6 +74,10 @@ final class InternalDataTypeDescriptor {
         return mIsDerived;
     }
 
+    boolean supportGranularityLogging() {
+        return mSupportGranularityLogging;
+    }
+
     interface RecordTypeIdentifierBuilderStep {
         RecordHelperBuilderStep setRecordTypeIdentifier(
                 @RecordTypeIdentifier.RecordType int recordTypeIdentifier);
@@ -92,6 +98,8 @@ final class InternalDataTypeDescriptor {
 
     interface BuildStep {
         BuildStep setDerived();
+
+        BuildStep setSupportGranularityLogging();
 
         InternalDataTypeDescriptor build();
     }
@@ -115,6 +123,7 @@ final class InternalDataTypeDescriptor {
         private int mLoggingEnum = HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DATA_TYPE_UNKNOWN;
 
         private boolean mIsDerived = false;
+        private boolean mSupportGranularityLogging = false;
 
         private Builder() {}
 
@@ -150,6 +159,12 @@ final class InternalDataTypeDescriptor {
         @Override
         public Builder setDerived() {
             mIsDerived = true;
+            return this;
+        }
+
+        @Override
+        public Builder setSupportGranularityLogging() {
+            mSupportGranularityLogging = true;
             return this;
         }
 

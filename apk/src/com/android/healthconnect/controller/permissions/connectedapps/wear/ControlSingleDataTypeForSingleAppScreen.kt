@@ -29,11 +29,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.sp
+import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission.Companion.fromPermissionString
+import com.android.healthconnect.controller.permissions.data.FitnessPermissionStrings
+import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.shared.WearPermissionsPaddingValues
 import com.android.permissioncontroller.wear.permission.components.ScrollableScreen
 import com.android.permissioncontroller.wear.permission.components.material2.ToggleChip
@@ -44,12 +44,15 @@ import com.android.permissioncontroller.wear.permission.components.material3.Wea
 @Composable
 fun ControlSingleDataTypeForSingleAppScreen(
     viewModel: WearConnectedAppsViewModel,
-    permissionStr: String,
-    dataTypeStr: String,
+    fitnessPermission: HealthPermission.FitnessPermission,
     packageName: String,
     onAdditionalPermissionClick: (String) -> Unit,
 ) {
-    val healthPermission = fromPermissionString(permissionStr)
+    val dataTypeStr =
+        stringResource(
+            FitnessPermissionStrings.fromPermissionType(fitnessPermission.fitnessPermissionType)
+                .uppercaseLabel
+        )
 
     val healthAppDataList = viewModel.wearHealthApps.collectAsState()
     val healthAppData = healthAppDataList.value.firstOrNull { it.packageName == packageName }
@@ -60,7 +63,7 @@ fun ControlSingleDataTypeForSingleAppScreen(
 
     // Whether this data type permission is allowed (foreground).
     var allowed by remember { mutableStateOf(true) }
-    allowed = healthAppData.isPermissionAllowed(healthPermission)
+    allowed = healthAppData.isPermissionAllowed(fitnessPermission)
 
     ScrollableScreen(asScalingList = true, showTimeText = true, title = appMetadata.appName) {
         // Data type text.
@@ -81,7 +84,7 @@ fun ControlSingleDataTypeForSingleAppScreen(
                 checked = allowed,
                 onCheckedChanged = { checked ->
                     if (checked) {
-                        viewModel.updatePermission(healthPermission, appMetadata, grant = true)
+                        viewModel.updatePermission(fitnessPermission, appMetadata, grant = true)
                         allowed = true
                     }
                 },
@@ -98,7 +101,7 @@ fun ControlSingleDataTypeForSingleAppScreen(
                 checked = !allowed,
                 onCheckedChanged = { checked ->
                     if (checked) {
-                        viewModel.updatePermission(healthPermission, appMetadata, grant = false)
+                        viewModel.updatePermission(fitnessPermission, appMetadata, grant = false)
                         allowed = false
                     }
                 },
@@ -142,7 +145,7 @@ fun ControlSingleDataTypeForSingleAppScreen(
             ) {
                 Text(
                     text = stringResource(resourceId, appMetadata!!.appName),
-                    style = TextStyle(fontSize = 12.sp),
+                    style = MaterialTheme.typography.caption2,
                 )
             }
         }

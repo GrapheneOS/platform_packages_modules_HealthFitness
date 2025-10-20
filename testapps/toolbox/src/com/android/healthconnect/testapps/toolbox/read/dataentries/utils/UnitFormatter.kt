@@ -55,12 +55,12 @@ class UnitFormatter {
                     Unit.Mass.MILLIGRAMS -> round(mass.inGrams * 1000, 3)
                     Unit.Mass.GRAMS -> round(mass.inGrams, 1)
                 }
-            return "${roundedMass.replace(regex,"1$")} ${context.getString(unit.label)}"
+            return "${roundedMass.replace(regex,"$1")} ${context.getString(unit.label)}"
         }
 
         fun formatEnergy(energy: Energy, context: Context): String {
             val roundedMass = round(energy.inCalories / 1000, 0)
-            return "${roundedMass.replace(regex,"1$")} ${context.getString(R.string.calories_label)}"
+            return "${roundedMass.replace(regex,"$1")} ${context.getString(R.string.calories_label)}"
         }
 
         fun formatPower(power: Power, context: Context): String {

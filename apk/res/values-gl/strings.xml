@@ -37,7 +37,7 @@
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplicacións teñen acceso"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplicación ten acceso"</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{Unha aplicación ten acceso}other{# aplicacións teñen acceso}}"</string>
-    <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Ningunha"</string>
+    <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Ningún"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Detalles da entrada"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Consultar datos"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Ver os datos e as aplicacións que poden acceder a eles"</string>
@@ -84,6 +84,8 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"nutrición"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"Benestar"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"benestar"</string>
+    <string name="symptoms_category_uppercase" msgid="1357167834284360975">"Síntomas"</string>
+    <string name="symptoms_category_lowercase" msgid="2298815597177353672">"síntomas"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"Consultar datos"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"Xestionar datos"</string>
     <string name="export_data_button" msgid="7783329820434117744">"Exportar datos"</string>
@@ -108,12 +110,12 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Ler calorías queimadas"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Permite que a aplicación lea os datos de calorías queimadas"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Queres permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda aos datos en segundo plano?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"Se dás permiso, esta aplicación poderá acceder aos datos de actividade física e benestar, ademais de aos rexistros de información sanitaria, cando non a esteas usando."</string>
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"Se dás permiso, esta aplicación poderá acceder aos datos sobre forma física e benestar, ademais de aos rexistros de información sanitaria, cando non a esteas usando."</string>
     <string name="background_read_medical_single_request_description_medical_granted" msgid="5162456401369633859">"Se dás permiso, esta aplicación poderá acceder aos rexistros de información sanitaria cando non a esteas usando."</string>
-    <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Se dás permiso, esta aplicación poderá acceder aos datos de actividade física e benestar cando non a esteas usando."</string>
+    <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Se dás permiso, esta aplicación poderá acceder aos datos sobre forma física e benestar cando non a esteas usando."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Se dás permiso, esta aplicación poderá acceder aos datos de Saúde conectada cando non a esteas usando."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"Queres permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda aos datos anteriores?"</string>
-    <string name="history_read_medical_single_request_description" msgid="6408051015819625330">"Se dás permiso, esta aplicación poderá acceder aos datos de actividade física e benestar engadidos antes do <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>."</string>
+    <string name="history_read_medical_single_request_description" msgid="6408051015819625330">"Se dás permiso, esta aplicación poderá acceder aos datos sobre forma física e benestar engadidos antes do <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>."</string>
     <string name="history_read_medical_single_request_description_fallback" msgid="6685832866184737207">"Se dás permiso, esta aplicación poderá acceder a todos os datos anteriores de actividade física e benestar."</string>
     <string name="history_read_single_request_description" msgid="9140843675330318112">"Se dás permiso, esta aplicación poderá acceder aos datos de Saúde conectada engadidos antes do <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>."</string>
     <string name="history_read_single_request_description_fallback" msgid="7685531357676523654">"Se dás permiso, esta aplicación poderá acceder a todos os datos anteriores de Saúde conectada."</string>
@@ -121,8 +123,8 @@
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g> tamén quere ter acceso a estas opcións de configuración de Saúde conectada"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Acceder a todos os datos en segundo plano"</string>
     <string name="background_read_medical_combined_request_title_medical_granted" msgid="7245376864667067106">"Acceder aos rexistros de información sanitaria en segundo plano"</string>
-    <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Acceder aos datos de actividade física e benestar en segundo plano"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"Permite que esta aplicación acceda aos datos de actividade física e benestar, ademais de aos rexistros de información sanitaria, cando non a esteas usando"</string>
+    <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Acceder aos datos sobre forma física e benestar en segundo plano"</string>
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"Permite que esta aplicación acceda aos datos sobre forma física e benestar, ademais de aos rexistros de información sanitaria, cando non a esteas usando"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Permite que esta aplicación acceda a estes datos cando non a esteas usando"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Permite que esta aplicación acceda a estes datos cando non a esteas usando"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Acceder aos datos en segundo plano"</string>
@@ -137,8 +139,8 @@
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Máis información sobre os permisos"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Acceder a todos os datos en segundo plano"</string>
     <string name="background_read_medical_access_title_medical_granted" msgid="7852915238347056139">"Acceder aos rexistros de información sanitaria en segundo plano"</string>
-    <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Acceder aos datos de actividade física e benestar en segundo plano"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"Permite que esta aplicación acceda aos datos de actividade física e benestar, ademais de aos rexistros de información sanitaria, cando non a esteas usando"</string>
+    <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Acceder aos datos sobre forma física e benestar en segundo plano"</string>
+    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"Permite que esta aplicación acceda aos datos sobre forma física e benestar, ademais de aos rexistros de información sanitaria, cando non a esteas usando"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Permite que esta aplicación acceda a estes datos cando non a esteas usando"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Permite que esta aplicación acceda a estes datos cando non a esteas usando"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Acceder aos datos en segundo plano"</string>
@@ -378,6 +380,15 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"consumo de alcohol"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Ler os datos de consumo de alcohol"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Escribir os datos de consumo de alcohol"</string>
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Tose"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"tose"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Ler síntomas"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Escribir síntomas"</string>
+    <string name="symptom_unknown" msgid="5796719193136239306">"Descoñecido"</string>
+    <string name="symptom_severity_mild" msgid="2689415474774489874">"Leve"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"Moderada"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"Grave"</string>
+    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="TYPE">%2$s</xliff:g> <xliff:g id="SEVERITY">%1$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> lea"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> escriba"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Permitir"</string>
@@ -398,7 +409,7 @@
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Se lle dás acceso de lectura a esta aplicación, poderá ler os datos novos e os correspondentes aos últimos 30 días"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Se lle dás acceso de lectura a esta aplicación, poderá ler os datos novos e os anteriores"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Queres permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda a Saúde conectada?"</string>
-    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Queres permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda aos datos de actividade física e benestar?"</string>
+    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Queres permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda aos datos sobre forma física e benestar?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Se queres saber como xestiona <xliff:g id="APP_NAME">%1$s</xliff:g> os teus datos, consulta a súa <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"política de privacidade"</string>
     <string name="medical_request_header" msgid="2300521519021510027">"Queres permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda aos teus rexistros de información sanitaria?"</string>
@@ -416,7 +427,7 @@
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"<xliff:g id="APP_NAME">%1$s</xliff:g> xa non poderá ler nin escribir datos de Saúde conectada, incluídos os datos anteriores e en segundo plano.\n\nEsta acción non lles afecta a outros permisos que poida ter esta aplicación, como os de acceso á localización, á cámara ou ao micrófono."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Eliminar tamén os datos de <xliff:g id="APP_NAME">%1$s</xliff:g> almacenados en Saúde conectada"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Queres quitar todos os permisos de forma física e benestar?"</string>
-    <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Eliminar tamén de Saúde conectada os datos de actividade física de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Eliminar tamén de Saúde conectada os datos sobre forma física de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Queres quitar os permisos de acceso á información sanitaria?"</string>
     <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"Eliminar tamén de Saúde conectada os rexistros de información sanitaria de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> xa non poderá ler nin escribir estes datos de Saúde conectada.\n\nEsta acción non lles afecta a outros permisos que poida ter esta aplicación, como os de acceso á localización, á cámara ou ao micrófono."</string>
@@ -428,7 +439,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> xa non poderá ler nin escribir datos de Saúde conectada, incluídos os datos en segundo plano.\n\nEsta acción non lles afecta a outros permisos que poida ter esta aplicación, como os de acceso á localización, á cámara ou ao micrófono."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> xa non poderá ler nin escribir datos de Saúde conectada, incluídos os datos anteriores.\n\nEsta acción non lles afecta a outros permisos que poida ter esta aplicación, como os de acceso á localización, á cámara ou ao micrófono."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> xa non poderá ler nin escribir datos de Saúde conectada, incluídos os datos anteriores e en segundo plano.\n\nEsta acción non lles afecta a outros permisos que poida ter esta aplicación, como os de acceso á localización, á cámara ou ao micrófono."</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="762880061016391846">"Eliminar tamén de Saúde conectada os datos de actividade física e os rexistros de información sanitaria de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="762880061016391846">"Eliminar tamén de Saúde conectada os datos sobre forma física e os rexistros de información sanitaria de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Quitáronse os permisos para esta aplicación"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Eliminar tamén todos os datos de Saúde conectada"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Día seguinte"</string>
@@ -443,7 +454,7 @@
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>."</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Código fonte detallado: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"Ver os datos de orixe"</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"As aplicacións que contan con este permiso poderán ler e escribir datos de actividade física."</string>
+    <string name="health_permission_header_description" msgid="7497601695462373927">"As aplicacións que contan con este permiso poderán ler e escribir datos sobre forma física."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Controla as aplicacións que poden acceder aos datos almacenados en Saúde conectada. Toca unha aplicación para revisar os datos que pode ler ou escribir."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Con permiso para acceder"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Sen permiso para acceder"</string>
@@ -572,7 +583,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Ir a Play Store"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Comeza a usar Saúde conectada"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Saúde conectada almacena os teus datos de saúde e actividade física, e permíteche sincronizar facilmente as distintas aplicacións do dispositivo"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Saúde conectada almacena e sincroniza os teus datos de saúde e actividade física de distintas aplicacións.\n\n"<b>"Datos de actividade física e benestar:"</b>" Sesións de exercicio, pasos, nutrición, sono e moito máis\n\n"<b>"Rexistros de información sanitaria:"</b>" Vacinas ou resultados de análises, por exemplo"</string>
+    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Saúde conectada almacena e sincroniza os teus datos de saúde e actividade física de distintas aplicacións.\n\n"<b>"Datos sobre forma física e benestar:"</b>" Sesións de exercicio, pasos, nutrición, sono e moito máis\n\n"<b>"Rexistros de información sanitaria:"</b>" Vacinas ou resultados de análises, por exemplo"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Con Saúde conectada"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Comparte os datos coas túas aplicacións"</b>\n"Escolle os datos que pode ler ou escribir cada aplicación en Saúde conectada"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Xestiona a configuración e a privacidade"</b>\n"Cambia os permisos de aplicacións e xestiona os teus datos en calquera momento"</string>
@@ -660,6 +671,8 @@
     <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{1 impulso en cadeira de rodas}other{# impulsos en cadeira de rodas}}"</string>
     <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 l}other{# l}}"</string>
     <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 litro}other{# litros}}"</string>
+    <string name="milliliter" msgid="7730118351176678375">"{count,plural, =1{1 ml}other{# ml}}"</string>
+    <string name="milliliter_long" msgid="6431396151823725792">"{count,plural, =1{1 mililitro}other{# mililitros}}"</string>
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 andar}other{# andares}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 min}other{# min}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 metro}other{# metros}}"</string>
@@ -835,8 +848,32 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} calada de cigarro electrónico}other{{quantity} caladas de cigarro electrónico}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} cigarro}other{{quantity} cigarros}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} descoñ."</string>
+    <string name="alcohol_consumption_title" msgid="2627266871623334972">"<xliff:g id="SERVING">%1$s</xliff:g> • <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"Outra opción"</string>
+    <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Cervexa"</string>
+    <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Viño"</string>
+    <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
+    <string name="alcohol_consumption_beverage_type_gin" msgid="5945396443339874907">"Xenebra"</string>
+    <string name="alcohol_consumption_beverage_type_whiskey" msgid="1085904168947658887">"Whisky"</string>
+    <string name="alcohol_consumption_beverage_type_rum" msgid="5230691377430212826">"Ron"</string>
+    <string name="alcohol_consumption_beverage_type_tequila" msgid="9074751455065347442">"Tequila"</string>
+    <string name="alcohol_consumption_beverage_type_lager" msgid="1490153167547219382">"Lager"</string>
+    <string name="alcohol_consumption_beverage_type_cider" msgid="3348115754435446544">"Sidra"</string>
+    <string name="alcohol_consumption_beverage_type_sake" msgid="2773512901340614154">"Sake"</string>
+    <string name="alcohol_consumption_beverage_type_shochu" msgid="3491300198222489324">"Shochu"</string>
+    <string name="alcohol_consumption_beverage_type_soju" msgid="113120387013483711">"Soju"</string>
+    <string name="alcohol_consumption_beverage_type_mead" msgid="1673063923088962681">"Hidromel"</string>
+    <string name="alcohol_consumption_beverage_type_absinthe" msgid="3972259596196421914">"Asente"</string>
+    <string name="alcohol_consumption_beverage_type_brandy" msgid="3782444367994599131">"Brandy"</string>
+    <string name="alcohol_consumption_beverage_type_cocktail" msgid="4711099215987668649">"Cóctel"</string>
+    <string name="alcohol_consumption_beverage_type_chuhai" msgid="4727177353197748690">"Chuhai"</string>
+    <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Highball"</string>
+    <string name="serving_volume_title" msgid="4727986574534974167">"Volume da ración"</string>
+    <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Graduación alcohólica"</string>
+    <string name="note_title" msgid="4101166558186573016">"Nota"</string>
+    <string name="details_title" msgid="8411891773854413790">"Detalles"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> h e <xliff:g id="MIN">%2$s</xliff:g> min"</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> min"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> h"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> e <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 hora}other{# horas}}"</string>
@@ -1042,6 +1079,7 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Feito"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{Eliminación automática activada. Elimínanse os datos con máis de # mes}other{Eliminación automática activada. Elimínanse os datos con máis de # meses}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"A función Eliminación automática está desactivada"</string>
+    <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+<xliff:g id="COUNT">%s</xliff:g>"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"Definir prioridade de aplicacións"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"No caso de que máis dunha aplicación engada datos de <xliff:g id="DATA_TYPE">%s</xliff:g>, Saúde conectada daralle prioridade á que apareza primeiro nesta lista. Arrastra as aplicacións para reordenalas."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Gardar"</string>
@@ -1175,6 +1213,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"As aplicacións conectadas xa non poderán ler estes datos de Saúde conectada"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Caixa marcada"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Caixa non marcada"</string>
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Mapa da ruta de exercicio dispoñible"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Día seguinte"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Semana seguinte"</string>
@@ -1214,7 +1253,7 @@
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Permitir selección"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"Mentres se utiliza a aplicación"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Rexeitar todos"</string>
-    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Queres permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda aos datos de actividade física e benestar?"</string>
+    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Queres permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda aos datos sobre forma física e benestar?"</string>
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"<xliff:g id="APP_NAME">%1$s</xliff:g> solicita acceso a <xliff:g id="DATA_TYPES">%2$s</xliff:g>.\n\nDecide se queres dar todos os permisos ou controlalos por separado."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Queres permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda a <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Forma física e benestar"</string>
@@ -1228,6 +1267,7 @@
     <string name="write_access" msgid="571547306854732263">"Acceso de escritura"</string>
     <string name="read_access" msgid="3317759826769372785">"Acceso de lectura"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g> de <xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> de <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplicacións con permiso"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Non hai ningunha solicitude por parte das aplicacións"</string>
     <string name="allowed" msgid="4158456017482263737">"Con permiso"</string>
@@ -1267,26 +1307,271 @@
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Consulta os teus datos de saúde en distintas aplicacións"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Saúde conectada permíteche compartir datos sobre a actividade física e o benestar entre as túas aplicacións. Mira que aplicacións podes conectar agora."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Conecta unha segunda aplicación"</string>
-    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configura outra aplicación con Saúde conectada para que poida comezar a compartir datos de actividade física e benestar"</string>
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configura outra aplicación con Saúde conectada para que poida comezar a compartir datos sobre forma física e benestar"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"Dispositivo actual"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Dispositivo descoñecido"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Información do dispositivo"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Os datos recompilados por este dispositivo almacenaranse en Saúde conectada, onde as aplicacións conectadas poderán acceder a eles"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Este dispositivo non admite o seguimento de pasos, pero segue tendo datos almacenados en Saúde conectada"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Este dispositivo non fai un seguimento dos pasos"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Permisos de escritura"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Datos do dispositivo"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Xestionar dispositivo"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Ver datos do dispositivo"</string>
-    <string name="native_steps_banner_title" msgid="7668164332675458871">"Os pasos rexistrados no teléfono vense en Saúde conectada"</string>
-    <string name="native_steps_banner_summary" msgid="7109953051996114646">"Agora os pasos rexistrados por este dispositivo almacénanse en Saúde conectada para que poidan acceder a eles as aplicacións conectadas"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_title" msgid="8990874387340782536">"Os pasos rexistrados no teléfono vense en Saúde conectada"</string>
+    <string name="native_steps_banner_summary" msgid="8255767487167444809">"Agora os pasos rexistrados por este dispositivo almacénanse en Saúde conectada para que poidan acceder a eles as aplicacións conectadas"</string>
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Pechar"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Revisar"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Agora os pasos están en Saúde conectada"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Agora os pasos rexistrados por este dispositivo almacénanse en Saúde conectada para que poidan acceder a eles as aplicacións conectadas"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"As túas aplicacións de saúde"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"Os teus datos de saúde"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"Preferencias"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Saúde conectada permíteche compartir os teus datos de saúde e actividade física en varias aplicacións. Deste xeito, podes acceder a estatísticas e experiencias ao mesmo tempo que mantés seguros os datos."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"Máis información sobre Saúde conectada"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"Os teus datos e as aplicacións que poden acceder a eles"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"Aplicacións que utilizaron recentemente os teus datos"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"Revisa os dispositivos que poden acceder aos datos de saúde"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Instala aplicacións que funcionen con Saúde conectada para velas aquí"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"Consultar as aplicacións compatibles"</string>
+    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Ver máis aplicacións de saúde"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"Non conectada"</string>
+    <string name="connect_app_button_content_description" msgid="296796277841527165">"Facer clic para conectar esta aplicación a Saúde conectada"</string>
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Agora non"</string>
+    <string name="acne_read_content_description" msgid="1176708404029936065">"Ler os datos de acne"</string>
+    <string name="acne_write_content_description" msgid="9221785868351412493">"Escribir os datos de acne"</string>
+    <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Ler os datos de uñas quebradizas"</string>
+    <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Escribir os datos de uñas quebradizas"</string>
+    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Ler os datos de ardentía bucal "</string>
+    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Escribir os datos de ardentía bucal "</string>
+    <string name="chills_read_content_description" msgid="7244946135559432433">"Ler os datos de calafríos"</string>
+    <string name="chills_write_content_description" msgid="6478646233405107436">"Escribir os datos de calafríos"</string>
+    <string name="dehydration_read_content_description" msgid="7633935838518756206">"Ler os datos de deshidratación"</string>
+    <string name="dehydration_write_content_description" msgid="541514183036921571">"Escribir os datos de deshidratación"</string>
+    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"Ler os datos de pel seca"</string>
+    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"Escribir os datos de pel seca"</string>
+    <string name="fever_read_content_description" msgid="3385209639730909489">"Ler os datos de febre"</string>
+    <string name="fever_write_content_description" msgid="8440573327719878961">"Escribir os datos de febre"</string>
+    <string name="joint_pain_read_content_description" msgid="2932523124488927967">"Ler os datos de dor articular"</string>
+    <string name="joint_pain_write_content_description" msgid="7405551860978844535">"Escribir os datos de dor articular"</string>
+    <string name="joint_stiffness_read_content_description" msgid="2132696730582070534">"Ler os datos de rixidez das articulacións"</string>
+    <string name="joint_stiffness_write_content_description" msgid="7556318646656369856">"Escribir os datos de rixidez das articulacións"</string>
+    <string name="muscle_pain_read_content_description" msgid="3116385630330673084">"Ler os datos de dor muscular"</string>
+    <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"Escribir os datos de dor muscular"</string>
+    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"Ler os datos de perda de consciencia"</string>
+    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"Escribir os datos de perda de consciencia"</string>
+    <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"Ler os datos de capacidade de exercicio reducida"</string>
+    <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"Escribir os datos de capacidade de exercicio reducida"</string>
+    <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"Ler os datos de cambios de peso inexplicables"</string>
+    <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"Escribir os datos de cambios de peso inexplicables"</string>
+    <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"Ler os datos de dor corporal xeneralizada"</string>
+    <string name="generalized_body_ache_write_content_description" msgid="4282920161878530009">"Escribir os datos de dor corporal xeneralizada"</string>
+    <string name="fatigue_read_content_description" msgid="8447413794808220408">"Ler os datos de fatiga"</string>
+    <string name="fatigue_write_content_description" msgid="3000326883358951973">"Escribir os datos de fatiga"</string>
+    <string name="constipation_read_content_description" msgid="4024154136010015370">"Ler os datos de estrinximento"</string>
+    <string name="constipation_write_content_description" msgid="9059835998017996999">"Escribir os datos de estrinximento"</string>
+    <string name="diarrhea_read_content_description" msgid="6643311788778713543">"Ler os datos de diarrea"</string>
+    <string name="diarrhea_write_content_description" msgid="2525160401458506448">"Escribir os datos de diarrea"</string>
+    <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"Ler os datos de perda de apetito"</string>
+    <string name="loss_of_appetite_write_content_description" msgid="7370817778828856877">"Escribir os datos de perda de apetito"</string>
+    <string name="nausea_read_content_description" msgid="7696809485706809234">"Ler os datos de náuseas"</string>
+    <string name="nausea_write_content_description" msgid="7956853318058549079">"Escribir os datos de náuseas"</string>
+    <string name="stomach_ache_read_content_description" msgid="6960461949095524373">"Ler os datos de dor de estómago"</string>
+    <string name="stomach_ache_write_content_description" msgid="4822349196740130790">"Escribir os datos de dor de estómago"</string>
+    <string name="vomiting_read_content_description" msgid="6425637340168306118">"Ler os datos de vómitos"</string>
+    <string name="vomiting_write_content_description" msgid="2768436321239967229">"Escribir os datos de vómitos"</string>
+    <string name="chest_pain_read_content_description" msgid="5388099127082653993">"Ler os datos de dor no peito"</string>
+    <string name="chest_pain_write_content_description" msgid="7570421665813979598">"Escribir os datos de dor no peito"</string>
+    <string name="chest_tightness_read_content_description" msgid="3234587929340517638">"Ler os datos de opresión no peito"</string>
+    <string name="chest_tightness_write_content_description" msgid="3365518444505217882">"Escribir os datos de opresión no peito"</string>
+    <string name="cough_read_content_description" msgid="4834360757270578547">"Ler os datos de tose"</string>
+    <string name="cough_write_content_description" msgid="2927943192149715422">"Escribir os datos de tose"</string>
+    <string name="heart_palpitations_read_content_description" msgid="5830132363981902576">"Ler os datos de palpitacións"</string>
+    <string name="heart_palpitations_write_content_description" msgid="6195434828951874561">"Escribir os datos de palpitacións"</string>
+    <string name="shortness_of_breath_read_content_description" msgid="5285037217314042125">"Ler os datos de dificultade para respirar"</string>
+    <string name="shortness_of_breath_write_content_description" msgid="1812050225998794712">"Escribir os datos de dificultade para respirar"</string>
+    <string name="wheezing_read_content_description" msgid="3698103133045395859">"Ler os datos de sibilancias"</string>
+    <string name="wheezing_write_content_description" msgid="3555234332119025686">"Escribir os datos de sibilancias"</string>
+    <string name="heartburn_read_content_description" msgid="4650825508743336439">"Ler os datos de acedía"</string>
+    <string name="heartburn_write_content_description" msgid="1857706822547818187">"Escribir os datos de acedía"</string>
+    <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"Ler os datos de arritmia"</string>
+    <string name="skipped_heartbeat_write_content_description" msgid="834686289232563614">"Escribir os datos de arritmia"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"Ler os datos de latexos cardíacos rápidos, fortes ou axitados"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"Escribir os datos de latexos cardíacos rápidos, fortes ou axitados"</string>
+    <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"Ler os datos de dificultade para tragar"</string>
+    <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"Escribir os datos de dificultade para tragar"</string>
+    <string name="dizziness_read_content_description" msgid="2525565486057144416">"Ler os datos de mareos"</string>
+    <string name="dizziness_write_content_description" msgid="1875365619054873732">"Escribir os datos de mareos"</string>
+    <string name="earaches_read_content_description" msgid="4643142391473401154">"Ler os datos de dores de oído"</string>
+    <string name="earaches_write_content_description" msgid="3551386029980258801">"Escribir os datos de dores de oído"</string>
+    <string name="hair_loss_read_content_description" msgid="4057044821025872986">"Ler os datos de caída do cabelo"</string>
+    <string name="hair_loss_write_content_description" msgid="7387442867237711823">"Escribir os datos de caída do cabelo"</string>
+    <string name="headache_read_content_description" msgid="7485283472508878298">"Ler os datos de dor de cabeza"</string>
+    <string name="headache_write_content_description" msgid="720183844750746485">"Escribir os datos de dor de cabeza"</string>
+    <string name="runny_nose_read_content_description" msgid="443700998701222852">"Ler os datos de goteo nasal"</string>
+    <string name="runny_nose_write_content_description" msgid="6210009950948827090">"Escribir os datos de goteo nasal"</string>
+    <string name="sneezing_read_content_description" msgid="1825781985598094799">"Ler os datos de espirros"</string>
+    <string name="sneezing_write_content_description" msgid="8125072216406958337">"Escribir os datos de espirros"</string>
+    <string name="sore_throat_read_content_description" msgid="7798247670004858562">"Ler os datos de dor de gorxa"</string>
+    <string name="sore_throat_write_content_description" msgid="6058043292544091397">"Escribir os datos de dor de gorxa"</string>
+    <string name="stuffy_nose_read_content_description" msgid="6604212451531546331">"Ler os datos de nariz tapado"</string>
+    <string name="stuffy_nose_write_content_description" msgid="6950875986047625521">"Escribir os datos de nariz tapado"</string>
+    <string name="back_pain_read_content_description" msgid="1176155927269014089">"Ler os datos de dor nas costas"</string>
+    <string name="back_pain_write_content_description" msgid="6282959987099901645">"Escribir os datos de dor nas costas"</string>
+    <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"Ler os datos de dor lumbar"</string>
+    <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"Escribir os datos de dor lumbar"</string>
+    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"Ler os datos de sufocacións"</string>
+    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"Escribir os datos de sufocacións"</string>
+    <string name="night_sweats_read_content_description" msgid="7644094250441074129">"Ler os datos de suores nocturnas"</string>
+    <string name="night_sweats_write_content_description" msgid="7501357533280452509">"Escribir os datos de suores nocturnas"</string>
+    <string name="water_retention_read_content_description" msgid="211789030125880649">"Ler os datos de retención de líquidos"</string>
+    <string name="water_retention_write_content_description" msgid="7109328727506593781">"Escribir os datos de retención de líquidos"</string>
+    <string name="cravings_read_content_description" msgid="9098905292448612603">"Ler os datos de antollos"</string>
+    <string name="cravings_write_content_description" msgid="7932335159387976333">"Escribir os datos de antollos"</string>
+    <string name="bloating_read_content_description" msgid="8942780558464500997">"Ler os datos de inchazo"</string>
+    <string name="bloating_write_content_description" msgid="5014366726518564943">"Escribir os datos de inchazo"</string>
+    <string name="cramps_read_content_description" msgid="5853663240074256855">"Ler os datos de cambras"</string>
+    <string name="cramps_write_content_description" msgid="6777230560926849939">"Escribir os datos de cambras"</string>
+    <string name="abdominal_pain_read_content_description" msgid="6331928351160142817">"Ler os datos de dor abdominal"</string>
+    <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"Escribir os datos de dor abdominal"</string>
+    <string name="breast_tenderness_read_content_description" msgid="1556133668276886256">"Ler os datos de sensibilidade mamaria"</string>
+    <string name="breast_tenderness_write_content_description" msgid="5405234499024881940">"Escribir os datos de sensibilidade mamaria"</string>
+    <string name="pelvic_pain_read_content_description" msgid="8872893212311881743">"Ler os datos de dor na pelve"</string>
+    <string name="pelvic_pain_write_content_description" msgid="8482016412474126674">"Escribir os datos de dor na pelve"</string>
+    <string name="vaginal_dryness_read_content_description" msgid="21587787265978758">"Ler os datos de sequidade vaxinal"</string>
+    <string name="vaginal_dryness_write_content_description" msgid="7639415261021656468">"Escribir os datos de sequidade vaxinal"</string>
+    <string name="vaginal_itchiness_read_content_description" msgid="6027886706003079912">"Ler os datos de proído vaxinal"</string>
+    <string name="vaginal_itchiness_write_content_description" msgid="6833099607694941406">"Escribir os datos de proído vaxinal"</string>
+    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"Ler os datos de néboa mental"</string>
+    <string name="brain_fog_write_content_description" msgid="354508934978268288">"Escribir os datos de néboa mental"</string>
+    <string name="mood_change_read_content_description" msgid="5114563193264125173">"Ler os datos de cambio de humor"</string>
+    <string name="mood_change_write_content_description" msgid="7613564641235985120">"Escribir os datos de cambio de humor"</string>
+    <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"Ler os datos de lapso de memoria"</string>
+    <string name="memory_lapse_write_content_description" msgid="211569063190179476">"Escribir os datos de lapso de memoria"</string>
+    <string name="sleepiness_read_content_description" msgid="797381777988304669">"Ler os datos de somnolencia"</string>
+    <string name="sleepiness_write_content_description" msgid="888236364245216476">"Escribir os datos de somnolencia"</string>
+    <string name="sleep_changes_read_content_description" msgid="277237231470749744">"Ler os datos de os cambios no sono"</string>
+    <string name="sleep_changes_write_content_description" msgid="9078270254664653838">"Escribir os datos de os cambios no sono"</string>
+    <string name="insomnia_read_content_description" msgid="5225449618972721129">"Ler os datos de insomnio"</string>
+    <string name="insomnia_write_content_description" msgid="4237153589826489083">"Escribir os datos de insomnio"</string>
+    <string name="snore_read_content_description" msgid="3447953925696237628">"Ler os datos de ronquido"</string>
+    <string name="snore_write_content_description" msgid="959354771204900433">"Escribir os datos de ronquido"</string>
+    <string name="acne_uppercase_label" msgid="60568062993817483">"Acne"</string>
+    <string name="acne_lowercase_label" msgid="5301949536428255159">"acne"</string>
+    <string name="abdominal_pain_uppercase_label" msgid="442393846492385702">"Dor abdominal"</string>
+    <string name="abdominal_pain_lowercase_label" msgid="4136643670361233063">"dor abdominal"</string>
+    <string name="back_pain_uppercase_label" msgid="6034795846635350255">"Dor nas costas"</string>
+    <string name="back_pain_lowercase_label" msgid="7487168354843582888">"dor nas costas"</string>
+    <string name="bloating_uppercase_label" msgid="2827024204358491650">"Inchazo"</string>
+    <string name="bloating_lowercase_label" msgid="4108236897678347488">"inchazo"</string>
+    <string name="brain_fog_uppercase_label" msgid="3782508630097437711">"Néboa mental"</string>
+    <string name="brain_fog_lowercase_label" msgid="8018499987092429724">"néboa mental"</string>
+    <string name="breast_tenderness_uppercase_label" msgid="3633574517042452397">"Sensibilidade mamaria"</string>
+    <string name="breast_tenderness_lowercase_label" msgid="3745105353936751222">"sensibilidade mamaria"</string>
+    <string name="brittle_nails_uppercase_label" msgid="7290899807816681152">"Uñas quebradizas"</string>
+    <string name="brittle_nails_lowercase_label" msgid="43861645923597496">"uñas quebradizas"</string>
+    <string name="burning_mouth_uppercase_label" msgid="8975226712238467359">"Ardentía bucal"</string>
+    <string name="burning_mouth_lowercase_label" msgid="3378970972990933484">"ardentía bucal"</string>
+    <string name="chest_pain_uppercase_label" msgid="8091501402224214622">"Dor no peito"</string>
+    <string name="chest_pain_lowercase_label" msgid="8817807562310689177">"dor no peito"</string>
+    <string name="chest_tightness_uppercase_label" msgid="8988021502622503503">"Opresión no peito"</string>
+    <string name="chest_tightness_lowercase_label" msgid="1770063390635610292">"opresión no peito"</string>
+    <string name="chills_uppercase_label" msgid="4320786490882838834">"Calafríos"</string>
+    <string name="chills_lowercase_label" msgid="1306612496314055832">"calafríos"</string>
+    <string name="constipation_uppercase_label" msgid="7245001778443725742">"Estrinximento"</string>
+    <string name="constipation_lowercase_label" msgid="6217542866033766747">"estrinximento"</string>
+    <string name="cough_uppercase_label" msgid="5570609736970603012">"Tose"</string>
+    <string name="cough_lowercase_label" msgid="459638956679172779">"tose"</string>
+    <string name="cramps_uppercase_label" msgid="5162905309136173937">"Cambras"</string>
+    <string name="cramps_lowercase_label" msgid="4644485808002493449">"cambras"</string>
+    <string name="cravings_uppercase_label" msgid="4754194354806284307">"Antollos"</string>
+    <string name="cravings_lowercase_label" msgid="5836041614136287213">"antollos"</string>
+    <string name="dehydration_uppercase_label" msgid="10278239942824711">"Deshidratación"</string>
+    <string name="dehydration_lowercase_label" msgid="8692632632276643276">"deshidratación"</string>
+    <string name="diarrhea_uppercase_label" msgid="6310170127529968752">"Diarrea"</string>
+    <string name="diarrhea_lowercase_label" msgid="5938774694742839016">"diarrea"</string>
+    <string name="difficulty_swallowing_uppercase_label" msgid="3546617155300878657">"Dificultade para tragar"</string>
+    <string name="difficulty_swallowing_lowercase_label" msgid="4980631237611433200">"dificultade para tragar"</string>
+    <string name="dizziness_uppercase_label" msgid="8129950094459563983">"Mareos"</string>
+    <string name="dizziness_lowercase_label" msgid="3462347558609662379">"mareos"</string>
+    <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"Pel seca"</string>
+    <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"pel seca"</string>
+    <string name="earaches_uppercase_label" msgid="107701950625572701">"Dores de oído"</string>
+    <string name="earaches_lowercase_label" msgid="6240790850403958317">"dores de oído"</string>
+    <string name="fatigue_uppercase_label" msgid="7514286788083426578">"Fatiga"</string>
+    <string name="fatigue_lowercase_label" msgid="2669560685808367387">"fatiga"</string>
+    <string name="fever_uppercase_label" msgid="6889273008212535253">"Febre"</string>
+    <string name="fever_lowercase_label" msgid="3634400562894397159">"febre"</string>
+    <string name="generalized_body_ache_uppercase_label" msgid="2171378172300618053">"Dor corporal xeneralizada"</string>
+    <string name="generalized_body_ache_lowercase_label" msgid="1725534000111875030">"dor corporal xeneralizada"</string>
+    <string name="hair_loss_uppercase_label" msgid="6359351347019795813">"Caída do cabelo"</string>
+    <string name="hair_loss_lowercase_label" msgid="2764498189966225461">"caída do cabelo"</string>
+    <string name="headache_uppercase_label" msgid="863800537735413054">"Dor de cabeza"</string>
+    <string name="headache_lowercase_label" msgid="6564231905087583135">"dor de cabeza"</string>
+    <string name="heartburn_uppercase_label" msgid="1170571383460859644">"Acedía"</string>
+    <string name="heartburn_lowercase_label" msgid="6235983036978705474">"acedía"</string>
+    <string name="heart_palpitations_uppercase_label" msgid="2026400872833911547">"Palpitacións"</string>
+    <string name="heart_palpitations_lowercase_label" msgid="1468243523322721340">"palpitacións"</string>
+    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"Sufocacións"</string>
+    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"sufocacións"</string>
+    <string name="insomnia_uppercase_label" msgid="4946197328995261738">"Insomnio"</string>
+    <string name="insomnia_lowercase_label" msgid="3742025423716451058">"insomnio"</string>
+    <string name="joint_pain_uppercase_label" msgid="7693454621285586935">"Dor articular"</string>
+    <string name="joint_pain_lowercase_label" msgid="1877680075365305488">"dor articular"</string>
+    <string name="joint_stiffness_uppercase_label" msgid="5230114867081881444">"Rixidez das articulacións"</string>
+    <string name="joint_stiffness_lowercase_label" msgid="8766445235392409480">"rixidez das articulacións"</string>
+    <string name="loss_of_appetite_uppercase_label" msgid="4023141061302523950">"Perda de apetito"</string>
+    <string name="loss_of_appetite_lowercase_label" msgid="7558077308061468558">"perda de apetito"</string>
+    <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"Perda de consciencia"</string>
+    <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"perda de consciencia"</string>
+    <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"Dor lumbar"</string>
+    <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"dor lumbar"</string>
+    <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"Lapso de memoria"</string>
+    <string name="memory_lapse_lowercase_label" msgid="5590619293782264318">"lapso de memoria"</string>
+    <string name="mood_change_uppercase_label" msgid="6591596468077187132">"Cambio de humor"</string>
+    <string name="mood_change_lowercase_label" msgid="5154765930188874067">"cambio de humor"</string>
+    <string name="muscle_pain_uppercase_label" msgid="2470771124188001900">"Dor muscular"</string>
+    <string name="muscle_pain_lowercase_label" msgid="7842677871351347822">"dor muscular"</string>
+    <string name="nausea_uppercase_label" msgid="8384006696113532259">"Náuseas"</string>
+    <string name="nausea_lowercase_label" msgid="8182471893071968504">"náuseas"</string>
+    <string name="night_sweats_uppercase_label" msgid="6177687233700001658">"Suores nocturnas"</string>
+    <string name="night_sweats_lowercase_label" msgid="5041101323453286082">"suores nocturnas"</string>
+    <string name="pelvic_pain_uppercase_label" msgid="9057761232218571640">"Dor na pelve"</string>
+    <string name="pelvic_pain_lowercase_label" msgid="8993103170034473121">"dor na pelve"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"Latexos cardíacos rápidos, fortes ou axitados"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"latexos cardíacos rápidos, fortes ou axitados"</string>
+    <string name="reduced_capacity_for_exercise_uppercase_label" msgid="7471254320615756463">"Capacidade de exercicio reducida"</string>
+    <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"capacidade de exercicio reducida"</string>
+    <string name="runny_nose_uppercase_label" msgid="6561156187042071551">"Goteo nasal"</string>
+    <string name="runny_nose_lowercase_label" msgid="2214697492382685914">"goteo nasal"</string>
+    <string name="shortness_of_breath_uppercase_label" msgid="3747502224212110471">"Dificultade para respirar"</string>
+    <string name="shortness_of_breath_lowercase_label" msgid="3970444639088619346">"dificultade para respirar"</string>
+    <string name="skipped_heartbeat_uppercase_label" msgid="1004040920818222022">"Arritmia"</string>
+    <string name="skipped_heartbeat_lowercase_label" msgid="2446049805930852514">"arritmia"</string>
+    <string name="sleep_changes_uppercase_label" msgid="817870703301327111">"Cambios no sono"</string>
+    <string name="sleep_changes_lowercase_label" msgid="8606593835222848643">"cambios no sono"</string>
+    <string name="sleepiness_uppercase_label" msgid="8292543897598171825">"Somnolencia"</string>
+    <string name="sleepiness_lowercase_label" msgid="7563434619994665081">"somnolencia"</string>
+    <string name="sneezing_uppercase_label" msgid="3559089195823390830">"Espirros"</string>
+    <string name="sneezing_lowercase_label" msgid="4614496100578986753">"espirros"</string>
+    <string name="snore_uppercase_label" msgid="5408933698329003980">"Ronquido"</string>
+    <string name="snore_lowercase_label" msgid="4813706716393000341">"ronquido"</string>
+    <string name="sore_throat_uppercase_label" msgid="7652461264264564339">"Dor de gorxa"</string>
+    <string name="sore_throat_lowercase_label" msgid="2671417552726018944">"dor de gorxa"</string>
+    <string name="stomach_ache_uppercase_label" msgid="8450868632465837793">"Dor de estómago"</string>
+    <string name="stomach_ache_lowercase_label" msgid="3263518334946627327">"dor de estómago"</string>
+    <string name="stuffy_nose_uppercase_label" msgid="4216439398397550673">"Nariz tapado"</string>
+    <string name="stuffy_nose_lowercase_label" msgid="346310767340271161">"nariz tapado"</string>
+    <string name="unexplained_weight_changes_uppercase_label" msgid="1882204558194305221">"Cambios de peso inexplicables"</string>
+    <string name="unexplained_weight_changes_lowercase_label" msgid="8433998024876395101">"cambios de peso inexplicables"</string>
+    <string name="vaginal_dryness_uppercase_label" msgid="4256721076420375400">"Sequidade vaxinal"</string>
+    <string name="vaginal_dryness_lowercase_label" msgid="1329282833647595593">"sequidade vaxinal"</string>
+    <string name="vaginal_itchiness_uppercase_label" msgid="2843508264503404145">"Proído vaxinal"</string>
+    <string name="vaginal_itchiness_lowercase_label" msgid="4569019157289060524">"proído vaxinal"</string>
+    <string name="vomiting_uppercase_label" msgid="258794137964470267">"Vómitos"</string>
+    <string name="vomiting_lowercase_label" msgid="2520559377010270583">"vómitos"</string>
+    <string name="water_retention_uppercase_label" msgid="4748866467103152119">"Retención de líquidos"</string>
+    <string name="water_retention_lowercase_label" msgid="3738721149186742861">"retención de líquidos"</string>
+    <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Sibilancias"</string>
+    <string name="wheezing_lowercase_label" msgid="1278548371813007771">"sibilancias"</string>
 </resources>

@@ -17,7 +17,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layoutDirection="ltr"
     android:paddingBottom="@dimen/spacing_large"
     android:orientation="horizontal">
 
@@ -27,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:contentDescription="@string/navigation_previous_day"
-        android:layout_marginLeft="@dimen/spacing_normal"
+        android:layout_marginStart="@dimen/spacing_normal"
         app:icon="@drawable/arrow_left"
         style="@style/SettingsLibButtonStyle.Expressive.Icon.Filled"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:contentDescription="@string/navigation_next_day"
-        android:layout_marginRight="@dimen/spacing_normal"
+        android:layout_marginEnd="@dimen/spacing_normal"
         app:icon="@drawable/arrow_right"
         style="@style/SettingsLibButtonStyle.Expressive.Icon.Filled"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +56,6 @@
         app:layout_constraintEnd_toStartOf="@+id/navigation_next_day"
         app:layout_constraintStart_toEndOf="@+id/navigation_previous_day"
         app:layout_constraintTop_toTopOf="parent"
-        android:layoutDirection="locale"
         android:orientation="horizontal">
         <Spinner
             android:id="@+id/date_picker_spinner"

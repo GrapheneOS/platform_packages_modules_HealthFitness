@@ -23,6 +23,7 @@ import static android.content.pm.PackageManager.GET_PERMISSIONS;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
 import static android.health.connect.HealthPermissions.READ_HEART_RATE;
+import com.android.modules.utils.build.SdkLevel;
 
 import static com.android.server.healthconnect.permission.PackageInfoUtils.getPackageInfoUnchecked;
 
@@ -434,8 +435,8 @@ public final class HealthConnectPermissionHelper {
 
     /** Returns true if we should enforce permission usage intent for this package. */
     public boolean shouldEnforcePermissionUsageIntent(String packageName, UserHandle userHandle) {
-        // When flag is disabled, always enforce permission usage intent.
-        if (!Flags.replaceBodySensorPermissionEnabled()) {
+        // When body sensors split permission is not enabled, enforce permission usage intent.
+        if (!SdkLevel.isAtLeastB()) {
             return true;
         }
 
@@ -458,8 +459,8 @@ public final class HealthConnectPermissionHelper {
      */
     private boolean shouldEnforcePermissionUsageIntent(
             String packageName, UserHandle userHandle, String permissionName) {
-        // When flag is disabled, always enforce permission usage intent.
-        if (!Flags.replaceBodySensorPermissionEnabled()) {
+        // When body sensors split permission is not enabled, enforce permission usage intent.
+        if (!SdkLevel.isAtLeastB()) {
             return true;
         }
 
@@ -609,7 +610,7 @@ public final class HealthConnectPermissionHelper {
     /** Returns if the app is targeting SDK 35 and requesting the given permission. */
     private boolean isAppRequestingPermissionWithOutdatedTargetSdk(
             String packageName, UserHandle userHandle, String permission, int buildVersion) {
-        if (!Flags.replaceBodySensorPermissionEnabled()) {
+        if (!SdkLevel.isAtLeastB()) {
             return false;
         }
 

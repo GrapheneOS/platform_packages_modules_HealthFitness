@@ -20,12 +20,16 @@ import android.cts.statsdatom.lib.AtomTestUtils
 import android.cts.statsdatom.lib.ConfigUtils
 import android.cts.statsdatom.lib.DeviceUtils
 import android.cts.statsdatom.lib.ReportUtils
-import android.healthconnect.cts.HostSideTestUtil
+import android.healthconnect.cts.HostSideTestUtil.TEST_APP_PERMISSIONS
 import android.healthconnect.cts.HostSideTestUtil.TEST_APP_PKG_NAME
 import android.healthconnect.cts.HostSideTestUtil.UI_TESTS_HELPER
+import android.healthconnect.cts.HostSideTestUtil.grantPermissionsWithAdb
 import android.healthconnect.cts.HostSideTestUtil.isHardwareSupported
 import android.healthfitness.ui.ElementId
 import android.healthfitness.ui.PageId
+import android.platform.test.flag.junit.CheckFlagsRule
+import android.platform.test.flag.junit.host.HostFlagsValueProvider
+import com.android.healthfitness.flags.Flags.newHomeScreen
 import com.android.os.StatsLog
 import com.android.os.healthfitness.ui.UiExtensionAtoms
 import com.android.tradefed.build.IBuildInfo
@@ -33,8 +37,13 @@ import com.android.tradefed.testtype.DeviceTestCase
 import com.android.tradefed.testtype.IBuildReceiver
 import com.google.common.truth.Truth.assertThat
 import com.google.protobuf.ExtensionRegistry
+import org.junit.Rule
 
 class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
+
+    @Rule
+    val mCheckFlagsRule: CheckFlagsRule =
+        HostFlagsValueProvider.createCheckFlagsRule { this.getDevice() }
 
     companion object {
         private const val TAG = "HomeFragmentHostTest"
@@ -51,8 +60,6 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
         assertThat(mCtsBuild).isNotNull()
         ConfigUtils.removeConfig(device)
         ReportUtils.clearReports(device)
-        // TODO(b/313055175): Do not disable rate limiting once b/300238889 is resolved.
-        HostSideTestUtil.setupRateLimitingFeatureFlag(device)
         val pmResult =
             device.executeShellCommand(
                 "pm list packages com.google.android.healthconnect.controller"
@@ -73,6 +80,12 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
                 UiExtensionAtoms.HEALTH_CONNECT_UI_INTERACTION_FIELD_NUMBER,
             ),
         )
+
+        // Permissions declared in the TEST_APP's manifest should be automatically granted, however
+        // that seems flaky which led to issues like b/396574091, b/384734147.
+        // ag/31764622 which explicitly grants permissions via ADB seems to work so far, so we
+        // should do the same for this test file.
+        grantPermissionsWithAdb(device, TEST_APP_PKG_NAME, TEST_APP_PERMISSIONS)
     }
 
     @Throws(Exception::class)
@@ -82,8 +95,6 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
         }
         ConfigUtils.removeConfig(device)
         ReportUtils.clearReports(device)
-        // TODO(b/313055175): Do not disable rate limiting once b/300238889 is resolved.
-        HostSideTestUtil.restoreRateLimitingFeatureFlag(device)
         super.tearDown()
     }
 
@@ -103,7 +114,12 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
         val data = ReportUtils.getEventMetricDataList(device, registry)
         assertThat(data.size).isAtLeast(2)
 
-        val homePageId = PageId.HOME_PAGE
+        val homePageId =
+            if (newHomeScreen()) {
+                PageId.NEW_HOME_PAGE
+            } else {
+                PageId.HOME_PAGE
+            }
         val manageDataPageId = PageId.MANAGE_DATA_PAGE
         val homePageImpression =
             data.filter {
@@ -131,15 +147,27 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
         assertThat(manageDataInteraction.size).isAtLeast(1)
 
         // Home page impressions
-        val appPermissionsImpression = filterImpressionLogs(data, ElementId.APP_PERMISSIONS_BUTTON)
+        val appPermissionsImpression =
+            if (newHomeScreen()) {
+                filterImpressionLogs(data, ElementId.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON)
+            } else {
+                filterImpressionLogs(data, ElementId.APP_PERMISSIONS_BUTTON)
+            }
         assertThat(appPermissionsImpression.size).isAtLeast(1)
 
-        val recentAccessDataImpression = filterImpressionLogs(data, ElementId.RECENT_ACCESS_ENTRY)
-        assertThat(recentAccessDataImpression.size).isAtLeast(1)
+        if (newHomeScreen()) {
+            val recentAccessButtonImpression =
+                filterImpressionLogs(data, ElementId.RECENT_ACCESS_BUTTON)
+            assertThat(recentAccessButtonImpression.size).isAtLeast(1)
+        } else {
+            val recentAccessDataImpression =
+                filterImpressionLogs(data, ElementId.RECENT_ACCESS_ENTRY)
+            assertThat(recentAccessDataImpression.size).isAtLeast(1)
 
-        val seeAllRecentAccessImpression =
-            filterImpressionLogs(data, ElementId.SEE_ALL_RECENT_ACCESS_BUTTON)
-        assertThat(seeAllRecentAccessImpression.size).isAtLeast(1)
+            val seeAllRecentAccessImpression =
+                filterImpressionLogs(data, ElementId.SEE_ALL_RECENT_ACCESS_BUTTON)
+            assertThat(seeAllRecentAccessImpression.size).isAtLeast(1)
+        }
 
         val toolbarImpression = filterImpressionLogs(data, ElementId.TOOLBAR_SETTINGS_BUTTON)
         assertThat(toolbarImpression.size).isAtLeast(1)

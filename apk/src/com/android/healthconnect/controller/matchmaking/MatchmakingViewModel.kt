@@ -49,16 +49,15 @@ constructor(
 
     companion object {
         private const val EXPANDED_PREFERENCE_KEYS = "expanded_preference_keys"
+        private const val GRANTED_PERMISSIONS_KEY = "granted_permissions"
     }
 
     private val _matchmakingState = MutableLiveData<MatchmakingState>()
     val matchmakingState: LiveData<MatchmakingState>
         get() = _matchmakingState
 
-    private val _grantedPermissions =
-        MutableLiveData<Map<String, List<FitnessPermission>>>(emptyMap())
-    val grantedPermissions: LiveData<Map<String, List<FitnessPermission>>>
-        get() = _grantedPermissions
+    val grantedPermissions: MutableLiveData<Map<String, List<FitnessPermission>>> =
+        savedStateHandle.getLiveData(GRANTED_PERMISSIONS_KEY, emptyMap())
 
     val atLeastOnePermissionGranted = MutableLiveData(false)
     val allPermissionsGranted = MutableLiveData(false)
@@ -99,6 +98,12 @@ constructor(
                                 )
                             }
                             .sortedBy { it.metadata.appName }
+
+                    if (grantedPermissions.value.isNullOrEmpty()) {
+                        grantedPermissions.postValue(emptyMap())
+                    }
+                    atLeastOnePermissionGranted.postValue(grantedPermissions.value?.isNotEmpty())
+                    updateAllPermissionsGrantedStatus()
                     _matchmakingState.postValue(MatchmakingState.WithData(appMetadata, sortedApps))
                 }
                 is UseCaseResults.Failed -> {
@@ -109,17 +114,17 @@ constructor(
     }
 
     fun addPermissionToGrantedList(packageName: String, permission: FitnessPermission) {
-        val currentPermissions = _grantedPermissions.value?.toMutableMap() ?: mutableMapOf()
+        val currentPermissions = grantedPermissions.value?.toMutableMap() ?: mutableMapOf()
         val appPermissions = currentPermissions[packageName]?.toMutableList() ?: mutableListOf()
         appPermissions.add(permission)
         currentPermissions[packageName] = appPermissions
-        _grantedPermissions.value = currentPermissions
+        grantedPermissions.value = currentPermissions
         atLeastOnePermissionGranted.value = true
         updateAllPermissionsGrantedStatus()
     }
 
     fun removePermissionFromGrantedList(packageName: String, permission: FitnessPermission) {
-        val currentPermissions = _grantedPermissions.value?.toMutableMap() ?: mutableMapOf()
+        val currentPermissions = grantedPermissions.value?.toMutableMap() ?: mutableMapOf()
         val appPermissions = currentPermissions[packageName]?.toMutableList() ?: mutableListOf()
         appPermissions.remove(permission)
         if (appPermissions.isEmpty()) {
@@ -127,9 +132,9 @@ constructor(
         } else {
             currentPermissions[packageName] = appPermissions
         }
-        _grantedPermissions.value = currentPermissions
+        grantedPermissions.value = currentPermissions
         atLeastOnePermissionGranted.value =
-            _grantedPermissions.value?.values?.any { it.isNotEmpty() }
+            grantedPermissions.value?.values?.any { it.isNotEmpty() }
         updateAllPermissionsGrantedStatus()
     }
 
@@ -138,28 +143,40 @@ constructor(
             (matchmakingState.value as? MatchmakingState.WithData)?.matchingApps?.associate {
                 it.metadata.packageName to it.permissions
             }
-        _grantedPermissions.value = allPermissions ?: emptyMap()
+        grantedPermissions.value = allPermissions ?: emptyMap()
         atLeastOnePermissionGranted.value = allPermissions?.isNotEmpty()
         updateAllPermissionsGrantedStatus()
     }
 
     fun removeAllPermissionsFromGrantedList() {
-        _grantedPermissions.value = emptyMap()
+        grantedPermissions.value = emptyMap()
         atLeastOnePermissionGranted.value = false
         updateAllPermissionsGrantedStatus()
     }
 
     private fun updateAllPermissionsGrantedStatus() {
-        val granted = _grantedPermissions.value
+        val grantedMap = grantedPermissions.value ?: emptyMap()
         val allApps = (matchmakingState.value as? MatchmakingState.WithData)?.matchingApps
-        val allPermissions = allApps?.associate { it.metadata.packageName to it.permissions }
-        allPermissionsGranted.value =
-            granted == allPermissions && allPermissions?.isNotEmpty() ?: false
+        val allPermissionsMap =
+            allApps?.associate { it.metadata.packageName to it.permissions } ?: emptyMap()
+
+        if (allPermissionsMap.isEmpty() || grantedMap.keys != allPermissionsMap.keys) {
+            allPermissionsGranted.value = false
+            return
+        }
+
+        val allGranted =
+            allPermissionsMap.all { (packageName, allPerms) ->
+                val grantedPerms = grantedMap[packageName]
+                grantedPerms?.toSet() == allPerms.toSet()
+            }
+
+        allPermissionsGranted.value = allGranted
     }
 
     fun grantPermissions() {
         viewModelScope.launch {
-            _grantedPermissions.value?.forEach { (packageName, permissions) ->
+            grantedPermissions.value?.forEach { (packageName, permissions) ->
                 permissions.forEach { permission ->
                     healthPermissionManager.grantHealthPermission(
                         packageName,
@@ -167,30 +184,60 @@ constructor(
                     )
                 }
             }
-            _grantedPermissions.postValue(emptyMap())
+
+            recordDenialForUngrantedPermissions()
+
+            grantedPermissions.postValue(emptyMap())
             atLeastOnePermissionGranted.postValue(false)
+        }
+    }
+
+    private suspend fun recordDenialForUngrantedPermissions() {
+        val state = matchmakingState.value
+        if (state is MatchmakingState.WithData) {
+            val allPermissionsByPackage =
+                state.matchingApps.associate { it.metadata.packageName to it.permissions.toSet() }
+            val grantedPermissionsByPackage = grantedPermissions.value ?: emptyMap()
+            val deniedApps = mutableMapOf<String, List<String>>()
+
+            allPermissionsByPackage.forEach { (packageName, allPerms) ->
+                val grantedPerms = grantedPermissionsByPackage[packageName]?.toSet() ?: emptySet()
+                val currentDeniedPerms = allPerms - grantedPerms
+                if (currentDeniedPerms.isNotEmpty()) {
+                    deniedApps[packageName] = currentDeniedPerms.map { it.toString() }
+                }
+            }
+
+            if (deniedApps.isNotEmpty()) {
+                recordMatchmakingDenialUseCase.invoke(
+                    RecordMatchmakingDenialInput(state.callingAppMetaData.packageName, deniedApps)
+                )
+            }
         }
     }
 
     fun recordMatchmakingDenial() {
         val state = matchmakingState.value
-        if (state is MatchmakingState.WithData) {
-            val permissions =
-                state.matchingApps.flatMap { it.permissions }.map { it.toString() }.distinct()
-            recordMatchmakingDenial(state.callingAppMetaData.packageName, permissions)
+        if (state !is MatchmakingState.WithData) {
+            return
         }
-    }
+        val callingPackageName = state.callingAppMetaData.packageName
+        val deniedApps =
+            state.matchingApps
+                .filter { it.permissions.isNotEmpty() }
+                .associate {
+                    it.metadata.packageName to
+                        it.permissions.map { permission -> permission.toString() }
+                }
 
-    private fun recordMatchmakingDenial(packageName: String, permissions: List<String>) {
+        if (deniedApps.isEmpty()) {
+            return
+        }
         viewModelScope.launch {
             recordMatchmakingDenialUseCase.invoke(
-                RecordMatchmakingDenialInput(packageName, permissions)
+                RecordMatchmakingDenialInput(callingPackageName, deniedApps)
             )
         }
-    }
-
-    fun reset() {
-        _matchmakingState.postValue(MatchmakingState.Loading)
     }
 
     sealed class MatchmakingState {

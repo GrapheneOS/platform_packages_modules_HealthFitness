@@ -44,22 +44,25 @@ import com.android.healthconnect.controller.onboarding.OnboardingActivity.Compan
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.permissions.request.wear.WearGrantPermissionsActivity
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.shared.dialog.HealthConnectBottomSheetDialogFragment
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
-import com.android.healthfitness.flags.Flags
 import com.android.healthfitness.flags.Flags.permissionRequestBottomSheet
+import com.android.modules.utils.build.SdkLevel
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /** Permissions activity for Health Connect. */
 @AndroidEntryPoint(FragmentActivity::class)
-class PermissionsActivity : Hilt_PermissionsActivity() {
+class PermissionsActivity :
+    Hilt_PermissionsActivity(), HealthConnectBottomSheetDialogFragment.OnCancelListener {
 
     companion object {
         private const val TAG = "PermissionsActivity"
         private const val IS_BOTTOM_SHEET_SHOWN = "is_bottom_sheet_shown"
+        private const val BOTTOM_SHEET_TAG = "PermissionsBottomSheet"
     }
 
     @Inject lateinit var logger: HealthConnectLogger
@@ -96,7 +99,7 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
 
         // If device is enabled on watch, redirect to WearGrantPermissionsActivity.
         if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_WATCH)) {
-            if (!Flags.replaceBodySensorPermissionEnabled()) {
+            if (!SdkLevel.isAtLeastB()) {
                 Log.e(TAG, "Health connect is not available on watch, finishing!")
                 finish()
                 return
@@ -151,40 +154,32 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
 
         requestPermissionsViewModel.init(getPackageNameExtra(), getPermissionStrings())
 
-        if (permissionRequestBottomSheet()) {
-            val isBottomSheetShown = savedInstanceState?.getBoolean(IS_BOTTOM_SHEET_SHOWN) == true
-            if (!isBottomSheetShown && !isFinishing) {
-                PermissionsBottomSheetDialogFragment.newInstance()
-                    .show(supportFragmentManager, PermissionsBottomSheetDialogFragment.TAG)
-            }
-        } else {
-            requestPermissionsViewModel.permissionsActivityState.observe(this) { screenState ->
-                when (screenState) {
-                    is PermissionsActivityState.ShowMedical -> {
-                        if (screenState.isWriteOnly) {
-                            showFragment(MedicalWritePermissionFragment())
-                        } else {
-                            showFragment(MedicalPermissionsFragment())
-                        }
+        requestPermissionsViewModel.permissionsActivityState.observe(this) { screenState ->
+            when (screenState) {
+                is PermissionsActivityState.ShowMedical -> {
+                    if (screenState.isWriteOnly) {
+                        showBottomSheetOrFragment(MedicalWritePermissionFragment::class.java)
+                    } else {
+                        showBottomSheetOrFragment(MedicalPermissionsFragment::class.java)
                     }
-                    is PermissionsActivityState.ShowFitness -> {
-                        showFragment(FitnessPermissionsFragment())
+                }
+                is PermissionsActivityState.ShowFitness -> {
+                    showBottomSheetOrFragment(FitnessPermissionsFragment::class.java)
+                }
+                is PermissionsActivityState.ShowAdditional -> {
+                    if (screenState.singlePermission) {
+                        showBottomSheetOrFragment(SingleAdditionalPermissionFragment::class.java)
+                    } else {
+                        showBottomSheetOrFragment(CombinedAdditionalPermissionsFragment::class.java)
                     }
-                    is PermissionsActivityState.ShowAdditional -> {
-                        if (screenState.singlePermission) {
-                            showFragment(SingleAdditionalPermissionFragment())
-                        } else {
-                            showFragment(CombinedAdditionalPermissionsFragment())
-                        }
-                    }
-                    is PermissionsActivityState.FinishRequest -> {
-                        handlePermissionResults()
-                    }
-                    else -> {
-                        // No permissions
-                        requestPermissionsViewModel.updatePermissionGrants()
-                        handlePermissionResults()
-                    }
+                }
+                is PermissionsActivityState.FinishRequest -> {
+                    handlePermissionResults()
+                }
+                else -> {
+                    // No permissions
+                    requestPermissionsViewModel.updatePermissionGrants()
+                    handlePermissionResults()
                 }
             }
         }
@@ -203,9 +198,35 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val bottomSheet =
-            supportFragmentManager.findFragmentByTag(PermissionsBottomSheetDialogFragment.TAG)
+        val bottomSheet = supportFragmentManager.findFragmentByTag(BOTTOM_SHEET_TAG)
         outState.putBoolean(IS_BOTTOM_SHEET_SHOWN, bottomSheet != null && bottomSheet.isAdded)
+    }
+
+    private fun showBottomSheetOrFragment(fragmentClass: Class<out Fragment>) {
+        if (permissionRequestBottomSheet()) {
+            showBottomSheet(fragmentClass)
+        } else {
+            showFragment(fragmentClass.getDeclaredConstructor().newInstance())
+        }
+    }
+
+    /**
+     * Shows a [HealthConnectBottomSheetDialogFragment] containing the fragment specified by
+     * [fragmentClass]. If the bottom sheet is already visible, it replaces the current fragment
+     * inside the bottom sheet.
+     *
+     * @param fragmentClass The [Fragment] class to be shown inside the bottom sheet.
+     */
+    private fun showBottomSheet(fragmentClass: Class<out Fragment>) {
+        var bottomSheet =
+            supportFragmentManager.findFragmentByTag(BOTTOM_SHEET_TAG)
+                as? HealthConnectBottomSheetDialogFragment
+        if (bottomSheet == null) {
+            bottomSheet = HealthConnectBottomSheetDialogFragment.newInstance(fragmentClass)
+            bottomSheet.show(supportFragmentManager, BOTTOM_SHEET_TAG)
+        } else {
+            bottomSheet.replaceFragment(fragmentClass.getDeclaredConstructor().newInstance())
+        }
     }
 
     private fun maybeShowMigrationDialog(migrationRestoreState: MigrationRestoreState) {
@@ -291,5 +312,10 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
             .beginTransaction()
             .replace(R.id.permission_content, fragment)
             .commit()
+    }
+
+    override fun onDialogCanceled() {
+        setResult(RESULT_CANCELED)
+        finish()
     }
 }

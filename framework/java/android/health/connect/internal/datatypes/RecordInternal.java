@@ -27,12 +27,15 @@ import android.health.connect.datatypes.Identifier;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.PackageNameMasker;
+import android.health.connect.internal.PackageNameUnmasker;
 import android.os.Parcel;
-
+import com.android.healthfitness.flags.Flags;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * Base class for all health connect datatype records.
@@ -40,7 +43,8 @@ import java.util.UUID;
  * @param <T> The record type.
  * @hide
  */
-public abstract class RecordInternal<T extends Record> {
+public abstract class RecordInternal<T extends Record>
+        implements PackageNameMasker<RecordInternal<T>>, PackageNameUnmasker<RecordInternal<T>> {
     private final int mRecordIdentifier;
     @Nullable private UUID mUuid;
     @Nullable private String mPackageName;
@@ -54,6 +58,7 @@ public abstract class RecordInternal<T extends Record> {
     private long mDeviceInfoId = DEFAULT_LONG;
     private long mAppInfoId = DEFAULT_LONG;
     private int mRowId = DEFAULT_INT;
+    @Nullable private String mDisplayName;
 
     @Metadata.RecordingMethod private int mRecordingMethod;
 
@@ -80,6 +85,27 @@ public abstract class RecordInternal<T extends Record> {
         mModel = parcel.readString();
         mDeviceType = parcel.readInt();
         mRecordingMethod = parcel.readInt();
+        mDisplayName = parcel.readString();
+    }
+
+    @NonNull
+    @Override
+    public RecordInternal<T> toMasked(Function<String, String> packageMasker) {
+        if (Objects.equals(null, mPackageName)) {
+            return this;
+        }
+
+        return this.setPackageName(packageMasker.apply(mPackageName));
+    }
+
+    @NonNull
+    @Override
+    public RecordInternal<T> toUnmasked(Function<String, String> packageUnmasker) {
+        if (Objects.equals(null, mPackageName)) {
+            return this;
+        }
+
+        return this.setPackageName(packageUnmasker.apply(mPackageName));
     }
 
     /** Extract the record identifier from the annotations. */
@@ -94,7 +120,7 @@ public abstract class RecordInternal<T extends Record> {
     }
 
     /**
-     * Populates {@code parcel} with the self information, required to reconstructor this object
+     * Populates {@code parcel} with the self information, required to reconstruct this object
      * during IPC
      */
     @NonNull
@@ -109,6 +135,7 @@ public abstract class RecordInternal<T extends Record> {
         parcel.writeString(mModel);
         parcel.writeInt(mDeviceType);
         parcel.writeInt(mRecordingMethod);
+        parcel.writeString(mDisplayName);
 
         populateRecordTo(parcel);
     }
@@ -258,6 +285,18 @@ public abstract class RecordInternal<T extends Record> {
         return this;
     }
 
+    @Nullable
+    public String getDisplayName() {
+        return mDisplayName;
+    }
+
+    /** Sets the device display name. */
+    @NonNull
+    public RecordInternal<T> setDisplayName(@Nullable String displayName) {
+        mDisplayName = displayName;
+        return this;
+    }
+
     /** Returns recording method which indicates how data was recorded for the {@link Record} */
     @Metadata.RecordingMethod
     public int getRecordingMethod() {
@@ -279,6 +318,15 @@ public abstract class RecordInternal<T extends Record> {
         @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         DataOrigin dataOrigin = new DataOrigin.Builder().setPackageName(getPackageName()).build();
 
+        Device.Builder deviceBuilder =
+                new Device.Builder()
+                        .setManufacturer(getManufacturer())
+                        .setType(getDeviceType())
+                        .setModel(getModel());
+        if (Flags.deviceDataProvidersApi()) {
+            deviceBuilder.setDisplayName(getDisplayName());
+        }
+
         Metadata.Builder builder =
                 new Metadata.Builder()
                         .setClientRecordId(getClientRecordId())
@@ -286,12 +334,7 @@ public abstract class RecordInternal<T extends Record> {
                         .setDataOrigin(dataOrigin)
                         .setLastModifiedTime(Instant.ofEpochMilli(getLastModifiedTime()))
                         .setRecordingMethod(getRecordingMethod())
-                        .setDevice(
-                                new Device.Builder()
-                                        .setManufacturer(getManufacturer())
-                                        .setType(getDeviceType())
-                                        .setModel(getModel())
-                                        .build());
+                        .setDevice(deviceBuilder.build());
         UUID id = getUuid();
         if (id != null) {
             builder.setId(id.toString());
@@ -302,7 +345,7 @@ public abstract class RecordInternal<T extends Record> {
     /** Sets the fields for meta data for internal records */
     @NonNull
     public RecordInternal<T> setMetaData(Metadata metaData) {
-        return this.setUuid(metaData.getId())
+        this.setUuid(metaData.getId())
                 .setPackageName(metaData.getDataOrigin().getPackageName())
                 .setLastModifiedTime(metaData.getLastModifiedTime().toEpochMilli())
                 .setClientRecordId(metaData.getClientRecordId())
@@ -311,6 +354,10 @@ public abstract class RecordInternal<T extends Record> {
                 .setModel(metaData.getDevice().getModel())
                 .setDeviceType(metaData.getDevice().getType())
                 .setRecordingMethod(metaData.getRecordingMethod());
+        if (Flags.deviceDataProvidersApi()) {
+            this.setDisplayName(metaData.getDevice().getDisplayName());
+        }
+        return this;
     }
 
     /**
@@ -325,7 +372,7 @@ public abstract class RecordInternal<T extends Record> {
     public abstract long getRecordTime();
 
     /**
-     * Populate {@code bundle} with the data required to un-bundle self. This is used suring IPC
+     * Populate {@code bundle} with the data required to un-bundle self. This is used during IPC
      * transmissions
      */
     abstract void populateRecordTo(@NonNull Parcel bundle);

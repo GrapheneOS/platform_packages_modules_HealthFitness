@@ -53,7 +53,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.time.Clock;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
@@ -63,8 +66,11 @@ public class LatencyMetricsCollectorTest {
     @Rule public final TemporaryFolder mTemporaryFolder = new TemporaryFolder();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
+    private static final Instant NOW = Instant.parse("2023-01-01T12:00:00Z");
+
     @Mock private TransactionManager mTransactionManager;
     @Mock private AppInfoHelper mAppInfoHelper;
+    private final Clock mClock = Clock.fixed(NOW, ZoneOffset.UTC);
 
     private LatencyMetricsCollector mLatencyMetricsCollector;
 
@@ -77,11 +83,9 @@ public class LatencyMetricsCollectorTest {
                         .setAppInfoHelper(mAppInfoHelper)
                         .setEnvironmentDataDirectory(mTemporaryFolder.getRoot())
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
+                        .setClock(mClock)
                         .build();
-        mLatencyMetricsCollector =
-                new LatencyMetricsCollector(
-                        healthConnectInjector.getTransactionManager(),
-                        healthConnectInjector.getAppInfoHelper());
+        mLatencyMetricsCollector = healthConnectInjector.getLatencyMetricsCollector();
     }
 
     @Test

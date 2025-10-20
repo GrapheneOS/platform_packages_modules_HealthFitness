@@ -48,7 +48,7 @@ object WearPermissionsPaddingValues {
         PaddingValues(start = PADDING_NORMAL, top = PADDING_SMALL)
 
     val permissionSensorAccessNotePaddingValues =
-        PaddingValues(start = PADDING_NORMAL, bottom = PADDING_SMALL)
+        PaddingValues(start = PADDING_NORMAL, top = PADDING_SMALL, bottom = PADDING_SMALL)
 
     val givePermissionPromptPaddingValues =
         PaddingValues(start = PADDING_NORMAL, top = PADDING_SMALL, bottom = PADDING_LARGE)

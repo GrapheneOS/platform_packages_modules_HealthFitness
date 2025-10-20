@@ -22,14 +22,10 @@ import android.health.connect.HealthPermissions.READ_OXYGEN_SATURATION
 import android.health.connect.HealthPermissions.READ_SKIN_TEMPERATURE
 import android.health.connect.accesslog.AccessLog
 import android.health.connect.datatypes.RecordTypeIdentifier
-import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onParent
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.printToLog
@@ -147,8 +143,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
         composeTestRule.setContent {
             ControlSingleDataTypeForSingleAppScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                fitnessPermission = READ_HEART_RATE_PERMISSION,
                 packageName = appMetadataOne.packageName,
                 onAdditionalPermissionClick = { _ -> },
             )
@@ -157,21 +152,17 @@ class ControlSingleDataTypeForSingleAppScreenTest {
         composeTestRule.waitForIdle()
 
         composeTestRule.onRoot().printToLog("ControlSingleDataTypeForSingleAppScreenTest")
-        val listChildren = composeTestRule.onNodeWithText("Heart rate").onParent().onChildren()
-        listChildren[0].assert(hasText(appMetadataOne.appName))
-        listChildren[1].assert(hasText("Heart rate"))
-        listChildren[2].performScrollTo().assert(hasText("Allow"))
-        listChildren[2].assertIsOn()
-        listChildren[3].performScrollTo().assert(hasText("Don't allow"))
-        listChildren[3].assertIsOff()
-        listChildren[4].performScrollTo().assert(hasText("Additional access"))
-        listChildren[5]
-            .performScrollTo()
-            .assert(
-                hasText(
-                    "Currently, ${appMetadataOne.appName} can access fitness and wellness data all the time"
-                )
+        composeTestRule.onNodeWithText(appMetadataOne.appName).assertExists()
+        composeTestRule.onNodeWithText("Heart rate").assertExists()
+        composeTestRule.onNodeWithText("Allow").performScrollTo().assertIsOn()
+        composeTestRule.onNodeWithText("Don't allow").performScrollTo().assertIsOff()
+        composeTestRule.onNodeWithText("Additional access").performScrollTo().assertExists()
+        composeTestRule
+            .onNodeWithText(
+                "Currently, ${appMetadataOne.appName} can access fitness and wellness data all the time"
             )
+            .performScrollTo()
+            .assertExists()
     }
 
     @Test
@@ -210,8 +201,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
         composeTestRule.setContent {
             ControlSingleDataTypeForSingleAppScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                fitnessPermission = READ_HEART_RATE_PERMISSION,
                 packageName = appMetadataOne.packageName,
                 onAdditionalPermissionClick = { _ -> },
             )
@@ -220,21 +210,17 @@ class ControlSingleDataTypeForSingleAppScreenTest {
         composeTestRule.waitForIdle()
 
         composeTestRule.onRoot().printToLog("ControlSingleDataTypeForSingleAppScreenTest")
-        val listChildren = composeTestRule.onNodeWithText("Heart rate").onParent().onChildren()
-        listChildren[0].assert(hasText(appMetadataOne.appName))
-        listChildren[1].assert(hasText("Heart rate"))
-        listChildren[2].performScrollTo().assert(hasText("Allow"))
-        listChildren[2].assertIsOff()
-        listChildren[3].performScrollTo().assert(hasText("Don't allow"))
-        listChildren[3].assertIsOn()
-        listChildren[4].performScrollTo().assert(hasText("Additional access"))
-        listChildren[5]
-            .performScrollTo()
-            .assert(
-                hasText(
-                    "Currently, ${appMetadataOne.appName} can access fitness and wellness data while in use"
-                )
+        composeTestRule.onNodeWithText(appMetadataOne.appName).assertExists()
+        composeTestRule.onNodeWithText("Heart rate").assertExists()
+        composeTestRule.onNodeWithText("Allow").performScrollTo().assertIsOff()
+        composeTestRule.onNodeWithText("Don't allow").performScrollTo().assertIsOn()
+        composeTestRule.onNodeWithText("Additional access").performScrollTo().assertExists()
+        composeTestRule
+            .onNodeWithText(
+                "Currently, ${appMetadataOne.appName} can access fitness and wellness data while in use"
             )
+            .performScrollTo()
+            .assertExists()
     }
 
     @Test
@@ -272,8 +258,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
         composeTestRule.setContent {
             ControlSingleDataTypeForSingleAppScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                fitnessPermission = READ_HEART_RATE_PERMISSION,
                 packageName = appMetadataOne.packageName,
                 onAdditionalPermissionClick = { _ -> },
             )
@@ -282,21 +267,17 @@ class ControlSingleDataTypeForSingleAppScreenTest {
         composeTestRule.waitForIdle()
 
         composeTestRule.onRoot().printToLog("ControlSingleDataTypeForSingleAppScreenTest")
-        val listChildren = composeTestRule.onNodeWithText("Heart rate").onParent().onChildren()
-        listChildren[0].assert(hasText(appMetadataOne.appName))
-        listChildren[1].assert(hasText("Heart rate"))
-        listChildren[2].performScrollTo().assert(hasText("Allow"))
-        listChildren[2].assertIsOff()
-        listChildren[3].performScrollTo().assert(hasText("Don't allow"))
-        listChildren[3].assertIsOn()
+        composeTestRule.onNodeWithText(appMetadataOne.appName).assertExists()
+        composeTestRule.onNodeWithText("Heart rate").assertExists()
+        composeTestRule.onNodeWithText("Allow").performScrollTo().assertIsOff()
+        composeTestRule.onNodeWithText("Don't allow").performScrollTo().assertIsOn()
         composeTestRule.onNodeWithText("Additional access").assertDoesNotExist()
-        listChildren[4]
-            .performScrollTo()
-            .assert(
-                hasText(
-                    "Currently, ${appMetadataOne.appName} can access fitness and wellness data while in use"
-                )
+        composeTestRule
+            .onNodeWithText(
+                "Currently, ${appMetadataOne.appName} can access fitness and wellness data while in use"
             )
+            .performScrollTo()
+            .assertExists()
     }
 
     @Test
@@ -334,8 +315,7 @@ class ControlSingleDataTypeForSingleAppScreenTest {
         composeTestRule.setContent {
             ControlSingleDataTypeForSingleAppScreen(
                 viewModel = wearConnectedAppsViewModel,
-                permissionStr = "android.permission.health.READ_HEART_RATE",
-                dataTypeStr = "Heart rate",
+                fitnessPermission = READ_HEART_RATE_PERMISSION,
                 packageName = appMetadataTwo.packageName,
                 onAdditionalPermissionClick = { _ -> },
             )

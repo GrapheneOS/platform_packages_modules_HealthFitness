@@ -265,12 +265,7 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
         setupLaterButton.text = getString(R.string.set_up_later)
         setupLaterButton.setOnClickListener {
             healthConnectLogger.logInteraction(elementName)
-            startActivity(
-                Intent(HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS).apply {
-                    Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                }
-            )
-            requireActivity().finish()
+            navigateHomeAndFinish()
         }
     }
 
@@ -281,13 +276,17 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
         doneButton.text = getString(R.string.delete_dialog_done_button)
         doneButton.setOnClickListener {
             healthConnectLogger.logInteraction(AlmostDonePageElement.ONBOARDING_DONE_BUTTON)
-            startActivity(
-                Intent(HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS).apply {
-                    Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                }
-            )
-            requireActivity().finish()
+            navigateHomeAndFinish()
         }
+    }
+
+    private fun navigateHomeAndFinish() {
+        val intent =
+            Intent(HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     private fun getAppPreference(appMetadata: AppMetadata): HealthAppPreference {

@@ -43,7 +43,7 @@ import java.util.List;
  */
 public final class FloorsClimbedRecordHelper
         extends IntervalRecordHelper<FloorsClimbedRecordInternal> {
-    private static final String FLOORS_CLIMBED_RECORD_TABLE_NAME = "floors_climbed_record_table";
+    public static final String FLOORS_CLIMBED_RECORD_TABLE_NAME = "floors_climbed_record_table";
     private static final String FLOORS_COLUMN_NAME = "floors";
 
     public FloorsClimbedRecordHelper() {

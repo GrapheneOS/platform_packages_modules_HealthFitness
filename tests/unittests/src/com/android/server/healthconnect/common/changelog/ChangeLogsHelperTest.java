@@ -746,6 +746,7 @@ public class ChangeLogsHelperTest {
         assertThrows(Exception.class, () -> toMedicalResourceIdList(null));
     }
 
+
     private void insertRecordChangeLog(
             @RecordTypeIdentifier.RecordType int recordType,
             int appInfoId,

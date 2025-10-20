@@ -84,6 +84,8 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"elikadura"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"Ongizatea"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"ongizatea"</string>
+    <string name="symptoms_category_uppercase" msgid="1357167834284360975">"Sintomak"</string>
+    <string name="symptoms_category_lowercase" msgid="2298815597177353672">"sintomak"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"Arakatu datuak"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"Kudeatu datuak"</string>
     <string name="export_data_button" msgid="7783329820434117744">"Esportatu datuak"</string>
@@ -378,6 +380,15 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"alkohol-kontsumoa"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Irakurri alkohol-kontsumoa"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Idatzi alkohol-kontsumoa"</string>
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Eztula"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"eztula"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Irakurri sintomak"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Idatzi sintomak"</string>
+    <string name="symptom_unknown" msgid="5796719193136239306">"ezezaguna"</string>
+    <string name="symptom_severity_mild" msgid="2689415474774489874">"arina"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"tartekoa"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"larria"</string>
+    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="TYPE">%2$s</xliff:g> (<xliff:g id="SEVERITY">%1$s</xliff:g>)"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Eman irakurtzeko baimena <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Eman idazteko baimena <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Eman baimena"</string>
@@ -660,6 +671,8 @@
     <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{Gurpil-aulkiaren 1 bultzada}other{Gurpil-aulkiaren # bultzada}}"</string>
     <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 l}other{# l}}"</string>
     <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 litro}other{# litro}}"</string>
+    <string name="milliliter" msgid="7730118351176678375">"{count,plural, =1{1 ml}other{# ml}}"</string>
+    <string name="milliliter_long" msgid="6431396151823725792">"{count,plural, =1{1 mililitro}other{# mililitro}}"</string>
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 solairu}other{# solairu}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 min}other{# min}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 metro}other{# metro}}"</string>
@@ -835,8 +848,32 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{Zigarro elektronikoen {quantity} zupada}other{Zigarro elektronikoen {quantity} zupada}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} zigarro}other{{quantity} zigarro}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} ezezaguna"</string>
+    <string name="alcohol_consumption_title" msgid="2627266871623334972">"<xliff:g id="SERVING">%1$s</xliff:g> • <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"Beste bat"</string>
+    <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Garagardoa"</string>
+    <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Ardoa"</string>
+    <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
+    <string name="alcohol_consumption_beverage_type_gin" msgid="5945396443339874907">"Ginebra"</string>
+    <string name="alcohol_consumption_beverage_type_whiskey" msgid="1085904168947658887">"Whiskia"</string>
+    <string name="alcohol_consumption_beverage_type_rum" msgid="5230691377430212826">"Rona"</string>
+    <string name="alcohol_consumption_beverage_type_tequila" msgid="9074751455065347442">"Tekila"</string>
+    <string name="alcohol_consumption_beverage_type_lager" msgid="1490153167547219382">"Garagardo horia"</string>
+    <string name="alcohol_consumption_beverage_type_cider" msgid="3348115754435446544">"Sagardoa"</string>
+    <string name="alcohol_consumption_beverage_type_sake" msgid="2773512901340614154">"Sakea"</string>
+    <string name="alcohol_consumption_beverage_type_shochu" msgid="3491300198222489324">"Shochu-a"</string>
+    <string name="alcohol_consumption_beverage_type_soju" msgid="113120387013483711">"Soju-a"</string>
+    <string name="alcohol_consumption_beverage_type_mead" msgid="1673063923088962681">"Ezti-ardoa"</string>
+    <string name="alcohol_consumption_beverage_type_absinthe" msgid="3972259596196421914">"Absenta"</string>
+    <string name="alcohol_consumption_beverage_type_brandy" msgid="3782444367994599131">"Brandya"</string>
+    <string name="alcohol_consumption_beverage_type_cocktail" msgid="4711099215987668649">"Koktela"</string>
+    <string name="alcohol_consumption_beverage_type_chuhai" msgid="4727177353197748690">"Chuhai-a"</string>
+    <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Highball-a"</string>
+    <string name="serving_volume_title" msgid="4727986574534974167">"Bolumena"</string>
+    <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Alkohol-graduazioa"</string>
+    <string name="note_title" msgid="4101166558186573016">"Oharra"</string>
+    <string name="details_title" msgid="8411891773854413790">"Xehetasunak"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> min"</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> m"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> h"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 ordu}other{# ordu}}"</string>
@@ -1042,6 +1079,7 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Eginda"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{Ezabatze automatikoa aktibatuta dago. # hilabete baino gehiagoko datuak ezabatuko dira.}other{Ezabatze automatikoa aktibatuta dago. # hilabete baino gehiagoko datuak ezabatuko dira.}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"Ezabatze automatikoa desaktibatuta dago"</string>
+    <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+ <xliff:g id="COUNT">%s</xliff:g>"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"Ezarri aplikazioen lehentasuna"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"\"<xliff:g id="DATA_TYPE">%s</xliff:g>\" motako datuak aplikazio batek baino gehiagok gehitzen badituzte, Health Connect-ek zerrendaren gorenean dagoen aplikazioari emango dio lehentasuna. Arrastatu aplikazioak ordena aldatzeko."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Gorde"</string>
@@ -1175,6 +1213,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Aurrerantzean, konektatutako aplikazioek ezingo dituzte irakurri Health Connect-eko datu horiek"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Markatuta"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Markatu gabe"</string>
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Ariketaren mapako ibilbidea erabilgarri dago"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Hurrengo eguna"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Hurrengo astea"</string>
@@ -1228,6 +1267,7 @@
     <string name="write_access" msgid="571547306854732263">"Idazteko baimena"</string>
     <string name="read_access" msgid="3317759826769372785">"Irakurtzeko baimena"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g>/<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplikaziok dute baimena"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Ez dago baimena eskatzen ari den aplikaziorik"</string>
     <string name="allowed" msgid="4158456017482263737">"Baimena dauka"</string>
@@ -1272,21 +1312,266 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"Identifikatu ezin den gailua"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Gailuari buruzko informazioa"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Gailu honek bildutako datuak Health Connect-en gordeko dira, eta aplikazio konektatuek bertan atzitu ahalko dituzte"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Gailu honek ez du onartzen pausoen jarraipena egitea, baina datuak gordeta dauzka Health Connect-en"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Gailu honek ezin du egin pausoen jarraipena"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Idazteko baimena du"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Gailuko datuak"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Kudeatu gailua"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Ikusi gailuko datuak"</string>
-    <string name="native_steps_banner_title" msgid="7668164332675458871">"Telefonoak erregistratzen dituen pausoak Health Connect-en agertuko dira"</string>
-    <string name="native_steps_banner_summary" msgid="7109953051996114646">"Gailu honek erregistratzen dituen pausoak Health Connect-en gordetzen dira orain, aplikazio konektatuek atzitu ahal izan ditzaten"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_title" msgid="8990874387340782536">"Telefonoak erregistratzen dituen pausoak Health Connect-en agertuko dira"</string>
+    <string name="native_steps_banner_summary" msgid="8255767487167444809">"Gailu honek erregistratzen dituen pausoak Health Connect-en gordetzen dira orain, aplikazio konektatuek atzitu ahal izan ditzaten"</string>
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Baztertu"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Berrikusi"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Orain, Health Connect-en daude pausoak"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Gailu honek erregistratzen dituen pausoak Health Connect-en gordetzen dira orain, aplikazio konektatuek atzitu ahal izan ditzaten"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"Zure osasun-aplikazioak"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"Osasunari buruzko datuak"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"Hobespenak"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect-ek osasunari eta fitnessari buruzko datuak aplikazio batekin baino gehiagorekin partekatzeko aukera ematen dizu. Horri esker, estatistikak eta eginbideak desblokea ditzakezu datuak seguru mantendu bitartean."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect-i buruzko informazio gehiago"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"Zure datuak eta zein aplikaziok atzi ditzaketen"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"Zure datuak berriki erabil dituzten aplikazioak"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"Berrikusi osasunari buruzko datuak atzi ditzaketen gailuak"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Instalatu Health Connect-ekin funtzionatzen duten aplikazioak hemen ikusteko"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"Ikusi aplikazio bateragarriak"</string>
+    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Ikusi osasun-aplikazio gehiago"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"Konektatu gabe"</string>
+    <string name="connect_app_button_content_description" msgid="296796277841527165">"Sakatu hau aplikazioa Health Connect-ekin konektatzeko"</string>
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Orain ez"</string>
+    <string name="acne_read_content_description" msgid="1176708404029936065">"Irakurri akneari buruzko datuak"</string>
+    <string name="acne_write_content_description" msgid="9221785868351412493">"Idatzi akneari buruzko datuak"</string>
+    <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Irakurri azazkal hauskorrei buruzko datuak"</string>
+    <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Idatzi azazkal hauskorrei buruzko datuak"</string>
+    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Irakurri ahoko erreminari buruzko datuak "</string>
+    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Idatzi ahoko erreminari buruzko datuak "</string>
+    <string name="chills_read_content_description" msgid="7244946135559432433">"Irakurri hotzikarei buruzko datuak"</string>
+    <string name="chills_write_content_description" msgid="6478646233405107436">"Idatzi hotzikarei buruzko datuak"</string>
+    <string name="dehydration_read_content_description" msgid="7633935838518756206">"Irakurri deshidratazioari buruzko datuak"</string>
+    <string name="dehydration_write_content_description" msgid="541514183036921571">"Idatzi deshidratazioari buruzko datuak"</string>
+    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"Irakurri azal lehorrari buruzko datuak"</string>
+    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"Idatzi azal lehorrari buruzko datuak"</string>
+    <string name="fever_read_content_description" msgid="3385209639730909489">"Irakurri sukarrari buruzko datuak"</string>
+    <string name="fever_write_content_description" msgid="8440573327719878961">"Idatzi sukarrari buruzko datuak"</string>
+    <string name="joint_pain_read_content_description" msgid="2932523124488927967">"Irakurri artikulazioetako minari buruzko datuak"</string>
+    <string name="joint_pain_write_content_description" msgid="7405551860978844535">"Idatzi artikulazioetako minari buruzko datuak"</string>
+    <string name="joint_stiffness_read_content_description" msgid="2132696730582070534">"Irakurri artikulazioen zurruntasunari buruzko datuak"</string>
+    <string name="joint_stiffness_write_content_description" msgid="7556318646656369856">"Idatzi artikulazioen zurruntasunari buruzko datuak"</string>
+    <string name="muscle_pain_read_content_description" msgid="3116385630330673084">"Irakurri giharretako minari buruzko datuak"</string>
+    <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"Idatzi giharretako minari buruzko datuak"</string>
+    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"Irakurri konortea galtzeari buruzko datuak"</string>
+    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"Idatzi konortea galtzeari buruzko datuak"</string>
+    <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"Irakurri ariketa egiteko gaitasun murriztuari buruzko datuak"</string>
+    <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"Idatzi ariketa egiteko gaitasun murriztuari buruzko datuak"</string>
+    <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"Irakurri azalpenik gabeko pisu-aldaketei buruzko datuak"</string>
+    <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"Idatzi azalpenik gabeko pisu-aldaketei buruzko datuak"</string>
+    <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"Irakurri gorputzeko min orokorrari buruzko datuak"</string>
+    <string name="generalized_body_ache_write_content_description" msgid="4282920161878530009">"Idatzi gorputzeko min orokorrari buruzko datuak"</string>
+    <string name="fatigue_read_content_description" msgid="8447413794808220408">"Irakurri nekeari buruzko datuak"</string>
+    <string name="fatigue_write_content_description" msgid="3000326883358951973">"Idatzi nekeari buruzko datuak"</string>
+    <string name="constipation_read_content_description" msgid="4024154136010015370">"Irakurri idorreriari buruzko datuak"</string>
+    <string name="constipation_write_content_description" msgid="9059835998017996999">"Idatzi idorreriari buruzko datuak"</string>
+    <string name="diarrhea_read_content_description" msgid="6643311788778713543">"Irakurri beherakoari buruzko datuak"</string>
+    <string name="diarrhea_write_content_description" msgid="2525160401458506448">"Idatzi beherakoari buruzko datuak"</string>
+    <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"Irakurri gose ezari buruzko datuak"</string>
+    <string name="loss_of_appetite_write_content_description" msgid="7370817778828856877">"Idatzi gose ezari buruzko datuak"</string>
+    <string name="nausea_read_content_description" msgid="7696809485706809234">"Irakurri goragaleari buruzko datuak"</string>
+    <string name="nausea_write_content_description" msgid="7956853318058549079">"Idatzi goragaleari buruzko datuak"</string>
+    <string name="stomach_ache_read_content_description" msgid="6960461949095524373">"Irakurri tripako minari buruzko datuak"</string>
+    <string name="stomach_ache_write_content_description" msgid="4822349196740130790">"Idatzi tripako minari buruzko datuak"</string>
+    <string name="vomiting_read_content_description" msgid="6425637340168306118">"Irakurri oka egiteari buruzko datuak"</string>
+    <string name="vomiting_write_content_description" msgid="2768436321239967229">"Idatzi oka egiteari buruzko datuak"</string>
+    <string name="chest_pain_read_content_description" msgid="5388099127082653993">"Irakurri bularreko minari buruzko datuak"</string>
+    <string name="chest_pain_write_content_description" msgid="7570421665813979598">"Idatzi bularreko minari buruzko datuak"</string>
+    <string name="chest_tightness_read_content_description" msgid="3234587929340517638">"Irakurri bularreko estutasunari buruzko datuak"</string>
+    <string name="chest_tightness_write_content_description" msgid="3365518444505217882">"Idatzi bularreko estutasunari buruzko datuak"</string>
+    <string name="cough_read_content_description" msgid="4834360757270578547">"Irakurri eztulari buruzko datuak"</string>
+    <string name="cough_write_content_description" msgid="2927943192149715422">"Idatzi eztulari buruzko datuak"</string>
+    <string name="heart_palpitations_read_content_description" msgid="5830132363981902576">"Irakurri bihotz-palpitazioei buruzko datuak"</string>
+    <string name="heart_palpitations_write_content_description" msgid="6195434828951874561">"Idatzi bihotz-palpitazioei buruzko datuak"</string>
+    <string name="shortness_of_breath_read_content_description" msgid="5285037217314042125">"Irakurri arnasteko zailtasunari buruzko datuak"</string>
+    <string name="shortness_of_breath_write_content_description" msgid="1812050225998794712">"Idatzi arnasteko zailtasunari buruzko datuak"</string>
+    <string name="wheezing_read_content_description" msgid="3698103133045395859">"Irakurri arnasketa txistukariari buruzko datuak"</string>
+    <string name="wheezing_write_content_description" msgid="3555234332119025686">"Idatzi arnasketa txistukariari buruzko datuak"</string>
+    <string name="heartburn_read_content_description" msgid="4650825508743336439">"Irakurri bihotzerreari buruzko datuak"</string>
+    <string name="heartburn_write_content_description" msgid="1857706822547818187">"Idatzi bihotzerreari buruzko datuak"</string>
+    <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"Irakurri taupadak saltatzeari buruzko datuak"</string>
+    <string name="skipped_heartbeat_write_content_description" msgid="834686289232563614">"Idatzi taupadak saltatzeari buruzko datuak"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"Irakurri taupada bizkor, zakar edo ezegonkorrei buruzko datuak"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"Idatzi taupada bizkor, zakar edo ezegonkorrei buruzko datuak"</string>
+    <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"Irakurri irensteko zailtasunari buruzko datuak"</string>
+    <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"Idatzi irensteko zailtasunari buruzko datuak"</string>
+    <string name="dizziness_read_content_description" msgid="2525565486057144416">"Irakurri zorabioei buruzko datuak"</string>
+    <string name="dizziness_write_content_description" msgid="1875365619054873732">"Idatzi zorabioei buruzko datuak"</string>
+    <string name="earaches_read_content_description" msgid="4643142391473401154">"Irakurri belarriko minei buruzko datuak"</string>
+    <string name="earaches_write_content_description" msgid="3551386029980258801">"Idatzi belarriko minei buruzko datuak"</string>
+    <string name="hair_loss_read_content_description" msgid="4057044821025872986">"Irakurri ile-galerari buruzko datuak"</string>
+    <string name="hair_loss_write_content_description" msgid="7387442867237711823">"Idatzi ile-galerari buruzko datuak"</string>
+    <string name="headache_read_content_description" msgid="7485283472508878298">"Irakurri buruko minari buruzko datuak"</string>
+    <string name="headache_write_content_description" msgid="720183844750746485">"Idatzi buruko minari buruzko datuak"</string>
+    <string name="runny_nose_read_content_description" msgid="443700998701222852">"Irakurri mukiei buruzko datuak"</string>
+    <string name="runny_nose_write_content_description" msgid="6210009950948827090">"Idatzi mukiei buruzko datuak"</string>
+    <string name="sneezing_read_content_description" msgid="1825781985598094799">"Irakurri doministikuei buruzko datuak"</string>
+    <string name="sneezing_write_content_description" msgid="8125072216406958337">"Idatzi doministikuei buruzko datuak"</string>
+    <string name="sore_throat_read_content_description" msgid="7798247670004858562">"Irakurri eztarriko minari buruzko datuak"</string>
+    <string name="sore_throat_write_content_description" msgid="6058043292544091397">"Idatzi eztarriko minari buruzko datuak"</string>
+    <string name="stuffy_nose_read_content_description" msgid="6604212451531546331">"Irakurri sudurreko kongestioari buruzko datuak"</string>
+    <string name="stuffy_nose_write_content_description" msgid="6950875986047625521">"Idatzi sudurreko kongestioari buruzko datuak"</string>
+    <string name="back_pain_read_content_description" msgid="1176155927269014089">"Irakurri bizkarreko minari buruzko datuak"</string>
+    <string name="back_pain_write_content_description" msgid="6282959987099901645">"Idatzi bizkarreko minari buruzko datuak"</string>
+    <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"Irakurri bizkarraren behealdeko minari buruzko datuak"</string>
+    <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"Idatzi bizkarraren behealdeko minari buruzko datuak"</string>
+    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"Irakurri beroaldiei buruzko datuak"</string>
+    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"Idatzi beroaldiei buruzko datuak"</string>
+    <string name="night_sweats_read_content_description" msgid="7644094250441074129">"Irakurri gaueko izerdiei buruzko datuak"</string>
+    <string name="night_sweats_write_content_description" msgid="7501357533280452509">"Idatzi gaueko izerdiei buruzko datuak"</string>
+    <string name="water_retention_read_content_description" msgid="211789030125880649">"Irakurri ur-erretentzioari buruzko datuak"</string>
+    <string name="water_retention_write_content_description" msgid="7109328727506593781">"Idatzi ur-erretentzioari buruzko datuak"</string>
+    <string name="cravings_read_content_description" msgid="9098905292448612603">"Irakurri apetei buruzko datuak"</string>
+    <string name="cravings_write_content_description" msgid="7932335159387976333">"Idatzi apetei buruzko datuak"</string>
+    <string name="bloating_read_content_description" msgid="8942780558464500997">"Irakurri hanturari buruzko datuak"</string>
+    <string name="bloating_write_content_description" msgid="5014366726518564943">"Idatzi hanturari buruzko datuak"</string>
+    <string name="cramps_read_content_description" msgid="5853663240074256855">"Irakurri arranpari buruzko datuak"</string>
+    <string name="cramps_write_content_description" msgid="6777230560926849939">"Idatzi arranpari buruzko datuak"</string>
+    <string name="abdominal_pain_read_content_description" msgid="6331928351160142817">"Irakurri sabeleko minari buruzko datuak"</string>
+    <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"Idatzi sabeleko minari buruzko datuak"</string>
+    <string name="breast_tenderness_read_content_description" msgid="1556133668276886256">"Irakurri bularretako oinazeari buruzko datuak"</string>
+    <string name="breast_tenderness_write_content_description" msgid="5405234499024881940">"Idatzi bularretako oinazeari buruzko datuak"</string>
+    <string name="pelvic_pain_read_content_description" msgid="8872893212311881743">"Irakurri pelbiseko minari buruzko datuak"</string>
+    <string name="pelvic_pain_write_content_description" msgid="8482016412474126674">"Idatzi pelbiseko minari buruzko datuak"</string>
+    <string name="vaginal_dryness_read_content_description" msgid="21587787265978758">"Irakurri baginako lehortasunari buruzko datuak"</string>
+    <string name="vaginal_dryness_write_content_description" msgid="7639415261021656468">"Idatzi baginako lehortasunari buruzko datuak"</string>
+    <string name="vaginal_itchiness_read_content_description" msgid="6027886706003079912">"Irakurri baginako azkurari buruzko datuak"</string>
+    <string name="vaginal_itchiness_write_content_description" msgid="6833099607694941406">"Idatzi baginako azkurari buruzko datuak"</string>
+    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"Irakurri lausotasun mentalari buruzko datuak"</string>
+    <string name="brain_fog_write_content_description" msgid="354508934978268288">"Idatzi lausotasun mentalari buruzko datuak"</string>
+    <string name="mood_change_read_content_description" msgid="5114563193264125173">"Irakurri aldarte-aldaketari buruzko datuak"</string>
+    <string name="mood_change_write_content_description" msgid="7613564641235985120">"Idatzi aldarte-aldaketari buruzko datuak"</string>
+    <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"Irakurri oroimen-lapsusei buruzko datuak"</string>
+    <string name="memory_lapse_write_content_description" msgid="211569063190179476">"Idatzi oroimen-lapsusei buruzko datuak"</string>
+    <string name="sleepiness_read_content_description" msgid="797381777988304669">"Irakurri logurari buruzko datuak"</string>
+    <string name="sleepiness_write_content_description" msgid="888236364245216476">"Idatzi logurari buruzko datuak"</string>
+    <string name="sleep_changes_read_content_description" msgid="277237231470749744">"Irakurri loaren aldaketei buruzko datuak"</string>
+    <string name="sleep_changes_write_content_description" msgid="9078270254664653838">"Idatzi loaren aldaketei buruzko datuak"</string>
+    <string name="insomnia_read_content_description" msgid="5225449618972721129">"Irakurri insomnioari buruzko datuak"</string>
+    <string name="insomnia_write_content_description" msgid="4237153589826489083">"Idatzi insomnioari buruzko datuak"</string>
+    <string name="snore_read_content_description" msgid="3447953925696237628">"Irakurri zurrungei buruzko datuak"</string>
+    <string name="snore_write_content_description" msgid="959354771204900433">"Idatzi zurrungei buruzko datuak"</string>
+    <string name="acne_uppercase_label" msgid="60568062993817483">"Aknea"</string>
+    <string name="acne_lowercase_label" msgid="5301949536428255159">"aknea"</string>
+    <string name="abdominal_pain_uppercase_label" msgid="442393846492385702">"Sabeleko mina"</string>
+    <string name="abdominal_pain_lowercase_label" msgid="4136643670361233063">"sabeleko mina"</string>
+    <string name="back_pain_uppercase_label" msgid="6034795846635350255">"Bizkarreko mina"</string>
+    <string name="back_pain_lowercase_label" msgid="7487168354843582888">"bizkarreko mina"</string>
+    <string name="bloating_uppercase_label" msgid="2827024204358491650">"Hantura"</string>
+    <string name="bloating_lowercase_label" msgid="4108236897678347488">"hantura"</string>
+    <string name="brain_fog_uppercase_label" msgid="3782508630097437711">"Lausotasun mentala"</string>
+    <string name="brain_fog_lowercase_label" msgid="8018499987092429724">"lausotasun mentala"</string>
+    <string name="breast_tenderness_uppercase_label" msgid="3633574517042452397">"Bularretako oinazea"</string>
+    <string name="breast_tenderness_lowercase_label" msgid="3745105353936751222">"bularretako oinazea"</string>
+    <string name="brittle_nails_uppercase_label" msgid="7290899807816681152">"Azazkal hauskorrak"</string>
+    <string name="brittle_nails_lowercase_label" msgid="43861645923597496">"azazkal hauskorrak"</string>
+    <string name="burning_mouth_uppercase_label" msgid="8975226712238467359">"Ahoko erremina"</string>
+    <string name="burning_mouth_lowercase_label" msgid="3378970972990933484">"ahoko erremina"</string>
+    <string name="chest_pain_uppercase_label" msgid="8091501402224214622">"Bularreko mina"</string>
+    <string name="chest_pain_lowercase_label" msgid="8817807562310689177">"bularreko mina"</string>
+    <string name="chest_tightness_uppercase_label" msgid="8988021502622503503">"Bularreko estutasuna"</string>
+    <string name="chest_tightness_lowercase_label" msgid="1770063390635610292">"bularreko estutasuna"</string>
+    <string name="chills_uppercase_label" msgid="4320786490882838834">"Hotzikarak"</string>
+    <string name="chills_lowercase_label" msgid="1306612496314055832">"hotzikarak"</string>
+    <string name="constipation_uppercase_label" msgid="7245001778443725742">"Idorreria"</string>
+    <string name="constipation_lowercase_label" msgid="6217542866033766747">"idorreria"</string>
+    <string name="cough_uppercase_label" msgid="5570609736970603012">"Eztula"</string>
+    <string name="cough_lowercase_label" msgid="459638956679172779">"eztula"</string>
+    <string name="cramps_uppercase_label" msgid="5162905309136173937">"Arranpa"</string>
+    <string name="cramps_lowercase_label" msgid="4644485808002493449">"arranpa"</string>
+    <string name="cravings_uppercase_label" msgid="4754194354806284307">"Apetak"</string>
+    <string name="cravings_lowercase_label" msgid="5836041614136287213">"apetak"</string>
+    <string name="dehydration_uppercase_label" msgid="10278239942824711">"Deshidratazioa"</string>
+    <string name="dehydration_lowercase_label" msgid="8692632632276643276">"deshidratazioa"</string>
+    <string name="diarrhea_uppercase_label" msgid="6310170127529968752">"Beherakoa"</string>
+    <string name="diarrhea_lowercase_label" msgid="5938774694742839016">"beherakoa"</string>
+    <string name="difficulty_swallowing_uppercase_label" msgid="3546617155300878657">"Irensteko zailtasuna"</string>
+    <string name="difficulty_swallowing_lowercase_label" msgid="4980631237611433200">"irensteko zailtasuna"</string>
+    <string name="dizziness_uppercase_label" msgid="8129950094459563983">"Zorabioak"</string>
+    <string name="dizziness_lowercase_label" msgid="3462347558609662379">"zorabioak"</string>
+    <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"Azal lehorra"</string>
+    <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"azal lehorra"</string>
+    <string name="earaches_uppercase_label" msgid="107701950625572701">"Belarriko minak"</string>
+    <string name="earaches_lowercase_label" msgid="6240790850403958317">"belarriko minak"</string>
+    <string name="fatigue_uppercase_label" msgid="7514286788083426578">"Nekea"</string>
+    <string name="fatigue_lowercase_label" msgid="2669560685808367387">"nekea"</string>
+    <string name="fever_uppercase_label" msgid="6889273008212535253">"Sukarra"</string>
+    <string name="fever_lowercase_label" msgid="3634400562894397159">"sukarra"</string>
+    <string name="generalized_body_ache_uppercase_label" msgid="2171378172300618053">"Gorputzeko min orokorra"</string>
+    <string name="generalized_body_ache_lowercase_label" msgid="1725534000111875030">"gorputzeko min orokorra"</string>
+    <string name="hair_loss_uppercase_label" msgid="6359351347019795813">"Ile-galera"</string>
+    <string name="hair_loss_lowercase_label" msgid="2764498189966225461">"ile-galera"</string>
+    <string name="headache_uppercase_label" msgid="863800537735413054">"Buruko mina"</string>
+    <string name="headache_lowercase_label" msgid="6564231905087583135">"buruko mina"</string>
+    <string name="heartburn_uppercase_label" msgid="1170571383460859644">"Bihotzerrea"</string>
+    <string name="heartburn_lowercase_label" msgid="6235983036978705474">"bihotzerrea"</string>
+    <string name="heart_palpitations_uppercase_label" msgid="2026400872833911547">"Bihotz-palpitazioak"</string>
+    <string name="heart_palpitations_lowercase_label" msgid="1468243523322721340">"bihotz-palpitazioak"</string>
+    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"Beroaldiak"</string>
+    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"beroaldiak"</string>
+    <string name="insomnia_uppercase_label" msgid="4946197328995261738">"Insomnioa"</string>
+    <string name="insomnia_lowercase_label" msgid="3742025423716451058">"insomnioa"</string>
+    <string name="joint_pain_uppercase_label" msgid="7693454621285586935">"Artikulazioetako mina"</string>
+    <string name="joint_pain_lowercase_label" msgid="1877680075365305488">"artikulazioetako mina"</string>
+    <string name="joint_stiffness_uppercase_label" msgid="5230114867081881444">"Artikulazioen zurruntasuna"</string>
+    <string name="joint_stiffness_lowercase_label" msgid="8766445235392409480">"artikulazioen zurruntasuna"</string>
+    <string name="loss_of_appetite_uppercase_label" msgid="4023141061302523950">"Gose eza"</string>
+    <string name="loss_of_appetite_lowercase_label" msgid="7558077308061468558">"gose eza"</string>
+    <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"Konortea galtzea"</string>
+    <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"konortea galtzea"</string>
+    <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"Bizkarraren behealdeko mina"</string>
+    <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"bizkarraren behealdeko mina"</string>
+    <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"Oroimen-lapsusak"</string>
+    <string name="memory_lapse_lowercase_label" msgid="5590619293782264318">"oroimen-lapsusak"</string>
+    <string name="mood_change_uppercase_label" msgid="6591596468077187132">"Aldarte-aldaketa"</string>
+    <string name="mood_change_lowercase_label" msgid="5154765930188874067">"aldarte-aldaketa"</string>
+    <string name="muscle_pain_uppercase_label" msgid="2470771124188001900">"Giharretako mina"</string>
+    <string name="muscle_pain_lowercase_label" msgid="7842677871351347822">"giharretako mina"</string>
+    <string name="nausea_uppercase_label" msgid="8384006696113532259">"Goragalea"</string>
+    <string name="nausea_lowercase_label" msgid="8182471893071968504">"goragalea"</string>
+    <string name="night_sweats_uppercase_label" msgid="6177687233700001658">"Gaueko izerdiak"</string>
+    <string name="night_sweats_lowercase_label" msgid="5041101323453286082">"gaueko izerdiak"</string>
+    <string name="pelvic_pain_uppercase_label" msgid="9057761232218571640">"Pelbiseko mina"</string>
+    <string name="pelvic_pain_lowercase_label" msgid="8993103170034473121">"pelbiseko mina"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"Taupada bizkorrak, zakarrak edo ezegonkorrak"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"taupada bizkorrak, zakarrak edo ezegonkorrak"</string>
+    <string name="reduced_capacity_for_exercise_uppercase_label" msgid="7471254320615756463">"Ariketa egiteko gaitasun murriztua"</string>
+    <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"ariketa egiteko gaitasun murriztua"</string>
+    <string name="runny_nose_uppercase_label" msgid="6561156187042071551">"Mukiak"</string>
+    <string name="runny_nose_lowercase_label" msgid="2214697492382685914">"mukiak"</string>
+    <string name="shortness_of_breath_uppercase_label" msgid="3747502224212110471">"Arnasteko zailtasuna"</string>
+    <string name="shortness_of_breath_lowercase_label" msgid="3970444639088619346">"arnasteko zailtasuna"</string>
+    <string name="skipped_heartbeat_uppercase_label" msgid="1004040920818222022">"Taupadak saltatzea"</string>
+    <string name="skipped_heartbeat_lowercase_label" msgid="2446049805930852514">"taupadak saltatzea"</string>
+    <string name="sleep_changes_uppercase_label" msgid="817870703301327111">"Loaren aldaketak"</string>
+    <string name="sleep_changes_lowercase_label" msgid="8606593835222848643">"loaren aldaketak"</string>
+    <string name="sleepiness_uppercase_label" msgid="8292543897598171825">"Logura"</string>
+    <string name="sleepiness_lowercase_label" msgid="7563434619994665081">"logura"</string>
+    <string name="sneezing_uppercase_label" msgid="3559089195823390830">"Doministikuak"</string>
+    <string name="sneezing_lowercase_label" msgid="4614496100578986753">"doministikuak"</string>
+    <string name="snore_uppercase_label" msgid="5408933698329003980">"Zurrungak"</string>
+    <string name="snore_lowercase_label" msgid="4813706716393000341">"zurrungak"</string>
+    <string name="sore_throat_uppercase_label" msgid="7652461264264564339">"Eztarriko mina"</string>
+    <string name="sore_throat_lowercase_label" msgid="2671417552726018944">"eztarriko mina"</string>
+    <string name="stomach_ache_uppercase_label" msgid="8450868632465837793">"Tripako mina"</string>
+    <string name="stomach_ache_lowercase_label" msgid="3263518334946627327">"tripako mina"</string>
+    <string name="stuffy_nose_uppercase_label" msgid="4216439398397550673">"Sudurreko kongestioa"</string>
+    <string name="stuffy_nose_lowercase_label" msgid="346310767340271161">"sudurreko kongestioa"</string>
+    <string name="unexplained_weight_changes_uppercase_label" msgid="1882204558194305221">"Azalpenik gabeko pisu-aldaketak"</string>
+    <string name="unexplained_weight_changes_lowercase_label" msgid="8433998024876395101">"azalpenik gabeko pisu-aldaketak"</string>
+    <string name="vaginal_dryness_uppercase_label" msgid="4256721076420375400">"Baginako lehortasuna"</string>
+    <string name="vaginal_dryness_lowercase_label" msgid="1329282833647595593">"baginako lehortasuna"</string>
+    <string name="vaginal_itchiness_uppercase_label" msgid="2843508264503404145">"Baginako azkura"</string>
+    <string name="vaginal_itchiness_lowercase_label" msgid="4569019157289060524">"baginako azkura"</string>
+    <string name="vomiting_uppercase_label" msgid="258794137964470267">"Oka egitea"</string>
+    <string name="vomiting_lowercase_label" msgid="2520559377010270583">"oka egitea"</string>
+    <string name="water_retention_uppercase_label" msgid="4748866467103152119">"Ur-erretentzioa"</string>
+    <string name="water_retention_lowercase_label" msgid="3738721149186742861">"ur-erretentzioa"</string>
+    <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Arnasketa txistukaria"</string>
+    <string name="wheezing_lowercase_label" msgid="1278548371813007771">"arnasketa txistukaria"</string>
 </resources>

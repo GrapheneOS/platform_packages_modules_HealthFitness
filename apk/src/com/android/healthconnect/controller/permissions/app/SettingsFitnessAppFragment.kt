@@ -18,6 +18,7 @@
 package com.android.healthconnect.controller.permissions.app
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
+import android.icu.number.NumberFormatter
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -25,8 +26,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
+import androidx.preference.PreferenceScreen
 import androidx.preference.TwoStatePreference
+import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeShowMigrationDialog
 import com.android.healthconnect.controller.migration.MigrationViewModel
@@ -37,15 +41,20 @@ import com.android.healthconnect.controller.permissions.app.AppPermissionViewMod
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.permissions.request.PermissionGroupKey
 import com.android.healthconnect.controller.permissions.shared.DisconnectHealthPermissionsDialogFragment
 import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromFitnessPermissionType
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.getSortedDataCategoryToStringMap
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.shared.preference.ExpandablePreferenceAdapter
 import com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference
+import com.android.healthconnect.controller.shared.preference.HealthToggleExpandablePreference
 import com.android.healthconnect.controller.shared.preference.addIntroOrAppHeaderPreference
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.LocaleSorter.sortByLocale
@@ -56,6 +65,7 @@ import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.showLoadingDialog
+import com.android.healthfitness.flags.Flags.permissionsGroupingSettingsFitnessAppScreen
 import com.android.settingslib.widget.FooterPreference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -92,6 +102,14 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
     private val manageAppCategory: PreferenceGroup by pref(MANAGE_APP_CATEGORY)
     private val footer: FooterPreference by pref(FOOTER)
     private val dateFormatter by lazy { LocalDateTimeFormatter(requireContext()) }
+    private val expandableParentPreferences = mutableListOf<Preference>()
+
+    override fun onCreateAdapter(preferenceScreen: PreferenceScreen): RecyclerView.Adapter<*> {
+        if (permissionsGroupingSettingsFitnessAppScreen()) {
+            return ExpandablePreferenceAdapter(preferenceScreen, expandableParentPreferences)
+        }
+        return super.onCreateAdapter(preferenceScreen)
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
@@ -146,6 +164,7 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
                 is RevokeAllState.Loading -> {
                     showLoadingDialog()
                 }
+
                 else -> {
                     dismissLoadingDialog()
                 }
@@ -161,6 +180,7 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
                         viewModel.appInfo.value?.appName!!,
                     )
                 }
+
                 else -> {
                     // do nothing
                 }
@@ -293,9 +313,20 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
     private fun updatePermissions(permissions: List<FitnessPermission>) {
         readPermissionCategory.removeAll()
         writePermissionCategory.removeAll()
-
         permissionMap.clear()
 
+        if (permissionsGroupingSettingsFitnessAppScreen()) {
+            expandableParentPreferences.clear()
+            updateGroupedPermissionsUi(permissions)
+        } else {
+            updateFlatPermissionsUi(permissions)
+        }
+
+        readPermissionCategory.apply { isVisible = (preferenceCount != 0) }
+        writePermissionCategory.apply { isVisible = (preferenceCount != 0) }
+    }
+
+    private fun updateFlatPermissionsUi(permissions: List<FitnessPermission>) {
         permissions
             .sortByLocale {
                 requireContext()
@@ -308,50 +339,151 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
                     } else {
                         writePermissionCategory
                     }
-                val switchPreference =
-                    HealthSwitchPreference(requireContext()).also {
-                        val healthCategory =
-                            fromFitnessPermissionType(permission.fitnessPermissionType)
-                        it.icon = healthCategory.icon(requireContext())
-                        it.setTitle(
-                            fromPermissionType(permission.fitnessPermissionType).uppercaseLabel
-                        )
-                        it.logNameActive = PermissionsElement.PERMISSION_SWITCH
-                        it.logNameInactive = PermissionsElement.PERMISSION_SWITCH
-                        it.permission = permission
-                        it.setOnPreferenceChangeListener { _, newValue ->
-                            val checked = newValue as Boolean
-                            // Shown warning when revoking permission from system apps.
-                            if (!checked && isSystemApp) {
-                                showConfirmRevokingSystemAppPermissionDialog(
-                                    packageName,
-                                    permission,
-                                )
-                                // Return false IMMEDIATELY to prevent the switch from visually
-                                // changing until the user confirms in the dialog.
-                                false
-                            } else {
-                                val permissionUpdated =
-                                    viewModel.updatePermission(packageName, permission, checked)
-                                if (!permissionUpdated) {
-                                    Toast.makeText(
-                                            requireContext(),
-                                            R.string.default_error,
-                                            Toast.LENGTH_SHORT,
-                                        )
-                                        .show()
-                                }
-                                permissionUpdated
-                            }
-                        }
-                    }
-                permissionMap[permission] = switchPreference
-                category.addPreference(switchPreference)
+                val preference = getPermissionPreference(permission)
+                category.addPreference(preference)
+            }
+    }
+
+    private fun updateGroupedPermissionsUi(permissions: List<FitnessPermission>) {
+        val dataCategoryEnumToDataCategoryStringSortedMap =
+            getSortedDataCategoryToStringMap(requireContext())
+
+        val permissionGroupKeyToRequestedPermissions =
+            permissions.groupBy {
+                PermissionGroupKey(
+                    it.permissionsAccessType,
+                    fromFitnessPermissionType(it.fitnessPermissionType),
+                )
             }
 
-        // Hide category if it contains no permissions
-        readPermissionCategory.apply { isVisible = (preferenceCount != 0) }
-        writePermissionCategory.apply { isVisible = (preferenceCount != 0) }
+        populateGroupedPermissionsUi(
+            permissionGroupKeyToRequestedPermissions,
+            PermissionsAccessType.READ,
+            readPermissionCategory,
+            dataCategoryEnumToDataCategoryStringSortedMap,
+        )
+
+        populateGroupedPermissionsUi(
+            permissionGroupKeyToRequestedPermissions,
+            PermissionsAccessType.WRITE,
+            writePermissionCategory,
+            dataCategoryEnumToDataCategoryStringSortedMap,
+        )
+    }
+
+    private fun populateGroupedPermissionsUi(
+        permissionGroupKeyToRequestedPermissions: Map<PermissionGroupKey, List<FitnessPermission>>,
+        accessType: PermissionsAccessType,
+        preferenceGroup: PreferenceGroup,
+        sortedCategories: Map<Int, String>,
+    ) {
+        sortedCategories.keys
+            .filter { dataCategory ->
+                !permissionGroupKeyToRequestedPermissions[
+                        PermissionGroupKey(accessType, dataCategory)]
+                    .isNullOrEmpty()
+            }
+            .forEach { dataCategory ->
+                val preferenceKey = PermissionGroupKey(accessType, dataCategory)
+                val permissions = permissionGroupKeyToRequestedPermissions[preferenceKey]!!
+
+                if (viewModel.expandedDataCategoryPreferenceKeys.value?.isEmpty() == true) {
+                    viewModel.updateDataCategoryPreferenceKey(preferenceKey, /* isExpanded= */ true)
+                }
+
+                val expandablePreference =
+                    getExpandablePreferenceForDataCategory(dataCategory, preferenceKey, permissions)
+                expandableParentPreferences.add(expandablePreference)
+                preferenceGroup.addPreference(expandablePreference)
+
+                permissions
+                    .sortByLocale {
+                        requireContext()
+                            .getString(fromPermissionType(it.fitnessPermissionType).uppercaseLabel)
+                    }
+                    .forEachIndexed { index, permission ->
+                        val permissionPreference =
+                            getPermissionPreference(
+                                permission,
+                                isLastInGroup = index == permissions.size - 1,
+                            )
+                        expandableParentPreferences.add(permissionPreference)
+                        expandablePreference.addPreference(permissionPreference)
+                    }
+            }
+    }
+
+    private fun getExpandablePreferenceForDataCategory(
+        dataCategory: Int,
+        preferenceKey: PermissionGroupKey,
+        permissionsForCategory: List<FitnessPermission>,
+    ): HealthToggleExpandablePreference {
+        return HealthToggleExpandablePreference(requireContext()).apply {
+            title = getExpandablePreferenceTitle(dataCategory, permissionsForCategory.size)
+            key = preferenceKey.toString()
+            setExpanded(
+                viewModel.expandedDataCategoryPreferenceKeys.value?.contains(
+                    preferenceKey.toString()
+                ) == true
+            )
+            setOnExpandChangeListener { isExpanded ->
+                viewModel.updateDataCategoryPreferenceKey(preferenceKey, isExpanded)
+            }
+            viewModel.grantedFitnessPermissions.observe(viewLifecycleOwner) { grantedPermissions ->
+                isChecked = grantedPermissions.containsAll(permissionsForCategory)
+            }
+            setOnSwitchChangeListener { isChecked ->
+                viewModel.updatePermissions(packageName, permissionsForCategory, isChecked)
+            }
+        }
+    }
+
+    private fun getExpandablePreferenceTitle(dataCategory: Int, permissionsCount: Int): String {
+        return requireContext()
+            .getString(
+                R.string.health_data_category_expandable_preference_title,
+                getString(dataCategory.uppercaseTitle()),
+                NumberFormatter.with()
+                    .locale(requireContext().resources.configuration.locale)
+                    .format(permissionsCount)
+                    .toString(),
+            )
+    }
+
+    private fun getPermissionPreference(
+        permission: FitnessPermission,
+        isLastInGroup: Boolean = false,
+    ): HealthSwitchPreference {
+        return HealthSwitchPreference(requireContext()).also {
+            val healthCategory = fromFitnessPermissionType(permission.fitnessPermissionType)
+            it.icon = healthCategory.icon(requireContext())
+            it.setTitle(fromPermissionType(permission.fitnessPermissionType).uppercaseLabel)
+            it.logNameActive = PermissionsElement.PERMISSION_SWITCH
+            it.logNameInactive = PermissionsElement.PERMISSION_SWITCH
+            it.permission = permission
+            if (permissionsGroupingSettingsFitnessAppScreen()) {
+                it.isLastInGroup = isLastInGroup
+            }
+            it.setOnPreferenceChangeListener { _, newValue ->
+                val checked = newValue as Boolean
+                // Shown warning when revoking permission from system apps.
+                if (!checked && isSystemApp) {
+                    showConfirmRevokingSystemAppPermissionDialog(packageName, permission)
+                    // Return false IMMEDIATELY to prevent the switch from visually
+                    // changing until the user confirms in the dialog.
+                    false
+                } else {
+                    val permissionUpdated =
+                        viewModel.updatePermission(packageName, permission, checked)
+                    if (!permissionUpdated) {
+                        Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    permissionUpdated
+                }
+            }
+            permissionMap[permission] = it
+        }
     }
 
     private fun updateFooter(isAtLeastOneGranted: Boolean, appName: String) {

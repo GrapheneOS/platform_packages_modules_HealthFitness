@@ -44,7 +44,6 @@ import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
-import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.storage.TransactionManager;
 
 import org.junit.Before;
@@ -82,9 +81,6 @@ public class DailyCleanupJobTest {
     @Mock private MigrationUiStateManager mMigrationUiStateManager;
     @Mock Context mContext;
 
-    // TODO(b/373322447): Remove the mock FirstGrantTimeManager
-    @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
-
     private HealthConnectInjector mHealthConnectInjector;
     private DailyCleanupJob mDailyCleanupJob;
 
@@ -101,7 +97,6 @@ public class DailyCleanupJobTest {
                         .setMigrationUiStateManager(mMigrationUiStateManager)
                         .setAppInfoHelper(mAppInfoHelper)
                         .setActivityDateHelper(mActivityDateHelper)
-                        .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .build();
         mDailyCleanupJob = mHealthConnectInjector.getDailyCleanupJob();
     }

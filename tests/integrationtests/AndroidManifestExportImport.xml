@@ -54,8 +54,8 @@
     <uses-permission android:name="android.permission.health.READ_STEPS"/>
     <uses-permission android:name="android.permission.health.WRITE_STEPS"/>
 
-    <uses-permission android:name="android.permission.health.WRITE_MEDICAL_DATA"/>
     <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_VACCINES"/>
+    <uses-permission android:name="android.permission.health.WRITE_MEDICAL_DATA"/>
 
     <!--  self-instrumenting test package. -->
 </manifest>

@@ -39,12 +39,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry
@@ -62,6 +60,7 @@ import com.android.healthconnect.controller.migration.api.MigrationRestoreState.
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
 import com.android.healthconnect.controller.navigation.TrampolineActivity
+import com.android.healthconnect.controller.newHome.HomeViewModel as NewHomeViewModel
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.OnboardingViewModel
 import com.android.healthconnect.controller.permissions.additionalaccess.AdditionalAccessViewModel
@@ -80,6 +79,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
@@ -91,13 +91,14 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import java.time.Instant
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.anyString
-import org.mockito.Mockito.mock
+import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
@@ -107,26 +108,21 @@ class TrampolineActivityTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val setFlagsRule = SetFlagsRule()
-
-    @BindValue val deviceInfoUtils: DeviceInfoUtils = FakeDeviceInfoUtils()
-    @BindValue val migrationViewModel: MigrationViewModel = mock(MigrationViewModel::class.java)
-    @BindValue
-    val exportStatusViewModel: ExportStatusViewModel = mock(ExportStatusViewModel::class.java)
-
-    @BindValue
-    val appPermissionViewModel: AppPermissionViewModel = mock(AppPermissionViewModel::class.java)
-    @BindValue
-    val connectedAppsViewModel: ConnectedAppsViewModel = mock(ConnectedAppsViewModel::class.java)
-    @BindValue
-    val additionalAccessViewModel: AdditionalAccessViewModel =
-        mock(AdditionalAccessViewModel::class.java)
-    @BindValue val allDataViewModel: AllDataViewModel = mock(AllDataViewModel::class.java)
-    @BindValue val homeViewModel: HomeViewModel = mock(HomeViewModel::class.java)
-    @BindValue
-    val recentAccessViewModel: RecentAccessViewModel = mock(RecentAccessViewModel::class.java)
     private val context = InstrumentationRegistry.getInstrumentation().context
 
-    @BindValue val onboardingViewModel: OnboardingViewModel = mock(OnboardingViewModel::class.java)
+    @BindValue val deviceInfoUtils: DeviceInfoUtils = FakeDeviceInfoUtils()
+    @BindValue val migrationViewModel: MigrationViewModel = mock()
+    @BindValue val exportStatusViewModel: ExportStatusViewModel = mock()
+
+    @BindValue val appPermissionViewModel: AppPermissionViewModel = mock()
+    @BindValue val connectedAppsViewModel: ConnectedAppsViewModel = mock()
+    @BindValue val additionalAccessViewModel: AdditionalAccessViewModel = mock()
+    @BindValue val allDataViewModel: AllDataViewModel = mock()
+    @BindValue val homeViewModel: HomeViewModel = mock()
+    @BindValue val recentAccessViewModel: RecentAccessViewModel = mock()
+
+    @BindValue val onboardingViewModel: OnboardingViewModel = mock()
+    @BindValue val newHomeViewModel: NewHomeViewModel = mock()
 
     @Before
     fun setup() {
@@ -263,6 +259,9 @@ class TrampolineActivityTest {
         whenever(onboardingViewModel.onboardingBannerState).then {
             MediatorLiveData(OnboardingViewModel.OnboardingBannerState.NoOnboardingBanner)
         }
+        whenever(newHomeViewModel.homeFragmentState).then {
+            MutableStateFlow(NewHomeViewModel.HomeFragmentState.WithData(emptyList()))
+        }
     }
 
     @Test
@@ -309,15 +308,15 @@ class TrampolineActivityTest {
     @Test
     @EnableFlags(Flags.FLAG_ONBOARDING)
     fun syncMoreAppsAction_showsConnectAppsOnboarding() {
-        // TODO (b/416731816) replace with correct action
         launchActivityForResult<TrampolineActivity>(createStartIntent(ACTION_SYNC_MORE_APPS)).use {
             onIdle()
-            onView(withText("Connect your first app")).check(matches(isDisplayed()))
-            onView(withText(TEST_APP.appName)).check(matches(isDisplayed()))
+            checkTextIsDisplayed("Connect your first app")
+            checkTextIsDisplayed(TEST_APP.appName)
         }
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
     fun homeSettingsIntent_launchesMainActivity() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(true)
 
@@ -325,26 +324,35 @@ class TrampolineActivityTest {
             .use {
                 onIdle()
                 if (SettingsThemeHelper.isExpressiveTheme(context)) {
-                    onView(withText("No recent access"))
-                        .perform(scrollTo())
-                        .check(matches(isDisplayed()))
+                    checkTextIsDisplayed("No recent access")
                 } else {
-                    onView(withText("No apps recently accessed Health\u00A0Connect"))
-                        .perform(scrollTo())
-                        .check(matches(isDisplayed()))
+                    checkTextIsDisplayed("No apps recently accessed Health\u00A0Connect")
                 }
-                onView(withText("Permissions and data")).check(matches(isDisplayed()))
+                checkTextIsDisplayed("Permissions and data")
             }
     }
 
     @Test
-    fun manageHealthDataIntent_launchesDataManagementActivity_newIA() {
+    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    fun homeSettingsIntent_launchesMainActivity_withNewHomeScreen() {
+        (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(true)
+
+        launchActivityForResult<TrampolineActivity>(createStartIntent(ACTION_HEALTH_HOME_SETTINGS))
+            .use {
+                onIdle()
+                checkTextIsDisplayed("Your health apps")
+                checkTextIsDisplayed("Your health data")
+            }
+    }
+
+    @Test
+    fun manageHealthDataIntent_launchesDataManagementActivity() {
         // setup data management screen.
         launchActivityForResult<TrampolineActivity>(createStartIntent(ACTION_MANAGE_HEALTH_DATA))
             .use {
                 onIdle()
-                onView(withText("Activity")).check(matches(isDisplayed()))
-                onView(withText("Steps")).check(matches(isDisplayed()))
+                checkTextIsDisplayed("Activity")
+                checkTextIsDisplayed("Steps")
             }
     }
 
@@ -355,13 +363,10 @@ class TrampolineActivityTest {
                 createStartIntent(ACTION_MANAGE_HEALTH_PERMISSIONS)
             )
             .use {
-                onView(
-                        withText(
-                            "Apps with this permission can read and write your" +
-                                " health and fitness data."
-                        )
-                    )
-                    .check(matches(isDisplayed()))
+                checkTextIsDisplayed(
+                    "Apps with this permission can read and write your" +
+                        " health and fitness data."
+                )
             }
     }
 
@@ -372,12 +377,9 @@ class TrampolineActivityTest {
                 createStartIntent(ACTION_MANAGE_HEALTH_PERMISSIONS)
             )
             .use {
-                onView(
-                        withText(
-                            "Apps with this permission can read and write your health, fitness and wellness data. This includes data tracked from your devices and data stored in Health Connect"
-                        )
-                    )
-                    .check(matches(isDisplayed()))
+                checkTextIsDisplayed(
+                    "Apps with this permission can read and write your health, fitness and wellness data. This includes data tracked from your devices and data stored in Health Connect"
+                )
             }
     }
 
@@ -390,7 +392,7 @@ class TrampolineActivityTest {
 
         launchActivityForResult<TrampolineActivity>(intent).use {
             onIdle()
-            onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+            checkTextIsDisplayed(TEST_APP_NAME)
         }
     }
 

@@ -26,7 +26,7 @@ import com.android.healthconnect.controller.utils.logging.UnknownGenericElement
 import com.android.settingslib.widget.AppPreference
 import dagger.hilt.android.EntryPointAccessors
 
-class HealthAppPreference(context: Context, private val appMetadata: AppMetadata) :
+open class HealthAppPreference(context: Context, private val appMetadata: AppMetadata) :
     AppPreference(context), ComparablePreference {
 
     private var logger: HealthConnectLogger

@@ -52,6 +52,16 @@ fun Fragment.setupMenu(
     logger: HealthConnectLogger? = null,
     onMenuItemSelected: (MenuItem) -> Boolean,
 ) {
+    setupMenu(menuRes, viewLifecycleOwner, logger, null, onMenuItemSelected)
+}
+
+fun Fragment.setupMenu(
+    @MenuRes menuRes: Int,
+    viewLifecycleOwner: LifecycleOwner,
+    logger: HealthConnectLogger? = null,
+    onPrepareMenu: ((Menu) -> Unit)? = null,
+    onMenuItemSelected: (MenuItem) -> Boolean,
+) {
 
     val hiltEntryPoint =
         EntryPointAccessors.fromApplication(
@@ -68,6 +78,10 @@ fun Fragment.setupMenu(
                 menuInflater.inflate(menuRes, menu)
                 menu.findItem(R.id.menu_send_feedback).isVisible =
                     deviceInfoUtils.isSendFeedbackAvailable(requireContext())
+            }
+
+            override fun onPrepareMenu(menu: Menu) {
+                onPrepareMenu?.invoke(menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

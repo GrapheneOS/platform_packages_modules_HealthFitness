@@ -84,6 +84,8 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"näring"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"Välmående"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"välmående"</string>
+    <string name="symptoms_category_uppercase" msgid="1357167834284360975">"Symtom"</string>
+    <string name="symptoms_category_lowercase" msgid="2298815597177353672">"symtom"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"Bläddra bland data"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"Hantera data"</string>
     <string name="export_data_button" msgid="7783329820434117744">"Exportera data"</string>
@@ -378,6 +380,15 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"alkoholkonsumtion"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Läsbehörighet för alkoholkonsumtion"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Skrivbehörighet för alkoholkonsumtion"</string>
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Hosta"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"hosta"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Läsa symtom"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Skrivbehörighet för symtom"</string>
+    <string name="symptom_unknown" msgid="5796719193136239306">"Okänt"</string>
+    <string name="symptom_severity_mild" msgid="2689415474774489874">"Mild"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"Måttlig"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"Extrem"</string>
+    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Ge <xliff:g id="APP_NAME">%1$s</xliff:g> läsbehörighet"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Ge <xliff:g id="APP_NAME">%1$s</xliff:g> skrivbehörighet"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Tillåt"</string>
@@ -660,6 +671,8 @@
     <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{1 armtag på rullstol}other{# armtag på rullstol}}"</string>
     <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 l}other{# l}}"</string>
     <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 liter}other{# liter}}"</string>
+    <string name="milliliter" msgid="7730118351176678375">"{count,plural, =1{1 ml}other{# ml}}"</string>
+    <string name="milliliter_long" msgid="6431396151823725792">"{count,plural, =1{1 milliliter}other{# milliliter}}"</string>
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 våning}other{# våningar}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 m}other{# m}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 meter}other{# meter}}"</string>
@@ -835,8 +848,32 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} bloss från en vape}other{{quantity} bloss från en vape}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} cigarett}other{{quantity} cigaretter}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} okänd"</string>
+    <string name="alcohol_consumption_title" msgid="2627266871623334972">"<xliff:g id="SERVING">%1$s</xliff:g> • <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"Annat"</string>
+    <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Öl"</string>
+    <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Vin"</string>
+    <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
+    <string name="alcohol_consumption_beverage_type_gin" msgid="5945396443339874907">"Gin"</string>
+    <string name="alcohol_consumption_beverage_type_whiskey" msgid="1085904168947658887">"Whisky"</string>
+    <string name="alcohol_consumption_beverage_type_rum" msgid="5230691377430212826">"Rom"</string>
+    <string name="alcohol_consumption_beverage_type_tequila" msgid="9074751455065347442">"Tequila"</string>
+    <string name="alcohol_consumption_beverage_type_lager" msgid="1490153167547219382">"Lager"</string>
+    <string name="alcohol_consumption_beverage_type_cider" msgid="3348115754435446544">"Cider"</string>
+    <string name="alcohol_consumption_beverage_type_sake" msgid="2773512901340614154">"Saké"</string>
+    <string name="alcohol_consumption_beverage_type_shochu" msgid="3491300198222489324">"Shochu"</string>
+    <string name="alcohol_consumption_beverage_type_soju" msgid="113120387013483711">"Soju"</string>
+    <string name="alcohol_consumption_beverage_type_mead" msgid="1673063923088962681">"Mjöd"</string>
+    <string name="alcohol_consumption_beverage_type_absinthe" msgid="3972259596196421914">"Absint"</string>
+    <string name="alcohol_consumption_beverage_type_brandy" msgid="3782444367994599131">"Konjak"</string>
+    <string name="alcohol_consumption_beverage_type_cocktail" msgid="4711099215987668649">"Drink"</string>
+    <string name="alcohol_consumption_beverage_type_chuhai" msgid="4727177353197748690">"Chuhai"</string>
+    <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Whisky och soda"</string>
+    <string name="serving_volume_title" msgid="4727986574534974167">"Portionsvolym"</string>
+    <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Volymprocent alkohol"</string>
+    <string name="note_title" msgid="4101166558186573016">"Anteckning"</string>
+    <string name="details_title" msgid="8411891773854413790">"Information"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> m"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> m"</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> m"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> h"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 timme}other{# timmar}}"</string>
@@ -1042,6 +1079,7 @@
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Klar"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{Automatisk radering är aktiv. Data som är äldre än # månad raderas}other{Automatisk radering är aktiv. Data som är äldre än # månader raderas}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"Automatisk radering är inaktiverad"</string>
+    <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+<xliff:g id="COUNT">%s</xliff:g>"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"Ställ in prioritet för appar"</string>
     <string name="priority_dialog_message" msgid="6971250365335018184">"Om mer än en app lägger till data om <xliff:g id="DATA_TYPE">%s</xliff:g> prioriteras den app som står överst i den här listan i Health Connect. Du kan ändra ordning på apparna genom att dra."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Spara"</string>
@@ -1175,6 +1213,7 @@
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Anslutna appar kan inte längre läsa denna data från Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Markerad"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Inte markerad"</string>
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Det finns en träningskartrutt"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Nästa dag"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Nästa vecka"</string>
@@ -1228,6 +1267,7 @@
     <string name="write_access" msgid="571547306854732263">"Skrivbehörighet"</string>
     <string name="read_access" msgid="3317759826769372785">"Läsåtkomst"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> av <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> appar tillåts"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Inga appar begär"</string>
     <string name="allowed" msgid="4158456017482263737">"Tillåts"</string>
@@ -1272,21 +1312,266 @@
     <string name="devices_unknown_device" msgid="8830092952740474454">"Okänd enhet"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Enhetsinformation"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Data som samlas in av den här enheten lagras i Health Connect, där anslutna appar får åtkomst till den"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Enheten har inte stöd för registrering av steg, men den har fortfarande data lagrad i Health Connect"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Den här enheten registrerar inte steg"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Tillåts att skriva"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Enhetsdata"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Hantera enhet"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Se enhetsdata"</string>
-    <string name="native_steps_banner_title" msgid="7668164332675458871">"Steg på telefonen visas i Health Connect"</string>
-    <string name="native_steps_banner_summary" msgid="7109953051996114646">"De steg som registreras av den här enheten lagras nu i Health Connect så att anslutna appar kan komma åt dem"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_title" msgid="8990874387340782536">"Steg på telefonen visas i Health Connect"</string>
+    <string name="native_steps_banner_summary" msgid="8255767487167444809">"De steg som registreras av den här enheten lagras nu i Health Connect så att anslutna appar kan komma åt dem"</string>
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Stäng"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Granska"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Steg visas nu i Health Connect"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"De steg som registreras av den här enheten lagras nu i Health Connect så att anslutna appar kan komma åt dem"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
-    <skip />
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"Dina hälsoappar"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"Din hälsodata"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"Inställningar"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Med Health Connect kan du dela din hälso- och träningsdata mellan flera appar. Detta hjälper dig att få fler insikter och upplevelser samtidigt som din data skyddas."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"Mer om Health Connect"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"Din data och vilka appar som har åtkomst till den"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"Appar som nyligen har använt din data"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"Granska enheter som kan komma åt hälsodata"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Installera appar som fungerar med Health Connect för att se dem här"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"Se kompatibla appar"</string>
+    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Se fler hälsoappar"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"Inte ansluten"</string>
+    <string name="connect_app_button_content_description" msgid="296796277841527165">"Klicka för att ansluta den här appen till Health Connect"</string>
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Inte nu"</string>
+    <string name="acne_read_content_description" msgid="1176708404029936065">"Läsbehörighet för akne"</string>
+    <string name="acne_write_content_description" msgid="9221785868351412493">"Skrivbehörighet för akne"</string>
+    <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Läsbehörighet för sköra naglar"</string>
+    <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Skrivbehörighet för sköra naglar"</string>
+    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Läsbehörighet för brännande känsla i munnen"</string>
+    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Skrivbehörighet för brännande känsla i munnen"</string>
+    <string name="chills_read_content_description" msgid="7244946135559432433">"Läsbehörighet för frossa"</string>
+    <string name="chills_write_content_description" msgid="6478646233405107436">"Skrivbehörighet för frossa"</string>
+    <string name="dehydration_read_content_description" msgid="7633935838518756206">"Läsbehörighet för vätskebrist"</string>
+    <string name="dehydration_write_content_description" msgid="541514183036921571">"Skrivbehörighet för vätskebrist"</string>
+    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"Läsbehörighet för torr hud"</string>
+    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"Skrivbehörighet för torr hud"</string>
+    <string name="fever_read_content_description" msgid="3385209639730909489">"Läsbehörighet för feber"</string>
+    <string name="fever_write_content_description" msgid="8440573327719878961">"Skrivbehörighet för feber"</string>
+    <string name="joint_pain_read_content_description" msgid="2932523124488927967">"Läsbehörighet för ledvärk"</string>
+    <string name="joint_pain_write_content_description" msgid="7405551860978844535">"Skrivbehörighet för ledvärk"</string>
+    <string name="joint_stiffness_read_content_description" msgid="2132696730582070534">"Läsbehörighet för ledstelhet"</string>
+    <string name="joint_stiffness_write_content_description" msgid="7556318646656369856">"Skrivbehörighet för ledstelhet"</string>
+    <string name="muscle_pain_read_content_description" msgid="3116385630330673084">"Läsbehörighet för muskelvärk"</string>
+    <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"Skrivbehörighet för muskelvärk"</string>
+    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"Läsbehörighet för medvetslöshet"</string>
+    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"Skrivbehörighet för medvetslöshet"</string>
+    <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"Läsbehörighet för minskad förmåga att träna"</string>
+    <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"Skrivbehörighet för förmåga att träna"</string>
+    <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"Läsbehörighet för oförklarlig viktförändring"</string>
+    <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"Skrivbehörighet för oförklarlig viktförändring"</string>
+    <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"Läsbehörighet för generaliserad smärta"</string>
+    <string name="generalized_body_ache_write_content_description" msgid="4282920161878530009">"Skrivbehörighet för generaliserad smärta"</string>
+    <string name="fatigue_read_content_description" msgid="8447413794808220408">"Läsbehörighet för fatigue"</string>
+    <string name="fatigue_write_content_description" msgid="3000326883358951973">"Skrivbehörighet för fatigue"</string>
+    <string name="constipation_read_content_description" msgid="4024154136010015370">"Läsbehörighet för förstoppning"</string>
+    <string name="constipation_write_content_description" msgid="9059835998017996999">"Skrivbehörighet för förstoppning"</string>
+    <string name="diarrhea_read_content_description" msgid="6643311788778713543">"Läsbehörighet för diarré"</string>
+    <string name="diarrhea_write_content_description" msgid="2525160401458506448">"Skrivbehörighet för diarré"</string>
+    <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"Läsbehörighet för aptitlöshet"</string>
+    <string name="loss_of_appetite_write_content_description" msgid="7370817778828856877">"Skrivbehörighet för aptitlöshet"</string>
+    <string name="nausea_read_content_description" msgid="7696809485706809234">"Läsbehörighet för illamående"</string>
+    <string name="nausea_write_content_description" msgid="7956853318058549079">"Skrivbehörighet för illamående"</string>
+    <string name="stomach_ache_read_content_description" msgid="6960461949095524373">"Läsbehörighet för magont"</string>
+    <string name="stomach_ache_write_content_description" msgid="4822349196740130790">"Skrivbehörighet för magont"</string>
+    <string name="vomiting_read_content_description" msgid="6425637340168306118">"Läsbehörighet för kräkningar"</string>
+    <string name="vomiting_write_content_description" msgid="2768436321239967229">"Skrivbehörighet för kräkningar"</string>
+    <string name="chest_pain_read_content_description" msgid="5388099127082653993">"Läsbehörighet för bröstsmärta"</string>
+    <string name="chest_pain_write_content_description" msgid="7570421665813979598">"Skrivbehörighet för bröstsmärta"</string>
+    <string name="chest_tightness_read_content_description" msgid="3234587929340517638">"Läsbehörighet för tryck över bröstet"</string>
+    <string name="chest_tightness_write_content_description" msgid="3365518444505217882">"Skrivbehörighet för tryck över bröstet"</string>
+    <string name="cough_read_content_description" msgid="4834360757270578547">"Läsbehörighet för hosta"</string>
+    <string name="cough_write_content_description" msgid="2927943192149715422">"Skrivbehörighet för hosta"</string>
+    <string name="heart_palpitations_read_content_description" msgid="5830132363981902576">"Läsbehörighet för hjärtklappning"</string>
+    <string name="heart_palpitations_write_content_description" msgid="6195434828951874561">"Skrivbehörighet för hjärtklappning"</string>
+    <string name="shortness_of_breath_read_content_description" msgid="5285037217314042125">"Läsbehörighet för andfåddhet"</string>
+    <string name="shortness_of_breath_write_content_description" msgid="1812050225998794712">"Skrivbehörighet för andfåddhet"</string>
+    <string name="wheezing_read_content_description" msgid="3698103133045395859">"Läsbehörighet för väsande andning"</string>
+    <string name="wheezing_write_content_description" msgid="3555234332119025686">"Skrivbehörighet för väsande andning"</string>
+    <string name="heartburn_read_content_description" msgid="4650825508743336439">"Läsbehörighet för halsbränna"</string>
+    <string name="heartburn_write_content_description" msgid="1857706822547818187">"Skrivbehörighet för halsbränna"</string>
+    <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"Läsbehörighet för överhoppade hjärtslag"</string>
+    <string name="skipped_heartbeat_write_content_description" msgid="834686289232563614">"Skrivbehörighet för överhoppade hjärtslag"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"Läsbehörighet för snabb eller oregelbunden puls eller hjärtklappning"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"Skrivbehörighet för snabb eller oregelbunden puls eller hjärtklappning"</string>
+    <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"Läsbehörighet för svårigheter att svälja"</string>
+    <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"Skrivbehörighet för svårigheter att svälja"</string>
+    <string name="dizziness_read_content_description" msgid="2525565486057144416">"Läsbehörighet för yrsel"</string>
+    <string name="dizziness_write_content_description" msgid="1875365619054873732">"Skrivbehörighet för yrsel"</string>
+    <string name="earaches_read_content_description" msgid="4643142391473401154">"Läsbehörighet för ont i örat"</string>
+    <string name="earaches_write_content_description" msgid="3551386029980258801">"Skrivbehörighet för ont i örat"</string>
+    <string name="hair_loss_read_content_description" msgid="4057044821025872986">"Läsbehörighet för håravfall"</string>
+    <string name="hair_loss_write_content_description" msgid="7387442867237711823">"Skrivbehörighet för håravfall"</string>
+    <string name="headache_read_content_description" msgid="7485283472508878298">"Läsbehörighet för huvudvärk"</string>
+    <string name="headache_write_content_description" msgid="720183844750746485">"Skrivbehörighet för huvudvärk"</string>
+    <string name="runny_nose_read_content_description" msgid="443700998701222852">"Läsbehörighet för rinnande näsa"</string>
+    <string name="runny_nose_write_content_description" msgid="6210009950948827090">"Skrivbehörighet för rinnande näsa"</string>
+    <string name="sneezing_read_content_description" msgid="1825781985598094799">"Läsbehörighet för nysningar"</string>
+    <string name="sneezing_write_content_description" msgid="8125072216406958337">"Skrivbehörighet för snarkning"</string>
+    <string name="sore_throat_read_content_description" msgid="7798247670004858562">"Läsbehörighet för ont i halsen"</string>
+    <string name="sore_throat_write_content_description" msgid="6058043292544091397">"Skrivbehörighet för ont i halsen"</string>
+    <string name="stuffy_nose_read_content_description" msgid="6604212451531546331">"Läsbehörighet för täppt näsa"</string>
+    <string name="stuffy_nose_write_content_description" msgid="6950875986047625521">"Skrivbehörighet för täppt näsa"</string>
+    <string name="back_pain_read_content_description" msgid="1176155927269014089">"Läsbehörighet för ryggvärk"</string>
+    <string name="back_pain_write_content_description" msgid="6282959987099901645">"Skrivbehörighet för ryggvärk"</string>
+    <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"Läsbehörighet för smärta i ländryggen"</string>
+    <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"Skrivbehörighet för smärta i ländryggen"</string>
+    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"Läsbehörighet för värmevallningar"</string>
+    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"Skrivbehörighet för värmevallningar"</string>
+    <string name="night_sweats_read_content_description" msgid="7644094250441074129">"Läsbehörighet för nattsvettningar"</string>
+    <string name="night_sweats_write_content_description" msgid="7501357533280452509">"Skrivbehörighet för nattsvettningar"</string>
+    <string name="water_retention_read_content_description" msgid="211789030125880649">"Läsbehörighet för vätskeretention"</string>
+    <string name="water_retention_write_content_description" msgid="7109328727506593781">"Skrivbehörighet för vätskeretention"</string>
+    <string name="cravings_read_content_description" msgid="9098905292448612603">"Läsbehörighet för cravings"</string>
+    <string name="cravings_write_content_description" msgid="7932335159387976333">"Skrivbehörighet för cravings"</string>
+    <string name="bloating_read_content_description" msgid="8942780558464500997">"Läsbehörighet för uppblåst mage"</string>
+    <string name="bloating_write_content_description" msgid="5014366726518564943">"Skrivbehörighet för uppblåst mage"</string>
+    <string name="cramps_read_content_description" msgid="5853663240074256855">"Läsbehörighet för kramper"</string>
+    <string name="cramps_write_content_description" msgid="6777230560926849939">"Skrivbehörighet för kramper"</string>
+    <string name="abdominal_pain_read_content_description" msgid="6331928351160142817">"Läsbehörighet för buksmärtor"</string>
+    <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"Skrivbehörighet för buksmärtor"</string>
+    <string name="breast_tenderness_read_content_description" msgid="1556133668276886256">"Läsbehörighet för ömma bröst"</string>
+    <string name="breast_tenderness_write_content_description" msgid="5405234499024881940">"Skrivbehörighet för ömma bröst"</string>
+    <string name="pelvic_pain_read_content_description" msgid="8872893212311881743">"Läsbehörighet för bäckensmärta"</string>
+    <string name="pelvic_pain_write_content_description" msgid="8482016412474126674">"Skrivbehörighet för bäckensmärta"</string>
+    <string name="vaginal_dryness_read_content_description" msgid="21587787265978758">"Läsbehörighet för torrhet i underlivet"</string>
+    <string name="vaginal_dryness_write_content_description" msgid="7639415261021656468">"Skrivbehörighet för torrhet i underlivet"</string>
+    <string name="vaginal_itchiness_read_content_description" msgid="6027886706003079912">"Läsbehörighet för klåda i underlivet"</string>
+    <string name="vaginal_itchiness_write_content_description" msgid="6833099607694941406">"Skrivbehörighet för klåda i underlivet"</string>
+    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"Läsbehörighet för mental trötthet"</string>
+    <string name="brain_fog_write_content_description" msgid="354508934978268288">"Skrivbehörighet för mental trötthet"</string>
+    <string name="mood_change_read_content_description" msgid="5114563193264125173">"Läsbehörighet för humörsvängningar"</string>
+    <string name="mood_change_write_content_description" msgid="7613564641235985120">"Skrivbehörighet för humörsvängningar"</string>
+    <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"Läsbehörighet för minnesluckor"</string>
+    <string name="memory_lapse_write_content_description" msgid="211569063190179476">"Skrivbehörighet för minnesluckor"</string>
+    <string name="sleepiness_read_content_description" msgid="797381777988304669">"Läsbehörighet för sömnighet"</string>
+    <string name="sleepiness_write_content_description" msgid="888236364245216476">"Skrivbehörighet för sömnighet"</string>
+    <string name="sleep_changes_read_content_description" msgid="277237231470749744">"Läsbehörighet för sömnförändringar"</string>
+    <string name="sleep_changes_write_content_description" msgid="9078270254664653838">"Skrivbehörighet för sömnförändringar"</string>
+    <string name="insomnia_read_content_description" msgid="5225449618972721129">"Läsbehörighet för sömnlöshet"</string>
+    <string name="insomnia_write_content_description" msgid="4237153589826489083">"Skrivbehörighet för sömnlöshet"</string>
+    <string name="snore_read_content_description" msgid="3447953925696237628">"Läsbehörighet för snarkning"</string>
+    <string name="snore_write_content_description" msgid="959354771204900433">"Skrivbehörighet för snarkning"</string>
+    <string name="acne_uppercase_label" msgid="60568062993817483">"Akne"</string>
+    <string name="acne_lowercase_label" msgid="5301949536428255159">"akne"</string>
+    <string name="abdominal_pain_uppercase_label" msgid="442393846492385702">"Buksmärtor"</string>
+    <string name="abdominal_pain_lowercase_label" msgid="4136643670361233063">"buksmärtor"</string>
+    <string name="back_pain_uppercase_label" msgid="6034795846635350255">"Ryggvärk"</string>
+    <string name="back_pain_lowercase_label" msgid="7487168354843582888">"ryggvärk"</string>
+    <string name="bloating_uppercase_label" msgid="2827024204358491650">"Uppblåst mage"</string>
+    <string name="bloating_lowercase_label" msgid="4108236897678347488">"uppblåst mage"</string>
+    <string name="brain_fog_uppercase_label" msgid="3782508630097437711">"Mental trötthet"</string>
+    <string name="brain_fog_lowercase_label" msgid="8018499987092429724">"mental trötthet"</string>
+    <string name="breast_tenderness_uppercase_label" msgid="3633574517042452397">"Ömma bröst"</string>
+    <string name="breast_tenderness_lowercase_label" msgid="3745105353936751222">"ömma bröst"</string>
+    <string name="brittle_nails_uppercase_label" msgid="7290899807816681152">"Sköra naglar"</string>
+    <string name="brittle_nails_lowercase_label" msgid="43861645923597496">"sköra naglar"</string>
+    <string name="burning_mouth_uppercase_label" msgid="8975226712238467359">"Brännande känsla i munnen"</string>
+    <string name="burning_mouth_lowercase_label" msgid="3378970972990933484">"brännande känsla i munnen"</string>
+    <string name="chest_pain_uppercase_label" msgid="8091501402224214622">"Bröstsmärta"</string>
+    <string name="chest_pain_lowercase_label" msgid="8817807562310689177">"bröstsmärta"</string>
+    <string name="chest_tightness_uppercase_label" msgid="8988021502622503503">"Tryck över bröstet"</string>
+    <string name="chest_tightness_lowercase_label" msgid="1770063390635610292">"tryck över bröstet"</string>
+    <string name="chills_uppercase_label" msgid="4320786490882838834">"Frossa"</string>
+    <string name="chills_lowercase_label" msgid="1306612496314055832">"frossa"</string>
+    <string name="constipation_uppercase_label" msgid="7245001778443725742">"Förstoppning"</string>
+    <string name="constipation_lowercase_label" msgid="6217542866033766747">"förstoppning"</string>
+    <string name="cough_uppercase_label" msgid="5570609736970603012">"Hosta"</string>
+    <string name="cough_lowercase_label" msgid="459638956679172779">"hosta"</string>
+    <string name="cramps_uppercase_label" msgid="5162905309136173937">"Kramper"</string>
+    <string name="cramps_lowercase_label" msgid="4644485808002493449">"kramper"</string>
+    <string name="cravings_uppercase_label" msgid="4754194354806284307">"Cravings"</string>
+    <string name="cravings_lowercase_label" msgid="5836041614136287213">"cravings"</string>
+    <string name="dehydration_uppercase_label" msgid="10278239942824711">"Vätskebrist"</string>
+    <string name="dehydration_lowercase_label" msgid="8692632632276643276">"vätskebrist"</string>
+    <string name="diarrhea_uppercase_label" msgid="6310170127529968752">"Diarré"</string>
+    <string name="diarrhea_lowercase_label" msgid="5938774694742839016">"diarré"</string>
+    <string name="difficulty_swallowing_uppercase_label" msgid="3546617155300878657">"Svårigheter att svälja"</string>
+    <string name="difficulty_swallowing_lowercase_label" msgid="4980631237611433200">"svårigheter att svälja"</string>
+    <string name="dizziness_uppercase_label" msgid="8129950094459563983">"Yrsel"</string>
+    <string name="dizziness_lowercase_label" msgid="3462347558609662379">"yrsel"</string>
+    <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"Torr hud"</string>
+    <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"torr hud"</string>
+    <string name="earaches_uppercase_label" msgid="107701950625572701">"Ont i örat"</string>
+    <string name="earaches_lowercase_label" msgid="6240790850403958317">"ont i örat"</string>
+    <string name="fatigue_uppercase_label" msgid="7514286788083426578">"Fatigue"</string>
+    <string name="fatigue_lowercase_label" msgid="2669560685808367387">"fatigue"</string>
+    <string name="fever_uppercase_label" msgid="6889273008212535253">"Feber"</string>
+    <string name="fever_lowercase_label" msgid="3634400562894397159">"feber"</string>
+    <string name="generalized_body_ache_uppercase_label" msgid="2171378172300618053">"Generaliserad smärta"</string>
+    <string name="generalized_body_ache_lowercase_label" msgid="1725534000111875030">"generaliserad smärta"</string>
+    <string name="hair_loss_uppercase_label" msgid="6359351347019795813">"Håravfall"</string>
+    <string name="hair_loss_lowercase_label" msgid="2764498189966225461">"håravfall"</string>
+    <string name="headache_uppercase_label" msgid="863800537735413054">"Huvudvärk"</string>
+    <string name="headache_lowercase_label" msgid="6564231905087583135">"huvudvärk"</string>
+    <string name="heartburn_uppercase_label" msgid="1170571383460859644">"Halsbränna"</string>
+    <string name="heartburn_lowercase_label" msgid="6235983036978705474">"halsbränna"</string>
+    <string name="heart_palpitations_uppercase_label" msgid="2026400872833911547">"Hjärtklappning"</string>
+    <string name="heart_palpitations_lowercase_label" msgid="1468243523322721340">"hjärtklappning"</string>
+    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"Värmevallningar"</string>
+    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"värmevallningar"</string>
+    <string name="insomnia_uppercase_label" msgid="4946197328995261738">"Sömnlöshet"</string>
+    <string name="insomnia_lowercase_label" msgid="3742025423716451058">"sömnlöshet"</string>
+    <string name="joint_pain_uppercase_label" msgid="7693454621285586935">"Ledvärk"</string>
+    <string name="joint_pain_lowercase_label" msgid="1877680075365305488">"ledvärk"</string>
+    <string name="joint_stiffness_uppercase_label" msgid="5230114867081881444">"Ledstelhet"</string>
+    <string name="joint_stiffness_lowercase_label" msgid="8766445235392409480">"ledstelhet"</string>
+    <string name="loss_of_appetite_uppercase_label" msgid="4023141061302523950">"Aptitlöshet"</string>
+    <string name="loss_of_appetite_lowercase_label" msgid="7558077308061468558">"aptitlöshet"</string>
+    <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"Medvetslöshet"</string>
+    <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"medvetslöshet"</string>
+    <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"Smärta i ländryggen"</string>
+    <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"smärta i ländryggen"</string>
+    <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"Minnesluckor"</string>
+    <string name="memory_lapse_lowercase_label" msgid="5590619293782264318">"minnesluckor"</string>
+    <string name="mood_change_uppercase_label" msgid="6591596468077187132">"Humörsvängningar"</string>
+    <string name="mood_change_lowercase_label" msgid="5154765930188874067">"humörsvängningar"</string>
+    <string name="muscle_pain_uppercase_label" msgid="2470771124188001900">"Muskelvärk"</string>
+    <string name="muscle_pain_lowercase_label" msgid="7842677871351347822">"muskelvärk"</string>
+    <string name="nausea_uppercase_label" msgid="8384006696113532259">"Illamående"</string>
+    <string name="nausea_lowercase_label" msgid="8182471893071968504">"illamående"</string>
+    <string name="night_sweats_uppercase_label" msgid="6177687233700001658">"Nattsvettningar"</string>
+    <string name="night_sweats_lowercase_label" msgid="5041101323453286082">"nattsvettningar"</string>
+    <string name="pelvic_pain_uppercase_label" msgid="9057761232218571640">"Bäckensmärta"</string>
+    <string name="pelvic_pain_lowercase_label" msgid="8993103170034473121">"bäckensmärta"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"Snabb eller oregelbunden puls eller hjärtklappning"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"snabb eller oregelbunden puls eller hjärtklappning"</string>
+    <string name="reduced_capacity_for_exercise_uppercase_label" msgid="7471254320615756463">"Minskad förmåga att träna"</string>
+    <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"minskad förmåga att träna"</string>
+    <string name="runny_nose_uppercase_label" msgid="6561156187042071551">"Rinnande näsa"</string>
+    <string name="runny_nose_lowercase_label" msgid="2214697492382685914">"rinnande näsa"</string>
+    <string name="shortness_of_breath_uppercase_label" msgid="3747502224212110471">"Andfåddhet"</string>
+    <string name="shortness_of_breath_lowercase_label" msgid="3970444639088619346">"andfåddhet"</string>
+    <string name="skipped_heartbeat_uppercase_label" msgid="1004040920818222022">"Överhoppade hjärtslag"</string>
+    <string name="skipped_heartbeat_lowercase_label" msgid="2446049805930852514">"överhoppade hjärtslag"</string>
+    <string name="sleep_changes_uppercase_label" msgid="817870703301327111">"Sömnförändringar"</string>
+    <string name="sleep_changes_lowercase_label" msgid="8606593835222848643">"sömnförändringar"</string>
+    <string name="sleepiness_uppercase_label" msgid="8292543897598171825">"Sömnighet"</string>
+    <string name="sleepiness_lowercase_label" msgid="7563434619994665081">"sömnighet"</string>
+    <string name="sneezing_uppercase_label" msgid="3559089195823390830">"Nysningar"</string>
+    <string name="sneezing_lowercase_label" msgid="4614496100578986753">"nysningar"</string>
+    <string name="snore_uppercase_label" msgid="5408933698329003980">"Snarkning"</string>
+    <string name="snore_lowercase_label" msgid="4813706716393000341">"snarkning"</string>
+    <string name="sore_throat_uppercase_label" msgid="7652461264264564339">"Ont i halsen"</string>
+    <string name="sore_throat_lowercase_label" msgid="2671417552726018944">"ont i halsen"</string>
+    <string name="stomach_ache_uppercase_label" msgid="8450868632465837793">"Magont"</string>
+    <string name="stomach_ache_lowercase_label" msgid="3263518334946627327">"magont"</string>
+    <string name="stuffy_nose_uppercase_label" msgid="4216439398397550673">"Täppt näsa"</string>
+    <string name="stuffy_nose_lowercase_label" msgid="346310767340271161">"täppt näsa"</string>
+    <string name="unexplained_weight_changes_uppercase_label" msgid="1882204558194305221">"Oförklarlig viktförändring"</string>
+    <string name="unexplained_weight_changes_lowercase_label" msgid="8433998024876395101">"oförklarlig viktförändring"</string>
+    <string name="vaginal_dryness_uppercase_label" msgid="4256721076420375400">"Torrhet i underlivet"</string>
+    <string name="vaginal_dryness_lowercase_label" msgid="1329282833647595593">"torrhet i underlivet"</string>
+    <string name="vaginal_itchiness_uppercase_label" msgid="2843508264503404145">"Klåda i underlivet"</string>
+    <string name="vaginal_itchiness_lowercase_label" msgid="4569019157289060524">"klåda i underlivet"</string>
+    <string name="vomiting_uppercase_label" msgid="258794137964470267">"Kräkningar"</string>
+    <string name="vomiting_lowercase_label" msgid="2520559377010270583">"kräkningar"</string>
+    <string name="water_retention_uppercase_label" msgid="4748866467103152119">"Vätskeretention"</string>
+    <string name="water_retention_lowercase_label" msgid="3738721149186742861">"vätskeretention"</string>
+    <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Väsande andning"</string>
+    <string name="wheezing_lowercase_label" msgid="1278548371813007771">"väsande andning"</string>
 </resources>

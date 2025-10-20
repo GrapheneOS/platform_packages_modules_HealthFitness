@@ -445,6 +445,10 @@ class HomeViewModelTest {
             .isEqualTo(HomeViewModel.LockScreenBannerState.NoBanner)
     }
 
+    // endregion
+
+    // region Connected apps
+
     @Test
     fun loadConnectedApps_connectedAppsExcludeSystemApps() = runTest {
         (loadHealthPermissionApps as FakeHealthPermissionAppsUseCase).updateList(

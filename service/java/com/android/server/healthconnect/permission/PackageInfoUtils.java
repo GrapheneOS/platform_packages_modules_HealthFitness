@@ -70,6 +70,12 @@ public final class PackageInfoUtils {
         return healthAppsInfos;
     }
 
+    /** Wrapper for {@link PackageManager#checkPermission(String, String)}. */
+    public int checkPermission(
+            Context context, UserHandle user, String permission, String packageName) {
+        return getPackageManagerAsUser(context, user).checkPermission(permission, packageName);
+    }
+
     boolean hasGrantedHealthPermissions(String[] packageNames, UserHandle user, Context context) {
         for (String packageName : packageNames) {
             PackageInfo info = getPackageInfoWithPermissionsAsUser(packageName, user, context);

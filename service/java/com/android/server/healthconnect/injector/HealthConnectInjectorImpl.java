@@ -30,6 +30,7 @@ import android.os.UserManager;
 
 import androidx.annotation.Nullable;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
@@ -48,8 +49,10 @@ import com.android.server.healthconnect.common.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.common.logging.UsageStatsCollector;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.DeviceDataProviderManager;
 import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.device.notification.NativeStepsNotificationSender;
@@ -65,6 +68,7 @@ import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
@@ -187,6 +191,9 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Nullable private final MatchmakingManager mMatchmakingManager;
     @Nullable private final MatchmakingDenialStateManager mMatchmakingDenialStateManager;
     private final Clock mClock;
+    @Nullable private final SyntheticPackageNameResolver mSyntheticPackageNameResolver;
+    @Nullable private final DeviceDataProviderHelper mDeviceDataProviderHelper;
+    @Nullable private final DeviceDataProviderManager mDeviceDataProviderManager;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -549,10 +556,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mThreadScheduler)
                         : builder.mPermissionPackageChangesOrchestrator;
         mCloudBackupManager =
-                // TODO(b/400105647): Remove duplicate flag check once excess code size is resolved.
-                builder.mCloudBackupManager == null
-                                && Flags.cloudBackupAndRestore()
-                                && isCloudBackupRestoreEnabled()
+                builder.mCloudBackupManager == null && isCloudBackupRestoreEnabled()
                         ? new CloudBackupManager(
                                 mTransactionManager,
                                 mFitnessRecordReadHelper,
@@ -568,10 +572,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         : null;
 
         mCloudRestoreManager =
-                // TODO(b/400105647): Remove duplicate flag check once excess code size is resolved.
-                builder.mCloudRestoreManager == null
-                                && Flags.cloudBackupAndRestore()
-                                && isCloudBackupRestoreEnabled()
+                builder.mCloudRestoreManager == null && isCloudBackupRestoreEnabled()
                         ? new CloudRestoreManager(
                                 mTransactionManager,
                                 mFitnessRecordUpsertHelper,
@@ -585,7 +586,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
 
         mLatencyMetricsCollector =
                 builder.mLatencyMetricsCollector == null
-                        ? new LatencyMetricsCollector(mTransactionManager, mAppInfoHelper)
+                        ? new LatencyMetricsCollector(mTransactionManager, mAppInfoHelper, mClock)
                         : builder.mLatencyMetricsCollector;
         mLatencyMetricsLogger =
                 builder.mLatencyMetricsLogger == null
@@ -595,7 +596,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
 
         mDataGranularityStatsCollector =
                 builder.mDataGranularityStatsCollector == null
-                        ? new DataGranularityStatsCollector(mTransactionManager, mAppInfoHelper)
+                        ? new DataGranularityStatsCollector(
+                                mTransactionManager, mAppInfoHelper, mClock)
                         : builder.mDataGranularityStatsCollector;
 
         mDataGranularityStatsLogger =
@@ -616,9 +618,27 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthConnectPermissionHelper,
                                 mPackageInfoUtils,
                                 mHealthConnectMappings,
-                                context.getPackageManager(),
                                 Objects.requireNonNull(mMatchmakingDenialStateManager))
                         : builder.mMatchmakingManager;
+        mSyntheticPackageNameResolver =
+                builder.mSyntheticPackageNameResolver == null && Flags.deviceDataProvidersApi()
+                        ? new SyntheticPackageNameResolver(mAppInfoHelper)
+                        : builder.mSyntheticPackageNameResolver;
+        mDeviceDataProviderHelper =
+                builder.mDeviceDataProviderHelper == null
+                                && Flags.deviceDataProvidersApi()
+                                && AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                        ? new DeviceDataProviderHelper(
+                                mDatabaseHelpers, mTransactionManager, mHealthConnectMappings)
+                        : builder.mDeviceDataProviderHelper;
+        mDeviceDataProviderManager =
+                builder.mDeviceDataProviderManager == null
+                                && Flags.deviceDataProvidersApi()
+                                && AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                                && mDeviceDataProviderHelper != null
+                        ? new DeviceDataProviderManager(
+                                mDeviceInfoHelper, mAppInfoHelper, mDeviceDataProviderHelper)
+                        : builder.mDeviceDataProviderManager;
     }
 
     @Override
@@ -987,6 +1007,24 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         return new CompletenessStatsCollector(mTransactionManager, mAppInfoHelper, mClock);
     }
 
+    @Nullable
+    @Override
+    public SyntheticPackageNameResolver getSyntheticPackageNameResolver() {
+        return mSyntheticPackageNameResolver;
+    }
+
+    @Nullable
+    @Override
+    public DeviceDataProviderHelper getDeviceDataProviderHelper() {
+        return mDeviceDataProviderHelper;
+    }
+
+    @Nullable
+    @Override
+    public DeviceDataProviderManager getDeviceDataProviderManager() {
+        return mDeviceDataProviderManager;
+    }
+
     /**
      * Returns a new Builder of Health Connect Injector
      *
@@ -1070,6 +1108,9 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private MatchmakingManager mMatchmakingManager;
         @Nullable private MatchmakingDenialStateManager mMatchmakingDenialStateManager;
         @Nullable private Clock mClock;
+        @Nullable private SyntheticPackageNameResolver mSyntheticPackageNameResolver;
+        @Nullable private DeviceDataProviderHelper mDeviceDataProviderHelper;
+        @Nullable private DeviceDataProviderManager mDeviceDataProviderManager;
 
         private Builder(Context context) {
             mContext = context;
@@ -1481,6 +1522,27 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         /** Set fake or custom {@link Clock}. */
         public Builder setClock(Clock clock) {
             mClock = Objects.requireNonNull(clock);
+            return this;
+        }
+
+        /** Set fake or custom {@link SyntheticPackageNameResolver}. */
+        public Builder setSyntheticPackageNameResolver(
+                SyntheticPackageNameResolver syntheticPackageNameResolver) {
+            mSyntheticPackageNameResolver = syntheticPackageNameResolver;
+            return this;
+        }
+
+        /** Set fake or custom {@link DeviceDataProviderHelper}. */
+        public Builder setDeviceDataProviderHelper(
+                DeviceDataProviderHelper deviceDataProviderHelper) {
+            mDeviceDataProviderHelper = deviceDataProviderHelper;
+            return this;
+        }
+
+        /** Set fake or custom {@link DeviceDataProviderManager}. */
+        public Builder setDeviceDataProviderManager(
+                DeviceDataProviderManager deviceDataProviderManager) {
+            mDeviceDataProviderManager = deviceDataProviderManager;
             return this;
         }
 

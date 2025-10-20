@@ -18,29 +18,29 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Salud conectada"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Gestiona el acceso de las aplicaciones a tus datos de salud"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Gestiona el acceso de las apps a tus datos de salud"</string>
     <string name="health_connect_notification_channel_name" msgid="5189243942800749782">"Novedades y alertas"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Permisos y datos"</string>
-    <string name="home_subtitle" msgid="2154213430054477787">"Gestiona los datos de salud y actividad física en tu dispositivo y controla qué aplicaciones pueden acceder a ellos"</string>
+    <string name="home_subtitle" msgid="2154213430054477787">"Gestiona los datos de salud y actividad física en tu dispositivo y controla qué apps pueden acceder a ellos"</string>
     <string name="data_title" msgid="4456619761533380816">"Datos y acceso"</string>
     <string name="browse_medical_data" msgid="6963802956096683273">"Consultar registros de salud"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"Consulta tus registros de salud y qué aplicaciones pueden acceder a ellos"</string>
+    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"Consulta tus registros de salud y qué apps pueden acceder a ellos"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Todas las categorías"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Ver todas las categorías"</string>
     <string name="no_data" msgid="1906986019249068659">"No hay datos"</string>
     <string name="devices_summary" msgid="8653563324512654292">"Gestiona tus dispositivos conectados"</string>
     <string name="devices_title" msgid="7548105261104504301">"Dispositivos"</string>
-    <string name="connected_apps_title" msgid="279942692804743223">"Permisos de aplicaciones"</string>
-    <string name="connected_apps_subtitle" msgid="8464462995533399175">"Gestionar aplicaciones y permisos"</string>
-    <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> de <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> aplicaciones tienen acceso"</string>
-    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> de <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> aplicaciones tienen acceso"</string>
-    <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplicaciones tienen acceso"</string>
+    <string name="connected_apps_title" msgid="279942692804743223">"Permisos de apps"</string>
+    <string name="connected_apps_subtitle" msgid="8464462995533399175">"Gestionar apps y permisos"</string>
+    <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> de <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> apps tienen acceso"</string>
+    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> de <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> apps tienen acceso"</string>
+    <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> apps tienen acceso"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplicación tiene acceso"</string>
-    <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{1 aplicación tiene acceso}other{# aplicaciones tienen acceso}}"</string>
+    <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{1 app tiene acceso}other{# apps tienen acceso}}"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Ninguna"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Detalles de la entrada"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Consultar datos"</string>
-    <string name="browse_data_subtitle" msgid="7025164374898103993">"Consulta los datos y las aplicaciones que pueden acceder a ellos"</string>
+    <string name="browse_data_subtitle" msgid="7025164374898103993">"Consulta los datos y las apps que pueden acceder a ellos"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Eliminación automática, fuentes de datos, copia de seguridad y restauración"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"Más elementos"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"Menos elementos"</string>
@@ -57,7 +57,7 @@
     <string name="recent_access_header" msgid="7623497371790225888">"Accesos recientes"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Ninguna aplicación ha accedido a Salud conectada recientemente"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Ver todos los accesos recientes"</string>
-    <string name="recent_access_screen_description" msgid="331101209889185402">"Consulta qué aplicaciones han accedido a tus datos en las últimas 24 horas"</string>
+    <string name="recent_access_screen_description" msgid="331101209889185402">"Consulta qué apps han accedido a tus datos en las últimas 24 horas"</string>
     <string name="today_header" msgid="1006837293203834373">"Hoy"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"Ayer"</string>
     <string name="read_data_access_label" msgid="8968758932021241976">"Leer: <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
@@ -66,7 +66,7 @@
     <string name="manage_permissions" msgid="8394221950712608160">"Gestionar permisos"</string>
     <string name="recent_access_time_content_descritption" msgid="1137471676075811472">"Hora: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
     <string name="recent_access_empty_state_title" msgid="4767157641389217682">"No hay accesos recientes"</string>
-    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"Las aplicaciones que han accedido a tus datos recientemente se mostrarán automáticamente aquí"</string>
+    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"Las apps que han accedido a tus datos recientemente se mostrarán automáticamente aquí"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"Ver todo"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"No se han podido cargar los accesos recientes"</string>
     <string name="recent_access_inactive_app" msgid="8754221676902025802">"Esta aplicación ya no está disponible"</string>
@@ -84,20 +84,22 @@
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"nutrición"</string>
     <string name="wellness_category_uppercase" msgid="5900304317921557780">"Bienestar"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"bienestar"</string>
+    <string name="symptoms_category_uppercase" msgid="1357167834284360975">"Síntomas"</string>
+    <string name="symptoms_category_lowercase" msgid="2298815597177353672">"síntomas"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"Consultar datos"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"Gestionar datos"</string>
     <string name="export_data_button" msgid="7783329820434117744">"Exportar datos"</string>
     <string name="delete_all_data_button" msgid="7238755635416521487">"Eliminar todos los datos"</string>
     <string name="no_categories" msgid="2636778482437506241">"No tienes datos en Salud conectada"</string>
     <string name="permission_types_title" msgid="7698058200557389436">"Tus datos"</string>
-    <string name="app_priority_button" msgid="3126133977893705098">"Prioridad de las aplicaciones"</string>
+    <string name="app_priority_button" msgid="3126133977893705098">"Prioridad de las apps"</string>
     <string name="delete_category_data_button" msgid="2324773398768267043">"Eliminar los datos de <xliff:g id="CATEGORY">%s</xliff:g>"</string>
-    <string name="select_all_apps_title" msgid="884487568464305913">"Todas las aplicaciones"</string>
+    <string name="select_all_apps_title" msgid="884487568464305913">"Todas las apps"</string>
     <string name="can_read" msgid="4568261079308309564">"Puede leer <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Puede escribir <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"Aplicaciones inactivas"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Estas aplicaciones ya no pueden leer o escribir datos de <xliff:g id="DATA_TYPE">%s</xliff:g>, pero aún tienen datos almacenados en Salud conectada"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"Las aplicaciones ya no pueden leer ni escribir datos de <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> y no hay datos de <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> guardados en Salud conectada"</string>
+    <string name="inactive_apps" msgid="8956546286760797760">"Apps inactivas"</string>
+    <string name="inactive_apps_message" msgid="8335803540719022910">"Estas apps ya no pueden leer o escribir datos de <xliff:g id="DATA_TYPE">%s</xliff:g>, pero aún tienen datos almacenados en Salud conectada"</string>
+    <string name="data_access_empty_message" msgid="9084350402254264452">"Las apps ya no pueden leer ni escribir datos de <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> y no hay datos de <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> guardados en Salud conectada"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Estos datos incluyen información como el tiempo de actividad, el tipo de ejercicio, los largos, las repeticiones, las sesiones o las brazadas"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Estos datos incluyen información como las fases y las sesiones del sueño"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Ver todas las entradas"</string>
@@ -378,6 +380,15 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"consumo de alcohol"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Leer consumo de alcohol"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Escribir consumo de alcohol"</string>
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Tos"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"tos"</string>
+    <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Leer síntomas"</string>
+    <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Escribir síntomas"</string>
+    <string name="symptom_unknown" msgid="5796719193136239306">"desconocido"</string>
+    <string name="symptom_severity_mild" msgid="2689415474774489874">"de intensidad leve"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"de intensidad moderada"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"de intensidad grave"</string>
+    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="TYPE">%2$s</xliff:g> <xliff:g id="SEVERITY">%1$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> lea"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> escriba"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Permitir"</string>
@@ -407,7 +418,7 @@
     <string name="medical_request_about_health_records" msgid="7204918218748362687">"Acerca de los registros de salud"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Los datos que se compartirán incluyen"</string>
     <string name="medical_request_summary" msgid="7281321524805015510">"Si lo permites, <xliff:g id="APP_NAME">%1$s</xliff:g> podrá compartir tus registros de salud con Salud conectada."</string>
-    <string name="medical_request_footer" msgid="6533749932770903089">"Sincroniza tus registros de salud de las diferentes aplicaciones y fuentes para tenerlos en un mismo lugar"</string>
+    <string name="medical_request_footer" msgid="6533749932770903089">"Sincroniza tus registros de salud de las diferentes apps y fuentes para tenerlos en un mismo lugar"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"¿Quitar todos los permisos?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Quitar todos"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> ya no podrá leer ni escribir datos de Salud conectada.\n\nEsta acción no afecta a otros permisos de la aplicación, como los de la cámara, el micrófono o la ubicación."</string>
@@ -443,34 +454,34 @@
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>."</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Código fuente detallado: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"Ver datos de origen"</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"Las aplicaciones con este permiso pueden leer y escribir tus datos de salud y actividad física."</string>
-    <string name="connected_apps_text" msgid="1177626440966855831">"Controla qué aplicaciones pueden acceder a los datos almacenados en Salud conectada. Toca una aplicación para comprobar los datos que puede leer o escribir."</string>
+    <string name="health_permission_header_description" msgid="7497601695462373927">"Las apps con este permiso pueden leer y escribir tus datos de salud y actividad física."</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"Controla qué apps pueden acceder a los datos almacenados en Salud conectada. Toca una app para comprobar los datos que puede leer o escribir."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Acceso permitido"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Acceso no permitido"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"Actualización necesaria"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"Configuración y ayuda"</string>
-    <string name="disconnect_all_apps" msgid="748945115977534726">"Quitar acceso de todas las aplicaciones"</string>
+    <string name="disconnect_all_apps" msgid="748945115977534726">"Quitar acceso de todas las apps"</string>
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"Con permiso de lectura"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"Con permiso de escritura"</string>
-    <string name="no_apps_allowed" msgid="5794833581324128108">"No hay aplicaciones permitidas"</string>
-    <string name="no_apps_denied" msgid="743327680286446017">"No hay aplicaciones denegadas"</string>
-    <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"¿Quitar acceso de todas las aplicaciones?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Ninguna de tus aplicaciones podrá acceder ni añadir nuevos datos a Salud conectada. No se eliminarán los datos ya almacenados.\n\nEsta acción no afecta a otros permisos que pueda tener esta aplicación, como los de ubicación, cámara o micrófono."</string>
+    <string name="no_apps_allowed" msgid="5794833581324128108">"No hay apps permitidas"</string>
+    <string name="no_apps_denied" msgid="743327680286446017">"No hay apps denegadas"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"¿Quitar acceso de todas las apps?"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Ninguna de tus apps podrá acceder ni añadir nuevos datos a Salud conectada. No se eliminarán los datos ya almacenados.\n\nEsta acción no afecta a otros permisos que pueda tener esta app, como los de ubicación, cámara o micrófono."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Quitar"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Gestionar aplicación"</string>
     <string name="see_app_data" msgid="3951030076195119476">"Ver datos de la aplicación"</string>
     <string name="remove_access_for_this_app" msgid="7701101420310711833">"Quitar acceso de esta aplicación"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Eliminar datos de la aplicación"</string>
-    <string name="inactive_apps_section_title" msgid="7492812973696378690">"Aplicaciones inactivas"</string>
-    <string name="inactive_apps_section_message" msgid="2610789262055974739">"Estas aplicaciones ya no tienen acceso, pero siguen teniendo datos almacenados en Salud conectada"</string>
+    <string name="inactive_apps_section_title" msgid="7492812973696378690">"Apps inactivas"</string>
+    <string name="inactive_apps_section_message" msgid="2610789262055974739">"Estas apps ya no tienen acceso, pero siguen teniendo datos almacenados en Salud conectada"</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> puede leer los datos añadidos después del <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
-    <string name="other_android_permissions" msgid="8051485761573324702">"Para gestionar otros permisos de Android a los que puede acceder esta aplicación, ve a Ajustes &gt; Aplicaciones"</string>
+    <string name="other_android_permissions" msgid="8051485761573324702">"Para gestionar otros permisos de Android a los que puede acceder esta app, ve a Ajustes &gt; Apps"</string>
     <string name="manage_permissions_rationale" msgid="2780008055185441703">"Consulta cómo <xliff:g id="APP_NAME">%1$s</xliff:g> gestiona tus datos en la política de privacidad del desarrollador"</string>
-    <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Para gestionar otros permisos de Android a los que puede acceder esta aplicación, ve a Ajustes y, después, toca Aplicaciones"</string>
+    <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Para gestionar otros permisos de Android a los que puede acceder esta app, ve a Ajustes y, después, toca Apps"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Leer política de privacidad"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Acceso realizado en las últimas 24 horas"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Acceso de la aplicación"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"No hay aplicaciones compatibles instaladas"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"No hay apps compatibles instaladas"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"Acceso adicional"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"Datos anteriores y datos en 2.º plano"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"Se han quitado los permisos adicionales para esta aplicación"</string>
@@ -480,14 +491,14 @@
     <string name="medical_permissions" msgid="1224097151249321566">"Registros de salud"</string>
     <string name="medical_permissions_lowercase" msgid="3969792205103436491">"registros de salud"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Analíticas, medicamentos, vacunas y otros"</string>
-    <string name="denied_apps_banner_title" msgid="1997745063608657965">"Permisos de aplicaciones quitados"</string>
+    <string name="denied_apps_banner_title" msgid="1997745063608657965">"Permisos de apps quitados"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Salud conectada ha quitado los permisos de <xliff:g id="APP_DATA">%s</xliff:g>"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Salud conectada ha quitado los permisos de <xliff:g id="APP_DATA_0">%1$s</xliff:g> y <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
     <string name="denied_apps_banner_message_three_apps" msgid="7978499051473471633">"Salud conectada ha quitado los permisos de <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> y <xliff:g id="APP_DATA_THREE">%3$s</xliff:g>"</string>
-    <string name="denied_apps_banner_message_many_apps" msgid="7249805432604650982">"Salud conectada ha quitado los permisos de <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> y otras aplicaciones"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="7249805432604650982">"Salud conectada ha quitado los permisos de <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> y otras apps"</string>
     <string name="denied_apps_banner_button" msgid="4438480389769298412">"Ver detalles"</string>
-    <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Por qué Salud conectada quita los permisos de las aplicaciones"</string>
-    <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Si una aplicación se suspende o se elimina de Google Play, Salud conectada quita automáticamente sus permisos.\n\nPor lo tanto, la aplicación ya no podrá acceder a tus datos almacenados en Salud conectada. Si la aplicación ya había escrito datos, aparecerá en la lista de aplicaciones inactivas."</string>
+    <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Por qué Salud conectada quita los permisos de las apps"</string>
+    <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Si una app se suspende o se elimina de Google Play, Salud conectada quita automáticamente sus permisos.\n\nPor lo tanto, la app ya no podrá acceder a tus datos almacenados en Salud conectada. Si la app ya había escrito datos, aparecerá en la lista de apps inactivas."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Entendido"</string>
     <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"Configurar"</string>
     <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"No se han podido exportar los datos"</string>
@@ -567,15 +578,15 @@
     <string name="export_import_choose_account_title" msgid="1047021319012735232">"Elige una cuenta"</string>
     <string name="export_import_choose_account_cancel_button" msgid="7975616126298263479">"Cancelar"</string>
     <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"Hecho"</string>
-    <string name="export_import_no_apps_text" msgid="6403119325024893690">"No hay aplicaciones disponibles. Descarga aplicaciones de almacenamiento en la nube para verlas aquí."</string>
-    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Si quieres más opciones, instala aplicaciones de almacenamiento en la nube para verlas aquí"</string>
+    <string name="export_import_no_apps_text" msgid="6403119325024893690">"No hay apps disponibles. Descarga apps de almacenamiento en la nube para verlas aquí."</string>
+    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Si quieres más opciones, instala apps de almacenamiento en la nube para verlas aquí"</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Ir a Play Store"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Empezar a usar Salud conectada"</string>
-    <string name="onboarding_description" msgid="3479157507808350452">"Salud conectada almacena tus datos de salud y actividad física, y te ofrece una forma sencilla de sincronizar las diferentes aplicaciones de tu dispositivo"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Salud conectada almacena y sincroniza de diferentes aplicaciones tus datos de salud y actividad física:\n\n"<b>"Datos de actividad física y bienestar,"</b>" como sesiones de ejercicio, pasos, nutrición y sueño \n\n"<b>"Registros de salud,"</b>" como vacunas y resultados de analíticas"</string>
+    <string name="onboarding_description" msgid="3479157507808350452">"Salud conectada almacena tus datos de salud y actividad física, y te ofrece una forma sencilla de sincronizar las diferentes apps de tu dispositivo"</string>
+    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Salud conectada almacena y sincroniza de diferentes apps tus datos de salud y actividad física:\n\n"<b>"Datos de actividad física y bienestar,"</b>" como sesiones de ejercicio, pasos, nutrición y sueño \n\n"<b>"Registros de salud,"</b>" como vacunas y resultados de analíticas"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Con Salud conectada, puedes:"</string>
-    <string name="share_data_text" msgid="6898398345784931678"><b>"Compartir datos con tus aplicaciones"</b>\n"Elige los datos que cada aplicación puede leer o escribir en Salud conectada"</string>
-    <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Gestionar tus ajustes y tu privacidad"</b>\n"Cambia los permisos de las aplicaciones y gestiona tus datos en cualquier momento"</string>
+    <string name="share_data_text" msgid="6898398345784931678"><b>"Compartir datos con tus apps"</b>\n"Elige los datos que cada app puede leer o escribir en Salud conectada"</string>
+    <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Gestionar tus ajustes y tu privacidad"</b>\n"Cambia los permisos de las apps y gestiona tus datos en cualquier momento"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Atrás"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Empezar"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Eliminar datos"</string>
@@ -616,16 +627,16 @@
     <string name="confirming_question_app_remove_all_permissions" msgid="4170343072352701421">"Quitar también todos los permisos de <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> de Salud conectada"</string>
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"¿Eliminar permanentemente todos los datos de <xliff:g id="DATA_TYPE">%1$s</xliff:g> añadidos por <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
     <string name="confirming_question_single_entry" msgid="2064578008447638932">"¿Eliminar permanentemente esta entrada de Salud conectada?"</string>
-    <string name="confirming_question_message" msgid="2934249835529079545">"Las aplicaciones conectadas ya no podrán acceder a estos datos de Salud conectada"</string>
+    <string name="confirming_question_message" msgid="2934249835529079545">"Las apps conectadas ya no podrán acceder a estos datos de Salud conectada"</string>
     <string name="confirming_question_message_menstruation" msgid="944931041343695373">"Se eliminarán todas las entradas de menstruación del <xliff:g id="START_DATE">%1$s</xliff:g> al <xliff:g id="END_DATE">%2$s</xliff:g>."</string>
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Eliminar"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Atrás"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Hecho"</string>
     <string name="delete_dialog_failure_close_button" msgid="4376647579348193224">"Cerrar"</string>
     <string name="delete_dialog_success_title" msgid="900884533930984889">"Datos eliminados de Salud conectada"</string>
-    <string name="delete_dialog_success_message" msgid="7454086333205881294">"Si quieres eliminar por completo los datos de todas las aplicaciones conectadas, comprueba cada aplicación en la que puedan haberse guardado tus datos."</string>
+    <string name="delete_dialog_success_message" msgid="7454086333205881294">"Si quieres eliminar por completo los datos de todas las apps conectadas, comprueba cada app en la que puedan haberse guardado tus datos."</string>
     <string name="delete_dialog_done_button" msgid="1371340030947835493">"Hecho"</string>
-    <string name="delete_dialog_see_connected_apps_button" msgid="2975631672738138716">"Ver aplicaciones conectadas"</string>
+    <string name="delete_dialog_see_connected_apps_button" msgid="2975631672738138716">"Ver apps conectadas"</string>
     <string name="delete_progress_indicator" msgid="5799502879065833417">"Eliminando tus datos"</string>
     <string name="delete_dialog_failure_title" msgid="1959020721355789496">"No se han podido eliminar los datos"</string>
     <string name="delete_dialog_failure_message" msgid="7473241488471319963">"Salud conectada no ha podido eliminar tus datos"</string>
@@ -660,6 +671,8 @@
     <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{1 impulso en silla de ruedas}other{# impulsos en silla de ruedas}}"</string>
     <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 l}other{# l}}"</string>
     <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 litro}other{# litros}}"</string>
+    <string name="milliliter" msgid="7730118351176678375">"{count,plural, =1{1 ml}other{# ml}}"</string>
+    <string name="milliliter_long" msgid="6431396151823725792">"{count,plural, =1{1 mililitro}other{# mililitros}}"</string>
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 piso}other{# pisos}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 m}other{# m}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 metro}other{# metros}}"</string>
@@ -835,8 +848,32 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} calada de vapeador}other{{quantity} caladas de vapeador}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} cigarrillo}other{{quantity} cigarrillos}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} desconocido"</string>
+    <string name="alcohol_consumption_title" msgid="2627266871623334972">"<xliff:g id="SERVING">%1$s</xliff:g> • <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"Otro"</string>
+    <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Cerveza"</string>
+    <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Vino"</string>
+    <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
+    <string name="alcohol_consumption_beverage_type_gin" msgid="5945396443339874907">"Ginebra"</string>
+    <string name="alcohol_consumption_beverage_type_whiskey" msgid="1085904168947658887">"Whisky"</string>
+    <string name="alcohol_consumption_beverage_type_rum" msgid="5230691377430212826">"Ron"</string>
+    <string name="alcohol_consumption_beverage_type_tequila" msgid="9074751455065347442">"Tequila"</string>
+    <string name="alcohol_consumption_beverage_type_lager" msgid="1490153167547219382">"Lager"</string>
+    <string name="alcohol_consumption_beverage_type_cider" msgid="3348115754435446544">"Sidra"</string>
+    <string name="alcohol_consumption_beverage_type_sake" msgid="2773512901340614154">"Sake"</string>
+    <string name="alcohol_consumption_beverage_type_shochu" msgid="3491300198222489324">"Shochu"</string>
+    <string name="alcohol_consumption_beverage_type_soju" msgid="113120387013483711">"Soju"</string>
+    <string name="alcohol_consumption_beverage_type_mead" msgid="1673063923088962681">"Hidromiel"</string>
+    <string name="alcohol_consumption_beverage_type_absinthe" msgid="3972259596196421914">"Absenta"</string>
+    <string name="alcohol_consumption_beverage_type_brandy" msgid="3782444367994599131">"Brandy"</string>
+    <string name="alcohol_consumption_beverage_type_cocktail" msgid="4711099215987668649">"Cóctel"</string>
+    <string name="alcohol_consumption_beverage_type_chuhai" msgid="4727177353197748690">"Chuhai"</string>
+    <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Combinado"</string>
+    <string name="serving_volume_title" msgid="4727986574534974167">"Volumen de la ración"</string>
+    <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Graduación alcohólica"</string>
+    <string name="note_title" msgid="4101166558186573016">"Nota"</string>
+    <string name="details_title" msgid="8411891773854413790">"Detalles"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> min"</string>
+    <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> m"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> h"</string>
     <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 hora}other{# horas}}"</string>
@@ -1018,11 +1055,11 @@
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Si no ves una aplicación instalada, puede que aún no sea compatible con Salud conectada"</string>
     <string name="things_to_try" msgid="8200374691546152703">"Cosas que puedes probar"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Buscar actualizaciones"</string>
-    <string name="check_for_updates_description" msgid="1347667778199095160">"Comprueba que las aplicaciones instaladas estén actualizadas"</string>
-    <string name="see_all_compatible_apps" msgid="6791146164535475726">"Ver todas las aplicaciones compatibles"</string>
-    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Encuentra aplicaciones en Google Play"</string>
+    <string name="check_for_updates_description" msgid="1347667778199095160">"Comprueba que las apps instaladas estén actualizadas"</string>
+    <string name="see_all_compatible_apps" msgid="6791146164535475726">"Ver todas las apps compatibles"</string>
+    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Encuentra apps en Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Enviar comentarios"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"Dinos qué aplicaciones de salud y actividad física te gustaría que funcionaran con Salud conectada"</string>
+    <string name="send_feedback_description" msgid="2887207112856240778">"Dinos qué apps de salud y actividad física te gustaría que funcionaran con Salud conectada"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Eliminación automática"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Eliminación automática"</string>
@@ -1031,19 +1068,20 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Eliminación automática de datos"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Después de # mes}other{Después de # meses}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nunca"</string>
-    <string name="range_off" msgid="8178520557618184215">"Desactivado"</string>
+    <string name="range_off" msgid="8178520557618184215">"Desactivada"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Si cambias estos ajustes, Salud conectada eliminará los datos existentes para reflejar tus nuevas preferencias"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{¿Eliminar automáticamente los datos después de # mes?}other{¿Eliminar automáticamente los datos después de # meses?}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Esta acción también elimina los datos de Salud conectada que tengan más de # mes.\n\nSi quieres eliminar por completo los datos de todas las aplicaciones conectadas, comprueba cada aplicación en la que puedan haberse guardado tus datos.}other{Esta acción también elimina los datos de Salud conectada que tengan más de # meses.\n\nSi quieres eliminar por completo los datos de todas las aplicaciones conectadas, comprueba cada aplicación en la que puedan haberse guardado tus datos.}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Esta acción también elimina los datos de Salud conectada que tengan más de # mes.\n\nSi quieres eliminar por completo los datos de todas las apps conectadas, comprueba cada app en la que puedan haberse guardado tus datos.}other{Esta acción también elimina los datos de Salud conectada que tengan más de # meses.\n\nSi quieres eliminar por completo los datos de todas las apps conectadas, comprueba cada app en la que puedan haberse guardado tus datos.}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"Activar"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"Los datos almacenados se eliminarán"</string>
-    <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Salud conectada eliminará todos los datos de hace más de # mes. Los cambios pueden tardar un día en aparecer en tus aplicaciones conectadas.}other{Salud conectada eliminará todos los datos de hace más de # meses. Los cambios pueden tardar un día en aparecer en tus aplicaciones conectadas.}}"</string>
+    <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Salud conectada eliminará todos los datos de hace más de # mes. Los cambios pueden tardar un día en aparecer en tus apps conectadas.}other{Salud conectada eliminará todos los datos de hace más de # meses. Los cambios pueden tardar un día en aparecer en tus apps conectadas.}}"</string>
     <string name="deletion_started_category_list_section" msgid="3052940611815658991">"Se eliminarán los datos de estas categorías"</string>
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Hecho"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{Eliminación automática activada. Se eliminarán los datos de más de # mes.}other{Eliminación automática activada. Se eliminarán los datos de más de # meses.}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"La eliminación automática está desactivada"</string>
-    <string name="priority_dialog_title" msgid="7360654442596118085">"Establecer prioridad de aplicaciones"</string>
-    <string name="priority_dialog_message" msgid="6971250365335018184">"Si más de una aplicación añade datos de <xliff:g id="DATA_TYPE">%s</xliff:g>, Salud conectada priorizará la aplicación que esté más arriba en esta lista. Arrastra las aplicaciones para reordenarlas."</string>
+    <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+<xliff:g id="COUNT">%s</xliff:g>"</string>
+    <string name="priority_dialog_title" msgid="7360654442596118085">"Establecer prioridad de apps"</string>
+    <string name="priority_dialog_message" msgid="6971250365335018184">"Si más de una app añade datos de <xliff:g id="DATA_TYPE">%s</xliff:g>, Salud conectada priorizará la app que esté más arriba en esta lista. Arrastra las apps para reordenarlas."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Guardar"</string>
     <string name="action_drag_label_move_up" msgid="4221641798253080966">"Mover hacia arriba"</string>
     <string name="action_drag_label_move_down" msgid="3448000958912947588">"Mover hacia abajo"</string>
@@ -1051,15 +1089,15 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Mover al final"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Botón para arrastrar y reordenar <xliff:g id="SELECTED_APP">%s</xliff:g> en la lista de prioridad"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Botón para eliminar <xliff:g id="SELECTED_APP">%s</xliff:g> de la lista prioritaria"</string>
-    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Botón para reordenar o quitar <xliff:g id="SELECTED_APP">%s</xliff:g> de la lista de fuentes de aplicaciones"</string>
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Botón para reordenar o quitar <xliff:g id="SELECTED_APP">%s</xliff:g> de la lista de fuentes de apps"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Da dos toques y arrastra para cambiar el orden"</string>
     <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> en la lista: <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"actividad física, bienestar"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"permisos"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"salud conectada, datos de salud, categorías de salud, acceso a datos, actividad, medidas corporales, seguimiento del ciclo, nutrición, sueño, constantes vitales"</string>
-    <string name="search_breadcrumbs_permissions" msgid="2667471090347475796">"Salud conectada &gt; Permisos de aplicaciones"</string>
+    <string name="search_breadcrumbs_permissions" msgid="2667471090347475796">"Salud conectada &gt; Permisos de apps"</string>
     <string name="search_breadcrumbs_data" msgid="6635428480372024040">"Salud conectada &gt; Datos y acceso"</string>
-    <string name="search_connected_apps" msgid="8180770761876928851">"Buscar aplicaciones"</string>
+    <string name="search_connected_apps" msgid="8180770761876928851">"Buscar apps"</string>
     <string name="no_results" msgid="4007426147286897998">"No hay resultados"</string>
     <string name="help" msgid="6028777453152686162">"Ayuda"</string>
     <string name="request_route_header_title" msgid="6599707039845646714">"¿Permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda a esta ruta de ejercicio en Salud conectada?"</string>
@@ -1067,9 +1105,9 @@
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
     <string name="request_route_info_header_title" msgid="4149969049719763190">"Las rutas de ejercicio incluyen información sobre la ubicación"</string>
     <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"¿Quién puede ver estos datos?"</string>
-    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"Solo las aplicaciones a las que les permitas acceder a tus rutas de ejercicio"</string>
+    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"Solo las apps a las que les permitas acceder a tus rutas de ejercicio"</string>
     <string name="request_route_info_access_management_title" msgid="3222594923675464852">"¿Cómo puedo gestionar el acceso?"</string>
-    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"Puedes gestionar el acceso de las aplicaciones a las rutas de ejercicio en los ajustes de Salud conectada"</string>
+    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"Puedes gestionar el acceso de las apps a las rutas de ejercicio en los ajustes de Salud conectada"</string>
     <string name="request_route_allow" msgid="4427372851821847274">"Permitir esta ruta"</string>
     <string name="request_route_allow_all" msgid="314830698958736916">"Permitir todas las rutas"</string>
     <string name="request_route_dont_allow" msgid="1186236234664957228">"No permitir"</string>
@@ -1108,14 +1146,14 @@
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Toca para continuar integrando Salud conectada con el sistema Android. Para conservar tus datos, completa esta acción en <xliff:g id="TIME_NEEDED">%1$s</xliff:g>."</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Toca para continuar integrando Salud conectada con el sistema Android."</string>
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"Continuar"</string>
-    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Es necesario actualizar aplicaciones"</string>
-    <string name="app_update_needed_banner_description_single" msgid="8220676317438592573">"<xliff:g id="APP_NAME">%1$s</xliff:g> debe actualizarse para seguir sincronizándose con Salud conectada Puede que las actualizaciones no estén disponibles para todas las aplicaciones."</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="6021498912770754575">"Algunas aplicaciones deben actualizarse para seguir sincronizándose con Salud conectada. Puede que las actualizaciones no estén disponibles para todas las aplicaciones."</string>
+    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Es necesario actualizar apps"</string>
+    <string name="app_update_needed_banner_description_single" msgid="8220676317438592573">"<xliff:g id="APP_NAME">%1$s</xliff:g> debe actualizarse para seguir sincronizándose con Salud conectada Puede que las actualizaciones no estén disponibles para todas las apps."</string>
+    <string name="app_update_needed_banner_description_multiple" msgid="6021498912770754575">"Algunas apps deben actualizarse para seguir sincronizándose con Salud conectada. Puede que las actualizaciones no estén disponibles para todas las apps."</string>
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Buscar actualizaciones"</string>
     <string name="app_update_needed_banner_learn_more_button" msgid="7269232067819258160">"Más información"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integración con Salud conectada"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Salud conectada está lista para integrarse con tu sistema Android. Si das acceso a <xliff:g id="APP_NAME">%1$s</xliff:g> ahora, es posible que algunas funciones no puedan usarse hasta que se haya completado la integración."</string>
-    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Salud conectada está lista para integrarse con tu sistema Android. Si das acceso a las aplicaciones ahora, es posible que algunas funciones no puedan usarse hasta que se haya completado la integración."</string>
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Salud conectada está lista para integrarse con tu sistema Android. Si das acceso a las apps ahora, es posible que algunas funciones no puedan usarse hasta que se haya completado la integración."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continuar"</string>
     <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Iniciar integración"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integración de Salud conectada en curso"</string>
@@ -1147,9 +1185,9 @@
     <string name="move_up" msgid="9136155291380319606">"Mover hacia arriba"</string>
     <string name="move_down" msgid="4404970288236170693">"Mover hacia abajo"</string>
     <string name="remove" msgid="1340423400489007362">"Quitar"</string>
-    <string name="app_data_title" msgid="6499967982291000837">"Datos de la aplicación"</string>
+    <string name="app_data_title" msgid="6499967982291000837">"Datos de la app"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Los datos de <xliff:g id="APP_NAME">%1$s</xliff:g> se mostrarán aquí"</string>
-    <string name="all_data_no_data_footer" msgid="2553443887019153340">"Los datos de las aplicaciones con acceso a Salud conectada se mostrarán aquí"</string>
+    <string name="all_data_no_data_footer" msgid="2553443887019153340">"Los datos de las apps con acceso a Salud conectada se mostrarán aquí"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Día"</string>
     <string name="date_picker_week" msgid="1038805538316142229">"Semana"</string>
     <string name="date_picker_month" msgid="3560692391260778560">"Mes"</string>
@@ -1160,21 +1198,22 @@
     <string name="tab_entries" msgid="3402700951602029493">"Entradas"</string>
     <string name="tab_access" msgid="7818197975407243701">"Acceso"</string>
     <string name="start_using_hc_banner_title" msgid="2030178284749796384">"Empieza a usar Salud conectada"</string>
-    <string name="start_using_hc_banner_content" msgid="3171560198945933334">"Sincroniza tus primeras aplicaciones para que compartan datos de salud y actividad física entre ellas"</string>
+    <string name="start_using_hc_banner_content" msgid="3171560198945933334">"Sincroniza tus primeras apps para que compartan datos de salud y actividad física entre ellas"</string>
     <string name="start_using_hc_set_up_button" msgid="7486865297236439364">"Configurar"</string>
-    <string name="connect_more_apps_banner_title" msgid="4746581834305054229">"Conectar más aplicaciones"</string>
-    <string name="connect_more_apps_banner_content" msgid="8104544246031860111">"Empieza a compartir datos entre <xliff:g id="APP_NAME">%s</xliff:g> y las aplicaciones de salud de tu teléfono"</string>
+    <string name="connect_more_apps_banner_title" msgid="4746581834305054229">"Conectar más apps"</string>
+    <string name="connect_more_apps_banner_content" msgid="8104544246031860111">"Empieza a compartir datos entre <xliff:g id="APP_NAME">%s</xliff:g> y las apps de salud de tu teléfono"</string>
     <string name="connect_more_apps_set_up_button" msgid="4491201768717567269">"Configurar"</string>
-    <string name="see_compatible_apps_banner_title" msgid="5217106184748241727">"Ver aplicaciones compatibles"</string>
-    <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"Encuentra más aplicaciones para sincronizarlas con <xliff:g id="APP_NAME">%s</xliff:g> a través de Salud conectada"</string>
-    <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"Ver en la tienda de aplicaciones"</string>
+    <string name="see_compatible_apps_banner_title" msgid="5217106184748241727">"Ver apps compatibles"</string>
+    <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"Encuentra más apps para sincronizarlas con <xliff:g id="APP_NAME">%s</xliff:g> a través de Salud conectada"</string>
+    <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"Ver en la tienda de apps"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"Establece un bloqueo de pantalla"</string>
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Para añadir una capa de seguridad a tus datos de salud, configura un PIN, patrón o contraseña en este dispositivo"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Establecer bloqueo de pantalla"</string>
     <string name="select_all" msgid="837499881590001166">"Seleccionar todo"</string>
-    <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Las aplicaciones conectadas dejarán de leer estos datos de Salud conectada"</string>
+    <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Las apps conectadas dejarán de leer estos datos de Salud conectada"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Marcada"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Sin marcar"</string>
+    <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Mapa de ruta de ejercicio disponible"</string>
     <string name="a11y_next_day" msgid="7298174378837366410">"Día siguiente"</string>
     <string name="a11y_next_week" msgid="6692230156318350735">"Semana siguiente"</string>
@@ -1228,12 +1267,13 @@
     <string name="write_access" msgid="571547306854732263">"Acceso de escritura"</string>
     <string name="read_access" msgid="3317759826769372785">"Acceso de lectura"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>."</string>
-    <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> de <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplicaciones permitidas"</string>
-    <string name="no_apps_requesting" msgid="8088684445910698363">"No hay aplicaciones que lo soliciten"</string>
+    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
+    <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> de <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> apps permitidas"</string>
+    <string name="no_apps_requesting" msgid="8088684445910698363">"No hay apps que lo soliciten"</string>
     <string name="allowed" msgid="4158456017482263737">"Permitidas"</string>
     <string name="not_allowed" msgid="6092523505093372147">"No permitidas"</string>
-    <string name="access_sensor_note" msgid="7949933977197789634">"Las aplicaciones con este permiso pueden acceder a los datos de <xliff:g id="DATA_TYPE">%s</xliff:g> de los sensores de tu dispositivo."</string>
-    <string name="remove_one_permission_for_all" msgid="6732728480265044938">"¿Quitar el acceso de todas las aplicaciones de tu reloj a <xliff:g id="DATA_TYPE">%s</xliff:g>?"</string>
+    <string name="access_sensor_note" msgid="7949933977197789634">"Las apps con este permiso pueden acceder a los datos de <xliff:g id="DATA_TYPE">%s</xliff:g> de los sensores de tu dispositivo."</string>
+    <string name="remove_one_permission_for_all" msgid="6732728480265044938">"¿Quitar el acceso de todas las apps de tu reloj a <xliff:g id="DATA_TYPE">%s</xliff:g>?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"Marca de verificación"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Marca de cierre"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Actualmente, <xliff:g id="APP_NAME">%1$s</xliff:g> puede acceder a los datos de actividad física y bienestar en todo momento"</string>
@@ -1241,52 +1281,533 @@
     <string name="allow_all_the_time_prompt" msgid="3749806575200677882">"Elige cuándo puede acceder <xliff:g id="APP_NAME">%1$s</xliff:g> a tus datos de actividad física y bienestar"</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> tiene acceso a <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Gestionar permisos de actividad física y bienestar"</string>
-    <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Usado por 1 aplicación}other{Usado por # aplicaciones}}"</string>
+    <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Usado por 1 app}other{Usado por # apps}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"No se ha usado en las últimas 24 horas"</string>
     <string name="accessed" msgid="4424701457530587176">"Último acceso: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
     <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Conectar la primera aplicación"</string>
-    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Conecta estas aplicaciones para empezar a compartir datos de salud y actividad física entre ellas"</string>
+    <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Conecta estas apps para empezar a compartir datos de salud y actividad física entre ellas"</string>
     <string name="connect_second_app_title" msgid="6609568573884272692">"Conecta una segunda aplicación"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Configura otra aplicación para compartir datos de salud y actividad física con <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="set_up_later" msgid="223888663943501921">"Configurar más tarde"</string>
-    <string name="available_apps_to_connect" msgid="8425012138408583646">"Aplicaciones que puedes conectar"</string>
-    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Salud conectada te permite almacenar tus datos de salud y actividad física en un único lugar y compartirlos entre las aplicaciones de tu teléfono, lo que hace que tus aplicaciones funcionen mejor juntas."</string>
+    <string name="available_apps_to_connect" msgid="8425012138408583646">"Apps que puedes conectar"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Salud conectada te permite almacenar tus datos de salud y actividad física en un único lugar y compartirlos entre las apps de tu teléfono, lo que hace que tus apps funcionen mejor juntas."</string>
     <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Más información sobre Salud conectada"</string>
     <string name="onboarded_app_content_description" msgid="8571163043712952164">"Aplicación conectada a Salud conectada"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Casi listo"</string>
-    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Abre estas aplicaciones ahora para finalizar la configuración y empezar a compartir datos"</string>
-    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Abre estas aplicaciones ahora para finalizar la configuración y empezar a compartir datos o sigue conectando otras aplicaciones disponibles"</string>
-    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Aplicaciones conectadas"</string>
-    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Aplicaciones que puedes conectar"</string>
-    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Consulta tus datos de salud en todas las aplicaciones"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Empieza a compartir datos de actividad física y bienestar entre aplicaciones"</string>
+    <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Abre estas apps ahora para finalizar la configuración y empezar a compartir datos"</string>
+    <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Abre estas apps ahora para finalizar la configuración y empezar a compartir datos o sigue conectando otras apps disponibles"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Apps conectadas"</string>
+    <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Apps que puedes conectar"</string>
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Consulta tus datos de salud en todas las apps"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Empieza a compartir datos de actividad física y bienestar entre apps"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Configurar"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Conecta una segunda aplicación"</string>
     <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Configura otra aplicación para que pueda empezar a compartir datos de actividad física y bienestar"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Continuar"</string>
-    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Consulta tus datos de salud en todas las aplicaciones"</string>
-    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Con Salud conectada puedes compartir datos de actividad física y bienestar entre tus aplicaciones. Consulta qué aplicaciones puedes conectar ahora."</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Consulta tus datos de salud en todas las apps"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Con Salud conectada puedes compartir datos de actividad física y bienestar entre tus apps. Consulta qué apps puedes conectar ahora."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Conectar una segunda aplicación"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configura otra aplicación con Salud conectada para que pueda empezar a compartir datos de actividad física y bienestar"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"Dispositivo actual"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Dispositivo desconocido"</string>
-    <string name="device_management_screen_title" msgid="504259497211017622">"Información del dispositivo"</string>
+    <string name="device_management_screen_title" msgid="504259497211017622">"Info del dispositivo"</string>
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Los datos recogidos por este dispositivo se almacenarán en Salud conectada, donde las apps conectadas podrán acceder a ellos"</string>
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (4919722476738792627) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_header (7517509284321019072) -->
-    <skip />
+    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Este dispositivo no admite la monitorización de pasos, pero aún tiene datos almacenados en Salud conectada"</string>
+    <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Este dispositivo no monitoriza los pasos"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Con permiso de escritura"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Datos del dispositivo"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Gestionar dispositivo"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Ver datos del dispositivo"</string>
-    <string name="native_steps_banner_title" msgid="7668164332675458871">"Los pasos registrados en tu teléfono aparecerán en Salud conectada"</string>
-    <string name="native_steps_banner_summary" msgid="7109953051996114646">"Los pasos registrados por este dispositivo ahora se almacenan en Salud conectada para que las aplicaciones conectadas puedan acceder a ellos"</string>
-    <!-- no translation found for native_steps_banner_dismiss_button (6585196620402280635) -->
-    <skip />
+    <string name="native_steps_banner_title" msgid="8990874387340782536">"Los pasos registrados en tu teléfono aparecerán en Salud conectada"</string>
+    <string name="native_steps_banner_summary" msgid="8255767487167444809">"Los pasos registrados por este dispositivo ahora se almacenan en Salud conectada para que las aplicaciones conectadas puedan acceder a ellos"</string>
+    <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Cerrar"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Revisar"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Los pasos ahora están en Salud conectada"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"Los pasos registrados por este dispositivo ahora se almacenan en Salud conectada para que las aplicaciones conectadas puedan acceder a ellos"</string>
-    <!-- no translation found for banner_default_dismiss_button (3193723491836994371) -->
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"Los pasos registrados por este dispositivo ahora se almacenan en Salud conectada para que las apps conectadas puedan acceder a ellos"</string>
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"Tus apps de salud"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"Tus datos de salud"</string>
+    <string name="preferences_category_title" msgid="8799354266901230310">"Preferencias"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Salud conectada te permite compartir tus datos de salud y actividad física entre varias apps. De esta forma, puedes acceder a estadísticas y experiencias sin desproteger tus datos."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"Más información sobre Salud conectada"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"Tus datos y qué apps pueden acceder a ellos"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"Apps que han usado tus datos recientemente"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"Revisa los dispositivos que pueden acceder a los datos de salud"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Instala apps que funcionen con Salud conectada para verlas aquí"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"Ver apps compatibles"</string>
+    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Ver más aplicaciones de salud"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"No conectada"</string>
+    <string name="connect_app_button_content_description" msgid="296796277841527165">"Haz clic para conectar esta aplicación a Salud conectada"</string>
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Ahora no"</string>
+    <!-- no translation found for acne_read_content_description (1176708404029936065) -->
+    <skip />
+    <!-- no translation found for acne_write_content_description (9221785868351412493) -->
+    <skip />
+    <!-- no translation found for brittle_nails_read_content_description (423745726647038216) -->
+    <skip />
+    <!-- no translation found for brittle_nails_write_content_description (1804481735143147688) -->
+    <skip />
+    <!-- no translation found for burning_mouth_read_content_description (71088318928262260) -->
+    <skip />
+    <!-- no translation found for burning_mouth_write_content_description (2778289937475041118) -->
+    <skip />
+    <!-- no translation found for chills_read_content_description (7244946135559432433) -->
+    <skip />
+    <!-- no translation found for chills_write_content_description (6478646233405107436) -->
+    <skip />
+    <!-- no translation found for dehydration_read_content_description (7633935838518756206) -->
+    <skip />
+    <!-- no translation found for dehydration_write_content_description (541514183036921571) -->
+    <skip />
+    <!-- no translation found for dry_skin_read_content_description (6798683159412202977) -->
+    <skip />
+    <!-- no translation found for dry_skin_write_content_description (1312998001092991619) -->
+    <skip />
+    <!-- no translation found for fever_read_content_description (3385209639730909489) -->
+    <skip />
+    <!-- no translation found for fever_write_content_description (8440573327719878961) -->
+    <skip />
+    <!-- no translation found for joint_pain_read_content_description (2932523124488927967) -->
+    <skip />
+    <!-- no translation found for joint_pain_write_content_description (7405551860978844535) -->
+    <skip />
+    <!-- no translation found for joint_stiffness_read_content_description (2132696730582070534) -->
+    <skip />
+    <!-- no translation found for joint_stiffness_write_content_description (7556318646656369856) -->
+    <skip />
+    <!-- no translation found for muscle_pain_read_content_description (3116385630330673084) -->
+    <skip />
+    <!-- no translation found for muscle_pain_write_content_description (2544204740665773272) -->
+    <skip />
+    <!-- no translation found for loss_of_consciousness_read_content_description (8346630124770268372) -->
+    <skip />
+    <!-- no translation found for loss_of_consciousness_write_content_description (1959348657257573252) -->
+    <skip />
+    <!-- no translation found for reduced_capacity_for_exercise_read_content_description (2246901110448734533) -->
+    <skip />
+    <!-- no translation found for reduced_capacity_for_exercise_write_content_description (8119106053737965766) -->
+    <skip />
+    <!-- no translation found for unexplained_weight_changes_read_content_description (7644187172731376645) -->
+    <skip />
+    <!-- no translation found for unexplained_weight_changes_write_content_description (8744350844236958279) -->
+    <skip />
+    <!-- no translation found for generalized_body_ache_read_content_description (3132494584303814009) -->
+    <skip />
+    <!-- no translation found for generalized_body_ache_write_content_description (4282920161878530009) -->
+    <skip />
+    <!-- no translation found for fatigue_read_content_description (8447413794808220408) -->
+    <skip />
+    <!-- no translation found for fatigue_write_content_description (3000326883358951973) -->
+    <skip />
+    <!-- no translation found for constipation_read_content_description (4024154136010015370) -->
+    <skip />
+    <!-- no translation found for constipation_write_content_description (9059835998017996999) -->
+    <skip />
+    <!-- no translation found for diarrhea_read_content_description (6643311788778713543) -->
+    <skip />
+    <!-- no translation found for diarrhea_write_content_description (2525160401458506448) -->
+    <skip />
+    <!-- no translation found for loss_of_appetite_read_content_description (5825568361431664706) -->
+    <skip />
+    <!-- no translation found for loss_of_appetite_write_content_description (7370817778828856877) -->
+    <skip />
+    <!-- no translation found for nausea_read_content_description (7696809485706809234) -->
+    <skip />
+    <!-- no translation found for nausea_write_content_description (7956853318058549079) -->
+    <skip />
+    <!-- no translation found for stomach_ache_read_content_description (6960461949095524373) -->
+    <skip />
+    <!-- no translation found for stomach_ache_write_content_description (4822349196740130790) -->
+    <skip />
+    <!-- no translation found for vomiting_read_content_description (6425637340168306118) -->
+    <skip />
+    <!-- no translation found for vomiting_write_content_description (2768436321239967229) -->
+    <skip />
+    <!-- no translation found for chest_pain_read_content_description (5388099127082653993) -->
+    <skip />
+    <!-- no translation found for chest_pain_write_content_description (7570421665813979598) -->
+    <skip />
+    <!-- no translation found for chest_tightness_read_content_description (3234587929340517638) -->
+    <skip />
+    <!-- no translation found for chest_tightness_write_content_description (3365518444505217882) -->
+    <skip />
+    <!-- no translation found for cough_read_content_description (4834360757270578547) -->
+    <skip />
+    <!-- no translation found for cough_write_content_description (2927943192149715422) -->
+    <skip />
+    <!-- no translation found for heart_palpitations_read_content_description (5830132363981902576) -->
+    <skip />
+    <!-- no translation found for heart_palpitations_write_content_description (6195434828951874561) -->
+    <skip />
+    <!-- no translation found for shortness_of_breath_read_content_description (5285037217314042125) -->
+    <skip />
+    <!-- no translation found for shortness_of_breath_write_content_description (1812050225998794712) -->
+    <skip />
+    <!-- no translation found for wheezing_read_content_description (3698103133045395859) -->
+    <skip />
+    <!-- no translation found for wheezing_write_content_description (3555234332119025686) -->
+    <skip />
+    <!-- no translation found for heartburn_read_content_description (4650825508743336439) -->
+    <skip />
+    <!-- no translation found for heartburn_write_content_description (1857706822547818187) -->
+    <skip />
+    <!-- no translation found for skipped_heartbeat_read_content_description (4732209374634649857) -->
+    <skip />
+    <!-- no translation found for skipped_heartbeat_write_content_description (834686289232563614) -->
+    <skip />
+    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_read_content_description (7616019217735602113) -->
+    <skip />
+    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_write_content_description (271585170557004393) -->
+    <skip />
+    <!-- no translation found for difficulty_swallowing_read_content_description (3506995529886706872) -->
+    <skip />
+    <!-- no translation found for difficulty_swallowing_write_content_description (4087127686579577768) -->
+    <skip />
+    <!-- no translation found for dizziness_read_content_description (2525565486057144416) -->
+    <skip />
+    <!-- no translation found for dizziness_write_content_description (1875365619054873732) -->
+    <skip />
+    <!-- no translation found for earaches_read_content_description (4643142391473401154) -->
+    <skip />
+    <!-- no translation found for earaches_write_content_description (3551386029980258801) -->
+    <skip />
+    <!-- no translation found for hair_loss_read_content_description (4057044821025872986) -->
+    <skip />
+    <!-- no translation found for hair_loss_write_content_description (7387442867237711823) -->
+    <skip />
+    <!-- no translation found for headache_read_content_description (7485283472508878298) -->
+    <skip />
+    <!-- no translation found for headache_write_content_description (720183844750746485) -->
+    <skip />
+    <!-- no translation found for runny_nose_read_content_description (443700998701222852) -->
+    <skip />
+    <!-- no translation found for runny_nose_write_content_description (6210009950948827090) -->
+    <skip />
+    <!-- no translation found for sneezing_read_content_description (1825781985598094799) -->
+    <skip />
+    <!-- no translation found for sneezing_write_content_description (8125072216406958337) -->
+    <skip />
+    <!-- no translation found for sore_throat_read_content_description (7798247670004858562) -->
+    <skip />
+    <!-- no translation found for sore_throat_write_content_description (6058043292544091397) -->
+    <skip />
+    <!-- no translation found for stuffy_nose_read_content_description (6604212451531546331) -->
+    <skip />
+    <!-- no translation found for stuffy_nose_write_content_description (6950875986047625521) -->
+    <skip />
+    <!-- no translation found for back_pain_read_content_description (1176155927269014089) -->
+    <skip />
+    <!-- no translation found for back_pain_write_content_description (6282959987099901645) -->
+    <skip />
+    <!-- no translation found for lower_back_pain_read_content_description (1437405008757136462) -->
+    <skip />
+    <!-- no translation found for lower_back_pain_write_content_description (3519700764000282215) -->
+    <skip />
+    <!-- no translation found for hot_flashes_read_content_description (2229463748079331513) -->
+    <skip />
+    <!-- no translation found for hot_flashes_write_content_description (441093768815039294) -->
+    <skip />
+    <!-- no translation found for night_sweats_read_content_description (7644094250441074129) -->
+    <skip />
+    <!-- no translation found for night_sweats_write_content_description (7501357533280452509) -->
+    <skip />
+    <!-- no translation found for water_retention_read_content_description (211789030125880649) -->
+    <skip />
+    <!-- no translation found for water_retention_write_content_description (7109328727506593781) -->
+    <skip />
+    <!-- no translation found for cravings_read_content_description (9098905292448612603) -->
+    <skip />
+    <!-- no translation found for cravings_write_content_description (7932335159387976333) -->
+    <skip />
+    <!-- no translation found for bloating_read_content_description (8942780558464500997) -->
+    <skip />
+    <!-- no translation found for bloating_write_content_description (5014366726518564943) -->
+    <skip />
+    <!-- no translation found for cramps_read_content_description (5853663240074256855) -->
+    <skip />
+    <!-- no translation found for cramps_write_content_description (6777230560926849939) -->
+    <skip />
+    <!-- no translation found for abdominal_pain_read_content_description (6331928351160142817) -->
+    <skip />
+    <!-- no translation found for abdominal_pain_write_content_description (9213133328064016367) -->
+    <skip />
+    <!-- no translation found for breast_tenderness_read_content_description (1556133668276886256) -->
+    <skip />
+    <!-- no translation found for breast_tenderness_write_content_description (5405234499024881940) -->
+    <skip />
+    <!-- no translation found for pelvic_pain_read_content_description (8872893212311881743) -->
+    <skip />
+    <!-- no translation found for pelvic_pain_write_content_description (8482016412474126674) -->
+    <skip />
+    <!-- no translation found for vaginal_dryness_read_content_description (21587787265978758) -->
+    <skip />
+    <!-- no translation found for vaginal_dryness_write_content_description (7639415261021656468) -->
+    <skip />
+    <!-- no translation found for vaginal_itchiness_read_content_description (6027886706003079912) -->
+    <skip />
+    <!-- no translation found for vaginal_itchiness_write_content_description (6833099607694941406) -->
+    <skip />
+    <!-- no translation found for brain_fog_read_content_description (4240133221789017568) -->
+    <skip />
+    <!-- no translation found for brain_fog_write_content_description (354508934978268288) -->
+    <skip />
+    <!-- no translation found for mood_change_read_content_description (5114563193264125173) -->
+    <skip />
+    <!-- no translation found for mood_change_write_content_description (7613564641235985120) -->
+    <skip />
+    <!-- no translation found for memory_lapse_read_content_description (3639865098888366357) -->
+    <skip />
+    <!-- no translation found for memory_lapse_write_content_description (211569063190179476) -->
+    <skip />
+    <!-- no translation found for sleepiness_read_content_description (797381777988304669) -->
+    <skip />
+    <!-- no translation found for sleepiness_write_content_description (888236364245216476) -->
+    <skip />
+    <!-- no translation found for sleep_changes_read_content_description (277237231470749744) -->
+    <skip />
+    <!-- no translation found for sleep_changes_write_content_description (9078270254664653838) -->
+    <skip />
+    <!-- no translation found for insomnia_read_content_description (5225449618972721129) -->
+    <skip />
+    <!-- no translation found for insomnia_write_content_description (4237153589826489083) -->
+    <skip />
+    <!-- no translation found for snore_read_content_description (3447953925696237628) -->
+    <skip />
+    <!-- no translation found for snore_write_content_description (959354771204900433) -->
+    <skip />
+    <!-- no translation found for acne_uppercase_label (60568062993817483) -->
+    <skip />
+    <!-- no translation found for acne_lowercase_label (5301949536428255159) -->
+    <skip />
+    <!-- no translation found for abdominal_pain_uppercase_label (442393846492385702) -->
+    <skip />
+    <!-- no translation found for abdominal_pain_lowercase_label (4136643670361233063) -->
+    <skip />
+    <!-- no translation found for back_pain_uppercase_label (6034795846635350255) -->
+    <skip />
+    <!-- no translation found for back_pain_lowercase_label (7487168354843582888) -->
+    <skip />
+    <!-- no translation found for bloating_uppercase_label (2827024204358491650) -->
+    <skip />
+    <!-- no translation found for bloating_lowercase_label (4108236897678347488) -->
+    <skip />
+    <!-- no translation found for brain_fog_uppercase_label (3782508630097437711) -->
+    <skip />
+    <!-- no translation found for brain_fog_lowercase_label (8018499987092429724) -->
+    <skip />
+    <!-- no translation found for breast_tenderness_uppercase_label (3633574517042452397) -->
+    <skip />
+    <!-- no translation found for breast_tenderness_lowercase_label (3745105353936751222) -->
+    <skip />
+    <!-- no translation found for brittle_nails_uppercase_label (7290899807816681152) -->
+    <skip />
+    <!-- no translation found for brittle_nails_lowercase_label (43861645923597496) -->
+    <skip />
+    <!-- no translation found for burning_mouth_uppercase_label (8975226712238467359) -->
+    <skip />
+    <!-- no translation found for burning_mouth_lowercase_label (3378970972990933484) -->
+    <skip />
+    <!-- no translation found for chest_pain_uppercase_label (8091501402224214622) -->
+    <skip />
+    <!-- no translation found for chest_pain_lowercase_label (8817807562310689177) -->
+    <skip />
+    <!-- no translation found for chest_tightness_uppercase_label (8988021502622503503) -->
+    <skip />
+    <!-- no translation found for chest_tightness_lowercase_label (1770063390635610292) -->
+    <skip />
+    <!-- no translation found for chills_uppercase_label (4320786490882838834) -->
+    <skip />
+    <!-- no translation found for chills_lowercase_label (1306612496314055832) -->
+    <skip />
+    <!-- no translation found for constipation_uppercase_label (7245001778443725742) -->
+    <skip />
+    <!-- no translation found for constipation_lowercase_label (6217542866033766747) -->
+    <skip />
+    <!-- no translation found for cough_uppercase_label (5570609736970603012) -->
+    <skip />
+    <!-- no translation found for cough_lowercase_label (459638956679172779) -->
+    <skip />
+    <!-- no translation found for cramps_uppercase_label (5162905309136173937) -->
+    <skip />
+    <!-- no translation found for cramps_lowercase_label (4644485808002493449) -->
+    <skip />
+    <!-- no translation found for cravings_uppercase_label (4754194354806284307) -->
+    <skip />
+    <!-- no translation found for cravings_lowercase_label (5836041614136287213) -->
+    <skip />
+    <!-- no translation found for dehydration_uppercase_label (10278239942824711) -->
+    <skip />
+    <!-- no translation found for dehydration_lowercase_label (8692632632276643276) -->
+    <skip />
+    <!-- no translation found for diarrhea_uppercase_label (6310170127529968752) -->
+    <skip />
+    <!-- no translation found for diarrhea_lowercase_label (5938774694742839016) -->
+    <skip />
+    <!-- no translation found for difficulty_swallowing_uppercase_label (3546617155300878657) -->
+    <skip />
+    <!-- no translation found for difficulty_swallowing_lowercase_label (4980631237611433200) -->
+    <skip />
+    <!-- no translation found for dizziness_uppercase_label (8129950094459563983) -->
+    <skip />
+    <!-- no translation found for dizziness_lowercase_label (3462347558609662379) -->
+    <skip />
+    <!-- no translation found for dry_skin_uppercase_label (4542430684082075550) -->
+    <skip />
+    <!-- no translation found for dry_skin_lowercase_label (6892264917735291961) -->
+    <skip />
+    <!-- no translation found for earaches_uppercase_label (107701950625572701) -->
+    <skip />
+    <!-- no translation found for earaches_lowercase_label (6240790850403958317) -->
+    <skip />
+    <!-- no translation found for fatigue_uppercase_label (7514286788083426578) -->
+    <skip />
+    <!-- no translation found for fatigue_lowercase_label (2669560685808367387) -->
+    <skip />
+    <!-- no translation found for fever_uppercase_label (6889273008212535253) -->
+    <skip />
+    <!-- no translation found for fever_lowercase_label (3634400562894397159) -->
+    <skip />
+    <!-- no translation found for generalized_body_ache_uppercase_label (2171378172300618053) -->
+    <skip />
+    <!-- no translation found for generalized_body_ache_lowercase_label (1725534000111875030) -->
+    <skip />
+    <!-- no translation found for hair_loss_uppercase_label (6359351347019795813) -->
+    <skip />
+    <!-- no translation found for hair_loss_lowercase_label (2764498189966225461) -->
+    <skip />
+    <!-- no translation found for headache_uppercase_label (863800537735413054) -->
+    <skip />
+    <!-- no translation found for headache_lowercase_label (6564231905087583135) -->
+    <skip />
+    <!-- no translation found for heartburn_uppercase_label (1170571383460859644) -->
+    <skip />
+    <!-- no translation found for heartburn_lowercase_label (6235983036978705474) -->
+    <skip />
+    <!-- no translation found for heart_palpitations_uppercase_label (2026400872833911547) -->
+    <skip />
+    <!-- no translation found for heart_palpitations_lowercase_label (1468243523322721340) -->
+    <skip />
+    <!-- no translation found for hot_flashes_uppercase_label (2410116266729711836) -->
+    <skip />
+    <!-- no translation found for hot_flashes_lowercase_label (6485269554856410007) -->
+    <skip />
+    <!-- no translation found for insomnia_uppercase_label (4946197328995261738) -->
+    <skip />
+    <!-- no translation found for insomnia_lowercase_label (3742025423716451058) -->
+    <skip />
+    <!-- no translation found for joint_pain_uppercase_label (7693454621285586935) -->
+    <skip />
+    <!-- no translation found for joint_pain_lowercase_label (1877680075365305488) -->
+    <skip />
+    <!-- no translation found for joint_stiffness_uppercase_label (5230114867081881444) -->
+    <skip />
+    <!-- no translation found for joint_stiffness_lowercase_label (8766445235392409480) -->
+    <skip />
+    <!-- no translation found for loss_of_appetite_uppercase_label (4023141061302523950) -->
+    <skip />
+    <!-- no translation found for loss_of_appetite_lowercase_label (7558077308061468558) -->
+    <skip />
+    <!-- no translation found for loss_of_consciousness_uppercase_label (4195502722277905266) -->
+    <skip />
+    <!-- no translation found for loss_of_consciousness_lowercase_label (4822860811117141611) -->
+    <skip />
+    <!-- no translation found for lower_back_pain_uppercase_label (2307572603791750654) -->
+    <skip />
+    <!-- no translation found for lower_back_pain_lowercase_label (940765534682997044) -->
+    <skip />
+    <!-- no translation found for memory_lapse_uppercase_label (241393771674969441) -->
+    <skip />
+    <!-- no translation found for memory_lapse_lowercase_label (5590619293782264318) -->
+    <skip />
+    <!-- no translation found for mood_change_uppercase_label (6591596468077187132) -->
+    <skip />
+    <!-- no translation found for mood_change_lowercase_label (5154765930188874067) -->
+    <skip />
+    <!-- no translation found for muscle_pain_uppercase_label (2470771124188001900) -->
+    <skip />
+    <!-- no translation found for muscle_pain_lowercase_label (7842677871351347822) -->
+    <skip />
+    <!-- no translation found for nausea_uppercase_label (8384006696113532259) -->
+    <skip />
+    <!-- no translation found for nausea_lowercase_label (8182471893071968504) -->
+    <skip />
+    <!-- no translation found for night_sweats_uppercase_label (6177687233700001658) -->
+    <skip />
+    <!-- no translation found for night_sweats_lowercase_label (5041101323453286082) -->
+    <skip />
+    <!-- no translation found for pelvic_pain_uppercase_label (9057761232218571640) -->
+    <skip />
+    <!-- no translation found for pelvic_pain_lowercase_label (8993103170034473121) -->
+    <skip />
+    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_uppercase_label (2029088854167004239) -->
+    <skip />
+    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_lowercase_label (5744229600679518473) -->
+    <skip />
+    <!-- no translation found for reduced_capacity_for_exercise_uppercase_label (7471254320615756463) -->
+    <skip />
+    <!-- no translation found for reduced_capacity_for_exercise_lowercase_label (3820574649548616546) -->
+    <skip />
+    <!-- no translation found for runny_nose_uppercase_label (6561156187042071551) -->
+    <skip />
+    <!-- no translation found for runny_nose_lowercase_label (2214697492382685914) -->
+    <skip />
+    <!-- no translation found for shortness_of_breath_uppercase_label (3747502224212110471) -->
+    <skip />
+    <!-- no translation found for shortness_of_breath_lowercase_label (3970444639088619346) -->
+    <skip />
+    <!-- no translation found for skipped_heartbeat_uppercase_label (1004040920818222022) -->
+    <skip />
+    <!-- no translation found for skipped_heartbeat_lowercase_label (2446049805930852514) -->
+    <skip />
+    <!-- no translation found for sleep_changes_uppercase_label (817870703301327111) -->
+    <skip />
+    <!-- no translation found for sleep_changes_lowercase_label (8606593835222848643) -->
+    <skip />
+    <!-- no translation found for sleepiness_uppercase_label (8292543897598171825) -->
+    <skip />
+    <!-- no translation found for sleepiness_lowercase_label (7563434619994665081) -->
+    <skip />
+    <!-- no translation found for sneezing_uppercase_label (3559089195823390830) -->
+    <skip />
+    <!-- no translation found for sneezing_lowercase_label (4614496100578986753) -->
+    <skip />
+    <!-- no translation found for snore_uppercase_label (5408933698329003980) -->
+    <skip />
+    <!-- no translation found for snore_lowercase_label (4813706716393000341) -->
+    <skip />
+    <!-- no translation found for sore_throat_uppercase_label (7652461264264564339) -->
+    <skip />
+    <!-- no translation found for sore_throat_lowercase_label (2671417552726018944) -->
+    <skip />
+    <!-- no translation found for stomach_ache_uppercase_label (8450868632465837793) -->
+    <skip />
+    <!-- no translation found for stomach_ache_lowercase_label (3263518334946627327) -->
+    <skip />
+    <!-- no translation found for stuffy_nose_uppercase_label (4216439398397550673) -->
+    <skip />
+    <!-- no translation found for stuffy_nose_lowercase_label (346310767340271161) -->
+    <skip />
+    <!-- no translation found for unexplained_weight_changes_uppercase_label (1882204558194305221) -->
+    <skip />
+    <!-- no translation found for unexplained_weight_changes_lowercase_label (8433998024876395101) -->
+    <skip />
+    <!-- no translation found for vaginal_dryness_uppercase_label (4256721076420375400) -->
+    <skip />
+    <!-- no translation found for vaginal_dryness_lowercase_label (1329282833647595593) -->
+    <skip />
+    <!-- no translation found for vaginal_itchiness_uppercase_label (2843508264503404145) -->
+    <skip />
+    <!-- no translation found for vaginal_itchiness_lowercase_label (4569019157289060524) -->
+    <skip />
+    <!-- no translation found for vomiting_uppercase_label (258794137964470267) -->
+    <skip />
+    <!-- no translation found for vomiting_lowercase_label (2520559377010270583) -->
+    <skip />
+    <!-- no translation found for water_retention_uppercase_label (4748866467103152119) -->
+    <skip />
+    <!-- no translation found for water_retention_lowercase_label (3738721149186742861) -->
+    <skip />
+    <!-- no translation found for wheezing_uppercase_label (2837114949197811787) -->
+    <skip />
+    <!-- no translation found for wheezing_lowercase_label (1278548371813007771) -->
     <skip />
 </resources>

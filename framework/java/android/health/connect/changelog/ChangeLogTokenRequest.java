@@ -33,8 +33,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.ArraySet;
 
-import com.android.healthfitness.flags.AconfigFlagHelper;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -219,7 +217,7 @@ public final class ChangeLogTokenRequest implements Parcelable {
         /**
          * Returns Object of {@link ChangeLogTokenRequest}
          *
-         * @throws IllegalArgumentException if validation fails:
+         * @throws IllegalStateException if validation fails:
          *     <ul>
          *       <li>At least one Record type or Medical Resource type must be set
          *       <li>Record type or Medical Resource types can't both be set

@@ -195,6 +195,9 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
             onSelectEntryListener = onSelectEntryListener,
         )
     }
+    private val symptomItemViewBinder by lazy {
+        SymptomItemViewBinder(onSelectEntryListener = onSelectEntryListener)
+    }
     private val seriesDataItemViewBinder by lazy {
         SeriesDataItemViewBinder(
             onItemClickedListener = onClickEntryListener,
@@ -314,6 +317,7 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
                 FormattedEntry.ExerciseSessionEntry::class.java,
                 exerciseSessionItemViewBinder,
             )
+            .setViewBinder(FormattedEntry.SymptomEntry::class.java, symptomItemViewBinder)
             .setViewBinder(FormattedEntry.SeriesDataEntry::class.java, seriesDataItemViewBinder)
             .setViewBinder(FormattedEntry.FormattedAggregation::class.java, aggregationViewBinder)
             .setViewBinder(
@@ -341,6 +345,7 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
                 FormattedEntry.ExerciseSessionEntry::class.java,
                 exerciseSessionItemViewBinder,
             )
+            .setViewBinder(FormattedEntry.SymptomEntry::class.java, symptomItemViewBinder)
             .setViewBinder(FormattedEntry.SeriesDataEntry::class.java, seriesDataItemViewBinder)
             .setViewBinder(FormattedEntry.FormattedAggregation::class.java, aggregationViewBinder)
             .setViewBinder(
@@ -380,7 +385,10 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
     override fun onResume() {
         super.onResume()
         setTitle(permissionType.upperCaseLabel())
-        reloadEntries()
+        if (entriesViewModel.shouldReloadEntries) {
+            reloadEntries()
+            entriesViewModel.shouldReloadEntries = false
+        }
         setLoggerPageId()
         logger.logPageImpression()
         dateNavigationView.setDateChangedListener(

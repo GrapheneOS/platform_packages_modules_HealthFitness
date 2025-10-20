@@ -40,8 +40,6 @@ import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Build;
 import android.os.Process;
 import android.os.UserHandle;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.annotation.Nullable;
@@ -104,15 +102,15 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
-    public void shouldEnforcePermissionUsageIntent_flagDisabled_shouldEnforce() {
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
+    public void shouldEnforcePermissionUsageIntent_preBaklava_shouldEnforce() {
         assertTrue(
                 mPermissionHelper.shouldEnforcePermissionUsageIntent(
                         TEST_PACKAGE_NAME, CURRENT_USER));
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void shouldEnforcePermissionUsageIntent_watchDevice_shouldNotEnforce()
             throws PackageManager.NameNotFoundException {
         when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)).thenReturn(true);
@@ -123,7 +121,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void shouldEnforcePermissionUsageIntent_noPackageFound_shouldEnforce()
             throws PackageManager.NameNotFoundException {
         when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
@@ -135,7 +133,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void shouldEnforcePermissionUsageIntent_noHealthPermissions_shouldNotEnforce()
             throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo = new PackageInfo();
@@ -149,7 +147,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void shouldEnforcePermissionUsageIntent_requestNotFromSplitPermission_shouldEnforce()
             throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo = new PackageInfo();
@@ -166,7 +164,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void shouldEnforcePermissionUsageIntent_exceptionDuringGetPermissionFlags_shouldEnforce()
             throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo = new PackageInfo();
@@ -184,7 +182,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void shouldEnforcePermissionUsageIntent_hrFromSplitPermission_shouldNotEnforce()
             throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo =
@@ -205,7 +203,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void
             shouldEnforcePermissionUsageIntent_hrFromSplitPermission_targetSdk22_shouldNotEnforce()
                     throws PackageManager.NameNotFoundException {
@@ -227,7 +225,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void
             shouldEnforcePermissionUsageIntent_onePermissionNotFromSplitPermission_shouldEnforce()
                     throws PackageManager.NameNotFoundException {
@@ -254,7 +252,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void shouldEnforcePermissionUsageIntent_multipleSplitPermissions_shouldNotEnforce()
             throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo =
@@ -281,7 +279,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void grantHealthPermission_noIntentSupport_doesNotGrantPermission()
             throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
@@ -305,7 +303,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void grantHealthPermission_noIntentSupport_wear_grantsPermission()
             throws PackageManager.NameNotFoundException {
         when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)).thenReturn(true);
@@ -334,7 +332,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void grantHealthPermission_supportsRationaleIntent_grantsPermission()
             throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
@@ -363,7 +361,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void
             grantHealthPermission_noIntentSupport_nonSplittablePermission_doesNotGrantPermission()
                     throws PackageManager.NameNotFoundException {
@@ -389,7 +387,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void
             grantHealthPermission_noIntentSupport_splittablePermission_baklavaTargetSdk_doesNotGrantPermission()
                     throws PackageManager.NameNotFoundException {
@@ -413,7 +411,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void
             grantHealthPermission_noIntentSupport_readHrExplicitlyRequested_doesNotGrantPermission()
                     throws PackageManager.NameNotFoundException {
@@ -439,7 +437,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void
             grantHealthPermission_noIntentSupport_readBackgroundExplicitlyRequested_doesNotGrantPermission()
                     throws PackageManager.NameNotFoundException {
@@ -467,7 +465,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void grantHealthPermission_noIntentSupport_readHrSplitPermission_grantsPermission()
             throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
@@ -500,7 +498,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void
             grantHealthPermission_noIntentSupport_readBackgroundSplitPermission_grantsPermission()
                     throws PackageManager.NameNotFoundException {
@@ -536,8 +534,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void
             grantHealthPermission_readHeartRate_supportsIntent_outdatedTargetSdk_alsoGrantBodySensors()
                     throws PackageManager.NameNotFoundException {
@@ -579,7 +576,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void
             grantHealthPermission_readHeartRate_noIntentSupport_outdatedTargetSdk_alsoGrantBodySensors()
                     throws PackageManager.NameNotFoundException {
@@ -624,7 +620,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void grantHealthPermission_readHeartRate_postSplitTargetSdk_noBodySensorsSync()
             throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
@@ -660,7 +655,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void grantHealthPermission_readHeartRate_bodySensorNotRequested_noBodySensorsSync()
             throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
@@ -696,7 +690,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void grantHealthPermission_readHeartRate_olderBuildVersion_noBodySensorsSync()
             throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
@@ -732,7 +725,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void
             grantHealthPermission_readHealthDataInBackground_supportsIntent_outdatedTargetSdk_alsoGrantBodySensorsBackground()
                     throws PackageManager.NameNotFoundException {
@@ -779,7 +771,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void
             grantHealthPermission_readHealthDataInBackground_noIntentSupport_outdatedTargetSdk_alsoGrantBodySensorsBackground()
                     throws PackageManager.NameNotFoundException {
@@ -831,7 +822,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void
             grantHealthPermission_readHealthDataInBackground_postSplitTargetSdk_noBodySensorsBackgroundSync()
                     throws PackageManager.NameNotFoundException {
@@ -868,7 +858,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void
             grantHealthPermission_readHealthDataInBackground_bodySensorsBackgroundNotRequested_noBodySensorsBackgroundSync()
                     throws PackageManager.NameNotFoundException {
@@ -905,7 +894,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void
             grantHealthPermission_readHealthDataInBackground_olderPlatformVersion_noBodySensorsBackgroundSync()
                     throws PackageManager.NameNotFoundException {
@@ -942,7 +930,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void revokeHealthPermission_readHeartRate_outdatedTargetSdk_bodySensorsRevoked()
             throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo =
@@ -988,7 +975,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void revokeHealthPermission_readHeartRate_postSplitTargetSdk_bodySensorsNotRevoked()
             throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo =
@@ -1025,7 +1011,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void revokeHealthPermission_readHeartRate_bodySensorsNotRequested_bodySensorsNotRevoked()
             throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo =
@@ -1069,7 +1054,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void revokeHealthPermission_readHeartRate_olderPlatformVersion_bodySensorsNotRevoked()
             throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo =
@@ -1107,7 +1091,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void
             revokeHealthPermission_readHealthDataInBackground_outdatedTargetSdk_bodySensorsBackgroundRevoked()
                     throws PackageManager.NameNotFoundException {
@@ -1154,7 +1137,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void
             revokeHealthPermission_readHealthDataInBackground_postSplitTargetSdk_bodySensorsBackgroundNotRevoked()
                     throws PackageManager.NameNotFoundException {
@@ -1193,8 +1175,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void
             revokeHealthPermission_readHealthDataInBackground_bodySensorsBackgroundNotRequested_bodySensorsBackgroundNotRevoked()
                     throws PackageManager.NameNotFoundException {
@@ -1234,7 +1215,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void
             revokeHealthPermission_readHealthDataInBackground_olderPlatformVersion_bodySensorsBackgroundNotRevoked()
                     throws PackageManager.NameNotFoundException {
@@ -1348,7 +1328,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void
             revokeAllHealthPermissions_noPermissionsGranted_bodySensorsRequested_bodySensorsRevoked()
                     throws Exception {
@@ -1383,7 +1362,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void
             revokeAllHealthPermissions_outdatedTargetSdk_requestsBodySensors_bodySensorsRevoked()
                     throws PackageManager.NameNotFoundException {
@@ -1430,7 +1408,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void revokeAllHealthPermissions_postSplitTargetSdk_noBodySensorsRevoked()
             throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo =
@@ -1473,7 +1450,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void revokeAllHealthPermissions_bodySensorNotRequested_noBodySensorsRevoked()
             throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo =
@@ -1510,7 +1486,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void revokeAllHealthPermissions_olderPlatform_noBodySensorsRevoked()
             throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo =
@@ -1548,7 +1523,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void
             revokeAllHealthPermissions_outdatedTargetSdk_requestsBodySensorsBackground_bodySensorsBackgroundRevoked()
                     throws PackageManager.NameNotFoundException {
@@ -1599,7 +1573,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void revokeAllHealthPermissions_postSplitTargetSdk_noBodySensorsBackgroundRevoked()
             throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo =
@@ -1642,7 +1615,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void
             revokeAllHealthPermissions_bodySensorBackgroundNotRequested_noBodySensorsBackgroundRevoked()
                     throws PackageManager.NameNotFoundException {
@@ -1680,7 +1652,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void revokeAllHealthPermissions_olderPlatform_noBodySensorsBackgroundRevoked()
             throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo =
@@ -1719,7 +1690,6 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void
             revokeAllHealthPermissions_outdatedTargetSdk_requestsBodySensorsAndBackground_allBodySensorsPermissionsRevoked()
                     throws PackageManager.NameNotFoundException {

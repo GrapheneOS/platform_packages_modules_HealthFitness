@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.shared
 
 import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.SymptomRecord
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.fromHealthPermissionCategory
@@ -38,12 +39,29 @@ object HealthPermissionToDatatypeMapper {
     private fun createMap(): Map<FitnessPermissionType, List<Class<out Record>>> {
         val healthConnectMappings = HealthConnectMappings.getInstance()
 
-        return healthConnectMappings.allRecordTypeIdentifiers
-            .map { recordTypeId ->
-                fromHealthPermissionCategory(
-                    healthConnectMappings.getHealthPermissionCategoryForRecordType(recordTypeId)
-                ) to healthConnectMappings.recordIdToExternalRecordClassMap[recordTypeId]!!
+        val map =
+            healthConnectMappings.allRecordTypeIdentifiers
+                .flatMap { recordTypeId ->
+                    val recordClass =
+                        healthConnectMappings.recordIdToExternalRecordClassMap[recordTypeId]!!
+                    val permissionCategories =
+                        healthConnectMappings.getHealthPermissionCategoriesForRecordType(
+                            recordTypeId
+                        )
+                    permissionCategories.map { permissionCategory ->
+                        fromHealthPermissionCategory(permissionCategory) to recordClass
+                    }
+                }
+                .groupBy({ it.first as FitnessPermissionType }, { it.second })
+                .toMutableMap()
+
+        val symptomRecordClass = listOf(SymptomRecord::class.java)
+        FitnessPermissionType.values().forEach {
+            if (it.name.startsWith("SYMPTOM_")) {
+                map[it] = symptomRecordClass
             }
-            .groupBy({ it.first as FitnessPermissionType }, { it.second })
+        }
+
+        return map
     }
 }

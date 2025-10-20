@@ -52,38 +52,40 @@ constructor(
         @StringRes nicotineIntakeRes: Int,
         record: NicotineIntakeRecord,
     ): String {
+        val nicotineIntakeType = getNicotineIntakeType(record.nicotineIntakeType, record.quantity)
+        if (record.nicotineIntake == null) {
+            return nicotineIntakeType
+        }
+
         val formattedIntake =
             NumberFormatter.withLocale(Locale.getDefault())
                 .unit(MILLIGRAM)
                 .unitWidth(UnitWidth.SHORT)
                 .precision(Precision.maxFraction(2))
                 .integerWidth(IntegerWidth.zeroFillTo(1))
-                .format(record.nicotineIntake?.inGrams?.times(1000) ?: 0)
+                .format(record.nicotineIntake!!.inGrams * 1000)
 
-        return context.getString(
-            nicotineIntakeRes,
-            getNicotineIntakeType(record.nicotineIntakeType, record.quantity),
-            formattedIntake,
-        )
+        return context.getString(nicotineIntakeRes, nicotineIntakeType, formattedIntake)
     }
 
     private fun formatA11yNicotineIntake(
         @StringRes nicotineIntakeRes: Int,
         record: NicotineIntakeRecord,
     ): String {
+        val nicotineIntakeType = getNicotineIntakeType(record.nicotineIntakeType, record.quantity)
+        if (record.nicotineIntake == null) {
+            return nicotineIntakeType
+        }
+
         val formattedIntake =
             NumberFormatter.withLocale(Locale.getDefault())
                 .unit(MILLIGRAM)
                 .unitWidth(UnitWidth.FULL_NAME)
                 .precision(Precision.maxFraction(2))
                 .integerWidth(IntegerWidth.zeroFillTo(1))
-                .format(record.nicotineIntake?.inGrams?.times(1000) ?: 0)
+                .format(record.nicotineIntake!!.inGrams * 1000)
 
-        return context.getString(
-            nicotineIntakeRes,
-            getNicotineIntakeType(record.nicotineIntakeType, record.quantity),
-            formattedIntake,
-        )
+        return context.getString(nicotineIntakeRes, nicotineIntakeType, formattedIntake)
     }
 
     private fun getNicotineIntakeType(type: Int, quantity: Int): String {

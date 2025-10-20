@@ -23,6 +23,7 @@ import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_MANUAL_
 
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.ActivityIntensityRecord;
+import android.health.connect.datatypes.AlcoholConsumptionRecord;
 import android.health.connect.datatypes.BasalBodyTemperatureRecord;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.BloodGlucoseRecord;
@@ -64,6 +65,7 @@ import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.SpeedRecord;
 import android.health.connect.datatypes.StepsCadenceRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
 import android.health.connect.datatypes.Vo2MaxRecord;
 import android.health.connect.datatypes.WeightRecord;
@@ -336,6 +338,9 @@ public abstract class RecordFactory<T extends Record> {
             return new ActiveCaloriesBurnedRecordFactory();
         } else if (recordClass.equals(ActivityIntensityRecord.class)) {
             return new ActivityIntensityRecordFactory();
+        } else if (Flags.alcoholConsumption()
+                && recordClass.equals(AlcoholConsumptionRecord.class)) {
+            return new AlcoholConsumptionRecordFactory();
         } else if (recordClass.equals(BasalBodyTemperatureRecord.class)) {
             return new BasalBodyTemperatureRecordFactory();
         } else if (recordClass.equals(BasalMetabolicRateRecord.class)) {
@@ -410,6 +415,8 @@ public abstract class RecordFactory<T extends Record> {
             return new StepsCadenceRecordFactory();
         } else if (recordClass.equals(StepsRecord.class)) {
             return new StepsRecordFactory();
+        } else if (Flags.symptoms() && recordClass.equals(SymptomRecord.class)) {
+            return new SymptomRecordFactory();
         } else if (recordClass.equals(TotalCaloriesBurnedRecord.class)) {
             return new TotalCaloriesBurnedRecordFactory();
         } else if (recordClass.equals(Vo2MaxRecord.class)) {

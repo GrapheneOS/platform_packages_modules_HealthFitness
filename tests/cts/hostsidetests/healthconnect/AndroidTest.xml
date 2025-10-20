@@ -30,4 +30,11 @@
             class="com.android.tradefed.testtype.suite.module.MainlineTestModuleController">
         <option name="mainline-module-package-name" value="com.google.android.healthfitness"/>
     </object>
+    <target_preparer class="com.android.tradefed.targetprep.RunCommandTargetPreparer">
+        <!-- Disables StatsD logging control-->
+        <option name="run-command" value="cmd stats logging-control 0" />
+        <!-- Delay 30 seconds to allow StatsD process above command-->
+        <option name="delay-after-commands" value="30000" />
+        <option name="run-command" value="cmd stats logging-control 1" />
+    </target_preparer>
 </configuration>

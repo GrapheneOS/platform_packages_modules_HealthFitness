@@ -18,6 +18,10 @@ package com.android.server.healthconnect.telemetry.dataquality;
 
 import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 
+import android.content.pm.PackageManager;
+import android.util.Slog;
+
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -26,6 +30,7 @@ import com.android.server.healthconnect.storage.utils.WhereClauses;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Util class for various classes collecting Data QUality Metrics.
@@ -33,10 +38,10 @@ import java.util.List;
  * @hide
  */
 final class DataQualityUtils {
+    private static final String TAG = "DataQualityUtils";
 
     /** Returns {@link ReadTableRequest} to read past week data for given table name. */
-    static ReadTableRequest getReadLastWeekSessionsRequest(String tableName) {
-        final Instant now = Instant.now();
+    static ReadTableRequest getReadLastWeekSessionsRequest(String tableName, Instant now) {
         final Instant weekAgo = now.minus(7, ChronoUnit.DAYS);
 
         // TODO(b/437880789): update if filtering column needs to be changed to Last Modified Date
@@ -56,5 +61,16 @@ final class DataQualityUtils {
                 // one week.
                 .setLimit(MAXIMUM_PAGE_SIZE)
                 .setWhereClause(whereClause);
+    }
+
+    static Optional<String> getPackageName(AppInfoHelper appInfoHelper, long appId) {
+        String packageName;
+        try {
+            packageName = appInfoHelper.getPackageName(appId);
+        } catch (PackageManager.NameNotFoundException ex) {
+            Slog.w(TAG, "Invalid app id " + appId);
+            return Optional.empty();
+        }
+        return Optional.of(packageName);
     }
 }

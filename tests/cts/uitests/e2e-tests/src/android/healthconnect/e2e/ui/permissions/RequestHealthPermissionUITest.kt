@@ -26,17 +26,26 @@ import android.healthconnect.testing.cts.ui.UiTestUtils.findText
 import android.healthconnect.testing.cts.ui.UiTestUtils.findTextAndClick
 import android.healthconnect.testing.cts.ui.UiTestUtils.grantPermissionViaPackageManager
 import android.healthconnect.testing.cts.ui.UiTestUtils.revokePermissionViaPackageManager
+import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndClick
 import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.testing.cts.ui.UiTestUtils.waitForObjectNotFound
 import android.os.Build
+import android.platform.test.annotations.RequiresFlagsEnabled
+import android.platform.test.flag.junit.CheckFlagsRule
+import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.filters.SdkSuppress
 import androidx.test.uiautomator.By
+import com.android.healthfitness.flags.Flags.FLAG_PERMISSIONS_GROUPING_UI
 import com.google.common.truth.Truth
 import java.time.Duration.ofSeconds
 import org.junit.After
+import org.junit.Rule
 import org.junit.Test
 
+@RequiresFlagsEnabled(FLAG_PERMISSIONS_GROUPING_UI)
 class RequestHealthPermissionUITest : HealthConnectBaseTest() {
+
+    @get:Rule val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
@@ -49,15 +58,16 @@ class RequestHealthPermissionUITest : HealthConnectBaseTest() {
         revokePermissionViaPackageManager(
             context,
             TEST_APP_PACKAGE_NAME,
-            HealthPermissions.WRITE_BODY_FAT,
+            HealthPermissions.WRITE_STEPS,
         )
         context.launchRequestPermissionActivity(
             packageName = TEST_APP_PACKAGE_NAME,
-            permissions = listOf(HealthPermissions.READ_HEIGHT, HealthPermissions.WRITE_BODY_FAT),
+            permissions = listOf(HealthPermissions.READ_HEIGHT, HealthPermissions.WRITE_STEPS),
         ) {
             findText("Allow Health Connect cts test app to access Health Connect?")
             scrollDownToAndFindText("Height")
-            scrollDownToAndFindText("Body fat")
+            scrollDownToAndClick(By.text("Activity (1)"))
+            scrollDownToAndFindText("Steps")
         }
     }
 
@@ -72,15 +82,16 @@ class RequestHealthPermissionUITest : HealthConnectBaseTest() {
         revokePermissionViaPackageManager(
             context,
             TEST_APP_PACKAGE_NAME,
-            HealthPermissions.WRITE_BODY_FAT,
+            HealthPermissions.WRITE_STEPS,
         )
         context.launchRequestPermissionActivity(
             packageName = TEST_APP_PACKAGE_NAME,
-            permissions = listOf(HealthPermissions.READ_HEIGHT, HealthPermissions.WRITE_BODY_FAT),
+            permissions = listOf(HealthPermissions.READ_HEIGHT, HealthPermissions.WRITE_STEPS),
         ) {
             findText("Allow Health Connect cts test app to access your fitness and wellness data?")
             scrollDownToAndFindText("Height")
-            scrollDownToAndFindText("Body fat")
+            scrollDownToAndClick(By.text("Activity (1)"))
+            scrollDownToAndFindText("Steps")
         }
     }
 

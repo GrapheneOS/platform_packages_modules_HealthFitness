@@ -31,7 +31,7 @@ import android.permission.PermissionManager;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 
-import com.android.healthfitness.flags.Flags;
+import com.android.modules.utils.build.SdkLevel;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 
@@ -71,13 +71,37 @@ public class DataPermissionEnforcer {
     /** Enforces default read permissions for given recordTypeIds */
     public void enforceRecordIdsReadPermissions(
             Collection<Integer> recordTypeIds, AttributionSource attributionSource) {
+        recordTypeLoop:
         for (Integer recordTypeId : recordTypeIds) {
-            String permissionName =
-                    mHealthConnectMappings.getHealthReadPermission(
-                            mHealthConnectMappings.getHealthPermissionCategoryForRecordType(
-                                    recordTypeId));
-            enforceRecordPermission(
-                    permissionName, attributionSource, recordTypeId, /* isReadPermission= */ true);
+            Set<Integer> permissionCategories =
+                    mHealthConnectMappings.getHealthPermissionCategoriesForRecordType(recordTypeId);
+            if (permissionCategories.isEmpty()) {
+                throw new SecurityException(
+                        "No permissions defined for record type " + recordTypeId);
+            }
+
+            // A record type can have multiple read permissions, at least one of which is required
+            // to be granted. We can't use enforceAnyOfPermissions because we want to check each
+            // permission individually and ignore SecurityException for denied ones.
+            for (int category : permissionCategories) {
+                String permissionName = mHealthConnectMappings.getHealthReadPermission(category);
+                try {
+                    enforceRecordPermission(
+                            permissionName,
+                            attributionSource,
+                            recordTypeId,
+                            /* isReadPermission= */ true);
+                    // As soon as we find a permission that is granted, continue to the next
+                    // recordTypeId.
+                    continue recordTypeLoop;
+                } catch (SecurityException e) {
+                    // Ignore and check the next permission
+                }
+            }
+
+            // If no permission was granted for this record type, throw an exception.
+            throw new SecurityException(
+                    "Caller requires one of the permissions for record type " + recordTypeId);
         }
     }
 
@@ -138,6 +162,11 @@ public class DataPermissionEnforcer {
             RecordHelper<?> recordHelper =
                     mInternalHealthConnectMappings.getRecordHelper(recordTypeId);
 
+            // Enforce granular permissions
+            for (String permission : recordHelper.getGranularWritePermissions(recordInternal)) {
+                enforcePermission(permission, attributionSource);
+            }
+
             if (!recordTypeIdToExtraPerms.containsKey(recordTypeId)) {
                 recordTypeIdToExtraPerms.put(recordTypeId, new ArraySet<>());
             }
@@ -175,6 +204,13 @@ public class DataPermissionEnforcer {
                         + String.join(", ", permissions));
     }
 
+    /** Enforces that caller has the given permission. */
+    public void enforcePermission(String permissionName, AttributionSource attributionSource) {
+        if (!isPermissionGranted(permissionName, attributionSource)) {
+            throw new SecurityException("Caller doesn't have " + permissionName);
+        }
+    }
+
     /**
      * Returns granted extra read permissions.
      *
@@ -207,13 +243,37 @@ public class DataPermissionEnforcer {
 
     private void enforceRecordIdWritePermissionInternal(
             Collection<Integer> recordTypeIds, AttributionSource attributionSource) {
+        recordTypeLoop:
         for (Integer recordTypeId : recordTypeIds) {
-            String permissionName =
-                    mHealthConnectMappings.getHealthWritePermission(
-                            mHealthConnectMappings.getHealthPermissionCategoryForRecordType(
-                                    recordTypeId));
-            enforceRecordPermission(
-                    permissionName, attributionSource, recordTypeId, /* isReadPermission= */ false);
+            Set<Integer> permissionCategories =
+                    mHealthConnectMappings.getHealthPermissionCategoriesForRecordType(recordTypeId);
+            if (permissionCategories.isEmpty()) {
+                throw new SecurityException(
+                        "No permissions defined for record type " + recordTypeId);
+            }
+
+            // A record type can have multiple write permissions, at least one of which is required
+            // to be granted. We can't use enforceAnyOfPermissions because we want to check each
+            // permission individually and ignore SecurityException for denied ones.
+            for (int category : permissionCategories) {
+                String permissionName = mHealthConnectMappings.getHealthWritePermission(category);
+                try {
+                    enforceRecordPermission(
+                            permissionName,
+                            attributionSource,
+                            recordTypeId,
+                            /* isReadPermission= */ false);
+                    // As soon as we find a permission that is granted, continue to the next
+                    // recordTypeId.
+                    continue recordTypeLoop;
+                } catch (SecurityException e) {
+                    // Ignore and check the next permission.
+                }
+            }
+
+            // If no permission was granted for this record type, throw an exception.
+            throw new SecurityException(
+                    "Caller requires one of the permissions for record type " + recordTypeId);
         }
     }
 
@@ -235,7 +295,8 @@ public class DataPermissionEnforcer {
         }
 
         // Deny access to HealthConnect API if READ_HEART_RATE is a split permission.
-        if (Flags.replaceBodySensorPermissionEnabled() && permissionName.equals(READ_HEART_RATE)) {
+        if (SdkLevel.isAtLeastB()
+                && permissionName.equals(READ_HEART_RATE)) {
             String packageName = attributionSource.getPackageName();
             if (packageName == null) {
                 throw new SecurityException("Caller packageName is null");
@@ -272,8 +333,8 @@ public class DataPermissionEnforcer {
         }
     }
 
-    private boolean isPermissionGranted(
-            String permissionName, AttributionSource attributionSource) {
+    /** Checks if the given permission is granted for the given {@link AttributionSource}. */
+    public boolean isPermissionGranted(String permissionName, AttributionSource attributionSource) {
         return mPermissionManager.checkPermissionForDataDelivery(
                         permissionName, attributionSource, null)
                 == PERMISSION_GRANTED;

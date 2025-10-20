@@ -39,6 +39,7 @@ import com.android.server.healthconnect.storage.request.ReadTableRequest;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +87,10 @@ public class FitnessRecordReadHelper {
      * @param request The read request describing what to read.
      * @param grantedExtraReadPermissions List of permissions granted to this app to read associated
      *     data.
+     * @param grantedGranularPermissions A set of granted granular permissions for the read
+     *     operation. These will be used to filter data in cases where a record type is associated
+     *     with multiple permissions, ensuring only data permitted based on these permissions is
+     *     returned.
      * @param startDateAccessMillis The earliest time this app is allowed to read from.
      * @param isInForeground If the calling app is in the foreground.
      * @param shouldRecordAccessLog If access logs should be recorded for this call.
@@ -102,6 +107,7 @@ public class FitnessRecordReadHelper {
             String callingPackageName,
             ReadRecordsRequestParcel request,
             Set<String> grantedExtraReadPermissions,
+            Set<String> grantedGranularPermissions,
             long startDateAccessMillis,
             boolean isInForeground,
             boolean shouldRecordAccessLog,
@@ -116,6 +122,7 @@ public class FitnessRecordReadHelper {
                         enforceSelfRead,
                         startDateAccessMillis,
                         grantedExtraReadPermissions,
+                        grantedGranularPermissions,
                         isInForeground,
                         mAppInfoHelper);
 
@@ -185,6 +192,7 @@ public class FitnessRecordReadHelper {
                 callingPackageName,
                 request,
                 grantedExtraReadPermissions,
+                /* grantedGranularPermissions= */ Collections.emptySet(),
                 /* startDateAccessMillis= */ DEFAULT_LONG,
                 // Pass in caller as foreground so that all data is read.
                 /* isInForeground= */ true,
@@ -204,6 +212,8 @@ public class FitnessRecordReadHelper {
      *     be read.
      * @param grantedExtraReadPermissions List of permissions granted to this app to read associated
      *     data.
+     * @param grantedGranularPermissions A set of granted granular permissions for the read
+     *     operation.
      * @param startDateAccessMillis The earliest time this app is allowed to read from.
      * @param isInForeground If the calling app is in the foreground.
      * @param shouldRecordAccessLog If access logs should be recorded for this call.
@@ -214,6 +224,7 @@ public class FitnessRecordReadHelper {
             String callingPackageName,
             Map<Integer, List<UUID>> recordTypeToUuids,
             Set<String> grantedExtraReadPermissions,
+            Set<String> grantedGranularPermissions,
             long startDateAccessMillis,
             boolean isInForeground,
             boolean shouldRecordAccessLog) {
@@ -221,16 +232,17 @@ public class FitnessRecordReadHelper {
         recordTypeToUuids.forEach(
                 (recordType, uuids) -> {
                     if (!uuids.isEmpty()) {
+                        RecordHelper<?> recordHelper =
+                                mInternalHealthConnectMappings.getRecordHelper(recordType);
                         readTableRequests.add(
-                                mInternalHealthConnectMappings
-                                        .getRecordHelper(recordType)
-                                        .getReadTableRequest(
-                                                callingPackageName,
-                                                uuids,
-                                                startDateAccessMillis,
-                                                grantedExtraReadPermissions,
-                                                isInForeground,
-                                                mAppInfoHelper));
+                                recordHelper.getReadTableRequest(
+                                        callingPackageName,
+                                        uuids,
+                                        startDateAccessMillis,
+                                        grantedExtraReadPermissions,
+                                        grantedGranularPermissions,
+                                        isInForeground,
+                                        mAppInfoHelper));
                     }
                 });
 
@@ -267,6 +279,7 @@ public class FitnessRecordReadHelper {
                 callingPackageName,
                 recordTypeToUuids,
                 grantedExtraReadPermissions,
+                /* grantedGranularPermissions= */ Collections.emptySet(),
                 /* startDateAccessMillis= */ DEFAULT_LONG,
                 // Pass in caller as foreground so that all data is read.
                 /* isInForeground= */ true,

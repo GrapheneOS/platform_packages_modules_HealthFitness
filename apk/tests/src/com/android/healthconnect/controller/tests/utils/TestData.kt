@@ -1,7 +1,9 @@
 package com.android.healthconnect.controller.tests.utils
 
 import android.health.connect.datatypes.ExerciseRoute
+import android.health.connect.datatypes.SymptomRecord
 import java.time.Instant
+import java.time.ZoneOffset
 
 /** Test data for route rendering. */
 object TestData {
@@ -104,4 +106,23 @@ object TestData {
             ExerciseRoute.Location.Builder(START.plusSeconds(40), 89.0, 1.0).build(),
             ExerciseRoute.Location.Builder(START.plusSeconds(48), 89.0, 0.0).build(),
         )
+
+    fun getSymptomRecord(
+        symptomType: Int = SymptomRecord.SYMPTOM_TYPE_COUGH,
+        notes: String = "note",
+    ): SymptomRecord {
+        return SymptomRecord(
+            symptomType,
+            notes,
+            SymptomRecord.SEVERITY_MILD,
+            1,
+            SymptomRecord.RECORD_TEMPORAL_TYPE_INSTANT,
+            Instant.parse("2023-04-05T10:00:00Z"),
+            ZoneOffset.UTC,
+            Instant.parse("2023-04-05T10:00:00Z"),
+            ZoneOffset.UTC,
+            getMetaData(),
+            true,
+        )
+    }
 }

@@ -159,8 +159,7 @@ public final class DataMigrationManager {
 
         return InternalHealthConnectMappings.getInstance()
                 .getRecordHelper(record.getRecordType())
-                .getUpsertTableRequest(record)
-                .getUpsertTableRequest();
+                .getUpsertTableRequest(record);
     }
 
     @GuardedBy("sLock")

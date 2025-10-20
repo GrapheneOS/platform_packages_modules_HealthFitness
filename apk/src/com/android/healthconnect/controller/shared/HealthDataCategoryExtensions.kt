@@ -30,9 +30,12 @@ import com.android.healthconnect.controller.shared.CategoriesMappers.BODY_MEASUR
 import com.android.healthconnect.controller.shared.CategoriesMappers.CYCLE_TRACKING_PERMISSION_GROUPS
 import com.android.healthconnect.controller.shared.CategoriesMappers.NUTRITION_PERMISSION_GROUPS
 import com.android.healthconnect.controller.shared.CategoriesMappers.SLEEP_PERMISSION_GROUPS
+import com.android.healthconnect.controller.shared.CategoriesMappers.SYMPTOMS_PERMISSION_GROUPS
 import com.android.healthconnect.controller.shared.CategoriesMappers.VITALS_PERMISSION_GROUPS
 import com.android.healthconnect.controller.shared.CategoriesMappers.WELLNESS_PERMISSION_GROUPS
 import com.android.healthconnect.controller.utils.AttributeResolver
+import com.android.healthconnect.controller.utils.LocaleSorter.sortByLocale
+import com.android.healthfitness.flags.Flags
 
 object HealthDataCategoryExtensions {
     /** Additional category for medical permission types. */
@@ -53,11 +56,16 @@ object HealthDataCategoryExtensions {
         val healthConnectMappings = HealthConnectMappings.getInstance()
 
         return healthConnectMappings.allRecordTypeIdentifiers
-            .map { recordTypeId ->
-                healthConnectMappings.getRecordCategoryForRecordType(recordTypeId) to
-                    healthConnectMappings.getHealthPermissionCategoryForRecordType(recordTypeId)
+            .flatMap { recordTypeId ->
+                val dataCategory =
+                    healthConnectMappings.getRecordCategoryForRecordType(recordTypeId)
+                val permissionCategories =
+                    healthConnectMappings.getHealthPermissionCategoriesForRecordType(recordTypeId)
+                permissionCategories.map { permissionCategory ->
+                    dataCategory to fromHealthPermissionCategory(permissionCategory)
+                }
             }
-            .groupBy({ it.first }, { fromHealthPermissionCategory(it.second) })
+            .groupBy({ it.first }, { it.second })
             .toMutableMap()
             .apply { specialCases.forEach { merge(it.key, it.value) { a, b -> a + b } } }
             .mapValues { it.value.distinct() }
@@ -79,6 +87,7 @@ object HealthDataCategoryExtensions {
             HealthDataCategory.SLEEP -> SLEEP_PERMISSION_GROUPS
             HealthDataCategory.VITALS -> VITALS_PERMISSION_GROUPS
             HealthDataCategory.WELLNESS -> WELLNESS_PERMISSION_GROUPS
+            HealthDataCategory.SYMPTOMS -> SYMPTOMS_PERMISSION_GROUPS
             MEDICAL -> MedicalPermissionType.entries
             else -> throw IllegalArgumentException("Category $this is not supported.")
         }
@@ -86,32 +95,52 @@ object HealthDataCategoryExtensions {
 
     @StringRes
     fun @receiver:HealthDataCategoryInt Int.lowercaseTitle(): Int {
-        return when (this) {
-            HealthDataCategory.ACTIVITY -> R.string.activity_category_lowercase
-            HealthDataCategory.BODY_MEASUREMENTS -> R.string.body_measurements_category_lowercase
-            HealthDataCategory.CYCLE_TRACKING -> R.string.cycle_tracking_category_lowercase
-            HealthDataCategory.NUTRITION -> R.string.nutrition_category_lowercase
-            HealthDataCategory.SLEEP -> R.string.sleep_category_lowercase
-            HealthDataCategory.VITALS -> R.string.vitals_category_lowercase
-            HealthDataCategory.WELLNESS -> R.string.wellness_category_lowercase
-            MEDICAL -> R.string.medical_permissions_lowercase
-            else -> throw IllegalArgumentException("Category $this is not supported.")
-        }
+        val result =
+            when (this) {
+                HealthDataCategory.ACTIVITY -> R.string.activity_category_lowercase
+                HealthDataCategory.BODY_MEASUREMENTS ->
+                    R.string.body_measurements_category_lowercase
+                HealthDataCategory.CYCLE_TRACKING -> R.string.cycle_tracking_category_lowercase
+                HealthDataCategory.NUTRITION -> R.string.nutrition_category_lowercase
+                HealthDataCategory.SLEEP -> R.string.sleep_category_lowercase
+                HealthDataCategory.VITALS -> R.string.vitals_category_lowercase
+                HealthDataCategory.WELLNESS -> R.string.wellness_category_lowercase
+                MEDICAL -> R.string.medical_permissions_lowercase
+                else -> {
+                    if (Flags.symptoms()) {
+                        if (this == HealthDataCategory.SYMPTOMS) {
+                            return R.string.symptoms_category_lowercase
+                        }
+                    }
+                    throw IllegalArgumentException("Category $this is not supported.")
+                }
+            }
+        return result
     }
 
     @StringRes
     fun @receiver:HealthDataCategoryInt Int.uppercaseTitle(): Int {
-        return when (this) {
-            HealthDataCategory.ACTIVITY -> R.string.activity_category_uppercase
-            HealthDataCategory.BODY_MEASUREMENTS -> R.string.body_measurements_category_uppercase
-            HealthDataCategory.CYCLE_TRACKING -> R.string.cycle_tracking_category_uppercase
-            HealthDataCategory.NUTRITION -> R.string.nutrition_category_uppercase
-            HealthDataCategory.SLEEP -> R.string.sleep_category_uppercase
-            HealthDataCategory.VITALS -> R.string.vitals_category_uppercase
-            HealthDataCategory.WELLNESS -> R.string.wellness_category_uppercase
-            MEDICAL -> R.string.medical_permissions
-            else -> throw IllegalArgumentException("Category $this is not supported.")
-        }
+        val result =
+            when (this) {
+                HealthDataCategory.ACTIVITY -> R.string.activity_category_uppercase
+                HealthDataCategory.BODY_MEASUREMENTS ->
+                    R.string.body_measurements_category_uppercase
+                HealthDataCategory.CYCLE_TRACKING -> R.string.cycle_tracking_category_uppercase
+                HealthDataCategory.NUTRITION -> R.string.nutrition_category_uppercase
+                HealthDataCategory.SLEEP -> R.string.sleep_category_uppercase
+                HealthDataCategory.VITALS -> R.string.vitals_category_uppercase
+                HealthDataCategory.WELLNESS -> R.string.wellness_category_uppercase
+                MEDICAL -> R.string.medical_permissions
+                else -> {
+                    if (Flags.symptoms()) {
+                        if (this == HealthDataCategory.SYMPTOMS) {
+                            return R.string.symptoms_category_uppercase
+                        }
+                    }
+                    throw IllegalArgumentException("Category $this is not supported.")
+                }
+            }
+        return result
     }
 
     fun @receiver:HealthDataCategoryInt Int.icon(context: Context): Drawable? {
@@ -126,7 +155,17 @@ object HealthDataCategoryExtensions {
                 HealthDataCategory.WELLNESS -> R.attr.wellnessCategoryIcon
                 // TODO(b/342156345): Add default medical icon.
                 MEDICAL -> R.attr.vitalsCategoryIcon
-                else -> throw IllegalArgumentException("Category $this is not supported.")
+                else -> {
+                    if (Flags.symptoms()) {
+                        if (this == HealthDataCategory.SYMPTOMS) {
+                            return AttributeResolver.getDrawable(
+                                context,
+                                R.attr.symptomsCategoryIcon,
+                            )
+                        }
+                    }
+                    throw IllegalArgumentException("Category $this is not supported.")
+                }
             }
         return AttributeResolver.getDrawable(context, attrRes)
     }
@@ -143,6 +182,19 @@ object HealthDataCategoryExtensions {
         return getAllFitnessDataCategories().firstOrNull {
             it.healthPermissionTypes().contains(type)
         }
+    }
+
+    fun getSortedDataCategoryToStringMap(context: Context): Map<Int, String> {
+        return DATA_CATEGORY_TO_HEALTH_PERMISSION_TYPE_MAP.keys
+            .mapNotNull { category ->
+                try {
+                    category to context.getString(category.uppercaseTitle())
+                } catch (_: IllegalArgumentException) {
+                    null
+                }
+            }
+            .sortByLocale { (_, value) -> value }
+            .toMap()
     }
 }
 
@@ -204,7 +256,75 @@ private object CategoriesMappers {
             FitnessPermissionType.SKIN_TEMPERATURE,
         )
 
-    val WELLNESS_PERMISSION_GROUPS = listOf(FitnessPermissionType.MINDFULNESS)
+    val WELLNESS_PERMISSION_GROUPS =
+        listOf(FitnessPermissionType.MINDFULNESS, FitnessPermissionType.ALCOHOL_CONSUMPTION)
+
+    val SYMPTOMS_PERMISSION_GROUPS =
+        if (Flags.symptoms()) {
+            listOf(
+                FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN,
+                FitnessPermissionType.SYMPTOM_ACNE,
+                FitnessPermissionType.SYMPTOM_BACK_PAIN,
+                FitnessPermissionType.SYMPTOM_BLOATING,
+                FitnessPermissionType.SYMPTOM_BRAIN_FOG,
+                FitnessPermissionType.SYMPTOM_BREAST_TENDERNESS,
+                FitnessPermissionType.SYMPTOM_BRITTLE_NAILS,
+                FitnessPermissionType.SYMPTOM_BURNING_MOUTH,
+                FitnessPermissionType.SYMPTOM_CHEST_PAIN,
+                FitnessPermissionType.SYMPTOM_CHEST_TIGHTNESS,
+                FitnessPermissionType.SYMPTOM_CHILLS,
+                FitnessPermissionType.SYMPTOM_CONSTIPATION,
+                FitnessPermissionType.SYMPTOM_COUGH,
+                FitnessPermissionType.SYMPTOM_CRAMPS,
+                FitnessPermissionType.SYMPTOM_CRAVINGS,
+                FitnessPermissionType.SYMPTOM_DEHYDRATION,
+                FitnessPermissionType.SYMPTOM_DIARRHEA,
+                FitnessPermissionType.SYMPTOM_DIFFICULTY_SWALLOWING,
+                FitnessPermissionType.SYMPTOM_DIZZINESS,
+                FitnessPermissionType.SYMPTOM_DRY_SKIN,
+                FitnessPermissionType.SYMPTOM_EARACHES,
+                FitnessPermissionType.SYMPTOM_FATIGUE,
+                FitnessPermissionType.SYMPTOM_FEVER,
+                FitnessPermissionType.SYMPTOM_GENERALIZED_BODY_ACHE,
+                FitnessPermissionType.SYMPTOM_HAIR_LOSS,
+                FitnessPermissionType.SYMPTOM_HEADACHE,
+                FitnessPermissionType.SYMPTOM_HEARTBURN,
+                FitnessPermissionType.SYMPTOM_HEART_PALPITATIONS,
+                FitnessPermissionType.SYMPTOM_HOT_FLASHES,
+                FitnessPermissionType.SYMPTOM_INSOMNIA,
+                FitnessPermissionType.SYMPTOM_JOINT_PAIN,
+                FitnessPermissionType.SYMPTOM_JOINT_STIFFNESS,
+                FitnessPermissionType.SYMPTOM_LOSS_OF_APPETITE,
+                FitnessPermissionType.SYMPTOM_LOSS_OF_CONSCIOUSNESS,
+                FitnessPermissionType.SYMPTOM_LOWER_BACK_PAIN,
+                FitnessPermissionType.SYMPTOM_MEMORY_LAPSE,
+                FitnessPermissionType.SYMPTOM_MOOD_CHANGE,
+                FitnessPermissionType.SYMPTOM_MUSCLE_PAIN,
+                FitnessPermissionType.SYMPTOM_NAUSEA,
+                FitnessPermissionType.SYMPTOM_NIGHT_SWEATS,
+                FitnessPermissionType.SYMPTOM_PELVIC_PAIN,
+                FitnessPermissionType.SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT,
+                FitnessPermissionType.SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE,
+                FitnessPermissionType.SYMPTOM_RUNNY_NOSE,
+                FitnessPermissionType.SYMPTOM_SHORTNESS_OF_BREATH,
+                FitnessPermissionType.SYMPTOM_SKIPPED_HEARTBEAT,
+                FitnessPermissionType.SYMPTOM_SLEEP_CHANGES,
+                FitnessPermissionType.SYMPTOM_SLEEPINESS,
+                FitnessPermissionType.SYMPTOM_SNEEZING,
+                FitnessPermissionType.SYMPTOM_SNORE,
+                FitnessPermissionType.SYMPTOM_SORE_THROAT,
+                FitnessPermissionType.SYMPTOM_STOMACH_ACHE,
+                FitnessPermissionType.SYMPTOM_STUFFY_NOSE,
+                FitnessPermissionType.SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES,
+                FitnessPermissionType.SYMPTOM_VAGINAL_DRYNESS,
+                FitnessPermissionType.SYMPTOM_VAGINAL_ITCHINESS,
+                FitnessPermissionType.SYMPTOM_VOMITING,
+                FitnessPermissionType.SYMPTOM_WATER_RETENTION,
+                FitnessPermissionType.SYMPTOM_WHEEZING,
+            )
+        } else {
+            emptyList()
+        }
 }
 
 /** List of available Health data categories. */

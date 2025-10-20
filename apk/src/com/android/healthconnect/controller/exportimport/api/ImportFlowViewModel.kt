@@ -18,11 +18,11 @@ package com.android.healthconnect.controller.exportimport.api
 
 import android.net.Uri
 import android.util.Slog
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Instant
 import javax.inject.Inject
@@ -34,17 +34,16 @@ class ImportFlowViewModel
 @Inject
 constructor(private val triggerImportUseCase: ITriggerImportUseCase) : ViewModel() {
 
-    private val _lastImportCompletionInstant = MutableLiveData<Instant>()
+    private val _lastImportCompletionInstant = MutableLiveData<Instant?>()
 
     companion object {
         const val TAG = "ImportFlowViewModel"
     }
 
-    val lastImportCompletionInstant: LiveData<Instant>
+    val lastImportCompletionInstant: LiveData<Instant?>
         get() = _lastImportCompletionInstant
 
-    @VisibleForTesting
-    fun setLastCompletionInstant(newCompletionInstant: Instant) {
+    fun setLastCompletionInstant(newCompletionInstant: Instant?) {
         _lastImportCompletionInstant.postValue(newCompletionInstant)
     }
 
@@ -52,12 +51,12 @@ constructor(private val triggerImportUseCase: ITriggerImportUseCase) : ViewModel
         Slog.i(TAG, "$uri")
         viewModelScope.launch {
             when (triggerImportUseCase.invoke(uri)) {
-                is ExportImportUseCaseResult.Success -> {
+                is UseCaseResults.Success -> {
                     Slog.i(TAG, "import succeeded")
                     // TODO(b/356652714): Change to use TimeSource instead
                     setLastCompletionInstant(Instant.now())
                 }
-                is ExportImportUseCaseResult.Failed -> {
+                is UseCaseResults.Failed -> {
                     Slog.i(TAG, "import failed")
                 }
             }

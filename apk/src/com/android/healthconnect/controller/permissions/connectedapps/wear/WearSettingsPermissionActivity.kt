@@ -28,7 +28,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.android.healthfitness.flags.Flags
+import com.android.modules.utils.build.SdkLevel
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Wear Settings Permission activity for Health&Fitness. */
@@ -40,7 +40,7 @@ class WearSettingsPermissionActivity : Hilt_WearSettingsPermissionActivity() {
 
         if (
             !getPackageManager().hasSystemFeature(PackageManager.FEATURE_WATCH) ||
-                !Flags.replaceBodySensorPermissionEnabled()
+                !SdkLevel.isAtLeastB()
         ) {
             Log.e(
                 TAG,

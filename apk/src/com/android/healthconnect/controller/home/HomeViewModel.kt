@@ -31,7 +31,6 @@ import com.android.healthconnect.controller.shared.Constants.LOCK_SCREEN_BANNER_
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.KeyguardManagerUtil
-import com.android.healthconnect.controller.utils.postValueIfUpdated
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -74,13 +73,15 @@ constructor(
 
     fun loadConnectedApps() {
         viewModelScope.launch {
-            try {
-                _connectedApps.postValueIfUpdated(
-                    loadHealthPermissionApps.invoke().filter { !it.isSystem }
-                )
-            } catch (exception: Exception) {
-                Log.e(TAG, "Error loading connected apps", exception)
-                _connectedApps.postValueIfUpdated(emptyList())
+            val healthAppsResult = loadHealthPermissionApps.invoke(Unit)
+            when (healthAppsResult) {
+                is UseCaseResults.Failed -> {
+                    Log.e(TAG, "Error loading connected apps", healthAppsResult.exception)
+                    _connectedApps.postValue(emptyList())
+                }
+                is UseCaseResults.Success -> {
+                    _connectedApps.postValue(healthAppsResult.data.filter { !it.isSystem })
+                }
             }
         }
     }

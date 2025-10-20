@@ -34,6 +34,7 @@ import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigratorPackageChangesReceiver;
 import com.android.server.healthconnect.onboarding.HealthConnectOnboardingReceiver;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationJob;
+import com.android.server.healthconnect.permission.HealthConnectPermissionsChangedListener;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.telemetry.TelemetryJobService;
 
@@ -51,6 +52,7 @@ public class HealthConnectManagerService extends SystemService {
     private final UserManager mUserManager;
     private final HealthConnectInjector mHealthConnectInjector;
     private final RateLimiter mRateLimiter;
+    private final HealthConnectPermissionsChangedListener mHealthConnectPermissionsChangedListener;
 
     private UserHandle mCurrentForegroundUser;
 
@@ -113,11 +115,16 @@ public class HealthConnectManagerService extends SystemService {
                         mHealthConnectInjector.getTrackerManager(),
                         mHealthConnectInjector.getCloudBackupManager(),
                         mHealthConnectInjector.getCloudRestoreManager(),
-                        mHealthConnectInjector.getMatchingAppsManager());
+                        mHealthConnectInjector.getMatchingAppsManager(),
+                        mHealthConnectInjector.getSyntheticPackageNameResolver());
+        mHealthConnectPermissionsChangedListener =
+                new HealthConnectPermissionsChangedListener(
+                        mContext, healthConnectInjector.getFirstGrantTimeManager());
     }
 
     @Override
     public void onStart() {
+        mHealthConnectPermissionsChangedListener.registerPermissionsChangeListener();
         mHealthConnectInjector
                 .getPermissionPackageChangesOrchestrator()
                 .registerBroadcastReceiver(mContext);

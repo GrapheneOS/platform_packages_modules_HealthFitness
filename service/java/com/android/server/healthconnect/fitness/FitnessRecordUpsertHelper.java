@@ -48,7 +48,6 @@ import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -230,7 +229,6 @@ public class FitnessRecordUpsertHelper {
             Objects.requireNonNull(callingPackageName);
         }
 
-        List<RecordUpsertTableRequest> upsertRequests = new ArrayList<>();
         @RecordTypeIdentifier.RecordType Set<Integer> recordTypes = new ArraySet<>();
         for (RecordInternal<?> recordInternal : recordInternals) {
             mAppInfoHelper.populateAppInfoId(recordInternal, /* requireAllFields= */ true);
@@ -239,9 +237,6 @@ public class FitnessRecordUpsertHelper {
             if (updateLastModifiedTime) {
                 recordInternal.setLastModifiedTime(Instant.now().toEpochMilli());
             }
-            upsertRequests.add(
-                    createUpsertRequestForRecord(
-                            recordInternal, isInsertRequest, extraPermsStateMap));
         }
 
         if (Constants.DEBUG) {
@@ -259,43 +254,52 @@ public class FitnessRecordUpsertHelper {
 
         return mTransactionManager.runAsTransaction(
                 db -> {
-                    for (RecordUpsertTableRequest upsertRequest : upsertRequests) {
+                    for (RecordInternal<?> recordInternal : recordInternals) {
+                        UpsertTableRequest upsertRequest =
+                                createUpsertRequestForRecord(
+                                        recordInternal, isInsertRequest, extraPermsStateMap);
                         if (shouldGenerateChangeLog) {
                             if (!Flags.fixChangeLogWhenInsertWithSameTimestamps()) {
-                                upsertionChangeLogs.addRecordInfo(
-                                        upsertRequest.getRecordInternal().getRecordType(),
-                                        upsertRequest.getRecordInternal().getAppInfoId(),
-                                        upsertRequest.getRecordInternal().getUuid());
+                                // TODO(b/448836403): Prevent insertion of Symptoms change log as we
+                                //  are not sure yet what inserted ChangeLogs for Symptoms should
+                                //  look like.
+                                if (recordInternal.getRecordType()
+                                        != RecordTypeIdentifier.RECORD_TYPE_SYMPTOM) {
+                                    upsertionChangeLogs.addRecordInfo(
+                                            recordInternal.getRecordType(),
+                                            recordInternal.getAppInfoId(),
+                                            recordInternal.getUuid());
+                                }
                             }
                             addChangeLogsForOtherModifiedRecords(
-                                    mAppInfoHelper.getAppInfoId(
-                                            upsertRequest.getRecordInternal().getPackageName()),
-                                    upsertRequest,
-                                    otherModifiedRecordsChangeLogs);
+                                    recordInternal, otherModifiedRecordsChangeLogs);
                         }
 
                         if (isInsertRequest) {
                             if (shouldPreferNewRecord) {
-                                mTransactionManager.insertOrReplaceOnConflict(
-                                        db, upsertRequest.getUpsertTableRequest());
+                                mTransactionManager.insertOrReplaceOnConflict(db, upsertRequest);
                             } else {
-                                mTransactionManager.insertOrIgnoreOnConflict(
-                                        db, upsertRequest.getUpsertTableRequest());
+                                mTransactionManager.insertOrIgnoreOnConflict(db, upsertRequest);
                             }
                         } else {
-                            mTransactionManager.update(db, upsertRequest.getUpsertTableRequest());
+                            mTransactionManager.update(db, upsertRequest);
                         }
 
-                        // RecordUpsertTableRequest objects are mutable and can be modified by
+                        // RecordInternal objects are mutable and can be modified by
                         // mTransactionManager.insertOrReplaceOnConflict, therefore upsert change
                         // logs must be generated AFTER the upserts have taken places.
                         // See b/430891167
                         if (shouldGenerateChangeLog
                                 && Flags.fixChangeLogWhenInsertWithSameTimestamps()) {
-                            upsertionChangeLogs.addRecordInfo(
-                                    upsertRequest.getRecordInternal().getRecordType(),
-                                    upsertRequest.getRecordInternal().getAppInfoId(),
-                                    upsertRequest.getRecordInternal().getUuid());
+                            // TODO(b/448836403): Prevent insertion of Symptoms change log as we are
+                            //  not sure yet what inserted ChangeLogs for Symptoms should look like.
+                            if (recordInternal.getRecordType()
+                                    != RecordTypeIdentifier.RECORD_TYPE_SYMPTOM) {
+                                upsertionChangeLogs.addRecordInfo(
+                                        recordInternal.getRecordType(),
+                                        recordInternal.getAppInfoId(),
+                                        recordInternal.getUuid());
+                            }
                         }
                     }
                     if (shouldGenerateChangeLog) {
@@ -317,13 +321,13 @@ public class FitnessRecordUpsertHelper {
                                         Objects.requireNonNull(callingPackageName),
                                         recordTypes);
                     }
-                    return getUUIdsInOrder(upsertRequests);
+                    return getUUIdsInOrder(recordInternals);
                 });
     }
 
-    private List<String> getUUIdsInOrder(List<RecordUpsertTableRequest> upsertRequests) {
-        return upsertRequests.stream()
-                .map((request) -> request.getRecordInternal().getUuid().toString())
+    private List<String> getUUIdsInOrder(List<? extends RecordInternal<?>> recordInternals) {
+        return recordInternals.stream()
+                .map((recordInternal) -> recordInternal.getUuid().toString())
                 .collect(Collectors.toList());
     }
 
@@ -337,36 +341,29 @@ public class FitnessRecordUpsertHelper {
         return whereClauseForUpdateRequest;
     }
 
-    private RecordUpsertTableRequest createUpsertRequestForRecord(
+    private UpsertTableRequest createUpsertRequestForRecord(
             RecordInternal<?> recordInternal,
             boolean isInsertRequest,
             @Nullable ArrayMap<String, Boolean> extraPermsStateMap) {
         RecordHelper<?> recordHelper =
                 mInternalHealthConnectMappings.getRecordHelper(recordInternal.getRecordType());
 
-        RecordUpsertTableRequest request =
+        UpsertTableRequest request =
                 recordHelper.getUpsertTableRequest(recordInternal, extraPermsStateMap);
         if (!isInsertRequest) {
-            request.getUpsertTableRequest()
-                    .setUpdateWhereClauses(generateWhereClausesForUpdate(recordInternal));
+            request.setUpdateWhereClauses(generateWhereClausesForUpdate(recordInternal));
         }
         return request;
     }
 
     private void addChangeLogsForOtherModifiedRecords(
-            long callingPackageAppInfoId,
-            RecordUpsertTableRequest upsertRequest,
-            ChangeLogsTableRequests modificationChangeLogs) {
+            RecordInternal<?> recordInternal, ChangeLogsTableRequests modificationChangeLogs) {
         // Carries out read requests provided by the record helper and uses the results to add
         // change logs to the transaction.
         final RecordHelper<?> recordHelper =
-                mInternalHealthConnectMappings.getRecordHelper(
-                        upsertRequest.getRecordInternal().getRecordType());
+                mInternalHealthConnectMappings.getRecordHelper(recordInternal.getRecordType());
         for (RecordReadTableRequest additionalChangeLogUuidRequest :
-                recordHelper.getReadRequestsForRecordsModifiedByUpsertion(
-                        upsertRequest.getRecordInternal().getUuid(),
-                        upsertRequest,
-                        callingPackageAppInfoId)) {
+                recordHelper.getReadRequestsForRecordsModifiedByUpsertion(recordInternal)) {
             Cursor cursorAdditionalUuids =
                     mTransactionManager.read(additionalChangeLogUuidRequest.getReadTableRequest());
             while (cursorAdditionalUuids.moveToNext()) {

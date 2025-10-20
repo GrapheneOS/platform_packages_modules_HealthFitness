@@ -17,7 +17,11 @@
 package com.android.healthfitness.flags;
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.getDbVersionToDbFlagMap;
+import static com.android.healthfitness.flags.AconfigFlagHelper.isAlcoholConsumptionEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
+import static com.android.healthfitness.flags.AconfigFlagHelper.isCyclePhasesEnabled;
+import static com.android.healthfitness.flags.AconfigFlagHelper.isDeviceDataProvidersEnabled;
+import static com.android.healthfitness.flags.AconfigFlagHelper.isSymptomsEnabled;
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -113,5 +117,74 @@ public class AconfigFlagHelperTest {
     @DisableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB)
     public void cloudBackupAndRestore_featureFlagTrueAndDbFalse_expectFalse() {
         assertThat(isCloudBackupRestoreEnabled()).isFalse();
+    }
+
+    @Test
+    @DisableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void isDeviceDataProvidersEnabled_flagOff_expectFalse() {
+        assertThat(isDeviceDataProvidersEnabled()).isFalse();
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void isDeviceDataProvidersEnabled_flagOn_expectTrue() {
+        assertThat(isDeviceDataProvidersEnabled()).isTrue();
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_SYMPTOMS)
+    @EnableFlags({Flags.FLAG_SYMPTOMS_DB, Flags.FLAG_SMOKING_DB})
+    public void symptoms_featureFlagFalseAndDbTrue_expectFalse() {
+        assertThat(isSymptomsEnabled()).isFalse();
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_SYMPTOMS, Flags.FLAG_SMOKING_DB})
+    @DisableFlags({Flags.FLAG_SYMPTOMS_DB})
+    public void symptoms_featureFlagTrueAndDbFalse_expectFalse() {
+        assertThat(isSymptomsEnabled()).isFalse();
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB, Flags.FLAG_SMOKING_DB})
+    public void symptoms_featureFlagTrueAndDbTrue_expectTrue() {
+        assertThat(isSymptomsEnabled()).isTrue();
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_ALCOHOL_CONSUMPTION)
+    @EnableFlags({Flags.FLAG_ALCOHOL_CONSUMPTION_DB, Flags.FLAG_SYMPTOMS_DB, Flags.FLAG_SMOKING_DB})
+    public void alcohol_consumption_featureFlagFalseAndDbTrue_expectFalse() {
+        assertThat(isAlcoholConsumptionEnabled()).isFalse();
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_ALCOHOL_CONSUMPTION, Flags.FLAG_SYMPTOMS_DB, Flags.FLAG_SMOKING_DB})
+    @DisableFlags({Flags.FLAG_ALCOHOL_CONSUMPTION_DB})
+    public void alcohol_consumption_featureFlagTrueAndDbFalse_expectFalse() {
+        assertThat(isAlcoholConsumptionEnabled()).isFalse();
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_ALCOHOL_CONSUMPTION,
+        Flags.FLAG_ALCOHOL_CONSUMPTION_DB,
+        Flags.FLAG_SYMPTOMS_DB,
+        Flags.FLAG_SMOKING_DB
+    })
+    public void alcohol_consumption_featureFlagTrueAndDbTrue_expectTrue() {
+        assertThat(isAlcoholConsumptionEnabled()).isTrue();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_CYCLE_PHASES)
+    public void isCyclePhaseEnabled_featureFlagTrue_expectTrue() {
+        assertThat(isCyclePhasesEnabled()).isTrue();
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_CYCLE_PHASES)
+    public void isCyclePhaseEnabled_featureFlagFalse_expectTrue() {
+        assertThat(isCyclePhasesEnabled()).isFalse();
     }
 }

@@ -25,6 +25,9 @@ import android.health.connect.HealthDataCategory.CYCLE_TRACKING
 import android.health.connect.HealthDataCategory.NUTRITION
 import android.health.connect.HealthDataCategory.SLEEP
 import android.health.connect.HealthDataCategory.VITALS
+import android.platform.test.annotations.RequiresFlagsDisabled
+import android.platform.test.annotations.RequiresFlagsEnabled
+import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
@@ -40,6 +43,7 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.lowercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import com.google.common.truth.Truth.assertWithMessage
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -57,6 +61,8 @@ class HealthDataCategoryExtensionsTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
+    @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
+
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
     @Before
@@ -65,7 +71,16 @@ class HealthDataCategoryExtensionsTest {
     }
 
     @Test
-    fun fitnessDataCategories() {
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun fitnessDataCategories_symptomsFlagEnabled_returnsSymptoms() {
+        assertThat(FITNESS_DATA_CATEGORIES).hasSize(8)
+        assertThat(FITNESS_DATA_CATEGORIES).containsNoDuplicates()
+        assertThat(FITNESS_DATA_CATEGORIES).doesNotContain(HealthDataCategory.UNKNOWN)
+    }
+
+    @Test
+    @RequiresFlagsDisabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun fitnessDataCategories_symptomsFlagDisabled_doesNotReturnSymptoms() {
         assertThat(FITNESS_DATA_CATEGORIES).hasSize(7)
         assertThat(FITNESS_DATA_CATEGORIES).containsNoDuplicates()
         assertThat(FITNESS_DATA_CATEGORIES).doesNotContain(HealthDataCategory.UNKNOWN)
@@ -81,6 +96,31 @@ class HealthDataCategoryExtensionsTest {
 
         assertThat(FITNESS_DATA_CATEGORIES.flatMap { it.healthPermissionTypes() })
             .containsNoDuplicates()
+    }
+
+    @Test
+    fun healthPermissionTypes_activityCategory_returnsCorrectTypes() {
+        val activityPermissionTypes = ACTIVITY.healthPermissionTypes()
+
+        assertThat(activityPermissionTypes)
+            .containsExactlyElementsIn(
+                listOf(
+                    FitnessPermissionType.ACTIVE_CALORIES_BURNED,
+                    FitnessPermissionType.ACTIVITY_INTENSITY,
+                    FitnessPermissionType.DISTANCE,
+                    FitnessPermissionType.ELEVATION_GAINED,
+                    FitnessPermissionType.EXERCISE,
+                    FitnessPermissionType.PLANNED_EXERCISE,
+                    FitnessPermissionType.FLOORS_CLIMBED,
+                    FitnessPermissionType.STEPS,
+                    FitnessPermissionType.TOTAL_CALORIES_BURNED,
+                    FitnessPermissionType.VO2_MAX,
+                    FitnessPermissionType.WHEELCHAIR_PUSHES,
+                    FitnessPermissionType.POWER,
+                    FitnessPermissionType.SPEED,
+                    FitnessPermissionType.EXERCISE_ROUTE,
+                )
+            )
     }
 
     @Test

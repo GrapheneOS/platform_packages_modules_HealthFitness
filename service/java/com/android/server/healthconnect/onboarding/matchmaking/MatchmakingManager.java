@@ -50,7 +50,6 @@ public final class MatchmakingManager {
     @GuardedBy("this")
     private HealthConnectContext mUserContext;
 
-    private final PackageManager mPackageManager;
     private final MatchmakingDenialStateManager mMatchmakingDenialStateManager;
 
     public MatchmakingManager(
@@ -58,13 +57,11 @@ public final class MatchmakingManager {
             HealthConnectPermissionHelper healthConnectPermissionHelper,
             PackageInfoUtils packageInfoUtils,
             HealthConnectMappings healthConnectMappings,
-            PackageManager packageManager,
             MatchmakingDenialStateManager matchmakingDenialStateManager) {
         mUserContext = userContext;
         mHealthConnectPermissionHelper = healthConnectPermissionHelper;
         mPackageInfoUtils = packageInfoUtils;
         mHealthConnectMappings = healthConnectMappings;
-        mPackageManager = packageManager;
         mMatchmakingDenialStateManager = matchmakingDenialStateManager;
     }
 
@@ -98,17 +95,26 @@ public final class MatchmakingManager {
     }
 
     /** Increments the denial counter for the given package and permissions. */
-    public void recordMatchmakingDenial(String packageName, List<String> permissions) {
-        permissions.stream()
+    public void recordMatchmakingDenial(
+            String callingPackageName, Map<String, List<String>> deniedApps) {
+        for (Map.Entry<String, List<String>> entry : deniedApps.entrySet()) {
+            String matchingPackageName = entry.getKey();
+            List<String> permissions = entry.getValue();
+            Set<Integer> writeCategories = getUniqueWriteCategories(permissions);
+            for (int category : writeCategories) {
+                mMatchmakingDenialStateManager.recordMatchmakingDenial(
+                        callingPackageName, matchingPackageName, category);
+            }
+        }
+    }
+
+    private Set<Integer> getUniqueWriteCategories(List<String> permissions) {
+        return permissions.stream()
                 .distinct()
                 .filter(mHealthConnectMappings::isWritePermission)
                 .map(mHealthConnectMappings::getHealthDataCategoryForWritePermission)
                 .filter(category -> category != -1)
-                .distinct()
-                .forEach(
-                        category ->
-                                mMatchmakingDenialStateManager.recordMatchmakingDenial(
-                                        packageName, category));
+                .collect(Collectors.toSet());
     }
 
     private Set<String> getWritePermissionsToMatch(
@@ -122,7 +128,12 @@ public final class MatchmakingManager {
         Set<String> readPermissionsFilter =
                 recordTypes.stream()
                         .map(mHealthConnectMappings::getRecordType)
-                        .map(mHealthConnectMappings::getHealthPermissionCategoryForRecordType)
+                        .flatMap(
+                                recordType ->
+                                        mHealthConnectMappings
+                                                .getHealthPermissionCategoriesForRecordType(
+                                                        recordType)
+                                                .stream())
                         .map(mHealthConnectMappings::getHealthReadPermission)
                         .collect(Collectors.toSet());
         return getReadPermissions(readPermissionsFilter, packageName);
@@ -153,16 +164,21 @@ public final class MatchmakingManager {
             return Map.of();
         }
 
-        Set<String> unpausedWritePermissions =
-                getUnpausedWritePermissions(writePermissions, readingAppPackageName);
-        if (unpausedWritePermissions.isEmpty()) {
-            return Map.of();
-        }
-
         return getCompatibleApps().stream()
-                .filter(packageInfo -> packageInfo.requestedPermissions != null)
+                .filter(
+                        packageInfo ->
+                                !packageInfo.packageName.equals(readingAppPackageName)
+                                        && packageInfo.requestedPermissions != null)
                 .map(
                         packageInfo -> {
+                            Set<String> unpausedWritePermissions =
+                                    getUnpausedWritePermissions(
+                                            writePermissions,
+                                            readingAppPackageName,
+                                            packageInfo.packageName);
+                            if (unpausedWritePermissions.isEmpty()) {
+                                return Map.entry(packageInfo.packageName, Set.<String>of());
+                            }
                             Set<String> grantablePermissions =
                                     allGrantableWritePermission(
                                             unpausedWritePermissions, packageInfo);
@@ -173,7 +189,9 @@ public final class MatchmakingManager {
     }
 
     private Set<String> getUnpausedWritePermissions(
-            Set<String> writePermissions, String readingAppPackageName) {
+            Set<String> writePermissions,
+            String readingAppPackageName,
+            String matchingPackageName) {
         Set<Integer> unpausedDataCategories =
                 writePermissions.stream()
                         .map(mHealthConnectMappings::getHealthDataCategoryForWritePermission)
@@ -182,7 +200,9 @@ public final class MatchmakingManager {
                         .filter(
                                 category ->
                                         !mMatchmakingDenialStateManager.isMatchmakingPaused(
-                                                readingAppPackageName, category))
+                                                readingAppPackageName,
+                                                matchingPackageName,
+                                                category))
                         .collect(Collectors.toSet());
 
         return writePermissions.stream()
@@ -211,7 +231,8 @@ public final class MatchmakingManager {
     }
 
     private boolean isDenied(PackageInfo packageInfo, String permission) {
-        return mPackageManager.checkPermission(permission, packageInfo.packageName)
+        return mPackageInfoUtils.checkPermission(
+                        mUserContext, mUserContext.getUser(), permission, packageInfo.packageName)
                 == PERMISSION_DENIED;
     }
 

@@ -39,6 +39,10 @@ class NicotineIntakeTest : BaseDataTypeTest<NicotineIntakeRecord>() {
     override val sameCategoryDataTypeString = "Mindfulness"
     override val anotherCategoryString = "Vitals"
 
+    override val hasDetailsScreen = false
+    override val expectedRecordDetailsHeader = null
+    override val expectedRecordDetailsTitle = null
+
     override fun createRecord() =
         NicotineIntakeRecord.Builder(
                 newEmptyMetadata(),

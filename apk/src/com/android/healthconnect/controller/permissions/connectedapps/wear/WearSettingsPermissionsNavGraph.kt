@@ -31,6 +31,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.android.healthconnect.controller.permissions.app.wear.WearViewAppInfoPermissionsActivity
+import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 
 /** Wear Settings Permissions navigation graph. */
 @Composable
@@ -42,9 +43,9 @@ fun WearSettingsPermissionsNavGraph(showRecentAccess: Boolean = false) {
             AllDataTypesScreen(
                 viewModel,
                 showRecentAccess,
-                onClick = { permissionStr, dataTypeStr ->
+                onClick = { permissionStr ->
                     navController.navigate(
-                        "${PermissionManagerScreen.PerDataType.name}/$permissionStr/$dataTypeStr/$showRecentAccess"
+                        "${PermissionManagerScreen.PerDataType.name}/$permissionStr/$showRecentAccess"
                     )
                 },
             )
@@ -52,30 +53,27 @@ fun WearSettingsPermissionsNavGraph(showRecentAccess: Boolean = false) {
 
         composable(
             route =
-                "${PermissionManagerScreen.PerDataType.name}/{permissionStr}/{dataTypeStr}/{showRecentAccess}",
+                "${PermissionManagerScreen.PerDataType.name}/{permissionStr}/{showRecentAccess}",
             arguments =
                 listOf(
                     navArgument("permissionStr") { type = NavType.StringType },
-                    navArgument("dataTypeStr") { type = NavType.StringType },
                     navArgument("showRecentAccess") { type = NavType.BoolType },
                 ),
         ) { backStackEntry ->
             val permissionStr = backStackEntry.arguments?.getString("permissionStr") ?: ""
-            val dataTypeStr = backStackEntry.arguments?.getString("dataTypeStr") ?: ""
             viewModel.updateShowSystem(false)
             PerDataTypeScreen(
                 viewModel,
-                permissionStr,
-                dataTypeStr,
+                fitnessPermission = FitnessPermission.fromPermissionString(permissionStr),
                 showRecentAccess,
-                onAppChipClick = { permissionStr, dataTypeStr, packageName ->
+                onAppChipClick = { permissionStr, packageName ->
                     navController.navigate(
-                        "${PermissionManagerScreen.PerDataTypePerApp.name}/$permissionStr/$dataTypeStr/$packageName"
+                        "${PermissionManagerScreen.PerDataTypePerApp.name}/$permissionStr/$packageName"
                     )
                 },
-                onRemoveAllAppAccessButtonClick = { permissionStr, dataTypeStr ->
+                onRemoveAllAppAccessButtonClick = { permissionStr ->
                     navController.navigate(
-                        "${PermissionManagerScreen.RemoveAll.name}/$permissionStr/$dataTypeStr"
+                        "${PermissionManagerScreen.RemoveAll.name}/$permissionStr"
                     )
                 },
                 onShowSystemClick = { show -> run { viewModel.updateShowSystem(show) } },
@@ -83,40 +81,31 @@ fun WearSettingsPermissionsNavGraph(showRecentAccess: Boolean = false) {
         }
 
         composable(
-            route = "${PermissionManagerScreen.RemoveAll.name}/{permissionStr}/{dataTypeStr}",
-            arguments =
-                listOf(
-                    navArgument("permissionStr") { type = NavType.StringType },
-                    navArgument("dataTypeStr") { type = NavType.StringType },
-                ),
+            route = "${PermissionManagerScreen.RemoveAll.name}/{permissionStr}",
+            arguments = listOf(navArgument("permissionStr") { type = NavType.StringType }),
         ) { backStackEntry ->
             val permissionStr = backStackEntry.arguments?.getString("permissionStr") ?: ""
-            val dataTypeStr = backStackEntry.arguments?.getString("dataTypeStr") ?: ""
             RemoveAllAppsOnePermissionScreen(
                 viewModel,
-                permissionStr,
-                dataTypeStr,
+                fitnessPermission = FitnessPermission.fromPermissionString(permissionStr),
                 onBackClick = { navController.popBackStack() },
             )
         }
 
         composable(
             route =
-                "${PermissionManagerScreen.PerDataTypePerApp.name}/{permissionStr}/{dataTypeStr}/{packageName}",
+                "${PermissionManagerScreen.PerDataTypePerApp.name}/{permissionStr}/{packageName}",
             arguments =
                 listOf(
                     navArgument("permissionStr") { type = NavType.StringType },
-                    navArgument("dataTypeStr") { type = NavType.StringType },
                     navArgument("packageName") { type = NavType.StringType },
                 ),
         ) { backStackEntry ->
             val permissionStr = backStackEntry.arguments?.getString("permissionStr") ?: ""
-            val dataTypeStr = backStackEntry.arguments?.getString("dataTypeStr") ?: ""
             val packageName = backStackEntry.arguments?.getString("packageName") ?: ""
             ControlSingleDataTypeForSingleAppScreen(
                 viewModel,
-                permissionStr,
-                dataTypeStr,
+                fitnessPermission = FitnessPermission.fromPermissionString(permissionStr),
                 packageName,
                 onAdditionalPermissionClick = {
                     navController.navigate(

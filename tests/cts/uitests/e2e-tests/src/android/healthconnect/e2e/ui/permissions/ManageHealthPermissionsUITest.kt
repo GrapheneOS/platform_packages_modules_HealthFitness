@@ -37,6 +37,7 @@ import android.healthconnect.testing.cts.ui.UiTestUtils.findTextAndClick
 import android.healthconnect.testing.cts.ui.UiTestUtils.findTextPatternAndClick
 import android.healthconnect.testing.cts.ui.UiTestUtils.grantPermissionViaPackageManager
 import android.healthconnect.testing.cts.ui.UiTestUtils.hasUserFixedHealthPermissions
+import android.healthconnect.testing.cts.ui.UiTestUtils.navigateToAppPermissions
 import android.healthconnect.testing.cts.ui.UiTestUtils.revokeAllHealthPermissionsViaPackageManager
 import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.testing.cts.ui.UiTestUtils.scrollToEnd
@@ -68,7 +69,7 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
     @Test
     fun showsListOfHealthConnectApps() {
         context.launchMainActivity {
-            navigateToManagePermissions()
+            navigateToAppPermissions()
             scrollDownToAndFindText("Health Connect cts test app")
         }
     }
@@ -76,7 +77,7 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
     @Test
     fun showsHelpAndFeedback() {
         context.launchMainActivity {
-            navigateToManagePermissions()
+            navigateToAppPermissions()
             scrollDownToAndFindText("Settings & help")
         }
     }
@@ -86,7 +87,7 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
     fun onboardingActivity_launchedWhenAppPermissionsDenied() {
         context.launchMainActivity {
             revokeAllHealthPermissionsViaPackageManager(context, TEST_APP_PACKAGE_NAME)
-            navigateToManagePermissions()
+            navigateToAppPermissions()
             scrollDownToAndFindText("Health Connect cts test app")
             clickOnTextAndWaitForNewWindow("Health Connect cts test app")
             verifyOnboardingActivityLaunched()
@@ -100,7 +101,7 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
             revokeAllHealthPermissionsViaPackageManager(context, TEST_APP_PACKAGE_NAME)
             setPermissionsAsUserFixed(context, TEST_APP_PACKAGE_NAME, true)
             assertThat(hasUserFixedHealthPermissions(context, TEST_APP_PACKAGE_NAME)).isTrue()
-            navigateToManagePermissions()
+            navigateToAppPermissions()
             scrollDownToAndFindText("Health Connect cts test app")
             clickOnTextAndWaitForNewWindow("Health Connect cts test app")
             verifyOnboardingActivityLaunched()
@@ -234,7 +235,7 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
         )
 
         context.launchMainActivity {
-            navigateToManagePermissions()
+            navigateToAppPermissions()
 
             scrollDownToAndFindText("Remove access for all apps")
             findTextAndClick("Remove access for all apps")
@@ -247,7 +248,7 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
     @Test
     fun showSearchOption() {
         context.launchMainActivity {
-            navigateToManagePermissions()
+            navigateToAppPermissions()
             clickOnDescAndWaitForNewWindow("Search apps")
             findText("Search apps")
         }
@@ -276,12 +277,6 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
         // We just export the MainActivity as the onboarding activity. Sufficient to simply
         // verify that the activity successfully launches.
         findText("MainActivity")
-    }
-
-    private fun navigateToManagePermissions() {
-        scrollDownToAndFindText("App permissions")
-        clickOnTextAndWaitForNewWindow("App permissions")
-        scrollDownToAndFindText("Allowed access")
     }
 
     fun clearPermissionFlag(context: Context, app: String, permissions: List<String>, flag: Int) {

@@ -22,16 +22,21 @@ import static android.healthconnect.testing.unittest.StorageUtils.assertTablesEx
 import static android.healthconnect.testing.unittest.StorageUtils.clearDatabase;
 import static android.healthconnect.testing.unittest.StorageUtils.createEmptyDatabase;
 
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ALCOHOL_CONSUMPTION;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PHR_CHANGE_LOGS;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_SYMPTOMS;
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
+import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS_DB;
+import static com.android.server.healthconnect.fitness.recordhelpers.AlcoholConsumptionRecordHelper.ALCOHOL_CONSUMPTION_RECORD_TABLE_NAME;
 import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.onUpgrade;
 
 import android.database.sqlite.SQLiteDatabase;
@@ -44,9 +49,11 @@ import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.AlcoholConsumptionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSegmentRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.NicotineIntakeRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.SymptomRecordHelper;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper;
@@ -65,8 +72,11 @@ public class DatabaseUpgradeHelperTest {
     private static final int NUM_OF_TABLES_AT_MINDFULNESS_VERSION = 64;
     private static final int NUM_OF_TABLES_AT_EXERCISE_SEGMENT_IMPROVEMENTS_VERSION = 70;
     private static final int NUM_OF_TABLES_AT_NICOTINE_INTAKE_VERSION = 71;
-    private static final int NUM_OF_TABLES_IN_STAGING = NUM_OF_TABLES_AT_NICOTINE_INTAKE_VERSION;
-    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_NICOTINE_INTAKE;
+    private static final int NUM_OF_TABLES_AT_SYMPTOMS_VERSION = 72;
+    private static final int NUM_OF_TABLES_AT_ALCOHOL_CONSUMPTION_VERSION = 73;
+    private static final int NUM_OF_TABLES_IN_STAGING =
+            NUM_OF_TABLES_AT_ALCOHOL_CONSUMPTION_VERSION;
+    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_ALCOHOL_CONSUMPTION;
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
@@ -220,6 +230,46 @@ public class DatabaseUpgradeHelperTest {
                             NicotineIntakeRecordHelper.NICOTINE_INTAKE_TYPE_COLUMN_NAME,
                             NicotineIntakeRecordHelper.QUANTITY_COLUMN_NAME,
                             NicotineIntakeRecordHelper.QUANTITY_COLUMN_NAME));
+        }
+    }
+
+    @Test
+    @EnableFlags({FLAG_SMOKING_DB, FLAG_SYMPTOMS_DB})
+    public void onUpgrade_symptoms_schemaUpToDate() {
+        try (var db = createEmptyDatabase()) {
+            onUpgrade(db, 0, DB_VERSION_SYMPTOMS);
+
+            assertNumberOfTables(db, NUM_OF_TABLES_AT_SYMPTOMS_VERSION);
+            assertColumnsExist(
+                    db,
+                    SymptomRecordHelper.TABLE_NAME,
+                    List.of(
+                            SymptomRecordHelper.SYMPTOM_TYPE_COLUMN_NAME,
+                            SymptomRecordHelper.NOTES_COLUMN_NAME,
+                            SymptomRecordHelper.SEVERITY_COLUMN_NAME,
+                            SymptomRecordHelper.COUNT_COLUMN_NAME,
+                            SymptomRecordHelper.TEMPORAL_TYPE_COLUMN_NAME));
+        }
+    }
+
+    @Test
+    @EnableFlags({FLAG_ALCOHOL_CONSUMPTION_DB, FLAG_SYMPTOMS_DB, FLAG_SMOKING_DB})
+    public void onUpgrade_alcohol_consumption_schemaUpToDate() {
+        try (var db = createEmptyDatabase()) {
+            onUpgrade(db, 0, DB_VERSION_ALCOHOL_CONSUMPTION);
+
+            assertNumberOfTables(db, NUM_OF_TABLES_AT_ALCOHOL_CONSUMPTION_VERSION);
+            assertColumnsExist(
+                    db,
+                    ALCOHOL_CONSUMPTION_RECORD_TABLE_NAME,
+                    List.of(
+                            AlcoholConsumptionRecordHelper.TEMPORAL_TYPE_COLUMN_NAME,
+                            AlcoholConsumptionRecordHelper.SERVING_COUNT_COLUMN_NAME,
+                            AlcoholConsumptionRecordHelper.BEVERAGE_TYPE_COLUMN_NAME,
+                            AlcoholConsumptionRecordHelper.SERVING_SIZE_COLUMN_NAME,
+                            AlcoholConsumptionRecordHelper.SERVING_VOLUME_LITERS_COLUMN_NAME,
+                            AlcoholConsumptionRecordHelper.ALCOHOL_BY_VOLUME_COLUMN_NAME,
+                            AlcoholConsumptionRecordHelper.NOTE_COLUMN_NAME));
         }
     }
 

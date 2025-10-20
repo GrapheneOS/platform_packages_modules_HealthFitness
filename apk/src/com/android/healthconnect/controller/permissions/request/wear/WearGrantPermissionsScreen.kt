@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.wear.compose.material3.LocalContentColor
 import androidx.wear.compose.material3.LocalTextStyle
 import androidx.wear.compose.material3.SwitchButton
 import androidx.wear.compose.material3.Text
@@ -63,27 +64,48 @@ fun WearGrantPermissionsScreen(viewModel: RequestPermissionViewModel, onButtonCl
     val additionalPermissions = viewModel.additionalPermissionsList.observeAsState(emptyList())
     val backgroundPermission =
         additionalPermissions.value.filter { it.isBackgroundReadPermission() }
+    val grantedAdditionalPermissions =
+        viewModel.grantedAdditionalPermissions.observeAsState(emptySet())
 
     val fitnessPermissionsList = fitnessPermissions.value
     if (fitnessPermissionsList.size > 1) {
-        GrantMultipleFitnessPermissions(fitnessPermissionsList, appName, onButtonClicked, viewModel)
+        GrantMultipleFitnessPermissions(
+            fitnessPermissionsList,
+            appName,
+            onButtonClicked,
+            viewModel::updateHealthPermission,
+            viewModel::updateFitnessPermissions,
+        )
     } else if (fitnessPermissionsList.size == 1) {
-        GrantSingleFitnessPermission(appName, fitnessPermissionsList[0], onButtonClicked, viewModel)
+        GrantSingleFitnessPermission(
+            appName,
+            fitnessPermissionsList[0],
+            onButtonClicked,
+            viewModel::updateFitnessPermissions,
+        )
     } else if (fitnessPermissionsList.size == 0 && !backgroundPermission.isEmpty()) {
-        GrantReadBackgroundHealthPermission(appName, onButtonClicked, viewModel)
+        GrantReadBackgroundHealthPermission(
+            appName,
+            onButtonClicked,
+            // Pass in the state so that only GrantReadBackgroundHealthPermission will be recomposed
+            // when the permissions change.
+            grantedAdditionalPermissions,
+            viewModel::updateHealthPermission,
+        )
     }
 }
 
-// TODO: b/402848385 - Consider passing in a callback rather than viewmodel.
 @Composable
 fun GrantMultipleFitnessPermissions(
     fitnessPermissions: List<FitnessPermission>,
     appName: String,
     onButtonClicked: () -> Unit,
-    viewModel: RequestPermissionViewModel,
+    updateHealthPermission: (HealthPermission, Boolean) -> Unit,
+    updateFitnessPermissions: (Boolean) -> Unit,
 ) {
     val res = LocalContext.current.resources
     val materialUIVersion = ResourceHelper.materialUIVersionInApp
+    val iconTintColor = LocalContentColor.current
     // Represents whether user has toggled-on a granular data type permission, by default toggled.
     val checkedStates =
         remember(fitnessPermissions) { // Recalculate when fitness permissions change.
@@ -100,7 +122,8 @@ fun GrantMultipleFitnessPermissions(
         materialUIVersion = materialUIVersion,
         asScalingList = true,
         showTimeText = false,
-        imageBuilder = WearPermissionIconBuilder.builder(R.drawable.ic_health_connect),
+        imageBuilder =
+            WearPermissionIconBuilder.builder(R.drawable.ic_health_connect).tint(iconTintColor),
         title = res.getString(R.string.wear_allow_app_access_fitness_and_wellness_data, appName),
         subtitle =
             res.getString(
@@ -133,7 +156,7 @@ fun GrantMultipleFitnessPermissions(
                     checked = isChecked,
                     onCheckedChange = { newCheckedValue ->
                         checkedStates[index] = newCheckedValue
-                        viewModel.updateHealthPermission(
+                        updateHealthPermission(
                             fitnessPermissions[index],
                             newCheckedValue as Boolean,
                         )
@@ -155,7 +178,7 @@ fun GrantMultipleFitnessPermissions(
                     },
                 onClick = {
                     if (checkedStates.all { it }) {
-                        viewModel.updateFitnessPermissions(true)
+                        updateFitnessPermissions(true)
                     }
                     onButtonClicked()
                 },
@@ -172,7 +195,7 @@ fun GrantMultipleFitnessPermissions(
                 label = res.getString(R.string.request_permissions_deny_all),
                 onClick = {
                     checkedStates.fill(false)
-                    viewModel.updateFitnessPermissions(false)
+                    updateFitnessPermissions(false)
                     onButtonClicked()
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -188,10 +211,11 @@ fun GrantSingleFitnessPermission(
     appName: String,
     permission: FitnessPermission,
     onButtonClicked: () -> Unit,
-    viewModel: RequestPermissionViewModel,
+    updateFitnessPermissions: (Boolean) -> Unit,
 ) {
     val res = LocalContext.current.resources
     val materialUIVersion = ResourceHelper.materialUIVersionInApp
+    val iconTintColor = LocalContentColor.current
     val permissionLabel =
         stringResource(
             FitnessPermissionStrings.fromPermissionType(permission.fitnessPermissionType)
@@ -201,7 +225,8 @@ fun GrantSingleFitnessPermission(
         materialUIVersion = materialUIVersion,
         showTimeText = false,
         asScalingList = true,
-        imageBuilder = WearPermissionIconBuilder.builder(R.drawable.ic_health_connect),
+        imageBuilder =
+            WearPermissionIconBuilder.builder(R.drawable.ic_health_connect).tint(iconTintColor),
         title =
             res.getString(
                 R.string.wear_request_single_data_type_permission,
@@ -214,7 +239,7 @@ fun GrantSingleFitnessPermission(
             WearPermissionButton(
                 label = res.getString(R.string.request_permissions_allow),
                 onClick = {
-                    viewModel.updateFitnessPermissions(true)
+                    updateFitnessPermissions(true)
                     onButtonClicked()
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -227,7 +252,7 @@ fun GrantSingleFitnessPermission(
             WearPermissionButton(
                 label = res.getString(R.string.request_permissions_dont_allow),
                 onClick = {
-                    viewModel.updateFitnessPermissions(false)
+                    updateFitnessPermissions(false)
                     onButtonClicked()
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -242,15 +267,15 @@ fun GrantSingleFitnessPermission(
 fun GrantReadBackgroundHealthPermission(
     appName: String,
     onButtonClicked: () -> Unit,
-    viewModel: RequestPermissionViewModel,
+    grantedAdditionalPermissions: State<Set<HealthPermission.AdditionalPermission>>,
+    updateHealthPermission: (HealthPermission, Boolean) -> Unit,
 ) {
     val materialUIVersion = ResourceHelper.materialUIVersionInApp
     val res = LocalContext.current.resources
-    val grantedAdditionalPermissions =
-        viewModel.grantedAdditionalPermissions.observeAsState(emptySet())
+    val iconTintColor = LocalContentColor.current
     // Wait until the grantedAdditionalPermission value has been posted then return to Activity and
     // handle permission results.
-    LaunchedEffect(grantedAdditionalPermissions.value) {
+    LaunchedEffect(key1 = grantedAdditionalPermissions.value) {
         if (
             HealthPermission.AdditionalPermission.READ_HEALTH_DATA_IN_BACKGROUND in
                 grantedAdditionalPermissions.value
@@ -263,7 +288,8 @@ fun GrantReadBackgroundHealthPermission(
         materialUIVersion = materialUIVersion,
         showTimeText = false,
         asScalingList = true,
-        imageBuilder = WearPermissionIconBuilder.builder(R.drawable.ic_health_connect),
+        imageBuilder =
+            WearPermissionIconBuilder.builder(R.drawable.ic_health_connect).tint(iconTintColor),
         title = res.getString(R.string.allow_all_the_time_prompt, appName),
     ) {
         // Allow all the time button.
@@ -271,7 +297,7 @@ fun GrantReadBackgroundHealthPermission(
             WearPermissionButton(
                 label = res.getString(R.string.request_permissions_allow_all_the_time),
                 onClick = {
-                    viewModel.updateHealthPermission(
+                    updateHealthPermission(
                         HealthPermission.AdditionalPermission.READ_HEALTH_DATA_IN_BACKGROUND,
                         true,
                     )
@@ -286,7 +312,7 @@ fun GrantReadBackgroundHealthPermission(
             WearPermissionButton(
                 label = res.getString(R.string.request_permissions_while_using_the_app),
                 onClick = {
-                    viewModel.updateHealthPermission(
+                    updateHealthPermission(
                         HealthPermission.AdditionalPermission.READ_HEALTH_DATA_IN_BACKGROUND,
                         false,
                     )

@@ -26,6 +26,7 @@ import com.android.healthconnect.controller.shared.app.AppPermissionsType.FITNES
 import com.android.healthconnect.controller.shared.app.AppPermissionsType.MEDICAL_PERMISSIONS_ONLY
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.OLD_PERMISSIONS_TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
@@ -114,10 +115,11 @@ class LoadHealthPermissionAppsTest {
         whenever(healthPermissionReader.getAppPermissionsType(any()))
             .thenReturn(FITNESS_PERMISSIONS_ONLY)
 
-        val connectedAppsList = loadHealthPermissionApps.invoke()
+        val connectedAppsList = loadHealthPermissionApps.invoke(Unit)
         val testAppMetadata = appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME)
         val testApp2Metadata = appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME_2)
-        assertThat(connectedAppsList)
+        assertThat(connectedAppsList is UseCaseResults.Success).isTrue()
+        assertThat((connectedAppsList as UseCaseResults.Success).data)
             .containsExactlyElementsIn(
                 listOf(
                     ConnectedAppMetadata(
@@ -161,8 +163,9 @@ class LoadHealthPermissionAppsTest {
         whenever(healthPermissionReader.getAppPermissionsType(any()))
             .thenReturn(FITNESS_PERMISSIONS_ONLY)
 
-        val connectedAppsList = loadHealthPermissionApps.invoke()
-        assertThat(connectedAppsList)
+        val connectedAppsList = loadHealthPermissionApps.invoke(Unit)
+        assertThat(connectedAppsList is UseCaseResults.Success).isTrue()
+        assertThat((connectedAppsList as UseCaseResults.Success).data)
             .containsExactlyElementsIn(
                 listOf(
                     ConnectedAppMetadata(
@@ -204,8 +207,9 @@ class LoadHealthPermissionAppsTest {
             whenever(healthPermissionReader.getAppPermissionsType(any()))
                 .thenReturn(FITNESS_PERMISSIONS_ONLY)
 
-            val connectedAppsList = loadHealthPermissionApps.invoke()
-            assertThat(connectedAppsList)
+            val connectedAppsList = loadHealthPermissionApps.invoke(Unit)
+            assertThat(connectedAppsList is UseCaseResults.Success).isTrue()
+            assertThat((connectedAppsList as UseCaseResults.Success).data)
                 .containsExactlyElementsIn(
                     listOf(
                         ConnectedAppMetadata(
@@ -254,8 +258,9 @@ class LoadHealthPermissionAppsTest {
         whenever(healthPermissionReader.getAppPermissionsType(any()))
             .thenReturn(FITNESS_PERMISSIONS_ONLY)
 
-        val connectedAppsList = loadHealthPermissionApps.invoke()
-        assertThat(connectedAppsList)
+        val connectedAppsList = loadHealthPermissionApps.invoke(Unit)
+        assertThat(connectedAppsList is UseCaseResults.Success).isTrue()
+        assertThat((connectedAppsList as UseCaseResults.Success).data)
             .containsExactlyElementsIn(
                 listOf(
                     ConnectedAppMetadata(
@@ -307,11 +312,12 @@ class LoadHealthPermissionAppsTest {
         whenever(healthPermissionReader.getAppPermissionsType(TEST_APP_PACKAGE_NAME_3))
             .thenReturn(COMBINED_PERMISSIONS)
 
-        val connectedAppsList = loadHealthPermissionApps.invoke()
         val testAppMetadata = appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME)
         val testApp2Metadata = appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME_2)
         val testApp3Metadata = appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME_3)
-        assertThat(connectedAppsList)
+        val connectedAppsList = loadHealthPermissionApps.invoke(Unit)
+        assertThat(connectedAppsList is UseCaseResults.Success).isTrue()
+        assertThat((connectedAppsList as UseCaseResults.Success).data)
             .containsExactlyElementsIn(
                 listOf(
                     ConnectedAppMetadata(
@@ -337,10 +343,10 @@ class LoadHealthPermissionAppsTest {
     }
 
     @Test
-    fun whenErrorThrownByHealthPermissionReader_returnsEmptyList() = runTest {
+    fun whenErrorThrownByHealthPermissionReader_returnsUseCaseError() = runTest {
         whenever(healthPermissionReader.getAppsWithHealthPermissions())
             .thenThrow(RuntimeException())
-        val connectedAppsList = loadHealthPermissionApps.invoke()
-        assertThat(connectedAppsList).isEmpty()
+        val connectedAppsList = loadHealthPermissionApps.invoke(Unit)
+        assertThat(connectedAppsList is UseCaseResults.Failed).isTrue()
     }
 }

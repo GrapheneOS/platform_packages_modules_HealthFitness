@@ -21,6 +21,8 @@ import static android.health.connect.Constants.DEFAULT_FLOAT;
 import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.datatypes.units.Temperature.fromCelsius;
 
+import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.IntervalRecord.DataCase.ALCOHOL_CONSUMPTION;
+
 import static java.util.stream.Collectors.toSet;
 
 import android.annotation.SuppressLint;
@@ -32,6 +34,7 @@ import android.health.connect.datatypes.units.Power;
 import android.health.connect.datatypes.units.Velocity;
 import android.health.connect.internal.datatypes.ActiveCaloriesBurnedRecordInternal;
 import android.health.connect.internal.datatypes.ActivityIntensityRecordInternal;
+import android.health.connect.internal.datatypes.AlcoholConsumptionRecordInternal;
 import android.health.connect.internal.datatypes.BasalBodyTemperatureRecordInternal;
 import android.health.connect.internal.datatypes.BasalMetabolicRateRecordInternal;
 import android.health.connect.internal.datatypes.BloodGlucoseRecordInternal;
@@ -81,6 +84,7 @@ import android.health.connect.internal.datatypes.SleepStageInternal;
 import android.health.connect.internal.datatypes.SpeedRecordInternal;
 import android.health.connect.internal.datatypes.StepsCadenceRecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
+import android.health.connect.internal.datatypes.SymptomRecordInternal;
 import android.health.connect.internal.datatypes.TotalCaloriesBurnedRecordInternal;
 import android.health.connect.internal.datatypes.Vo2MaxRecordInternal;
 import android.health.connect.internal.datatypes.WeightRecordInternal;
@@ -90,6 +94,7 @@ import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ActiveCaloriesBurned;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ActivityIntensity;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.AlcoholConsumption;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BasalBodyTemperature;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BasalMetabolicRate;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BloodGlucose;
@@ -140,6 +145,7 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.S
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Speed.SpeedSample;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Steps;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.StepsCadence;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Symptoms;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.TotalCaloriesBurned;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Vo2Max;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Weight;
@@ -159,7 +165,7 @@ import java.util.UUID;
  */
 public final class RecordProtoConverter {
 
-    public static final int PROTO_VERSION = 2;
+    public static final int PROTO_VERSION = 3;
 
     private final Map<Integer, Class<? extends RecordInternal<?>>> mDataTypeClassMap =
             HealthConnectMappings.getInstance().getRecordIdToInternalRecordClassMap();
@@ -226,6 +232,10 @@ public final class RecordProtoConverter {
                 instanceof ActivityIntensityRecordInternal activityIntensityRecordInternal) {
             builder.setActivityIntensity(toActivityIntensityProto(activityIntensityRecordInternal));
         } else if (intervalRecordInternal
+                instanceof AlcoholConsumptionRecordInternal alcoholConsumptionRecordInternal) {
+            builder.setAlcoholConsumption(
+                    toAlcoholConsumptionProto(alcoholConsumptionRecordInternal));
+        } else if (intervalRecordInternal
                 instanceof
                 CyclingPedalingCadenceRecordInternal cyclingPedalingCadenceRecordInternal) {
             builder.setCyclingPedalingCadence(
@@ -287,6 +297,8 @@ public final class RecordProtoConverter {
         } else if (intervalRecordInternal
                 instanceof WheelchairPushesRecordInternal wheelchairPushesRecordInternal) {
             builder.setWheelchairPushes(toWheelchairPushesProto(wheelchairPushesRecordInternal));
+        } else if (intervalRecordInternal instanceof SymptomRecordInternal symptomRecordInternal) {
+            builder.setSymptoms(toSymptomsProto(symptomRecordInternal));
         } else {
             throw new IllegalArgumentException(
                     "Unknown interval record type "
@@ -640,7 +652,7 @@ public final class RecordProtoConverter {
         } else if (performanceGoalInternal
                 instanceof
                 ExercisePerformanceGoalInternal.RateOfPerceivedExertionGoalInternal
-                                rateOfPerceivedExertionGoalInternal) {
+                        rateOfPerceivedExertionGoalInternal) {
             return ExercisePerformanceGoal.newBuilder()
                     .setRateOfPerceivedExertionGoal(
                             ExercisePerformanceGoal.RateOfPerceivedExertionGoal.newBuilder()
@@ -699,7 +711,7 @@ public final class RecordProtoConverter {
         } else if (completionGoalInternal
                 instanceof
                 ExerciseCompletionGoalInternal.TotalCaloriesBurnedGoalInternal
-                                totalCaloriesBurnedGoalInternal) {
+                        totalCaloriesBurnedGoalInternal) {
             return ExerciseCompletionGoal.newBuilder()
                     .setTotalCaloriesBurnedGoal(
                             ExerciseCompletionGoal.TotalCaloriesBurnedGoal.newBuilder()
@@ -711,7 +723,7 @@ public final class RecordProtoConverter {
         } else if (completionGoalInternal
                 instanceof
                 ExerciseCompletionGoalInternal.ActiveCaloriesBurnedGoalInternal
-                                activeCaloriesBurnedGoalInternal) {
+                        activeCaloriesBurnedGoalInternal) {
             return ExerciseCompletionGoal.newBuilder()
                     .setActiveCaloriesBurnedGoal(
                             ExerciseCompletionGoal.ActiveCaloriesBurnedGoal.newBuilder()
@@ -723,7 +735,7 @@ public final class RecordProtoConverter {
         } else if (completionGoalInternal
                 instanceof
                 ExerciseCompletionGoalInternal.DistanceWithVariableRestGoalInternal
-                                distanceWithVariableRestGoalInternal) {
+                        distanceWithVariableRestGoalInternal) {
             return ExerciseCompletionGoal.newBuilder()
                     .setDistanceWithVariableRestGoal(
                             ExerciseCompletionGoal.DistanceWithVariableRestGoal.newBuilder()
@@ -872,6 +884,19 @@ public final class RecordProtoConverter {
                 .build();
     }
 
+    private static Symptoms toSymptomsProto(SymptomRecordInternal symptomRecordInternal) {
+        Symptoms.Builder builder =
+                Symptoms.newBuilder()
+                        .setSymptomType(symptomRecordInternal.getSymptomType())
+                        .setSeverity(symptomRecordInternal.getSeverity())
+                        .setCount(symptomRecordInternal.getCount())
+                        .setTemporalType(symptomRecordInternal.getTemporalType());
+        if (symptomRecordInternal.getNotes() != null) {
+            builder.setNotes(symptomRecordInternal.getNotes());
+        }
+        return builder.build();
+    }
+
     private InstantRecord toInstantRecordProto(InstantRecordInternal<?> instantRecordInternal) {
         InstantRecord.Builder builder =
                 InstantRecord.newBuilder()
@@ -945,6 +970,22 @@ public final class RecordProtoConverter {
                             + instantRecordInternal.getClass().getSimpleName());
         }
 
+        return builder.build();
+    }
+
+    private static AlcoholConsumption toAlcoholConsumptionProto(
+            AlcoholConsumptionRecordInternal alcoholConsumptionRecordInternal) {
+        AlcoholConsumption.Builder builder =
+                AlcoholConsumption.newBuilder()
+                        .setServingCount(alcoholConsumptionRecordInternal.getServingCount())
+                        .setBeverageType(alcoholConsumptionRecordInternal.getBeverageType())
+                        .setServingSize(alcoholConsumptionRecordInternal.getServingSize())
+                        .setServingVolume(alcoholConsumptionRecordInternal.getServingVolumeLiters())
+                        .setAlcoholByVolume(alcoholConsumptionRecordInternal.getAlcoholByVolume())
+                        .setTemporalType(alcoholConsumptionRecordInternal.getTemporalType());
+        if (alcoholConsumptionRecordInternal.getNote() != null) {
+            builder.setNote(alcoholConsumptionRecordInternal.getNote().toString());
+        }
         return builder.build();
     }
 
@@ -1145,6 +1186,10 @@ public final class RecordProtoConverter {
                     intervalRecordInternal =
                             populateActivityIntensityRecordInternal(
                                     intervalRecordProto.getActivityIntensity());
+            case ALCOHOL_CONSUMPTION ->
+                    intervalRecordInternal =
+                            populateAlcoholConsumptionRecordInternal(
+                                    intervalRecordProto.getAlcoholConsumption());
             case CYCLING_PEDALING_CADENCE ->
                     intervalRecordInternal =
                             populateCyclingPedalingCadenceRecordInternal(
@@ -1217,6 +1262,9 @@ public final class RecordProtoConverter {
                     intervalRecordInternal =
                             populateWheelchairPushesRecordInternal(
                                     intervalRecordProto.getWheelchairPushes());
+            case SYMPTOMS ->
+                    intervalRecordInternal =
+                            populateSymptomRecordInternal(intervalRecordProto.getSymptoms());
             default ->
                     throw new IllegalArgumentException(
                             "Unknown record type " + intervalRecordProto.getDataCase());
@@ -1239,6 +1287,28 @@ public final class RecordProtoConverter {
             ActivityIntensity activityIntensityProto) {
         return new ActivityIntensityRecordInternal()
                 .setActivityIntensityType(activityIntensityProto.getActivityIntensityType());
+    }
+
+    private static AlcoholConsumptionRecordInternal populateAlcoholConsumptionRecordInternal(
+            AlcoholConsumption alcoholConsumptionProto) {
+        AlcoholConsumptionRecordInternal record =
+                new AlcoholConsumptionRecordInternal()
+                        .setTemporalType(alcoholConsumptionProto.getTemporalType())
+                        .setServingCount(alcoholConsumptionProto.getServingCount())
+                        .setBeverageType(alcoholConsumptionProto.getBeverageType());
+        if (alcoholConsumptionProto.hasAlcoholByVolume()) {
+            record.setAlcoholByVolume(alcoholConsumptionProto.getAlcoholByVolume());
+        }
+        if (alcoholConsumptionProto.hasServingSize()) {
+            record.setServingSize(alcoholConsumptionProto.getServingSize());
+        }
+        if (alcoholConsumptionProto.hasServingVolume()) {
+            record.setServingVolumeLiters(alcoholConsumptionProto.getServingVolume());
+        }
+        if (alcoholConsumptionProto.hasNote()) {
+            record.setNote(alcoholConsumptionProto.getNote());
+        }
+        return record;
     }
 
     private static CyclingPedalingCadenceRecordInternal
@@ -1668,6 +1738,19 @@ public final class RecordProtoConverter {
         return new WheelchairPushesRecordInternal().setCount(wheelchairPushesProto.getCount());
     }
 
+    private static SymptomRecordInternal populateSymptomRecordInternal(Symptoms symptomsProto) {
+        SymptomRecordInternal record =
+                new SymptomRecordInternal()
+                        .setSymptomType(symptomsProto.getSymptomType())
+                        .setSeverity(symptomsProto.getSeverity())
+                        .setCount(symptomsProto.getCount())
+                        .setTemporalType(symptomsProto.getTemporalType());
+        if (symptomsProto.hasNotes()) {
+            record.setNotes(symptomsProto.getNotes());
+        }
+        return record;
+    }
+
     private static void populateInstantRecordInternal(
             InstantRecord instantRecordProto, InstantRecordInternal<?> instantRecordInternal) {
         instantRecordInternal
@@ -1912,6 +1995,7 @@ public final class RecordProtoConverter {
         return switch (protoRecord.getDataCase()) {
             case ACTIVE_CALORIES_BURNED -> RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED;
             case ACTIVITY_INTENSITY -> RecordTypeIdentifier.RECORD_TYPE_ACTIVITY_INTENSITY;
+            case ALCOHOL_CONSUMPTION -> RecordTypeIdentifier.RECORD_TYPE_ALCOHOL_CONSUMPTION;
             case CYCLING_PEDALING_CADENCE ->
                     RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE;
             case DISTANCE -> RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
@@ -1934,6 +2018,7 @@ public final class RecordProtoConverter {
             case STEPS_CADENCE -> RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
             case TOTAL_CALORIES_BURNED -> RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
             case WHEELCHAIR_PUSHES -> RecordTypeIdentifier.RECORD_TYPE_WHEELCHAIR_PUSHES;
+            case SYMPTOMS -> RecordTypeIdentifier.RECORD_TYPE_SYMPTOM;
             case DATA_NOT_SET -> throw new IllegalArgumentException("Interval record not set");
         };
     }

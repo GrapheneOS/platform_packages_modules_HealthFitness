@@ -60,7 +60,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
  * ([LoadMenstruationDataUseCase]) and aggregations ([LoadDataAggregationsUseCase]).).
  */
 @Singleton
-class LoadEntriesHelper
+open class LoadEntriesHelper
 @Inject
 constructor(
     @ApplicationContext private val context: Context,
@@ -108,7 +108,7 @@ constructor(
     }
 
     /** Returns a list of records from an input sorted in descending order of their start time. */
-    suspend fun readRecords(input: LoadDataEntriesInput): List<Record> {
+    open suspend fun readRecords(input: LoadDataEntriesInput): List<Record> {
         val timeFilterRange =
             getTimeFilter(input.displayedStartTime, input.period, endTimeExclusive = true)
         val dataTypes = HealthPermissionToDatatypeMapper.getDataTypes(input.permissionType)

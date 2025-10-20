@@ -29,12 +29,14 @@ import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPer
 import com.android.healthconnect.controller.permissions.api.LoadAccessDateUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
+import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission.AdditionalPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission.Companion.fromPermissionString
 import com.android.healthconnect.controller.permissions.data.HealthPermission.MedicalPermission
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.permissions.request.PermissionGroupKey
 import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteAppData
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteAppDataUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
@@ -43,7 +45,7 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
-import com.android.healthfitness.flags.Flags
+import com.android.modules.utils.build.SdkLevel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Instant
@@ -119,6 +121,7 @@ constructor(
 
     private var _grantedAdditionalPermissions =
         MutableLiveData<Set<AdditionalPermission>>(emptySet())
+
     @VisibleForTesting
     val grantedAdditionalPermissions: LiveData<Set<AdditionalPermission>>
         get() = _grantedAdditionalPermissions
@@ -153,6 +156,11 @@ constructor(
                 this.value = value || atLeastOneFitnessPermissionGranted.value ?: false
             }
         }
+
+    private val _expandedDataCategoryPreferenceKeys = MutableLiveData<Set<String>>(emptySet())
+
+    val expandedDataCategoryPreferenceKeys: LiveData<Set<String>>
+        get() = _expandedDataCategoryPreferenceKeys
 
     private fun atLeastOneMedicalReadPermissionGranted(): Boolean =
         _grantedMedicalPermissions.value
@@ -270,7 +278,7 @@ constructor(
         viewModelScope.launch {
             healthPermissionsList = loadAppPermissionsStatusUseCase.invoke(packageName)
             // On Wear, there are only a subset of permissions supported.
-            if (Flags.replaceBodySensorPermissionEnabled() && deviceInfoUtils.isOnWatch(context)) {
+            if (SdkLevel.isAtLeastB() && deviceInfoUtils.isOnWatch(context)) {
                 val allowedPermissionsToRequest: Set<String> =
                     healthPermissionReader.getSystemHealthPermissions().toMutableSet().also {
                         it.add(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND)
@@ -328,9 +336,7 @@ constructor(
             viewModelScope.launch {
                 var grantedPermissions =
                     loadAppPermissionsStatusUseCase.invoke(packageName).filter { it.isGranted }
-                if (
-                    Flags.replaceBodySensorPermissionEnabled() && deviceInfoUtils.isOnWatch(context)
-                ) {
+                if (SdkLevel.isAtLeastB() && deviceInfoUtils.isOnWatch(context)) {
                     val allowedPermissionsToRequest: Set<String> =
                         healthPermissionReader.getSystemHealthPermissions().toMutableSet().also {
                             it.add(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND)
@@ -383,6 +389,50 @@ constructor(
         return loadAccessDateUseCase.invoke(packageName)
     }
 
+    /** Mark dropdown for given [android.health.connect.HealthDataCategory] expanded or collapsed */
+    fun updateDataCategoryPreferenceKey(key: PermissionGroupKey, isExpanded: Boolean) {
+        val currentKeys = _expandedDataCategoryPreferenceKeys.value.orEmpty().toMutableSet()
+        if (isExpanded) {
+            currentKeys.add(key.toString())
+        } else {
+            currentKeys.remove(key.toString())
+        }
+        _expandedDataCategoryPreferenceKeys.value = currentKeys.toSet()
+    }
+
+    fun updatePermissions(
+        packageName: String,
+        permissions: List<FitnessPermission>,
+        grant: Boolean,
+    ): Boolean {
+        val readExercisePermission =
+            FitnessPermission(FitnessPermissionType.EXERCISE, PermissionsAccessType.READ)
+        try {
+            if (grant) {
+                grantPermissions(packageName, permissions)
+            } else {
+                if (
+                    permissions.contains(readExercisePermission) &&
+                        shouldDisplayExerciseRouteDialog(packageName, readExercisePermission)
+                ) {
+                    _showDisableExerciseRouteEvent.postValue(true)
+                    // Revoke all permissions except Read Exercise as it will be revoked depending
+                    // on the user action in the dialog.
+                    revokeFitnessPermissions(
+                        permissions.filter { it != readExercisePermission },
+                        packageName,
+                    )
+                } else {
+                    revokeFitnessPermissions(permissions, packageName)
+                }
+            }
+            return true
+        } catch (ex: Exception) {
+            Log.e(TAG, "Failed to update fitness permissions!", ex)
+        }
+        return false
+    }
+
     fun updatePermission(
         packageName: String,
         fitnessPermission: FitnessPermission,
@@ -390,15 +440,14 @@ constructor(
     ): Boolean {
         try {
             if (grant) {
-                grantPermission(packageName, fitnessPermission)
+                grantPermissions(packageName, listOf(fitnessPermission))
             } else {
                 if (shouldDisplayExerciseRouteDialog(packageName, fitnessPermission)) {
                     _showDisableExerciseRouteEvent.postValue(true)
                 } else {
-                    revokeFitnessPermission(fitnessPermission, packageName)
+                    revokeFitnessPermissions(listOf(fitnessPermission), packageName)
                 }
             }
-
             return true
         } catch (ex: Exception) {
             Log.e(TAG, "Failed to update fitness permission!", ex)
@@ -435,7 +484,7 @@ constructor(
     ): Boolean {
         try {
             if (grant) {
-                grantPermission(packageName, medicalPermission)
+                grantPermissions(packageName, medicalPermission)
             } else {
                 revokeMedicalPermission(medicalPermission, packageName)
             }
@@ -447,21 +496,26 @@ constructor(
         return false
     }
 
-    private fun grantPermission(packageName: String, fitnessPermission: FitnessPermission) {
+    private fun grantPermissions(packageName: String, fitnessPermissions: List<FitnessPermission>) {
         val grantedPermissions = _grantedFitnessPermissions.value.orEmpty().toMutableSet()
-        grantPermissionsStatusUseCase.invoke(packageName, fitnessPermission.toString())
-        grantedPermissions.add(fitnessPermission)
+        fitnessPermissions.forEach { fitnessPermission ->
+            grantPermissionsStatusUseCase.invoke(packageName, fitnessPermission.toString())
+        }
+        grantedPermissions.addAll(fitnessPermissions)
         _grantedFitnessPermissions.postValue(grantedPermissions)
     }
 
-    private fun grantPermission(packageName: String, medicalPermission: MedicalPermission) {
+    private fun grantPermissions(packageName: String, medicalPermission: MedicalPermission) {
         val grantedPermissions = _grantedMedicalPermissions.value.orEmpty().toMutableSet()
         grantPermissionsStatusUseCase.invoke(packageName, medicalPermission.toString())
         grantedPermissions.add(medicalPermission)
         _grantedMedicalPermissions.postValue(grantedPermissions)
     }
 
-    private fun revokeFitnessPermission(fitnessPermission: FitnessPermission, packageName: String) {
+    private fun revokeFitnessPermissions(
+        fitnessPermissions: List<FitnessPermission>,
+        packageName: String,
+    ) {
         val grantedFitnessPermissions = _grantedFitnessPermissions.value.orEmpty().toMutableSet()
         val grantedMedicalPermissions = _grantedMedicalPermissions.value.orEmpty()
 
@@ -473,7 +527,7 @@ constructor(
                     medicalPermission.medicalPermissionType !=
                         MedicalPermissionType.ALL_MEDICAL_DATA
                 }
-        grantedFitnessPermissions.remove(fitnessPermission)
+        grantedFitnessPermissions.removeAll(fitnessPermissions)
         val readPermissionsAfterDisconnect =
             grantedFitnessPermissions.count { permission ->
                 permission.permissionsAccessType == PermissionsAccessType.READ
@@ -497,7 +551,9 @@ constructor(
         }
 
         _lastReadPermissionDisconnected.postValue(lastReadPermissionRevoked)
-        revokePermissionsStatusUseCase.invoke(packageName, fitnessPermission.toString())
+        fitnessPermissions.forEach { fitnessPermission ->
+            revokePermissionsStatusUseCase.invoke(packageName, fitnessPermission.toString())
+        }
     }
 
     private fun revokeMedicalPermission(medicalPermission: MedicalPermission, packageName: String) {
@@ -544,7 +600,9 @@ constructor(
         packageName: String,
         fitnessPermission: FitnessPermission,
     ): Boolean {
-        if (fitnessPermission.toString() != HealthPermissions.READ_EXERCISE) {
+        val readExercisePermission =
+            FitnessPermission(FitnessPermissionType.EXERCISE, PermissionsAccessType.READ)
+        if (fitnessPermission != readExercisePermission) {
             return false
         }
 
@@ -584,7 +642,10 @@ constructor(
     }
 
     fun disableExerciseRoutePermission(packageName: String) {
-        revokeFitnessPermission(fromPermissionString(HealthPermissions.READ_EXERCISE), packageName)
+        revokeFitnessPermissions(
+            listOf(fromPermissionString(HealthPermissions.READ_EXERCISE)),
+            packageName,
+        )
         // the revokePermission call will automatically revoke all additional permissions
         // including Exercise Routes if the READ_EXERCISE permission is the last READ permission
         if (isExerciseRoutePermissionAlwaysAllow(packageName)) {
@@ -597,6 +658,7 @@ constructor(
             is UseCaseResults.Success -> {
                 exerciseRouteState.data.exerciseRoutePermissionState == ALWAYS_ALLOW
             }
+
             else -> false
         }
     }
@@ -715,7 +777,7 @@ constructor(
 
     /** Returns True if the packageName meets the required conditions to use health permissions. */
     fun isPackageSupported(packageName: String): Boolean {
-        if (deviceInfoUtils.isOnWatch(context) && Flags.replaceBodySensorPermissionEnabled()) {
+        if (deviceInfoUtils.isOnWatch(context) && SdkLevel.isAtLeastB()) {
             return true
         }
 

@@ -48,7 +48,6 @@ import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
-import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -92,10 +91,9 @@ public class DeviceRecordHelperTest {
 
     private static final DeviceDataSource TEST_DEVICE_DATA_SOURCE =
             new DeviceDataSource(
-                    new DeviceInfoHelper.DeviceInfo(
-                            /* manufacturer= */ "Acme Corp.",
-                            /* model= */ "FabPhone",
-                            /* type= */ DEVICE_TYPE_PHONE),
+                    /* manufacturer= */ "Acme Corp.",
+                    /* model= */ "FabPhone",
+                    /* type= */ DEVICE_TYPE_PHONE,
                     /* deviceId= */ "a25341c4-c39a-4605-acc6-d4a6bc903413",
                     /* displayName= */ "My mobile phone");
 
@@ -267,9 +265,9 @@ public class DeviceRecordHelperTest {
         assertThat(records.stream().map(RecordInternal::getPackageName).distinct().toList())
                 .containsExactly(DEVICE_DATA_PROVIDER_PACKAGE);
         assertThat(records.stream().map(RecordInternal::getManufacturer).distinct().toList())
-                .containsExactly(TEST_DEVICE_DATA_SOURCE.getDeviceInfo().getManufacturer());
+                .containsExactly(TEST_DEVICE_DATA_SOURCE.getManufacturer());
         assertThat(records.stream().map(RecordInternal::getModel).distinct().toList())
-                .containsExactly(TEST_DEVICE_DATA_SOURCE.getDeviceInfo().getModel());
+                .containsExactly(TEST_DEVICE_DATA_SOURCE.getModel());
     }
 
     @Test

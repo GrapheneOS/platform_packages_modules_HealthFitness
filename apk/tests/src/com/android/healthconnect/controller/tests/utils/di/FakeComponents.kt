@@ -20,7 +20,6 @@ import android.health.connect.HealthDataCategory
 import android.health.connect.accesslog.AccessLog
 import android.health.connect.datatypes.Record
 import android.health.connect.exportimport.ScheduledExportSettings
-import android.net.Uri
 import com.android.healthconnect.controller.data.access.AppAccessMetadata
 import com.android.healthconnect.controller.data.access.AppAccessState
 import com.android.healthconnect.controller.data.access.ILoadAccessUseCase
@@ -53,18 +52,16 @@ import com.android.healthconnect.controller.devices.SetTrackingEnabled
 import com.android.healthconnect.controller.exportimport.api.DocumentProvider
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency.EXPORT_FREQUENCY_NEVER
-import com.android.healthconnect.controller.exportimport.api.ExportImportUseCaseResult
 import com.android.healthconnect.controller.exportimport.api.ILoadExportSettingsUseCase
 import com.android.healthconnect.controller.exportimport.api.ILoadImportStatusUseCase
 import com.android.healthconnect.controller.exportimport.api.ILoadScheduledExportStatusUseCase
 import com.android.healthconnect.controller.exportimport.api.IQueryDocumentProvidersUseCase
-import com.android.healthconnect.controller.exportimport.api.ITriggerImportUseCase
 import com.android.healthconnect.controller.exportimport.api.IUpdateExportSettingsUseCase
 import com.android.healthconnect.controller.exportimport.api.ImportUiState
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
+import com.android.healthconnect.controller.migration.api.DEFAULT_MIGRATION_RESTORE_STATE
+import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
-import com.android.healthconnect.controller.onboarding.ILoadFitnessPermissionAppsUseCase
-import com.android.healthconnect.controller.onboarding.api.ILoadOnboardingStateUseCase
 import com.android.healthconnect.controller.onboarding.api.OnboardingState
 import com.android.healthconnect.controller.permissions.additionalaccess.ExerciseRouteState
 import com.android.healthconnect.controller.permissions.additionalaccess.ILoadExerciseRoutePermissionUseCase
@@ -86,6 +83,7 @@ import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.toInstant
 import java.time.Instant
 import java.time.LocalDate
+import kotlinx.coroutines.Dispatchers
 
 class FakeRecentAccessUseCase : ILoadRecentAccessUseCase {
     private var list: List<AccessLog> = emptyList()
@@ -127,6 +125,11 @@ class FakeRecentAccessUseCase : ILoadRecentAccessUseCase {
 class FakeHealthPermissionAppsUseCase : ILoadHealthPermissionApps {
     private var list: List<ConnectedAppMetadata> = emptyList()
     var numberOfInvocations = 0
+    private var forceFail = false
+
+    fun setForceFail(forceFail: Boolean) {
+        this.forceFail = forceFail
+    }
 
     fun updateList(list: List<ConnectedAppMetadata>) {
         this.list = list
@@ -136,14 +139,19 @@ class FakeHealthPermissionAppsUseCase : ILoadHealthPermissionApps {
         this.list = list + connectedAppMetadata
     }
 
-    override suspend fun invoke(): List<ConnectedAppMetadata> {
+    override suspend fun invoke(input: Unit): UseCaseResults<List<ConnectedAppMetadata>> {
         numberOfInvocations += 1
-        return list
+        return if (forceFail) {
+            UseCaseResults.Failed(IllegalStateException("Force fail recent access."))
+        } else {
+            UseCaseResults.Success(list)
+        }
     }
 
     fun reset() {
         this.list = emptyList()
         this.numberOfInvocations = 0
+        this.forceFail = false
     }
 }
 
@@ -240,17 +248,26 @@ class FakeSetTrackingEnabledUseCase : ISetTrackingEnabled {
 
 class FakeLoadDataEntriesUseCase : ILoadDataEntriesUseCase {
     private var formattedList = listOf<FormattedEntry>()
+    var wasInvoked = false
+        private set
 
     fun updateList(list: List<FormattedEntry>) {
         formattedList = list
     }
 
     override suspend fun invoke(input: LoadDataEntriesInput): UseCaseResults<List<FormattedEntry>> {
+        wasInvoked = true
         return UseCaseResults.Success(formattedList)
     }
 
     override suspend fun execute(input: LoadDataEntriesInput): List<FormattedEntry> {
+        wasInvoked = true
         return formattedList
+    }
+
+    fun reset() {
+        formattedList = emptyList()
+        wasInvoked = false
     }
 }
 
@@ -663,8 +680,12 @@ class FakeQueryRecentAccessLogsUseCase : IQueryRecentAccessLogsUseCase {
 class FakeLoadExportSettingsUseCase : ILoadExportSettingsUseCase {
     private var exportFrequency = EXPORT_FREQUENCY_NEVER
 
-    override suspend fun invoke(): ExportImportUseCaseResult<ExportFrequency> {
-        return ExportImportUseCaseResult.Success(exportFrequency)
+    override suspend fun invoke(input: Unit): UseCaseResults<ExportFrequency> {
+        return UseCaseResults.Success(exportFrequency)
+    }
+
+    override suspend fun execute(input: Unit): ExportFrequency {
+        return exportFrequency
     }
 
     fun updateExportFrequency(frequency: ExportFrequency) {
@@ -682,11 +703,13 @@ class FakeUpdateExportSettingsUseCase : IUpdateExportSettingsUseCase {
             .setPeriodInDays(EXPORT_FREQUENCY_NEVER.periodInDays)
             .build()
 
-    override suspend fun invoke(
-        settings: ScheduledExportSettings
-    ): ExportImportUseCaseResult<Unit> {
+    override suspend fun invoke(settings: ScheduledExportSettings): UseCaseResults<Unit> {
         mostRecentSettings = settings
-        return ExportImportUseCaseResult.Success(Unit)
+        return UseCaseResults.Success(Unit)
+    }
+
+    override suspend fun execute(settings: ScheduledExportSettings) {
+        mostRecentSettings = settings
     }
 
     fun reset() {
@@ -698,6 +721,7 @@ class FakeUpdateExportSettingsUseCase : IUpdateExportSettingsUseCase {
 }
 
 class FakeLoadScheduledExportStatusUseCase : ILoadScheduledExportStatusUseCase {
+    private var forceFail = false
     private var exportState: ScheduledExportUiState =
         ScheduledExportUiState(
             null,
@@ -705,6 +729,10 @@ class FakeLoadScheduledExportStatusUseCase : ILoadScheduledExportStatusUseCase {
             0,
             "0",
         )
+
+    fun setForceFail(forceFail: Boolean) {
+        this.forceFail = forceFail
+    }
 
     fun reset() {
         exportState =
@@ -714,14 +742,22 @@ class FakeLoadScheduledExportStatusUseCase : ILoadScheduledExportStatusUseCase {
                 0,
                 "0",
             )
+        forceFail = false
     }
 
     fun updateExportStatus(exportState: ScheduledExportUiState) {
         this.exportState = exportState
     }
 
-    override suspend fun invoke(): ExportImportUseCaseResult<ScheduledExportUiState> {
-        return ExportImportUseCaseResult.Success(exportState)
+    override suspend fun invoke(input: Unit): UseCaseResults<ScheduledExportUiState> {
+        if (forceFail) {
+            return UseCaseResults.Failed(IllegalStateException("Failed to load export status"))
+        }
+        return UseCaseResults.Success(exportState)
+    }
+
+    override suspend fun execute(input: Unit): ScheduledExportUiState {
+        return exportState
     }
 }
 
@@ -736,8 +772,12 @@ class FakeQueryDocumentProvidersUseCase : IQueryDocumentProvidersUseCase {
         this.documentProviders = documentProviders
     }
 
-    override suspend fun invoke(): ExportImportUseCaseResult<List<DocumentProvider>> {
-        return ExportImportUseCaseResult.Success(documentProviders)
+    override suspend fun invoke(input: Unit): UseCaseResults<List<DocumentProvider>> {
+        return UseCaseResults.Success(documentProviders)
+    }
+
+    override suspend fun execute(input: Unit): List<DocumentProvider> {
+        return documentProviders
     }
 }
 
@@ -762,26 +802,6 @@ class FakeLoadExerciseRoute : ILoadExerciseRoutePermissionUseCase {
     }
 }
 
-class FakeTriggerImportUseCase : ITriggerImportUseCase {
-
-    private var lastImportCompletionInstant: Instant? = null
-
-    private var importState: ImportUiState =
-        ImportUiState(ImportUiState.DataImportState.DATA_IMPORT_ERROR_NONE)
-
-    fun reset() {
-        lastImportCompletionInstant = null
-    }
-
-    fun updateLastImportCompletionInstant(instant: Instant) {
-        this.lastImportCompletionInstant = instant
-    }
-
-    override suspend fun invoke(fileToImportUri: Uri): ExportImportUseCaseResult<Unit> {
-        return ExportImportUseCaseResult.Success(Unit)
-    }
-}
-
 class FakeLoadImportStatusUseCase : ILoadImportStatusUseCase {
     private var importState: ImportUiState =
         ImportUiState(ImportUiState.DataImportState.DATA_IMPORT_ERROR_NONE)
@@ -794,72 +814,55 @@ class FakeLoadImportStatusUseCase : ILoadImportStatusUseCase {
         this.importState = importState
     }
 
-    override suspend fun invoke(): ExportImportUseCaseResult<ImportUiState> {
-        return ExportImportUseCaseResult.Success(importState)
+    override suspend fun invoke(input: Unit): UseCaseResults<ImportUiState> {
+        return UseCaseResults.Success(importState)
+    }
+
+    override suspend fun execute(input: Unit): ImportUiState {
+        return importState
     }
 }
 
-class FakeLoadFitnessPermissionAppsUseCase : ILoadFitnessPermissionAppsUseCase {
+class FakeLoadFitnessPermissionAppsUseCase :
+    FakeUseCase<Unit, List<ConnectedFitnessAppMetadata>>(dispatcher = Dispatchers.Unconfined) {
     private var connectedApps: List<ConnectedFitnessAppMetadata> = emptyList()
-    private var forceFail = false
-    var invocations = 0
 
-    fun reset() {
-        connectedApps = emptyList()
-        invocations = 0
-        forceFail = false
+    override suspend fun successValue(input: Unit): List<ConnectedFitnessAppMetadata> {
+        return this.connectedApps
     }
 
     fun setConnectedApps(connectedApps: List<ConnectedFitnessAppMetadata>) {
         this.connectedApps = connectedApps
     }
-
-    override suspend fun execute(unit: Unit): List<ConnectedFitnessAppMetadata> {
-        return connectedApps
-    }
-
-    override suspend fun invoke(unit: Unit): UseCaseResults<List<ConnectedFitnessAppMetadata>> {
-        invocations += 1
-        return if (forceFail) {
-            UseCaseResults.Failed(IllegalStateException("Force fail loadFitnessPermissionApps."))
-        } else {
-            return UseCaseResults.Success(connectedApps)
-        }
-    }
-
-    fun setForceFail(forceFail: Boolean) {
-        this.forceFail = forceFail
-    }
 }
 
-class FakeLoadOnboardingStateUseCase : ILoadOnboardingStateUseCase {
+class FakeLoadOnboardingStateUseCase :
+    FakeUseCase<Unit, OnboardingState>(dispatcher = Dispatchers.Unconfined) {
     private var onboardingState = OnboardingState.ONBOARDING_BANNER_STATE_HIDE
-    private var forceFail = false
-    var invocations = 0
-
-    fun reset() {
-        invocations = 0
-        forceFail = false
-    }
 
     fun setOnboardingBannerState(onboardingState: OnboardingState) {
         this.onboardingState = onboardingState
     }
 
-    override suspend fun execute(input: Unit): OnboardingState {
-        return onboardingState
+    override suspend fun successValue(input: Unit): OnboardingState {
+        return this.onboardingState
+    }
+}
+
+class FakeLoadMigrationStateUseCase :
+    FakeUseCase<Unit, MigrationRestoreState>(dispatcher = Dispatchers.Unconfined) {
+    private var migrationState = DEFAULT_MIGRATION_RESTORE_STATE
+
+    fun setMigrationState(migrationState: MigrationRestoreState) {
+        this.migrationState = migrationState
     }
 
-    override suspend fun invoke(input: Unit): UseCaseResults<OnboardingState> {
-        invocations += 1
-        return if (forceFail) {
-            UseCaseResults.Failed(IllegalStateException("Force fail onboarding state."))
-        } else {
-            UseCaseResults.Success(onboardingState)
-        }
+    override suspend fun successValue(input: Unit): MigrationRestoreState {
+        return migrationState
     }
 
-    fun setForceFail(forceFail: Boolean) {
-        this.forceFail = forceFail
+    override fun reset() {
+        super.reset()
+        migrationState = DEFAULT_MIGRATION_RESTORE_STATE
     }
 }

@@ -180,9 +180,11 @@ class MockedPermissionsActivityTest {
         whenever(viewModel.additionalScreenState).then {
             MutableLiveData(AdditionalScreenState.NoAdditionalData)
         }
+        whenever(viewModel.expandedDataCategoryPreferenceKeys).then {
+            MutableLiveData(emptySet<String>())
+        }
 
         whenever(healthPermissionReader.isRationaleIntentDeclared(anyString())).thenReturn(true)
-
         (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(true)
         showOnboarding(context, false)
     }
@@ -511,7 +513,7 @@ class MockedPermissionsActivityTest {
 
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
-    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET, Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun showFitnessPermissionRequest_healthConnectBrand() {
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowFitness)
@@ -566,6 +568,7 @@ class MockedPermissionsActivityTest {
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
     @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun showFitnessPermissionRequest_healthConnectBrand_bottomSheet() {
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowFitness)
@@ -625,7 +628,7 @@ class MockedPermissionsActivityTest {
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @Test
-    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET, Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun showFitnessPermissionRequest_healthFitnessBrand() {
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowFitness)
@@ -684,6 +687,7 @@ class MockedPermissionsActivityTest {
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @Test
     @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun showFitnessPermissionRequest_healthFitnessBrand_bottomSheet() {
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowFitness)
@@ -694,7 +698,7 @@ class MockedPermissionsActivityTest {
                     appMetadata = appMetadata,
                     fitnessPermissions =
                         listOf(READ_STEPS, WRITE_DISTANCE).map {
-                            fromPermissionString(it) as HealthPermission.FitnessPermission
+                            fromPermissionString(it) as FitnessPermission
                         },
                     hasMedical = false,
                     historyGranted = false,
@@ -1033,6 +1037,15 @@ class MockedPermissionsActivityTest {
     @Test
     @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
     fun whenMigrationInProgress_showsMigrationInProgressDialog_bottomSheet() {
+        val migrationStateLiveData = MutableLiveData<MigrationViewModel.MigrationFragmentState>()
+        val migrationInProgressState =
+            WithData(
+                MigrationRestoreState(
+                    migrationUiState = MigrationUiState.IN_PROGRESS,
+                    dataRestoreState = DataRestoreUiState.IDLE,
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
+                )
+            )
         whenever(migrationViewModel.getCurrentMigrationUiState()).then {
             MigrationRestoreState(
                 migrationUiState = MigrationUiState.IN_PROGRESS,
@@ -1040,17 +1053,7 @@ class MockedPermissionsActivityTest {
                 dataRestoreError = DataRestoreUiError.ERROR_NONE,
             )
         }
-        whenever(migrationViewModel.migrationState).then {
-            MutableLiveData(
-                WithData(
-                    MigrationRestoreState(
-                        migrationUiState = MigrationUiState.IN_PROGRESS,
-                        dataRestoreState = DataRestoreUiState.IDLE,
-                        dataRestoreError = DataRestoreUiError.ERROR_NONE,
-                    )
-                )
-            )
-        }
+        whenever(migrationViewModel.migrationState).thenReturn(migrationStateLiveData)
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowFitness)
         }
@@ -1076,6 +1079,11 @@ class MockedPermissionsActivityTest {
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
         launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
+            onView(withText("Allow $TEST_APP_NAME to access fitness and wellness data?"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            scenario.onActivity { migrationStateLiveData.value = migrationInProgressState }
+
             onView(withText("Health Connect integration in progress"))
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()))
@@ -1176,24 +1184,19 @@ class MockedPermissionsActivityTest {
     @Test
     @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
     fun whenRestoreInProgress_showsRestoreInProgressDialog_bottomSheet() {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IDLE,
-                dataRestoreState = DataRestoreUiState.IN_PROGRESS,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
-        whenever(migrationViewModel.migrationState).then {
-            MutableLiveData(
-                WithData(
-                    MigrationRestoreState(
-                        migrationUiState = MigrationUiState.IDLE,
-                        dataRestoreState = DataRestoreUiState.IN_PROGRESS,
-                        dataRestoreError = DataRestoreUiError.ERROR_NONE,
-                    )
+        val migrationStateLiveData = MutableLiveData<MigrationViewModel.MigrationFragmentState>()
+        val restoreInProgressState =
+            WithData(
+                MigrationRestoreState(
+                    migrationUiState = MigrationUiState.IDLE,
+                    dataRestoreState = DataRestoreUiState.IN_PROGRESS,
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
                 )
             )
+        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
+            restoreInProgressState.migrationRestoreState
         }
+        whenever(migrationViewModel.migrationState).thenReturn(migrationStateLiveData)
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowFitness)
         }
@@ -1214,10 +1217,16 @@ class MockedPermissionsActivityTest {
             MutableLiveData(setOf(FitnessPermission.fromPermissionString(READ_STEPS)))
         }
         whenever(viewModel.allFitnessPermissionsGranted).then { MutableLiveData(false) }
+
         val permissions = arrayOf(READ_STEPS, WRITE_DISTANCE)
         val startActivityIntent = getPermissionScreenIntent(permissions)
+
         launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
-            Espresso.onIdle()
+            onView(withText("Allow $TEST_APP_NAME to access fitness and wellness data?"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            scenario.onActivity { migrationStateLiveData.value = restoreInProgressState }
+
             onView(withText("Health Connect restore in progress"))
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()))
@@ -1238,7 +1247,6 @@ class MockedPermissionsActivityTest {
             verify(healthConnectLogger)
                 .logInteraction(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
 
-            // Needed to makes sure activity has finished
             scenario.result
             assertEquals(Lifecycle.State.DESTROYED, scenario.state)
         }
@@ -1315,24 +1323,19 @@ class MockedPermissionsActivityTest {
     @Test
     @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
     fun whenMigrationPending_showsMigrationPendingDialog_bottomSheet() {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
-        whenever(migrationViewModel.migrationState).then {
-            MutableLiveData(
-                WithData(
-                    MigrationRestoreState(
-                        migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
-                        dataRestoreState = DataRestoreUiState.IDLE,
-                        dataRestoreError = DataRestoreUiError.ERROR_NONE,
-                    )
+        val migrationStateLiveData = MutableLiveData<MigrationViewModel.MigrationFragmentState>()
+        val migrationPendingState =
+            WithData(
+                MigrationRestoreState(
+                    migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
+                    dataRestoreState = DataRestoreUiState.IDLE,
+                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
                 )
             )
+        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
+            migrationPendingState.migrationRestoreState
         }
+        whenever(migrationViewModel.migrationState).thenReturn(migrationStateLiveData)
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowFitness)
         }
@@ -1353,10 +1356,16 @@ class MockedPermissionsActivityTest {
             MutableLiveData(setOf(FitnessPermission.fromPermissionString(READ_STEPS)))
         }
         whenever(viewModel.allFitnessPermissionsGranted).then { MutableLiveData(false) }
+
         val permissions = arrayOf(READ_STEPS, WRITE_DISTANCE)
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
-        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
+            onView(withText("Allow $TEST_APP_NAME to access fitness and wellness data?"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            scenario.onActivity { migrationStateLiveData.value = migrationPendingState }
+
             onView(
                     withText(
                         "Health Connect is ready to be integrated with your Android system. If you give $TEST_APP_NAME access now, some features may not work until integration is complete."

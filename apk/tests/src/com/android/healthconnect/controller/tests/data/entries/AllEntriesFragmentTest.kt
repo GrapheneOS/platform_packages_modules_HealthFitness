@@ -17,13 +17,17 @@ package com.android.healthconnect.controller.tests.data.entries
 
 import android.content.Context
 import android.health.connect.HealthConnectManager
+import android.health.connect.datatypes.AlcoholConsumptionRecord
 import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.PlannedExerciseSessionRecord
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsRecord
+import android.health.connect.datatypes.SymptomRecord
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
+import android.platform.test.annotations.RequiresFlagsEnabled
+import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
@@ -52,6 +56,7 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry.Formatte
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedDataEntry
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.data.entriesandaccess.EntriesAndAccessFragment
+import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.EXERCISE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.HEART_RATE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.PLANNED_EXERCISE
@@ -86,6 +91,7 @@ import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
 import kotlinx.coroutines.test.runTest
+import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -105,6 +111,7 @@ class AllEntriesFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val setFlagsRule = SetFlagsRule()
+    @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @BindValue val viewModel: EntriesViewModel = mock()
     @BindValue val manager: HealthConnectManager = mock()
@@ -138,6 +145,7 @@ class AllEntriesFragmentTest {
             .thenReturn(MutableLiveData(EntriesViewModel.EntriesDeletionScreenState.VIEW))
         whenever(viewModel.mapOfEntriesToBeDeleted).thenReturn(MutableLiveData())
         whenever(viewModel.allEntriesSelected).thenReturn(MutableLiveData(false))
+        whenever(viewModel.isLoadingDateNavigation).thenReturn(MutableLiveData(false))
     }
 
     @After
@@ -283,6 +291,85 @@ class AllEntriesFragmentTest {
         onView(withText("8:06 - 8:06")).check(matches(isDisplayed()))
         onView(withText("15 steps")).check(matches(isDisplayed()))
         verify(healthConnectLogger, times(2)).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_ALCOHOL_CONSUMPTION)
+    fun withAlcoholConsumptionData_showsListOfEntries() {
+        whenever(viewModel.entries)
+            .thenReturn(MutableLiveData(With(FORMATTED_ALCOHOL_CONSUMPTION_LIST)))
+        whenever(viewModel.getEntriesList())
+            .thenReturn(FORMATTED_ALCOHOL_CONSUMPTION_LIST.toMutableList())
+
+        launchNestedFragment<AllEntriesFragment>(
+            bundleOf(PERMISSION_TYPE_NAME_KEY to FitnessPermissionType.ALCOHOL_CONSUMPTION.name)
+        )
+
+        onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
+        onView(withText("2 • Beer")).check(matches(isDisplayed()))
+        verify(healthConnectLogger).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS)
+    fun withSymptomsData_showsListOfEntries() {
+        whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_SYMPTOMS_LIST)))
+        whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_SYMPTOMS_LIST.toMutableList())
+
+        launchNestedFragment<AllEntriesFragment>(
+            bundleOf(PERMISSION_TYPE_NAME_KEY to FitnessPermissionType.SYMPTOM_COUGH.name)
+        )
+
+        onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
+        onView(withText("Mild cough")).check(matches(isDisplayed()))
+        onView(withId(R.id.item_data_entry_notes)).check(matches(isDisplayed()))
+        onView(withId(R.id.item_data_entry_notes)).check(matches(withText("Test notes")))
+        onView(withId(R.id.item_data_entry_divider)).check(matches(not(isDisplayed())))
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS)
+    fun withSymptomsData_noNotes_hidesNotesView() {
+        val symptomListNoNotes =
+            listOf(
+                FormattedEntry.SymptomEntry(
+                    uuid = "test_id_no_notes",
+                    header = "8:06 - 8:06",
+                    headerA11y = "from 8:06 to 8:06",
+                    title = "Mild cough",
+                    titleA11y = "Mild cough",
+                    dataType = SymptomRecord::class,
+                    notes = "",
+                )
+            )
+        whenever(viewModel.entries).thenReturn(MutableLiveData(With(symptomListNoNotes)))
+        whenever(viewModel.getEntriesList()).thenReturn(symptomListNoNotes.toMutableList())
+
+        launchNestedFragment<AllEntriesFragment>(
+            bundleOf(PERMISSION_TYPE_NAME_KEY to FitnessPermissionType.SYMPTOM_COUGH.name)
+        )
+
+        onView(withText("8:06 - 8:06")).check(matches(isDisplayed()))
+        onView(withText("Mild cough")).check(matches(isDisplayed()))
+        onView(withId(R.id.item_data_entry_notes))
+            .check(matches(org.hamcrest.Matchers.not(isDisplayed())))
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS)
+    fun withSymptomsData_noSeverity_showsListOfEntries() {
+
+        whenever(viewModel.entries)
+            .thenReturn(MutableLiveData(With(FORMATTED_SYMPTOMS_LIST_NO_SEVERITY)))
+        whenever(viewModel.getEntriesList())
+            .thenReturn(FORMATTED_SYMPTOMS_LIST_NO_SEVERITY.toMutableList())
+
+        launchNestedFragment<AllEntriesFragment>(
+            bundleOf(PERMISSION_TYPE_NAME_KEY to FitnessPermissionType.SYMPTOM_COUGH.name)
+        )
+        onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
+        onView(withText("Cough")).check(matches(isDisplayed()))
+        onView(withId(R.id.item_data_entry_divider)).check(matches(not(isDisplayed())))
     }
 
     @Test
@@ -608,6 +695,32 @@ private val FORMATTED_EXERCISE_SESSION_LIST =
         )
     )
 
+private val FORMATTED_SYMPTOMS_LIST =
+    listOf(
+        FormattedEntry.SymptomEntry(
+            uuid = "test_id",
+            header = "7:06 - 7:06",
+            headerA11y = "from 7:06 to 7:06",
+            title = "Mild cough",
+            titleA11y = "Mild cough",
+            dataType = SymptomRecord::class,
+            notes = "Test notes",
+        )
+    )
+
+private val FORMATTED_SYMPTOMS_LIST_NO_SEVERITY =
+    listOf(
+        FormattedEntry.SymptomEntry(
+            uuid = "test_id",
+            header = "7:06 - 7:06",
+            headerA11y = "from 7:06 to 7:06",
+            title = "Cough",
+            titleA11y = "Cough",
+            dataType = SymptomRecord::class,
+            notes = "notes",
+        )
+    )
+
 private val FORMATTED_IMMUNIZATION_LIST =
     listOf(
         FormattedEntry.FormattedMedicalDataEntry(
@@ -631,6 +744,18 @@ private val FORMATTED_IMMUNIZATION_LIST =
             titleA11y = "important vaccination",
             medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION_3.id,
         ),
+    )
+
+private val FORMATTED_ALCOHOL_CONSUMPTION_LIST =
+    listOf(
+        FormattedEntry.SeriesDataEntry(
+            uuid = "test_id",
+            header = "7:06 - 7:06",
+            headerA11y = "from 7:06 to 7:06",
+            title = "2 • Beer",
+            titleA11y = "2 • Beer",
+            dataType = AlcoholConsumptionRecord::class,
+        )
     )
 
 private val FORMATTED_STEPS_LIST_WITH_AGGREGATION =

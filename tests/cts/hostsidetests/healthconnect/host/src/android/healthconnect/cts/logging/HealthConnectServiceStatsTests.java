@@ -40,7 +40,6 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import android.cts.statsdatom.lib.ConfigUtils;
 import android.cts.statsdatom.lib.DeviceUtils;
 import android.cts.statsdatom.lib.ReportUtils;
-import android.healthconnect.cts.HostSideTestUtil;
 import android.healthfitness.api.ApiMethod;
 import android.healthfitness.api.ApiStatus;
 import android.healthfitness.api.ForegroundState;
@@ -80,8 +79,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
             return;
         }
         assertThat(mCtsBuild).isNotNull();
-        // TODO(b/313055175): Do not disable rate limiting once b/300238889 is resolved.
-        HostSideTestUtil.setupRateLimitingFeatureFlag(getDevice());
         ConfigUtils.removeConfig(getDevice());
         ReportUtils.clearReports(getDevice());
         // b/396574091: Grant all permissions that the test helper app needs.
@@ -96,8 +93,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         if (!isHardwareSupported(getDevice())) {
             return;
         }
-        // TODO(b/313055175): Do not disable rate limiting once b/300238889 is resolved.
-        HostSideTestUtil.restoreRateLimitingFeatureFlag(getDevice());
         ConfigUtils.removeConfig(getDevice());
         ReportUtils.clearReports(getDevice());
         clearData(getDevice());

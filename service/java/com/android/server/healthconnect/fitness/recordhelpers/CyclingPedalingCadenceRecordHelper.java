@@ -80,7 +80,7 @@ public class CyclingPedalingCadenceRecordHelper
     }
 
     @Override
-    String getSeriesDataTableName() {
+    public String getSeriesDataTableName() {
         return SERIES_TABLE_NAME;
     }
 

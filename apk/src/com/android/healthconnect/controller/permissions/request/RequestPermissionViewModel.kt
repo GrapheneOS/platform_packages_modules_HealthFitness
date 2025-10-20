@@ -50,7 +50,7 @@ import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
-import com.android.healthfitness.flags.Flags
+import com.android.modules.utils.build.SdkLevel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Instant
@@ -78,7 +78,10 @@ constructor(
         private const val TAG = "RequestPermissionViewMo"
         private const val GRANTED_MEDICAL_PERMISSIONS_KEY = "granted_medical_permissions"
         private const val GRANTED_FITNESS_PERMISSIONS_KEY = "granted_fitness_permissions"
+        private const val GRANTED_FITNESS_CATEGORY_PERMISSIONS_KEY =
+            "granted_fitness_category_permissions_key"
         private const val GRANTED_ADDITIONAL_PERMISSIONS_KEY = "granted_additional_permissions"
+        private const val EXPANDED_CATEGORY_PREFERENCE_KEYS = "expanded_category_preference_keys"
     }
 
     private val _appMetaData = MutableLiveData<AppMetadata>()
@@ -104,6 +107,23 @@ constructor(
     private val _healthPermissionsList = MutableLiveData<List<HealthPermission>>()
     val grantableHealthPermissionsList: LiveData<List<HealthPermission>>
         get() = _healthPermissionsList
+
+    private val _expandedDataCategoryPreferenceKeys =
+        savedStateHandle.getLiveData<Set<String>>(EXPANDED_CATEGORY_PREFERENCE_KEYS, emptySet())
+
+    val expandedDataCategoryPreferenceKeys: LiveData<Set<String>>
+        get() = _expandedDataCategoryPreferenceKeys
+
+    /** Mark dropdown for given [android.health.connect.HealthDataCategory] expanded or collapsed */
+    fun updateDataCategoryPreferenceKey(key: PermissionGroupKey, isExpanded: Boolean) {
+        val currentKeys = _expandedDataCategoryPreferenceKeys.value.orEmpty().toMutableSet()
+        if (isExpanded) {
+            currentKeys.add(key.toString())
+        } else {
+            currentKeys.remove(key.toString())
+        }
+        _expandedDataCategoryPreferenceKeys.value = currentKeys.toSet()
+    }
 
     /** Screen states */
     private val _medicalScreenState =
@@ -156,22 +176,23 @@ constructor(
     val permissionsActivityState: LiveData<PermissionsActivityState>
         get() = _permissionsActivityState
 
-    /** Permission grants */
-    /** [MedicalPermission]s that have been granted locally via a toggle, but not yet requested */
     private val _grantedMedicalPermissions =
         savedStateHandle.getLiveData<Set<MedicalPermission>>(
             GRANTED_MEDICAL_PERMISSIONS_KEY,
             emptySet(),
         )
+
+    /** Permission grants */
+    /** [MedicalPermission]s that have been granted locally via a toggle, but not yet requested */
     val grantedMedicalPermissions: LiveData<Set<MedicalPermission>>
         get() = _grantedMedicalPermissions
 
-    /** [FitnessPermission]s that have been granted locally via a toggle, but not yet requested */
     private val _grantedFitnessPermissions =
         savedStateHandle.getLiveData<Set<FitnessPermission>>(
             GRANTED_FITNESS_PERMISSIONS_KEY,
             emptySet(),
         )
+    /** [FitnessPermission]s that have been granted locally via a toggle, but not yet requested */
     val grantedFitnessPermissions: LiveData<Set<FitnessPermission>>
         get() = _grantedFitnessPermissions
 
@@ -360,6 +381,19 @@ constructor(
         }
     }
 
+    /** Mark given [FitnessPermission]s as locally granted (or revoked) */
+    fun updateHealthPermissions(permissions: List<FitnessPermission>, grant: Boolean) {
+        val updatedGrantedPermissions = _grantedFitnessPermissions.value.orEmpty().toMutableSet()
+
+        if (grant) {
+            updatedGrantedPermissions.addAll(permissions)
+        } else {
+            updatedGrantedPermissions.removeAll(permissions)
+        }
+
+        _grantedFitnessPermissions.postValue(updatedGrantedPermissions)
+    }
+
     /** Mark all [MedicalPermission]s as locally granted */
     fun updateMedicalPermissions(grant: Boolean) {
         if (grant) {
@@ -486,7 +520,7 @@ constructor(
         // TODO: b/404305506 - Consider moving this filter upstream into HealthPermissionReader.
         if (
             context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH) &&
-                Flags.replaceBodySensorPermissionEnabled()
+                SdkLevel.isAtLeastB()
         ) {
             var allowedPermissionsToRequest =
                 healthPermissionReader

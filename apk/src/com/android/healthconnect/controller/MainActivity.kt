@@ -19,10 +19,12 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeRedirectToMigrationActivity
 import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.navigation.DestinationChangedListener
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthfitness.flags.Flags.newHomeScreen
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -37,12 +39,16 @@ class MainActivity : Hilt_MainActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        if (savedInstanceState == null) {
+            setStartDestinationFragment()
+        }
+
         // This flag ensures a non system app cannot show an overlay on Health Connect. b/313425281
         window.addSystemFlags(
             WindowManager.LayoutParams.SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS
         )
-
-        setContentView(R.layout.activity_main)
 
         setTitle(R.string.app_label)
 
@@ -51,6 +57,23 @@ class MainActivity : Hilt_MainActivity() {
         if (maybeRedirectToMigrationActivity(this, currentMigrationState)) {
             return
         }
+    }
+
+    private fun setStartDestinationFragment() {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+
+        val startDestinationId =
+            if (newHomeScreen()) {
+                R.id.newHomeFragment
+            } else {
+                R.id.homeFragment
+            }
+        navGraph.setStartDestination(startDestinationId)
+
+        navController.graph = navGraph
     }
 
     override fun onStart() {

@@ -5,7 +5,7 @@ import android.health.connect.aidl.HealthConnectExceptionParcel;
 
 /**
  * Callback for {@link HealthConnectManager#getChangesForBackup}
- * {@hide}
+ * @hide
  */
 interface IGetChangesForBackupResponseCallback {
     // Called on a successful operation
