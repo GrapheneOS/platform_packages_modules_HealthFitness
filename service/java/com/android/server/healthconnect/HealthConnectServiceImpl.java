@@ -552,7 +552,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             AttributionSource attributionSource,
             RecordsParcel recordsParcel,
             IInsertRecordsResponseCallback callback) {
-        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, recordsParcel, callback);
 
         final int uid = Binder.getCallingUid();
@@ -565,9 +564,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         ErrorCallback errorCallback = callback::onError;
 
-        final RecordsParcel unmaskedRecordsParcel =
-                recordsParcel.toUnmasked(getUnmaskingFunction(attributionSource.getPackageName()));
-
         scheduleLoggingHealthDataApiErrors(
                 () -> {
                     enforceIsForegroundUser(userHandle);
@@ -578,10 +574,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         + " not allowed to insert records");
                     }
                     enforceMemoryRateLimit(
-                            unmaskedRecordsParcel.getRecordsSize(),
-                            unmaskedRecordsParcel.getRecordsChunkSize());
-                    final List<RecordInternal<?>> recordInternals =
-                            unmaskedRecordsParcel.getRecords();
+                            recordsParcel.getRecordsSize(), recordsParcel.getRecordsChunkSize());
+                    final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
                     logger.setNumberOfRecords(recordInternals.size());
                     throwExceptionIfDataSyncInProgress();
                     boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
@@ -590,7 +584,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             QuotaCategory.QUOTA_CATEGORY_WRITE,
                             isInForeground,
                             logger,
-                            unmaskedRecordsParcel.getRecordsChunkSize());
+                            recordsParcel.getRecordsChunkSize());
                     mDataPermissionEnforcer.enforceRecordsWritePermissions(
                             recordInternals, attributionSource);
                     List<String> uuids =
@@ -927,7 +921,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             AttributionSource attributionSource,
             RecordsParcel recordsParcel,
             IEmptyResponseCallback callback) {
-        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, recordsParcel, callback);
         ErrorCallback errorCallback = callback::onError;
 
@@ -939,9 +932,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionSource.getPackageName());
 
-        final RecordsParcel unmaskedRecordsParcel =
-                recordsParcel.toUnmasked(getUnmaskingFunction(attributionSource.getPackageName()));
-
         scheduleLoggingHealthDataApiErrors(
                 () -> {
                     enforceIsForegroundUser(userHandle);
@@ -952,10 +942,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         + " not allowed to insert records");
                     }
                     enforceMemoryRateLimit(
-                            unmaskedRecordsParcel.getRecordsSize(),
-                            unmaskedRecordsParcel.getRecordsChunkSize());
-                    final List<RecordInternal<?>> recordInternals =
-                            unmaskedRecordsParcel.getRecords();
+                            recordsParcel.getRecordsSize(), recordsParcel.getRecordsChunkSize());
+                    final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
                     logger.setNumberOfRecords(recordInternals.size());
                     throwExceptionIfDataSyncInProgress();
                     boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
@@ -964,7 +952,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             QuotaCategory.QUOTA_CATEGORY_WRITE,
                             isInForeground,
                             logger,
-                            unmaskedRecordsParcel.getRecordsChunkSize());
+                            recordsParcel.getRecordsChunkSize());
                     mDataPermissionEnforcer.enforceRecordsWritePermissions(
                             recordInternals, attributionSource);
                     mFitnessRecordUpsertHelper.updateRecords(

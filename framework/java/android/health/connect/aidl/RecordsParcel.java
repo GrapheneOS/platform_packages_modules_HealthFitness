@@ -20,7 +20,6 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.internal.PackageNameMasker;
-import android.health.connect.internal.PackageNameUnmasker;
 import android.health.connect.internal.ParcelUtils;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.ParcelRecordConverter;
@@ -38,10 +37,7 @@ import java.util.function.Function;
  *
  * @hide
  */
-public class RecordsParcel
-        implements Parcelable,
-                PackageNameMasker<RecordsParcel>,
-                PackageNameUnmasker<RecordsParcel> {
+public class RecordsParcel implements Parcelable, PackageNameMasker<RecordsParcel> {
     @NonNull
     public static final Creator<RecordsParcel> CREATOR =
             new Creator<>() {
@@ -140,17 +136,6 @@ public class RecordsParcel
         return new RecordsParcel(
                 this.mRecordInternals.stream()
                         .<RecordInternal<?>>map(record -> record.toMasked(packageMasker))
-                        .toList(),
-                this.mRecordsChunkSize,
-                this.mRecordsSize);
-    }
-
-    @NonNull
-    @Override
-    public RecordsParcel toUnmasked(Function<String, String> packageUnmasker) {
-        return new RecordsParcel(
-                this.mRecordInternals.stream()
-                        .<RecordInternal<?>>map(record -> record.toUnmasked(packageUnmasker))
                         .toList(),
                 this.mRecordsChunkSize,
                 this.mRecordsSize);
