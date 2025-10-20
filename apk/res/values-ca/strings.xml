@@ -88,7 +88,7 @@
     <string name="symptoms_category_lowercase" msgid="2298815597177353672">"símptomes"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"Navega per les dades"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"Gestiona les dades"</string>
-    <string name="export_data_button" msgid="7783329820434117744">"Exporta dades"</string>
+    <string name="export_data_button" msgid="7783329820434117744">"Exporta les dades"</string>
     <string name="delete_all_data_button" msgid="7238755635416521487">"Suprimeix totes les dades"</string>
     <string name="no_categories" msgid="2636778482437506241">"No tens cap dada a Salut connectada"</string>
     <string name="permission_types_title" msgid="7698058200557389436">"Les teves dades"</string>
@@ -256,6 +256,14 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"moc cervical"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"Llegir el moc cervical"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"Escriure el moc cervical"</string>
+    <!-- no translation found for cycle_phases_uppercase_label (1693612101973701017) -->
+    <skip />
+    <!-- no translation found for cycle_phases_lowercase_label (6513009148778082622) -->
+    <skip />
+    <!-- no translation found for cycle_phases_read_content_description (1974818937933604194) -->
+    <skip />
+    <!-- no translation found for cycle_phases_write_content_description (8779256196190212513) -->
+    <skip />
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"Hemorràgia intermenstrual"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"hemorràgia intermenstrual"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Llegir l\'hemorràgia intermenstrual"</string>
