@@ -43,8 +43,9 @@ import android.health.connect.internal.datatypes.AlcoholConsumptionRecordInterna
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.SetFlagsRule;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -66,12 +67,14 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 @RunWith(AndroidJUnit4.class)
-@EnableFlags({Flags.FLAG_ALCOHOL_CONSUMPTION, Flags.FLAG_ALCOHOL_CONSUMPTION_DB})
+@RequiresFlagsEnabled({Flags.FLAG_ALCOHOL_CONSUMPTION, Flags.FLAG_ALCOHOL_CONSUMPTION_DB})
 public class AlcoholConsumptionRecordHelperTest {
     private static final String TEST_PACKAGE_NAME = "package.name";
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
-    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
+    @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
     @Rule
     public final AssumptionCheckerRule mSupportedHardwareRule =
