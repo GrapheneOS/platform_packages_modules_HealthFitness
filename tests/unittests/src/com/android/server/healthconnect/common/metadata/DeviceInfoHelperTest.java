@@ -208,6 +208,58 @@ public class DeviceInfoHelperTest {
         assertThat(deviceInfo).isNotEqualTo(differentDisplayName);
     }
 
+    @Test
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void getDeviceInfo_deviceIdNotInCache_returnsNull() {
+        DeviceInfoHelper.DeviceInfo deviceInfo = mDeviceInfoHelper.getDeviceInfo("non_existent_id");
+        assertThat(deviceInfo).isNull();
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void getDeviceInfoId_deviceInfoNotInCache_returnsNull() {
+        DeviceInfoHelper.DeviceInfo nonExistentDeviceInfo =
+                new DeviceInfoHelper.DeviceInfo(
+                        "NonExistent", "Device", DEVICE_TYPE_UNKNOWN, null, "Non Existent Device");
+
+        Long id = mDeviceInfoHelper.getDeviceInfoId(nonExistentDeviceInfo);
+
+        assertThat(id).isNull();
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void getDeviceInfoId_deviceInfoInCache_returnsCorrectId() {
+        RecordInternal<?> recordInternal = getStepsRecordInternal();
+        mDeviceInfoHelper.populateDeviceInfoId(recordInternal);
+        DeviceInfoHelper.DeviceInfo existingDeviceInfo =
+                new DeviceInfoHelper.DeviceInfo(
+                        "Google", "Pixel", DEVICE_TYPE_PHONE, null, "Pixel Phone");
+
+        Long id = mDeviceInfoHelper.getDeviceInfoId(existingDeviceInfo);
+
+        assertThat(id).isEqualTo(1L);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void getDeviceInfo_deviceIdInCache_returnsCorrectDeviceInfo() {
+        DeviceInfoHelper.DeviceInfo deviceInfoWithId =
+                new DeviceInfoHelper.DeviceInfo(
+                        "Google", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone");
+        mDeviceInfoHelper.insertIfNotPresent(deviceInfoWithId);
+
+        DeviceInfoHelper.DeviceInfo retrievedDeviceInfo =
+                mDeviceInfoHelper.getDeviceInfo("pixel_id");
+
+        assertThat(retrievedDeviceInfo).isNotNull();
+        assertThat(retrievedDeviceInfo.getManufacturer()).isEqualTo("Google");
+        assertThat(retrievedDeviceInfo.getModel()).isEqualTo("Pixel");
+        assertThat(retrievedDeviceInfo.getDeviceType()).isEqualTo(DEVICE_TYPE_PHONE);
+        assertThat(retrievedDeviceInfo.getDeviceId()).isEqualTo("pixel_id");
+        assertThat(retrievedDeviceInfo.getDisplayName()).isEqualTo("Pixel Phone");
+    }
+
     private RecordInternal<?> getStepsRecordInternal() {
         StepsRecordInternal recordInternal = new StepsRecordInternal();
         recordInternal.setManufacturer("Google");
@@ -215,5 +267,21 @@ public class DeviceInfoHelperTest {
         recordInternal.setDeviceType(DEVICE_TYPE_PHONE);
         recordInternal.setDisplayName("Pixel Phone");
         return recordInternal;
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void populateDeviceInfoId_syntheticPackageNameAndDeviceInfoIdPresent_returnsEarly() {
+        RecordInternal<?> recordInternal = getStepsRecordInternal();
+        recordInternal.setPackageName(
+                SyntheticPackageNameCreator.createCanonical(DEVICE_TYPE_PHONE, "test_device_id"));
+        recordInternal.setDeviceInfoId(100L);
+
+        mDeviceInfoHelper.populateDeviceInfoId(recordInternal);
+
+        verify(mTransactionManager, times(0))
+                .insertOrThrowOnConflict(any(UpsertTableRequest.class));
+        verify(mTransactionManager, times(0)).read(any(ReadTableRequest.class));
+        assertThat(recordInternal.getDeviceInfoId()).isEqualTo(100L);
     }
 }

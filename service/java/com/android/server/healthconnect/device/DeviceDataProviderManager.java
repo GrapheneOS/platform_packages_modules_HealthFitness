@@ -18,13 +18,19 @@ package com.android.server.healthconnect.device;
 
 import android.annotation.NonNull;
 import android.health.connect.datatypes.Device;
+import android.health.connect.internal.datatypes.AppInfoInternal;
+import android.health.connect.internal.datatypes.RecordInternal;
+import android.util.ArrayMap;
+import android.util.Slog;
 
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper.DeviceInfo;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
+import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -36,17 +42,24 @@ import java.util.Set;
  */
 public class DeviceDataProviderManager {
 
+    private static final String TAG = "DeviceDataProviderManager";
+    private static final ArrayMap<String, Boolean> EMPTY_EXTRA_PERMISSION_MAPPING =
+            new ArrayMap<>();
+
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final AppInfoHelper mAppInfoHelper;
     private final DeviceDataProviderHelper mDeviceDataProviderHelper;
+    private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
 
     public DeviceDataProviderManager(
             @NonNull DeviceInfoHelper deviceInfoHelper,
             @NonNull AppInfoHelper appInfoHelper,
-            @NonNull DeviceDataProviderHelper deviceDataProviderHelper) {
+            @NonNull DeviceDataProviderHelper deviceDataProviderHelper,
+            @NonNull FitnessRecordUpsertHelper fitnessRecordUpsertHelper) {
         mDeviceInfoHelper = Objects.requireNonNull(deviceInfoHelper);
         mAppInfoHelper = Objects.requireNonNull(appInfoHelper);
         mDeviceDataProviderHelper = Objects.requireNonNull(deviceDataProviderHelper);
+        mFitnessRecordUpsertHelper = Objects.requireNonNull(fitnessRecordUpsertHelper);
     }
 
     /**
@@ -92,5 +105,74 @@ public class DeviceDataProviderManager {
         // DDP package name + device info + data type + status
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 ddpPackageName, deviceInfoId, advertisement);
+    }
+
+    /**
+     * Inserts a list of records associated with a specific device.
+     *
+     * <p>Note: The device data source must be advertised first through {@link
+     * #handleAdvertisement}.
+     *
+     * @param deviceId The ID of the device.
+     * @param records The list of records to insert.
+     * @return A list of UUIDs of the inserted records.
+     * @throws IllegalArgumentException if the device with the given ID is not found
+     * @throws IllegalStateException if the generated syntheticPackageName or deviceInfoId is not
+     *     valid
+     */
+    public List<String> insertDeviceRecords(
+            @NonNull String deviceId, @NonNull List<RecordInternal<?>> records) {
+        Objects.requireNonNull(deviceId);
+        Objects.requireNonNull(records);
+        DeviceInfoHelper.DeviceInfo deviceInfo = mDeviceInfoHelper.getDeviceInfo(deviceId);
+        if (deviceInfo == null) {
+            Slog.e(
+                    TAG,
+                    "Device with ID "
+                            + deviceId
+                            + " not found, ensure the device data source has been advertised");
+            throw new IllegalArgumentException(
+                    "Device with ID "
+                            + deviceId
+                            + " not found, ensure the device data source has been advertised");
+        }
+
+        String syntheticPackageName =
+                SyntheticPackageNameCreator.createCanonical(deviceInfo.getDeviceType(), deviceId);
+        long deviceInfoId = getOrThrowDeviceInfoId(deviceInfo, syntheticPackageName);
+
+        for (RecordInternal<?> record : records) {
+            mDeviceInfoHelper.populateRecordWithValue(deviceInfoId, record);
+            record.setDeviceInfoId(deviceInfoId);
+            record.setPackageName(syntheticPackageName);
+        }
+
+        return mFitnessRecordUpsertHelper.insertRecords(
+                syntheticPackageName,
+                records,
+                EMPTY_EXTRA_PERMISSION_MAPPING,
+                /* shouldGenerateAccessLogs= */ false);
+    }
+
+    private long getOrThrowDeviceInfoId(DeviceInfo deviceInfo, String syntheticPackageName) {
+        AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(syntheticPackageName);
+        if (appInfo == null) {
+            throw new IllegalStateException(
+                    "syntheticPackageName not found in application_info_table");
+        }
+        Long deviceInfoIdFromAppInfoDb = appInfo.getDeviceInfoId();
+        Long deviceInfoIdFromDeviceInfoDb = mDeviceInfoHelper.getDeviceInfoId(deviceInfo);
+        if (deviceInfoIdFromAppInfoDb == null) {
+            throw new IllegalStateException("deviceInfoId not found in application_info_table");
+        }
+        if (deviceInfoIdFromDeviceInfoDb == null) {
+            throw new IllegalStateException("deviceInfoId not found in device_info_table");
+        }
+        // Check that the inferred synthetic package name is the correct one for the deviceId
+        if (!deviceInfoIdFromDeviceInfoDb.equals(deviceInfoIdFromAppInfoDb)) {
+            throw new IllegalStateException(
+                    "deviceInfoId in device_info_table does not match application_info_table");
+        }
+        return deviceInfoIdFromDeviceInfoDb;
     }
 }
