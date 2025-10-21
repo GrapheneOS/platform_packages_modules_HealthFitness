@@ -41,7 +41,6 @@ import com.android.healthconnect.controller.shared.usecase.LoadOnboardingStateUs
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.KeyguardManagerUtil
-import com.android.healthfitness.flags.Flags.onboarding
 import com.android.healthfitness.flags.Flags.stepTrackingEnabled
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -263,9 +262,6 @@ constructor(
 
     private fun loadOnboardingBanners() {
         viewModelScope.launch {
-            if (!onboarding()) {
-                return@launch
-            }
             val onboardingZeroAppsBannerSeen =
                 sharedPreferences.getBoolean(Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
             val onboardingOneAppBannerSeen =

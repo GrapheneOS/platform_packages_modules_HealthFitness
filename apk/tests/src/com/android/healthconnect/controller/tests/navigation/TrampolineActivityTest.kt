@@ -306,7 +306,6 @@ class TrampolineActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING)
     fun syncMoreAppsAction_showsConnectAppsOnboarding() {
         launchActivityForResult<TrampolineActivity>(createStartIntent(ACTION_SYNC_MORE_APPS)).use {
             onIdle()
