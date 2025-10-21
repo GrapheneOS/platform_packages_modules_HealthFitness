@@ -111,18 +111,15 @@ object TestData {
         symptomType: Int = SymptomRecord.SYMPTOM_TYPE_COUGH,
         notes: String = "note",
     ): SymptomRecord {
-        return SymptomRecord(
-            symptomType,
-            notes,
-            SymptomRecord.SEVERITY_MILD,
-            1,
-            SymptomRecord.RECORD_TEMPORAL_TYPE_INSTANT,
-            Instant.parse("2023-04-05T10:00:00Z"),
-            ZoneOffset.UTC,
-            Instant.parse("2023-04-05T10:00:00Z"),
-            ZoneOffset.UTC,
-            getMetaData(),
-            true,
-        )
+        return SymptomRecord.Builder(
+                symptomType,
+                Instant.parse("2023-04-05T10:00:00Z"),
+                getMetaData(),
+            )
+            .setNotes(notes)
+            .setSeverity(SymptomRecord.SEVERITY_MILD)
+            .setStartZoneOffset(ZoneOffset.UTC)
+            .setEndZoneOffset(ZoneOffset.UTC)
+            .build()
     }
 }
