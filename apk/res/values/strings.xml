@@ -1158,7 +1158,7 @@
     <!--endregion-->
 
     <!-- region Alcohol Consumption -->
-    <string name="alcohol_consumption_title" description="Title of a single data entry for Alcohol Consumption. [CHAR LIMIT=20]"><xliff:g example="1 serving" id="serving">%1$s</xliff:g> • <xliff:g example="Beer" id="type">%2$s</xliff:g></string>
+    <string name="alcohol_consumption_title" description="Title of a single data entry for Alcohol Consumption. [CHAR LIMIT=20]"><xliff:g example="Beer" id="type">%1$s</xliff:g></string>
     <string name="alcohol_consumption_beverage_type_other" description="Alcohol consumption beverage type: Other. [CHAR LIMIT=20]">Other</string>
     <string name="alcohol_consumption_beverage_type_beer" description="Alcohol consumption beverage type: Beer. [CHAR LIMIT=20]">Beer</string>
     <string name="alcohol_consumption_beverage_type_wine" description="Alcohol consumption beverage type: Wine. [CHAR LIMIT=20]">Wine</string>
@@ -1180,7 +1180,7 @@
     <string name="alcohol_consumption_beverage_type_highball" description="Alcohol consumption beverage type: Highball. [CHAR LIMIT=20]">Highball</string>
     <string name="serving_volume_title" description="Title for serving volume. [CHAR LIMIT=40]">Serving Volume</string>
     <string name="alcohol_by_volume_title" description="Title for alcohol by volume. [CHAR LIMIT=40]">Alcohol by Volume</string>
-    <string name="note_title" description="Title for note. [CHAR LIMIT=40]">Note</string>
+    <string name="notes_title" description="Title for note. [CHAR LIMIT=40]">Notes</string>
     <string name="details_title" description="Title for details section. [CHAR LIMIT=40]">Details</string>
     <!-- endregion -->
     <!-- endregion -->

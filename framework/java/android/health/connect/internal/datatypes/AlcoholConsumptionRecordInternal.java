@@ -40,12 +40,10 @@ public class AlcoholConsumptionRecordInternal
         extends IntervalRecordInternal<AlcoholConsumptionRecord> {
 
     private int mTemporalType;
-    private int mServingCount;
     private int mBeverageType;
-    private int mServingSize;
     private double mServingVolumeLiters = DEFAULT_DOUBLE;
     private double mAlcoholByVolume = DEFAULT_DOUBLE;
-    @Nullable private String mNote;
+    @Nullable private String mNotes;
 
     public AlcoholConsumptionRecordInternal() {
         super();
@@ -54,23 +52,19 @@ public class AlcoholConsumptionRecordInternal
     public AlcoholConsumptionRecordInternal(Parcel parcel) {
         super(parcel);
         mTemporalType = parcel.readInt();
-        mServingCount = parcel.readInt();
         mBeverageType = parcel.readInt();
-        mServingSize = parcel.readInt();
         mServingVolumeLiters = parcel.readDouble();
         mAlcoholByVolume = parcel.readDouble();
-        mNote = parcel.readString();
+        mNotes = parcel.readString();
     }
 
     @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
         parcel.writeInt(mTemporalType);
-        parcel.writeInt(mServingCount);
         parcel.writeInt(mBeverageType);
-        parcel.writeInt(mServingSize);
         parcel.writeDouble(mServingVolumeLiters);
         parcel.writeDouble(mAlcoholByVolume);
-        parcel.writeString(mNote);
+        parcel.writeString(mNotes);
     }
 
     @Override
@@ -79,25 +73,22 @@ public class AlcoholConsumptionRecordInternal
         if (mTemporalType == RECORD_TEMPORAL_TYPE_INSTANT) {
             builder =
                     new AlcoholConsumptionRecord.Builder(
-                            buildMetaData(), getStartTime(), mServingCount, mBeverageType);
+                            buildMetaData(), getStartTime(), mBeverageType);
         } else if (mTemporalType == AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_INTERVAL) {
             builder =
                     new AlcoholConsumptionRecord.Builder(
                             buildMetaData(),
                             getStartTime(),
                             getEndTime(),
-                            mServingCount,
                             mBeverageType);
         } else {
             builder =
                     new AlcoholConsumptionRecord.Builder(
                             buildMetaData(),
                             getStartTime().atOffset(getStartZoneOffset()).toLocalDate(),
-                            mServingCount,
                             mBeverageType);
         }
 
-        builder.setServingSize(mServingSize);
         if (getStartZoneOffset() != null) {
             builder.setStartZoneOffset(getStartZoneOffset());
         }
@@ -110,25 +101,16 @@ public class AlcoholConsumptionRecordInternal
         if (mAlcoholByVolume != DEFAULT_DOUBLE) {
             builder.setAlcoholByVolume(Percentage.fromValue(getAlcoholByVolume()));
         }
-        if (mNote != null) {
-            builder.setNote(mNote);
+        if (mNotes != null) {
+            builder.setNotes(mNotes);
         }
 
         return builder.buildWithoutValidation();
     }
 
-    public int getServingCount() {
-        return mServingCount;
-    }
-
     @AlcoholConsumptionRecord.AlcoholConsumptionBeverageType
     public int getBeverageType() {
         return mBeverageType;
-    }
-
-    @AlcoholConsumptionRecord.AlcoholConsumptionServingSize
-    public int getServingSize() {
-        return mServingSize;
     }
 
     public double getServingVolumeLiters() {
@@ -140,8 +122,8 @@ public class AlcoholConsumptionRecordInternal
     }
 
     @Nullable
-    public CharSequence getNote() {
-        return mNote;
+    public CharSequence getNotes() {
+        return mNotes;
     }
 
     /** Returns the temporal type of this record. */
@@ -150,26 +132,11 @@ public class AlcoholConsumptionRecordInternal
         return mTemporalType;
     }
 
-    /** Returns this object with the specified number of servings. */
-    @NonNull
-    public AlcoholConsumptionRecordInternal setServingCount(int servingCount) {
-        mServingCount = servingCount;
-        return this;
-    }
-
     /** Returns this object with the specified beverage type. */
     @NonNull
     public AlcoholConsumptionRecordInternal setBeverageType(
             @AlcoholConsumptionRecord.AlcoholConsumptionBeverageType int beverageType) {
         mBeverageType = beverageType;
-        return this;
-    }
-
-    /** Returns this object with the specified beverage serving size. */
-    @NonNull
-    public AlcoholConsumptionRecordInternal setServingSize(
-            @AlcoholConsumptionRecord.AlcoholConsumptionServingSize int servingSize) {
-        mServingSize = servingSize;
         return this;
     }
 
@@ -189,8 +156,8 @@ public class AlcoholConsumptionRecordInternal
 
     /** Returns this object with the specified note. */
     @NonNull
-    public AlcoholConsumptionRecordInternal setNote(CharSequence note) {
-        mNote = (note != null) ? note.toString() : null;
+    public AlcoholConsumptionRecordInternal setNotes(CharSequence notes) {
+        mNotes = (notes != null) ? notes.toString() : null;
         return this;
     }
 

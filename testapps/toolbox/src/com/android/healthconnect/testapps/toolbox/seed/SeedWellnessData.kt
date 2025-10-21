@@ -37,16 +37,6 @@ import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMP
 import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_VODKA
 import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WHISKEY
 import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE
-import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_BOTTLE
-import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_CAN
-import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS
-import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_HALF_PINT
-import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_HANDLE
-import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER
-import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT
-import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_SHOT
-import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_STANDARD_DRINK
-import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_UNIT
 import android.health.connect.datatypes.MindfulnessSessionRecord
 import android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_BREATHING
 import android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_MEDITATION
@@ -107,20 +97,6 @@ class SeedWellnessData(private val context: Context, private val manager: Health
                 ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_COCKTAIL,
                 ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_CHUHAI,
                 ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_HIGHBALL,
-            )
-
-        val VALID_ALCOHOL_CONSUMPTION_SERVING_SIZE =
-            setOf(
-                ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER,
-                ALCOHOL_CONSUMPTION_SERVING_SIZE_STANDARD_DRINK,
-                ALCOHOL_CONSUMPTION_SERVING_SIZE_UNIT,
-                ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT,
-                ALCOHOL_CONSUMPTION_SERVING_SIZE_HALF_PINT,
-                ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS,
-                ALCOHOL_CONSUMPTION_SERVING_SIZE_SHOT,
-                ALCOHOL_CONSUMPTION_SERVING_SIZE_BOTTLE,
-                ALCOHOL_CONSUMPTION_SERVING_SIZE_CAN,
-                ALCOHOL_CONSUMPTION_SERVING_SIZE_HANDLE,
             )
 
         val VALID_NICOTINE_INTAKE_TYPE =
@@ -244,13 +220,11 @@ class SeedWellnessData(private val context: Context, private val manager: Health
         return AlcoholConsumptionRecord.Builder(
                 getMetaData(context),
                 time,
-                Random.nextInt(1, 11),
                 VALID_ALCOHOL_CONSUMPTION_TYPE.random(),
             )
-            .setServingSize(VALID_ALCOHOL_CONSUMPTION_SERVING_SIZE.random())
             .setAlcoholByVolume(Percentage.fromValue(Random.nextDouble(1.0, 100.0)))
             .setServingVolume(Volume.fromLiters(Random.nextDouble(1.0, 10.0)))
-            .setNote(ALCOHOL_CONSUMPTION_NOTES.random())
+            .setNotes(ALCOHOL_CONSUMPTION_NOTES.random())
             .build()
     }
 
@@ -262,13 +236,11 @@ class SeedWellnessData(private val context: Context, private val manager: Health
                 getMetaData(context),
                 startTime,
                 endTime,
-                Random.nextInt(1, 11),
                 VALID_ALCOHOL_CONSUMPTION_TYPE.random(),
             )
-            .setServingSize(VALID_ALCOHOL_CONSUMPTION_SERVING_SIZE.random())
             .setAlcoholByVolume(Percentage.fromValue(Random.nextDouble(1.0, 100.0)))
             .setServingVolume(Volume.fromLiters(Random.nextDouble(1.0, 10.0)))
-            .setNote(ALCOHOL_CONSUMPTION_NOTES.random())
+            .setNotes(ALCOHOL_CONSUMPTION_NOTES.random())
             .build()
     }
 
@@ -276,13 +248,11 @@ class SeedWellnessData(private val context: Context, private val manager: Health
         return AlcoholConsumptionRecord.Builder(
                 getMetaData(context),
                 date,
-                Random.nextInt(1, 11),
                 VALID_ALCOHOL_CONSUMPTION_TYPE.random(),
             )
-            .setServingSize(VALID_ALCOHOL_CONSUMPTION_SERVING_SIZE.random())
             .setAlcoholByVolume(Percentage.fromValue(Random.nextDouble(1.0, 100.0)))
             .setServingVolume(Volume.fromLiters(Random.nextDouble(1.0, 10.0)))
-            .setNote(ALCOHOL_CONSUMPTION_NOTES.random())
+            .setNotes(ALCOHOL_CONSUMPTION_NOTES.random())
             .build()
     }
 }

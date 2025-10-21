@@ -30,6 +30,7 @@ import android.annotation.Nullable;
 import android.health.connect.datatypes.units.Percentage;
 import android.health.connect.datatypes.units.Volume;
 import android.health.connect.internal.datatypes.AlcoholConsumptionRecordInternal;
+import android.text.TextUtils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -107,44 +108,6 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
     /** Use this type for highball. */
     public static final int ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_HIGHBALL = 18;
 
-    /** Use this for other serving sizes. */
-    public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER = 0;
-
-    /**
-     * Use this for a standard drink. The definition of a "standard drink" varies by country, but
-     * generally refers to a drink containing a fixed amount of pure alcohol (e.g., 10 grams in
-     * Australia, 14 grams in the United States).
-     */
-    public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_STANDARD_DRINK = 1;
-
-    /**
-     * Use this for a unit of alcohol. The definition of a "unit of alcohol" varies by country, but
-     * generally refers to a drink containing a fixed amount of pure alcohol (e.g., 10 millilitres
-     * or 8 grams in the United Kingdom).
-     */
-    public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_UNIT = 2;
-
-    /** Use this for a pint. */
-    public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT = 3;
-
-    /** Use this for a half pint. */
-    public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_HALF_PINT = 4;
-
-    /** Use this for a glass. */
-    public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS = 5;
-
-    /** Use this for a shot. */
-    public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_SHOT = 6;
-
-    /** Use this for a bottle. */
-    public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_BOTTLE = 7;
-
-    /** Use this for a can. */
-    public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_CAN = 8;
-
-    /** Use this for a handle. */
-    public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_HANDLE = 9;
-
     /** @hide */
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
@@ -184,26 +147,11 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
                     ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_COCKTAIL,
                     ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_CHUHAI,
                     ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_HIGHBALL);
-
-    private static final Set<Integer> VALID_ALCOHOL_CONSUMPTION_SERVING_SIZES =
-            Set.of(
-                    ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER,
-                    ALCOHOL_CONSUMPTION_SERVING_SIZE_STANDARD_DRINK,
-                    ALCOHOL_CONSUMPTION_SERVING_SIZE_UNIT,
-                    ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT,
-                    ALCOHOL_CONSUMPTION_SERVING_SIZE_HALF_PINT,
-                    ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS,
-                    ALCOHOL_CONSUMPTION_SERVING_SIZE_SHOT,
-                    ALCOHOL_CONSUMPTION_SERVING_SIZE_BOTTLE,
-                    ALCOHOL_CONSUMPTION_SERVING_SIZE_CAN,
-                    ALCOHOL_CONSUMPTION_SERVING_SIZE_HANDLE);
     @AlcoholConsumptionTemporalType private final int mTemporalType;
-    private final int mServingCount;
     private final int mBeverageType;
-    private final int mServingSize;
     @Nullable private final Volume mServingVolume;
     @Nullable private final Percentage mAlcoholByVolume;
-    @Nullable private final CharSequence mNote;
+    @Nullable private final CharSequence mNotes;
 
     private AlcoholConsumptionRecord(
             @NonNull Metadata metadata,
@@ -212,12 +160,10 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
             @AlcoholConsumptionTemporalType int temporalType,
-            int servingCount,
             @AlcoholConsumptionBeverageType int beverageType,
-            @AlcoholConsumptionServingSize int servingSize,
             @Nullable Volume servingVolume,
             @Nullable Percentage alcoholByVolume,
-            @Nullable CharSequence note,
+            @Nullable CharSequence notes,
             boolean skipValidation) {
         super(
                 metadata,
@@ -230,7 +176,6 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
 
         if (!skipValidation) {
 
-            requireInRange(servingCount, 1, 255, "servingCount");
             if (servingVolume != null) {
                 requirePositive(servingVolume.getInLiters(), "servingVolume");
                 requireInRange(servingVolume.getInLiters(), 0, 255, "servingVolume");
@@ -242,18 +187,12 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
                     beverageType,
                     VALID_ALCOHOL_CONSUMPTION_BEVERAGE_TYPES,
                     AlcoholConsumptionBeverageType.class.getSimpleName());
-            validateIntDefValue(
-                    servingSize,
-                    VALID_ALCOHOL_CONSUMPTION_SERVING_SIZES,
-                    AlcoholConsumptionServingSize.class.getSimpleName());
         }
         mTemporalType = temporalType;
-        mServingCount = servingCount;
         mBeverageType = beverageType;
-        mServingSize = servingSize;
         mServingVolume = servingVolume;
         mAlcoholByVolume = alcoholByVolume;
-        mNote = note;
+        mNotes = notes;
     }
 
     /**
@@ -268,7 +207,7 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
         return mTemporalType;
     }
 
-    /** Returns the date of the record, or null if the record is not a local date record. */
+    /** Returns the date of the record, or {@code null} if the record is not a local date record. */
     @Nullable
     public LocalDate getDate() {
         if (getTemporalType() == RECORD_TEMPORAL_TYPE_LOCAL_DATE) {
@@ -277,25 +216,15 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
         return null;
     }
 
-    /** Returns the number of servings of alcohol the user consumed. */
-    public int getServingCount() {
-        return mServingCount;
-    }
-
     /** Returns the type of beverage the user consumed. */
     @AlcoholConsumptionBeverageType
     public int getBeverageType() {
         return mBeverageType;
     }
 
-    /** Returns the serving size of the beverage the user consumed. */
-    @AlcoholConsumptionServingSize
-    public int getServingSize() {
-        return mServingSize;
-    }
-
     /**
-     * Returns the volume of each serving consumed. Returns null if no serving volume was specified.
+     * Returns the volume of each serving consumed. Returns {@code null} if no serving volume was
+     * specified.
      */
     @Nullable
     public Volume getServingVolume() {
@@ -303,18 +232,17 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
     }
 
     /**
-     * Returns the alcohol by volume of the beverage. Returns null if no alcohol by volume was
-     * specified.
+     * Returns the alcohol by volume of the beverage or {@code null} if alcohol by volume is null.
      */
     @Nullable
     public Percentage getAlcoholByVolume() {
         return mAlcoholByVolume;
     }
 
-    /** Returns the note for this record. Returns null if no note was specified. */
+    /** Returns the notes for this record. Returns {@code null} if no notes were specified. */
     @Nullable
-    public CharSequence getNote() {
-        return mNote;
+    public CharSequence getNotes() {
+        return mNotes;
     }
 
     /**
@@ -329,12 +257,10 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
         if (!(o instanceof AlcoholConsumptionRecord that)) return false;
         if (!super.equals(o)) return false;
         return mTemporalType == that.mTemporalType
-                && mServingCount == that.mServingCount
                 && mBeverageType == that.mBeverageType
-                && mServingSize == that.mServingSize
                 && Objects.equals(mServingVolume, that.mServingVolume)
                 && Objects.equals(mAlcoholByVolume, that.mAlcoholByVolume)
-                && Objects.equals(mNote, that.mNote);
+                && TextUtils.equals(mNotes, that.mNotes);
     }
 
     @Override
@@ -342,12 +268,10 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
         return Objects.hash(
                 super.hashCode(),
                 mTemporalType,
-                mServingCount,
                 mBeverageType,
-                mServingSize,
                 mServingVolume,
                 mAlcoholByVolume,
-                mNote);
+                mNotes);
     }
 
     /** @hide */
@@ -375,22 +299,6 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
     @Retention(RetentionPolicy.SOURCE)
     public @interface AlcoholConsumptionBeverageType {}
 
-    /** @hide */
-    @IntDef({
-        ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER,
-        ALCOHOL_CONSUMPTION_SERVING_SIZE_STANDARD_DRINK,
-        ALCOHOL_CONSUMPTION_SERVING_SIZE_UNIT,
-        ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT,
-        ALCOHOL_CONSUMPTION_SERVING_SIZE_HALF_PINT,
-        ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS,
-        ALCOHOL_CONSUMPTION_SERVING_SIZE_SHOT,
-        ALCOHOL_CONSUMPTION_SERVING_SIZE_BOTTLE,
-        ALCOHOL_CONSUMPTION_SERVING_SIZE_CAN,
-        ALCOHOL_CONSUMPTION_SERVING_SIZE_HANDLE
-    })
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface AlcoholConsumptionServingSize {}
-
     /** Builder class for {@link AlcoholConsumptionRecord} */
     public static final class Builder {
         private final Metadata mMetadata;
@@ -399,26 +307,22 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
         private ZoneOffset mStartZoneOffset;
         private ZoneOffset mEndZoneOffset;
         @AlcoholConsumptionTemporalType private final int mTemporalType;
-        private int mServingCount;
         private int mBeverageType;
-        private int mServingSize;
         @Nullable private Volume mServingVolume;
         @Nullable private Percentage mAlcoholByVolume;
-        @Nullable private CharSequence mNote;
+        @Nullable private CharSequence mNotes;
 
         /**
          * Builder for an alcohol consumption record that occurs at a specific instant in time.
          *
          * @param metadata The metadata of the record.
          * @param time The time of the record.
-         * @param servingCount The number of servings consumed. Required range: 1 to 255.
          * @param beverageType The type of beverage consumed. See {@link
          *     AlcoholConsumptionBeverageType} for valid values.
          */
         public Builder(
                 @NonNull Metadata metadata,
                 @NonNull Instant time,
-                int servingCount,
                 @AlcoholConsumptionBeverageType int beverageType) {
             mMetadata = metadata;
             mStartTime = time;
@@ -426,7 +330,6 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
             mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(time);
             mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(time);
             mTemporalType = RECORD_TEMPORAL_TYPE_INSTANT;
-            mServingCount = servingCount;
             mBeverageType = beverageType;
         }
 
@@ -436,7 +339,6 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
          * @param metadata The metadata of the record.
          * @param startTime The start time of the record.
          * @param endTime The end time of the record.
-         * @param servingCount The number of servings consumed. Required range: 1 to 255.
          * @param beverageType The type of beverage consumed. See {@link
          *     AlcoholConsumptionBeverageType} for valid values.
          */
@@ -444,7 +346,6 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
                 @NonNull Metadata metadata,
                 @NonNull Instant startTime,
                 @NonNull Instant endTime,
-                int servingCount,
                 @AlcoholConsumptionBeverageType int beverageType) {
             mMetadata = metadata;
             mStartTime = startTime;
@@ -452,7 +353,6 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
             mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
             mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
             mTemporalType = RECORD_TEMPORAL_TYPE_INTERVAL;
-            mServingCount = servingCount;
             mBeverageType = beverageType;
         }
 
@@ -461,14 +361,12 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
          *
          * @param metadata The metadata of the record.
          * @param date The date of the record.
-         * @param servingCount The number of servings consumed. Required range: 1 to 255.
          * @param beverageType The type of beverage consumed. See {@link
          *     AlcoholConsumptionBeverageType} for valid values.
          */
         public Builder(
                 @NonNull Metadata metadata,
                 @NonNull LocalDate date,
-                int servingCount,
                 @AlcoholConsumptionBeverageType int beverageType) {
             mMetadata = metadata;
             mStartZoneOffset = ZoneId.systemDefault().getRules().getOffset(date.atStartOfDay());
@@ -477,7 +375,6 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
             mStartTime = date.atStartOfDay().toInstant(mStartZoneOffset);
             mEndTime = LocalTime.MAX.atDate(date).toInstant(mEndZoneOffset);
             mTemporalType = RECORD_TEMPORAL_TYPE_LOCAL_DATE;
-            mServingCount = servingCount;
             mBeverageType = beverageType;
         }
 
@@ -512,17 +409,6 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
         }
 
         /**
-         * Sets the serving count of alcohol the user consumed.
-         *
-         * @param servingCount The number of servings consumed. Required range: 1 to 255.
-         */
-        @NonNull
-        public Builder setServingCount(int servingCount) {
-            mServingCount = servingCount;
-            return this;
-        }
-
-        /**
          * Sets the type of beverage the user consumed.
          *
          * @param beverageType The type of beverage consumed. See {@link
@@ -531,18 +417,6 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
         @NonNull
         public Builder setBeverageType(@AlcoholConsumptionBeverageType int beverageType) {
             mBeverageType = beverageType;
-            return this;
-        }
-
-        /**
-         * Sets the serving size of the beverage the user consumed.
-         *
-         * @param servingSize The serving size. See {@link AlcoholConsumptionServingSize} for valid
-         *     values.
-         */
-        @NonNull
-        public Builder setServingSize(@AlcoholConsumptionServingSize int servingSize) {
-            mServingSize = servingSize;
             return this;
         }
 
@@ -570,10 +444,10 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
             return this;
         }
 
-        /** Sets the note for this record. */
+        /** Sets the notes for this record. */
         @NonNull
-        public Builder setNote(@Nullable CharSequence note) {
-            mNote = note;
+        public Builder setNotes(@Nullable CharSequence notes) {
+            mNotes = notes;
             return this;
         }
 
@@ -590,12 +464,10 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
                     mEndTime,
                     mEndZoneOffset,
                     mTemporalType,
-                    mServingCount,
                     mBeverageType,
-                    mServingSize,
                     mServingVolume,
                     mAlcoholByVolume,
-                    mNote,
+                    mNotes,
                     true);
         }
 
@@ -611,12 +483,10 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
                     mEndTime,
                     mEndZoneOffset,
                     mTemporalType,
-                    mServingCount,
                     mBeverageType,
-                    mServingSize,
                     mServingVolume,
                     mAlcoholByVolume,
-                    mNote,
+                    mNotes,
                     false);
         }
     }
@@ -630,17 +500,15 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
 
         recordInternal.setTimeInterval(this);
         recordInternal.setTemporalType(mTemporalType);
-        recordInternal.setServingCount(mServingCount);
         recordInternal.setBeverageType(mBeverageType);
-        recordInternal.setServingSize(mServingSize);
         if (mServingVolume != null) {
             recordInternal.setServingVolumeLiters(mServingVolume.getInLiters());
         }
         if (mAlcoholByVolume != null) {
             recordInternal.setAlcoholByVolume(mAlcoholByVolume.getValue());
         }
-        if (mNote != null) {
-            recordInternal.setNote(mNote);
+        if (mNotes != null) {
+            recordInternal.setNotes(mNotes);
         }
         return recordInternal;
     }

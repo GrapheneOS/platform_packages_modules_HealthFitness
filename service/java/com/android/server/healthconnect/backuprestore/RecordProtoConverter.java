@@ -21,8 +21,6 @@ import static android.health.connect.Constants.DEFAULT_FLOAT;
 import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.datatypes.units.Temperature.fromCelsius;
 
-import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.IntervalRecord.DataCase.ALCOHOL_CONSUMPTION;
-
 import static java.util.stream.Collectors.toSet;
 
 import android.annotation.SuppressLint;
@@ -977,14 +975,12 @@ public final class RecordProtoConverter {
             AlcoholConsumptionRecordInternal alcoholConsumptionRecordInternal) {
         AlcoholConsumption.Builder builder =
                 AlcoholConsumption.newBuilder()
-                        .setServingCount(alcoholConsumptionRecordInternal.getServingCount())
                         .setBeverageType(alcoholConsumptionRecordInternal.getBeverageType())
-                        .setServingSize(alcoholConsumptionRecordInternal.getServingSize())
                         .setServingVolume(alcoholConsumptionRecordInternal.getServingVolumeLiters())
                         .setAlcoholByVolume(alcoholConsumptionRecordInternal.getAlcoholByVolume())
                         .setTemporalType(alcoholConsumptionRecordInternal.getTemporalType());
-        if (alcoholConsumptionRecordInternal.getNote() != null) {
-            builder.setNote(alcoholConsumptionRecordInternal.getNote().toString());
+        if (alcoholConsumptionRecordInternal.getNotes() != null) {
+            builder.setNotes(alcoholConsumptionRecordInternal.getNotes().toString());
         }
         return builder.build();
     }
@@ -1294,19 +1290,15 @@ public final class RecordProtoConverter {
         AlcoholConsumptionRecordInternal record =
                 new AlcoholConsumptionRecordInternal()
                         .setTemporalType(alcoholConsumptionProto.getTemporalType())
-                        .setServingCount(alcoholConsumptionProto.getServingCount())
                         .setBeverageType(alcoholConsumptionProto.getBeverageType());
         if (alcoholConsumptionProto.hasAlcoholByVolume()) {
             record.setAlcoholByVolume(alcoholConsumptionProto.getAlcoholByVolume());
         }
-        if (alcoholConsumptionProto.hasServingSize()) {
-            record.setServingSize(alcoholConsumptionProto.getServingSize());
-        }
         if (alcoholConsumptionProto.hasServingVolume()) {
             record.setServingVolumeLiters(alcoholConsumptionProto.getServingVolume());
         }
-        if (alcoholConsumptionProto.hasNote()) {
-            record.setNote(alcoholConsumptionProto.getNote());
+        if (alcoholConsumptionProto.hasNotes()) {
+            record.setNotes(alcoholConsumptionProto.getNotes());
         }
         return record;
     }

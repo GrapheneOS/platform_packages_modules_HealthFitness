@@ -311,7 +311,6 @@ class InsertRecordFragment : Fragment() {
                 AlcoholConsumptionRecord::class ->
                     mapOf(
                         "mBeverageType" to AlcoholConsumptionRecord::class,
-                        "mServingSize" to AlcoholConsumptionRecord::class,
                         "mTemporalType" to AlcoholConsumptionRecord::class,
                     )
                 else -> mapOf()
