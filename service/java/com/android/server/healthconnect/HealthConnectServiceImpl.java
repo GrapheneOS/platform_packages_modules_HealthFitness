@@ -987,6 +987,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             AttributionSource attributionSource,
             ChangeLogTokenRequest request,
             IGetChangeLogTokenCallback callback) {
+        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, request, callback);
 
         ErrorCallback errorCallback = callback::onError;
@@ -997,6 +998,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 new HealthConnectServiceLogger.Builder(false, GET_CHANGES_TOKEN)
                         .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionSource.getPackageName());
+        final ChangeLogTokenRequest unmaskedRequest =
+                request.toUnmasked(getUnmaskingFunction(attributionSource.getPackageName()));
+
         scheduleLoggingHealthDataApiErrors(
                 () -> {
                     enforceIsForegroundUser(userHandle);
@@ -1008,9 +1012,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             logger);
                     throwExceptionIfDataSyncInProgress();
                     if (isPhrChangeLogsEnabled()) {
-                        boolean hasRecordTypes = !request.getRecordTypeIds().isEmpty();
+                        boolean hasRecordTypes = !unmaskedRequest.getRecordTypeIds().isEmpty();
                         boolean hasMedicalResourceTypes =
-                                !request.getMedicalResourceTypes().isEmpty();
+                                !unmaskedRequest.getMedicalResourceTypes().isEmpty();
                         if (!hasRecordTypes && !hasMedicalResourceTypes) {
                             throw new IllegalArgumentException(
                                     "At least one Record type or Medical Resource type must be"
@@ -1020,17 +1024,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     "Record types and Medical Resource types can't both be set");
                         }
                     } else {
-                        if (request.getRecordTypeIds().isEmpty()) {
+                        if (unmaskedRequest.getRecordTypeIds().isEmpty()) {
                             throw new IllegalArgumentException(
                                     "Requested record types must not be empty.");
                         }
                     }
 
                     mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
-                            request.getRecordTypeIds(), attributionSource);
+                            unmaskedRequest.getRecordTypeIds(), attributionSource);
                     if (isPhrChangeLogsEnabled()) {
                         mMedicalDataPermissionEnforcer.enforceMedicalResourceTypesReadPermissions(
-                                request.getMedicalResourceTypes(), attributionSource);
+                                unmaskedRequest.getMedicalResourceTypes(), attributionSource);
                     }
 
                     callback.onResult(
@@ -1038,12 +1042,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     mChangeLogsRequestHelper.getToken(
                                             mChangeLogsHelper.getLatestRowId(),
                                             attributionSource.getPackageName(),
-                                            request)));
+                                            unmaskedRequest)));
                     logger.setHealthDataServiceApiStatusSuccess()
                             .setDataTypesFromRecordTypes(
-                                    request.getRecordTypeIds().stream().toList());
+                                    unmaskedRequest.getRecordTypeIds().stream().toList());
                     if (isPhrChangeLogsEnabled()) {
-                        logger.setMedicalResourceTypes(request.getMedicalResourceTypes());
+                        logger.setMedicalResourceTypes(unmaskedRequest.getMedicalResourceTypes());
                     }
                 },
                 logger,
@@ -1061,6 +1065,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             AttributionSource attributionSource,
             ChangeLogsRequest request,
             IChangeLogsResponseCallback callback) {
+        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, request, callback);
 
         ErrorCallback errorCallback = callback::onError;
@@ -1196,12 +1201,22 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     ? changeLogsResponse.getDeletedMedicalResources()
                                     : List.of();
 
-                    // Return the result.
+                    // Masking the ChangeLogsResponse itself would necessitate two redundant
+                    // deep-copy operations(to convert to RecordInternal, mask, and convert
+                    // back), which is avoided by masking the record list preemptively,
+                    // improving efficiency.
+                    List<Record> maskedRecords =
+                            recordInternals.stream()
+                                    .map(
+                                            recordInternal ->
+                                                    recordInternal.toMasked(
+                                                            getMaskingFunction(callerPackageName)))
+                                    .map(RecordInternal::toExternalRecord)
+                                    .collect(toList());
+
                     callback.onResult(
                             new ChangeLogsResponse(
-                                    recordInternals.stream()
-                                            .map(RecordInternal::toExternalRecord)
-                                            .collect(toList()),
+                                    maskedRecords,
                                     deletedLogs,
                                     upsertedMedicalResources,
                                     deletedMedicalResources,
