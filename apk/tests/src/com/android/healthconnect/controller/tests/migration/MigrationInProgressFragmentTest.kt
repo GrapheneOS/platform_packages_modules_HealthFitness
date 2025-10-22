@@ -41,16 +41,18 @@ class MigrationInProgressFragmentTest {
 
     @Test
     fun migrationInProgressFragment_displaysCorrectly() {
-        launchFragment<MigrationInProgressFragment>()
+        launchFragment<MigrationInProgressFragment>().use {
+            onView(withText("Integration in progress")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Health Connect is being integrated with the Android system." +
+                            "\n\nIt may take some time while your data and permissions are being transferred."
+                    )
+                )
+                .check(matches(isDisplayed()))
 
-        onView(withText("Integration in progress")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Health Connect is being integrated with the Android system." +
-                        "\n\nIt may take some time while your data and permissions are being transferred."))
-            .check(matches(isDisplayed()))
-
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.MIGRATION_IN_PROGRESS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.MIGRATION_IN_PROGRESS_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+        }
     }
 }
