@@ -81,16 +81,27 @@ constructor(
     private val _showSeeMoreHealthApps = MutableStateFlow(true)
     private val _isLoading = MutableStateFlow(true)
     private val _appLoadingError = MutableStateFlow(false)
+    private val _showMigrationDialog =
+        MutableStateFlow<MigrationDialog>(MigrationDialog.NoMigrationDialog)
 
     var showSystemApps = false
 
     val homeFragmentState: StateFlow<HomeFragmentState> =
-        combine(_connectedApps, _banners, _showSeeMoreHealthApps, _isLoading, _appLoadingError) {
-                apps,
-                banners,
-                showSeeMoreHealthApps,
-                loading,
-                error ->
+        combine(
+                _connectedApps,
+                _banners,
+                _showSeeMoreHealthApps,
+                _showMigrationDialog,
+                _isLoading,
+                _appLoadingError,
+            ) { flows ->
+                val apps = flows[0] as List<ConnectedAppMetadata>
+                val banners = flows[1] as List<BannerData>
+                val showSeeMoreHealthApps = flows[2] as Boolean
+                val showMigrationDialog = flows[3] as MigrationDialog
+                val loading = flows[4] as Boolean
+                val error = flows[5] as Boolean
+
                 if (error) {
                     HomeFragmentState.Error
                 } else if (loading) {
@@ -99,6 +110,7 @@ constructor(
                     HomeFragmentState.WithData(
                         connectedApps = apps,
                         showSeeMoreHealthApps = showSeeMoreHealthApps,
+                        migrationDialog = showMigrationDialog,
                         bannerState =
                             if (banners.isNotEmpty()) HomeBannerState.ShowBanners(banners)
                             else HomeBannerState.NoBanner,
@@ -124,7 +136,7 @@ constructor(
         _banners.value = emptyList()
         viewModelScope.launch {
             _isLoading.value = true
-            launch { loadMigrationBanners() }
+            launch { loadMigrationData() }
             launch { loadExportErrorBanner() }
             launch { loadNativeStepsBanner() }
             launch { loadLockScreenBanner() }
@@ -204,8 +216,13 @@ constructor(
         }
     }
 
-    private fun loadMigrationBanners() {
+    private fun loadMigrationData() {
         viewModelScope.launch {
+            val migrationNotCompleteDialogSeen =
+                sharedPreferences.getBoolean(Constants.MIGRATION_NOT_COMPLETE_DIALOG_SEEN, false)
+            val migrationCompleteDialogSeen =
+                sharedPreferences.getBoolean(Constants.WHATS_NEW_DIALOG_SEEN, false)
+
             // migration and restore banners cannot be dismissed
             when (val migrationResult = loadMigrationRestoreStateUseCase.invoke(Unit)) {
                 is UseCaseResults.Success -> {
@@ -227,6 +244,16 @@ constructor(
                             )
                     ) {
                         addBanner(BannerData.MigrationBanner)
+                    } else if (
+                        migrationUiState == MigrationUiState.COMPLETE &&
+                            !migrationCompleteDialogSeen
+                    ) {
+                        _showMigrationDialog.value = MigrationDialog.MigrationCompleteDialog
+                    } else if (
+                        migrationUiState == MigrationUiState.ALLOWED_ERROR &&
+                            !migrationNotCompleteDialogSeen
+                    ) {
+                        _showMigrationDialog.value = MigrationDialog.MigrationNotCompleteDialog
                     }
                 }
                 is UseCaseResults.Failed -> {
@@ -339,31 +366,49 @@ constructor(
     }
 
     fun onDismissBanner(banner: BannerData) {
-        val key =
-            when (banner) {
-                is BannerData.LockScreenBanner -> {
-                    sharedPreferences.edit().apply {
-                        if (banner.hasAnyFitnessData) {
-                            putBoolean(LOCK_SCREEN_BANNER_SEEN_FITNESS, true)
-                        }
-                        if (banner.hasAnyMedicalData) {
-                            putBoolean(LOCK_SCREEN_BANNER_SEEN_MEDICAL, true)
-                        }
-                        apply()
+        when (banner) {
+            is BannerData.LockScreenBanner -> {
+                sharedPreferences.edit().apply {
+                    if (banner.hasAnyFitnessData) {
+                        putBoolean(LOCK_SCREEN_BANNER_SEEN_FITNESS, true)
                     }
-                    null
+                    if (banner.hasAnyMedicalData) {
+                        putBoolean(LOCK_SCREEN_BANNER_SEEN_MEDICAL, true)
+                    }
+                    apply()
                 }
-                BannerData.NativeStepsBanner -> Constants.NATIVE_STEPS_BANNER_SEEN
-                BannerData.ZeroAppsOnboardingBanner -> Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN
-                BannerData.OneAppOnboardingBanner -> Constants.ONBOARDING_ONE_APP_BANNER_SEEN
-                BannerData.MigrationBanner,
-                BannerData.DataRestorePendingBanner,
-                is BannerData.ExportErrorBanner ->
-                    // TODO(b/337749314): Add shared preference keys for these banners if needed
-                    null
+                null
             }
-        key?.let { sharedPreferences.edit { putBoolean(it, true) } }
+            BannerData.NativeStepsBanner -> Constants.NATIVE_STEPS_BANNER_SEEN
+            BannerData.ZeroAppsOnboardingBanner -> Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN
+            BannerData.OneAppOnboardingBanner -> Constants.ONBOARDING_ONE_APP_BANNER_SEEN
+            BannerData.MigrationBanner,
+            BannerData.DataRestorePendingBanner,
+            is BannerData.ExportErrorBanner ->
+                // TODO(b/337749314): Add shared preference keys for these banners if needed
+                null
+        }
         _banners.update { currentBanners -> currentBanners.filterNot { it.id == banner.id } }
+    }
+
+    fun onDismissDialog(dialog: MigrationDialog) {
+        when (dialog) {
+            is MigrationDialog.MigrationCompleteDialog -> {
+                sharedPreferences.edit().apply {
+                    putBoolean(Constants.WHATS_NEW_DIALOG_SEEN, true)
+                    apply()
+                }
+            }
+            is MigrationDialog.MigrationNotCompleteDialog -> {
+                sharedPreferences.edit().apply {
+                    putBoolean(Constants.MIGRATION_NOT_COMPLETE_DIALOG_SEEN, true)
+                    apply()
+                }
+            }
+            else -> {
+                // Do nothing
+            }
+        }
     }
 
     private fun getSortOrder(status: ConnectedAppStatus): Int {
@@ -382,6 +427,7 @@ constructor(
         data class WithData(
             val connectedApps: List<ConnectedAppMetadata>,
             val showSeeMoreHealthApps: Boolean = true,
+            val migrationDialog: MigrationDialog = MigrationDialog.NoMigrationDialog,
             val bannerState: HomeBannerState = HomeBannerState.NoBanner,
         ) : HomeFragmentState()
     }
@@ -410,5 +456,13 @@ constructor(
 
         data class ExportErrorBanner(val lastFailedExportTime: Instant) :
             BannerData("ExportErrorBanner")
+    }
+
+    sealed class MigrationDialog {
+        object NoMigrationDialog : MigrationDialog()
+
+        object MigrationCompleteDialog : MigrationDialog()
+
+        object MigrationNotCompleteDialog : MigrationDialog()
     }
 }
