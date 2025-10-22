@@ -41,6 +41,8 @@ import android.content.pm.PackageManager;
 import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.GetMedicalDataSourcesRequest;
+import android.health.connect.MatchmakingRequest;
+import android.health.connect.MatchmakingResponse;
 import android.health.connect.MedicalResourceId;
 import android.health.connect.ReadMedicalResourcesRequest;
 import android.health.connect.ReadMedicalResourcesResponse;
@@ -65,7 +67,6 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -271,12 +272,11 @@ public final class TestAppProxy {
         getFromTestApp(requestBundle);
     }
 
-    /** Calls canConnectMatchingApps on behalf of the app. */
-    public boolean canConnectMatchingApps(Set<Class<? extends Record>> recordTypes)
-            throws Exception {
-        Bundle requestBundle = BundleHelper.fromCanConnectMatchingAppsQuery(recordTypes);
+    /** Calls isMatchmakingPossible on behalf of the app. */
+    public MatchmakingResponse isMatchmakingPossible(MatchmakingRequest request) throws Exception {
+        Bundle requestBundle = BundleHelper.fromIsMatchmakingPossibleQuery(request);
         Bundle responseBundle = getFromTestApp(requestBundle);
-        return BundleHelper.toCanConnectMatchingAppsResponse(responseBundle);
+        return BundleHelper.toIsMatchmakingPossibleResponse(responseBundle);
     }
 
     /** Instructs the app to self-revokes the specified permission. */

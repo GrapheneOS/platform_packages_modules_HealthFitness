@@ -146,7 +146,7 @@
             android:excludeFromRecents="true"
             android:theme="@style/Theme.HealthConnect.MatchMakingActivity">
             <intent-filter>
-                <action android:name="android.health.connect.action.CONNECT_MATCHING_APPS" />
+                <action android:name="android.health.connect.action.MATCHMAKING" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

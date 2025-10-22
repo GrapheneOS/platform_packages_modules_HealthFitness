@@ -17,4 +17,4 @@
 package android.health.connect;
 
 /** @hide */
-parcelable GetMatchingAppsRequest;
+parcelable MatchmakingResponse;

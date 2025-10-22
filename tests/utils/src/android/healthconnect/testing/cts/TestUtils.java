@@ -58,6 +58,7 @@ import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissionCategory;
 import android.health.connect.InsertRecordsResponse;
+import android.health.connect.MatchmakingRequest;
 import android.health.connect.ReadRecordsRequest;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
@@ -122,13 +123,11 @@ import android.health.connect.migration.MigrationException;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.OutcomeReceiver;
 import android.util.Log;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.modules.utils.build.SdkLevel;
 
 import java.lang.reflect.Field;
@@ -1088,8 +1087,10 @@ public final class TestUtils {
     }
 
     /** Creates an {@link Intent} to launch the matching apps flow. */
-    public static Intent createConnectMatchingAppsIntent(Set<Class<? extends Record>> recordTypes) {
-        return getHealthConnectManager().createConnectMatchingAppsIntent(recordTypes);
+    public static Intent createMatchmakingIntent(Set<Class<? extends Record>> recordTypes) {
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
+        return getHealthConnectManager().createMatchmakingIntent(request);
     }
 
     /** Copies record ids from the one list to another in order. Workaround for b/328228842. */

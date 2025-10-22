@@ -77,7 +77,6 @@ import android.health.connect.Constants;
 import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
-import android.health.connect.GetMatchingAppsRequest;
 import android.health.connect.GetMatchingAppsResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectDataState;
@@ -86,6 +85,8 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthConnectManager.DataDownloadState;
 import android.health.connect.HealthConnectOnboardingState;
 import android.health.connect.HealthDataCategory;
+import android.health.connect.MatchmakingRequest;
+import android.health.connect.MatchmakingResponse;
 import android.health.connect.MedicalResourceId;
 import android.health.connect.MedicalResourceTypeInfo;
 import android.health.connect.PageTokenWrapper;
@@ -105,7 +106,6 @@ import android.health.connect.aidl.IAccessLogsResponseCallback;
 import android.health.connect.aidl.IActivityDatesResponseCallback;
 import android.health.connect.aidl.IAggregateRecordsResponseCallback;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
-import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
@@ -120,6 +120,7 @@ import android.health.connect.aidl.IGetMatchingAppsCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
+import android.health.connect.aidl.IIsMatchmakingPossibleCallback;
 import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.aidl.IMedicalResourceListParcelResponseCallback;
@@ -3096,13 +3097,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
-     * @see HealthConnectManager#canConnectMatchingApps(Set, Executor, OutcomeReceiver)
+     * @see HealthConnectManager#isMatchmakingPossible(MatchmakingRequest, Executor,
+     *     OutcomeReceiver)
      */
     @Override
-    public void canConnectMatchingApps(
+    public void isMatchmakingPossible(
             AttributionSource attributionSource,
-            GetMatchingAppsRequest request,
-            ICanConnectMatchingAppsCallback callback) {
+            MatchmakingRequest request,
+            IIsMatchmakingPossibleCallback callback) {
         checkParamsNonNull(attributionSource, request, callback);
         getMatchingApps(
                 attributionSource,
@@ -3110,7 +3112,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 new IGetMatchingAppsCallback.Stub() {
                     @Override
                     public void onResult(GetMatchingAppsResponse response) throws RemoteException {
-                        callback.onResult(response.hasMatchingApps());
+                        callback.onResult(
+                                new MatchmakingResponse.Builder(response.hasMatchingApps())
+                                        .build());
                     }
 
                     @Override
@@ -3127,7 +3131,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void getMatchingApps(
             AttributionSource attributionSource,
-            GetMatchingAppsRequest request,
+            MatchmakingRequest request,
             IGetMatchingAppsCallback callback) {
         checkParamsNonNull(attributionSource, request, callback);
         final int uid = Binder.getCallingUid();
@@ -3150,7 +3154,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     }
                     enforceIsForegroundUser(userHandle);
                     throwExceptionIfDataSyncInProgress();
-                    String requestPackageName = request.getPackageName();
+                    String requestPackageName = request.getCallingPackageName();
                     if (holdsDataManagementPermission) {
                         checkArgument(requestPackageName != null, "package name must be provided");
                     } else {

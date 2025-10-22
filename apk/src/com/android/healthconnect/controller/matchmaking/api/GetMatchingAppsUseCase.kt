@@ -17,6 +17,7 @@
 package com.android.healthconnect.controller.matchmaking.api
 
 import android.health.connect.HealthConnectManager
+import android.health.connect.MatchmakingRequest
 import android.health.connect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.matchmaking.MatchmakingAppData
@@ -41,8 +42,10 @@ constructor(
         val result =
             suspendCancellableCoroutine<Map<String, Set<String>>> { continuation ->
                 healthConnectManager.getMatchingApps(
-                    input.recordTypes,
-                    input.packageName,
+                    MatchmakingRequest.Builder()
+                        .setCallingPackageName(input.packageName)
+                        .addRecordTypes(input.recordTypes)
+                        .build(),
                     Runnable::run,
                     continuation.asOutcomeReceiver(),
                 )

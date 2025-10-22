@@ -175,8 +175,9 @@ class HomeFragment : Fragment() {
     private fun setUpMatchmaking(view: View) {
         val matchmakingButton = view.requireViewById<Button>(R.id.matchmaking_button)
         homeFragmentViewModel.loadMatchmakingStatus(manager)
-        homeFragmentViewModel.canConnectMatchingApps.observe(viewLifecycleOwner) { canConnect ->
-            matchmakingButton.isVisible = canConnect
+        homeFragmentViewModel.isMatchmakingPossible.observe(viewLifecycleOwner) {
+            isMatchmakingPossible ->
+            matchmakingButton.isVisible = isMatchmakingPossible
         }
 
         val matchingAppsIntent = homeFragmentViewModel.createMatchmakingIntent(manager)
