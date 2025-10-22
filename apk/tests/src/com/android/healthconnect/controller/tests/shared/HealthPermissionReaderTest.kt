@@ -198,26 +198,6 @@ class HealthPermissionReaderTest {
             )
     }
 
-    @RequiresFlagsEnabled(Flags.FLAG_CYCLE_PHASES)
-    @Test
-    fun getHealthPermissions_cyclePhasesFlagEnabled_returnsPermissions() {
-        assertThat(permissionReader.getHealthPermissions())
-            .containsAtLeast(
-                HealthPermissions.READ_CYCLE_PHASES,
-                HealthPermissions.WRITE_CYCLE_PHASES,
-            )
-    }
-
-    @RequiresFlagsDisabled(Flags.FLAG_CYCLE_PHASES)
-    @Test
-    fun getHealthPermissions_cyclePhasesFlagDisabled_doesNotReturnPermissions() {
-        assertThat(permissionReader.getHealthPermissions())
-            .containsNoneOf(
-                HealthPermissions.READ_CYCLE_PHASES,
-                HealthPermissions.WRITE_CYCLE_PHASES,
-            )
-    }
-
     @Test
     fun isRationalIntentDeclared_withIntent_returnsTrue() {
         assertThat(permissionReader.isRationaleIntentDeclared(TEST_APP_PACKAGE_NAME)).isTrue()

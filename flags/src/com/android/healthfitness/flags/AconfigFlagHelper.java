@@ -161,10 +161,4 @@ public final class AconfigFlagHelper {
     public static boolean isSymptomsEnabled() {
         return Flags.symptoms() && isDbFlagEnabled(DB_VERSION_SYMPTOMS);
     }
-
-    /** Returns a boolean indicating whether Symptoms data type is enabled. */
-    public static boolean isCyclePhasesEnabled() {
-        // TODO(b/450552432): Use isDbFlagEnabled once the database changes are finalized.
-        return Flags.cyclePhases();
-    }
 }

@@ -526,8 +526,6 @@ constructor(
                 !AconfigFlagHelper.isActivityIntensityEnabled()
             HealthPermissions.READ_NICOTINE_INTAKE,
             HealthPermissions.WRITE_NICOTINE_INTAKE -> !AconfigFlagHelper.isNicotineIntakeEnabled()
-            HealthPermissions.READ_CYCLE_PHASES,
-            HealthPermissions.WRITE_CYCLE_PHASES -> !AconfigFlagHelper.isCyclePhasesEnabled()
             else -> !isPermissionEnabled(permission)
         }
     }

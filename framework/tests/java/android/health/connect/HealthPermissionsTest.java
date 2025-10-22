@@ -45,7 +45,6 @@ import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.InstrumentationRegistry;
 
-import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 
 import org.junit.Before;
@@ -326,11 +325,6 @@ public class HealthPermissionsTest {
                                     : Stream.of(),
                             Flags.deviceResource()
                                     ? Stream.of(HealthPermissions.READ_MEDICAL_DATA_DEVICES)
-                                    : Stream.of(),
-                            AconfigFlagHelper.isCyclePhasesEnabled()
-                                    ? Stream.of(
-                                            HealthPermissions.READ_CYCLE_PHASES,
-                                            HealthPermissions.WRITE_CYCLE_PHASES)
                                     : Stream.of())
                     .flatMap(s -> s)
                     .collect(Collectors.toSet());

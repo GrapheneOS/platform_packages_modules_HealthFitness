@@ -192,12 +192,6 @@
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 
-    <permission
-        android:name="android.permission.health.READ_CYCLE_PHASES"
-        android:label="@string/cycle_phases_read_content_description"
-        android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
-
     <!-- Read permissions for nutrition -->
     <permission
         android:name="android.permission.health.READ_HYDRATION"
@@ -822,12 +816,6 @@
     <permission
         android:name="android.permission.health.WRITE_SEXUAL_ACTIVITY"
         android:label="@string/sexual_activity_write_content_description"
-        android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
-
-    <permission
-        android:name="android.permission.health.WRITE_CYCLE_PHASES"
-        android:label="@string/cycle_phases_write_content_description"
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 
