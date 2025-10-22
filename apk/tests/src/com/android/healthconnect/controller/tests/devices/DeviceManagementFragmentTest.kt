@@ -84,98 +84,99 @@ class DeviceManagementFragmentTest {
 
     @Test
     fun noStepsBanner_hasSensor_isNotDisplayed() {
-        launchFragment<DeviceManagementFragment>(Bundle())
-
-        onView(withText("This device doesn't track steps")).check(doesNotExist())
+        launchFragment<DeviceManagementFragment>(Bundle()).use {
+            onView(withText("This device doesn't track steps")).check(doesNotExist())
+        }
     }
 
     @Test
     fun noStepsBanner_hasNoSensor_isDisplayed() {
         whenever(viewModel.hasStepsSensor).then { MutableLiveData(false) }
-        launchFragment<DeviceManagementFragment>(Bundle())
-
-        onView(withText("This device doesn't track steps")).check(matches(isDisplayed()))
+        launchFragment<DeviceManagementFragment>(Bundle()).use {
+            onView(withText("This device doesn't track steps")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun header_isDisplayed() {
-        launchFragment<DeviceManagementFragment>(Bundle())
-
-        onView(withText("Pixel 8")).check(matches(isDisplayed()))
+        launchFragment<DeviceManagementFragment>(Bundle()).use {
+            onView(withText("Pixel 8")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun stepTrackingSwitch_hasSensor_isDisplayed() {
-        launchFragment<DeviceManagementFragment>(Bundle())
-
-        onView(withText("Steps")).check(matches(isDisplayed()))
+        launchFragment<DeviceManagementFragment>(Bundle()).use {
+            onView(withText("Steps")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun stepTrackingSwitch_hasNoSensor_isDisplayedAndDisabled() {
         whenever(viewModel.hasStepsSensor).then { MutableLiveData(false) }
 
-        launchFragment<DeviceManagementFragment>(Bundle())
-
-        onView(withText("Steps")).check(matches(isDisplayed()))
-        onView(withText("Steps")).check(matches(ViewMatchers.isNotEnabled()))
+        launchFragment<DeviceManagementFragment>(Bundle()).use {
+            onView(withText("Steps")).check(matches(isDisplayed()))
+            onView(withText("Steps")).check(matches(ViewMatchers.isNotEnabled()))
+        }
     }
 
     @Test
     fun stepTrackingSwitch_whenClicked_callsViewModel() {
-        launchFragment<DeviceManagementFragment>(Bundle())
-
-        // Disable, then re-enable steps tracking.
-        onView(withText("Steps")).perform(click())
-        verify(viewModel).setTrackingEnabled(StepsRecord::class.java, false)
-        onView(withText("Steps")).perform(click())
-        verify(viewModel).setTrackingEnabled(StepsRecord::class.java, true)
+        launchFragment<DeviceManagementFragment>(Bundle()).use {
+            // Disable, then re-enable steps tracking.
+            onView(withText("Steps")).perform(click())
+            verify(viewModel).setTrackingEnabled(StepsRecord::class.java, false)
+            onView(withText("Steps")).perform(click())
+            verify(viewModel).setTrackingEnabled(StepsRecord::class.java, true)
+        }
     }
 
     @Test
     fun seeDeviceData_isDisplayed() {
-        launchFragment<DeviceManagementFragment>(Bundle())
-
-        onView(withText("Manage device")).check(matches(isDisplayed()))
-        onView(withText("See device data")).check(matches(isDisplayed()))
+        launchFragment<DeviceManagementFragment>(Bundle()).use {
+            onView(withText("Manage device")).check(matches(isDisplayed()))
+            onView(withText("See device data")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun seeDeviceData_navigatesToAppData() {
         launchFragment<DeviceManagementFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.device_management_nav_graph)
-            navHostController.setCurrentDestination(R.id.deviceManagementFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
+                navHostController.setGraph(R.navigation.device_management_nav_graph)
+                navHostController.setCurrentDestination(R.id.deviceManagementFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("See device data")).perform(click())
 
-        onView(withText("See device data")).perform(click())
-
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.appDataFragment)
+                assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.appDataFragment)
+            }
     }
 
     @Test
     fun footer_hasSensor_displaysCorrectText() {
-        launchFragment<DeviceManagementFragment>(Bundle())
-
-        onView(
-                withText(
-                    "Data collected by this device will be stored in Health Connect, where connected" +
-                        " apps will access it"
+        launchFragment<DeviceManagementFragment>(Bundle()).use {
+            onView(
+                    withText(
+                        "Data collected by this device will be stored in Health Connect, where connected" +
+                            " apps will access it"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun footer_hasNoSensor_displaysCorrectText() {
         whenever(viewModel.hasStepsSensor).then { MutableLiveData(false) }
-        launchFragment<DeviceManagementFragment>(Bundle())
-
-        onView(
-                withText(
-                    "This device doesn't support step tracking, but still has data stored in Health Connect"
+        launchFragment<DeviceManagementFragment>(Bundle()).use {
+            onView(
+                    withText(
+                        "This device doesn't support step tracking, but still has data stored in Health Connect"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+        }
     }
 }

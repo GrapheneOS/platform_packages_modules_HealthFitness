@@ -110,21 +110,21 @@ class ScheduledExportFragmentTest {
                 .build()
         fakeHealthDataExportManager.setScheduledExportStatus(scheduledExportStatus)
 
-        launchFragment<ScheduledExportFragment>(Bundle())
-
-        onView(withText("Use scheduled export")).check(matches(isDisplayed()))
-        onView(withText("Change frequency")).check(matches(isDisplayed()))
-        onView(withText("Daily")).check(matches(isDisplayed()))
-        onView(withText("Weekly")).check(matches(isDisplayed()))
-        onView(withText("Monthly")).check(matches(isDisplayed()))
-        onView(withText("Next export starting soon")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you turn off scheduled export, this won't delete previously exported data from where it was saved"
+        launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(withText("Use scheduled export")).check(matches(isDisplayed()))
+            onView(withText("Change frequency")).check(matches(isDisplayed()))
+            onView(withText("Daily")).check(matches(isDisplayed()))
+            onView(withText("Weekly")).check(matches(isDisplayed()))
+            onView(withText("Monthly")).check(matches(isDisplayed()))
+            onView(withText("Next export starting soon")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you turn off scheduled export, this won't delete previously exported data from where it was saved"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Dropbox • hc.zip")).check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+            onView(withText("Dropbox • hc.zip")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -137,16 +137,16 @@ class ScheduledExportFragmentTest {
                 .build()
         fakeHealthDataExportManager.setScheduledExportStatus(scheduledExportStatus)
 
-        launchFragment<ScheduledExportFragment>(Bundle())
-
-        onView(withText("Use scheduled export")).check(matches(isDisplayed()))
-        verify(healthConnectLogger, atLeast(1)).logPageImpression()
-        verify(healthConnectLogger)
-            .logImpression(ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_DAILY)
-        verify(healthConnectLogger)
-            .logImpression(ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_WEEKLY)
-        verify(healthConnectLogger)
-            .logImpression(ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_MONTHLY)
+        launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(withText("Use scheduled export")).check(matches(isDisplayed()))
+            verify(healthConnectLogger, atLeast(1)).logPageImpression()
+            verify(healthConnectLogger)
+                .logImpression(ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_DAILY)
+            verify(healthConnectLogger)
+                .logImpression(ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_WEEKLY)
+            verify(healthConnectLogger)
+                .logImpression(ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_MONTHLY)
+        }
     }
 
     @Test
@@ -160,9 +160,9 @@ class ScheduledExportFragmentTest {
                 .build()
         fakeHealthDataExportManager.setScheduledExportStatus(scheduledExportStatus)
 
-        launchFragment<ScheduledExportFragment>(Bundle())
-
-        onView(withText("Dropbox")).check(matches(isDisplayed()))
+        launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(withText("Dropbox")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -176,9 +176,9 @@ class ScheduledExportFragmentTest {
                 .build()
         fakeHealthDataExportManager.setScheduledExportStatus(scheduledExportStatus)
 
-        launchFragment<ScheduledExportFragment>(Bundle())
-
-        onView(withText("hc.zip")).check(matches(isDisplayed()))
+        launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(withText("hc.zip")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -191,9 +191,9 @@ class ScheduledExportFragmentTest {
                 .build()
         fakeHealthDataExportManager.setScheduledExportStatus(scheduledExportStatus)
 
-        launchFragment<ScheduledExportFragment>(Bundle())
-
-        onView(withText("Next export starting soon")).check(matches(isDisplayed()))
+        launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(withText("Next export starting soon")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -206,9 +206,9 @@ class ScheduledExportFragmentTest {
                 .build()
         fakeHealthDataExportManager.setScheduledExportStatus(scheduledExportStatus)
 
-        launchFragment<ScheduledExportFragment>(Bundle())
-
-        onView(withText("Next export: October 21, 2022")).check(matches(isDisplayed()))
+        launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(withText("Next export: October 21, 2022")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -218,9 +218,9 @@ class ScheduledExportFragmentTest {
                 .setPeriodInDays(ExportFrequency.EXPORT_FREQUENCY_DAILY.periodInDays)
                 .build()
         )
-        launchFragment<ScheduledExportFragment>(Bundle())
-
-        onView(checkBoxOf("Daily")).check(matches(isChecked()))
+        launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(checkBoxOf("Daily")).check(matches(isChecked()))
+        }
     }
 
     @Test
@@ -230,9 +230,9 @@ class ScheduledExportFragmentTest {
                 .setPeriodInDays(ExportFrequency.EXPORT_FREQUENCY_WEEKLY.periodInDays)
                 .build()
         )
-        launchFragment<ScheduledExportFragment>(Bundle())
-
-        onView(checkBoxOf("Weekly")).check(matches(isChecked()))
+        launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(checkBoxOf("Weekly")).check(matches(isChecked()))
+        }
     }
 
     @Test
@@ -242,33 +242,33 @@ class ScheduledExportFragmentTest {
                 .setPeriodInDays(ExportFrequency.EXPORT_FREQUENCY_MONTHLY.periodInDays)
                 .build()
         )
-        launchFragment<ScheduledExportFragment>(Bundle())
-
-        onView(checkBoxOf("Monthly")).check(matches(isChecked()))
+        launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(checkBoxOf("Monthly")).check(matches(isChecked()))
+        }
     }
 
     @Test
     fun turnsOffControl_offIsDisplayed() = runTest {
-        launchFragment<ScheduledExportFragment>(Bundle())
+        launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(withText("Use scheduled export")).perform(click())
 
-        onView(withText("Use scheduled export")).perform(click())
-
-        advanceUntilIdle()
-        assertThat(healthDataExportManager.getScheduledExportPeriodInDays())
-            .isEqualTo(ExportFrequency.EXPORT_FREQUENCY_NEVER.periodInDays)
+            advanceUntilIdle()
+            assertThat(healthDataExportManager.getScheduledExportPeriodInDays())
+                .isEqualTo(ExportFrequency.EXPORT_FREQUENCY_NEVER.periodInDays)
+        }
     }
 
     @Test
     fun turnsOffControl_exportFrequencySectionDoesNotExist() {
-        launchFragment<ScheduledExportFragment>(Bundle())
+        launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(withText("Use scheduled export")).perform(click())
 
-        onView(withText("Use scheduled export")).perform(click())
-
-        onView(withText("Use scheduled export")).check(matches(isDisplayed()))
-        onView(withText("Choose frequency")).check(doesNotExist())
-        onView(withText("Daily")).check(doesNotExist())
-        onView(withText("Weekly")).check(doesNotExist())
-        onView(withText("Monthly")).check(doesNotExist())
+            onView(withText("Use scheduled export")).check(matches(isDisplayed()))
+            onView(withText("Choose frequency")).check(doesNotExist())
+            onView(withText("Daily")).check(doesNotExist())
+            onView(withText("Weekly")).check(doesNotExist())
+            onView(withText("Monthly")).check(doesNotExist())
+        }
     }
 
     @Test
@@ -281,11 +281,11 @@ class ScheduledExportFragmentTest {
                 .build()
         fakeHealthDataExportManager.setScheduledExportStatus(scheduledExportStatus)
 
-        launchFragment<ScheduledExportFragment>(Bundle())
+        launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(withText("Use scheduled export")).perform(click())
 
-        onView(withText("Use scheduled export")).perform(click())
-
-        onView(allOf(withText(containsString("Next export")))).check(doesNotExist())
+            onView(allOf(withText(containsString("Next export")))).check(doesNotExist())
+        }
     }
 
     @Test
@@ -295,16 +295,16 @@ class ScheduledExportFragmentTest {
                 .setPeriodInDays(ExportFrequency.EXPORT_FREQUENCY_WEEKLY.periodInDays)
                 .build()
         )
-        launchFragment<ScheduledExportFragment>(Bundle())
+        launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(withText("Use scheduled export")).perform(click())
+            assertThat(healthDataExportManager.getScheduledExportPeriodInDays())
+                .isEqualTo(ExportFrequency.EXPORT_FREQUENCY_NEVER.periodInDays)
+            onView(withText("Use scheduled export")).perform(click())
 
-        onView(withText("Use scheduled export")).perform(click())
-        assertThat(healthDataExportManager.getScheduledExportPeriodInDays())
-            .isEqualTo(ExportFrequency.EXPORT_FREQUENCY_NEVER.periodInDays)
-        onView(withText("Use scheduled export")).perform(click())
-
-        advanceUntilIdle()
-        assertThat(healthDataExportManager.getScheduledExportPeriodInDays())
-            .isEqualTo(ExportFrequency.EXPORT_FREQUENCY_WEEKLY.periodInDays)
+            advanceUntilIdle()
+            assertThat(healthDataExportManager.getScheduledExportPeriodInDays())
+                .isEqualTo(ExportFrequency.EXPORT_FREQUENCY_WEEKLY.periodInDays)
+        }
     }
 
     @Test
@@ -315,14 +315,14 @@ class ScheduledExportFragmentTest {
                 .build()
         )
 
-        launchFragment<ScheduledExportFragment>(Bundle())
-
-        onView(checkBoxOf("Daily")).check(matches(isChecked()))
-        onView(withText("Monthly")).perform(click())
-        advanceUntilIdle()
-        assertThat(fakeHealthDataExportManager.getScheduledExportPeriodInDays())
-            .isEqualTo(ExportFrequency.EXPORT_FREQUENCY_MONTHLY.periodInDays)
-        verify(healthConnectLogger)
-            .logInteraction(ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_MONTHLY)
+        launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(checkBoxOf("Daily")).check(matches(isChecked()))
+            onView(withText("Monthly")).perform(click())
+            advanceUntilIdle()
+            assertThat(fakeHealthDataExportManager.getScheduledExportPeriodInDays())
+                .isEqualTo(ExportFrequency.EXPORT_FREQUENCY_MONTHLY.periodInDays)
+            verify(healthConnectLogger)
+                .logInteraction(ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_MONTHLY)
+        }
     }
 }

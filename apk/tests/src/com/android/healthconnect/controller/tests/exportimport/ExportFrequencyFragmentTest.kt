@@ -86,149 +86,154 @@ class ExportFrequencyFragmentTest {
 
     @Test
     fun exportFrequencyFragment_isDisplayedCorrectly() {
-        launchFragment<ExportFrequencyFragment>(Bundle())
+        launchFragment<ExportFrequencyFragment>(Bundle()).use {
+            onView(withText("Set up scheduled export")).check(matches(isDisplayed()))
+            onView(withText("Choose how frequently to export your data"))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Set up scheduled export")).check(matches(isDisplayed()))
-        onView(withText("Choose how frequently to export your data")).check(matches(isDisplayed()))
+            onView(withText("Daily")).check(matches(isDisplayed()))
+            onView(withText("Weekly")).check(matches(isDisplayed()))
+            onView(withText("Monthly")).check(matches(isDisplayed()))
 
-        onView(withText("Daily")).check(matches(isDisplayed()))
-        onView(withText("Weekly")).check(matches(isDisplayed()))
-        onView(withText("Monthly")).check(matches(isDisplayed()))
-
-        onView(withText("Cancel")).check(matches(isDisplayed()))
-        onView(withText("Next")).check(matches(isDisplayed()))
+            onView(withText("Cancel")).check(matches(isDisplayed()))
+            onView(withText("Next")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun exportFrequencyFragment_impressionsLogged() {
-        launchFragment<ExportFrequencyFragment>(Bundle())
-
-        verify(healthConnectLogger, atLeast(1)).logPageImpression()
-        verify(healthConnectLogger)
-            .logImpression(ExportFrequencyElement.EXPORT_FREQUENCY_BACK_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(ExportFrequencyElement.EXPORT_FREQUENCY_NEXT_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(ExportFrequencyElement.EXPORT_FREQUENCY_DAILY_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(ExportFrequencyElement.EXPORT_FREQUENCY_WEEKLY_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(ExportFrequencyElement.EXPORT_FREQUENCY_MONTHLY_BUTTON)
+        launchFragment<ExportFrequencyFragment>(Bundle()).use {
+            verify(healthConnectLogger, atLeast(1)).logPageImpression()
+            verify(healthConnectLogger)
+                .logImpression(ExportFrequencyElement.EXPORT_FREQUENCY_BACK_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(ExportFrequencyElement.EXPORT_FREQUENCY_NEXT_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(ExportFrequencyElement.EXPORT_FREQUENCY_DAILY_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(ExportFrequencyElement.EXPORT_FREQUENCY_WEEKLY_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(ExportFrequencyElement.EXPORT_FREQUENCY_MONTHLY_BUTTON)
+        }
     }
 
     @Test
     fun exportFrequencyFragment_cancelButton_isClickable() {
-        launchFragment<ExportFrequencyFragment>(Bundle())
+        launchFragment<ExportFrequencyFragment>(Bundle()).use {
+            onView(withId(R.id.secondary_button)).check(matches(isClickable()))
+            onView(withId(R.id.secondary_button)).perform(click())
 
-        onView(withId(R.id.secondary_button)).check(matches(isClickable()))
-        onView(withId(R.id.secondary_button)).perform(click())
-
-        verify(exportSettingsViewModel)
-            .updateSelectedFrequency(ExportFrequency.EXPORT_FREQUENCY_NEVER)
-        verify(healthConnectLogger)
-            .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_BACK_BUTTON)
+            verify(exportSettingsViewModel)
+                .updateSelectedFrequency(ExportFrequency.EXPORT_FREQUENCY_NEVER)
+            verify(healthConnectLogger)
+                .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_BACK_BUTTON)
+        }
     }
 
     @Test
     fun exportFrequencyFragment_clicksNextButton_navigatesToDestinationFragment() {
         launchFragment<ExportFrequencyFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.export_nav_graph)
-            navHostController.setCurrentDestination(R.id.exportFrequencyFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
+                navHostController.setGraph(R.navigation.export_nav_graph)
+                navHostController.setCurrentDestination(R.id.exportFrequencyFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withId(R.id.primary_button_full)).check(matches(isClickable()))
+                onView(withId(R.id.primary_button_full)).perform(click())
 
-        onView(withId(R.id.primary_button_full)).check(matches(isClickable()))
-        onView(withId(R.id.primary_button_full)).perform(click())
-
-        assertThat(navHostController.currentDestination?.id)
-            .isEqualTo(R.id.exportDestinationFragment)
-        verify(healthConnectLogger)
-            .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_NEXT_BUTTON)
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.exportDestinationFragment)
+                verify(healthConnectLogger)
+                    .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_NEXT_BUTTON)
+            }
     }
 
     @Test
     fun exportFrequencyFragment_clicksNextButtonWithDailyFrequency_interactionLogged() {
         launchFragment<ExportFrequencyFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.export_nav_graph)
-            navHostController.setCurrentDestination(R.id.exportFrequencyFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
+                navHostController.setGraph(R.navigation.export_nav_graph)
+                navHostController.setCurrentDestination(R.id.exportFrequencyFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Daily")).perform(click())
+                onView(withId(R.id.primary_button_full)).perform(click())
 
-        onView(withText("Daily")).perform(click())
-        onView(withId(R.id.primary_button_full)).perform(click())
-
-        verify(exportSettingsViewModel, times(2))
-            .updateSelectedFrequency(ExportFrequency.EXPORT_FREQUENCY_DAILY)
-        verify(healthConnectLogger)
-            .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_DAILY_BUTTON)
+                verify(exportSettingsViewModel, times(2))
+                    .updateSelectedFrequency(ExportFrequency.EXPORT_FREQUENCY_DAILY)
+                verify(healthConnectLogger)
+                    .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_DAILY_BUTTON)
+            }
     }
 
     @Test
     fun exportFrequencyFragment_clicksNextButtonWithWeeklyFrequency_interactionLogged() {
         launchFragment<ExportFrequencyFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.export_nav_graph)
-            navHostController.setCurrentDestination(R.id.exportFrequencyFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
+                navHostController.setGraph(R.navigation.export_nav_graph)
+                navHostController.setCurrentDestination(R.id.exportFrequencyFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Weekly")).perform(click())
+                onView(withId(R.id.primary_button_full)).perform(click())
 
-        onView(withText("Weekly")).perform(click())
-        onView(withId(R.id.primary_button_full)).perform(click())
-
-        verify(exportSettingsViewModel)
-            .updateSelectedFrequency(ExportFrequency.EXPORT_FREQUENCY_WEEKLY)
-        verify(healthConnectLogger)
-            .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_WEEKLY_BUTTON)
+                verify(exportSettingsViewModel)
+                    .updateSelectedFrequency(ExportFrequency.EXPORT_FREQUENCY_WEEKLY)
+                verify(healthConnectLogger)
+                    .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_WEEKLY_BUTTON)
+            }
     }
 
     @Test
     fun exportFrequencyFragment_clicksNextButtonWithMonthlyFrequency_interactionLogged() {
         launchFragment<ExportFrequencyFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.export_nav_graph)
-            navHostController.setCurrentDestination(R.id.exportFrequencyFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
+                navHostController.setGraph(R.navigation.export_nav_graph)
+                navHostController.setCurrentDestination(R.id.exportFrequencyFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Monthly")).perform(click())
+                onView(withId(R.id.primary_button_full)).perform(click())
 
-        onView(withText("Monthly")).perform(click())
-        onView(withId(R.id.primary_button_full)).perform(click())
-
-        verify(exportSettingsViewModel)
-            .updateSelectedFrequency(ExportFrequency.EXPORT_FREQUENCY_MONTHLY)
-        verify(healthConnectLogger)
-            .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_MONTHLY_BUTTON)
+                verify(exportSettingsViewModel)
+                    .updateSelectedFrequency(ExportFrequency.EXPORT_FREQUENCY_MONTHLY)
+                verify(healthConnectLogger)
+                    .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_MONTHLY_BUTTON)
+            }
     }
 
     @Test
     fun exportFrequencyFragment_dailyButtonIsCheckedByDefault() {
-        launchFragment<ExportFrequencyFragment>(Bundle())
+        launchFragment<ExportFrequencyFragment>(Bundle()).use {
+            onView(checkBoxOf("Daily")).check(matches(isChecked()))
 
-        onView(checkBoxOf("Daily")).check(matches(isChecked()))
-
-        verify(healthConnectLogger, never())
-            .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_DAILY_BUTTON)
+            verify(healthConnectLogger, never())
+                .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_DAILY_BUTTON)
+        }
     }
 
     @Test
     fun exportFrequencyFragment_checksWeeklyButton_updatesSelectedFrequency() {
-        launchFragment<ExportFrequencyFragment>(Bundle())
+        launchFragment<ExportFrequencyFragment>(Bundle()).use {
+            onView(withText("Weekly")).perform(click())
 
-        onView(withText("Weekly")).perform(click())
-
-        verify(exportSettingsViewModel)
-            .updateSelectedFrequency(ExportFrequency.EXPORT_FREQUENCY_WEEKLY)
-        verify(healthConnectLogger)
-            .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_WEEKLY_BUTTON)
+            verify(exportSettingsViewModel)
+                .updateSelectedFrequency(ExportFrequency.EXPORT_FREQUENCY_WEEKLY)
+            verify(healthConnectLogger)
+                .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_WEEKLY_BUTTON)
+        }
     }
 
     @Test
     fun exportFrequencyFragment_checksMonthlyButton_updatesSelectedFrequency() {
-        launchFragment<ExportFrequencyFragment>(Bundle())
+        launchFragment<ExportFrequencyFragment>(Bundle()).use {
+            onView(withText("Monthly")).perform(click())
 
-        onView(withText("Monthly")).perform(click())
-
-        verify(exportSettingsViewModel)
-            .updateSelectedFrequency(ExportFrequency.EXPORT_FREQUENCY_MONTHLY)
-        verify(healthConnectLogger)
-            .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_MONTHLY_BUTTON)
+            verify(exportSettingsViewModel)
+                .updateSelectedFrequency(ExportFrequency.EXPORT_FREQUENCY_MONTHLY)
+            verify(healthConnectLogger)
+                .logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_MONTHLY_BUTTON)
+        }
     }
 
     @Test
@@ -236,9 +241,9 @@ class ExportFrequencyFragmentTest {
         whenever(exportSettingsViewModel.selectedExportFrequency).then {
             MutableLiveData(ExportFrequency.EXPORT_FREQUENCY_DAILY)
         }
-        launchFragment<ExportFrequencyFragment>(Bundle())
-
-        onView(checkBoxOf("Daily")).check(matches(isChecked()))
+        launchFragment<ExportFrequencyFragment>(Bundle()).use {
+            onView(checkBoxOf("Daily")).check(matches(isChecked()))
+        }
     }
 
     @Test
@@ -246,9 +251,9 @@ class ExportFrequencyFragmentTest {
         whenever(exportSettingsViewModel.selectedExportFrequency).then {
             MutableLiveData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY)
         }
-        launchFragment<ExportFrequencyFragment>(Bundle())
-
-        onView(checkBoxOf("Weekly")).check(matches(isChecked()))
+        launchFragment<ExportFrequencyFragment>(Bundle()).use {
+            onView(checkBoxOf("Weekly")).check(matches(isChecked()))
+        }
     }
 
     @Test
@@ -256,8 +261,8 @@ class ExportFrequencyFragmentTest {
         whenever(exportSettingsViewModel.selectedExportFrequency).then {
             MutableLiveData(ExportFrequency.EXPORT_FREQUENCY_MONTHLY)
         }
-        launchFragment<ExportFrequencyFragment>(Bundle())
-
-        onView(checkBoxOf("Monthly")).check(matches(isChecked()))
+        launchFragment<ExportFrequencyFragment>(Bundle()).use {
+            onView(checkBoxOf("Monthly")).check(matches(isChecked()))
+        }
     }
 }
