@@ -62,6 +62,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.scrollToBottomOfPreferenceScreen
 import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
@@ -172,8 +173,7 @@ class HomeFragmentTest {
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
         launchFragmentWithNavigation().use {
             checkTextIsDisplayed("Set a screen lock")
-            // TODO re-enable when b/447652645 is fixed
-            //        checkTextIsDisplayed("More items (1)")
+            checkTextIsDisplayed("More items")
             checkTextIsDisplayed("Your health apps")
             checkTextIsDisplayed("Health Connect test app")
             checkTextIsDisplayed("See more health apps")
@@ -587,7 +587,13 @@ class HomeFragmentTest {
 
     @Test
     fun moreAboutHealthConnect_navigatesToHelpPage() {
-        // TODO: Implement this test.
+        (deviceInfoUtils as FakeDeviceInfoUtils).setSendFeedbackAvailability(true)
+
+        setupFragmentForNavigation().use {
+            scrollToBottomOfPreferenceScreen()
+            onView(withText("More about Health\u00A0Connect")).perform(click())
+            verify(healthConnectLogger).logInteraction(NewHomePageElement.HOME_PAGE_FOOTER_LINK)
+        }
     }
 
     // endregion

@@ -17,11 +17,11 @@ import android.os.Bundle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.shared.HelpAndFeedbackFragment
+import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
@@ -61,89 +61,78 @@ class HelpAndFeedbackFragmentTest {
     fun helpAndFeedbackFragment_FeedbackAvailable_sendFeedbackIsAvailable() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setSendFeedbackAvailability(true)
 
-        launchFragment<HelpAndFeedbackFragment>(Bundle())
-
-        onView(
-                withText(
-                    "If you can't see an installed app, it may not be compatible with Health Connect yet"
-                )
+        launchFragment<HelpAndFeedbackFragment>(Bundle()).use {
+            checkTextIsDisplayed(
+                "If you can't see an installed app, it may not be compatible with Health Connect yet"
             )
-            .check(matches(ViewMatchers.isDisplayed()))
-        onView(withText("Things to try")).check(matches(isDisplayed()))
-        onView(withText("Send feedback")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Tell us which health & fitness apps you'd like to work with Health\u00A0Connect"
-                )
+            checkTextIsDisplayed("Things to try")
+            checkTextIsDisplayed("Send feedback")
+            checkTextIsDisplayed(
+                "Tell us which health & fitness apps you'd like to work with Health\u00A0Connect"
             )
-            .check(matches(isDisplayed()))
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.HELP_AND_FEEDBACK_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(AppPermissionsElement.SEND_FEEDBACK_BUTTON)
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.HELP_AND_FEEDBACK_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger).logImpression(AppPermissionsElement.SEND_FEEDBACK_BUTTON)
+        }
     }
 
     @Test
     fun helpAndFeedbackFragment_playStoreAvailable_playStoreLinksAreDisplayed() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
 
-        launchFragment<HelpAndFeedbackFragment>(Bundle())
-
-        onView(
-                withText(
-                    "If you can't see an installed app, it may not be compatible with Health\u00A0Connect yet"
-                )
+        launchFragment<HelpAndFeedbackFragment>(Bundle()).use {
+            checkTextIsDisplayed(
+                "If you can't see an installed app, it may not be compatible with Health\u00A0Connect yet"
             )
-            .check(matches(isDisplayed()))
-        onView(withText("Things to try")).check(matches(isDisplayed()))
-        onView(withText("Check for updates")).check(matches(isDisplayed()))
-        onView(withText("Make sure installed apps are up-to-date")).check(matches(isDisplayed()))
-        onView(withText("See all compatible apps")).check(matches(isDisplayed()))
-        onView(withText("Find apps on Google\u00A0Play")).check(matches(isDisplayed()))
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.HELP_AND_FEEDBACK_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(AppPermissionsElement.CHECK_FOR_UPDATES_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(AppPermissionsElement.SEE_ALL_COMPATIBLE_APPS_BUTTON)
+            checkTextIsDisplayed("Things to try")
+            checkTextIsDisplayed("Check for updates")
+            checkTextIsDisplayed("Make sure installed apps are up-to-date")
+            checkTextIsDisplayed("See all compatible apps")
+            checkTextIsDisplayed("Find apps on Google\u00A0Play")
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.HELP_AND_FEEDBACK_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger)
+                .logImpression(AppPermissionsElement.CHECK_FOR_UPDATES_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(AppPermissionsElement.SEE_ALL_COMPATIBLE_APPS_BUTTON)
+        }
     }
 
     @Test
     fun helpAndFeedbackFragment_playStoreNotAvailable_playStoreLinksNotDisplayed() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(false)
 
-        launchFragment<HelpAndFeedbackFragment>(Bundle())
-
-        onView(
-                withText(
-                    "If you can't see an installed app, it may not be compatible with Health\u00A0Connect yet"
-                )
+        launchFragment<HelpAndFeedbackFragment>(Bundle()).use {
+            checkTextIsDisplayed(
+                "If you can't see an installed app, it may not be compatible with Health\u00A0Connect yet"
             )
-            .check(matches(isDisplayed()))
-        onView(withText("Things to try")).check(matches(isDisplayed()))
-        onView(withText("Check for updates")).check(doesNotExist())
-        onView(withText("Make sure installed apps are up-to-date")).check(doesNotExist())
-        onView(withText("See all compatible apps")).check(doesNotExist())
-        onView(withText("Find apps on Google\u00A0Play")).check(doesNotExist())
+            checkTextIsDisplayed("Things to try")
+            onView(withText("Check for updates")).check(doesNotExist())
+            onView(withText("Make sure installed apps are up-to-date")).check(doesNotExist())
+            onView(withText("See all compatible apps")).check(doesNotExist())
+            onView(withText("Find apps on Google\u00A0Play")).check(doesNotExist())
+        }
     }
 
     @Test
     fun helpAndFeedbackFragment_feedbackNotAvailable_sendFeedbackNotDisplayed() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setSendFeedbackAvailability(false)
 
-        launchFragment<HelpAndFeedbackFragment>(Bundle())
-
-        onView(
-                withText(
-                    "If you can't see an installed app, it may not be compatible with Health\u00A0Connect yet"
+        launchFragment<HelpAndFeedbackFragment>(Bundle()).use {
+            onView(
+                    withText(
+                        "If you can't see an installed app, it may not be compatible with Health\u00A0Connect yet"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Things to try")).check(matches(isDisplayed()))
-        onView(withText("Send feedback")).check(doesNotExist())
-        onView(
-                withText(
-                    "Tell us which health & fitness apps you'd like to work with Health\u00A0Connect"
+                .check(matches(isDisplayed()))
+            checkTextIsDisplayed("Things to try")
+            onView(withText("Send feedback")).check(doesNotExist())
+            onView(
+                    withText(
+                        "Tell us which health & fitness apps you'd like to work with Health\u00A0Connect"
+                    )
                 )
-            )
-            .check(doesNotExist())
+                .check(doesNotExist())
+        }
     }
 }
