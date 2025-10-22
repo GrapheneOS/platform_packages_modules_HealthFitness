@@ -53,9 +53,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
+import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
@@ -67,9 +67,8 @@ import org.mockito.kotlin.whenever
 class AddAnAppFragmentTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    @BindValue
-    val dataSourcesViewModel: DataSourcesViewModel = Mockito.mock(DataSourcesViewModel::class.java)
-    @BindValue val navigationUtils: NavigationUtils = Mockito.mock(NavigationUtils::class.java)
+    @BindValue val dataSourcesViewModel: DataSourcesViewModel = mock()
+    @BindValue val navigationUtils: NavigationUtils = mock()
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
 
     @Before
@@ -98,15 +97,16 @@ class AddAnAppFragmentTest {
         }
 
         launchFragment<AddAnAppFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+            .use {
+                onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+                onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
+                onView(withText(TEST_APP_NAME_3)).check(matches(isDisplayed()))
 
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME_3)).check(matches(isDisplayed()))
-
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ADD_AN_APP_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger, times(3))
-            .logImpression(AddAnAppElement.POTENTIAL_PRIORITY_APP_BUTTON)
+                verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ADD_AN_APP_PAGE)
+                verify(healthConnectLogger).logPageImpression()
+                verify(healthConnectLogger, times(3))
+                    .logImpression(AddAnAppElement.POTENTIAL_PRIORITY_APP_BUTTON)
+            }
     }
 
     @Test
@@ -121,8 +121,9 @@ class AddAnAppFragmentTest {
         }
 
         launchFragment<AddAnAppFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
-
-        onView(ViewMatchers.withId(R.id.progress_indicator)).check(matches(isDisplayed()))
+            .use {
+                onView(ViewMatchers.withId(R.id.progress_indicator)).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -137,13 +138,12 @@ class AddAnAppFragmentTest {
         }
 
         launchFragment<AddAnAppFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
-
-        onView(ViewMatchers.withId(R.id.error_view)).check(matches(isDisplayed()))
+            .use { onView(ViewMatchers.withId(R.id.error_view)).check(matches(isDisplayed())) }
     }
 
     @Test
     fun addAnApp_navigatesBackToDataSourcesFragment() {
-        Mockito.doNothing().whenever(navigationUtils).popBackStack(any<AddAnAppFragment>())
+        doNothing().whenever(navigationUtils).popBackStack(any<AddAnAppFragment>())
         whenever(dataSourcesViewModel.dataSourcesInfo).then {
             MutableLiveData(
                 DataSourcesInfo(
@@ -158,9 +158,12 @@ class AddAnAppFragmentTest {
         }
 
         launchFragment<AddAnAppFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
-        onView(withText(TEST_APP_NAME_2)).perform(click())
-        verify(navigationUtils, times(1)).popBackStack(any<AddAnAppFragment>())
-        verify(healthConnectLogger).logInteraction(AddAnAppElement.POTENTIAL_PRIORITY_APP_BUTTON)
+            .use {
+                onView(withText(TEST_APP_NAME_2)).perform(click())
+                verify(navigationUtils, times(1)).popBackStack(any<AddAnAppFragment>())
+                verify(healthConnectLogger)
+                    .logInteraction(AddAnAppElement.POTENTIAL_PRIORITY_APP_BUTTON)
+            }
     }
 
     @Test
@@ -179,10 +182,11 @@ class AddAnAppFragmentTest {
         }
 
         launchFragment<AddAnAppFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
-
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
-        onView(withText(DEVICE_DATA_PROVIDER_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(R.string.devices_current_device)).check(matches(isDisplayed()))
+            .use {
+                onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+                onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
+                onView(withText(DEVICE_DATA_PROVIDER_APP_NAME)).check(matches(isDisplayed()))
+                onView(withText(R.string.devices_current_device)).check(matches(isDisplayed()))
+            }
     }
 }

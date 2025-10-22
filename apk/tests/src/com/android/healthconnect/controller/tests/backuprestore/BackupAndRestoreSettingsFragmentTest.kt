@@ -20,7 +20,6 @@ import android.Manifest
 import android.Manifest.permission.BACKUP
 import android.Manifest.permission.BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS
 import android.app.Activity
-import android.app.Instrumentation
 import android.app.Instrumentation.ActivityResult
 import android.content.ComponentName
 import android.content.Context
@@ -37,7 +36,6 @@ import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
-import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
@@ -104,7 +102,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
@@ -137,19 +134,12 @@ class BackupAndRestoreSettingsFragmentTest {
     @get:Rule val setFlagsRule = SetFlagsRule()
 
     // TODO: b/348591669 - Replace the mock with a fake and investigate the UI tests.
-    @BindValue
-    val exportSettingsViewModel: ExportSettingsViewModel =
-        Mockito.mock(ExportSettingsViewModel::class.java)
-    @BindValue
-    val exportStatusViewModel: ExportStatusViewModel =
-        Mockito.mock(ExportStatusViewModel::class.java)
+    @BindValue val exportSettingsViewModel: ExportSettingsViewModel = mock()
+    @BindValue val exportStatusViewModel: ExportStatusViewModel = mock()
 
-    @BindValue
-    val importStatusViewModel: ImportStatusViewModel =
-        Mockito.mock(ImportStatusViewModel::class.java)
+    @BindValue val importStatusViewModel: ImportStatusViewModel = mock()
 
-    @BindValue
-    val importFlowViewModel: ImportFlowViewModel = Mockito.mock(ImportFlowViewModel::class.java)
+    @BindValue val importFlowViewModel: ImportFlowViewModel = mock()
     @BindValue var toastManager: ToastManager = mock()
     @BindValue val timeSource = TestTimeSource
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
@@ -176,7 +166,7 @@ class BackupAndRestoreSettingsFragmentTest {
         hiltRule.inject()
         // Required for aconfig flag reading for tests run on pre V devices
         InstrumentationRegistry.getInstrumentation()
-            .getUiAutomation()
+            .uiAutomation
             .adoptShellPermissionIdentity(Manifest.permission.READ_DEVICE_CONFIG)
         context = InstrumentationRegistry.getInstrumentation().context
         navHostController = TestNavHostController(context)
@@ -240,16 +230,16 @@ class BackupAndRestoreSettingsFragmentTest {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY))
         }
 
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Scheduled export")).check(matches(isDisplayed()))
-        onView(withText("Import data")).check(matches(isDisplayed()))
-        onView(withText("Restore data from a previously exported file"))
-            .check(matches(isDisplayed()))
-        onView(withText("Export lets you save your data so you can transfer it to a new phone"))
-            .check(matches(isDisplayed()))
-        onView(withText("About backup and restore")).check(matches(isDisplayed()))
-        onView(withText("Drive • healthconnect.zip")).check(matches(isDisplayed()))
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Scheduled export")).check(matches(isDisplayed()))
+            onView(withText("Import data")).check(matches(isDisplayed()))
+            onView(withText("Restore data from a previously exported file"))
+                .check(matches(isDisplayed()))
+            onView(withText("Export lets you save your data so you can transfer it to a new phone"))
+                .check(matches(isDisplayed()))
+            onView(withText("About backup and restore")).check(matches(isDisplayed()))
+            onView(withText("Drive • healthconnect.zip")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -258,11 +248,12 @@ class BackupAndRestoreSettingsFragmentTest {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_DAILY))
         }
 
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(BackupAndRestoreElement.SCHEDULED_EXPORT_BUTTON)
-        verify(healthConnectLogger).logImpression(BackupAndRestoreElement.RESTORE_DATA_BUTTON)
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger)
+                .logImpression(BackupAndRestoreElement.SCHEDULED_EXPORT_BUTTON)
+            verify(healthConnectLogger).logImpression(BackupAndRestoreElement.RESTORE_DATA_BUTTON)
+        }
     }
 
     @Test
@@ -282,9 +273,9 @@ class BackupAndRestoreSettingsFragmentTest {
                 )
             )
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Last export: Oct 20, 7:06 AM")).check(doesNotExist())
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Last export: Oct 20, 7:06 AM")).check(doesNotExist())
+        }
     }
 
     @Test
@@ -305,9 +296,9 @@ class BackupAndRestoreSettingsFragmentTest {
                 )
             )
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Last export: none")).check(matches(isDisplayed()))
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Last export: none")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -328,9 +319,9 @@ class BackupAndRestoreSettingsFragmentTest {
                 )
             )
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Last export: now")).check(matches(isDisplayed()))
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Last export: now")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -351,9 +342,9 @@ class BackupAndRestoreSettingsFragmentTest {
                 )
             )
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Last export: 30 minutes ago")).check(matches(isDisplayed()))
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Last export: 30 minutes ago")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -374,9 +365,9 @@ class BackupAndRestoreSettingsFragmentTest {
                 )
             )
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Last export: 1 minute ago")).check(matches(isDisplayed()))
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Last export: 1 minute ago")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -397,9 +388,9 @@ class BackupAndRestoreSettingsFragmentTest {
                 )
             )
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Last export: 23 hours ago")).check(matches(isDisplayed()))
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Last export: 23 hours ago")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -420,9 +411,9 @@ class BackupAndRestoreSettingsFragmentTest {
                 )
             )
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Last export: 1 hour ago")).check(matches(isDisplayed()))
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Last export: 1 hour ago")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -443,9 +434,9 @@ class BackupAndRestoreSettingsFragmentTest {
                 )
             )
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Last export: Dec 20, 1:06 AM")).check(matches(isDisplayed()))
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Last export: Dec 20, 1:06 AM")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -466,9 +457,9 @@ class BackupAndRestoreSettingsFragmentTest {
                 )
             )
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Last export: October 20, 2021")).check(matches(isDisplayed()))
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Last export: October 20, 2021")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -489,9 +480,9 @@ class BackupAndRestoreSettingsFragmentTest {
                 )
             )
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Drive")).check(matches(isDisplayed()))
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Drive")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -512,9 +503,9 @@ class BackupAndRestoreSettingsFragmentTest {
                 )
             )
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("healthconnect.zip")).check(matches(isDisplayed()))
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("healthconnect.zip")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -533,14 +524,14 @@ class BackupAndRestoreSettingsFragmentTest {
             )
         intending(hasComponent(ImportFlowActivity::class.java.name)).respondWith(expectedResult)
 
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Import data")).check(matches(isEnabled()))
+            onView(withText("Import data")).perform(click())
+            onView(withText("Import data")).check(matches(not(isEnabled())))
 
-        onView(withText("Import data")).check(matches(isEnabled()))
-        onView(withText("Import data")).perform(click())
-        onView(withText("Import data")).check(matches(not(isEnabled())))
-
-        intended(hasComponent(ImportFlowActivity::class.java.name))
-        verify(importFlowViewModel).triggerImportOfSelectedFile(Uri.parse(TEST_LAST_IMPORT_URI))
+            intended(hasComponent(ImportFlowActivity::class.java.name))
+            verify(importFlowViewModel).triggerImportOfSelectedFile(Uri.parse(TEST_LAST_IMPORT_URI))
+        }
     }
 
     @Test
@@ -565,19 +556,22 @@ class BackupAndRestoreSettingsFragmentTest {
             )
         intending(hasComponent(ImportFlowActivity::class.java.name)).respondWith(expectedResult)
 
-        val scenario: ActivityScenario<TestActivity> =
-            launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use { scenario ->
+            onView(withText("Import data")).perform(click())
 
-        onView(withText("Import data")).perform(click())
+            intended(hasComponent(ImportFlowActivity::class.java.name))
+            verify(importFlowViewModel).triggerImportOfSelectedFile(Uri.parse(TEST_LAST_IMPORT_URI))
 
-        intended(hasComponent(ImportFlowActivity::class.java.name))
-        verify(importFlowViewModel).triggerImportOfSelectedFile(Uri.parse(TEST_LAST_IMPORT_URI))
-
-        scenario.onActivity { activity: TestActivity ->
-            verify(toastManager)
-                .showToast(eq(activity), eq(expectedInProgressMessage), ArgumentMatchers.anyInt())
-            verify(toastManager)
-                .showToast(eq(activity), eq(expectedCompleteMessage), ArgumentMatchers.anyInt())
+            scenario.onActivity { activity: TestActivity ->
+                verify(toastManager)
+                    .showToast(
+                        eq(activity),
+                        eq(expectedInProgressMessage),
+                        ArgumentMatchers.anyInt(),
+                    )
+                verify(toastManager)
+                    .showToast(eq(activity), eq(expectedCompleteMessage), ArgumentMatchers.anyInt())
+            }
         }
     }
 
@@ -597,16 +591,15 @@ class BackupAndRestoreSettingsFragmentTest {
                 Intent().putExtra(IMPORT_FILE_URI_KEY, TEST_LAST_IMPORT_URI),
             )
         intending(hasComponent(ImportFlowActivity::class.java.name)).respondWith(expectedResult)
-        val scenario: ActivityScenario<TestActivity> =
-            launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use { scenario ->
+            onView(withText("Import data")).perform(click())
+            intended(hasComponent(ImportFlowActivity::class.java.name))
 
-        onView(withText("Import data")).perform(click())
-        intended(hasComponent(ImportFlowActivity::class.java.name))
-
-        verify(importFlowViewModel).triggerImportOfSelectedFile(Uri.parse(TEST_LAST_IMPORT_URI))
-        scenario.onActivity { activity: TestActivity ->
-            verify(toastManager, never())
-                .showToast(eq(activity), eq(completeMessage), ArgumentMatchers.anyInt())
+            verify(importFlowViewModel).triggerImportOfSelectedFile(Uri.parse(TEST_LAST_IMPORT_URI))
+            scenario.onActivity { activity: TestActivity ->
+                verify(toastManager, never())
+                    .showToast(eq(activity), eq(completeMessage), ArgumentMatchers.anyInt())
+            }
         }
     }
 
@@ -626,15 +619,15 @@ class BackupAndRestoreSettingsFragmentTest {
             )
         intending(hasComponent(ImportFlowActivity::class.java.name)).respondWith(expectedResult)
 
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Import data")).check(matches(isDisplayed()))
+            onView(withText("Import data")).check(matches(isEnabled()))
+            onView(withText("Import data")).perform(click())
 
-        onView(withText("Import data")).check(matches(isDisplayed()))
-        onView(withText("Import data")).check(matches(isEnabled()))
-        onView(withText("Import data")).perform(click())
+            intended(hasComponent(ImportFlowActivity::class.java.name))
 
-        intended(hasComponent(ImportFlowActivity::class.java.name))
-
-        verify(healthConnectLogger).logInteraction(BackupAndRestoreElement.RESTORE_DATA_BUTTON)
+            verify(healthConnectLogger).logInteraction(BackupAndRestoreElement.RESTORE_DATA_BUTTON)
+        }
     }
 
     @Test
@@ -642,14 +635,17 @@ class BackupAndRestoreSettingsFragmentTest {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_NEVER))
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-        val expectedResult = ActivityResult(Activity.RESULT_OK, Intent())
-        intending(hasComponent(ExportSetupActivity::class.java.name)).respondWith(expectedResult)
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            val expectedResult = ActivityResult(Activity.RESULT_OK, Intent())
+            intending(hasComponent(ExportSetupActivity::class.java.name))
+                .respondWith(expectedResult)
 
-        onView(withText("Scheduled export")).perform(click())
+            onView(withText("Scheduled export")).perform(click())
 
-        intended(hasComponent(ExportSetupActivity::class.java.name))
-        verify(healthConnectLogger).logInteraction(BackupAndRestoreElement.SCHEDULED_EXPORT_BUTTON)
+            intended(hasComponent(ExportSetupActivity::class.java.name))
+            verify(healthConnectLogger)
+                .logInteraction(BackupAndRestoreElement.SCHEDULED_EXPORT_BUTTON)
+        }
     }
 
     @Test
@@ -658,14 +654,16 @@ class BackupAndRestoreSettingsFragmentTest {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_DAILY))
         }
         launchFragment<BackupAndRestoreSettingsFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.backupAndRestoreSettingsFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.backupAndRestoreSettingsFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Scheduled export")).perform(click())
 
-        onView(withText("Scheduled export")).perform(click())
-
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.scheduledExportFragment)
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.scheduledExportFragment)
+            }
     }
 
     @Test
@@ -685,15 +683,14 @@ class BackupAndRestoreSettingsFragmentTest {
         val expectedResult = ActivityResult(Activity.RESULT_OK, Intent())
         intending(hasComponent(ExportSetupActivity::class.java.name)).respondWith(expectedResult)
 
-        val scenario: ActivityScenario<TestActivity> =
-            launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use { scenario ->
+            onView(withText("Scheduled export")).perform(click())
+            intended(hasComponent(ExportSetupActivity::class.java.name))
 
-        onView(withText("Scheduled export")).perform(click())
-        intended(hasComponent(ExportSetupActivity::class.java.name))
-
-        scenario.onActivity { activity: TestActivity ->
-            verify(toastManager)
-                .showToast(eq(activity), eq(expectedMessage), ArgumentMatchers.anyInt())
+            scenario.onActivity { activity: TestActivity ->
+                verify(toastManager)
+                    .showToast(eq(activity), eq(expectedMessage), ArgumentMatchers.anyInt())
+            }
         }
     }
 
@@ -702,9 +699,9 @@ class BackupAndRestoreSettingsFragmentTest {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_NEVER))
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Off")).check(matches(isDisplayed()))
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Off")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -712,9 +709,9 @@ class BackupAndRestoreSettingsFragmentTest {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_DAILY))
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("On • Daily")).check(matches(isDisplayed()))
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("On • Daily")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -722,9 +719,9 @@ class BackupAndRestoreSettingsFragmentTest {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY))
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("On • Weekly")).check(matches(isDisplayed()))
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("On • Weekly")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -732,9 +729,9 @@ class BackupAndRestoreSettingsFragmentTest {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_MONTHLY))
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("On • Monthly")).check(matches(isDisplayed()))
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("On • Monthly")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -751,20 +748,20 @@ class BackupAndRestoreSettingsFragmentTest {
                 )
             )
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Choose file")).check(matches(isDisplayed()))
-        onView(withText("Couldn't restore data")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "The file you selected isn't compatible for restore. Make sure to select the correct exported file."
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Choose file")).check(matches(isDisplayed()))
+            onView(withText("Couldn't restore data")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "The file you selected isn't compatible for restore. Make sure to select the correct exported file."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(BackupAndRestoreElement.IMPORT_WRONG_FILE_ERROR_BANNER)
-        verify(healthConnectLogger)
-            .logImpression(BackupAndRestoreElement.IMPORT_WRONG_FILE_ERROR_BANNER_BUTTON)
+                .check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logImpression(BackupAndRestoreElement.IMPORT_WRONG_FILE_ERROR_BANNER)
+            verify(healthConnectLogger)
+                .logImpression(BackupAndRestoreElement.IMPORT_WRONG_FILE_ERROR_BANNER_BUTTON)
+        }
     }
 
     @Test
@@ -782,20 +779,20 @@ class BackupAndRestoreSettingsFragmentTest {
                 )
             )
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Update now")).check(matches(isDisplayed()))
-        onView(withText("Couldn't restore data")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Update your system so that Health\u00A0Connect can restore your data, then try again."
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Update now")).check(matches(isDisplayed()))
+            onView(withText("Couldn't restore data")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Update your system so that Health\u00A0Connect can restore your data, then try again."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(BackupAndRestoreElement.IMPORT_VERSION_MISMATCH_ERROR_BANNER)
-        verify(healthConnectLogger)
-            .logImpression(BackupAndRestoreElement.IMPORT_VERSION_MISMATCH_ERROR_BANNER_BUTTON)
+                .check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logImpression(BackupAndRestoreElement.IMPORT_VERSION_MISMATCH_ERROR_BANNER)
+            verify(healthConnectLogger)
+                .logImpression(BackupAndRestoreElement.IMPORT_VERSION_MISMATCH_ERROR_BANNER_BUTTON)
+        }
     }
 
     @Test
@@ -813,16 +810,16 @@ class BackupAndRestoreSettingsFragmentTest {
                 )
             )
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Try again")).check(matches(isDisplayed()))
-        onView(withText("Couldn't restore data")).check(matches(isDisplayed()))
-        onView(withText("There was a problem with restoring data from your export."))
-            .check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(BackupAndRestoreElement.IMPORT_GENERAL_ERROR_BANNER)
-        verify(healthConnectLogger)
-            .logImpression(BackupAndRestoreElement.IMPORT_GENERAL_ERROR_BANNER_BUTTON)
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Try again")).check(matches(isDisplayed()))
+            onView(withText("Couldn't restore data")).check(matches(isDisplayed()))
+            onView(withText("There was a problem with restoring data from your export."))
+                .check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logImpression(BackupAndRestoreElement.IMPORT_GENERAL_ERROR_BANNER)
+            verify(healthConnectLogger)
+                .logImpression(BackupAndRestoreElement.IMPORT_GENERAL_ERROR_BANNER_BUTTON)
+        }
     }
 
     @Test
@@ -839,9 +836,9 @@ class BackupAndRestoreSettingsFragmentTest {
                 )
             )
         }
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        onView(withText("Couldn't restore data")).check(doesNotExist())
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("Couldn't restore data")).check(doesNotExist())
+        }
     }
 
     @Test
@@ -850,12 +847,12 @@ class BackupAndRestoreSettingsFragmentTest {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY))
         }
 
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            onView(withText("About backup and restore")).check(matches(isDisplayed()))
 
-        onView(withText("About backup and restore")).check(matches(isDisplayed()))
-
-        onView(withText("About backup and restore")).perform(scrollTo(), click())
-        assertThat(fakeDeviceInfoUtils.backupAndRestoreHelpCenterInvoked).isTrue()
+            onView(withText("About backup and restore")).perform(scrollTo(), click())
+            assertThat(fakeDeviceInfoUtils.backupAndRestoreHelpCenterInvoked).isTrue()
+        }
     }
 
     @Test
@@ -876,21 +873,23 @@ class BackupAndRestoreSettingsFragmentTest {
                 settingsStartIntent,
                 BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS, /* Permission to be granted*/
             )
-        Intents.intending(
-                hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
-            )
-            .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, Intent()))
+        intending(hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS"))
+            .respondWith(ActivityResult(Activity.RESULT_OK, Intent()))
 
         // All steps to show the UI element are executed
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()) {
-            (this as BackupAndRestoreSettingsFragment).packageManager = mockPackageManager
-            // The fragement lifecycle is already complete when we set the packageManager,
-            // Manually re-trigger the componentResolution to hit the mock PackageManager.
-            this.resolveBackupSettingsComponentAndDisplayOptionIfAvailable()
-        }
-
-        // But the UI is invisible, because the flag is turned off
-        onView(withText("Backup")).check(doesNotExist())
+        launchFragment<BackupAndRestoreSettingsFragment>(
+                Bundle(),
+                action = {
+                    (this as BackupAndRestoreSettingsFragment).packageManager = mockPackageManager
+                    // The fragement lifecycle is already complete when we set the packageManager,
+                    // Manually re-trigger the componentResolution to hit the mock PackageManager.
+                    this.resolveBackupSettingsComponentAndDisplayOptionIfAvailable()
+                },
+            )
+            .use {
+                // But the UI is invisible, because the flag is turned off
+                onView(withText("Backup")).check(doesNotExist())
+            }
     }
 
     @Test
@@ -911,33 +910,38 @@ class BackupAndRestoreSettingsFragmentTest {
                 settingsStartIntent,
                 BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS, /* Permission to be granted*/
             )
-        Intents.intending(
-                hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
+        intending(hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS"))
+            .respondWith(ActivityResult(Activity.RESULT_OK, Intent()))
+
+        launchFragment<BackupAndRestoreSettingsFragment>(
+                Bundle(),
+                action = {
+                    (this as BackupAndRestoreSettingsFragment).packageManager = mockPackageManager
+
+                    // The fragement lifecycle is already complete when we set the packageManager,
+                    // Manually re-trigger the componentResolution to hit the mock PackageManager.
+                    this.resolveBackupSettingsComponentAndDisplayOptionIfAvailable()
+                },
             )
-            .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, Intent()))
+            .use {
+                onView(withText("Backup")).perform(click())
 
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()) {
-            (this as BackupAndRestoreSettingsFragment).packageManager = mockPackageManager
+                // The package manager should have requested the resolving activity.
+                val intentCaptor: ArgumentCaptor<Intent> =
+                    ArgumentCaptor.forClass(Intent::class.java)
+                verify(mockPackageManager)
+                    .resolveActivity(intentCaptor.capture(), eq(PackageManager.MATCH_DEFAULT_ONLY))
+                val actualIntent = intentCaptor.firstValue
+                assertThat(actualIntent.action)
+                    .isEqualTo("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
+                assertThat(intentCaptor.allValues.size).isEqualTo(1)
 
-            // The fragement lifecycle is already complete when we set the packageManager,
-            // Manually re-trigger the componentResolution to hit the mock PackageManager.
-            this.resolveBackupSettingsComponentAndDisplayOptionIfAvailable()
-        }
-
-        onView(withText("Backup")).perform(click())
-
-        // The package manager should have requested the resolving activity.
-        val intentCaptor: ArgumentCaptor<Intent> = ArgumentCaptor.forClass(Intent::class.java)
-        verify(mockPackageManager)
-            .resolveActivity(intentCaptor.capture(), eq(PackageManager.MATCH_DEFAULT_ONLY))
-        val actualIntent = intentCaptor.firstValue
-        assertThat(actualIntent.action)
-            .isEqualTo("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
-        assertThat(intentCaptor.allValues.size).isEqualTo(1)
-
-        // And an intent should have been sent to it.
-        intended(hasComponent(settingUIComponentName))
-        intended(hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS"))
+                // And an intent should have been sent to it.
+                intended(hasComponent(settingUIComponentName))
+                intended(
+                    hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
+                )
+            }
     }
 
     @Test
@@ -958,32 +962,37 @@ class BackupAndRestoreSettingsFragmentTest {
                 settingsStartIntent,
                 BACKUP, /* Permission to be granted*/
             )
-        Intents.intending(
-                hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
+        intending(hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS"))
+            .respondWith(ActivityResult(Activity.RESULT_OK, Intent()))
+
+        launchFragment<BackupAndRestoreSettingsFragment>(
+                Bundle(),
+                action = {
+                    (this as BackupAndRestoreSettingsFragment).packageManager = mockPackageManager
+                    // The fragement lifecycle is already complete when we set the packageManager,
+                    // Manually re-trigger the componentResolution to hit the mock PackageManager.
+                    this.resolveBackupSettingsComponentAndDisplayOptionIfAvailable()
+                },
             )
-            .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, Intent()))
+            .use {
+                onView(withText("Backup")).perform(click())
 
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()) {
-            (this as BackupAndRestoreSettingsFragment).packageManager = mockPackageManager
-            // The fragement lifecycle is already complete when we set the packageManager,
-            // Manually re-trigger the componentResolution to hit the mock PackageManager.
-            this.resolveBackupSettingsComponentAndDisplayOptionIfAvailable()
-        }
+                // The package manager should have requested the resolving activity.
+                val intentCaptor: ArgumentCaptor<Intent> =
+                    ArgumentCaptor.forClass(Intent::class.java)
+                verify(mockPackageManager)
+                    .resolveActivity(intentCaptor.capture(), eq(PackageManager.MATCH_DEFAULT_ONLY))
+                val actualIntent = intentCaptor.firstValue
+                assertThat(actualIntent.action)
+                    .isEqualTo("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
+                assertThat(intentCaptor.allValues.size).isEqualTo(1)
 
-        onView(withText("Backup")).perform(click())
-
-        // The package manager should have requested the resolving activity.
-        val intentCaptor: ArgumentCaptor<Intent> = ArgumentCaptor.forClass(Intent::class.java)
-        verify(mockPackageManager)
-            .resolveActivity(intentCaptor.capture(), eq(PackageManager.MATCH_DEFAULT_ONLY))
-        val actualIntent = intentCaptor.firstValue
-        assertThat(actualIntent.action)
-            .isEqualTo("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
-        assertThat(intentCaptor.allValues.size).isEqualTo(1)
-
-        // And an intent should have been sent to it.
-        intended(hasComponent(settingUIComponentName))
-        intended(hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS"))
+                // And an intent should have been sent to it.
+                intended(hasComponent(settingUIComponentName))
+                intended(
+                    hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
+                )
+            }
     }
 
     @Test
@@ -1004,20 +1013,23 @@ class BackupAndRestoreSettingsFragmentTest {
                 settingsStartIntent,
                 "", /* No permission granted*/
             )
-        Intents.intending(
-                hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS")
+        intending(hasAction("android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS"))
+            .respondWith(ActivityResult(Activity.RESULT_OK, Intent()))
+
+        launchFragment<BackupAndRestoreSettingsFragment>(
+                Bundle(),
+                action = {
+                    (this as BackupAndRestoreSettingsFragment).packageManager = mockPackageManager
+                    // The fragement lifecycle is already complete when we set the packageManager,
+                    // Manually re-trigger the componentResolution to hit the mock PackageManager.
+                    this.resolveBackupSettingsComponentAndDisplayOptionIfAvailable()
+                },
             )
-            .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, Intent()))
+            .use {
 
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()) {
-            (this as BackupAndRestoreSettingsFragment).packageManager = mockPackageManager
-            // The fragement lifecycle is already complete when we set the packageManager,
-            // Manually re-trigger the componentResolution to hit the mock PackageManager.
-            this.resolveBackupSettingsComponentAndDisplayOptionIfAvailable()
-        }
-
-        // The resolver doesn't hold permissions, so the UI should stay hidden.
-        onView(withText("Backup")).check(doesNotExist())
+                // The resolver doesn't hold permissions, so the UI should stay hidden.
+                onView(withText("Backup")).check(doesNotExist())
+            }
     }
 
     @Test
@@ -1027,11 +1039,11 @@ class BackupAndRestoreSettingsFragmentTest {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY))
         }
 
-        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
-
-        // We are not mocking out the package manager to provide a component that can handle the
-        // settings intent. If there is no settings handler, the backup option should be hidden.
-        onView(withText("Backup")).check(doesNotExist())
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle()).use {
+            // We are not mocking out the package manager to provide a component that can handle the
+            // settings intent. If there is no settings handler, the backup option should be hidden.
+            onView(withText("Backup")).check(doesNotExist())
+        }
     }
 
     // We create our own mockPackagemanager, because ShadowManager can not be used on instrumented
