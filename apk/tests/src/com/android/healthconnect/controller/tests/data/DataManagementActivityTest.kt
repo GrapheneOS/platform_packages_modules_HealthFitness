@@ -41,7 +41,6 @@ import com.android.healthconnect.controller.migration.api.MigrationRestoreState.
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.selectabledeletion.DeletionDataViewModel
-import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -79,7 +78,6 @@ class DataManagementActivityTest {
 
         context = InstrumentationRegistry.getInstrumentation().context
 
-        showOnboarding(context, show = false)
         whenever(allDataViewModel.allData).then {
             MutableLiveData<AllDataViewModel.AllDataState>(
                 AllDataViewModel.AllDataState.WithData(
@@ -131,7 +129,6 @@ class DataManagementActivityTest {
 
     @Test
     fun manageDataIntent_migrationInProgress_redirectsToMigrationInProgress() = runTest {
-        showOnboarding(context, false)
         whenever(migrationViewModel.getCurrentMigrationUiState()).then {
             MigrationRestoreState(
                 migrationUiState = MigrationUiState.IN_PROGRESS,
@@ -160,7 +157,6 @@ class DataManagementActivityTest {
 
     @Test
     fun manageDataIntent_dataRestoreInProgress_redirectsToDataRestoreInProgress() = runTest {
-        showOnboarding(context, false)
         whenever(migrationViewModel.getCurrentMigrationUiState()).then {
             MigrationRestoreState(
                 migrationUiState = MigrationUiState.IDLE,
@@ -189,7 +185,6 @@ class DataManagementActivityTest {
 
     @Test
     fun manageDataIntent_migrationComplete_showsDialog() = runTest {
-        showOnboarding(context, false)
         whenever(migrationViewModel.getCurrentMigrationUiState()).then {
             MigrationRestoreState(
                 migrationUiState = MigrationUiState.COMPLETE,
@@ -235,6 +230,5 @@ class DataManagementActivityTest {
     @After
     fun tearDown() {
         activityScenario.close()
-        showOnboarding(context, false)
     }
 }

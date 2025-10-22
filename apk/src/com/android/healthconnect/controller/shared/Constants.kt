@@ -16,9 +16,7 @@
 package com.android.healthconnect.controller.shared
 
 object Constants {
-    // Onboarding
     const val USER_ACTIVITY_TRACKER = "USER_ACTIVITY_TRACKER"
-    const val ONBOARDING_SHOWN_PREF_KEY = "ONBOARDING_SHOWN_PREF_KEY"
 
     // Migration
     const val APP_UPDATE_NEEDED_BANNER_SEEN = "app_update_banner_seen"

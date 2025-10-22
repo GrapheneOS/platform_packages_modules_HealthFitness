@@ -45,7 +45,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionManager
 import com.android.healthconnect.controller.tests.utils.setLocale
-import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -88,7 +87,6 @@ class SettingsActivityTest {
         whenever(viewModel.grantedFitnessPermissions).then {
             MutableLiveData<Set<FitnessPermission>>(emptySet())
         }
-        showOnboarding(context, false)
 
         // Needed for the fragment
         whenever(viewModel.revokeAllHealthPermissionsState).then {

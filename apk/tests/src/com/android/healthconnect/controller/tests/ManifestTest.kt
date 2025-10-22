@@ -21,7 +21,6 @@ import android.content.pm.PackageManager
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.migration.MigrationActivity
-import com.android.healthconnect.controller.onboarding.OnboardingActivity
 import com.android.healthconnect.controller.route.RouteRequestActivity
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
@@ -31,13 +30,6 @@ import org.junit.runner.RunWith
 class ManifestTest {
 
     private val context = InstrumentationRegistry.getInstrumentation().context
-
-    @Test
-    fun onboardingActivity_shouldNotBeExported() {
-        val intent = Intent(context, OnboardingActivity::class.java)
-        val info = intent.resolveActivityInfo(context.packageManager, PackageManager.MATCH_ALL)
-        assertThat(info.exported).isFalse()
-    }
 
     @Test
     fun migrationActivity_shouldBeExported() {
@@ -52,7 +44,6 @@ class ManifestTest {
         val info = intent.resolveActivityInfo(context.packageManager, PackageManager.MATCH_ALL)
         assertThat(info.permission).isEqualTo("android.permission.health.READ_EXERCISE")
     }
-
 
     @Test
     fun routeRequestActivity_shouldBeExported() {
