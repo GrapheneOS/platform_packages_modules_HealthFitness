@@ -347,15 +347,11 @@
     <string name="cervical_mucus_read_content_description" description="Content description for switch that enables permissions for reading the user's cervical mucus data [CHAR_LIMIT=NONE]">Read cervical mucus</string>
     <string name="cervical_mucus_write_content_description" description="Content description for switch that enables permissions for writing the user's cervical mucus data [CHAR_LIMIT=NONE]">Write cervical mucus</string>
 
-    <string name="cycle_phases_uppercase_label" description="Uppercase label used to show the user's cycle phases data [CHAR_LIMIT=50]">Cycle phases</string>
-    <string name="cycle_phases_lowercase_label" description="Lowercase label used to show the user's cycle phases data [CHAR_LIMIT=50]">cycle phases</string>
-    <string name="cycle_phases_read_content_description" description="Content description for switch that enables permissions for reading the user's cycle phases data [CHAR_LIMIT=NONE]">Read cycle phases</string>
-    <string name="cycle_phases_write_content_description" description="Content description for switch that enables permissions for writing the user's cycle phases data [CHAR_LIMIT=NONE]">Write cycle phases</string>
-
     <string name="intermenstrual_bleeding_uppercase_label" description="Uppercase label used to show the user's intermenstrual bleeding data [CHAR_LIMIT=50]">Intermenstrual bleeding</string>
     <string name="intermenstrual_bleeding_lowercase_label" description="Lowercase label used to show the user's intermenstrual bleeding data [CHAR_LIMIT=50]">intermenstrual bleeding</string>
     <string name="intermenstrual_bleeding_read_content_description" description="Content description for switch that enables permissions for reading the user's intermenstrual bleeding data [CHAR_LIMIT=NONE]">Read intermenstrual bleeding</string>
     <string name="intermenstrual_bleeding_write_content_description" description="Content description for switch that enables permissions for writing the user's intermenstrual bleeding data [CHAR_LIMIT=NONE]">Write intermenstrual bleeding</string>
+
 
     <string name="menstruation_uppercase_label" description="Uppercase label used to show the user's menstruation data [CHAR_LIMIT=50]">Menstruation</string>
     <string name="menstruation_lowercase_label" description="Lowercase label used to show the user's menstruation data [CHAR_LIMIT=50]">menstruation</string>

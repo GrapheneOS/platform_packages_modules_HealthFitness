@@ -18,7 +18,6 @@ package android.health.connect;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION;
-import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES;
 import static com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
@@ -118,14 +117,6 @@ public class HealthPermissionCategory {
     // CYCLE_TRACKING
     /** Permission category for {CervicalMucusRecord} */
     public static final int CERVICAL_MUCUS = 18;
-
-    /**
-     * Permission category for {CyclePhasesRecord}
-     *
-     * @hide
-     */
-    @FlaggedApi(FLAG_CYCLE_PHASES)
-    public static final int CYCLE_PHASES = 104;
 
     /** Permission category for {IntermenstrualBleedingRecord} */
     public static final int INTERMENSTRUAL_BLEEDING = 38;
