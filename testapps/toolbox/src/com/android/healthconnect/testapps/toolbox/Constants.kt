@@ -56,6 +56,7 @@ import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.SpeedRecord
 import android.health.connect.datatypes.StepsCadenceRecord
 import android.health.connect.datatypes.StepsRecord
+import android.health.connect.datatypes.SymptomRecord
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord
 import android.health.connect.datatypes.Vo2MaxRecord
 import android.health.connect.datatypes.WeightRecord
@@ -116,6 +117,65 @@ object Constants {
             "android.permission.health.READ_SLEEP",
             "android.permission.health.READ_SPEED",
             "android.permission.health.READ_STEPS",
+            "android.permission.health.READ_SYMPTOM_COUGH",
+            "android.permission.health.READ_SYMPTOM_SNORE",
+            "android.permission.health.READ_SYMPTOM_ABDOMINAL_PAIN",
+            "android.permission.health.READ_SYMPTOM_ACNE",
+            "android.permission.health.READ_SYMPTOM_BACK_PAIN",
+            "android.permission.health.READ_SYMPTOM_BLOATING",
+            "android.permission.health.READ_SYMPTOM_BRAIN_FOG",
+            "android.permission.health.READ_SYMPTOM_BREAST_TENDERNESS",
+            "android.permission.health.READ_SYMPTOM_BRITTLE_NAILS",
+            "android.permission.health.READ_SYMPTOM_BURNING_MOUTH",
+            "android.permission.health.READ_SYMPTOM_CHEST_PAIN",
+            "android.permission.health.READ_SYMPTOM_CHEST_TIGHTNESS",
+            "android.permission.health.READ_SYMPTOM_CHILLS",
+            "android.permission.health.READ_SYMPTOM_CONSTIPATION",
+            "android.permission.health.READ_SYMPTOM_CRAMPS",
+            "android.permission.health.READ_SYMPTOM_CRAVINGS",
+            "android.permission.health.READ_SYMPTOM_DEHYDRATION",
+            "android.permission.health.READ_SYMPTOM_DIARRHEA",
+            "android.permission.health.READ_SYMPTOM_DIFFICULTY_SWALLOWING",
+            "android.permission.health.READ_SYMPTOM_DIZZINESS",
+            "android.permission.health.READ_SYMPTOM_DRY_SKIN",
+            "android.permission.health.READ_SYMPTOM_EARACHES",
+            "android.permission.health.READ_SYMPTOM_FATIGUE",
+            "android.permission.health.READ_SYMPTOM_FEVER",
+            "android.permission.health.READ_SYMPTOM_GENERALIZED_BODY_ACHE",
+            "android.permission.health.READ_SYMPTOM_HAIR_LOSS",
+            "android.permission.health.READ_SYMPTOM_HEADACHE",
+            "android.permission.health.READ_SYMPTOM_HEARTBURN",
+            "android.permission.health.READ_SYMPTOM_HEART_PALPITATIONS",
+            "android.permission.health.READ_SYMPTOM_HOT_FLASHES",
+            "android.permission.health.READ_SYMPTOM_INSOMNIA",
+            "android.permission.health.READ_SYMPTOM_JOINT_PAIN",
+            "android.permission.health.READ_SYMPTOM_JOINT_STIFFNESS",
+            "android.permission.health.READ_SYMPTOM_LOSS_OF_APPETITE",
+            "android.permission.health.READ_SYMPTOM_LOSS_OF_CONSCIOUSNESS",
+            "android.permission.health.READ_SYMPTOM_LOWER_BACK_PAIN",
+            "android.permission.health.READ_SYMPTOM_MEMORY_LAPSE",
+            "android.permission.health.READ_SYMPTOM_MOOD_CHANGE",
+            "android.permission.health.READ_SYMPTOM_MUSCLE_PAIN",
+            "android.permission.health.READ_SYMPTOM_NAUSEA",
+            "android.permission.health.READ_SYMPTOM_NIGHT_SWEATS",
+            "android.permission.health.READ_SYMPTOM_PELVIC_PAIN",
+            "android.permission.health.READ_SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT",
+            "android.permission.health.READ_SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE",
+            "android.permission.health.READ_SYMPTOM_RUNNY_NOSE",
+            "android.permission.health.READ_SYMPTOM_SHORTNESS_OF_BREATH",
+            "android.permission.health.READ_SYMPTOM_SKIPPED_HEARTBEAT",
+            "android.permission.health.READ_SYMPTOM_SLEEPINESS",
+            "android.permission.health.READ_SYMPTOM_SLEEP_CHANGES",
+            "android.permission.health.READ_SYMPTOM_SNEEZING",
+            "android.permission.health.READ_SYMPTOM_SORE_THROAT",
+            "android.permission.health.READ_SYMPTOM_STOMACH_ACHE",
+            "android.permission.health.READ_SYMPTOM_STUFFY_NOSE",
+            "android.permission.health.READ_SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES",
+            "android.permission.health.READ_SYMPTOM_VAGINAL_DRYNESS",
+            "android.permission.health.READ_SYMPTOM_VAGINAL_ITCHINESS",
+            "android.permission.health.READ_SYMPTOM_VOMITING",
+            "android.permission.health.READ_SYMPTOM_WATER_RETENTION",
+            "android.permission.health.READ_SYMPTOM_WHEEZING",
             "android.permission.health.READ_TOTAL_CALORIES_BURNED",
             "android.permission.health.READ_VO2_MAX",
             "android.permission.health.READ_WEIGHT",
@@ -161,6 +221,65 @@ object Constants {
             "android.permission.health.WRITE_SLEEP",
             "android.permission.health.WRITE_SPEED",
             "android.permission.health.WRITE_STEPS",
+            "android.permission.health.WRITE_SYMPTOM_COUGH",
+            "android.permission.health.WRITE_SYMPTOM_SNORE",
+            "android.permission.health.WRITE_SYMPTOM_ABDOMINAL_PAIN",
+            "android.permission.health.WRITE_SYMPTOM_ACNE",
+            "android.permission.health.WRITE_SYMPTOM_BACK_PAIN",
+            "android.permission.health.WRITE_SYMPTOM_BLOATING",
+            "android.permission.health.WRITE_SYMPTOM_BRAIN_FOG",
+            "android.permission.health.WRITE_SYMPTOM_BREAST_TENDERNESS",
+            "android.permission.health.WRITE_SYMPTOM_BRITTLE_NAILS",
+            "android.permission.health.WRITE_SYMPTOM_BURNING_MOUTH",
+            "android.permission.health.WRITE_SYMPTOM_CHEST_PAIN",
+            "android.permission.health.WRITE_SYMPTOM_CHEST_TIGHTNESS",
+            "android.permission.health.WRITE_SYMPTOM_CHILLS",
+            "android.permission.health.WRITE_SYMPTOM_CONSTIPATION",
+            "android.permission.health.WRITE_SYMPTOM_CRAMPS",
+            "android.permission.health.WRITE_SYMPTOM_CRAVINGS",
+            "android.permission.health.WRITE_SYMPTOM_DEHYDRATION",
+            "android.permission.health.WRITE_SYMPTOM_DIARRHEA",
+            "android.permission.health.WRITE_SYMPTOM_DIFFICULTY_SWALLOWING",
+            "android.permission.health.WRITE_SYMPTOM_DIZZINESS",
+            "android.permission.health.WRITE_SYMPTOM_DRY_SKIN",
+            "android.permission.health.WRITE_SYMPTOM_EARACHES",
+            "android.permission.health.WRITE_SYMPTOM_FATIGUE",
+            "android.permission.health.WRITE_SYMPTOM_FEVER",
+            "android.permission.health.WRITE_SYMPTOM_GENERALIZED_BODY_ACHE",
+            "android.permission.health.WRITE_SYMPTOM_HAIR_LOSS",
+            "android.permission.health.WRITE_SYMPTOM_HEADACHE",
+            "android.permission.health.WRITE_SYMPTOM_HEARTBURN",
+            "android.permission.health.WRITE_SYMPTOM_HEART_PALPITATIONS",
+            "android.permission.health.WRITE_SYMPTOM_HOT_FLASHES",
+            "android.permission.health.WRITE_SYMPTOM_INSOMNIA",
+            "android.permission.health.WRITE_SYMPTOM_JOINT_PAIN",
+            "android.permission.health.WRITE_SYMPTOM_JOINT_STIFFNESS",
+            "android.permission.health.WRITE_SYMPTOM_LOSS_OF_APPETITE",
+            "android.permission.health.WRITE_SYMPTOM_LOSS_OF_CONSCIOUSNESS",
+            "android.permission.health.WRITE_SYMPTOM_LOWER_BACK_PAIN",
+            "android.permission.health.WRITE_SYMPTOM_MEMORY_LAPSE",
+            "android.permission.health.WRITE_SYMPTOM_MOOD_CHANGE",
+            "android.permission.health.WRITE_SYMPTOM_MUSCLE_PAIN",
+            "android.permission.health.WRITE_SYMPTOM_NAUSEA",
+            "android.permission.health.WRITE_SYMPTOM_NIGHT_SWEATS",
+            "android.permission.health.WRITE_SYMPTOM_PELVIC_PAIN",
+            "android.permission.health.WRITE_SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT",
+            "android.permission.health.WRITE_SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE",
+            "android.permission.health.WRITE_SYMPTOM_RUNNY_NOSE",
+            "android.permission.health.WRITE_SYMPTOM_SHORTNESS_OF_BREATH",
+            "android.permission.health.WRITE_SYMPTOM_SKIPPED_HEARTBEAT",
+            "android.permission.health.WRITE_SYMPTOM_SLEEPINESS",
+            "android.permission.health.WRITE_SYMPTOM_SLEEP_CHANGES",
+            "android.permission.health.WRITE_SYMPTOM_SNEEZING",
+            "android.permission.health.WRITE_SYMPTOM_SORE_THROAT",
+            "android.permission.health.WRITE_SYMPTOM_STOMACH_ACHE",
+            "android.permission.health.WRITE_SYMPTOM_STUFFY_NOSE",
+            "android.permission.health.WRITE_SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES",
+            "android.permission.health.WRITE_SYMPTOM_VAGINAL_DRYNESS",
+            "android.permission.health.WRITE_SYMPTOM_VAGINAL_ITCHINESS",
+            "android.permission.health.WRITE_SYMPTOM_VOMITING",
+            "android.permission.health.WRITE_SYMPTOM_WATER_RETENTION",
+            "android.permission.health.WRITE_SYMPTOM_WHEEZING",
             "android.permission.health.WRITE_TOTAL_CALORIES_BURNED",
             "android.permission.health.WRITE_VO2_MAX",
             "android.permission.health.WRITE_WEIGHT",
@@ -241,6 +360,11 @@ object Constants {
             R.string.wellness_category,
             R.drawable.ic_wellness,
         ),
+        SYMPTOMS(
+            CategoriesMappers.SYMPTOMS_PERMISSION_GROUPS,
+            R.string.symptoms_category,
+            R.drawable.ic_symptoms,
+        ),
     }
 
     /** Permission groups for each {@link HealthDataCategory}. */
@@ -289,6 +413,11 @@ object Constants {
             listOf(HealthPermissionType.HYDRATION, HealthPermissionType.NUTRITION)
 
         val SLEEP_PERMISSION_GROUPS = listOf(HealthPermissionType.SLEEP)
+
+        // As symptoms has many permission groups per record type, we just include a generic
+        // symptoms permission type here to avoid asking for symptom type twice in write data
+        // screens.
+        val SYMPTOMS_PERMISSION_GROUPS = listOf(HealthPermissionType.SYMPTOMS)
 
         val VITALS_PERMISSION_GROUPS =
             listOf(
@@ -368,6 +497,9 @@ object Constants {
 
         // SLEEP
         SLEEP(SleepSessionRecord::class, R.string.sleep_label),
+
+        // SYMPTOMS
+        SYMPTOMS(SymptomRecord::class, R.string.symptoms_category),
 
         // VITALS
         BASAL_BODY_TEMPERATURE(

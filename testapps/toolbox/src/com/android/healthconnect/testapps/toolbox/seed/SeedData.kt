@@ -27,14 +27,13 @@ import android.health.connect.datatypes.units.Temperature
 import android.health.connect.datatypes.units.TemperatureDelta
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.getMetaData
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.insertRecords
-import kotlinx.coroutines.runBlocking
 import java.time.Duration.ofDays
 import java.time.Duration.ofMinutes
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.Random
 import kotlin.random.Random as ktRandom
-
+import kotlinx.coroutines.runBlocking
 
 class SeedData(private val context: Context, private val manager: HealthConnectManager) {
 
@@ -45,7 +44,8 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
                 SkinTemperatureRecord.MEASUREMENT_LOCATION_FINGER,
                 SkinTemperatureRecord.MEASUREMENT_LOCATION_TOE,
                 SkinTemperatureRecord.MEASUREMENT_LOCATION_WRIST,
-                SkinTemperatureRecord.MEASUREMENT_LOCATION_UNKNOWN)
+                SkinTemperatureRecord.MEASUREMENT_LOCATION_UNKNOWN,
+            )
     }
 
     fun seedRandomDataToGenerateAccessLog(numOfLogs: Int) {
@@ -71,7 +71,7 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
         }
     }
 
-    fun seedAllData(){
+    fun seedAllData() {
         try {
             SeedActivityData(context, manager).seedActivityData()
             SeedBodyMeasurementsData(context, manager).seedBodyMeasurementsData()
@@ -80,7 +80,8 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
             SeedSleepData(context, manager).seedSleepCategoryData()
             SeedVitalsData(context, manager).seedVitalsData()
             SeedWellnessData(context, manager).seedWellnessData()
-        }catch (ex: Exception) {
+            SeedSymptomsData(context, manager).seedSymptomsData()
+        } catch (ex: Exception) {
             throw ex
         }
     }
@@ -95,13 +96,15 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
     private suspend fun seedMenstruationData() {
         val today = Instant.now()
         val periodRecord =
-            MenstruationPeriodRecord.Builder(getMetaData(context), today.minus(ofDays(5L)), today).build()
+            MenstruationPeriodRecord.Builder(getMetaData(context), today.minus(ofDays(5L)), today)
+                .build()
         val flowRecords =
             (-5..0).map { days ->
                 MenstruationFlowRecord.Builder(
                         getMetaData(context),
                         today.plus(ofDays(days.toLong())),
-                        MenstruationFlowType.FLOW_MEDIUM)
+                        MenstruationFlowType.FLOW_MEDIUM,
+                    )
                     .build()
             }
         insertRecords(
@@ -109,7 +112,8 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
                 add(periodRecord)
                 addAll(flowRecords)
             },
-            manager)
+            manager,
+        )
     }
 
     suspend fun seedHeartRateData(numberOfRecordsPerBatch: Long) {
@@ -120,12 +124,14 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
                 val hrSamples = ArrayList<Pair<Long, Instant>>()
                 repeat(10) { i ->
                     hrSamples.add(
-                        Pair(getValidHeartRate(random), start.plus(ofMinutes(timeOffset + i))))
+                        Pair(getValidHeartRate(random), start.plus(ofMinutes(timeOffset + i)))
+                    )
                 }
                 getHeartRateRecord(
                     hrSamples,
                     start.plus(ofMinutes(timeOffset)),
-                    start.plus(ofMinutes(timeOffset + 100)))
+                    start.plus(ofMinutes(timeOffset + 100)),
+                )
             }
         insertRecords(records, manager)
     }
@@ -138,12 +144,16 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
                 repeat(10) { i ->
                     skinTempSamples.add(
                         SkinTemperatureRecord.Delta(
-                            getValidTemperatureDelta(), start.plus(ofMinutes(timeOffset + i))))
+                            getValidTemperatureDelta(),
+                            start.plus(ofMinutes(timeOffset + i)),
+                        )
+                    )
                 }
                 getSkinTemperatureRecord(
                     skinTempSamples,
                     start.plus(ofMinutes(timeOffset)),
-                    start.plus(ofMinutes(timeOffset + 100)))
+                    start.plus(ofMinutes(timeOffset + 100)),
+                )
             }
         insertRecords(records, manager)
     }
@@ -151,7 +161,7 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
     private fun getSkinTemperatureRecord(
         deltasList: List<SkinTemperatureRecord.Delta>,
         startTime: Instant,
-        endTime: Instant
+        endTime: Instant,
     ): SkinTemperatureRecord {
         return SkinTemperatureRecord.Builder(getMetaData(context), startTime, endTime)
             .setDeltas(deltasList)
@@ -173,7 +183,8 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
                 getMetaData(context),
                 start,
                 end,
-                heartRateValues.map { HeartRateRecord.HeartRateSample(it.first, it.second) })
+                heartRateValues.map { HeartRateRecord.HeartRateSample(it.first, it.second) },
+            )
             .build()
     }
 
@@ -185,5 +196,3 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
         return StepsRecord.Builder(getMetaData(context), time, time.plusSeconds(30), count).build()
     }
 }
-
-
