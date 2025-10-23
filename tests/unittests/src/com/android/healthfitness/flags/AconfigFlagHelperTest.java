@@ -19,6 +19,7 @@ package com.android.healthfitness.flags;
 import static com.android.healthfitness.flags.AconfigFlagHelper.getDbVersionToDbFlagMap;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isAlcoholConsumptionEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
+import static com.android.healthfitness.flags.AconfigFlagHelper.isCyclePhasesEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isDeviceDataProvidersEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isSymptomsEnabled;
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
@@ -173,5 +174,17 @@ public class AconfigFlagHelperTest {
     })
     public void alcohol_consumption_featureFlagTrueAndDbTrue_expectTrue() {
         assertThat(isAlcoholConsumptionEnabled()).isTrue();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_CYCLE_PHASES_FEATURE)
+    public void isCyclePhaseEnabled_featureFlagTrue_expectTrue() {
+        assertThat(isCyclePhasesEnabled()).isTrue();
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_CYCLE_PHASES_FEATURE)
+    public void isCyclePhaseEnabled_featureFlagFalse_expectFalse() {
+        assertThat(isCyclePhasesEnabled()).isFalse();
     }
 }
