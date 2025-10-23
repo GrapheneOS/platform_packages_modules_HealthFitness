@@ -68,25 +68,26 @@ class AppUpdateRequiredFragmentTest {
 
     @Test
     fun appUpdateRequiredFragment_displaysCorrectly() {
-        launchFragment<AppUpdateRequiredFragment>(Bundle())
-
-        onView(withText("Update needed")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Health Connect is being integrated with the Android system so " +
-                        "you can access it directly from your settings.\n\n" +
-                        "Before continuing, update the Health Connect app to the latest version."
+        launchFragment<AppUpdateRequiredFragment>(Bundle()).use {
+            onView(withText("Update needed")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Health Connect is being integrated with the Android system so " +
+                            "you can access it directly from your settings.\n\n" +
+                            "Before continuing, update the Health Connect app to the latest version."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).check(matches(isDisplayed()))
-        onView(withText("Update")).check(matches(isDisplayed()))
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.MIGRATION_APP_UPDATE_NEEDED_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)
+                .check(matches(isDisplayed()))
+            onView(withText("Cancel")).check(matches(isDisplayed()))
+            onView(withText("Update")).check(matches(isDisplayed()))
+            verify(healthConnectLogger, atLeast(1))
+                .setPageId(PageName.MIGRATION_APP_UPDATE_NEEDED_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)
+        }
     }
 
     @Test
@@ -96,57 +97,60 @@ class AppUpdateRequiredFragmentTest {
                 Intent(Intent.ACTION_SHOW_APP_INFO).also { it.setPackage("installer.package.name") }
             )
         whenever(navigationUtils.startActivity(any(), any())).thenCallRealMethod()
-        launchFragment<AppUpdateRequiredFragment>(Bundle())
-        onView(withText("Update")).check(matches(isDisplayed()))
-        onView(withText("Update")).perform(click())
+        launchFragment<AppUpdateRequiredFragment>(Bundle()).use {
+            onView(withText("Update")).check(matches(isDisplayed()))
+            onView(withText("Update")).perform(click())
 
-        intended(
-            allOf(hasAction(Intent.ACTION_SHOW_APP_INFO), hasPackage("installer.package.name"))
-        )
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
+            intended(
+                allOf(hasAction(Intent.ACTION_SHOW_APP_INFO), hasPackage("installer.package.name"))
+            )
+            verify(healthConnectLogger)
+                .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
+        }
     }
 
     @Test
     fun appUpdateRequiredFragment_ifAppStoreDoesNotExist_doesNotNavigateToAppStore() {
         whenever(appStoreUtils.getAppStoreLink(any())).thenReturn(null)
 
-        launchFragment<AppUpdateRequiredFragment>(Bundle())
-        onView(withText("Update")).check(matches(isDisplayed()))
-        onView(withText("Update")).perform(click())
+        launchFragment<AppUpdateRequiredFragment>(Bundle()).use {
+            onView(withText("Update")).check(matches(isDisplayed()))
+            onView(withText("Update")).perform(click())
 
-        // Check we are still on the same page
-        onView(
-                withText(
-                    "Health Connect is being integrated with the Android system so " +
-                        "you can access it directly from your settings.\n\n" +
-                        "Before continuing, update the Health Connect app to the latest version."
+            // Check we are still on the same page
+            onView(
+                    withText(
+                        "Health Connect is being integrated with the Android system so " +
+                            "you can access it directly from your settings.\n\n" +
+                            "Before continuing, update the Health Connect app to the latest version."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
 
-        verify(navigationUtils, never()).startActivity(any(), any())
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
+            verify(navigationUtils, never()).startActivity(any(), any())
+            verify(healthConnectLogger)
+                .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
+        }
     }
 
     @Test
     fun appUpdateRequiredFragment_whenCancelButtonPressed_setsSharedPreferences() {
         doNothing().whenever(navigationUtils).navigate(any(), any())
-        launchFragment<AppUpdateRequiredFragment>(Bundle())
-        onView(withText("Cancel")).check(matches(isDisplayed()))
-        onView(withText("Cancel")).perform(click())
+        launchFragment<AppUpdateRequiredFragment>(Bundle()).use {
+            onView(withText("Cancel")).check(matches(isDisplayed()))
+            onView(withText("Cancel")).perform(click())
 
-        // Can't use onActivity as it may already be destroyed
-        onIdle {
-            val preferences =
-                applicationContext.getSharedPreferences(
-                    "USER_ACTIVITY_TRACKER",
-                    Context.MODE_PRIVATE,
-                )
-            assertThat(preferences.getBoolean("App Update Seen", false)).isTrue()
+            // Can't use onActivity as it may already be destroyed
+            onIdle {
+                val preferences =
+                    applicationContext.getSharedPreferences(
+                        "USER_ACTIVITY_TRACKER",
+                        Context.MODE_PRIVATE,
+                    )
+                assertThat(preferences.getBoolean("App Update Seen", false)).isTrue()
+            }
+            verify(healthConnectLogger)
+                .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)
         }
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)
     }
 }

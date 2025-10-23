@@ -67,85 +67,95 @@ class MigrationPausedFragmentTest {
     @Test
     fun migrationPausedFragment_displaysCorrectly() {
         launchFragment<MigrationPausedFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.migration_nav_graph)
-            navHostController.setCurrentDestination(R.id.migrationPausedFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-
-        onView(withText("Integration paused")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "The Health Connect app closed while it was being integrated " +
-                        "with the Android system.\n\nClick resume to reopen the app and continue " +
-                        "transferring your data and permissions."
-                )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).check(matches(isDisplayed()))
-        onView(withText("Resume")).check(matches(isDisplayed()))
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.MIGRATION_PAUSED_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(MigrationElement.MIGRATION_PAUSED_CONTINUE_BUTTON)
+                navHostController.setGraph(R.navigation.migration_nav_graph)
+                navHostController.setCurrentDestination(R.id.migrationPausedFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Integration paused")).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "The Health Connect app closed while it was being integrated " +
+                                "with the Android system.\n\nClick resume to reopen the app and continue " +
+                                "transferring your data and permissions."
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).check(matches(isDisplayed()))
+                onView(withText("Resume")).check(matches(isDisplayed()))
+                verify(healthConnectLogger, atLeast(1)).setPageId(PageName.MIGRATION_PAUSED_PAGE)
+                verify(healthConnectLogger).logPageImpression()
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_PAUSED_CONTINUE_BUTTON)
+            }
     }
 
     @Test
     fun migrationPausedFragment_whenCancelButtonPressed_setsSharedPreferences() {
         //        Mockito.doNothing().whenever(navigationUtils).navigate(any(), any())
         launchFragment<MigrationPausedFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.migration_nav_graph)
-            navHostController.setCurrentDestination(R.id.migrationPausedFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-        onView(withText("Cancel")).check(matches(isDisplayed()))
-        onView(withText("Cancel")).perform(ViewActions.click())
+                navHostController.setGraph(R.navigation.migration_nav_graph)
+                navHostController.setCurrentDestination(R.id.migrationPausedFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Cancel")).check(matches(isDisplayed()))
+                onView(withText("Cancel")).perform(ViewActions.click())
 
-        // Can't use onActivity as it may already be destroyed
-        onIdle {
-            val preferences =
-                applicationContext.getSharedPreferences("USER_ACTIVITY_TRACKER", MODE_PRIVATE)
-            assertThat(preferences.getBoolean("integration_paused_seen", false)).isTrue()
-        }
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)
+                // Can't use onActivity as it may already be destroyed
+                onIdle {
+                    val preferences =
+                        applicationContext.getSharedPreferences(
+                            "USER_ACTIVITY_TRACKER",
+                            MODE_PRIVATE,
+                        )
+                    assertThat(preferences.getBoolean("integration_paused_seen", false)).isTrue()
+                }
+                verify(healthConnectLogger)
+                    .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)
+            }
     }
 
     @Test
     fun migrationPausedFragment_whenResumeButtonPressed_navigatesToMigratorApk() {
         //        Mockito.doNothing().whenever(navigationUtils).navigate(any(), any())
         launchFragment<MigrationPausedFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.migration_nav_graph)
-            navHostController.setCurrentDestination(R.id.migrationPausedFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-        onView(withText("Resume")).check(matches(isDisplayed()))
-        onView(withText("Resume")).perform(ViewActions.click())
+                navHostController.setGraph(R.navigation.migration_nav_graph)
+                navHostController.setCurrentDestination(R.id.migrationPausedFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Resume")).check(matches(isDisplayed()))
+                onView(withText("Resume")).perform(ViewActions.click())
 
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.migrationApk)
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_PAUSED_CONTINUE_BUTTON)
+                assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.migrationApk)
+                verify(healthConnectLogger)
+                    .logInteraction(MigrationElement.MIGRATION_PAUSED_CONTINUE_BUTTON)
+            }
     }
 
     @Test
     fun migrationPausedFragment_whenNavigateToMigratorApkFails_displaysCorrectly() {
         //        whenever(navigationUtils.navigate(any(),
         // any())).thenThrow(RuntimeException("Exception"))
-        launchFragment<MigrationPausedFragment>(Bundle())
-        onView(withText("Resume")).check(matches(isDisplayed()))
-        onView(withText("Resume")).perform(ViewActions.click())
+        launchFragment<MigrationPausedFragment>(Bundle()).use {
+            onView(withText("Resume")).check(matches(isDisplayed()))
+            onView(withText("Resume")).perform(ViewActions.click())
 
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_PAUSED_CONTINUE_BUTTON)
+            verify(healthConnectLogger)
+                .logInteraction(MigrationElement.MIGRATION_PAUSED_CONTINUE_BUTTON)
 
-        onView(withText("Integration paused")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "The Health Connect app closed while it was being integrated " +
-                        "with the Android system.\n\nClick resume to reopen the app and continue " +
-                        "transferring your data and permissions."
+            onView(withText("Integration paused")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "The Health Connect app closed while it was being integrated " +
+                            "with the Android system.\n\nClick resume to reopen the app and continue " +
+                            "transferring your data and permissions."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).check(matches(isDisplayed()))
-        onView(withText("Resume")).check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+            onView(withText("Cancel")).check(matches(isDisplayed()))
+            onView(withText("Resume")).check(matches(isDisplayed()))
+        }
     }
 }
