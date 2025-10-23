@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.tests.datasources
 import android.health.connect.HealthDataCategory
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -45,6 +46,7 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppUtils
 import com.android.healthconnect.controller.shared.app.AppUtilsModule
+import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_3
@@ -73,7 +75,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -88,8 +89,7 @@ class DataSourcesFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    @BindValue
-    val dataSourcesViewModel: DataSourcesViewModel = Mockito.mock(DataSourcesViewModel::class.java)
+    @BindValue val dataSourcesViewModel: DataSourcesViewModel = mock()
     @BindValue val appUtils: AppUtils = FakeAppUtils()
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
 
@@ -157,16 +157,18 @@ class DataSourcesFragmentTest {
             )
         }
         launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
-
-        onIdle()
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.DATA_SOURCES_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(DataSourcesElement.DATA_TOTALS_CARD)
-        verify(healthConnectLogger).logImpression(DataSourcesElement.DATA_TYPE_SPINNER)
-        verify(healthConnectLogger, times(2)).logImpression(DataSourcesElement.APP_SOURCE_BUTTON)
-        verify(healthConnectLogger, times(2))
-            .logImpression(DataSourcesElement.OPEN_APP_SOURCE_MENU_BUTTON)
-        verify(healthConnectLogger).logImpression(DataSourcesElement.ADD_AN_APP_BUTTON)
+            .use {
+                onIdle()
+                verify(healthConnectLogger, atLeast(1)).setPageId(PageName.DATA_SOURCES_PAGE)
+                verify(healthConnectLogger).logPageImpression()
+                verify(healthConnectLogger).logImpression(DataSourcesElement.DATA_TOTALS_CARD)
+                verify(healthConnectLogger).logImpression(DataSourcesElement.DATA_TYPE_SPINNER)
+                verify(healthConnectLogger, times(2))
+                    .logImpression(DataSourcesElement.APP_SOURCE_BUTTON)
+                verify(healthConnectLogger, times(2))
+                    .logImpression(DataSourcesElement.OPEN_APP_SOURCE_MENU_BUTTON)
+                verify(healthConnectLogger).logImpression(DataSourcesElement.ADD_AN_APP_BUTTON)
+            }
     }
 
     @Test
@@ -186,24 +188,26 @@ class DataSourcesFragmentTest {
             MutableLiveData(AggregationCardsState.WithData(true, listOf()))
         }
         launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
-        onIdle()
+            .use {
+                onIdle()
 
-        onView(withText("Activity")).check(matches(isDisplayed()))
-        onView(withText("Data totals")).check(doesNotExist())
-        onView(withText("Data sources")).check(matches(isDisplayed()))
-        onView(withText("Add a data source")).check(doesNotExist())
-        onView(
-                withText(
-                    "Add data sources to the list to see how the data " +
-                        "totals can change. Removing a data source from this list will stop it " +
-                        "from contributing to totals, but it will still have write permissions."
-                )
-            )
-            .check(matches(isDisplayed()))
-        verifyTestApp()
-        verifyTestApp2()
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.DATA_SOURCES_PAGE)
-        verify(healthConnectLogger, atLeast(1)).logPageImpression()
+                onView(withText("Activity")).check(matches(isDisplayed()))
+                onView(withText("Data totals")).check(doesNotExist())
+                onView(withText("Data sources")).check(matches(isDisplayed()))
+                onView(withText("Add a data source")).check(doesNotExist())
+                onView(
+                        withText(
+                            "Add data sources to the list to see how the data " +
+                                "totals can change. Removing a data source from this list will stop it " +
+                                "from contributing to totals, but it will still have write permissions."
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                verifyTestApp()
+                verifyTestApp2()
+                verify(healthConnectLogger, atLeast(1)).setPageId(PageName.DATA_SOURCES_PAGE)
+                verify(healthConnectLogger, atLeast(1)).logPageImpression()
+            }
     }
 
     @Test
@@ -253,24 +257,25 @@ class DataSourcesFragmentTest {
             )
         }
         launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+            .use {
+                onView(withText("Activity")).check(matches(isDisplayed()))
+                onView(withText("Data totals")).check(matches(isDisplayed()))
+                onView(withText("1234 steps")).check(matches(isDisplayed()))
+                onView(withText("October 19")).check(matches(isDisplayed()))
+                onView(withText("Data sources")).check(matches(isDisplayed()))
+                onView(withText("Add a data source")).check(doesNotExist())
+                onView(
+                        withText(
+                            "Add data sources to the list to see how the data " +
+                                "totals can change. Removing a data source from this list will stop it " +
+                                "from contributing to totals, but it will still have write permissions."
+                        )
+                    )
+                    .check(matches(isDisplayed()))
 
-        onView(withText("Activity")).check(matches(isDisplayed()))
-        onView(withText("Data totals")).check(matches(isDisplayed()))
-        onView(withText("1234 steps")).check(matches(isDisplayed()))
-        onView(withText("October 19")).check(matches(isDisplayed()))
-        onView(withText("Data sources")).check(matches(isDisplayed()))
-        onView(withText("Add a data source")).check(doesNotExist())
-        onView(
-                withText(
-                    "Add data sources to the list to see how the data " +
-                        "totals can change. Removing a data source from this list will stop it " +
-                        "from contributing to totals, but it will still have write permissions."
-                )
-            )
-            .check(matches(isDisplayed()))
-
-        verifyTestApp()
-        verifyTestApp2()
+                verifyTestApp()
+                verifyTestApp2()
+            }
     }
 
     @Test
@@ -320,9 +325,11 @@ class DataSourcesFragmentTest {
             )
         }
         launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
-        onView(withText("Data totals")).check(matches(isDisplayed()))
-        onView(withText("1234 steps")).check(matches(isDisplayed()))
-        onView(withText("October 19, 2020")).check(matches(isDisplayed()))
+            .use {
+                onView(withText("Data totals")).check(matches(isDisplayed()))
+                onView(withText("1234 steps")).check(matches(isDisplayed()))
+                onView(withText("October 19, 2020")).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -372,23 +379,24 @@ class DataSourcesFragmentTest {
         }
 
         launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.SLEEP))
-
-        onView(withText("Sleep")).check(matches(isDisplayed()))
-        onView(withText("Data totals")).check(matches(isDisplayed()))
-        onView(withText("11h 5m")).check(matches(isDisplayed()))
-        onView(withText("Oct 18 – 19")).check(matches(isDisplayed()))
-        onView(withText("Data sources")).check(matches(isDisplayed()))
-        onView(withText("Add a data source")).check(doesNotExist())
-        onView(
-                withText(
-                    "Add data sources to the list to see how the data " +
-                        "totals can change. Removing a data source from this list will stop it " +
-                        "from contributing to totals, but it will still have write permissions."
-                )
-            )
-            .check(matches(isDisplayed()))
-        verifyTestApp()
-        verifyTestApp2()
+            .use {
+                onView(withText("Sleep")).check(matches(isDisplayed()))
+                onView(withText("Data totals")).check(matches(isDisplayed()))
+                onView(withText("11h 5m")).check(matches(isDisplayed()))
+                onView(withText("Oct 18 – 19")).check(matches(isDisplayed()))
+                onView(withText("Data sources")).check(matches(isDisplayed()))
+                onView(withText("Add a data source")).check(doesNotExist())
+                onView(
+                        withText(
+                            "Add data sources to the list to see how the data " +
+                                "totals can change. Removing a data source from this list will stop it " +
+                                "from contributing to totals, but it will still have write permissions."
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                verifyTestApp()
+                verifyTestApp2()
+            }
     }
 
     @Test
@@ -438,23 +446,24 @@ class DataSourcesFragmentTest {
         }
 
         launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.SLEEP))
-
-        onView(withText("Sleep")).check(matches(isDisplayed()))
-        onView(withText("Data totals")).check(matches(isDisplayed()))
-        onView(withText("11h 5m")).check(matches(isDisplayed()))
-        onView(withText("Oct 18 – 19, 2020")).check(matches(isDisplayed()))
-        onView(withText("Data sources")).check(matches(isDisplayed()))
-        onView(withText("Add a data source")).check(doesNotExist())
-        onView(
-                withText(
-                    "Add data sources to the list to see how the data " +
-                        "totals can change. Removing a data source from this list will stop it " +
-                        "from contributing to totals, but it will still have write permissions."
-                )
-            )
-            .check(matches(isDisplayed()))
-        verifyTestApp()
-        verifyTestApp2()
+            .use {
+                onView(withText("Sleep")).check(matches(isDisplayed()))
+                onView(withText("Data totals")).check(matches(isDisplayed()))
+                onView(withText("11h 5m")).check(matches(isDisplayed()))
+                onView(withText("Oct 18 – 19, 2020")).check(matches(isDisplayed()))
+                onView(withText("Data sources")).check(matches(isDisplayed()))
+                onView(withText("Add a data source")).check(doesNotExist())
+                onView(
+                        withText(
+                            "Add data sources to the list to see how the data " +
+                                "totals can change. Removing a data source from this list will stop it " +
+                                "from contributing to totals, but it will still have write permissions."
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                verifyTestApp()
+                verifyTestApp2()
+            }
     }
 
     @Test
@@ -504,23 +513,24 @@ class DataSourcesFragmentTest {
         }
 
         launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.SLEEP))
-
-        onView(withText("Sleep")).check(matches(isDisplayed()))
-        onView(withText("Data totals")).check(matches(isDisplayed()))
-        onView(withText("11h 5m")).check(matches(isDisplayed()))
-        onView(withText("Dec 31, 2020 – Jan 1, 2021")).check(matches(isDisplayed()))
-        onView(withText("Data sources")).check(matches(isDisplayed()))
-        onView(withText("Add a data source")).check(doesNotExist())
-        onView(
-                withText(
-                    "Add data sources to the list to see how the data " +
-                        "totals can change. Removing a data source from this list will stop it " +
-                        "from contributing to totals, but it will still have write permissions."
-                )
-            )
-            .check(matches(isDisplayed()))
-        verifyTestApp()
-        verifyTestApp2()
+            .use {
+                onView(withText("Sleep")).check(matches(isDisplayed()))
+                onView(withText("Data totals")).check(matches(isDisplayed()))
+                onView(withText("11h 5m")).check(matches(isDisplayed()))
+                onView(withText("Dec 31, 2020 – Jan 1, 2021")).check(matches(isDisplayed()))
+                onView(withText("Data sources")).check(matches(isDisplayed()))
+                onView(withText("Add a data source")).check(doesNotExist())
+                onView(
+                        withText(
+                            "Add data sources to the list to see how the data " +
+                                "totals can change. Removing a data source from this list will stop it " +
+                                "from contributing to totals, but it will still have write permissions."
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                verifyTestApp()
+                verifyTestApp2()
+            }
     }
 
     @Test
@@ -538,16 +548,17 @@ class DataSourcesFragmentTest {
             MutableLiveData(AggregationCardsState.WithData(true, listOf()))
         }
         launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
-
-        onView(withText("Activity")).check(matches(isDisplayed()))
-        onView(withText("No data sources")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Once you give a data source permission to write activity data, sources will show here."
-                )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("How sources & prioritization work")).check(matches(isDisplayed()))
+            .use {
+                onView(withText("Activity")).check(matches(isDisplayed()))
+                onView(withText("No data sources")).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Once you give a data source permission to write activity data, sources will show here."
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(withText("How sources & prioritization work")).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -568,64 +579,67 @@ class DataSourcesFragmentTest {
             MutableLiveData(AggregationCardsState.WithData(true, listOf()))
         }
         launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
-        onIdle()
+            .use {
+                onIdle()
 
-        onView(withText("Activity")).check(matches(isDisplayed()))
-        onView(withText("Data totals")).check(doesNotExist())
-        onView(withText("Data sources")).check(matches(isDisplayed()))
-        onView(withText("Add a data source")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Add data sources to the list to see how the data " +
-                        "totals can change. Removing a data source from this list will stop it " +
-                        "from contributing to totals, but it will still have write permissions."
-                )
-            )
-            .check(matches(isDisplayed()))
+                onView(withText("Activity")).check(matches(isDisplayed()))
+                onView(withText("Data totals")).check(doesNotExist())
+                onView(withText("Data sources")).check(matches(isDisplayed()))
+                onView(withText("Add a data source")).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Add data sources to the list to see how the data " +
+                                "totals can change. Removing a data source from this list will stop it " +
+                                "from contributing to totals, but it will still have write permissions."
+                        )
+                    )
+                    .check(matches(isDisplayed()))
 
-        verifyTestApp()
-        verifyTestApp2()
+                verifyTestApp()
+                verifyTestApp2()
+            }
     }
 
     @Test
     fun appOnPriorityList_whenDefaultApp_showsAsDeviceDefault() {
         (appUtils as FakeAppUtils).setDefaultApp(TEST_APP_PACKAGE_NAME)
-        launchFragment(listOf(TEST_APP, TEST_APP_2))
-        onIdle()
+        launchFragment(listOf(TEST_APP, TEST_APP_2)).use {
+            onIdle()
 
-        onView(withText("Activity")).check(matches(isDisplayed()))
-        onView(withText("Data totals")).check(matches(isDisplayed()))
-        onView(withText("Data sources")).check(matches(isDisplayed()))
-        onView(withText("Add a data source")).check(doesNotExist())
-        onView(
-                withText(
-                    "Add data sources to the list to see how the data " +
-                        "totals can change. Removing a data source from this list will stop it " +
-                        "from contributing to totals, but it will still have write permissions."
+            onView(withText("Activity")).check(matches(isDisplayed()))
+            onView(withText("Data totals")).check(matches(isDisplayed()))
+            onView(withText("Data sources")).check(matches(isDisplayed()))
+            onView(withText("Add a data source")).check(doesNotExist())
+            onView(
+                    withText(
+                        "Add data sources to the list to see how the data " +
+                            "totals can change. Removing a data source from this list will stop it " +
+                            "from contributing to totals, but it will still have write permissions."
+                    )
                 )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
 
-        onView(
-                allOf(
-                    withText(TEST_APP_NAME),
-                    hasIndirectSibling(withText("1")),
-                    hasSibling(withText("Device default")),
+            onView(
+                    allOf(
+                        withText(TEST_APP_NAME),
+                        hasIndirectSibling(withText("1")),
+                        hasSibling(withText("Device default")),
+                    )
                 )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
 
-        onView(
-                allOf(
-                    withText(TEST_APP_NAME_2),
-                    hasIndirectSibling(withText("2")),
-                    hasSibling(not(withText("Device default"))),
+            onView(
+                    allOf(
+                        withText(TEST_APP_NAME_2),
+                        hasIndirectSibling(withText("2")),
+                        hasSibling(not(withText("Device default"))),
+                    )
                 )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -646,8 +660,7 @@ class DataSourcesFragmentTest {
             MutableLiveData(AggregationCardsState.Loading(false))
         }
         launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
-
-        onView(withId(R.id.progress_indicator)).check(matches(isDisplayed()))
+            .use { onView(withId(R.id.progress_indicator)).check(matches(isDisplayed())) }
     }
 
     @Test
@@ -667,75 +680,85 @@ class DataSourcesFragmentTest {
             MutableLiveData(AggregationCardsState.WithData(true, listOf()))
         }
         launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
-        onIdle()
+            .use {
+                onIdle()
 
-        onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+                onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+            }
     }
 
     @Test
     fun clickOnTopAppSource_menuHasCorrectOptions() {
-        launchFragment(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
-
-        onView(
-                withContentDescription(
-                    "Button to reorder or remove Health Connect test app from the app sources list"
+        launchFragment(listOf(TEST_APP, TEST_APP_2, TEST_APP_3)).use {
+            onView(
+                    withContentDescription(
+                        "Button to reorder or remove Health Connect test app from the app sources list"
+                    )
                 )
-            )
-            .perform(scrollTo())
-            .perform(click())
-        onIdle()
+                .perform(scrollTo())
+                .perform(click())
+            onIdle()
 
-        verify(healthConnectLogger).logInteraction(DataSourcesElement.OPEN_APP_SOURCE_MENU_BUTTON)
-        onView(withText("Move up")).check(doesNotExist())
-        onView(withText("Move down")).check(matches(isDisplayed()))
-        onView(withText("Remove")).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(DataSourcesElement.MOVE_APP_SOURCE_DOWN_MENU_BUTTON)
-        verify(healthConnectLogger).logImpression(DataSourcesElement.REMOVE_APP_SOURCE_MENU_BUTTON)
+            verify(healthConnectLogger)
+                .logInteraction(DataSourcesElement.OPEN_APP_SOURCE_MENU_BUTTON)
+            onView(withText("Move up")).check(doesNotExist())
+            onView(withText("Move down")).check(matches(isDisplayed()))
+            onView(withText("Remove")).check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logImpression(DataSourcesElement.MOVE_APP_SOURCE_DOWN_MENU_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(DataSourcesElement.REMOVE_APP_SOURCE_MENU_BUTTON)
+        }
     }
 
     @Test
     fun clickOnMiddleAppSource_menuHasCorrectOptions() {
-        launchFragment(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
-
-        onView(
-                withContentDescription(
-                    "Button to reorder or remove Health Connect test app 2 from the app sources list"
+        launchFragment(listOf(TEST_APP, TEST_APP_2, TEST_APP_3)).use {
+            onView(
+                    withContentDescription(
+                        "Button to reorder or remove Health Connect test app 2 from the app sources list"
+                    )
                 )
-            )
-            .perform(scrollTo())
-            .perform(click())
-        onIdle()
+                .perform(scrollTo())
+                .perform(click())
+            onIdle()
 
-        verify(healthConnectLogger).logInteraction(DataSourcesElement.OPEN_APP_SOURCE_MENU_BUTTON)
-        onView(withText("Move up")).check(matches(isDisplayed()))
-        onView(withText("Move down")).check(matches(isDisplayed()))
-        onView(withText("Remove")).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(DataSourcesElement.MOVE_APP_SOURCE_UP_MENU_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(DataSourcesElement.MOVE_APP_SOURCE_DOWN_MENU_BUTTON)
-        verify(healthConnectLogger).logImpression(DataSourcesElement.REMOVE_APP_SOURCE_MENU_BUTTON)
+            verify(healthConnectLogger)
+                .logInteraction(DataSourcesElement.OPEN_APP_SOURCE_MENU_BUTTON)
+            onView(withText("Move up")).check(matches(isDisplayed()))
+            onView(withText("Move down")).check(matches(isDisplayed()))
+            onView(withText("Remove")).check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logImpression(DataSourcesElement.MOVE_APP_SOURCE_UP_MENU_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(DataSourcesElement.MOVE_APP_SOURCE_DOWN_MENU_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(DataSourcesElement.REMOVE_APP_SOURCE_MENU_BUTTON)
+        }
     }
 
     @Test
     fun clickOnBottomAppSource_menuHasCorrectOptions() {
-        launchFragment(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
-
-        onView(
-                withContentDescription(
-                    "Button to reorder or remove Health Connect test app 3 from the app sources list"
+        launchFragment(listOf(TEST_APP, TEST_APP_2, TEST_APP_3)).use {
+            onView(
+                    withContentDescription(
+                        "Button to reorder or remove Health Connect test app 3 from the app sources list"
+                    )
                 )
-            )
-            .perform(scrollTo())
-            .perform(click())
-        onIdle()
+                .perform(scrollTo())
+                .perform(click())
+            onIdle()
 
-        verify(healthConnectLogger).logInteraction(DataSourcesElement.OPEN_APP_SOURCE_MENU_BUTTON)
-        onView(withText("Move up")).check(matches(isDisplayed()))
-        onView(withText("Move down")).check(doesNotExist())
-        onView(withText("Remove")).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(DataSourcesElement.MOVE_APP_SOURCE_UP_MENU_BUTTON)
-        verify(healthConnectLogger).logImpression(DataSourcesElement.REMOVE_APP_SOURCE_MENU_BUTTON)
+            verify(healthConnectLogger)
+                .logInteraction(DataSourcesElement.OPEN_APP_SOURCE_MENU_BUTTON)
+            onView(withText("Move up")).check(matches(isDisplayed()))
+            onView(withText("Move down")).check(doesNotExist())
+            onView(withText("Remove")).check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logImpression(DataSourcesElement.MOVE_APP_SOURCE_UP_MENU_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(DataSourcesElement.REMOVE_APP_SOURCE_MENU_BUTTON)
+        }
     }
 
     @Test
@@ -783,29 +806,31 @@ class DataSourcesFragmentTest {
         }
 
         launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
-        onIdle()
-        onView(withText("No data sources")).check(matches(isDisplayed()))
+            .use {
+                onIdle()
+                onView(withText("No data sources")).check(matches(isDisplayed()))
 
-        onView(withId(android.R.id.text1)).perform(click())
-        onView(withText("Sleep")).perform(click())
-        onIdle()
+                onView(withId(android.R.id.text1)).perform(click())
+                onView(withText("Sleep")).perform(click())
+                onIdle()
 
-        onView(withText("No data sources")).check(doesNotExist())
-        onView(withText("Data sources")).check(matches(isDisplayed()))
+                onView(withText("No data sources")).check(doesNotExist())
+                onView(withText("Data sources")).check(matches(isDisplayed()))
 
-        whenever(dataSourcesViewModel.loadData(HealthDataCategory.ACTIVITY)).then {
-            dataSourcesLiveData.postValue(withData)
-        }
+                whenever(dataSourcesViewModel.loadData(HealthDataCategory.ACTIVITY)).then {
+                    dataSourcesLiveData.postValue(withData)
+                }
 
-        onView(withId(android.R.id.text1)).perform(click())
-        onView(withText("Activity")).perform(click())
-        onIdle()
+                onView(withId(android.R.id.text1)).perform(click())
+                onView(withText("Activity")).perform(click())
+                onIdle()
 
-        onView(withText("No data sources")).check(doesNotExist())
-        onView(withText("Data sources")).check(matches(isDisplayed()))
+                onView(withText("No data sources")).check(doesNotExist())
+                onView(withText("Data sources")).check(matches(isDisplayed()))
+            }
     }
 
-    private fun launchFragment(priorityList: List<AppMetadata>) {
+    private fun launchFragment(priorityList: List<AppMetadata>): ActivityScenario<TestActivity> {
         whenever(dataSourcesViewModel.dataSourcesAndAggregationsInfo).then {
             MutableLiveData(
                 DataSourcesAndAggregationsInfo(
@@ -848,7 +873,9 @@ class DataSourcesFragmentTest {
                 )
             )
         }
-        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        return launchFragment<DataSourcesFragment>(
+            bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY)
+        )
     }
 
     private fun verifyTestApp() {

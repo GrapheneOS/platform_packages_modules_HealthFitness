@@ -42,7 +42,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -55,7 +54,7 @@ class AutoDeleteFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    @BindValue val viewModel: AutoDeleteViewModel = Mockito.mock(AutoDeleteViewModel::class.java)
+    @BindValue val viewModel: AutoDeleteViewModel = mock()
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
 
     @Before
@@ -78,31 +77,32 @@ class AutoDeleteFragmentTest {
                 )
             )
         }
-        launchFragment<AutoDeleteFragment>(Bundle())
-
-        onView(
-                withText(
-                    "Control how long your data is stored in Health\u00A0Connect by scheduling it to delete after a set time"
+        launchFragment<AutoDeleteFragment>(Bundle()).use {
+            onView(
+                    withText(
+                        "Control how long your data is stored in Health\u00A0Connect by scheduling it to delete after a set time"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(allOf(withText("Learn more about auto-delete"))).check(matches(isDisplayed()))
-        onView(withText("Auto-delete data")).check(matches(isDisplayed()))
-        onView(withText("After 3 months")).check(matches(isDisplayed()))
-        onView(withText("After 18 months")).check(matches(isDisplayed()))
-        onView(withText("Never")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "When you change these settings, Health\u00A0Connect deletes existing data to reflect your new preferences"
+                .check(matches(isDisplayed()))
+            onView(allOf(withText("Learn more about auto-delete"))).check(matches(isDisplayed()))
+            onView(withText("Auto-delete data")).check(matches(isDisplayed()))
+            onView(withText("After 3 months")).check(matches(isDisplayed()))
+            onView(withText("After 18 months")).check(matches(isDisplayed()))
+            onView(withText("Never")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "When you change these settings, Health\u00A0Connect deletes existing data to reflect your new preferences"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
 
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.AUTO_DELETE_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(AutoDeleteElement.AUTO_DELETE_NEVER_BUTTON)
-        verify(healthConnectLogger).logImpression(AutoDeleteElement.AUTO_DELETE_3_MONTHS_BUTTON)
-        verify(healthConnectLogger).logImpression(AutoDeleteElement.AUTO_DELETE_18_MONTHS_BUTTON)
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.AUTO_DELETE_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger).logImpression(AutoDeleteElement.AUTO_DELETE_NEVER_BUTTON)
+            verify(healthConnectLogger).logImpression(AutoDeleteElement.AUTO_DELETE_3_MONTHS_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(AutoDeleteElement.AUTO_DELETE_18_MONTHS_BUTTON)
+        }
     }
 
     @Test
@@ -121,8 +121,9 @@ class AutoDeleteFragmentTest {
         whenever(viewModel.oldAutoDeleteRange).then {
             MutableLiveData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER)
         }
-        launchFragment<AutoDeleteFragment>(Bundle())
-        onView(checkBoxOf("Never")).check(matches(isChecked()))
+        launchFragment<AutoDeleteFragment>(Bundle()).use {
+            onView(checkBoxOf("Never")).check(matches(isChecked()))
+        }
     }
 
     @Test
@@ -141,32 +142,34 @@ class AutoDeleteFragmentTest {
         whenever(viewModel.oldAutoDeleteRange).then {
             MutableLiveData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER)
         }
-        launchFragment<AutoDeleteFragment>(Bundle())
-
-        onView(withText("After 3 months")).perform(click())
-        verify(healthConnectLogger).logInteraction(AutoDeleteElement.AUTO_DELETE_3_MONTHS_BUTTON)
-        onView(withText("Auto-delete data after 3 months?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "This also deletes data older than 3 months from Health\u00A0Connect.\n\nIf you want to completely delete the data from your connected apps, check each app where your data may be saved."
+        launchFragment<AutoDeleteFragment>(Bundle()).use {
+            onView(withText("After 3 months")).perform(click())
+            verify(healthConnectLogger)
+                .logInteraction(AutoDeleteElement.AUTO_DELETE_3_MONTHS_BUTTON)
+            onView(withText("Auto-delete data after 3 months?"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "This also deletes data older than 3 months from Health\u00A0Connect.\n\nIf you want to completely delete the data from your connected apps, check each app where your data may be saved."
+                    )
                 )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Set auto-delete")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            onView(withText("Set auto-delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
 
-        verify(healthConnectLogger).logImpression(AutoDeleteElement.AUTO_DELETE_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(AutoDeleteElement.AUTO_DELETE_DIALOG_CONFIRM_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(AutoDeleteElement.AUTO_DELETE_DIALOG_CANCEL_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(AutoDeleteElement.AUTO_DELETE_DIALOG_CONTAINER)
+            verify(healthConnectLogger)
+                .logImpression(AutoDeleteElement.AUTO_DELETE_DIALOG_CONFIRM_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(AutoDeleteElement.AUTO_DELETE_DIALOG_CANCEL_BUTTON)
 
-        onView(withText("Set auto-delete")).inRoot(isDialog()).perform(click())
-        verify(healthConnectLogger)
-            .logInteraction(AutoDeleteElement.AUTO_DELETE_DIALOG_CONFIRM_BUTTON)
+            onView(withText("Set auto-delete")).inRoot(isDialog()).perform(click())
+            verify(healthConnectLogger)
+                .logInteraction(AutoDeleteElement.AUTO_DELETE_DIALOG_CONFIRM_BUTTON)
+        }
     }
 
     @Test
@@ -179,9 +182,9 @@ class AutoDeleteFragmentTest {
                 )
             )
         }
-        launchFragment<AutoDeleteFragment>(Bundle())
-
-        onView(checkBoxOf("After 3 months")).check(matches(isChecked()))
+        launchFragment<AutoDeleteFragment>(Bundle()).use {
+            onView(checkBoxOf("After 3 months")).check(matches(isChecked()))
+        }
     }
 
     @Test
@@ -200,32 +203,34 @@ class AutoDeleteFragmentTest {
         whenever(viewModel.oldAutoDeleteRange).then {
             MutableLiveData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER)
         }
-        launchFragment<AutoDeleteFragment>(Bundle())
-
-        onView(withText("After 18 months")).perform(click())
-        verify(healthConnectLogger).logInteraction(AutoDeleteElement.AUTO_DELETE_18_MONTHS_BUTTON)
-        onView(withText("Auto-delete data after 18 months?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "This also deletes data older than 18 months from Health\u00A0Connect.\n\nIf you want to completely delete the data from your connected apps, check each app where your data may be saved."
+        launchFragment<AutoDeleteFragment>(Bundle()).use {
+            onView(withText("After 18 months")).perform(click())
+            verify(healthConnectLogger)
+                .logInteraction(AutoDeleteElement.AUTO_DELETE_18_MONTHS_BUTTON)
+            onView(withText("Auto-delete data after 18 months?"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "This also deletes data older than 18 months from Health\u00A0Connect.\n\nIf you want to completely delete the data from your connected apps, check each app where your data may be saved."
+                    )
                 )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Set auto-delete")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            onView(withText("Set auto-delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
 
-        verify(healthConnectLogger).logImpression(AutoDeleteElement.AUTO_DELETE_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(AutoDeleteElement.AUTO_DELETE_DIALOG_CONFIRM_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(AutoDeleteElement.AUTO_DELETE_DIALOG_CANCEL_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(AutoDeleteElement.AUTO_DELETE_DIALOG_CONTAINER)
+            verify(healthConnectLogger)
+                .logImpression(AutoDeleteElement.AUTO_DELETE_DIALOG_CONFIRM_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(AutoDeleteElement.AUTO_DELETE_DIALOG_CANCEL_BUTTON)
 
-        onView(withText("Set auto-delete")).inRoot(isDialog()).perform(click())
-        verify(healthConnectLogger)
-            .logInteraction(AutoDeleteElement.AUTO_DELETE_DIALOG_CONFIRM_BUTTON)
+            onView(withText("Set auto-delete")).inRoot(isDialog()).perform(click())
+            verify(healthConnectLogger)
+                .logInteraction(AutoDeleteElement.AUTO_DELETE_DIALOG_CONFIRM_BUTTON)
+        }
     }
 
     @Test
@@ -238,9 +243,9 @@ class AutoDeleteFragmentTest {
                 )
             )
         }
-        launchFragment<AutoDeleteFragment>(Bundle())
-
-        onView(checkBoxOf("After 18 months")).check(matches(isChecked()))
+        launchFragment<AutoDeleteFragment>(Bundle()).use {
+            onView(checkBoxOf("After 18 months")).check(matches(isChecked()))
+        }
     }
 
     @Test
@@ -252,8 +257,8 @@ class AutoDeleteFragmentTest {
                 )
             )
         }
-        launchFragment<AutoDeleteFragment>(Bundle())
-
-        onView(allOf(withText("Learn more about auto-delete"))).perform(click())
+        launchFragment<AutoDeleteFragment>(Bundle()).use {
+            onView(allOf(withText("Learn more about auto-delete"))).perform(click())
+        }
     }
 }
